@@ -5,14 +5,14 @@ import { MomentModule } from 'angular2-moment';
 import { InboxComponent } from './inbox.component';
 import { InboxConversationComponent } from '../inbox-conversation/inbox-conversation.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { HttpService } from '../../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { TrackingService } from '../../../core/tracking/tracking.service';
+import { HttpService } from '../../../core/http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
+import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { InboxService } from '../../core/inbox/inbox.service';
-import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
-import { EventService } from '../../core/event/event.service';
+import { InboxService } from '../../../core/inbox/inbox.service';
+import { createInboxConversationsArray } from '../../../../tests/inbox.fixtures.spec';
+import { EventService } from '../../../core/event/event.service';
 
 
 describe('Component: ConversationsPanel', () => {

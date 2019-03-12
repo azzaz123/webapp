@@ -2,15 +2,15 @@ import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChi
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { EventService } from '../../core/event/event.service';
-import { ConversationService } from '../../core/conversation/conversation.service';
-import { UserService } from '../../core/user/user.service';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { Conversation } from '../../core/conversation/conversation';
-import { Message, phoneMethod } from '../../core/message/message';
-import { NewConversationResponse } from '../../core/conversation/conversation-response.interface';
+import { EventService } from '../../../core/event/event.service';
+import { ConversationService } from '../../../core/conversation/conversation.service';
+import { UserService } from '../../../core/user/user.service';
+import { TrackingService } from '../../../core/tracking/tracking.service';
+import { Conversation } from '../../../core/conversation/conversation';
+import { Message, phoneMethod } from '../../../core/message/message';
+import { NewConversationResponse } from '../../../core/conversation/conversation-response.interface';
 import { Observable } from 'rxjs';
-import { MessageService } from '../../core/message/message.service';
+import { MessageService } from '../../../core/message/message.service';
 
 @Component({
   selector: 'tsl-conversations-panel',

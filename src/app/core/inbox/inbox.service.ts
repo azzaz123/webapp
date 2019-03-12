@@ -72,12 +72,12 @@ export class InboxService {
       if (conversation.lastMessage && conversation.lastMessage.id !== newMessage.id) {
         conversation.lastMessage = newMessage;
         conversation.modifiedDate = conversation.lastMessage.date;
-      if (!message.fromSelf) {
-        conversation.unreadCounter++;
-        this.messageService.totalUnreadMessages++;
-      }
+        if (!message.fromSelf) {
+          conversation.unreadCounter++;
+          this.messageService.totalUnreadMessages++;
         }
       }
+    }
   }
 
   private processChatSignal(signal: ChatSignal) {

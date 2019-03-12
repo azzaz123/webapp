@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { ConversationsPanelComponent } from './conversations-panel/conversations-panel.component';
-import { MessagesPanelComponent } from './messages-panel/messages-panel.component';
+import { ConversationsPanelComponent } from './chat-with-archive/conversations-panel/conversations-panel.component';
+import { MessagesPanelComponent } from './chat-with-archive/messages-panel/messages-panel.component';
 import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
 import { InputComponent } from './input/input.component';
 import { ConnectionAlertComponent } from './connection-alert/connection-alert.component';
@@ -22,6 +22,10 @@ import { ItemSoldComponent } from './item/item-sold/item-sold.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { UserResponseRateComponent } from './user-response-rate/user-response-rate.component';
 import { TrackingModule } from '../core/tracking/tracking.module';
+import { InboxComponent } from './chat-with-inbox/inbox/inbox.component';
+import { InboxConversationComponent } from './chat-with-inbox/inbox-conversation/inbox-conversation.component';
+import { ChatWithInboxComponent } from './chat-with-inbox/chat-with-inbox.component';
+import { ChatWithArchiveComponent } from './chat-with-archive/chat-with-archive.component';
 
 @NgModule({
   imports: [
@@ -52,7 +56,11 @@ import { TrackingModule } from '../core/tracking/tracking.module';
     UnblockUserComponent,
     UserDetailComponent,
     UserCardComponent,
-    UserResponseRateComponent
+    UserResponseRateComponent,
+    InboxComponent,
+    InboxConversationComponent,
+    ChatWithInboxComponent,
+    ChatWithArchiveComponent
   ],
   entryComponents: [
     ArchiveConversationComponent,

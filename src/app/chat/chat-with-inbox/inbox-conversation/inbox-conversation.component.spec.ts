@@ -4,7 +4,7 @@ import { InboxConversationComponent } from './inbox-conversation.component';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 
 
 describe('Component: Conversation', () => {

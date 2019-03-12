@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AdService } from '../core/ad/ad.service';
-import { UserService } from '../core/user/user.service';
-import { EventService } from '../core/event/event.service';
+import { AdService } from '../../core/ad/ad.service';
+import { UserService } from '../../core/user/user.service';
+import { EventService } from '../../core/event/event.service';
 
 @Component({
   selector: 'tsl-chat-with-inbox',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  templateUrl: './chat-with-inbox.component.html',
+  styleUrls: ['./chat-with-inbox.component.scss']
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatWithInboxComponent implements OnInit, OnDestroy {
 
   public conversationsLoaded: boolean;
   public conversationsTotal: number;
@@ -18,8 +18,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   public isProfessional: boolean;
 
   constructor(public userService: UserService,
-              private eventService: EventService,
-              private adService: AdService) {
+    private eventService: EventService,
+    private adService: AdService) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });

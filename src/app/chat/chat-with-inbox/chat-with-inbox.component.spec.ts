@@ -1,37 +1,36 @@
-/* tslint:disable:no-unused-variable */
-
 import { TestBed } from '@angular/core/testing';
-import { ChatComponent } from './chat.component';
+import { ChatWithInboxComponent } from './chat-with-inbox.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { TrackingService } from '../core/tracking/tracking.service';
-import { AdService } from '../core/ad/ad.service';
-import { HttpService } from '../core/http/http.service';
-import { I18nService } from '../core/i18n/i18n.service';
-import { EventService } from '../core/event/event.service';
-import { UserService } from '../core/user/user.service';
-import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
+import { TrackingService } from '../../core/tracking/tracking.service';
+import { AdService } from '../../core/ad/ad.service';
+import { HttpService } from '../../core/http/http.service';
+import { I18nService } from '../../core/i18n/i18n.service';
+import { EventService } from '../../core/event/event.service';
+import { UserService } from '../../core/user/user.service';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
+
 class MockUserService {
   public isProfessional() {
     return Observable.of(true);
   }
 }
-describe('Component: Chat', () => {
 
-  let component: ChatComponent;
+
+describe('Component: ChatWithInboxComponent', () => {
+  let component: ChatWithInboxComponent;
   let eventService: EventService;
-  let userService: UserService;
   let adService: AdService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ChatComponent],
+      declarations: [ ChatWithInboxComponent ],
       imports: [NgbModule.forRoot(), FormsModule, NgxPermissionsModule],
       providers: [
-        ChatComponent,
+        ChatWithInboxComponent,
         {provide: TrackingService, useClass: MockTrackingService},
         {provide: UserService, useClass: MockUserService},
         {provide: HttpService, useValue: {}},
@@ -49,9 +48,8 @@ describe('Component: Chat', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
-    component = TestBed.createComponent(ChatComponent).componentInstance;
+    component = TestBed.createComponent(ChatWithInboxComponent).componentInstance;
     eventService = TestBed.get(EventService);
-    userService = TestBed.get(UserService);
     adService = TestBed.get(AdService);
   });
   it('should set the conversationsLoaded value to FALSE when event.loaded is false', () => {
@@ -113,5 +111,4 @@ describe('Component: Chat', () => {
 
     expect(adService.stopAdsRefresh).toHaveBeenCalled();
   });
-
 });
