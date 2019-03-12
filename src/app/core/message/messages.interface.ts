@@ -34,7 +34,7 @@ export interface StoredMessage {
   message: string;
   status: string;
   from: string;
-   // TODO - replace conversationId with thread when with DB version update to standardizes pop. names
+  // TODO - replace conversationId with thread with DB version update to standardizes prop. names
   conversationId: string;
   payload?: MessagePayload;
   phoneRequest?: string;
