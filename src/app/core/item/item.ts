@@ -11,6 +11,11 @@ export const ITEM_STATUSES: any = {
   'active': 'PUBLISHED',
   'sold': ['SOLD_OUTSIDE', 'BOUGHT']
 };
+export const INBOX_ITEM_STATUSES: any = {
+  sold: 'SOLD',
+  reserved: 'RESERVED',
+  notAvailable: 'NOT_AVAILABLE',
+};
 export const ITEM_TYPES: any = {
   CONSUMER_GOODS: 'consumer_goods',
   CARS: 'cars',
@@ -281,7 +286,7 @@ export class InboxItem implements Model {
               private _price?: InboxItemPrice,
               private _title?: string,
               private _mainImage?: InboxImage,
-              private _status?: any) {
+              private _flags?: any) {
   }
 
   get id(): string {
@@ -296,32 +301,32 @@ export class InboxItem implements Model {
     return this._title;
   }
 
-  get status(): string {
-    return this._status;
+  get flags(): string {
+    return this._flags;
   }
 
   set sold(value: boolean) {
-    this._status.sold = value;
+    this._flags.sold = value;
   }
 
   get sold(): boolean {
-    return this._status ? this._status.sold : false;
+    return this._flags ? this._flags.sold : false;
   }
 
   set reserved(value: boolean) {
-    this._status.reserved = value;
+    this._flags.reserved = value;
   }
 
   get reserved(): boolean {
-    return this._status ? this._status.reserved : false;
+    return this._flags ? this._flags.reserved : false;
   }
 
   set notAvailable(value: boolean) {
-    this._status.notAvailable = value;
+    this._flags.notAvailable = value;
   }
 
   get notAvailable(): boolean {
-    return this._status ? this._status.notAvailable : false;
+    return this._flags ? this._flags.notAvailable : false;
   }
 
   get mainImage(): InboxImage {
