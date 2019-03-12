@@ -84,7 +84,6 @@ describe('InboxService', () => {
     });
 
     it('should set the number of unreadMessages in messageService', () => {
-      spyOn(messageService, 'totalUnreadMessages');
       let expectedUnreadCount = 0;
       res.json().conversations.filter(c => c.unread_messages).map(c => expectedUnreadCount += + c.unread_messages);
 

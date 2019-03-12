@@ -52,6 +52,7 @@ export class InboxService {
   }
 
   private getInbox(): Observable<any> {
+    this.messageService.totalUnreadMessages = 0;
     return this.http.get(this.API_URL)
     .map(res => {
       const r = res.json();
