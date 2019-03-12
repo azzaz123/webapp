@@ -1229,12 +1229,12 @@ describe('Service: Conversation', () => {
       spyOn(service, 'processChatSignal');
       conversation.messages = [MOCK_MESSAGE, MOCK_MESSAGE, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE];
       conversation.unreadMessages = 2;
-      const readSignal = new ChatSignal(chatSignalType.READ, conversation.id, null);
+      const readSignalFromSelf = new ChatSignal(chatSignalType.READ, conversation.id, null, null, true);
 
       service.sendRead(conversation);
       eventService.emit(EventService.MESSAGE_READ_ACK);
 
-      expect(service.processChatSignal).toHaveBeenCalledWith(readSignal);
+      expect(service.processChatSignal).toHaveBeenCalledWith(readSignalFromSelf);
     });
 
     it('should call realTime.sendRead', () => {
