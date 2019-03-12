@@ -133,7 +133,12 @@ export class InboxService {
         small: item && item.image_url ? item.image_url : null
       }
     };
-    return new InboxItem(item.hash, item.price, item.title, image, item.status);
+    const statusFlags = {
+      sold: item.status === 'sold',
+      reserved: item.status === 'reserved',
+      notAvailable: item.status === 'not_available',
+    };
+    return new InboxItem(item.hash, item.price, item.title, image, statusFlags);
   }
 
   private saveMessages(conversations: any) {
