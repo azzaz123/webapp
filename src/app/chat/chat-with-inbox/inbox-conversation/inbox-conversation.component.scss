@@ -51,6 +51,17 @@ $menu-width-and-spacing: 10px;
 
   & /deep/ tsl-item-avatar div {
     float: left;
+    border-radius: 10px;
+    .overlay {
+      border-radius: 10px;
+      opacity: .25;
+    }
+    .sold, .reserved, .not-available {
+      @include square($item-avatar-size-xsmall);
+      position: absolute;
+      top: 4px;
+      left: 4px;
+    }
   }
 }
 .conversation-info {
