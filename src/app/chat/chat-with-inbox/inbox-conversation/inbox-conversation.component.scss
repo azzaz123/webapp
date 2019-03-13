@@ -144,7 +144,7 @@ $menu-width-and-spacing: 10px;
       @include square($phone-icon-adjusted-size);
     }
 
-    mat-icon.blocked {
+    mat-icon.blocked, mat-icon.not-available {
       @include square(10px);
       position: relative;
       bottom: 4px;
@@ -202,7 +202,7 @@ a {
   cursor: pointer;
 }
 
-.blocked {
+.faded {
   tsl-item-avatar, .conversation-item-meta.badge-pill {
     opacity: 0.6;
   }
