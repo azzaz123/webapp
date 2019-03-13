@@ -215,6 +215,14 @@ export class Item implements Model {
     return this._flags ? this._flags.reserved : false;
   }
 
+  set notAvailable(value: boolean) {
+    this._flags.notAvailable = value;
+  }
+
+  get notAvailable(): boolean {
+    return this._flags ? this._flags.notAvailable : false;
+  }
+
   get selected(): boolean {
     return this._selected;
   }
