@@ -105,6 +105,7 @@ $menu-width-and-spacing: 10px;
     .conversation-item-meta {
       position: absolute;
       right: 12px;
+      align-self: center;
       .badge-pill {
         display: flex;
         justify-content: center;
