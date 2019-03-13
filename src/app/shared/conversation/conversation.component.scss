@@ -50,7 +50,6 @@ $menu-width-and-spacing: 10px;
 
 
   & /deep/ tsl-item-avatar div {
-    @include square-avatar(25px);
     float: left;
   }
 }

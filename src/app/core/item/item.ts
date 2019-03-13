@@ -15,6 +15,7 @@ export const INBOX_ITEM_STATUSES: any = {
   sold: 'SOLD',
   reserved: 'RESERVED',
   notAvailable: 'NOT_AVAILABLE',
+  published: 'PUBLISHED'
 };
 export const ITEM_TYPES: any = {
   CONSUMER_GOODS: 'consumer_goods',
