@@ -23,6 +23,9 @@ import { ErrorsService } from '../../core/errors/errors.service';
 import { Item, ITEM_TYPES } from '../../core/item/item';
 import { DeliveryInfo } from '../../core/item/item-response.interface';
 import { GeneralSuggestionsService } from './general-suggestions.service';
+import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
+import { Subject } from 'rxjs';
+import { Brand, BrandModel, Model } from '../brand-model.interface';
 
 @Component({
   selector: 'tsl-upload-product',
@@ -38,6 +41,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() onCategorySelect = new EventEmitter<number>();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
+  @Input() suggestionValue: string;
+
   public itemTypes: any = ITEM_TYPES;
   public hasObjectType: boolean;
   public hasBrand: boolean;
@@ -46,6 +51,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public objectTypes: IOption[];
   public brands: IOption[];
   public models: IOption[];
+  public brandSuggestions: Subject<KeywordSuggestion[]> = new Subject();
+  public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
+  public selectedBrand: Subject<string> = new Subject();
+  public selectedModel: Subject<string> = new Subject();
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
@@ -190,9 +199,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.fixedCategory = selectedCategory ? selectedCategory.label : null;
         }
         this.onCategoryChange(selectedCategory);
-        if (this.item.extraInfo) {
-          this.getBrandsAndModels(this.item.extraInfo.object_type.id);
-        }
       }
     });
   }
@@ -303,25 +309,103 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public onCategoryChange(category: CategoryOption) {
-    this.hasObjectType = category.has_object_type;
-    this.hasBrand = category.has_brand;
-    this.hasModel = category.has_model;
-    this.objectTypeTitle = category.object_type_title;
-    this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
-      this.objectTypes = objectTypes;
-    });
+    if (category.value === '16000') {
+      this.hasBrand = category.has_brand;
+      this.hasModel = category.has_model;
+      this.hasObjectType = category.has_object_type;
+      this.objectTypeTitle = category.object_type_title;
+      this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
+        this.objectTypes = objectTypes;
+      });
+    } else {
+      delete this.hasBrand;
+      delete this.hasModel;
+      delete this.hasObjectType;
+      delete this.selectedBrand;
+      delete this.selectedModel;
+    }
   }
 
-  public getBrandsAndModels(objectTypeId: string) {
-    if (this.hasBrand) {
-      this.generalSuggestionsService.getBrands(this.uploadForm.value.categoryId, objectTypeId).subscribe((brands: IOption[]) => {
-        this.brands = brands;
+  public getBrands(brandKeyword: string) {
+    const suggestions: KeywordSuggestion[] = [];
+
+    this.generalSuggestionsService.
+      getBrands(brandKeyword, this.uploadForm.value.categoryId, this.uploadForm.value.extra_info.object_type.id)
+      .subscribe((brands: Brand[]) => {
+        if (brands.length > 0) {
+          brands.map((brand: Brand) => {
+            suggestions.push({ suggestion: brand.brand, value: brand });
+          });
+
+          this.brandSuggestions.next(suggestions);
+        } else {
+          this.generalSuggestionsService.
+            getBrandsAndModels(brandKeyword, this.uploadForm.value.category_id, this.uploadForm.value.extra_info.object_type.id)
+            .subscribe((brandsAndModels: BrandModel[]) => {
+              brandsAndModels.map((brandAndModel: BrandModel) => {
+                const suggestionText = `${brandAndModel.brand}${brandAndModel.model ? ', ' + brandAndModel.model : ''} `;
+
+                suggestions.push({ suggestion: suggestionText, value: brandAndModel });
+              });
+
+              this.brandSuggestions.next(suggestions);
+            });
+        }
       });
-    }
-    if (this.hasModel) {
-      this.generalSuggestionsService.getModels(this.uploadForm.value.categoryId, objectTypeId).subscribe((models: IOption[]) => {
-        this.models = models;
+  }
+
+  public getModels(modelKeyword: string) {
+    this.generalSuggestionsService.
+      getModels(
+        modelKeyword,
+        this.uploadForm.value.category_id,
+        this.uploadForm.value.extra_info.brand,
+        this.uploadForm.value.extra_info.object_type.id)
+      .subscribe((models: Model[]) => {
+        const suggestions: KeywordSuggestion[] = [];
+
+        models.map((model: Model) => {
+          suggestions.push({ suggestion: model.model, value: model });
+        });
+        this.modelSuggestions.next(suggestions);
       });
+  }
+
+  public selectBrandOrModel(value, type: string) {
+    if (typeof value === 'string') {
+      if (type === 'brand') {
+        this.selectedBrand.next(value);
+        this.uploadForm.patchValue({
+          extra_info: {
+            brand: value
+          }
+        });
+      }
+      if (type === 'model') {
+        this.selectedModel.next(value);
+        this.uploadForm.patchValue({
+          extra_info: {
+            model: value
+          }
+        });
+      }
+    } else if (typeof value === 'object') {
+      if (value.brand) {
+        this.selectedBrand.next(value.brand);
+        this.uploadForm.patchValue({
+          extra_info: {
+            brand: value.brand
+          }
+        });
+      }
+      if (value.model) {
+        this.selectedModel.next(value.model);
+        this.uploadForm.patchValue({
+          extra_info: {
+            model: value.model
+          }
+        });
+      }
     }
   }
 

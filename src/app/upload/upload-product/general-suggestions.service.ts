@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
 import { IOption } from 'ng-select';
 import { HttpService } from '../../core/http/http.service';
+import { Brand, BrandModel, Model } from '../brand-model.interface';
 
 @Injectable()
 export class GeneralSuggestionsService {
@@ -13,7 +14,7 @@ export class GeneralSuggestionsService {
   }
 
   getObjectTypes(categoryId: string): Observable<IOption[]> {
-    return this.http.get(this.API_URL + '/object-type', {category_id: categoryId})
+    return this.http.get(this.API_URL + '/object-type', { category_id: categoryId })
       .map((r: Response) => r.json())
       .map((types: any[]) => {
         return types
@@ -25,36 +26,29 @@ export class GeneralSuggestionsService {
       });
   }
 
-  getBrands(categoryId: string, objectTypeId): Observable<IOption[]> {
-    return this.http.get(this.API_URL + '/brand', {
+  getBrandsAndModels(suggestion: string, categoryId: number, objectTypeId: number): Observable<BrandModel[]> {
+    return this.http.get(this.API_URL + '/brand-model', {
+      text: suggestion,
       category_id: categoryId,
       object_type_id: objectTypeId
-    })
-      .map((r: Response) => r.json())
-      .map((brands: any[]) => {
-        return brands
-          .filter((brand: any) => brand.brand)
-          .map((brand: any) => ({
-          value: brand.brand,
-          label: brand.brand
-        }));
-      });
+    }).map((r: Response) => r.json());
   }
 
-  getModels(categoryId: string, objectTypeId): Observable<IOption[]> {
-    return this.http.get(this.API_URL + '/brand-model', {
+  getModels(suggestion: string, categoryId: number, brand: string, objectTypeId: number): Observable<Model[]> {
+    return this.http.get(this.API_URL + '/model', {
+      text: suggestion,
+      category_id: categoryId,
+      brand: brand,
+      object_type_id: objectTypeId
+    }).map((r: Response) => r.json());
+  }
+
+  getBrands(suggestion: string, categoryId: string, objectTypeId): Observable<Brand[]> {
+    return this.http.get(this.API_URL + '/brand', {
+      text: suggestion,
       category_id: categoryId,
       object_type_id: objectTypeId
-    })
-      .map((r: Response) => r.json())
-      .map((models: any[]) => {
-        return models
-          .filter((model: any) => model.model)
-          .map((model: any) => ({
-            value: model.model,
-            label: model.model
-          }));
-      });
+    }).map((r: Response) => r.json());
   }
 
 }
