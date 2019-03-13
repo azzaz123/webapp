@@ -134,9 +134,9 @@ export class InboxService {
       }
     };
     const flags = {
-      sold: item.status.toUpperCase() === INBOX_ITEM_STATUSES.sold,
-      reserved: item.status.toUpperCase() === INBOX_ITEM_STATUSES.reserved,
-      notAvailable: item.status.toUpperCase() === INBOX_ITEM_STATUSES.notAvailable,
+      sold: item.status === INBOX_ITEM_STATUSES.sold,
+      reserved: item.status === INBOX_ITEM_STATUSES.reserved,
+      notAvailable: item.status === INBOX_ITEM_STATUSES.notAvailable,
     };
     return new InboxItem(item.hash, item.price, item.title, image, flags);
   }

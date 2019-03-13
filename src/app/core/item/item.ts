@@ -12,10 +12,10 @@ export const ITEM_STATUSES: any = {
   'sold': ['SOLD_OUTSIDE', 'BOUGHT']
 };
 export const INBOX_ITEM_STATUSES: any = {
-  sold: 'SOLD',
-  reserved: 'RESERVED',
-  notAvailable: 'NOT_AVAILABLE',
-  published: 'PUBLISHED'
+  sold: 'sold',
+  reserved: 'reserved',
+  notAvailable: 'not available',
+  published: 'published'
 };
 export const ITEM_TYPES: any = {
   CONSUMER_GOODS: 'consumer_goods',
