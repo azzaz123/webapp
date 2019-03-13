@@ -1,12 +1,5 @@
 @import "~style/common";
 
-:host {
-  display: block;
-  overflow: hidden;
-  margin-left: $sidebar-width;
-  margin-top: $topbar-height;
-}
-
 #left-panel {
   position: relative;
   float: left;
@@ -48,7 +41,7 @@
     }
 
     tsl-user-avatar {
-      margin-right: spacing-ms;
+      margin-right: $spacing-ms;
     }
 
     .conversation-header-user-info {

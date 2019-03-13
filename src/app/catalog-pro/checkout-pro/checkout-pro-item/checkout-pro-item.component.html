@@ -8,10 +8,10 @@
       </div>
     </div>
     <div class="item-actions">
-      <div class="btn-bumps citybump" [ngClass]="{selected: cartProItem.bumpType === 'citybump'}" (click)="selectBump('citybump')">
+      <div class="btn-bumps citybump" id="qa-checkout-pro-select-citybump" [ngClass]="{selected: cartProItem.bumpType === 'citybump'}" (click)="selectBump('citybump')">
         <mat-icon svgIcon="bump-city-pro"></mat-icon>
       </div>
-      <div class="btn-bumps countrybump" [ngClass]="{selected: cartProItem.bumpType === 'countrybump'}" (click)="selectBump('countrybump')">
+      <div class="btn-bumps countrybump" id="qa-checkout-pro-select-countrybump" [ngClass]="{selected: cartProItem.bumpType === 'countrybump'}" (click)="selectBump('countrybump')">
         <mat-icon svgIcon="bump-country-pro"></mat-icon>
       </div>
     </div>

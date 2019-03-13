@@ -356,17 +356,26 @@ export class UploadCarComponent implements OnInit {
       this.toggleField('model', 'enable');
       this.toggleField('year', 'enable');
       this.toggleField('version', 'enable');
+      if (!this.customVersion) {
+        this.customVersion = !this.customVersion;
+      }
     } else {
       this.customMake = false;
       this.uploadForm.get('brand').patchValue('');
       this.toggleField('model', 'disable');
       this.toggleField('year', 'disable');
       this.toggleField('version', 'disable');
+      this.customVersion = !this.customVersion;
     }
   }
 
   public toggleCustomVersionSelection() {
-      this.customVersion = !this.customVersion;
+    this.customVersion = !this.customVersion;
+    if (this.customVersion) {
+      this.toggleField('version', 'enable');
+    } else if (!this.customMake && !this.years && !this.brands && !this.models || this.customMake) {
+      this.toggleField('version', 'disable');
+    }
   }
 
 }

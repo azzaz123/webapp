@@ -2,15 +2,15 @@ import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChi
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { EventService } from '../../core/event/event.service';
-import { ConversationService } from '../../core/conversation/conversation.service';
-import { UserService } from '../../core/user/user.service';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { Conversation } from '../../core/conversation/conversation';
-import { Message, phoneMethod } from '../../core/message/message';
-import { NewConversationResponse } from '../../core/conversation/conversation-response.interface';
+import { EventService } from '../../../core/event/event.service';
+import { ConversationService } from '../../../core/conversation/conversation.service';
+import { UserService } from '../../../core/user/user.service';
+import { TrackingService } from '../../../core/tracking/tracking.service';
+import { Conversation } from '../../../core/conversation/conversation';
+import { Message, phoneMethod } from '../../../core/message/message';
+import { NewConversationResponse } from '../../../core/conversation/conversation-response.interface';
 import { Observable } from 'rxjs';
-import { MessageService } from '../../core/message/message.service';
+import { MessageService } from '../../../core/message/message.service';
 
 @Component({
   selector: 'tsl-conversations-panel',
@@ -167,19 +167,19 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       return this.active;
     }).subscribe((params: any) => {
       this.currentConversationSet = true;
-      const conversationId: string = params.c || this.userService.queryParams.c;
-      if (conversationId) {
-        this.setCurrentConversationWithConversationId(conversationId);
+      const thread: string = params.c || this.userService.queryParams.c;
+      if (thread) {
+        this.setCurrentConversationWithThread(thread);
       }
     });
   }
 
-  private setCurrentConversationWithConversationId(conversationId: string) {
-    const page = this.conversationService.getConversationPage(conversationId);
+  private setCurrentConversationWithThread(thread: string) {
+    const page = this.conversationService.getConversationPage(thread);
     if (page === -1) {
       this.createConversationAndSetItCurrent();
     } else {
-      const currentConversation: Conversation = _.find(this.conversations, {id: conversationId});
+      const currentConversation: Conversation = _.find(this.conversations, {id: thread});
       if (currentConversation) {
         this.setCurrentConversation(currentConversation);
         setTimeout(() => {
@@ -193,7 +193,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     if (conversation === null) {
       this.createConversationAndSetItCurrent();
     } else {
-      this.setCurrentConversationWithConversationId(conversation.conversation_id);
+      this.setCurrentConversationWithThread(conversation.conversation_id);
     }
   }
 
@@ -222,7 +222,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   }
 
   private sendRead(message: Message) {
-    if (this.conversation && this.conversation.id === message.conversationId && !message.fromSelf) {
+    if (this.conversation && this.conversation.id === message.thread && !message.fromSelf) {
       Visibility.onVisible(() => {
         setTimeout(() => {
           this.conversationService.sendRead(this.conversation);

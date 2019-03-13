@@ -87,7 +87,7 @@ describe('Service: Persistency', () => {
       const mockTrackEvent: TrackingEventData = {
         eventData: TrackingService.MESSAGE_SENT,
         id: '123',
-        attributes: { thread_id: MOCK_MESSAGE.conversationId, message_id: MOCK_MESSAGE.id }
+        attributes: { thread_id: MOCK_MESSAGE.thread, message_id: MOCK_MESSAGE.id }
       };
 
       request.addEventListener('success', () => {
@@ -126,13 +126,13 @@ describe('Service: Persistency', () => {
       const mockTrackEvents: TrackingEventData[] = [
         { eventData: TrackingService.MESSAGE_SENT,
           id: '1',
-          attributes: { thread_id: MOCK_MESSAGE.conversationId, message_id: MOCK_MESSAGE.id + '1' }},
+          attributes: { thread_id: MOCK_MESSAGE.thread, message_id: MOCK_MESSAGE.id + '1' }},
         { eventData: TrackingService.MESSAGE_RECEIVED,
           id: '2',
-          attributes: { thread_id: MOCK_MESSAGE.conversationId, message_id: MOCK_MESSAGE.id  + '2' }},
+          attributes: { thread_id: MOCK_MESSAGE.thread, message_id: MOCK_MESSAGE.id  + '2' }},
         { eventData: TrackingService.MESSAGE_READ,
           id: '3',
-          attributes: { thread_id: MOCK_MESSAGE.conversationId, message_id: MOCK_MESSAGE.id + '3' }}
+          attributes: { thread_id: MOCK_MESSAGE.thread, message_id: MOCK_MESSAGE.id + '3' }}
       ];
       request.addEventListener('success', () => {
         service['clickstreamDb'] = request.result;
@@ -252,7 +252,8 @@ describe('Service: Persistency', () => {
         message: MOCK_MESSAGE.message,
         status: MOCK_MESSAGE.status,
         from: MOCK_MESSAGE.from.split('@')[0],
-        conversationId: MOCK_MESSAGE.conversationId,
+        // TODO - replace conversationId with thread with DB version update to standardizes prop. names
+        conversationId: MOCK_MESSAGE.thread,
         payload: undefined,
         phoneRequest: undefined
       });
@@ -274,7 +275,8 @@ describe('Service: Persistency', () => {
         message: MOCK_MESSAGE.message,
         status: MOCK_MESSAGE.status,
         from: MOCK_MESSAGE.from.split('@')[0],
-        conversationId: MOCK_MESSAGE.conversationId,
+        // TODO - replace conversationId with thread with DB version update to standardizes prop. names
+        conversationId: MOCK_MESSAGE.thread,
         payload: MOCK_PAYLOAD_OK,
         phoneRequest: undefined
       });

@@ -26,11 +26,10 @@ export class Conversation extends Lead {
 export class InboxConversation {
 
   constructor(private _id: string,
-              private _modifiedDate: number,
+              private _modifiedDate: Date,
               private _user?: InboxUser,
               private _item?: InboxItem,
               private _lastMessage?: Message,
-              private _messages: Array<Message> = [],
               private _unreadCounter: number = 0,
               private _archived: boolean = false,
               private _phoneShared?: boolean) {
@@ -40,11 +39,11 @@ export class InboxConversation {
     return this._id;
   }
 
-  set modifiedDate(value: number) {
+  set modifiedDate(value: Date) {
     this._modifiedDate = value;
   }
 
-  get modifiedDate(): number {
+  get modifiedDate(): Date {
     return this._modifiedDate;
   }
 
@@ -70,14 +69,6 @@ export class InboxConversation {
 
   get lastMessage(): Message {
     return this._lastMessage;
-  }
-
-  set messages(value: Array<Message>) {
-    this._messages = value;
-  }
-
-  get messages(): Array<Message> {
-    return this._messages;
   }
 
   set unreadCounter(value: number) {

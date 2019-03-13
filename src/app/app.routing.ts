@@ -58,10 +58,6 @@ const routes: Routes = [
     loadChildren: 'app/profile/profile.module#ProfileModule'
   },
   {
-    path: 'chat-with-inbox-ndbcd1dqy5',
-    loadChildren: 'app/chat-with-inbox/chat.module#ChatModule'
-  },
-  {
     path: 'chat',
     loadChildren: 'app/chat/chat.module#ChatModule'
   },

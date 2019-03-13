@@ -56,6 +56,7 @@ export class MessageService {
         const res: MsgArchiveResponse = {
           messages: messages.map((message: any): Message => {
             const msg = new Message(message.doc._id,
+              // TODO - replace conversationId with thread with DB version update to standardizes prop. names
               message.doc.conversationId,
               message.doc.message,
               message.doc.from,
@@ -77,7 +78,7 @@ export class MessageService {
         return Observable.of(res);
       } else if (this.connectionService.isConnected) {
         if (firstArchive) {
-          this.eventService.emit(EventService.MSG_ARCHIVE_LOADING);
+          this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
         }
         return this.archiveService.getAllEvents(conversation.id).map(r => {
           this.persistencyService.saveMetaInformation({start: r.metaDate, last: null});
@@ -108,7 +109,7 @@ export class MessageService {
     messages.filter(message => !message.fromSelf).map(message => {
       const msgAlreadyConfirmed = receivedReceipts.find(receipt => receipt.messageId === message.id);
       if (!msgAlreadyConfirmed) {
-        this.realTime.sendDeliveryReceipt(message.from, message.id, message.conversationId);
+        this.realTime.sendDeliveryReceipt(message.from, message.id, message.thread);
       }
     });
   }
@@ -116,11 +117,11 @@ export class MessageService {
   public getNotSavedMessages(conversations: Conversation[], archived: boolean): Observable<Conversation[]> {
     if (this.connectionService.isConnected) {
       return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
-        this.eventService.emit(EventService.MSG_ARCHIVE_LOADING);
+        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
         return this.archiveService.getEventsSince(resp.data.start).map(r => {
           this.persistencyService.saveMetaInformation({ start: r.metaDate, last: null });
           if (r.messages.length) {
-            const messagesByThread = _.groupBy(r.messages, 'conversationId');
+            const messagesByThread = _.groupBy(r.messages, 'thread');
             Object.keys(messagesByThread).map((thread) => {
               const msgAndSingalsForThread = {
                 messages: messagesByThread[thread],
@@ -151,7 +152,7 @@ export class MessageService {
               this.totalUnreadMessages = 0;
             }
 
-            const updateMessagesByThread = _.groupBy(updatedMesages, 'conversationId');
+            const updateMessagesByThread = _.groupBy(updatedMesages, 'thread');
             Object.keys(updateMessagesByThread).map((thread) => {
               const unreadCount = updateMessagesByThread[thread].filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
               const conv = conversations.find(c => c.id === thread);
@@ -161,7 +162,7 @@ export class MessageService {
               }
             });
           }
-          this.eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+          this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
           return conversations;
         });
       });

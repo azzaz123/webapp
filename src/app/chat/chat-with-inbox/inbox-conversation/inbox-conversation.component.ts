@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { InboxConversation } from '../../core/conversation/conversation';
+import { InboxConversation } from '../../../core/conversation/conversation';
 
 @Component({
   selector: 'tsl-inbox-conversation',
@@ -11,13 +11,20 @@ export class InboxConversationComponent {
   @Input() conversation: InboxConversation;
 
   public momentConfig: any = {
-    lastDay: 'ddd',
+    lastDay: '[Yesterday]',
     sameDay: 'HH:mm',
     nextDay: 'ddd',
-    lastWeek: 'ddd',
+    lastWeek: 'D MMM.',
     nextWeek: 'ddd',
-    sameElse: 'D MMM'
+    sameElse: 'D MMM.'
   };
 
   constructor() { }
+
+  public dateIsThisYear() {
+    if (this.conversation && this.conversation.modifiedDate) {
+      return this.conversation.modifiedDate.getFullYear() === new Date().getFullYear();
+    }
+    return false;
+  }
 }

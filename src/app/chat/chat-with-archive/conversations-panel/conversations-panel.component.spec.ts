@@ -3,29 +3,29 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { ConversationsPanelComponent } from './conversations-panel.component';
-import { ConversationComponent } from '../../shared/conversation/conversation.component';
+import { ConversationComponent } from '../../../shared/conversation/conversation.component';
 import { Observable, Subscription } from 'rxjs';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ConversationService } from '../../core/conversation/conversation.service';
-import { EventService } from '../../core/event/event.service';
-import { UserService } from '../../core/user/user.service';
+import { ConversationService } from '../../../core/conversation/conversation.service';
+import { EventService } from '../../../core/event/event.service';
+import { UserService } from '../../../core/user/user.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TrackingService } from '../../core/tracking/tracking.service';
+import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { HttpService } from '../../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { USER_ID } from '../../../tests/user.fixtures.spec';
-import { User } from '../../core/user/user';
+import { HttpService } from '../../../core/http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
+import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
+import { USER_ID } from '../../../../tests/user.fixtures.spec';
+import { User } from '../../../core/user/user';
 import {
   createConversationsArray, MOCK_CONVERSATION, NEW_CONVERSATION_RESPONSE,
-  SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { Conversation } from '../../core/conversation/conversation';
-import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
-import { Message, phoneMethod } from '../../core/message/message';
+  SECOND_MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
+import { Conversation } from '../../../core/conversation/conversation';
+import { MOCK_MESSAGE } from '../../../../tests/message.fixtures.spec';
+import { Message, phoneMethod } from '../../../core/message/message';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { MessageService } from '../../core/message/message.service';
+import { MessageService } from '../../../core/message/message.service';
 
 describe('Component: ConversationsPanel', () => {
 
@@ -516,11 +516,11 @@ describe('Component: ConversationsPanel', () => {
       expect(conversationService.sendRead).not.toHaveBeenCalled();
     }));
   });
-  describe('setCurrentConversationWithConversationId', () => {
+  describe('setCurrentConversationWithThread', () => {
     it('should call getConversationPage of conversationService', () => {
       spyOn(conversationService, 'getConversationPage');
 
-      (component as any).setCurrentConversationWithConversationId(MOCK_CONVERSATION().id);
+      (component as any).setCurrentConversationWithThread(MOCK_CONVERSATION().id);
 
       expect(conversationService.getConversationPage).toHaveBeenCalledWith(MOCK_CONVERSATION().id);
     });
@@ -529,7 +529,7 @@ describe('Component: ConversationsPanel', () => {
       spyOn(conversationService, 'getConversationPage').and.returnValue(-1);
       spyOn((component as any), 'createConversationAndSetItCurrent');
 
-      (component as any).setCurrentConversationWithConversationId(MOCK_CONVERSATION().id);
+      (component as any).setCurrentConversationWithThread(MOCK_CONVERSATION().id);
 
       expect((component as any).createConversationAndSetItCurrent).toHaveBeenCalled();
     });
@@ -539,7 +539,7 @@ describe('Component: ConversationsPanel', () => {
       component.conversations = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
       spyOn(component, 'setCurrentConversation');
 
-      (component as any).setCurrentConversationWithConversationId(SECOND_MOCK_CONVERSATION.id);
+      (component as any).setCurrentConversationWithThread(SECOND_MOCK_CONVERSATION.id);
 
       expect(component.setCurrentConversation).toHaveBeenCalledWith(SECOND_MOCK_CONVERSATION);
     });
@@ -554,12 +554,12 @@ describe('Component: ConversationsPanel', () => {
       expect((component as any).createConversationAndSetItCurrent).toHaveBeenCalled();
     });
 
-    it('should call setCurrentConversationWithConversationId with the conversation Id if it exists', () => {
-      spyOn((component as any), 'setCurrentConversationWithConversationId');
+    it('should call setCurrentConversationWithThread with the conversation Id if it exists', () => {
+      spyOn((component as any), 'setCurrentConversationWithThread');
 
       component.findConversation(NEW_CONVERSATION_RESPONSE);
 
-      expect((component as any).setCurrentConversationWithConversationId).toHaveBeenCalledWith(NEW_CONVERSATION_RESPONSE.conversation_id);
+      expect((component as any).setCurrentConversationWithThread).toHaveBeenCalledWith(NEW_CONVERSATION_RESPONSE.conversation_id);
     });
   });
 

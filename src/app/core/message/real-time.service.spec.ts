@@ -173,7 +173,7 @@ describe('RealTimeService', () => {
 
         eventService.emit(EventService.NEW_MESSAGE, msg, false, true);
 
-        expect(service.sendDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.conversationId);
+        expect(service.sendDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.thread);
       });
 
     it('should NOT call sendDeliveryReceipt if the new message is fromSelf', () => {
