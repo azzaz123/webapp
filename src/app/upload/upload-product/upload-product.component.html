@@ -107,7 +107,7 @@
       <div class="col-sm-4">
         <div class="form-group last">
           <label for="brand" i18n>Brand</label>
-          <tsl-keyword-suggester placeholder="Brand" [initialValue]="item.extraInfo?.brand" [value]="selectedBrand"
+          <tsl-keyword-suggester placeholder="Brand" [initialValue]="item?.extraInfo?.brand" [value]="selectedBrand"
             [suggestions]="brandSuggestions" (inputChange)="getBrands($event)"
             (suggestionSelect)="selectBrandOrModel($event, 'brand')">
           </tsl-keyword-suggester>
@@ -116,7 +116,7 @@
       <div class="col-sm-4">
         <div class="form-group last">
           <label for="model" i18n>Model</label>
-          <tsl-keyword-suggester placeholder="Model" [initialValue]="item.extraInfo?.model" [value]="selectedModel"
+          <tsl-keyword-suggester placeholder="Model" [initialValue]="item?.extraInfo?.model" [value]="selectedModel"
             [suggestions]="modelSuggestions" (inputChange)="getModels($event)"
             (suggestionSelect)="selectBrandOrModel($event, 'model')">
           </tsl-keyword-suggester>
