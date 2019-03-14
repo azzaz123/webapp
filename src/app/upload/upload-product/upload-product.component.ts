@@ -27,6 +27,8 @@ import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-sugges
 import { Subject } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
 
+const CATEGORIES_WITH_BRAND_AND_MODEL = ['16000'];
+
 @Component({
   selector: 'tsl-upload-product',
   templateUrl: './upload-product.component.html',
@@ -44,9 +46,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Input() suggestionValue: string;
 
   public itemTypes: any = ITEM_TYPES;
-  public hasObjectType: boolean;
-  public hasBrand: boolean;
-  public hasModel: boolean;
+  public extraInfoEnabled = false;
   public objectTypeTitle: string;
   public objectTypes: IOption[];
   public brands: IOption[];
@@ -213,6 +213,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
+      if (!CATEGORIES_WITH_BRAND_AND_MODEL.includes(this.uploadForm.value.category_id)) {
+        this.uploadForm.value.extra_info = {};
+      }
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
         this.uploadForm.value.sale_conditions.shipping_allowed = this.uploadForm.value.delivery_info ? true : false;
       }
@@ -309,16 +312,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public onCategoryChange(category: CategoryOption) {
-    if (category.value === '16000') {
-      this.hasBrand = category.has_brand;
-      this.hasModel = category.has_model;
-      this.hasObjectType = category.has_object_type;
+    if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(category.value)) {
+      this.extraInfoEnabled = true;
       this.objectTypeTitle = category.object_type_title;
       this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
         this.objectTypes = objectTypes;
       });
     } else {
-      this.resetBrandModelFields();
+      this.extraInfoEnabled = false;
     }
   }
 
@@ -383,21 +384,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         this.setModel(value.model);
       }
     }
-  }
-
-  private resetBrandModelFields() {
-    delete this.hasBrand;
-    delete this.hasModel;
-    delete this.hasObjectType;
-    this.setBrand('');
-    this.setModel('');
-    this.uploadForm.patchValue({
-      extra_info: {
-        object_type: {
-          id: ''
-        }
-      }
-    });
   }
 
   private setBrand(brand: string) {

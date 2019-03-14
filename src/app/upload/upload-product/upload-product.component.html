@@ -98,10 +98,10 @@
       <div i18n>FAQ</div>
     </ng-template>
   </div>
-  <div class="box" *ngIf="hasObjectType || hasBrand || hasModel">
+  <div class="box" *ngIf="extraInfoEnabled">
     <h2><span i18n>The more precise, the better</span> 🎯</h2>
     <div class="row" formGroupName="extra_info">
-      <div class="col-sm-4" *ngIf="hasObjectType">
+      <div class="col-sm-4">
         <div class="form-group last" formGroupName="object_type">
           <label for="objectType">{{objectTypeTitle}}</label>
           <ng-select class="form-control" formControlName="id" id="objectType" i18n-placeholder
