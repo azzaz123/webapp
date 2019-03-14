@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { KeywordSuggestion } from './keyword-suggestion.interface';
 import { Subject } from 'rxjs';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-keyword-suggester',
@@ -19,7 +20,10 @@ export class KeywordSuggesterComponent implements OnInit {
 
   public keywordSuggestions: KeywordSuggestion[];
   public suggestionsOpened = false;
+  public placeholderValue;
   private suggestionIndexSelected = -1;
+
+  constructor(private i18n: I18nService) { }
 
   ngOnInit() {
     if (this.initialValue) {
@@ -32,6 +36,10 @@ export class KeywordSuggesterComponent implements OnInit {
     this.value.subscribe((value: string) => {
       this.suggestionValue = value;
     });
+
+    if (this.placeholder) {
+      this.placeholderValue = this.i18n.getTranslations(this.placeholder);
+    }
   }
 
   inputValueChange(event: any) {

@@ -769,4 +769,7 @@
   <translation id="5448941415082762589">Para poder ver estadísticas de tu producto publícalo para que los demás usuarios lo vean y puedan contactarte.</translation>
   <translation id="8215426233314088255">¡Enhorabuena! Ya tienes tu producto subido a wallapop.</translation>
   <translation id="8871965642938314035">(<ph name="INTERPOLATION"><ex>{{(status?.autorenew_scheduled?.citybump || 0) + (status?.autorenew_scheduled?.zonebump || 0)}}</ex></ph> planeado)</translation>
+  <translation id="8132836034776935972">Te encontrarán antes si conretas</translation>
+  <translation id="3892318280760368021">Selecciona un tipo</translation>
+  <translation id="2559885490456050359">Marca</translation>
 </translationbundle>
