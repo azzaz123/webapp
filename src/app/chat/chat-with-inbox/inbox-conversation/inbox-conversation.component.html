@@ -10,10 +10,10 @@
           <span *ngIf="!conversation.user.available">
             <mat-icon svgIcon="not-available" class="not-available"></mat-icon>
           </span>
-          <span *ngIf="conversation.user.blocked && conversation.user.available">
+          <span *ngIf="conversation.user.blocked">
             <mat-icon svgIcon="blocked" class="blocked"></mat-icon>
           </span>
-          <span>
+          <span [ngClass]="{'blocked': conversation.user.blocked}">
             {{conversation.user.microName}}
           </span>
         </p>

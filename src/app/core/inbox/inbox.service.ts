@@ -124,7 +124,8 @@ export class InboxService {
   }
 
   private buildInboxUser(user: any) {
-    return new InboxUser(user.hash, user.name, user.blocked, user.available);
+    const userBlocked = Boolean(user.available && user.blocked);
+    return new InboxUser(user.hash, user.name, userBlocked, user.available);
   }
 
   private buildInboxItem(item) {
