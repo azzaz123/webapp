@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../conversation/conversation';
 import { MessageService } from '../message/message.service';
-import { InboxItem } from '../item/item';
+import { InboxItem, INBOX_ITEM_STATUSES } from '../item/item';
 import { InboxUser } from '../user/user';
 import { InboxImage } from '../user/user-response.interface';
 import { FeatureflagService } from '../user/featureflag.service';
@@ -104,7 +104,7 @@ export class InboxService {
   }
 
   private buildConversations(conversations): InboxConversation[] {
-    return conversations.map(conv => {
+    return conversations.map((conv) => {
       let lastMessage: Message = null;
       let dateModified: Date = null;
       if (conv.messages && conv.messages.length) {
@@ -133,7 +133,12 @@ export class InboxService {
         small: item && item.image_url ? item.image_url : null
       }
     };
-    return new InboxItem(item.hash, item.price, item.title, image, item.status);
+    const flags = {
+      sold: item.status === INBOX_ITEM_STATUSES.sold,
+      reserved: item.status === INBOX_ITEM_STATUSES.reserved,
+      notAvailable: item.status === INBOX_ITEM_STATUSES.notAvailable,
+    };
+    return new InboxItem(item.hash, item.price, item.title, image, flags);
   }
 
   private saveMessages(conversations: any) {

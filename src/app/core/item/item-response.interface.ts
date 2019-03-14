@@ -275,6 +275,7 @@ export interface ItemFlags {
   urgent?: boolean;
   bump_type?: string;
   onhold?: boolean;
+  notAvailable?: boolean;
 }
 
 export interface ItemActions {

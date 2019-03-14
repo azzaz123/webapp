@@ -43,7 +43,7 @@ div {
 }
 
 $sold-width: 32px;
-.sold, .reserved, .featured, .urgent {
+.sold, .reserved, .featured, .urgent, .not-available {
   @include square($sold-width);
   border-radius: 50%;
   display: flex;
