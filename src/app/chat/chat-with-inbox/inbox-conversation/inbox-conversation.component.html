@@ -1,4 +1,4 @@
-<div [ngClass]="{'faded': conversation.user.blocked || !conversation.user.available}">
+<div [ngClass]="{'faded': cannotChat}">
   <tsl-item-avatar [item]="conversation?.item"></tsl-item-avatar>
   <div class="conversation-info" *ngIf="conversation">
     <div class="user-name-row" [ngClass]="{'has-phone': true}">
