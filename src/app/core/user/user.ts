@@ -220,7 +220,8 @@ export class User implements Model {
 export class InboxUser implements Model {
   constructor(private _id: string,
               private _microName?: string,
-              private _blocked?: boolean) {
+              private _blocked?: boolean,
+              private _available?: boolean) {
   }
   get id(): string {
     return this._id;
@@ -236,5 +237,13 @@ export class InboxUser implements Model {
 
   set blocked(value: boolean) {
     this._blocked = value;
+  }
+
+  get available(): boolean {
+    return this._available;
+  }
+
+  set available(value: boolean) {
+    this._available = value;
   }
 }
