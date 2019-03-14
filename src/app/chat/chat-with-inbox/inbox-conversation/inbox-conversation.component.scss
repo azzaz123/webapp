@@ -115,6 +115,11 @@ $menu-width-and-spacing: 10px;
         height: 24px;
         width: 24px;
         font-size: $font-size-xs;
+        padding-left: 0;
+        padding-right: 0;
+        .small {
+          font-size: $font-size-xxs;
+        }
       }
     }
 
