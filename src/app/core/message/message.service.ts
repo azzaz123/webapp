@@ -56,7 +56,8 @@ export class MessageService {
         const res: MsgArchiveResponse = {
           messages: messages.map((message: any): Message => {
             const msg = new Message(message.doc._id,
-              message.doc.thread,
+              // TODO - replace conversationId with thread with DB version update to standardizes prop. names
+              message.doc.conversationId,
               message.doc.message,
               message.doc.from,
               message.doc.date,

@@ -1,23 +1,11 @@
 @import "~style/common";
 
-// TODO -- remove these vars after webstyuleguide is merged
-$blue-grey-1:#253238;
-$blue-grey-3:#90A4AE;
-$negative-main: $warn;
-
-$font-size-s: 0.875rem;
-$font-size-m: 1rem;
-
-$spacing-xxs: 2px;
-$spacing-ms: 12px;
-// TODO -- end
-
 $transition-time: .15s;
 $check-width-and-spacing: 50px;
 $menu-width-and-spacing: 10px;
 :host {
   display: block;
-  padding: $spacing-ml spacing-ms $spacing-ml $spacing-ml;
+  padding: $spacing-ml $spacing-ms $spacing-ml $spacing-ml;
   box-sizing: border-box;
   transition: $transition-time ease background-color,
   $transition-time ease border;
@@ -35,7 +23,7 @@ $menu-width-and-spacing: 10px;
     @include hide();
     position: absolute;
     top: 43px;
-    right: spacing-ms;
+    right: $spacing-ms;
   }
   &:hover {
     background-color: rgba($blue-grey-4, .2);
@@ -63,6 +51,22 @@ $menu-width-and-spacing: 10px;
 
   & /deep/ tsl-item-avatar div {
     float: left;
+    border-radius: 10px;
+    .overlay {
+      border-radius: 10px;
+      opacity: .25;
+    }
+    .sold, .reserved, .not-available {
+      @include square(25px);
+      position: absolute;
+      top: 4px;
+      left: 4px;
+    }
+    .not-available mat-icon {
+      display: flex !important;
+      width: 10px !important;
+      height: 10px !important;
+    }
   }
 }
 .conversation-info {
@@ -178,7 +182,7 @@ $menu-width-and-spacing: 10px;
         float: left;
         width: $status-width;
         height: 14px;
-        background: center center no-repeat;
+        background: center left no-repeat;
         &.pending { background-image: url(/assets/icons/status-pending.svg); }
         &.sent { background-image: url(/assets/icons/status-sent.svg); }
         &.received { background-image: url(/assets/icons/status-received.svg); }

@@ -15,6 +15,7 @@ import { FeatureflagService } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
 import { Message, messageStatus } from '../message/message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { INBOX_ITEM_STATUSES } from '../item/item';
 
 let service: InboxService;
 let http: HttpService;
@@ -34,10 +35,10 @@ describe('InboxService', () => {
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: MessageService, useClass: MockMessageService },
         { provide: FeatureflagService, useValue: {
-          getFlag() {
-            return Observable.of(false);
-          }
-        }}
+            getFlag() {
+              return Observable.of(false);
+            }
+          }}
       ]
     });
     service = TestBed.get(InboxService);
@@ -59,7 +60,7 @@ describe('InboxService', () => {
   });
 
   describe('init', () => {
-    const res: Response = new Response (new ResponseOptions({body: MOCK_INBOX_API_RESPONSE}));
+    const res: Response = new Response(new ResponseOptions({ body: MOCK_INBOX_API_RESPONSE }));
     let parsedConversaitonsResponse;
     beforeEach(() => {
       spyOn(http, 'get').and.returnValue(Observable.of(res));
@@ -84,13 +85,25 @@ describe('InboxService', () => {
     });
 
     it('should set the number of unreadMessages in messageService', () => {
-      spyOn(messageService, 'totalUnreadMessages');
       let expectedUnreadCount = 0;
       res.json().conversations.filter(c => c.unread_messages).map(c => expectedUnreadCount += + c.unread_messages);
 
       service.init();
 
       expect(messageService.totalUnreadMessages).toBe(expectedUnreadCount);
+    });
+
+    it('should save the messages from each conversation via persistencyService', () => {
+      spyOn(persistencyService, 'saveMessages');
+
+      service.init();
+
+      res.json().conversations.map(conv => {
+        const messages = [];
+        conv.messages.map(msg => messages.push(new Message(msg.id, conv.hash, msg.text, msg.from_user_hash,
+          new Date(msg.timestamp), msg.status, msg.payload)));
+        expect(persistencyService.saveMessages).toHaveBeenCalledWith(messages);
+      });
     });
 
     it('should call persistencyService.updateInbox after the inbox response is returned', () => {
@@ -220,76 +233,75 @@ describe('InboxService', () => {
       });
 
       it(`should update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal that meets the
-      conditions: signal timestamp is after lastMessage timestamp AND signal fromSelf is the reverse of lastMessage fromSelf
-      (because a READ signal fromSelf is meant to mark as read messages from the other user (!fromSelf))`, () => {
-        const readSingalfromSelf = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
-        lastMessage.fromSelf = false;
+        conditions: signal timestamp is after lastMessage timestamp AND signal fromSelf is the reverse of lastMessage fromSelf
+        (because a READ signal fromSelf is meant to mark as read messages from the other user (!fromSelf))`, () => {
+          const readSingalfromSelf = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
+          lastMessage.fromSelf = false;
 
-        eventService.emit(EventService.CHAT_SIGNAL, readSingalfromSelf);
+          eventService.emit(EventService.CHAT_SIGNAL, readSingalfromSelf);
 
-        expect(conversation.lastMessage.status).toBe(messageStatus.READ);
+          expect(conversation.lastMessage.status).toBe(messageStatus.READ);
 
-        const readSingalfromOther = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, false);
-        lastMessage.status = messageStatus.RECEIVED;
-        lastMessage.fromSelf = true;
+          const readSingalfromOther = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, false);
+          lastMessage.status = messageStatus.RECEIVED;
+          lastMessage.fromSelf = true;
 
-        eventService.emit(EventService.CHAT_SIGNAL, readSingalfromOther);
+          eventService.emit(EventService.CHAT_SIGNAL, readSingalfromOther);
 
-        expect(conversation.lastMessage.status).toBe(messageStatus.READ);
-      });
+          expect(conversation.lastMessage.status).toBe(messageStatus.READ);
+        });
 
       it(`should NOT update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal that does not
-      meet the conditions: signal timestamp is after lastMessage timestamp AND signal fromSelf is the reverse of lastMessage fromSelf
-      (because a READ signal fromSelf is meant to mark as read messages from the other user (!fromSelf))`, () => {
-        const readSingalfromSelf = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, false);
-        lastMessage.fromSelf = false;
+        meet the conditions: signal timestamp is after lastMessage timestamp AND signal fromSelf is the reverse of lastMessage fromSelf
+        (because a READ signal fromSelf is meant to mark as read messages from the other user (!fromSelf))`, () => {
+          const readSingalfromSelf = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, false);
+          lastMessage.fromSelf = false;
 
-        eventService.emit(EventService.CHAT_SIGNAL, readSingalfromSelf);
+          eventService.emit(EventService.CHAT_SIGNAL, readSingalfromSelf);
 
-        expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
+          expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
 
-        const readSingalfromOther = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
-        lastMessage.status = messageStatus.RECEIVED;
-        lastMessage.fromSelf = true;
+          const readSingalfromOther = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
+          lastMessage.status = messageStatus.RECEIVED;
+          lastMessage.fromSelf = true;
 
-        eventService.emit(EventService.CHAT_SIGNAL, readSingalfromOther);
+          eventService.emit(EventService.CHAT_SIGNAL, readSingalfromOther);
 
-        expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
-      });
+          expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
+        });
 
       it(`should NOT update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal with
-      timestamp before the lastMessage timestamp`, () => {
-        const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateBefore);
+        timestamp before the lastMessage timestamp`, () => {
+          const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateBefore);
 
-        eventService.emit(EventService.CHAT_SIGNAL, readSingal);
+          eventService.emit(EventService.CHAT_SIGNAL, readSingal);
 
-        expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
-      });
+          expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
+        });
 
       it(`should set the unread counters to 0 when a CHAT_SIGNAL event is emitted with a readSignal that is fromSelf AND with
-      timestamp after the lastMessage timestamp`, () => {
-        const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
-        messageService.totalUnreadMessages = 12;
-        conversation.unreadCounter = 7;
+        timestamp after the lastMessage timestamp`, () => {
+          const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
+          messageService.totalUnreadMessages = 12;
+          conversation.unreadCounter = 7;
 
-        eventService.emit(EventService.CHAT_SIGNAL, readSingal);
-        console.log(conversation);
+          eventService.emit(EventService.CHAT_SIGNAL, readSingal);
 
-        expect(conversation.unreadCounter).toBe(0);
-        expect(messageService.totalUnreadMessages).toBe(12 - 7);
-      });
+          expect(conversation.unreadCounter).toBe(0);
+          expect(messageService.totalUnreadMessages).toBe(12 - 7);
+        });
 
       it(`should NOT update the unread counters when a CHAT_SIGNAL event is emitted with a readSignal that is fromSelf and with a timestamp
-      before the lastMessage timestamp`, () => {
-        const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateBefore, null, true);
-        messageService.totalUnreadMessages = 12;
-        conversation.unreadCounter = 7;
+        before the lastMessage timestamp`, () => {
+          const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateBefore, null, true);
+          messageService.totalUnreadMessages = 12;
+          conversation.unreadCounter = 7;
 
-        eventService.emit(EventService.CHAT_SIGNAL, readSingal);
+          eventService.emit(EventService.CHAT_SIGNAL, readSingal);
 
-        expect(conversation.unreadCounter).toBe(7);
-        expect(messageService.totalUnreadMessages).toBe(12);
-      });
+          expect(conversation.unreadCounter).toBe(7);
+          expect(messageService.totalUnreadMessages).toBe(12);
+        });
 
       it('should NOT update the unread counters when a CHAT_SIGNAL event is emitted with a readSignal that is NOT fromSelf', () => {
         const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, false);
@@ -297,11 +309,46 @@ describe('InboxService', () => {
         conversation.unreadCounter = 7;
 
         eventService.emit(EventService.CHAT_SIGNAL, readSingal);
-        console.log(conversation);
 
         expect(conversation.unreadCounter).toBe(7);
         expect(messageService.totalUnreadMessages).toBe(12);
       });
+    });
+  });
+
+  describe('process API item status as item flags', () => {
+    let modifiedResponse;
+    beforeEach(() => {
+      modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE);
+    });
+    it('should set item.reserved TRUE when the API response returns an item with status reserved', () => {
+      modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.reserved;
+      const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+      spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+      service.init();
+
+      expect(service.conversations[0].item.reserved).toBe(true);
+    });
+
+    it('should set item.sold TRUE when the API response returns an item with status sold', () => {
+      modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.sold;
+      const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+      spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+      service.init();
+
+      expect(service.conversations[0].item.sold).toBe(true);
+    });
+
+    it('should set item.notAvailable TRUE when the API response returns an item with status not_available', () => {
+      modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.notAvailable;
+      const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+      spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+      service.init();
+
+      expect(service.conversations[0].item.notAvailable).toBe(true);
     });
   });
 });

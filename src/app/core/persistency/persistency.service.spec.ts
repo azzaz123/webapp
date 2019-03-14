@@ -252,7 +252,7 @@ describe('Service: Persistency', () => {
         message: MOCK_MESSAGE.message,
         status: MOCK_MESSAGE.status,
         from: MOCK_MESSAGE.from.split('@')[0],
-        // TODO - change prop name 'conversationId' to thread when updateing messagesDb verion
+        // TODO - replace conversationId with thread with DB version update to standardizes prop. names
         conversationId: MOCK_MESSAGE.thread,
         payload: undefined,
         phoneRequest: undefined
@@ -275,7 +275,7 @@ describe('Service: Persistency', () => {
         message: MOCK_MESSAGE.message,
         status: MOCK_MESSAGE.status,
         from: MOCK_MESSAGE.from.split('@')[0],
-        // TODO - change prop name 'conversationId' to thread when updateing messagesDb verion
+        // TODO - replace conversationId with thread with DB version update to standardizes prop. names
         conversationId: MOCK_MESSAGE.thread,
         payload: MOCK_PAYLOAD_OK,
         phoneRequest: undefined
