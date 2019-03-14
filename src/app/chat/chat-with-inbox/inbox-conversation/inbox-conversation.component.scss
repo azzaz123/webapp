@@ -61,11 +61,17 @@ $menu-width-and-spacing: 10px;
       position: absolute;
       top: 4px;
       left: 4px;
+      mat-icon {
+        height: 100% !important;
+      }
     }
-    .not-available mat-icon {
-      display: flex !important;
-      width: 10px !important;
-      height: 10px !important;
+    .sold mat-icon {
+      width: 17px !important;
+    }
+    .not-available, .reserved {
+      mat-icon {
+        width: 10px !important;
+      }
     }
   }
 }
@@ -149,6 +155,7 @@ $menu-width-and-spacing: 10px;
       @include square(10px);
       position: relative;
       bottom: 4px;
+      margin-right: $spacing-xs;
     }
     .user-name {
       font-size: $font-size-xs;
@@ -176,21 +183,22 @@ $menu-width-and-spacing: 10px;
       vertical-align: bottom;
     }
     &.showStatus {
-      $status-width: 20px;
       p.message {
-        float: left;
-        width: calc(100% - #{$status-width});
         padding-left: $spacing-xxs;
       }
       .message-status {
         float: left;
-        width: $status-width;
+        width: 20px;
         height: 14px;
         background: center left no-repeat;
         &.pending { background-image: url(/assets/icons/status-pending.svg); }
         &.sent { background-image: url(/assets/icons/status-sent.svg); }
         &.received { background-image: url(/assets/icons/status-received.svg); }
         &.read { background-image: url(/assets/icons/status-read-wallaColor.svg); }
+        &.error { background-image: url(/assets/icons/status-error.svg); }
+        &.error, &.pending {
+          width: 12px;
+        }
       }
     }
   }
