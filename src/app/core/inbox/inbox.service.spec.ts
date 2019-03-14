@@ -322,7 +322,6 @@ describe('InboxService', () => {
       modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE);
     });
     it('should set item.reserved TRUE when the API response returns an item with status reserved', () => {
-      console.log(modifiedResponse);
       modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.reserved;
       const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
       spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
@@ -350,6 +349,81 @@ describe('InboxService', () => {
       service.init();
 
       expect(service.conversations[0].item.notAvailable).toBe(true);
+    });
+  });
+
+  describe('process API user status', () => {
+    let modifiedResponse;
+    beforeEach(() => {
+      modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE);
+    });
+
+    describe('user blocked', () => {
+      it('should set user.blocked FALSE when the API response returns blocked FALSE', () => {
+        modifiedResponse.conversations[0].with_user.blocked = false;
+        const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+        spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+        service.init();
+
+        expect(service.conversations[0].user.blocked).toBe(false);
+      });
+
+      it('should set user.blocked TRUE when the API response returns blocked TRUE AND available TRUE', () => {
+        modifiedResponse.conversations[0].with_user.blocked = true;
+        modifiedResponse.conversations[0].with_user.available = true;
+        const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+        spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+        service.init();
+
+        expect(service.conversations[0].user.blocked).toBe(true);
+      });
+
+      it('should set user.blocked FALSE when the API response returns blocked TRUE AND available FALSE', () => {
+        modifiedResponse.conversations[0].with_user.blocked = true;
+        modifiedResponse.conversations[0].with_user.available = false;
+        const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+        spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+        service.init();
+
+        expect(service.conversations[0].user.blocked).toBe(false);
+      });
+    });
+
+    describe('user available', () => {
+      it('should set user.available FALSE when the API response returns available FALSE', () => {
+        modifiedResponse.conversations[0].with_user.available = false;
+        const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+        spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+        service.init();
+
+        expect(service.conversations[0].user.available).toBe(false);
+      });
+
+      it('should set user.available TRUE when the API response returns blocked TRUE AND available TRUE', () => {
+        modifiedResponse.conversations[0].with_user.blocked = true;
+        modifiedResponse.conversations[0].with_user.available = true;
+        const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+        spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+        service.init();
+
+        expect(service.conversations[0].user.available).toBe(true);
+      });
+
+      it('should set user.available TRUE when the API response returns blocked FALSE AND available TRUE', () => {
+        modifiedResponse.conversations[0].with_user.blocked = false;
+        modifiedResponse.conversations[0].with_user.available = true;
+        const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+        spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+        service.init();
+
+        expect(service.conversations[0].user.available).toBe(true);
+      });
     });
   });
 });

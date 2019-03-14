@@ -152,6 +152,9 @@ $menu-width-and-spacing: 10px;
     }
     .user-name {
       font-size: $font-size-xs;
+      .blocked {
+        color: $negative-main;
+      }
     }
     &.has-phone {
       $phone-icon-size: 10px;
