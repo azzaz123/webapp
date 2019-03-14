@@ -318,11 +318,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         this.objectTypes = objectTypes;
       });
     } else {
-      delete this.hasBrand;
-      delete this.hasModel;
-      delete this.hasObjectType;
-      delete this.selectedBrand;
-      delete this.selectedModel;
+      this.resetBrandModelFields();
     }
   }
 
@@ -374,39 +370,52 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public selectBrandOrModel(value, type: string) {
     if (typeof value === 'string') {
       if (type === 'brand') {
-        this.selectedBrand.next(value);
-        this.uploadForm.patchValue({
-          extra_info: {
-            brand: value
-          }
-        });
+        this.setBrand(value);
       }
       if (type === 'model') {
-        this.selectedModel.next(value);
-        this.uploadForm.patchValue({
-          extra_info: {
-            model: value
-          }
-        });
+        this.setModel(value);
       }
     } else if (typeof value === 'object') {
       if (value.brand) {
-        this.selectedBrand.next(value.brand);
-        this.uploadForm.patchValue({
-          extra_info: {
-            brand: value.brand
-          }
-        });
+        this.setBrand(value.brand);
       }
       if (value.model) {
-        this.selectedModel.next(value.model);
-        this.uploadForm.patchValue({
-          extra_info: {
-            model: value.model
-          }
-        });
+        this.setModel(value.model);
       }
     }
+  }
+
+  private resetBrandModelFields() {
+    delete this.hasBrand;
+    delete this.hasModel;
+    delete this.hasObjectType;
+    this.setBrand('');
+    this.setModel('');
+    this.uploadForm.patchValue({
+      extra_info: {
+        object_type: {
+          id: ''
+        }
+      }
+    });
+  }
+
+  private setBrand(brand: string) {
+    this.selectedBrand.next(brand);
+    this.uploadForm.patchValue({
+      extra_info: {
+        brand
+      }
+    });
+  }
+
+  private setModel(model: string) {
+    this.selectedModel.next(model);
+    this.uploadForm.patchValue({
+      extra_info: {
+        model
+      }
+    });
   }
 
   public onDeliveryChange(newDeliveryValue: any) {
