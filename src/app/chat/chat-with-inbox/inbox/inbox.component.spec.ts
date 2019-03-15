@@ -52,6 +52,15 @@ describe('Component: ConversationsPanel', () => {
       expect(component.loading).toBe(true);
     });
 
+    it('should subscribe to the NEW_MESSAGE event', () => {
+      spyOn(eventService, 'subscribe').and.callThrough();
+
+      component.ngOnInit();
+      const evSubscribed = eventService.subscribe['calls'].allArgs().find(call => (call[0] === EventService.NEW_MESSAGE));
+
+      expect(evSubscribed).toBeTruthy();
+    });
+
     describe('when inboxService.conversations exists', () => {
       const mockedInboxConversations = createInboxConversationsArray(3);
       beforeEach(() => {
@@ -77,8 +86,9 @@ describe('Component: ConversationsPanel', () => {
       });
       it('should subscribe to EventService.CHAT_CAN_PROCESS_RT event with true', () => {
         component.ngOnInit();
+        const evSubscribed = eventService.subscribe['calls'].allArgs().find(call => (call[0] === EventService.NEW_MESSAGE));
 
-        expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.INBOX_LOADED);
+        expect(evSubscribed).toBeTruthy();
       });
 
       it('should set loading to false after the EventService.INBOX_LOADED event is triggered', () => {
@@ -97,5 +107,66 @@ describe('Component: ConversationsPanel', () => {
     });
   });
 
+  describe('behaviour of New messages toast button', () => {
+    beforeEach(() => {
+      component.ngOnInit();
+    });
+
+    it('should set showNewMessagesToast to TRUE if a NEW_MEESAGE event is emitted AND the currect scrollTop > 75', () => {
+      component.scrollPanel = { nativeElement: { scrollTop: 100 } };
+
+      eventService.emit(EventService.NEW_MESSAGE);
+
+      expect(component.showNewMessagesToast).toBe(true);
+    });
+
+    it('should set showNewMessagesToast FALSE if a NEW_MEESAGE event is emitted AND the currect scrollTop <= 75', () => {
+      component.scrollPanel = { nativeElement: { scrollTop: 75 } };
+
+      eventService.emit(EventService.NEW_MESSAGE);
+
+      expect(component.showNewMessagesToast).toBe(false);
+    });
+
+    describe('handleScroll', () => {
+      it('should set showNewMessagesToast to FALSE when handleScroll is called, if scrollTop >= 25 ', () => {
+        const valuesToCheck = [25, 18, 0];
+        component.scrollPanel = { nativeElement: { scrollTop: 100 } };
+        eventService.emit(EventService.NEW_MESSAGE);
+        expect(component.showNewMessagesToast).toBe(true);
+
+        valuesToCheck.map(val => {
+          component.scrollPanel = { nativeElement: { scrollTop: val } };
+          component.handleScroll();
+          expect(component.showNewMessagesToast).toBe(false);
+        });
+      });
+
+      it('should set showNewMessagesToast to TRUE when handleScroll is called, if scrollTop > 25 ', () => {
+        const valuesToCheck = [130, 77, 26];
+        component.scrollPanel = { nativeElement: { scrollTop: 100 } };
+        eventService.emit(EventService.NEW_MESSAGE);
+        expect(component.showNewMessagesToast).toBe(true);
+
+        valuesToCheck.map(val => {
+          component.scrollPanel = { nativeElement: { scrollTop: val } };
+          component.handleScroll();
+          expect(component.showNewMessagesToast).toBe(true);
+        });
+      });
+    });
+
+    describe('scrollToTop', () => {
+      it('should set scrollTop to 0 and set showNewMessagesToast to FALSE when called ', () => {
+        component.scrollPanel = { nativeElement: { scrollTop: 100 } };
+        component.showNewMessagesToast = true;
+
+        component.scrollToTop();
+
+        expect(component.scrollPanel.nativeElement.scrollTop).toBe(0);
+        expect(component.showNewMessagesToast).toBe(false);
+      });
+    });
+  });
 });
 
