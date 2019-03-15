@@ -14,7 +14,7 @@ export class InboxComponent implements OnInit {
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
   public conversations: InboxConversation[] = [];
-  public showNewMessagesToast = true;
+  public showNewMessagesToast = false;
   private _loading = false;
   private conversationElementHeight = 100;
 
@@ -36,6 +36,7 @@ export class InboxComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    this.bindNewMessageToast();
     if (this.inboxService.conversations) {
       this.conversations = this.inboxService.conversations;
       this.loading = false;
@@ -45,7 +46,6 @@ export class InboxComponent implements OnInit {
         this.loading = false;
       });
     }
-    this.bindNewMessageToast();
   }
 
   private bindNewMessageToast() {
@@ -60,5 +60,6 @@ export class InboxComponent implements OnInit {
 
   public scrollToTop() {
     this.scrollPanel.nativeElement.scrollTop = 0;
+    this.showNewMessagesToast = false;
   }
 }
