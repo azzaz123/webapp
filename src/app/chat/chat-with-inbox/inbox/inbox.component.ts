@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
 import { InboxConversation } from '../../../core/conversation/conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
@@ -10,11 +10,13 @@ import { InboxService } from '../../../core/inbox/inbox.service';
   styleUrls: ['./inbox.component.scss']
 })
 export class InboxComponent implements OnInit {
-
   @Output() public loaded = new EventEmitter<any>();
+  @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
   public conversations: InboxConversation[] = [];
+  public showNewMessagesToast = true;
   private _loading = false;
+  private conversationElementHeight = 100;
 
   constructor(private inboxService: InboxService,
     private eventService: EventService) {}
@@ -43,5 +45,20 @@ export class InboxComponent implements OnInit {
         this.loading = false;
       });
     }
+    this.bindNewMessageToast();
+  }
+
+  private bindNewMessageToast() {
+    this.eventService.subscribe(EventService.NEW_MESSAGE, () => {
+      this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.75;
+    });
+  }
+
+  public handleScroll() {
+    this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.25;
+  }
+
+  public scrollToTop() {
+    this.scrollPanel.nativeElement.scrollTop = 0;
   }
 }
