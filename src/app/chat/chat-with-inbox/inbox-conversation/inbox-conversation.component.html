@@ -31,7 +31,7 @@
       <div class="conversation-item-meta">
         <span [hidden]="conversation.unreadCounter === 0" class="badge badge-primary badge-pill">
           <span *ngIf="conversation.unreadCounter < 100">{{conversation.unreadCounter }}</span>
-          <span *ngIf="conversation.unreadCounter >= 100" class="small">99+</span>
+          <span *ngIf="conversation.unreadCounter >= 100" i18n>99+</span>
         </span>
       </div>
     </div>
