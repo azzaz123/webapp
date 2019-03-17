@@ -22,18 +22,20 @@
       </div>
     </div>
 
-    <div class="item-title-row">
-      <div class="conversation-item-title">
-        <span>{{conversation.item.title}}</span>
+    <div class="item-message-row">
+      <div class="item-title-message-column">
+        <div class="item-title-row">
+          <span>{{conversation.item.title}}</span>
+        </div>
+        
+        <div class="message-row" [ngClass]="{'showStatus': conversation.lastMessage.fromSelf && conversation.lastMessage.status }">
+          <div class="message-status" [ngClass]="conversation.lastMessage.status" *ngIf="conversation.lastMessage.fromSelf && conversation.lastMessage.status"></div>
+          <p class="message">{{conversation.lastMessage.message}}</p>
+        </div>
       </div>
-      <div class="conversation-item-meta">
-        <span [hidden]="conversation.unreadCounter === 0" class="badge badge-primary badge-pill">{{conversation.unreadCounter}}</span>
+      <div class="unread-counter-column">
+        <div class="badge badge-primary badge-pill" [hidden]="conversation.unreadCounter === 0">{{conversation.unreadCounter}}</div>
       </div>
-    </div>
-
-    <div class="message-row" [ngClass]="{'showStatus': conversation.lastMessage.fromSelf && conversation.lastMessage.status }">
-      <div class="message-status" [ngClass]="conversation.lastMessage.status" *ngIf="conversation.lastMessage.fromSelf && conversation.lastMessage.status"></div>
-      <p class="message">{{conversation.lastMessage.message}}</p>
     </div>
   </div>
 </div>
