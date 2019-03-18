@@ -7,7 +7,7 @@ export const environment: any = {
   production: false,
   profeatures: true,
   name: 'local',
-  baseUrl: 'https://api.beta.wallapop.com/',
+  baseUrl: 'https://apigw.dock112.wallapop.com/',
   xmppDomain: 'dock112.wallapop.com',
   wsUrl: 'wss://dock112.wallapop.com:5282/ws-xmpp',
   siteUrl: 'https://es.dock112.wallapop.com/',
