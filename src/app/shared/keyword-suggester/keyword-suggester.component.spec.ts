@@ -11,7 +11,7 @@ const MOCK_SUGGESTION: KeywordSuggestion = {
   value: { brand: 'Samsung', model: 'Galaxy S7' }
 };
 
-fdescribe('KeywordSuggesterComponent', () => {
+describe('KeywordSuggesterComponent', () => {
   let component: KeywordSuggesterComponent;
   let fixture: ComponentFixture<KeywordSuggesterComponent>;
   let i18n: I18nService;
