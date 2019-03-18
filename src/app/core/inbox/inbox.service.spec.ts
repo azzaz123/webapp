@@ -322,7 +322,6 @@ describe('InboxService', () => {
       modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE);
     });
     it('should set item.reserved TRUE when the API response returns an item with status reserved', () => {
-      console.log(modifiedResponse);
       modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.reserved;
       const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
       spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
