@@ -22,6 +22,7 @@ import { environment } from '../../../environments/environment';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { CategoryOption } from '../../core/category/category-response.interface';
+import { SplitTestService } from '../../core/tracking/split-test.service';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -47,6 +48,7 @@ describe('UploadProductComponent', () => {
   let categoryService: CategoryService;
   let modalService: NgbModal;
   let trackingService: TrackingService;
+  let splitTestService: SplitTestService;
   const componentInstance: any = {};
 
   beforeEach(async(() => {
@@ -91,6 +93,14 @@ describe('UploadProductComponent', () => {
           }
         },
         {
+          provide: SplitTestService, useValue: {
+            getVariable() {
+              return Observable.of(true);
+            },
+            track() { }
+          }
+        },
+        {
           provide: GeneralSuggestionsService, useValue: {
             getObjectTypes() {
               return Observable.of({});
@@ -123,6 +133,7 @@ describe('UploadProductComponent', () => {
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
+    splitTestService = TestBed.get(SplitTestService);
     fixture.detectChanges();
     appboy.initialize(environment.appboy);
   });
@@ -156,6 +167,14 @@ describe('UploadProductComponent', () => {
           model: ''
         }
       });
+    });
+
+    it('should get the value for the Taplytics `BrandModelUploadEnabled` experiment', () => {
+      spyOn(splitTestService, 'getVariable').and.returnValue(Observable.of(true));
+
+      component.ngOnInit();
+
+      expect(splitTestService.getVariable).toHaveBeenCalledWith('BrandModelUploadEnabled', false);
     });
   });
 
@@ -369,30 +388,49 @@ describe('UploadProductComponent', () => {
       has_model: true
     };
 
-    it('should show the type of object, brand and model fields if the selected category allow these fields', () => {
-      component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+    describe('The Taplytics experiment returns true, and the selected category allows brand/model fields', () => {
+      beforeEach(() => {
+        component.brandModelExperimentEnabled = true;
+      });
 
-      expect(component.extraInfoEnabled).toBe(true);
+      it('should show the extra info fields', () => {
+        component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+
+        expect(component.extraInfoEnabled).toBe(true);
+      });
+
+      it('should update the object type title', () => {
+        component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+
+        expect(component.objectTypeTitle).toBe('title');
+      });
+
+      it('should get the object types for the selected category', () => {
+        spyOn(generalSuggestionsService, 'getObjectTypes').and.callThrough();
+
+        component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+
+        expect(generalSuggestionsService.getObjectTypes).toHaveBeenCalledWith('16000');
+      });
     });
 
-    it('should update the object type title', () => {
-      component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+    describe('The Taplytics experiment returns false or the selected category doesn`t allow brand/model fields', () => {
+      beforeEach(() => {
+        component.brandModelExperimentEnabled = false;
+      });
 
-      expect(component.objectTypeTitle).toBe('title');
-    });
+      it('should hide the extra info fields if the selected category doesn`t allow these fields', () => {
+        component.onCategoryChange(MOCK_CATGORY_OPTION_2);
 
-    it('should get the object types for the selected category', () => {
-      spyOn(generalSuggestionsService, 'getObjectTypes').and.callThrough();
+        expect(component.extraInfoEnabled).toBe(false);
+      });
 
-      component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+      it('should hide the extra info fields if the Taplytics experiment returns false', () => {
+        component.brandModelExperimentEnabled = false;
+        component.onCategoryChange(MOCK_CATGORY_OPTION_2);
 
-      expect(generalSuggestionsService.getObjectTypes).toHaveBeenCalledWith('16000');
-    });
-
-    it('should hide the type of object, brand and model fields if the selected category doesn`t allow these fields', () => {
-      component.onCategoryChange(MOCK_CATGORY_OPTION_2);
-
-      expect(component.extraInfoEnabled).toBe(false);
+        expect(component.extraInfoEnabled).toBe(false);
+      });
     });
   });
 
@@ -517,6 +555,16 @@ describe('UploadProductComponent', () => {
 
       expect(appboy.logCustomEvent).toHaveBeenCalledWith('List', { platform: 'web' });
     });
+
+    it('should send the Taplytics `UploadCompleted` event if the extra info fields are enabled', () => {
+      spyOn(splitTestService, 'track');
+
+      component.extraInfoEnabled = true;
+      component.onUploaded(uploadedEvent);
+
+      expect(splitTestService.track).toHaveBeenCalledWith('UploadCompleted');
+    });
+
   });
 
   describe('onError', () => {
