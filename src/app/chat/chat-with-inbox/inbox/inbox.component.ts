@@ -60,6 +60,5 @@ export class InboxComponent implements OnInit {
 
   public scrollToTop() {
     this.scrollPanel.nativeElement.scrollTop = 0;
-    this.showNewMessagesToast = false;
   }
 }

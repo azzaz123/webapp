@@ -40,7 +40,7 @@ h2 {
     margin-top: $spacing-ms;
     padding: $spacing-s $spacing-ml;
     transform: translateX(-50%);
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.16);
+    box-shadow: 0 1px 3px 0 rgba($black, 0.16);
     mat-icon {
       width: 9px;
       height: 100%;

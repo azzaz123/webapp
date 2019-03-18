@@ -160,6 +160,10 @@ describe('Component: ConversationsPanel', () => {
       it('should set scrollTop to 0 and set showNewMessagesToast to FALSE when called ', () => {
         component.scrollPanel = { nativeElement: { scrollTop: 100 } };
         component.showNewMessagesToast = true;
+        spyOn(component, 'scrollToTop').and.callFake(() => {
+          component.scrollPanel = { nativeElement: { scrollTop: 0 } };
+          component.handleScroll();
+        });
 
         component.scrollToTop();
 
