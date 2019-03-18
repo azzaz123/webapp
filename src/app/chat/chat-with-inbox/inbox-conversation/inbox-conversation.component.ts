@@ -11,6 +11,7 @@ export class InboxConversationComponent implements OnChanges {
 
   @Input() conversation: InboxConversation;
 
+  public unreadCounterDisplayLimit = 99;
   public momentConfig: any = {
     lastDay: '[Yesterday]',
     sameDay: 'HH:mm',
