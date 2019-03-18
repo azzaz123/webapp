@@ -299,7 +299,33 @@ export class InboxItem implements Model {
               private _price?: InboxItemPrice,
               private _title?: string,
               private _mainImage?: InboxImage,
-              private _flags?: any) {
+              private _status?: string) {
+    this.mapStatusToFlags(this.status);
+  }
+
+  public sold = false;
+  public reserved = false;
+  public published = false;
+  public notAvailable = false;
+
+  private mapStatusToFlags(status: string) {
+    switch (status) {
+      case INBOX_ITEM_STATUSES.sold:
+        this.sold = true;
+        break;
+      case INBOX_ITEM_STATUSES.reserved:
+        this.reserved = true;
+        break;
+      case INBOX_ITEM_STATUSES.notAvailable:
+        this.notAvailable = true;
+        break;
+      case INBOX_ITEM_STATUSES.published:
+        this.published = true;
+        break;
+      default:
+        this.published = true;
+        break;
+    }
   }
 
   get id(): string {
@@ -314,32 +340,12 @@ export class InboxItem implements Model {
     return this._title;
   }
 
-  get flags(): string {
-    return this._flags;
+  get status() {
+    return this._status;
   }
 
-  set sold(value: boolean) {
-    this._flags.sold = value;
-  }
-
-  get sold(): boolean {
-    return this._flags ? this._flags.sold : false;
-  }
-
-  set reserved(value: boolean) {
-    this._flags.reserved = value;
-  }
-
-  get reserved(): boolean {
-    return this._flags ? this._flags.reserved : false;
-  }
-
-  set notAvailable(value: boolean) {
-    this._flags.notAvailable = value;
-  }
-
-  get notAvailable(): boolean {
-    return this._flags ? this._flags.notAvailable : false;
+  set status(value: string) {
+    this._status = value;
   }
 
   get mainImage(): InboxImage {
