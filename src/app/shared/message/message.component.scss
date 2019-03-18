@@ -69,15 +69,19 @@ $avatar-size: 40px;
 
 .message-status {
   position: absolute;
-  bottom: 14px;
-  right: 12px;
+  bottom: 13px;
+  right: 6px;
   width: 20px;
   height: 20px;
-  background: right bottom no-repeat;
+  background: center bottom no-repeat;
   &.pending { background-image: url(/assets/icons/status-pending.svg); }
   &.sent { background-image: url(/assets/icons/status-sent.svg); }
   &.received { background-image: url(/assets/icons/status-received.svg); }
   &.read { background-image: url(/assets/icons/status-read.svg); }
+  &.error { background-image: url(/assets/icons/status-error.svg); }
+  &.received, &.read {
+    right: 12px;
+  }
 }
 
 .message-date {

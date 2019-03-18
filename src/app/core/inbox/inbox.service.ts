@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../conversation/conversation';
 import { MessageService } from '../message/message.service';
-import { InboxItem, INBOX_ITEM_STATUSES } from '../item/item';
+import { InboxItem } from '../item/item';
 import { InboxUser } from '../user/user';
 import { InboxImage } from '../user/user-response.interface';
 import { FeatureflagService } from '../user/featureflag.service';
@@ -124,21 +124,17 @@ export class InboxService {
   }
 
   private buildInboxUser(user: any) {
-    return new InboxUser(user.hash, user.name, user.blocked);
+    const userBlocked = Boolean(user.available && user.blocked);
+    return new InboxUser(user.hash, user.name, userBlocked, user.available);
   }
 
-  private buildInboxItem(item) {
+  private buildInboxItem(item: any): InboxItem {
     const image: InboxImage = {
       urls_by_size: {
         small: item && item.image_url ? item.image_url : null
       }
     };
-    const flags = {
-      sold: item.status === INBOX_ITEM_STATUSES.sold,
-      reserved: item.status === INBOX_ITEM_STATUSES.reserved,
-      notAvailable: item.status === INBOX_ITEM_STATUSES.notAvailable,
-    };
-    return new InboxItem(item.hash, item.price, item.title, image, flags);
+    return new InboxItem(item.hash, item.price, item.title, image, item.status);
   }
 
   private saveMessages(conversations: any) {
