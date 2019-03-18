@@ -95,10 +95,7 @@ $menu-width-and-spacing: 10px;
   flex-wrap: nowrap;
   justify-content: space-between;
   height: $item-avatar-size;
-  // margin-left: $item-avatar-space; // remove
-  // max-width: calc(100% - #{$item-avatar-size} - #{$item-avatar-margin});
   color: $blue-grey-1;
-  // flex-grow: 1;
 
   p {
     font-size: $font-size-s;
