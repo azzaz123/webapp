@@ -4,7 +4,7 @@ $transition-time: .15s;
 $check-width-and-spacing: 50px;
 $menu-width-and-spacing: 10px;
 :host {
-  display: block;
+  display: flex;
   padding: $spacing-ml $spacing-ms $spacing-ml $spacing-ml;
   box-sizing: border-box;
   transition: $transition-time ease background-color,
@@ -13,11 +13,25 @@ $menu-width-and-spacing: 10px;
   overflow: hidden;
   cursor: pointer;
   position: relative;
+  div:first-of-type {
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+  }
   &:first-child {
     border-top: 0;
   }
   &.active {
-    background-color: rgba($blue-grey-4, .4);
+    background-color: $blue-grey-6;
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 100%;
+      background-color: $walla-main;
+    }
   }
   tsl-archive-button, tsl-unarchive-button {
     @include hide();
@@ -61,11 +75,17 @@ $menu-width-and-spacing: 10px;
       position: absolute;
       top: 4px;
       left: 4px;
+      mat-icon {
+        height: 100% !important;
+      }
     }
-    .not-available mat-icon {
-      display: flex !important;
-      width: 10px !important;
-      height: 10px !important;
+    .sold mat-icon {
+      width: 17px !important;
+    }
+    .not-available, .reserved {
+      mat-icon {
+        width: 10px !important;
+      }
     }
   }
 }
@@ -75,49 +95,12 @@ $menu-width-and-spacing: 10px;
   flex-wrap: nowrap;
   justify-content: space-between;
   height: $item-avatar-size;
-  margin-left: $item-avatar-space;
-  max-width: calc(100% - #{$item-avatar-size} - #{$item-avatar-margin});
   color: $blue-grey-1;
 
   p {
     font-size: $font-size-s;
     margin-bottom: 0;
     @include text-truncate();
-  }
-  .item-title-row {
-    line-height: $spacing-m;
-    display: flex;
-    flex-direction: row;
-    vertical-align: super;
-    .conversation-item-title {
-      font-weight: bold;
-      font-size: $font-size-m;
-      display: flex;
-    }
-    .conversation-item-title {
-      @include text-truncate;
-      flex-grow: 1;
-      span {
-        @include text-truncate;
-        flex-grow: 1;
-      }
-    }
-    .conversation-item-meta {
-      position: absolute;
-      right: 12px;
-      align-self: center;
-      .badge-pill {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        text-align: center;
-        background-color: $warn;
-        height: 24px;
-        width: 24px;
-        font-size: $font-size-xs;
-      }
-    }
-
   }
   .user-name-row {
     $phone-icon-size: 18px;
@@ -149,6 +132,7 @@ $menu-width-and-spacing: 10px;
       @include square(10px);
       position: relative;
       bottom: 4px;
+      margin-right: $spacing-xs;
     }
     .user-name {
       font-size: $font-size-xs;
@@ -163,39 +147,76 @@ $menu-width-and-spacing: 10px;
       }
     }
   }
-  .message-row {
-    position: relative;
-    line-height: $font-size-s;
-    p.message {
-      font-size: $font-size-s;
-      color: $blue-grey-3;
+
+  .item-message-row {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 2;
+    .item-title-message-column {
+      flex-direction: column;
     }
-    mat-icon {
-      height: 15px;
-      width: 15px;
-      vertical-align: bottom;
-    }
-    &.showStatus {
-      $status-width: 20px;
-      p.message {
-        float: left;
-        width: calc(100% - #{$status-width});
-        padding-left: $spacing-xxs;
+    .item-title-row {
+      line-height: $spacing-m;
+      display: flex;
+      flex-direction: row;
+      vertical-align: super;
+      font-weight: bold;
+      font-size: $font-size-m;
+      display: flex;
+      @include text-truncate;
+      flex-grow: 1;
+      span {
+        @include text-truncate;
+        flex-grow: 1;
       }
-      .message-status {
-        float: left;
-        width: $status-width;
-        height: 14px;
-        background: center left no-repeat;
-        &.pending { background-image: url(/assets/icons/status-pending.svg); }
-        &.sent { background-image: url(/assets/icons/status-sent.svg); }
-        &.received { background-image: url(/assets/icons/status-received.svg); }
-        &.read { background-image: url(/assets/icons/status-read-wallaColor.svg); }
+    } 
+
+    .message-row {
+      position: relative;
+      line-height: $font-size-s;
+      p.message {
+        font-size: $font-size-s;
+        color: $blue-grey-3;
+      }
+      mat-icon {
+        height: 15px;
+        width: 15px;
+        vertical-align: bottom;
+      }
+      &.showStatus {
+        p.message {
+          padding-left: $spacing-xxs;
+        }
+        .message-status {
+          float: left;
+          width: 20px;
+          height: 14px;
+          background: center left no-repeat;
+          &.pending { background-image: url(/assets/icons/status-pending.svg); }
+          &.sent { background-image: url(/assets/icons/status-sent.svg); }
+          &.received { background-image: url(/assets/icons/status-received.svg); }
+          &.read { background-image: url(/assets/icons/status-read-wallaColor.svg); }
+          &.error { background-image: url(/assets/icons/status-error.svg); }
+        }
+      }
+    }
+    .unread-counter-column {
+      display: flex;
+      .badge-pill {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        background-color: $warn;
+        height: 24px;
+        width: 24px;
+        font-size: $font-size-xs;
+        align-self: center;
       }
     }
   }
-
 }
+
 
 .message-date {
   font-size: $font-size-xs;
@@ -207,7 +228,7 @@ a {
 }
 
 .faded {
-  tsl-item-avatar, .conversation-item-meta.badge-pill {
+  tsl-item-avatar, .badge-pill {
     opacity: 0.6;
   }
   .item-title-row {
