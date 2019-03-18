@@ -51,6 +51,8 @@ export abstract class LeadService {
         this.archivedStream$.next(conversations);
       }
       this.firstLoad = false;
+      this.leads = _.uniqBy(this.leads, 'id');
+      this.archivedLeads = _.uniqBy(this.archivedLeads, 'id');
     });
   }
 
@@ -59,6 +61,7 @@ export abstract class LeadService {
     this.stream();
   }
 
+  // TODO - this method seems to never be used; check if it can be safely removed
   protected getAllLeads(since?: number, archived?: boolean): Observable<Lead[]> {
     return this.getLeads(since, archived)
     .flatMap((conversations: Lead[]) => {
