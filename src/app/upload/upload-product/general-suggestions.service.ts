@@ -43,7 +43,7 @@ export class GeneralSuggestionsService {
     }).map((r: Response) => r.json());
   }
 
-  getBrands(suggestion: string, categoryId: string, objectTypeId): Observable<Brand[]> {
+  getBrands(suggestion: string, categoryId: number, objectTypeId): Observable<Brand[]> {
     return this.http.get(this.API_URL + '/brand', {
       text: suggestion,
       category_id: categoryId,

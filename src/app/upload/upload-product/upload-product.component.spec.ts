@@ -21,6 +21,7 @@ import { UserLocation } from '../../core/user/user-response.interface';
 import { environment } from '../../../environments/environment';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { GeneralSuggestionsService } from './general-suggestions.service';
+import { CategoryOption } from '../../core/category/category-response.interface';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -41,6 +42,7 @@ describe('UploadProductComponent', () => {
   let component: UploadProductComponent;
   let fixture: ComponentFixture<UploadProductComponent>;
   let errorService: ErrorsService;
+  let generalSuggestionsService: GeneralSuggestionsService;
   let router: Router;
   let categoryService: CategoryService;
   let modalService: NgbModal;
@@ -54,58 +56,61 @@ describe('UploadProductComponent', () => {
         FormBuilder,
         NgbPopoverConfig,
         TEST_HTTP_PROVIDERS,
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: Router, useValue: {
-          navigate() {
+            navigate() {
+            }
           }
-        }
         },
         {
           provide: ErrorsService, useValue: {
-          i18nSuccess() {
-          },
-          i18nError() {
+            i18nSuccess() {
+            },
+            i18nError() {
+            }
           }
-        }
         },
         {
           provide: CategoryService, useValue: {
-          getUploadCategories() {
-            return Observable.of(CATEGORIES_OPTIONS);
-          },
-          isHeroCategory() {
+            getUploadCategories() {
+              return Observable.of(CATEGORIES_OPTIONS);
+            },
+            isHeroCategory() {
+            }
           }
-        }
         },
         {
           provide: NgbModal, useValue: {
-          open() {
-            return {
-              result: Promise.resolve(),
-              componentInstance: componentInstance
-            };
+            open() {
+              return {
+                result: Promise.resolve(),
+                componentInstance: componentInstance
+              };
+            }
           }
-        }
         },
         {
           provide: GeneralSuggestionsService, useValue: {
-          getObjectTypes() {
-            return Observable.of([]);
-          },
-          getBrands() {
-            return Observable.of([]);
-          },
-          getModels() {
-            return Observable.of([]);
+            getObjectTypes() {
+              return Observable.of({});
+            },
+            getBrands() {
+              return Observable.of({});
+            },
+            getModels() {
+              return Observable.of(['iPhone 2G', 'iPhone 3G', 'iPhone 4']);
+            },
+            getBrandsAndModels() {
+              return Observable.of([{ brand: 'Apple', model: 'iPhone XSX' }, { brand: 'Samsung', model: 'Galaxy S20' }]);
+            }
           }
-        }
         }
       ],
       declarations: [UploadProductComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -114,6 +119,7 @@ describe('UploadProductComponent', () => {
     categoryService = TestBed.get(CategoryService);
     spyOn(categoryService, 'getUploadCategories').and.callThrough();
     errorService = TestBed.get(ErrorsService);
+    generalSuggestionsService = TestBed.get(GeneralSuggestionsService);
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
@@ -275,7 +281,7 @@ describe('UploadProductComponent', () => {
       component.uploadForm.get('description').patchValue('test');
       component.uploadForm.get('sale_price').patchValue(1000000);
       component.uploadForm.get('currency_code').patchValue('EUR');
-      component.uploadForm.get('images').patchValue([{'image': true}]);
+      component.uploadForm.get('images').patchValue([{ 'image': true }]);
       component.uploadForm.get('location').patchValue({
         address: USER_LOCATION.full_address,
         latitude: USER_LOCATION.approximated_latitude,
@@ -321,6 +327,151 @@ describe('UploadProductComponent', () => {
 
       expect(component.uploadForm.valid).toBeFalsy();
     });
+
+    it('should reset the extra_info object if the selected category doesn`t accept brand and model', () => {
+      component.uploadForm.get('category_id').patchValue('12463');
+      component.uploadForm.get('title').patchValue('test');
+      component.uploadForm.get('description').patchValue('test');
+      component.uploadForm.get('sale_price').patchValue(1000000);
+      component.uploadForm.get('currency_code').patchValue('EUR');
+      component.uploadForm.get('images').patchValue([{ 'image': true }]);
+      component.uploadForm.get('location').patchValue({
+        address: USER_LOCATION.full_address,
+        latitude: USER_LOCATION.approximated_latitude,
+        longitude: USER_LOCATION.approximated_longitude
+      });
+
+      component.onSubmit();
+
+      expect(component.uploadForm.value.extra_info).toEqual({});
+    });
+
+  });
+
+  describe('onCategoryChange', () => {
+    const MOCK_CATGORY_OPTION_1: CategoryOption = {
+      value: '16000',
+      label: 'label',
+      icon_id: '1',
+      object_type_title: 'title',
+      has_object_type: true,
+      has_brand: true,
+      has_model: true
+    };
+
+    const MOCK_CATGORY_OPTION_2: CategoryOption = {
+      value: '12463',
+      label: 'label',
+      icon_id: '1',
+      object_type_title: 'title',
+      has_object_type: true,
+      has_brand: true,
+      has_model: true
+    };
+
+    it('should show the type of object, brand and model fields if the selected category allow these fields', () => {
+      component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+
+      expect(component.extraInfoEnabled).toBe(true);
+    });
+
+    it('should update the object type title', () => {
+      component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+
+      expect(component.objectTypeTitle).toBe('title');
+    });
+
+    it('should get the object types for the selected category', () => {
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.callThrough();
+
+      component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+
+      expect(generalSuggestionsService.getObjectTypes).toHaveBeenCalledWith('16000');
+    });
+
+    it('should hide the type of object, brand and model fields if the selected category doesn`t allow these fields', () => {
+      component.onCategoryChange(MOCK_CATGORY_OPTION_2);
+
+      expect(component.extraInfoEnabled).toBe(false);
+    });
+  });
+
+  describe('getBrands', () => {
+    beforeEach(() => {
+      component.uploadForm.value.extra_info.object_type.id = '365';
+      component.uploadForm.value.category_id = '16000';
+    });
+
+    it('should get the brands for the provided keyword', () => {
+      spyOn(generalSuggestionsService, 'getBrands').and.callThrough();
+
+      component.getBrands('Apple');
+
+      expect(generalSuggestionsService.getBrands).toHaveBeenCalledWith('Apple', '16000', '365');
+    });
+
+    it('should get brands and models if the brand endpoint doesn`t return any result', () => {
+      spyOn(generalSuggestionsService, 'getBrandsAndModels').and.callThrough();
+
+      component.getBrands('Apple');
+
+      expect(generalSuggestionsService.getBrandsAndModels).toHaveBeenCalledWith('Apple', '16000', '365');
+    });
+  });
+
+  describe('getModels', () => {
+    beforeEach(() => {
+      component.uploadForm.value.category_id = '16000';
+      component.uploadForm.value.extra_info.object_type.id = '365';
+      component.uploadForm.value.extra_info.brand = 'Apple';
+    });
+
+    it('should get the models for the provided keyword and the selected brand', () => {
+      spyOn(generalSuggestionsService, 'getModels').and.callThrough();
+
+      component.getModels('iPhone');
+
+      expect(generalSuggestionsService.getModels).toHaveBeenCalledWith('iPhone', '16000', 'Apple', '365');
+    });
+  });
+
+  describe('selectBrandOrModel', () => {
+    describe('when reciving a string', () => {
+      it('should select the brand', () => {
+        component.selectBrandOrModel('Apple', 'brand');
+
+        expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
+      });
+
+      it('should select the model', () => {
+        component.selectBrandOrModel('iPhone', 'model');
+
+        expect(component.uploadForm.value.extra_info.model).toEqual('iPhone');
+      });
+    });
+
+    describe('when reciving an object', () => {
+      it('should select the brand and model', () => {
+        component.selectBrandOrModel({ brand: 'Apple', model: 'iPhone XSX' }, null);
+
+        expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
+        expect(component.uploadForm.value.extra_info.model).toEqual('iPhone XSX');
+      });
+
+      it('should select the brand', () => {
+        component.selectBrandOrModel({ brand: 'Apple' }, null);
+
+        expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
+        expect(component.uploadForm.value.extra_info.model).toEqual('');
+      });
+
+      it('should select the model', () => {
+        component.selectBrandOrModel({ model: 'iPhone XSX' }, null);
+
+        expect(component.uploadForm.value.extra_info.brand).toEqual('');
+        expect(component.uploadForm.value.extra_info.model).toEqual('iPhone XSX');
+      });
+    });
   });
 
   describe('onUploaded', () => {
@@ -347,7 +498,7 @@ describe('UploadProductComponent', () => {
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id}]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id }]);
     });
 
     it('should send appboy Edit event if item is selected', () => {
@@ -356,7 +507,7 @@ describe('UploadProductComponent', () => {
       component.item = MOCK_ITEM;
       component.onUploaded(uploadedEvent);
 
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('Edit', {platform: 'web'});
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('Edit', { platform: 'web' });
     });
 
     it('should send appboy List event if any item is selected', () => {
@@ -364,7 +515,7 @@ describe('UploadProductComponent', () => {
 
       component.onUploaded(uploadedEvent);
 
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('List', {platform: 'web'});
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('List', { platform: 'web' });
     });
   });
 
@@ -402,7 +553,7 @@ describe('UploadProductComponent', () => {
       component.uploadForm.get('description').patchValue('test');
       component.uploadForm.get('sale_price').patchValue(1000000);
       component.uploadForm.get('currency_code').patchValue('EUR');
-      component.uploadForm.get('images').patchValue([{'image': true}]);
+      component.uploadForm.get('images').patchValue([{ 'image': true }]);
       component.uploadForm.get('location').patchValue({
         address: USER_LOCATION.full_address,
         latitude: USER_LOCATION.approximated_latitude,
@@ -428,7 +579,7 @@ describe('UploadProductComponent', () => {
         description: 'test',
         'sale_price': 1000000,
         currency_code: 'EUR',
-        images: [{'image': true}],
+        images: [{ 'image': true }],
         sale_conditions: {
           fix_price: false,
           exchange_allowed: false

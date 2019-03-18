@@ -327,7 +327,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     const suggestions: KeywordSuggestion[] = [];
 
     this.generalSuggestionsService.
-      getBrands(brandKeyword, this.uploadForm.value.categoryId, this.uploadForm.value.extra_info.object_type.id)
+      getBrands(brandKeyword, this.uploadForm.value.category_id, this.uploadForm.value.extra_info.object_type.id)
       .subscribe((brands: Brand[]) => {
         if (brands.length > 0) {
           brands.map((brand: Brand) => {

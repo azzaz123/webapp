@@ -26,17 +26,17 @@ export class KeywordSuggesterComponent implements OnInit {
   constructor(private i18n: I18nService) { }
 
   ngOnInit() {
-    if (this.initialValue) {
-      this.suggestionValue = this.initialValue;
-    }
     this.suggestions.subscribe((suggestions: KeywordSuggestion[]) => {
       this.keywordSuggestions = suggestions;
       this.suggestionsOpened = suggestions.length ? true : false;
     });
     this.value.subscribe((value: string) => {
-      this.suggestionValue = value;
+      this.setSuggestionValue(value);
     });
 
+    if (this.initialValue) {
+      this.setSuggestionValue(this.initialValue);
+    }
     if (this.placeholder) {
       this.placeholderValue = this.i18n.getTranslations(this.placeholder);
     }
@@ -53,7 +53,7 @@ export class KeywordSuggesterComponent implements OnInit {
   }
 
   selectSuggestion(suggestion: KeywordSuggestion) {
-    this.suggestionValue = suggestion.suggestion;
+    this.setSuggestionValue(suggestion.suggestion);
     this.suggestionSelect.emit(suggestion.value);
     this.suggestionsOpened = false;
   }
@@ -78,6 +78,10 @@ export class KeywordSuggesterComponent implements OnInit {
         this.suggestionsOpened = false;
       }
     }
+  }
+
+  private setSuggestionValue(value) {
+    this.suggestionValue = value;
   }
 
 }
