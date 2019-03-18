@@ -10,6 +10,7 @@ export class InboxConversationComponent {
 
   @Input() conversation: InboxConversation;
 
+  public unreadCounterDisplayLimit = 99;
   public momentConfig: any = {
     lastDay: '[Yesterday]',
     sameDay: 'HH:mm',
