@@ -16,6 +16,7 @@ import { EventService } from '../event/event.service';
 import { Message, messageStatus } from '../message/message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { INBOX_ITEM_STATUSES } from '../item/item';
+import { InboxConversation } from '../conversation/conversation';
 
 let service: InboxService;
 let http: HttpService;
@@ -82,6 +83,17 @@ describe('InboxService', () => {
       service.init();
 
       expect(http.get).toHaveBeenCalledWith(service['API_URL']);
+    });
+
+    it('should return an array of InboxConversation`s with the correct lastMesage for each', () => {
+      const apiResponse = res.json().conversations;
+
+      service.init();
+
+      service.conversations.map((conv, index) => {
+        expect(conv instanceof InboxConversation).toBe(true);
+        expect(conv.lastMessage.id).toEqual(apiResponse[index].messages[0].id);
+      });
     });
 
     it('should set the number of unreadMessages in messageService', () => {

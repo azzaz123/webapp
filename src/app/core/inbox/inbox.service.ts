@@ -108,7 +108,8 @@ export class InboxService {
       let lastMessage: Message = null;
       let dateModified: Date = null;
       if (conv.messages && conv.messages.length) {
-        const lastMsg = conv.messages[conv.messages.length - 1];
+        const lastMsg = conv.messages[0];
+        // TODO - handle case when last message is a third voice type and may NOT have the 'text' property
         lastMessage = new Message(lastMsg.id, conv.hash, lastMsg.text, lastMsg.from_user_hash, new Date(lastMsg.timestamp),
         lastMsg.status, lastMsg.payload);
         lastMessage.fromSelf = lastMessage.from !== conv.with_user.hash;
