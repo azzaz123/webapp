@@ -27,12 +27,11 @@ export class InboxConversation {
 
   constructor(private _id: string,
               private _modifiedDate: Date,
-              private _user?: InboxUser,
-              private _item?: InboxItem,
-              private _lastMessage?: Message,
+              private _user: InboxUser,
+              private _item: InboxItem,
+              private _phoneShared: boolean,
               private _unreadCounter: number = 0,
-              private _archived: boolean = false,
-              private _phoneShared?: boolean) {
+              private _lastMessage?: Message) {
   }
 
   get id(): string {
@@ -45,14 +44,6 @@ export class InboxConversation {
 
   get modifiedDate(): Date {
     return this._modifiedDate;
-  }
-
-  get archived(): boolean {
-    return this._archived;
-  }
-
-  set archived(value: boolean) {
-    this._archived = value;
   }
 
   get user(): InboxUser {

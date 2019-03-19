@@ -117,8 +117,7 @@ export class InboxService {
       }
       const user = this.buildInboxUser(conv.with_user);
       const item = this.buildInboxItem(conv.item);
-      const conversation = new InboxConversation(conv.hash, dateModified, user, item, lastMessage, conv.unread_messages || 0,
-        conv.phone_shared);
+      const conversation = new InboxConversation(conv.hash, dateModified, user, item, conv.phone_shared, conv.unread_messages, lastMessage);
       this.messageService.totalUnreadMessages += conversation.unreadCounter;
       return conversation;
     });

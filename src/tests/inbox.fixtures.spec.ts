@@ -145,17 +145,18 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
           tempMsg.payload);
       message.fromSelf = tempMsg.from === 'self';
 
-      return new InboxConversation(id, date, new InboxUser(userId), new InboxItem(ITEM_ID), message, 0, false, false);
+      return new InboxConversation(id, date, new InboxUser(userId), new InboxItem(ITEM_ID), false, 0, message);
 };
 export const SECOND_MOCK_INBOX_CONVERSATION: InboxConversation = new InboxConversation('secondId', INBOX_CONVERSATION_DATE,
-  new InboxUser(OTHER_USER_ID), new InboxItem(ITEM_ID));
+  new InboxUser(OTHER_USER_ID), new InboxItem(ITEM_ID), false);
 export const MOCKED_INBOX_CONVERSATIONS: InboxConversation[] = [CREATE_MOCK_INBOX_CONVERSATION(), SECOND_MOCK_INBOX_CONVERSATION];
 export const NOT_FOUND_INBOX_CONVERSATION_ID = 'notFound';
 export const MOCK_NOT_FOUND_INBOX_CONVERSATION: InboxConversation = new InboxConversation(
   NOT_FOUND_INBOX_CONVERSATION_ID,
   INBOX_CONVERSATION_DATE,
   new InboxUser(OTHER_USER_ID),
-  new InboxItem(ITEM_ID));
+  new InboxItem(ITEM_ID),
+  false);
 
 export function createInboxConversationsArray(total: number, conversationsId?: string) {
   const conversations: InboxConversation[] = [];
