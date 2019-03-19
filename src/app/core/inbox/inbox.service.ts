@@ -26,7 +26,6 @@ export class InboxService {
     private featureflagService: FeatureflagService,
     private eventService: EventService,
     private userService: UserService) {
-      this.selfId = this.userService.user.id;
     }
 
 
@@ -43,6 +42,7 @@ export class InboxService {
   }
 
   public init() {
+    this.selfId = this.userService.user.id;
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
       this.processNewMessage(message);
     });

@@ -27,6 +27,7 @@ let persistencyService: PersistencyService;
 let messageService: MessageService;
 let featureflagService: FeatureflagService;
 let eventService: EventService;
+let userService: UserService;
 
 describe('InboxService', () => {
   beforeEach(() => {
@@ -53,6 +54,7 @@ describe('InboxService', () => {
     messageService = TestBed.get(MessageService);
     featureflagService = TestBed.get(FeatureflagService);
     eventService = TestBed.get(EventService);
+    userService = TestBed.get(UserService);
   });
 
   describe('getInboxFeatureFlag', () => {
@@ -71,6 +73,14 @@ describe('InboxService', () => {
     beforeEach(() => {
       spyOn(http, 'get').and.returnValue(Observable.of(res));
       parsedConversaitonsResponse = service['buildConversations'](JSON.parse(MOCK_INBOX_API_RESPONSE).conversations);
+    });
+
+    it('should set selfId as the of the logged in used', () => {
+      spyOn(eventService, 'subscribe');
+
+      service.init();
+
+      expect(service['selfId']).toBe(userService.user.id);
     });
 
     it('should subscribe to the NEW_MESSAGE and CHAT_SIGNAL events', () => {
