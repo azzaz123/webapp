@@ -51,8 +51,6 @@ export abstract class LeadService {
         this.archivedStream$.next(conversations);
       }
       this.firstLoad = false;
-      this.leads = _.uniqBy(this.leads, 'id');
-      this.archivedLeads = _.uniqBy(this.archivedLeads, 'id');
     });
   }
 
