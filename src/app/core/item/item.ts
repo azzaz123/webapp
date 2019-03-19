@@ -11,6 +11,12 @@ export const ITEM_STATUSES: any = {
   'active': 'PUBLISHED',
   'sold': ['SOLD_OUTSIDE', 'BOUGHT']
 };
+export const INBOX_ITEM_STATUSES: any = {
+  sold: 'sold',
+  reserved: 'reserved',
+  notAvailable: 'not available',
+  published: 'published'
+};
 export const ITEM_TYPES: any = {
   CONSUMER_GOODS: 'consumer_goods',
   CARS: 'cars',
@@ -210,6 +216,14 @@ export class Item implements Model {
     return this._flags ? this._flags.reserved : false;
   }
 
+  set notAvailable(value: boolean) {
+    this._flags.notAvailable = value;
+  }
+
+  get notAvailable(): boolean {
+    return this._flags ? this._flags.notAvailable : false;
+  }
+
   get selected(): boolean {
     return this._selected;
   }
@@ -282,6 +296,32 @@ export class InboxItem implements Model {
               private _title?: string,
               private _mainImage?: InboxImage,
               private _status?: string) {
+    this.mapStatusToFlags(this.status);
+  }
+
+  public sold = false;
+  public reserved = false;
+  public published = false;
+  public notAvailable = false;
+
+  private mapStatusToFlags(status: string) {
+    switch (status) {
+      case INBOX_ITEM_STATUSES.sold:
+        this.sold = true;
+        break;
+      case INBOX_ITEM_STATUSES.reserved:
+        this.reserved = true;
+        break;
+      case INBOX_ITEM_STATUSES.notAvailable:
+        this.notAvailable = true;
+        break;
+      case INBOX_ITEM_STATUSES.published:
+        this.published = true;
+        break;
+      default:
+        this.published = true;
+        break;
+    }
   }
 
   get id(): string {
@@ -296,8 +336,12 @@ export class InboxItem implements Model {
     return this._title;
   }
 
-  get status(): string {
+  get status() {
     return this._status;
+  }
+
+  set status(value: string) {
+    this._status = value;
   }
 
   get mainImage(): InboxImage {

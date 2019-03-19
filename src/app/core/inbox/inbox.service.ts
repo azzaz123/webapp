@@ -104,7 +104,7 @@ export class InboxService {
   }
 
   private buildConversations(conversations): InboxConversation[] {
-    return conversations.map(conv => {
+    return conversations.map((conv) => {
       let lastMessage: Message = null;
       let dateModified: Date = null;
       if (conv.messages && conv.messages.length) {
@@ -124,10 +124,11 @@ export class InboxService {
   }
 
   private buildInboxUser(user: any) {
-    return new InboxUser(user.hash, user.name, user.blocked);
+    const userBlocked = Boolean(user.available && user.blocked);
+    return new InboxUser(user.hash, user.name, userBlocked, user.available);
   }
 
-  private buildInboxItem(item) {
+  private buildInboxItem(item: any): InboxItem {
     const image: InboxImage = {
       urls_by_size: {
         small: item && item.image_url ? item.image_url : null

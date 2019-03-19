@@ -45,6 +45,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('spinner', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/spinner.svg'));
   matIconRegistry.addSvgIcon('sold', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/sold.svg'));
   matIconRegistry.addSvgIcon('reserved', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/reserved.svg'));
+  matIconRegistry.addSvgIcon('not-available', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/warning.svg'));
   matIconRegistry.addSvgIcon('caret', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/caret.svg'));
   matIconRegistry.addSvgIcon('close', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/close.svg'));
   matIconRegistry.addSvgIcon('empty-phones', sanitizer.bypassSecurityTrustResourceUrl('/assets/images/empty-state-phones.svg'));
