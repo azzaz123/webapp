@@ -192,11 +192,11 @@ $menu-width-and-spacing: 10px;
           width: 20px;
           height: 14px;
           background: center left no-repeat;
-          &.pending { background-image: url(/assets/icons/status-pending.svg); }
-          &.sent { background-image: url(/assets/icons/status-sent.svg); }
-          &.received { background-image: url(/assets/icons/status-received.svg); }
-          &.read { background-image: url(/assets/icons/status-read-wallaColor.svg); }
-          &.error { background-image: url(/assets/icons/status-error.svg); }
+          &.pending { background-image: url(/assets/icons/msg-status-pending.svg); }
+          &.sent { background-image: url(/assets/icons/msg-status-sent.svg); }
+          &.received { background-image: url(/assets/icons/msg-status-received.svg); }
+          &.read { background-image: url(/assets/icons/msg-status-read-wallaColor.svg); }
+          &.error { background-image: url(/assets/icons/msg-status-error.svg); }
         }
       }
     }
