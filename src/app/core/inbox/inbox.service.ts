@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../conversation/conversation';
 import { MessageService } from '../message/message.service';
-import { InboxItem } from '../item/item';
-import { InboxUser } from '../user/user';
+import { InboxItem, InboxItemPlaceholder } from '../item/item';
+import { InboxUser, InboxUserPlaceholder } from '../user/user';
 import { InboxImage } from '../user/user-response.interface';
 import { FeatureflagService } from '../user/featureflag.service';
 import { Message, messageStatus, statusOrder } from '../message/message';
@@ -128,7 +128,10 @@ export class InboxService {
     });
   }
 
-  private buildInboxUser(user: any) {
+  private buildInboxUser(user: any): InboxUser {
+    if (!user) {
+      return InboxUserPlaceholder;
+    }
     const userBlocked = Boolean(user.available && user.blocked);
     return new InboxUser(user.hash, user.name, userBlocked, user.available);
   }
@@ -139,6 +142,9 @@ export class InboxService {
         small: item && item.image_url ? item.image_url : null
       }
     };
+    if (!item) {
+      return InboxItemPlaceholder;
+    }
     return new InboxItem(item.hash, item.price, item.title, image, item.status);
   }
 

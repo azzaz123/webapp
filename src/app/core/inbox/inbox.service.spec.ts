@@ -15,8 +15,11 @@ import { FeatureflagService } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
 import { Message, messageStatus } from '../message/message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
-import { INBOX_ITEM_STATUSES } from '../item/item';
+import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../item/item';
 import { InboxConversation } from '../conversation/conversation';
+import { UserService } from '../user/user.service';
+import { MockedUserService } from '../../../tests/user.fixtures.spec';
+import { InboxUserPlaceholder } from '../user/user';
 
 let service: InboxService;
 let http: HttpService;
@@ -35,11 +38,13 @@ describe('InboxService', () => {
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: MessageService, useClass: MockMessageService },
+        {provide: UserService, useClass: MockedUserService},
         { provide: FeatureflagService, useValue: {
             getFlag() {
               return Observable.of(false);
             }
-          }}
+          }
+        }
       ]
     });
     service = TestBed.get(InboxService);
@@ -436,6 +441,33 @@ describe('InboxService', () => {
 
         expect(service.conversations[0].user.available).toBe(true);
       });
+    });
+  });
+
+  describe('process API response with missing user OR item', () => {
+    let modifiedResponse;
+    beforeEach(() => {
+      modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE);
+    });
+
+    it('should set InboxItemPlaceholder as the item of a InboxConversation, when the API response does not return an item object', () => {
+      delete modifiedResponse.conversations[0].item;
+      const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+      spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+      service.init();
+
+      expect(service.conversations[0].item).toEqual(InboxItemPlaceholder);
+    });
+
+    it('should set InboxUserPlaceholder as the user of a InboxConversation, when the API response does not return a user object', () => {
+      delete modifiedResponse.conversations[0].with_user;
+      const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+      spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+      service.init();
+
+      expect(service.conversations[0].user).toEqual(InboxUserPlaceholder);
     });
   });
 });

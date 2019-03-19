@@ -219,9 +219,9 @@ export class User implements Model {
 
 export class InboxUser implements Model {
   constructor(private _id: string,
-              private _microName?: string,
-              private _blocked?: boolean,
-              private _available?: boolean) {
+              private _microName: string,
+              private _blocked: boolean,
+              private _available: boolean) {
   }
   get id(): string {
     return this._id;
@@ -247,3 +247,5 @@ export class InboxUser implements Model {
     this._available = value;
   }
 }
+
+export const InboxUserPlaceholder = new InboxUser(null, 'unknown', false, false);
