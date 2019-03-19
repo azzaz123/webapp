@@ -11,18 +11,23 @@ import { FeatureflagService } from '../user/featureflag.service';
 import { Message, messageStatus, statusOrder } from '../message/message';
 import { EventService } from '../event/event.service';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 
 export class InboxService {
   private API_URL = 'bff/messaging/inboxes/mine';
   public _conversations: InboxConversation[];
+  private selfId: string;
 
   constructor(private http: HttpService,
     private persistencyService: PersistencyService,
     private messageService: MessageService,
     private featureflagService: FeatureflagService,
-    private eventService: EventService) {}
+    private eventService: EventService,
+    private userService: UserService) {
+      this.selfId = this.userService.user.id;
+    }
 
 
   set conversations(value: InboxConversation[]) {
@@ -112,7 +117,7 @@ export class InboxService {
         // TODO - handle case when last message is a third voice type and may NOT have the 'text' property
         lastMessage = new Message(lastMsg.id, conv.hash, lastMsg.text, lastMsg.from_user_hash, new Date(lastMsg.timestamp),
         lastMsg.status, lastMsg.payload);
-        lastMessage.fromSelf = lastMessage.from !== conv.with_user.hash;
+        lastMessage.fromSelf = lastMessage.from === this.selfId;
         dateModified = new Date(lastMsg.timestamp);
       }
       const user = this.buildInboxUser(conv.with_user);
