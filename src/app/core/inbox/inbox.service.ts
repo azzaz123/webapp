@@ -114,11 +114,14 @@ export class InboxService {
       let dateModified: Date = null;
       if (conv.messages && conv.messages.length) {
         const lastMsg = conv.messages[0];
-        // TODO - handle case when last message is a third voice type and may NOT have the 'text' property
+        if (lastMsg.type === 'text') {
         lastMessage = new Message(lastMsg.id, conv.hash, lastMsg.text, lastMsg.from_user_hash, new Date(lastMsg.timestamp),
         lastMsg.status, lastMsg.payload);
         lastMessage.fromSelf = lastMessage.from === this.selfId;
         dateModified = new Date(lastMsg.timestamp);
+        } else {
+          // TODO - handle case when last message is a third voice type and may NOT have the 'text' property
+        }
       }
       const user = this.buildInboxUser(conv.with_user);
       const item = this.buildInboxItem(conv.item);
