@@ -49,8 +49,10 @@ export class InboxService {
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processChatSignal(signal);
     });
-    this.getInbox().subscribe((conversations: InboxConversation[]) => {
-      this.saveInbox(conversations);
+    this.getInbox()
+    .catch(() => {
+    })
+    .subscribe((conversations: InboxConversation[]) => {
       this.eventService.emit(EventService.INBOX_LOADED, conversations);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
@@ -62,7 +64,9 @@ export class InboxService {
     .map(res => {
       const r = res.json();
       this.saveMessages(r.conversations);
-      return this.conversations = this.buildConversations(r.conversations);
+      this.conversations = this.buildConversations(r.conversations);
+      this.saveInbox(this.conversations);
+      return this.conversations;
     });
   }
 
