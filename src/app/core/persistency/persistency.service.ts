@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Message, phoneRequestState } from '../message/message';
 import {
-  StoredConversation,
   StoredMessage,
   StoredMessageRow,
   StoredMetaInfo,
@@ -26,7 +25,7 @@ import { InboxMessage, statusOrder } from '../../chat/chat-with-inbox/message/in
 @Injectable()
 export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
-  private _conversationsDb: Database<StoredConversation>;
+  private _conversationsDb: Database<any>;
   private _inboxDb: Database<any>;
   private clickstreamDb: any;
   private storedMessages: AllDocsResponse<StoredMessage>;
