@@ -41,6 +41,7 @@
         <div class="form-group">
           <label for="category" i18n>Category</label>
           <ng-select [hidden]="fixedCategory" i18n-placeholder placeholder="Category"
+                     (selected)="onCategoryChange($event)"
                      class="form-control" formControlName="category_id"
                      [ngbPopover]="coachmarkPrice" #p2="ngbPopover" triggers="manual" (opened)="p2.open()" (closed)="p2.close()"
                      id="category" [options]="categories" noFilter="10">
@@ -96,6 +97,36 @@
     <ng-template #coachmarkExtras>
       <div i18n>FAQ</div>
     </ng-template>
+  </div>
+  <div class="box" *ngIf="extraInfoEnabled">
+    <h2><span i18n>The more precise, the better</span> 🎯</h2>
+    <div class="row" formGroupName="extra_info">
+      <div class="col-sm-4">
+        <div class="form-group last" formGroupName="object_type">
+          <label for="objectType">{{objectTypeTitle}}</label>
+          <ng-select class="form-control" formControlName="id" id="objectType" i18n-placeholder
+            placeholder="Select a type" [options]="objectTypes" noFilter="10"></ng-select>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group last">
+          <label for="brand" i18n>Brand</label>
+          <tsl-keyword-suggester placeholder="brand" [initialValue]="item?.extraInfo?.brand" [value]="selectedBrand"
+            [suggestions]="brandSuggestions" (inputChange)="getBrands($event)"
+            (suggestionSelect)="selectBrandOrModel($event, 'brand')">
+          </tsl-keyword-suggester>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group last">
+          <label for="model" i18n>Model</label>
+          <tsl-keyword-suggester placeholder="model" [initialValue]="item?.extraInfo?.model" [value]="selectedModel"
+            [suggestions]="modelSuggestions" (inputChange)="getModels($event)"
+            (suggestionSelect)="selectBrandOrModel($event, 'model')">
+          </tsl-keyword-suggester>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="box" [ngbPopover]="coachmarkShipping" triggers="mouseenter:mouseleave"
        *ngIf="categoryId === '-1' || item && item.itemType === itemTypes.CONSUMER_GOODS">

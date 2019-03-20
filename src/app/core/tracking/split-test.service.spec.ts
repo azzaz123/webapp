@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { SplitTestService } from './split-test.service';
 import { SplitTestUserInfo } from './split-test.interface';
+import { environment } from '../../../environments/environment.docker';
 
 const VARIABLE = 'right';
-window['Taplytics'] = jasmine.createSpyObj('Taplytics', ['variable', 'codeBlock', 'identify', 'reset', 'track']);
+window['Taplytics'] = jasmine.createSpyObj('Taplytics', ['variable', 'codeBlock', 'identify', 'reset', 'track', 'init']);
 window['Taplytics'].variable.and.callFake((name, value, callback) => callback(VARIABLE));
 window['Taplytics'].codeBlock.and.callFake((name, callback) => callback());
 
@@ -78,6 +79,14 @@ describe('SplitTestService', () => {
       service.track(EVENT_NAME, VALUE, ATTRS);
 
       expect(window['Taplytics'].track).toHaveBeenCalledWith(EVENT_NAME, VALUE, ATTRS);
+    });
+  });
+
+  describe('init', () => {
+    it('should call Taplytics.init with the Taplytics API key', () => {
+      service.init();
+
+      expect(window['Taplytics'].init).toHaveBeenCalledWith(environment.taplytics);
     });
   });
 });
