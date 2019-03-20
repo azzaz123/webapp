@@ -26,6 +26,7 @@ import { GeneralSuggestionsService } from './general-suggestions.service';
 import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
 import { Subject } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
+import { SplitTestService } from '../../core/tracking/split-test.service';
 
 const CATEGORIES_WITH_BRAND_AND_MODEL = ['16000'];
 
@@ -47,6 +48,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public itemTypes: any = ITEM_TYPES;
   public extraInfoEnabled = false;
+  public brandModelExperimentEnabled = false;
   public objectTypeTitle: string;
   public objectTypes: IOption[];
   public brands: IOption[];
@@ -105,6 +107,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private modalService: NgbModal,
     private trackingService: TrackingService,
     private generalSuggestionsService: GeneralSuggestionsService,
+    private splitTestService: SplitTestService,
     config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
@@ -153,6 +156,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.detectFormChanges();
       this.oldDeliveryValue = this.getDeliveryInfo();
     }
+
+    this.splitTestService.getVariable('BrandModelUploadEnabled', false).subscribe((BrandModelUploadEnabled: boolean) => {
+      this.brandModelExperimentEnabled = BrandModelUploadEnabled;
+    });
   }
 
   private detectFormChanges() {
@@ -249,6 +256,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
       appboy.logCustomEvent('List', { platform: 'web' });
+      if (this.extraInfoEnabled) {
+        this.splitTestService.track('UploadCompleted');
+      }
     }
 
     if (this.isUrgent) {
@@ -312,7 +322,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public onCategoryChange(category: CategoryOption) {
-    if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(category.value)) {
+    if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(category.value) && this.brandModelExperimentEnabled === true) {
       this.extraInfoEnabled = true;
       this.objectTypeTitle = category.object_type_title;
       this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {

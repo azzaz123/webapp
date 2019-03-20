@@ -39,6 +39,7 @@ import { RealTimeService } from './core/message/real-time.service';
 import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
 import { createInboxConversationsArray } from '../tests/inbox.fixtures.spec';
+import { SplitTestService } from './core/tracking/split-test.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -58,6 +59,7 @@ let cookieService: CookieService;
 let modalService: NgbModal;
 let connectionService: ConnectionService;
 let paymentService: PaymentService;
+let splitTestService: SplitTestService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -200,6 +202,11 @@ describe('App', () => {
           }
         },
         {
+          provide: SplitTestService, useValue: {
+            init() {}
+          }
+        },
+        {
           provide: PaymentService, useValue: {
             deleteCache() {
             }
@@ -228,6 +235,7 @@ describe('App', () => {
     modalService = TestBed.get(NgbModal);
     connectionService = TestBed.get(ConnectionService);
     paymentService = TestBed.get(PaymentService);
+    splitTestService = TestBed.get(SplitTestService);
     spyOn(notificationService, 'init');
   });
 
@@ -631,6 +639,16 @@ describe('App', () => {
       component['setTitle']();
 
       expect(component.hideSidebar).toBeTruthy();
+    });
+  });
+
+  describe('Taplytics', () => {
+    it('should initialize the Taplytics library when creating the app', () => {
+      spyOn(splitTestService, 'init');
+
+      component.ngOnInit();
+
+      expect(splitTestService.init).toHaveBeenCalled();
     });
   });
 });

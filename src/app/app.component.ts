@@ -36,6 +36,7 @@ import { RealTimeService } from './core/message/real-time.service';
 import { ChatSignal } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
 import { Subscription } from 'rxjs';
+import { SplitTestService } from './core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-root',
@@ -78,7 +79,8 @@ export class AppComponent implements OnInit {
               private modalService: NgbModal,
               private connectionService: ConnectionService,
               private paymentService: PaymentService,
-              private callService: CallsService) {
+              private callService: CallsService,
+              private splitTestService: SplitTestService) {
     this.config();
   }
 
@@ -98,6 +100,7 @@ export class AppComponent implements OnInit {
     this.connectionService.checkConnection();
     this.conversationService.firstLoad = true;
     this.trackingService.trackAccumulatedEvents();
+    this.splitTestService.init();
 
     __cmp('init', quancastOptions[this.i18n.locale]);
   }

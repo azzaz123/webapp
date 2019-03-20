@@ -12,6 +12,7 @@ export const environment: any = {
   wsUrl: 'wss://dock112.wallapop.com:5282/ws-xmpp',
   siteUrl: 'https://es.dock112.wallapop.com/',
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
+  taplytics: '27dc733a355d44a7b8be1ce740f686a0',
   cookieSuffix: 'Local',
   clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents'
 };
