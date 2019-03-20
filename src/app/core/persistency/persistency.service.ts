@@ -95,6 +95,7 @@ export class PersistencyService {
       const lastMessage = new Message(conv.lastMessage._id, conv.lastMessage._thread, conv.lastMessage._message,
         conv.lastMessage._from, conv.lastMessage._date, conv.lastMessage._status, conv.lastMessage._payload,
         conv.lastMessage._phoneRequest);
+        lastMessage.fromSelf = conv.lastMessage._fromSelf;
       return new InboxConversation(conv._id, conv.modifiedDate, user, item,  conv.phoneShared, conv.unreadCounter, lastMessage);
     });
   }
