@@ -16,6 +16,8 @@ import AllDocsResponse = PouchDB.Core.AllDocsResponse;
 import Document = PouchDB.Core.Document;
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
+import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
+import { InboxItem } from '../../chat/chat-with-inbox/inbox/inbox-item';
 import { EventService } from '../event/event.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TrackingEvent } from '../tracking/tracking-event';
@@ -80,6 +82,25 @@ export class PersistencyService {
       })
     );
   }
+
+  public getStoredInbox(): Observable<InboxConversation[]> {
+    return Observable.fromPromise((this.inboxDb.allDocs({ include_docs: true })).then((data) => {
+      return this.mapToInboxConversation(data);
+    }));
+  }
+
+  private mapToInboxConversation(data): InboxConversation[] {
+    return data.rows.map(row => {
+      const conv = row.doc;
+      const user = new InboxUser(conv.user._id, conv.user._microName, conv.user._blocked, conv.user._available);
+      const item = new InboxItem(conv.item._id, conv.item._price, conv.item._title, conv.item._mainImage, conv.item._status);
+      const lastMessage = new InboxMessage(conv.lastMessage._id, conv.lastMessage._thread, conv.lastMessage._message,
+        conv.lastMessage._from, this.userService.user.id === conv.lastMessage._from, conv.lastMessage._date,
+        conv.lastMessage._status, conv.lastMessage._payload, conv.lastMessage._phoneRequest);
+      return new InboxConversation(conv._id, conv.modifiedDate, user, item,  conv.phoneShared, conv.unreadCounter, lastMessage);
+    });
+  }
+
 
   private initClickstreamDb(dbName: string, version?: number) {
     const request = version ? window.indexedDB.open(dbName, version) : window.indexedDB.open(dbName);

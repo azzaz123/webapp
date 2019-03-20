@@ -2,6 +2,7 @@ import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { Message, phoneRequestState } from '../app/core/message/message';
 import { InboxMessage, messageStatus } from '../app/chat/chat-with-inbox/message/inbox-message';
 import { Observable } from 'rxjs';
+import { createInboxConversationsArray } from './inbox.fixtures.spec';
 
 const currentDate = new Date();
 
@@ -120,6 +121,57 @@ export const MOCK_DB_RESPONSE: any = {
         'from': 'pj9ylwknvv6e@dock9.wallapop.com/1.15.0-d1610071212_ONE-E1001_22_XZAmN_RT_DEBUG',
         'date': '2016-10-10T15:30:27.000Z',
         'status': messageStatus.READ
+      }
+    }
+  ]
+};
+
+const mockedInboxConvs = createInboxConversationsArray(3);
+
+export const MOCK_INBOX_DB_RESPONSE: any = {
+  offset: 1,
+  total_rows: 3,
+  rows: [
+    {
+      doc: {
+        '_id': mockedInboxConvs[0].id,
+        'data': {
+          'id': mockedInboxConvs[0].id,
+          'modifiedDate': mockedInboxConvs[0].modifiedDate,
+          'user': mockedInboxConvs[0].user,
+          'item': mockedInboxConvs[0].item,
+          'phoneShared': true,
+          'unreadCounter': 2,
+          'lastMessage': mockedInboxConvs[0].lastMessage
+        }
+      }
+    },
+    {
+      doc: {
+        '_id': mockedInboxConvs[1].id,
+        'data': {
+          'id': mockedInboxConvs[1].id,
+          'modifiedDate': mockedInboxConvs[1].modifiedDate,
+          'user': mockedInboxConvs[1].user,
+          'item': mockedInboxConvs[1].item,
+          'phoneShared': true,
+          'unreadCounter': 0,
+          'lastMessage': mockedInboxConvs[1].lastMessage
+        }
+      }
+    },
+    {
+      doc: {
+        '_id': mockedInboxConvs[2].id,
+        'data': {
+          'id': mockedInboxConvs[2].id,
+          'modifiedDate': mockedInboxConvs[2].modifiedDate,
+          'user': mockedInboxConvs[2].user,
+          'item': mockedInboxConvs[2].item,
+          'phoneShared': false,
+          'unreadCounter': 1,
+          'lastMessage': mockedInboxConvs[2].lastMessage
+        }
       }
     }
   ]

@@ -50,6 +50,7 @@ export class InboxService {
     });
     this.getInbox()
     .catch(() => {
+      return this.persistencyService.getStoredInbox();
     })
     .subscribe((conversations: InboxConversation[]) => {
       this.eventService.emit(EventService.INBOX_LOADED, conversations);
