@@ -102,6 +102,13 @@ describe('Component: ChatWithInboxComponent', () => {
       expect(component.connectionError).toBe(true);
       expect(component.conversationsLoaded).toBe(true);
     });
+
+    it('should set connectionError to FALSE when a EventService.CONNECTION_RESTORED event is emitted', () => {
+      component.ngOnInit();
+      eventService.emit(EventService.CONNECTION_RESTORED);
+
+      expect(component.connectionError).toBe(false);
+    });
   });
 
   it('should call stopAdsRefresh when destroy component', () => {
