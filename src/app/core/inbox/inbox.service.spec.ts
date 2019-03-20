@@ -39,7 +39,7 @@ describe('InboxService', () => {
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: MessageService, useClass: MockMessageService },
-        {provide: UserService, useClass: MockedUserService},
+        { provide: UserService, useClass: MockedUserService },
         { provide: FeatureflagService, useValue: {
             getFlag() {
               return Observable.of(false);
