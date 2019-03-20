@@ -206,6 +206,8 @@ export class MockedPersistencyService {
   public updateStoredInbox() {
   }
 
+  public getStoredInbox() {}
+
   public getMetaInformation() {
   }
 

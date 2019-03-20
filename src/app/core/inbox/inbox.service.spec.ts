@@ -6,7 +6,7 @@ import { HttpService } from '../http/http.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { Observable } from 'rxjs';
-import { MOCK_INBOX_API_RESPONSE } from '../../../tests/inbox.fixtures.spec';
+import { MOCK_INBOX_API_RESPONSE, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { ResponseOptions, Response } from '@angular/http';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
@@ -340,6 +340,25 @@ describe('InboxService', () => {
         expect(conversation.unreadCounter).toBe(7);
         expect(messageService.totalUnreadMessages).toBe(12);
       });
+    });
+  });
+
+  describe('when the http request throws an error', () => {
+    beforeEach(() => {
+      spyOn<any>(service, 'getInbox').and.returnValue(Observable.throw(''));
+      spyOn(persistencyService, 'getStoredInbox').and.returnValue(Observable.of(createInboxConversationsArray(2)));
+    });
+
+    it('should set errorRetrievingInbox to true', () => {
+      service.init();
+
+      expect(service.errorRetrievingInbox).toBe(true);
+    });
+
+    it('should call persistencyService.getStoredInbox', () => {
+      service.init();
+
+      expect(persistencyService.getStoredInbox).toHaveBeenCalled();
     });
   });
 
