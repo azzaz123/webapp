@@ -18,6 +18,7 @@ export class InboxService {
   private API_URL = 'bff/messaging/inboxes/mine';
   private _conversations: InboxConversation[];
   private selfId: string;
+  public errorRetrievingInbox = false;
 
   constructor(private http: HttpService,
     private persistencyService: PersistencyService,
@@ -50,6 +51,7 @@ export class InboxService {
     });
     this.getInbox()
     .catch(() => {
+      this.errorRetrievingInbox = true;
       return this.persistencyService.getStoredInbox();
     })
     .subscribe((conversations: InboxConversation[]) => {

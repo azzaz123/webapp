@@ -17,6 +17,7 @@ export class InboxComponent implements OnInit {
   public showNewMessagesToast = false;
   private _loading = false;
   private conversationElementHeight = 100;
+  public errorRetrievingInbox = false;
 
   constructor(private inboxService: InboxService,
     private eventService: EventService) {}
@@ -47,10 +48,9 @@ export class InboxComponent implements OnInit {
   }
 
   private onInboxReady(conversations) {
-        this.conversations = conversations;
-        this.loading = false;
-      });
-    }
+    this.conversations = conversations;
+    this.loading = false;
+    this.errorRetrievingInbox = this.inboxService.errorRetrievingInbox;
   }
 
   private bindNewMessageToast() {
