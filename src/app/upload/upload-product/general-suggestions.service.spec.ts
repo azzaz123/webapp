@@ -24,10 +24,6 @@ describe('GeneralSuggestionsService', () => {
     http = TestBed.get(HttpService);
   });
 
-  it('should instantiate', () => {
-    expect(service).toBeTruthy();
-  });
-
   describe('getObjectTypes', () => {
     let response: IOption[];
     const CATEGORY = '1';
@@ -49,7 +45,7 @@ describe('GeneralSuggestionsService', () => {
     }));
 
     it('should call the object-type endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/suggesters/general/object-type', { category_id: CATEGORY });
+      expect(http.get).toHaveBeenCalledWith(`${service['API_URL']}/object-type`, { category_id: CATEGORY });
     });
 
     it('should return the object type options', () => {
@@ -86,7 +82,7 @@ describe('GeneralSuggestionsService', () => {
     }));
 
     it('should call the brand-model endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/suggesters/general/brand-model',
+      expect(http.get).toHaveBeenCalledWith(`${service['API_URL']}/brand-model`,
         { text: SUGGESTION, category_id: CATEGORY, object_type_id: OBJECT_TYPE_ID });
     });
 
@@ -123,7 +119,7 @@ describe('GeneralSuggestionsService', () => {
     }));
 
     it('should call the model endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/suggesters/general/model',
+      expect(http.get).toHaveBeenCalledWith(`${service['API_URL']}/model`,
         { text: SUGGESTION, category_id: CATEGORY, brand: BRAND, object_type_id: OBJECT_TYPE_ID });
     });
 
@@ -153,7 +149,7 @@ describe('GeneralSuggestionsService', () => {
     }));
 
     it('should call the brand endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/suggesters/general/brand',
+      expect(http.get).toHaveBeenCalledWith(`${service['API_URL']}/brand`,
         { text: SUGGESTION, category_id: CATEGORY, object_type_id: OBJECT_TYPE_ID });
     });
 
