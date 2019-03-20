@@ -49,10 +49,6 @@ export interface StoredMessageRow {
   };
 }
 
-export interface StoredConversation {
-  unreadMessages: number;
-}
-
 export interface MessagePayload {
   text: string;
   type: string;
