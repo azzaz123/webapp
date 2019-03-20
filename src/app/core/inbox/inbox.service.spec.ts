@@ -133,12 +133,12 @@ describe('InboxService', () => {
       });
     });
 
-    it('should call persistencyService.updateInbox after the inbox response is returned', () => {
-      spyOn(persistencyService, 'updateInbox');
+    it('should call persistencyService.updateStoredInbox after the inbox response is returned', () => {
+      spyOn(persistencyService, 'updateStoredInbox');
 
       service.init();
 
-      expect(persistencyService.updateInbox).toHaveBeenCalledWith(parsedConversaitonsResponse);
+      expect(persistencyService.updateStoredInbox).toHaveBeenCalledWith(parsedConversaitonsResponse);
     });
 
     it('should emit a EventService.INBOX_LOADED after getInbox returns', () => {

@@ -17,7 +17,7 @@ import { UserService } from '../user/user.service';
 
 export class InboxService {
   private API_URL = 'bff/messaging/inboxes/mine';
-  public _conversations: InboxConversation[];
+  private _conversations: InboxConversation[];
   private selfId: string;
 
   constructor(private http: HttpService,
@@ -71,7 +71,7 @@ export class InboxService {
   }
 
   private saveInbox(inboxConversations: InboxConversation[]) {
-    this.persistencyService.updateInbox(inboxConversations);
+    this.persistencyService.updateStoredInbox(inboxConversations);
   }
 
   private processNewMessage(message: Message) {
