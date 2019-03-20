@@ -11,7 +11,11 @@
   </div>
   <div class="separator"></div>
 </div>
-<div class="scroll-panel" #scrollPanel>
+<div class="scroll-panel" #scrollPanel (scroll)="showNewMessagesToast ? handleScroll() : null">
+  <button class="btn btn-primary new-messages-toast" *ngIf="showNewMessagesToast" (click)="scrollToTop()">
+    <mat-icon svgIcon="up-arrow-white"></mat-icon>
+    <span i18n>New messages</span>
+  </button>
   <div id="conversations" [hidden]="loading"> 
     <tsl-inbox-conversation *ngFor="let conversation of conversations" [conversation]="conversation" [ngClass]="{'active': conversation?.active}"></tsl-inbox-conversation>
   </div>

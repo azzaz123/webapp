@@ -363,6 +363,15 @@ describe('App', () => {
 
           expect(conversationService.init).toHaveBeenCalledTimes(2);
         });
+
+        it('should unsubscribe from the RT_CONNECTED_EVENT', () => {
+          spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+
+          component.ngOnInit();
+          emitSuccessChatEvents();
+
+          expect(component['RTConnectedSubscription'].closed).toBe(true);
+        });
       });
 
       describe('when getInboxFeatureFlag return true', () => {
@@ -375,6 +384,15 @@ describe('App', () => {
           emitSuccessChatEvents();
 
           expect(inboxService.init).toHaveBeenCalledTimes(1);
+        });
+
+        it('should NOT unsubscribe from the RT_CONNECTED_EVENT', () => {
+          spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+
+          component.ngOnInit();
+          emitSuccessChatEvents();
+
+          expect(component['RTConnectedSubscription'].closed).toBe(false);
         });
       });
 
