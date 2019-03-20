@@ -155,7 +155,7 @@ export class MockedPersistencyService {
   public saveMetaInformation(data: any) {
   }
 
-  public updateInbox() {
+  public updateStoredInbox() {
   }
 
   public getMetaInformation() {
@@ -214,4 +214,12 @@ export class MockedConversationsDb {
   allDocs(): any {
   }
 
+}
+
+export class MockedInboxDb {
+  get(): any {}
+  bulkDocs(): any {}
+  put(): any {}
+  allDocs(): any {}
+  destroy(): any {}
 }

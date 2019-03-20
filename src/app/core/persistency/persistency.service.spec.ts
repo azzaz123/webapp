@@ -34,7 +34,11 @@ describe('Service: Persistency', () => {
       providers: [
         PersistencyService,
         EventService,
-        {provide: UserService, useValue: { me() { return Observable.of(MOCK_USER); }}}
+        { provide: UserService, useValue: {
+          me() { return Observable.of(MOCK_USER); },
+          user() { return Observable.of(MOCK_USER); },
+          }
+        }
       ],
     });
     service = TestBed.get(PersistencyService);
@@ -42,6 +46,7 @@ describe('Service: Persistency', () => {
     eventService = TestBed.get(EventService);
     (service as any)['_messagesDb'] = new MockedMessagesDb();
     (service as any)['_conversationsDb'] = new MockedConversationsDb();
+    (service as any)['_inboxDb'] = new MockedInboxDb();
   });
 
   it('should call localDbVersionUpdate through the constructor after USER_LOGIN event is trigegred', () => {
@@ -538,6 +543,35 @@ describe('Service: Persistency', () => {
       expect(service['storedMessages']).toBe(null);
     });
 
+  });
+
+  describe('updateStoredInbox', () => {
+    const newInboxConversations = createInboxConversationsArray(1);
+    beforeEach(() => {
+      spyOn(userService, 'user').and.returnValue(Observable.of(MOCK_USER));
+      spyOn(service.inboxDb, 'destroy').and.returnValue(Promise.resolve({}));
+      spyOn(service.inboxDb, 'bulkDocs').and.callThrough();
+    });
+
+    it('should destroy the existing inboxDb', () => {
+      service.updateStoredInbox(newInboxConversations);
+
+      expect(service.inboxDb.destroy).toHaveBeenCalled();
+    });
+
+    it('should recreate the inboxDb', () => {
+      service.updateStoredInbox(newInboxConversations);
+
+      expect(service.inboxDb).toBeTruthy();
+    });
+
+    it('should bulk store the new inbox conversations', () => {
+      service.updateStoredInbox(newInboxConversations).subscribe(() => {
+
+        expect(service.inboxDb.bulkDocs).toHaveBeenCalledWith(newInboxConversations);
+      });
+    });
+  });
   });
 });
 
