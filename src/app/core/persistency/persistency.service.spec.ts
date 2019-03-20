@@ -550,11 +550,10 @@ describe('Service: Persistency', () => {
   });
 
   describe('updateStoredInbox', () => {
-    const newInboxConversations = createInboxConversationsArray(1);
+    let newInboxConversations = createInboxConversationsArray(1);
     beforeEach(() => {
       spyOn(userService, 'user').and.returnValue(Observable.of(MOCK_USER));
       spyOn(service.inboxDb, 'destroy').and.returnValue(Promise.resolve({}));
-      spyOn(service.inboxDb, 'bulkDocs').and.callThrough();
     });
 
     it('should destroy the existing inboxDb', () => {
@@ -563,32 +562,39 @@ describe('Service: Persistency', () => {
       expect(service.inboxDb.destroy).toHaveBeenCalled();
     });
 
-    it('should recreate the inboxDb', () => {
-      service.updateStoredInbox(newInboxConversations);
+    it('should recreate the inboxDb', fakeAsync(() => {
+      service.updateStoredInbox(newInboxConversations).subscribe();
+      tick();
 
       expect(service.inboxDb).toBeTruthy();
-    });
+    }));
 
-    it('should bulk store the new inbox conversations', () => {
+    it('should store the new inbox conversations', fakeAsync(() => {
+      newInboxConversations = createInboxConversationsArray(5);
+
       service.updateStoredInbox(newInboxConversations).subscribe(() => {
 
-        expect(service.inboxDb.bulkDocs).toHaveBeenCalledWith(newInboxConversations);
+        service.getStoredInbox().subscribe(result => {
+          expect(result).toEqual(newInboxConversations);
+        });
+        tick();
       });
-    });
+    }));
   });
 
   describe('getStoredInbox', () => {
-    it('should fetch all documents from the inboxDb and return them as an array od InboxConversations', () => {
+    it('should fetch all documents from the inboxDb and return them as an array of InboxConversations', fakeAsync(() => {
       spyOn(service.inboxDb, 'allDocs').and.returnValue(Promise.resolve(MOCK_INBOX_DB_RESPONSE));
+      let convs: any;
 
-      service.getStoredInbox().subscribe((data: any) => {
+      service.getStoredInbox().subscribe((data: any) => convs = data);
+      tick();
 
-        expect(service.inboxDb.allDocs).toHaveBeenCalledWith({include_docs: true});
-        data.map(conv => {
-          expect(conv instanceof InboxConversation);
-        });
+      expect(service.inboxDb.allDocs).toHaveBeenCalledWith({include_docs: true});
+      convs.map(conv => {
+        expect(conv instanceof InboxConversation);
       });
-    });
+    }));
   });
 });
 
