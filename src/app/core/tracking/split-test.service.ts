@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Observer } from 'rxjs/Observer';
 import { SplitTestUserInfo } from './split-test.interface';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class SplitTestService {
 
-  getVariable(name: string, defaultValue: string): Observable<any> {
+  getVariable(name: string, defaultValue): Observable<any> {
     return Observable.create((observer: Observer<any>) => {
-      Taplytics.variable(name, defaultValue, (value: string) => {
+      Taplytics.variable(name, defaultValue, (value) => {
         observer.next(value);
         observer.complete();
       });
@@ -34,6 +35,10 @@ export class SplitTestService {
 
   track(eventName: string, value?: number, attributes?: any) {
     Taplytics.track(eventName, value, attributes);
+  }
+
+  init() {
+    Taplytics.init(environment.taplytics);
   }
 
 }

@@ -118,7 +118,9 @@ export class I18nService {
       pro_subscription_tutorial_extra_fields_description_direction: 'You will have a description of your store or service and its location.',
       cars_subscription_tutorial_description3: 'You will have a different design and will stand out!',
       pro_subscription_tutorial_items_no_expire: 'Your items won\'t expire.',
-      cars_subscription_tutorial_phone_on_car: 'Your phone will appear in each car you have listed, so more buyers will contact you.'
+      cars_subscription_tutorial_phone_on_car: 'Your phone will appear in each car you have listed, so more buyers will contact you.',
+      brand: 'Brand',
+      model: 'Model'
     },
     es: {
       daysMomentConfig: {
@@ -236,7 +238,9 @@ export class I18nService {
       pro_subscription_tutorial_extra_fields_description_direction: 'Tendrás una descripción de tu tienda o servicio y su ubicación.',
       cars_subscription_tutorial_description3: 'Tu perfil tendrá un diseño diferente y ¡destacará!',
       pro_subscription_tutorial_items_no_expire: 'Tus productos no caducarán nunca.',
-      cars_subscription_tutorial_phone_on_car: 'Tu teléfono aparecerá en cada coche que tengas publicado, así más compradores te contactarán.'
+      cars_subscription_tutorial_phone_on_car: 'Tu teléfono aparecerá en cada coche que tengas publicado, así más compradores te contactarán.',
+      brand: 'Marca',
+      model: 'Modelo'
     }
   };
 
