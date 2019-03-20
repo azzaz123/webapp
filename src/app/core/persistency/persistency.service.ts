@@ -74,7 +74,7 @@ export class PersistencyService {
   public updateStoredInbox(conversations: InboxConversation[]): Observable<any> {
     return Observable.fromPromise(
       this.inboxDb.destroy().then(() => {
-      this.inboxDb = new PouchDB('inbox-' + this.userService.user.id, { auto_compaction: true });
+        this.inboxDb = new PouchDB('inbox-' + this.userService.user.id, { auto_compaction: true });
         const inboxToSave = conversations.map((conversation: InboxConversation) =>
           new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
             conversation.phoneShared, conversation.unreadCounter, conversation.lastMessage));

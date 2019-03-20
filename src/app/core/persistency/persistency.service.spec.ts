@@ -10,7 +10,9 @@ import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_RESPONSE,
   MockedConversationsDb,
-  MockedMessagesDb
+  MockedMessagesDb,
+  MOCK_INBOX_DB_RESPONSE,
+  MockedInboxDb
 } from '../../../tests/persistency.fixtures.spec';
 import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs';
@@ -20,6 +22,8 @@ import { EventService } from '../event/event.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
+import { InboxConversation } from '../conversation/conversation';
+import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 
 let service: PersistencyService;
 let userService: UserService;
@@ -572,6 +576,19 @@ describe('Service: Persistency', () => {
       });
     });
   });
+
+  describe('getStoredInbox', () => {
+    it('should fetch all documents from the inboxDb and return them as an array od InboxConversations', () => {
+      spyOn(service.inboxDb, 'allDocs').and.returnValue(Promise.resolve(MOCK_INBOX_DB_RESPONSE));
+
+      service.getStoredInbox().subscribe((data: any) => {
+
+        expect(service.inboxDb.allDocs).toHaveBeenCalledWith({include_docs: true});
+        data.map(conv => {
+          expect(conv instanceof InboxConversation);
+        });
+      });
+    });
   });
 });
 
