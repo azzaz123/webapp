@@ -240,7 +240,7 @@ export class XmppService {
   }
 
   private buildMessage(message: XmppBodyMessage, markAsPending = false) {
-    message.status = markAsPending ? messageStatus.PENDING : null;
+    message.status = markAsPending ? messageStatus.PENDING : messageStatus.SENT;
     return new Message(message.id, message.thread, message.body, message.from.local,
       new Date(message.date), message.status, message.payload);
   }

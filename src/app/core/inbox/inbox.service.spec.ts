@@ -15,7 +15,11 @@ import { FeatureflagService } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
 import { Message, messageStatus } from '../message/message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
-import { INBOX_ITEM_STATUSES } from '../item/item';
+import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../item/item';
+import { InboxConversation } from '../conversation/conversation';
+import { UserService } from '../user/user.service';
+import { MockedUserService } from '../../../tests/user.fixtures.spec';
+import { InboxUserPlaceholder } from '../user/user';
 
 let service: InboxService;
 let http: HttpService;
@@ -23,6 +27,7 @@ let persistencyService: PersistencyService;
 let messageService: MessageService;
 let featureflagService: FeatureflagService;
 let eventService: EventService;
+let userService: UserService;
 
 describe('InboxService', () => {
   beforeEach(() => {
@@ -34,11 +39,13 @@ describe('InboxService', () => {
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: MessageService, useClass: MockMessageService },
+        { provide: UserService, useClass: MockedUserService },
         { provide: FeatureflagService, useValue: {
             getFlag() {
               return Observable.of(false);
             }
-          }}
+          }
+        }
       ]
     });
     service = TestBed.get(InboxService);
@@ -47,6 +54,7 @@ describe('InboxService', () => {
     messageService = TestBed.get(MessageService);
     featureflagService = TestBed.get(FeatureflagService);
     eventService = TestBed.get(EventService);
+    userService = TestBed.get(UserService);
   });
 
   describe('getInboxFeatureFlag', () => {
@@ -67,6 +75,14 @@ describe('InboxService', () => {
       parsedConversaitonsResponse = service['buildConversations'](JSON.parse(MOCK_INBOX_API_RESPONSE).conversations);
     });
 
+    it('should set selfId as the of the logged in used', () => {
+      spyOn(eventService, 'subscribe');
+
+      service.init();
+
+      expect(service['selfId']).toBe(userService.user.id);
+    });
+
     it('should subscribe to the NEW_MESSAGE and CHAT_SIGNAL events', () => {
       spyOn(eventService, 'subscribe');
       const eventServiceSubscribeArgs = [];
@@ -82,6 +98,17 @@ describe('InboxService', () => {
       service.init();
 
       expect(http.get).toHaveBeenCalledWith(service['API_URL']);
+    });
+
+    it('should return an array of InboxConversation`s with the correct lastMesage for each', () => {
+      const apiResponse = res.json().conversations;
+
+      service.init();
+
+      service.conversations.map((conv, index) => {
+        expect(conv instanceof InboxConversation).toBe(true);
+        expect(conv.lastMessage.id).toEqual(apiResponse[index].messages[0].id);
+      });
     });
 
     it('should set the number of unreadMessages in messageService', () => {
@@ -424,6 +451,33 @@ describe('InboxService', () => {
 
         expect(service.conversations[0].user.available).toBe(true);
       });
+    });
+  });
+
+  describe('process API response with missing user OR item', () => {
+    let modifiedResponse;
+    beforeEach(() => {
+      modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE);
+    });
+
+    it('should set InboxItemPlaceholder as the item of a InboxConversation, when the API response does not return an item object', () => {
+      delete modifiedResponse.conversations[0].item;
+      const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+      spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+      service.init();
+
+      expect(service.conversations[0].item).toEqual(InboxItemPlaceholder);
+    });
+
+    it('should set InboxUserPlaceholder as the user of a InboxConversation, when the API response does not return a user object', () => {
+      delete modifiedResponse.conversations[0].with_user;
+      const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+      spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+      service.init();
+
+      expect(service.conversations[0].user).toEqual(InboxUserPlaceholder);
     });
   });
 });

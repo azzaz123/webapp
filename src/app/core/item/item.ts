@@ -296,10 +296,10 @@ export interface InboxItemPrice {
 
 export class InboxItem implements Model {
   constructor(private _id: string,
-              private _price?: InboxItemPrice,
-              private _title?: string,
-              private _mainImage?: InboxImage,
-              private _status?: string) {
+              private _price: InboxItemPrice,
+              private _title: string,
+              private _mainImage: InboxImage,
+              private _status: string) {
     this.mapStatusToFlags(this.status);
   }
 
@@ -360,3 +360,5 @@ export class InboxItem implements Model {
     };
   }
 }
+
+export const InboxItemPlaceholder = new InboxItem(null, null, 'unknown', null, INBOX_ITEM_STATUSES.notAvailable);
