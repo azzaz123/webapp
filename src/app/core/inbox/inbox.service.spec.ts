@@ -69,10 +69,10 @@ describe('InboxService', () => {
 
   describe('init', () => {
     const res: Response = new Response(new ResponseOptions({ body: MOCK_INBOX_API_RESPONSE }));
-    let parsedConversaitonsResponse;
+    let parsedConversationsResponse;
     beforeEach(() => {
       spyOn(http, 'get').and.returnValue(Observable.of(res));
-      parsedConversaitonsResponse = service['buildConversations'](JSON.parse(MOCK_INBOX_API_RESPONSE).conversations);
+      parsedConversationsResponse = service['buildConversations'](JSON.parse(MOCK_INBOX_API_RESPONSE).conversations);
     });
 
     it('should set selfId as the of the logged in used', () => {
@@ -138,7 +138,7 @@ describe('InboxService', () => {
 
       service.init();
 
-      expect(persistencyService.updateInbox).toHaveBeenCalledWith(parsedConversaitonsResponse);
+      expect(persistencyService.updateInbox).toHaveBeenCalledWith(parsedConversationsResponse);
     });
 
     it('should emit a EventService.INBOX_LOADED after getInbox returns', () => {
@@ -146,7 +146,7 @@ describe('InboxService', () => {
 
       service.init();
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, parsedConversaitonsResponse);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, parsedConversationsResponse);
     });
 
     it('should emit a EventService.CHAT_CAN_PROCESS_RT with TRUE after getInbox returns', () => {
@@ -165,7 +165,7 @@ describe('InboxService', () => {
         currentLastMessage = conversation.lastMessage;
       });
 
-      it('should update the lastMessage and the modifiedDate wth the new message', () => {
+      it('should update the lastMessage and the modifiedDate with the new message', () => {
         const newMessage = new Message('mockId', conversation.id, 'hola!', 'mockUserId', new Date());
 
         eventService.emit(EventService.NEW_MESSAGE, newMessage);
@@ -174,12 +174,31 @@ describe('InboxService', () => {
         expect(service.conversations[0].modifiedDate).toEqual(newMessage.date);
       });
 
+      it('should bump the conversation to 1st position', () => {
+        const conversationToBump = service.conversations[1];
+        const newMessage = new Message('mockId', conversationToBump.id, 'hola!', 'mockUserId', new Date());
+
+        eventService.emit(EventService.NEW_MESSAGE, newMessage);
+
+        expect(service.conversations.indexOf(conversationToBump)).toBe(0);
+      });
+
       it('should NOT update the lastMessage NOR the modifiedDate if the new message has the same ID as the current lastMessage', () => {
         const newMessage = new Message(currentLastMessage.id, conversation, 'hola!', 'mockUserId');
         eventService.emit(EventService.NEW_MESSAGE, newMessage);
 
         expect(conversation.lastMessage).toEqual(currentLastMessage);
         expect(conversation.modifiedDate).toEqual(currentLastMessage.date);
+      });
+
+      it('should NOT bump the conversation to 1st position if the new message has the same ID as the current lastMessage', () => {
+        const conversationToBump = service.conversations[1];
+        currentLastMessage = conversationToBump.lastMessage.id;
+        const newMessage = new Message(conversationToBump.lastMessage.id, conversationToBump.id, 'hola!', 'mockUserId');
+
+        eventService.emit(EventService.NEW_MESSAGE, newMessage);
+
+        expect(service.conversations.indexOf(conversationToBump)).not.toBe(0);
       });
 
       it('should increment the unread counters by one for each new message not fromSelf', () => {
