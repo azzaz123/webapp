@@ -30,7 +30,6 @@
         
         <div class="message-row" [ngClass]="{'showStatus': conversation.lastMessage.fromSelf && conversation.lastMessage.status }">
           <div class="message-status" [ngClass]="conversation.lastMessage.status" *ngIf="conversation.lastMessage.fromSelf && conversation.lastMessage.status"></div>
-          <p class="message">{{conversation.lastMessage.message}}</p>
         </div>
       </div>
       <div class="unread-counter-column">
