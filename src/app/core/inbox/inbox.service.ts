@@ -154,9 +154,9 @@ export class InboxService {
   private saveMessages(conversations: any) {
     conversations.map(conv => {
       const messages = [];
-      conv.messages.map(msg => messages.push(new Message(msg.id, conv.hash, msg.text, msg.from_user_hash,
-        new Date(msg.timestamp), msg.status, msg.payload)));
-      this.persistencyService.saveMessages(messages);
+      conv.messages.map(msg => messages.push(new InboxMessage(msg.id, conv.hash, msg.text, msg.from_user_hash,
+        msg.from_user_hash === this.selfId, new Date(msg.timestamp), msg.status, msg.payload)));
+      this.persistencyService.saveInboxMessages(messages);
     });
   }
 }

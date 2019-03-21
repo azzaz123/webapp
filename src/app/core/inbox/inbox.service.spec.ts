@@ -123,7 +123,7 @@ describe('InboxService', () => {
     });
 
     it('should save the messages from each conversation via persistencyService', () => {
-      spyOn(persistencyService, 'saveMessages');
+      spyOn(persistencyService, 'saveInboxMessages');
 
       service.init();
 
@@ -131,7 +131,7 @@ describe('InboxService', () => {
         const messages = [];
         conv.messages.map(msg => messages.push(new InboxMessage(msg.id, conv.hash, msg.text, msg.from_user_hash,
           msg.from_user_hash === selfId, new Date(msg.timestamp), msg.status, msg.payload)));
-        expect(persistencyService.saveMessages).toHaveBeenCalledWith(messages);
+        expect(persistencyService.saveInboxMessages).toHaveBeenCalledWith(messages);
       });
     });
 

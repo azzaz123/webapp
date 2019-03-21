@@ -1,6 +1,6 @@
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { Message, phoneRequestState } from '../app/core/message/message';
-import { messageStatus } from '../app/chat/chat-with-inbox/message/inbox-message';
+import { InboxMessage, messageStatus } from '../app/chat/chat-with-inbox/message/inbox-message';
 import { Observable } from 'rxjs';
 
 const currentDate = new Date();
@@ -147,6 +147,9 @@ export class MockedPersistencyService {
   }
 
   public saveMessages(messages: Array<Message> | Message) {
+  }
+
+  public saveInboxMessages(messages: Array<InboxMessage> | InboxMessage) {
   }
 
   public saveMetaInformation(data: any) {

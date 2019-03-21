@@ -2,9 +2,10 @@
 
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PersistencyService } from './persistency.service';
-import { createMessagesArray, MESSAGE_MAIN, MOCK_MESSAGE, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
+import { createMessagesArray, createInboxMessagesArray, MESSAGE_MAIN,
+  MOCK_MESSAGE, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
 import { Message, phoneRequestState } from '../message/message';
-import { messageStatus } from '../../chat/chat-with-inbox/message/inbox-message';
+import { InboxMessage, messageStatus } from '../../chat/chat-with-inbox/message/inbox-message';
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_RESPONSE,
@@ -304,6 +305,40 @@ describe('Service: Persistency', () => {
     }));
 
     it('should call the upsert when a single message is passed', fakeAsync(() => {
+      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve());
+      let saveMessagePromise: any;
+
+      service.saveMessages(MOCK_MESSAGE).subscribe((data: any) => {
+        saveMessagePromise = data;
+      });
+      tick();
+
+      expect((service as any).upsert).toHaveBeenCalled();
+      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
+      expect((service as any).upsert.calls.allArgs()[0][1]).toBe(MOCK_MESSAGE.id);
+    }));
+  });
+
+  describe('saveInboxMessages', () => {
+    it('should save the messages with bulkDocs when an array of InboxMessages is passed', fakeAsync(() => {
+      spyOn(service.messagesDb, 'bulkDocs').and.returnValue(Promise.resolve());
+      spyOn<any>(service, 'buildResponse');
+      const messages: Array<InboxMessage> = createInboxMessagesArray(2);
+      let saveMessagePromise: any;
+
+      service.saveInboxMessages(messages).subscribe((data: any) => {
+        saveMessagePromise = data;
+      });
+      tick();
+
+      expect((service as any).buildResponse).toHaveBeenCalledTimes(2);
+      expect(service.messagesDb.bulkDocs).toHaveBeenCalledWith(
+        messages.map((message: InboxMessage) => {
+          return (service as any).buildResponse(message);
+        }));
+    }));
+
+    it('should call the upsert when a single InboxMessage is passed', fakeAsync(() => {
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve());
       let saveMessagePromise: any;
 
