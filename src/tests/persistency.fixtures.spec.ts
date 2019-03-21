@@ -1,5 +1,6 @@
 import { MESSAGE_MAIN } from './message.fixtures.spec';
-import { Message, messageStatus, phoneRequestState } from '../app/core/message/message';
+import { Message, phoneRequestState } from '../app/core/message/message';
+import { messageStatus } from '../app/chat/chat-with-inbox/message/inbox-message';
 import { Observable } from 'rxjs';
 
 const currentDate = new Date();

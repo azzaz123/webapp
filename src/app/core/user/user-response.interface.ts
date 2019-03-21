@@ -38,12 +38,6 @@ export interface Image {
   };
 }
 
-export interface InboxImage {
-  urls_by_size: {
-    small: string;
-  };
-}
-
 export interface UserLocation {
   id: number;
   approximated_latitude: number;
@@ -57,11 +51,6 @@ export interface UserLocation {
   latitude?: number;
   longitude?: number;
   address?: string;
-}
-
-export interface InboxUserLocation {
-  approximated_latitude: number;
-  approximated_longitude: number;
 }
 
 export interface UserStats {

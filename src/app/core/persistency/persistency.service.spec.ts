@@ -3,7 +3,8 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PersistencyService } from './persistency.service';
 import { createMessagesArray, MESSAGE_MAIN, MOCK_MESSAGE, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
-import { Message, messageStatus, phoneRequestState } from '../message/message';
+import { Message, phoneRequestState } from '../message/message';
+import { messageStatus } from '../../chat/chat-with-inbox/message/inbox-message';
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_RESPONSE,
