@@ -556,10 +556,10 @@ describe('UploadProductComponent', () => {
       expect(appboy.logCustomEvent).toHaveBeenCalledWith('List', { platform: 'web' });
     });
 
-    it('should send the Taplytics `UploadCompleted` event if the extra info fields are enabled', () => {
+    it('should send the Taplytics `UploadCompleted` event if the category allow extra fields', () => {
       spyOn(splitTestService, 'track');
 
-      component.extraInfoEnabled = true;
+      component.uploadForm.value.category_id = '16000';
       component.onUploaded(uploadedEvent);
 
       expect(splitTestService.track).toHaveBeenCalledWith('UploadCompleted');
