@@ -144,7 +144,8 @@ export class InboxService {
       return InboxUserPlaceholder;
     }
     const userBlocked = Boolean(user.available && user.blocked);
-    return new InboxUser(user.hash, user.name, userBlocked, user.available);
+    return new InboxUser(user.hash, user.name, userBlocked, user.available, user.slug, user.image_url, user.response_rate,
+      user.score, user.location);
   }
 
   private buildInboxItem(item: any): InboxItem {
