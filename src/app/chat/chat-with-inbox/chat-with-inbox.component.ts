@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AdService } from '../../core/ad/ad.service';
 import { UserService } from '../../core/user/user.service';
 import { EventService } from '../../core/event/event.service';
+import { InboxConversation } from './inbox/inbox-conversation/inbox-conversation';
 
 @Component({
   selector: 'tsl-chat-with-inbox',

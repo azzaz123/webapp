@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
-import { InboxConversation } from '../conversation/conversation';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { MessageService } from '../message/message.service';
-import { InboxItem, InboxItemPlaceholder } from '../item/item';
-import { InboxUser, InboxUserPlaceholder } from '../user/user';
-import { InboxImage } from '../user/user-response.interface';
+import { InboxItem, InboxItemPlaceholder, InboxImage } from '../../chat/chat-with-inbox/inbox/inbox-item';
+import { InboxUser, InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
 import { FeatureflagService } from '../user/featureflag.service';
-import { Message, messageStatus, statusOrder } from '../message/message';
+import { InboxMessage, messageStatus, statusOrder } from '../../chat/chat-with-inbox/message/inbox-message';
 import { EventService } from '../event/event.service';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { UserService } from '../user/user.service';
@@ -43,7 +42,7 @@ export class InboxService {
 
   public init() {
     this.selfId = this.userService.user.id;
-    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
       this.processNewMessage(message);
     });
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
@@ -70,11 +69,12 @@ export class InboxService {
     this.persistencyService.updateInbox(inboxConversations);
   }
 
-  private processNewMessage(message: Message) {
+  private processNewMessage(message: InboxMessage) {
     const conversation = this.conversations.find(c => c.id === message.thread);
     if (conversation) {
       const newMessage = message;
       if (conversation.lastMessage && conversation.lastMessage.id !== newMessage.id) {
+        this.bumpConversation(conversation);
         conversation.lastMessage = newMessage;
         conversation.modifiedDate = conversation.lastMessage.date;
         if (!message.fromSelf) {
@@ -82,6 +82,14 @@ export class InboxService {
           this.messageService.totalUnreadMessages++;
         }
       }
+    }
+  }
+
+  private bumpConversation(conversation: InboxConversation) {
+    const index: number = this.conversations.indexOf(conversation);
+    if (index > 0) {
+      this.conversations.splice(index, 1);
+      this.conversations.unshift(conversation);
     }
   }
 
@@ -110,14 +118,14 @@ export class InboxService {
 
   private buildConversations(conversations): InboxConversation[] {
     return conversations.map((conv) => {
-      let lastMessage: Message = null;
+      let lastMessage: InboxMessage = null;
       let dateModified: Date = null;
       if (conv.messages && conv.messages.length) {
         const lastMsg = conv.messages[0];
+        const fromSelf = lastMsg.from_user_hash === this.selfId;
         if (lastMsg.type === 'text') {
-        lastMessage = new Message(lastMsg.id, conv.hash, lastMsg.text, lastMsg.from_user_hash, new Date(lastMsg.timestamp),
+        lastMessage = new InboxMessage(lastMsg.id, conv.hash, lastMsg.text, lastMsg.from_user_hash, fromSelf, new Date(lastMsg.timestamp),
         lastMsg.status, lastMsg.payload);
-        lastMessage.fromSelf = lastMessage.from === this.selfId;
         dateModified = new Date(lastMsg.timestamp);
         } else {
           // TODO - handle case when last message is a third voice type and may NOT have the 'text' property
@@ -154,9 +162,9 @@ export class InboxService {
   private saveMessages(conversations: any) {
     conversations.map(conv => {
       const messages = [];
-      conv.messages.map(msg => messages.push(new Message(msg.id, conv.hash, msg.text, msg.from_user_hash,
-        new Date(msg.timestamp), msg.status, msg.payload)));
-      this.persistencyService.saveMessages(messages);
+      conv.messages.map(msg => messages.push(new InboxMessage(msg.id, conv.hash, msg.text, msg.from_user_hash,
+        msg.from_user_hash === this.selfId, new Date(msg.timestamp), msg.status, msg.payload)));
+      this.persistencyService.saveInboxMessages(messages);
     });
   }
 }

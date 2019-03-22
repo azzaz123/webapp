@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Observer, throwError } from 'rxjs';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Message, statusOrder, phoneRequestState } from '../message/message';
+import { Message, phoneRequestState } from '../message/message';
 import {
   StoredConversation,
   StoredMessage,
@@ -20,7 +20,8 @@ import { User } from '../user/user';
 import { EventService } from '../event/event.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TrackingEvent } from '../tracking/tracking-event';
-import { InboxConversation } from '../conversation/conversation';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxMessage, statusOrder } from '../../chat/chat-with-inbox/message/inbox-message';
 
 @Injectable()
 export class PersistencyService {
@@ -206,17 +207,36 @@ export class PersistencyService {
     }));
   }
 
-  private buildResponse(message: Message): StoredMessage {
+  private buildResponse(message: Message | InboxMessage): StoredMessage {
+    let text: string;
+    message instanceof Message ? text = message.message : text = message.text;
     return {
       _id: message.id,
       date: message.date,
-      message: message.message,
+      message: text,
       status: message.status,
       from: message.from,
       conversationId: message.thread,
       payload: message.payload,
       phoneRequest: message.phoneRequest
     };
+  }
+
+  public saveInboxMessages(messages: Array<InboxMessage> | InboxMessage): Observable<any> {
+    if (Array.isArray(messages)) {
+      const messagesToSave: StoredMessage[] = messages.map((message: InboxMessage) => {
+        return this.buildResponse(message);
+      });
+      return Observable.fromPromise(this.messagesDb.bulkDocs(
+        messagesToSave
+      ));
+    } else {
+      return Observable.fromPromise(
+        this.upsert(this.messagesDb, messages.id, () => {
+          return this.buildResponse(messages);
+        })
+      );
+    }
   }
 
   public saveMessages(messages: Array<Message> | Message): Observable<any> {

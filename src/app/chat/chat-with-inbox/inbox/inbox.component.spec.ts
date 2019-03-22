@@ -3,7 +3,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { InboxComponent } from './inbox.component';
-import { InboxConversationComponent } from '../inbox-conversation/inbox-conversation.component';
+import { InboxConversationComponent } from '../inbox/inbox-conversation/inbox-conversation.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { HttpService } from '../../../core/http/http.service';
