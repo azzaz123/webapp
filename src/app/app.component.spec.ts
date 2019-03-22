@@ -382,6 +382,14 @@ describe('App', () => {
         });
       });
 
+      it('should init the old chat (call conversationService.init) when getInboxFeatureFlag throws an error', () => {
+        spyOn(inboxService, 'getInboxFeatureFlag').and.returnValue(Observable.throw(false));
+        component.ngOnInit();
+        emitSuccessChatEvents();
+
+        expect(conversationService.init).toHaveBeenCalled();
+      });
+
       describe('when getInboxFeatureFlag return true', () => {
         beforeEach(() => {
           spyOn(inboxService, 'getInboxFeatureFlag').and.returnValue(Observable.of(true));
