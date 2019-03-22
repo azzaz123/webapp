@@ -161,10 +161,10 @@ describe('UploadProductComponent', () => {
         },
         extra_info: {
           object_type: {
-            id: ''
+            id: null
           },
-          brand: '',
-          model: ''
+          brand: null,
+          model: null
         }
       });
     });
@@ -347,7 +347,7 @@ describe('UploadProductComponent', () => {
       expect(component.uploadForm.valid).toBeFalsy();
     });
 
-    it('should reset the extra_info object if the selected category doesn`t accept brand and model', () => {
+    it('should delete the extra_info object if the selected category doesn`t accept brand and model', () => {
       component.uploadForm.get('category_id').patchValue('12463');
       component.uploadForm.get('title').patchValue('test');
       component.uploadForm.get('description').patchValue('test');
@@ -362,7 +362,7 @@ describe('UploadProductComponent', () => {
 
       component.onSubmit();
 
-      expect(component.uploadForm.value.extra_info).toEqual({});
+      expect(component.uploadForm.value.extra_info).toBeUndefined();
     });
 
   });
@@ -500,13 +500,13 @@ describe('UploadProductComponent', () => {
         component.selectBrandOrModel({ brand: 'Apple' }, null);
 
         expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
-        expect(component.uploadForm.value.extra_info.model).toEqual('');
+        expect(component.uploadForm.value.extra_info.model).toBe(null);
       });
 
       it('should select the model', () => {
         component.selectBrandOrModel({ model: 'iPhone XSX' }, null);
 
-        expect(component.uploadForm.value.extra_info.brand).toEqual('');
+        expect(component.uploadForm.value.extra_info.brand).toBe(null);
         expect(component.uploadForm.value.extra_info.model).toEqual('iPhone XSX');
       });
     });
@@ -640,10 +640,10 @@ describe('UploadProductComponent', () => {
         },
         extra_info: {
           object_type: {
-            id: ''
+            id: null
           },
-          brand: '',
-          model: ''
+          brand: null,
+          model: null
         }
       });
     });
