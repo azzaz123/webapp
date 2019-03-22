@@ -22,7 +22,7 @@ import { EventService } from '../event/event.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
-import { InboxConversation } from '../conversation/conversation';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 
 let service: PersistencyService;
