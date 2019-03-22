@@ -75,6 +75,7 @@ export class InboxService {
     if (conversation) {
       const newMessage = message;
       if (conversation.lastMessage && conversation.lastMessage.id !== newMessage.id) {
+        this.bumpConversation(conversation);
         conversation.lastMessage = newMessage;
         conversation.modifiedDate = conversation.lastMessage.date;
         if (!message.fromSelf) {
@@ -82,6 +83,14 @@ export class InboxService {
           this.messageService.totalUnreadMessages++;
         }
       }
+    }
+  }
+
+  private bumpConversation(conversation: InboxConversation) {
+    const index: number = this.conversations.indexOf(conversation);
+    if (index > 0) {
+      this.conversations.splice(index, 1);
+      this.conversations.unshift(conversation);
     }
   }
 
