@@ -26,6 +26,7 @@ import { InboxComponent } from './chat-with-inbox/inbox/inbox.component';
 import { InboxConversationComponent } from './chat-with-inbox/inbox/inbox-conversation/inbox-conversation.component';
 import { ChatWithInboxComponent } from './chat-with-inbox/chat-with-inbox.component';
 import { ChatWithArchiveComponent } from './chat-with-archive/chat-with-archive.component';
+import { CurrentConversationComponent } from './chat-with-inbox/current-conversation/current-conversation.component';
 
 @NgModule({
   imports: [
@@ -60,7 +61,8 @@ import { ChatWithArchiveComponent } from './chat-with-archive/chat-with-archive.
     InboxComponent,
     InboxConversationComponent,
     ChatWithInboxComponent,
-    ChatWithArchiveComponent
+    ChatWithArchiveComponent,
+    CurrentConversationComponent,
   ],
   entryComponents: [
     ArchiveConversationComponent,
