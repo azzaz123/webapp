@@ -1,15 +1,16 @@
 import * as _ from 'lodash';
-import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
 import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
+import { ConversationService } from '../../../core/inbox/conversation.service';
 
 @Component({
   selector: 'tsl-inbox',
   templateUrl: './inbox.component.html',
   styleUrls: ['./inbox.component.scss']
 })
-export class InboxComponent implements OnInit {
+export class InboxComponent implements OnInit, OnDestroy  {
   @Output() public loaded = new EventEmitter<any>();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
@@ -17,9 +18,11 @@ export class InboxComponent implements OnInit {
   public showNewMessagesToast = false;
   private _loading = false;
   private conversationElementHeight = 100;
+  private conversation: InboxConversation;
 
   constructor(private inboxService: InboxService,
-    private eventService: EventService) {}
+    private eventService: EventService,
+    private conversationService: ConversationService) {}
 
   set loading(value: boolean) {
     this._loading = value;
@@ -48,6 +51,10 @@ export class InboxComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.unselectCurrentConversation();
+  }
+
   private bindNewMessageToast() {
     this.eventService.subscribe(EventService.NEW_MESSAGE, () => {
       this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.75;
@@ -60,5 +67,18 @@ export class InboxComponent implements OnInit {
 
   public scrollToTop() {
     this.scrollPanel.nativeElement.scrollTop = 0;
+  }
+
+  public setCurrentConversation(newCurrentConversation: InboxConversation) {
+    this.unselectCurrentConversation();
+    this.conversation = newCurrentConversation;
+    newCurrentConversation.active = true;
+    this.conversationService.openConversation(newCurrentConversation);
+  }
+
+  private unselectCurrentConversation() {
+    if (this.conversation) {
+      this.conversation.active = false;
+    }
   }
 }

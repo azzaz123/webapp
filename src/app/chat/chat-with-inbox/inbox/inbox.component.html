@@ -17,7 +17,10 @@
     <span i18n>New messages</span>
   </button>
   <div id="conversations" [hidden]="loading"> 
-    <tsl-inbox-conversation *ngFor="let conversation of conversations" [conversation]="conversation" [ngClass]="{'active': conversation?.active}"></tsl-inbox-conversation>
+    <tsl-inbox-conversation *ngFor="let conversation of conversations"
+      [conversation]="conversation"
+      [ngClass]="{'active': conversation?.active}"
+      (click)="setCurrentConversation(conversation)"></tsl-inbox-conversation>
   </div>
   <div id="loader" [hidden]="!loading">
     <mat-icon svgIcon="conversations-mock"></mat-icon>

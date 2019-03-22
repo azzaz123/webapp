@@ -20,6 +20,7 @@ export class EventService {
   public static CONNECTION_RESTORED = 'connectionRestored';
   public static CHAT_RT_CONNECTED = 'chatRealTimeConnected';
   public static CHAT_RT_DISCONNECTED = 'chatRealTimeDisconnected';
+  public static CURRENT_CONVERSATION_SET = 'currentConversationSet';
   public static CONVERSATION_ARCHIVED = 'conversationArchived';
   public static CONVERSATION_UNARCHIVED = 'conversationUnarchived';
   public static CONV_WITH_PHONE_CREATED = 'conversationWithPhoneCreated';
