@@ -7,15 +7,15 @@ export const messageStatus = {
 
 export const statusOrder = [messageStatus.PENDING, messageStatus.SENT, messageStatus.RECEIVED, messageStatus.READ];
 
-// export const phoneRequestState = {
-//     pending: 'pending',
-//     answered: 'answered'
-// };
+export const phoneRequestState = {
+    pending: 'pending',
+    answered: 'answered'
+};
 
-// export const phoneMethod = {
-//     chatMessage: 'bubble',
-//     popUp: 'qa'
-// };
+export const phoneMethod = {
+    chatMessage: 'bubble',
+    popUp: 'qa'
+};
 
 export class InboxMessage {
     constructor(private _id: string,
