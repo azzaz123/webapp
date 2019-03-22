@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { InboxConversation } from '../../../core/conversation/conversation';
-import { INBOX_ITEM_STATUSES } from '../../../core/item/item';
+import { InboxConversation } from './inbox-conversation';
+import { INBOX_ITEM_STATUSES } from '../inbox-item';
 
 @Component({
   selector: 'tsl-inbox-conversation',

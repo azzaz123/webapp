@@ -13,13 +13,13 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
 import { FeatureflagService } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
-import { Message, messageStatus } from '../message/message';
+import { InboxMessage, messageStatus } from '../../chat/chat-with-inbox/message/inbox-message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
-import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../item/item';
-import { InboxConversation } from '../conversation/conversation';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-item';
 import { UserService } from '../user/user.service';
 import { MockedUserService } from '../../../tests/user.fixtures.spec';
-import { InboxUserPlaceholder } from '../user/user';
+import { InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
 
 let service: InboxService;
 let http: HttpService;
@@ -28,6 +28,7 @@ let messageService: MessageService;
 let featureflagService: FeatureflagService;
 let eventService: EventService;
 let userService: UserService;
+let selfId: string;
 
 describe('InboxService', () => {
   beforeEach(() => {
@@ -55,6 +56,7 @@ describe('InboxService', () => {
     featureflagService = TestBed.get(FeatureflagService);
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);
+    selfId = userService.user.id;
   });
 
   describe('getInboxFeatureFlag', () => {
@@ -121,15 +123,15 @@ describe('InboxService', () => {
     });
 
     it('should save the messages from each conversation via persistencyService', () => {
-      spyOn(persistencyService, 'saveMessages');
+      spyOn(persistencyService, 'saveInboxMessages');
 
       service.init();
 
       res.json().conversations.map(conv => {
         const messages = [];
-        conv.messages.map(msg => messages.push(new Message(msg.id, conv.hash, msg.text, msg.from_user_hash,
-          new Date(msg.timestamp), msg.status, msg.payload)));
-        expect(persistencyService.saveMessages).toHaveBeenCalledWith(messages);
+        conv.messages.map(msg => messages.push(new InboxMessage(msg.id, conv.hash, msg.text, msg.from_user_hash,
+          msg.from_user_hash === selfId, new Date(msg.timestamp), msg.status, msg.payload)));
+        expect(persistencyService.saveInboxMessages).toHaveBeenCalledWith(messages);
       });
     });
 
@@ -165,8 +167,9 @@ describe('InboxService', () => {
         currentLastMessage = conversation.lastMessage;
       });
 
-      it('should update the lastMessage and the modifiedDate with the new message', () => {
-        const newMessage = new Message('mockId', conversation.id, 'hola!', 'mockUserId', new Date());
+      it('should update the lastMessage and the modifiedDate wth the new message', () => {
+        const newMessage = new InboxMessage('mockId', conversation.id, 'hola!', 'mockUserId', true,
+          new Date(), messageStatus.SENT);
 
         eventService.emit(EventService.NEW_MESSAGE, newMessage);
 
@@ -176,7 +179,8 @@ describe('InboxService', () => {
 
       it('should bump the conversation to 1st position', () => {
         const conversationToBump = service.conversations[1];
-        const newMessage = new Message('mockId', conversationToBump.id, 'hola!', 'mockUserId', new Date());
+        const newMessage = new InboxMessage('mockId', conversationToBump.id, 'hola!', 'mockUserId', true,
+        new Date(), messageStatus.SENT);
 
         eventService.emit(EventService.NEW_MESSAGE, newMessage);
 
@@ -184,7 +188,8 @@ describe('InboxService', () => {
       });
 
       it('should NOT update the lastMessage NOR the modifiedDate if the new message has the same ID as the current lastMessage', () => {
-        const newMessage = new Message(currentLastMessage.id, conversation, 'hola!', 'mockUserId');
+        const newMessage = new InboxMessage(currentLastMessage.id, conversation.id, 'hola!', 'mockUserId', true,
+          new Date(), messageStatus.RECEIVED);
         eventService.emit(EventService.NEW_MESSAGE, newMessage);
 
         expect(conversation.lastMessage).toEqual(currentLastMessage);
@@ -194,7 +199,8 @@ describe('InboxService', () => {
       it('should NOT bump the conversation to 1st position if the new message has the same ID as the current lastMessage', () => {
         const conversationToBump = service.conversations[1];
         currentLastMessage = conversationToBump.lastMessage.id;
-        const newMessage = new Message(conversationToBump.lastMessage.id, conversationToBump.id, 'hola!', 'mockUserId');
+        const newMessage = new InboxMessage(conversationToBump.lastMessage.id, conversationToBump.id, 'hola!', 'mockUserId', true,
+        new Date(), messageStatus.SENT);
 
         eventService.emit(EventService.NEW_MESSAGE, newMessage);
 
@@ -205,8 +211,8 @@ describe('InboxService', () => {
         const unreadCounterBefore = service.conversations[0].unreadCounter;
         const count = 3;
         for (let i = 0; i < count; i++) {
-          const msg = new Message('mockId' + i, conversation.id, 'hola!', 'mockUserId');
-          msg.fromSelf = false;
+          const msg = new InboxMessage('mockId' + i, conversation.id, 'hola!', 'mockUserId', false, new Date(),
+            messageStatus.SENT);
           eventService.emit(EventService.NEW_MESSAGE, msg);
         }
 
@@ -216,8 +222,8 @@ describe('InboxService', () => {
 
       it('should NOT increase the unread counts if the new message has the same ID as the current lastMessage', () => {
         const unreadCounterBefore = service.conversations[0].unreadCounter;
-        const newMessage = new Message(currentLastMessage.id, conversation.id, 'hola!', 'mockUserId');
-        newMessage.fromSelf = false;
+        const newMessage = new InboxMessage(currentLastMessage.id, conversation.id, 'hola!', 'mockUserId', false, new Date(),
+          messageStatus.READ);
 
         eventService.emit(EventService.NEW_MESSAGE, newMessage);
 
@@ -227,8 +233,7 @@ describe('InboxService', () => {
 
       it('should only increase the unread counters for new messages NOT fromSelf and with unique IDs', () => {
         const unreadCounterBefore = service.conversations[0].unreadCounter;
-        const newMessage = new Message('mockId', conversation.id, 'hola!', 'mockUserId');
-        newMessage.fromSelf = false;
+        const newMessage = new InboxMessage('mockId', conversation.id, 'hola!', 'mockUserId', false, new Date(), messageStatus.SENT);
 
         eventService.emit(EventService.NEW_MESSAGE, newMessage);
         eventService.emit(EventService.NEW_MESSAGE, newMessage);
@@ -239,8 +244,7 @@ describe('InboxService', () => {
       });
 
       it('should NOT increase conversation.unreadCount NOR messageService.totalUnreadMessages for new messages fromSelf', () => {
-        const newMessage = new Message('mockId', conversation, 'hola!', 'mockUserId');
-        newMessage.fromSelf = true;
+        const newMessage = new InboxMessage('mockId', conversation, 'hola!', 'mockUserId', true, new Date(), messageStatus.SENT);
         const unreadCounterBefore = service.conversations[0].unreadCounter;
 
         eventService.emit(EventService.NEW_MESSAGE, newMessage);

@@ -1,7 +1,7 @@
-import { InboxConversation } from '../app/core/conversation/conversation';
-import { Message } from '../app/core/message/message';
-import { InboxUser } from '../app/core/user/user';
-import { InboxItem, INBOX_ITEM_STATUSES } from '../app/core/item/item';
+import { InboxConversation } from '../app/chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxUser } from '../app/chat/chat-with-inbox/inbox/inbox-user';
+import { InboxItem, INBOX_ITEM_STATUSES } from '../app/chat/chat-with-inbox/inbox/inbox-item';
+import { InboxMessage } from '../app/chat/chat-with-inbox/message/inbox-message';
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { OTHER_USER_ID } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';
@@ -138,15 +138,15 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
     userId: string = OTHER_USER_ID,
     date: Date = INBOX_CONVERSATION_DATE): InboxConversation => {
       const tempMsg = MOCK_INBOX_CONVERSATION.messages[0];
-      const message = new Message(
+      const message = new InboxMessage(
           tempMsg.id,
           MOCK_INBOX_CONVERSATION.hash,
           tempMsg.text,
           tempMsg.from,
+          tempMsg.from === 'self',
           new Date(tempMsg.timestamp),
           tempMsg.status,
           tempMsg.payload);
-      message.fromSelf = tempMsg.from === 'self';
 
     mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, INBOX_ITEM_STATUSES.published);
     mockInboxUser = new InboxUser(userId, 'Jodn D,', false, true);
