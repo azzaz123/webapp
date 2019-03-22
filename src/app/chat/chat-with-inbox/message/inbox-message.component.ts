@@ -11,10 +11,7 @@ import { ConversationService } from '../../../core/inbox/conversation.service';
 export class InboxMessageComponent implements OnInit {
 
   @Input() message: InboxMessage;
-  @Input() showUserInfo: boolean;
-  // @Input() callsPanel: boolean;
   @Input() currentConversation: CurrentConversation;
-  // public userWebSlug: string;
   // public phoneRequestState = phoneRequestState;
 
   constructor(@Inject('SUBDOMAIN')
@@ -23,7 +20,6 @@ export class InboxMessageComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.userWebSlug = this.message.user ? this.message.user.getUrl(this.subdomain) : null;
   }
 
   openDialog() {
