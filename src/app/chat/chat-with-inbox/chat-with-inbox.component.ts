@@ -3,6 +3,7 @@ import { AdService } from '../../core/ad/ad.service';
 import { UserService } from '../../core/user/user.service';
 import { EventService } from '../../core/event/event.service';
 import { InboxConversation } from './inbox/inbox-conversation/inbox-conversation';
+import { CurrentConversation } from './current-conversation/current-conversation';
 
 @Component({
   selector: 'tsl-chat-with-inbox',
@@ -17,6 +18,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
   public firstLoad: boolean;
   public userWebSlug: string;
   public isProfessional: boolean;
+  public currentConversation: InboxConversation;
 
   constructor(public userService: UserService,
     private eventService: EventService,
@@ -33,6 +35,9 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
     });
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.connectionError = false;
+    });
+    this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation: CurrentConversation) => {
+      this.currentConversation = conversation;
     });
   }
 

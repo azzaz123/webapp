@@ -29,6 +29,7 @@ export class InboxConversationComponent implements OnChanges {
     this.cannotChat = this.conversation.user.blocked
     || !this.conversation.user.available
     || this.conversation.item.status === INBOX_ITEM_STATUSES.notAvailable;
+    this.conversation.cannotChat = this.cannotChat;
   }
 
 
