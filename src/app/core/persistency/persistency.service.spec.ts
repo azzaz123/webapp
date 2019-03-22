@@ -554,7 +554,7 @@ describe('Service: Persistency', () => {
     beforeEach(() => {
       spyOn(userService, 'user').and.returnValue(Observable.of(MOCK_USER));
       spyOn(service.inboxDb, 'destroy').and.returnValue(Promise.resolve({}));
-    });
+      });
 
     it('should destroy the existing inboxDb', () => {
       service.updateStoredInbox(inboxConversations);
@@ -569,20 +569,6 @@ describe('Service: Persistency', () => {
       expect(service.inboxDb).toBeTruthy();
     }));
 
-    xit('should store the new inbox conversations', fakeAsync(() => {
-      const newInboxConversations = createInboxConversationsArray(5);
-      let expectedResult;
-
-      service.updateStoredInbox(newInboxConversations).subscribe(() => {
-        console.log(newInboxConversations);
-        service.getStoredInbox().subscribe(result => {
-          console.log('result', result);
-          expectedResult = result;
-          expect(expectedResult).toEqual(newInboxConversations);
-        });
-        });
-        tick();
-    }));
   });
 
   describe('getStoredInbox', () => {
