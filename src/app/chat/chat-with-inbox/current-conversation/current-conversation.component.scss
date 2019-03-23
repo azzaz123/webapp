@@ -13,8 +13,9 @@
 
 
 .messages-panel-container {
-  max-height: calc(100vh - #{$chat-topbar-height + $chat-input + $topbar-height});
-  display: block;
+  height: calc(100vh - #{$chat-topbar-height + $chat-input + $topbar-height});
+  display: flex;
+  flex-direction: column-reverse;
   overflow-y: scroll;
   padding: $spacing-ml;
   width: 100%;
