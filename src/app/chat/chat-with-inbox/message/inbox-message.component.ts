@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { InboxMessage, phoneRequestState } from './inbox-message';
-import { CurrentConversation } from '../current-conversation/current-conversation';
 import { ConversationService } from '../../../core/inbox/conversation.service';
+import { InboxConversation } from '../inbox/inbox-conversation/inbox-conversation';
 
 @Component({
   selector: 'tsl-inbox-message',
@@ -11,7 +11,7 @@ import { ConversationService } from '../../../core/inbox/conversation.service';
 export class InboxMessageComponent implements OnInit {
 
   @Input() message: InboxMessage;
-  @Input() currentConversation: CurrentConversation;
+  @Input() currentConversation: InboxConversation;
   // public phoneRequestState = phoneRequestState;
 
   constructor(@Inject('SUBDOMAIN')
