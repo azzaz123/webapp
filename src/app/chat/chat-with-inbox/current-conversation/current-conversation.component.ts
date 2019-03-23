@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { CurrentConversation } from './current-conversation';
 import { InboxMessage, phoneRequestState } from '../message/inbox-message';
+import { InboxConversation } from '../inbox/inbox-conversation/inbox-conversation';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -9,7 +9,7 @@ import { InboxMessage, phoneRequestState } from '../message/inbox-message';
 })
 export class CurrentConversationComponent implements OnInit, OnChanges {
 
-  @Input() currentConversation: CurrentConversation;
+  @Input() currentConversation: InboxConversation;
 
   constructor() { }
 
