@@ -10,6 +10,7 @@ import { FeatureflagService } from '../user/featureflag.service';
 import { InboxMessage, messageStatus, statusOrder } from '../../chat/chat-with-inbox/message/inbox-message';
 import { EventService } from '../event/event.service';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { Message } from '../message/message';
 import { UserService } from '../user/user.service';
 import { Message } from '../message/message';
 
