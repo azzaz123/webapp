@@ -10,6 +10,7 @@ import { FeatureflagService } from '../user/featureflag.service';
 import { InboxMessage, messageStatus, statusOrder } from '../../chat/chat-with-inbox/message/inbox-message';
 import { EventService } from '../event/event.service';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { Message } from '../message/message';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -42,8 +43,10 @@ export class InboxService {
 
   public init() {
     this.selfId = this.userService.user.id;
-    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
-      this.processNewMessage(message);
+    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+      const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from,
+        message.fromSelf, message.date, message.status, message.payload, message.phoneRequest);
+      this.processNewMessage(inboxMessage);
     });
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processChatSignal(signal);
