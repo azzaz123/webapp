@@ -23,13 +23,10 @@ export class InboxConversationComponent implements OnChanges {
 
   constructor() { }
 
-  public cannotChat = false;
-
   ngOnChanges() {
-    this.cannotChat = this.conversation.user.blocked
+    this.conversation.cannotChat  = this.conversation.user.blocked
     || !this.conversation.user.available
     || this.conversation.item.status === INBOX_ITEM_STATUSES.notAvailable;
-    this.conversation.cannotChat = this.cannotChat;
   }
 
 
