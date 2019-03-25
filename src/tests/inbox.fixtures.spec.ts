@@ -110,7 +110,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
                 "image_url": "http://cdn-beta.wallapop.com/images/13/16/sp/__/c13p71883041/i413962112.jpg?pictureSize=W640",
                 "response_rate" : "unknown",
                 "score" : 100,
-                "blocked": false
+                "blocked": false,
                 "available": false,
                 "location" : {
                     "latitude": 19.39266063798759,
@@ -146,10 +146,9 @@ export const MOCK_INBOX_API_RESPONSE = `{
     ]
   }`;
   export const MOCK_INBOX_CONVERSATION = JSON.parse(MOCK_INBOX_API_RESPONSE).conversations[0];
-  console.log(MOCK_INBOX_CONVERSATION);
   export const INBOX_CONVERSATION_DATE: Date = new Date();
 
-const apiConvUser = MOCK_INBOX_CONVERSATION.conversations[0].with_user;
+const apiConvUser = MOCK_INBOX_CONVERSATION.with_user;
 let mockInboxUser = new InboxUser(OTHER_USER_ID, apiConvUser.name, apiConvUser.blocked, apiConvUser.available, apiConvUser.slug,
     apiConvUser.avatar_url, apiConvUser.response_rate, apiConvUser.scoring);
 let mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, INBOX_ITEM_STATUSES.published);
