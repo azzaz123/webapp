@@ -174,6 +174,9 @@ export class MockedPersistencyService {
   public updateMessageStatus(messageId: string, newStatus: string) {
   }
 
+  public updateInboxMessageStatus(messageId: string, newStatus: string) {
+  }
+
   public findMessage(messageId: string) {
     return Observable.of({});
   }
