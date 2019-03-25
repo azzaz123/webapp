@@ -12,6 +12,7 @@ import { EventService } from '../../core/event/event.service';
 import { UserService } from '../../core/user/user.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 
 class MockUserService {
   public isProfessional() {
@@ -52,6 +53,7 @@ describe('Component: ChatWithInboxComponent', () => {
     eventService = TestBed.get(EventService);
     adService = TestBed.get(AdService);
   });
+
   it('should set the conversationsLoaded value to FALSE when event.loaded is false', () => {
     component.onLoaded({
       loaded: false,
@@ -101,6 +103,16 @@ describe('Component: ChatWithInboxComponent', () => {
 
       expect(component.connectionError).toBe(true);
       expect(component.conversationsLoaded).toBe(true);
+    });
+
+    it('should set currentConversation when a EventService.CURRENT_CONVERSATION_SET is emitted', () => {
+      const mockConversation = CREATE_MOCK_INBOX_CONVERSATION();
+      component.ngOnInit();
+
+
+      eventService.emit(EventService.CURRENT_CONVERSATION_SET, mockConversation);
+
+      expect(component.currentConversation).toEqual(mockConversation);
     });
   });
 
