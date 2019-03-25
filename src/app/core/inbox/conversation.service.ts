@@ -9,10 +9,10 @@ import { EventService } from '../event/event.service';
 export class ConversationService {
   constructor(
     private realTime: RealTimeService,
-    private event: EventService) { }
+    private eventService: EventService) { }
 
   public openConversation(conversation: InboxConversation) {
-    this.event.emit(EventService.CURRENT_CONVERSATION_SET, conversation);
+    this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, conversation);
     if (conversation.unreadCounter) {
       this.realTime.sendRead(conversation.user.id, conversation.id);
     }
