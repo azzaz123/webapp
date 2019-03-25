@@ -11,16 +11,18 @@ import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { InboxService } from '../../../core/inbox/inbox.service';
-import { createInboxConversationsArray } from '../../../../tests/inbox.fixtures.spec';
+import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { EventService } from '../../../core/event/event.service';
+import { ConversationService } from '../../../core/inbox/conversation.service';
+import { InboxConversation } from './inbox-conversation/inbox-conversation';
 
 
 describe('Component: ConversationsPanel', () => {
-
   let component: InboxComponent;
   let inboxService: InboxService;
   let http: HttpService;
   let eventService: EventService;
+  let conversationService: ConversationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,6 +37,9 @@ describe('Component: ConversationsPanel', () => {
         ...TEST_HTTP_PROVIDERS,
         {provide: TrackingService, useClass: MockTrackingService},
         {provide: InboxService, useValue: {}},
+        {provide: ConversationService, useValue: {
+          openConversation() {}
+        }}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
@@ -42,6 +47,7 @@ describe('Component: ConversationsPanel', () => {
     http = TestBed.get(HttpService);
     inboxService = TestBed.get(InboxService);
     eventService = TestBed.get(EventService);
+    conversationService = TestBed.get(ConversationService);
   });
 
 
@@ -201,6 +207,49 @@ describe('Component: ConversationsPanel', () => {
         expect(component.showNewMessagesToast).toBe(false);
       });
     });
+  });
+
+  describe('setCurrentConversation', () => {
+    let previouslySelectedConversation: InboxConversation;
+    let newlySelectedConversation: InboxConversation;
+
+    beforeEach(() => {
+      previouslySelectedConversation = CREATE_MOCK_INBOX_CONVERSATION('old-conv-id');
+      newlySelectedConversation = CREATE_MOCK_INBOX_CONVERSATION('some-new-conv-id');
+    });
+
+    it('should set active to FALSE to the currently selected conversation, if one exists', () => {
+      component.setCurrentConversation(previouslySelectedConversation);
+      expect(previouslySelectedConversation.active).toBe(true);
+
+      component.setCurrentConversation(newlySelectedConversation);
+
+      expect(previouslySelectedConversation.active).toBe(false);
+    });
+
+    it('should set component.conversation as the new conversation and set active to TRUE', () => {
+      component.setCurrentConversation(newlySelectedConversation);
+
+      expect(component['conversation']).toEqual(newlySelectedConversation);
+      expect(newlySelectedConversation.active).toBe(true);
+    });
+
+    it('should should call conversationService.openConversation with the new conversation', () => {
+      spyOn(conversationService, 'openConversation').and.callThrough();
+
+      component.setCurrentConversation(newlySelectedConversation);
+
+      expect(conversationService.openConversation).toHaveBeenCalledWith(newlySelectedConversation);
+    });
+  });
+
+  it('should set conversation.active to FALSE if a conversation exists when ngOnDestroy is called', () => {
+    const previouslySelectedConversation = CREATE_MOCK_INBOX_CONVERSATION();
+    component.setCurrentConversation(previouslySelectedConversation);
+
+    component.ngOnDestroy();
+
+    expect(previouslySelectedConversation.active).toBe(false);
   });
 });
 
