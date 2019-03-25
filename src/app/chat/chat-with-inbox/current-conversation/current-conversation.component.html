@@ -1,5 +1,5 @@
 <div id="messaging">
-    <div id="top-bar" [ngClass]="{professional: isProfessional}">
+    <div id="top-bar">
         <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
             target="_blank" class="user-avatar">
             <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
