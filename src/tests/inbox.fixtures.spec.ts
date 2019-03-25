@@ -152,30 +152,28 @@ const apiConvUser = MOCK_INBOX_CONVERSATION.conversations[0].with_user;
 let mockInboxUser = new InboxUser(OTHER_USER_ID, apiConvUser.name, apiConvUser.blocked, apiConvUser.available, apiConvUser.slug,
     apiConvUser.avatar_url, apiConvUser.response_rate, apiConvUser.scoring);
 let mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, INBOX_ITEM_STATUSES.published);
+const mockInboxMessages = MOCK_INBOX_CONVERSATION.messages.filter(m => m.type === 'text')
+.map(m => new InboxMessage(m.id, MOCK_INBOX_CONVERSATION.hash, m.text,
+  m.from_user_id, m.from_user_hash === this.selfId, new Date(m.timestamp), m.status, m.payload));
 
 export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
     id: string = CONVERSATION_ID,
     userId: string = OTHER_USER_ID,
     date: Date = INBOX_CONVERSATION_DATE): InboxConversation => {
-      const tempMsg = MOCK_INBOX_CONVERSATION.messages[0];
-      const message = new InboxMessage(
-          tempMsg.id,
-          MOCK_INBOX_CONVERSATION.hash,
-          tempMsg.text,
-          tempMsg.from,
-          tempMsg.from === 'self',
-          new Date(tempMsg.timestamp),
-          tempMsg.status,
-          tempMsg.payload);
+        const inboxMessages = MOCK_INBOX_CONVERSATION.messages.filter(m => m.type === 'text')
+        .map(m => new InboxMessage(m.id, MOCK_INBOX_CONVERSATION.hash, m.text, m.from_user_id,
+            m.from_user_hash === this.selfId, new Date(m.timestamp), m.status, m.payload));
 
     mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, INBOX_ITEM_STATUSES.published);
     mockInboxUser = new InboxUser(userId, apiConvUser.name, apiConvUser.blocked, apiConvUser.available, apiConvUser.slug,
         apiConvUser.avatar_url, apiConvUser.response_rate, apiConvUser.scoring);
 
-      return new InboxConversation(id, date, mockInboxUser, mockInboxItem, false, 0, message);
+      return new InboxConversation(id, date, mockInboxUser, mockInboxItem, inboxMessages, false, 0, inboxMessages[0]);
 };
+
+
 export const SECOND_MOCK_INBOX_CONVERSATION: InboxConversation = new InboxConversation('secondId', INBOX_CONVERSATION_DATE,
-mockInboxUser, mockInboxItem, false);
+mockInboxUser,  mockInboxItem, mockInboxMessages, false, 0, mockInboxMessages[0]);
 export const MOCKED_INBOX_CONVERSATIONS: InboxConversation[] = [CREATE_MOCK_INBOX_CONVERSATION(), SECOND_MOCK_INBOX_CONVERSATION];
 export const NOT_FOUND_INBOX_CONVERSATION_ID = 'notFound';
 export const MOCK_NOT_FOUND_INBOX_CONVERSATION: InboxConversation = new InboxConversation(
@@ -183,6 +181,7 @@ export const MOCK_NOT_FOUND_INBOX_CONVERSATION: InboxConversation = new InboxCon
   INBOX_CONVERSATION_DATE,
   mockInboxUser,
   mockInboxItem,
+  mockInboxMessages,
   false);
 
 export function createInboxConversationsArray(total: number, conversationsId?: string) {
