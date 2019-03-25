@@ -56,42 +56,42 @@ describe('Component: Conversation', () => {
   });
 
   describe('cannotChat', () => {
-    it('should set cannotChat to TRUE when the conversation user is not available', () => {
+    it('should set conversation.cannotChat to TRUE when the conversation user is not available', () => {
       component.conversation.user.available = false;
-      expect(component.cannotChat).toBe(false);
+      expect(component.conversation.cannotChat).toBe(false);
 
       component.ngOnChanges();
 
-      expect(component.cannotChat).toBe(true);
+      expect(component.conversation.cannotChat).toBe(true);
     });
 
-    it('should set cannotChat to TRUE when the conversation user is blocked', () => {
+    it('should set conversation.cannotChat to TRUE when the conversation user is blocked', () => {
       component.conversation.user.blocked = true;
-      expect(component.cannotChat).toBe(false);
+      expect(component.conversation.cannotChat).toBe(false);
 
       component.ngOnChanges();
 
-      expect(component.cannotChat).toBe(true);
+      expect(component.conversation.cannotChat).toBe(true);
     });
 
-    it('should set cannotChat to TRUE when the conversation item is not available', () => {
+    it('should set conversation.cannotChat to TRUE when the conversation item is not available', () => {
       component.conversation.item.status = INBOX_ITEM_STATUSES.notAvailable;
-      expect(component.cannotChat).toBe(false);
+      expect(component.conversation.cannotChat).toBe(false);
 
       component.ngOnChanges();
 
-      expect(component.cannotChat).toBe(true);
+      expect(component.conversation.cannotChat).toBe(true);
     });
 
-    it('should set cannotChat to FALSE when none of the above conditions are met', () => {
+    it('should set conversation.cannotChat to FALSE when none of the above conditions are met', () => {
       component.conversation.item.status = INBOX_ITEM_STATUSES.available;
       component.conversation.user.blocked = false;
       component.conversation.user.available = true;
-      expect(component.cannotChat).toBe(false);
+      expect(component.conversation.cannotChat).toBe(false);
 
       component.ngOnChanges();
 
-      expect(component.cannotChat).toBe(false);
+      expect(component.conversation.cannotChat).toBe(false);
     });
   });
 });
