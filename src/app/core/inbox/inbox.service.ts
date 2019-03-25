@@ -164,7 +164,7 @@ export class InboxService {
   private buildInboxMessages(conversation) {
     // TODO - handle third voice type message (type === 'TBD');
     const textMessages = conversation.messages.filter(m => m.type === 'text').map(m => new InboxMessage(m.id, conversation.hash, m.text,
-      m.from_user_id, m.from_user_hash === this.selfId, new Date(m.timestamp), m.status, m.payload));
+      m.from_user_hash, m.from_user_hash === this.selfId, new Date(m.timestamp), m.status, m.payload));
     this.persistencyService.saveInboxMessages(textMessages);
     return textMessages;
   }
