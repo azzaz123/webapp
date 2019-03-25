@@ -1,6 +1,5 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { InboxMessage, phoneRequestState } from './inbox-message';
-import { ConversationService } from '../../../core/inbox/conversation.service';
+import { Component, Input } from '@angular/core';
+import { InboxMessage } from './inbox-message';
 import { InboxConversation } from '../inbox/inbox-conversation/inbox-conversation';
 
 @Component({
@@ -8,21 +7,11 @@ import { InboxConversation } from '../inbox/inbox-conversation/inbox-conversatio
   templateUrl: 'inbox-message.component.html',
   styleUrls: ['inbox-message.component.scss']
 })
-export class InboxMessageComponent implements OnInit {
+export class InboxMessageComponent {
 
   @Input() message: InboxMessage;
   @Input() currentConversation: InboxConversation;
-  // public phoneRequestState = phoneRequestState;
 
-  constructor(@Inject('SUBDOMAIN')
-    private subdomain: string,
-    private conversationService: ConversationService) {
-  }
+  constructor() { }
 
-  ngOnInit() {
-  }
-
-  openDialog() {
-    // this.conversationService.openPhonePopup(this.currentConversation);
-  }
 }
