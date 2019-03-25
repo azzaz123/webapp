@@ -20,6 +20,7 @@ import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../../chat/chat-with-
 import { UserService } from '../user/user.service';
 import { MockedUserService } from '../../../tests/user.fixtures.spec';
 import { InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
+import { Message } from '../message/message';
 
 let service: InboxService;
 let http: HttpService;
@@ -168,13 +169,14 @@ describe('InboxService', () => {
       });
 
       it('should update the lastMessage and the modifiedDate wth the new message', () => {
-        const newMessage = new InboxMessage('mockId', conversation.id, 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.SENT);
+        const newMessage = new Message('mockId', conversation.id, 'hola!', 'mockUserId', new Date(), messageStatus.SENT);
+        const newInboxMessage = new InboxMessage(newMessage.id, conversation.id, newMessage.message, newMessage.from, newMessage.fromSelf,
+          newMessage.date, newMessage.status);
 
         eventService.emit(EventService.NEW_MESSAGE, newMessage);
 
-        expect(service.conversations[0].lastMessage).toEqual(newMessage);
-        expect(service.conversations[0].modifiedDate).toEqual(newMessage.date);
+        expect(service.conversations[0].lastMessage).toEqual(newInboxMessage);
+        expect(service.conversations[0].modifiedDate).toEqual(newInboxMessage.date);
       });
 
       it('should bump the conversation to 1st position', () => {
