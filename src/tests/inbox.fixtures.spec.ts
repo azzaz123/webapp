@@ -22,7 +22,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
                 "slug": "wallacars-56047883",
                 "name": "John D.",
                 "image_url": "http://cdn-beta.wallapop.com/images/13/16/sp/__/c13p71883041/i413962112.jpg?pictureSize=W640",
-                "response_rate" : "less than a day", "less than one hour", "less than three hours", "more than a day", "unknown"
+                "response_rate" : "less than a day",
                 "score" : 20,
                 "blocked": false,
                 "available": true,
@@ -108,7 +108,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
                 "slug": "johnnycash-56047883",
                 "name": "John D.",
                 "image_url": "http://cdn-beta.wallapop.com/images/13/16/sp/__/c13p71883041/i413962112.jpg?pictureSize=W640",
-                "response_rate" : "less than a day", "less than one hour", "less than three hours", "more than a day", "unknown"
+                "response_rate" : "unknown",
                 "score" : 100,
                 "blocked": false
                 "available": false,
@@ -146,6 +146,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
     ]
   }`;
   export const MOCK_INBOX_CONVERSATION = JSON.parse(MOCK_INBOX_API_RESPONSE).conversations[0];
+  console.log(MOCK_INBOX_CONVERSATION);
   export const INBOX_CONVERSATION_DATE: Date = new Date();
 
 const apiConvUser = MOCK_INBOX_CONVERSATION.conversations[0].with_user;
