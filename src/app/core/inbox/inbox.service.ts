@@ -79,15 +79,14 @@ export class InboxService {
     this.persistencyService.updateStoredInbox(inboxConversations);
   }
 
-  private processNewMessage(message: InboxMessage) {
-    const conversation = this.conversations.find(c => c.id === message.thread);
+  private processNewMessage(newMessage: InboxMessage) {
+    const conversation = this.conversations.find(c => c.id === newMessage.thread);
     if (conversation) {
-      const newMessage = message;
       if (conversation.lastMessage && conversation.lastMessage.id !== newMessage.id) {
         this.bumpConversation(conversation);
         conversation.lastMessage = newMessage;
         conversation.modifiedDate = conversation.lastMessage.date;
-        if (!message.fromSelf) {
+        if (!newMessage.fromSelf) {
           conversation.unreadCounter++;
           this.messageService.totalUnreadMessages++;
         }
