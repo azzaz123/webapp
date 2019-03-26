@@ -103,6 +103,7 @@ export class PersistencyService {
     });
   }
 
+
   private initClickstreamDb(dbName: string, version?: number) {
     const request = version ? window.indexedDB.open(dbName, version) : window.indexedDB.open(dbName);
     request.onsuccess = () => {
