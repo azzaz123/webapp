@@ -10,9 +10,7 @@ import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_RESPONSE,
   MockedConversationsDb,
-  MockedMessagesDb,
-  MOCK_INBOX_DB_RESPONSE,
-  MockedInboxDb
+  MockedMessagesDb
 } from '../../../tests/persistency.fixtures.spec';
 import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs';
@@ -23,8 +21,6 @@ import { TrackingService } from '../tracking/tracking.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
 import { MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
-import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 
 let service: PersistencyService;
 let userService: UserService;
@@ -39,11 +35,7 @@ describe('Service: Persistency', () => {
       providers: [
         PersistencyService,
         EventService,
-        { provide: UserService, useValue: {
-          me() { return Observable.of(MOCK_USER); },
-          user() { return Observable.of(MOCK_USER); },
-          }
-        }
+        {provide: UserService, useValue: { me() { return Observable.of(MOCK_USER); }}}
       ],
     });
     service = TestBed.get(PersistencyService);
@@ -51,7 +43,6 @@ describe('Service: Persistency', () => {
     eventService = TestBed.get(EventService);
     (service as any)['_messagesDb'] = new MockedMessagesDb();
     (service as any)['_conversationsDb'] = new MockedConversationsDb();
-    (service as any)['_inboxDb'] = new MockedInboxDb();
   });
 
   it('should call localDbVersionUpdate through the constructor after USER_LOGIN event is trigegred', () => {
@@ -563,43 +554,6 @@ describe('Service: Persistency', () => {
       expect(service['storedMessages']).toBe(null);
     });
 
-  });
-
-  describe('updateStoredInbox', () => {
-    const inboxConversations = createInboxConversationsArray(1);
-    beforeEach(() => {
-      spyOn(userService, 'user').and.returnValue(Observable.of(MOCK_USER));
-      spyOn(service.inboxDb, 'destroy').and.returnValue(Promise.resolve({}));
-      });
-
-    it('should destroy the existing inboxDb', () => {
-      service.updateStoredInbox(inboxConversations);
-
-      expect(service.inboxDb.destroy).toHaveBeenCalled();
-    });
-
-    it('should recreate the inboxDb', fakeAsync(() => {
-      service.updateStoredInbox(inboxConversations).subscribe();
-      tick();
-
-      expect(service.inboxDb).toBeTruthy();
-    }));
-
-  });
-
-  describe('getStoredInbox', () => {
-    it('should fetch all documents from the inboxDb and return them as an array of InboxConversations', fakeAsync(() => {
-      spyOn(service.inboxDb, 'allDocs').and.returnValue(Promise.resolve(MOCK_INBOX_DB_RESPONSE));
-      let convs: any;
-
-      service.getStoredInbox().subscribe((data: any) => convs = data);
-      tick();
-
-      expect(service.inboxDb.allDocs).toHaveBeenCalledWith({include_docs: true});
-      convs.map(conv => {
-        expect(conv instanceof InboxConversation);
-      });
-    }));
   });
 });
 

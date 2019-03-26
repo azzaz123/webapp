@@ -17,9 +17,8 @@ import { UserService } from '../user/user.service';
 
 export class InboxService {
   private API_URL = 'bff/messaging/inboxes/mine';
-  private _conversations: InboxConversation[];
+  public _conversations: InboxConversation[];
   private selfId: string;
-  public errorRetrievingInbox = false;
 
   constructor(private http: HttpService,
     private persistencyService: PersistencyService,
@@ -52,12 +51,8 @@ export class InboxService {
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processChatSignal(signal);
     });
-    this.getInbox()
-    .catch(() => {
-      this.errorRetrievingInbox = true;
-      return this.persistencyService.getStoredInbox();
-    })
-    .subscribe((conversations: InboxConversation[]) => {
+    this.getInbox().subscribe((conversations: InboxConversation[]) => {
+      this.saveInbox(conversations);
       this.eventService.emit(EventService.INBOX_LOADED, conversations);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
@@ -68,15 +63,12 @@ export class InboxService {
     return this.http.get(this.API_URL)
     .map(res => {
       const r = res.json();
-      this.saveMessages(r.conversations);
-      this.conversations = this.buildConversations(r.conversations);
-      this.saveInbox(this.conversations);
-      return this.conversations;
+      return this.conversations = this.buildConversations(r.conversations);
     });
   }
 
   private saveInbox(inboxConversations: InboxConversation[]) {
-    this.persistencyService.updateStoredInbox(inboxConversations);
+    this.persistencyService.updateInbox(inboxConversations);
   }
 
   private processNewMessage(newMessage: InboxMessage) {

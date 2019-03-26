@@ -123,10 +123,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }),
       extra_info: fb.group({
         object_type: fb.group({
-          id: null
+          id: ''
         }),
-        brand: null,
-        model: null
+        brand: '',
+        model: ''
       }),
       delivery_info: [null],
       location: this.fb.group({
@@ -220,15 +220,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
-      if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(this.uploadForm.value.category_id)) {
-        if (this.uploadForm.value.extra_info.brand === '') {
-          this.uploadForm.value.extra_info.brand = null;
-        }
-        if (this.uploadForm.value.extra_info.model === '') {
-          this.uploadForm.value.extra_info.model = null;
-        }
-      } else {
-        delete this.uploadForm.value.extra_info;
+      if (!CATEGORIES_WITH_BRAND_AND_MODEL.includes(this.uploadForm.value.category_id)) {
+        this.uploadForm.value.extra_info = {};
       }
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
         this.uploadForm.value.sale_conditions.shipping_allowed = this.uploadForm.value.delivery_info ? true : false;

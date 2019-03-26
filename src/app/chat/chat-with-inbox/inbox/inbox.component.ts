@@ -19,7 +19,6 @@ export class InboxComponent implements OnInit, OnDestroy  {
   private _loading = false;
   private conversationElementHeight = 100;
   private conversation: InboxConversation;
-  public errorRetrievingInbox = false;
 
   constructor(private inboxService: InboxService,
     private eventService: EventService,
@@ -42,22 +41,18 @@ export class InboxComponent implements OnInit, OnDestroy  {
     this.loading = true;
     this.bindNewMessageToast();
     if (this.inboxService.conversations) {
-      this.onInboxReady(this.inboxService.conversations);
+      this.conversations = this.inboxService.conversations;
+      this.loading = false;
     } else {
       this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
-        this.onInboxReady(conversations);
+        this.conversations = conversations;
+        this.loading = false;
       });
     }
   }
 
   ngOnDestroy() {
     this.unselectCurrentConversation();
-  }
-
-  private onInboxReady(conversations) {
-    this.conversations = conversations;
-    this.loading = false;
-    this.errorRetrievingInbox = this.inboxService.errorRetrievingInbox;
   }
 
   private bindNewMessageToast() {

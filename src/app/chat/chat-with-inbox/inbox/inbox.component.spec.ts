@@ -83,20 +83,6 @@ describe('Component: ConversationsPanel', () => {
 
         expect(component.loading).toBe(false);
       });
-
-      it('should set errorRetrievingInbox to the value returned by inboxService.errorRetrievingInbox', () => {
-        inboxService.errorRetrievingInbox = false;
-
-        component.ngOnInit();
-
-        expect(component.errorRetrievingInbox).toBe(false);
-
-        inboxService.errorRetrievingInbox = true;
-
-        component.ngOnInit();
-
-        expect(component.errorRetrievingInbox).toBe(true);
-      });
     });
 
     describe('when inboxService.conversations do not exists', () => {
@@ -123,22 +109,6 @@ describe('Component: ConversationsPanel', () => {
         eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
 
         expect(component.conversations).toBe(mockedInboxConversations);
-      });
-
-      it('should set errorRetrievingInbox to the value returned by inboxService.errorRetrievingInbox', () => {
-        inboxService.errorRetrievingInbox = false;
-
-        component.ngOnInit();
-        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
-
-        expect(component.errorRetrievingInbox).toBe(false);
-
-        inboxService.errorRetrievingInbox = true;
-
-        component.ngOnInit();
-        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
-
-        expect(component.errorRetrievingInbox).toBe(true);
       });
     });
   });
