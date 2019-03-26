@@ -12,7 +12,6 @@ import { EventService } from '../event/event.service';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { Message } from '../message/message';
 import { UserService } from '../user/user.service';
-import { Message } from '../message/message';
 
 @Injectable()
 

@@ -562,7 +562,6 @@ describe('Service: Persistency', () => {
 
       expect(service['storedMessages']).toBe(null);
     });
-
   });
 
   describe('updateStoredInbox', () => {
