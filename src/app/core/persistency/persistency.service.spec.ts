@@ -583,7 +583,6 @@ describe('Service: Persistency', () => {
 
       expect(service.inboxDb).toBeTruthy();
     }));
-
   });
 
   describe('getStoredInbox', () => {
