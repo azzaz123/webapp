@@ -12,7 +12,9 @@ import { EventService } from '../event/event.service';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { Message } from '../message/message';
 import { UserService } from '../user/user.service';
+import { environment } from '../../../environments/environment';
 
+const USER_BASE_PATH = environment.siteUrl +  'user/';
 @Injectable()
 
 export class InboxService {
@@ -143,7 +145,8 @@ export class InboxService {
       return InboxUserPlaceholder;
     }
     const userBlocked = Boolean(user.available && user.blocked);
-    return new InboxUser(user.hash, user.name, userBlocked, user.available, user.slug, user.image_url, user.response_rate,
+    const profileUrl = USER_BASE_PATH + user.slug;
+    return new InboxUser(user.hash, user.name, userBlocked, user.available, profileUrl, user.image_url, user.response_rate,
       user.score, user.location);
   }
 
@@ -160,7 +163,7 @@ export class InboxService {
   }
 
   private buildInboxMessages(conversation) {
-    // TODO - handle third voice type message (type === 'TBD');
+    // TODO - handle third voice type message (type === '? TBD');
     const textMessages = conversation.messages.filter(m => m.type === 'text').map(m => new InboxMessage(m.id, conversation.hash, m.text,
       m.from_user_hash, m.from_user_hash === this.selfId, new Date(m.timestamp), m.status, m.payload));
     this.persistencyService.saveInboxMessages(textMessages);
