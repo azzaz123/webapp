@@ -1,6 +1,6 @@
 import { Model } from '../resource/model.interface';
-import { Image, UserLocation, InboxImage } from '../user/user-response.interface';
-import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo, AutorenewPurchase } from './item-response.interface';
+import { Image, UserLocation } from '../user/user-response.interface';
+import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo, AutorenewPurchase, ItemExtraInfo } from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
 export const ITEM_BASE_PATH = 'http://es.wallapop.com/item/';
@@ -11,6 +11,7 @@ export const ITEM_STATUSES: any = {
   'active': 'PUBLISHED',
   'sold': ['SOLD_OUTSIDE', 'BOUGHT']
 };
+
 export const ITEM_TYPES: any = {
   CONSUMER_GOODS: 'consumer_goods',
   CARS: 'cars',
@@ -19,8 +20,8 @@ export const ITEM_TYPES: any = {
 
 export class Item implements Model {
   private _webLink: string;
-
   private _views: number;
+
   private _favorites: number;
   private _conversations: number;
   private _purchases: AutorenewPurchase;
@@ -49,10 +50,10 @@ export class Item implements Model {
               private _webSlug?: string,
               private _publishedDate?: number,
               private _deliveryInfo?: DeliveryInfo,
-              private _itemType: string = ITEM_TYPES.CONSUMER_GOODS) {
+              private _itemType: string = ITEM_TYPES.CONSUMER_GOODS,
+              private _extraInfo?: ItemExtraInfo) {
     this._webLink = ITEM_BASE_PATH + _webSlug;
   }
-
   get id(): string {
     return this._id;
   }
@@ -210,6 +211,14 @@ export class Item implements Model {
     return this._flags ? this._flags.reserved : false;
   }
 
+  set notAvailable(value: boolean) {
+    this._flags.notAvailable = value;
+  }
+
+  get notAvailable(): boolean {
+    return this._flags ? this._flags.notAvailable : false;
+  }
+
   get selected(): boolean {
     return this._selected;
   }
@@ -269,46 +278,8 @@ export class Item implements Model {
   get itemType(): string {
     return this._itemType;
   }
-}
 
-export interface InboxItemPrice {
-  amount: number;
-  currency: string;
-}
-
-export class InboxItem implements Model {
-  constructor(private _id: string,
-              private _price?: InboxItemPrice,
-              private _title?: string,
-              private _mainImage?: InboxImage,
-              private _status?: string) {
-  }
-
-  get id(): string {
-    return this._id;
-  }
-
-  get price(): InboxItemPrice {
-    return this._price;
-  }
-
-  get title(): string {
-    return this._title;
-  }
-
-  get status(): string {
-    return this._status;
-  }
-
-  get mainImage(): InboxImage {
-    return this._mainImage;
-  }
-
-  public setFakeImage(image: string) {
-    this._mainImage = {
-      urls_by_size: {
-        small: '',
-      }
-    };
+  get extraInfo(): ItemExtraInfo {
+    return this._extraInfo;
   }
 }

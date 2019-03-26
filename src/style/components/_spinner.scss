@@ -8,7 +8,7 @@ $duration: 1.4s;
       stroke-dasharray: $offset;
       stroke-dashoffset: 0;
       transform-origin: center;
-      stroke: $corporate;
+      stroke: $walla-main;
       animation: dash $duration ease-in-out infinite;
     }
   }
@@ -23,7 +23,7 @@ $duration: 1.4s;
     @include square(14px);
     svg {
       .path {
-        stroke: $grey-100;
+        stroke: $blue-grey-4;
       }
     }
   }

@@ -1,0 +1,103 @@
+@import "~style/common";
+
+$title-height: 64px;
+$filters-nav-height: 38px;
+
+h2 {
+  margin: $spacing-ml;
+  font-weight: bold;
+  font-size: $font-size-ll;
+  letter-spacing: $letter-spacing;
+  .badge {
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+}
+
+.header {
+  border-bottom: 1px solid $blue-grey-5;
+}
+
+.scroll-panel {
+  scroll-behavior: smooth;
+  display: block;
+  height: calc(100vh - #{$topbar-height});
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  &.professional {
+    height: calc(100vh - #{$topbar-height} - #{$title-height} - #{$filters-nav-height});
+  }
+  .btn.new-messages-toast {
+    display: flex;
+    align-items: center;
+    font-size: $font-size-s;
+    border-radius: 100px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 99;
+    margin-top: $spacing-ms;
+    padding: $spacing-s $spacing-ml;
+    transform: translateX(-50%);
+    box-shadow: 0 1px 3px 0 rgba($black, 0.16);
+    mat-icon {
+      width: 9px;
+      height: 100%;
+      margin-right: $spacing-s;
+    }
+  }
+}
+
+.inboxError {
+  background-color: $blue-grey-6;
+  color: $negative-main;
+  font-size: $font-size-xs;
+  padding: $spacing-ms $spacing-xxxl $spacing-ms $spacing-ml;
+}
+
+.nav.filters-nav {
+  margin-left: $spacing-ml;
+}
+
+tsl-process-all-button {
+  float: right;
+  margin-top: 10px;
+  margin-right: $spacing-ms;
+}
+
+#loader {
+  padding-top: $spacing-ml;
+  mat-icon {
+    width: 339px;
+    height: 487px;
+  }
+}
+
+.load-more-container {
+  $load-more-container-height: 48px;
+  $spinner-size: 14px;
+  line-height: $load-more-container-height;
+  height: $load-more-container-height;
+  text-align: center;
+  .load-more {
+    color: $walla-main;
+    position: relative;
+    text-transform: uppercase;
+    font-size: $font-size-xs;
+    font-weight: bold;
+    .spinner {
+      height: $spinner-size;
+      width: $spinner-size;
+      svg {
+        position: absolute;
+        top: 0;
+        left: -#{$spacing-ml + 5px};
+      }
+    }
+    &:hover {
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+}

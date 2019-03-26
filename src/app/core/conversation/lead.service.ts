@@ -59,6 +59,7 @@ export abstract class LeadService {
     this.stream();
   }
 
+  // TODO - this method seems to never be used; check if it can be safely removed
   protected getAllLeads(since?: number, archived?: boolean): Observable<Lead[]> {
     return this.getLeads(since, archived)
     .flatMap((conversations: Lead[]) => {

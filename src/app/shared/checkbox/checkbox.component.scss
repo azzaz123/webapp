@@ -16,22 +16,22 @@ $feature-button-width: 170px;
       opacity: 1;
     }
     span {
-      color: $grey-500;
+      color: $blue-grey-2;
       /deep/ > * {
         cursor: pointer;
       }
       &.selected {
-        color: $corporate;
+        color: $walla-main;
       }
       text-align: left;
     }
     button {
       @include square($checkbox-width);
-      border: 2px solid $grey-100;
+      border: 2px solid $blue-grey-4;
       border-radius: 6px;
       padding: 0;
       background: transparent;
-      margin-right: $spacing-S;
+      margin-right: $spacing-ms;
       cursor: pointer;
       display: flex;
       justify-content: center;
@@ -42,7 +42,7 @@ $feature-button-width: 170px;
         width: 12px;
       }
       &.selected {
-        background: $corporate;
+        background: $walla-main;
         border-color: transparent;
         mat-icon {
           display: flex;
@@ -52,7 +52,7 @@ $feature-button-width: 170px;
         }
       }
       &:hover {
-        border-color: $corporate;
+        border-color: $walla-main;
       }
     }
   }

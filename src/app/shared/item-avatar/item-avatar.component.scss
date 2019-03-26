@@ -22,8 +22,8 @@ div {
     padding-top: 100%;
     span {
       position: absolute;
-      top: $spacing-S;
-      left: $spacing-S;
+      top: 12px;
+      left: 12px;
       &.overlay {
         background: none;
       }
@@ -32,7 +32,7 @@ div {
 }
 
 .overlay {
-  background-color: $grey-900;
+  background-color: $blue-grey-1;
   position: absolute;
   @include square-avatar(100%);
   opacity: .5;
@@ -43,7 +43,7 @@ div {
 }
 
 $sold-width: 32px;
-.sold, .reserved, .featured, .urgent {
+.sold, .reserved, .featured, .urgent, .not-available {
   @include square($sold-width);
   border-radius: 50%;
   display: flex;
@@ -68,7 +68,7 @@ $sold-width: 32px;
 }
 
 .featured {
-  background-color: $corporate;
+  background-color: $walla-main;
   mat-icon {
     @include square(25px);
   }
@@ -82,7 +82,7 @@ $sold-width: 32px;
     background-color: $country-bump;
   }
   &.planned {
-    background-color: $grey-100;
+    background-color: $blue-grey-4;
   }
 }
 

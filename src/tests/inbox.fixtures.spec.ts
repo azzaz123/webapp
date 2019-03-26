@@ -1,7 +1,7 @@
-import { InboxConversation } from '../app/core/conversation/conversation';
-import { Message } from '../app/core/message/message';
-import { InboxUser } from '../app/core/user/user';
-import { InboxItem } from '../app/core/item/item';
+import { InboxConversation } from '../app/chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxUser } from '../app/chat/chat-with-inbox/inbox/inbox-user';
+import { InboxItem, INBOX_ITEM_STATUSES } from '../app/chat/chat-with-inbox/inbox/inbox-item';
+import { InboxMessage } from '../app/chat/chat-with-inbox/message/inbox-message';
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { OTHER_USER_ID } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';
@@ -36,7 +36,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
             "unread_messages": 1,
             "messages": [
                 {
-                    "message_id": "20394401-ec61-4032-9eee-e79441fae457",
+                    "id": "20394401-ec61-4032-9eee-e79441fae457",
                     "from_user_hash": "mxzorp9np7z9",
                     "to_user_hash": "7v6gwyklr5ze",
                     "text": "Vale gracias",
@@ -47,7 +47,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
                     }
                 },
                 {
-                    "message_id": "df9455bd-9d3f-4315-abdc-c7c230932347",
+                    "id": "df9455bd-9d3f-4315-abdc-c7c230932347",
                     "from_user_hash": "7v6gwyklr5ze",
                     "to_user_hash": "mxzorp9np7z9",
                     "text": "Por cuanto vale?",
@@ -58,7 +58,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
                     }
                 },
                 {
-                    "message_id": "b034a784-2702-4517-99cd-1268ba7d1cb7",
+                    "id": "b034a784-2702-4517-99cd-1268ba7d1cb7",
                     "from_user_hash": "mxzorp9np7z9",
                     "to_user_hash": "7v6gwyklr5ze",
                     "text": "€20",
@@ -69,7 +69,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
                     }
                 },
                 {
-                    "message_id": "2bc9b35e-3d17-4044-91b7-20d52884bc1c",
+                    "id": "2bc9b35e-3d17-4044-91b7-20d52884bc1c",
                     "from_user_hash": "7v6gwyklr5ze",
                     "to_user_hash": "mxzorp9np7z9",
                     "text": "Te va bien?",
@@ -80,7 +80,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
                     }
                 },
                 {
-                    "message_id": "02E8347D-526B-4042-8AA8-A7F343488D12",
+                    "id": "02E8347D-526B-4042-8AA8-A7F343488D12",
                     "from_user_hash": "mxzorp9np7z9",
                     "to_user_hash": "7v6gwyklr5ze",
                     "text": "Vale gracias",
@@ -113,7 +113,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
             "unread_messages": 0,
             "messages": [
                 {
-                    "message_id": "58AC7C92-1441-4D65-A05B-3FF1EABE48E2",
+                    "id": "58AC7C92-1441-4D65-A05B-3FF1EABE48E2",
                     "from_user_hash": "mxzorp9np7z9",
                     "to_user_hash": "xpzp3dpqnk63",
                     "text": "Vale perfecto",
@@ -128,33 +128,41 @@ export const MOCK_INBOX_API_RESPONSE = `{
     ]
   }`;
   export const MOCK_INBOX_CONVERSATION = JSON.parse(MOCK_INBOX_API_RESPONSE).conversations[0];
+  export const INBOX_CONVERSATION_DATE: Date = new Date();
+
+let mockInboxUser = new InboxUser(OTHER_USER_ID, 'Jodn D,', false, true);
+let mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, INBOX_ITEM_STATUSES.published);
 
 export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
     id: string = CONVERSATION_ID,
     userId: string = OTHER_USER_ID,
-    date: number = CONVERSATION_DATE): InboxConversation => {
+    date: Date = INBOX_CONVERSATION_DATE): InboxConversation => {
       const tempMsg = MOCK_INBOX_CONVERSATION.messages[0];
-      const message = new Message(
+      const message = new InboxMessage(
           tempMsg.id,
           MOCK_INBOX_CONVERSATION.hash,
           tempMsg.text,
           tempMsg.from,
+          tempMsg.from === 'self',
           new Date(tempMsg.timestamp),
           tempMsg.status,
           tempMsg.payload);
-      message.fromSelf = tempMsg.from === 'self';
 
-      return new InboxConversation(id, date, new InboxUser(userId), new InboxItem(ITEM_ID), message, [message], 0, false, false);
+    mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, INBOX_ITEM_STATUSES.published);
+    mockInboxUser = new InboxUser(userId, 'Jodn D,', false, true);
+
+      return new InboxConversation(id, date, mockInboxUser, mockInboxItem, false, 0, message);
 };
-export const SECOND_MOCK_INBOX_CONVERSATION: InboxConversation = new InboxConversation('secondId', CONVERSATION_DATE,
-  new InboxUser(OTHER_USER_ID), new InboxItem(ITEM_ID));
+export const SECOND_MOCK_INBOX_CONVERSATION: InboxConversation = new InboxConversation('secondId', INBOX_CONVERSATION_DATE,
+mockInboxUser, mockInboxItem, false);
 export const MOCKED_INBOX_CONVERSATIONS: InboxConversation[] = [CREATE_MOCK_INBOX_CONVERSATION(), SECOND_MOCK_INBOX_CONVERSATION];
 export const NOT_FOUND_INBOX_CONVERSATION_ID = 'notFound';
 export const MOCK_NOT_FOUND_INBOX_CONVERSATION: InboxConversation = new InboxConversation(
   NOT_FOUND_INBOX_CONVERSATION_ID,
-  CONVERSATION_DATE,
-  new InboxUser(OTHER_USER_ID),
-  new InboxItem(ITEM_ID));
+  INBOX_CONVERSATION_DATE,
+  mockInboxUser,
+  mockInboxItem,
+  false);
 
 export function createInboxConversationsArray(total: number, conversationsId?: string) {
   const conversations: InboxConversation[] = [];

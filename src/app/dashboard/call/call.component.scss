@@ -4,12 +4,12 @@ $transition-time: .15s;
 $check-width-and-spacing: 50px;
 :host {
   display: block;
-  padding: $spacing $spacing-S $spacing $spacing;
+  padding: $spacing-ml $spacing-ms $spacing-ml $spacing-ml;
   box-sizing: border-box;
   border-left: 2px solid transparent;
   transition: $transition-time ease background-color,
   $transition-time ease border;
-  border-top: 1px solid $grey-50;
+  border-top: 1px solid $blue-grey-5;
   overflow: hidden;
   cursor: pointer;
   position: relative;
@@ -17,16 +17,16 @@ $check-width-and-spacing: 50px;
     border-top: 0;
   }
   &.active {
-    background-color: rgba($grey-100, .4);
+    background-color: rgba($blue-grey-4, .4);
   }
   tsl-archive-button, tsl-unarchive-button {
     @include hide();
     position: absolute;
     top: 43px;
-    right: $spacing-S;
+    right: 12px;
   }
   &:hover {
-    background-color: rgba($grey-600, .1);
+    background-color: rgba($blue-grey-2, .1);
     tsl-archive-button {
       opacity: 1;
       visibility: visible;
@@ -50,20 +50,20 @@ tsl-user-avatar {
   justify-content: space-between;
   margin-left: $item-avatar-space;
   max-width: calc(100% - #{$item-avatar-size} - #{$item-avatar-margin});
-  color: $grey-900;
+  color: $blue-grey-1;
   p {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     margin-bottom: 0;
     @include text-truncate();
   }
   .call-user-row {
-    line-height: $spacing-M;
+    line-height: $line-height-m;
     display: flex;
     flex-direction: row;
     vertical-align: super;
     .call-user-name {
       font-weight: bold;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       display: flex;
       @include text-truncate;
       flex-grow: 1;
@@ -74,15 +74,14 @@ tsl-user-avatar {
     }
     .call-meta {
       flex: none;
-      margin-left: $spacing-XXS;
+      margin-left: $spacing-xs;
     }
   }
   .call-item-row {
-    $phone-icon-size: 18px;
     $phone-icon-adjusted-size: 15px;
-    line-height: $phone-icon-size;
+    line-height: $line-height-ml;
     overflow: hidden;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     display: flex;
     flex-direction: row;
     .call-item-row-left {
@@ -103,7 +102,7 @@ tsl-user-avatar {
       @include square($phone-icon-adjusted-size);
     }
     .call-item-title {
-      color: $grey-600;
+      color: $blue-grey-2;
     }
     &.has-phone {
       $phone-icon-size: 10px;
@@ -113,16 +112,16 @@ tsl-user-avatar {
     }
   }
   .call-date {
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     font-weight: bold;
-    color: $grey-300;
+    color: $blue-grey-2;
     text-transform: uppercase;
   }
   .call-data-row {
-    line-height: $font-size-S;
+    line-height: $line-height-m;
     p{
-      color: $grey-600;
-      margin: 10px 0;
+      color: $blue-grey-2;
+      margin: $spacing-ms 0;
       &:last-child {
         margin-bottom: 0;
       }

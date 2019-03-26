@@ -2,11 +2,14 @@
   tslsanitizedBackground="{{avatar}}"
   [fallback]="fallback"
   [ngClass]="size">
-  <span class="overlay" *ngIf="item?.featured || item?.sold || item?.reserved || item?.purchases"></span>
-  <span class="sold" *ngIf="item?.sold">
+  <span class="overlay" *ngIf="item?.featured || item?.sold || item?.reserved || item?.purchases || item?.notAvailable"></span>
+  <span class="not-available" *ngIf="item?.notAvailable">
+    <mat-icon svgIcon="not-available"></mat-icon>
+  </span>
+  <span class="sold" *ngIf="item?.sold && !item?.notAvailable">
     <mat-icon svgIcon="sold"></mat-icon>
   </span>
-  <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.featured && !item?.purchases">
+  <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.featured && !item?.purchases && !item?.notAvailable">
     <mat-icon svgIcon="reserved"></mat-icon>
   </span>
   <span class="featured"

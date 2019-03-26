@@ -22,6 +22,13 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Item, ITEM_TYPES } from '../../core/item/item';
 import { DeliveryInfo } from '../../core/item/item-response.interface';
+import { GeneralSuggestionsService } from './general-suggestions.service';
+import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
+import { Subject } from 'rxjs';
+import { Brand, BrandModel, Model } from '../brand-model.interface';
+import { SplitTestService } from '../../core/tracking/split-test.service';
+
+const CATEGORIES_WITH_BRAND_AND_MODEL = ['16000'];
 
 @Component({
   selector: 'tsl-upload-product',
@@ -37,12 +44,24 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() onCategorySelect = new EventEmitter<number>();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
+  @Input() suggestionValue: string;
+
   public itemTypes: any = ITEM_TYPES;
+  public extraInfoEnabled = false;
+  public brandModelExperimentEnabled = false;
+  public objectTypeTitle: string;
+  public objectTypes: IOption[];
+  public brands: IOption[];
+  public models: IOption[];
+  public brandSuggestions: Subject<KeywordSuggestion[]> = new Subject();
+  public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
+  public selectedBrand: Subject<string> = new Subject();
+  public selectedModel: Subject<string> = new Subject();
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
-    {value: 'EUR', label: '€'},
-    {value: 'GBP', label: '£'}
+    { value: 'EUR', label: '€' },
+    { value: 'GBP', label: '£' }
   ];
   public deliveryInfo: any = [{
     size: '20x38x40cm',
@@ -78,14 +97,18 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private oldFormValue: any;
   private oldDeliveryValue: any;
   public isUrgent = false;
+  public customMake = false;
+  public customModel = false;
 
   constructor(private fb: FormBuilder,
-              private router: Router,
-              private errorsService: ErrorsService,
-              private categoryService: CategoryService,
-              private modalService: NgbModal,
-              private trackingService: TrackingService,
-              config: NgbPopoverConfig) {
+    private router: Router,
+    private errorsService: ErrorsService,
+    private categoryService: CategoryService,
+    private modalService: NgbModal,
+    private trackingService: TrackingService,
+    private generalSuggestionsService: GeneralSuggestionsService,
+    private splitTestService: SplitTestService,
+    config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
       category_id: ['', [Validators.required]],
@@ -97,6 +120,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       sale_conditions: fb.group({
         fix_price: false,
         exchange_allowed: false
+      }),
+      extra_info: fb.group({
+        object_type: fb.group({
+          id: null
+        }),
+        brand: null,
+        model: null
       }),
       delivery_info: [null],
       location: this.fb.group({
@@ -120,11 +150,16 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         description: this.item.description,
         sale_conditions: this.item.saleConditions,
         category_id: this.item.categoryId.toString(),
-        delivery_info: this.getDeliveryInfo()
+        delivery_info: this.getDeliveryInfo(),
+        extra_info: this.item.extraInfo ? this.item.extraInfo : {}
       });
       this.detectFormChanges();
       this.oldDeliveryValue = this.getDeliveryInfo();
     }
+
+    this.splitTestService.getVariable('BrandModelUploadEnabled', false).subscribe((BrandModelUploadEnabled: boolean) => {
+      this.brandModelExperimentEnabled = BrandModelUploadEnabled;
+    });
   }
 
   private detectFormChanges() {
@@ -159,17 +194,18 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       if (!this.item) {
         if (this.categoryId && this.categoryId !== '-1') {
           this.uploadForm.get('category_id').patchValue(this.categoryId);
-          const fixedCategory = _.find(categories, {value: this.categoryId});
+          const fixedCategory = _.find(categories, { value: this.categoryId });
           this.fixedCategory = fixedCategory ? fixedCategory.label : null;
           this.uploadForm.get('delivery_info').patchValue(null);
         } else {
           this.fixedCategory = null;
         }
       } else {
+        const selectedCategory = _.find(categories, { value: this.item.categoryId.toString() });
         if (this.categoryService.isHeroCategory(this.item.categoryId)) {
-          const fixedCategory = _.find(categories, {value: this.item.categoryId.toString()});
-          this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+          this.fixedCategory = selectedCategory ? selectedCategory.label : null;
         }
+        this.onCategoryChange(selectedCategory);
       }
     });
   }
@@ -184,6 +220,16 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
+      if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(this.uploadForm.value.category_id)) {
+        if (this.uploadForm.value.extra_info.brand === '') {
+          this.uploadForm.value.extra_info.brand = null;
+        }
+        if (this.uploadForm.value.extra_info.model === '') {
+          this.uploadForm.value.extra_info.model = null;
+        }
+      } else {
+        delete this.uploadForm.value.extra_info;
+      }
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
         this.uploadForm.value.sale_conditions.shipping_allowed = this.uploadForm.value.delivery_info ? true : false;
       }
@@ -212,25 +258,28 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
-      appboy.logCustomEvent('Edit', {platform: 'web'});
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
+      appboy.logCustomEvent('Edit', { platform: 'web' });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
-      appboy.logCustomEvent('List', {platform: 'web'});
+      appboy.logCustomEvent('List', { platform: 'web' });
+      if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(this.uploadForm.value.category_id)) {
+        this.splitTestService.track('UploadCompleted');
+      }
     }
 
     if (this.isUrgent) {
-      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {category: this.uploadForm.value.category_id});
+      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, { category: this.uploadForm.value.category_id });
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
-    this.router.navigate(['/catalog/list', {[uploadEvent.action]: true, itemId: uploadEvent.response.id}]);
+    this.router.navigate(['/catalog/list', { [uploadEvent.action]: true, itemId: uploadEvent.response.id }]);
   }
 
   onError(response: any) {
     this.loading = false;
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {category: this.uploadForm.value.category_id});
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
     }
@@ -253,7 +302,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         return null;
       }
       const v: number = Number(control.value);
-      return v < min ? {'min': {'requiredMin': min, 'actualMin': v}} : null;
+      return v < min ? { 'min': { 'requiredMin': min, 'actualMin': v } } : null;
     };
   }
 
@@ -263,7 +312,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         return null;
       }
       const v: number = Number(control.value);
-      return v > max ? {'max': {'requiredMax': max, 'actualMax': v}} : null;
+      return v > max ? { 'max': { 'requiredMax': max, 'actualMax': v } } : null;
     };
   }
 
@@ -277,6 +326,99 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public emitLocation(): void {
     this.locationSelected.emit(this.categoryId);
+  }
+
+  public onCategoryChange(category: CategoryOption) {
+    if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(category.value) && this.brandModelExperimentEnabled === true) {
+      this.extraInfoEnabled = true;
+      this.objectTypeTitle = category.object_type_title;
+      this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
+        this.objectTypes = objectTypes;
+      });
+    } else {
+      this.extraInfoEnabled = false;
+    }
+  }
+
+  public getBrands(brandKeyword: string) {
+    const suggestions: KeywordSuggestion[] = [];
+
+    this.generalSuggestionsService.
+      getBrands(brandKeyword, this.uploadForm.value.category_id, this.uploadForm.value.extra_info.object_type.id)
+      .subscribe((brands: Brand[]) => {
+        if (brands.length > 0) {
+          brands.map((brand: Brand) => {
+            suggestions.push({ suggestion: brand.brand, value: brand });
+          });
+
+          this.brandSuggestions.next(suggestions);
+        } else {
+          this.generalSuggestionsService.
+            getBrandsAndModels(brandKeyword, this.uploadForm.value.category_id, this.uploadForm.value.extra_info.object_type.id)
+            .subscribe((brandsAndModels: BrandModel[]) => {
+              brandsAndModels.map((brandAndModel: BrandModel) => {
+                const suggestionText = `${brandAndModel.brand}${brandAndModel.model ? ', ' + brandAndModel.model : ''} `;
+
+                suggestions.push({ suggestion: suggestionText, value: brandAndModel });
+              });
+
+              this.brandSuggestions.next(suggestions);
+            });
+        }
+      });
+  }
+
+  public getModels(modelKeyword: string) {
+    this.generalSuggestionsService.
+      getModels(
+        modelKeyword,
+        this.uploadForm.value.category_id,
+        this.uploadForm.value.extra_info.brand,
+        this.uploadForm.value.extra_info.object_type.id)
+      .subscribe((models: Model[]) => {
+        const suggestions: KeywordSuggestion[] = [];
+
+        models.map((model: Model) => {
+          suggestions.push({ suggestion: model.model, value: model });
+        });
+        this.modelSuggestions.next(suggestions);
+      });
+  }
+
+  public selectBrandOrModel(value, type: string) {
+    if (typeof value === 'string') {
+      if (type === 'brand') {
+        this.setBrand(value);
+      }
+      if (type === 'model') {
+        this.setModel(value);
+      }
+    } else if (typeof value === 'object') {
+      if (value.brand) {
+        this.setBrand(value.brand);
+      }
+      if (value.model) {
+        this.setModel(value.model);
+      }
+    }
+  }
+
+  private setBrand(brand: string) {
+    this.selectedBrand.next(brand);
+    this.uploadForm.patchValue({
+      extra_info: {
+        brand
+      }
+    });
+  }
+
+  private setModel(model: string) {
+    this.selectedModel.next(model);
+    this.uploadForm.patchValue({
+      extra_info: {
+        model
+      }
+    });
   }
 
   public onDeliveryChange(newDeliveryValue: any) {

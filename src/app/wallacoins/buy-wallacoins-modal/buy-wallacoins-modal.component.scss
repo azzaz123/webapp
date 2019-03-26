@@ -10,18 +10,18 @@
 
 .buy-modal {
   display: flex;
-  color: $grey-900;
+  color: $blue-grey-1;
   .left {
     text-align: center;
     align-items: center;
     h2 {
-      font-size: $font-size-M;
+      font-size: $font-size-l;
     }
     .icon {
       @include square(200px);
       border-radius: 50%;
-      margin-top: $spacing-1M;
-      margin-bottom: $spacing-2M;
+      margin-top: $spacing-ml;
+      margin-bottom: $spacing-l;
       background: $white no-repeat center;
       &.icon-1 {
         background-image: url(/assets/images/wallacoins-1.svg);
@@ -48,16 +48,16 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin-bottom: $spacing-S;
+      margin-bottom: $spacing-ms;
       .quantity {
-        font-size: $font-size-XXXL;
+        font-size: $font-size-xxxl;
         font-weight: bold;
-        line-height: $font-size-XXXL;
-        margin-top: $spacing-S;
+        line-height: $font-size-xxxl;
+        margin-top: $spacing-ms;
       }
       .label {
-        font-size: $font-size-L;
-        color: $grey-900;
+        font-size: $font-size-l;
+        color: $blue-grey-1;
       }
     }
   }
@@ -67,33 +67,33 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    padding: $spacing-40 $spacing-L;
+    padding: $spacing-xxl $spacing-xl;
     .price {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
       font-weight: bold;
-      font-size: $font-size;
-      margin-bottom: $spacing;
+      font-size: $font-size-m;
+      margin-bottom: $spacing-ml;
       &.spacing {
-        margin-top: $spacing;
+        margin-top: $spacing-ml;
       }
     }
     .for-free {
-      color: $corporate;
+      color: $walla-main;
       font-weight: bold;
     }
     .note {
       text-align: center;
-      color: $grey-250;
-      font-size: $font-size-XS;
+      color: $blue-grey-3;
+      font-size: $font-size-xs;
     }
   }
   .right {
     tsl-card-selection {
       width: 100%;
-      margin-bottom: $spacing-S;
+      margin-bottom: $spacing-ms;
     }
   }
 }

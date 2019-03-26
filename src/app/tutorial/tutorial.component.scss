@@ -14,20 +14,20 @@
   margin-top: $topbar-height;
   height: calc(100vh - #{$topbar-height});
   margin-left: $sidebar-width;
-  background-color: $corporate;
-  color: $grey-50;
-  font-size: $font-size-L;
+  background-color: $walla-main;
+  color: $blue-grey-5;
+  font-size: $font-size-l;
 }
 
 #close {
   position: absolute;
-  right: $spacing;;
+  right: 20px;
   top: 50px;
   color: $white;
   text-align: center;
   span {
     opacity: 0.6;
-    font-size: $font-size;
+    font-size: $font-size-m;
   }
   mat-icon {
     /deep/ path {
@@ -44,27 +44,27 @@
 
 #controls {
   position: absolute;
-  right: $spacing;;
-  bottom: $spacing;
+  right: 20px;
+  bottom: 20px;
   .btn-next {
-    color: $corporate;
-    padding: 10px 48px;
+    color: $walla-main;
+    padding: $spacing-ms $spacing-xxl;
     border-radius: 100px;
     background: $white;
     &:hover {
-      color: $corporate-dark;
+      color: $walla-dark;
     }
   }
   .dots {
     text-align: center;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
     .dot {
       display: inline-block;
       @include square(7.6px);
       opacity: 0.3;
       background-color: $white;
       border-radius: 50%;
-      margin: 0 4px;
+      margin: 0 $spacing-xs;
       vertical-align: middle;
       &.active {
         @include square(10.8px);
@@ -85,8 +85,8 @@
   flex-direction: column;
   background: url(/assets/images/welcome.svg) no-repeat top center;
   h1 {
-    font-size: $font-size-XXXXL;
-    margin-bottom: 40px;
+    font-size: $font-size-xxxxl;
+    margin-bottom: $spacing-xxl;
     font-family: $wallieSkinny;
   }
   p {
@@ -100,7 +100,7 @@
   left: 67px;
   width: 770px;
   &.step-1, &.step-1-pro {
-    top: $spacing;
+    top: 20px;
   }
   &.step-2, &.step-2-pro {
     top: 120px;

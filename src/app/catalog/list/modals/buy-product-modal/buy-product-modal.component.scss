@@ -10,7 +10,7 @@
 
 .buy-modal {
   display: flex;
-  color: $grey-900;
+  color: $blue-grey-1;
 }
 
 .left {
@@ -21,14 +21,14 @@
     flex-direction: column;
     .title {
       word-break: break-word;
-      color: $grey-900;
-      font-size: $font-size;
+      color: $blue-grey-1;
+      font-size: $font-size-m;
       font-weight: bold;
       width: 160px;
     }
     tsl-item-avatar {
       width: 160px;
-      margin-bottom: $spacing-S;
+      margin-bottom: $spacing-ms;
       /deep/ {
         .urgent {
           @include square(50px);
@@ -47,18 +47,18 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: $spacing-40 $spacing-L;
+  padding: $spacing-xxl $spacing-xl;
   justify-content: center;
   h2 {
-    font-size: $font-size-L;
-    margin-bottom: $spacing-M;
+    font-size: $font-size-l;
+    margin-bottom: $spacing-m;
   }
   h3 {
-    margin-bottom: $spacing-S;
-    color: $grey-500;
-    font-size: $font-size-S;
+    margin-bottom: $spacing-ms;
+    color: $blue-grey-2;
+    font-size: $font-size-s;
     text-align: center;
-    line-height: $spacing;
+    line-height: $spacing-ml;
   }
   .price {
     display: flex;
@@ -66,7 +66,7 @@
     align-items: center;
     width: 100%;
     font-weight: bold;
-    font-size: $font-size;
+    font-size: $font-size-m;
     &.with-credit {
       font-weight: normal;
     }
@@ -77,17 +77,17 @@
     }
   }
   p {
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
   }
   .totals {
     width: 100%;
-    line-height: $spacing-L;
+    line-height: $spacing-xl;
   }
   .credit, .total, .missing {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: $font-size;
+    font-size: $font-size-m;
     clear: both;
     .amount {
       text-align: right;
@@ -97,25 +97,25 @@
     .label {
       tsl-wallacoin {
         vertical-align: sub;
-        margin-right: 5px;
+        margin-right: $spacing-xs;
       }
     }
   }
   .credit {
-    padding-right: 2px;
+    padding-right: $spacing-xxs;
     .with-credits & {
-      font-size: $font-size;
+      font-size: $font-size-m;
     }
     .amount {
-      color: $corporate;
+      color: $walla-main;
     }
   }
   .missing {
-    border-top: solid 1px $grey-50;
-    padding: 3px 2px 0 0;
-    margin-bottom: $spacing-L;
+    border-top: solid 1px $blue-grey-5;
+    padding: $spacing-xs $spacing-xxs 0 0;
+    margin-bottom: $spacing-xl;
     .label {
-      color: $grey-250;
+      color: $blue-grey-3;
     }
   }
   .total {
@@ -123,23 +123,23 @@
   }
   tsl-card-selection {
     width: 100%;
-    margin-top: $spacing-M;
+    margin-top: $spacing-m;
     display: block;
     &:empty {
       margin: 0;
     }
   }
   tsl-button {
-    margin-top: $spacing;
+    margin-top: $spacing-ml;
   }
   .credit-card {
     width: 100%;
   }
   .note {
-    color: $grey-250;
+    color: $blue-grey-3;
     text-align: center;
     margin-bottom: 0;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
   }
 }
 

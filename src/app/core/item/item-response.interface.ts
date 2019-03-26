@@ -56,6 +56,7 @@ export interface ItemContent {
   favorites?: number;
   views?: number;
   delivery_info?: DeliveryInfo;
+  extra_info?: ItemExtraInfo;
   publish_date?: number;
 }
 
@@ -275,6 +276,7 @@ export interface ItemFlags {
   urgent?: boolean;
   bump_type?: string;
   onhold?: boolean;
+  notAvailable?: boolean;
 }
 
 export interface ItemActions {
@@ -317,6 +319,14 @@ export interface ItemsStore {
 export interface DeliveryInfo {
   max_weight_kg: number;
   min_weight_kg: number;
+}
+
+export interface ItemExtraInfo {
+  object_type: {
+    id: string;
+  };
+  brand: string;
+  model: string;
 }
 
 export interface ItemDataResponse {

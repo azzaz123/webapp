@@ -64,6 +64,7 @@ import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/de
 import { UploaderModule } from './uploader/uploader.module';
 import { UserCoverComponent } from './user-cover/user-cover.component';
 import { CoverUploadComponent } from './profile/cover-upload/cover-upload.component';
+import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
 
 @NgModule({
   imports: [
@@ -129,7 +130,8 @@ import { CoverUploadComponent } from './profile/cover-upload/cover-upload.compon
     CountdownComponent,
     ThousandSuffixesPipe,
     UserCoverComponent,
-    CoverUploadComponent
+    CoverUploadComponent,
+    KeywordSuggesterComponent
   ],
   declarations: [
     AdComponent,
@@ -182,7 +184,8 @@ import { CoverUploadComponent } from './profile/cover-upload/cover-upload.compon
     ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
     UserCoverComponent,
-    CoverUploadComponent
+    CoverUploadComponent,
+    KeywordSuggesterComponent
   ],
   providers: [
     DecimalPipe,

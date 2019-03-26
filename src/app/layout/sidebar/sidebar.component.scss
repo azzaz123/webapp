@@ -6,19 +6,19 @@
   left: 0;
   top: $topbar-height;
   bottom: 0;
-  background-color: $grey-900;
-  padding-top: $spacing-M;
+  background-color: $blue-grey-1;
+  padding-top: $spacing-m;
   height: calc(100vh - #{$topbar-height});
   z-index: 99;
 }
 
 .chat-notification-pending {
   position: absolute;
-  top: $spacing;
-  right: $spacing;
+  top: 20px;
+  right: 20px;
   width: 10px;
   height: 10px;
-  background-color: $warn;
+  background-color: $negative-main;
   border-radius: 100%;
   transform: translateX(100%);
 }
@@ -28,13 +28,13 @@ $sidebar-section-circle-size-small: 32px;
 
 .sidebar-section-circle {
   position: relative;
-  margin: 0 auto $spacing-S auto;
+  margin: 0 auto $spacing-ms auto;
   width: $sidebar-section-circle-size;
   height: $sidebar-section-circle-size;
-  background-color: rgba($grey-800, .5);
+  background-color: rgba(lighten($blue-grey-1, 8%), .5);
   transition: width 0.75s, height 0.75s;
   .active & {
-    background-color: $corporate !important;
+    background-color: $walla-main !important;
   }
   border-radius: 50%;
   .profile-item & {
@@ -67,7 +67,7 @@ $sidebar-section-circle-size-small: 32px;
 }
 
 h2 {
-  font-size: $font-size-XXS;
+  font-size: $font-size-xxs;
   font-weight: bold;
   color: rgba($white, .5);
   text-transform: uppercase;
@@ -81,14 +81,14 @@ h2 {
 .sidebar-section {
   position: relative;
   display: block;
-  padding: $spacing-S 0;
+  padding: $spacing-ms 0;
   text-align: center;
   &:focus, &:hover {
     text-decoration: none;
   }
   &:hover {
     .sidebar-section-circle {
-      background-color: $grey-800;
+      background-color: lighten($blue-grey-1, 8%);
     }
     h2 {
       color: $white;
@@ -108,15 +108,15 @@ h2 {
   }
   &.logout-item {
     position: absolute;
-    bottom: $spacing;
-    left: $spacing;
+    bottom: 20px;
+    left: 20px;
     padding: 0;
     h2 {
       width: $sidebar-section-circle-size;
     }
     &:hover {
       .sidebar-section-circle {
-        background-color: $warn;
+        background-color: $negative-main;
       }
     }
   }
@@ -126,7 +126,7 @@ h2 {
   .sidebar-section-circle {
     width: $sidebar-section-circle-size-small;
     height: $sidebar-section-circle-size-small;
-    margin: 0 auto $spacing-XS auto;
+    margin: 0 auto $spacing-s auto;
   }
   .sidebar-section {
     mat-icon {

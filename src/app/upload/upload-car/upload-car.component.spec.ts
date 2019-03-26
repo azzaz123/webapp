@@ -530,6 +530,7 @@ describe('UploadCarComponent', () => {
       component.uploadForm.get('model').disable();
       component.uploadForm.get('year').disable();
       component.uploadForm.get('version').disable();
+      component.customVersion = true;
 
       component.toggleCustomMakeSelection();
 
@@ -538,6 +539,7 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('model').enabled).toBeTruthy();
       expect(component.uploadForm.get('year').enabled).toBeTruthy();
       expect(component.uploadForm.get('version').enabled).toBeTruthy();
+      expect(component.customVersion).toBe(true);
     });
 
     it('should set customMake false and disable other fields', () => {
@@ -546,6 +548,7 @@ describe('UploadCarComponent', () => {
       component.uploadForm.get('year').enable();
       component.uploadForm.get('version').enable();
       component.customMake = true;
+      component.customVersion = false;
 
       component.toggleCustomMakeSelection();
 
@@ -554,6 +557,7 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('model').disabled).toBeTruthy();
       expect(component.uploadForm.get('year').disabled).toBeTruthy();
       expect(component.uploadForm.get('version').disabled).toBeTruthy();
+      expect(component.customVersion).toBe(true);
     });
   });
 
@@ -576,12 +580,24 @@ describe('UploadCarComponent', () => {
   });
 
   describe('toggleCustomVersionSelection', () => {
-    it ('should toggle the version value', () => {
+    it ('should not toggle the version value if its true and disable the field', () => {
       component.customVersion = true;
+      component.uploadForm.get('version').enable();
 
       component.toggleCustomVersionSelection();
 
       expect(component.customVersion).toBe(false);
+      expect(component.uploadForm.get('version').disabled).toBeFalsy();
+    });
+
+    it ('should toggle the version value and enable the field', () => {
+      component.customVersion = false;
+      component.uploadForm.get('version').disable();
+
+      component.toggleCustomVersionSelection();
+
+      expect(component.customVersion).toBe(true);
+      expect(component.uploadForm.get('version').enabled).toBeTruthy();
     });
   });
 

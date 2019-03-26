@@ -166,13 +166,13 @@ export class UserService extends ResourceService {
                     itemId: number,
                     comments: string,
                     reason: number,
-                    conversationId: number): Observable<any> {
+                    thread: number): Observable<any> {
 
     const data: any = {
       itemId: itemId,
       comments: comments,
       reason: reason,
-      conversationId: conversationId,
+      thread: thread,
     };
     return this.http.post(this.API_URL + '/me/report/user/' + userId, data);
   }

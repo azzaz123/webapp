@@ -22,8 +22,8 @@ export class XmppService {
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   public blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
-  private messageQ: Array<XmppBodyMessage> = [];
-  private archiveFinishedLoaded = false;
+  private realtimeQ: Array<XmppBodyMessage> = [];
+  private canProcessRealtime = true;
   private xmppError = { mesasge: 'XMPP disconnected' };
 
   constructor(private eventService: EventService) {
@@ -31,7 +31,7 @@ export class XmppService {
 
   public connect(userId: string, accessToken: string): Observable<boolean> {
     this.resource = 'WEB_' + Math.floor(Math.random() * 100000000000000);
-    this.self = this.createJid(userId);
+    this.self = this.createJid(userId, true);
     this.createClient(accessToken);
     this.bindEvents();
     this.client.connect();
@@ -72,11 +72,11 @@ export class XmppService {
     return message;
   }
 
-  public sendConversationStatus(userId: string, conversationId: string) {
+  public sendConversationStatus(userId: string, thread: string) {
     this.client.sendMessage({
       to: this.createJid(userId),
       type: 'chat',
-      thread: conversationId,
+      thread: thread,
       read: {
         xmlns: 'wallapop:thread:status'
       }
@@ -131,19 +131,18 @@ export class XmppService {
   }
 
   private bindEvents(): void {
-    this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADING, () => {
-      this.archiveFinishedLoaded = false;
-    });
-    this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADED, () => {
-      this.archiveFinishedLoaded = true;
-      this.messageQ.map(m => this.onNewMessage(m));
+    this.eventService.subscribe(EventService.CHAT_CAN_PROCESS_RT, (val) => {
+      this.canProcessRealtime = val;
+      if (val) {
+        this.realtimeQ.map(m => this.onNewMessage(m));
+      }
     });
 
     this.client.enableKeepAlive({
       interval: 30
     });
     this.client.on('message', (message: XmppBodyMessage) => {
-      this.archiveFinishedLoaded ? this.onNewMessage(message) : this.messageQ.push(message);
+      this.canProcessRealtime ? this.onNewMessage(message) : this.realtimeQ.push(message) ;
     });
     this.client.on('message:sent', (message: XmppBodyMessage) => {
       if (message.received) {
@@ -197,7 +196,7 @@ export class XmppService {
   }
 
   private onNewMessage(message: XmppBodyMessage, markAsPending = false) {
-      const replaceTimestamp = !message.timestamp || message.carbonSent;
+    const replaceTimestamp = !message.timestamp || message.carbonSent;
     if (message.carbonSent) {
       message = message.carbonSent.forwarded.message;
     }
@@ -232,7 +231,7 @@ export class XmppService {
     } else if (!message.carbon && message.sentReceipt) {
       signal = new ChatSignal(chatSignalType.SENT, message.thread, message.date, message.sentReceipt.id);
     } else if (message.readReceipt) {
-      signal = new ChatSignal(chatSignalType.READ, message.thread, message.date, null, !this.isFromSelf(message));
+      signal = new ChatSignal(chatSignalType.READ, message.thread, message.date, null, this.isFromSelf(message));
     }
 
     if (signal) {
@@ -241,7 +240,7 @@ export class XmppService {
   }
 
   private buildMessage(message: XmppBodyMessage, markAsPending = false) {
-    message.status = markAsPending ? messageStatus.PENDING : null;
+    message.status = markAsPending ? messageStatus.PENDING : messageStatus.SENT;
     return new Message(message.id, message.thread, message.body, message.from.local,
       new Date(message.date), message.status, message.payload);
   }
@@ -500,8 +499,8 @@ export class XmppService {
     });
   }
 
-  private createJid(userId: string): JID {
-    const jid = new JID(userId, environment.xmppDomain, this.resource);
+  private createJid(userId: string, withResource = false): JID {
+    const jid = new JID(userId, environment.xmppDomain, withResource ? this.resource : null);
     return jid;
   }
 }

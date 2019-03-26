@@ -27,7 +27,7 @@
   <msg id="3983509092263971640"><source>app/layout/topbar/topbar.component.html:38</source>My Pro Zone</msg>
   <msg id="4818441514225396186"><source>app/layout/topbar/topbar.component.html:43</source>List a product</msg>
   <msg id="6348395677948023023"><source>app/layout/topbar/topbar.component.html:44</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:31</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:42</source>List a car</msg>
-  <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.html:7</source><source>app/profile/profile.component.html:21</source><source>app/profile-pro/profile-pro.component.html:21</source>Profile</msg>
+  <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.html:7</source><source>app/profile/profile.component.html:23</source><source>app/profile-pro/profile-pro.component.html:21</source>Profile</msg>
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.html:15</source>Dashboard</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.html:23</source><source>app/catalog/list/list.component.html:38</source><source>app/favorites/favorites.component.html:28</source>Products</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.html:24</source>Catalog</msg>
@@ -55,7 +55,7 @@
   <msg id="8753092784115704500"><source>app/shared/process-all-button/process-all-button.component.html:7</source><source>app/shared/process-all-button/process-all-button.component.html:12</source><source>app/calls/calls.component.html:28</source>Process all</msg>
   <msg id="4965764680155209445"><source>app/shared/process-all-button/process-all-button.component.html:8</source>This will process all the elements in this page.</msg>
   <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.html:11</source><source>app/shared/confirmation-modal/confirmation-modal.component.html:32</source><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:6</source><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:6</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:31</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:6</source><source>app/chat/modals/block-user/block-user.component.html:6</source><source>app/chat/modals/unblock-user/unblock-user.component.html:6</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:5</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:6</source>Cancel</msg>
-  <msg id="4749295647449765550"><source>app/shared/archivable/archivable.component.html:6</source><source>app/calls/calls.component.html:24</source><source>app/chat/conversations-panel/conversations-panel.component.html:10</source><source>app/chat-with-inbox/inbox/inbox.component.html:10</source>Processed</msg>
+  <msg id="4749295647449765550"><source>app/shared/archivable/archivable.component.html:6</source><source>app/calls/calls.component.html:24</source><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:10</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:10</source>Processed</msg>
   <msg id="5847549463396300276"><source>app/shared/modals/review-modal/review-modal.component.html:8</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{userName}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="4650730844441578299"><source>app/shared/modals/review-modal/review-modal.component.html:9</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
   <msg id="3113301792677314615"><source>app/shared/modals/review-modal/review-modal.component.html:12</source>I sold this for:</msg>
@@ -78,10 +78,10 @@
   <msg id="5340498030552368470"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:10</source><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:11</source>Current password</msg>
   <msg id="3588415639242079458"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:14</source><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:15</source>New password</msg>
   <msg id="8656126574213649581"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:18</source><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:19</source>Confirm new password</msg>
-  <msg id="4021752662928002901"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:21</source><source>app/upload/preview-modal/preview-modal.component.html:7</source><source>app/upload/upload-car/upload-car.component.html:237</source><source>app/upload/upload-product/upload-product.component.html:121</source><source>app/upload/upload-realestate/upload-realestate.component.html:174</source>Update</msg>
-  <msg id="1897498190172236951"><source>app/shared/profile/picture-upload/picture-upload.component.html:16</source><source>app/shared/profile/picture-upload/picture-upload.component.html:37</source>Upload picture</msg>
-  <msg id="2828231996579923086"><source>app/shared/profile/picture-upload/picture-upload.component.html:19</source><source>app/shared/profile/picture-upload/picture-upload.component.html:40</source>JPG format and a minimum size of 400 x 400px are accepted.</msg>
-  <msg id="2099215062285114503"><source>app/shared/profile/picture-upload/picture-upload.component.html:36</source>Update picture</msg>
+  <msg id="4021752662928002901"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:21</source><source>app/upload/preview-modal/preview-modal.component.html:7</source><source>app/upload/upload-car/upload-car.component.html:237</source><source>app/upload/upload-product/upload-product.component.html:152</source><source>app/upload/upload-realestate/upload-realestate.component.html:174</source>Update</msg>
+  <msg id="2099215062285114503"><source>app/shared/profile/picture-upload/picture-upload.component.html:17</source><source>app/shared/profile/picture-upload/picture-upload.component.html:38</source><source>app/shared/profile/cover-upload/cover-upload.component.html:14</source>Update picture</msg>
+  <msg id="1897498190172236951"><source>app/shared/profile/picture-upload/picture-upload.component.html:18</source><source>app/shared/profile/picture-upload/picture-upload.component.html:39</source><source>app/shared/profile/cover-upload/cover-upload.component.html:15</source>Upload picture</msg>
+  <msg id="2828231996579923086"><source>app/shared/profile/picture-upload/picture-upload.component.html:21</source><source>app/shared/profile/picture-upload/picture-upload.component.html:42</source><source>app/shared/profile/cover-upload/cover-upload.component.html:18</source>JPG format and a minimum size of 400 x 400px are accepted.</msg>
   <msg id="4918814479561513634"><source>app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:2</source>Do you want to leave this page?</msg>
   <msg id="6618892692857491514"><source>app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:3</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
   <msg id="3542042671420335679"><source>app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:6</source><source>app/shared/catalog/catalog-card/catalog-card.component.html:87</source>No</msg>
@@ -125,7 +125,7 @@
   <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.html:62</source><source>app/catalog/list/catalog-item/catalog-item.component.html:49</source>Mark as sold</msg>
   <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.html:65</source><source>app/catalog/list/catalog-item/catalog-item.component.html:52</source>Mark as reserved</msg>
   <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.html:68</source><source>app/catalog/list/catalog-item/catalog-item.component.html:55</source>Edit</msg>
-  <msg id="4416413576346763682"><source>app/shared/catalog/catalog-card/catalog-card.component.html:76</source><source>app/calls/calls.component.html:23</source><source>app/calls/calls.component.html:51</source><source>app/catalog/list/catalog-item/catalog-item.component.html:70</source><source>app/chat/conversations-panel/conversations-panel.component.html:9</source><source>app/chat-with-inbox/inbox/inbox.component.html:9</source><source>app/dashboard/dashboard.component.html:17</source>Pending</msg>
+  <msg id="4416413576346763682"><source>app/shared/catalog/catalog-card/catalog-card.component.html:76</source><source>app/calls/calls.component.html:23</source><source>app/calls/calls.component.html:51</source><source>app/catalog/list/catalog-item/catalog-item.component.html:70</source><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:9</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:9</source><source>app/dashboard/dashboard.component.html:17</source>Pending</msg>
   <msg id="5272763997595694217"><source>app/shared/catalog/catalog-card/catalog-card.component.html:83</source>Cancel Autorenew</msg>
   <msg id="291347435854981703"><source>app/shared/catalog/catalog-card/catalog-card.component.html:84</source>Do you really want to cancel the autorenew for this item?</msg>
   <msg id="2807800733729323332"><source>app/shared/catalog/catalog-card/catalog-card.component.html:88</source>Yes</msg>
@@ -174,8 +174,8 @@
   <msg id="5269877616047992907"><source>app/shared/catalog/cart/cart.component.html:75</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:39</source>spending</msg>
   <msg id="7484614059925376312"><source>app/shared/catalog/cart/cart.component.html:86</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:50</source>missing</msg>
   <msg id="6315786827665033981"><source>app/shared/catalog/cart/cart.component.html:97</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:58</source>Total to pay</msg>
-  <msg id="7274286978511770772"><source>app/shared/catalog/cart/cart.component.html:104</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:53</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:58</source>Continue to Checkout</msg>
-  <msg id="3708302938863076299"><source>app/shared/catalog/cart/cart.component.html:107</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:19</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:61</source>Secure payment through Sabadell</msg>
+  <msg id="7274286978511770772"><source>app/shared/catalog/cart/cart.component.html:105</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:54</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:60</source>Continue to Checkout</msg>
+  <msg id="3708302938863076299"><source>app/shared/catalog/cart/cart.component.html:108</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:19</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:63</source>Secure payment through Sabadell</msg>
   <msg id="8720977247725652816"><source>app/shared/geolocation/location-select/location-modal/location-modal.component.html:4</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:61</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:67</source><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:7</source>Ok</msg>
   <msg id="4359291232904891489"><source>app/shared/geolocation/location-select/location-select.component.html:3</source>Set a location</msg>
   <msg id="5371960677736303052"><source>app/shared/geolocation/geolocation.component.html:9</source>Where?</msg>
@@ -305,8 +305,8 @@
     </msg>
   <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.html:37</source>Feature Product</msg>
   <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.html:65</source>Reactivate</msg>
-  <msg id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart"><source>app/catalog/list/selected-items/selected-items.component.html:28</source>Continue</msg>
-  <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.html:22</source>Not Available</msg>
+  <msg id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart"><source>app/catalog/list/selected-items/selected-items.component.html:29</source>Continue</msg>
+  <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.html:23</source>Not Available</msg>
   <msg id="3286725018134496844"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:10</source>You already have your extra features and you can use them whenever you want.</msg>
   <msg id="1034935109316471792"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:16</source>You featured your products.</msg>
   <msg id="495907666381542902"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:21</source>At the moment you do not have enough credit for this action.</msg>
@@ -377,31 +377,12 @@
   <msg id="6299971173481067869"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:18</source>city bumps</msg>
   <msg id="4849465581526004216"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:19</source>country bumps</msg>
   <msg id="4391289919356861627"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:24</source>Apply</msg>
-  <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:2</source><source>app/chat/chat.component.html:26</source>Delete conversation</msg>
-  <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:3</source>This will delete the conversation.</msg>
-  <msg id="7008439939460403347"><source>app/chat/modals/report-listing/report-listing.component.html:2</source><source>app/chat/modals/report-listing/report-listing.component.html:23</source><source>app/chat/modals/report-user/report-user.component.html:2</source><source>app/chat/modals/report-user/report-user.component.html:27</source>Report</msg>
-  <msg id="568597304214607466"><source>app/chat/modals/report-user/report-user.component.html:22</source>I&apos;m reporting this user because...</msg>
-  <msg id="20327443157350316"><source>app/chat/modals/block-user/block-user.component.html:2</source>Block user</msg>
-  <msg id="5871136368461493241"><source>app/chat/modals/block-user/block-user.component.html:3</source>You won&apos;t be able to send or receive messages from this user. Do you wish to continue?</msg>
-  <msg id="420763834450076269"><source>app/chat/modals/block-user/block-user.component.html:7</source>Block</msg>
-  <msg id="5118689036165223498"><source>app/chat/modals/unblock-user/unblock-user.component.html:2</source>Unblock user</msg>
-  <msg id="2565755719057925105"><source>app/chat/modals/unblock-user/unblock-user.component.html:3</source>You&apos;ll be able to send or receive messages from this user again. Do you wish to continue?</msg>
-  <msg id="4859202148272511129"><source>app/chat/modals/unblock-user/unblock-user.component.html:7</source>Unblock</msg>
-  <msg id="2711435905501432474"><source>app/chat/chat.component.html:27</source>Report this Listing</msg>
-  <msg id="5918739414324010673"><source>app/chat/chat.component.html:28</source>Report this User</msg>
-  <msg id="3909560892838036974"><source>app/chat/chat.component.html:29</source>Block this User</msg>
-  <msg id="7240635163184231751"><source>app/chat/chat.component.html:30</source>Unblock this User</msg>
-  <msg id="3437274703198746531"><source>app/chat/chat.component.html:46,47</source><source>app/chat-with-inbox/chat.component.html:9,10</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
-        from the list on the left</msg>
-  <msg id="3325766019344626759"><source>app/chat/chat.component.html:48</source><source>app/chat-with-inbox/chat.component.html:11</source>There are no messages</msg>
-  <msg id="6334569300046707546"><source>app/chat/chat.component.html:49,50</source><source>app/chat-with-inbox/chat.component.html:12,13</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
-        Try again later.</msg>
-  <msg id="6146618115870222180"><source>app/chat/conversations-panel/conversations-panel.component.html:2</source><source>app/chat-with-inbox/inbox/inbox.component.html:2</source>Your Messages</msg>
-  <msg id="8848709900682152607"><source>app/chat/conversations-panel/conversations-panel.component.html:5</source><source>app/chat-with-inbox/inbox/inbox.component.html:5</source>Mark everything as Processed</msg>
-  <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.html:27</source><source>app/chat-with-inbox/inbox/inbox.component.html:26</source>Load more</msg>
+  <msg id="6146618115870222180"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:2</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:2</source>Your Messages</msg>
+  <msg id="8848709900682152607"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:5</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:5</source>Mark everything as Processed</msg>
+  <msg id="33149636091572968"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:27</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:29</source>Load more</msg>
   <msg id="4896863464728200563"><source>app/chat/input/input.component.html:2</source>Write a message...</msg>
-  <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.html:2</source><source>app/chat-with-inbox/connection-alert/connection-alert.component.html:2</source>Waiting for network...</msg>
-  <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.html:3</source><source>app/chat-with-inbox/connection-alert/connection-alert.component.html:3</source>Connected</msg>
+  <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.html:2</source>Waiting for network...</msg>
+  <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.html:3</source>Connected</msg>
   <msg id="8016649850785953911"><source>app/chat/item/item.component.html:18</source>Unreserve</msg>
   <msg id="3537961834218859224"><source>app/chat/item/item.component.html:38,40</source>
         Add Insurance
@@ -413,12 +394,34 @@
         Finance your purchase
       </msg>
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.html:3</source>Reserved</msg>
+  <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:2</source><source>app/chat/chat-with-archive/chat-with-archive.component.html:30</source>Delete conversation</msg>
+  <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:3</source>This will delete the conversation.</msg>
+  <msg id="7008439939460403347"><source>app/chat/modals/report-listing/report-listing.component.html:2</source><source>app/chat/modals/report-listing/report-listing.component.html:23</source><source>app/chat/modals/report-user/report-user.component.html:2</source><source>app/chat/modals/report-user/report-user.component.html:27</source>Report</msg>
+  <msg id="568597304214607466"><source>app/chat/modals/report-user/report-user.component.html:22</source>I&apos;m reporting this user because...</msg>
+  <msg id="20327443157350316"><source>app/chat/modals/block-user/block-user.component.html:2</source>Block user</msg>
+  <msg id="5871136368461493241"><source>app/chat/modals/block-user/block-user.component.html:3</source>You won&apos;t be able to send or receive messages from this user. Do you wish to continue?</msg>
+  <msg id="420763834450076269"><source>app/chat/modals/block-user/block-user.component.html:7</source>Block</msg>
+  <msg id="5118689036165223498"><source>app/chat/modals/unblock-user/unblock-user.component.html:2</source>Unblock user</msg>
+  <msg id="2565755719057925105"><source>app/chat/modals/unblock-user/unblock-user.component.html:3</source>You&apos;ll be able to send or receive messages from this user again. Do you wish to continue?</msg>
+  <msg id="4859202148272511129"><source>app/chat/modals/unblock-user/unblock-user.component.html:7</source>Unblock</msg>
   <msg id="2020278898288143668"><source>app/chat/user-card/user-card.component.html:37</source>Selling</msg>
   <msg id="4636699111573030980"><source>app/chat/user-card/user-card.component.html:38</source>+<ph name="ITEMS_COUNT"><ex>{{user.itemsCount // i18n(ph=&quot;ITEMS_COUNT&quot;)}}</ex></ph> More</msg>
   <msg id="1166265010439249641"><source>app/chat/user-response-rate/user-response-rate.component.html:3</source>Typically responds within an hour</msg>
   <msg id="1404539941798522798"><source>app/chat/user-response-rate/user-response-rate.component.html:4</source>Typically responds within 3 hours</msg>
   <msg id="5927748278732131263"><source>app/chat/user-response-rate/user-response-rate.component.html:5</source>Typically responds within a day</msg>
   <msg id="6807057680918467236"><source>app/chat/user-response-rate/user-response-rate.component.html:6</source>Responds in more than 24 hours</msg>
+  <msg id="8032820066123493751"><source>app/chat/chat-with-inbox/inbox/inbox.component.html:17</source>New messages</msg>
+  <msg id="1353608778979192041"><source>app/chat/chat-with-inbox/inbox/inbox.component.html:20</source>We couldn&apos;t load your inbox due to whatever reasons :)</msg>
+  <msg id="8354913375869415098"><source>app/chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation.component.html:39</source><ph name="INTERPOLATION"><ex>{{ unreadCounterDisplayLimit }}</ex></ph>+</msg>
+  <msg id="4644715650405235071"><source>app/chat/chat-with-inbox/chat-with-inbox.component.html:9,10</source><source>app/chat/chat-with-archive/chat-with-archive.component.html:53,54</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+                from the list on the left</msg>
+  <msg id="3325766019344626759"><source>app/chat/chat-with-inbox/chat-with-inbox.component.html:11</source><source>app/chat/chat-with-archive/chat-with-archive.component.html:55</source>There are no messages</msg>
+  <msg id="7443033219479243959"><source>app/chat/chat-with-inbox/chat-with-inbox.component.html:12,13</source><source>app/chat/chat-with-archive/chat-with-archive.component.html:56,57</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+                Try again later.</msg>
+  <msg id="2711435905501432474"><source>app/chat/chat-with-archive/chat-with-archive.component.html:32</source>Report this Listing</msg>
+  <msg id="5918739414324010673"><source>app/chat/chat-with-archive/chat-with-archive.component.html:33</source>Report this User</msg>
+  <msg id="3909560892838036974"><source>app/chat/chat-with-archive/chat-with-archive.component.html:35</source>Block this User</msg>
+  <msg id="7240635163184231751"><source>app/chat/chat-with-archive/chat-with-archive.component.html:37</source>Unblock this User</msg>
   <msg id="7368172072093620772"><source>app/dashboard/dashboard.component.html:5</source>Your stats</msg>
   <msg id="44488151127771040"><source>app/dashboard/dashboard.component.html:8</source>Here you can see information related with the visualizations, chats and calls generated by your car catalog. You can also see the impact on metrics of the highlights you apply.</msg>
   <msg id="2734780694152757859"><source>app/dashboard/dashboard.component.html:25</source><source>app/dashboard/dashboard.component.html:34</source>View all</msg>
@@ -441,11 +444,13 @@
   <msg id="5871405940994162095"><source>app/help/help.component.html:60</source>For any support:</msg>
   <msg id="4039809737462883261"><source>app/help/help.component.html:64</source>Mon to Thurs from 10:00 to 18:00</msg>
   <msg id="4911360466860911169"><source>app/help/help.component.html:65</source>Fri from 09:00 to 15:00</msg>
-  <msg id="548531554532991134"><source>app/profile/profile.component.html:6</source>Your profile <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
-  <msg id="4532380494593950343"><source>app/profile/profile.component.html:9</source>From here you can view and edit your profile</msg>
-  <msg id="7022993325750262876"><source>app/profile/profile.component.html:11</source><source>app/profile-pro/profile-pro.component.html:11</source>View my public profile</msg>
-  <msg id="3797778920049399855"><source>app/profile/profile.component.html:16</source><source>app/profile-pro/profile-pro.component.html:16</source>Logout</msg>
-  <msg id="7830707034534607415"><source>app/profile/profile.component.html:22</source><source>app/profile-pro/profile-pro.component.html:23</source>Subscription</msg>
+  <msg id="462122657641643201"><source>app/profile/profile.component.html:6,8</source>Your profile <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>
+            <ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+          </msg>
+  <msg id="4532380494593950343"><source>app/profile/profile.component.html:11</source>From here you can view and edit your profile</msg>
+  <msg id="7022993325750262876"><source>app/profile/profile.component.html:13</source><source>app/profile-pro/profile-pro.component.html:11</source>View my public profile</msg>
+  <msg id="3797778920049399855"><source>app/profile/profile.component.html:18</source><source>app/profile-pro/profile-pro.component.html:16</source>Logout</msg>
+  <msg id="7830707034534607415"><source>app/profile/profile.component.html:24</source><source>app/profile-pro/profile-pro.component.html:23</source>Subscription</msg>
   <msg id="3163876998313048927"><source>app/profile/become-pro-modal/become-pro-modal.component.html:5</source>Become a PRO</msg>
   <msg id="2542747907081885378"><source>app/profile/become-pro-modal/become-pro-modal.component.html:6</source>Go to the app for further details</msg>
   <msg id="976362268569732073"><source>app/profile/become-pro-modal/become-pro-modal.component.html:10</source>Your products will be seen more: they will be in the first position of the searches</msg>
@@ -478,25 +483,27 @@
   <msg id="6283914624769804238"><source>app/profile/profile-info/profile-info.component.html:28</source>Gender:</msg>
   <msg id="8012344910054029733"><source>app/profile/profile-info/profile-info.component.html:34</source>Male</msg>
   <msg id="5667840900782067941"><source>app/profile/profile-info/profile-info.component.html:39</source>Female</msg>
-  <msg id="8134597337896146328"><source>app/profile/profile-info/profile-info.component.html:45</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:31</source>Product location:</msg>
-  <msg id="3768927257183755959"><source>app/profile/profile-info/profile-info.component.html:53</source><source>app/profile/profile-info/profile-info.component.html:98</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:61</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.html:69</source>Save</msg>
-  <msg id="6694781109624015458"><source>app/profile/profile-info/profile-info.component.html:63</source>PRO info</msg>
-  <msg id="6996799422725544865"><source>app/profile/profile-info/profile-info.component.html:66</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:24</source>Description:</msg>
-  <msg id="1205072394541462689"><source>app/profile/profile-info/profile-info.component.html:74</source>Phone number:</msg>
-  <msg id="874465399775999813"><source>app/profile/profile-info/profile-info.component.html:81</source>Website:</msg>
-  <msg id="8393150378980885613"><source>app/profile/profile-info/profile-info.component.html:88</source>Shop address:</msg>
-  <msg id="3004455960309356224"><source>app/profile/profile-info/profile-info.component.html:109</source>Account info</msg>
-  <msg id="6631334172623029500"><source>app/profile/profile-info/profile-info.component.html:112</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:74</source>Email:</msg>
-  <msg id="6865009229971482891"><source>app/profile/profile-info/profile-info.component.html:118</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:81</source>Password:</msg>
-  <msg id="2322688793988378029"><source>app/profile/profile-info/profile-info.component.html:127</source>Close account</msg>
+  <msg id="8134597337896146328"><source>app/profile/profile-info/profile-info.component.html:45</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:32</source>Product location:</msg>
+  <msg id="3768927257183755959"><source>app/profile/profile-info/profile-info.component.html:53</source><source>app/profile/profile-info/profile-info.component.html:116</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:62</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.html:69</source>Save</msg>
+  <msg id="3351130716079059086"><source>app/profile/profile-info/profile-info.component.html:67</source>Become a Pro</msg>
+  <msg id="6632978177693812295"><source>app/profile/profile-info/profile-info.component.html:70</source>See Pro options</msg>
+  <msg id="6694781109624015458"><source>app/profile/profile-info/profile-info.component.html:81</source>PRO info</msg>
+  <msg id="6996799422725544865"><source>app/profile/profile-info/profile-info.component.html:84</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:25</source>Description:</msg>
+  <msg id="1205072394541462689"><source>app/profile/profile-info/profile-info.component.html:92</source>Phone number:</msg>
+  <msg id="874465399775999813"><source>app/profile/profile-info/profile-info.component.html:99</source>Website:</msg>
+  <msg id="8393150378980885613"><source>app/profile/profile-info/profile-info.component.html:106</source>Shop address:</msg>
+  <msg id="3004455960309356224"><source>app/profile/profile-info/profile-info.component.html:127</source>Account info</msg>
+  <msg id="6631334172623029500"><source>app/profile/profile-info/profile-info.component.html:130</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:75</source>Email:</msg>
+  <msg id="6865009229971482891"><source>app/profile/profile-info/profile-info.component.html:136</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:82</source>Password:</msg>
+  <msg id="2322688793988378029"><source>app/profile/profile-info/profile-info.component.html:145</source>Close account</msg>
   <msg id="9032739290449539063"><source>app/profile-pro/profile-pro.component.html:6</source>Your info</msg>
   <msg id="4558593963938972556"><source>app/profile-pro/profile-pro.component.html:9</source>Here you can see and manage the information related to your profile</msg>
   <msg id="690637757793763587"><source>app/profile-pro/profile-pro.component.html:22</source>Billing information</msg>
-  <msg id="2836854179267941399"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:10</source>First name:</msg>
-  <msg id="5759985852212057755"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:17</source>Last name:</msg>
-  <msg id="138907429214820806"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:38</source>Opening Hours:</msg>
-  <msg id="2595624684026123810"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:45</source>Telephone:</msg>
-  <msg id="4644971093370005279"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:52</source>Web:</msg>
+  <msg id="2836854179267941399"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:11</source>First name:</msg>
+  <msg id="5759985852212057755"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:18</source>Last name:</msg>
+  <msg id="138907429214820806"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:39</source>Opening Hours:</msg>
+  <msg id="2595624684026123810"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:46</source>Telephone:</msg>
+  <msg id="4644971093370005279"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:53</source>Web:</msg>
   <msg id="8458658926966860767"><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:2</source>Are you sure you want to delete billing information?</msg>
   <msg id="5359061492766571193"><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.html:20</source>Company Name:</msg>
   <msg id="6744115081020952615"><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.html:26</source>Billing email:</msg>
@@ -589,23 +596,23 @@
   <msg id="5112037422043971210"><source>app/upload/drop-area/drop-area.component.html:5</source>Drop here your files to upload as a product photo</msg>
   <msg id="1417432796546296307"><source>app/upload/drop-area/drop-area.component.html:11</source>You have reached the limit of <ph name="INTERPOLATION"><ex>{{maxUploads}}</ex></ph> photos per product.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Remove one first if you want to add more.</msg>
   <msg id="6145572175629887249"><source>app/upload/drop-area/drop-area.component.html:31</source>Main photo</msg>
-  <msg id="6622336784189066984"><source>app/upload/preview-modal/preview-modal.component.html:6</source><source>app/upload/upload-car/upload-car.component.html:236</source><source>app/upload/upload-product/upload-product.component.html:120</source><source>app/upload/upload-realestate/upload-realestate.component.html:173</source>Post Ad</msg>
+  <msg id="6622336784189066984"><source>app/upload/preview-modal/preview-modal.component.html:6</source><source>app/upload/upload-car/upload-car.component.html:236</source><source>app/upload/upload-product/upload-product.component.html:151</source><source>app/upload/upload-realestate/upload-realestate.component.html:173</source>Post Ad</msg>
   <msg id="2233560223291461480"><source>app/upload/preview-modal/preview-modal.component.html:27</source><source>app/upload/upload-car/upload-car.component.html:182</source>Manual</msg>
   <msg id="810888510148304696"><source>app/upload/preview-modal/preview-modal.component.html:28</source><source>app/upload/upload-car/upload-car.component.html:187</source>Automatic</msg>
   <msg id="7493844856700299080"><source>app/upload/preview-modal/preview-modal.component.html:42</source><source>app/upload/upload-car/upload-car.component.html:154</source>Petrol</msg>
   <msg id="1763954588841728713"><source>app/upload/preview-modal/preview-modal.component.html:43</source><source>app/upload/upload-car/upload-car.component.html:159</source>Diesel</msg>
   <msg id="3250359485015452319"><source>app/upload/preview-modal/preview-modal.component.html:44</source><source>app/upload/upload-car/upload-car.component.html:164</source>Electric</msg>
   <msg id="8258001121894230907"><source>app/upload/preview-modal/preview-modal.component.html:45</source><source>app/upload/upload-car/upload-car.component.html:169</source>Other...</msg>
-  <msg id="7026441111090698984"><source>app/upload/preview-modal/preview-modal.component.html:52</source><source>app/upload/upload-car/upload-car.component.html:221</source><source>app/upload/upload-product/upload-product.component.html:88</source>Firm Price</msg>
+  <msg id="7026441111090698984"><source>app/upload/preview-modal/preview-modal.component.html:52</source><source>app/upload/upload-car/upload-car.component.html:221</source><source>app/upload/upload-product/upload-product.component.html:89</source>Firm Price</msg>
   <msg id="8260444303636416171"><source>app/upload/preview-modal/preview-modal.component.html:56</source>Shipping available</msg>
-  <msg id="1292901362619782619"><source>app/upload/preview-modal/preview-modal.component.html:60</source><source>app/upload/upload-car/upload-car.component.html:226</source><source>app/upload/upload-product/upload-product.component.html:93</source>Accept trades</msg>
+  <msg id="1292901362619782619"><source>app/upload/preview-modal/preview-modal.component.html:60</source><source>app/upload/upload-car/upload-car.component.html:226</source><source>app/upload/upload-product/upload-product.component.html:94</source>Accept trades</msg>
   <msg id="8781767917622107949"><source>app/upload/upload-car/upload-car.component.html:3</source>Basic Information</msg>
   <msg id="1511766279515968094"><source>app/upload/upload-car/upload-car.component.html:7</source>Make</msg>
   <msg id="7990122896525380062"><source>app/upload/upload-car/upload-car.component.html:10</source>Select another make</msg>
   <msg id="6589788805402268888"><source>app/upload/upload-car/upload-car.component.html:11</source>Select a predefined make</msg>
   <msg id="3937675945889395823"><source>app/upload/upload-car/upload-car.component.html:14</source>E.g. Seat</msg>
   <msg id="6532546314500089011"><source>app/upload/upload-car/upload-car.component.html:20</source>The basics: make.</msg>
-  <msg id="1141886420788473147"><source>app/upload/upload-car/upload-car.component.html:27</source>Model</msg>
+  <msg id="1141886420788473147"><source>app/upload/upload-car/upload-car.component.html:27</source><source>app/upload/upload-product/upload-product.component.html:122</source>Model</msg>
   <msg id="2547360803785971520"><source>app/upload/upload-car/upload-car.component.html:28</source><source>app/upload/upload-car/upload-car.component.html:31</source>E.g. Ibiza</msg>
   <msg id="3089964188307740"><source>app/upload/upload-car/upload-car.component.html:34</source>The basics: model.</msg>
   <msg id="1464072562214937907"><source>app/upload/upload-car/upload-car.component.html:42</source>Year</msg>
@@ -634,15 +641,15 @@
   <msg id="8722082542322229824"><source>app/upload/upload-car/upload-car.component.html:149</source>Motor</msg>
   <msg id="6234112553577946460"><source>app/upload/upload-car/upload-car.component.html:173</source>It&apos;s important, trust us!</msg>
   <msg id="3577268427399505619"><source>app/upload/upload-car/upload-car.component.html:177</source>Transmission</msg>
-  <msg id="4902817035128594900"><source>app/upload/upload-car/upload-car.component.html:195</source><source>app/upload/upload-product/upload-product.component.html:63</source><source>app/upload/upload-realestate/upload-realestate.component.html:128</source>Description</msg>
+  <msg id="4902817035128594900"><source>app/upload/upload-car/upload-car.component.html:195</source><source>app/upload/upload-product/upload-product.component.html:64</source><source>app/upload/upload-realestate/upload-realestate.component.html:128</source>Description</msg>
   <msg id="4908480064602665904"><source>app/upload/upload-car/upload-car.component.html:197</source>Tell us more. Used or new? Yellow or red? Has it got any bumps?</msg>
   <msg id="6236574297221800719"><source>app/upload/upload-car/upload-car.component.html:201</source>Don&apos;t leave anything out. The details are key to selling faster.</msg>
-  <msg id="8405309693308875139"><source>app/upload/upload-car/upload-car.component.html:208</source><source>app/upload/upload-product/upload-product.component.html:76</source><source>app/upload/upload-realestate/upload-realestate.component.html:164</source>Photos</msg>
-  <msg id="7052953914167063593"><source>app/upload/upload-car/upload-car.component.html:212</source><source>app/upload/upload-product/upload-product.component.html:79</source>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images.</msg>
-  <msg id="3429380014519274140"><source>app/upload/upload-car/upload-car.component.html:217</source><source>app/upload/upload-product/upload-product.component.html:84</source>Further information</msg>
+  <msg id="8405309693308875139"><source>app/upload/upload-car/upload-car.component.html:208</source><source>app/upload/upload-product/upload-product.component.html:77</source><source>app/upload/upload-realestate/upload-realestate.component.html:164</source>Photos</msg>
+  <msg id="7052953914167063593"><source>app/upload/upload-car/upload-car.component.html:212</source><source>app/upload/upload-product/upload-product.component.html:80</source>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images.</msg>
+  <msg id="3429380014519274140"><source>app/upload/upload-car/upload-car.component.html:217</source><source>app/upload/upload-product/upload-product.component.html:85</source>Further information</msg>
   <msg id="2224879576270143088"><source>app/upload/upload-car/upload-car.component.html:230</source>What sellers usually ask...</msg>
   <msg id="3738144900818451024"><source>app/upload/upload-car/upload-car.component.html:233</source>Your car is in:</msg>
-  <msg id="4138346261331244869"><source>app/upload/upload-car/upload-car.component.html:243</source><source>app/upload/upload-product/upload-product.component.html:127</source><source>app/upload/upload-realestate/upload-realestate.component.html:180</source>How does it look?</msg>
+  <msg id="4138346261331244869"><source>app/upload/upload-car/upload-car.component.html:243</source><source>app/upload/upload-product/upload-product.component.html:158</source><source>app/upload/upload-realestate/upload-realestate.component.html:180</source>How does it look?</msg>
   <msg id="243983274320667129"><source>app/upload/upload-product/upload-product.component.html:3</source>Information about your item</msg>
   <msg id="3322682308330601072"><source>app/upload/upload-product/upload-product.component.html:7</source>What are you selling?</msg>
   <msg id="368364095324628291"><source>app/upload/upload-product/upload-product.component.html:9</source><source>app/upload/upload-realestate/upload-realestate.component.html:115</source>In two words...</msg>
@@ -650,12 +657,15 @@
   <msg id="6649229882788371997"><source>app/upload/upload-product/upload-product.component.html:23</source>(don&apos;t go crazy)</msg>
   <msg id="3306762056923998233"><source>app/upload/upload-product/upload-product.component.html:28</source>Add a fair price and the category that best suits your item.</msg>
   <msg id="1806667489382256324"><source>app/upload/upload-product/upload-product.component.html:42</source><source>app/upload/upload-product/upload-product.component.html:43</source>Category</msg>
-  <msg id="5433438112560949935"><source>app/upload/upload-product/upload-product.component.html:65</source>Add relevant information such as condition, model, color...</msg>
-  <msg id="7493287338252374869"><source>app/upload/upload-product/upload-product.component.html:69</source>Every detail helps: so tell us more!</msg>
-  <msg id="2806917038528218276"><source>app/upload/upload-product/upload-product.component.html:97</source>FAQ</msg>
-  <msg id="5972351850683239127"><source>app/upload/upload-product/upload-product.component.html:103</source>Shipping</msg>
-  <msg id="2059029015636272683"><source>app/upload/upload-product/upload-product.component.html:104</source>You can send (almost) anything through wallapop. And it&apos;s free for you!</msg>
-  <msg id="2877776180648049476"><source>app/upload/upload-product/upload-product.component.html:114</source>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</msg>
+  <msg id="5433438112560949935"><source>app/upload/upload-product/upload-product.component.html:66</source>Add relevant information such as condition, model, color...</msg>
+  <msg id="7493287338252374869"><source>app/upload/upload-product/upload-product.component.html:70</source>Every detail helps: so tell us more!</msg>
+  <msg id="2806917038528218276"><source>app/upload/upload-product/upload-product.component.html:98</source>FAQ</msg>
+  <msg id="8132836034776935972"><source>app/upload/upload-product/upload-product.component.html:102</source>The more precise, the better</msg>
+  <msg id="3892318280760368021"><source>app/upload/upload-product/upload-product.component.html:108</source>Select a type</msg>
+  <msg id="2559885490456050359"><source>app/upload/upload-product/upload-product.component.html:113</source>Brand</msg>
+  <msg id="5972351850683239127"><source>app/upload/upload-product/upload-product.component.html:134</source>Shipping</msg>
+  <msg id="2059029015636272683"><source>app/upload/upload-product/upload-product.component.html:135</source>You can send (almost) anything through wallapop. And it&apos;s free for you!</msg>
+  <msg id="2877776180648049476"><source>app/upload/upload-product/upload-product.component.html:145</source>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</msg>
   <msg id="4601810369894625886"><source>app/upload/upload-realestate/upload-realestate.component.html:3</source>Information about your property</msg>
   <msg id="2368160689121002750"><source>app/upload/upload-realestate/upload-realestate.component.html:6</source>Rent or sale?</msg>
   <msg id="87397333944060990"><source>app/upload/upload-realestate/upload-realestate.component.html:15</source>Is your property for sale or for rent?</msg>

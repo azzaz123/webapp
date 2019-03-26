@@ -35,11 +35,11 @@ import { CallsService } from './core/conversation/calls.service';
 import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
 import { PaymentService } from './core/payments/payment.service';
 import { MOCK_MESSAGE } from '../tests/message.fixtures.spec';
-import { messageStatus } from './core/message/message';
 import { RealTimeService } from './core/message/real-time.service';
 import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
 import { createInboxConversationsArray } from '../tests/inbox.fixtures.spec';
+import { SplitTestService } from './core/tracking/split-test.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -59,6 +59,7 @@ let cookieService: CookieService;
 let modalService: NgbModal;
 let connectionService: ConnectionService;
 let paymentService: PaymentService;
+let splitTestService: SplitTestService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -87,7 +88,7 @@ describe('App', () => {
         {provide: DebugService, useValue: {}},
         {
           provide: InboxService, useValue: {
-            getInbox() {},
+            init() {},
             saveInbox() {},
             getInboxFeatureFlag() {
               return Observable.of(false);
@@ -201,6 +202,11 @@ describe('App', () => {
           }
         },
         {
+          provide: SplitTestService, useValue: {
+            init() {}
+          }
+        },
+        {
           provide: PaymentService, useValue: {
             deleteCache() {
             }
@@ -229,6 +235,7 @@ describe('App', () => {
     modalService = TestBed.get(NgbModal);
     connectionService = TestBed.get(ConnectionService);
     paymentService = TestBed.get(PaymentService);
+    splitTestService = TestBed.get(SplitTestService);
     spyOn(notificationService, 'init');
   });
 
@@ -277,7 +284,7 @@ describe('App', () => {
         });
         spyOn(conversationService, 'init').and.returnValue(Observable.of({}));
         spyOn(callsService, 'init').and.returnValue(Observable.of({}));
-        spyOn(inboxService, 'getInbox').and.returnValue(Observable.of(mockedInboxConversations));
+        spyOn(inboxService, 'init');
       }));
 
       it('should call the eventService.subscribe passing the login event', () => {
@@ -364,6 +371,23 @@ describe('App', () => {
 
           expect(conversationService.init).toHaveBeenCalledTimes(2);
         });
+
+        it('should unsubscribe from the RT_CONNECTED_EVENT', () => {
+          spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+
+          component.ngOnInit();
+          emitSuccessChatEvents();
+
+          expect(component['RTConnectedSubscription'].closed).toBe(true);
+        });
+      });
+
+      it('should init the old chat (call conversationService.init) when getInboxFeatureFlag throws an error', () => {
+        spyOn(inboxService, 'getInboxFeatureFlag').and.returnValue(Observable.throw(false));
+        component.ngOnInit();
+        emitSuccessChatEvents();
+
+        expect(conversationService.init).toHaveBeenCalled();
       });
 
       describe('when getInboxFeatureFlag return true', () => {
@@ -371,29 +395,20 @@ describe('App', () => {
           spyOn(inboxService, 'getInboxFeatureFlag').and.returnValue(Observable.of(true));
         });
 
-        it('should call inboxService.getInbox', () => {
+        it('should call inboxService.init', () => {
           component.ngOnInit();
           emitSuccessChatEvents();
 
-          expect(inboxService.getInbox).toHaveBeenCalledTimes(1);
+          expect(inboxService.init).toHaveBeenCalledTimes(1);
         });
 
-        it('should call inboxService.saveInbox with the result returned by getInbox', () => {
-          spyOn(inboxService, 'saveInbox');
+        it('should NOT unsubscribe from the RT_CONNECTED_EVENT', () => {
+          spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
 
           component.ngOnInit();
           emitSuccessChatEvents();
 
-          expect(inboxService.saveInbox).toHaveBeenCalledWith(mockedInboxConversations);
-        });
-
-        it('should emit a EventService.INBOX_LOADED after getInbox returns', () => {
-          spyOn(eventService, 'emit').and.callThrough();
-
-          component.ngOnInit();
-          emitSuccessChatEvents();
-
-          expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, mockedInboxConversations);
+          expect(component['RTConnectedSubscription'].closed).toBe(false);
         });
       });
 
@@ -548,9 +563,9 @@ describe('App', () => {
   describe('process chat signals', () => {
     it('should call conversationService.processChatSignal when a CHAT_SIGNAL event is emitted with a Sent, Received or Read signal', () => {
       const timestamp = new Date(MOCK_MESSAGE.date).getTime();
-      const sentSignal = new ChatSignal(chatSignalType.SENT, MOCK_MESSAGE.conversationId, timestamp, MOCK_MESSAGE.id);
-      const receivedSignal =  new ChatSignal(chatSignalType.RECEIVED, MOCK_MESSAGE.conversationId, timestamp, MOCK_MESSAGE.id);
-      const readSignal = new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.conversationId, timestamp, null, false);
+      const sentSignal = new ChatSignal(chatSignalType.SENT, MOCK_MESSAGE.thread, timestamp, MOCK_MESSAGE.id);
+      const receivedSignal =  new ChatSignal(chatSignalType.RECEIVED, MOCK_MESSAGE.thread, timestamp, MOCK_MESSAGE.id);
+      const readSignal = new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.thread, timestamp, null, false);
       const testWithignals = [sentSignal, receivedSignal, readSignal];
       spyOn(conversationService, 'processChatSignal');
       component.ngOnInit();
@@ -632,6 +647,16 @@ describe('App', () => {
       component['setTitle']();
 
       expect(component.hideSidebar).toBeTruthy();
+    });
+  });
+
+  describe('Taplytics', () => {
+    it('should initialize the Taplytics library when creating the app', () => {
+      spyOn(splitTestService, 'init');
+
+      component.ngOnInit();
+
+      expect(splitTestService.init).toHaveBeenCalled();
     });
   });
 });

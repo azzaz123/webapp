@@ -6,13 +6,13 @@
     display: -ms-flexbox;
     position: relative;
     align-items: center;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
   }
   input {
     & {
       border: none;
       width: 190px - 36px;
-      color: $grey-900;
+      color: $blue-grey-1;
       -webkit-transition-property: width;
       transition-property: width;
       transition-duration: 0.2s;
@@ -25,19 +25,19 @@
       width: 250px - 36px;
     }
     &::-webkit-input-placeholder {
-      color: $corporate;
+      color: $walla-main;
       opacity: 0.9;
     }
     &::-moz-placeholder {
-      color: $grey-300;
+      color: $blue-grey-2;
       opacity: 0.9;
     }
     &::-ms-placeholder {
-      color: $grey-300;
+      color: $blue-grey-2;
       opacity: 0.9;
     }
     &::placeholder {
-      color: $grey-300;
+      color: $blue-grey-2;
       opacity: 0.9;
     }
   }
@@ -57,11 +57,11 @@
   & {
     height: 36px;
     width: 36px;
-    color: $grey-100;
+    color: $blue-grey-4;
   }
   &.active {
     /deep/ svg g path {
-      fill: $corporate;
+      fill: $walla-main;
     }
   }
 }
@@ -70,7 +70,7 @@
   & {
     width: 15px;
     height: 17px;
-    margin-right: 12px;
+    margin-right: $spacing-ms;
     display: inline-block;
     vertical-align: top;
     background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/autocomplete-icons.png);
@@ -83,7 +83,7 @@
   & {
     padding: 0;
     overflow: hidden;
-    margin: 0.4rem 0 0;
+    margin: $spacing-s 0 0;
     left: 0 !important;
   }
 }
@@ -92,9 +92,9 @@
   & {
     background-color: transparent;
     cursor: pointer;
-    color: $grey-900;
-    border-bottom: 1px solid $grey-50;
-    padding: 0.5rem 1rem;
+    color: $blue-grey-1;
+    border-bottom: 1px solid $blue-grey-5;
+    padding: $spacing-s $spacing-m;
     -webkit-transition: all .15s linear;
     -moz-transition: all .15s linear;
     -o-transition: all .15s linear;
@@ -103,5 +103,5 @@
 }
 
 :host /deep/ .dropdown-item.active {
-  background-color: $grey-50;
+  background-color: $blue-grey-5;
 }

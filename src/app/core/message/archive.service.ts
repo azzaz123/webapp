@@ -35,21 +35,23 @@ export class MsgArchiveService {
 
   public getEventsSince(start: string): Observable<MsgArchiveResponse> {
     if (!this.sinceArchiveSubscription) {
-      this.sinceArchiveSubscription = this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADED, () => {
-        this.sinceArchiveMetrics = this.calculateMetrics(this.sinceArchiveMetrics);
-        if (this.sinceArchiveMetrics.downloadingTime) {
-          const trackEvent: TrackingEventData = {
-            eventData: TrackingService.CONVERSATION_SINCEARCHIVE_OK,
-            attributes: {
-              processing_time: this.sinceArchiveMetrics.processingTime,
-              downloading_time: this.sinceArchiveMetrics.downloadingTime,
-              number_of_messages: this.sinceArchiveMetrics.eventsCount,
-              number_of_page_elems: this.pageSize
-            }
-          };
-          this.trackingService.addTrackingEvent(trackEvent);
+      this.sinceArchiveSubscription = this.eventService.subscribe(EventService.CHAT_CAN_PROCESS_RT, (val) => {
+        if (val) {
+          this.sinceArchiveMetrics = this.calculateMetrics(this.sinceArchiveMetrics);
+          if (this.sinceArchiveMetrics.downloadingTime) {
+            const trackEvent: TrackingEventData = {
+              eventData: TrackingService.CONVERSATION_SINCEARCHIVE_OK,
+              attributes: {
+                processing_time: this.sinceArchiveMetrics.processingTime,
+                downloading_time: this.sinceArchiveMetrics.downloadingTime,
+                number_of_messages: this.sinceArchiveMetrics.eventsCount,
+                number_of_page_elems: this.pageSize
+              }
+            };
+            this.trackingService.addTrackingEvent(trackEvent);
+          }
+          this.sinceArchiveMetrics = {} as ArchiveMetrics;
         }
-        this.sinceArchiveMetrics = {} as ArchiveMetrics;
       });
     }
     this.selfId = this.userService.user.id;
@@ -99,21 +101,23 @@ export class MsgArchiveService {
 
   public getAllEvents(thread: string, since: string = '0'): Observable<MsgArchiveResponse> {
     if (!this.firstArchiveSubscription) {
-      this.firstArchiveSubscription = this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADED, () => {
-        this.firstArchiveMetrics = this.calculateMetrics(this.firstArchiveMetrics);
-        if (this.firstArchiveMetrics.downloadingTime) {
-          const trackEvent: TrackingEventData = {
-            eventData: TrackingService.CONVERSATION_FIRSTARCHIVE_OK,
-            attributes: {
-              processing_time: this.firstArchiveMetrics.processingTime,
-              downloading_time: this.firstArchiveMetrics.downloadingTime,
-              number_of_messages: this.firstArchiveMetrics.eventsCount,
-              number_of_page_elems: this.pageSize
-            }
-          };
-          this.trackingService.addTrackingEvent(trackEvent);
+      this.firstArchiveSubscription = this.eventService.subscribe(EventService.CHAT_CAN_PROCESS_RT, (val) => {
+        if (val) {
+          this.firstArchiveMetrics = this.calculateMetrics(this.firstArchiveMetrics);
+          if (this.firstArchiveMetrics.downloadingTime) {
+            const trackEvent: TrackingEventData = {
+              eventData: TrackingService.CONVERSATION_FIRSTARCHIVE_OK,
+              attributes: {
+                processing_time: this.firstArchiveMetrics.processingTime,
+                downloading_time: this.firstArchiveMetrics.downloadingTime,
+                number_of_messages: this.firstArchiveMetrics.eventsCount,
+                number_of_page_elems: this.pageSize
+              }
+            };
+            this.trackingService.addTrackingEvent(trackEvent);
+          }
+          this.firstArchiveMetrics = {} as ArchiveMetrics;
         }
-        this.firstArchiveMetrics = {} as ArchiveMetrics;
       });
     }
     this.selfId = this.userService.user.id;
@@ -164,7 +168,7 @@ export class MsgArchiveService {
   public updateStatuses(messages: Message[], readReceipts: ReadReceipt[], receivedReceipts: ReceivedReceipt[]) {
     readReceipts.forEach(r => {
       messages.filter(m => {
-        const threadMatches = m.conversationId === r.thread;
+        const threadMatches = m.thread === r.thread;
         /* senderMatches: The first part of ternary condition is used to match 3rd voice messages, where 'from' = the id of the user
         logged in, so the readReceipts match inversley (example: a 3rd voice message will have 'from' as my user id, but it should be
         marked as read with a read receipt sent by me, to the other user id) */

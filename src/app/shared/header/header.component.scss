@@ -2,12 +2,12 @@
 
 /deep/ {
     .header-title {
-        font-size: $font-size-LL;
-        color: $grey-900;
+        font-size: $font-size-ll;
+        color: $blue-grey-1;
         font-weight: bold;
         display: flex;
         .badge {
-          margin-left: 10px;
+          margin-left: $spacing-ms;
           vertical-align: middle;
         }
     }
@@ -18,41 +18,41 @@
     }
 
     .header-row-margin {
-        margin-bottom: $spacing;
+        margin-bottom: $spacing-ml;
     }
 
     .header-subtitle {
-        font-size: $font-size-S;
-        color: $grey-300;
+        font-size: $font-size-s;
+        color: $blue-grey-2;
         margin-bottom: 0;
-        line-height: $spacing;
+        line-height: $line-height-ml;
     }
 
     .header-separator {
-        color: $grey-300;
-        margin: 0 15px;
+        color: $blue-grey-2;
+        margin: 0 $spacing-m;
     }
 
     .header-link {
-        font-size: $font-size-S;
+        font-size: $font-size-s;
     }
 
     .header-numbers {
-        color: $grey-250;
+        color: $blue-grey-3;
         text-align: center;
         display: flex;
         flex-direction: column;
         align-self: flex-end;
         .header-numbers-top {
-            font-size: 20px;
+            font-size: $font-size-l;
             font-weight: 700;
-            line-height: 1.1;
+            line-height: $line-height-ml;
             margin-bottom: 0;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .header-numbers-bottom {
-            font-size: 14px;
+            font-size: $font-size-s;
             margin-bottom: 0;
         }
     }

@@ -1,7 +1,7 @@
 @import "~style/common";
 
 :host {
-  padding: $spacing-L;
+  padding: $spacing-xl;
   text-align: center;
 }
 .modal-close {
@@ -14,35 +14,35 @@
   }
 }
 img {
-  margin-bottom: $spacing-L;
-  margin-top: $spacing-L;
+  margin-bottom: $spacing-xl;
+  margin-top: $spacing-xl;
   &.fail {
     width: 173px;
   }
 }
 p {
-  color: $grey-250;
-  font-size: $font-size;
+  color: $blue-grey-3;
+  font-size: $font-size-m;
   max-width: 300px;
-  margin: 0 auto $spacing-L auto;
+  margin: 0 auto $spacing-xl auto;
 }
 h1 {
   font-weight: bold;
-  color: $grey-900;
-  font-size: $spacing;
-  margin-bottom: $spacing-2M;
-  margin-top: $spacing-XL;
+  color: $blue-grey-1;
+  font-size: $font-size-xs;
+  margin-bottom: $spacing-l;
+  margin-top: $spacing-xxxl;
   &.fail {
-    color: $warn;
+    color: $negative-main;
   }
 }
 tsl-button {
   width: 100%;
-  margin-bottom: $spacing-S;
+  margin-bottom: $spacing-ms;
 }
 a {
   &:not([href]) {
-    color: $grey-250;
+    color: $blue-grey-3;
     text-decoration: underline;
     cursor: pointer;
     &:hover {

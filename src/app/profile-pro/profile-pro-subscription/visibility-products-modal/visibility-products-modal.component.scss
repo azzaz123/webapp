@@ -13,7 +13,7 @@
 .modal-body {
   text-align: center;
   p {
-    color: $grey-200;
+    color: $blue-grey-3;
   }
 }
 
@@ -23,14 +23,14 @@ h1, h2 {
 }
 
 h1 {
-  font-size: 26px;
-  margin-top: 50px;
-  margin-bottom: 40px;
+  font-size: $font-size-3L;
+  margin-top: $spacing-xxl;
+  margin-bottom: $spacing-xxl;
 }
 
 h2 {
-  font-size: 24px;
-  margin-bottom: $spacing-S;
+  font-size: $font-size-lll;
+  margin-bottom: $spacing-ms;
 }
 
 .city, .country {
@@ -43,7 +43,7 @@ h2 {
 
 .city {
   background: url(/assets/images/visibility-city.svg) no-repeat center 27px;
-  border-right: solid 1px rgba($grey-100, .3);
+  border-right: solid 1px rgba($blue-grey-4, .3);
 }
 
 .country {
@@ -53,6 +53,6 @@ h2 {
 .btn {
   border-radius: $button-border-radius;
   font-weight: bold;
-  margin-top: $spacing-L;
-  padding: 10px 30px;
+  margin-top: $spacing-xl;
+  padding: $spacing-ms $spacing-xl;
 }

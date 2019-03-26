@@ -34,9 +34,10 @@
   <translation id="5918739414324010673">Reportar usuario</translation>
   <translation id="3909560892838036974">Bloquear usuario</translation>
   <translation id="7240635163184231751">Desbloquear usuario</translation>
-  <translation id="3437274703198746531">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
+  <translation id="4644715650405235071">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
   <translation id="3325766019344626759">No hay mensajes</translation>
-  <translation id="6334569300046707546">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
+  <translation id="8032820066123493751">Nuevos mensajes</translation>
+  <translation id="7443033219479243959">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
   <translation id="4896863464728200563">Escribe un mensaje...</translation>
   <translation id="3093507871243266697">Esperando red...</translation>
   <translation id="3208980041287937682">Conectado</translation>
@@ -46,6 +47,8 @@
   <translation id="1404539941798522798">Responde en menos de 3 horas</translation>
   <translation id="5927748278732131263">Responde el mismo día</translation>
   <translation id="6807057680918467236">Responde en 24 horas o más</translation>
+  <translation id="1353608778979192041">No pudimos cargar tu bandeja de entrada por cualquier motivo :)</translation>
+  <translation id="8354913375869415098">+<ph name="INTERPOLATION"><ex>{{ unreadCounterDisplayLimit }}</ex></ph></translation>
   <translation id="3894950702316166331">Cargando...</translation>
   <translation id="8998211649643752990">Estamos cargando todos tus mensajes por primera vez. Estarán disponibles antes de que acaben las obras de la Sagrada Família, un abrazo.</translation>
   <translation id="4814285799071780083">Eliminar</translation>
@@ -769,4 +772,17 @@
   <translation id="8215426233314088255">¡Enhorabuena! Ya tienes tu producto subido a wallapop.</translation>
   <translation id="2828231996579923086">Aceptamos formatos .jpg y mínimo 400 x 400px</translation>
   <translation id="2099215062285114503">Cambiar foto</translation>
+  <translation id="8871965642938314035">(<ph name="INTERPOLATION"><ex>{{(status?.autorenew_scheduled?.citybump || 0) + (status?.autorenew_scheduled?.zonebump || 0)}}</ex></ph> planeado)</translation>
+  <translation id="8132836034776935972">Te encontrarán antes si concretas</translation>
+  <translation id="3892318280760368021">Selecciona un tipo</translation>
+  <translation id="2559885490456050359">Marca</translation>
+  <translation id="3351130716079059086">Conviértete en Pro</translation>
+  <translation id="6632978177693812295">Vea las opciones Pro</translation>
+  <translation id="2836854179267941399">Nombre:</translation>
+  <translation id="5759985852212057755">Apellidos:</translation>
+  <translation id="4644971093370005279">Web:</translation>
+  <translation id="2959266806536471647">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="462122657641643201">Tu perfil <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>
+              <ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+  </translation>
 </translationbundle>

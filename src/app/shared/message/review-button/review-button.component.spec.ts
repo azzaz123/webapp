@@ -45,7 +45,7 @@ describe('ReviewButtonComponent', () => {
       providers: [
         {
           provide: ConversationService, useValue: {
-          getItemFromConvId() {
+          getItemFromThread() {
             return mockItem;
           },
           get() {
@@ -188,7 +188,7 @@ describe('ReviewButtonComponent', () => {
       });
 
       it('should set thread in the modal component', () => {
-        expect(modalRef.componentInstance.thread).toEqual(component.message.conversationId);
+        expect(modalRef.componentInstance.thread).toEqual(component.message.thread);
       });
 
       it('should set showButton false', () => {

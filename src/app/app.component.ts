@@ -35,7 +35,8 @@ import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
 import { ChatSignal } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
-import { InboxConversation } from './core/conversation/conversation';
+import { Subscription, Observable } from 'rxjs';
+import { SplitTestService } from './core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-root',
@@ -53,6 +54,7 @@ export class AppComponent implements OnInit {
   private currentUrl: string;
   private previousSlug: string;
   private sendPresenceInterval = 240000;
+  private RTConnectedSubscription: Subscription;
 
   constructor(private event: EventService,
               private realTime: RealTimeService,
@@ -77,7 +79,8 @@ export class AppComponent implements OnInit {
               private modalService: NgbModal,
               private connectionService: ConnectionService,
               private paymentService: PaymentService,
-              private callService: CallsService) {
+              private callService: CallsService,
+              private splitTestService: SplitTestService) {
     this.config();
   }
 
@@ -97,6 +100,7 @@ export class AppComponent implements OnInit {
     this.connectionService.checkConnection();
     this.conversationService.firstLoad = true;
     this.trackingService.trackAccumulatedEvents();
+    this.splitTestService.init();
 
     __cmp('init', quancastOptions[this.i18n.locale]);
   }
@@ -162,9 +166,11 @@ export class AppComponent implements OnInit {
   private initRealTimeChat(user: User, accessToken: string) {
     this.event.subscribe(EventService.DB_READY, (dbName) => {
       if (!dbName) {
-        this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
-          this.inboxService.getInboxFeatureFlag().subscribe((active) => {
-            active ? this.initChatWithInbox() : this.initOldChat();
+        this.RTConnectedSubscription = this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
+          this.inboxService.getInboxFeatureFlag()
+          .catch(() => Observable.of(false))
+          .subscribe((active) => {
+            active ? this.inboxService.init() : this.initOldChat();
           });
         });
         this.realTime.connect(user.id, accessToken);
@@ -184,14 +190,9 @@ export class AppComponent implements OnInit {
         }
       });
     });
+    this.RTConnectedSubscription.unsubscribe();
   }
 
-  private initChatWithInbox() {
-    this.inboxService.getInbox().subscribe((conversations: InboxConversation[]) => {
-      this.inboxService.saveInbox(conversations);
-      this.event.emit(EventService.INBOX_LOADED, conversations);
-    });
-  }
 
   private subscribeEventUserLogout() {
     this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {

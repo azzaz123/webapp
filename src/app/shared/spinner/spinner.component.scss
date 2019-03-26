@@ -11,12 +11,12 @@ $spinner-size: 24px;
     align-self: center;
     .spinner {
       @include square($spinner-size);
-      margin-bottom: $spacing;
+      margin-bottom: $spacing-ml;
     }
     h2 {
-      font-size: $font-size;
-      color: $grey-500;
-      line-height: 24px;
+      font-size: $font-size-m;
+      color: $blue-grey-2;
+      line-height: $line-height-l;
     }
   }
 }

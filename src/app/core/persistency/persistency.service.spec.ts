@@ -2,13 +2,17 @@
 
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PersistencyService } from './persistency.service';
-import { createMessagesArray, MESSAGE_MAIN, MOCK_MESSAGE, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
-import { Message, messageStatus, phoneRequestState } from '../message/message';
+import { createMessagesArray, createInboxMessagesArray, MESSAGE_MAIN,
+  MOCK_MESSAGE, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
+import { Message, phoneRequestState } from '../message/message';
+import { InboxMessage, messageStatus } from '../../chat/chat-with-inbox/message/inbox-message';
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_RESPONSE,
   MockedConversationsDb,
-  MockedMessagesDb
+  MockedMessagesDb,
+  MOCK_INBOX_DB_RESPONSE,
+  MockedInboxDb
 } from '../../../tests/persistency.fixtures.spec';
 import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs';
@@ -18,6 +22,8 @@ import { EventService } from '../event/event.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 
 let service: PersistencyService;
 let userService: UserService;
@@ -32,7 +38,11 @@ describe('Service: Persistency', () => {
       providers: [
         PersistencyService,
         EventService,
-        {provide: UserService, useValue: { me() { return Observable.of(MOCK_USER); }}}
+        { provide: UserService, useValue: {
+          me() { return Observable.of(MOCK_USER); },
+          user() { return Observable.of(MOCK_USER); },
+          }
+        }
       ],
     });
     service = TestBed.get(PersistencyService);
@@ -40,6 +50,7 @@ describe('Service: Persistency', () => {
     eventService = TestBed.get(EventService);
     (service as any)['_messagesDb'] = new MockedMessagesDb();
     (service as any)['_conversationsDb'] = new MockedConversationsDb();
+    (service as any)['_inboxDb'] = new MockedInboxDb();
   });
 
   it('should call localDbVersionUpdate through the constructor after USER_LOGIN event is trigegred', () => {
@@ -87,7 +98,7 @@ describe('Service: Persistency', () => {
       const mockTrackEvent: TrackingEventData = {
         eventData: TrackingService.MESSAGE_SENT,
         id: '123',
-        attributes: { thread_id: MOCK_MESSAGE.conversationId, message_id: MOCK_MESSAGE.id }
+        attributes: { thread_id: MOCK_MESSAGE.thread, message_id: MOCK_MESSAGE.id }
       };
 
       request.addEventListener('success', () => {
@@ -126,13 +137,13 @@ describe('Service: Persistency', () => {
       const mockTrackEvents: TrackingEventData[] = [
         { eventData: TrackingService.MESSAGE_SENT,
           id: '1',
-          attributes: { thread_id: MOCK_MESSAGE.conversationId, message_id: MOCK_MESSAGE.id + '1' }},
+          attributes: { thread_id: MOCK_MESSAGE.thread, message_id: MOCK_MESSAGE.id + '1' }},
         { eventData: TrackingService.MESSAGE_RECEIVED,
           id: '2',
-          attributes: { thread_id: MOCK_MESSAGE.conversationId, message_id: MOCK_MESSAGE.id  + '2' }},
+          attributes: { thread_id: MOCK_MESSAGE.thread, message_id: MOCK_MESSAGE.id  + '2' }},
         { eventData: TrackingService.MESSAGE_READ,
           id: '3',
-          attributes: { thread_id: MOCK_MESSAGE.conversationId, message_id: MOCK_MESSAGE.id + '3' }}
+          attributes: { thread_id: MOCK_MESSAGE.thread, message_id: MOCK_MESSAGE.id + '3' }}
       ];
       request.addEventListener('success', () => {
         service['clickstreamDb'] = request.result;
@@ -252,7 +263,8 @@ describe('Service: Persistency', () => {
         message: MOCK_MESSAGE.message,
         status: MOCK_MESSAGE.status,
         from: MOCK_MESSAGE.from.split('@')[0],
-        conversationId: MOCK_MESSAGE.conversationId,
+        // TODO - replace conversationId with thread with DB version update to standardizes prop. names
+        conversationId: MOCK_MESSAGE.thread,
         payload: undefined,
         phoneRequest: undefined
       });
@@ -274,7 +286,8 @@ describe('Service: Persistency', () => {
         message: MOCK_MESSAGE.message,
         status: MOCK_MESSAGE.status,
         from: MOCK_MESSAGE.from.split('@')[0],
-        conversationId: MOCK_MESSAGE.conversationId,
+        // TODO - replace conversationId with thread with DB version update to standardizes prop. names
+        conversationId: MOCK_MESSAGE.thread,
         payload: MOCK_PAYLOAD_OK,
         phoneRequest: undefined
       });
@@ -301,6 +314,40 @@ describe('Service: Persistency', () => {
     }));
 
     it('should call the upsert when a single message is passed', fakeAsync(() => {
+      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve());
+      let saveMessagePromise: any;
+
+      service.saveMessages(MOCK_MESSAGE).subscribe((data: any) => {
+        saveMessagePromise = data;
+      });
+      tick();
+
+      expect((service as any).upsert).toHaveBeenCalled();
+      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
+      expect((service as any).upsert.calls.allArgs()[0][1]).toBe(MOCK_MESSAGE.id);
+    }));
+  });
+
+  describe('saveInboxMessages', () => {
+    it('should save the messages with bulkDocs when an array of InboxMessages is passed', fakeAsync(() => {
+      spyOn(service.messagesDb, 'bulkDocs').and.returnValue(Promise.resolve());
+      spyOn<any>(service, 'buildResponse');
+      const messages: Array<InboxMessage> = createInboxMessagesArray(2);
+      let saveMessagePromise: any;
+
+      service.saveInboxMessages(messages).subscribe((data: any) => {
+        saveMessagePromise = data;
+      });
+      tick();
+
+      expect((service as any).buildResponse).toHaveBeenCalledTimes(2);
+      expect(service.messagesDb.bulkDocs).toHaveBeenCalledWith(
+        messages.map((message: InboxMessage) => {
+          return (service as any).buildResponse(message);
+        }));
+    }));
+
+    it('should call the upsert when a single InboxMessage is passed', fakeAsync(() => {
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve());
       let saveMessagePromise: any;
 
@@ -500,6 +547,43 @@ describe('Service: Persistency', () => {
       expect(service['storedMessages']).toBe(null);
     });
 
+  });
+
+  describe('updateStoredInbox', () => {
+    const inboxConversations = createInboxConversationsArray(1);
+    beforeEach(() => {
+      spyOn(userService, 'user').and.returnValue(Observable.of(MOCK_USER));
+      spyOn(service.inboxDb, 'destroy').and.returnValue(Promise.resolve({}));
+      });
+
+    it('should destroy the existing inboxDb', () => {
+      service.updateStoredInbox(inboxConversations);
+
+      expect(service.inboxDb.destroy).toHaveBeenCalled();
+    });
+
+    it('should recreate the inboxDb', fakeAsync(() => {
+      service.updateStoredInbox(inboxConversations).subscribe();
+      tick();
+
+      expect(service.inboxDb).toBeTruthy();
+    }));
+
+  });
+
+  describe('getStoredInbox', () => {
+    it('should fetch all documents from the inboxDb and return them as an array of InboxConversations', fakeAsync(() => {
+      spyOn(service.inboxDb, 'allDocs').and.returnValue(Promise.resolve(MOCK_INBOX_DB_RESPONSE));
+      let convs: any;
+
+      service.getStoredInbox().subscribe((data: any) => convs = data);
+      tick();
+
+      expect(service.inboxDb.allDocs).toHaveBeenCalledWith({include_docs: true});
+      convs.map(conv => {
+        expect(conv instanceof InboxConversation);
+      });
+    }));
   });
 });
 

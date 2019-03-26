@@ -26,6 +26,7 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'ng-select';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
+import { GeneralSuggestionsService } from './upload-product/general-suggestions.service';
 
 
 @NgModule({
@@ -63,7 +64,8 @@ import { GeolocationModule } from '../shared/geolocation/geolocation.module';
     CarKeysService,
     CarSuggestionsService,
     RealestateKeysService,
-    ItemResolverService
+    ItemResolverService,
+    GeneralSuggestionsService
   ],
   entryComponents: [
     RemoveConfirmModalComponent,

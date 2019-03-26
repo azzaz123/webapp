@@ -32,8 +32,8 @@
       max-width: 8px;
       border-radius: 50%;
       background-color: #aeaeae;
-      margin-left: 6px;
-      margin-right: 6px;
+      margin-left: $spacing-s;
+      margin-right: $spacing-s;
       &.active {
         @include square(10px);
         max-width: 10px;
