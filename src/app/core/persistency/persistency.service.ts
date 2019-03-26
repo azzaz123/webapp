@@ -84,7 +84,7 @@ export class PersistencyService {
 
   private buildInboxResponse(conversation) {
     return {
-      _id: conversation.hash,
+      _id: conversation.id,
       conversation: conversation
     };
   }
