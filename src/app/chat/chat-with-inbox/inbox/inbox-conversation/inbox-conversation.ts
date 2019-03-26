@@ -69,3 +69,13 @@ export class InboxConversation {
         return this._phoneShared;
     }
 }
+
+export class StoredInboxConversation {
+    constructor(private _id: string,
+      private modifiedDate: Date,
+      private user: InboxUser,
+      private item: InboxItem,
+      private phoneShared: boolean,
+      private unreadCounter: number = 0,
+      private lastMessage?: InboxMessage) {}
+  }

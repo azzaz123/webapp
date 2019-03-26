@@ -114,6 +114,13 @@ describe('Component: ChatWithInboxComponent', () => {
 
       expect(component.currentConversation).toEqual(mockConversation);
     });
+
+    it('should set connectionError to FALSE when a EventService.CONNECTION_RESTORED event is emitted', () => {
+      component.ngOnInit();
+      eventService.emit(EventService.CONNECTION_RESTORED);
+
+      expect(component.connectionError).toBe(false);
+    });
   });
 
   it('should call stopAdsRefresh when destroy component', () => {

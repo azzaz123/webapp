@@ -17,6 +17,7 @@
     <span i18n>New messages</span>
   </button>
   <div id="conversations" [hidden]="loading"> 
+    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We couldn't load your inbox due to whatever reasons :)</div>
     <tsl-inbox-conversation *ngFor="let conversation of conversations"
       [conversation]="conversation"
       [ngClass]="{'active': conversation?.active}"
