@@ -11,13 +11,15 @@ import { InboxMessage, messageStatus, statusOrder } from '../../chat/chat-with-i
 import { EventService } from '../event/event.service';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { UserService } from '../user/user.service';
+import { Message } from '../message/message';
 
 @Injectable()
 
 export class InboxService {
   private API_URL = 'bff/messaging/inboxes/mine';
-  public _conversations: InboxConversation[];
+  private _conversations: InboxConversation[];
   private selfId: string;
+  public errorRetrievingInbox = false;
 
   constructor(private http: HttpService,
     private persistencyService: PersistencyService,
@@ -42,14 +44,20 @@ export class InboxService {
 
   public init() {
     this.selfId = this.userService.user.id;
-    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
-      this.processNewMessage(message);
+    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+      const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from,
+        message.fromSelf, message.date, message.status, message.payload, message.phoneRequest);
+      this.processNewMessage(inboxMessage);
     });
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processChatSignal(signal);
     });
-    this.getInbox().subscribe((conversations: InboxConversation[]) => {
-      this.saveInbox(conversations);
+    this.getInbox()
+    .catch(() => {
+      this.errorRetrievingInbox = true;
+      return this.persistencyService.getStoredInbox();
+    })
+    .subscribe((conversations: InboxConversation[]) => {
       this.eventService.emit(EventService.INBOX_LOADED, conversations);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
@@ -61,12 +69,14 @@ export class InboxService {
     .map(res => {
       const r = res.json();
       this.saveMessages(r.conversations);
-      return this.conversations = this.buildConversations(r.conversations);
+      this.conversations = this.buildConversations(r.conversations);
+      this.saveInbox(this.conversations);
+      return this.conversations;
     });
   }
 
   private saveInbox(inboxConversations: InboxConversation[]) {
-    this.persistencyService.updateInbox(inboxConversations);
+    this.persistencyService.updateStoredInbox(inboxConversations);
   }
 
   private processNewMessage(message: InboxMessage) {
