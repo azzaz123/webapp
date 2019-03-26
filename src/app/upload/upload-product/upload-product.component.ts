@@ -329,12 +329,17 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public onCategoryChange(category: CategoryOption) {
-    if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(category.value) && this.brandModelExperimentEnabled === true) {
-      this.extraInfoEnabled = true;
-      this.objectTypeTitle = category.object_type_title;
-      this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
-        this.objectTypes = objectTypes;
-      });
+    if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(category.value)) {
+      if (!this.item) {
+        this.splitTestService.track('CategoryWithBrandModelSelected');
+      }
+      if (this.brandModelExperimentEnabled === true) {
+        this.extraInfoEnabled = true;
+        this.objectTypeTitle = category.object_type_title;
+        this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
+          this.objectTypes = _.reverse(objectTypes);
+        });
+      }
     } else {
       this.extraInfoEnabled = false;
     }

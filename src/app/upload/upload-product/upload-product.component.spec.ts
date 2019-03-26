@@ -388,6 +388,16 @@ describe('UploadProductComponent', () => {
       has_model: true
     };
 
+    describe('if the selected category allows brand/model fields', () => {
+      it('should send the Taplytics `CategoryWithBrandModelSelected` event', () => {
+        spyOn(splitTestService, 'track');
+
+        component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+
+        expect(splitTestService.track).toHaveBeenCalledWith('CategoryWithBrandModelSelected');
+      });
+    });
+
     describe('The Taplytics experiment returns true, and the selected category allows brand/model fields', () => {
       beforeEach(() => {
         component.brandModelExperimentEnabled = true;
