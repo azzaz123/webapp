@@ -70,14 +70,8 @@ export class InboxService {
     return this.http.get(this.API_URL)
     .map(res => {
       const r = res.json();
-      this.conversations = this.buildConversations(r.conversations);
-      this.saveInbox(this.conversations);
-      return this.conversations;
+      return this.buildConversations(r.conversations);
     });
-  }
-
-  private saveInbox(inboxConversations: InboxConversation[]) {
-    this.persistencyService.updateStoredInbox(inboxConversations);
   }
 
   private processNewMessage(newMessage: InboxMessage) {
@@ -166,7 +160,6 @@ export class InboxService {
     // TODO - handle third voice type message (type === '? TBD');
     const textMessages = conversation.messages.filter(m => m.type === 'text').map(m => new InboxMessage(m.id, conversation.hash, m.text,
       m.from_user_hash, m.from_user_hash === this.selfId, new Date(m.timestamp), m.status, m.payload));
-    this.persistencyService.saveInboxMessages(textMessages);
     return textMessages;
   }
 }
