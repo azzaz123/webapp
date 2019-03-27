@@ -368,7 +368,7 @@ describe('UploadProductComponent', () => {
   });
 
   describe('onCategoryChange', () => {
-    const MOCK_CATGORY_OPTION_1: CategoryOption = {
+    const MOCK_CATEGORY_OPTION_1: CategoryOption = {
       value: '16000',
       label: 'label',
       icon_id: '1',
@@ -392,7 +392,7 @@ describe('UploadProductComponent', () => {
       it('should send the Taplytics `CategoryWithBrandModelSelected` event', () => {
         spyOn(splitTestService, 'track');
 
-        component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+        component.onCategoryChange(MOCK_CATEGORY_OPTION_1);
 
         expect(splitTestService.track).toHaveBeenCalledWith('CategoryWithBrandModelSelected');
       });
@@ -404,13 +404,13 @@ describe('UploadProductComponent', () => {
       });
 
       it('should show the extra info fields', () => {
-        component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+        component.onCategoryChange(MOCK_CATEGORY_OPTION_1);
 
         expect(component.extraInfoEnabled).toBe(true);
       });
 
       it('should update the object type title', () => {
-        component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+        component.onCategoryChange(MOCK_CATEGORY_OPTION_1);
 
         expect(component.objectTypeTitle).toBe('title');
       });
@@ -418,7 +418,7 @@ describe('UploadProductComponent', () => {
       it('should get the object types for the selected category', () => {
         spyOn(generalSuggestionsService, 'getObjectTypes').and.callThrough();
 
-        component.onCategoryChange(MOCK_CATGORY_OPTION_1);
+        component.onCategoryChange(MOCK_CATEGORY_OPTION_1);
 
         expect(generalSuggestionsService.getObjectTypes).toHaveBeenCalledWith('16000');
       });
