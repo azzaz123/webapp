@@ -21,14 +21,17 @@
   width: 100%;
 }
 
-h6 {
-  display: block;
-  width: 100%;
+.message-container {
   text-align: center;
-  margin: $spacing-ml 0;
-  text-transform: uppercase;
-  color: $blue-grey-2;
-  font-weight: bold;
+}
+.date-marker {
+  display: inline-flex;
+  text-align: center;
+  padding: $spacing-xxs $spacing-s;
+  background-color: $blue-grey-4;
+  border-radius: 10px;
+  margin: $spacing-ms 0;
+  color: $white;
   font-size: $font-size-xs;
 }
 
