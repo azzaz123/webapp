@@ -1,17 +1,20 @@
-import { Component, Input } from '@angular/core';
-import { InboxMessage } from '../message/inbox-message';
+import { Component, OnInit, Input } from '@angular/core';
 import { InboxConversation } from '../inbox/inbox-conversation/inbox-conversation';
+import { EventService } from '../../../core/event/event.service';
+import { RealTimeService } from '../../../core/message/real-time.service';
 
 @Component({
   selector: 'tsl-current-conversation',
   templateUrl: './current-conversation.component.html',
   styleUrls: ['./current-conversation.component.scss']
 })
-export class CurrentConversationComponent {
+export class CurrentConversationComponent implements OnInit {
 
   @Input() currentConversation: InboxConversation;
 
-  constructor() { }
+  constructor(private eventService: EventService,
+    private realTime: RealTimeService) {
+  }
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -22,6 +25,10 @@ export class CurrentConversationComponent {
     sameElse: 'dddd, D MMM'
   };
 
+  ngOnInit() {
+    this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: InboxMessage) => this.sendRead(message));
+  }
+
   public showDate(currentMessage: InboxMessage, nextMessage: InboxMessage): boolean {
     return nextMessage ? new Date(currentMessage.date).toDateString() !== new Date(nextMessage.date).toDateString() : true;
   }
@@ -30,4 +37,13 @@ export class CurrentConversationComponent {
     return date.getFullYear() === new Date().getFullYear();
   }
 
+  private sendRead(message: InboxMessage) {
+    if (this.currentConversation.id === message.thread) {
+      Visibility.onVisible(() => {
+        setTimeout(() => {
+          this.realTime.sendRead(this.currentConversation.user.id, this.currentConversation.id);
+        }, 1000);
+      });
+    }
+  }
 }
