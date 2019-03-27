@@ -12,6 +12,9 @@
   &:active, &:focus {
     border: 1px solid $walla-main;
   }
+  &::placeholder {
+    color: $blue-grey-3;
+  }
 }
 
 .keyword-suggester-suggestions {

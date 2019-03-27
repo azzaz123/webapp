@@ -120,7 +120,9 @@ export class I18nService {
       pro_subscription_tutorial_items_no_expire: 'Your items won\'t expire.',
       cars_subscription_tutorial_phone_on_car: 'Your phone will appear in each car you have listed, so more buyers will contact you.',
       brand: 'Brand',
-      model: 'Model'
+      model: 'Model',
+      brand_example: 'E.g: Apple',
+      model_example: 'E.g: iPhone'
     },
     es: {
       daysMomentConfig: {
@@ -240,7 +242,9 @@ export class I18nService {
       pro_subscription_tutorial_items_no_expire: 'Tus productos no caducarán nunca.',
       cars_subscription_tutorial_phone_on_car: 'Tu teléfono aparecerá en cada coche que tengas publicado, así más compradores te contactarán.',
       brand: 'Marca',
-      model: 'Modelo'
+      model: 'Modelo',
+      brand_example: 'P. ej: Apple',
+      model_example: 'P. ej: iPhone',
     }
   };
 
