@@ -2,27 +2,32 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
-import { InboxConversation } from '../conversation/conversation';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { MessageService } from '../message/message.service';
-import { InboxItem } from '../item/item';
-import { InboxUser } from '../user/user';
-import { InboxImage } from '../user/user-response.interface';
+import { InboxItem, InboxItemPlaceholder, InboxImage } from '../../chat/chat-with-inbox/inbox/inbox-item';
+import { InboxUser, InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
 import { FeatureflagService } from '../user/featureflag.service';
-import { Message, messageStatus, statusOrder } from '../message/message';
+import { InboxMessage, messageStatus, statusOrder } from '../../chat/chat-with-inbox/message/inbox-message';
 import { EventService } from '../event/event.service';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { UserService } from '../user/user.service';
+import { Message } from '../message/message';
 
 @Injectable()
 
 export class InboxService {
   private API_URL = 'bff/messaging/inboxes/mine';
-  public _conversations: InboxConversation[];
+  private _conversations: InboxConversation[];
+  private selfId: string;
+  public errorRetrievingInbox = false;
 
   constructor(private http: HttpService,
     private persistencyService: PersistencyService,
     private messageService: MessageService,
     private featureflagService: FeatureflagService,
-    private eventService: EventService) {}
+    private eventService: EventService,
+    private userService: UserService) {
+    }
 
 
   set conversations(value: InboxConversation[]) {
@@ -38,14 +43,21 @@ export class InboxService {
   }
 
   public init() {
+    this.selfId = this.userService.user.id;
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
-      this.processNewMessage(message);
+      const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from,
+        message.fromSelf, message.date, message.status, message.payload, message.phoneRequest);
+      this.processNewMessage(inboxMessage);
     });
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processChatSignal(signal);
     });
-    this.getInbox().subscribe((conversations: InboxConversation[]) => {
-      this.saveInbox(conversations);
+    this.getInbox()
+    .catch(() => {
+      this.errorRetrievingInbox = true;
+      return this.persistencyService.getStoredInbox();
+    })
+    .subscribe((conversations: InboxConversation[]) => {
       this.eventService.emit(EventService.INBOX_LOADED, conversations);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
@@ -57,19 +69,22 @@ export class InboxService {
     .map(res => {
       const r = res.json();
       this.saveMessages(r.conversations);
-      return this.conversations = this.buildConversations(r.conversations);
+      this.conversations = this.buildConversations(r.conversations);
+      this.saveInbox(this.conversations);
+      return this.conversations;
     });
   }
 
   private saveInbox(inboxConversations: InboxConversation[]) {
-    this.persistencyService.updateInbox(inboxConversations);
+    this.persistencyService.updateStoredInbox(inboxConversations);
   }
 
-  private processNewMessage(message: Message) {
+  private processNewMessage(message: InboxMessage) {
     const conversation = this.conversations.find(c => c.id === message.thread);
     if (conversation) {
       const newMessage = message;
       if (conversation.lastMessage && conversation.lastMessage.id !== newMessage.id) {
+        this.bumpConversation(conversation);
         conversation.lastMessage = newMessage;
         conversation.modifiedDate = conversation.lastMessage.date;
         if (!message.fromSelf) {
@@ -77,6 +92,14 @@ export class InboxService {
           this.messageService.totalUnreadMessages++;
         }
       }
+    }
+  }
+
+  private bumpConversation(conversation: InboxConversation) {
+    const index: number = this.conversations.indexOf(conversation);
+    if (index > 0) {
+      this.conversations.splice(index, 1);
+      this.conversations.unshift(conversation);
     }
   }
 
@@ -105,25 +128,31 @@ export class InboxService {
 
   private buildConversations(conversations): InboxConversation[] {
     return conversations.map((conv) => {
-      let lastMessage: Message = null;
+      let lastMessage: InboxMessage = null;
       let dateModified: Date = null;
       if (conv.messages && conv.messages.length) {
-        const lastMsg = conv.messages[conv.messages.length - 1];
-        lastMessage = new Message(lastMsg.id, conv.hash, lastMsg.text, lastMsg.from_user_hash, new Date(lastMsg.timestamp),
+        const lastMsg = conv.messages[0];
+        const fromSelf = lastMsg.from_user_hash === this.selfId;
+        if (lastMsg.type === 'text') {
+        lastMessage = new InboxMessage(lastMsg.id, conv.hash, lastMsg.text, lastMsg.from_user_hash, fromSelf, new Date(lastMsg.timestamp),
         lastMsg.status, lastMsg.payload);
-        lastMessage.fromSelf = lastMessage.from !== conv.with_user.hash;
         dateModified = new Date(lastMsg.timestamp);
+        } else {
+          // TODO - handle case when last message is a third voice type and may NOT have the 'text' property
+        }
       }
       const user = this.buildInboxUser(conv.with_user);
       const item = this.buildInboxItem(conv.item);
-      const conversation = new InboxConversation(conv.hash, dateModified, user, item, lastMessage, conv.unread_messages || 0,
-        conv.phone_shared);
+      const conversation = new InboxConversation(conv.hash, dateModified, user, item, conv.phone_shared, conv.unread_messages, lastMessage);
       this.messageService.totalUnreadMessages += conversation.unreadCounter;
       return conversation;
     });
   }
 
-  private buildInboxUser(user: any) {
+  private buildInboxUser(user: any): InboxUser {
+    if (!user) {
+      return InboxUserPlaceholder;
+    }
     const userBlocked = Boolean(user.available && user.blocked);
     return new InboxUser(user.hash, user.name, userBlocked, user.available);
   }
@@ -134,15 +163,18 @@ export class InboxService {
         small: item && item.image_url ? item.image_url : null
       }
     };
+    if (!item) {
+      return InboxItemPlaceholder;
+    }
     return new InboxItem(item.hash, item.price, item.title, image, item.status);
   }
 
   private saveMessages(conversations: any) {
     conversations.map(conv => {
       const messages = [];
-      conv.messages.map(msg => messages.push(new Message(msg.id, conv.hash, msg.text, msg.from_user_hash,
-        new Date(msg.timestamp), msg.status, msg.payload)));
-      this.persistencyService.saveMessages(messages);
+      conv.messages.map(msg => messages.push(new InboxMessage(msg.id, conv.hash, msg.text, msg.from_user_hash,
+        msg.from_user_hash === this.selfId, new Date(msg.timestamp), msg.status, msg.payload)));
+      this.persistencyService.saveInboxMessages(messages);
     });
   }
 }

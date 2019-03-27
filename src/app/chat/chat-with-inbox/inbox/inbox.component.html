@@ -16,7 +16,8 @@
     <mat-icon svgIcon="up-arrow-white"></mat-icon>
     <span i18n>New messages</span>
   </button>
-  <div id="conversations" [hidden]="loading"> 
+  <div id="conversations" [hidden]="loading">
+    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We couldn't load your inbox due to whatever reasons :)</div>
     <tsl-inbox-conversation *ngFor="let conversation of conversations" [conversation]="conversation" [ngClass]="{'active': conversation?.active}"></tsl-inbox-conversation>
   </div>
   <div id="loader" [hidden]="!loading">

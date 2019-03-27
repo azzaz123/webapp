@@ -4,6 +4,7 @@ import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/te
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
 import { Message } from '../message/message';
+import { messageStatus } from '../../chat/chat-with-inbox/message/inbox-message';
 import { MOCK_USER, USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID,
   MOCKED_CONVERSATIONS,
@@ -303,6 +304,20 @@ describe('Service: Xmpp', () => {
       expect(msg.thread).toEqual('thread');
       expect(msg.message).toEqual('body');
       expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.local);
+    }));
+
+    it('should set the message status to SENT when a new xmpp message is received', fakeAsync(() => {
+      let msg: Message;
+      eventService.emit('session:started', null);
+      eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+        msg = message;
+      });
+
+      eventService.emit('message', MOCKED_SERVER_MESSAGE);
+      tick();
+
+      expect(msg.status).toBe(messageStatus.SENT);
     }));
 
     it(`should emit a newMessage event with withDeliveryReceipt TRUE when the message includes
@@ -648,6 +663,19 @@ describe('Service: Xmpp', () => {
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(message);
       expect(service['onNewMessage']).toHaveBeenCalledWith(message, true);
     });
+
+    it('should set the message status to PENDING when a new xmpp message is sent', fakeAsync(() => {
+      let msg: Message;
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+        msg = message;
+      });
+
+      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+      tick();
+
+      expect(msg.status).toBe(messageStatus.PENDING);
+    }));
 
     it('should emit a MESSAGE_SENT event when called', () => {
       spyOn(eventService, 'emit');

@@ -1,5 +1,5 @@
 import { Model } from '../resource/model.interface';
-import { Image, UserLocation, InboxImage } from '../user/user-response.interface';
+import { Image, UserLocation } from '../user/user-response.interface';
 import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo, AutorenewPurchase, ItemExtraInfo } from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
@@ -11,12 +11,7 @@ export const ITEM_STATUSES: any = {
   'active': 'PUBLISHED',
   'sold': ['SOLD_OUTSIDE', 'BOUGHT']
 };
-export const INBOX_ITEM_STATUSES: any = {
-  sold: 'sold',
-  reserved: 'reserved',
-  notAvailable: 'not available',
-  published: 'published'
-};
+
 export const ITEM_TYPES: any = {
   CONSUMER_GOODS: 'consumer_goods',
   CARS: 'cars',
@@ -286,77 +281,5 @@ export class Item implements Model {
 
   get extraInfo(): ItemExtraInfo {
     return this._extraInfo;
-  }
-}
-
-export interface InboxItemPrice {
-  amount: number;
-  currency: string;
-}
-
-export class InboxItem implements Model {
-  constructor(private _id: string,
-              private _price?: InboxItemPrice,
-              private _title?: string,
-              private _mainImage?: InboxImage,
-              private _status?: string) {
-    this.mapStatusToFlags(this.status);
-  }
-
-  public sold = false;
-  public reserved = false;
-  public published = false;
-  public notAvailable = false;
-
-  private mapStatusToFlags(status: string) {
-    switch (status) {
-      case INBOX_ITEM_STATUSES.sold:
-        this.sold = true;
-        break;
-      case INBOX_ITEM_STATUSES.reserved:
-        this.reserved = true;
-        break;
-      case INBOX_ITEM_STATUSES.notAvailable:
-        this.notAvailable = true;
-        break;
-      case INBOX_ITEM_STATUSES.published:
-        this.published = true;
-        break;
-      default:
-        this.published = true;
-        break;
-    }
-  }
-
-  get id(): string {
-    return this._id;
-  }
-
-  get price(): InboxItemPrice {
-    return this._price;
-  }
-
-  get title(): string {
-    return this._title;
-  }
-
-  get status() {
-    return this._status;
-  }
-
-  set status(value: string) {
-    this._status = value;
-  }
-
-  get mainImage(): InboxImage {
-    return this._mainImage;
-  }
-
-  public setFakeImage(image: string) {
-    this._mainImage = {
-      urls_by_size: {
-        small: '',
-      }
-    };
   }
 }

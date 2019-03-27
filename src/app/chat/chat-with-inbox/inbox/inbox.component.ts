@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
-import { InboxConversation } from '../../../core/conversation/conversation';
+import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class InboxComponent implements OnInit {
   public showNewMessagesToast = false;
   private _loading = false;
   private conversationElementHeight = 100;
+  public errorRetrievingInbox = false;
 
   constructor(private inboxService: InboxService,
     private eventService: EventService) {}
@@ -38,14 +39,18 @@ export class InboxComponent implements OnInit {
     this.loading = true;
     this.bindNewMessageToast();
     if (this.inboxService.conversations) {
-      this.conversations = this.inboxService.conversations;
-      this.loading = false;
+      this.onInboxReady(this.inboxService.conversations);
     } else {
       this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
-        this.conversations = conversations;
-        this.loading = false;
+        this.onInboxReady(conversations);
       });
     }
+  }
+
+  private onInboxReady(conversations) {
+    this.conversations = conversations;
+    this.loading = false;
+    this.errorRetrievingInbox = this.inboxService.errorRetrievingInbox;
   }
 
   private bindNewMessageToast() {

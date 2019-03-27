@@ -3,7 +3,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { InboxComponent } from './inbox.component';
-import { InboxConversationComponent } from '../inbox-conversation/inbox-conversation.component';
+import { InboxConversationComponent } from '../inbox/inbox-conversation/inbox-conversation.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { HttpService } from '../../../core/http/http.service';
@@ -77,6 +77,20 @@ describe('Component: ConversationsPanel', () => {
 
         expect(component.loading).toBe(false);
       });
+
+      it('should set errorRetrievingInbox to the value returned by inboxService.errorRetrievingInbox', () => {
+        inboxService.errorRetrievingInbox = false;
+
+        component.ngOnInit();
+
+        expect(component.errorRetrievingInbox).toBe(false);
+
+        inboxService.errorRetrievingInbox = true;
+
+        component.ngOnInit();
+
+        expect(component.errorRetrievingInbox).toBe(true);
+      });
     });
 
     describe('when inboxService.conversations do not exists', () => {
@@ -103,6 +117,22 @@ describe('Component: ConversationsPanel', () => {
         eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
 
         expect(component.conversations).toBe(mockedInboxConversations);
+      });
+
+      it('should set errorRetrievingInbox to the value returned by inboxService.errorRetrievingInbox', () => {
+        inboxService.errorRetrievingInbox = false;
+
+        component.ngOnInit();
+        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
+
+        expect(component.errorRetrievingInbox).toBe(false);
+
+        inboxService.errorRetrievingInbox = true;
+
+        component.ngOnInit();
+        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
+
+        expect(component.errorRetrievingInbox).toBe(true);
       });
     });
   });

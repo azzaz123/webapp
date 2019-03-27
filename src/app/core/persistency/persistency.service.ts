@@ -3,9 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, Observer, throwError } from 'rxjs';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Message, statusOrder, phoneRequestState } from '../message/message';
+import { Message, phoneRequestState } from '../message/message';
 import {
-  StoredConversation,
   StoredMessage,
   StoredMessageRow,
   StoredMetaInfo,
@@ -17,15 +16,18 @@ import AllDocsResponse = PouchDB.Core.AllDocsResponse;
 import Document = PouchDB.Core.Document;
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
+import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
+import { InboxItem } from '../../chat/chat-with-inbox/inbox/inbox-item';
 import { EventService } from '../event/event.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TrackingEvent } from '../tracking/tracking-event';
-import { InboxConversation } from '../conversation/conversation';
+import { InboxConversation, StoredInboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxMessage, statusOrder } from '../../chat/chat-with-inbox/message/inbox-message';
 
 @Injectable()
 export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
-  private _conversationsDb: Database<StoredConversation>;
+  private _conversationsDb: Database<any>;
   private _inboxDb: Database<any>;
   private clickstreamDb: any;
   private storedMessages: AllDocsResponse<StoredMessage>;
@@ -69,23 +71,34 @@ export class PersistencyService {
     this.inboxDb = new PouchDB('inbox-' + userId, { auto_compaction: true });
   }
 
-  public updateInbox(conversations: InboxConversation[]): Observable<any> {
-    return this.inboxDb.destroy().then(() => {
-      this.inboxDb = new PouchDB('inbox-' + this.userService.user.id, { auto_compaction: true });
-      const inboxToSave = conversations.map((conversation: InboxConversation) => {
-        return this.buildInboxResponse(conversation);
-      });
-      return Observable.fromPromise(this.inboxDb.bulkDocs(
-        inboxToSave
-      ));
-    });
+  public updateStoredInbox(conversations: InboxConversation[]): Observable<any> {
+    return Observable.fromPromise(
+      this.inboxDb.destroy().then(() => {
+        this.inboxDb = new PouchDB('inbox-' + this.userService.user.id, { auto_compaction: true });
+        const inboxToSave = conversations.map((conversation: InboxConversation) =>
+          new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
+            conversation.phoneShared, conversation.unreadCounter, conversation.lastMessage));
+        return Observable.fromPromise(this.inboxDb.bulkDocs(inboxToSave));
+      })
+    );
   }
 
-  private buildInboxResponse(conversation) {
-    return {
-      _id: conversation.hash,
-      conversation: conversation
-    };
+  public getStoredInbox(): Observable<InboxConversation[]> {
+    return Observable.fromPromise((this.inboxDb.allDocs({ include_docs: true })).then((data) => {
+      return this.mapToInboxConversation(data);
+    }));
+  }
+
+  private mapToInboxConversation(data): InboxConversation[] {
+    return data.rows.map(row => {
+      const conv = row.doc;
+      const user = new InboxUser(conv.user._id, conv.user._microName, conv.user._blocked, conv.user._available);
+      const item = new InboxItem(conv.item._id, conv.item._price, conv.item._title, conv.item._mainImage, conv.item._status);
+      const lastMessage = new InboxMessage(conv.lastMessage._id, conv.lastMessage._thread, conv.lastMessage._message,
+        conv.lastMessage._from, conv.lastMessage._fromSelf, conv.lastMessage._date,
+        conv.lastMessage._status, conv.lastMessage._payload, conv.lastMessage._phoneRequest);
+      return new InboxConversation(conv._id, conv.modifiedDate, user, item,  conv.phoneShared, conv.unreadCounter, lastMessage);
+    });
   }
 
   private initClickstreamDb(dbName: string, version?: number) {
@@ -206,17 +219,36 @@ export class PersistencyService {
     }));
   }
 
-  private buildResponse(message: Message): StoredMessage {
+  private buildResponse(message: Message | InboxMessage): StoredMessage {
+    let text: string;
+    message instanceof Message ? text = message.message : text = message.text;
     return {
       _id: message.id,
       date: message.date,
-      message: message.message,
+      message: text,
       status: message.status,
       from: message.from,
       conversationId: message.thread,
       payload: message.payload,
       phoneRequest: message.phoneRequest
     };
+  }
+
+  public saveInboxMessages(messages: Array<InboxMessage> | InboxMessage): Observable<any> {
+    if (Array.isArray(messages)) {
+      const messagesToSave: StoredMessage[] = messages.map((message: InboxMessage) => {
+        return this.buildResponse(message);
+      });
+      return Observable.fromPromise(this.messagesDb.bulkDocs(
+        messagesToSave
+      ));
+    } else {
+      return Observable.fromPromise(
+        this.upsert(this.messagesDb, messages.id, () => {
+          return this.buildResponse(messages);
+        })
+      );
+    }
   }
 
   public saveMessages(messages: Array<Message> | Message): Observable<any> {

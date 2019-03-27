@@ -35,7 +35,7 @@ import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
 import { ChatSignal } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { SplitTestService } from './core/tracking/split-test.service';
 
 @Component({
@@ -167,7 +167,9 @@ export class AppComponent implements OnInit {
     this.event.subscribe(EventService.DB_READY, (dbName) => {
       if (!dbName) {
         this.RTConnectedSubscription = this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
-          this.inboxService.getInboxFeatureFlag().subscribe((active) => {
+          this.inboxService.getInboxFeatureFlag()
+          .catch(() => Observable.of(false))
+          .subscribe((active) => {
             active ? this.inboxService.init() : this.initOldChat();
           });
         });
