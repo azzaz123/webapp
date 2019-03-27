@@ -60,7 +60,7 @@ export class InboxService {
     return this.http.get(this.API_URL)
     .map(res => {
       const r = res.json();
-      return this.buildConversations(r.conversations);
+      return this.conversations = this.buildConversations(r.conversations);
     });
   }
 
