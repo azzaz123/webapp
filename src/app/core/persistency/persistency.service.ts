@@ -56,7 +56,15 @@ export class PersistencyService {
         });
       });
     });
+    this.subscribeEventInboxLoaded();
     this.subscribeEventNewMessage();
+  }
+
+  private subscribeEventInboxLoaded() {
+    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
+      this.updateStoredInbox(conversations);
+      conversations.map(conv => this.saveInboxMessages(conv.messages));
+    });
   }
 
   set messagesDb(value: PouchDB.Database<any>) {
@@ -71,7 +79,7 @@ export class PersistencyService {
     this.inboxDb = new PouchDB('inbox-' + userId, { auto_compaction: true });
   }
 
-  public updateStoredInbox(conversations: InboxConversation[]): Observable<any> {
+  private updateStoredInbox(conversations: InboxConversation[]): Observable<any> {
     return Observable.fromPromise(
       this.inboxDb.destroy().then(() => {
         this.inboxDb = new PouchDB('inbox-' + this.userService.user.id, { auto_compaction: true });
@@ -237,7 +245,7 @@ export class PersistencyService {
     };
   }
 
-  public saveInboxMessages(messages: Array<InboxMessage> | InboxMessage): Observable<any> {
+  private saveInboxMessages(messages: Array<InboxMessage> | InboxMessage): Observable<any> {
     if (Array.isArray(messages)) {
       const messagesToSave: StoredMessage[] = messages.map((message: InboxMessage) => {
         return this.buildResponse(message);
