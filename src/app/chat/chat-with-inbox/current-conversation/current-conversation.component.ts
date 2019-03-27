@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { InboxMessage } from '../message/inbox-message';
 import { InboxConversation } from '../inbox/inbox-conversation/inbox-conversation';
 import { EventService } from '../../../core/event/event.service';
 import { RealTimeService } from '../../../core/message/real-time.service';
