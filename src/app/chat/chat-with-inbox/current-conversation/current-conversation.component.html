@@ -30,10 +30,11 @@
     </div>
 
     <div class="messages-panel-container" #messagesPanel>
-        <div *ngFor="let message of currentConversation?.messages; let i = index">
-            <h6 *ngIf="showDate(message, currentConversation.messages[i+1])">
-                {{message.date | amCalendar:momentConfig}}
-            </h6>
+        <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-container">
+            <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
+                <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
+                <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
+            </div>
             <tsl-inbox-message [message]="message"
                 [currentConversation]="message.phoneRequest ? currentConversation : null"></tsl-inbox-message>
         </div>
