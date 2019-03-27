@@ -34,7 +34,7 @@ export class CurrentConversationComponent implements OnInit {
     return nextMessage ? new Date(currentMessage.date).toDateString() !== new Date(nextMessage.date).toDateString() : true;
   }
 
-  public dateIsThisYear(date) {
+  public dateIsThisYear(date: Date) {
     return date.getFullYear() === new Date().getFullYear();
   }
 
