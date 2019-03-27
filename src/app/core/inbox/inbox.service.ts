@@ -7,10 +7,8 @@ import { MessageService } from '../message/message.service';
 import { InboxItem, InboxItemPlaceholder, InboxImage } from '../../chat/chat-with-inbox/inbox/inbox-item';
 import { InboxUser, InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
 import { FeatureflagService } from '../user/featureflag.service';
-import { InboxMessage, messageStatus, statusOrder } from '../../chat/chat-with-inbox/message/inbox-message';
+import { InboxMessage } from '../../chat/chat-with-inbox/message/inbox-message';
 import { EventService } from '../event/event.service';
-import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
-import { Message } from '../message/message';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 
@@ -46,14 +44,6 @@ export class InboxService {
 
   public init() {
     this.selfId = this.userService.user.id;
-    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
-      const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from,
-        message.fromSelf, message.date, message.status, message.payload, message.phoneRequest);
-      this.processNewMessage(inboxMessage);
-    });
-    this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
-      this.processChatSignal(signal);
-    });
     this.getInbox()
     .catch(() => {
       this.errorRetrievingInbox = true;
@@ -72,52 +62,6 @@ export class InboxService {
       const r = res.json();
       return this.buildConversations(r.conversations);
     });
-  }
-
-  private processNewMessage(newMessage: InboxMessage) {
-    const conversation = this.conversations.find(c => c.id === newMessage.thread);
-    if (conversation) {
-      if (conversation.lastMessage && conversation.lastMessage.id !== newMessage.id) {
-        this.bumpConversation(conversation);
-        conversation.lastMessage = newMessage;
-        conversation.modifiedDate = conversation.lastMessage.date;
-        if (!newMessage.fromSelf) {
-          conversation.unreadCounter++;
-          this.messageService.totalUnreadMessages++;
-        }
-      }
-    }
-  }
-
-  private bumpConversation(conversation: InboxConversation) {
-    const index: number = this.conversations.indexOf(conversation);
-    if (index > 0) {
-      this.conversations.splice(index, 1);
-      this.conversations.unshift(conversation);
-    }
-  }
-
-  private processChatSignal(signal: ChatSignal) {
-    const conversation = this.conversations.find(c => c.id === signal.thread);
-    const newStatus = signal.type;
-    if (conversation) {
-      const lastMessage = conversation.lastMessage;
-    if (signal.type === chatSignalType.READ) {
-      if (signal.fromSelf !== lastMessage.fromSelf && signal.timestamp >= lastMessage.date.getTime()) {
-        lastMessage.status = messageStatus.READ;
-        this.updateUnreadCounters(signal, conversation);
-      }
-    } else if (signal.messageId === lastMessage.id  && statusOrder.indexOf(newStatus) > statusOrder.indexOf(lastMessage.status)) {
-      lastMessage.status = newStatus;
-    }
-  }
-  }
-
-  private updateUnreadCounters(signal: ChatSignal, conversation: InboxConversation) {
-    if (signal.fromSelf) {
-      this.messageService.totalUnreadMessages -= conversation.unreadCounter;
-      conversation.unreadCounter = 0;
-    }
   }
 
   private buildConversations(conversations): InboxConversation[] {
