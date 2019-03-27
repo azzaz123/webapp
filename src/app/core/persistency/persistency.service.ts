@@ -245,7 +245,7 @@ export class PersistencyService {
     };
   }
 
-  private saveInboxMessages(messages: Array<InboxMessage> | InboxMessage): Observable<any> {
+  public saveInboxMessages(messages: Array<InboxMessage> | InboxMessage): Observable<any> {
     if (Array.isArray(messages)) {
       const messagesToSave: StoredMessage[] = messages.map((message: InboxMessage) => {
         return this.buildResponse(message);
