@@ -8,6 +8,7 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
 import { ProfileSubscriptionComponent } from './profile-subscription/profile-subscription.component';
 import { ProfileInfoComponent } from './profile-info/profile-info.component';
+import { AccountComponent } from './account/account.component';
 
 const routes: Routes = [
   {
@@ -17,11 +18,7 @@ const routes: Routes = [
     canDeactivate: [ExitConfirmGuard],
     data: {
       isMyZone: true,
-      isProfile: true,
-      permissions: {
-        only: PERMISSIONS.normal,
-        redirectTo: '/pro/profile'
-      }
+      isProfile: true
     },
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'info' },
@@ -29,6 +26,14 @@ const routes: Routes = [
         path: 'info',
         component: ProfileInfoComponent,
         canDeactivate: [ExitConfirmGuard],
+        data: {
+          isMyZone: true,
+          isProfile: true
+        }
+      },
+      {
+        path: 'account',
+        component: AccountComponent,
         data: {
           isMyZone: true,
           isProfile: true

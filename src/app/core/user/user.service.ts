@@ -345,6 +345,16 @@ export class UserService extends ResourceService {
     return this.hasPerm('professional');
   }
 
+  public isProUser(): Observable<boolean> {
+    return Observable.forkJoin([
+      this.isProfessional(),
+      this.getMotorPlan()
+    ])
+      .map((values: any[]) => {
+        return values[0] && !!values[1];
+      });
+  }
+
   public getMotorPlan(): Observable<MotorPlan> {
     if (this._motorPlan) {
       return Observable.of(this._motorPlan);

@@ -1,0 +1,15 @@
+@import "~style/common";
+
+.unsubscribe-section {
+  padding-top: $spacing-xl;
+  text-align: center;
+  a {
+    text-decoration: underline;
+    color: $blue-grey-4;
+    font-size: $font-size-s;
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

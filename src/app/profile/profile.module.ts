@@ -9,6 +9,7 @@ import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal
 import { ProfileSubscriptionComponent } from './profile-subscription/profile-subscription.component';
 import { ProfileInfoComponent } from './profile-info/profile-info.component';
 import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.component';
+import { AccountComponent } from './account/account.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.com
     BecomeProModalComponent,
     UnsubscribeModalComponent,
     ProfileSubscriptionComponent,
-    ProfileInfoComponent
+    ProfileInfoComponent,
+    AccountComponent
   ],
   entryComponents: [
     UnsubscribeModalComponent,
