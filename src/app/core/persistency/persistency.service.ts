@@ -35,6 +35,7 @@ export class PersistencyService {
   public clickstreamDbName = 'clickstreamEvents';
   private eventsStore;
   private packagedEventsStore = 'packagedEvents';
+  private userId: string;
 
   constructor(
     private userService: UserService,
@@ -42,17 +43,18 @@ export class PersistencyService {
   ) {
     this.eventService.subscribe(EventService.USER_LOGIN, () => {
       this.userService.me().subscribe((user: User) => {
+        this.userId = user.id;
         this.initClickstreamDb(this.clickstreamDbName);
-        this.eventsStore = 'events-' + user.id;
-        this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
-        this.initInboxDb(user.id);
+        this.eventsStore = 'events-' + this.userId;
+        this._messagesDb = new PouchDB('messages-' + this.userId, { auto_compaction: true });
+        this.initInboxDb(this.userId);
         this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
           this.messagesDb.destroy().then(() => {
-            this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
+            this._messagesDb = new PouchDB('messages-' + this.userId, { auto_compaction: true });
             this.saveDbVersion(this.messagesDb, this.latestVersion);
             this.eventService.emit(EventService.DB_READY);
           });
-          this.destroyDbs('messages', 'conversations', 'conversations-' + user.id);
+          this.destroyDbs('messages', 'conversations', 'conversations-' + this.userId);
         });
       });
     });
@@ -82,7 +84,7 @@ export class PersistencyService {
   private updateStoredInbox(conversations: InboxConversation[]): Observable<any> {
     return Observable.fromPromise(
       this.inboxDb.destroy().then(() => {
-        this.inboxDb = new PouchDB('inbox-' + this.userService.user.id, { auto_compaction: true });
+        this.inboxDb = new PouchDB('inbox-' + this.userId, { auto_compaction: true });
         const inboxToSave = conversations.map((conversation: InboxConversation) =>
           new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
             conversation.phoneShared, conversation.unreadCounter, conversation.lastMessage));
