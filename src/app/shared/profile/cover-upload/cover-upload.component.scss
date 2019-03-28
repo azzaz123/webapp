@@ -31,15 +31,15 @@ h3 {
     margin-right: $spacing-m;
   }
   .btn-upload {
-    background-color: $blue-grey-4;
-    border: solid 1px $blue-grey-1;
-    color: $blue-grey-4;
+    background-color: $blue-grey-5;
+    border: solid 1px $blue-grey-4;
+    color: $blue-grey-2;
     font-size: $font-size-s;
-    padding: $spacing-xs $spacing-m;
+    padding: $spacing-ms $spacing-ml;
     cursor: pointer;
     border-radius: $button-border-radius;
     &:hover:not(.disabled) {
-      background-color: $blue-grey-1;
+      background-color: $blue-grey-4;
     }
     input {
       display: none;
