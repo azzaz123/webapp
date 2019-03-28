@@ -23,7 +23,7 @@ export class XmppService {
   public blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private realtimeQ: Array<XmppBodyMessage> = [];
-  private canProcessRealtime = true;
+  private canProcessRealtime = false;
   private xmppError = { mesasge: 'XMPP disconnected' };
 
   constructor(private eventService: EventService) {
