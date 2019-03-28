@@ -54,7 +54,7 @@ export class InboxConversation {
     }
 
     set unreadCounter(value: number) {
-        this._unreadCounter = value;
+        this._unreadCounter = Math.max(value, 0);
     }
 
     get unreadCounter(): number {

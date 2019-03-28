@@ -158,8 +158,7 @@ const mockInboxMessages = MOCK_INBOX_CONVERSATION.messages.filter(m => m.type ==
 
 export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
     id: string = CONVERSATION_ID,
-    userId: string = OTHER_USER_ID,
-    date: Date = INBOX_CONVERSATION_DATE): InboxConversation => {
+    userId: string = OTHER_USER_ID): InboxConversation => {
         const inboxMessages = MOCK_INBOX_CONVERSATION.messages.filter(m => m.type === 'text')
         .map(m => new InboxMessage(m.id, MOCK_INBOX_CONVERSATION.hash, m.text, m.from_user_id,
             m.from_user_hash === this.selfId, new Date(m.timestamp), m.status, m.payload));
@@ -168,7 +167,7 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
     mockInboxUser = new InboxUser(userId, apiConvUser.name, apiConvUser.blocked, apiConvUser.available, apiConvUser.slug,
         apiConvUser.avatar_url, apiConvUser.response_rate, apiConvUser.scoring);
 
-      return new InboxConversation(id, date, mockInboxUser, mockInboxItem, inboxMessages, false, 0, inboxMessages[0]);
+      return new InboxConversation(id, inboxMessages[0].date, mockInboxUser, mockInboxItem, inboxMessages, false, 0, inboxMessages[0]);
 };
 
 
@@ -188,7 +187,7 @@ export function createInboxConversationsArray(total: number, conversationsId?: s
   const conversations: InboxConversation[] = [];
   for (let i = 1; i <= total; i++) {
     conversations.push(CREATE_MOCK_INBOX_CONVERSATION(conversationsId ? i + conversationsId : i.toString(),
-    OTHER_USER_ID, CONVERSATION_DATE - i));
+    OTHER_USER_ID));
   }
   return conversations;
 }
