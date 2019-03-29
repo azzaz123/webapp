@@ -4,13 +4,11 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { TrackingService } from '../../core/tracking/tracking.service';
 import { AdService } from '../../core/ad/ad.service';
 import { HttpService } from '../../core/http/http.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { EventService } from '../../core/event/event.service';
 import { UserService } from '../../core/user/user.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 
@@ -32,7 +30,6 @@ describe('Component: ChatWithInboxComponent', () => {
       imports: [NgbModule.forRoot(), FormsModule, NgxPermissionsModule],
       providers: [
         ChatWithInboxComponent,
-        {provide: TrackingService, useClass: MockTrackingService},
         {provide: UserService, useClass: MockUserService},
         {provide: HttpService, useValue: {}},
         I18nService,

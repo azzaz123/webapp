@@ -8,8 +8,6 @@ import { MockedPersistencyService } from '../../../tests/persistency.fixtures.sp
 import { Observable } from 'rxjs';
 import { MOCK_INBOX_API_RESPONSE, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { ResponseOptions, Response } from '@angular/http';
-import { TrackingService } from '../tracking/tracking.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
 import { FeatureflagService } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
@@ -36,7 +34,6 @@ describe('InboxService', () => {
         ...TEST_HTTP_PROVIDERS,
         EventService,
         { provide: PersistencyService, useClass: MockedPersistencyService },
-        { provide: TrackingService, useClass: MockTrackingService },
         { provide: MessageService, useClass: MockMessageService },
         { provide: UserService, useClass: MockedUserService },
         { provide: FeatureflagService, useValue: {

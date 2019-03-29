@@ -275,19 +275,12 @@ describe('ConversationService', () => {
           const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
           service.processNewChatSignal(signal);
 
-          const attributes = {
-            thread_id: mockedConversation.id,
-            message_id: null
-          };
-
           expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(unreadCount);
           expectedMarkedAsRead.forEach(m => {
-            attributes.message_id = m.id;
             expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
           });
 
           expectedNotMarkedAsRead.forEach(m => {
-            attributes.message_id = m.id;
             expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
           });
         });
@@ -304,19 +297,13 @@ describe('ConversationService', () => {
           const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
           service.processNewChatSignal(signal);
 
-          const attributes = {
-            thread_id: mockedConversation.id,
-            message_id: null
-          };
 
           expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(unreadCount);
           expectedMarkedAsRead.forEach(m => {
-            attributes.message_id = m.id;
             expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
           });
 
           expectedNotMarkedAsRead.forEach(m => {
-            attributes.message_id = m.id;
             expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
           });
         });
@@ -358,7 +345,7 @@ describe('ConversationService', () => {
           expectedNotMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf);
         });
 
-        it(`should update status to READ and push tracking events MESSAGE_READ_ACK for messages NOT fromSelf`, () => {
+        it(`should update status to READ for messages NOT fromSelf`, () => {
           const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
 
           service.processNewChatSignal(signal);
@@ -438,7 +425,7 @@ describe('ConversationService', () => {
         expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalled();
       });
 
-      it(`should update message status and add a tracking event ONLY for messages that meet the criteria:
+      it(`should update message status ONLY for messages that meet the criteria:
         message status is missing OR message status is NULL OR the new status order is greater than the current status order`, () => {
           mockedConversation.messages[0].status = messageStatus.SENT;
           mockedConversation.messages[1].status = null;
