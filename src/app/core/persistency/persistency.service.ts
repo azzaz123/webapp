@@ -92,14 +92,17 @@ export class PersistencyService {
   private mapToInboxConversation(data): InboxConversation[] {
     return data.rows.map(row => {
       const conv = row.doc;
-      const user = new InboxUser(conv.user._id, conv.user._microName, conv.user._blocked, conv.user._available);
+      const user = new InboxUser(conv.user._id, conv.user._microName, conv.user._blocked, conv.user._available,
+        conv.user_profileUrl, conv.user.avatarUrl, conv.user._responseRate, conv.user._score, conv.user._location);
       const item = new InboxItem(conv.item._id, conv.item._price, conv.item._title, conv.item._mainImage, conv.item._status);
       const lastMessage = new InboxMessage(conv.lastMessage._id, conv.lastMessage._thread, conv.lastMessage._message,
         conv.lastMessage._from, conv.lastMessage._fromSelf, conv.lastMessage._date,
         conv.lastMessage._status, conv.lastMessage._payload, conv.lastMessage._phoneRequest);
-      return new InboxConversation(conv._id, conv.modifiedDate, user, item,  conv.phoneShared, conv.unreadCounter, lastMessage);
+      return new InboxConversation(conv._id, conv.modifiedDate, user, item, conv.messages, conv.phoneShared,
+        conv.unreadCounter, lastMessage);
     });
   }
+
 
   private initClickstreamDb(dbName: string, version?: number) {
     const request = version ? window.indexedDB.open(dbName, version) : window.indexedDB.open(dbName);
@@ -321,6 +324,14 @@ export class PersistencyService {
     return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
       if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
         this.saveMessages(message);
+      }
+    }));
+  }
+
+  public updateInboxMessageStatus(message: InboxMessage, newStatus: string) {
+    return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
+      if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
+        this.saveInboxMessages(message);
       }
     }));
   }

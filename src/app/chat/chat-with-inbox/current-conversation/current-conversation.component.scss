@@ -1,0 +1,117 @@
+@import "~style/common";
+
+:host {
+  display: block;
+  position: relative;
+  height: calc(100vh - #{$chat-topbar-height + $chat-input + $topbar-height});
+}
+
+#messaging {
+  width: calc(100% - #{$right-panel-width});
+  float: left;
+}
+
+
+.messages-panel-container {
+  height: calc(100vh - #{$chat-topbar-height + $chat-input + $topbar-height});
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: scroll;
+  padding: $spacing-ml;
+  width: 100%;
+}
+
+h6 {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: $spacing-ml 0;
+  text-transform: uppercase;
+  color: $blue-grey-2;
+  font-weight: bold;
+  font-size: $font-size-xs;
+}
+
+
+#top-bar {
+  padding: $spacing-ml;
+  border-bottom: 1px solid $blue-grey-5;
+  z-index: 99;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &.professional {
+    height: 103px;
+    tsl-user-avatar {
+      display: none;
+    }
+    h5 {
+      margin-top: -25px;
+    }
+  }
+
+  span {
+    color: $blue-grey-2;
+  }
+
+  .user-avatar {
+    display: inline-flex;
+  }
+
+  tsl-user-avatar {
+    margin-right: $spacing-ms;
+  }
+
+  .conversation-header-user-info {
+    display: inline-block;
+    flex-grow: 1;
+    h5 {
+      color: $blue-grey-1;
+      font-size: $font-size-m;
+      font-weight: bold;
+      margin-bottom: 0;
+    }
+
+    tsl-stars{
+      height: 17px;
+      padding-top: 2px;
+    }
+  }
+
+  span {
+    font-size: $font-size-s;
+  }
+}
+
+.conversation-header-menu {
+  height: 24px;
+  mat-icon {
+    cursor: pointer;
+    padding: 0 3px;
+    /deep/ #MVP {
+      fill: $blue-grey-2;
+    }
+  }
+  .dropdown-item {
+    padding: ($spacing-ml /2) $spacing-ml;
+    cursor: pointer;
+    &.warn {
+      color: $warn;
+    }
+  }
+}
+
+#conversation-meta {
+  overflow-y: auto;
+  height: calc(100vh - #{$topbar-height});
+  float: right;
+  width: $right-panel-width;
+  padding: $spacing-ml;
+  background-color: $blue-grey-5;
+  border-left: 1px solid $blue-grey-4;
+
+  tsl-user {
+    margin-bottom: $spacing-ml;
+  }
+}
