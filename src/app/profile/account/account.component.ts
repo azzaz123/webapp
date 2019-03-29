@@ -6,6 +6,7 @@ import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-
 import { UserService } from '../../core/user/user.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { User } from '../../core/user/user';
+import * as moment from 'moment';
 
 @Component({
   selector: 'tsl-account',
@@ -32,12 +33,19 @@ export class AccountComponent implements OnInit {
   ngOnInit() {
     this.userService.me().subscribe((user: User) => {
       this.user = user;
+      this.profileForm.patchValue({
+        birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
+        gender: this.user.gender.toUpperCase().substr(0, 1)
+      });
     });
   }
 
   public onSubmit() {
     if (this.profileForm.valid) {
-      this.userService.edit(this.profileForm.value).subscribe(() => {
+      this.userService.edit({
+        birth_date: moment(this.profileForm.get('birth_date').value).format('YYYY-MM-DD'),
+        gender: this.profileForm.get('gender').value
+      }).subscribe(() => {
         this.errorsService.i18nSuccess('userEdited');
         this.formComponent.hasNotSavedChanges = false;
       });

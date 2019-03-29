@@ -1,18 +1,20 @@
 <div class="box profile-box" *ngIf="financialCard">
   <div class="box-content">
     <div class="row">
+      <h3 i18n>Payment method</h3>
       <div class="col-10 offset-2">
         <div class="form-group row align-items-center">
-          <label class="col-3" i18n>Payment method:</label>
           <div class="col-5">
             <div class="credit-card-field">
-              <mat-icon svgIcon="card" class="card-icon"></mat-icon>
-              <div class="number">{{financialCard?.number}}</div>
-              <div class="date"><span i18n>Expires</span> {{financialCard?.expire_date | date:'MM/yy'}}</div>
+              <div class="info">
+                <mat-icon svgIcon="card" class="card-icon"></mat-icon>
+                <div class="number">{{financialCard?.number}}</div>
+                <div class="date">{{financialCard?.expire_date | date:'MM/yy'}}</div>
+              </div>
+              <div class="delete-link">
+                <a (click)="deleteCreditCard()" i18n>Delete</a>
+              </div>
             </div>
-          </div>
-          <div class="col-4 delete-link">
-            <a (click)="deleteCreditCard()" i18n>Delete card</a>
           </div>
         </div>
       </div>
