@@ -4,6 +4,9 @@ h3 {
   font-size: $font-size-s;
   font-weight: bold;
 }
+.box-content {
+  padding-top: 0;
+}
 .profile-pic {
   &.top {
     margin-bottom: 32px;
@@ -28,14 +31,14 @@ h3 {
     align-items: center;
   }
   tsl-user-avatar, tsl-user-cover {
-    margin-right: $spacing-m;
+    margin-right: $spacing-ml;
   }
   .btn-upload {
     background-color: $blue-grey-5;
     border: solid 1px $blue-grey-4;
     color: $blue-grey-2;
     font-size: $font-size-s;
-    padding: $spacing-ms $spacing-ml;
+    padding: $spacing-s $spacing-ml;
     cursor: pointer;
     border-radius: $button-border-radius;
     &:hover:not(.disabled) {
@@ -48,6 +51,18 @@ h3 {
       @include square(15px);
       margin-right: $spacing-xs;
       vertical-align: bottom;
+    }
+  }
+}
+
+.not-pro {
+  .title {
+    color: $blue-grey-4;
+  }
+  tsl-user-cover /deep/ {
+    .avatar-rounded {
+      background: $blue-grey-6 !important;
+      border: 1px solid $blue-grey-5;
     }
   }
 }

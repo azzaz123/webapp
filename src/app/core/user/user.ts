@@ -20,6 +20,7 @@ export class User implements Model {
   private _sellingItem: Item;
   private _itemsCount: number;
   private _blocked: boolean;
+
   constructor(private _id: string,
               private _microName?: string,
               private _image?: any,
@@ -46,6 +47,7 @@ export class User implements Model {
     this._webLink = webSlug ? USER_BASE_PATH + webSlug : null;
     this._type = this.mapType(this._type);
   }
+
   get id(): string {
     return this._id;
   }
@@ -220,6 +222,30 @@ export class User implements Model {
 
   set coverImage(value: any) {
     this._coverImage = value;
+  }
+
+  public setCoverImageUrl(url: string) {
+    if (!this._coverImage) {
+      this._coverImage = {
+        id: '',
+        original_width: 0,
+        original_height: 0,
+        average_hex_color: '',
+        urls_by_size: {
+          original: url,
+          small: url,
+          large: url,
+          medium: url,
+          xlarge: url
+        }
+      }
+    } else {
+      this._coverImage.urls_by_size.original = url;
+      this._coverImage.urls_by_size.small = url;
+      this._coverImage.urls_by_size.large = url;
+      this._coverImage.urls_by_size.medium = url;
+      this._coverImage.urls_by_size.xlarge = url;
+    }
   }
 
   getUrl(subdomain: string) {

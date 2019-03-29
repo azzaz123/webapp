@@ -18,6 +18,7 @@ export class CoverUploadComponent implements OnInit {
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
   uploadCoverInput: EventEmitter<UploadInput> = new EventEmitter();
   options: NgUploaderOptions;
+  @Input() isPro: boolean;
 
   constructor(private http: HttpService,
               private errorsService: ErrorsService,
@@ -74,7 +75,7 @@ export class CoverUploadComponent implements OnInit {
 
   private onUploadDone(output: UploadOutput) {
     if (output.file.progress.data.responseStatus === 204) {
-      this.userService.user.coverImage.urls_by_size.medium = output.file.preview;
+      this.userService.user.setCoverImageUrl(<string>output.file.preview);
     } else {
       this.errorsService.i18nError('serverError', output.file.response.message ? output.file.response.message : '');
     }

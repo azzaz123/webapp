@@ -14,7 +14,6 @@ import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from '../../
 export class PictureUploadComponent implements OnInit {
 
   @Input() user: User;
-  @Input() isPro: boolean;
   file: UploadFile;
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
   options: NgUploaderOptions;

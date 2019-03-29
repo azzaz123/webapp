@@ -15,3 +15,15 @@ $right-gutter: 35px;
 .center {
   margin-top: 12px !important;
 }
+
+.form-control[readonly] {
+  background: $blue-grey-6;
+  border: 1px solid $blue-grey-5;
+}
+
+.not-pro {
+  margin-bottom: $spacing-xl;
+  label {
+    color: $blue-grey-4;
+  }
+}
