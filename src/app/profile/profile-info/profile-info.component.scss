@@ -21,9 +21,11 @@ $right-gutter: 35px;
   border: 1px solid $blue-grey-5;
 }
 
-.not-pro {
+.pro-section {
   margin-bottom: $spacing-xl;
-  label {
-    color: $blue-grey-4;
+  &.not-pro {
+    label {
+      color: $blue-grey-4;
+    }
   }
 }
