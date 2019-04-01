@@ -3,6 +3,7 @@ import { InboxMessage } from '../message/inbox-message';
 import { InboxConversation } from '../inbox/inbox-conversation/inbox-conversation';
 import { EventService } from '../../../core/event/event.service';
 import { RealTimeService } from '../../../core/message/real-time.service';
+import { ChatSignal, chatSignalType } from '../../../core/message/chat-signal.interface';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -43,6 +44,8 @@ export class CurrentConversationComponent implements OnInit {
       Visibility.onVisible(() => {
         setTimeout(() => {
           this.realTime.sendRead(this.currentConversation.user.id, this.currentConversation.id);
+          this.eventService.emit(EventService.CHAT_SIGNAL,
+            new ChatSignal(chatSignalType.READ, this.currentConversation.id, new Date().getTime(), null, true));
         }, 1000);
       });
     }
