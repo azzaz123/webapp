@@ -14,6 +14,7 @@ export class ProfileComponent implements OnInit {
   public userUrl: string;
   public motorPlan: MotorPlanType;
   public showSubscriptionTab: boolean;
+  public isPro: boolean;
 
   constructor(private userService: UserService,
               protected i18n: I18nService,
@@ -32,6 +33,9 @@ export class ProfileComponent implements OnInit {
         this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
         this.showSubscriptionTab = motorPlan.type === 'motor_plan_pro';
       }
+    });
+    this.userService.isProUser().subscribe((isPro: boolean) => {
+      this.isPro = isPro;
     });
   }
 

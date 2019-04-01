@@ -9,9 +9,9 @@
     line-height: $line-height-ms;
     padding: $spacing-xs $spacing-s;
     margin-left: $spacing-ms;
-  }
-  &.silver {
-    background-color: $blue-grey-4;
+    mat-icon /deep/ path {
+      fill: $white;
+    }
   }
   &.gold {
     background-color: $yellow-main;
@@ -19,9 +19,6 @@
   &.platinum {
     background-color: $blue-grey-1;
     color: $white;
-    mat-icon /deep/ path {
-      fill: $white;
-    }
   }
   &.motor {
     background-color: $skyblue-main;

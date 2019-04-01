@@ -351,7 +351,7 @@ export class UserService extends ResourceService {
       this.getMotorPlan()
     ])
       .map((values: any[]) => {
-        return values[0] && !!values[1];
+        return values[0] || !!values[1];
       });
   }
 
