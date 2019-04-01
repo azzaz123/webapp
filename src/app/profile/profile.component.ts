@@ -3,6 +3,7 @@ import { UserService } from '../core/user/user.service';
 import { User } from '../core/user/user';
 import { MotorPlan, MotorPlanType } from '../core/user/user-response.interface';
 import { I18nService } from '../core/i18n/i18n.service';
+import { UserStatsResponse } from '../core/user/user-stats.interface';
 
 @Component({
   selector: 'tsl-profile',
@@ -15,6 +16,7 @@ export class ProfileComponent implements OnInit {
   public motorPlan: MotorPlanType;
   public showSubscriptionTab: boolean;
   public isPro: boolean;
+  public userStats: UserStatsResponse;
 
   constructor(private userService: UserService,
               protected i18n: I18nService,
@@ -36,6 +38,9 @@ export class ProfileComponent implements OnInit {
     });
     this.userService.isProUser().subscribe((isPro: boolean) => {
       this.isPro = isPro;
+    });
+    this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+      this.userStats = userStats;
     });
   }
 

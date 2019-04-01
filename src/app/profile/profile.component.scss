@@ -24,3 +24,13 @@
 nav {
   margin-bottom: $spacing-ml;
 }
+
+.rating {
+  float: right;
+  color: $blue-grey-2;
+  font-size: $font-size-s;
+  padding-top: $spacing-ms;
+  tsl-stars {
+    display: inline-block;
+  }
+}
