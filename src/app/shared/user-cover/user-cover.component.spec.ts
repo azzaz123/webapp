@@ -1,9 +1,9 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed } from '@angular/core/testing';
-import { UserCoverComponent } from './user-cover.component.ts';
+import { UserCoverComponent } from './user-cover.component';
 import { SanitizedBackgroundDirective } from '../sanitized-background/sanitized-background.directive';
-import { PLACEHOLDER_AVATAR, User } from '../../core/user/user';
+import { PLACEHOLDER_COVER, User } from '../../core/user/user';
 import { IMAGE, MICRO_NAME, USER_ID } from '../../../tests/user.fixtures.spec';
 
 describe('Component: UserCover', () => {
@@ -26,8 +26,8 @@ describe('Component: UserCover', () => {
     const IMAGE_URL = 'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320';
 
     beforeEach(() => {
-      IMAGE.urls_by_size.medium = IMAGE_URL;
       component.user = new User(USER_ID, MICRO_NAME, IMAGE);
+      component.user.setCoverImageUrl(IMAGE_URL);
     });
 
     it('should use the medium image as avatar', () => {
@@ -36,19 +36,19 @@ describe('Component: UserCover', () => {
       expect(component['avatar']).toBe(IMAGE_URL);
     });
 
-    it('should update imageUrl', () => {
+    it('should update imageCoverUrl', () => {
       const imageObject = {
         test: 'test'
       };
       const changes = {
-        imageUrl: {
+        imageCoverUrl: {
           currentValue: imageObject
         }
       };
 
       component.ngOnChanges(changes);
 
-      expect(component.uploadedAvatar).toEqual(imageObject);
+      expect(component.uploadedCover).toEqual(imageObject);
     });
   });
 
@@ -58,7 +58,7 @@ describe('Component: UserCover', () => {
 
       component.ngOnChanges();
 
-      expect(component['avatar']).toBe(PLACEHOLDER_AVATAR);
+      expect(component['avatar']).toBe(PLACEHOLDER_COVER);
     });
   });
 

@@ -10,6 +10,7 @@ export interface UserProData {
   description?: string;
   opening_hours?: string;
   phone_number?: string;
+  link?: string;
 }
 
 export interface UserProDataNotifications {

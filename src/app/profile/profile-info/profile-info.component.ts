@@ -1,16 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { UnsubscribeModalComponent } from './../unsubscribe-modal/unsubscribe-modal.component';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 import { User } from '../../core/user/user';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
-import { LocationModalComponent } from '../../shared/geolocation/location-select/location-modal/location-modal.component';
-import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
-import { Coordinate } from '../../core/geolocation/address-response.interface';
-import { LOCATION_MODAL_TIMEOUT } from '../../shared/geolocation/location-select/location-select.component';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserProInfo } from '../../core/user/user-info.interface';
 import { Image } from '../../core/user/user-response.interface';
@@ -114,9 +108,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
       this.userService.updateProInfo(this.profileForm.value).subscribe(() => {
         this.userService.edit({
           first_name: this.profileForm.value.first_name,
-          last_name: this.profileForm.value.last_name,
-          birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
-          gender: this.user.gender
+          last_name: this.profileForm.value.last_name
         }).subscribe(() => {
           this.errorsService.i18nSuccess('userEdited');
           this.formComponent.hasNotSavedChanges = false;
@@ -128,14 +120,6 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
       }
       this.errorsService.i18nError('formErrors');
     }
-  }
-
-  public onNotificationChange(fieldName: string, value: boolean) {
-    this.userService.updateProInfoNotifications({
-      [fieldName]: value
-    }).subscribe(() => {
-      this.errorsService.i18nSuccess('settingsEdited');
-    });
   }
 
 }

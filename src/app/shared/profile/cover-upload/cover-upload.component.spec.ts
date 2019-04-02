@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CoverUploadComponent } from './cover-upload.component.ts';
+import { CoverUploadComponent } from './cover-upload.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpService } from '../../../core/http/http.service';
 import { UserService } from '../../../core/user/user.service';
@@ -53,7 +53,7 @@ describe('CoverUploadComponent', () => {
     let uploadEvent: UploadInput;
 
     beforeEach(() => {
-      component.uploadInput.subscribe((event) => {
+      component.uploadCoverInput.subscribe((event) => {
         uploadEvent = event;
       });
     });
@@ -78,13 +78,13 @@ describe('CoverUploadComponent', () => {
       expect(component.file).toEqual(UPLOAD_FILE);
       expect(uploadEvent).toEqual({
         type: 'uploadFile',
-        url: environment.baseUrl + 'api/v3/users/me/image',
+        url: environment.baseUrl + 'api/v3/users/me/cover-image',
         method: 'POST',
         fieldName: 'image',
         headers: headers,
         file: UPLOAD_FILE
       });
-      expect(http.getOptions).toHaveBeenCalledWith(null, 'api/v3/users/me/image', 'POST');
+      expect(http.getOptions).toHaveBeenCalledWith(null, 'api/v3/users/me/cover-image', 'POST');
     });
 
     it('should set file if event is uploading', () => {
@@ -109,7 +109,7 @@ describe('CoverUploadComponent', () => {
         type: 'remove',
         id: UPLOAD_FILE_ID
       });
-      expect(userService.user.image.urls_by_size.medium).toBe(UPLOAD_FILE.preview);
+      expect(userService.user.coverImage.urls_by_size.medium).toBe(UPLOAD_FILE.preview);
     });
 
     it('should show error if event is done and status not 204', () => {

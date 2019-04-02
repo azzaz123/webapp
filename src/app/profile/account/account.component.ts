@@ -26,7 +26,6 @@ export class AccountComponent implements OnInit {
     this.profileForm = fb.group({
       birth_date: ['', [Validators.required, this.dateValidator]],
       gender: ['', [Validators.required]],
-
     });
   }
 
