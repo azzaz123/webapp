@@ -24,6 +24,7 @@ import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
+import { MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 
 let service: PersistencyService;
 let userService: UserService;
@@ -51,6 +52,32 @@ describe('Service: Persistency', () => {
     (service as any)['_messagesDb'] = new MockedMessagesDb();
     (service as any)['_conversationsDb'] = new MockedConversationsDb();
     (service as any)['_inboxDb'] = new MockedInboxDb();
+  });
+
+  describe('when INBOX_LOADED event is emitted', () => {
+    let conversations;
+    beforeEach(() => {
+      spyOn(service, 'saveInboxMessages').and.callFake(() => {});
+      spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_USER));
+      eventService.emit(EventService.USER_LOGIN);
+      conversations = createInboxConversationsArray(3);
+    });
+
+    it('should destroy and recreate the inboxDb', fakeAsync(() => {
+      spyOn(service.inboxDb, 'destroy').and.returnValue(Promise.resolve({}));
+      eventService.emit(EventService.INBOX_LOADED, conversations);
+      expect(service.inboxDb.destroy).toHaveBeenCalled();
+
+      tick();
+      expect(service.inboxDb).toBeTruthy();
+      expect(service.inboxDb.name).toBe('inbox-' + MOCK_USER.id);
+    }));
+
+    it('should call saveInboxMessages for each conversation', () => {
+      eventService.emit(EventService.INBOX_LOADED, conversations);
+
+      conversations.map(conv => expect(service.saveInboxMessages).toHaveBeenCalledWith(conv.messages));
+    });
   });
 
   it('should call localDbVersionUpdate through the constructor after USER_LOGIN event is trigegred', () => {
@@ -458,6 +485,21 @@ describe('Service: Persistency', () => {
     }));
   });
 
+  describe('updateInboxMessageStatus', () => {
+    it('should upsert the message status', fakeAsync(() => {
+      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
+      const mockMsg = MOCK_INBOX_CONVERSATION.messages[0];
+      tick();
+
+      service.updateInboxMessageStatus(mockMsg, messageStatus.READ).subscribe();
+      tick();
+
+      expect((service as any).upsert).toHaveBeenCalled();
+      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
+      expect((service as any).upsert.calls.allArgs()[0][1]).toBe(mockMsg.id);
+    }));
+  });
+
   describe('markPhoneRequestAnswered', () => {
     beforeEach(fakeAsync(() => {
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
@@ -546,29 +588,6 @@ describe('Service: Persistency', () => {
 
       expect(service['storedMessages']).toBe(null);
     });
-
-  });
-
-  describe('updateStoredInbox', () => {
-    const inboxConversations = createInboxConversationsArray(1);
-    beforeEach(() => {
-      spyOn(userService, 'user').and.returnValue(Observable.of(MOCK_USER));
-      spyOn(service.inboxDb, 'destroy').and.returnValue(Promise.resolve({}));
-      });
-
-    it('should destroy the existing inboxDb', () => {
-      service.updateStoredInbox(inboxConversations);
-
-      expect(service.inboxDb.destroy).toHaveBeenCalled();
-    });
-
-    it('should recreate the inboxDb', fakeAsync(() => {
-      service.updateStoredInbox(inboxConversations).subscribe();
-      tick();
-
-      expect(service.inboxDb).toBeTruthy();
-    }));
-
   });
 
   describe('getStoredInbox', () => {
