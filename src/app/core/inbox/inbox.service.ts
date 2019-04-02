@@ -16,7 +16,7 @@ const USER_BASE_PATH = environment.siteUrl +  'user/';
 @Injectable()
 
 export class InboxService {
-  private API_URL = 'bff/messaging/inboxes/mine';
+  private API_URL = 'bff/messaging/inbox';
   private _conversations: InboxConversation[];
   private selfId: string;
   public errorRetrievingInbox = false;
