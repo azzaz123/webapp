@@ -16,11 +16,13 @@ import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../../chat/chat-with-
 import { UserService } from '../user/user.service';
 import { MockedUserService } from '../../../tests/user.fixtures.spec';
 import { InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
+import { ConversationService } from './conversation.service';
 
 let service: InboxService;
 let http: HttpService;
 let persistencyService: PersistencyService;
 let messageService: MessageService;
+let conversationService: ConversationService;
 let featureflagService: FeatureflagService;
 let eventService: EventService;
 let userService: UserService;
@@ -36,6 +38,7 @@ describe('InboxService', () => {
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: MessageService, useClass: MockMessageService },
         { provide: UserService, useClass: MockedUserService },
+        { provide: ConversationService, useValue: { subscribeChatEvents() {} }},
         { provide: FeatureflagService, useValue: {
             getFlag() {
               return Observable.of(false);
@@ -48,6 +51,7 @@ describe('InboxService', () => {
     http = TestBed.get(HttpService);
     persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
+    conversationService = TestBed.get(ConversationService);
     featureflagService = TestBed.get(FeatureflagService);
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);
@@ -111,6 +115,14 @@ describe('InboxService', () => {
       service.init();
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, true);
+    });
+
+    it('should call conversationService.subscribeChatEvents', () => {
+      spyOn(conversationService, 'subscribeChatEvents');
+
+      service.init();
+
+      expect(conversationService.subscribeChatEvents).toHaveBeenCalled();
     });
   });
 

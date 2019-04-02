@@ -17,12 +17,11 @@ export class ConversationService {
     private messageService: MessageService,
     private persistencyService: PersistencyService,
     private eventService: EventService) {
-      this.subscribeChatEvents();
     }
 
   public conversations: InboxConversation[];
 
-  private subscribeChatEvents() {
+  public subscribeChatEvents() {
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.conversations = conversations;
     });

@@ -11,6 +11,7 @@ import { InboxMessage } from '../../chat/chat-with-inbox/message/inbox-message';
 import { EventService } from '../event/event.service';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
+import { ConversationService } from './conversation.service';
 
 const USER_BASE_PATH = environment.siteUrl +  'user/';
 @Injectable()
@@ -24,6 +25,7 @@ export class InboxService {
   constructor(private http: HttpService,
     private persistencyService: PersistencyService,
     private messageService: MessageService,
+    private conversationService: ConversationService,
     private featureflagService: FeatureflagService,
     private eventService: EventService,
     private userService: UserService) {
@@ -43,6 +45,7 @@ export class InboxService {
   }
 
   public init() {
+    this.conversationService.subscribeChatEvents();
     this.selfId = this.userService.user.id;
     this.getInbox()
     .catch(() => {
