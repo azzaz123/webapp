@@ -103,7 +103,8 @@ export class InboxService {
   private buildInboxMessages(conversation) {
     // TODO - handle third voice type message (type === '? TBD');
     const textMessages = conversation.messages.filter(m => m.type === 'text').map(m => new InboxMessage(m.id, conversation.hash, m.text,
-      m.from_self ? this.selfId : conversation.with_user.hash, m.from_self, new Date(m.timestamp), m.status, m.payload));
+      m.from_self ? this.selfId : (conversation.with_user ? conversation.with_user.hash : null), m.from_self, new Date(m.timestamp),
+      m.status, m.payload));
     return textMessages;
   }
 }

@@ -5,7 +5,6 @@ import { InboxMessage } from '../app/chat/chat-with-inbox/message/inbox-message'
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { OTHER_USER_ID, USER_ID } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';
-import { CONVERSATION_DATE } from './conversation.fixtures.spec';
 
 export const CONVERSATION_ID: string = MESSAGE_MAIN.thread;
 export const CONVERSATION_PHONE = '123.456.789';
@@ -148,15 +147,16 @@ let mockInboxUser = new InboxUser(OTHER_USER_ID, apiConvUser.name, apiConvUser.b
 let mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, INBOX_ITEM_STATUSES.published);
 const mockInboxMessages = MOCK_INBOX_CONVERSATION.messages.filter(m => m.type === 'text')
 .map(m => new InboxMessage(m.id, MOCK_INBOX_CONVERSATION.hash, m.text,
-    m.from_self ? USER_ID : MOCK_INBOX_CONVERSATION.with_user.hash, m.from_self, new Date(m.timestamp), m.status, m.payload));
+    m.from_self ? USER_ID : (MOCK_INBOX_CONVERSATION.with_user ? MOCK_INBOX_CONVERSATION.with_user.hash : null),
+    m.from_self, new Date(m.timestamp), m.status, m.payload));
 
 export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
     id: string = CONVERSATION_ID,
     userId: string = OTHER_USER_ID): InboxConversation => {
         const inboxMessages = MOCK_INBOX_CONVERSATION.messages.filter(m => m.type === 'text')
             .map(m => new InboxMessage(m.id, MOCK_INBOX_CONVERSATION.hash, m.text,
-                 m.from_self ? USER_ID : MOCK_INBOX_CONVERSATION.with_user.hash,
-                 m.from_self, new Date(m.timestamp), m.status, m.payload));
+                m.from_self ? USER_ID : (MOCK_INBOX_CONVERSATION.with_user ? MOCK_INBOX_CONVERSATION.with_user.hash : null),
+                m.from_self, new Date(m.timestamp), m.status, m.payload));
 
     mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, INBOX_ITEM_STATUSES.published);
     mockInboxUser = new InboxUser(userId, apiConvUser.name, apiConvUser.blocked, apiConvUser.available, apiConvUser.slug,
