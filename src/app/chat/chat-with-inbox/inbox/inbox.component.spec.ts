@@ -5,10 +5,8 @@ import { MomentModule } from 'angular2-moment';
 import { InboxComponent } from './inbox.component';
 import { InboxConversationComponent } from '../inbox/inbox-conversation/inbox-conversation.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TrackingService } from '../../../core/tracking/tracking.service';
 import { HttpService } from '../../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
-import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
@@ -35,7 +33,6 @@ describe('Component: ConversationsPanel', () => {
       providers: [
         EventService,
         ...TEST_HTTP_PROVIDERS,
-        {provide: TrackingService, useClass: MockTrackingService},
         {provide: InboxService, useValue: {}},
         {provide: ConversationService, useValue: {
           openConversation() {}
