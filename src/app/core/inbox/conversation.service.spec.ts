@@ -35,6 +35,7 @@ describe('ConversationService', () => {
     realTime = TestBed.get(RealTimeService);
     persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
+    service.subscribeChatEvents();
   });
 
   describe('subscribe chat events', () => {

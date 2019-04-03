@@ -80,6 +80,22 @@ describe('CurrentConversationComponent', () => {
     }));
   });
 
+  describe('ngOnDestroy', () => {
+    beforeEach(() => component.ngOnInit());
+
+    it('should unsubscribe from the chat events', () => {
+      component.ngOnDestroy();
+
+      expect(component['newMessageSubscription'].closed).toBe(true);
+    });
+
+    it('should set currentConversation to null', () => {
+      component.ngOnDestroy();
+
+      expect(component.currentConversation).toBe(null);
+    });
+  });
+
   describe('describe dateIsThisYear', () => {
     it('should return TRUE when the date is in the current calendar year', () => {
       const expectedResult = component.dateIsThisYear(new Date());

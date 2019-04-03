@@ -65,16 +65,16 @@
             <div class="form-group row">
               <label for="description" class="col-3" i18n>Description:</label>
               <div class="col-5">
-                <span class="chars-counter" *ngIf="user.featured">{{profileForm.value?.extra_info?.description?.length}}/150</span>
+                <span class="chars-counter" *ngIf="user.featured">{{profileForm.value?.extra_info?.description?.length}}/250</span>
                 <textarea class="form-control" id="description" formControlName="description" [readonly]="!user.featured"
-                          (click)="openBecomeProModal()" maxlength="150"></textarea>
+                          (click)="openBecomeProModal()" maxlength="250"></textarea>
               </div>
             </div>
             <div class="form-group row">
               <label for="phone_number" class="col-3" i18n>Phone number:</label>
               <div class="col-5">
-                <input type="text" class="form-control" id="phone_number" formControlName="phone_number" [readonly]="!user.featured"
-                       (click)="openBecomeProModal()" />
+                <textarea type="text" class="form-control" id="phone_number" formControlName="phone_number" [readonly]="!user.featured"
+                       (click)="openBecomeProModal()"></textarea>
               </div>
             </div>
             <div class="form-group row">

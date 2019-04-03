@@ -1,22 +1,24 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { InboxMessage } from '../message/inbox-message';
 import { InboxConversation } from '../inbox/inbox-conversation/inbox-conversation';
 import { EventService } from '../../../core/event/event.service';
 import { RealTimeService } from '../../../core/message/real-time.service';
-import { ChatSignal, chatSignalType } from '../../../core/message/chat-signal.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'tsl-current-conversation',
   templateUrl: './current-conversation.component.html',
   styleUrls: ['./current-conversation.component.scss']
 })
-export class CurrentConversationComponent implements OnInit {
+export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   @Input() currentConversation: InboxConversation;
 
   constructor(private eventService: EventService,
     private realTime: RealTimeService) {
   }
+
+  private newMessageSubscription: Subscription;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -28,7 +30,13 @@ export class CurrentConversationComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: InboxMessage) => this.sendRead(message));
+    this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
+      (message: InboxMessage) => this.sendRead(message));
+  }
+
+  ngOnDestroy() {
+    this.currentConversation = null;
+    this.newMessageSubscription.unsubscribe();
   }
 
   public showDate(currentMessage: InboxMessage, nextMessage: InboxMessage): boolean {
@@ -44,8 +52,6 @@ export class CurrentConversationComponent implements OnInit {
       Visibility.onVisible(() => {
         setTimeout(() => {
           this.realTime.sendRead(this.currentConversation.user.id, this.currentConversation.id);
-          this.eventService.emit(EventService.CHAT_SIGNAL,
-            new ChatSignal(chatSignalType.READ, this.currentConversation.id, new Date().getTime(), null, true));
         }, 1000);
       });
     }
