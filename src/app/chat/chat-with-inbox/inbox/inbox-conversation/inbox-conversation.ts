@@ -8,6 +8,7 @@ export class InboxConversation {
         private _modifiedDate: Date,
         private _user: InboxUser,
         private _item: InboxItem,
+        private _messages: InboxMessage[],
         private _phoneShared: boolean,
         private _unreadCounter: number = 0,
         private _lastMessage?: InboxMessage) {
@@ -44,8 +45,16 @@ export class InboxConversation {
         return this._lastMessage;
     }
 
+    set messages(messages: InboxMessage[]) {
+        this._messages = messages;
+    }
+
+    get messages(): InboxMessage[] {
+        return this._messages;
+    }
+
     set unreadCounter(value: number) {
-        this._unreadCounter = value;
+        this._unreadCounter = Math.max(value, 0);
     }
 
     get unreadCounter(): number {

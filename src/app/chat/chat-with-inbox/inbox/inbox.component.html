@@ -18,7 +18,10 @@
   </button>
   <div id="conversations" [hidden]="loading">
     <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We couldn't load your inbox due to whatever reasons :)</div>
-    <tsl-inbox-conversation *ngFor="let conversation of conversations" [conversation]="conversation" [ngClass]="{'active': conversation?.active}"></tsl-inbox-conversation>
+    <tsl-inbox-conversation *ngFor="let conversation of conversations"
+      [conversation]="conversation"
+      [ngClass]="{'active': conversation?.active}"
+      (click)="setCurrentConversation(conversation)"></tsl-inbox-conversation>
   </div>
   <div id="loader" [hidden]="!loading">
     <mat-icon svgIcon="conversations-mock"></mat-icon>

@@ -6,6 +6,7 @@ import { EventService } from '../event/event.service';
 import { Message } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
+import { ChatSignal, chatSignalType } from './chat-signal.interface';
 
 @Injectable()
 export class RealTimeService {
@@ -69,6 +70,8 @@ export class RealTimeService {
 
   public sendRead(to: string, thread: string) {
     this.xmpp.sendConversationStatus(to, thread);
+    this.eventService.emit(EventService.CHAT_SIGNAL,
+      new ChatSignal(chatSignalType.READ, thread, new Date().getTime(), null, true));
   }
 
   private subscribeEventNewMessage() {

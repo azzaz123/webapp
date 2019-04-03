@@ -2,7 +2,11 @@
     <tsl-connection-alert></tsl-connection-alert>
     <tsl-inbox (loaded)="onLoaded($event)"></tsl-inbox>
 </div>
-<div id="empty-state">
+<div id="center-panel" *ngIf="currentConversation">
+    <tsl-current-conversation [currentConversation]=currentConversation></tsl-current-conversation>
+</div>
+
+<div id="empty-state" *ngIf="!currentConversation">
     <div class="content">
         <div [hidden]="!conversationsLoaded">
             <mat-icon svgIcon="empty-state" class="image"></mat-icon>

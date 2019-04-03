@@ -80,26 +80,8 @@
       <div i18n>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images.</div>
     </ng-template>
   </div>
-  <div class="box" [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave">
-    <div class="selector-container terms-options" formGroupName="sale_conditions" data-toggle="buttons">
-      <h2 i18n>Further information</h2>
-      <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.fix_price">
-        <input type="checkbox" formControlName="fix_price">
-        <mat-icon svgIcon="firm-price"></mat-icon>
-        <span i18n>Firm Price</span>
-      </label>
-      <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.exchange_allowed">
-        <input type="checkbox" formControlName="exchange_allowed">
-        <mat-icon svgIcon="accept-trades"></mat-icon>
-        <span i18n>Accept trades</span>
-      </label>
-    </div>
-    <ng-template #coachmarkExtras>
-      <div i18n>FAQ</div>
-    </ng-template>
-  </div>
   <div class="box" *ngIf="extraInfoEnabled">
-    <h2><span i18n>The more precise, the better</span> 🎯</h2>
+    <h2><span i18n>The more precise, the better</span></h2>
     <div class="row" formGroupName="extra_info">
       <div class="col-sm-4">
         <div class="form-group last" formGroupName="object_type">
@@ -111,7 +93,7 @@
       <div class="col-sm-4">
         <div class="form-group last">
           <label for="brand" i18n>Brand</label>
-          <tsl-keyword-suggester placeholder="brand" [initialValue]="item?.extraInfo?.brand" [value]="selectedBrand"
+          <tsl-keyword-suggester placeholder="brand_example" [initialValue]="item?.extraInfo?.brand" [value]="selectedBrand"
             [suggestions]="brandSuggestions" (inputChange)="getBrands($event)"
             (suggestionSelect)="selectBrandOrModel($event, 'brand')">
           </tsl-keyword-suggester>
@@ -120,7 +102,7 @@
       <div class="col-sm-4">
         <div class="form-group last">
           <label for="model" i18n>Model</label>
-          <tsl-keyword-suggester placeholder="model" [initialValue]="item?.extraInfo?.model" [value]="selectedModel"
+          <tsl-keyword-suggester placeholder="model_example" [initialValue]="item?.extraInfo?.model" [value]="selectedModel"
             [suggestions]="modelSuggestions" (inputChange)="getModels($event)"
             (suggestionSelect)="selectBrandOrModel($event, 'model')">
           </tsl-keyword-suggester>
@@ -143,6 +125,24 @@
     </div>
     <ng-template #coachmarkShipping>
       <div i18n>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</div>
+    </ng-template>
+  </div>
+  <div class="box" [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave">
+    <div class="selector-container terms-options" formGroupName="sale_conditions" data-toggle="buttons">
+      <h2 i18n>Further information</h2>
+      <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.fix_price">
+        <input type="checkbox" formControlName="fix_price">
+        <mat-icon svgIcon="firm-price"></mat-icon>
+        <span i18n>Firm Price</span>
+      </label>
+      <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.exchange_allowed">
+        <input type="checkbox" formControlName="exchange_allowed">
+        <mat-icon svgIcon="accept-trades"></mat-icon>
+        <span i18n>Accept trades</span>
+      </label>
+    </div>
+    <ng-template #coachmarkExtras>
+      <div i18n>FAQ</div>
     </ng-template>
   </div>
   <tsl-location-box [form]="uploadForm" name="location" (locationSelected)="emitLocation()"></tsl-location-box>

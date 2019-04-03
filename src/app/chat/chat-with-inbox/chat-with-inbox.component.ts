@@ -17,6 +17,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
   public firstLoad: boolean;
   public userWebSlug: string;
   public isProfessional: boolean;
+  public currentConversation: InboxConversation;
 
   constructor(public userService: UserService,
     private eventService: EventService,
@@ -33,6 +34,9 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
     });
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.connectionError = false;
+    });
+    this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation: InboxConversation) => {
+      this.currentConversation = conversation;
     });
   }
 

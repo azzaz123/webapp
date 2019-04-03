@@ -199,9 +199,6 @@ export class MockedPersistencyService {
   public saveMetaInformation(data: any) {
   }
 
-  public updateStoredInbox() {
-  }
-
   public getStoredInbox() {}
 
   public getMetaInformation() {
@@ -218,6 +215,9 @@ export class MockedPersistencyService {
   }
 
   public updateMessageStatus(messageId: string, newStatus: string) {
+  }
+
+  public updateInboxMessageStatus(messageId: string, newStatus: string) {
   }
 
   public findMessage(messageId: string) {
