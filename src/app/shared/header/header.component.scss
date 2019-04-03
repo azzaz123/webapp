@@ -6,9 +6,9 @@
         color: $blue-grey-1;
         font-weight: bold;
         display: flex;
+        align-items: center;
         .badge {
           margin-left: $spacing-ms;
-          vertical-align: middle;
         }
     }
 
