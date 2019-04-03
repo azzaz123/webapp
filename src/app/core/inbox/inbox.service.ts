@@ -12,6 +12,7 @@ import { EventService } from '../event/event.service';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { ConversationService } from './conversation.service';
+import { Response } from '@angular/http';
 
 const USER_BASE_PATH = environment.siteUrl +  'user/';
 @Injectable()
@@ -20,6 +21,8 @@ export class InboxService {
   private API_URL = 'bff/messaging/inboxes/mine';
   private _conversations: InboxConversation[];
   private selfId: string;
+  private lastTimestamp: number = null;
+  private pageSize = 30;
   public errorRetrievingInbox = false;
 
   constructor(private http: HttpService,
@@ -58,13 +61,47 @@ export class InboxService {
     });
   }
 
+  public loadMorePages() {
+    this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
+    this.getNextPage()
+      .catch((err) => {
+        this.errorRetrievingInbox = true;
+        return null;
+      })
+      .subscribe((conversations: InboxConversation[]) => {
+        this.eventService.emit(EventService.INBOX_LOADED, conversations);
+        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+      });
+  }
+
+  public shouldLoadMorePages(): Boolean {
+    return this.lastTimestamp !== null;
+  }
+
   private getInbox(): Observable<any> {
     this.messageService.totalUnreadMessages = 0;
-    return this.http.get(this.API_URL)
+    return this.http.get(this.API_URL, {
+      'page_size': this.pageSize
+    })
     .map(res => {
-      const r = res.json();
-      return this.conversations = this.buildConversations(r.conversations);
+      return this.conversations = this.processInboxResponse(res);
     });
+  }
+
+  private getNextPage(): Observable<any> {
+      return this.http.get(this.API_URL, {
+        'page_size': this.pageSize,
+        'from': this.lastTimestamp
+      })
+      .map(res => {
+        return this.conversations = this.conversations.concat(this.processInboxResponse(res));
+      });
+  }
+
+  private processInboxResponse(res: Response): InboxConversation[] {
+    const r = res.json();
+    this.lastTimestamp = r.next_from ? r.next_from : null; // TODO: this will come in header response r.headers.get('NAMEOF')
+    return this.buildConversations(r.conversations);
   }
 
   private buildConversations(conversations): InboxConversation[] {
