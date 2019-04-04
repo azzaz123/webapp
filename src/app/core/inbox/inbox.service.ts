@@ -21,7 +21,7 @@ export class InboxService {
   private API_URL = 'bff/messaging/inbox';
   private _conversations: InboxConversation[];
   private selfId: string;
-  private lastTimestamp: number = null;
+  private nextPageToken: number = null;
   private pageSize = 30;
   public errorRetrievingInbox = false;
 
@@ -75,13 +75,13 @@ export class InboxService {
   }
 
   public shouldLoadMorePages(): Boolean {
-    return this.lastTimestamp !== null;
+    return this.nextPageToken !== null;
   }
 
   private getInbox(): Observable<any> {
     this.messageService.totalUnreadMessages = 0;
     return this.http.get(this.API_URL, {
-      'page_size': this.pageSize
+      page_size: this.pageSize
     })
     .map(res => {
       return this.conversations = this.processInboxResponse(res);
@@ -90,8 +90,8 @@ export class InboxService {
 
   private getNextPage(): Observable<any> {
       return this.http.get(this.API_URL, {
-        'page_size': this.pageSize,
-        'from': this.lastTimestamp
+        page_size: this.pageSize,
+        from: this.nextPageToken
       })
       .map(res => {
         return this.conversations = this.conversations.concat(this.processInboxResponse(res));
@@ -100,7 +100,7 @@ export class InboxService {
 
   private processInboxResponse(res: Response): InboxConversation[] {
     const r = res.json();
-    this.lastTimestamp = r.next_from ? r.next_from : null; // TODO: this will come in header response r.headers.get('NAMEOF')
+    this.nextPageToken = r.next_from ? r.next_from : null; // TODO: this will come in header response r.headers.get('NAMEOF')
     // In order to avoid adding repeated conversations
     const newConvs = r.conversations.filter(newConv => {
       return (this.conversations
