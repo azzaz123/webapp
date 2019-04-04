@@ -14,7 +14,7 @@ import { EventService } from '../event/event.service';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-item';
 import { UserService } from '../user/user.service';
-import { MockedUserService } from '../../../tests/user.fixtures.spec';
+import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
 import { ConversationService } from './conversation.service';
 
@@ -26,7 +26,6 @@ let conversationService: ConversationService;
 let featureflagService: FeatureflagService;
 let eventService: EventService;
 let userService: UserService;
-let selfId: string;
 
 describe('InboxService', () => {
   beforeEach(() => {
@@ -55,7 +54,7 @@ describe('InboxService', () => {
     featureflagService = TestBed.get(FeatureflagService);
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);
-    selfId = userService.user.id;
+    spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
   });
 
   describe('getInboxFeatureFlag', () => {
@@ -73,12 +72,9 @@ describe('InboxService', () => {
     let parsedConversationsResponse;
     beforeEach(() => {
       spyOn(http, 'get').and.returnValue(Observable.of(res));
-      parsedConversationsResponse = service['buildConversations'](JSON.parse(MOCK_INBOX_API_RESPONSE).conversations);
     });
 
     it('should set selfId as the of the logged in used', () => {
-      spyOn(eventService, 'subscribe');
-
       service.init();
 
       expect(service['selfId']).toBe(userService.user.id);
@@ -103,6 +99,8 @@ describe('InboxService', () => {
 
     it('should emit a EventService.INBOX_LOADED after getInbox returns', () => {
       spyOn(eventService, 'emit').and.callThrough();
+      service['selfId'] = MOCK_USER.id;
+      parsedConversationsResponse = service['buildConversations'](JSON.parse(MOCK_INBOX_API_RESPONSE).conversations);
 
       service.init();
 

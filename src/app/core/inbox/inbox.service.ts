@@ -17,7 +17,7 @@ const USER_BASE_PATH = environment.siteUrl +  'user/';
 @Injectable()
 
 export class InboxService {
-  private API_URL = 'bff/messaging/inboxes/mine';
+  private API_URL = 'bff/messaging/inbox';
   private _conversations: InboxConversation[];
   private selfId: string;
   public errorRetrievingInbox = false;
@@ -106,7 +106,8 @@ export class InboxService {
   private buildInboxMessages(conversation) {
     // TODO - handle third voice type message (type === '? TBD');
     const textMessages = conversation.messages.filter(m => m.type === 'text').map(m => new InboxMessage(m.id, conversation.hash, m.text,
-      m.from_user_hash, m.from_user_hash === this.selfId, new Date(m.timestamp), m.status, m.payload));
+      m.from_self ? this.selfId : (conversation.with_user ? conversation.with_user.hash : null), m.from_self, new Date(m.timestamp),
+      m.status, m.payload));
     return textMessages;
   }
 }

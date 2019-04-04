@@ -56,6 +56,10 @@ export class InboxMessage {
         this._status = value;
     }
 
+    set from(value: string) {
+        this._from = value;
+    }
+
     get from(): string {
         return this._from;
     }
