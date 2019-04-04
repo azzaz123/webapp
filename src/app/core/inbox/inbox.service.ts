@@ -101,7 +101,12 @@ export class InboxService {
   private processInboxResponse(res: Response): InboxConversation[] {
     const r = res.json();
     this.lastTimestamp = r.next_from ? r.next_from : null; // TODO: this will come in header response r.headers.get('NAMEOF')
-    return this.buildConversations(r.conversations);
+    // In order to avoid adding repeated conversations
+    const newConvs = r.conversations.filter(newConv => {
+      return (this.conversations
+        && this.conversations.find(existingConv => existingConv.id === newConv.hash)) ? null : newConv;
+    });
+    return this.buildConversations(newConvs);
   }
 
   private buildConversations(conversations): InboxConversation[] {

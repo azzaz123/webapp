@@ -27,9 +27,9 @@
     <mat-icon svgIcon="conversations-mock"></mat-icon>
   </div>
   <div class="load-more-container" *ngIf="showLoadMore()">
-    <a class="load-more" (click)="loadMore()">
+    <a class="load-more">
       <mat-icon svgIcon="spinner" [hidden]="!loadingMore" class="spinner"></mat-icon>
-      <span [hidden]="loadingMore" i18n>Load more</span>
+      <span [hidden]="loadingMore" (click)="loadMore()" i18n>Load more</span>
     </a>
   </div>
 </div>
