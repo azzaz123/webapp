@@ -106,7 +106,7 @@ export class PersistencyService {
         conv.user_profileUrl, conv.user.avatarUrl, conv.user._responseRate, conv.user._score, conv.user._location);
       const item = new InboxItem(conv.item._id, conv.item._price, conv.item._title, conv.item._mainImage, conv.item._status);
       const lastMessage = new InboxMessage(conv.lastMessage._id, conv.lastMessage._thread, conv.lastMessage._message,
-        conv.lastMessage._from, conv.lastMessage._fromSelf, conv.lastMessage._date,
+        conv.lastMessage._fromSelf, conv.lastMessage._date,
         conv.lastMessage._status, conv.lastMessage._payload, conv.lastMessage._phoneRequest);
       return new InboxConversation(conv._id, conv.modifiedDate, user, item, conv.messages, conv.phoneShared,
         conv.unreadCounter, lastMessage);
