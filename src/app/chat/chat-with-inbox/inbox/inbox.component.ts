@@ -4,6 +4,7 @@ import { EventService } from '../../../core/event/event.service';
 import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { ConversationService } from '../../../core/inbox/conversation.service';
+import { Message } from '../../../core/message/message';
 
 @Component({
   selector: 'tsl-inbox',
@@ -61,8 +62,12 @@ export class InboxComponent implements OnInit, OnDestroy  {
   }
 
   private bindNewMessageToast() {
-    this.eventService.subscribe(EventService.NEW_MESSAGE, () => {
-      this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.75;
+    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+      if (message.fromSelf) {
+        this.scrollToTop();
+      } else {
+        this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.75;
+      }
     });
   }
 
