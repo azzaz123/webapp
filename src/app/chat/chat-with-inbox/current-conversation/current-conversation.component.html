@@ -2,11 +2,11 @@
     <div class="content">
         <div>
             <mat-icon svgIcon="empty-state" class="image"></mat-icon>
-            <h2 *ngIf="conversationsTotal > 0 && !connectionError" i18n>Choose a conversation<br />
-                from the list on the left</h2>
-            <h2 *ngIf="conversationsTotal === 0 && !connectionError" i18n>There are no messages</h2>
-            <h2 *ngIf="connectionError" i18n>Service not available at the moment.<br />
-                Try again later.</h2>
+            <p *ngIf="conversationsTotal > 0 && !connectionError" i18n>Choose a conversation<br />
+                from the list on the left</p>
+            <p *ngIf="conversationsTotal === 0 && !connectionError" i18n>There are no messages</p>
+            <p *ngIf="connectionError" i18n>Service not available at the moment.<br />
+                Try again later.</p>
         </div>
     </div>
 </div>
