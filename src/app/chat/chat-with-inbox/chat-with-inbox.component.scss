@@ -14,22 +14,3 @@
   position: relative;
 }
 
-#empty-state {
-  height: 100vh;
-  margin-left: $left-panel-width;
-  position: relative;
-  background: $white;
-  .content {
-    @include in-the-middle;
-    text-align: center;
-    .image {
-      width: 211px;
-      height: 220px;
-    }
-    h2 {
-      font-size: $font-size-m;
-      color: $blue-grey-2;
-      line-height: 24px;
-    }
-  }
-}

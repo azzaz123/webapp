@@ -12,7 +12,7 @@ export const CONVERSATION_PHONE = '123.456.789';
 export const MOCK_INBOX_API_RESPONSE = `{
     "user_hash": "mxzorp9np7z9",
     "page": 1,
-    "page_size": 1000,
+    "next_from": "p61y8o5np265-7v6gwyklr5ze",
     "conversations": [
         {
             "hash": "p61y8o5np265",

@@ -13,10 +13,9 @@ import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '.
 import { EventService } from '../../../core/event/event.service';
 import { ConversationService } from '../../../core/inbox/conversation.service';
 import { InboxConversation } from './inbox-conversation/inbox-conversation';
-import { MOCK_MESSAGE } from '../../../../tests/message.fixtures.spec';
 
 
-fdescribe('Component: ConversationsPanel', () => {
+describe('Component: InboxComponent', () => {
   let component: InboxComponent;
   let inboxService: InboxService;
   let http: HttpService;
@@ -34,7 +33,10 @@ fdescribe('Component: ConversationsPanel', () => {
       providers: [
         EventService,
         ...TEST_HTTP_PROVIDERS,
-        {provide: InboxService, useValue: {}},
+        {provide: InboxService, useValue: {
+          loadMorePages() {},
+          shouldLoadMorePages() {}
+        }},
         {provide: ConversationService, useValue: {
           openConversation() {}
         }}
@@ -50,12 +52,7 @@ fdescribe('Component: ConversationsPanel', () => {
 
 
   describe('ngOnInit', () => {
-    it('should set loading to true when the component is initialized', () => {
-      component.ngOnInit();
-
-      expect(component.loading).toBe(true);
-    });
-
+    const mockedInboxConversations = createInboxConversationsArray(3);
     it('should subscribe to the NEW_MESSAGE event', () => {
       spyOn(eventService, 'subscribe').and.callThrough();
 
@@ -65,8 +62,22 @@ fdescribe('Component: ConversationsPanel', () => {
       expect(evSubscribed).toBeTruthy();
     });
 
+    it('should set loading and loadingMore to false after the EventService.INBOX_LOADED event is triggered', () => {
+      component.ngOnInit();
+      eventService.emit(EventService.INBOX_LOADED);
+
+      expect(component.loading).toBe(false);
+      expect(component.loadingMore).toBe(false);
+    });
+
+    it('should set conversations to the conversations from EventService.INBOX_LOADED event when it is triggered', () => {
+      component.ngOnInit();
+      eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
+
+      expect(component.conversations).toBe(mockedInboxConversations);
+    });
+
     describe('when inboxService.conversations exists', () => {
-      const mockedInboxConversations = createInboxConversationsArray(3);
       beforeEach(() => {
         inboxService.conversations = mockedInboxConversations;
       });
@@ -98,29 +109,22 @@ fdescribe('Component: ConversationsPanel', () => {
     });
 
     describe('when inboxService.conversations do not exists', () => {
-      const mockedInboxConversations = createInboxConversationsArray(3);
       beforeEach(() => {
         spyOn(eventService, 'subscribe').and.callThrough();
       });
+      it('should set loading to true', () => {
+        component.conversations = null;
+
+        component.ngOnInit();
+
+        expect(component.loading).toBe(true);
+      });
+
       it('should subscribe to EventService.CHAT_CAN_PROCESS_RT event with true', () => {
         component.ngOnInit();
         const evSubscribed = eventService.subscribe['calls'].allArgs().find(call => (call[0] === EventService.NEW_MESSAGE));
 
         expect(evSubscribed).toBeTruthy();
-      });
-
-      it('should set loading to false after the EventService.INBOX_LOADED event is triggered', () => {
-        component.ngOnInit();
-        eventService.emit(EventService.INBOX_LOADED);
-
-        expect(component.loading).toBe(false);
-      });
-
-      it('should set conversations to the conversations from EventService.INBOX_LOADED event when it is triggered', () => {
-        component.ngOnInit();
-        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
-
-        expect(component.conversations).toBe(mockedInboxConversations);
       });
 
       it('should set errorRetrievingInbox to the value returned by inboxService.errorRetrievingInbox', () => {
@@ -266,5 +270,38 @@ fdescribe('Component: ConversationsPanel', () => {
 
     expect(previouslySelectedConversation.active).toBe(false);
   });
-});
 
+  describe('loadMore', () => {
+    it('should set loadingMore to true', () => {
+      component.loadMore();
+
+      expect(component.loadingMore).toBe(true);
+    });
+
+    it('should call inboxService to loadMorePages()', () => {
+      spyOn(inboxService, 'loadMorePages');
+
+      component.loadMore();
+
+      expect(inboxService.loadMorePages).toHaveBeenCalled();
+    });
+  });
+
+  describe('shouldLoadMore', () => {
+    it('should return false when inboxService shouldLoadMorePages return false', () => {
+      spyOn(inboxService, 'shouldLoadMorePages').and.returnValue(false);
+
+      const result = component.showLoadMore();
+
+      expect(result).toBe(false);
+    });
+
+    it('should return true when inboxService shouldLoadMorePages return true', () => {
+      spyOn(inboxService, 'shouldLoadMorePages').and.returnValue(true);
+
+      const result = component.showLoadMore();
+
+      expect(result).toBe(true);
+    });
+  });
+});

@@ -12,6 +12,7 @@ import { EventService } from '../event/event.service';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { ConversationService } from './conversation.service';
+import { Response } from '@angular/http';
 
 const USER_BASE_PATH = environment.siteUrl +  'user/';
 @Injectable()
@@ -20,6 +21,8 @@ export class InboxService {
   private API_URL = 'bff/messaging/inbox';
   private _conversations: InboxConversation[];
   private selfId: string;
+  private nextPageToken: number = null;
+  private pageSize = 30;
   public errorRetrievingInbox = false;
 
   constructor(private http: HttpService,
@@ -58,13 +61,52 @@ export class InboxService {
     });
   }
 
+  public loadMorePages() {
+    this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
+    this.getNextPage()
+      .catch((err) => {
+        this.errorRetrievingInbox = true;
+        return null;
+      })
+      .subscribe((conversations: InboxConversation[]) => {
+        this.eventService.emit(EventService.INBOX_LOADED, conversations);
+        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+      });
+  }
+
+  public shouldLoadMorePages(): Boolean {
+    return this.nextPageToken !== null;
+  }
+
   private getInbox(): Observable<any> {
     this.messageService.totalUnreadMessages = 0;
-    return this.http.get(this.API_URL)
+    return this.http.get(this.API_URL, {
+      page_size: this.pageSize
+    })
     .map(res => {
-      const r = res.json();
-      return this.conversations = this.buildConversations(r.conversations);
+      return this.conversations = this.processInboxResponse(res);
     });
+  }
+
+  private getNextPage(): Observable<any> {
+      return this.http.get(this.API_URL, {
+        page_size: this.pageSize,
+        from: this.nextPageToken
+      })
+      .map(res => {
+        return this.conversations = this.conversations.concat(this.processInboxResponse(res));
+      });
+  }
+
+  private processInboxResponse(res: Response): InboxConversation[] {
+    const r = res.json();
+    this.nextPageToken = r.next_from ? r.next_from : null; // TODO: this will come in header response r.headers.get('NAMEOF')
+    // In order to avoid adding repeated conversations
+    const newConvs = r.conversations.filter(newConv => {
+      return (this.conversations
+        && this.conversations.find(existingConv => existingConv.id === newConv.hash)) ? null : newConv;
+    });
+    return this.buildConversations(newConvs);
   }
 
   private buildConversations(conversations): InboxConversation[] {
