@@ -13,9 +13,10 @@ import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '.
 import { EventService } from '../../../core/event/event.service';
 import { ConversationService } from '../../../core/inbox/conversation.service';
 import { InboxConversation } from './inbox-conversation/inbox-conversation';
+import { MOCK_MESSAGE } from '../../../../tests/message.fixtures.spec';
 
 
-describe('Component: ConversationsPanel', () => {
+fdescribe('Component: ConversationsPanel', () => {
   let component: InboxComponent;
   let inboxService: InboxService;
   let http: HttpService;
@@ -145,10 +146,23 @@ describe('Component: ConversationsPanel', () => {
       component.ngOnInit();
     });
 
-    it('should set showNewMessagesToast to TRUE if a NEW_MEESAGE event is emitted AND the currect scrollTop > 75', () => {
+    it('should set showNewMessagesToast to TRUE if a NEW_MEESAGE not fromSelf event is emitted AND the currect scrollTop > 75', () => {
       component.scrollPanel = { nativeElement: { scrollTop: 100 } };
+      const message = MOCK_MESSAGE;
+      message.fromSelf = false;
 
-      eventService.emit(EventService.NEW_MESSAGE);
+      eventService.emit(EventService.NEW_MESSAGE, message);
+
+      expect(component.showNewMessagesToast).toBe(true);
+    });
+
+    it('should not change showNewMessagesToast if a NEW_MEESAGE fromSelf event is emitted AND the currect scrollTop > 75', () => {
+      component.scrollPanel = { nativeElement: { scrollTop: 100 } };
+      const message = MOCK_MESSAGE;
+      message.fromSelf = true;
+      component.showNewMessagesToast = true;
+
+      eventService.emit(EventService.NEW_MESSAGE, message);
 
       expect(component.showNewMessagesToast).toBe(true);
     });
@@ -165,7 +179,9 @@ describe('Component: ConversationsPanel', () => {
       it('should set showNewMessagesToast to FALSE when handleScroll is called, if scrollTop >= 25 ', () => {
         const valuesToCheck = [25, 18, 0];
         component.scrollPanel = { nativeElement: { scrollTop: 100 } };
-        eventService.emit(EventService.NEW_MESSAGE);
+        const message = MOCK_MESSAGE;
+        message.fromSelf = false;
+        eventService.emit(EventService.NEW_MESSAGE, message);
         expect(component.showNewMessagesToast).toBe(true);
 
         valuesToCheck.map(val => {
@@ -178,7 +194,9 @@ describe('Component: ConversationsPanel', () => {
       it('should set showNewMessagesToast to TRUE when handleScroll is called, if scrollTop > 25 ', () => {
         const valuesToCheck = [130, 77, 26];
         component.scrollPanel = { nativeElement: { scrollTop: 100 } };
-        eventService.emit(EventService.NEW_MESSAGE);
+        const message = MOCK_MESSAGE;
+        message.fromSelf = false;
+        eventService.emit(EventService.NEW_MESSAGE, message);
         expect(component.showNewMessagesToast).toBe(true);
 
         valuesToCheck.map(val => {
