@@ -7,6 +7,7 @@ import { Message } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { ChatSignal, chatSignalType } from './chat-signal.interface';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 
 @Injectable()
 export class RealTimeService {
@@ -56,7 +57,7 @@ export class RealTimeService {
     });
   }
 
-  public sendMessage(conversation: Conversation, body: string) {
+  public sendMessage(conversation: Conversation | InboxConversation, body: string) {
     this.xmpp.sendMessage(conversation, body);
   }
 

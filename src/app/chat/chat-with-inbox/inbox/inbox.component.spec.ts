@@ -146,22 +146,35 @@ describe('Component: InboxComponent', () => {
   });
 
   describe('behaviour of New messages toast button', () => {
+    const mockedInboxConversations = createInboxConversationsArray(1);
+    const message = mockedInboxConversations[0].messages[0];
     beforeEach(() => {
       component.ngOnInit();
     });
 
-    it('should set showNewMessagesToast to TRUE if a NEW_MEESAGE event is emitted AND the currect scrollTop > 75', () => {
+    it('should set showNewMessagesToast to TRUE if a NEW_MEESAGE not fromSelf event is emitted AND the current scrollTop > 75', () => {
       component.scrollPanel = { nativeElement: { scrollTop: 100 } };
+      message.fromSelf = false;
 
-      eventService.emit(EventService.NEW_MESSAGE);
+      eventService.emit(EventService.NEW_MESSAGE, message);
 
       expect(component.showNewMessagesToast).toBe(true);
     });
 
-    it('should set showNewMessagesToast FALSE if a NEW_MEESAGE event is emitted AND the currect scrollTop <= 75', () => {
-      component.scrollPanel = { nativeElement: { scrollTop: 75 } };
+    it('should set showNewMessagesToast to true if a NEW_MEESAGE event is emitted AND the current scrollTop > 75', () => {
+      component.scrollPanel = { nativeElement: { scrollTop: 100 } };
+      message.fromSelf = false;
 
-      eventService.emit(EventService.NEW_MESSAGE);
+      eventService.emit(EventService.NEW_MESSAGE, message);
+
+      expect(component.showNewMessagesToast).toBe(true);
+    });
+
+    it('should set showNewMessagesToast FALSE if a NEW_MEESAGE event is emitted AND the current scrollTop <= 75', () => {
+      component.scrollPanel = { nativeElement: { scrollTop: 75 } };
+      message.fromSelf = false;
+
+      eventService.emit(EventService.NEW_MESSAGE, message);
 
       expect(component.showNewMessagesToast).toBe(false);
     });
@@ -170,7 +183,8 @@ describe('Component: InboxComponent', () => {
       it('should set showNewMessagesToast to FALSE when handleScroll is called, if scrollTop >= 25 ', () => {
         const valuesToCheck = [25, 18, 0];
         component.scrollPanel = { nativeElement: { scrollTop: 100 } };
-        eventService.emit(EventService.NEW_MESSAGE);
+        message.fromSelf = false;
+        eventService.emit(EventService.NEW_MESSAGE, message);
         expect(component.showNewMessagesToast).toBe(true);
 
         valuesToCheck.map(val => {
@@ -183,7 +197,8 @@ describe('Component: InboxComponent', () => {
       it('should set showNewMessagesToast to TRUE when handleScroll is called, if scrollTop > 25 ', () => {
         const valuesToCheck = [130, 77, 26];
         component.scrollPanel = { nativeElement: { scrollTop: 100 } };
-        eventService.emit(EventService.NEW_MESSAGE);
+        message.fromSelf = false;
+        eventService.emit(EventService.NEW_MESSAGE, message);
         expect(component.showNewMessagesToast).toBe(true);
 
         valuesToCheck.map(val => {
