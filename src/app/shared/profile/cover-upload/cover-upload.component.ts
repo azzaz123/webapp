@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '../../../core/user/user';
 import { HttpService } from '../../../core/http/http.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
@@ -19,6 +19,7 @@ export class CoverUploadComponent implements OnInit {
   uploadCoverInput: EventEmitter<UploadInput> = new EventEmitter();
   options: NgUploaderOptions;
   @Input() isPro: boolean;
+  @Output() clickNotPro: EventEmitter<any> = new EventEmitter();
 
   constructor(private http: HttpService,
               private errorsService: ErrorsService,

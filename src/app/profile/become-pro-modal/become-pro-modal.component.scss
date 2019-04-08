@@ -1,39 +1,40 @@
 @import "~style/common";
 
 .header {
-  background-image: linear-gradient(to bottom, $color-pro-super-light, $skyblue-main);
-  height: 144px;
+  background: $blue-grey-5;
+  height: 137px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   h1, p {
-    color: $white;
+    color: $blue-grey-1;
   }
   h1 {
-    font-size: $font-size-lll;
+    font-size: $font-size-l;
     font-weight: bold;
   }
   p {
     margin: 0;
     font-size: $font-size-m;
+    color: $blue-grey-2;
   }
 }
 
 .modal-body {
-  width: 580px;
+  width: 600px;
   text-align: center;
-  padding: $spacing-xl $spacing-xxxl;
+  padding: $spacing-ml $spacing-xl $spacing-l;
   ul {
-    margin-bottom: $spacing-xl;
+    margin-bottom: $spacing-l;
     padding: 0;
     li {
-      color: $blue-grey-2;
+      color: $blue-grey-1;
       text-align: left;
-      font-size: $font-size-s;
+      font-size: $font-size-base;
       list-style: none;
       margin-bottom: $spacing-ms;
-      background: url(/assets/icons/check-purple.svg) no-repeat left center;
+      background: url(/assets/icons/rounded-check.svg) no-repeat left center;
       padding-left: $spacing-xxl;
       background-size: 20px;
     }
