@@ -10,6 +10,7 @@ import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 
 @Injectable()
 export class XmppService {
@@ -45,7 +46,7 @@ export class XmppService {
     }
   }
 
-  public sendMessage(conversation: Conversation, body: string) {
+  public sendMessage(conversation: Conversation| InboxConversation, body: string) {
     const message = this.createXmppMessage(conversation, this.client.nextId(), body);
     this.onNewMessage(_.clone(message), true);
     this.client.sendMessage(message);
@@ -57,7 +58,7 @@ export class XmppService {
     this.client.sendMessage(msg);
   }
 
-  private createXmppMessage(conversation: Conversation, id: string, body: string): XmppBodyMessage {
+  private createXmppMessage(conversation: Conversation | InboxConversation, id: string, body: string): XmppBodyMessage {
     const message: XmppBodyMessage = {
       id: id,
       to: this.createJid(conversation.user.id),

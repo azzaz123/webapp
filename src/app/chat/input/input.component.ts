@@ -3,6 +3,7 @@ import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
+import { InboxConversation } from '../chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 
 @Component({
   selector: 'tsl-input',
@@ -11,7 +12,7 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 })
 export class InputComponent implements OnChanges, OnInit {
 
-  @Input() currentConversation: Conversation;
+  @Input() currentConversation: Conversation | InboxConversation;
   @ViewChild('messageArea') messageArea: ElementRef;
   public disable: boolean;
 
@@ -51,6 +52,7 @@ export class InputComponent implements OnChanges, OnInit {
         this.messageArea.nativeElement.value = '';
       }
     }
-    this.disable = this.currentConversation.user.blocked;
+    this.disable = this.currentConversation instanceof Conversation ? this.currentConversation.user.blocked
+    : this.currentConversation.cannotChat;
   }
 }
