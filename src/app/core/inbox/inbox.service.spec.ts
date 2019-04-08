@@ -95,7 +95,7 @@ describe('InboxService', () => {
 
       service.conversations.map((conv, index) => {
         expect(conv instanceof InboxConversation).toBe(true);
-        expect(conv.lastMessage.id).toEqual(apiResponse[index].messages[0].id);
+        expect(conv.lastMessage.id).toEqual(apiResponse[index].messages.messages[0].id);
       });
     });
 
@@ -331,6 +331,28 @@ describe('InboxService', () => {
       service.loadMorePages();
 
       expect(service.conversations.length).toBe(res.json().conversations.length + res2.json().conversations.length);
+    });
+  });
+
+  describe('shouldLoadMorePages', () => {
+    const res: Response = new Response(new ResponseOptions({ body: MOCK_INBOX_API_RESPONSE }));
+    let modifiedResponse;
+
+    beforeEach(() => modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE));
+
+    it('should return TRUE if APIResponse has next_from', () => {
+      spyOn(http, 'get').and.returnValues(Observable.of(res));
+      service.init();
+
+      expect(service.shouldLoadMorePages()).toBe(true);
+    });
+
+    it('should return FALSE if APIResponse has not next_from', () => {
+      delete modifiedResponse.next_from;
+      spyOn(http, 'get').and.returnValues(Observable.of(modifiedResponse));
+      service.init();
+
+      expect(service.shouldLoadMorePages()).toBe(false);
     });
   });
 });
