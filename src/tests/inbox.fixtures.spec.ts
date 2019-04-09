@@ -45,57 +45,57 @@ export const MOCK_INBOX_API_RESPONSE = `{
             "messages": {
                 "next_from": "220382881010",
                 "messages": [
-                {
-                    "id": "20394401-ec61-4032-9eee-e79441fae457",
-                    "from_self": true,
-                    "text": "Vale gracias",
-                    "timestamp": "2019-01-28T08:00:20.573038Z",
-                    "status": "read",
-                    "type": "text",
-                    "payload": {
-                    }
-                },
-                {
-                    "id": "df9455bd-9d3f-4315-abdc-c7c230932347",
-                    "from_self": true,
-                    "text": "Por cuanto vale?",
-                    "timestamp": "2019-01-28T08:02:20.573038Z",
-                    "status": "read",
-                    "type": "text",
-                    "payload": {
-                    }
-                },
-                {
-                    "id": "b034a784-2702-4517-99cd-1268ba7d1cb7",
-                    "from_self": false,
-                    "text": "€20",
-                    "timestamp": "2019-01-28T08:45:20.573038Z",
-                    "status": "read",
-                    "type": "text",
-                    "payload": {
-                    }
-                },
-                {
-                    "id": "2bc9b35e-3d17-4044-91b7-20d52884bc1c",
-                    "from_self": true,
-                    "text": "Te va bien?",
-                    "timestamp": "2019-01-28T08:47:20.573038Z",
-                    "status": "read",
-                    "type": "text",
-                    "payload": {
-                    }
-                },
-                {
-                    "id": "02E8347D-526B-4042-8AA8-A7F343488D12",
-                    "from_self": false,
-                    "text": "Vale gracias",
-                    "timestamp": "2019-01-28T09:00:20.573038Z",
-                    "status": "read",
-                    "type": "text",
-                    "payload": {
-                    }
-                }
-            ]
+                        {
+                            "id": "20394401-ec61-4032-9eee-e79441fae457",
+                            "from_self": true,
+                            "text": "Vale gracias",
+                            "timestamp": "2019-01-28T08:00:20.573038Z",
+                            "status": "read",
+                            "type": "text",
+                            "payload": {
+                            }
+                        },
+                        {
+                            "id": "df9455bd-9d3f-4315-abdc-c7c230932347",
+                            "from_self": true,
+                            "text": "Por cuanto vale?",
+                            "timestamp": "2019-01-28T08:02:20.573038Z",
+                            "status": "read",
+                            "type": "text",
+                            "payload": {
+                            }
+                        },
+                        {
+                            "id": "b034a784-2702-4517-99cd-1268ba7d1cb7",
+                            "from_self": false,
+                            "text": "€20",
+                            "timestamp": "2019-01-28T08:45:20.573038Z",
+                            "status": "read",
+                            "type": "text",
+                            "payload": {
+                            }
+                        },
+                        {
+                            "id": "2bc9b35e-3d17-4044-91b7-20d52884bc1c",
+                            "from_self": true,
+                            "text": "Te va bien?",
+                            "timestamp": "2019-01-28T08:47:20.573038Z",
+                            "status": "read",
+                            "type": "text",
+                            "payload": {
+                            }
+                        },
+                        {
+                            "id": "02E8347D-526B-4042-8AA8-A7F343488D12",
+                            "from_self": false,
+                            "text": "Vale gracias",
+                            "timestamp": "2019-01-28T09:00:20.573038Z",
+                            "status": "read",
+                            "type": "text",
+                            "payload": {
+                            }
+                        }
+                ]
             }
         },
         {
@@ -128,16 +128,16 @@ export const MOCK_INBOX_API_RESPONSE = `{
             "unread_messages": 0,
             "messages": {
                 "messages": [
-                    {
-                     "id": "58AC7C92-1441-4D65-A05B-3FF1EABE48E2",
-                     "from_self": true,
-                     "text": "Vale perfecto",
-                     "timestamp": "2019-01-28T08:44:01.571872Z",
-                     "status": "sent",
-                      "type": "text",
-                     "payload": {
-                     }
-                    }
+                        {
+                        "id": "58AC7C92-1441-4D65-A05B-3FF1EABE48E2",
+                        "from_self": true,
+                        "text": "Vale perfecto",
+                        "timestamp": "2019-01-28T08:44:01.571872Z",
+                        "status": "sent",
+                        "type": "text",
+                        "payload": {
+                        }
+                        }
                 ]
              }
         }

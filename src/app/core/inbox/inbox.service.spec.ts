@@ -342,6 +342,7 @@ describe('InboxService', () => {
 
     it('should return TRUE if APIResponse has next_from', () => {
       spyOn(http, 'get').and.returnValues(Observable.of(res));
+
       service.init();
 
       expect(service.shouldLoadMorePages()).toBe(true);
@@ -350,6 +351,7 @@ describe('InboxService', () => {
     it('should return FALSE if APIResponse has not next_from', () => {
       delete modifiedResponse.next_from;
       spyOn(http, 'get').and.returnValues(Observable.of(modifiedResponse));
+
       service.init();
 
       expect(service.shouldLoadMorePages()).toBe(false);

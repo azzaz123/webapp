@@ -114,7 +114,7 @@ export class InboxService {
       const user = this.buildInboxUser(conv.with_user);
       const item = this.buildInboxItem(conv.item);
       const messages = this.buildInboxMessages(conv);
-      const nextPageToken = conv.next_from ? conv.next_from : null;
+      const nextPageToken = conv.next_from || null;
       const lastMessage = messages[0];
       const dateModified = lastMessage.date;
       const conversation = new InboxConversation(conv.hash, dateModified, user, item, nextPageToken, messages, conv.phone_shared,
