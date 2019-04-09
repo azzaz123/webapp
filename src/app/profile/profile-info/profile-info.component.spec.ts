@@ -247,7 +247,7 @@ describe('ProfileInfoComponent', () => {
 
   describe('openBecomeProModal', () => {
     it('should open modal if user is not featured', () => {
-      component.user.featured = false;
+      component.isPro = false;
       spyOn(modalService, 'open');
 
       component.openBecomeProModal();

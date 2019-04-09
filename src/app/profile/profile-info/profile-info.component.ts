@@ -126,7 +126,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   }
 
   public openBecomeProModal() {
-    if (!this.user.featured) {
+    if (!this.isPro) {
       this.modalService.open(BecomeProModalComponent, {windowClass: 'become-pro'});
     }
   }
