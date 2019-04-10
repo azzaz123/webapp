@@ -4,10 +4,7 @@ import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { MessageService } from '../message/message.service';
-import { InboxItem, InboxItemPlaceholder, InboxImage } from '../../chat/chat-with-inbox/inbox/inbox-item';
-import { InboxUser, InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
 import { FeatureflagService } from '../user/featureflag.service';
-import { InboxMessage } from '../../chat/chat-with-inbox/message/inbox-message';
 import { EventService } from '../event/event.service';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
@@ -100,7 +97,7 @@ export class InboxService {
 
   private processInboxResponse(res: Response): InboxConversation[] {
     const r = res.json();
-    this.nextPageToken = r.next_from ? r.next_from : null; // TODO: this will come in header response r.headers.get('NAMEOF')
+    this.nextPageToken = r.next_from || null;
     // In order to avoid adding repeated conversations
     const newConvs = r.conversations.filter(newConv => {
       return (this.conversations
@@ -111,47 +108,10 @@ export class InboxService {
 
   private buildConversations(conversations): InboxConversation[] {
     return conversations.map((conv) => {
-      const user = this.buildInboxUser(conv.with_user);
-      const item = this.buildInboxItem(conv.item);
-      const messages = this.buildInboxMessages(conv);
-      const nextPageToken = conv.next_from || null;
-      const lastMessage = messages[0];
-      const dateModified = lastMessage.date;
-      const conversation = new InboxConversation(conv.hash, dateModified, user, item, nextPageToken, messages, conv.phone_shared,
-        conv.unread_messages, lastMessage);
+      const conversation = InboxConversation.fromJSON(conv, this.selfId);
       this.messageService.totalUnreadMessages += conversation.unreadCounter;
       return conversation;
     });
   }
 
-  private buildInboxUser(user: any): InboxUser {
-    if (!user) {
-      return InboxUserPlaceholder;
-    }
-    const userBlocked = Boolean(user.available && user.blocked);
-    const profileUrl = USER_BASE_PATH + user.slug;
-    return new InboxUser(user.hash, user.name, userBlocked, user.available, profileUrl, user.image_url, user.response_rate,
-      user.score, user.location);
-  }
-
-  private buildInboxItem(item: any): InboxItem {
-    const image: InboxImage = {
-      urls_by_size: {
-        small: item && item.image_url ? item.image_url : null
-      }
-    };
-    if (!item) {
-      return InboxItemPlaceholder;
-    }
-    return new InboxItem(item.hash, item.price, item.title, image, item.status);
-  }
-
-  private buildInboxMessages(conversation) {
-    // TODO - handle third voice type message (type === '? TBD');
-    const textMessages = conversation.messages.messages.filter(m => m.type === 'text')
-    .map(m => new InboxMessage(m.id, conversation.hash, m.text,
-      m.from_self ? this.selfId : (conversation.with_user ? conversation.with_user.hash : null), m.from_self, new Date(m.timestamp),
-      m.status, m.payload));
-    return textMessages;
-  }
 }

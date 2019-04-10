@@ -7,18 +7,27 @@ import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { Message } from '../message/message';
+import { Observable } from 'rxjs';
+import { HttpService } from '../http/http.service';
+import { UserService } from '../user/user.service';
+import { Response } from '@angular/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConversationService {
+  private API_URL = 'bff/messaging/conversation/';
+  private selfId = this.userService.user.id;
+
   constructor(
+    private http: HttpService,
     private realTime: RealTimeService,
     private messageService: MessageService,
     private persistencyService: PersistencyService,
-    private eventService: EventService) {
+    private eventService: EventService,
+    private userService: UserService) {
     }
-
+  
   public conversations: InboxConversation[];
 
   public subscribeChatEvents() {
@@ -47,7 +56,7 @@ export class ConversationService {
     if (existingConversation) {
       this.addNewMessage(existingConversation, message);
     } else {
-      // TODO - request INBOX by conversation id OR create new conversation
+      this.fetchOrCreateInboxConversation(message);
     }
   }
 
@@ -131,5 +140,34 @@ export class ConversationService {
       message.status = newStatus;
       this.persistencyService.updateInboxMessageStatus(message, newStatus);
     }
+  }
+
+  private fetchOrCreateInboxConversation(message: InboxMessage) {
+    this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
+    this.getConversation(message.thread)
+    .subscribe((conversation) => {
+      this.conversations.unshift(conversation);
+      this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
+      this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+    },
+    (err) => {
+      // This is to display incoming messages if for some reason fetching the conversation fails.
+      const conversation = InboxConversation.errorConversationFromMessage(message);
+      this.conversations.unshift(conversation);
+      this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
+      this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+    });
+  }
+
+  private getConversation(id: String): Observable<InboxConversation> {
+    return this.http.get(this.API_URL + id)
+    .map((res: Response) => {
+      return this.buildConversation(res);
+    });
+  }
+
+  private buildConversation(res: Response): InboxConversation {
+    const json = res.json();
+    return InboxConversation.fromJSON(json, this.selfId);
   }
 }

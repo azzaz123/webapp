@@ -1,6 +1,7 @@
 import { InboxMessage } from '../../message/inbox-message';
-import { InboxUser } from '../inbox-user';
-import { InboxItem } from '../inbox-item';
+import { InboxUser, InboxUserPlaceholder } from '../inbox-user';
+import { InboxItem, InboxImage, InboxItemPlaceholder } from '../inbox-item';
+import { environment } from '../../../../../environments/environment.prod';
 
 export class InboxConversation {
 
@@ -76,6 +77,58 @@ export class InboxConversation {
 
     get phoneShared(): boolean {
         return this._phoneShared;
+    }
+
+    static errorConversationFromMessage(message: InboxMessage) {
+        const user = InboxUserPlaceholder;
+        const item = InboxItemPlaceholder;
+        const messages = [message];
+        const lastMessage = message;
+        const dateModified = lastMessage.date;
+        const hash = message.thread;
+        return new InboxConversation(hash, dateModified, user, item, null, messages, false, messages.length, lastMessage);
+    }
+
+    static fromJSON(json: any, withSelfId: string): InboxConversation {
+        const user = this.buildInboxUser(json.with_user);
+        const item = this.buildInboxItem(json.item);
+        const messages = this.buildInboxMessages(json, withSelfId);
+        const nextPageToken = json.next_from || null;
+        const lastMessage = messages[0];
+        const dateModified = lastMessage.date;
+        return new InboxConversation(json.hash, dateModified, user, item, nextPageToken, messages, json.phone_shared,
+            json.unread_messages, lastMessage);
+    }
+
+    private static buildInboxUser(user: any): InboxUser {
+        if (!user) {
+            return InboxUserPlaceholder;
+        }
+        const userBlocked = Boolean(user.available && user.blocked);
+        const profileUrl = environment.siteUrl + 'user/' + user.slug;
+        return new InboxUser(user.hash, user.name, userBlocked, user.available, profileUrl, user.image_url, user.response_rate,
+            user.score, user.location);
+    }
+
+    private static buildInboxItem(item: any): InboxItem {
+        const image: InboxImage = {
+            urls_by_size: {
+                small: item && item.image_url ? item.image_url : null
+            }
+        };
+        if (!item) {
+            return InboxItemPlaceholder;
+        }
+        return new InboxItem(item.hash, item.price, item.title, image, item.status);
+    }
+
+    private static buildInboxMessages(conversation, id) {
+        // TODO - handle third voice type message (type === '? TBD');
+        const textMessages = conversation.messages.messages.filter(m => m.type === 'text')
+            .map(m => new InboxMessage(m.id, conversation.hash, m.text,
+                m.from_self ? id : (conversation.with_user ? conversation.with_user.hash : null), m.from_self, new Date(m.timestamp),
+                m.status, m.payload));
+        return textMessages;
     }
 }
 
