@@ -27,7 +27,7 @@ export class ConversationService {
     private eventService: EventService,
     private userService: UserService) {
     }
-  
+
   public conversations: InboxConversation[];
 
   public subscribeChatEvents() {

@@ -11,23 +11,31 @@ import { chatSignalType, ChatSignal } from '../message/chat-signal.interface';
 import { Message } from '../message/message';
 import { messageStatus, InboxMessage } from '../../chat/chat-with-inbox/message/inbox-message';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
+import { UserService } from '../user/user.service';
+import { MockedUserService } from '../../../tests/user.fixtures.spec';
+import { HttpService } from '../http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 
 let service: ConversationService;
+let http: HttpService;
 let eventService: EventService;
 let realTime: RealTimeService;
 let persistencyService: PersistencyService;
 let messageService: MessageService;
+let userService: UserService;
 
 
-describe('ConversationService', () => {
+fdescribe('ConversationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         ConversationService,
+        ...TEST_HTTP_PROVIDERS,
         EventService,
         {provide: RealTimeService, useValue: { sendRead() {}} },
         {provide: PersistencyService, useClass: MockedPersistencyService},
-        {provide: MessageService, useValue: { totalUnreadMessages: 0 }}
+        {provide: MessageService, useValue: { totalUnreadMessages: 0 }},
+        {provide: UserService, useClass: MockedUserService}
       ]
     });
     service = TestBed.get(ConversationService);
