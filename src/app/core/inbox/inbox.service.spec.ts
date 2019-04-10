@@ -293,6 +293,7 @@ describe('InboxService', () => {
     it('should emit CHAT_CAN_PROCESS_RT with false', () => {
       spyOn(eventService, 'emit').and.callThrough();
       spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res2));
+
       service.init();
 
       service.loadMorePages();
@@ -303,6 +304,7 @@ describe('InboxService', () => {
     it('should make an HTTP get request to get the inbox next page using next_from', () => {
       spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res2));
       const expectedRes = res.json();
+
       service.init();
 
       service.loadMorePages();
@@ -315,6 +317,7 @@ describe('InboxService', () => {
 
     it('should not add existing conversations', () => {
       spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res2));
+
       service.init();
 
       service.loadMorePages();
@@ -326,6 +329,7 @@ describe('InboxService', () => {
       modifiedResponse.conversations.map(conv => conv.hash = conv.hash + 'new');
       const apiResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
       spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(apiResponse));
+
       service.init();
 
       service.loadMorePages();
