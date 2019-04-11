@@ -114,9 +114,10 @@ export class InboxService {
       const user = this.buildInboxUser(conv.with_user);
       const item = this.buildInboxItem(conv.item);
       const messages = this.buildInboxMessages(conv);
+      const nextPageToken = conv.next_from || null;
       const lastMessage = messages[0];
       const dateModified = lastMessage.date;
-      const conversation = new InboxConversation(conv.hash, dateModified, user, item, messages, conv.phone_shared,
+      const conversation = new InboxConversation(conv.hash, dateModified, user, item, nextPageToken, messages, conv.phone_shared,
         conv.unread_messages, lastMessage);
       this.messageService.totalUnreadMessages += conversation.unreadCounter;
       return conversation;
@@ -147,7 +148,8 @@ export class InboxService {
 
   private buildInboxMessages(conversation) {
     // TODO - handle third voice type message (type === '? TBD');
-    const textMessages = conversation.messages.filter(m => m.type === 'text').map(m => new InboxMessage(m.id, conversation.hash, m.text,
+    const textMessages = conversation.messages.messages.filter(m => m.type === 'text')
+    .map(m => new InboxMessage(m.id, conversation.hash, m.text,
       m.from_self ? this.selfId : (conversation.with_user ? conversation.with_user.hash : null), m.from_self, new Date(m.timestamp),
       m.status, m.payload));
     return textMessages;

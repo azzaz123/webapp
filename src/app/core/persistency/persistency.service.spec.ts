@@ -488,7 +488,7 @@ describe('Service: Persistency', () => {
   describe('updateInboxMessageStatus', () => {
     it('should upsert the message status', fakeAsync(() => {
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
-      const mockMsg = MOCK_INBOX_CONVERSATION.messages[0];
+      const mockMsg = MOCK_INBOX_CONVERSATION.messages.messages[0];
       tick();
 
       service.updateInboxMessageStatus(mockMsg, messageStatus.READ).subscribe();

@@ -8,6 +8,7 @@ export class InboxConversation {
         private _modifiedDate: Date,
         private _user: InboxUser,
         private _item: InboxItem,
+        private _nextPageToken: string,
         private _messages: InboxMessage[],
         private _phoneShared: boolean,
         private _unreadCounter: number = 0,
@@ -45,6 +46,14 @@ export class InboxConversation {
         return this._lastMessage;
     }
 
+    set nextPageToken(nextPageToken: string) {
+        this._nextPageToken = nextPageToken;
+    }
+
+    get nextPageToken(): string {
+        return this._nextPageToken;
+    }
+
     set messages(messages: InboxMessage[]) {
         this._messages = messages;
     }
@@ -77,5 +86,6 @@ export class StoredInboxConversation {
       private item: InboxItem,
       private phoneShared: boolean,
       private unreadCounter: number = 0,
+      private nextPageToken: string,
       private lastMessage?: InboxMessage) {}
   }

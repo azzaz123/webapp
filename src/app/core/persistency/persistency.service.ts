@@ -87,7 +87,7 @@ export class PersistencyService {
         this.inboxDb = new PouchDB('inbox-' + this.userId, { auto_compaction: true });
         const inboxToSave = conversations.map((conversation: InboxConversation) =>
           new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
-            conversation.phoneShared, conversation.unreadCounter, conversation.lastMessage));
+            conversation.phoneShared, conversation.unreadCounter, conversation.nextPageToken, conversation.lastMessage));
         return Observable.fromPromise(this.inboxDb.bulkDocs(inboxToSave));
       })
     );
@@ -108,7 +108,7 @@ export class PersistencyService {
       const lastMessage = new InboxMessage(conv.lastMessage._id, conv.lastMessage._thread, conv.lastMessage._message,
         conv.lastMessage._fromSelf, conv.lastMessage._date,
         conv.lastMessage._status, conv.lastMessage._payload, conv.lastMessage._phoneRequest);
-      return new InboxConversation(conv._id, conv.modifiedDate, user, item, conv.messages, conv.phoneShared,
+      return new InboxConversation(conv._id, conv.modifiedDate, user, item, conv.nextPageToken, conv.messages, conv.phoneShared,
         conv.unreadCounter, lastMessage);
     });
   }
