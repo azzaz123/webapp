@@ -12,9 +12,12 @@ import { Message } from '../message/message';
 import { messageStatus, InboxMessage } from '../../chat/chat-with-inbox/message/inbox-message';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../user/user.service';
-import { MockedUserService } from '../../../tests/user.fixtures.spec';
+import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { ResponseOptions, Response } from '@angular/http';
+import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { Observable } from 'rxjs';
 
 let service: ConversationService;
 let http: HttpService;
@@ -25,7 +28,7 @@ let messageService: MessageService;
 let userService: UserService;
 
 
-fdescribe('ConversationService', () => {
+describe('ConversationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -39,10 +42,13 @@ fdescribe('ConversationService', () => {
       ]
     });
     service = TestBed.get(ConversationService);
+    http = TestBed.get(HttpService);
     eventService = TestBed.get(EventService);
     realTime = TestBed.get(RealTimeService);
     persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
+    userService = TestBed.get(UserService);
+    spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
     service.subscribeChatEvents();
   });
 
@@ -240,6 +246,41 @@ fdescribe('ConversationService', () => {
 
         expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore);
         expect(messageService.totalUnreadMessages).toEqual(unreadCounterBefore);
+      });
+    });
+
+    describe('when called with a conversation that not exists', () => {
+      beforeEach(() => {
+        currentLastMessage = conversations[0].lastMessage;
+        newInboxMessage = new InboxMessage('newMessageId', 'newConversationId', 'hola!', 'mockUserId', true,
+          new Date(), messageStatus.RECEIVED);
+      });
+
+      it('should call fetch new conversation', () => {
+        spyOn(http, 'get').and.callThrough();
+
+        service.processNewMessage(newInboxMessage);
+
+        expect(http.get).toHaveBeenCalledWith(service['API_URL'] + newInboxMessage.thread);
+      });
+
+      it('should add new conversation to the top of the list if fetch succeed', () => {
+        const apiResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify(MOCK_API_CONVERSATION) }));
+        spyOn(http, 'get').and.returnValue(Observable.of(apiResponse));
+
+        service.processNewMessage(newInboxMessage);
+
+        expect(service.conversations[0].id).toEqual(MOCK_API_CONVERSATION.hash);
+      });
+
+      it('should add new conversation with received message to the top of the list if fetch failed', () => {
+        const apiResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify(MOCK_API_CONVERSATION) }));
+        spyOn(http, 'get').and.returnValue(Observable.throw(new Error('Test error')));
+
+        service.processNewMessage(newInboxMessage);
+
+        expect(service.conversations[0].id).toEqual(newInboxMessage.thread);
+        expect(service.conversations[0].lastMessage.id).toEqual(newInboxMessage.id);
       });
     });
   });

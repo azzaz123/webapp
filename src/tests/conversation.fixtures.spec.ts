@@ -92,3 +92,49 @@ export function createConversationsArray(total: number, phone?: boolean, convers
   }
   return conversations;
 }
+
+export const MOCK_CONVERSATION_API_RESPONSE = `{
+    "hash": "p61y8o5np268",
+    "with_user": {
+        "hash": "7v6gwyklr5ze",
+        "slug": "wallacars-56047883",
+        "name": "John D.",
+        "image_url": "http://cdn-beta.wallapop.com/images/13/16/sp/__/c13p71883041/i413962112.jpg?pictureSize=W640",
+        "response_rate" : "less than a day",
+        "score" : 20,
+        "blocked": false,
+        "available": true,
+        "location" : {
+           "latitude": 37.39266063798759,
+           "longitude": -5.977606016287523
+        }
+    },
+    "item": {
+        "hash": "9nz0nlmkyv6o",
+        "title": "Camiseta",
+        "price": {
+            "amount": "12.45",
+            "currency": "€"
+        },
+        "status": "RESERVED",
+        "image_url": "http://cdn-beta.wallapop.com/images/10420/30/yi/__/c10420p183008817/i413212126.jpg?pictureSize=W320"
+    },
+    "phone_shared": true,
+    "unread_messages": 1,
+    "messages": {
+        "next_from": "220382881010",
+        "messages": [
+              {
+                  "id": "20394401-ec61-4032-9eee-e79441fae457",
+                  "from_self": true,
+                  "text": "Vale gracias",
+                  "timestamp": "2019-01-28T08:00:20.573038Z",
+                  "status": "read",
+                  "type": "text",
+                  "payload": {
+                  }
+              }
+        ]
+    }
+}`;
+export const MOCK_API_CONVERSATION = JSON.parse(MOCK_CONVERSATION_API_RESPONSE);
