@@ -51,8 +51,9 @@ tsl-card {
 
     .cart-footer-icon {
       position: absolute;
-      &.active g {
-        fill: $color-favorite-icon-fill;
+      &.active path {
+        fill: #FD6C67;
+        stroke: #D45B57;
       }
     }
 

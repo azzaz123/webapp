@@ -177,7 +177,7 @@ describe('ProfileInfoComponent', () => {
 
       it('should call updateProInfo and edit', () => {
         expect(userService.updateProInfo).toHaveBeenCalledWith(DATA);
-        expect(userService.edit).toHaveBeenCalledWith(BASIC_DATA);
+        expect(userService.edit).toHaveBeenCalledWith(USER_EDIT_DATA);
       });
 
       it('should call i18nSuccess', () => {

@@ -111,7 +111,9 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
       this.userService.updateProInfo(this.profileForm.value).subscribe(() => {
         this.userService.edit({
           first_name: this.profileForm.value.first_name,
-          last_name: this.profileForm.value.last_name
+          last_name: this.profileForm.value.last_name,
+          birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
+          gender: this.user.gender
         }).subscribe(() => {
           this.errorsService.i18nSuccess('userEdited');
           this.formComponent.hasNotSavedChanges = false;
