@@ -11,7 +11,7 @@
     <tsl-stars *ngIf="profile.scoring_stars > -1" [stars]="profile.scoring_stars" [normalized]="false"></tsl-stars>
   </tsl-card-content>
   <tsl-card-footer (click)="removeFavoriteModal($event)">
-    <mat-icon svgIcon="heart" class="cart-footer-icon" [ngClass]="{active: profile.favorited}"></mat-icon>
+    <mat-icon svgIcon="heart-full" class="cart-footer-icon" [ngClass]="{active: profile.favorited}"></mat-icon>
     <div class="cart-footer-text" i18n> Remove </div>
   </tsl-card-footer>
 </tsl-card>

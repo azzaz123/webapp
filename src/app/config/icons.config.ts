@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
   matIconRegistry.addSvgIcon('heart', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/heart.svg'));
+  matIconRegistry.addSvgIcon('heart-full', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/heart-full.svg'));
   matIconRegistry.addSvgIcon('location', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/location.svg'));
   matIconRegistry.addSvgIcon('others', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/others.svg'));
   matIconRegistry.addSvgIcon('phone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/phone.svg'));
