@@ -64,9 +64,9 @@ export class InboxService {
   public loadMorePages() {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getNextPage()
-      .catch((err) => {
+      .catch(() => {
         this.errorRetrievingInbox = true;
-        return null;
+        return Observable.of([]);
       })
       .subscribe((conversations: InboxConversation[]) => {
         this.eventService.emit(EventService.INBOX_LOADED, conversations);
@@ -74,7 +74,7 @@ export class InboxService {
       });
   }
 
-  public shouldLoadMorePages(): Boolean {
+  public shouldLoadMorePages(): boolean {
     return this.nextPageToken !== null;
   }
 

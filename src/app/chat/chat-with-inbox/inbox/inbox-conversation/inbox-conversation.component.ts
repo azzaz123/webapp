@@ -24,13 +24,14 @@ export class InboxConversationComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges() {
-    this.conversation.cannotChat  = this.conversation.user.blocked
+    this.conversation.cannotChat  = !this.conversation
+    || this.conversation.user.blocked
     || !this.conversation.user.available
     || this.conversation.item.status === INBOX_ITEM_STATUSES.notAvailable;
   }
 
 
-  public dateIsThisYear() {
+  public dateIsThisYear(): boolean {
     if (this.conversation && this.conversation.modifiedDate) {
       return this.conversation.modifiedDate.getFullYear() === new Date().getFullYear();
     }

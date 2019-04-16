@@ -101,3 +101,45 @@ tsl-process-all-button {
     }
   }
 }
+
+#inbox-empty {
+  padding-top: $spacing-ml;
+  mat-icon {
+    width: 340px;
+    height: 403px;
+  }
+}
+
+#header-empty {
+  mat-icon {
+    width: 340px;
+    height: 60px;
+  }
+}
+
+.inbox-header-menu {
+    height: 60px;
+    border-bottom: 1px solid $blue-grey-4;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    p {
+      margin-left: 20px;
+      float: left;
+      position: relative;
+    }
+    mat-icon {
+      height: 24px;
+      width: 24px;
+      cursor: pointer;
+      /deep/ #MVP {
+        fill: $blue-grey-2;
+      }
+    }
+    .dropdown-item {
+      padding: ($spacing-ml /2) $spacing-ml;
+      cursor: pointer;
+      &.warn {
+        color: $warn;
+      }
+    }
+  }

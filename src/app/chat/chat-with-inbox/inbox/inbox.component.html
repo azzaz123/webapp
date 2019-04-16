@@ -11,6 +11,20 @@
   </div>
   <div class="separator"></div>
 </div>
+
+<div ngbDropdown placement="bottom" class="inbox-header-menu" *ngIf="shouldDisplayHeader()">
+  <div>
+    <p class="" i18n>Inbox</p>
+    <mat-icon class="header-icon" svgIcon="arrow-waterfall" ngbDropdownToggle></mat-icon>
+    <div ngbDropdownMenu>
+      <button class="dropdown-item" (click)="showArchive()" i18n>Archived Inbox</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="!shouldDisplayHeader()" id="header-empty">
+  <mat-icon svgIcon="empty-header-inbox-placeholder"></mat-icon>
+</div>
+
 <div class="scroll-panel" #scrollPanel (scroll)="showNewMessagesToast ? handleScroll() : null">
   <button class="btn btn-primary new-messages-toast" *ngIf="showNewMessagesToast" (click)="scrollToTop()">
     <mat-icon svgIcon="up-arrow-white"></mat-icon>
@@ -18,10 +32,15 @@
   </button>
   <div id="conversations" [hidden]="loading">
     <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We couldn't load your inbox due to whatever reasons :)</div>
-    <tsl-inbox-conversation *ngFor="let conversation of conversations"
-      [conversation]="conversation"
-      [ngClass]="{'active': conversation?.active}"
-      (click)="setCurrentConversation(conversation)"></tsl-inbox-conversation>
+    <div *ngIf="hasConversations()" id="inbox-data">
+      <tsl-inbox-conversation *ngFor="let conversation of conversations" 
+        [conversation]="conversation"
+        [ngClass]="{'active': conversation?.active}" (click)="setCurrentConversation(conversation)">
+      </tsl-inbox-conversation>
+    </div>
+    <div *ngIf="!hasConversations()" id="inbox-empty">
+      <mat-icon svgIcon="empty-inbox-placeholder"></mat-icon>
+    </div>
   </div>
   <div id="loader" [hidden]="!loading">
     <mat-icon svgIcon="conversations-mock"></mat-icon>
