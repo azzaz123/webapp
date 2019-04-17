@@ -16,11 +16,19 @@
   <div ngbDropdownToggle class="dropdown-header">
     <div class="header-title" i18n>Inbox</div>
     <mat-icon class="header-icon" svgIcon="arrow-waterfall"></mat-icon>
-  </div>  
-  <div ngbDropdownMenu class="dropdown-menu">
-    <button class="dropdown-item active" (click)="showInbox()" i18n>Inbox</button>
-    <button class="dropdown-item" (click)="showArchive()" i18n>Archived Messages</button>
-    </div>
+  </div> 
+  <ul ngbDropdownMenu class="dropdown-menu">
+      <li class="dropdown-item active">
+        <a (click)="showInbox()">
+          <span i18n>Inbox</span>
+        </a>
+      </li>
+      <li class="dropdown-item">
+          <a (click)="showArchive()">
+            <span i18n>Archived Messages</span>
+          </a>
+      </li>
+  </ul>
 </div>
 <div *ngIf="!shouldDisplayHeader()" id="header-empty" [class]="loading ? 'isLoading' : ''">
   <mat-icon svgIcon="empty-header-inbox-placeholder"></mat-icon>
