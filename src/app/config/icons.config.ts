@@ -44,6 +44,8 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('conversations-mock', sanitizer.bypassSecurityTrustResourceUrl('/assets/images/conversations-mock.svg'));
   matIconRegistry.addSvgIcon('empty-inbox-placeholder', sanitizer.bypassSecurityTrustResourceUrl('/assets/images/empty-inbox-placeholder.svg'));
   matIconRegistry.addSvgIcon('empty-header-inbox-placeholder', sanitizer.bypassSecurityTrustResourceUrl('/assets/images/empty-header-inbox-placeholder.svg'));
+  matIconRegistry.addSvgIcon('inbox-loader', sanitizer.bypassSecurityTrustResourceUrl('/assets/images/inbox-loader.svg'));
+  matIconRegistry.addSvgIcon('empty-inbox-conversation', sanitizer.bypassSecurityTrustResourceUrl('/assets/images/empty-inbox-conversation.svg'));
   matIconRegistry.addSvgIcon('spinner', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/spinner.svg'));
   matIconRegistry.addSvgIcon('sold', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/sold.svg'));
   matIconRegistry.addSvgIcon('reserved', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/reserved.svg'));

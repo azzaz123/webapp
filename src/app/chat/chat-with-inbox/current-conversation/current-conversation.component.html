@@ -1,5 +1,10 @@
 <div id="empty-state" *ngIf="!currentConversation">
-    <div class="content">
+    <div class="empty" *ngIf="emptyInbox">
+        <div>
+            <mat-icon svgIcon="empty-inbox-conversation"></mat-icon>
+        </div>
+    </div>
+    <div class="content" *ngIf="!emptyInbox">
         <div>
             <mat-icon svgIcon="empty-state" class="image"></mat-icon>
             <p *ngIf="conversationsTotal > 0 && !connectionError" i18n>Choose a conversation<br />

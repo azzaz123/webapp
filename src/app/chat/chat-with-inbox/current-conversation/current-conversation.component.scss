@@ -137,3 +137,13 @@
     }
   }
 }
+
+.empty {
+  position: relative;
+  background: $white;
+  display: flex;
+  mat-icon{
+    width: 100vh;
+    height: 100vh;
+  }
+}

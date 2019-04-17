@@ -22,7 +22,7 @@
     <button class="dropdown-item" (click)="showArchive()" i18n>Archived Messages</button>
     </div>
 </div>
-<div *ngIf="!shouldDisplayHeader()" id="header-empty">
+<div *ngIf="!shouldDisplayHeader()" id="header-empty" [class]="loading ? 'isLoading' : ''">
   <mat-icon svgIcon="empty-header-inbox-placeholder"></mat-icon>
 </div>
 
@@ -43,8 +43,8 @@
       <mat-icon svgIcon="empty-inbox-placeholder"></mat-icon>
     </div>
   </div>
-  <div id="loader" [hidden]="!loading">
-    <mat-icon svgIcon="conversations-mock"></mat-icon>
+  <div id="loader" [hidden]="!loading" class="isLoading">
+    <mat-icon svgIcon="inbox-loader"></mat-icon>
   </div>
   <div class="load-more-container" *ngIf="showLoadMore()">
     <a class="load-more">
