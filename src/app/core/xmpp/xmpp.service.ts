@@ -25,7 +25,7 @@ export class XmppService {
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private realtimeQ: Array<XmppBodyMessage> = [];
   private canProcessRealtime = false;
-  private xmppError = { mesasge: 'XMPP disconnected' };
+  private xmppError = { message: 'XMPP disconnected' };
 
   constructor(private eventService: EventService) {
   }
