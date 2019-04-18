@@ -148,12 +148,11 @@ export class XmppService {
     this.client.on('message:sent', (message: XmppBodyMessage) => {
       if (message.received) {
         this.eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
-        this.eventService.emit(EventService.CHAT_SIGNAL, 
-          new ChatSignal(messageStatus.RECEIVED, message.thread, new Date().getTime(), message.id, this.isFromSelf(message)));
       }
       if (message.read) {
         this.eventService.emit(EventService.MESSAGE_READ_ACK);
       }
+      this.buildChatSignal(message);
     });
 
     this.client.on('disconnected', () => {
