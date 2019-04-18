@@ -33,6 +33,12 @@ export class ConversationService {
   public subscribeChatEvents() {
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.conversations = conversations;
+      conversations.map(conv => {
+        conv.messages.filter((message) => {
+          return (message.status === messageStatus.SENT && !message.fromSelf);
+        })
+        .map(message => this.realTime.sendDeliveryReceipt(conv.user.id, message.id, conv.id));
+      });
     });
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
       const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
