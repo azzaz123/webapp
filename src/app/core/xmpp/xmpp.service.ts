@@ -91,7 +91,7 @@ export class XmppService {
 
   public disconnectError(): Observable<boolean> {
     if (!this.clientConnected) {
-      return Observable.throw(this.xmppError);
+      return Observable.throwError(this.xmppError);
     }
     return Observable.of(true);
   }
