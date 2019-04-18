@@ -47,6 +47,7 @@ export class InboxService {
   public init() {
     this.conversationService.subscribeChatEvents();
     this.selfId = this.userService.user.id;
+    this.conversationService.selfId = this.selfId;
     this.getInbox()
     .catch(() => {
       this.errorRetrievingInbox = true;

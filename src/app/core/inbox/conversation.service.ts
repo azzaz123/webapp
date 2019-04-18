@@ -9,7 +9,6 @@ import { PersistencyService } from '../persistency/persistency.service';
 import { Message } from '../message/message';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
-import { UserService } from '../user/user.service';
 import { Response } from '@angular/http';
 
 @Injectable({
@@ -17,15 +16,14 @@ import { Response } from '@angular/http';
 })
 export class ConversationService {
   private API_URL = 'bff/messaging/conversation/';
-  private selfId: string;
+  private _selfId: string;
 
   constructor(
     private http: HttpService,
     private realTime: RealTimeService,
     private messageService: MessageService,
     private persistencyService: PersistencyService,
-    private eventService: EventService,
-    private userService: UserService) {
+    private eventService: EventService) {
     }
 
   public conversations: InboxConversation[];
@@ -48,7 +46,10 @@ export class ConversationService {
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processNewChatSignal(signal);
     });
-    this.selfId = this.userService.user.id;
+  }
+
+  set selfId(value: string) {
+    this._selfId = this._selfId;
   }
 
   public openConversation(conversation: InboxConversation) {
@@ -175,6 +176,6 @@ export class ConversationService {
 
   private buildConversation(res: Response): InboxConversation {
     const json = res.json();
-    return InboxConversation.fromJSON(json, this.selfId);
+    return InboxConversation.fromJSON(json, this._selfId);
   }
 }
