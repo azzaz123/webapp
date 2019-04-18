@@ -30,10 +30,6 @@ export class ConversationService {
 
   public conversations: InboxConversation[];
 
-  public init() {
-    this.selfId = this.userService.user.id;
-  }
-
   public subscribeChatEvents() {
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.conversations = conversations;
@@ -52,6 +48,7 @@ export class ConversationService {
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processNewChatSignal(signal);
     });
+    this.selfId = this.userService.user.id;
   }
 
   public openConversation(conversation: InboxConversation) {
