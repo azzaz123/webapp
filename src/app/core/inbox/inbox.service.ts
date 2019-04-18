@@ -45,6 +45,7 @@ export class InboxService {
   }
 
   public init() {
+    this.conversationService.init();
     this.conversationService.subscribeChatEvents();
     this.selfId = this.userService.user.id;
     this.getInbox()

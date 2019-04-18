@@ -17,7 +17,7 @@ import { Response } from '@angular/http';
 })
 export class ConversationService {
   private API_URL = 'bff/messaging/conversation/';
-  private selfId = this.userService.user.id;
+  private selfId: string;
 
   constructor(
     private http: HttpService,
@@ -29,6 +29,10 @@ export class ConversationService {
     }
 
   public conversations: InboxConversation[];
+
+  public init() {
+    this.selfId = this.userService.user.id;
+  }
 
   public subscribeChatEvents() {
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
