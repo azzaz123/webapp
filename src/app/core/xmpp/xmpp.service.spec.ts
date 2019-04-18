@@ -619,7 +619,7 @@ describe('Service: Xmpp', () => {
   });
 
   describe('disconnectError', () => {
-    xit('should throw an error if clientConnected is false', fakeAsync(() => { // skipping test, it's failing for no reason
+    it('should throw an error if clientConnected is false', fakeAsync(() => { // skipping test, it's failing for no reason
       let error: any, response: any;
       service['clientConnected'] = false;
 
