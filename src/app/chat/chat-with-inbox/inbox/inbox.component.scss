@@ -20,7 +20,7 @@ letter-spacing: $letter-spacing;
 .scroll-panel {
 	scroll-behavior: smooth;
 	display: block;
-	height: calc(100vh - #{$topbar-height});
+	height: calc(100vh - (#{$topbar-height} + 60px));
 	overflow-y: auto;
 	overflow-x: hidden;
 	width: 100%;
