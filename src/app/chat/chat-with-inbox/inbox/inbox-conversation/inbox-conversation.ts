@@ -1,7 +1,7 @@
 import { InboxMessage } from '../../message/inbox-message';
 import { InboxUser, InboxUserPlaceholder } from '../inbox-user';
 import { InboxItem, InboxImage, InboxItemPlaceholder } from '../inbox-item';
-import { environment } from '../../../../../environments/environment.prod';
+import { environment } from '../../../../../environments/environment';
 
 export class InboxConversation {
 
@@ -105,7 +105,7 @@ export class InboxConversation {
             return InboxUserPlaceholder;
         }
         const userBlocked = Boolean(user.available && user.blocked);
-        const profileUrl = environment.siteUrl + 'user/' + user.slug;
+        const profileUrl = `${environment.siteUrl}user/${user.slug}`;
         return new InboxUser(user.hash, user.name, userBlocked, user.available, profileUrl, user.image_url, user.response_rate,
             user.score, user.location);
     }
