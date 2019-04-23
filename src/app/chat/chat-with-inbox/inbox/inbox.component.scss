@@ -2,15 +2,19 @@
 
 $title-height: 64px;
 $filters-nav-height: 38px;
+$inbox-width: 340px;
+$inbox-height: 403px;
+$inbox-header-height: 60px;
 
 h2 {
-margin: $spacing-ml;
-font-weight: bold;
-font-size: $font-size-ll;
-letter-spacing: $letter-spacing;
-.badge {
+  margin: $spacing-ml;
+  font-weight: bold;
+  font-size: $font-size-ll;
+  letter-spacing: $letter-spacing;
+  .badge {
     margin-left: 10px;
-    vertical-align: middle; }
+    vertical-align: middle; 
+  }
 }
 
 .header {
@@ -114,21 +118,21 @@ tsl-process-all-button {
 #inbox-empty {
   padding-top: $spacing-ml;
   mat-icon {
-      width: 340px;
-      height: 403px;
+    width: $inbox-width;
+    height: $inbox-height;
   }
 }
 
 #header-empty {
   mat-icon {
-    width: 340px;
-    height: 60px;
+    width: $inbox-width;
+    height: $inbox-header-height;
   }
   border-bottom: 1px solid $blue-grey-5;
 }
 
 .inbox-header-menu {
-  height: 60px;
+  height: $inbox-header-height;
   border-bottom: 1px solid $blue-grey-4;
   display: flex;
   align-content: center;
