@@ -21,6 +21,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   }
 
   private newMessageSubscription: Subscription;
+  private _emptyInbox: boolean;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -30,6 +31,10 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     nextWeek: 'dddd, D MMM',
     sameElse: 'dddd, D MMM'
   };
+
+  get emptyInbox(): boolean {
+    return this.conversationsTotal === 0;
+  }
 
   ngOnInit() {
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,

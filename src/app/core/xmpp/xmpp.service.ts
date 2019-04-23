@@ -25,7 +25,7 @@ export class XmppService {
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private realtimeQ: Array<XmppBodyMessage> = [];
   private canProcessRealtime = false;
-  private xmppError = { mesasge: 'XMPP disconnected' };
+  private xmppError = { message: 'XMPP disconnected' };
 
   constructor(private eventService: EventService) {
   }
@@ -91,7 +91,7 @@ export class XmppService {
 
   public disconnectError(): Observable<boolean> {
     if (!this.clientConnected) {
-      return Observable.throw(this.xmppError);
+      return Observable.throwError(this.xmppError);
     }
     return Observable.of(true);
   }
@@ -152,6 +152,7 @@ export class XmppService {
       if (message.read) {
         this.eventService.emit(EventService.MESSAGE_READ_ACK);
       }
+      this.buildChatSignal(message);
     });
 
     this.client.on('disconnected', () => {

@@ -101,8 +101,17 @@ export class InboxComponent implements OnInit, OnDestroy  {
     this.inboxService.loadMorePages();
   }
 
-  public showLoadMore(): Boolean {
+  public showLoadMore(): boolean {
     return this.inboxService.shouldLoadMorePages();
+  }
+
+  public hasConversations(): boolean {
+    return this.conversations && this.conversations.length > 0;
+  }
+
+  public shouldDisplayHeader(): boolean {
+    // This should check if there are also Archived conversations when developed
+    return this.hasConversations();
   }
 
   private unselectCurrentConversation() {

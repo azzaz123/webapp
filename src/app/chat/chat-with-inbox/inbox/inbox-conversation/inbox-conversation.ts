@@ -95,7 +95,7 @@ export class InboxConversation {
         const messages = this.buildInboxMessages(json, withSelfId);
         const nextPageToken = json.next_from || null;
         const lastMessage = messages[0];
-        const dateModified = lastMessage.date;
+        const dateModified = lastMessage ? lastMessage.date : null;
         return new InboxConversation(json.hash, dateModified, user, item, nextPageToken, messages, json.phone_shared,
             json.unread_messages, lastMessage);
     }

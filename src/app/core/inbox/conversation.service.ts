@@ -9,7 +9,6 @@ import { PersistencyService } from '../persistency/persistency.service';
 import { Message } from '../message/message';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
-import { UserService } from '../user/user.service';
 import { Response } from '@angular/http';
 
 @Injectable({
@@ -17,15 +16,14 @@ import { Response } from '@angular/http';
 })
 export class ConversationService {
   private API_URL = 'bff/messaging/conversation/';
-  private selfId = this.userService.user.id;
+  private _selfId: string;
 
   constructor(
     private http: HttpService,
     private realTime: RealTimeService,
     private messageService: MessageService,
     private persistencyService: PersistencyService,
-    private eventService: EventService,
-    private userService: UserService) {
+    private eventService: EventService) {
     }
 
   public conversations: InboxConversation[];
@@ -33,6 +31,12 @@ export class ConversationService {
   public subscribeChatEvents() {
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.conversations = conversations;
+      conversations.map(conv => {
+        conv.messages.filter((message) => {
+          return (message.status === messageStatus.SENT && !message.fromSelf);
+        })
+        .map(message => this.realTime.sendDeliveryReceipt(conv.user.id, message.id, conv.id));
+      });
     });
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
       const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
@@ -42,6 +46,10 @@ export class ConversationService {
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processNewChatSignal(signal);
     });
+  }
+
+  set selfId(value: string) {
+    this._selfId = this._selfId;
   }
 
   public openConversation(conversation: InboxConversation) {
@@ -168,6 +176,6 @@ export class ConversationService {
 
   private buildConversation(res: Response): InboxConversation {
     const json = res.json();
-    return InboxConversation.fromJSON(json, this.selfId);
+    return InboxConversation.fromJSON(json, this._selfId);
   }
 }
