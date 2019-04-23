@@ -5,14 +5,12 @@
         </div>
     </div>
     <div class="content" *ngIf="!emptyInbox">
-        <div>
-            <mat-icon svgIcon="empty-state" class="image"></mat-icon>
-            <p *ngIf="conversationsTotal > 0 && !connectionError" i18n>Choose a conversation<br />
-                from the list on the left</p>
-            <p *ngIf="conversationsTotal === 0 && !connectionError" i18n>There are no messages</p>
-            <p *ngIf="connectionError" i18n>Service not available at the moment.<br />
-                Try again later.</p>
-        </div>
+        <mat-icon svgIcon="empty-state" class="image"></mat-icon>
+        <p *ngIf="conversationsTotal > 0 && !connectionError" i18n>Choose a conversation<br />
+            from the list on the left</p>
+        <p *ngIf="conversationsTotal === 0 && !connectionError" i18n>There are no messages</p>
+        <p *ngIf="connectionError" i18n>Service not available at the moment.<br />
+            Try again later.</p>
     </div>
 </div>
 <div *ngIf="currentConversation">
