@@ -28,9 +28,9 @@
           <span>{{conversation.item.title}}</span>
         </div>
         
-        <div class="message-row" [ngClass]="{'showStatus': conversation.lastMessage.fromSelf && conversation.lastMessage.status }">
-          <div class="message-status" [ngClass]="conversation.lastMessage.status" *ngIf="conversation.lastMessage.fromSelf && conversation.lastMessage.status"></div>
-          <p class="message">{{conversation.lastMessage.text}}</p>
+        <div class="message-row" [ngClass]="{'showStatus': conversation.lastMessage && conversation.lastMessage.fromSelf && conversation.lastMessage.status }">
+          <div class="message-status" [ngClass]="conversation.lastMessage.status" *ngIf="conversation.lastMessage && conversation.lastMessage.fromSelf && conversation.lastMessage.status"></div>
+          <p *ngIf="conversation.lastMessage" class="message">{{conversation.lastMessage.text}}</p>
         </div>
       </div>
       <div class="unread-counter-column">

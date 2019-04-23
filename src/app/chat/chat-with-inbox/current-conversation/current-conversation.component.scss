@@ -118,3 +118,32 @@
     margin-bottom: $spacing-ml;
   }
 }
+
+#empty-state {
+  height: 100vh;
+  position: relative;
+  background: $white;
+  .content {
+    @include in-the-middle;
+    text-align: center;
+    .image {
+      width: 211px;
+      height: 220px;
+    }
+    p {
+      font-size: $font-size-m;
+      color: $blue-grey-2;
+      line-height: 24px;
+    }
+  }
+}
+
+.empty {
+  position: relative;
+  background: $white;
+  display: flex;
+  mat-icon{
+    width: 100vh;
+    height: 100vh;
+  }
+}

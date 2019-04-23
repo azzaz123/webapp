@@ -10,6 +10,7 @@ import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 
 @Injectable()
 export class XmppService {
@@ -24,7 +25,7 @@ export class XmppService {
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private realtimeQ: Array<XmppBodyMessage> = [];
   private canProcessRealtime = false;
-  private xmppError = { mesasge: 'XMPP disconnected' };
+  private xmppError = { message: 'XMPP disconnected' };
 
   constructor(private eventService: EventService) {
   }
@@ -45,7 +46,7 @@ export class XmppService {
     }
   }
 
-  public sendMessage(conversation: Conversation, body: string) {
+  public sendMessage(conversation: Conversation| InboxConversation, body: string) {
     const message = this.createXmppMessage(conversation, this.client.nextId(), body);
     this.onNewMessage(_.clone(message), true);
     this.client.sendMessage(message);
@@ -57,7 +58,7 @@ export class XmppService {
     this.client.sendMessage(msg);
   }
 
-  private createXmppMessage(conversation: Conversation, id: string, body: string): XmppBodyMessage {
+  private createXmppMessage(conversation: Conversation | InboxConversation, id: string, body: string): XmppBodyMessage {
     const message: XmppBodyMessage = {
       id: id,
       to: this.createJid(conversation.user.id),
@@ -90,7 +91,7 @@ export class XmppService {
 
   public disconnectError(): Observable<boolean> {
     if (!this.clientConnected) {
-      return Observable.throw(this.xmppError);
+      return Observable.throwError(this.xmppError);
     }
     return Observable.of(true);
   }
@@ -151,6 +152,7 @@ export class XmppService {
       if (message.read) {
         this.eventService.emit(EventService.MESSAGE_READ_ACK);
       }
+      this.buildChatSignal(message);
     });
 
     this.client.on('disconnected', () => {

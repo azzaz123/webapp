@@ -13,12 +13,15 @@ import { Subscription } from 'rxjs';
 export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   @Input() currentConversation: InboxConversation;
+  @Input() conversationsTotal: number;
+  @Input() connectionError: boolean;
 
   constructor(private eventService: EventService,
     private realTime: RealTimeService) {
   }
 
   private newMessageSubscription: Subscription;
+  private _emptyInbox: boolean;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -28,6 +31,10 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     nextWeek: 'dddd, D MMM',
     sameElse: 'dddd, D MMM'
   };
+
+  get emptyInbox(): boolean {
+    return this.conversationsTotal === 0;
+  }
 
   ngOnInit() {
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
@@ -48,7 +55,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   }
 
   private sendRead(message: InboxMessage) {
-    if (this.currentConversation.id === message.thread) {
+    if (this.currentConversation && this.currentConversation.id === message.thread) {
       Visibility.onVisible(() => {
         setTimeout(() => {
           this.realTime.sendRead(this.currentConversation.user.id, this.currentConversation.id);

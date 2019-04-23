@@ -83,7 +83,9 @@ describe('InboxService', () => {
     it('should make an HTTP get request to get the inbox', () => {
       service.init();
 
-      expect(http.get).toHaveBeenCalledWith(service['API_URL']);
+      expect(http.get).toHaveBeenCalledWith(service['API_URL'], {
+        page_size: service['pageSize']
+      });
     });
 
     it('should return an array of InboxConversation`s with the correct lastMesage for each', () => {
@@ -93,7 +95,7 @@ describe('InboxService', () => {
 
       service.conversations.map((conv, index) => {
         expect(conv instanceof InboxConversation).toBe(true);
-        expect(conv.lastMessage.id).toEqual(apiResponse[index].messages[0].id);
+        expect(conv.lastMessage.id).toEqual(apiResponse[index].messages.messages[0].id);
       });
     });
 
@@ -278,6 +280,85 @@ describe('InboxService', () => {
       service.init();
 
       expect(service.conversations[0].user).toEqual(InboxUserPlaceholder);
+    });
+  });
+
+  describe('loadMorePages', () => {
+    const res: Response = new Response(new ResponseOptions({ body: MOCK_INBOX_API_RESPONSE }));
+    const res2: Response = new Response(new ResponseOptions({ body: MOCK_INBOX_API_RESPONSE }));
+    let modifiedResponse;
+    beforeEach(() => {
+      modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE);
+    });
+    it('should emit CHAT_CAN_PROCESS_RT with false', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res2));
+
+      service.init();
+
+      service.loadMorePages();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, false);
+    });
+
+    it('should make an HTTP get request to get the inbox next page using next_from', () => {
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res2));
+      const expectedRes = res.json();
+
+      service.init();
+
+      service.loadMorePages();
+
+      expect(http.get).toHaveBeenCalledWith(service['API_URL'], {
+        page_size: service['pageSize'],
+        from: expectedRes.next_from
+      });
+    });
+
+    it('should not add existing conversations', () => {
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res2));
+
+      service.init();
+
+      service.loadMorePages();
+
+      expect(service.conversations.length).toBe(res.json().conversations.length);
+    });
+
+    it('should add not existing conversations', () => {
+      modifiedResponse.conversations.map(conv => conv.hash = conv.hash + 'new');
+      const apiResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(apiResponse));
+
+      service.init();
+
+      service.loadMorePages();
+
+      expect(service.conversations.length).toBe(res.json().conversations.length + res2.json().conversations.length);
+    });
+  });
+
+  describe('shouldLoadMorePages', () => {
+    const res: Response = new Response(new ResponseOptions({ body: MOCK_INBOX_API_RESPONSE }));
+    let modifiedResponse;
+
+    beforeEach(() => modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE));
+
+    it('should return TRUE if APIResponse has next_from', () => {
+      spyOn(http, 'get').and.returnValues(Observable.of(res));
+
+      service.init();
+
+      expect(service.shouldLoadMorePages()).toBe(true);
+    });
+
+    it('should return FALSE if APIResponse has not next_from', () => {
+      delete modifiedResponse.next_from;
+      spyOn(http, 'get').and.returnValues(Observable.of(modifiedResponse));
+
+      service.init();
+
+      expect(service.shouldLoadMorePages()).toBe(false);
     });
   });
 });

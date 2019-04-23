@@ -11,6 +11,29 @@
   </div>
   <div class="separator"></div>
 </div>
+
+<div ngbDropdown placement="bottom-left" class="inbox-header-menu" *ngIf="shouldDisplayHeader()">
+  <div ngbDropdownToggle class="dropdown-header">
+    <div class="header-title" i18n>Inbox</div>
+    <mat-icon class="header-icon" svgIcon="arrow-waterfall"></mat-icon>
+  </div> 
+  <ul ngbDropdownMenu class="dropdown-menu">
+      <li class="dropdown-item active">
+        <a (click)="showInbox()">
+          <span i18n>Inbox</span>
+        </a>
+      </li>
+      <li class="dropdown-item">
+          <a (click)="showArchive()">
+            <span i18n>Archived Messages</span>
+          </a>
+      </li>
+  </ul>
+</div>
+<div *ngIf="!shouldDisplayHeader()" id="header-empty" [class]="loading ? 'isLoading' : ''">
+  <mat-icon svgIcon="empty-header-inbox-placeholder"></mat-icon>
+</div>
+
 <div class="scroll-panel" #scrollPanel (scroll)="showNewMessagesToast ? handleScroll() : null">
   <button class="btn btn-primary new-messages-toast" *ngIf="showNewMessagesToast" (click)="scrollToTop()">
     <mat-icon svgIcon="up-arrow-white"></mat-icon>
@@ -18,18 +41,23 @@
   </button>
   <div id="conversations" [hidden]="loading">
     <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We couldn't load your inbox due to whatever reasons :)</div>
-    <tsl-inbox-conversation *ngFor="let conversation of conversations"
-      [conversation]="conversation"
-      [ngClass]="{'active': conversation?.active}"
-      (click)="setCurrentConversation(conversation)"></tsl-inbox-conversation>
+    <div *ngIf="hasConversations()" id="inbox-data">
+      <tsl-inbox-conversation *ngFor="let conversation of conversations" 
+        [conversation]="conversation"
+        [ngClass]="{'active': conversation?.active}" (click)="setCurrentConversation(conversation)">
+      </tsl-inbox-conversation>
+    </div>
+    <div *ngIf="!hasConversations()" id="inbox-empty">
+      <mat-icon svgIcon="empty-inbox-placeholder"></mat-icon>
+    </div>
   </div>
-  <div id="loader" [hidden]="!loading">
-    <mat-icon svgIcon="conversations-mock"></mat-icon>
+  <div id="loader" [hidden]="!loading" class="isLoading">
+    <mat-icon svgIcon="inbox-loader"></mat-icon>
   </div>
-  <div class="load-more-container" *ngIf="false">
-    <a class="load-more" (click)="loadMore()">
-      <mat-icon svgIcon="spinner" [hidden]="!loading" class="spinner"></mat-icon>
-      <span [hidden]="loading" i18n>Load more</span>
+  <div class="load-more-container" *ngIf="showLoadMore()">
+    <a class="load-more">
+      <mat-icon svgIcon="spinner" [hidden]="!loadingMore" class="spinner"></mat-icon>
+      <span [hidden]="loadingMore" (click)="loadMore()" i18n>Load more</span>
     </a>
   </div>
 </div>

@@ -7,12 +7,19 @@ import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { Message } from '../message/message';
+import { Observable } from 'rxjs';
+import { HttpService } from '../http/http.service';
+import { Response } from '@angular/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConversationService {
+  private API_URL = 'bff/messaging/conversation/';
+  private _selfId: string;
+
   constructor(
+    private http: HttpService,
     private realTime: RealTimeService,
     private messageService: MessageService,
     private persistencyService: PersistencyService,
@@ -24,6 +31,12 @@ export class ConversationService {
   public subscribeChatEvents() {
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.conversations = conversations;
+      conversations.map(conv => {
+        conv.messages.filter((message) => {
+          return (message.status === messageStatus.SENT && !message.fromSelf);
+        })
+        .map(message => this.realTime.sendDeliveryReceipt(conv.user.id, message.id, conv.id));
+      });
     });
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
       const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
@@ -33,6 +46,10 @@ export class ConversationService {
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processNewChatSignal(signal);
     });
+  }
+
+  set selfId(value: string) {
+    this._selfId = this._selfId;
   }
 
   public openConversation(conversation: InboxConversation) {
@@ -47,7 +64,7 @@ export class ConversationService {
     if (existingConversation) {
       this.addNewMessage(existingConversation, message);
     } else {
-      // TODO - request INBOX by conversation id OR create new conversation
+      this.fetchOrCreateInboxConversation(message);
     }
   }
 
@@ -131,5 +148,34 @@ export class ConversationService {
       message.status = newStatus;
       this.persistencyService.updateInboxMessageStatus(message, newStatus);
     }
+  }
+
+  private fetchOrCreateInboxConversation(message: InboxMessage) {
+    this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
+    this.getConversation(message.thread)
+    .subscribe((conversation) => {
+      this.conversations.unshift(conversation);
+      this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
+      this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+    },
+    (err) => {
+      // This is to display incoming messages if for some reason fetching the conversation fails.
+      const conversation = InboxConversation.errorConversationFromMessage(message);
+      this.conversations.unshift(conversation);
+      this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
+      this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+    });
+  }
+
+  private getConversation(id: String): Observable<InboxConversation> {
+    return this.http.get(this.API_URL + id)
+    .map((res: Response) => {
+      return this.buildConversation(res);
+    });
+  }
+
+  private buildConversation(res: Response): InboxConversation {
+    const json = res.json();
+    return InboxConversation.fromJSON(json, this._selfId);
   }
 }

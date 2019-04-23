@@ -4,6 +4,7 @@ import { EventService } from '../../../core/event/event.service';
 import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { ConversationService } from '../../../core/inbox/conversation.service';
+import { Message } from '../../../core/message/message';
 
 @Component({
   selector: 'tsl-inbox',
@@ -11,12 +12,13 @@ import { ConversationService } from '../../../core/inbox/conversation.service';
   styleUrls: ['./inbox.component.scss']
 })
 export class InboxComponent implements OnInit, OnDestroy  {
-  @Output() public loaded = new EventEmitter<any>();
+  @Output() public loadingEvent = new EventEmitter<any>();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
-  public conversations: InboxConversation[] = [];
+  public conversations: InboxConversation[];
   public showNewMessagesToast = false;
   private _loading = false;
+  private _loadingMore = false;
   private conversationElementHeight = 100;
   public errorRetrievingInbox = false;
   private conversation: InboxConversation;
@@ -27,10 +29,9 @@ export class InboxComponent implements OnInit, OnDestroy  {
 
   set loading(value: boolean) {
     this._loading = value;
-    this.loaded.emit({
-      loaded: !value,
+    this.loadingEvent.emit({
+      loading: value,
       total: this.conversations ? this.conversations.length : 0,
-      firstPage: true
     });
   }
 
@@ -38,16 +39,25 @@ export class InboxComponent implements OnInit, OnDestroy  {
     return this._loading;
   }
 
+  set loadingMore(value: boolean) {
+    this._loadingMore = value;
+  }
+
+  get loadingMore(): boolean {
+    return this._loadingMore;
+  }
   ngOnInit() {
-    this.loading = true;
+
     this.bindNewMessageToast();
     if (this.inboxService.conversations) {
       this.onInboxReady(this.inboxService.conversations);
+      this.loading = false;
     } else {
-      this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
-        this.onInboxReady(conversations);
-      });
+      this.loading = true;
     }
+    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
+      this.onInboxReady(conversations);
+    });
   }
 
   ngOnDestroy() {
@@ -57,12 +67,17 @@ export class InboxComponent implements OnInit, OnDestroy  {
   private onInboxReady(conversations) {
     this.conversations = conversations;
     this.loading = false;
+    this.loadingMore = false;
     this.errorRetrievingInbox = this.inboxService.errorRetrievingInbox;
   }
 
   private bindNewMessageToast() {
-    this.eventService.subscribe(EventService.NEW_MESSAGE, () => {
-      this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.75;
+    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+      if (message.fromSelf) {
+        this.scrollToTop();
+      } else {
+        this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.75;
+      }
     });
   }
 
@@ -79,6 +94,24 @@ export class InboxComponent implements OnInit, OnDestroy  {
     this.conversation = newCurrentConversation;
     newCurrentConversation.active = true;
     this.conversationService.openConversation(newCurrentConversation);
+  }
+
+  public loadMore() {
+    this.loadingMore = true;
+    this.inboxService.loadMorePages();
+  }
+
+  public showLoadMore(): boolean {
+    return this.inboxService.shouldLoadMorePages();
+  }
+
+  public hasConversations(): boolean {
+    return this.conversations && this.conversations.length > 0;
+  }
+
+  public shouldDisplayHeader(): boolean {
+    // This should check if there are also Archived conversations when developed
+    return this.hasConversations();
   }
 
   private unselectCurrentConversation() {
