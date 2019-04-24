@@ -10,6 +10,8 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReportUserComponent } from '../../modals/report-user/report-user.component';
 import { UserService } from '../../../core/user/user.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { ReportListingComponent } from '../../modals/report-listing/report-listing.component';
+import { ItemService } from '../../../core/item/item.service';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -27,12 +29,12 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private trackingService: TrackingService,
     private userService: UserService,
+    private itemService: ItemService,
     private i18n: I18nService,
     private realTime: RealTimeService) {
   }
 
   private newMessageSubscription: Subscription;
-  private _emptyInbox: boolean;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -90,5 +92,35 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
       });
     }, () => {
     });
+  }
+
+  public reportListingAction(): void {
+    this.modalService.open(ReportListingComponent, {windowClass: 'report'}).result.then((result: any) => {
+      this.itemService.reportListing(
+        this.currentConversation.item.id,
+        result.message,
+        result.reason,
+        this.currentConversation.id
+      ).subscribe(() => {
+        this.trackingService.track(TrackingService.PRODUCT_REPPORTED,
+          {product_id: this.currentConversation.item.id, reason_id: result.reason});
+        this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
+      }, (error: any) => {
+        if (error.status === 403) {
+          this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
+        } else {
+          this.toastr.error(this.i18n.getTranslations('serverError') + ' ' + error.json().message);
+        }
+      });
+    }, () => {
+    });
+  }
+
+  get itemIsMine(): boolean {
+    return this.currentConversation.item.isMine;
+  }
+
+  get conversationChattable(): boolean {
+    return !this.currentConversation.cannotChat;
   }
 }

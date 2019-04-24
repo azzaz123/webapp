@@ -18,6 +18,7 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { ITEM_ID } from '../../../../tests/item.fixtures.spec';
 
 class MockUserService {
 
@@ -235,5 +236,63 @@ fdescribe('CurrentConversationComponent', () => {
         reason_id: 1
       });
     }));
+  });
+
+  describe('reportListingAction', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve({
+          message: 'Report Listing Reason',
+          reason: 1
+        })
+      });
+    });
+
+    describe('success', () => {
+      it('should call the itemService.reportListing and then close the modal and show a toast', fakeAsync(() => {
+        spyOn(itemService, 'reportListing').and.callThrough();
+        spyOn(toastr, 'success').and.callThrough();
+        component.currentConversation = MOCK_CONVERSATION();
+
+        component.reportListingAction();
+        tick();
+
+        expect(itemService.reportListing).toHaveBeenCalledWith(ITEM_ID,
+          'Report Listing Reason',
+          1,
+          component.currentConversation.id);
+        expect(toastr.success).toHaveBeenCalledWith('The listing has been reported correctly');
+      }));
+
+      it('should track the ProductRepported event', fakeAsync(() => {
+        spyOn(trackingService, 'track');
+        spyOn(itemService, 'reportListing').and.callThrough();
+        spyOn(toastr, 'success').and.callThrough();
+        component.currentConversation = MOCK_CONVERSATION();
+
+        component.reportListingAction();
+        tick();
+
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_REPPORTED, {
+          product_id: ITEM_ID,
+          reason_id: 1
+        });
+      }));
+    });
+
+    describe('error', () => {
+      it('should open toastr if error 403', fakeAsync(() => {
+        spyOn(itemService, 'reportListing').and.returnValue(Observable.throwError({
+          status: 403
+        }));
+        spyOn(toastr, 'success').and.callThrough();
+        component.currentConversation = MOCK_CONVERSATION();
+
+        component.reportListingAction();
+        tick();
+
+        expect(toastr.success).toHaveBeenCalled();
+      }));
+    });
   });
 });
