@@ -9,20 +9,64 @@ import { USER_ID } from '../../../../tests/user.fixtures.spec';
 import { messageStatus } from '../../../core/message/message';
 import { RealTimeService } from '../../../core/message/real-time.service';
 import { EventService } from '../../../core/event/event.service';
+import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { ItemService } from '../../../core/item/item.service';
+import { UserService } from '../../../core/user/user.service';
+import { TrackingService } from '../../../core/tracking/tracking.service';
+import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
+import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
-describe('CurrentConversationComponent', () => {
+class MockUserService {
+
+  public reportUser(): Observable<any> {
+    return Observable.of({});
+  }
+
+
+  public isProfessional() {
+    return Observable.of(true);
+  }
+}
+
+class MockItemService {
+
+  public reportListing(): Observable<any> {
+    return Observable.of({});
+  }
+}
+
+class MockedToastr {
+
+  success(message: string, title?: string, optionsOverride?: any): any {
+  }
+}
+
+fdescribe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
   let fixture: ComponentFixture<CurrentConversationComponent>;
   let realTime: RealTimeService;
   let eventService: EventService;
+  let toastr: ToastrService;
+  let itemService: MockItemService;
+  let userService: UserService;
+  let trackingService: TrackingService;
+  let modalService: NgbModal;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ MomentModule ],
+      imports: [ NgbModule.forRoot(), MomentModule ],
       declarations: [ CurrentConversationComponent ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
       providers: [ EventService,
-        { provide: RealTimeService, useValue: { sendRead() {} }}
+        { provide: RealTimeService, useValue: { sendRead() {} }},
+        { provide: ToastrService, useClass: MockedToastr },
+        { provide: ItemService, useClass: MockItemService },
+        { provide: UserService, useClass: MockUserService },
+        { provide: TrackingService, useClass: MockTrackingService },
+        I18nService
       ]
     });
     fixture = TestBed.createComponent(CurrentConversationComponent);
@@ -30,6 +74,11 @@ describe('CurrentConversationComponent', () => {
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
     realTime = TestBed.get(RealTimeService);
     eventService = TestBed.get(EventService);
+    userService = TestBed.get(UserService);
+    trackingService = TestBed.get(TrackingService);
+    itemService = TestBed.get(ItemService);
+    toastr = TestBed.get(ToastrService);
+    modalService = TestBed.get(NgbModal);
   });
 
   describe('ngOnInit', () => {
@@ -144,5 +193,47 @@ describe('CurrentConversationComponent', () => {
 
       expect(value).toBe(true);
     });
+  });
+
+  describe('reportUserAction', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve({
+          message: 'Report User Reason',
+          reason: 1
+        })
+      });
+    });
+
+    it('should call the userService.reportUser and then close the modal and show a toast', fakeAsync(() => {
+      spyOn(userService, 'reportUser').and.callThrough();
+      spyOn(toastr, 'success').and.callThrough();
+      component.currentConversation = MOCK_CONVERSATION();
+
+      component.reportUserAction();
+      tick();
+
+      expect(userService.reportUser).toHaveBeenCalledWith(component.currentConversation.user.id,
+        component.currentConversation.item.id,
+        'Report User Reason',
+        1,
+        component.currentConversation.id);
+      expect(toastr.success).toHaveBeenCalledWith('The user has been reported correctly');
+    }));
+
+    it('should track the UserProfileRepported event', fakeAsync(() => {
+      spyOn(trackingService, 'track');
+      spyOn(userService, 'reportUser').and.callThrough();
+      spyOn(toastr, 'success').and.callThrough();
+      component.currentConversation = MOCK_CONVERSATION();
+
+      component.reportUserAction();
+      tick();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.USER_PROFILE_REPPORTED, {
+        user_id: 'l1kmzn82zn3p',
+        reason_id: 1
+      });
+    }));
   });
 });

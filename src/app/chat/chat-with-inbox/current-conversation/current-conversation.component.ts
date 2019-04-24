@@ -4,6 +4,12 @@ import { InboxConversation } from '../inbox/inbox-conversation/inbox-conversatio
 import { EventService } from '../../../core/event/event.service';
 import { RealTimeService } from '../../../core/message/real-time.service';
 import { Subscription } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { TrackingService } from '../../../core/tracking/tracking.service';
+import { ReportUserComponent } from '../../modals/report-user/report-user.component';
+import { UserService } from '../../../core/user/user.service';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -17,6 +23,11 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   @Input() connectionError: boolean;
 
   constructor(private eventService: EventService,
+    private modalService: NgbModal,
+    private toastr: ToastrService,
+    private trackingService: TrackingService,
+    private userService: UserService,
+    private i18n: I18nService,
     private realTime: RealTimeService) {
   }
 
@@ -62,5 +73,22 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         }, 1000);
       });
     }
+  }
+
+  public reportUserAction(): void {
+    this.modalService.open(ReportUserComponent, {windowClass: 'report'}).result.then((result: any) => {
+      this.userService.reportUser(
+        this.currentConversation.user.id,
+        this.currentConversation.item.id,
+        result.message,
+        result.reason,
+        this.currentConversation.id
+      ).subscribe(() => {
+        this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
+          {user_id: this.currentConversation.user.id, reason_id: result.reason});
+        this.toastr.success(this.i18n.getTranslations('reportUserSuccess'));
+      });
+    }, () => {
+    });
   }
 }

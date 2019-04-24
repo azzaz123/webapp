@@ -163,10 +163,10 @@ export class UserService extends ResourceService {
   }
 
   public reportUser(userId: string,
-                    itemId: number,
+                    itemId: number | string,
                     comments: string,
                     reason: number,
-                    thread: number): Observable<any> {
+                    thread: number | string): Observable<any> {
 
     const data: any = {
       itemId: itemId,
