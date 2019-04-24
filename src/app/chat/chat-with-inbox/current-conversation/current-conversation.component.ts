@@ -12,6 +12,9 @@ import { UserService } from '../../../core/user/user.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ReportListingComponent } from '../../modals/report-listing/report-listing.component';
 import { ItemService } from '../../../core/item/item.service';
+import { BlockUserComponent } from '../../modals/block-user/block-user.component';
+import { BlockUserService } from '../../../core/conversation/block-user.service';
+import { UnblockUserComponent } from '../../modals/unblock-user/unblock-user.component';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -30,6 +33,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     private trackingService: TrackingService,
     private userService: UserService,
     private itemService: ItemService,
+    private blockService: BlockUserService,
     private i18n: I18nService,
     private realTime: RealTimeService) {
   }
@@ -111,6 +115,24 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         } else {
           this.toastr.error(this.i18n.getTranslations('serverError') + ' ' + error.json().message);
         }
+      });
+    }, () => {
+    });
+  }
+
+  public blockUserAction() {
+    this.modalService.open(BlockUserComponent).result.then(() => {
+      this.blockService.blockUser(this.currentConversation.user).subscribe(() => {
+        this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
+      });
+    }, () => {
+    });
+  }
+
+  public unblockUserAction() {
+    this.modalService.open(UnblockUserComponent).result.then(() => {
+      this.blockService.unblockUser(this.currentConversation.user).subscribe(() => {
+        this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
       });
     }, () => {
     });

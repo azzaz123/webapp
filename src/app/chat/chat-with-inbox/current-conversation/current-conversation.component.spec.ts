@@ -19,6 +19,7 @@ import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec'
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ITEM_ID } from '../../../../tests/item.fixtures.spec';
+import { BlockUserService } from '../../../core/conversation/block-user.service';
 
 class MockUserService {
 
@@ -45,7 +46,7 @@ class MockedToastr {
   }
 }
 
-fdescribe('CurrentConversationComponent', () => {
+describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
   let fixture: ComponentFixture<CurrentConversationComponent>;
   let realTime: RealTimeService;
@@ -55,6 +56,7 @@ fdescribe('CurrentConversationComponent', () => {
   let userService: UserService;
   let trackingService: TrackingService;
   let modalService: NgbModal;
+  let blockService: BlockUserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -67,7 +69,15 @@ fdescribe('CurrentConversationComponent', () => {
         { provide: ItemService, useClass: MockItemService },
         { provide: UserService, useClass: MockUserService },
         { provide: TrackingService, useClass: MockTrackingService },
-        I18nService
+        I18nService,
+        {
+          provide: BlockUserService, useValue: {
+            blockUser() {
+            },
+            unblockUser() {
+            }
+          }
+        }
       ]
     });
     fixture = TestBed.createComponent(CurrentConversationComponent);
@@ -80,6 +90,7 @@ fdescribe('CurrentConversationComponent', () => {
     itemService = TestBed.get(ItemService);
     toastr = TestBed.get(ToastrService);
     modalService = TestBed.get(NgbModal);
+    blockService = TestBed.get(BlockUserService);
   });
 
   describe('ngOnInit', () => {
@@ -294,5 +305,45 @@ fdescribe('CurrentConversationComponent', () => {
         expect(toastr.success).toHaveBeenCalled();
       }));
     });
+  });
+
+  describe('blockUserAction', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve()
+      });
+    });
+
+    it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
+      component.currentConversation = MOCK_CONVERSATION();
+      spyOn(blockService, 'blockUser').and.returnValue(Observable.of({}));
+      spyOn(toastr, 'success').and.callThrough();
+
+      component.blockUserAction();
+      tick();
+
+      expect(blockService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
+      expect(toastr.success).toHaveBeenCalledWith('The user has been blocked');
+    }));
+  });
+
+  describe('unblockUserAction', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve()
+      });
+    });
+
+    it('should close the modal, call unblockUser and show the toast', fakeAsync(() => {
+      component.currentConversation = MOCK_CONVERSATION();
+      spyOn(blockService, 'unblockUser').and.returnValue(Observable.of({}));
+      spyOn(toastr, 'success').and.callThrough();
+
+      component.unblockUserAction();
+      tick();
+
+      expect(blockService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
+      expect(toastr.success).toHaveBeenCalledWith('The user has been unblocked');
+    }));
   });
 });
