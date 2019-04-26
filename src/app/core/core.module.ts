@@ -29,6 +29,7 @@ import { BlockUserService } from './conversation/block-user.service';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
 import { InboxService } from './inbox/inbox.service';
+import { StripeService } from './stripe/stripe.service';
 
 @NgModule({
   imports: [
@@ -76,7 +77,8 @@ export class CoreModule {
         ReviewService,
         AdService,
         ConnectionService,
-        ProfileService
+        ProfileService,
+        StripeService
       ]
     };
   }

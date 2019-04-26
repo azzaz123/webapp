@@ -524,10 +524,14 @@ describe('Service: Item', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(['1234'])});
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
       let resp: string[];
+      const options = new RequestOptions();
+      options.headers = new Headers();
+      options.headers.append('Provider', 'STRIPE');
+
       service.purchaseProducts([ORDER], 'UUID').subscribe((r: string[]) => {
         resp = r;
       });
-      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/UUID', [ORDER]);
+      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/UUID', [ORDER], options);
       expect(resp).toEqual(['1234']);
     });
   });
@@ -541,10 +545,14 @@ describe('Service: Item', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESP)});
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
       let resp: PurchaseProductsWithCreditsResponse;
+      const options = new RequestOptions();
+      options.headers = new Headers();
+      options.headers.append('Provider', 'STRIPE');
+
       service.purchaseProductsWithCredits([ORDER], 'UUID').subscribe((r: PurchaseProductsWithCreditsResponse) => {
         resp = r;
       });
-      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/credit/UUID', [ORDER]);
+      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/credit/UUID', [ORDER], options);
       expect(resp).toEqual(RESP);
     });
   });

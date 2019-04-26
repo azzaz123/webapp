@@ -63,6 +63,7 @@ import { ActivateItemsModalComponent } from './catalog/catalog-item-actions/acti
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { UploaderModule } from './uploader/uploader.module';
 import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
+import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
 
 @NgModule({
   imports: [
@@ -127,7 +128,8 @@ import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester
     ExitConfirmationModalComponent,
     CountdownComponent,
     ThousandSuffixesPipe,
-    KeywordSuggesterComponent
+    KeywordSuggesterComponent,
+    StripeCardElementComponent
   ],
   declarations: [
     AdComponent,
@@ -179,7 +181,8 @@ import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester
     ThousandSuffixesPipe,
     ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
-    KeywordSuggesterComponent
+    KeywordSuggesterComponent,
+    StripeCardElementComponent
   ],
   providers: [
     DecimalPipe,

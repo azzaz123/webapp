@@ -8,7 +8,6 @@ declare let XMPP: any;
 declare let Visibility: any;
 declare let analytics: any;
 declare let appboy: any;
-
 declare let ga: Function;
 declare let gtag: Function;
 declare let fbq: Function;
@@ -21,3 +20,6 @@ declare let quancastOptions: {es: {}, en: {}};
 declare let H: any;
 declare let Taplytics: any;
 declare let Adomik: any;
+declare let stripe: any;
+declare let elements: any;
+declare let paymentIntent: any;

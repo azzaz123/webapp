@@ -40,7 +40,8 @@ export class BuyWallacoinsModalComponent {
     const order: OrderProExtras = {
       id: UUID.UUID(),
       packs: [this.pack.id],
-      origin: 'WEB'
+      origin: 'WEB',
+      provider: 'STRIPE'
     };
     this.loading = true;
     this.paymentService.orderExtrasProPack(order).subscribe(() => {

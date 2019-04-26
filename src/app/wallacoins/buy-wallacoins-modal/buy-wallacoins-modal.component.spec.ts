@@ -96,7 +96,8 @@ describe('BuyWallacoinsModalComponent', () => {
         expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith({
           id: 'UUID',
           packs: ['id'],
-          origin: 'WEB'
+          origin: 'WEB',
+          provider: 'STRIPE'
         });
       });
 

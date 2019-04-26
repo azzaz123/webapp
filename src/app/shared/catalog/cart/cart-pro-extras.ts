@@ -34,7 +34,8 @@ export class CartProExtras extends CartBase {
     });
     return {
       id: this.getOrderId(),
-      packs: ordersArray
+      packs: ordersArray,
+      provider: 'STRIPE'
     };
   }
 

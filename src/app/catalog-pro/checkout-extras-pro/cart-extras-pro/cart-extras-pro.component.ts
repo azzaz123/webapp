@@ -83,6 +83,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   private processCheckout() {
     const order: OrderProExtras = this.cart.prepareOrder();
+    order.provider = 'STRIPE';
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
       this.track(order);
       this.buy(order.id);

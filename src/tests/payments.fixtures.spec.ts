@@ -458,7 +458,8 @@ export const PREPARED_PACKS: Array<any> = [
 
 export const ORDER_CART_EXTRAS_PRO: OrderProExtras = {
   id: 'UUID',
-  packs: ['1', '2', '4', '5']
+  packs: ['1', '2', '4', '5'],
+  provider: 'STRIPE'
 };
 
 export const BILLING_INFO_RESPONSE: BillingInfoResponse = {

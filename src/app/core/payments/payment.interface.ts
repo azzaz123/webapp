@@ -64,6 +64,7 @@ export interface OrderProExtras {
   packs: Array<string>;
   id: string;
   origin?: string;
+  provider?: string;
 }
 
 export interface BillingInfoResponse {
