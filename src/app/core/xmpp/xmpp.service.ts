@@ -11,6 +11,7 @@ import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
 
 @Injectable()
 export class XmppService {
@@ -290,7 +291,7 @@ export class XmppService {
     });
   }
 
-  public blockUser(user: User): Observable<any> {
+  public blockUser(user: User | InboxUser): Observable<any> {
     this.blockedUsers.push(user.id);
     return this.setPrivacyList(this.blockedUsers)
     .flatMap(() => {
@@ -302,7 +303,7 @@ export class XmppService {
     .do(() => user.blocked = true);
   }
 
-  public unblockUser(user: User): Observable<any> {
+  public unblockUser(user: User | InboxUser): Observable<any> {
     _.remove(this.blockedUsers, (userId) => userId === user.id);
     return this.setPrivacyList(this.blockedUsers)
     .do(() => user.blocked = false);

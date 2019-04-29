@@ -4,6 +4,17 @@ import { InboxConversation } from '../inbox/inbox-conversation/inbox-conversatio
 import { EventService } from '../../../core/event/event.service';
 import { RealTimeService } from '../../../core/message/real-time.service';
 import { Subscription } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { TrackingService } from '../../../core/tracking/tracking.service';
+import { ReportUserComponent } from '../../modals/report-user/report-user.component';
+import { UserService } from '../../../core/user/user.service';
+import { I18nService } from '../../../core/i18n/i18n.service';
+import { ReportListingComponent } from '../../modals/report-listing/report-listing.component';
+import { ItemService } from '../../../core/item/item.service';
+import { BlockUserComponent } from '../../modals/block-user/block-user.component';
+import { BlockUserService } from '../../../core/conversation/block-user.service';
+import { UnblockUserComponent } from '../../modals/unblock-user/unblock-user.component';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -17,11 +28,17 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   @Input() connectionError: boolean;
 
   constructor(private eventService: EventService,
+    private modalService: NgbModal,
+    private toastr: ToastrService,
+    private trackingService: TrackingService,
+    private userService: UserService,
+    private itemService: ItemService,
+    private blockService: BlockUserService,
+    private i18n: I18nService,
     private realTime: RealTimeService) {
   }
 
   private newMessageSubscription: Subscription;
-  private _emptyInbox: boolean;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -62,5 +79,66 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         }, 1000);
       });
     }
+  }
+
+  public reportUserAction(): void {
+    this.modalService.open(ReportUserComponent, {windowClass: 'report'}).result.then((result: any) => {
+      this.userService.reportUser(
+        this.currentConversation.user.id,
+        this.currentConversation.item.id,
+        result.message,
+        result.reason,
+        this.currentConversation.id
+      ).subscribe(() => {
+        this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
+          {user_id: this.currentConversation.user.id, reason_id: result.reason});
+        this.toastr.success(this.i18n.getTranslations('reportUserSuccess'));
+      });
+    });
+  }
+
+  public reportListingAction(): void {
+    this.modalService.open(ReportListingComponent, {windowClass: 'report'}).result.then((result: any) => {
+      this.itemService.reportListing(
+        this.currentConversation.item.id,
+        result.message,
+        result.reason,
+        this.currentConversation.id
+      ).subscribe(() => {
+        this.trackingService.track(TrackingService.PRODUCT_REPPORTED,
+          {product_id: this.currentConversation.item.id, reason_id: result.reason});
+        this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
+      }, (error: any) => {
+        if (error.status === 403) {
+          this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
+        } else {
+          this.toastr.error(this.i18n.getTranslations('serverError') + ' ' + error.json().message);
+        }
+      });
+    });
+  }
+
+  public blockUserAction() {
+    this.modalService.open(BlockUserComponent).result.then(() => {
+      this.blockService.blockUser(this.currentConversation.user).subscribe(() => {
+        this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
+      });
+    });
+  }
+
+  public unblockUserAction() {
+    this.modalService.open(UnblockUserComponent).result.then(() => {
+      this.blockService.unblockUser(this.currentConversation.user).subscribe(() => {
+        this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
+      });
+    });
+  }
+
+  get itemIsMine(): boolean {
+    return this.currentConversation.item.isMine;
+  }
+
+  get conversationChattable(): boolean {
+    return !this.currentConversation.cannotChat;
   }
 }

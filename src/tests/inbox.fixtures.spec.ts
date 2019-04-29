@@ -149,7 +149,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
 const apiConvUser = MOCK_INBOX_CONVERSATION.with_user;
 let mockInboxUser = new InboxUser(OTHER_USER_ID, apiConvUser.name, apiConvUser.blocked, apiConvUser.available, apiConvUser.slug,
     apiConvUser.avatar_url, apiConvUser.response_rate, apiConvUser.scoring);
-let mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, INBOX_ITEM_STATUSES.published);
+let mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, INBOX_ITEM_STATUSES.published, false);
 const mockInboxMessages = MOCK_INBOX_CONVERSATION.messages.messages.filter(m => m.type === 'text')
 .map(m => new InboxMessage(m.id, MOCK_INBOX_CONVERSATION.hash, m.text,
     m.from_self ? USER_ID : (MOCK_INBOX_CONVERSATION.with_user ? MOCK_INBOX_CONVERSATION.with_user.hash : null),
@@ -163,7 +163,7 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
                 m.from_self ? USER_ID : (MOCK_INBOX_CONVERSATION.with_user ? MOCK_INBOX_CONVERSATION.with_user.hash : null),
                 m.from_self, new Date(m.timestamp), m.status, m.payload));
 
-    mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, INBOX_ITEM_STATUSES.published);
+    mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, INBOX_ITEM_STATUSES.published, false);
     mockInboxUser = new InboxUser(userId, apiConvUser.name, apiConvUser.blocked, apiConvUser.available, apiConvUser.slug,
         apiConvUser.avatar_url, apiConvUser.response_rate, apiConvUser.scoring);
     const next_from = MOCK_INBOX_CONVERSATION.messages.next_from ? MOCK_INBOX_CONVERSATION.messages.next_from : null;

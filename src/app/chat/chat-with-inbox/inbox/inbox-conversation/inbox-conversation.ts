@@ -119,7 +119,7 @@ export class InboxConversation {
         if (!item) {
             return InboxItemPlaceholder;
         }
-        return new InboxItem(item.hash, item.price, item.title, image, item.status);
+        return new InboxItem(item.hash, item.price, item.title, image, item.status, item.is_mine);
     }
 
     private static buildInboxMessages(conversation, id) {
