@@ -27,7 +27,6 @@ class MockUserService {
     return Observable.of({});
   }
 
-
   public isProfessional() {
     return Observable.of(true);
   }

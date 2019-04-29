@@ -94,7 +94,6 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
           {user_id: this.currentConversation.user.id, reason_id: result.reason});
         this.toastr.success(this.i18n.getTranslations('reportUserSuccess'));
       });
-    }, () => {
     });
   }
 
@@ -116,7 +115,6 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
           this.toastr.error(this.i18n.getTranslations('serverError') + ' ' + error.json().message);
         }
       });
-    }, () => {
     });
   }
 
@@ -125,7 +123,6 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
       this.blockService.blockUser(this.currentConversation.user).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
       });
-    }, () => {
     });
   }
 
@@ -134,7 +131,6 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
       this.blockService.unblockUser(this.currentConversation.user).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
       });
-    }, () => {
     });
   }
 
