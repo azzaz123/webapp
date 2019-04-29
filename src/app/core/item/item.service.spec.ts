@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { ItemService, PUBLISHED_ID, ONHOLD_ID } from './item.service';
+import { ItemService, PUBLISHED_ID, ONHOLD_ID, PAYMENT_PROVIDER } from './item.service';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Headers, RequestMethod, RequestOptions, Response, ResponseOptions } from '@angular/http';
 import {
@@ -524,9 +524,7 @@ describe('Service: Item', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(['1234'])});
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
       let resp: string[];
-      const options = new RequestOptions();
-      options.headers = new Headers();
-      options.headers.append('Provider', 'STRIPE');
+      const options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
 
       service.purchaseProducts([ORDER], 'UUID').subscribe((r: string[]) => {
         resp = r;
@@ -545,9 +543,7 @@ describe('Service: Item', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESP)});
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
       let resp: PurchaseProductsWithCreditsResponse;
-      const options = new RequestOptions();
-      options.headers = new Headers();
-      options.headers.append('Provider', 'STRIPE');
+      const options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
 
       service.purchaseProductsWithCredits([ORDER], 'UUID').subscribe((r: PurchaseProductsWithCreditsResponse) => {
         resp = r;
