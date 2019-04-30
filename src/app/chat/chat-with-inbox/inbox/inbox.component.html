@@ -67,10 +67,10 @@
   <div id="conversations" [hidden]="loading">
     <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We couldn't load your inbox due to whatever reasons :)</div>
     <div *ngIf="hasArchivedConversations" id="inbox-data">
-      <tsl-inbox-conversation *ngFor="let conversation of archivedConversations" 
+      <tsl-archived-inbox-conversation *ngFor="let conversation of archivedConversations" 
         [conversation]="conversation"
         [ngClass]="{'active': conversation?.active}" (click)="setCurrentConversation(conversation)">
-      </tsl-inbox-conversation>
+      </tsl-archived-inbox-conversation>
     </div>
     <div *ngIf="!hasArchivedConversations" id="inbox-empty">
       <mat-icon svgIcon="empty-inbox-placeholder"></mat-icon>
