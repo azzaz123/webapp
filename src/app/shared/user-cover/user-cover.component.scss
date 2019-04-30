@@ -1,0 +1,18 @@
+@import "~style/common";
+
+:host {
+  display: inline-block;
+}
+
+div {
+  display: block;
+}
+
+.avatar-rounded {
+  background-size: cover;
+  border-radius: 2%;
+  background-position: center;
+  width: 350px;
+  height: 120px;
+  object-fit: cover;
+}

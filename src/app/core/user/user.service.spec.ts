@@ -36,7 +36,7 @@ import {
   USERS_STATS_RESPONSE,
   VALIDATIONS,
   VERIFICATION_LEVEL,
-  MOTORPLAN_DATA, PROFILE_SUB_INFO
+  MOTORPLAN_DATA, PROFILE_SUB_INFO, IMAGE
 } from '../../../tests/user.fixtures.spec';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { AvailableSlots, UserStatsResponse } from './user-stats.interface';
@@ -47,7 +47,7 @@ import { EventService } from '../event/event.service';
 import { PERMISSIONS, User } from './user';
 import { environment } from '../../../environments/environment';
 import { LoginResponse } from './login-response.interface';
-import { UserLocation, MotorPlan, ProfileSubscriptionInfo } from './user-response.interface';
+import { UserLocation, MotorPlan, ProfileSubscriptionInfo, Image } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
@@ -425,6 +425,21 @@ describe('Service: User', () => {
     });
   });
 
+  describe('getUserCover', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(IMAGE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: Image;
+
+      service.getUserCover().subscribe((response: Image) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/cover-image');
+      expect(resp).toEqual(IMAGE);
+    });
+  });
+
   describe('updateProInfo', () => {
     it('should call endpoint', () => {
       spyOn(http, 'post').and.callThrough();
@@ -645,6 +660,41 @@ describe('Service: User', () => {
 
     it('should return true', () => {
       expect(val).toBe(true);
+    });
+  });
+
+  describe('isProUser', () => {
+    it('should return true if user is professional', () => {
+      spyOn(service, 'isProfessional').and.returnValue(Observable.of(true));
+      spyOn(service, 'getMotorPlan').and.returnValue(Observable.of({}));
+
+      let resp: boolean;
+
+      service.isProUser().subscribe(response => resp = response);
+
+      expect(resp).toBe(true);
+    });
+
+    it('should return true if there is a motor plan', () => {
+      spyOn(service, 'isProfessional').and.returnValue(Observable.of(false));
+      spyOn(service, 'getMotorPlan').and.returnValue(Observable.of(mockMotorPlan));
+
+      let resp: boolean;
+
+      service.isProUser().subscribe(response => resp = response);
+
+      expect(resp).toBe(true);
+    });
+
+    it('should return false if there is not a motor plan and user is not professional', () => {
+      spyOn(service, 'isProfessional').and.returnValue(Observable.of(false));
+      spyOn(service, 'getMotorPlan').and.returnValue(Observable.of({}));
+
+      let resp: boolean;
+
+      service.isProUser().subscribe(response => resp = response);
+
+      expect(resp).toBe(false);
     });
   });
 

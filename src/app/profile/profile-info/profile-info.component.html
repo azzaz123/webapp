@@ -1,54 +1,79 @@
-<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-  <tsl-picture-upload [user]="user"></tsl-picture-upload>
+<form [formGroup]="profileForm" (submit)="onSubmit()">
+  <div class="box">
+    <tsl-picture-upload [user]="user"></tsl-picture-upload>
+    <tsl-cover-upload [user]="user" [isPro]="isPro"></tsl-cover-upload>
+  </div>
   <tsl-profile-form [profileForm]="profileForm">
     <div class="box profile-box">
       <div class="box-content">
+        <h3 i18n>Public information</h3>
         <div class="row">
-          <h3 class="section-title" i18n>Personal info</h3>
-          <div class="col-10 offset-2">
-            <div class="form-group row">
-              <label for="first_name" class="col-3" i18n>First Name:</label>
-              <div class="col-5">
+          <div class="col-12">
+            <div class="form-group row align-items-center" *ngIf="!isPro">
+              <label for="first_name" class="col-4" i18n>First name:</label>
+              <div class="col-1"></div>
+              <div class="col-6">
                 <input type="text" class="form-control" id="first_name" formControlName="first_name" tslRestrictInput maxlength="50" />
               </div>
             </div>
-            <div class="form-group row">
-              <label for="last_name" class="col-3" i18n>Last Name:</label>
-              <div class="col-5">
+            <div class="form-group row align-items-center" *ngIf="!isPro">
+              <label for="last_name" class="col-4" i18n>Last name:</label>
+              <div class="col-1"></div>
+              <div class="col-6">
                 <input type="text" class="form-control" id="last_name" formControlName="last_name" tslRestrictInput maxlength="50" />
               </div>
             </div>
-            <div class="form-group row">
-              <label for="birth_date" class="col-3" i18n>Date of birth:</label>
-              <div class="col-5">
-                <input type="date" class="form-control" id="birth_date" formControlName="birth_date" />
+            <div class="form-group row align-items-center" *ngIf="isPro">
+              <label for="name" class="col-4" i18n>Name:</label>
+              <div class="col-1"></div>
+              <div class="col-3">
+                <input type="text" class="form-control" id="name" formControlName="first_name" tslRestrictInput maxlength="50" />
+              </div>
+              <div class="col-3">
+                <input type="text" class="form-control" formControlName="last_name" tslRestrictInput maxlength="50" />
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-3" i18n>Gender:</label>
-              <div class="col-5">
-                <div ngbRadioGroup name="radioBasic" formControlName="gender">
-                  <label ngbButtonLabel class="btn select">
-                    <input ngbButton type="radio" value="M">
-                    <mat-icon svgIcon="male"></mat-icon>
-                    <div i18n>Male</div>
-                  </label>
-                  <label ngbButtonLabel class="btn select">
-                    <input ngbButton type="radio" value="F">
-                    <mat-icon svgIcon="female"></mat-icon>
-                    <div i18n>Female</div>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-3" i18n>Product location:</label>
-              <div class="col-9">
+              <label class="col-4 center" i18n>Product location:</label>
+              <div class="col-1"></div>
+              <div class="col-6">
                 <tsl-location-box [form]="profileForm" name="location"></tsl-location-box>
               </div>
             </div>
+            <div class="pro-section" [class.not-pro]="!isPro">
+              <div class="form-group row">
+                <label for="description" class="col-4" i18n>Description:</label>
+                <div class="col-1"></div>
+                <div class="col-6">
+                  <span class="chars-counter">{{profileForm.value?.description?.length}}/250</span>
+                  <textarea class="form-control" id="description" formControlName="description" maxlength="250" [readonly]="!isPro"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="opening_hours" class="col-4" i18n>Opening Hours:</label>
+                <div class="col-1"></div>
+                <div class="col-6">
+                  <span class="chars-counter">{{profileForm.value?.opening_hours?.length}}/250</span>
+                  <textarea class="form-control" id="opening_hours" formControlName="opening_hours" maxlength="250" [readonly]="!isPro"></textarea>
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label for="phone_number" class="col-4" i18n>Telephone:</label>
+                <div class="col-1"></div>
+                <div class="col-6">
+                  <input type="text" class="form-control" id="phone_number" formControlName="phone_number" [readonly]="!isPro" />
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label for="link" class="col-4" i18n>Web:</label>
+                <div class="col-1"></div>
+                <div class="col-6">
+                  <input class="form-control" id="link" formControlName="link" [readonly]="!isPro" />
+                </div>
+              </div>
+            </div>
             <div class="row">
-              <div class="offset-3 col-9">
+              <div class="offset-5 col-6">
                 <tsl-button [type]="'submit'" className="btn-primary btn-big" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!formComponent.hasNotSavedChanges"
                             i18n>Save</tsl-button>
               </div>
@@ -57,77 +82,5 @@
         </div>
       </div>
     </div>
-    <div class="box profile-box pro-box" formGroupName="extra_info" [class.disabled]="!user.featured">
-      <div class="box-content">
-        <div class="row">
-          <h3 class="section-title" i18n>PRO info</h3>
-          <div class="col-10 offset-2">
-            <div class="form-group row">
-              <label for="description" class="col-3" i18n>Description:</label>
-              <div class="col-5">
-                <span class="chars-counter" *ngIf="user.featured">{{profileForm.value?.extra_info?.description?.length}}/250</span>
-                <textarea class="form-control" id="description" formControlName="description" [readonly]="!user.featured"
-                          (click)="openBecomeProModal()" maxlength="250"></textarea>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="phone_number" class="col-3" i18n>Phone number:</label>
-              <div class="col-5">
-                <textarea type="text" class="form-control" id="phone_number" formControlName="phone_number" [readonly]="!user.featured"
-                       (click)="openBecomeProModal()"></textarea>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="link" class="col-3" i18n>Website:</label>
-              <div class="col-5">
-                <input type="text" class="form-control" id="link" formControlName="link" [readonly]="!user.featured"
-                       (click)="openBecomeProModal()" />
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="shop-address" class="col-3" i18n>Shop address:</label>
-              <div class="col-5">
-                <input *ngIf="user.featured" #input type="text" class="form-control" formControlName="address" id="shop-address" (focus)="open(input)" />
-                <input *ngIf="!user.featured" type="text" class="form-control" formControlName="address" readonly="true"
-                       (click)="openBecomeProModal()" />
-              </div>
-            </div>
-            <div class="row">
-              <div class="offset-3 col-9">
-                <tsl-button [type]="'submit'" className="btn-primary btn-big" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!formComponent.hasNotSavedChanges || !user.featured"
-                            i18n>Save</tsl-button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </tsl-profile-form>
-  <div class="box profile-box">
-    <div class="box-content">
-      <div class="row box-section">
-        <h3 class="section-title" i18n>Account info</h3>
-        <div class="col-10 offset-2">
-          <div class="form-group row">
-            <label class="col-3" i18n>Email:</label>
-            <div class="col-5">
-              <tsl-edit-email [email]="user?.email"></tsl-edit-email>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-3" i18n>Password:</label>
-            <div class="col-5">
-              <tsl-edit-password></tsl-edit-password>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 unsubscribe-section">
-          <a (click)="openUnsubscribeModal()" tslTrackEvent="MYPROFILE_UNSUBSCRIBE" i18n>Close account</a>
-        </div>
-      </div>
-    </div>
-  </div>
 </form>
-<tsl-credit-card-info></tsl-credit-card-info>

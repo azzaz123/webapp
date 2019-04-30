@@ -1,5 +1,5 @@
 <div *ngxPermissionsOnly="['isProfessional']" class="header">
-  <h2><span i18n>Your Messages</span> <span class="badge badge-pro">Pro</span></h2>
+  <h2><span i18n>Your Messages</span> <span class="badge badge-pro"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span></h2>
   <tsl-process-all-button type="conversations"
                           [hidden]="!conversations.length || archive"
                           ngbTooltip="Mark everything as Processed" i18n-ngbTooltip placement="left">
@@ -12,10 +12,10 @@
   <div class="separator"></div>
 </div>
 <div class="scroll-panel" #scrollPanel [ngClass]="{professional: isProfessional}">
-  <div id="conversations" [hidden]="loading && (archive ? !conversationService.processedPagesLoaded : !conversationService.pendingPagesLoaded)"> 
+  <div id="conversations" [hidden]="loading && (archive ? !conversationService.processedPagesLoaded : !conversationService.pendingPagesLoaded)">
     <tsl-conversation *ngFor="let conversation of conversations" [conversation]="conversation"
                       [ngClass]="{'active': conversation?.active}"
-                      [hidden]="conversation.messages.length === 0 && conversation.item.owner === userService.user.id" 
+                      [hidden]="conversation.messages.length === 0 && conversation.item.owner === userService.user.id"
                       (click)="setCurrentConversation(conversation)"></tsl-conversation>
   </div>
   <div id="loader" [hidden]="!loading || (archive ? conversationService.processedPagesLoaded : conversationService.pendingPagesLoaded)">
