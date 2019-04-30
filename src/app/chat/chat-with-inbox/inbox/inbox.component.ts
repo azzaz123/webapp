@@ -127,7 +127,7 @@ export class InboxComponent implements OnInit, OnDestroy  {
   }
 
   public showLoadMore(): boolean {
-    return this.inboxService.shouldLoadMoreArchivedPages();
+    return this.inboxService.shouldLoadMorePages();
   }
 
   public loadMoreArchived() {

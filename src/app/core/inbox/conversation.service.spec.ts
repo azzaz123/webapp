@@ -50,6 +50,7 @@ describe('ConversationService', () => {
     userService = TestBed.get(UserService);
     spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
     service.subscribeChatEvents();
+    service.archivedConversations = [];
   });
 
   describe('subscribe chat events', () => {
