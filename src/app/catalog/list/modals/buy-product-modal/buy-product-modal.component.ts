@@ -105,9 +105,12 @@ export class BuyProductModalComponent implements OnInit {
   private buy(orderId: string) {
     if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
       localStorage.setItem('redirectToTPV', 'true');
-      this.sabadellSubmit.emit(orderId);
+      this.paymentService.paymentIntent(orderId).subscribe((response: any) => {
+        this.payment(response.token);
+      });
     } else {
-      this.paymentService.pay(orderId).subscribe(() => {
+      this.paymentService.paymentIntent(orderId).subscribe((response: any) => {
+        this.payment(response.token);
         this.activeModal.close('success');
       }, () => {
         this.activeModal.close('error');

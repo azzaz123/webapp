@@ -27,3 +27,11 @@
     width: 50%;
   }
 }
+
+tsl-button {
+  width: 100%;
+  /deep/ button {
+    width: 100%;
+    -webkit-appearance: none;
+  }
+}

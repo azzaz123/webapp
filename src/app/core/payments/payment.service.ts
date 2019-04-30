@@ -63,6 +63,13 @@ export class PaymentService {
     });
   }
 
+  public paymentIntent(orderId: string): Observable<any> {
+    return this.http.post(`${this.API_URL}/c2b/stripe/tpv/payment_intent`, {
+      order_id: orderId
+    })
+      .map((r: Response) => r.json());
+  }
+
   public getPacks(product?: Products): Observable<Packs> {
     let params: any;
     if (product) {
