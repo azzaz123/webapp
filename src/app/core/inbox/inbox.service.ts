@@ -150,4 +150,22 @@ export class InboxService {
     });
   }
 
+  private subscribeArchiveEvents() {
+    this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, (conversation) => {
+      const index = this.conversations.indexOf(conversation);
+      this.conversations.splice(index, 1);
+      this.archivedConversations.unshift(conversation);
+      this.archivedConversations.sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
+    });
+  }
+
+  private subscribeUnarchiveEvents() {
+    this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, (conversation) => {
+      const index = this.archivedConversations.indexOf(conversation);
+      this.archivedConversations.splice(index, 1);
+      this.conversations.unshift(conversation);
+      this.conversations.sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
+    });
+  }
+
 }
