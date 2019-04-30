@@ -21,6 +21,7 @@ export class InboxService {
   private _archivedConversations: InboxConversation[];
   private selfId: string;
   private nextPageToken: number = null;
+  private nextArchivedPageToken: number = null;
   private pageSize = 30;
   public errorRetrievingInbox = false;
 
@@ -91,6 +92,23 @@ export class InboxService {
     return this.nextPageToken !== null;
   }
 
+  public loadMoreArchivedPages() {
+    this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
+    this.getNextArchivedPage()
+      .catch(() => {
+        this.errorRetrievingInbox = true;
+        return Observable.of([]);
+      })
+      .subscribe((conversations: InboxConversation[]) => {
+        this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
+        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+      });
+  }
+
+  public shouldLoadMoreArchivedPages(): boolean {
+    return this.nextArchivedPageToken !== null;
+  }
+
   private getInbox(): Observable<any> {
     this.messageService.totalUnreadMessages = 0;
     return this.http.get(this.API_URL, {
@@ -120,6 +138,16 @@ export class InboxService {
       });
   }
 
+  private getNextArchivedPage(): Observable<any> {
+    return this.http.get(this.API_URL, {
+      page_size: this.pageSize,
+      from: this.nextArchivedPageToken
+    })
+    .map(res => {
+      return this.conversations = this.conversations.concat(this.processArchivedInboxResponse(res));
+    });
+}
+
   private processInboxResponse(res: Response): InboxConversation[] {
     const r = res.json();
     this.nextPageToken = r.next_from || null;
@@ -133,7 +161,7 @@ export class InboxService {
 
   private processArchivedInboxResponse(res: Response): InboxConversation[] {
     const r = res.json();
-    // this.nextPageToken = r.next_from || null;
+    this.nextArchivedPageToken = r.next_from || null;
     // In order to avoid adding repeated conversations
     const newConvs = r.conversations.filter(newConv => {
       return (this.archivedConversations

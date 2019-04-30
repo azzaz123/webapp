@@ -72,17 +72,17 @@
         [ngClass]="{'active': conversation?.active}" (click)="setCurrentConversation(conversation)">
       </tsl-inbox-conversation>
     </div>
-    <div *ngIf="!hasConversations()" id="inbox-empty">
+    <div *ngIf="!hasArchivedConversations" id="inbox-empty">
       <mat-icon svgIcon="empty-inbox-placeholder"></mat-icon>
     </div>
   </div>
   <div id="loader" [hidden]="!loading" class="isLoading">
     <mat-icon svgIcon="inbox-loader"></mat-icon>
   </div>
-  <div class="load-more-container" *ngIf="showLoadMore()">
+  <div class="load-more-container" *ngIf="showLoadMoreArchived()">
     <a class="load-more">
       <mat-icon svgIcon="spinner" [hidden]="!loadingMore" class="spinner"></mat-icon>
-      <span [hidden]="loadingMore" (click)="loadMore()" i18n>Load more</span>
+      <span [hidden]="loadingMore" (click)="loadMoreArchived()" i18n>Load more</span>
     </a>
   </div>
 </div>

@@ -71,6 +71,7 @@ export class ConversationService {
     if (existingConversation) {
       this.addNewMessage(existingConversation, message);
     } else if (existingArchivedConversation) {
+      this.addNewMessage(existingArchivedConversation, message);
       this.eventService.emit(EventService.CONVERSATION_UNARCHIVED, existingArchivedConversation);
     } else {
       this.fetchOrCreateInboxConversation(message);

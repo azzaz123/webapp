@@ -16,7 +16,8 @@ import { BlockUserComponent } from '../../modals/block-user/block-user.component
 import { BlockUserService } from '../../../core/conversation/block-user.service';
 import { UnblockUserComponent } from '../../modals/unblock-user/unblock-user.component';
 import { ConversationService } from '../../../core/inbox/conversation.service';
-import { ArchiveConversationComponent } from '../../modals/archive-conversation/archive-conversation.component';
+import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conversation/archive-inbox-conversation.component';
+import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -138,7 +139,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   }
 
   public archiveConversation(): void {
-    this.modalService.open(ArchiveConversationComponent).result.then(() => {
+    this.modalService.open(ArchiveInboxConversationComponent).result.then(() => {
       this.conversationService.archive(this.currentConversation).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
       });
@@ -146,7 +147,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   }
 
   public unarchiveConversation() {
-    this.modalService.open(ArchiveConversationComponent).result.then(() => {
+    this.modalService.open(UnarchiveInboxConversationComponent).result.then(() => {
       this.conversationService.unarchive(this.currentConversation).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('unarchiveConversationSuccess'));
       });
