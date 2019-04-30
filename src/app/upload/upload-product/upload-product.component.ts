@@ -48,7 +48,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public itemTypes: any = ITEM_TYPES;
   public extraInfoEnabled = false;
-  public brandModelExperimentEnabled = false;
   public objectTypeTitle: string;
   public objectTypes: IOption[];
   public brands: IOption[];
@@ -156,10 +155,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.detectFormChanges();
       this.oldDeliveryValue = this.getDeliveryInfo();
     }
-
-    this.splitTestService.getVariable('BrandModelUploadEnabled', false).subscribe((BrandModelUploadEnabled: boolean) => {
-      this.brandModelExperimentEnabled = BrandModelUploadEnabled;
-    });
   }
 
   private detectFormChanges() {
@@ -330,16 +325,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public onCategoryChange(category: CategoryOption) {
     if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(category.value)) {
-      if (!this.item) {
-        this.splitTestService.track('CategoryWithBrandModelSelected');
-      }
-      if (this.brandModelExperimentEnabled === true) {
-        this.extraInfoEnabled = true;
-        this.objectTypeTitle = category.object_type_title;
-        this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
-          this.objectTypes = _.reverse(objectTypes);
-        });
-      }
+      this.extraInfoEnabled = true;
+      this.objectTypeTitle = category.object_type_title;
+      this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
+        this.objectTypes = _.reverse(objectTypes);
+      });
     } else {
       this.extraInfoEnabled = false;
     }
