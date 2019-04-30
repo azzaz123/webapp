@@ -454,6 +454,15 @@
   <msg id="7830707034534607415"><source>app/profile/profile.component.html:24</source><source>app/profile/profile.component.html:26</source>Subscription</msg>
   <msg id="690637757793763587"><source>app/profile/profile.component.html:25</source>Billing information</msg>
   <msg id="6306441078838263413"><source>app/profile/profile.component.html:28</source><source>app/reviews/reviews.component.html:25</source>reviews</msg>
+  <msg id="5784720522096888528"><source>app/profile/become-pro-modal/become-pro-modal.component.html:5</source>These fields are for Pro users</msg>
+  <msg id="8414210615079813336"><source>app/profile/become-pro-modal/become-pro-modal.component.html:6</source>Subscribe through the app</msg>
+  <msg id="976362268569732073"><source>app/profile/become-pro-modal/become-pro-modal.component.html:10</source>Your products will be seen more: they will be in the first position of the searches</msg>
+  <msg id="2615367215367851425"><source>app/profile/become-pro-modal/become-pro-modal.component.html:11</source>Buyers can save your shop/profile as a favorite</msg>
+  <msg id="834481573787357193"><source>app/profile/become-pro-modal/become-pro-modal.component.html:12</source>Buyers will be able to see your phone and website in your profile for easy contact</msg>
+  <msg id="9213743536713966070"><source>app/profile/become-pro-modal/become-pro-modal.component.html:13</source>You will have a description of your store or service and its location</msg>
+  <msg id="4670889551195648197"><source>app/profile/become-pro-modal/become-pro-modal.component.html:14</source>Your profile will have a different design and will stand out!</msg>
+  <msg id="7373818560498277711"><source>app/profile/become-pro-modal/become-pro-modal.component.html:15</source>Your items won&apos;t expire</msg>
+  <msg id="5553776930806289663"><source>app/profile/become-pro-modal/become-pro-modal.component.html:18</source>Ok, got it!</msg>
   <msg id="7679042812456775772"><source>app/profile/profile-info/profile-info.component.html:9</source>Public information</msg>
   <msg id="2836854179267941399"><source>app/profile/profile-info/profile-info.component.html:13</source>First name:</msg>
   <msg id="5759985852212057755"><source>app/profile/profile-info/profile-info.component.html:20</source>Last name:</msg>
@@ -522,15 +531,6 @@
   <msg id="1658274921433299016"><source>app/profile/profile-pro-subscription/profile-pro-subscription.component.html:75</source>To subscribe to a country plan, call us at 674 726 372 or send us an email at <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></msg>
   <msg id="5559193479269599693"><source>app/profile/profile-pro-subscription/profile-pro-subscription.component.html:76</source>To change your country plan, call us at 674 726 372 or send us an email at <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></msg>
   <msg id="5868024112393513368"><source>app/profile/profile-pro-subscription/profile-pro-subscription.component.html:97</source>Why should I buy visibility?</msg>
-  <msg id="3163876998313048927"><source>app/profile/become-pro-modal/become-pro-modal.component.html:5</source>Become a PRO</msg>
-  <msg id="2542747907081885378"><source>app/profile/become-pro-modal/become-pro-modal.component.html:6</source>Go to the app for further details</msg>
-  <msg id="976362268569732073"><source>app/profile/become-pro-modal/become-pro-modal.component.html:10</source>Your products will be seen more: they will be in the first position of the searches</msg>
-  <msg id="2615367215367851425"><source>app/profile/become-pro-modal/become-pro-modal.component.html:11</source>Buyers can save your shop/profile as a favorite</msg>
-  <msg id="834481573787357193"><source>app/profile/become-pro-modal/become-pro-modal.component.html:12</source>Buyers will be able to see your phone and website in your profile for easy contact</msg>
-  <msg id="9213743536713966070"><source>app/profile/become-pro-modal/become-pro-modal.component.html:13</source>You will have a description of your store or service and its location</msg>
-  <msg id="4670889551195648197"><source>app/profile/become-pro-modal/become-pro-modal.component.html:14</source>Your profile will have a different design and will stand out!</msg>
-  <msg id="7373818560498277711"><source>app/profile/become-pro-modal/become-pro-modal.component.html:15</source>Your items won&apos;t expire</msg>
-  <msg id="5553776930806289663"><source>app/profile/become-pro-modal/become-pro-modal.component.html:18</source>Ok, got it!</msg>
   <msg id="2303735769987845467"><source>app/profile/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.html:5</source>Visibility products</msg>
   <msg id="5130627671872052700"><source>app/profile/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.html:8</source>Feature on your city</msg>
   <msg id="1768872655561111284"><source>app/profile/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.html:9</source>Get on first position</msg>

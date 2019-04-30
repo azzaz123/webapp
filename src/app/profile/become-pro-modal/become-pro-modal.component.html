@@ -1,9 +1,9 @@
 <div class="header">
-  <div class="modal-close light" (click)="activeModal.dismiss()">
+  <div class="modal-close" (click)="activeModal.dismiss()">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
-  <h1 i18n>Become a PRO</h1>
-  <p i18n>Go to the app for further details</p>
+  <h1 i18n>These fields are for Pro users</h1>
+  <p i18n>Subscribe through the app</p>
 </div>
 <div class="modal-body">
   <ul>
@@ -15,6 +15,6 @@
     <li i18n>Your items won't expire</li>
   </ul>
 
-  <button class="btn btn-secondary" (click)="activeModal.close()" i18n>Ok, got it!</button>
+  <tsl-button (click)="activeModal.close()" i18n>Ok, got it!</tsl-button>
 
 </div>

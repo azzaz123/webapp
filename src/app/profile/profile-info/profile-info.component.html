@@ -1,7 +1,7 @@
 <form [formGroup]="profileForm" (submit)="onSubmit()">
   <div class="box">
     <tsl-picture-upload [user]="user"></tsl-picture-upload>
-    <tsl-cover-upload [user]="user" [isPro]="isPro"></tsl-cover-upload>
+    <tsl-cover-upload (clickNotPro)="openBecomeProModal()" [user]="user" [isPro]="isPro"></tsl-cover-upload>
   </div>
   <tsl-profile-form [profileForm]="profileForm">
     <div class="box profile-box">
@@ -46,7 +46,7 @@
                 <div class="col-1"></div>
                 <div class="col-6">
                   <span class="chars-counter">{{profileForm.value?.description?.length}}/250</span>
-                  <textarea class="form-control" id="description" formControlName="description" maxlength="250" [readonly]="!isPro"></textarea>
+                  <textarea (click)="openBecomeProModal()" class="form-control" id="description" formControlName="description" maxlength="250" [readonly]="!isPro"></textarea>
                 </div>
               </div>
               <div class="form-group row">
@@ -54,21 +54,21 @@
                 <div class="col-1"></div>
                 <div class="col-6">
                   <span class="chars-counter">{{profileForm.value?.opening_hours?.length}}/250</span>
-                  <textarea class="form-control" id="opening_hours" formControlName="opening_hours" maxlength="250" [readonly]="!isPro"></textarea>
+                  <textarea (click)="openBecomeProModal()" class="form-control" id="opening_hours" formControlName="opening_hours" maxlength="250" [readonly]="!isPro"></textarea>
                 </div>
               </div>
               <div class="form-group row align-items-center">
                 <label for="phone_number" class="col-4" i18n>Telephone:</label>
                 <div class="col-1"></div>
                 <div class="col-6">
-                  <input type="text" class="form-control" id="phone_number" formControlName="phone_number" [readonly]="!isPro" />
+                  <input (click)="openBecomeProModal()" type="text" class="form-control" id="phone_number" formControlName="phone_number" [readonly]="!isPro" />
                 </div>
               </div>
               <div class="form-group row align-items-center">
                 <label for="link" class="col-4" i18n>Web:</label>
                 <div class="col-1"></div>
                 <div class="col-6">
-                  <input class="form-control" id="link" formControlName="link" [readonly]="!isPro" />
+                  <input (click)="openBecomeProModal()" class="form-control" id="link" formControlName="link" [readonly]="!isPro" />
                 </div>
               </div>
             </div>

@@ -8,6 +8,8 @@ import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserProInfo } from '../../core/user/user-info.interface';
 import { Image } from '../../core/user/user-response.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
 
 export const competitorLinks = [
   'coches.net',
@@ -34,7 +36,8 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
 
   constructor(private userService: UserService,
               private fb: FormBuilder,
-              private errorsService: ErrorsService) {
+              private errorsService: ErrorsService,
+              private modalService: NgbModal) {
     this.profileForm = fb.group({
       first_name: '',
       last_name: '',
@@ -121,6 +124,12 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
         this.profileForm.get('location.address').markAsDirty();
       }
       this.errorsService.i18nError('formErrors');
+    }
+  }
+
+  public openBecomeProModal() {
+    if (!this.isPro) {
+      this.modalService.open(BecomeProModalComponent, {windowClass: 'become-pro'});
     }
   }
 

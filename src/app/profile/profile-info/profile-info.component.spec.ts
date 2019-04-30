@@ -19,6 +19,7 @@ import {
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from '../../shared/switch/switch.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -27,6 +28,7 @@ describe('ProfileInfoComponent', () => {
   let errorsService: ErrorsService;
   let http: HttpService;
   let mockBackend: MockBackend;
+  let modalService: NgbModal;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -38,7 +40,10 @@ describe('ProfileInfoComponent', () => {
       providers: [
         ...TEST_HTTP_PROVIDERS,
         {
-          provide: NgbModal, useValue: {}
+          provide: NgbModal, useValue: {
+          open() {
+          }
+        }
         },
         {
           provide: UserService, useValue: {
@@ -84,6 +89,7 @@ describe('ProfileInfoComponent', () => {
     errorsService = TestBed.get(ErrorsService);
     http = TestBed.get(HttpService);
     mockBackend = TestBed.get(MockBackend);
+    modalService = TestBed.get(NgbModal);
     spyOn(userService, 'me').and.callThrough();
     spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
     spyOn(userService, 'getUserCover').and.returnValue(Observable.of(IMAGE));
@@ -237,6 +243,17 @@ describe('ProfileInfoComponent', () => {
       });
     });
 
+  });
+
+  describe('openBecomeProModal', () => {
+    it('should open modal if user is not featured', () => {
+      component.isPro = false;
+      spyOn(modalService, 'open');
+
+      component.openBecomeProModal();
+
+      expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {windowClass: 'become-pro'});
+    });
   });
 
 
