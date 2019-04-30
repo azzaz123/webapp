@@ -5,7 +5,7 @@ h3 {
   font-weight: bold;
 }
 .box-content {
-  padding-bottom: 0;
+  padding-top: 0;
 }
 .profile-pic {
   &.top {
@@ -18,7 +18,7 @@ h3 {
   }
   p {
     font-size: $font-size-s;
-    line-height: $line-height-ml;
+    line-height: 1.29;
     color: $blue-grey-2;
     margin-bottom: 0;
   }
@@ -30,7 +30,6 @@ h3 {
     display: flex;
     align-items: center;
   }
-
   tsl-user-avatar, tsl-user-cover {
     margin-right: $spacing-ml;
   }
@@ -50,8 +49,20 @@ h3 {
     }
     .spinner {
       @include square(15px);
-      margin-right: $spacing-s;
+      margin-right: $spacing-xs;
       vertical-align: bottom;
+    }
+  }
+}
+
+.not-pro {
+  .title {
+    color: $blue-grey-4;
+  }
+  tsl-user-cover /deep/ {
+    .avatar-rounded {
+      background: $white !important;
+      border: 1px solid $blue-grey-5;
     }
   }
 }

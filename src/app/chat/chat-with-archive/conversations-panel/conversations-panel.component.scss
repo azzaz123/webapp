@@ -8,6 +8,8 @@ h2 {
   font-weight: bold;
   font-size: $font-size-ll;
   letter-spacing: $letter-spacing;
+  display: flex;
+  align-items: center;
   .badge {
     margin-left: $spacing-ms;
     vertical-align: middle;

@@ -8,7 +8,7 @@ import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { Response } from '@angular/http';
-import { UserLocation, UserResponse, MotorPlan, ProfileSubscriptionInfo } from './user-response.interface';
+import { UserLocation, UserResponse, MotorPlan, ProfileSubscriptionInfo, Image } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -187,6 +187,11 @@ export class UserService extends ResourceService {
       .map((r: Response) => r.json());
   }
 
+  public getUserCover(): Observable<Image> {
+    return this.http.get(this.API_URL + '/me/cover-image')
+      .map((r: Response) => r.json());
+  }
+
   public updateProInfo(data: UserProData): Observable<any> {
     return this.http.post(this.API_URL_PROTOOL + '/extraInfo', data);
   }
@@ -338,6 +343,16 @@ export class UserService extends ResourceService {
 
   public isProfessional(): Observable<boolean> {
     return this.hasPerm('professional');
+  }
+
+  public isProUser(): Observable<boolean> {
+    return Observable.forkJoin([
+      this.isProfessional(),
+      this.getMotorPlan()
+    ])
+      .map((values: any[]) => {
+        return values[0] || !!(values[1] && values[1].type);
+      });
   }
 
   public getMotorPlan(): Observable<MotorPlan> {

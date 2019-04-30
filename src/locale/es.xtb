@@ -264,8 +264,7 @@
   <translation id="9032739290449539063">Tus datos</translation>
   <translation id="7022993325750262876">Ver mi perfil público</translation>
   <translation id="438622500917182822">Cambia tu imagen de perfil</translation>
-  <translation id="1315384386910114762">Esta es la imagen con la que la comunidad identificará tu perfil. Sólo aceptamos formatos .jpg</translation>
-  <translation id="1897498190172236951">Sube una foto de ti</translation>
+  <translation id="1897498190172236951">Subir foto</translation>
   <translation id="529882100731018983">Nombre:</translation>
   <translation id="6335971540734973333">Apellidos:</translation>
   <translation id="7338814826142544882">Fecha de nacimiento:</translation>
@@ -333,7 +332,6 @@
   <translation id="3258601590058086652">¿Tienes prisa para vender tu producto?</translation>
   <translation id="4495547321385209565">Diferencia tu producto durante 7 días en el muro para que sea más fácil de encontrar mediante el filtro "Urge"</translation>
   <translation id="4532380494593950343">Aquí podrás ver y editar los datos de tu perfil</translation>
-  <translation id="5433688037539750263">Tus productos</translation>
   <translation id="1953428607881051577">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
   <translation id="6938753357996446484">Tus favoritos</translation>
   <translation id="2988941833994717815">Estos son los productos de wallapop que más te gustan</translation>
@@ -704,8 +702,8 @@
   <translation id="807686572653733419">Únicamente en caso de que nos des tu consentimiento, compartiremos el teléfono que informes con un usuario profesional ajeno a nuestra plataforma (un concesionario interesarado). Los datos recabados serán utilizados mientras no te opongas a dicho tratamiento.</translation>
   <translation id="7250390756093690890">Podrás ejercer sus derechos de acceso, rectificación, supresión, oposición, limitación al tratamiento y portabilidad de sus Datos, así como la revocación, en cualquier momento, de los consentimientos, en su caso, prestados ante Wallapop S.L., CIF nº B-66.04.9057, en la Avenida Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Para tu mayor comodidad, y sin perjuicio de que se deban cumplir con determinados requisitos formales establecidos por la LOPD, Wallapop S.L. le ofrece la posibilidad de ejercer los derechos antes referidos a través del correo electrónico: privacidad@wallapop.com.</translation>
   <translation id="548531554532991134">Tu perfil <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="3163876998313048927">Conviértete en PRO</translation>
-  <translation id="2542747907081885378">Más información desde la app</translation>
+  <translation id="5784720522096888528">Estos campos son para los usuarios PROS</translation>
+  <translation id="8414210615079813336">Conviertete desde la app</translation>
   <translation id="976362268569732073">Tus productos se verán más porque estarán en las primeras posiciones de las búsquedas</translation>
   <translation id="2615367215367851425">Los compradores podrán guardar tu tienda / perfil como favorito</translation>
   <translation id="834481573787357193">Los compradores podrán ver en tu perfil el teléfono y web para contactar fácilmente</translation>
@@ -714,6 +712,7 @@
   <translation id="7373818560498277711">Tus productos no caducarán nunca</translation>
   <translation id="5553776930806289663">Entendido</translation>
   <translation id="2618743771935093938">Información personal</translation>
+  <translation id="7679042812456775772">Información publica</translation>
   <translation id="6694781109624015458">Información PRO</translation>
   <translation id="3004455960309356224">Información cuenta</translation>
   <translation id="4930506384627295710">Configuración</translation>
@@ -731,7 +730,7 @@
   <translation id="3202305721451114390">Deja tu teléfono...</translation>
   <translation id="9178182467454450952">Confirmar</translation>
   <translation id="1214570422954613349">Teléfono enviado ;)</translation>
-  <translation id="989776066026256137">Tus productos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="5433688037539750263">Tus productos</translation>
   <translation id="7811210420459773233">¿Seguro que quieres darte de baja de wallapop?</translation>
   <translation id="475161398925564146">Te estás dando de baja pero tienes activa una suscripción en wallapop. Para cancelarla, deberás hacerlo a través de la Play Store o la App Store.</translation>
   <translation id="1468205032926382389">Dame de baja y tramitaré la cancelación</translation>
@@ -771,8 +770,22 @@
   <translation id="4469663920044009823">Publica tu producto</translation>
   <translation id="5448941415082762589">Para poder ver estadísticas de tu producto publícalo para que los demás usuarios lo vean y puedan contactarte.</translation>
   <translation id="8215426233314088255">¡Enhorabuena! Ya tienes tu producto subido a wallapop.</translation>
+  <translation id="2828231996579923086">Aceptamos formatos .jpg y mínimo 400 x 400px</translation>
+  <translation id="2099215062285114503">Cambiar foto</translation>
+  <translation id="3395733106362662025">Imágenes de perfil</translation>
+  <translation id="3861342383500161019">Foto principal:</translation>
+  <translation id="420613684636248465">Foto de portada:</translation>
   <translation id="8871965642938314035">(<ph name="INTERPOLATION"><ex>{{(status?.autorenew_scheduled?.citybump || 0) + (status?.autorenew_scheduled?.zonebump || 0)}}</ex></ph> planeado)</translation>
   <translation id="8132836034776935972">Te encontrarán antes si concretas</translation>
   <translation id="3892318280760368021">Selecciona un tipo</translation>
   <translation id="2559885490456050359">Marca</translation>
+  <translation id="3351130716079059086">Conviértete en Pro</translation>
+  <translation id="6632978177693812295">Vea las opciones Pro</translation>
+  <translation id="2836854179267941399">Nombre:</translation>
+  <translation id="5759985852212057755">Apellidos:</translation>
+  <translation id="4644971093370005279">Web:</translation>
+  <translation id="2959266806536471647">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="792930787826735850">Tu perfil</translation>
+  <translation id="4086606389696938932">Cuenta</translation>
+  <translation id="5722353260643724736">Método de pago</translation>
 </translationbundle>

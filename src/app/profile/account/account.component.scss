@@ -1,0 +1,66 @@
+@import "~style/common";
+
+.unsubscribe-section {
+  padding-top: $spacing-xl;
+  text-align: center;
+  a {
+    text-decoration: underline;
+    color: $blue-grey-4;
+    font-size: $font-size-s;
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.select {
+  height: 100px;
+  width: calc(50% - #{$spacing-ml / 2});
+  border-radius: $border-radius;
+  border: solid 2px $blue-grey-5;
+  cursor: pointer;
+  padding: 0;
+  text-align: center;
+  line-height: $line-height-xxl;
+  [ngbButton] {
+    display: none;
+  }
+  &:first-of-type {
+    margin-right: $spacing-m;
+  }
+  mat-icon {
+    @include square(42px);
+    margin-top: $spacing-l;
+    margin-bottom: $spacing-m;
+    /deep/ path {
+      transition: fill 0.2s ease-in-out;
+    }
+  }
+  div {
+    margin-top: -$spacing-ms;
+    font-size: $font-size-s;
+  }
+  &.active {
+    background-color: $blue-grey-2;
+    border-color: transparent;
+    box-shadow: 0 2px 6px 0 rgba($blue-grey-2, 0.2);
+    mat-icon {
+      /deep/ path {
+        fill: $white;
+      }
+    }
+    div {
+      font-weight: bold;
+      color: $white;
+    }
+  }
+  &:hover:not(.active) {
+    border-color: $blue-grey-2;
+    mat-icon {
+      /deep/ path {
+        fill: $blue-grey-2;
+      }
+    }
+  }
+}

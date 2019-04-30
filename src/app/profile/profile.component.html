@@ -3,7 +3,8 @@
     <tsl-header>
       <div class="col-9">
         <div class="header-row">
-          <h1 class="header-title" i18n>Your profile <span class="badge badge-pro motor">{{motorPlan && motorPlan.label}}</span></h1>
+          <h1 class="header-title"><span i18n>Your profile</span> <span *ngIf="isPro" class="badge badge-pro"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span>
+          </h1>
         </div>
         <div class="header-row header-row--margin">
           <h4 class="header-subtitle" i18n>From here you can view and edit your profile</h4>
@@ -17,10 +18,14 @@
         </div>
       </div>
     </tsl-header>
-    <nav class="nav filters-nav" *ngIf="showSubscriptionTab">
+    <nav class="nav filters-nav">
       <a class="nav-link" [routerLink]="['info']" routerLinkActive="active" i18n>Profile</a>
-      <a class="nav-link" [routerLink]="['subscription']" routerLinkActive="active" i18n>Subscription</a>
+      <a class="nav-link" [routerLink]="['account']" routerLinkActive="active" i18n>Account</a>
+      <a class="nav-link" [routerLink]="['subscription']" routerLinkActive="active" *ngIf="showSubscriptionTab" i18n>Subscription</a>
+      <a class="nav-link" [routerLink]="['billing']" routerLinkActive="active" *ngxPermissionsOnly="['isProfessional']" i18n>Billing information</a>
+      <a class="nav-link" [routerLink]="['subscription-pro']" routerLinkActive="active" *ngxPermissionsOnly="['isProfessional']" i18n>Subscription</a>
     </nav>
+    <div class="rating" *ngIf="userStats"><tsl-stars class="review-rating" [stars]="userStats?.ratings?.reviews" [normalized]="false"></tsl-stars> ({{userStats?.counters?.reviews}} <span i18n>reviews</span>)</div>
     <router-outlet></router-outlet>
   </div>
 </div>

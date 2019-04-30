@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
   matIconRegistry.addSvgIcon('heart', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/heart.svg'));
+  matIconRegistry.addSvgIcon('heart-full', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/heart-full.svg'));
   matIconRegistry.addSvgIcon('location', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/location.svg'));
   matIconRegistry.addSvgIcon('others', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/others.svg'));
   matIconRegistry.addSvgIcon('phone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/phone.svg'));
@@ -271,4 +272,5 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('up-arrow-white', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/up-arrow-white.svg'));
   matIconRegistry.addSvgIcon('listing-fee-car-icon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/listing-fee-icon.svg'));
   matIconRegistry.addSvgIcon('listing-fee-car-icon-wings', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/listing-fee-icon-wings.svg'));
+  matIconRegistry.addSvgIcon('pro-seal', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/pro-seal.svg'));
 }

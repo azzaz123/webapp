@@ -1,5 +1,5 @@
 <div *ngxPermissionsOnly="['isProfessional']" class="header">
-  <h2><span i18n>Your Messages</span> <span class="badge badge-pro">Pro</span></h2>
+  <h2><span i18n>Your Messages</span> <span class="badge badge-pro"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span></h2>
   <tsl-process-all-button type="conversations"
                           [hidden]="!conversations.length || archive"
                           ngbTooltip="Mark everything as Processed" i18n-ngbTooltip placement="left">

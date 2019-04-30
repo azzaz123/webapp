@@ -2,33 +2,34 @@
 
 .credit-card-field {
   border: solid 1px $blue-grey-5;
-  height: 53px;
-  padding: 0 $spacing-ml;
-  display: flex;
+  padding: 0 $spacing-ml $spacing-ms;
   border-radius: 6px;
-  align-items: center;
-  font-size: $font-size-s;
-  .card-icon {
-    flex: 0 0 34px;
-    margin-right: $spacing-m;
-  }
-  .number {
-    flex: 1;
-  }
-  .date {
-    color: $blue-grey-3;
-    span {
-      font-size: $font-size-xs;
+  font-size: $font-size-base;
+  .info {
+    height: 53px;
+    display: flex;
+    align-items: center;
+    .card-icon {
+      flex: 0 0 34px;
+      margin-right: $spacing-m;
+    }
+    .number {
+      flex: 1;
+    }
+    .date {
+      color: $blue-grey-3;
+      span {
+        font-size: $font-size-xs;
+      }
     }
   }
-}
-
-.delete-link {
-  text-align: right;
-  font-size: $font-size-s;
-  color: $blue-grey-3;
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
+  .delete-link {
+    text-align: right;
+    font-size: $font-size-base;
+    color: $walla-main;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

@@ -31,8 +31,9 @@ tsl-card {
 
     .cart-footer-icon {
       position: absolute;
-      &.active g {
-        fill: $color-favorite-icon-fill;
+      &.active path {
+        fill: $negative-main;
+        stroke: $negative-dark;
       }
     }
 

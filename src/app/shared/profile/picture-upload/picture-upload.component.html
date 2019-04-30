@@ -1,23 +1,24 @@
-<div class="box">
-  <div class="box-content">
-    <div class="row profile-pic align-items-center">
-      <div class="col-4">
-        <tsl-user-avatar [user]="user" [imageUrl]="user?.image?.urls_by_size.medium" size="80"></tsl-user-avatar>
-        <div>
-          <h2 i18n>Change your profile picture</h2>
-          <p i18n>This is the picture linked to your account. We accept only .jpg images</p>
+<div class="box-content">
+  <h3 i18n>Profile images</h3>
+  <div class="row profile-pic top">
+    <div class="col-4" i18n>Main image:</div>
+    <div class="col-1"></div>
+    <div class="col-6">
+      <tsl-user-avatar [user]="user" [imageUrl]="user?.image?.urls_by_size.medium" size="80"></tsl-user-avatar>
+        <div class="upload-button">
+          <label class="btn btn-upload" [ngClass]="{disabled: file?.progress?.status === 0 || file?.progress?.status === 1}">
+            <input type="file" tslFileSelect (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" [options]="options" [disabled]="file?.progress?.status === 0 || file?.progress?.status === 1"
+            />
+            <span class="loader" *ngIf="file?.progress?.status === 0 || file?.progress?.status === 1">
+                    <mat-icon svgIcon="spinner" class="spinner"></mat-icon>
+                  </span>
+            <span i18n *ngIf="user?.image">Update picture</span>
+            <span i18n *ngIf="!user?.image">Upload picture</span>
+          </label>
+          <div>
+            <p i18n>JPG format and a minimum size of 400 x 400px are accepted.</p>
+          </div>
         </div>
-      </div>
-      <div class="col">
-        <label class="btn btn-upload" [ngClass]="{disabled: file?.progress?.status === 0 || file?.progress?.status === 1}">
-          <input type="file" tslFileSelect (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" [options]="options" [disabled]="file?.progress?.status === 0 || file?.progress?.status === 1"
-          />
-          <span class="loader" *ngIf="file?.progress?.status === 0 || file?.progress?.status === 1">
-                  <mat-icon svgIcon="spinner" class="spinner"></mat-icon>
-                </span>
-          <span i18n>Upload picture</span>
-        </label>
-      </div>
     </div>
   </div>
 </div>
