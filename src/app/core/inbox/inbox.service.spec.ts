@@ -128,9 +128,9 @@ describe('InboxService', () => {
 
   describe('when the http request throws an error', () => {
     beforeEach(() => {
-      spyOn<any>(service, 'getInbox').and.returnValue(Observable.throw(''));
-      spyOn(persistencyService, 'getStoredInbox').and.returnValue(Observable.of(createInboxConversationsArray(2)));
-      spyOn(persistencyService, 'getArchivedStoredInbox').and.returnValue(Observable.of(createInboxConversationsArray(2)));
+      spyOn<any>(service, 'getInbox').and.returnValue(Observable.throwError(''));
+      spyOn(persistencyService, 'getStoredInbox').and.returnValue((createInboxConversationsArray(2)));
+      spyOn(persistencyService, 'getArchivedStoredInbox').and.returnValue(createInboxConversationsArray(2));
     });
 
     it('should set errorRetrievingInbox to true', () => {
@@ -356,7 +356,9 @@ describe('InboxService', () => {
 
     it('should return FALSE if APIResponse has not next_from', () => {
       delete modifiedResponse.next_from;
-      spyOn(http, 'get').and.returnValues(Observable.of(modifiedResponse), Observable.of(modifiedResponse));
+      spyOn(http, 'get').and.returnValues(Observable.of(
+        new Response(new ResponseOptions({ body: modifiedResponse }))),
+         Observable.of(new Response(new ResponseOptions({ body: modifiedResponse }))));
 
       service.init();
 
