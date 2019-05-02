@@ -28,6 +28,10 @@
   }
 }
 
+:host {
+  width: 100%;
+}
+
 tsl-button {
   width: 100%;
   /deep/ button {

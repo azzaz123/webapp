@@ -98,13 +98,13 @@
     <span class="price">{{totalToPay | customCurrency}}</span>
   </div>
   <!--<tsl-card-selection [(ngModel)]="cardType" name="card-type" (hasCard)="hasCard($event)"></tsl-card-selection>-->
-  <tsl-stripe-card-element [creditInfo]="creditInfo"></tsl-stripe-card-element>
-  <!--<tsl-button [disabled]="!cart?.total || loading"
+  <tsl-stripe-card-element [creditInfo]="creditInfo" (stripeCard)="setCardInfo(card)"></tsl-stripe-card-element>
+  <tsl-button [disabled]="!cart?.total || loading"
               [loading]="loading"
               (click)="checkout()"
               id="qa-checkout-buy"
               i18n>Continue to Checkout</tsl-button>
-  <div class="secure-payment">
+  <!--<div class="secure-payment">
     <mat-icon svgIcon="secure-card"></mat-icon>
     <span i18n>Secure payment through Sabadell</span>
   </div>-->

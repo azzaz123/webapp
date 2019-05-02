@@ -31,6 +31,7 @@ import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many
 import { ActivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
+import { CreditInfo } from '../../core/payments/payment.interface';
 
 const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reactivateWithCredits', 'purchaseListingFeeWithCredits'];
 
@@ -62,6 +63,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public userCanDeactivate: boolean;
   public availableSlots: number = 0;
   public selectedItems: Item[];
+  public creditInfo: CreditInfo;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -91,6 +93,7 @@ export class ListComponent implements OnInit, OnDestroy {
       }
       this.getItems();
       this.getNumberOfProducts();
+      this.getCreditInfo();
     });
 
     this.itemService.selectedItems$.takeWhile(() => {
@@ -221,6 +224,16 @@ export class ListComponent implements OnInit, OnDestroy {
           this.errorService.i18nError('alreadyFeatured');
         }
       });
+    });
+  }
+
+  private getCreditInfo() {
+    this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
+      if (creditInfo.credit === 0) {
+        creditInfo.currencyName = 'wallacredits';
+        creditInfo.factor = 1;
+      }
+      this.creditInfo = creditInfo;
     });
   }
 
@@ -363,6 +376,7 @@ export class ListComponent implements OnInit, OnDestroy {
     const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'modal-standard' });
     modalRef.componentInstance.type = type;
     modalRef.componentInstance.orderEvent = orderEvent;
+    modalRef.componentInstance.creditInfo = this.creditInfo;
     modalRef.result.then((result: string) => {
       this.isUrgent = false;
       this.setRedirectToTPV(false);
@@ -398,6 +412,7 @@ export class ListComponent implements OnInit, OnDestroy {
     const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'modal-standard' });
     modalRef.componentInstance.type = 'listing-fee';
     modalRef.componentInstance.orderEvent = orderEvent;
+    modalRef.componentInstance.creditInfo = this.creditInfo;
     localStorage.setItem('transactionType', 'purchaseListingFee');
     modalRef.result.then((result: string) => {
       this.setRedirectToTPV(false);

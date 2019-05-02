@@ -9,6 +9,9 @@ import { PaymentService } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
 import { Response } from '@angular/http';
+import { StripeService } from '../../../../core/stripe/stripe.service';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs/index';
 
 @Component({
   selector: 'tsl-buy-product-modal',
@@ -26,11 +29,14 @@ export class BuyProductModalComponent implements OnInit {
   public loading: boolean;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public creditInfo: CreditInfo;
+  public card: any;
 
   constructor(private itemService: ItemService,
-    public activeModal: NgbActiveModal,
-    private paymentService: PaymentService,
-    private eventService: EventService) { }
+              public activeModal: NgbActiveModal,
+              private paymentService: PaymentService,
+              private eventService: EventService,
+              private stripeService: StripeService,
+              private router: Router) { }
 
   ngOnInit() {
     this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
@@ -39,12 +45,17 @@ export class BuyProductModalComponent implements OnInit {
         this.item.urgent = true;
       }
     });
+
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
       if (creditInfo.credit === 0) {
         creditInfo.currencyName = 'wallacredits';
         creditInfo.factor = 1;
       }
       this.creditInfo = creditInfo;
+    });
+
+    this.eventService.subscribe('paymentResponse', (response) => {
+      this.managePaymentResponse(response);
     });
   }
 
@@ -92,7 +103,7 @@ export class BuyProductModalComponent implements OnInit {
         }
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
-          this.buy(orderId);
+          this.stripeService.buy(orderId, this.hasFinancialCard, this.cardType, this.card);
         } else {
           this.activeModal.close('success');
         }
@@ -102,20 +113,21 @@ export class BuyProductModalComponent implements OnInit {
     });
   }
 
-  private buy(orderId: string) {
-    if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
-      localStorage.setItem('redirectToTPV', 'true');
-      this.paymentService.paymentIntent(orderId).subscribe((response: any) => {
-        this.payment(response.token);
-      });
-    } else {
-      this.paymentService.paymentIntent(orderId).subscribe((response: any) => {
-        this.payment(response.token);
+  private managePaymentResponse(paymentResponse) {
+    switch(paymentResponse) {
+      case 'succeeded': {
         this.activeModal.close('success');
-      }, () => {
+        break;
+      }
+      default: {
         this.activeModal.close('error');
-      });
+        break;
+      }
     }
+  }
+
+  public setCardInfo(card: any) {
+    this.card = card;
   }
 
   private usedCredits(orderTotal: number): number {

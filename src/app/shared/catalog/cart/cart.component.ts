@@ -12,6 +12,7 @@ import { CreditInfo, FinancialCard } from '../../../core/payments/payment.interf
 import { PaymentService } from '../../../core/payments/payment.service';
 import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
+import { StripeService } from '../../../core/stripe/stripe.service';
 
 @Component({
   selector: 'tsl-cart',
@@ -29,6 +30,7 @@ export class CartComponent implements OnInit, OnDestroy {
   public hasFinancialCard: boolean;
   public cardType = 'old';
   public loading: boolean;
+  public card: any;
 
   constructor(private cartService: CartService,
     private itemService: ItemService,
@@ -36,7 +38,8 @@ export class CartComponent implements OnInit, OnDestroy {
     private trackingService: TrackingService,
     private paymentService: PaymentService,
     private eventService: EventService,
-    private router: Router) {
+    private router: Router,
+    private stripeService: StripeService) {
       this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
         this.cart = cartChange.cart;
       });
@@ -44,6 +47,10 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
+
+    this.eventService.subscribe('paymentResponse', (response) => {
+      this.managePaymentResponse(response);
+    });
   }
 
   ngOnDestroy() {
@@ -73,7 +80,7 @@ export class CartComponent implements OnInit, OnDestroy {
       this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
       this.track(order);
       if (response.payment_needed) {
-        this.buy(orderId);
+        this.stripeService.buy(orderId, this.hasFinancialCard, this.cardType, this.card);
       } else {
         this.success();
       }
@@ -87,7 +94,24 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
-  private buy(orderId: string) {
+  public setCardInfo(card: any) {
+    this.card = card;
+  }
+
+  private managePaymentResponse(paymentResponse) {
+    switch(paymentResponse) {
+      case 'succeeded': {
+        this.success();
+        break;
+      }
+      default: {
+        this.router.navigate(['catalog/list', { code: -1 }]);
+        break;
+      }
+    }
+  }
+  
+  /*private buy(orderId: string) {
     if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
       this.sabadellSubmit.emit(orderId);
     } else {
@@ -97,7 +121,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.router.navigate(['catalog/list', { code: -1 }]);
       });
     }
-  }
+  }*/
 
   private success() {
     this.itemService.deselectItems();
