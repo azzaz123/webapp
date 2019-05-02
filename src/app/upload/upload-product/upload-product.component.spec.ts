@@ -168,14 +168,6 @@ describe('UploadProductComponent', () => {
         }
       });
     });
-
-    it('should get the value for the Taplytics `BrandModelUploadEnabled` experiment', () => {
-      spyOn(splitTestService, 'getVariable').and.returnValue(Observable.of(true));
-
-      component.ngOnInit();
-
-      expect(splitTestService.getVariable).toHaveBeenCalledWith('BrandModelUploadEnabled', false);
-    });
   });
 
   describe('detectFormChanges', () => {
@@ -389,57 +381,10 @@ describe('UploadProductComponent', () => {
     };
 
     describe('if the selected category allows brand/model fields', () => {
-      it('should send the Taplytics `CategoryWithBrandModelSelected` event', () => {
-        spyOn(splitTestService, 'track');
-
-        component.onCategoryChange(MOCK_CATEGORY_OPTION_1);
-
-        expect(splitTestService.track).toHaveBeenCalledWith('CategoryWithBrandModelSelected');
-      });
-    });
-
-    describe('The Taplytics experiment returns true, and the selected category allows brand/model fields', () => {
-      beforeEach(() => {
-        component.brandModelExperimentEnabled = true;
-      });
-
-      it('should show the extra info fields', () => {
+      it('should show the form extra fields', () => {
         component.onCategoryChange(MOCK_CATEGORY_OPTION_1);
 
         expect(component.extraInfoEnabled).toBe(true);
-      });
-
-      it('should update the object type title', () => {
-        component.onCategoryChange(MOCK_CATEGORY_OPTION_1);
-
-        expect(component.objectTypeTitle).toBe('title');
-      });
-
-      it('should get the object types for the selected category', () => {
-        spyOn(generalSuggestionsService, 'getObjectTypes').and.callThrough();
-
-        component.onCategoryChange(MOCK_CATEGORY_OPTION_1);
-
-        expect(generalSuggestionsService.getObjectTypes).toHaveBeenCalledWith('16000');
-      });
-    });
-
-    describe('The Taplytics experiment returns false or the selected category doesn`t allow brand/model fields', () => {
-      beforeEach(() => {
-        component.brandModelExperimentEnabled = false;
-      });
-
-      it('should hide the extra info fields if the selected category doesn`t allow these fields', () => {
-        component.onCategoryChange(MOCK_CATGORY_OPTION_2);
-
-        expect(component.extraInfoEnabled).toBe(false);
-      });
-
-      it('should hide the extra info fields if the Taplytics experiment returns false', () => {
-        component.brandModelExperimentEnabled = false;
-        component.onCategoryChange(MOCK_CATGORY_OPTION_2);
-
-        expect(component.extraInfoEnabled).toBe(false);
       });
     });
   });
