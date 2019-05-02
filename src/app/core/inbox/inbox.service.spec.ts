@@ -130,6 +130,7 @@ describe('InboxService', () => {
     beforeEach(() => {
       spyOn<any>(service, 'getInbox').and.returnValue(Observable.throw(''));
       spyOn(persistencyService, 'getStoredInbox').and.returnValue(Observable.of(createInboxConversationsArray(2)));
+      spyOn(persistencyService, 'getArchivedStoredInbox').and.returnValue(Observable.of(createInboxConversationsArray(2)));
     });
 
     it('should set errorRetrievingInbox to true', () => {
@@ -292,7 +293,7 @@ describe('InboxService', () => {
     });
     it('should emit CHAT_CAN_PROCESS_RT with false', () => {
       spyOn(eventService, 'emit').and.callThrough();
-      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res2));
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res), Observable.of(res2));
 
       service.init();
 
@@ -302,7 +303,7 @@ describe('InboxService', () => {
     });
 
     it('should make an HTTP get request to get the inbox next page using next_from', () => {
-      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res2));
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res), Observable.of(res2));
       const expectedRes = res.json();
 
       service.init();
@@ -316,7 +317,7 @@ describe('InboxService', () => {
     });
 
     it('should not add existing conversations', () => {
-      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res2));
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res), Observable.of(res2));
 
       service.init();
 
@@ -328,7 +329,7 @@ describe('InboxService', () => {
     it('should add not existing conversations', () => {
       modifiedResponse.conversations.map(conv => conv.hash = conv.hash + 'new');
       const apiResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
-      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(apiResponse));
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res), Observable.of(apiResponse));
 
       service.init();
 
@@ -340,12 +341,13 @@ describe('InboxService', () => {
 
   describe('shouldLoadMorePages', () => {
     const res: Response = new Response(new ResponseOptions({ body: MOCK_INBOX_API_RESPONSE }));
+    const res2: Response = new Response(new ResponseOptions({ body: MOCK_INBOX_API_RESPONSE }));
     let modifiedResponse;
 
     beforeEach(() => modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE));
 
     it('should return TRUE if APIResponse has next_from', () => {
-      spyOn(http, 'get').and.returnValues(Observable.of(res));
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res2));
 
       service.init();
 
@@ -354,7 +356,7 @@ describe('InboxService', () => {
 
     it('should return FALSE if APIResponse has not next_from', () => {
       delete modifiedResponse.next_from;
-      spyOn(http, 'get').and.returnValues(Observable.of(modifiedResponse));
+      spyOn(http, 'get').and.returnValues(Observable.of(modifiedResponse), Observable.of(modifiedResponse));
 
       service.init();
 

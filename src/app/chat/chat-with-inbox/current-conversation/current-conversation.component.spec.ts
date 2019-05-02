@@ -46,6 +46,8 @@ class MockedToastr {
   }
 }
 
+class MockConversationService {}
+
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
   let fixture: ComponentFixture<CurrentConversationComponent>;
@@ -70,11 +72,7 @@ describe('CurrentConversationComponent', () => {
         { provide: ItemService, useClass: MockItemService },
         { provide: UserService, useClass: MockUserService },
         { provide: TrackingService, useClass: MockTrackingService },
-        { provide: ConversationService, useValue: {
-          isConversationArchived() { return false; },
-          archive() { return Observable.of([]); },
-          unarchive() { return Observable.of([]); }
-        }},
+        { provide: ConversationService, useClass: MockConversationService },
         I18nService,
         {
           provide: BlockUserService, useValue: {
