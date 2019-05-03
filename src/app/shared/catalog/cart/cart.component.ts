@@ -110,7 +110,7 @@ export class CartComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
   /*private buy(orderId: string) {
     if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
       this.sabadellSubmit.emit(orderId);

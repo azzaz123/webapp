@@ -98,7 +98,7 @@
     <span class="price">{{totalToPay | customCurrency}}</span>
   </div>
   <!--<tsl-card-selection [(ngModel)]="cardType" name="card-type" (hasCard)="hasCard($event)"></tsl-card-selection>-->
-  <tsl-stripe-card-element [creditInfo]="creditInfo" (stripeCard)="setCardInfo(card)"></tsl-stripe-card-element>
+  <tsl-stripe-card-element [creditInfo]="creditInfo" (stripeCard)="setCardInfo($event)"></tsl-stripe-card-element>
   <tsl-button [disabled]="!cart?.total || loading"
               [loading]="loading"
               (click)="checkout()"
