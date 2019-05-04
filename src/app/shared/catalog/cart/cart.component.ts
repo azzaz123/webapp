@@ -31,6 +31,7 @@ export class CartComponent implements OnInit, OnDestroy {
   public cardType = 'old';
   public loading: boolean;
   public card: any;
+  public errors = true;
 
   constructor(private cartService: CartService,
     private itemService: ItemService,

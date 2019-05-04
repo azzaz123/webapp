@@ -42,7 +42,7 @@ export class StripeService {
     const { paymentIntent, error } = paymentResponse;
 
     if (error) {
-      this.eventService.emit('paymentResponse', 'error');
+      this.eventService.emit('paymentResponse', error);
     } else {
       this.eventService.emit('paymentResponse', paymentIntent.status);
     }

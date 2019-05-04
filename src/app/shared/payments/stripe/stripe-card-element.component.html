@@ -1,25 +1,21 @@
-<form id="payment-form" method="POST" action="/orders">
-    <div class="form-row">
-        <div class="field">
-            <label for="checkout-card" i18n>Pay with credit card</label>
-            <div id="checkout-card" class="input empty"></div>
-        </div>
+<div id="stripe">
+    <form id="payment-form" method="POST" action="/orders">
+        <fieldset>
+            <div class="form-row">
+                <div class="field">
+                    <label for="checkout-card" i18n>Pay with credit card</label>
+                    <div id="checkout-card" class="input empty"></div>
+                </div>
+            </div>
+        </fieldset>
         <div id="card-errors" role="alert" *ngIf="error">
             {{ error }}
         </div>
-    </div>
-    <input type="hidden" id="clientSecret" name="clientSecret" data-secret="pi_111_secret_222"/>
-    <!--<tsl-button id="checkout-card-button"
-                className="btn-primary btn-medium stripe"
-                [disabled]="!cart?.total || loading"
-                [loading]="loading"
-                (click)="checkout()" i18n>Continue to Checkout</tsl-button>-->
-    <div class="error">
-        <span class="message"></span>
-    </div>
-</form>
-<div class="success">
-    <a class="reset" href="#"></a>
-    <p class="message"><span data-tid="elements_examples.success.message"><span class="token"></span></span></p>
-    <span class="message"></span>
+        <tsl-button id="checkout-card-button"
+                    className="btn-primary btn-medium stripe"
+                    [disabled]="type === 'cart' && !cart?.total"
+                    [loading]="loading"
+                    (click)="onSubmit()" i18n
+        >Continue to Checkout</tsl-button>
+    </form>
 </div>

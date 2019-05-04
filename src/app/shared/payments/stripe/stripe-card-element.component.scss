@@ -26,6 +26,9 @@
   &.half-width {
     width: 50%;
   }
+  label {
+    margin-bottom: 0;
+  }
 }
 
 :host {
