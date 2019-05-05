@@ -108,7 +108,10 @@ describe('CartComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-          buy() {}
+          buy() {},
+          isPaymentMethodStripe() {
+            return true;
+          }
         }
         },
       ],
@@ -195,7 +198,7 @@ describe('CartComponent', () => {
     });
   });
 
-  xdescribe('checkout', () => {
+  describe('checkout', () => {
     let eventId: string;
 
     describe('success', () => {
@@ -210,6 +213,7 @@ describe('CartComponent', () => {
         component.sabadellSubmit.subscribe((id: string) => {
           eventId = id;
         });
+        component.isStripe = false;
       });
 
       it('should set localStorage with transaction type', () => {

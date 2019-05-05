@@ -97,7 +97,7 @@
     <span class="label" i18n>Total to pay</span>
     <span class="price">{{totalToPay | customCurrency}}</span>
   </div>
-  <tsl-card-selection [hidden]="isStripe" [(ngModel)]="cardType" name="card-type" (hasCard)="hasCard($event)"></tsl-card-selection>-->
+  <tsl-card-selection [hidden]="isStripe" [(ngModel)]="cardType" name="card-type" (hasCard)="hasCard($event)"></tsl-card-selection>
   <tsl-stripe-card-element *ngIf="isStripe" [type]="'cart'" [cart]="cart" (stripeCardToken)="checkout($event)"
                            (stripeCard)="setCardInfo($event)" [loading]="loading"
   ></tsl-stripe-card-element>

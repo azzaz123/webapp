@@ -72,7 +72,10 @@ describe('BuyProductModalComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-          buy() {}
+          buy() {},
+          isPaymentMethodStripe() {
+            return true;
+          }
         }
         },
       ],
@@ -192,7 +195,7 @@ describe('BuyProductModalComponent', () => {
     });
   });
 
-  xdescribe('checkout', () => {
+  describe('checkout', () => {
     let eventId: string;
 
     describe('success', () => {
@@ -212,6 +215,7 @@ describe('BuyProductModalComponent', () => {
           factor: 100
         };
         component.orderEvent = {...ORDER_EVENT} as OrderEvent;
+        component.isStripe = false;
       });
 
       it('should set localStorage with transaction amount', () => {

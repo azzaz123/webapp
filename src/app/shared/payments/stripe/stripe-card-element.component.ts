@@ -54,7 +54,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.type === 'cart' && changes.cart.currentValue) {
+    if (this.type === 'cart' && changes.cart && changes.cart.currentValue) {
       this.cart.total = changes.cart.currentValue.total;
     }
   }
