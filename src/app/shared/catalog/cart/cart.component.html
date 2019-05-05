@@ -97,19 +97,20 @@
     <span class="label" i18n>Total to pay</span>
     <span class="price">{{totalToPay | customCurrency}}</span>
   </div>
-  <!--<tsl-card-selection [(ngModel)]="cardType" name="card-type" (hasCard)="hasCard($event)"></tsl-card-selection>-->
-  <tsl-stripe-card-element [type]="'cart'" [cart]="cart" (stripeCardToken)="checkout($event)"
+  <tsl-card-selection [hidden]="isStripe" [(ngModel)]="cardType" name="card-type" (hasCard)="hasCard($event)"></tsl-card-selection>-->
+  <tsl-stripe-card-element *ngIf="isStripe" [type]="'cart'" [cart]="cart" (stripeCardToken)="checkout($event)"
                            (stripeCard)="setCardInfo($event)" [loading]="loading"
   ></tsl-stripe-card-element>
-  <!--<tsl-button [disabled]="!cart?.total || loading"
+  <tsl-button [hidden]="isStripe"
+              [disabled]="!cart?.total || loading"
               [loading]="loading"
               (click)="checkout()"
               id="qa-checkout-buy"
-              i18n>Continue to Checkout</tsl-button>-->
-  <!--<div class="secure-payment">
+              i18n>Continue to Checkout</tsl-button>
+  <div class="secure-payment" [hidden]="isStripe">
     <mat-icon svgIcon="secure-card"></mat-icon>
     <span i18n>Secure payment through Sabadell</span>
-  </div>-->
+  </div>
 </div>
-<!--<tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>-->
+<tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>
 

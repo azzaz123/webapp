@@ -30,6 +30,7 @@ export class BuyProductModalComponent implements OnInit {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public creditInfo: CreditInfo;
   public card: any;
+  public isStripe: boolean;
 
   constructor(private itemService: ItemService,
               public activeModal: NgbActiveModal,
@@ -39,6 +40,7 @@ export class BuyProductModalComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
+    this.isStripe = this.stripeService.isPaymentMethodStripe();
     this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
       this.item = item;
       if (this.type === 'urgent') {
@@ -54,9 +56,11 @@ export class BuyProductModalComponent implements OnInit {
       this.creditInfo = creditInfo;
     });
 
-    this.eventService.subscribe('paymentResponse', (response) => {
-      this.managePaymentResponse(response);
-    });
+    if (this.isStripe) {
+      this.eventService.subscribe('paymentResponse', (response) => {
+        this.managePaymentResponse(response);
+      });
+    }
   }
 
   get withCredits(): boolean {
@@ -103,7 +107,12 @@ export class BuyProductModalComponent implements OnInit {
         }
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
-          this.stripeService.buy(orderId, this.hasFinancialCard, this.cardType, this.card);
+          if (this.isStripe) {
+            this.stripeService.buy(orderId, this.hasFinancialCard, this.cardType, this.card);
+          } else {
+            this.buy(orderId);
+          }
+
         } else {
           this.activeModal.close('success');
         }
@@ -111,6 +120,19 @@ export class BuyProductModalComponent implements OnInit {
     }, (error: Response) => {
       this.activeModal.close('error');
     });
+  }
+
+  private buy(orderId: string) {
+    if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
+      localStorage.setItem('redirectToTPV', 'true');
+      this.sabadellSubmit.emit(orderId);
+    } else {
+      this.paymentService.pay(orderId).subscribe(() => {
+        this.activeModal.close('success');
+      }, () => {
+        this.activeModal.close('error');
+      });
+    }
   }
 
   private managePaymentResponse(paymentResponse) {

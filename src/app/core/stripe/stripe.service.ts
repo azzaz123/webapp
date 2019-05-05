@@ -37,6 +37,10 @@ export class StripeService {
     }
   }
 
+  public isPaymentMethodStripe() {
+    return true;
+  }
+
   handlePayment = (paymentResponse)  => {
     const { paymentIntent, error } = paymentResponse;
 

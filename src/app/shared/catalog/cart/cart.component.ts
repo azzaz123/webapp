@@ -32,6 +32,7 @@ export class CartComponent implements OnInit, OnDestroy {
   public loading: boolean;
   public card: any;
   public errors = true;
+  public isStripe: boolean;
 
   constructor(private cartService: CartService,
     private itemService: ItemService,
@@ -48,10 +49,13 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
-
-    this.eventService.subscribe('paymentResponse', (response) => {
-      this.managePaymentResponse(response);
-    });
+    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    
+    if (this.isStripe) {
+      this.eventService.subscribe('paymentResponse', (response) => {
+        this.managePaymentResponse(response);
+      }); 
+    }
   }
 
   ngOnDestroy() {
@@ -81,7 +85,11 @@ export class CartComponent implements OnInit, OnDestroy {
       this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
       this.track(order);
       if (response.payment_needed) {
-        this.stripeService.buy(orderId, this.hasFinancialCard, this.cardType, this.card);
+        if (this.isStripe) {
+          this.stripeService.buy(orderId, this.hasFinancialCard, this.cardType, this.card);
+        } else {
+          this.buy(orderId);
+        }
       } else {
         this.success();
       }
@@ -112,7 +120,7 @@ export class CartComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*private buy(orderId: string) {
+  private buy(orderId: string) {
     if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
       this.sabadellSubmit.emit(orderId);
     } else {
@@ -122,7 +130,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.router.navigate(['catalog/list', { code: -1 }]);
       });
     }
-  }*/
+  }
 
   private success() {
     this.itemService.deselectItems();
