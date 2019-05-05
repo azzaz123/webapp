@@ -2,23 +2,17 @@ import {
   Component,
   EventEmitter,
   forwardRef,
-  OnInit,
   Output,
   Input,
   AfterViewInit,
   OnDestroy,
-  ViewChild,
-  ElementRef,
   ChangeDetectorRef,
   SimpleChanges
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
-import { FinancialCard, CreditInfo } from '../../../core/payments/payment.interface';
+import { FinancialCard } from '../../../core/payments/payment.interface';
 import { CartBase } from '../../catalog/cart/cart-base';
-import { Cart } from '../../catalog/cart/cart';
-import { CartService } from '../../catalog/cart/cart.service';
-import { CartChange } from '../../catalog/cart/cart-item.interface';
-import { TrackingService } from '../../../core/tracking/tracking.service';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -36,9 +30,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
 
   private _model: boolean = false;
   public financialCard: FinancialCard;
-  public fullName: string;
   public hasFinancialCard: boolean;
-  public cardType = 'old';
   public card: any;
   @Input() type: string;
   @Input() cart: CartBase;
@@ -53,17 +45,13 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   private onModelChange: any = () => {};
   private onTouched: any = () => {};
 
-  constructor(private cd: ChangeDetectorRef) {
+  constructor(private cd: ChangeDetectorRef,
+              private i18n: I18nService) {
   }
 
   ngAfterViewInit() {
     this.initStripe();
   }
-
-  /*ngOnInit() {
-    this.initStripe();
-    this.card.addEventListener('change', this.cardHandler);
-  }*/
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.type === 'cart' && changes.cart.currentValue) {
@@ -87,7 +75,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
 
   private initStripe() {
     const elements = stripe.elements({
-      locale: 'es_ES'
+      locale: this.i18n.locale
     });
 
     const style = {

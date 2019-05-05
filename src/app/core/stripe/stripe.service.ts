@@ -1,5 +1,4 @@
-import { Injectable, EventEmitter, Output } from '@angular/core';
-import { Observable } from 'rxjs/index';
+import { Injectable } from '@angular/core';
 import { PaymentService } from '../payments/payment.service';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
