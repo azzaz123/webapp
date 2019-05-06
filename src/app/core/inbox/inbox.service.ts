@@ -17,8 +17,8 @@ const USER_BASE_PATH = environment.siteUrl +  'user/';
 export class InboxService {
   private API_URL = 'bff/messaging/inbox';
   private ARCHIVED_API_URL = '/bff/messaging/archived';
-  private _conversations: InboxConversation[];
-  private _archivedConversations: InboxConversation[];
+  private _conversations: InboxConversation[] = [];
+  private _archivedConversations: InboxConversation[] = [];
   private selfId: string;
   private nextPageToken: number = null;
   private nextArchivedPageToken: number = null;
