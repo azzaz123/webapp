@@ -32,6 +32,7 @@ import { ActivateItemsModalComponent } from '../../shared/catalog/catalog-item-a
 import { DeactivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { CreditInfo } from '../../core/payments/payment.interface';
+import { StripeService } from '../../core/stripe/stripe.service';
 
 const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reactivateWithCredits', 'purchaseListingFeeWithCredits'];
 
@@ -64,23 +65,26 @@ export class ListComponent implements OnInit, OnDestroy {
   public availableSlots: number = 0;
   public selectedItems: Item[];
   public creditInfo: CreditInfo;
+  public isStripe: boolean;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
-    private trackingService: TrackingService,
-    private modalService: NgbModal,
-    private route: ActivatedRoute,
-    private paymentService: PaymentService,
-    private errorService: ErrorsService,
-    private router: Router,
-    private userService: UserService,
-    private eventService: EventService,
-    protected i18n: I18nService) {
+              private trackingService: TrackingService,
+              private modalService: NgbModal,
+              private route: ActivatedRoute,
+              private paymentService: PaymentService,
+              private errorService: ErrorsService,
+              private router: Router,
+              private userService: UserService,
+              private eventService: EventService,
+              protected i18n: I18nService,
+              private stripeService: StripeService) {
   }
 
   ngOnInit() {
+    this.isStripe = this.stripeService.isPaymentMethodStripe();
     this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
       if (motorPlan) {
         const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');

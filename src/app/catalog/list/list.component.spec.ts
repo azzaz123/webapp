@@ -38,6 +38,7 @@ import { AvailableSlots } from '../../core/user/user-stats.interface';
 import { ItemFlags } from '../../core/item/item-response.interface';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
+import { StripeService } from '../../core/stripe/stripe.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -56,6 +57,7 @@ describe('ListComponent', () => {
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   let eventService: EventService;
+  let stripeService: StripeService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
@@ -178,6 +180,13 @@ describe('ListComponent', () => {
           }
           }
         },
+        {
+          provide: StripeService, useValue: {
+          isPaymentMethodStripe() {
+            return true;
+          }
+        }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -197,6 +206,7 @@ describe('ListComponent', () => {
     errorService = TestBed.get(ErrorsService);
     userService = TestBed.get(UserService);
     eventService = TestBed.get(EventService);
+    stripeService = TestBed.get(StripeService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
