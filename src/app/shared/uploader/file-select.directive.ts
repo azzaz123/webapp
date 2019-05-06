@@ -16,8 +16,8 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
   @Input() uploadInput: EventEmitter<any>;
   @Input() uploadCoverInput: EventEmitter<any>;
   @Output() uploadOutput: EventEmitter<UploadOutput>;
-  @Output() coverUploadOutput: EventEmitter<UploadOutput>;
   @Input() options: NgUploaderOptions;
+  @Input() imageType: string;
 
   isServer: boolean = isPlatformServer(this.platform_id);
   el: HTMLInputElement;
@@ -26,7 +26,6 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
 
   constructor(@Inject(PLATFORM_ID) private platform_id, private elementRef: ElementRef, private sanitizer: DomSanitizer, private upload: UploaderService) {
     this.uploadOutput = new EventEmitter<UploadOutput>();
-    this.coverUploadOutput = new EventEmitter<UploadOutput>();
   }
 
   ngOnInit() {
@@ -40,10 +39,8 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
     this.upload.options = this.options;
 
     this.upload.serviceEvents.subscribe((event: UploadOutput) => {
-      if (this.el.id === 'cover-select') {
-        this.coverUploadOutput.emit(event);
-      } else {
-        this.uploadOutput.emit(event);  
+      if (event.imageType === this.imageType) {
+        this.uploadOutput.emit(event);
       }
     });
 
@@ -52,7 +49,7 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
     }
 
     if (this.uploadCoverInput instanceof EventEmitter) {
-      this.subscription = this.upload.initInputEvents(this.uploadCoverInput);
+      this.subscription = this.upload.initInputEvents(this.uploadCoverInput, this.imageType);
     }
 
   }
@@ -69,7 +66,7 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
   }
 
   fileListener = () => {
-    this.upload.handleFiles(this.el.files);
+    this.upload.handleFiles(this.el.files, this.imageType);
   }
 
 }
