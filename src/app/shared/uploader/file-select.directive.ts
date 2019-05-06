@@ -40,7 +40,7 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
     this.upload.options = this.options;
 
     this.upload.serviceEvents.subscribe((event: UploadOutput) => {
-      if (this.el.id) {
+      if (this.el.id === 'cover-select') {
         this.coverUploadOutput.emit(event);
       } else {
         this.uploadOutput.emit(event);  
