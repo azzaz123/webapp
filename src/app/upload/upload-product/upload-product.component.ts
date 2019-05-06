@@ -28,7 +28,7 @@ import { Subject } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { SplitTestService } from '../../core/tracking/split-test.service';
 
-const CATEGORIES_WITH_BRAND_AND_MODEL = ['16000'];
+const CATEGORIES_WITH_EXTRA_FIELDS = ['16000', '12465'];
 
 @Component({
   selector: 'tsl-upload-product',
@@ -47,11 +47,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Input() suggestionValue: string;
 
   public itemTypes: any = ITEM_TYPES;
+  public currentCategory: CategoryOption;
   public extraInfoEnabled = false;
   public objectTypeTitle: string;
   public objectTypes: IOption[];
   public brands: IOption[];
   public models: IOption[];
+  public sizes: IOption[];
   public brandSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public selectedBrand: Subject<string> = new Subject();
@@ -98,6 +100,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public isUrgent = false;
   public customMake = false;
   public customModel = false;
+  public isFashionCategory = false;
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -125,7 +128,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           id: null
         }),
         brand: null,
-        model: null
+        model: null,
+        size: null,
+        gender: ['female']
       }),
       delivery_info: [null],
       location: this.fb.group({
@@ -215,7 +220,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
-      if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(this.uploadForm.value.category_id)) {
+      if (CATEGORIES_WITH_EXTRA_FIELDS.includes(this.uploadForm.value.category_id)) {
         if (this.uploadForm.value.extra_info.brand === '') {
           this.uploadForm.value.extra_info.brand = null;
         }
@@ -258,7 +263,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
       appboy.logCustomEvent('List', { platform: 'web' });
-      if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(this.uploadForm.value.category_id)) {
+      if (CATEGORIES_WITH_EXTRA_FIELDS.includes(this.uploadForm.value.category_id)) {
         this.splitTestService.track('UploadCompleted');
       }
     }
@@ -324,14 +329,15 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public onCategoryChange(category: CategoryOption) {
-    if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(category.value)) {
-      this.extraInfoEnabled = true;
+    this.currentCategory = category;
+    if (category.value === '12465') {
+      this.isFashionCategory = true;
+    }
+    if (category.has_object_type) {
       this.objectTypeTitle = category.object_type_title;
       this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
         this.objectTypes = _.reverse(objectTypes);
       });
-    } else {
-      this.extraInfoEnabled = false;
     }
   }
 
@@ -380,6 +386,16 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       });
   }
 
+  public getSizes() {
+    const objectTypeId = this.uploadForm.value.extra_info.object_type.id;
+    const gender = this.uploadForm.value.extra_info.gender;
+
+    this.generalSuggestionsService.
+      getSizes(objectTypeId, gender).subscribe((sizes: IOption[]) => {
+        this.sizes = sizes;
+      });
+  }
+
   public selectBrandOrModel(value, type: string) {
     if (typeof value === 'string') {
       if (type === 'brand') {
@@ -422,6 +438,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       delete this.oldDeliveryValue;
     } else {
       this.oldDeliveryValue = newDeliveryValue;
+    }
+  }
+
+  public onObjectTypeChange(objectType: string) {
+    if (this.isFashionCategory) {
+      this.getSizes();
     }
   }
 
