@@ -10,13 +10,14 @@ import { UploaderService } from './uploader.service';
 
 @Directive({
   selector: '[tslFileSelect]',
-  providers: [UploaderService]
+  //providers: [UploaderService]
 })
 export class FileSelectDirective  implements OnInit, OnDestroy {
 
   @Input() uploadInput: EventEmitter<any>;
   @Input() uploadCoverInput: EventEmitter<any>;
   @Output() uploadOutput: EventEmitter<UploadOutput>;
+  @Output() coverUploadOutput: EventEmitter<UploadOutput>;
   @Input() options: NgUploaderOptions;
 
   isServer: boolean = isPlatformServer(this.platform_id);
@@ -26,6 +27,7 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
 
   constructor(@Inject(PLATFORM_ID) private platform_id, private elementRef: ElementRef, private sanitizer: DomSanitizer, private upload: UploaderService) {
     this.uploadOutput = new EventEmitter<UploadOutput>();
+    this.coverUploadOutput = new EventEmitter<UploadOutput>();
   }
 
   ngOnInit() {
@@ -39,7 +41,11 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
     this.upload.options = this.options;
 
     this.upload.serviceEvents.subscribe((event: UploadOutput) => {
-      this.uploadOutput.emit(event);
+      if (this.el.id) {
+        this.coverUploadOutput.emit(event);
+      } else {
+        this.uploadOutput.emit(event);  
+      }
     });
 
     if (this.uploadInput instanceof EventEmitter) {
