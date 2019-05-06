@@ -9,8 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { UploaderService } from './uploader.service';
 
 @Directive({
-  selector: '[tslFileSelect]',
-  //providers: [UploaderService]
+  selector: '[tslFileSelect]'
 })
 export class FileSelectDirective  implements OnInit, OnDestroy {
 
