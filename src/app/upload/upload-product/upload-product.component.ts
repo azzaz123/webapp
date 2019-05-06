@@ -129,8 +129,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         }),
         brand: null,
         model: null,
-        size: null,
-        gender: ['female']
+        size: fb.group({
+          id: null
+        }),
+        gender: null
       }),
       delivery_info: [null],
       location: this.fb.group({
@@ -157,6 +159,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         delivery_info: this.getDeliveryInfo(),
         extra_info: this.item.extraInfo ? this.item.extraInfo : {}
       });
+      if (this.item.extraInfo.size) {
+        this.getSizes();
+      }
       this.detectFormChanges();
       this.oldDeliveryValue = this.getDeliveryInfo();
     }
@@ -438,12 +443,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       delete this.oldDeliveryValue;
     } else {
       this.oldDeliveryValue = newDeliveryValue;
-    }
-  }
-
-  public onObjectTypeChange(objectType: string) {
-    if (this.isFashionCategory) {
-      this.getSizes();
     }
   }
 

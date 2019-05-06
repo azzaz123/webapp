@@ -59,7 +59,7 @@ export class GeneralSuggestionsService {
       .map((sizes: SizesResponse) => {
         return sizes[gender]
           .map((size: Size) => ({
-            value: size.id,
+            value: size.id.toString(),
             label: size.text
           }));
       });

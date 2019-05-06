@@ -12,7 +12,7 @@ export interface BrandModel {
 }
 
 export interface Size {
-  id: number;
+  id: string;
   text: string;
 }
 

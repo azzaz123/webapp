@@ -265,7 +265,11 @@ export class ItemService extends ResourceService {
           id: content.extra_info.object_type && content.extra_info.object_type.id ? content.extra_info.object_type.id.toString() : null
         },
         brand: content.extra_info.brand,
-        model: content.extra_info.model
+        model: content.extra_info.model,
+        gender: content.extra_info.gender,
+        size: {
+          id: content.extra_info.size && content.extra_info.size.id ? content.extra_info.size.id.toString() : null
+        }
       } : undefined
     );
   }

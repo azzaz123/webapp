@@ -85,7 +85,7 @@
     <div class="row" formGroupName="extra_info">
       <div class="col-sm-12" *ngIf="isFashionCategory">
         <div class="form-group last">
-          <label i18n>Choose the garment gender</label>
+          <label i18n>Choose the gender of the garment</label>
           <div ngbRadioGroup name="radioBasic" formControlName="gender" class="input-radio">
             <label ngbButtonLabel>
               <input ngbButton type="radio" value="female">
@@ -102,7 +102,7 @@
         <div class="form-group last" formGroupName="object_type">
           <label for="objectType">{{objectTypeTitle}}</label>
           <ng-select class="form-control" formControlName="id" id="objectType" i18n-placeholder
-            placeholder="Select a type" [options]="objectTypes" noFilter="10" (selected)="onObjectTypeChange($event)"></ng-select>
+            placeholder="Select a type" [options]="objectTypes" noFilter="10"></ng-select>
         </div>
       </div>
       <div class="col-sm-4" *ngIf="currentCategory.has_brand">
@@ -124,10 +124,10 @@
         </div>
       </div>
       <div class="col-sm-4" *ngIf="isFashionCategory">
-        <div class="form-group last">
-          <label for="model" i18n>Size</label>
-          <ng-select class="form-control" formControlName="size" id="size" i18n-placeholder
-            placeholder="Select a size" [options]="sizes" noFilter="10"></ng-select>
+        <div class="form-group last" formGroupName="size">
+          <label for="size" i18n>Size</label>
+          <ng-select class="form-control" formControlName="id" id="fashionSizes" i18n-placeholder
+            placeholder="Select a size" [options]="sizes" noFilter="10" (opened)="getSizes()"></ng-select>
         </div>
       </div>
     </div>
