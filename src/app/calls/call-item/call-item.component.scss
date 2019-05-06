@@ -6,16 +6,11 @@ $expanded-height: 240px;
 $expanded-vertical-padding: $spacing-xl;
 $expanded-horizontal-padding: $spacing-l;
 :host {
-  cursor: pointer;
   user-select: none;
   border-radius: 0;
   &:not(.archive) {
     overflow: hidden;
   }
-}
-
-.call-expanded {
-  cursor: auto;
 }
 
 .col-1:last-of-type {
@@ -43,9 +38,15 @@ span {
   .row {
     margin-left: 0;
     margin-right: 0;
+    .duration {
+      text-align: center;
+    }
+    .process {
+      text-align: right;
+    }
   }
   .row:not(.call-expanded) {
-    padding: $spacing-s 0;
+    padding: $spacing-s $spacing-xl;
     &:hover {
       background-color: $blue-grey-5;
     }
@@ -96,6 +97,12 @@ tsl-user-avatar {
   .call-missed {
     height: 11px;
     vertical-align: baseline;
+  }
+  .phone-info {
+    .status {
+      margin: 0 $spacing-ml;
+      color: $blue-grey-3;
+    }
   }
   p {
     margin: -$spacing-ms 0 0 0;

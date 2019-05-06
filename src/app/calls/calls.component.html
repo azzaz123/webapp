@@ -32,22 +32,16 @@
     <div class="calls-block" [hidden]="!calls.length || loading">
       <div class="row calls-header">
         <div class="col-md-3">
-          <h3 i18n>Name</h3>
-        </div>
-        <div class="col-md-3">
-          <h3 i18n>Car</h3>
-        </div>
-        <div class="col-md-2">
-          <h3 i18n>Phone</h3>
-        </div>
-        <div class="col-md-2">
           <h3 i18n>Date</h3>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-6">
+          <h3 i18n>Phone</h3>
+        </div>
+        <div class="col-md-2 duration">
           <h3 i18n>Duration</h3>
         </div>
         <div class="col-md-1  text-right" >
-          <h3 i18n [hidden]="archive">Process</h3>
+          <h3 i18n [hidden]="archive">Processed</h3>
           <h3 i18n [hidden]="!archive">Pending</h3>
         </div>
       </div>

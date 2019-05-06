@@ -27,9 +27,12 @@
       margin-top: $spacing-m;
       .calls-header {
         margin: 0;
-        padding: $spacing-xl $spacing-l $spacing-l;
+        padding: $spacing-l $spacing-xl $spacing-ms;
         h3 {
           color: $blue-grey-2;
+        }
+        .duration {
+          text-align: center;
         }
       }
     }
