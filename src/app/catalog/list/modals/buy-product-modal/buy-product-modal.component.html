@@ -69,7 +69,6 @@
                 className="btn-block btn-primary"
                 (click)="checkout()"
                 [loading]="loading"
-                [disabled]="errors"
                 i18n>Continue</tsl-button>
     <p class="note" *ngIf="!hasFinancialCard && creditInfo?.credit < orderEvent.total && !isStripe" i18n>
       We don't save details of this transaction. The purchase is made via Banco Sabadell.
