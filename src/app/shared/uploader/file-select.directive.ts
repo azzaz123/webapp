@@ -45,7 +45,7 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
     });
 
     if (this.uploadInput instanceof EventEmitter) {
-      this.subscription = this.upload.initInputEvents(this.uploadInput);
+      this.subscription = this.upload.initInputEvents(this.uploadInput, this.imageType);
     }
 
     if (this.uploadCoverInput instanceof EventEmitter) {
