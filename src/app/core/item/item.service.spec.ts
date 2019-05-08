@@ -524,9 +524,9 @@ describe('Service: Item', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(['1234'])});
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
       let resp: string[];
-      const options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+      let options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
 
-      service.purchaseProducts([ORDER], 'UUID').subscribe((r: string[]) => {
+      service.purchaseProducts([ORDER], 'UUID', true).subscribe((r: string[]) => {
         resp = r;
       });
       expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/UUID', [ORDER], options);
@@ -543,9 +543,9 @@ describe('Service: Item', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESP)});
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
       let resp: PurchaseProductsWithCreditsResponse;
-      const options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+      let options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
 
-      service.purchaseProductsWithCredits([ORDER], 'UUID').subscribe((r: PurchaseProductsWithCreditsResponse) => {
+      service.purchaseProductsWithCredits([ORDER], 'UUID', true).subscribe((r: PurchaseProductsWithCreditsResponse) => {
         resp = r;
       });
       expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/credit/UUID', [ORDER], options);

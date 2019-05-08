@@ -25,6 +25,7 @@ import {
 import { USERS_STATS_RESPONSE } from '../../../tests/user.fixtures.spec';
 import { FINANCIAL_CARD } from '../../../tests/payments.fixtures.spec';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
+import { StripeService } from '../../core/stripe/stripe.service';
 
 describe('CatalogProListComponent', () => {
   let component: CatalogProListComponent;
@@ -42,6 +43,7 @@ describe('CatalogProListComponent', () => {
   let eventService: EventService;
   let errorService: ErrorsService;
   let modalSpy: jasmine.Spy;
+  let stripeService: StripeService;
   const routerEvents: Subject<any> = new Subject();
   const mockCounters = {
     sold: 0,
@@ -138,6 +140,13 @@ describe('CatalogProListComponent', () => {
               code: 200
             })
           }
+        },
+        {
+          provide: StripeService, useValue: {
+          isPaymentMethodStripe() {
+            return true;
+          }
+        }
         },
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
@@ -453,7 +462,7 @@ describe('CatalogProListComponent', () => {
         });
 
         it('should call purchaseProducts', () => {
-          expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+          expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', true);
         });
 
         it('should call getFinancialCard', () => {
@@ -490,7 +499,7 @@ describe('CatalogProListComponent', () => {
           });
 
           it('should call purchaseProducts', () => {
-            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', true);
           });
 
           it('should call getFinancialCard', () => {
@@ -538,7 +547,7 @@ describe('CatalogProListComponent', () => {
             });
 
             it('should call purchaseProducts', () => {
-              expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+              expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', true);
             });
 
             it('should call getFinancialCard', () => {
@@ -577,7 +586,7 @@ describe('CatalogProListComponent', () => {
             });
 
             it('should call purchaseProducts', () => {
-              expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+              expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', true);
             });
 
             it('should call getFinancialCard', () => {
@@ -610,7 +619,7 @@ describe('CatalogProListComponent', () => {
           });
 
           it('should call purchaseProducts', () => {
-            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', true);
           });
 
           it('should call getFinancialCard', () => {

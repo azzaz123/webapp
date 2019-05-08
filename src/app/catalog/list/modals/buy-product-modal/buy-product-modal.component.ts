@@ -91,7 +91,8 @@ export class BuyProductModalComponent implements OnInit {
     this.loading = true;
     const orderId: string = UUID.UUID();
     const creditsToPay = this.usedCredits(this.orderEvent.total);
-    this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
+    const paymentId: string = UUID.UUID();
+    this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId, this.isStripe).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (response.items_failed && response.items_failed.length) {
         this.activeModal.close('error');
       } else {
@@ -108,7 +109,7 @@ export class BuyProductModalComponent implements OnInit {
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
           if (this.isStripe) {
-            this.stripeService.buy(orderId, this.hasFinancialCard, this.cardType, this.card);
+            this.stripeService.buy(orderId, paymentId, this.hasFinancialCard, this.cardType, this.card);
           } else {
             this.buy(orderId);
           }

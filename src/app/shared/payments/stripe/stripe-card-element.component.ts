@@ -99,7 +99,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
     this.card = elements.create('card', { hidePostalCode: true, style });
     this.card.mount('#checkout-card');
     this.card.addEventListener('change', this.cardHandler);
-    this.stripeCard.emit(this.card)
+    this.stripeCard.emit(this.card);
   }
 
   public async onSubmit() {

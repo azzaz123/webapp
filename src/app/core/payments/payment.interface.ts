@@ -119,3 +119,7 @@ export interface CreditInfo {
   credit: number;
   factor: number;
 }
+
+export interface PaymentIntents {
+  token: string;
+}

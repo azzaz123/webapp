@@ -448,14 +448,20 @@ export class ItemService extends ResourceService {
     .map((r: Response) => r.json());
   }
 
-  public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
-    const options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+  public purchaseProducts(orderParams: Order[], orderId: string, isStripe: boolean): Observable<string[]> {
+    let options: RequestOptions = null;
+    if (isStripe) {
+      options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+    }
     return this.http.post(this.API_URL_WEB + '/purchase/products/' + orderId, orderParams, options)
     .map((r: Response) => r.json());
   }
 
-  public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
-    const options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+  public purchaseProductsWithCredits(orderParams: Order[], orderId: string, isStripe: boolean): Observable<PurchaseProductsWithCreditsResponse> {
+    let options: RequestOptions = null;
+    if (isStripe) {
+      options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+    }
     return this.http.post(this.API_URL_WEB + '/purchase/products/credit/' + orderId, orderParams, options)
       .map((r: Response) => r.json());
   }

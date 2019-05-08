@@ -13,6 +13,7 @@ import { PaymentService } from '../../../core/payments/payment.service';
 import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
+import { UUID } from 'angular2-uuid/index';
 
 @Component({
   selector: 'tsl-cart',
@@ -73,8 +74,9 @@ export class CartComponent implements OnInit, OnDestroy {
   checkout() {
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
+    const paymentId: string = UUID.UUID();
     this.loading = true;
-    this.itemService.purchaseProductsWithCredits(order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
+    this.itemService.purchaseProductsWithCredits(order, orderId, this.isStripe).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (-this.usedCredits > 0) {
         localStorage.setItem('transactionType', 'bumpWithCredits');
         localStorage.setItem('transactionSpent', (-this.usedCredits).toString());
@@ -85,7 +87,7 @@ export class CartComponent implements OnInit, OnDestroy {
       this.track(order);
       if (response.payment_needed) {
         if (this.isStripe) {
-          this.stripeService.buy(orderId, this.hasFinancialCard, this.cardType, this.card);
+          this.stripeService.buy(orderId, paymentId, this.hasFinancialCard, this.cardType, this.card);
         } else {
           this.buy(orderId);
         }

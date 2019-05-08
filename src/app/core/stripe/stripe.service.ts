@@ -4,6 +4,8 @@ import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { Router } from '@angular/router';
 import { EventService } from '../event/event.service';
+import { PaymentIntents } from '../payments/payment.interface';
+import { PaymentIntent } from './stripe.interface';
 
 @Injectable()
 export class StripeService {
@@ -19,16 +21,16 @@ export class StripeService {
     });
   }
 
-  public buy(orderId: string, hasFinancialCard: boolean, cardType: string, card: any): void {
+  public buy(orderId: string, paymentId: string, hasFinancialCard: boolean, cardType: string, card: any): void {
     if (!hasFinancialCard || hasFinancialCard && cardType === 'new') {
-      this.paymentService.paymentIntent(orderId).subscribe((response: any) => {
+      this.paymentService.paymentIntent(orderId, paymentId).subscribe((response: PaymentIntents) => {
         this.payment(response.token, card).then((response: any) => {
           this.handlePayment(response);
         });
       });
     } else {
-      this.paymentService.paymentIntent(orderId).subscribe((response: any) => {
-        this.payment(response.token, card).then((response: any) => {
+      this.paymentService.paymentIntent(orderId, paymentId).subscribe((response: PaymentIntents) => {
+        this.payment(response.token, card).then((response: PaymentIntent) => {
           this.handlePayment(response);
         });
       }, () => {
@@ -38,7 +40,7 @@ export class StripeService {
   }
 
   public isPaymentMethodStripe() {
-    return true;
+    return false;
   }
 
   handlePayment = (paymentResponse)  => {
