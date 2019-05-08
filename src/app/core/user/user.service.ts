@@ -348,10 +348,11 @@ export class UserService extends ResourceService {
   public isProUser(): Observable<boolean> {
     return Observable.forkJoin([
       this.isProfessional(),
-      this.getMotorPlan()
+      this.getMotorPlan(),
+      this.me()
     ])
       .map((values: any[]) => {
-        return values[0] || !!(values[1] && values[1].type);
+        return values[0] || !!(values[1] && values[1].type) || values[2].featured;
       });
   }
 
