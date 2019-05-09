@@ -21,7 +21,7 @@ import {
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { StripeService } from '../../../core/stripe/stripe.service';
 
-fdescribe('CartExtrasProComponent', () => {
+describe('CartExtrasProComponent', () => {
   let component: CartExtrasProComponent;
   let fixture: ComponentFixture<CartExtrasProComponent>;
   let cartService: CartService;
@@ -86,7 +86,7 @@ fdescribe('CartExtrasProComponent', () => {
         {
           provide: StripeService, useValue: {
           isPaymentMethodStripe() {
-            return true;
+            return false;
           }
         }
         },
