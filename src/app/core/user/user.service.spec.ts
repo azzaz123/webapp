@@ -36,7 +36,7 @@ import {
   USERS_STATS_RESPONSE,
   VALIDATIONS,
   VERIFICATION_LEVEL,
-  MOTORPLAN_DATA, PROFILE_SUB_INFO, IMAGE
+  MOTORPLAN_DATA, PROFILE_SUB_INFO, IMAGE, MOCK_FULL_USER
 } from '../../../tests/user.fixtures.spec';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { AvailableSlots, UserStatsResponse } from './user-stats.interface';
@@ -667,6 +667,7 @@ describe('Service: User', () => {
     it('should return true if user is professional', () => {
       spyOn(service, 'isProfessional').and.returnValue(Observable.of(true));
       spyOn(service, 'getMotorPlan').and.returnValue(Observable.of({}));
+      spyOn(service, 'me').and.returnValue(Observable.of(MOCK_USER));
 
       let resp: boolean;
 
@@ -678,6 +679,19 @@ describe('Service: User', () => {
     it('should return true if there is a motor plan', () => {
       spyOn(service, 'isProfessional').and.returnValue(Observable.of(false));
       spyOn(service, 'getMotorPlan').and.returnValue(Observable.of(mockMotorPlan));
+      spyOn(service, 'me').and.returnValue(Observable.of(MOCK_USER));
+
+      let resp: boolean;
+
+      service.isProUser().subscribe(response => resp = response);
+
+      expect(resp).toBe(true);
+    });
+
+    it('should return true if user is featured', () => {
+      spyOn(service, 'isProfessional').and.returnValue(Observable.of(false));
+      spyOn(service, 'getMotorPlan').and.returnValue(Observable.of({}));
+      spyOn(service, 'me').and.returnValue(Observable.of(MOCK_FULL_USER));
 
       let resp: boolean;
 
@@ -689,6 +703,7 @@ describe('Service: User', () => {
     it('should return false if there is not a motor plan and user is not professional', () => {
       spyOn(service, 'isProfessional').and.returnValue(Observable.of(false));
       spyOn(service, 'getMotorPlan').and.returnValue(Observable.of({}));
+      spyOn(service, 'me').and.returnValue(Observable.of(MOCK_USER));
 
       let resp: boolean;
 
