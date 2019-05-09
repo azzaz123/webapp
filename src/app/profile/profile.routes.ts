@@ -8,6 +8,9 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
 import { ProfileSubscriptionComponent } from './profile-subscription/profile-subscription.component';
 import { ProfileInfoComponent } from './profile-info/profile-info.component';
+import { AccountComponent } from './account/account.component';
+import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
+import { ProfileProSubscriptionComponent } from './profile-pro-subscription/profile-pro-subscription.component';
 
 const routes: Routes = [
   {
@@ -17,11 +20,7 @@ const routes: Routes = [
     canDeactivate: [ExitConfirmGuard],
     data: {
       isMyZone: true,
-      isProfile: true,
-      permissions: {
-        only: PERMISSIONS.normal,
-        redirectTo: '/pro/profile'
-      }
+      isProfile: true
     },
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'info' },
@@ -35,11 +34,48 @@ const routes: Routes = [
         }
       },
       {
+        path: 'account',
+        component: AccountComponent,
+        data: {
+          isMyZone: true,
+          isProfile: true
+        }
+      },
+      {
         path: 'subscription',
         component: ProfileSubscriptionComponent,
         data: {
           isMyZone: true,
-          isProfile: true
+          isProfile: true,
+          permissions: {
+            only: PERMISSIONS.normal,
+            redirectTo: '/profile'
+          }
+        }
+      },
+      {
+        path: 'billing',
+        component: ProfileProBillingComponent,
+        canDeactivate: [ExitConfirmGuard],
+        data: {
+          isMyZone: true,
+          isProfile: true,
+          permissions: {
+            only: PERMISSIONS.professional,
+            redirectTo: '/profile'
+          }
+        }
+      },
+      {
+        path: 'subscription-pro',
+        component: ProfileProSubscriptionComponent,
+        data: {
+          isMyZone: true,
+          isProfile: true,
+          permissions: {
+            only: PERMISSIONS.professional,
+            redirectTo: '/profile'
+          }
         }
       }
     ]
@@ -54,5 +90,10 @@ export class ProfileRoutingModule {
 }
 
 export const profileRoutedComponents = [
-  ProfileComponent
+  ProfileComponent,
+  ProfileInfoComponent,
+  AccountComponent,
+  ProfileSubscriptionComponent,
+  ProfileProBillingComponent,
+  ProfileProSubscriptionComponent
 ];

@@ -22,10 +22,6 @@ const routes: Routes = [
         loadChildren: 'app/calls/calls.module#CallsModule'
       },
       {
-        path: 'profile',
-        loadChildren: 'app/profile-pro/profile-pro.module#ProfileProModule'
-      },
-      {
         path: 'catalog',
         children: [
           {

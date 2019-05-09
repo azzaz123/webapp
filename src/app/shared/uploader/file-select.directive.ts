@@ -14,8 +14,10 @@ import { UploaderService } from './uploader.service';
 export class FileSelectDirective  implements OnInit, OnDestroy {
 
   @Input() uploadInput: EventEmitter<any>;
+  @Input() uploadCoverInput: EventEmitter<any>;
   @Output() uploadOutput: EventEmitter<UploadOutput>;
   @Input() options: NgUploaderOptions;
+  @Input() imageType: string;
 
   isServer: boolean = isPlatformServer(this.platform_id);
   el: HTMLInputElement;
@@ -37,12 +39,19 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
     this.upload.options = this.options;
 
     this.upload.serviceEvents.subscribe((event: UploadOutput) => {
-      this.uploadOutput.emit(event);
+      if (event.imageType === this.imageType) {
+        this.uploadOutput.emit(event);
+      }
     });
 
     if (this.uploadInput instanceof EventEmitter) {
-      this.subscription = this.upload.initInputEvents(this.uploadInput);
+      this.subscription = this.upload.initInputEvents(this.uploadInput, this.imageType);
     }
+
+    if (this.uploadCoverInput instanceof EventEmitter) {
+      this.subscription = this.upload.initInputEvents(this.uploadCoverInput, this.imageType);
+    }
+
   }
 
   ngOnDestroy() {
@@ -57,7 +66,7 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
   }
 
   fileListener = () => {
-    this.upload.handleFiles(this.el.files);
+    this.upload.handleFiles(this.el.files, this.imageType);
   }
 
 }

@@ -6,7 +6,6 @@ import { UserService } from '../../../core/user/user.service';
 import { environment } from '../../../../environments/environment';
 import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from '../../uploader/upload.interface';
 
-
 @Component({
   selector: 'tsl-picture-upload',
   templateUrl: './picture-upload.component.html',
@@ -61,6 +60,7 @@ export class PictureUploadComponent implements OnInit {
       headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
       file: this.file
     };
+
     this.uploadInput.emit(uploadinput);
   }
 

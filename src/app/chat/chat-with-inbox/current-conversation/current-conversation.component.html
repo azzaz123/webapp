@@ -33,14 +33,14 @@
                 <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
                 <div ngbDropdownMenu>
                     <!-- <button class="dropdown-item" (click)="archiveConversation()" i18n
-                      *ngIf="!currentConversation?.archived">Delete conversation</button>
+                      *ngIf="!currentConversation?.archived">Delete conversation</button>-->
                   <button class="dropdown-item" (click)="reportListingAction()"
-                      *ngIf="currentConversation?.item.owner !== userService.user?.id" i18n>Report this Listing</button>
-                  <button class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
+                      *ngIf="!itemIsMine && conversationChattable" i18n>Report this Listing</button>
+                  <button *ngIf="conversationChattable" class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
                   <button [hidden]="currentConversation.user.blocked" class="dropdown-item warn"
                       (click)="blockUserAction()" i18n>Block this User</button>
                   <button [hidden]="!currentConversation.user.blocked" class="dropdown-item warn"
-                      (click)="unblockUserAction()" i18n>Unblock this User</button> -->
+                      (click)="unblockUserAction()" i18n>Unblock this User</button>
                 </div>
             </div>
         </div>

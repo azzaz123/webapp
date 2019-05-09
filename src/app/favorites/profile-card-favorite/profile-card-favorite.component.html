@@ -3,7 +3,7 @@
     <tsl-profile-images *ngFor="let number of [0,1,2,3]" [profileImage]="profile?.item_images[number]" size="profile"
                         fallbackLight="true">
     </tsl-profile-images>
-    <span class="featured" *ngIf="profile?.is_professional"><mat-icon svgIcon="wing"></mat-icon></span>
+    <span *ngIf="profile?.is_professional" class="badge badge-pro featured"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span>
   </tsl-card-image>
   <tsl-card-content>
     <h5 class="tsl-card-title"> {{profile.micro_name}} </h5>
@@ -11,7 +11,7 @@
     <tsl-stars *ngIf="profile.scoring_stars > -1" [stars]="profile.scoring_stars" [normalized]="false"></tsl-stars>
   </tsl-card-content>
   <tsl-card-footer (click)="removeFavoriteModal($event)">
-    <mat-icon svgIcon="heart" class="cart-footer-icon" [ngClass]="{active: profile.favorited}"></mat-icon>
+    <mat-icon svgIcon="heart-full" class="cart-footer-icon" [ngClass]="{active: profile.favorited}"></mat-icon>
     <div class="cart-footer-text" i18n> Remove </div>
   </tsl-card-footer>
 </tsl-card>

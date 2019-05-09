@@ -73,7 +73,7 @@ export class ListComponent implements OnInit, OnDestroy {
     private paymentService: PaymentService,
     private errorService: ErrorsService,
     private router: Router,
-    private userService: UserService,
+    public userService: UserService,
     private eventService: EventService,
     protected i18n: I18nService) {
   }

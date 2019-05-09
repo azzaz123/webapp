@@ -1,8 +1,10 @@
 @import "~style/common";
 
+$margin: $spacing-xxs;
+
 div {
   @include square-avatar($item-avatar-size);
-  margin: $spacing-xxs;
+  margin: $margin;
   display: flex;
   position: relative;
   &.small {
@@ -18,7 +20,7 @@ div {
     @include square-avatar($item-avatar-size-bigger);
   }
   &.profile {
-    @include square-avatar($item-avatar-size-profile);
+    @include square-avatar(calc(#{$item-avatar-size-profile} - #{$margin}));
   }
   &.full {
     span {
