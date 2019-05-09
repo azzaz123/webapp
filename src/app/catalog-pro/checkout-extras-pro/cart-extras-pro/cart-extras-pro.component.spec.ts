@@ -19,8 +19,9 @@ import {
   PREPARED_PACKS
 } from '../../../../tests/payments.fixtures.spec';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
+import { StripeService } from '../../../core/stripe/stripe.service';
 
-describe('CartExtrasProComponent', () => {
+fdescribe('CartExtrasProComponent', () => {
   let component: CartExtrasProComponent;
   let fixture: ComponentFixture<CartExtrasProComponent>;
   let cartService: CartService;
@@ -28,6 +29,7 @@ describe('CartExtrasProComponent', () => {
   let errorsService: ErrorsService;
   let router: Router;
   let trackingService: TrackingService;
+  let stripeService: StripeService;
 
   const CART_PRO_EXTRAS = new CartProExtras();
   const CART_CHANGE: CartChange = {
@@ -80,7 +82,14 @@ describe('CartExtrasProComponent', () => {
           provide: Router, useValue: {
             navigate() { }
           }
+        },
+        {
+          provide: StripeService, useValue: {
+          isPaymentMethodStripe() {
+            return true;
+          }
         }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -108,6 +117,7 @@ describe('CartExtrasProComponent', () => {
     errorsService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
     trackingService = TestBed.get(TrackingService);
+    stripeService = TestBed.get(StripeService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     fixture.detectChanges();
   });
