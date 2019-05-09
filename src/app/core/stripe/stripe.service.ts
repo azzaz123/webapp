@@ -40,7 +40,7 @@ export class StripeService {
   }
 
   public isPaymentMethodStripe() {
-    return false;
+    return true;
   }
 
   handlePayment = (paymentResponse)  => {
