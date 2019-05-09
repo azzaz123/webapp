@@ -21,7 +21,6 @@ import { UserLocation } from '../../core/user/user-response.interface';
 import { environment } from '../../../environments/environment';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { GeneralSuggestionsService } from './general-suggestions.service';
-import { CategoryOption } from '../../core/category/category-response.interface';
 import { SplitTestService } from '../../core/tracking/split-test.service';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
@@ -79,6 +78,8 @@ describe('UploadProductComponent', () => {
               return Observable.of(CATEGORIES_OPTIONS);
             },
             isHeroCategory() {
+            },
+            isFashionCategory() {
             }
           }
         },
@@ -113,6 +114,12 @@ describe('UploadProductComponent', () => {
             },
             getBrandsAndModels() {
               return Observable.of([{ brand: 'Apple', model: 'iPhone XSX' }, { brand: 'Samsung', model: 'Galaxy S20' }]);
+            },
+            getSizes() {
+              return Observable.of({
+                male: [{ id: 1, text: 'XXXS / 30 / 2' }],
+                female: [{ id: 18, text: 'XS / 30-32 / 40-42' }]
+              });
             }
           }
         }
@@ -164,38 +171,20 @@ describe('UploadProductComponent', () => {
             id: null
           },
           brand: null,
-          model: null
+          model: null,
+          size: {
+            id: null
+          },
+          gender: null
         }
       });
     });
-  });
 
-  describe('detectFormChanges', () => {
-
-    let formChanged: boolean;
-
-    beforeEach(() => {
-      component.item = MOCK_ITEM;
-      component.onFormChanged.subscribe((value: boolean) => {
-        formChanged = value;
-      });
-
-      component.ngOnInit();
-    });
-
-    it('should emit changed event if form values changes', () => {
-      component.uploadForm.get('title').patchValue('new title');
-      component.ngOnInit();
-      fixture.detectChanges();
-
-      expect(formChanged).toBeTruthy();
-    });
-  });
-
-  describe('ngOnChanges', () => {
     it('should get and set categories', () => {
-      spyOn(categoryService, 'isHeroCategory').and.returnValues(false, false, false, true, true);
-      component.ngOnChanges();
+      spyOn(categoryService, 'isHeroCategory').and.returnValues(false, false, false, true, true, false);
+
+      component.ngOnInit();
+
       expect(categoryService.getUploadCategories).toHaveBeenCalled();
       expect(component.categories).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS);
     });
@@ -203,7 +192,8 @@ describe('UploadProductComponent', () => {
     describe('with preselected category', () => {
       beforeEach(() => {
         component.categoryId = REALESTATE_CATEGORY;
-        component.ngOnChanges();
+
+        component.ngOnInit();
       });
 
       it('should set form category_id', () => {
@@ -231,26 +221,68 @@ describe('UploadProductComponent', () => {
           13000
         );
 
-        component.ngOnChanges();
+        component.ngOnInit();
 
         expect(component.fixedCategory).toBe('Real Estate');
       });
 
-      it('should should call onCategoryChange', () => {
-        spyOn(component, 'onCategoryChange');
+      it('should show upload extra fields if the item category is fashion', () => {
+        spyOn(categoryService, 'isFashionCategory').and.returnValue(true);
         component.item = new Item(
           ITEM_DATA.id,
           ITEM_DATA.legacy_id,
           ITEM_DATA.owner,
           ITEM_DATA.title,
           ITEM_DATA.description,
-          13000
+          12465
         );
 
-        component.ngOnChanges();
+        component.ngOnInit();
 
-        expect(component.onCategoryChange).toHaveBeenCalled();
+        expect(component.currentCategory.has_brand).toBe(true);
+        expect(component.currentCategory.has_model).toBe(true);
+        expect(component.isFashionCategory).toBe(true);
       });
+
+      // it('should show upload extra fields if the item category is cell phones', () => {
+      //   component.item = new Item(
+      //     ITEM_DATA.id,
+      //     ITEM_DATA.legacy_id,
+      //     ITEM_DATA.owner,
+      //     ITEM_DATA.title,
+      //     ITEM_DATA.description,
+      //     16000
+      //   );
+
+      //   component.ngOnInit();
+
+      //   console.log(component.currentCategory);
+
+      //   expect(component.currentCategory.has_brand).toBe(true);
+      //   expect(component.currentCategory.has_model).toBe(true);
+      // });
+    });
+
+  });
+
+  describe('detectFormChanges', () => {
+    let formChanged: boolean;
+
+    beforeEach(() => {
+      component.item = MOCK_ITEM;
+      component.onFormChanged.subscribe((value: boolean) => {
+        formChanged = value;
+      });
+
+      component.ngOnInit();
+    });
+
+    it('should emit changed event if form values changes', () => {
+      component.uploadForm.get('title').patchValue('new title');
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(formChanged).toBeTruthy();
     });
   });
 
@@ -357,36 +389,6 @@ describe('UploadProductComponent', () => {
       expect(component.uploadForm.value.extra_info).toBeUndefined();
     });
 
-  });
-
-  describe('onCategoryChange', () => {
-    const MOCK_CATEGORY_OPTION_1: CategoryOption = {
-      value: '16000',
-      label: 'label',
-      icon_id: '1',
-      object_type_title: 'title',
-      has_object_type: true,
-      has_brand: true,
-      has_model: true
-    };
-
-    const MOCK_CATGORY_OPTION_2: CategoryOption = {
-      value: '12463',
-      label: 'label',
-      icon_id: '1',
-      object_type_title: 'title',
-      has_object_type: true,
-      has_brand: true,
-      has_model: true
-    };
-
-    describe('if the selected category allows brand/model fields', () => {
-      it('should show the form extra fields', () => {
-        component.onCategoryChange(MOCK_CATEGORY_OPTION_1);
-
-        expect(component.extraInfoEnabled).toBe(true);
-      });
-    });
   });
 
   describe('getBrands', () => {
@@ -598,7 +600,11 @@ describe('UploadProductComponent', () => {
             id: null
           },
           brand: null,
-          model: null
+          model: null,
+          size: {
+            id: null
+          },
+          gender: null
         }
       });
     });

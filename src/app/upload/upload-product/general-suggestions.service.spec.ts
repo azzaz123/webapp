@@ -131,7 +131,7 @@ describe('GeneralSuggestionsService', () => {
   describe('getBrands', () => {
     let response: Brand[];
     const CATEGORY = 1;
-    const OBJECT_TYPE_ID = '2';
+    const OBJECT_TYPE_ID = 2;
     const SUGGESTION = 'suggestion';
 
     beforeEach(fakeAsync(() => {

@@ -41,7 +41,6 @@
         <div class="form-group">
           <label for="category" i18n>Category</label>
           <ng-select [hidden]="fixedCategory" i18n-placeholder placeholder="Category"
-                     (selected)="onCategoryChange($event)"
                      class="form-control" formControlName="category_id"
                      [ngbPopover]="coachmarkPrice" #p2="ngbPopover" triggers="manual" (opened)="p2.open()" (closed)="p2.close()"
                      id="category" [options]="categories" noFilter="10">

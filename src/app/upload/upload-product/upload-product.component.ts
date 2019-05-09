@@ -3,7 +3,6 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   OnInit,
   Output,
   ViewChild,
@@ -35,7 +34,7 @@ const CATEGORIES_WITH_EXTRA_FIELDS = ['16000', '12465'];
   templateUrl: './upload-product.component.html',
   styleUrls: ['./upload-product.component.scss']
 })
-export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
+export class UploadProductComponent implements OnInit, AfterContentInit {
 
   @Input() categoryId: string;
   @Input() item: Item;
@@ -147,51 +146,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngOnInit() {
-    if (this.item) {
-      this.uploadForm.patchValue({
-        id: this.item.id,
-        title: this.item.title,
-        sale_price: this.item.salePrice,
-        currency_code: this.item.currencyCode,
-        description: this.item.description,
-        sale_conditions: this.item.saleConditions,
-        category_id: this.item.categoryId.toString(),
-        delivery_info: this.getDeliveryInfo(),
-        extra_info: this.item.extraInfo ? this.item.extraInfo : {}
-      });
-      if (this.item.extraInfo.size) {
-        this.getSizes();
-      }
-      this.detectFormChanges();
-      this.oldDeliveryValue = this.getDeliveryInfo();
-    }
-  }
-
-  private detectFormChanges() {
-    this.uploadForm.valueChanges.subscribe((value) => {
-      const oldItemData = _.omit(this.oldFormValue, ['images', 'location']);
-      const newItemData = _.omit(value, ['images', 'location']);
-      if (!this.oldFormValue) {
-        this.oldFormValue = value;
-      } else {
-        if (!_.isEqual(oldItemData, newItemData)) {
-          this.onFormChanged.emit(true);
-        }
-        this.oldFormValue = value;
-      }
-    });
-  }
-
-  private getDeliveryInfo(): DeliveryInfo {
-    if (!this.item.deliveryInfo) {
-      return null;
-    }
-    return this.deliveryInfo.find((deliveryInfo) => {
-      return deliveryInfo.value.max_weight_kg === this.item.deliveryInfo.max_weight_kg;
-    }).value;
-  }
-
-  ngOnChanges(changes?: any) {
     this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories.filter((category: CategoryOption) => {
         return !this.categoryService.isHeroCategory(+category.value);
@@ -210,9 +164,51 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         if (this.categoryService.isHeroCategory(this.item.categoryId)) {
           this.fixedCategory = selectedCategory ? selectedCategory.label : null;
         }
-        this.onCategoryChange(selectedCategory);
+        this.uploadForm.patchValue({
+          id: this.item.id,
+          title: this.item.title,
+          sale_price: this.item.salePrice,
+          currency_code: this.item.currencyCode,
+          description: this.item.description,
+          sale_conditions: this.item.saleConditions ? this.item.saleConditions : {},
+          category_id: this.item.categoryId.toString(),
+          delivery_info: this.getDeliveryInfo(),
+          extra_info: this.item.extraInfo ? this.item.extraInfo : {}
+        });
+        this.oldDeliveryValue = this.getDeliveryInfo();
+        this.handleItemExtraInfo(false);
+      }
+      this.detectFormChanges();
+    });
+  }
+
+  private detectFormChanges() {
+    this.uploadForm.valueChanges.subscribe((value) => {
+      const oldItemData = _.omit(this.oldFormValue, ['images', 'location']);
+      const newItemData = _.omit(value, ['images', 'location']);
+      if (!this.oldFormValue) {
+        this.oldFormValue = value;
+      } else {
+        if (!_.isEqual(oldItemData, newItemData)) {
+          this.onFormChanged.emit(true);
+        }
+        this.oldFormValue = value;
+      }
+      if (oldItemData.category_id) {
+        if (oldItemData.category_id !== newItemData.category_id) {
+          this.handleItemExtraInfo(true);
+        }
       }
     });
+  }
+
+  private getDeliveryInfo(): DeliveryInfo {
+    if (!this.item.deliveryInfo) {
+      return null;
+    }
+    return this.deliveryInfo.find((deliveryInfo) => {
+      return deliveryInfo.value.max_weight_kg === this.item.deliveryInfo.max_weight_kg;
+    }).value;
   }
 
   ngAfterContentInit() {
@@ -333,19 +329,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.locationSelected.emit(this.categoryId);
   }
 
-  public onCategoryChange(category: CategoryOption) {
-    this.currentCategory = category;
-    if (category.value === '12465') {
-      this.isFashionCategory = true;
-    }
-    if (category.has_object_type) {
-      this.objectTypeTitle = category.object_type_title;
-      this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
-        this.objectTypes = _.reverse(objectTypes);
-      });
-    }
-  }
-
   public getBrands(brandKeyword: string) {
     const suggestions: KeywordSuggestion[] = [];
 
@@ -395,10 +378,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     const objectTypeId = this.uploadForm.value.extra_info.object_type.id;
     const gender = this.uploadForm.value.extra_info.gender;
 
-    this.generalSuggestionsService.
-      getSizes(objectTypeId, gender).subscribe((sizes: IOption[]) => {
+    if (objectTypeId && gender) {
+      this.generalSuggestionsService.getSizes(objectTypeId, gender).subscribe((sizes: IOption[]) => {
         this.sizes = sizes;
       });
+    }
   }
 
   public selectBrandOrModel(value, type: string) {
@@ -435,6 +419,44 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         model
       }
     });
+  }
+
+  private handleItemExtraInfo(resetExtraInfo: boolean) {
+    const selectedCategory: CategoryOption = _.find(this.categories, { value: this.uploadForm.value.category_id });
+
+    if (selectedCategory) {
+      this.currentCategory = selectedCategory;
+      this.isFashionCategory = this.categoryService.isFashionCategory(parseInt(selectedCategory.value, 10));
+
+      if (resetExtraInfo) {
+        this.uploadForm.patchValue({
+          extra_info: {
+            object_type: {
+              id: null
+            },
+            brand: null,
+            model: null,
+            size: {
+              id: null
+            },
+            gender: null
+          }
+        });
+        this.setModel(null);
+        this.setBrand(null);
+      }
+
+      if (this.isFashionCategory) {
+        this.getSizes();
+      }
+
+      if (selectedCategory.has_object_type) {
+        this.objectTypeTitle = selectedCategory.object_type_title;
+        this.generalSuggestionsService.getObjectTypes(selectedCategory.value).subscribe((objectTypes: IOption[]) => {
+          this.objectTypes = _.reverse(objectTypes);
+        });
+      }
+    }
   }
 
   public onDeliveryChange(newDeliveryValue: any) {
