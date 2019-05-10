@@ -233,6 +233,21 @@ describe('ListComponent', () => {
       expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, CREDITS);
     }));*/
 
+    describe('check isStripe payment method', () => {
+      it('should set isStripe to true', () => {
+        spyOn(stripeService, 'isPaymentMethodStripe').and.returnValue(true);
+
+        expect(component.isStripe).toBe(true);
+      });
+
+      it('should set isStripe to false', () => {
+        spyOn(stripeService, 'isPaymentMethodStripe').and.returnValue(false);
+
+        expect(component.isStripe).toBe(false);
+      });
+    });
+
+
     it('should open bump confirmation modal', fakeAsync(() => {
       spyOn(router, 'navigate');
       spyOn(localStorage, 'getItem').and.returnValue('bump');

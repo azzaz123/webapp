@@ -11,6 +11,7 @@ import { PaymentIntent } from './stripe.interface';
 export class StripeService {
 
   public fullName: string;
+  public PAYMENT_PROVIDER_STRIPE = true;
 
   constructor(private paymentService: PaymentService,
               private userService: UserService,
@@ -40,7 +41,7 @@ export class StripeService {
   }
 
   public isPaymentMethodStripe() {
-    return true;
+    return this.PAYMENT_PROVIDER_STRIPE;
   }
 
   handlePayment = (paymentResponse)  => {

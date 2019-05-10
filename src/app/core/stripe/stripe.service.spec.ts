@@ -85,6 +85,11 @@ describe('StripeService', () => {
       expect(response).toEqual(PAYMENT_INTENT_RESPONSE);
     });
   });
+  
+  describe('set payment method to stripe', () => {
+    service.isPaymentMethodStripe();
+    expect(service.PAYMENT_PROVIDER_STRIPE).toEqual(true);
+  });
 
 });
 
