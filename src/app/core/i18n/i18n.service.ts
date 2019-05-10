@@ -121,7 +121,8 @@ export class I18nService {
       cars_subscription_tutorial_phone_on_car: 'Your phone will appear in each car you have listed, so more buyers will contact you.',
       brand: 'Brand',
       model: 'Model',
-      brand_example: 'E.g: Apple',
+      phones_brand_example: 'E.g: Apple',
+      fashion_brand_example: 'E.g: Zara',
       model_example: 'E.g: iPhone'
     },
     es: {
@@ -243,7 +244,8 @@ export class I18nService {
       cars_subscription_tutorial_phone_on_car: 'Tu teléfono aparecerá en cada coche que tengas publicado, así más compradores te contactarán.',
       brand: 'Marca',
       model: 'Modelo',
-      brand_example: 'P. ej: Apple',
+      phones_brand_example: 'P. ej: Apple',
+      fashion_brand_example: 'P. ej: Zara',
       model_example: 'P. ej: iPhone',
     }
   };

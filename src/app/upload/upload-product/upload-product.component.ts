@@ -176,7 +176,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
           extra_info: this.item.extraInfo ? this.item.extraInfo : {}
         });
         this.oldDeliveryValue = this.getDeliveryInfo();
-        this.handleItemExtraInfo(false);
+        this.handleItemExtraInfo(false, selectedCategory);
       }
       this.detectFormChanges();
     });
@@ -193,11 +193,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
           this.onFormChanged.emit(true);
         }
         this.oldFormValue = value;
-      }
-      if (oldItemData.category_id) {
-        if (oldItemData.category_id !== newItemData.category_id) {
-          this.handleItemExtraInfo(true);
-        }
       }
     });
   }
@@ -386,19 +381,21 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
   }
 
   public selectBrandOrModel(value, type: string) {
-    if (typeof value === 'string') {
-      if (type === 'brand') {
-        this.setBrand(value);
-      }
-      if (type === 'model') {
-        this.setModel(value);
-      }
-    } else if (typeof value === 'object') {
-      if (value.brand) {
-        this.setBrand(value.brand);
-      }
-      if (value.model) {
-        this.setModel(value.model);
+    if (value) {
+      if (typeof value === 'string') {
+        if (type === 'brand') {
+          this.setBrand(value);
+        }
+        if (type === 'model') {
+          this.setModel(value);
+        }
+      } else if (typeof value === 'object') {
+        if (value.brand) {
+          this.setBrand(value.brand);
+        }
+        if (value.model) {
+          this.setModel(value.model);
+        }
       }
     }
   }
@@ -421,42 +418,48 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
     });
   }
 
-  private handleItemExtraInfo(resetExtraInfo: boolean) {
-    const selectedCategory: CategoryOption = _.find(this.categories, { value: this.uploadForm.value.category_id });
+  public handleItemExtraInfo(initializeExtraInfo: boolean, category: CategoryOption) {
+    this.currentCategory = category;
+    this.isFashionCategory = this.categoryService.isFashionCategory(parseInt(category.value, 10));
 
-    if (selectedCategory) {
-      this.currentCategory = selectedCategory;
-      this.isFashionCategory = this.categoryService.isFashionCategory(parseInt(selectedCategory.value, 10));
-
-      if (resetExtraInfo) {
-        this.uploadForm.patchValue({
-          extra_info: {
-            object_type: {
-              id: null
-            },
-            brand: null,
-            model: null,
-            size: {
-              id: null
-            },
-            gender: null
-          }
-        });
-        this.setModel(null);
-        this.setBrand(null);
-      }
-
-      if (this.isFashionCategory) {
-        this.getSizes();
-      }
-
-      if (selectedCategory.has_object_type) {
-        this.objectTypeTitle = selectedCategory.object_type_title;
-        this.generalSuggestionsService.getObjectTypes(selectedCategory.value).subscribe((objectTypes: IOption[]) => {
-          this.objectTypes = _.reverse(objectTypes);
-        });
-      }
+    if (initializeExtraInfo) {
+      this.initializeItemExtraInfo(null);
     }
+
+    if (this.isFashionCategory) {
+      this.getSizes();
+    }
+
+    if (category.has_object_type) {
+      this.objectTypeTitle = category.object_type_title;
+      this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
+        this.objectTypes = _.reverse(objectTypes);
+      });
+    }
+  }
+
+  public initializeItemExtraInfo(objectType) {
+    this.uploadForm.patchValue({
+      extra_info: {
+        object_type: {
+          id: objectType
+        },
+        brand: null,
+        model: null,
+        size: {
+          id: null
+        },
+        gender: this.isFashionCategory ? this.uploadForm.value.extra_info.gender : null
+      }
+    });
+    this.setModel(null);
+    this.setBrand(null);
+
+    this.getBrandPlaceholder();
+  }
+
+  public getBrandPlaceholder() {
+    return this.isFashionCategory ? 'fashion_brand_example' : 'phones_brand_example';
   }
 
   public onDeliveryChange(newDeliveryValue: any) {
