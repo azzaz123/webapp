@@ -35,7 +35,9 @@ describe('Component: InboxComponent', () => {
         ...TEST_HTTP_PROVIDERS,
         {provide: InboxService, useValue: {
           loadMorePages() {},
-          shouldLoadMorePages() {}
+          shouldLoadMorePages() {},
+          loadMoreArchivedPages() {},
+          shouldLoadMoreArchivedPages() {}
         }},
         {provide: ConversationService, useValue: {
           openConversation() {}

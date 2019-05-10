@@ -5,6 +5,9 @@ import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { ConversationService } from '../../../core/inbox/conversation.service';
 import { Message } from '../../../core/message/message';
+import { debug } from 'util';
+
+enum InboxState { Inbox, Archived }
 
 @Component({
   selector: 'tsl-inbox',
@@ -16,7 +19,9 @@ export class InboxComponent implements OnInit, OnDestroy  {
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
   public conversations: InboxConversation[];
+  public archivedConversations: InboxConversation[];
   public showNewMessagesToast = false;
+  public componentState: InboxState;
   private _loading = false;
   private _loadingMore = false;
   private conversationElementHeight = 100;
@@ -46,8 +51,16 @@ export class InboxComponent implements OnInit, OnDestroy  {
   get loadingMore(): boolean {
     return this._loadingMore;
   }
-  ngOnInit() {
 
+  get isInbox(): boolean {
+    return this.componentState === InboxState.Inbox;
+  }
+
+  get isArchived(): boolean {
+    return this.componentState === InboxState.Archived;
+  }
+  ngOnInit() {
+    this.componentState = InboxState.Inbox;
     this.bindNewMessageToast();
     if (this.inboxService.conversations) {
       this.onInboxReady(this.inboxService.conversations);
@@ -57,6 +70,10 @@ export class InboxComponent implements OnInit, OnDestroy  {
     }
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.onInboxReady(conversations);
+    });
+
+    this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
+      this.archivedConversations = conversations;
     });
   }
 
@@ -79,6 +96,14 @@ export class InboxComponent implements OnInit, OnDestroy  {
         this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.75;
       }
     });
+  }
+
+  public showInbox() {
+    this.componentState = InboxState.Inbox;
+  }
+
+  public showArchive() {
+    this.componentState = InboxState.Archived;
   }
 
   public handleScroll() {
@@ -105,13 +130,25 @@ export class InboxComponent implements OnInit, OnDestroy  {
     return this.inboxService.shouldLoadMorePages();
   }
 
+  public loadMoreArchived() {
+    this.loadingMore = true;
+    this.inboxService.loadMoreArchivedPages();
+  }
+
+  public showLoadMoreArchived(): boolean {
+    return this.inboxService.shouldLoadMoreArchivedPages();
+  }
+
   public hasConversations(): boolean {
     return this.conversations && this.conversations.length > 0;
   }
 
+  get hasArchivedConversations(): boolean {
+    return this.archivedConversations && this.archivedConversations.length > 0;
+  }
+
   public shouldDisplayHeader(): boolean {
-    // This should check if there are also Archived conversations when developed
-    return this.hasConversations();
+    return this.hasConversations() || this.hasArchivedConversations;
   }
 
   private unselectCurrentConversation() {

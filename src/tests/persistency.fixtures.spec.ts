@@ -201,6 +201,8 @@ export class MockedPersistencyService {
 
   public getStoredInbox() {}
 
+  public getArchivedStoredInbox() {}
+
   public getMetaInformation() {
   }
 
