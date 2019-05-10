@@ -77,6 +77,7 @@ describe('ListComponent', () => {
       providers: [
         I18nService,
         EventService,
+        StripeService,
         { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: ItemService, useValue: {
@@ -183,7 +184,7 @@ describe('ListComponent', () => {
         {
           provide: StripeService, useValue: {
           isPaymentMethodStripe() {
-            return true;
+            return true
           }
         }
         },
@@ -235,15 +236,7 @@ describe('ListComponent', () => {
 
     describe('check isStripe payment method', () => {
       it('should set isStripe to true', () => {
-        spyOn(stripeService, 'isPaymentMethodStripe').and.returnValue(true);
-
         expect(component.isStripe).toBe(true);
-      });
-
-      it('should set isStripe to false', () => {
-        spyOn(stripeService, 'isPaymentMethodStripe').and.returnValue(false);
-
-        expect(component.isStripe).toBe(false);
       });
     });
 
