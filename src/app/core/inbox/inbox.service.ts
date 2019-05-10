@@ -51,7 +51,7 @@ export class InboxService {
     return this._archivedConversations;
   }
 
-  public getInboxFeatureFlag(): Observable<boolean> {
+  public getInboxFeatureFlag$(): Observable<boolean> {
     return this.featureflagService.getFlag('web_inbox_projections');
   }
 
@@ -61,7 +61,7 @@ export class InboxService {
     this.conversationService.selfId = this.selfId;
     this.subscribeArchiveEvents();
     this.subscribeUnarchiveEvents();
-    Observable.forkJoin(this.getInbox(), this.getArchivedInbox())
+    Observable.forkJoin(this.getInbox$(), this.getArchivedInbox$())
     .catch(() => {
       this.errorRetrievingInbox = true;
       return [this.persistencyService.getStoredInbox(), this.persistencyService.getArchivedStoredInbox()];
@@ -77,7 +77,7 @@ export class InboxService {
 
   public loadMorePages() {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
-    this.getNextPage()
+    this.getNextPage$()
       .catch(() => {
         this.errorRetrievingInbox = true;
         return Observable.of([]);
@@ -94,7 +94,7 @@ export class InboxService {
 
   public loadMoreArchivedPages() {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
-    this.getNextArchivedPage()
+    this.getNextArchivedPage$()
       .catch(() => {
         this.errorRetrievingInbox = true;
         return Observable.of([]);
@@ -109,7 +109,7 @@ export class InboxService {
     return this.nextArchivedPageToken !== null;
   }
 
-  private getInbox(): Observable<any> {
+  private getInbox$(): Observable<any> {
     this.messageService.totalUnreadMessages = 0;
     return this.http.get(this.API_URL, {
       page_size: this.pageSize
@@ -119,7 +119,7 @@ export class InboxService {
     });
   }
 
-  private getArchivedInbox(): Observable<any> {
+  private getArchivedInbox$(): Observable<any> {
     return this.http.get(this.ARCHIVED_API_URL, {
       page_size: this.pageSize
     })
@@ -128,7 +128,7 @@ export class InboxService {
     });
   }
 
-  private getNextPage(): Observable<any> {
+  private getNextPage$(): Observable<any> {
       return this.http.get(this.API_URL, {
         page_size: this.pageSize,
         from: this.nextPageToken
@@ -138,7 +138,7 @@ export class InboxService {
       });
   }
 
-  private getNextArchivedPage(): Observable<any> {
+  private getNextArchivedPage$(): Observable<any> {
     return this.http.get(this.API_URL, {
       page_size: this.pageSize,
       from: this.nextArchivedPageToken

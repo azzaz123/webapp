@@ -61,7 +61,7 @@ describe('InboxService', () => {
     it('should call featureflagService.getFlag when called', () => {
       spyOn(featureflagService, 'getFlag');
 
-      service.getInboxFeatureFlag();
+      service.getInboxFeatureFlag$();
 
       expect(featureflagService.getFlag).toHaveBeenCalledWith('web_inbox_projections');
     });
@@ -128,7 +128,7 @@ describe('InboxService', () => {
 
   describe('when the http request throws an error', () => {
     beforeEach(() => {
-      spyOn<any>(service, 'getInbox').and.returnValue(Observable.throwError(''));
+      spyOn<any>(service, 'getInbox$').and.returnValue(Observable.throwError(''));
       spyOn(persistencyService, 'getStoredInbox').and.returnValue((createInboxConversationsArray(2)));
       spyOn(persistencyService, 'getArchivedStoredInbox').and.returnValue(createInboxConversationsArray(2));
     });
