@@ -18,8 +18,8 @@ export class InboxComponent implements OnInit, OnDestroy  {
   @Output() public loadingEvent = new EventEmitter<any>();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
-  public conversations: InboxConversation[];
-  public archivedConversations: InboxConversation[];
+  public conversations: InboxConversation[] = [];
+  public archivedConversations: InboxConversation[] = [];
   public showNewMessagesToast = false;
   public componentState: InboxState;
   private _loading = false;
