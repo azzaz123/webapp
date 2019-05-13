@@ -143,12 +143,12 @@ export class InboxComponent implements OnInit, OnDestroy  {
     return this.conversations && this.conversations.length > 0;
   }
 
-  get hasArchivedConversations(): boolean {
+  public hasArchivedConversations(): boolean {
     return this.archivedConversations && this.archivedConversations.length > 0;
   }
 
   public shouldDisplayHeader(): boolean {
-    return this.hasConversations() || this.hasArchivedConversations;
+    return this.hasConversations() || this.hasArchivedConversations();
   }
 
   private unselectCurrentConversation() {
