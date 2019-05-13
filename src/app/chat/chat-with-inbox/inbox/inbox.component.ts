@@ -64,6 +64,7 @@ export class InboxComponent implements OnInit, OnDestroy  {
     this.bindNewMessageToast();
     if (this.inboxService.conversations) {
       this.onInboxReady(this.inboxService.conversations);
+      this.archivedConversations = this.inboxService.archivedConversations;
       this.loading = false;
     } else {
       this.loading = true;
@@ -148,7 +149,7 @@ export class InboxComponent implements OnInit, OnDestroy  {
   }
 
   public shouldDisplayHeader(): boolean {
-    return this.hasConversations() || this.hasArchivedConversations();
+    return this.hasArchivedConversations() || this.hasConversations();
   }
 
   private unselectCurrentConversation() {
