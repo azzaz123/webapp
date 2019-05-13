@@ -108,6 +108,12 @@ describe('BuyProductModalComponent', () => {
       expect(component.item.urgent).toBe(true);
     });
 
+    describe('check isStripe payment method', () => {
+      it('should set isStripe to true', () => {
+        expect(component.isStripe).toBe(true);
+      });
+    });
+
     it('should call getCreditInfo and set it', () => {
       const creditInfo: CreditInfo = {
         currencyName: 'wallacoins',

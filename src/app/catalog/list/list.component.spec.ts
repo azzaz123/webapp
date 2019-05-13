@@ -39,6 +39,7 @@ import { ItemFlags } from '../../core/item/item-response.interface';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 import { StripeService } from '../../core/stripe/stripe.service';
+import { CreditInfo } from '../../core/payments/payment.interface';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -217,29 +218,26 @@ describe('ListComponent', () => {
 
   describe('ngOnInit', () => {
 
-    /*beforeEach(() => {
-      spyOn(paymentService, 'getCreditInfo').and.callThrough();
-    });
-
-    it('should emit the updated total credits if transactionSpent exists', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue(TRANSACTION_SPENT);
-      spyOn(eventService, 'emit');
-      route.params = Observable.of({
-        code: 200
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, CREDITS);
-    }));*/
-
     describe('check isStripe payment method', () => {
       it('should set isStripe to true', () => {
         expect(component.isStripe).toBe(true);
       });
     });
 
+    describe('getCreditInfo', () => {
+      it('should set the creditInfo', () => {
+        const creditInfo: CreditInfo = {
+          currencyName: 'wallacoins',
+          credit: 2000,
+          factor: 100
+        };
+        spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+
+        component.ngOnInit();
+
+        expect(component.creditInfo).toEqual(creditInfo);
+      });
+    });
 
     it('should open bump confirmation modal', fakeAsync(() => {
       spyOn(router, 'navigate');

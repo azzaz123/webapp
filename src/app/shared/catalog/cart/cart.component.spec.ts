@@ -148,8 +148,15 @@ describe('CartComponent', () => {
 
       expect(cartService.createInstance).toHaveBeenCalledWith(new Cart());
     });
+
     it('should set cart', () => {
       expect(component.cart).toEqual(CART);
+    });
+
+    describe('check isStripe payment method', () => {
+      it('should set isStripe to true', () => {
+        expect(component.isStripe).toBe(true);
+      });
     });
   });
 

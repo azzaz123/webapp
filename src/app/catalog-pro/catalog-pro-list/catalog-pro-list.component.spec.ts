@@ -331,6 +331,12 @@ describe('CatalogProListComponent', () => {
 
       expect(errorService.i18nError).toHaveBeenCalledWith('alreadyFeatured');
     }));
+
+    describe('check isStripe payment method', () => {
+      it('should set isStripe to true', () => {
+        expect(component.isStripe).toBe(true);
+      });
+    });
   });
 
   describe('getItems', () => {

@@ -136,6 +136,12 @@ describe('CartExtrasProComponent', () => {
     it('should set cart pro extras', () => {
       expect(component.cart).toEqual(CART_PRO_EXTRAS);
     });
+
+    describe('check isStripe payment method', () => {
+      it('should set isStripe to false', () => {
+        expect(component.isStripe).toBe(false);
+      });
+    });
   });
 
   describe('hasCard', () => {
