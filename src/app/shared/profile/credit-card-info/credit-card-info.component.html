@@ -12,7 +12,10 @@
             </div>
           </div>
           <div class="col-4 delete-link">
-            <a (click)="deleteCreditCard()" i18n>Delete card</a>
+            <a *ngIf="isStripe && card?.favorite" i18n>Main card</a>
+            <a (click)="setFavoriteCard($event)" *ngIf="isStripe && !card?.favorite" i18n>Set as main card</a>
+            <a (click)="deleteCreditCard()" [hidden]="isStripe" i18n>Delete card</a>
+            <a (click)="deleteStripeCard($event)" *ngIf="isStripe" i18n>Delete card</a>
           </div>
         </div>
       </div>

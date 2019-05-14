@@ -85,6 +85,7 @@ export interface FinancialCard {
   expire_date: number;
   id: string;
   number: string;
+  favorite?: boolean;
 }
 
 export interface Order {

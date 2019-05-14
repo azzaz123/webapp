@@ -12,6 +12,7 @@ import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.co
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { LOCATION_MODAL_TIMEOUT } from '../../shared/geolocation/location-select/location-select.component';
 import { ErrorsService } from '../../core/errors/errors.service';
+import { StripeService } from '../../core/stripe/stripe.service';
 
 export const competitorLinks = [
   'coches.net',
@@ -32,12 +33,14 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   public user: User;
   public profileForm: FormGroup;
   public allowSegmentation: boolean;
+  public isStripe: boolean;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
   constructor(private userService: UserService,
               private fb: FormBuilder,
               private errorsService: ErrorsService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private stripeService: StripeService) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
@@ -58,6 +61,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   }
 
   ngOnInit() {
+    this.isStripe = this.stripeService.isPaymentMethodStripe();
     this.userService.me().subscribe((user: User) => {
       this.user = user;
       if (user) {

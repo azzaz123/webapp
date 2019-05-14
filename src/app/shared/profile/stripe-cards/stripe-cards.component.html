@@ -1,0 +1,6 @@
+<div *ngFor="let stripeCard of stripeCards">
+    <tsl-credit-card-info [card]="stripeCard" (onSetFavoriteCard)="onSetFavoriteCard($event)" (onDeleteCard)="onDeleteCard($event)"></tsl-credit-card-info>
+</div>
+<div class="StripeCards-newCard">
+    <a (click)="addNewCard()" i18n>Add new card</a>
+</div>
