@@ -21,6 +21,7 @@ export class InboxItem {
         private _price: InboxItemPrice,
         private _title: string,
         private _mainImage: InboxImage,
+        private _itemUrl: string,
         private _status: string,
         private _isMine: boolean) {
         this.mapStatusToFlags(this.status);
@@ -30,6 +31,9 @@ export class InboxItem {
     public reserved = false;
     public published = false;
     public notAvailable = false;
+
+    public views: number;
+    public favorites: number;
 
     private mapStatusToFlags(status: string) {
         switch (status) {
@@ -83,6 +87,14 @@ export class InboxItem {
         this._isMine = value;
     }
 
+    get itemUrl(): string {
+        return this._itemUrl;
+    }
+
+    set itemUrl(value: string) {
+        this._itemUrl = value;
+    }
+
     public setFakeImage(image: string) {
         this._mainImage = {
             urls_by_size: {
@@ -92,4 +104,4 @@ export class InboxItem {
     }
 }
 
-export const InboxItemPlaceholder = new InboxItem(null, null, 'unknown', null, INBOX_ITEM_STATUSES.notAvailable, false);
+export const InboxItemPlaceholder = new InboxItem(null, null, 'unknown', null, null, INBOX_ITEM_STATUSES.notAvailable, false);

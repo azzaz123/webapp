@@ -32,6 +32,7 @@ import { ArchiveInboxConversationComponent } from './chat-with-inbox/modals/arch
 import { UnarchiveInboxConversationComponent } from './chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component';
 import { ArchivedInboxConversationComponent } from './chat-with-inbox/inbox/archived-inbox-conversation/archived-inbox-conversation.component';
 import { InboxUserDetailComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component';
+import { InboxItemDetailComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component';
 
 @NgModule({
   imports: [
@@ -72,7 +73,8 @@ import { InboxUserDetailComponent } from './chat-with-inbox/inbox/inbox-metadata
     ChatWithArchiveComponent,
     CurrentConversationComponent,
     InboxMessageComponent,
-    InboxUserDetailComponent
+    InboxUserDetailComponent,
+    InboxItemDetailComponent
   ],
   entryComponents: [
     ArchiveConversationComponent,

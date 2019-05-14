@@ -17,6 +17,9 @@
   .card-block {
     text-align: left;
     padding-right: 0px;
+    padding-left: 0px;
+    margin-left: $spacing-ms;
+    margin-right: 0px;
     h5 {
       font-family: 'Wallie-Fit';
       font-weight: 500;
@@ -42,5 +45,5 @@
 
 tsl-user-avatar {
   margin-top: $spacing-s;
-  margin-right: $spacing-s;
+  margin-right: $spacing-ms;
 }

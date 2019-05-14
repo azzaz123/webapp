@@ -103,13 +103,13 @@
   <msg id="968107342863651775"><source>app/shared/confirmation-modal/confirmation-modal.component.html:27</source>This profile is no longer featured</msg>
   <msg id="1918694988070405915"><source>app/shared/confirmation-modal/confirmation-modal.component.html:28</source>If you remove it you won&apos;t be able to save it again.</msg>
   <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.html:34</source><source>app/shared/profile/credit-card-info/credit-card-info.component.html:15</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:13</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:32</source><source>app/catalog/list/list.component.html:51</source><source>app/catalog/list/catalog-item/catalog-item.component.html:58</source><source>app/catalog/list/selected-items/selected-items.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:7</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:7</source>Delete</msg>
-  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.html:35</source><source>app/catalog/list/selected-items/selected-items.component.html:19</source><source>app/chat/item/item.component.html:17</source>Reserve</msg>
+  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.html:35</source><source>app/catalog/list/selected-items/selected-items.component.html:19</source><source>app/chat/item/item.component.html:17</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:17</source>Reserve</msg>
   <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.html:36</source>Remove</msg>
   <msg id="7092318893814699678"><source>app/shared/confirmation-modal/confirmation-modal.component.html:37</source><source>app/profile/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:6</source>Yes, I am sure</msg>
   <msg id="5722353260643724736"><source>app/shared/profile/credit-card-info/credit-card-info.component.html:4</source>Payment method</msg>
   <msg id="1839186591621749773"><source>app/shared/catalog/catalog-card/catalog-card.component.html:17</source><source>app/catalog/list/catalog-item/catalog-item.component.html:20</source>Publish Date</msg>
   <msg id="7239750919884229270"><source>app/shared/catalog/catalog-card/catalog-card.component.html:21</source>Updated</msg>
-  <msg id="4338022632676445411"><source>app/shared/catalog/catalog-card/catalog-card.component.html:25</source><source>app/chat/item/item.component.html:20</source><source>app/chat/item/item-sold/item-sold.component.html:3</source>Sold</msg>
+  <msg id="4338022632676445411"><source>app/shared/catalog/catalog-card/catalog-card.component.html:25</source><source>app/chat/item/item.component.html:20</source><source>app/chat/item/item-sold/item-sold.component.html:3</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:20</source>Sold</msg>
   <msg id="7166295046269696440"><source>app/shared/catalog/catalog-card/catalog-card.component.html:31,33</source>
           From <ph name="INTERPOLATION"><ex>{{item.purchases.scheduled_start_date | date:&apos;dd/MM/yy&apos;}}</ex></ph> to <ph name="INTERPOLATION_1"><ex>{{item.purchases.scheduled_end_date | date:&apos;dd/MM/yy&apos;}}</ex></ph>
         </msg>
@@ -199,7 +199,7 @@
   <msg id="3806530088285207761"><source>app/calls/call-item/call-item.component.html:53</source>View all messages</msg>
   <msg id="6314007099242784066"><source>app/calls/user-card-calls/user-card-calls.component.html:3</source>User rating</msg>
   <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/calls/user-card-calls/user-card-calls.component.html:10</source><source>app/chat/user-detail/user-detail.component.html:6</source><source>app/chat/user-card/user-card.component.html:14</source><ph name="DISTANCE"><ex>{{user.itemDistance | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you</msg>
-  <msg id="9119757647796405986"><source>app/calls/user-card-calls/user-card-calls.component.html:11</source><source>app/chat/user-detail/user-detail.component.html:7</source><source>app/chat/user-card/user-card.component.html:15</source>No location</msg>
+  <msg id="9119757647796405986"><source>app/calls/user-card-calls/user-card-calls.component.html:11</source><source>app/chat/user-detail/user-detail.component.html:7</source><source>app/chat/user-card/user-card.component.html:15</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:7</source>No location</msg>
   <msg id="1798778629973365531"><source>app/calls/user-card-calls/user-card-calls.component.html:16</source><source>app/chat/user-card/user-card.component.html:20</source>No spam/scam reports</msg>
   <msg id="5717387697033354741"><source>app/calls/user-card-calls/user-card-calls.component.html:17</source><source>app/chat/user-card/user-card.component.html:21</source>One spam/scam report</msg>
   <msg id="4681042121098831040"><source>app/calls/user-card-calls/user-card-calls.component.html:19</source><source>app/chat/user-card/user-card.component.html:23</source><ph name="TOTAL_NUMBER"><ex>{{user.receivedReports // i18n(ph=&quot;TOTAL_NUMBER&quot;)}}</ex></ph> spam/scam reports</msg>
@@ -385,7 +385,7 @@
   <msg id="4896863464728200563"><source>app/chat/input/input.component.html:2</source>Write a message...</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.html:2</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.html:3</source>Connected</msg>
-  <msg id="8016649850785953911"><source>app/chat/item/item.component.html:18</source>Unreserve</msg>
+  <msg id="8016649850785953911"><source>app/chat/item/item.component.html:18</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:18</source>Unreserve</msg>
   <msg id="3537961834218859224"><source>app/chat/item/item.component.html:38,40</source>
         Add Insurance
       </msg>
@@ -414,10 +414,10 @@
   <msg id="4859202148272511129"><source>app/chat/modals/unblock-user/unblock-user.component.html:7</source>Unblock</msg>
   <msg id="2020278898288143668"><source>app/chat/user-card/user-card.component.html:37</source>Selling</msg>
   <msg id="4636699111573030980"><source>app/chat/user-card/user-card.component.html:38</source>+<ph name="ITEMS_COUNT"><ex>{{user.itemsCount // i18n(ph=&quot;ITEMS_COUNT&quot;)}}</ex></ph> More</msg>
-  <msg id="1166265010439249641"><source>app/chat/user-response-rate/user-response-rate.component.html:3</source>Typically responds within an hour</msg>
-  <msg id="1404539941798522798"><source>app/chat/user-response-rate/user-response-rate.component.html:4</source>Typically responds within 3 hours</msg>
-  <msg id="5927748278732131263"><source>app/chat/user-response-rate/user-response-rate.component.html:5</source>Typically responds within a day</msg>
-  <msg id="6807057680918467236"><source>app/chat/user-response-rate/user-response-rate.component.html:6</source>Responds in more than 24 hours</msg>
+  <msg id="1166265010439249641"><source>app/chat/user-response-rate/user-response-rate.component.html:3</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:10</source>Typically responds within an hour</msg>
+  <msg id="1404539941798522798"><source>app/chat/user-response-rate/user-response-rate.component.html:4</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:11</source>Typically responds within 3 hours</msg>
+  <msg id="5927748278732131263"><source>app/chat/user-response-rate/user-response-rate.component.html:5</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:12</source>Typically responds within a day</msg>
+  <msg id="6807057680918467236"><source>app/chat/user-response-rate/user-response-rate.component.html:6</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:13</source>Responds in more than 24 hours</msg>
   <msg id="799485662157076328"><source>app/chat/chat-with-inbox/inbox/inbox.component.html:17</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:24</source>Inbox</msg>
   <msg id="2247942788262300865"><source>app/chat/chat-with-inbox/inbox/inbox.component.html:18</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:29</source>Archived Messages</msg>
   <msg id="8032820066123493751"><source>app/chat/chat-with-inbox/inbox/inbox.component.html:41</source>New messages</msg>
@@ -438,6 +438,7 @@
   <msg id="6105231501608810838"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:12,13</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
             Try again later.</msg>
   <msg id="7913053333994057167"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:38</source>Unarchive conversation</msg>
+  <msg id="5171793882050317851" desc="The distance between the user and the item"><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:6</source><ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you</msg>
   <msg id="7368172072093620772"><source>app/dashboard/dashboard.component.html:5</source>Your stats</msg>
   <msg id="44488151127771040"><source>app/dashboard/dashboard.component.html:8</source>Here you can see information related with the visualizations, chats and calls generated by your car catalog. You can also see the impact on metrics of the highlights you apply.</msg>
   <msg id="2734780694152757859"><source>app/dashboard/dashboard.component.html:25</source><source>app/dashboard/dashboard.component.html:34</source>View all</msg>
