@@ -452,6 +452,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
         gender: this.isFashionCategory ? this.uploadForm.value.extra_info.gender : null
       }
     });
+
+    delete this.sizes;
     this.setModel(null);
     this.setBrand(null);
 
