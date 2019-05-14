@@ -10,8 +10,6 @@ import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
 import { Response } from '@angular/http';
 import { StripeService } from '../../../../core/stripe/stripe.service';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs/index';
 
 @Component({
   selector: 'tsl-buy-product-modal',
@@ -36,8 +34,7 @@ export class BuyProductModalComponent implements OnInit {
               public activeModal: NgbActiveModal,
               private paymentService: PaymentService,
               private eventService: EventService,
-              private stripeService: StripeService,
-              private router: Router) { }
+              private stripeService: StripeService) { }
 
   ngOnInit() {
     this.isStripe = this.stripeService.isPaymentMethodStripe();

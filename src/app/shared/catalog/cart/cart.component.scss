@@ -14,7 +14,8 @@ $button-margin: $spacing-ml - $spacing-s;
 $button-space: $button-height + $spacing-ml;
 $secure-label-height: 25px;
 $extra-height: 15px;
-$scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $discounted-total-height + $button-space + $secure-label-height + $stripe-card-element-height});
+$scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $discounted-total-height + $button-space
++ $secure-label-height + $stripe-card-element-height});
 $clear-cart-height: 38px;
 $card-select-height: (50px + $spacing-s) * 2 + $spacing-xs;
 
@@ -54,16 +55,19 @@ h1 {
     .with-credits & {
       height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$missing-total-height} + #{$extra-height * 1.5});
       &.no-discount {
-        height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$missing-total-height} + #{$extra-height * 1.5} + #{$discounted-total-height});
+        height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$missing-total-height} + #{$extra-height * 1.5}
+        + #{$discounted-total-height});
         margin-bottom: $spacing-s;
       }
     }
   }
   &.no-credit {
-    height: calc(#{$scroll-panel-height} + #{$credit-total-height} + #{$missing-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
+    height: calc(#{$scroll-panel-height} + #{$credit-total-height} + #{$missing-total-height} + #{$totals-margins / 2}
+    + #{$discounted-total-height});
   }
   &.has-financial-card.no-credit {
-    height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$credit-total-height} + #{$missing-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
+    height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$credit-total-height} + #{$missing-total-height}
+    + #{$totals-margins / 2} + #{$discounted-total-height});
   }
 }
 

@@ -104,11 +104,11 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
-  public setCardInfo(card: any) {
+  public setCardInfo(card: any): void {
     this.card = card;
   }
 
-  private managePaymentResponse(paymentResponse) {
+  private managePaymentResponse(paymentResponse: string): void {
     switch(paymentResponse) {
       case 'succeeded': {
         this.success();

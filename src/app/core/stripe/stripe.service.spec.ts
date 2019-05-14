@@ -1,5 +1,4 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
-import { Response, ResponseOptions } from '@angular/http';
+import { TestBed } from '@angular/core/testing';
 import { Observable, Subject } from 'rxjs';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
@@ -8,7 +7,7 @@ import { StripeService } from './stripe.service';
 import { EventService } from '../event/event.service';
 import { PaymentService } from '../payments/payment.service';
 import { PaymentIntents } from '../payments/payment.interface';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { USER_DATA } from '../../../tests/user.fixtures.spec';
 
 
@@ -84,12 +83,6 @@ describe('StripeService', () => {
 
       expect(response).toEqual(PAYMENT_INTENT_RESPONSE);
     });
-  });
-  
-  xdescribe('set payment method to stripe', () => {
-    service.isPaymentMethodStripe();
-
-    expect(service.PAYMENT_PROVIDER_STRIPE).toEqual(true);
   });
 
 });
