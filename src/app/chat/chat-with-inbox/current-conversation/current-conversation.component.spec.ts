@@ -20,6 +20,7 @@ import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ITEM_ID } from '../../../../tests/item.fixtures.spec';
 import { BlockUserService } from '../../../core/conversation/block-user.service';
+import { ConversationService } from '../../../core/inbox/conversation.service';
 
 class MockUserService {
 
@@ -45,6 +46,8 @@ class MockedToastr {
   }
 }
 
+class MockConversationService {}
+
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
   let fixture: ComponentFixture<CurrentConversationComponent>;
@@ -56,6 +59,7 @@ describe('CurrentConversationComponent', () => {
   let trackingService: TrackingService;
   let modalService: NgbModal;
   let blockService: BlockUserService;
+  let conversationService: ConversationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -68,6 +72,7 @@ describe('CurrentConversationComponent', () => {
         { provide: ItemService, useClass: MockItemService },
         { provide: UserService, useClass: MockUserService },
         { provide: TrackingService, useClass: MockTrackingService },
+        { provide: ConversationService, useClass: MockConversationService },
         I18nService,
         {
           provide: BlockUserService, useValue: {
@@ -90,6 +95,7 @@ describe('CurrentConversationComponent', () => {
     toastr = TestBed.get(ToastrService);
     modalService = TestBed.get(NgbModal);
     blockService = TestBed.get(BlockUserService);
+    conversationService = TestBed.get(ConversationService);
   });
 
   describe('ngOnInit', () => {

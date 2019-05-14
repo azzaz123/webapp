@@ -15,11 +15,11 @@ export class UploaderService {
 
   constructor(private sanitizer: DomSanitizer) {
     this.files = [];
-    this.serviceEvents = new EventEmitter<any>();
+    this.serviceEvents = new EventEmitter();
     this.uploads = [];
   }
 
-  handleFiles(files: FileList): void {
+  handleFiles(files: FileList, imageType?: string): void {
     [].forEach.call(files, (file: File, i: number) => {
       const uploadFile: UploadFile = {
         fileIndex:        this.files[this.files.length - 1] ? this.files[this.files.length - 1].fileIndex + 1 : 0,
@@ -43,7 +43,7 @@ export class UploaderService {
         reader.readAsDataURL(<Blob>file);
         reader.addEventListener('load', (event: any) => {
           uploadFile.preview = this.sanitizer.bypassSecurityTrustResourceUrl(event.target.result);
-          this.serviceEvents.emit({type: 'addedToQueue', file: uploadFile});
+          this.serviceEvents.emit({type: 'addedToQueue', file: uploadFile, imageType: imageType});
         });
         this.files.push(uploadFile);
       }
@@ -83,13 +83,14 @@ export class UploaderService {
     return false;
   }
 
-  initInputEvents(input: EventEmitter<UploadInput>): Subscription {
+  initInputEvents(input: EventEmitter<UploadInput>, imageType: string): Subscription {
     const subscription: Subscription = input.subscribe((event: UploadInput) => {
       switch (event.type) {
         case 'uploadFile':
-          this.serviceEvents.emit({ type: 'start', file: event.file });
+          this.serviceEvents.emit({ type: 'start', file: event.file, imageType: imageType });
           let newLenght: number = this.uploads.push({ file: event.file, sub: null });
           const sub = this.uploadFile(event.file, event).subscribe(data => {
+            data.imageType = imageType;
             this.serviceEvents.emit(data);
           });
           this.uploads[newLenght - 1].sub = sub;
@@ -98,6 +99,7 @@ export class UploaderService {
           let concurrency = event.concurrency > 0 ? event.concurrency : Number.POSITIVE_INFINITY;
 
           const subscriber = Subscriber.create((data: UploadOutput) => {
+            data.imageType = imageType;
             this.serviceEvents.emit(data);
           });
 
@@ -124,14 +126,14 @@ export class UploaderService {
               this.uploads[index].sub.unsubscribe();
             }
 
-            this.serviceEvents.emit({ type: 'cancelled', file: this.uploads[index].file });
+            this.serviceEvents.emit({ type: 'cancelled', file: this.uploads[index].file, imageType: imageType });
             this.uploads[index].file.progress.status = UploadStatus.Canceled;
           }
           break;
         case 'cancelAll':
           this.uploads.forEach(upload => {
             upload.file.progress.status = UploadStatus.Canceled;
-            this.serviceEvents.emit({ type: 'cancelled', file: upload.file });
+            this.serviceEvents.emit({ type: 'cancelled', file: upload.file, imageType: imageType });
           });
           break;
         case 'remove':
@@ -142,7 +144,7 @@ export class UploaderService {
           const removeIndex = this.files.findIndex(file => file.id === removeId);
           if (removeIndex !== -1) {
             const deleted = this.files.splice(removeIndex, 1)[0];
-            this.serviceEvents.emit({ type: 'removed', file: deleted });
+            this.serviceEvents.emit({ type: 'removed', file: deleted, imageType: imageType });
           }
           break;
         case 'updateOrder':
@@ -154,14 +156,14 @@ export class UploaderService {
             file.fileIndex = i;
             return file;
           });
-          this.serviceEvents.emit({ type: 'orderUpdated', files: this.files });
+          this.serviceEvents.emit({ type: 'orderUpdated', files: this.files, imageType: imageType });
           break;
         case 'initialImages':
           this.files = event.files;
           break;
       }
     });
-    this.serviceEvents.emit({ type: 'ready' });
+    this.serviceEvents.emit({ type: 'ready', imageType: imageType });
     return subscription;
   }
 

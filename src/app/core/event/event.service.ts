@@ -16,6 +16,7 @@ export class EventService {
   public static MESSAGE_RECEIVED_ACK = 'messageReceivedAck';
   public static CHAT_CAN_PROCESS_RT = 'chatCanProcessRt';
   public static INBOX_LOADED = 'inboxLoaded';
+  public static ARCHIVED_INBOX_LOADED = 'archivedInboxLoaded';
   public static CONNECTION_ERROR = 'connectionError';
   public static CONNECTION_RESTORED = 'connectionRestored';
   public static CHAT_RT_CONNECTED = 'chatRealTimeConnected';

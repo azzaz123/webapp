@@ -167,7 +167,7 @@ export class AppComponent implements OnInit {
     this.event.subscribe(EventService.DB_READY, (dbName) => {
       if (!dbName) {
         this.RTConnectedSubscription = this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
-          this.inboxService.getInboxFeatureFlag()
+          this.inboxService.getInboxFeatureFlag$()
           .catch(() => Observable.of(false))
           .subscribe((active) => {
             active ? this.inboxService.init() : this.initOldChat();
