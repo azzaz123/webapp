@@ -18,8 +18,8 @@ export class InboxComponent implements OnInit, OnDestroy  {
   @Output() public loadingEvent = new EventEmitter<any>();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
-  public conversations: InboxConversation[];
-  public archivedConversations: InboxConversation[];
+  public conversations: InboxConversation[] = [];
+  public archivedConversations: InboxConversation[] = [];
   public showNewMessagesToast = false;
   public componentState: InboxState;
   private _loading = false;
@@ -64,6 +64,7 @@ export class InboxComponent implements OnInit, OnDestroy  {
     this.bindNewMessageToast();
     if (this.inboxService.conversations) {
       this.onInboxReady(this.inboxService.conversations);
+      this.archivedConversations = this.inboxService.archivedConversations;
       this.loading = false;
     } else {
       this.loading = true;
@@ -143,12 +144,12 @@ export class InboxComponent implements OnInit, OnDestroy  {
     return this.conversations && this.conversations.length > 0;
   }
 
-  get hasArchivedConversations(): boolean {
+  public hasArchivedConversations(): boolean {
     return this.archivedConversations && this.archivedConversations.length > 0;
   }
 
   public shouldDisplayHeader(): boolean {
-    return this.hasConversations() || this.hasArchivedConversations;
+    return this.hasArchivedConversations() || this.hasConversations();
   }
 
   private unselectCurrentConversation() {
