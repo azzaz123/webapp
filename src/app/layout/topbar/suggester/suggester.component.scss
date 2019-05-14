@@ -3,8 +3,8 @@
 :host {
   width: 100%;
   display: flex;
-	align-items: center;
-	height: 100%;
+  align-items: center;
+  height: 100%;
   width: 100%;
   padding: 0 $spacing-m;
 }
@@ -31,8 +31,8 @@
     outline: none;
     &::placeholder {
       color: $blue-grey-1;
-    }      
-    &:focus, {
+    }
+    &:focus {
       border: solid 1px $walla-main;
       background-color: $white;
     }
@@ -63,7 +63,7 @@
   color: $blue-grey-1;
   border-bottom: 1px solid $blue-grey-5;
   padding: $spacing-s $spacing-ml;
-  transition: all .15s linear;
+  transition: all 0.15s linear;
   & .suggestion {
     display: grid;
     line-height: $line-height-ml;
