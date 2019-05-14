@@ -14,17 +14,18 @@
 
 <div ngbDropdown placement="bottom-left" class="inbox-header-menu" *ngIf="shouldDisplayHeader()">
   <div ngbDropdownToggle class="dropdown-header">
-    <div class="header-title" i18n>Inbox</div>
+    <div *ngIf="isInbox" class="header-title" i18n>Inbox</div>
+    <div *ngIf="isArchived" class="header-title" i18n>Archived Messages</div>
     <mat-icon class="header-icon" svgIcon="arrow-waterfall"></mat-icon>
   </div> 
   <ul ngbDropdownMenu class="dropdown-menu">
-      <li class="dropdown-item active">
-        <a (click)="showInbox()">
+      <li class="dropdown-item" [ngClass]="{'active': isInbox}" (click)="showInbox()">
+        <a>
           <span i18n>Inbox</span>
         </a>
       </li>
-      <li class="dropdown-item">
-          <a (click)="showArchive()">
+      <li class="dropdown-item" [ngClass]="{'active': isArchived}" (click)="showArchive()">
+          <a>
             <span i18n>Archived Messages</span>
           </a>
       </li>
@@ -34,7 +35,7 @@
   <mat-icon svgIcon="empty-header-inbox-placeholder"></mat-icon>
 </div>
 
-<div class="scroll-panel" #scrollPanel (scroll)="showNewMessagesToast ? handleScroll() : null">
+<div *ngIf="isInbox" class="scroll-panel" #scrollPanel (scroll)="showNewMessagesToast ? handleScroll() : null">
   <button class="btn btn-primary new-messages-toast" *ngIf="showNewMessagesToast" (click)="scrollToTop()">
     <mat-icon svgIcon="up-arrow-white"></mat-icon>
     <span i18n>New messages</span>
@@ -58,6 +59,30 @@
     <a class="load-more">
       <mat-icon svgIcon="spinner" [hidden]="!loadingMore" class="spinner"></mat-icon>
       <span [hidden]="loadingMore" (click)="loadMore()" i18n>Load more</span>
+    </a>
+  </div>
+</div>
+
+<div *ngIf="isArchived" class="scroll-panel">
+  <div id="conversations" [hidden]="loading">
+    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We couldn't load your inbox due to whatever reasons :)</div>
+    <div *ngIf="hasArchivedConversations()" id="inbox-data">
+      <tsl-archived-inbox-conversation *ngFor="let conversation of archivedConversations" 
+        [conversation]="conversation"
+        [ngClass]="{'active': conversation?.active}" (click)="setCurrentConversation(conversation)">
+      </tsl-archived-inbox-conversation>
+    </div>
+    <div *ngIf="!hasArchivedConversations()" id="inbox-empty">
+      <mat-icon svgIcon="empty-inbox-placeholder"></mat-icon>
+    </div>
+  </div>
+  <div id="loader" [hidden]="!loading" class="isLoading">
+    <mat-icon svgIcon="inbox-loader"></mat-icon>
+  </div>
+  <div class="load-more-container" *ngIf="showLoadMoreArchived()">
+    <a class="load-more">
+      <mat-icon svgIcon="spinner" [hidden]="!loadingMore" class="spinner"></mat-icon>
+      <span [hidden]="loadingMore" (click)="loadMoreArchived()" i18n>Load more</span>
     </a>
   </div>
 </div>

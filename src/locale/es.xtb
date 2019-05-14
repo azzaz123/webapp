@@ -788,5 +788,19 @@
   <translation id="792930787826735850">Tu perfil</translation>
   <translation id="4086606389696938932">Cuenta</translation>
   <translation id="5722353260643724736">Método de pago</translation>
-  <translation id="9210977394305610616">Buscar en Todas las categorías</translation>
+  <translation id="3339021787040924237">Buscar en Todas las categorías</translation>
+  <translation id="8886737317292020570">Archivar conversación</translation>
+  <translation id="5298644184637702922">Esto archivará la conversación.</translation>
+  <translation id="1055686627716339120">Archivar</translation>
+  <translation id="6288847433566396172">Desarchivar conversación</translation>
+  <translation id="3205414127595653303">Esto desarchivará la cconversación.</translation>
+  <translation id="1121513541518618634">Desarchivar</translation>
+  <translation id="3094139520905825563">Elija una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+            de la lista de la izquierda</translation>
+  <translation id="6105231501608810838">Servicio no disponible por el momento.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+            Inténtelo de nuevo más tarde.</translation>
+  <translation id="7913053333994057167">Desarchivar conversación</translation>
+  <translation id="799485662157076328">Bandeja de Entrada</translation>
+  <translation id="2247942788262300865">Mensajes Archivados</translation>
+  <translation id="8721026914522212662">Archivado</translation>
 </translationbundle>

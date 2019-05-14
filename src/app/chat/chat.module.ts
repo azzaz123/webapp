@@ -28,6 +28,9 @@ import { ChatWithInboxComponent } from './chat-with-inbox/chat-with-inbox.compon
 import { ChatWithArchiveComponent } from './chat-with-archive/chat-with-archive.component';
 import { CurrentConversationComponent } from './chat-with-inbox/current-conversation/current-conversation.component';
 import { InboxMessageComponent } from './chat-with-inbox/message/inbox-message.component';
+import { ArchiveInboxConversationComponent } from './chat-with-inbox/modals/archive-inbox-conversation/archive-inbox-conversation.component';
+import { UnarchiveInboxConversationComponent } from './chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component';
+import { ArchivedInboxConversationComponent } from './chat-with-inbox/inbox/archived-inbox-conversation/archived-inbox-conversation.component';
 
 @NgModule({
   imports: [
@@ -52,6 +55,8 @@ import { InboxMessageComponent } from './chat-with-inbox/message/inbox-message.c
     ItemReservedComponent,
     ItemSoldComponent,
     ArchiveConversationComponent,
+    ArchiveInboxConversationComponent,
+    UnarchiveInboxConversationComponent,
     ReportListingComponent,
     ReportUserComponent,
     BlockUserComponent,
@@ -61,6 +66,7 @@ import { InboxMessageComponent } from './chat-with-inbox/message/inbox-message.c
     UserResponseRateComponent,
     InboxComponent,
     InboxConversationComponent,
+    ArchivedInboxConversationComponent,
     ChatWithInboxComponent,
     ChatWithArchiveComponent,
     CurrentConversationComponent,
@@ -68,6 +74,8 @@ import { InboxMessageComponent } from './chat-with-inbox/message/inbox-message.c
   ],
   entryComponents: [
     ArchiveConversationComponent,
+    ArchiveInboxConversationComponent,
+    UnarchiveInboxConversationComponent,
     ReportListingComponent,
     ReportUserComponent,
     BlockUserComponent,

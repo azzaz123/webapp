@@ -32,14 +32,16 @@
             <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
                 <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
                 <div ngbDropdownMenu>
-                    <!-- <button class="dropdown-item" (click)="archiveConversation()" i18n
-                      *ngIf="!currentConversation?.archived">Delete conversation</button>-->
-                  <button class="dropdown-item" (click)="reportListingAction()"
+                    <button class="dropdown-item" (click)="archiveConversation()" i18n
+                      [hidden]="currentConversationisArchived">Archive conversation</button>
+                      <button class="dropdown-item" (click)="unarchiveConversation()" i18n
+                      [hidden]="!currentConversationisArchived">Unarchive conversation</button>
+                    <button class="dropdown-item" (click)="reportListingAction()"
                       *ngIf="!itemIsMine && conversationChattable" i18n>Report this Listing</button>
-                  <button *ngIf="conversationChattable" class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
-                  <button [hidden]="currentConversation.user.blocked" class="dropdown-item warn"
+                    <button *ngIf="conversationChattable" class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
+                    <button [hidden]="currentConversation.user.blocked" class="dropdown-item warn"
                       (click)="blockUserAction()" i18n>Block this User</button>
-                  <button [hidden]="!currentConversation.user.blocked" class="dropdown-item warn"
+                    <button [hidden]="!currentConversation.user.blocked" class="dropdown-item warn"
                       (click)="unblockUserAction()" i18n>Unblock this User</button>
                 </div>
             </div>

@@ -90,7 +90,7 @@ describe('App', () => {
           provide: InboxService, useValue: {
             init() {},
             saveInbox() {},
-            getInboxFeatureFlag() {
+            getInboxFeatureFlag$() {
               return Observable.of(false);
             }
           }
@@ -353,7 +353,7 @@ describe('App', () => {
 
       describe('when getInboxFeatureFlag returns false', () => {
         beforeEach(() => {
-          spyOn(inboxService, 'getInboxFeatureFlag').and.returnValue(Observable.of(false));
+          spyOn(inboxService, 'getInboxFeatureFlag$').and.returnValue(Observable.of(false));
         });
 
         it('should call conversationService.init after login, db_ready and chat connected events are emitted', () => {
@@ -383,7 +383,7 @@ describe('App', () => {
       });
 
       it('should init the old chat (call conversationService.init) when getInboxFeatureFlag throws an error', () => {
-        spyOn(inboxService, 'getInboxFeatureFlag').and.returnValue(Observable.throw(false));
+        spyOn(inboxService, 'getInboxFeatureFlag$').and.returnValue(Observable.throw(false));
         component.ngOnInit();
         emitSuccessChatEvents();
 
@@ -392,7 +392,7 @@ describe('App', () => {
 
       describe('when getInboxFeatureFlag return true', () => {
         beforeEach(() => {
-          spyOn(inboxService, 'getInboxFeatureFlag').and.returnValue(Observable.of(true));
+          spyOn(inboxService, 'getInboxFeatureFlag$').and.returnValue(Observable.of(true));
         });
 
         it('should call inboxService.init', () => {
