@@ -43,6 +43,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   }
 
   private newMessageSubscription: Subscription;
+  private isLoadingMoreMessages = false;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -60,6 +61,12 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
       (message: InboxMessage) => this.sendRead(message));
+
+    this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED,
+      (conversation: InboxConversation) => {
+        this.currentConversation = conversation;
+        this.isLoadingMoreMessages = false;
+    });
   }
 
   ngOnDestroy() {
@@ -164,5 +171,17 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   get currentConversationisArchived(): boolean {
     return this.conversationService.isConversationArchived(this.currentConversation);
+  }
+
+  public hasMoreMessages(): boolean {
+    return this.currentConversation.nextPageToken !== null && this.currentConversation.nextPageToken !== undefined;
+  }
+
+  public loadMoreMessages() {
+    if (this.isLoadingMoreMessages) {
+      return;
+    }
+
+    // TODO: call conversation service to load more messages
   }
 }

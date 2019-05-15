@@ -220,4 +220,22 @@ export class ConversationService {
       conversation_ids: [conversationId]
     });
   }
+
+  public loadMoreMessages(conversationId: string) {
+    let conversation = this.conversations.find( (conver) => conver.id === conversationId);
+    if (!conversation) {
+      conversation = this.archivedConversations.find( (conver) => conver.id === conversationId);
+    }
+
+    if (conversation) {
+      this.loadMoreMessagesFor$(conversation)
+      .subscribe((conversation: InboxConversation) => {
+        
+      })
+    }
+  }
+
+  private loadMoreMessagesFor$(conversation: InboxConversation): Observable<InboxConversation> {
+
+  }
 }
