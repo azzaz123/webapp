@@ -13,6 +13,7 @@ import { UserService } from '../core/user/user.service';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
 import { Observable } from 'rxjs';
 import { User } from '../core/user/user';
+import { StripeService } from '../core/stripe/stripe.service';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -28,6 +29,7 @@ export class WallacoinsComponent implements OnInit {
   public factor: number;
   public loading = true;
   private localStorageName = '-wallacoins-tutorial';
+  public isStripe: boolean;
 
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,
@@ -35,7 +37,8 @@ export class WallacoinsComponent implements OnInit {
               private route: ActivatedRoute,
               private trackingService: TrackingService,
               private router: Router,
-              private userService: UserService){
+              private userService: UserService,
+              private stripeService: StripeService){
 
     this.userService.isProfessional().subscribe((value: boolean) => {
       if (value) {
@@ -45,6 +48,7 @@ export class WallacoinsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isStripe = this.stripeService.isPaymentMethodStripe();
     this.openTutorialModal();
     this.carouselOptions = {
       grid: {xs: 3, sm: 3, md: 3, lg: 3, all: 0},
@@ -98,6 +102,7 @@ export class WallacoinsComponent implements OnInit {
     const modal: NgbModalRef = this.modalService.open(BuyWallacoinsModalComponent, {windowClass: 'modal-standard'});
     modal.componentInstance.pack = pack;
     modal.componentInstance.packIndex = packIndex;
+    modal.componentInstance.isStripe = this.isStripe;
     modal.result.then(() => {
       this.updateRemainingCredit(pack);
       this.openConfirmModal(pack);

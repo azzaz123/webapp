@@ -21,6 +21,7 @@ export class BuyWallacoinsModalComponent {
   public mainLoading: boolean = true;
   public loading: boolean;
   public packIndex: number;
+  public isStripe: boolean;
 
   constructor(private errorService: ErrorsService,
               private paymentService: PaymentService,
@@ -41,8 +42,10 @@ export class BuyWallacoinsModalComponent {
       id: UUID.UUID(),
       packs: [this.pack.id],
       origin: 'WEB',
-      provider: 'STRIPE'
     };
+    if (this.isStripe) {
+      order.provider = 'STRIPE';
+    }
     this.loading = true;
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
       this.buy(order.id);
