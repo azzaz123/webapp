@@ -47,7 +47,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
 
   public itemTypes: any = ITEM_TYPES;
   public currentCategory: CategoryOption;
-  public extraInfoEnabled = false;
   public objectTypeTitle: string;
   public objectTypes: IOption[];
   public brands: IOption[];
@@ -100,6 +99,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
   public customMake = false;
   public customModel = false;
   public isFashionCategory = false;
+  public showExtraFields = false;
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -422,19 +422,31 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
     this.currentCategory = category;
     this.isFashionCategory = this.categoryService.isFashionCategory(parseInt(category.value, 10));
 
+    if (category.has_object_type || category.has_brand || category.has_model) {
+      if (this.isFashionCategory) {
+        this.splitTestService.getVariable('WebFashionUploadEnabled', false).subscribe((WebFashionUploadEnabled: boolean) => {
+          this.showExtraFields = WebFashionUploadEnabled;
+        });
+      } else {
+        this.showExtraFields = true;
+      }
+      if (!this.item) {
+        this.splitTestService.track('CategoryWithBrandModelSelected');
+      }
+      if (category.has_object_type) {
+        this.objectTypeTitle = category.object_type_title;
+        this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
+          this.objectTypes = _.reverse(objectTypes);
+        });
+      }
+    }
+
     if (initializeExtraInfo) {
       this.initializeItemExtraInfo(null);
     }
 
     if (this.isFashionCategory) {
       this.getSizes();
-    }
-
-    if (category.has_object_type) {
-      this.objectTypeTitle = category.object_type_title;
-      this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
-        this.objectTypes = _.reverse(objectTypes);
-      });
     }
   }
 
