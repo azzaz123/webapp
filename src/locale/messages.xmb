@@ -21,12 +21,12 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <messagebundle>
-  <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.html:26</source><source>app/layout/sidebar/sidebar.component.html:42</source><source>app/shared/catalog/cart/cart.component.html:71</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:35</source><source>app/wallacoins/wallacoins.component.html:27</source>credit</msg>
-  <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.html:32</source><source>app/layout/sidebar/sidebar.component.html:33</source><source>app/dashboard/dashboard.component.html:24</source>Messages</msg>
-  <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.html:37</source>My Zone</msg>
-  <msg id="3983509092263971640"><source>app/layout/topbar/topbar.component.html:38</source>My Pro Zone</msg>
-  <msg id="4818441514225396186"><source>app/layout/topbar/topbar.component.html:43</source>List a product</msg>
-  <msg id="6348395677948023023"><source>app/layout/topbar/topbar.component.html:44</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:31</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:42</source>List a car</msg>
+  <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.html:13</source><source>app/layout/sidebar/sidebar.component.html:42</source><source>app/shared/catalog/cart/cart.component.html:71</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:35</source><source>app/wallacoins/wallacoins.component.html:27</source>credit</msg>
+  <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.html:19</source><source>app/layout/sidebar/sidebar.component.html:33</source><source>app/dashboard/dashboard.component.html:24</source>Messages</msg>
+  <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.html:26</source>My Zone</msg>
+  <msg id="3983509092263971640"><source>app/layout/topbar/topbar.component.html:27</source>My Pro Zone</msg>
+  <msg id="4818441514225396186"><source>app/layout/topbar/topbar.component.html:32</source>List a product</msg>
+  <msg id="6348395677948023023"><source>app/layout/topbar/topbar.component.html:33</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:31</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:42</source>List a car</msg>
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.html:7</source><source>app/profile/profile.component.html:22</source>Profile</msg>
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.html:15</source>Dashboard</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.html:23</source><source>app/catalog/list/list.component.html:38</source><source>app/favorites/favorites.component.html:28</source>Products</msg>
@@ -184,8 +184,7 @@
   <msg id="958176169457402389"><source>app/shared/geolocation/location-box/location-box.component.html:4</source>Your products are in:</msg>
   <msg id="4163236016169197783"><source>app/shared/geolocation/location-box/location-box.component.html:12</source>This is the spot where your wallapop profile is located. We will show all your products here.</msg>
   <msg id="7840802104684576719"><source>app/shared/geolocation/location-box/location-box.component.html:18</source>Mark the location in a place where you usually are. This will help other users to find you and improve your user experience.</msg>
-  <msg id="221922226324249098"><source>app/layout/topbar/categories-list/categories-list.component.html:9</source>All Categories</msg>
-  <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/suggester/suggester.component.html:1</source>Search</msg>
+  <msg id="3339021787040924237"><source>app/layout/topbar/suggester/suggester.component.html:2</source>Search in All categories</msg>
   <msg id="4662529977781351630"><source>app/calls/calls.component.html:12</source>Calls</msg>
   <msg id="4812531333997465"><source>app/calls/calls.component.html:15</source>Here you can manage and see the information related with your calls</msg>
   <msg id="8953033926734869941"><source>app/calls/calls.component.html:35</source>Name</msg>

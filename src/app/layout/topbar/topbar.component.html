@@ -1,26 +1,13 @@
 <div class="topbar-logo-icon">
   <a [href]="homeUrl">
-    <mat-icon svgIcon="logo" class="topbar-logo-icon"></mat-icon>
+    <i class="ic-logo-web"></i>
   </a>
 </div>
-<div class="dropdown-main-search">
-  <div class="input-search">
-    <div class="search-wrapper">
-      <tsl-categories-list (newCategory)="onCategoryUpdate($event)"></tsl-categories-list>
-      <form id="js-main-search-form" method="get">
-        <tsl-suggester (newSearchSubmit)="onSearchSubmit($event)" (newKeyword)="onKeywordUpdate($event)"
-                       (newSearch)="onSearchUpdate($event)"></tsl-suggester>
-        <input id="main-search-hidden-category" #categoryEl name="category" type="hidden" value="{{ category }}"/>
-      </form>
-      <tsl-geolocation (newCoordinate)="onCoordinateUpdate($event)"></tsl-geolocation>
-    </div>
-    <button class="search-btn" (click)="submitForm()">
-      <mat-icon svgIcon="glass" class="search-glass topbar-icon"></mat-icon>
-    </button>
-  </div>
-</div>
+<tsl-suggester (newSearchSubmit)="onSearchSubmit($event)" (newKeyword)="onKeywordUpdate($event)"
+  (newSearch)="onSearchUpdate($event)"></tsl-suggester>
 <div class="main-header-login" [class.professional]="isProfessional">
-  <a [hidden]="!currencyName" *ngxPermissionsOnly="['isNormal']" tslTrackEvent="MYZONE_NAVBAR_WALLACOINS" class="main-header-credits menu-link" [routerLink]="['/wallacoins']" [routerLinkActive]="['active']">
+  <a [hidden]="!currencyName" *ngxPermissionsOnly="['isNormal']" tslTrackEvent="MYZONE_NAVBAR_WALLACOINS"
+    class="main-header-credits menu-link" [routerLink]="['/wallacoins']" [routerLinkActive]="['active']">
     <mat-icon svgIcon="wallacoins-nav" class="topbar-icon"></mat-icon>
     <span *ngIf="currencyName === 'wallacoins'"><b>{{wallacoins | number}}</b> {{currencyName}}</span>
     <span *ngIf="currencyName !== 'wallacoins'"><b>{{wallacoins | customCurrency}}</b> <span i18n>credit</span></span>
@@ -32,8 +19,10 @@
     <span i18n>Messages</span>
     <div class="horizontal-line"></div>
   </a>
-  <a class="main-header-my-zone menu-link" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_LERDI_BEHAVIOR" [class.active]="isMyZone">
-    <tsl-user-avatar class="topbar-avatar" [size]="32" [user]="user" *ngIf="user" [imageUrl]="user?.image?.urls_by_size.medium"></tsl-user-avatar>
+  <a class="main-header-my-zone menu-link" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_LERDI_BEHAVIOR"
+    [class.active]="isMyZone">
+    <tsl-user-avatar class="topbar-avatar" [size]="32" [user]="user" *ngIf="user"
+      [imageUrl]="user?.image?.urls_by_size.medium"></tsl-user-avatar>
     <span *ngxPermissionsOnly="['isNormal']" i18n>My Zone</span>
     <span *ngxPermissionsOnly="['isProfessional']" i18n>My Pro Zone</span>
     <div class="horizontal-line"></div>
