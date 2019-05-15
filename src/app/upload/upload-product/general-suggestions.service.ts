@@ -4,6 +4,7 @@ import { Response } from '@angular/http';
 import { IOption } from 'ng-select';
 import { HttpService } from '../../core/http/http.service';
 import { Brand, BrandModel, Model, SizesResponse, Size } from '../brand-model.interface';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 @Injectable()
 export class GeneralSuggestionsService {
@@ -11,11 +12,14 @@ export class GeneralSuggestionsService {
   private API_URL = 'api/v3/suggesters/general';
   private FASHION_KEYS_URL = 'api/v3/fashion/keys';
 
-  constructor(private http: HttpService) {
+  constructor(private http: HttpService, private i18n: I18nService) {
   }
 
   getObjectTypes(categoryId: string): Observable<IOption[]> {
-    return this.http.get(this.API_URL + '/object-type', { category_id: categoryId })
+    return this.http.get(this.API_URL + '/object-type', {
+      category_id: categoryId,
+      language: this.i18n.locale
+    })
       .map((r: Response) => r.json())
       .map((types: any[]) => {
         return types
@@ -54,7 +58,8 @@ export class GeneralSuggestionsService {
 
   getSizes(objectTypeId: number, gender: string): Observable<IOption[]> {
     return this.http.get(this.FASHION_KEYS_URL + '/size', {
-      object_type_id: objectTypeId
+      object_type_id: objectTypeId,
+      language: this.i18n.locale
     }).map((r: Response) => r.json())
       .map((sizes: SizesResponse) => {
         return sizes[gender]
