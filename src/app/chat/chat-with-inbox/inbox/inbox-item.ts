@@ -31,7 +31,6 @@ export class InboxItem {
     public reserved = false;
     public published = false;
     public notAvailable = false;
-
     public views: number;
     public favorites: number;
 
