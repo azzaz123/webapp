@@ -21,7 +21,7 @@ export class StripeService {
               private eventService: EventService,
               private http: HttpService) {
     this.userService.me().subscribe((user: User) => {
-      this.fullName = user.firstName + ' ' + user.lastName;
+      this.fullName = `${user.firstName} ${user.lastName}`
     });
   }
 
@@ -76,7 +76,10 @@ export class StripeService {
 
   payment = async (token, card) => {
     return await stripe.handleCardPayment(
-      token, card, {
+      token,
+      card,
+      {
+        save_payment_method: true,
         source_data: {
           owner: {name: this.fullName}
         }

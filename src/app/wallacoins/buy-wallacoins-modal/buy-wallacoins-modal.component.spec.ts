@@ -92,12 +92,12 @@ describe('BuyWallacoinsModalComponent', () => {
 
       it('should call paymentService orderExtrasProPack method to create a pack order', () => {
         component.checkout();
+        component.isStripe = false;
 
         expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith({
           id: 'UUID',
           packs: ['id'],
-          origin: 'WEB',
-          provider: 'STRIPE'
+          origin: 'WEB'
         });
       });
 
