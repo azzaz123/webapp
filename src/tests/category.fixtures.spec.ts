@@ -60,7 +60,18 @@ export const CATEGORIES_DATA_CONSUMER_GOODS: CategoryConsumerGoodsResponse[] = [
   has_brand: false,
   has_model: false,
   object_type_title: 'title'
-}, {
+},
+{
+  'category_id': 16000,
+  'name': 'Phones',
+  'icon_id': 'smartphone',
+  'vertical_id': 'consumer_goods',
+  has_object_type: true,
+  has_brand: true,
+  has_model: true,
+  object_type_title: 'title'
+},
+{
   'category_id': 13200,
   'name': 'Services',
   'icon_id': 'toolbox',
@@ -104,25 +115,34 @@ export const CATEGORIES_OPTIONS_CONSUMER_GOODS: CategoryOption[] = [{
   has_brand: false,
   has_model: false,
   object_type_title: 'title'
+},
+{
+  value: '16000',
+  label: 'Phones',
+  icon_id: 'smartphone',
+  has_object_type: true,
+  has_brand: true,
+  has_model: true,
+  object_type_title: 'title'
 }];
 
 export const CATEGORIES_OPTIONS: CategoryOption[] = [
   ...CATEGORIES_OPTIONS_CONSUMER_GOODS, {
-  value: '13200',
-  label: 'Services',
-  icon_id: 'toolbox',
-  has_object_type: true,
-  has_brand: true,
-  has_model: false,
-  object_type_title: 'title'
-}, {
-  value: '13000',
-  label: 'Real Estate',
-  icon_id: 'house',
-  has_object_type: false,
-  has_brand: false,
-  has_model: false,
-  object_type_title: 'title'
-}];
+    value: '13200',
+    label: 'Services',
+    icon_id: 'toolbox',
+    has_object_type: true,
+    has_brand: true,
+    has_model: false,
+    object_type_title: 'title'
+  }, {
+    value: '13000',
+    label: 'Real Estate',
+    icon_id: 'house',
+    has_object_type: false,
+    has_brand: false,
+    has_model: false,
+    object_type_title: 'title'
+  }];
 
 

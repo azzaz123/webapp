@@ -182,7 +182,7 @@ describe('UploadProductComponent', () => {
     });
 
     it('should get and set categories', () => {
-      spyOn(categoryService, 'isHeroCategory').and.returnValues(false, false, false, true, true, false);
+      spyOn(categoryService, 'isHeroCategory').and.returnValues(false, false, false, false, true, true);
 
       component.ngOnInit();
 
@@ -245,23 +245,21 @@ describe('UploadProductComponent', () => {
         expect(component.isFashionCategory).toBe(true);
       });
 
-      // it('should show upload extra fields if the item category is cell phones', () => {
-      //   component.item = new Item(
-      //     ITEM_DATA.id,
-      //     ITEM_DATA.legacy_id,
-      //     ITEM_DATA.owner,
-      //     ITEM_DATA.title,
-      //     ITEM_DATA.description,
-      //     16000
-      //   );
+      it('should show upload extra fields if the item category is cell phones', () => {
+        component.item = new Item(
+          ITEM_DATA.id,
+          ITEM_DATA.legacy_id,
+          ITEM_DATA.owner,
+          ITEM_DATA.title,
+          ITEM_DATA.description,
+          16000
+        );
 
-      //   component.ngOnInit();
+        component.ngOnInit();
 
-      //   console.log(component.currentCategory);
-
-      //   expect(component.currentCategory.has_brand).toBe(true);
-      //   expect(component.currentCategory.has_model).toBe(true);
-      // });
+        expect(component.currentCategory.has_brand).toBe(true);
+        expect(component.currentCategory.has_model).toBe(true);
+      });
     });
 
   });
