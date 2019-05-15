@@ -22,7 +22,7 @@ export class InboxItemDetailComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-      if (this.item.price.amount !== undefined && (this.item.views === undefined || this.item.favorites === undefined)) {
+      if (this.item.price !== undefined && (this.item.views === undefined || this.item.favorites === undefined)) {
         this.itemService.getCounters(this.item.id).subscribe((counters: ItemCounters) => {
           this.item.views = counters.views;
           this.item.favorites = counters.favorites;
@@ -43,7 +43,7 @@ export class InboxItemDetailComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public prevent($event: Event, stop?: boolean) {
-    if (this.item.itemUrl === undefined || stop) {
+    if (this.item.itemUrl === undefined || this.item.itemUrl === '#' || stop) {
       $event.preventDefault();
       $event.stopPropagation();
     }
