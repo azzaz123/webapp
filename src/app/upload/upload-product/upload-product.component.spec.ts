@@ -22,6 +22,7 @@ import { environment } from '../../../environments/environment';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { SplitTestService } from '../../core/tracking/split-test.service';
+import { CategoryOption } from '../../core/category/category-response.interface';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -430,6 +431,21 @@ describe('UploadProductComponent', () => {
     });
   });
 
+  describe('getSizes', () => {
+    beforeEach(() => {
+      component.uploadForm.value.extra_info.object_type.id = '365';
+      component.uploadForm.value.extra_info.gender = 'male';
+    });
+
+    it('should get the sizes for the current object type and gender', () => {
+      spyOn(generalSuggestionsService, 'getSizes').and.callThrough();
+
+      component.getSizes();
+
+      expect(generalSuggestionsService.getSizes).toHaveBeenCalledWith('365', 'male');
+    });
+  });
+
   describe('selectBrandOrModel', () => {
     describe('when reciving a string', () => {
       it('should select the brand', () => {
@@ -466,6 +482,117 @@ describe('UploadProductComponent', () => {
         expect(component.uploadForm.value.extra_info.brand).toBe(null);
         expect(component.uploadForm.value.extra_info.model).toEqual('iPhone XSX');
       });
+    });
+  });
+
+  describe(('handleItemExtraInfo'), () => {
+    const MOCK_CATEGORY_OPTION_1: CategoryOption = {
+      value: '16000',
+      label: 'label',
+      icon_id: '1',
+      object_type_title: 'title',
+      has_object_type: true,
+      has_brand: true,
+      has_model: true
+    };
+
+    it('should check if the selected category is the fashion category', () => {
+      spyOn(categoryService, 'isFashionCategory');
+
+      component.handleItemExtraInfo(false, CATEGORIES_OPTIONS_CONSUMER_GOODS[0]);
+
+      expect(categoryService.isFashionCategory).toHaveBeenCalledWith(parseInt(CATEGORIES_OPTIONS_CONSUMER_GOODS[0].value, 10));
+    });
+
+    describe('if the selected category allows brand/model fields', () => {
+      it('should show the form extra fields', () => {
+        component.handleItemExtraInfo(false, MOCK_CATEGORY_OPTION_1);
+
+        expect(component.showExtraFields).toBe(true);
+      });
+
+      it('should update the object type title', () => {
+        component.handleItemExtraInfo(false, MOCK_CATEGORY_OPTION_1);
+
+        expect(component.objectTypeTitle).toBe('title');
+      });
+
+      it('should get the object types for the selected category', () => {
+        spyOn(generalSuggestionsService, 'getObjectTypes').and.callThrough();
+
+        component.handleItemExtraInfo(false, MOCK_CATEGORY_OPTION_1);
+
+        expect(generalSuggestionsService.getObjectTypes).toHaveBeenCalledWith('16000');
+      });
+    });
+
+    describe('if the selected category is the fashion category', () => {
+      it('should get the value for the Taplytics `WebFashionUploadEnabled` experiment', () => {
+        spyOn(categoryService, 'isFashionCategory').and.returnValue(true);
+        spyOn(splitTestService, 'getVariable').and.returnValue(Observable.of(true));
+
+        component.handleItemExtraInfo(false, CATEGORIES_OPTIONS_CONSUMER_GOODS[0]);
+
+        expect(splitTestService.getVariable).toHaveBeenCalledWith('WebFashionUploadEnabled', false);
+      });
+
+      it('should get the sizes', () => {
+        spyOn(component, 'getSizes');
+        spyOn(categoryService, 'isFashionCategory').and.returnValue(true);
+
+        component.handleItemExtraInfo(false, CATEGORIES_OPTIONS_CONSUMER_GOODS[0]);
+
+        expect(component.getSizes).toHaveBeenCalled();
+      });
+    });
+
+    it('should send the Taplytics `CategoryWithBrandModelSelected` event', () => {
+      spyOn(splitTestService, 'track');
+
+      component.handleItemExtraInfo(false, CATEGORIES_OPTIONS_CONSUMER_GOODS[0]);
+
+      expect(splitTestService.track).toHaveBeenCalledWith('CategoryWithBrandModelSelected');
+    });
+
+    describe('when initializeExtraInfo parameter is true', () => {
+      it('should initialize the extra info object ', () => {
+        spyOn(component, 'initializeItemExtraInfo');
+
+        component.handleItemExtraInfo(true, CATEGORIES_OPTIONS_CONSUMER_GOODS[0]);
+
+        expect(component.initializeItemExtraInfo).toHaveBeenCalledWith(null);
+      });
+    });
+  });
+
+  describe(('initializeItemExtraInfo'), () => {
+    it('should initialize the upload form extra info fields with the default values', () => {
+      component.initializeItemExtraInfo(1);
+
+      expect(component.uploadForm.value.extra_info.brand).toBe(null);
+      expect(component.uploadForm.value.extra_info.model).toBe(null);
+      expect(component.uploadForm.value.extra_info.size.id).toBe(null);
+      expect(component.uploadForm.value.extra_info.gender).toBe(null);
+    });
+  });
+
+  describe('getBrandPlaceholder', () => {
+    describe('if the category is fashion', () => {
+      it('should return the fashion placeholder ', () => {
+        component.isFashionCategory = true;
+
+        const placeholder = component.getBrandPlaceholder();
+
+        expect(placeholder).toEqual('fashion_brand_example');
+      });
+    });
+
+    it('should return the generic placeholder ', () => {
+      component.isFashionCategory = false;
+
+      const placeholder = component.getBrandPlaceholder();
+
+      expect(placeholder).toEqual('phones_brand_example');
     });
   });
 
