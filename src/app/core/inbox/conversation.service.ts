@@ -18,7 +18,9 @@ export class ConversationService {
   private API_URL = 'bff/messaging/conversation/';
   private ARCHIVE_URL = '/api/v3/instant-messaging/conversations/archive';
   private UNARCHIVE_URL = '/api/v3/instant-messaging/conversations/unarchive';
+  private MORE_MESSAGES_URL = '/api/v3/instant-messaging/archive/conversation/CONVERSATION_HASH/messages';
   private _selfId: string;
+  private max_messages = 20;
 
   constructor(
     private http: HttpService,
@@ -229,13 +231,27 @@ export class ConversationService {
 
     if (conversation) {
       this.loadMoreMessagesFor$(conversation)
-      .subscribe((conversation: InboxConversation) => {
-        
-      })
+      .subscribe((conv: InboxConversation) => {
+        this.eventService.emit(EventService.MORE_MESSAGES_LOADED, conv);
+      });
     }
   }
 
   private loadMoreMessagesFor$(conversation: InboxConversation): Observable<InboxConversation> {
+    return this.getMoreMessages$(conversation.id, conversation.nextPageToken).delay(1000)
+    .map((res) => {
+      const json = res.json();
+      const newmessages = InboxMessage.messsagesFromJson(json.messages , conversation.id, this.selfId, conversation.user.id);
+      newmessages.forEach((mess) => conversation.messages.push(mess));
+      conversation.nextPageToken = json.next_from;
+      return conversation;
+    });
+  }
 
+  private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<any> {
+    const url = this.MORE_MESSAGES_URL.replace('CONVERSATION_HASH', conversationId);
+    return this.http.get(url, 
+      { max_messages : this.max_messages,
+      from : nextPageToken });
   }
 }

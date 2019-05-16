@@ -64,8 +64,8 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
     this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED,
       (conversation: InboxConversation) => {
-        this.currentConversation = conversation;
         this.isLoadingMoreMessages = false;
+        this.currentConversation = conversation;
     });
   }
 
@@ -177,11 +177,15 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     return this.currentConversation.nextPageToken !== null && this.currentConversation.nextPageToken !== undefined;
   }
 
+  public isLoadingMore(): boolean {
+    return this.isLoadingMoreMessages;
+  }
+
   public loadMoreMessages() {
     if (this.isLoadingMoreMessages) {
       return;
     }
-
-    // TODO: call conversation service to load more messages
+    this.isLoadingMoreMessages = true;
+    this.conversationService.loadMoreMessages(this.currentConversation.id);
   }
 }

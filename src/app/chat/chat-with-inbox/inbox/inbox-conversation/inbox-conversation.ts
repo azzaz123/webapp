@@ -93,7 +93,7 @@ export class InboxConversation {
         const user = this.buildInboxUser(json.with_user);
         const item = this.buildInboxItem(json.item);
         const messages = this.buildInboxMessages(json, withSelfId);
-        const nextPageToken = json.next_from || null;
+        const nextPageToken = json.messages.next_from || null;
         const lastMessage = messages[0];
         const dateModified = lastMessage ? lastMessage.date : null;
         return new InboxConversation(json.hash, dateModified, user, item, nextPageToken, messages, json.phone_shared,
@@ -124,10 +124,8 @@ export class InboxConversation {
 
     private static buildInboxMessages(conversation, id) {
         // TODO - handle third voice type message (type === '? TBD');
-        const textMessages = conversation.messages.messages.filter(m => m.type === 'text')
-            .map(m => new InboxMessage(m.id, conversation.hash, m.text,
-                m.from_self ? id : (conversation.with_user ? conversation.with_user.hash : null), m.from_self, new Date(m.timestamp),
-                m.status, m.payload));
+        const textMessages = InboxMessage.messsagesFromJson(conversation.messages.messages,
+            conversation.hash, id, conversation.with_user ? conversation.with_user.id : null);
         return textMessages;
     }
 }

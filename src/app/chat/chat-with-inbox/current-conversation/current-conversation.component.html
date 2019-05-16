@@ -46,15 +46,21 @@
                 </div>
             </div>
         </div>
-    
+        
         <div class="messages-panel-container" #messagesPanel>
-            <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-container">
-                <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
-                    <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
-                    <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
+            <div class="messages-info-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}" #messagesInfoContainer>
+                <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-container">
+                    <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
+                        <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
+                        <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
+                    </div>
+                        <tsl-inbox-message [message]="message"
+                            [currentConversation]="message.phoneRequest ? currentConversation : null"></tsl-inbox-message>
                 </div>
-                <tsl-inbox-message [message]="message"
-                    [currentConversation]="message.phoneRequest ? currentConversation : null"></tsl-inbox-message>
+            </div>
+            <div *ngIf="hasMoreMessages()" class="more-messages-loader" #loadMoreMessagesDiv>
+                <span *ngIf="!isLoadingMore()" (click)="loadMoreMessages()" i18n>Load more..</span>
+                <span *ngIf="isLoadingMore()" class="dot-loader"></span>
             </div>
         </div>
         <tsl-input [currentConversation]="currentConversation"></tsl-input>

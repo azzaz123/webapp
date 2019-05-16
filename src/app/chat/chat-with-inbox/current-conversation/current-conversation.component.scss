@@ -19,11 +19,18 @@
   overflow-y: scroll;
   padding: $spacing-ml;
   width: 100%;
+  position: relative;
 }
 
 .message-container {
   text-align: center;
 }
+
+.messages-info-container {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 .date-marker {
   display: inline-flex;
   text-align: center;
@@ -35,6 +42,20 @@
   font-size: $font-size-xs;
 }
 
+.more-messages-loader {
+  position: relative;
+  top: 0px;
+  left: 0px;;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+  :hover {
+    color: $walla-main;
+  }
+}
 
 #top-bar {
   padding: $spacing-ml;
@@ -146,4 +167,13 @@
     width: 100vh;
     height: 100vh;
   }
+}
+
+.dot-loader {
+  color: $walla-main;
+  font-size: 12px;
+  /* Keyword value */
+  animation: fadeInFromNone 0.9s ease-in-out alternate-reverse;
+  animation-iteration-count: infinite;
+  animation-timing-function:linear;
 }
