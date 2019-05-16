@@ -13,6 +13,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms'
 import { FinancialCard } from '../../../core/payments/payment.interface';
 import { CartBase } from '../../catalog/cart/cart-base';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { StripeService } from '../../../core/stripe/stripe.service';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -38,6 +39,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
+  @Output() saveCard: EventEmitter<string> = new EventEmitter<string>();
 
   cardHandler = this.onChange.bind(this);
   error: string;
@@ -46,7 +48,8 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   private onTouched: any = () => {};
 
   constructor(private cd: ChangeDetectorRef,
-              private i18n: I18nService) {
+              private i18n: I18nService,
+              private stripeService: StripeService) {
   }
 
   ngAfterViewInit() {
@@ -110,6 +113,10 @@ export class StripeCardElementComponent implements ControlValueAccessor {
     } else {
       this.stripeCardToken.emit(token)
     }
+  }
+
+  public createNewCard() {
+    this.stripeService.createStripeCard(this.card);
   }
 
   public get model(): boolean {

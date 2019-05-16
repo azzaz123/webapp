@@ -7,12 +7,13 @@ import { EventService } from '../event/event.service';
 import { PaymentIntents, FinancialCard } from '../payments/payment.interface';
 import { PaymentIntent } from './stripe.interface';
 import { HttpService } from '../http/http.service';
+import { Observable } from 'rxjs/index';
 
 @Injectable()
 export class StripeService {
 
   public fullName: string;
-  public PAYMENT_PROVIDER_STRIPE = false;
+  public PAYMENT_PROVIDER_STRIPE = true;
   private API_URL = 'api/v3/payments';
 
   constructor(private paymentService: PaymentService,
@@ -47,22 +48,35 @@ export class StripeService {
     return this.PAYMENT_PROVIDER_STRIPE;
   }
 
-  public getCards(): FinancialCard[] {
-    return this.http.get(this.API_URL + '/xxx')
+  public getCards(): Observable<FinancialCard[]> {
+    return this.http.get(`${this.API_URL}/c2b/stripe/payment_methods/cards`)
       .map((r: Response) => r.json());
   }
 
-  public setFavoriteCard() {
+  public setFavoriteCard(paymentMethodId: string) {
     return this.http.post(this.API_URL + '/xxx')
   }
 
-  public deleteCard(stripeCard: FinancialCard) {
-    return this.http.post(this.API_URL + '/xxx', stripeCard)
+  public deleteCard(paymentMethodId: string) {
+    return this.http.post(this.API_URL + '/xxx')
   }
 
-  public addNewCard(stripeCard: FinancialCard) {
-    return this.http.post(this.API_URL + '/xxx', stripeCard)
+  public addNewCard(paymentMethodId: string) {
+    return this.http.post(`${this.API_URL}/c2b/stripe/payment_method/${paymentMethodId}/attach`)
   }
+
+  public createStripeCard(cardElement: any): void {
+    this.createStripePaymentMethod(cardElement).then((response: any) => {
+      this.eventService.emit('createStripePaymentMethodResponse', response);
+    });
+  }
+
+  createStripePaymentMethod = async (cardElement: any) => {
+    return await stripe.createPaymentMethod(
+      'card',
+      cardElement
+    );
+  };
 
   handlePayment = (paymentResponse)  => {
     const { paymentIntent, error } = paymentResponse;

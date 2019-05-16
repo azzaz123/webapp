@@ -64,6 +64,9 @@ import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/de
 import { UploaderModule } from './uploader/uploader.module';
 import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
+import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.component';
+import { CreditCardsComponent } from './profile/credit-cards/credit-cards.component';
+import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
 
 @NgModule({
   imports: [
@@ -129,7 +132,10 @@ import { StripeCardElementComponent } from './payments/stripe/stripe-card-elemen
     CountdownComponent,
     ThousandSuffixesPipe,
     KeywordSuggesterComponent,
-    StripeCardElementComponent
+    StripeCardElementComponent,
+    StripeCardsComponent,
+    CreditCardsComponent,
+    NewCardModalComponent
   ],
   declarations: [
     AdComponent,
@@ -182,7 +188,10 @@ import { StripeCardElementComponent } from './payments/stripe/stripe-card-elemen
     ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
     KeywordSuggesterComponent,
-    StripeCardElementComponent
+    StripeCardElementComponent,
+    StripeCardsComponent,
+    CreditCardsComponent,
+    NewCardModalComponent
   ],
   providers: [
     DecimalPipe,
@@ -201,7 +210,8 @@ import { StripeCardElementComponent } from './payments/stripe/stripe-card-elemen
     PasswordModalComponent,
     ExitConfirmationModalComponent,
     ActivateItemsModalComponent,
-    DeactivateItemsModalComponent
+    DeactivateItemsModalComponent,
+    NewCardModalComponent
   ]
 })
 export class SharedModule { }

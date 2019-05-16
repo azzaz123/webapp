@@ -11,10 +11,10 @@ import { StripeService } from '../../../core/stripe/stripe.service';
   styleUrls: ['./credit-card-info.component.scss']
 })
 export class CreditCardInfoComponent implements OnInit {
-
-  public financialCard: FinancialCard;
+  
   public isStripe: boolean;
-  @Input() card: FinancialCard;
+  @Input() stripeCard: FinancialCard;
+  @Input() financialCard: FinancialCard;
   @Output() onDeleteCard: EventEmitter<FinancialCard> = new EventEmitter();
   @Output() onSetFavoriteCard: EventEmitter<FinancialCard> = new EventEmitter();
 
@@ -24,12 +24,8 @@ export class CreditCardInfoComponent implements OnInit {
               private stripeService: StripeService) { }
 
   ngOnInit() {
-    if (this.card) {
+    if (this.stripeCard) {
       this.isStripe = true;
-    } else {
-      this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
-        this.financialCard = financialCard;
-      });
     }
   }
 
@@ -40,6 +36,7 @@ export class CreditCardInfoComponent implements OnInit {
     modalRef.componentInstance.type = 4;
     modalRef.result.then(() => {
       this.paymentService.deleteFinancialCard().subscribe(() => {
+        this.onDeleteCard.emit(this.financialCard);
         this.financialCard = null;
       });
     }, () => {});
@@ -47,16 +44,15 @@ export class CreditCardInfoComponent implements OnInit {
 
   public setFavoriteCard(e: Event) {
     e.stopPropagation();
-    this.stripeService.setFavoriteCard(this.card).subscribe(() => {
-      this.onSetFavoriteCard.emit(this.card);
-      //this.isFavorite = true;
+    this.stripeService.setFavoriteCard(this.stripeCard.id).subscribe(() => {
+      this.onSetFavoriteCard.emit(this.stripeCard);
     });
   }
 
   private removeCard() {
-    this.stripeService.deleteCard().subscribe(() => {
-      this.onDeleteCard.emit(this.card);
-      this.card = null;
+    this.stripeService.deleteCard(this.stripeCard.id).subscribe(() => {
+      this.onDeleteCard.emit(this.stripeCard);
+      this.stripeCard = null;
     });
   }
 

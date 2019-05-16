@@ -11,11 +11,17 @@
         <div id="card-errors" role="alert" *ngIf="error">
             {{ error }}
         </div>
-        <tsl-button id="checkout-card-button"
+        <tsl-button [hidden]="type === 'new'"
+                    id="checkout-card-button"
                     className="btn-primary btn-medium stripe"
                     [disabled]="type === 'cart' && !cart?.total"
                     [loading]="loading"
                     (click)="onSubmit()" i18n
         >Continue to Checkout</tsl-button>
+        <tsl-button *ngIf="type === 'new'"
+                    id="checkout-card-button"
+                    className="btn-primary btn-medium stripe"
+                    (click)="createNewCard()" i18n
+        >Save</tsl-button>
     </form>
 </div>
