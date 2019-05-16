@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FinancialCard } from '../../../core/payments/payment.interface';
+import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { EventService } from '../../../core/event/event.service';
+import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 
 @Component({
   selector: 'tsl-new-card-modal',
@@ -16,16 +17,15 @@ export class NewCardModalComponent {
               private stripeService: StripeService,
               private errorService: ErrorsService,
               private eventService: EventService) {
-    this.eventService.subscribe('createStripePaymentMethodResponse', (response) => {
-      console.log('modal ', response);
-      this.addNewCard(response.paymentMethod.id);
+    this.eventService.subscribe('createStripePaymentMethodResponse', (response: PaymentMethodResponse) => {
+      const financialCard: FinancialCard = this.stripeService.mapResponse(response);
+      this.addNewCard(financialCard);
     });
   }
 
-private addNewCard(id: string) {
-    this.stripeService.addNewCard(id).subscribe((response: any) => {
-      console.log('add new card modal ', response);
-      this.activeModal.close(response)
+private addNewCard(financialCard: FinancialCard) {
+    this.stripeService.addNewCard(financialCard.id).subscribe((response: any) => {
+      this.activeModal.close(financialCard)
     }, (error) => {
       if (error.text()) {
         this.errorService.show(error);

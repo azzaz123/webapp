@@ -82,10 +82,58 @@ export interface BillingInfoResponse {
 }
 
 export interface FinancialCard {
-  expire_date: number;
+  expire_date: string;
   id: string;
   number: string;
   favorite?: boolean;
+  stripeCard?: StripeCard;
+}
+
+export interface CardCheck {
+  address_line1_check: string;
+  address_postal_code_check: string;
+  cvc_check: string;
+}
+
+export interface StripeCard {
+  brand: string;
+  checks: CardCheck;
+  country: string;
+  exp_month: number;
+  exp_year: number;
+  funding: string;
+  generated_from: number;
+  last4: string;
+  three_d_secure_usage: { supported : boolean };
+  wallet: string;
+}
+
+export interface Address {
+  city: string;
+  country: string;
+  line1: string;
+  line2: string;
+  postal_code: number;
+  state: string;
+}
+
+export interface BillingDetails {
+  address: Address;
+  email: string;
+  name: string;
+  phone: number;
+}
+
+export interface PaymentMethodResponse {
+  billing_details: BillingDetails;
+  card: StripeCard;
+  created: number;
+  customer: string;
+  id: string;
+  livemode: boolean;
+  metadata: any;
+  object: string;
+  type: string;
 }
 
 export interface Order {

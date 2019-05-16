@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FinancialCard } from '../../../core/payments/payment.interface';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
+import { FinancialCard } from './financial-card';
 
 @Component({
   selector: 'tsl-credit-card-info',
@@ -13,7 +13,6 @@ import { StripeService } from '../../../core/stripe/stripe.service';
 export class CreditCardInfoComponent implements OnInit {
   
   public isStripe: boolean;
-  @Input() stripeCard: FinancialCard;
   @Input() financialCard: FinancialCard;
   @Output() onDeleteCard: EventEmitter<FinancialCard> = new EventEmitter();
   @Output() onSetFavoriteCard: EventEmitter<FinancialCard> = new EventEmitter();
@@ -24,7 +23,7 @@ export class CreditCardInfoComponent implements OnInit {
               private stripeService: StripeService) { }
 
   ngOnInit() {
-    if (this.stripeCard) {
+    if (this.financialCard.stripeCard.last4) {
       this.isStripe = true;
     }
   }
@@ -44,15 +43,15 @@ export class CreditCardInfoComponent implements OnInit {
 
   public setFavoriteCard(e: Event) {
     e.stopPropagation();
-    this.stripeService.setFavoriteCard(this.stripeCard.id).subscribe(() => {
-      this.onSetFavoriteCard.emit(this.stripeCard);
+    this.stripeService.setFavoriteCard(this.financialCard).subscribe(() => {
+      this.onSetFavoriteCard.emit(this.financialCard);
     });
   }
 
   private removeCard() {
-    this.stripeService.deleteCard(this.stripeCard.id).subscribe(() => {
-      this.onDeleteCard.emit(this.stripeCard);
-      this.stripeCard = null;
+    this.stripeService.deleteCard(this.financialCard).subscribe(() => {
+      this.onDeleteCard.emit(this.financialCard);
+      this.financialCard = null;
     });
   }
 

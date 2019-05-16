@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FinancialCard } from '../../../core/payments/payment.interface';
+import { FinancialCard, StripeCard } from '../../../core/payments/payment.interface';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
@@ -21,9 +21,8 @@ export class StripeCardsComponent implements OnInit {
               private errorService: ErrorsService) { }
 
   ngOnInit() {
-    this.stripeService.getCards().subscribe((r: FinancialCard[]) => {
-      console.log('stripe cards getcards ', r);
-      this.stripeCards = r;
+    this.stripeService.getCards().subscribe((response: FinancialCard[]) => {
+      this.stripeCards = response;
     }, (error) => {
       if (error.text()) {
         this.errorService.show(error);
@@ -50,8 +49,9 @@ export class StripeCardsComponent implements OnInit {
 
   public addNewCard() {
     const modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {windowClass: 'review'});
-    //modalRef.componentInstance.item = this.item;
-    modalRef.result.then((card: FinancialCard) => this.stripeCards.push(card), () => {});
+    modalRef.result.then((card: FinancialCard) => {
+      this.stripeCards.push(card);
+    });
   }
 
 }

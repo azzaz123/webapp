@@ -4,10 +4,11 @@ import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { Router } from '@angular/router';
 import { EventService } from '../event/event.service';
-import { PaymentIntents, FinancialCard } from '../payments/payment.interface';
+import { PaymentIntents, PaymentMethodResponse } from '../payments/payment.interface';
 import { PaymentIntent } from './stripe.interface';
 import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs/index';
+import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
 
 @Injectable()
 export class StripeService {
@@ -50,14 +51,14 @@ export class StripeService {
 
   public getCards(): Observable<FinancialCard[]> {
     return this.http.get(`${this.API_URL}/c2b/stripe/payment_methods/cards`)
-      .map((r: Response) => r.json());
+      .map((r: Response) => r.json())
   }
 
-  public setFavoriteCard(paymentMethodId: string) {
+  public setFavoriteCard(card: FinancialCard) {
     return this.http.post(this.API_URL + '/xxx')
   }
 
-  public deleteCard(paymentMethodId: string) {
+  public deleteCard(card: FinancialCard) {
     return this.http.post(this.API_URL + '/xxx')
   }
 
@@ -67,7 +68,7 @@ export class StripeService {
 
   public createStripeCard(cardElement: any): void {
     this.createStripePaymentMethod(cardElement).then((response: any) => {
-      this.eventService.emit('createStripePaymentMethodResponse', response);
+      this.eventService.emit('createStripePaymentMethodResponse', response.paymentMethod);
     });
   }
 
@@ -100,4 +101,15 @@ export class StripeService {
       }
     );
   };
+
+  public mapResponse(res: PaymentMethodResponse): FinancialCard {
+      return new FinancialCard(
+        res.card.exp_month+'/'+res.card.exp_year,
+        res.id,
+        res.card.last4,
+        null,
+        res.card
+      );
+  }
+
 }
