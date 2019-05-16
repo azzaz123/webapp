@@ -11,7 +11,7 @@ import { PaymentIntent } from './stripe.interface';
 export class StripeService {
 
   public fullName: string;
-  public PAYMENT_PROVIDER_STRIPE = false;
+  public PAYMENT_PROVIDER_STRIPE = true;
 
   constructor(private paymentService: PaymentService,
               private userService: UserService,
