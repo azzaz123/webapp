@@ -164,11 +164,13 @@
   }
 }
 
-.dot-loader {
-  color: $walla-main;
-  font-size: 12px;
-  /* Keyword value */
-  animation: fadeInFromNone 0.5s ease-in-out alternate-reverse;
-  animation-iteration-count: infinite;
-  animation-timing-function:linear;
+.spinner {
+  $spinner-size: 14px;
+  height: $spinner-size;
+  width: $spinner-size;
+  svg {
+      position: absolute;
+      top: 0;
+      left: -#{$spacing-ml + 5px};
+  }
 }

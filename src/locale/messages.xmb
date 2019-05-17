@@ -400,7 +400,7 @@
   <msg id="8886737317292020570"><source>app/chat/chat-with-inbox/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:36</source>Archive conversation</msg>
   <msg id="5298644184637702922"><source>app/chat/chat-with-inbox/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:3</source>This will archive the conversation.</msg>
   <msg id="1055686627716339120"><source>app/chat/chat-with-inbox/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:7</source>Archive</msg>
-  <msg id="6288847433566396172"><source>app/chat/chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:2</source>Unrchive conversation</msg>
+  <msg id="6288847433566396172"><source>app/chat/chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:2</source>Unarchive conversation</msg>
   <msg id="3205414127595653303"><source>app/chat/chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:3</source>This will unarchive the conversation.</msg>
   <msg id="1121513541518618634"><source>app/chat/chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:7</source>Unarchive</msg>
   <msg id="7008439939460403347"><source>app/chat/modals/report-listing/report-listing.component.html:2</source><source>app/chat/modals/report-listing/report-listing.component.html:23</source><source>app/chat/modals/report-user/report-user.component.html:2</source><source>app/chat/modals/report-user/report-user.component.html:27</source>Report</msg>
