@@ -83,10 +83,10 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   }
 
   private sendRead(message: InboxMessage) {
-    if (this.currentConversation && this.currentConversation.id === message.thread) {
+    if (this.currentConversation && this.currentConversation.id === message.thread && !message.fromSelf) {
       Visibility.onVisible(() => {
         setTimeout(() => {
-          this.realTime.sendRead(this.currentConversation.user.id, this.currentConversation.id);
+          this.realTime.sendRead(this.userService.user.id, this.currentConversation.id);
         }, 1000);
       });
     }

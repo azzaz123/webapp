@@ -21,8 +21,14 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { ITEM_ID } from '../../../../tests/item.fixtures.spec';
 import { BlockUserService } from '../../../core/conversation/block-user.service';
 import { ConversationService } from '../../../core/inbox/conversation.service';
+import { User } from '../../../core/user/user';
 
 class MockUserService {
+
+  public user: User = new User('fakeId', 'microName', null,
+                                null, null, null, null, null, null,
+                                null, null, null, null, null, null,
+                                null, null, null, null, null, null, null);
 
   public reportUser(): Observable<any> {
     return Observable.of({});
@@ -113,13 +119,13 @@ fdescribe('CurrentConversationComponent', () => {
       it(`should call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message belonging
       to the currentConversation`, fakeAsync(() => {
         const newMessage = new InboxMessage('someId', component.currentConversation.id, 'hola!',
-        component.currentConversation.messages[0].from, true, new Date(), messageStatus.RECEIVED);
+        component.currentConversation.messages[0].from, false, new Date(), messageStatus.RECEIVED);
 
         component.ngOnInit();
         eventService.emit(EventService.MESSAGE_ADDED, newMessage);
         tick(1000);
 
-        expect(realTime.sendRead).toHaveBeenCalledWith(component.currentConversation.user.id, component.currentConversation.id);
+        expect(realTime.sendRead).toHaveBeenCalledWith('fakeId', component.currentConversation.id);
       }));
 
       it(`should NOT call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message NOT belonging

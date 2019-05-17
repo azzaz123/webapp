@@ -67,6 +67,9 @@
     </div>
     
     
-    <div id="conversation-meta" *ngIf="currentConversation">
+    <div id="conversation-meta">
+            <tsl-inbox-user-detail [user]="currentConversation.user"></tsl-inbox-user-detail>
+            <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
+            <tsl-ad slotid="div-gpt-ad-1508490196308-0"></tsl-ad>
     </div>
 </div>

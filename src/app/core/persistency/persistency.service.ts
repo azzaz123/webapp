@@ -140,7 +140,7 @@ export class PersistencyService {
       const conv = row.doc;
       const user = new InboxUser(conv.user._id, conv.user._microName, conv.user._blocked, conv.user._available,
         conv.user_profileUrl, conv.user.avatarUrl, conv.user._responseRate, conv.user._score, conv.user._location);
-      const item = new InboxItem(conv.item._id, conv.item._price, conv.item._title, conv.item._mainImage,
+      const item = new InboxItem(conv.item._id, conv.item._price, conv.item._title, conv.item._mainImage, conv.item._itemUrl,
         conv.item._status, conv.item._isMine);
       const lastMessage = new InboxMessage(conv.lastMessage._id, conv.lastMessage._thread, conv.lastMessage._message,
         conv.lastMessage._fromSelf, conv.lastMessage._date,

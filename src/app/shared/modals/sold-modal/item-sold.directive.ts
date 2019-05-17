@@ -5,12 +5,13 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Item } from '../../../core/item/item';
 import { SoldModalComponent } from './sold-modal.component';
+import { InboxItem } from '../../../chat/chat-with-inbox/inbox/inbox-item';
 
 @Directive({
   selector: '[tslItemSold]'
 })
 export class ItemSoldDirective {
-  @Input() item: Item;
+  @Input() item: Item | InboxItem;
   @Output() callback = new EventEmitter();
 
   constructor(private itemService: ItemService,
