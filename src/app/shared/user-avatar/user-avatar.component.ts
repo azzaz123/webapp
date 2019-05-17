@@ -31,7 +31,6 @@ export class UserAvatarComponent implements OnChanges {
         this.avatar = this.avatar.replace(/^http:\/\//i, 'https://');
       }
     } else if (this.user instanceof InboxUser && this.user) {
-      console.log(this.user);
       this.avatar = this.user.avatarUrl ? this.user.avatarUrl : PLACEHOLDER_AVATAR;
       if (environment.production || environment.name === 'beta') {
         this.avatar = this.avatar.replace('http://', 'https://');
