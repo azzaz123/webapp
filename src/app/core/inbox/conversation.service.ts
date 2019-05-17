@@ -250,7 +250,7 @@ export class ConversationService {
 
   private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<any> {
     const url = this.MORE_MESSAGES_URL.replace('CONVERSATION_HASH', conversationId);
-    return this.http.get(url, 
+    return this.http.get(url,
       { max_messages : this.max_messages,
       from : nextPageToken });
   }

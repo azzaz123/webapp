@@ -46,9 +46,11 @@ class MockedToastr {
   }
 }
 
-class MockConversationService {}
+class MockConversationService {
+  public loadMoreMessages() {}
+}
 
-describe('CurrentConversationComponent', () => {
+fdescribe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
   let fixture: ComponentFixture<CurrentConversationComponent>;
   let realTime: RealTimeService;
@@ -350,5 +352,45 @@ describe('CurrentConversationComponent', () => {
       expect(blockService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been unblocked');
     }));
+  });
+
+  describe('hasMoreMessages', () => {
+    it('should return TRUE if currentConversation has nextPageToken', () => {
+      component.currentConversation = MOCK_CONVERSATION();
+      component.currentConversation.nextPageToken = 'someToken';
+
+      const result = component.hasMoreMessages();
+
+      expect(result).toBeTruthy();
+    });
+
+    it('should return FALSE if currentConversation has not nextPageToken', () => {
+      component.currentConversation = MOCK_CONVERSATION();
+      component.currentConversation.nextPageToken = null;
+
+      const result = component.hasMoreMessages();
+
+      expect(result).toBeFalsy();
+    });
+  });
+
+  describe('loadMoreMessages', () => {
+    it('should call conversationService to loadMoreMessages() if isLoadingMore is FALSE', () => {
+      spyOn(conversationService, 'loadMoreMessages').and.callThrough();
+      component['isLoadingMoreMessages'] = false;
+
+      component.loadMoreMessages();
+
+      expect(conversationService.loadMoreMessages).toHaveBeenCalled();
+    });
+
+    it('should NOT call conversationService to loadMoreMessages() if isLoadingMore is FALSE', () => {
+      spyOn(conversationService, 'loadMoreMessages').and.callThrough();
+      component['isLoadingMoreMessages'] = true;
+
+      component.loadMoreMessages();
+
+      expect(conversationService.loadMoreMessages).not.toHaveBeenCalled();
+    });
   });
 });
