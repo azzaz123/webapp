@@ -39,12 +39,11 @@ h2 {
 	    font-size: $font-size-s;
 	    border-radius: 100px;
 	    position: absolute;
-	    top: 0;
-	    left: 50%;
-	    z-index: 99;
+	    top: $inbox-header-height;
+	    left: 25%;
+	    z-index: 80;
 	    margin-top: $spacing-ms;
-	    padding: $spacing-s $spacing-ml;
-	    transform: translateX(-50%);
+      padding: $spacing-s $spacing-ml;
 	    box-shadow: 0 1px 3px 0 rgba($black, 0.16);
 
 	     mat-icon {
@@ -136,6 +135,8 @@ tsl-process-all-button {
   border-bottom: 1px solid $blue-grey-4;
   display: flex;
   align-content: center;
+  background-color: $white;
+  z-index: 99;
   .dropdown-header {
     display: flex;
     align-content: center;

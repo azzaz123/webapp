@@ -36,7 +36,7 @@
 </div>
 
 <div *ngIf="isInbox" class="scroll-panel" #scrollPanel (scroll)="showNewMessagesToast ? handleScroll() : null">
-  <button class="btn btn-primary new-messages-toast" *ngIf="showNewMessagesToast" (click)="scrollToTop()">
+  <button class="btn btn-primary new-messages-toast" *ngIf="showNewMessagesToast" (click)="scrollToTop()" [@appearInOut]>
     <mat-icon svgIcon="up-arrow-white"></mat-icon>
     <span i18n>New messages</span>
   </button>
