@@ -140,8 +140,8 @@ export class ConversationService {
         this.persistencyService.updateInboxMessageStatus(message, messageStatus.READ);
       });
       if (!markMessagesFromSelf) {
-        conversation.unreadCounter -= unreadMessages.length;
-        this.messageService.totalUnreadMessages -= unreadMessages.length;
+        this.messageService.totalUnreadMessages -= conversation.unreadCounter;
+        conversation.unreadCounter = 0;
       }
     }
   }
