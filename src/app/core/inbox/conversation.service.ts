@@ -16,6 +16,8 @@ import { Response } from '@angular/http';
 })
 export class ConversationService {
   private API_URL = 'bff/messaging/conversation/';
+  private ARCHIVE_URL = '/api/v3/instant-messaging/conversations/archive';
+  private UNARCHIVE_URL = '/api/v3/instant-messaging/conversations/unarchive';
   private _selfId: string;
 
   constructor(
@@ -27,6 +29,7 @@ export class ConversationService {
     }
 
   public conversations: InboxConversation[];
+  public archivedConversations: InboxConversation[];
 
   public subscribeChatEvents() {
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
@@ -37,6 +40,9 @@ export class ConversationService {
         })
         .map(message => this.realTime.sendDeliveryReceipt(conv.user.id, message.id, conv.id));
       });
+    });
+    this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
+      this.archivedConversations = conversations;
     });
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
       const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
@@ -61,8 +67,12 @@ export class ConversationService {
 
   public processNewMessage(message: InboxMessage) {
     const existingConversation = this.conversations.find(c => c.id === message.thread);
+    const existingArchivedConversation = this.archivedConversations.find(c => c.id === message.thread);
     if (existingConversation) {
       this.addNewMessage(existingConversation, message);
+    } else if (existingArchivedConversation) {
+      this.addNewMessage(existingArchivedConversation, message);
+      this.eventService.emit(EventService.CONVERSATION_UNARCHIVED, existingArchivedConversation);
     } else {
       this.fetchOrCreateInboxConversation(message);
     }
@@ -177,5 +187,37 @@ export class ConversationService {
   private buildConversation(res: Response): InboxConversation {
     const json = res.json();
     return InboxConversation.fromJSON(json, this._selfId);
+  }
+
+  public isConversationArchived(conversation: InboxConversation): boolean {
+    return this.archivedConversations.includes(conversation);
+  }
+
+  public archive(conversation: InboxConversation): Observable<InboxConversation> {
+    return this.archiveConversation(conversation.id)
+    .map(() => {
+      this.eventService.emit(EventService.CONVERSATION_ARCHIVED, conversation);
+      return conversation;
+    });
+  }
+
+  public unarchive(conversation: InboxConversation): Observable<InboxConversation> {
+    return this.unarchiveConversation(conversation.id)
+    .map(() => {
+      this.eventService.emit(EventService.CONVERSATION_UNARCHIVED, conversation);
+      return conversation;
+    });
+  }
+
+  private archiveConversation(conversationId: string): Observable<any> {
+    return this.http.put(this.ARCHIVE_URL, {
+      conversation_ids: [conversationId]
+    });
+  }
+
+  private unarchiveConversation(conversationId: string): Observable<any> {
+    return this.http.put(this.UNARCHIVE_URL, {
+      conversation_ids: [conversationId]
+    });
   }
 }

@@ -557,7 +557,6 @@
   <translation id="3708302938863076299">Pago seguro con Banco Sabadell</translation>
   <translation id="466090356732378705">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="9195373106604759125">Para que los anuncios que voy a ver sean de mi interés, acepto que wallapop comparta con empresas con las que colaboramos información recabada durante la sesión.</translation>
-  <translation id="221922226324249098">Todas las categorías</translation>
   <translation id="7514254130085804538">Marcar como vendido</translation>
   <translation id="853408948668135550">Marcar como reservado</translation>
   <translation id="7585826646011739428">Editar</translation>
@@ -787,5 +786,20 @@
   <translation id="792930787826735850">Tu perfil</translation>
   <translation id="4086606389696938932">Cuenta</translation>
   <translation id="5722353260643724736">Método de pago</translation>
+  <translation id="3339021787040924237">Buscar en Todas las categorías</translation>
+  <translation id="8886737317292020570">Archivar conversación</translation>
+  <translation id="5298644184637702922">Esto archivará la conversación.</translation>
+  <translation id="1055686627716339120">Archivar</translation>
+  <translation id="6288847433566396172">Desarchivar conversación</translation>
+  <translation id="3205414127595653303">Esto desarchivará la cconversación.</translation>
+  <translation id="1121513541518618634">Desarchivar</translation>
+  <translation id="3094139520905825563">Elija una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+            de la lista de la izquierda</translation>
+  <translation id="6105231501608810838">Servicio no disponible por el momento.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+            Inténtelo de nuevo más tarde.</translation>
+  <translation id="7913053333994057167">Desarchivar conversación</translation>
+  <translation id="799485662157076328">Bandeja de Entrada</translation>
+  <translation id="2247942788262300865">Mensajes Archivados</translation>
+  <translation id="8721026914522212662">Archivado</translation>
   <translation id="5635139981490841331">En pocas palabras...</translation>
 </translationbundle>
