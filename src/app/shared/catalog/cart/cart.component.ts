@@ -29,19 +29,21 @@ export class CartComponent implements OnInit, OnDestroy {
   public types: string[] = BUMP_TYPES;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public hasFinancialCard: boolean;
+  public isStripeCard: boolean;
   public cardType = 'old';
   public loading: boolean;
   public card: any;
   public isStripe: boolean;
+  public showCard = false;
 
   constructor(private cartService: CartService,
-    private itemService: ItemService,
-    private errorService: ErrorsService,
-    private trackingService: TrackingService,
-    private paymentService: PaymentService,
-    private eventService: EventService,
-    private router: Router,
-    private stripeService: StripeService) {
+              private itemService: ItemService,
+              private errorService: ErrorsService,
+              private trackingService: TrackingService,
+              private paymentService: PaymentService,
+              private eventService: EventService,
+              private router: Router,
+              private stripeService: StripeService) {
       this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
         this.cart = cartChange.cart;
       });
@@ -165,6 +167,11 @@ export class CartComponent implements OnInit, OnDestroy {
     this.hasFinancialCard = hasCard;
   }
 
+  public hasStripeCard(hasCard: boolean) {
+    this.isStripeCard = hasCard;
+  }
+
+
   get totalToPay(): number {
     if (!this.cart) {
       return 0;
@@ -188,5 +195,30 @@ export class CartComponent implements OnInit, OnDestroy {
       return -this.creditInfo.credit;
     }
   }
+
+  public addNewCard() {
+    this.showCard = true;
+  }
+
+  public hideNewCard() {
+    this.showCard = false;
+  }
+
+  /*public addNewCard() {
+   let modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {windowClass: 'review'});
+   modalRef.result.then((financialCard: FinancialCard) => {
+     const existingCard = this.financialCards.filter((stripeCard: FinancialCard) => {
+      return stripeCard.id === financialCard.id;
+     });
+     if (!existingCard.length) {
+      this.stripeService.addNewCard(financialCard.id).subscribe((response: any) => {
+        this.financialCards.push(financialCard);
+      }, () => {
+      this.errorService.i18nError('addNewCardError');
+     });
+     }
+     modalRef = null;
+   }, () => {});
+  }*/
 
 }

@@ -67,6 +67,8 @@ import { StripeCardElementComponent } from './payments/stripe/stripe-card-elemen
 import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.component';
 import { CreditCardsComponent } from './profile/credit-cards/credit-cards.component';
 import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
+import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
+import { SelectModule } from 'ng-select';
 
 @NgModule({
   imports: [
@@ -82,7 +84,8 @@ import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.co
     NgbDropdownModule,
     TrackingModule,
     RouterModule,
-    UploaderModule
+    UploaderModule,
+    SelectModule
   ],
   exports: [
     CardModule,
@@ -135,7 +138,9 @@ import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.co
     StripeCardElementComponent,
     StripeCardsComponent,
     CreditCardsComponent,
-    NewCardModalComponent
+    NewCardModalComponent,
+    StripeCardSelectionComponent,
+    SelectModule
   ],
   declarations: [
     AdComponent,
@@ -191,7 +196,8 @@ import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.co
     StripeCardElementComponent,
     StripeCardsComponent,
     CreditCardsComponent,
-    NewCardModalComponent
+    NewCardModalComponent,
+    StripeCardSelectionComponent
   ],
   providers: [
     DecimalPipe,

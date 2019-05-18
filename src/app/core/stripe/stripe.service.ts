@@ -55,6 +55,11 @@ export class StripeService {
       .map((r: Response) => r.json())
   }
 
+  public getCard(paymentId: string): Observable<FinancialCard> {
+    return this.http.get(`${this.API_URL}/c2b/stripe/payment_methods/card`, paymentId)
+      .map((r: Response) => r.json())
+  }
+
   public deleteCard(card: FinancialCard): Observable<any> {
     return this.http.post(this.API_URL + '/xxx')
   }
