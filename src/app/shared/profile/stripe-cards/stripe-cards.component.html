@@ -1,14 +1,16 @@
-<div class="box profile-box">
+<div class="StripeCards box profile-box">
     <div class="box-content">
+        <h3 class="section-title" i18n>Payment method</h3>
         <div class="row">
             <div class="col-10 offset-2">
-                <div class="form-group row align-items-center">
-                    <label class="col-3" i18n>Payment method:</label>
-                    <div *ngFor="let stripeCard of stripeCards">
-                        <tsl-credit-card-info [financialCard]="stripeCard" (onSetFavoriteCard)="onSetFavoriteCard($event)" (onDeleteCard)="onDeleteCard($event)"></tsl-credit-card-info>
+                <div class="StripeCards__group form-group row align-items-center">
+                    <div class="StripeCards__card" *ngFor="let stripeCard of stripeCards">
+                        <tsl-credit-card-info [financialCard]="stripeCard" (onSetFavoriteCard)="onSetFavoriteCard($event)"
+                                              (onDeleteStripeCard)="onDeleteCard($event)">
+                        </tsl-credit-card-info>
                     </div>
-                    <div class="StripeCards-newCard">
-                        <a (click)="addNewCard()" i18n>Add new card</a>
+                    <div class="StripeCards__newCard">
+                        <a (click)="addNewCard()" i18n>+ Add new card</a>
                     </div>
                 </div>
             </div>

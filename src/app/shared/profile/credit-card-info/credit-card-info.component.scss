@@ -2,12 +2,15 @@
 
 .credit-card-field {
   border: solid 1px $blue-grey-5;
-  height: 53px;
+  height: 88px;
   padding: 0 $spacing-ml;
-  display: flex;
+  flex-direction: column;
   border-radius: 6px;
   align-items: center;
   font-size: $font-size-s;
+  width: 300px;
+  display: flex;
+  justify-content: center;
   .card-icon {
     flex: 0 0 34px;
     margin-right: $spacing-m;
@@ -21,14 +24,22 @@
       font-size: $font-size-xs;
     }
   }
+  .info {
+    width: 100%;
+    display: flex;
+    padding: 0;
+  }
 }
 
 .delete-link {
-  text-align: right;
   font-size: $font-size-s;
-  color: $blue-grey-3;
   cursor: pointer;
-  &:hover {
-    text-decoration: underline;
+  margin-left: auto;
+  a {
+    cursor: pointer;
+    color: $walla-main;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

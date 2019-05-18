@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FinancialCard, StripeCard } from '../../../core/payments/payment.interface';
-import { PaymentService } from '../../../core/payments/payment.service';
-import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { NewCardModalComponent } from '../../modals/new-card-modal/new-card-modal.component';
+import { FinancialCard } from '../credit-card-info/financial-card';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -39,19 +38,28 @@ export class StripeCardsComponent implements OnInit {
     }
   }
 
-  public onSetFavoriteCard(stripeCard: FinancialCard): void {
+  /*public onSetFavoriteCard(stripeCard: FinancialCard): void {
     const index = this.stripeCards.indexOf(stripeCard);
-
     for (let i = 0; i < this.stripeCards.length; i++) {
       this.stripeCards[i].favorite = i === index ? true : false;
     }
-  }
+  }*/
 
   public addNewCard() {
-    const modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {windowClass: 'review'});
-    modalRef.result.then((card: FinancialCard) => {
-      this.stripeCards.push(card);
-    });
+    let modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {windowClass: 'review'});
+    modalRef.result.then((financialCard: FinancialCard) => {
+      const existingCard = this.stripeCards.filter((stripeCard: FinancialCard) => {
+        return stripeCard.id === financialCard.id;
+      });
+      if (!existingCard.length) {
+        this.stripeService.addNewCard(financialCard.id).subscribe((response: any) => {
+          this.stripeCards.push(financialCard);
+        }, () => {
+          this.errorService.i18nError('addNewCardError');
+        });
+      }
+      modalRef = null;
+    }, () => {});
   }
-
+  
 }

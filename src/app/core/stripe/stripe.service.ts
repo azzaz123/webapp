@@ -7,8 +7,9 @@ import { EventService } from '../event/event.service';
 import { PaymentIntents, PaymentMethodResponse } from '../payments/payment.interface';
 import { PaymentIntent } from './stripe.interface';
 import { HttpService } from '../http/http.service';
-import { Observable } from 'rxjs/index';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
+import { Observable } from 'rxjs';
+import { Response } from '@angular/http';
 
 @Injectable()
 export class StripeService {
@@ -54,11 +55,7 @@ export class StripeService {
       .map((r: Response) => r.json())
   }
 
-  public setFavoriteCard(card: FinancialCard) {
-    return this.http.post(this.API_URL + '/xxx')
-  }
-
-  public deleteCard(card: FinancialCard) {
+  public deleteCard(card: FinancialCard): Observable<any> {
     return this.http.post(this.API_URL + '/xxx')
   }
 
@@ -66,9 +63,9 @@ export class StripeService {
     return this.http.post(`${this.API_URL}/c2b/stripe/payment_method/${paymentMethodId}/attach`)
   }
 
-  public createStripeCard(cardElement: any): void {
-    this.createStripePaymentMethod(cardElement).then((response: any) => {
-      this.eventService.emit('createStripePaymentMethodResponse', response.paymentMethod);
+  public createStripeCard(cardElement: any): Promise<any> {
+    return this.createStripePaymentMethod(cardElement).then((response: any) => {
+      return response.paymentMethod;
     });
   }
 

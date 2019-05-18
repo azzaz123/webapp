@@ -10,10 +10,10 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
-import { FinancialCard } from '../../../core/payments/payment.interface';
 import { CartBase } from '../../catalog/cart/cart-base';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
+import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -36,10 +36,12 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   @Input() type: string;
   @Input() cart: CartBase;
   @Input() loading: boolean;
+  @Input() newLoading: boolean;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
   @Output() saveCard: EventEmitter<string> = new EventEmitter<string>();
+  @Output() onStripeCardCreate: EventEmitter<FinancialCard> = new EventEmitter();
 
   cardHandler = this.onChange.bind(this);
   error: string;
@@ -116,7 +118,9 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   }
 
   public createNewCard() {
-    this.stripeService.createStripeCard(this.card);
+    this.stripeService.createStripeCard(this.card).then((paymentMethod: FinancialCard) => {
+      this.onStripeCardCreate.emit(paymentMethod);
+    });
   }
 
   public get model(): boolean {

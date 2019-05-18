@@ -1,13 +1,13 @@
-<div class="col-5">
+<div class="CreditCard--info">
   <div class="credit-card-field">
-    <mat-icon svgIcon="card" class="card-icon"></mat-icon>
-    <div class="number">{{financialCard?.number}}</div>
-    <div class="date"><span i18n>Expires</span> {{financialCard?.expire_date}}</div>
+    <div class="info">
+      <mat-icon svgIcon="card" class="card-icon"></mat-icon>
+      <div class="number">**** **** **** {{financialCard?.number}}</div>
+      <div class="date">{{financialCard?.expire_date}}</div>
+    </div>
+    <div class="delete-link">
+      <a (click)="deleteCreditCard()" [hidden]="isStripe" i18n>Delete card</a>
+      <a (click)="deleteStripeCard($event)" *ngIf="isStripe" i18n>Delete card</a>
+    </div>
   </div>
-</div>
-<div class="col-4 delete-link">
-  <a *ngIf="isStripe && card?.favorite" i18n>Main card</a>
-  <a (click)="setFavoriteCard($event)" *ngIf="isStripe && !card?.favorite" i18n>Set as main card</a>
-  <a (click)="deleteCreditCard()" [hidden]="isStripe" i18n>Delete card</a>
-  <a (click)="deleteStripeCard($event)" *ngIf="isStripe" i18n>Delete card</a>
 </div>

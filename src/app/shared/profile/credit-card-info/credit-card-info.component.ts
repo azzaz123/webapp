@@ -15,17 +15,15 @@ export class CreditCardInfoComponent implements OnInit {
   public isStripe: boolean;
   @Input() financialCard: FinancialCard;
   @Output() onDeleteCard: EventEmitter<FinancialCard> = new EventEmitter();
-  @Output() onSetFavoriteCard: EventEmitter<FinancialCard> = new EventEmitter();
-
+  @Output() onDeleteStripeCard: EventEmitter<FinancialCard> = new EventEmitter();
+  //@Output() onSetFavoriteCard: EventEmitter<FinancialCard> = new EventEmitter();
 
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,
               private stripeService: StripeService) { }
 
   ngOnInit() {
-    if (this.financialCard.stripeCard.last4) {
-      this.isStripe = true;
-    }
+    this.isStripe = this.stripeService.isPaymentMethodStripe();
   }
 
   deleteCreditCard() {
@@ -41,28 +39,19 @@ export class CreditCardInfoComponent implements OnInit {
     }, () => {});
   }
 
-  public setFavoriteCard(e: Event) {
-    e.stopPropagation();
-    this.stripeService.setFavoriteCard(this.financialCard).subscribe(() => {
-      this.onSetFavoriteCard.emit(this.financialCard);
-    });
-  }
-
-  private removeCard() {
-    this.stripeService.deleteCard(this.financialCard).subscribe(() => {
-      this.onDeleteCard.emit(this.financialCard);
-      this.financialCard = null;
-    });
-  }
-
   public deleteStripeCard(e: Event) {
     e.stopPropagation();
     const modalRef = this.modalService.open(ConfirmationModalComponent, {
       windowClass: 'modal-prompt'
     });
+    modalRef.componentInstance.type = 4;
     modalRef.result.then(() => {
-      this.removeCard();
-    }, () => {});
+      this.stripeService.deleteCard(this.financialCard).subscribe((response: Response) => {
+        console.log('delete service response ', response);
+        this.onDeleteStripeCard.emit(this.financialCard);
+        this.financialCard = null;
+      });
+    }, (error: any) => {console.log('delete service error', error);});
   }
 
 }

@@ -1,9 +1,10 @@
 <div class="box profile-box" *ngIf="financialCard">
     <div class="box-content">
+        <h3 class="section-title" i18n>Payment method</h3>
         <div class="row">
             <div class="col-10 offset-2">
                 <div class="form-group row align-items-center">
-                    <label class="col-3" i18n>Payment method:</label>
+
                     <tsl-credit-card-info [financialCard]="financialCard" (onDeleteCard)="onDeleteCard($event)"></tsl-credit-card-info>
                 </div>
             </div>
