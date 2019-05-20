@@ -23,12 +23,7 @@ export class ArchivedInboxConversationComponent implements OnChanges {
 
   constructor() { }
 
-  ngOnChanges() {
-    this.conversation.cannotChat  = !this.conversation
-    || this.conversation.user.blocked
-    || !this.conversation.user.available
-    || this.conversation.item.status === INBOX_ITEM_STATUSES.notAvailable;
-  }
+  ngOnChanges() { }
 
 
   public dateIsThisYear(): boolean {

@@ -1,6 +1,6 @@
 import { InboxMessage } from '../../message/inbox-message';
 import { InboxUser, InboxUserPlaceholder } from '../inbox-user';
-import { InboxItem, InboxImage, InboxItemPlaceholder } from '../inbox-item';
+import { InboxItem, InboxImage, InboxItemPlaceholder, INBOX_ITEM_STATUSES } from '../inbox-item';
 import { environment } from '../../../../../environments/environment';
 
 export class InboxConversation {
@@ -17,7 +17,12 @@ export class InboxConversation {
     }
 
     public active = false;
-    public cannotChat = false;
+
+    get cannotChat(): boolean {
+        return  this.user.blocked
+                || !this.user.available
+                || this.item.status === INBOX_ITEM_STATUSES.notAvailable;
+    }
 
     get id(): string {
         return this._id;
