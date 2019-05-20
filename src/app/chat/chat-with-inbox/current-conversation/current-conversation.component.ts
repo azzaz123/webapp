@@ -43,7 +43,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   }
 
   private newMessageSubscription: Subscription;
-  private isLoadingMoreMessages = false;
+  public isLoadingMoreMessages = false;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -175,10 +175,6 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   public hasMoreMessages(): boolean {
     return this.currentConversation.nextPageToken !== null && this.currentConversation.nextPageToken !== undefined;
-  }
-
-  public isLoadingMore(): boolean {
-    return this.isLoadingMoreMessages;
   }
 
   public loadMoreMessages() {

@@ -59,8 +59,8 @@
                 </div>
             </div>
             <div *ngIf="hasMoreMessages()" class="more-messages-loader" #loadMoreMessagesDiv>
-                <span *ngIf="!isLoadingMore()" (click)="loadMoreMessages()" i18n>Load more..</span>
-                <span *ngIf="isLoadingMore()"><mat-icon svgIcon="spinner" class="spinner"></mat-icon></span>
+                <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages()" i18n>Load more..</span>
+                <span *ngIf="isLoadingMoreMessages"><mat-icon svgIcon="spinner" class="spinner"></mat-icon></span>
             </div>
         </div>
         <tsl-input [currentConversation]="currentConversation"></tsl-input>
