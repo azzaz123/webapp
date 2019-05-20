@@ -1,9 +1,10 @@
 import { Component, EventEmitter, forwardRef, OnInit, Output } from '@angular/core';
-import { FinancialCard } from '../../../core/payments/payment.interface';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { IOption } from 'ng-select';
+import { FinancialCard } from '../../profile/credit-card-info/financial-card';
+import { StripeCard, FinancialCardOption, PaymentMethodCardResponse } from '../../../core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-stripe-card-selection',
@@ -13,9 +14,9 @@ import { IOption } from 'ng-select';
 export class StripeCardSelectionComponent implements OnInit {
 
   private _model: boolean = false;
-  public financialCards: IOption[] = [];
+  public financialCards: FinancialCardOption[];
+  //public financialCards: FinancialCard;
   public card: string = '';
-  public selectedFinancialCard: string;
   @Output() hasStripeCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onSelectExistingCard: EventEmitter<any> = new EventEmitter<any>();
 
@@ -29,21 +30,23 @@ export class StripeCardSelectionComponent implements OnInit {
 
   ngOnInit() {
     this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
-      //this.financialCards = stripeCards;
-      //this.financialCards = [{expire_date: '08/21', id: 'pm_3423rf23fd23', number: '4424'}, {expire_date: '10/21', id: 'pm_34232f2d23', number: '5353'}];
-      const stripeCard = {number: '2242', expire_date: '02/24'};
-      this.financialCards = [{
-        label: `**** **** **** ${stripeCard.number} ${stripeCard.expire_date}`,
-        value: 'pm_21312dc1c1'
-      }, {
-        label: `**** **** **** ${stripeCard.number} ${stripeCard.expire_date}`,
-        value: 'pm_23d3c3c2'
-      }];
-      this.selectedFinancialCard = this.financialCards[0].label;
+      this.financialCards = stripeCards.map((financialCard: FinancialCard) => this.toSelectOptions(financialCard));
       this.hasStripeCard.emit(!!this.financialCards);
     }, () => {
       this.hasStripeCard.emit(false);
     });
+  }
+
+  private toSelectOptions(card: FinancialCard): FinancialCardOption {
+    return {
+      value: card.number.toString(),
+      label: card.number,
+      expire_date: card.expire_date,
+      id: card.id,
+      number: card.number,
+      favorite: card.favorite,
+      stripeCard: card.stripeCard
+    };
   }
 
   public get model(): boolean {
@@ -68,11 +71,8 @@ export class StripeCardSelectionComponent implements OnInit {
     this.onTouched = fn;
   }
 
-  public setFinancialCard(selectedCard: IOption) {
-    //@TODO call retrieve a card with its id endpoint
-    this.stripeService.getCard(selectedCard.value).subscribe((financialCard: FinancialCard) => {
-      //Set card as payment method
-    });
+  public setFinancialCard(selectedCard: FinancialCardOption) {
+    //@TODO create paymentIntent with the payment method id (selectedCard.id)
     this.onSelectExistingCard.emit();
   }
 

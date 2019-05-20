@@ -2,6 +2,20 @@
 
 .select-card {
   margin-bottom: $spacing-s;
+  .card-body {
+    display: flex;
+    flex-direction: row;
+    font-size: $font-size-s;
+    mat-icon {
+      width: 24px;
+    }
+    .card-number {
+      flex: 1;
+    }
+    .card-date {
+      color: $blue-grey-3;
+    }
+  }
   .btn {
     width: 100%;
     border-radius: $border-radius;
@@ -22,12 +36,6 @@
           transition: $transition-base;
         }
       }
-    }
-    .number {
-      flex: 1;
-    }
-    .date {
-      color: $blue-grey-3;
     }
     &.new-card {
       font-size: $font-size-s;

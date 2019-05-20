@@ -23,19 +23,5 @@ export class NewCardModalComponent {
     const financialCard: FinancialCard = this.stripeService.mapResponse(paymentMethod);
     this.activeModal.close(financialCard);
   }
-
-  /*private addNewCard(financialCard: FinancialCard) {
-    this.loading = true;
-    this.stripeService.addNewCard(financialCard.id).subscribe((response: any) => {
-      console.log('close new card ', response);
-      this.loading = false;
-      this.activeModal.close(financialCard);
-    }, (error) => {
-      console.log('error nueva tarjeta');
-      this.loading = false;
-      this.activeModal.close('error');
-      this.errorService.i18nError('addNewCardError');
-    });
-  }*/
   
 }

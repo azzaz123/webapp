@@ -1,4 +1,5 @@
 import { Pack } from './pack';
+import { IOption } from 'ng-select/option.interface';
 export interface PerkResponse {
   expire_date: number;
   create_date: number;
@@ -89,6 +90,14 @@ export interface FinancialCard {
   stripeCard?: StripeCard;
 }
 
+export interface FinancialCardOption extends IOption {
+  expire_date: string;
+  id: string;
+  number: string;
+  favorite?: boolean;
+  stripeCard?: StripeCard;
+}
+
 export interface CardCheck {
   address_line1_check: string;
   address_postal_code_check: string;
@@ -134,6 +143,15 @@ export interface PaymentMethodResponse {
   metadata: any;
   object: string;
   type: string;
+}
+
+export interface PaymentMethodCardResponse {
+  brand: string;
+  default: boolean;
+  expiration_month: number;
+  expiration_year: number;
+  id: string;
+  last_digits: string;
 }
 
 export interface Order {

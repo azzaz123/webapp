@@ -4,12 +4,15 @@ import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { Router } from '@angular/router';
 import { EventService } from '../event/event.service';
-import { PaymentIntents, PaymentMethodResponse } from '../payments/payment.interface';
+import {
+  PaymentIntents, PaymentMethodResponse, StripeCard, FinancialCardOption, PaymentMethodCardResponse
+} from '../payments/payment.interface';
 import { PaymentIntent } from './stripe.interface';
 import { HttpService } from '../http/http.service';
-import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
+//import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
 import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
+import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
 
 @Injectable()
 export class StripeService {
@@ -17,6 +20,7 @@ export class StripeService {
   public fullName: string;
   public PAYMENT_PROVIDER_STRIPE = true;
   private API_URL = 'api/v3/payments';
+  private financialCards: FinancialCard[];
 
   constructor(private paymentService: PaymentService,
               private userService: UserService,
@@ -51,8 +55,13 @@ export class StripeService {
   }
 
   public getCards(): Observable<FinancialCard[]> {
+    if (this.financialCards) {
+      return Observable.of(this.financialCards);
+    }
     return this.http.get(`${this.API_URL}/c2b/stripe/payment_methods/cards`)
       .map((r: Response) => r.json())
+      .map((financialCards: PaymentMethodCardResponse[]) => this.mapPaymentMethodCard(financialCards))
+      .do((financialCards: FinancialCard[]) => this.financialCards = financialCards);
   }
 
   public getCard(paymentId: string): Observable<FinancialCard> {
@@ -106,12 +115,24 @@ export class StripeService {
 
   public mapResponse(res: PaymentMethodResponse): FinancialCard {
       return new FinancialCard(
-        res.card.exp_month+'/'+res.card.exp_year,
+        `${res.card.exp_month}/${res.card.exp_year}`,
         res.id,
         res.card.last4,
         null,
         res.card
       );
+  }
+
+  private mapPaymentMethodCard(stripeCard: PaymentMethodCardResponse[]): FinancialCard[] {
+    return stripeCard.map((stripeCard: PaymentMethodCardResponse) => {
+      return new FinancialCard(
+        `${stripeCard.expiration_month}/${stripeCard.expiration_year}`,
+        stripeCard.id,
+        stripeCard.last_digits,
+        null,
+        null
+      );
+    });
   }
 
 }

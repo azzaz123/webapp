@@ -1,15 +1,13 @@
 <div class="select-card" *ngIf="financialCards">
-  <ng-select placeholder="Select your card" class="form-control"
+  <ng-select placeholder="Select your card" class="form-control" i18n-placeholder placeholder="Select your card"
              [options]="financialCards" [(ngModel)]="selectedFinancialCard" bindLabel="number" bindValue="number"
              (selected)="setFinancialCard($event)">
-    <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-      <div class="card">
+    <ng-template #optionTemplate let-option="option" let-index="index">
         <div class="card-body">
           <mat-icon svgIcon="card" class="card-icon"></mat-icon>
-          <span class="card-title">**** **** **** {{item.number}}</span>
-          <span class="card-title">{{item.expire_date}}</span>
+          <span class="card-number">**** **** **** {{option.value}}</span>
+          <span class="card-date">{{option.expire_date}}</span>
         </div>
-      </div>
     </ng-template>
   </ng-select>
 </div>

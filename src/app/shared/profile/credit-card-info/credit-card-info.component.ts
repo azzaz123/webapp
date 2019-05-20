@@ -16,7 +16,6 @@ export class CreditCardInfoComponent implements OnInit {
   @Input() financialCard: FinancialCard;
   @Output() onDeleteCard: EventEmitter<FinancialCard> = new EventEmitter();
   @Output() onDeleteStripeCard: EventEmitter<FinancialCard> = new EventEmitter();
-  //@Output() onSetFavoriteCard: EventEmitter<FinancialCard> = new EventEmitter();
 
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,

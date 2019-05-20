@@ -5,6 +5,7 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { NewCardModalComponent } from '../../modals/new-card-modal/new-card-modal.component';
 import { FinancialCard } from '../credit-card-info/financial-card';
 import * as _ from 'lodash';
+import { PaymentMethodResponse, StripeCard, PaymentMethodCardResponse } from '../../../core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -20,8 +21,8 @@ export class StripeCardsComponent implements OnInit {
               private errorService: ErrorsService) { }
 
   ngOnInit() {
-    this.stripeService.getCards().subscribe((response: FinancialCard[]) => {
-      this.stripeCards = response;
+    this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
+      this.stripeCards = stripeCards;
     }, (error) => {
       if (error.text()) {
         this.errorService.show(error);
