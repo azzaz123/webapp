@@ -441,10 +441,11 @@ describe('ConversationService', () => {
 
         it(`should set messageService.totalUnreadMessages counter to 0 if the number of messages that are being marked as READ is greater
         than the existing counter (disallow negative values in counter)`, () => {
-            mockedConversation.unreadCounter = 1;
+            mockedConversation.unreadCounter = 5;
 
             const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
             service.processNewChatSignal(signal);
+            console.log('converwa', mockedConversation.unreadCounter, messageService.totalUnreadMessages);
 
             expect(messageService.totalUnreadMessages).toBe(0);
           });

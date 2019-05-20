@@ -180,7 +180,6 @@
   <translation id="8890553633144307762">Atrás</translation>
   <translation id="8260444303636416171">Hago envíos</translation>
   <translation id="3322682308330601072">¿Qué estás vendiendo?</translation>
-  <translation id="368364095324628291">En dos palabras...</translation>
   <translation id="5315989345504029668">Escribe bien (y sin faltas de ortografía) para que te encuentren más fácilmente.</translation>
   <translation id="6649229882788371997">(No te pases)</translation>
   <translation id="3306762056923998233">Añade un precio justo y la categoría que mejor representa a tu producto.</translation>
@@ -382,7 +381,7 @@
   <translation id="690637757793763587">Facturación</translation>
   <translation id="7830707034534607415">Suscripción</translation>
   <translation id="7658402240953727096">Nombre:</translation>
-  <translation id="2595624684026123810">Telefono:</translation>
+  <translation id="2595624684026123810">Teléfono:</translation>
   <translation id="6996799422725544865">Descripción:</translation>
   <translation id="138907429214820806">Horario apertura:</translation>
   <translation id="5359061492766571193">Nombre de la empresa:</translation>
@@ -802,5 +801,6 @@
   <translation id="799485662157076328">Bandeja de Entrada</translation>
   <translation id="2247942788262300865">Mensajes Archivados</translation>
   <translation id="8721026914522212662">Archivado</translation>
+  <translation id="5635139981490841331">En pocas palabras...</translation>
   <translation id="1429172029774130296">Cargar más..</translation>
 </translationbundle>
