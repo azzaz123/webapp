@@ -15,7 +15,6 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
   public conversationsTotal: number;
   public connectionError: boolean;
   public firstLoad: boolean;
-  public userWebSlug: string;
   public isProfessional: boolean;
   public currentConversation: InboxConversation;
 
