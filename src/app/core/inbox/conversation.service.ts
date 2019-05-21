@@ -197,6 +197,11 @@ export class ConversationService {
 
   public archive(conversation: InboxConversation): Observable<InboxConversation> {
     return this.archiveConversation(conversation.id)
+    .catch((err) => {
+      if (err.status === 409) {
+        return Observable.of(conversation);
+      } else { return Observable.throwError(err); }
+    })
     .map(() => {
       this.eventService.emit(EventService.CONVERSATION_ARCHIVED, conversation);
       return conversation;
@@ -205,6 +210,11 @@ export class ConversationService {
 
   public unarchive(conversation: InboxConversation): Observable<InboxConversation> {
     return this.unarchiveConversation(conversation.id)
+    .catch((err) => {
+      if (err.status === 409) {
+        return Observable.of(conversation);
+      } else { return Observable.throwError(err); }
+    })
     .map(() => {
       this.eventService.emit(EventService.CONVERSATION_UNARCHIVED, conversation);
       return conversation;
