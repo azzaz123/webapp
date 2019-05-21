@@ -56,7 +56,7 @@ class MockConversationService {
   public loadMoreMessages() {}
 }
 
-fdescribe('CurrentConversationComponent', () => {
+describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
   let fixture: ComponentFixture<CurrentConversationComponent>;
   let realTime: RealTimeService;
