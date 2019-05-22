@@ -1,7 +1,5 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie';
 import { InboxItem } from '../../inbox-item';
-import { InboxUser } from '../../inbox-user';
 import { ItemService } from '../../../../../core/item/item.service';
 import { TrackingService } from '../../../../../core/tracking/tracking.service';
 import { ItemCounters } from '../../../../../core/item/item-response.interface';
@@ -17,7 +15,6 @@ export class InboxItemDetailComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(private itemService: ItemService,
               private trackingService: TrackingService,
-              private cookieService: CookieService,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -47,6 +44,10 @@ export class InboxItemDetailComponent implements OnInit, OnChanges, OnDestroy {
       $event.preventDefault();
       $event.stopPropagation();
     }
+  }
+
+  get itemImageUrl(): String {
+    return this.item.mainImage.urls_by_size.small.replace('http://', 'https://');
   }
 
   public toggleReserve() {
