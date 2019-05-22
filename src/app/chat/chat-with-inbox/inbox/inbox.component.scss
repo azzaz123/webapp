@@ -4,7 +4,7 @@ $title-height: 64px;
 $filters-nav-height: 38px;
 $inbox-width: 340px;
 $inbox-height: 403px;
-$inbox-header-height: 60px;
+$inbox-header-height: 66px;
 
 h2 {
   margin: $spacing-ml;
@@ -18,19 +18,19 @@ h2 {
 }
 
 .header {
-    border-bottom: 1px solid $blue-grey-5;
+    border-bottom: 0px solid $blue-grey-5;
 }
 
 .scroll-panel {
 	scroll-behavior: smooth;
 	display: block;
-	height: calc(100vh - (#{$topbar-height} + 60px));
+	height: calc(100vh - (#{$topbar-height} + #{$inbox-header-height}));
 	overflow-y: auto;
 	overflow-x: hidden;
 	width: 100%;
 
 	&.professional {
-		height: calc(100vh - #{$topbar-height} - #{$title-height} - #{$filters-nav-height});
+		height: calc(100vh - #{$topbar-height} - #{$inbox-header-height} - #{$title-height} - 12px);
 	}
 
 	 .btn.new-messages-toast {

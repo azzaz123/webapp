@@ -7,6 +7,7 @@ import { ConversationService } from '../../../core/inbox/conversation.service';
 import { Message } from '../../../core/message/message';
 import { debug } from 'util';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
+import { UserService } from '../../../core/user/user.service';
 
 enum InboxState { Inbox, Archived }
 
@@ -61,10 +62,12 @@ export class InboxComponent implements OnInit, OnDestroy  {
   private conversationElementHeight = 100;
   public errorRetrievingInbox = false;
   private conversation: InboxConversation;
+  public isProfessional: boolean;
 
   constructor(private inboxService: InboxService,
     private eventService: EventService,
-    private conversationService: ConversationService) {}
+    private conversationService: ConversationService,
+    private userService: UserService) {}
 
   set loading(value: boolean) {
     this._loading = value;
@@ -109,6 +112,10 @@ export class InboxComponent implements OnInit, OnDestroy  {
 
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.archivedConversations = conversations;
+    });
+    
+    this.userService.isProfessional().subscribe((value: boolean) => {
+      this.isProfessional = value;
     });
   }
 
