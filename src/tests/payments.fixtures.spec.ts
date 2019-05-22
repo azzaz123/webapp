@@ -4,15 +4,15 @@ import { getMockItem } from './item.fixtures.spec';
 import { COINS_PACK_ID, CREDITS_PACK_ID, Pack } from '../app/core/payments/pack';
 import {
   BillingInfoResponse,
-  FinancialCard,
   SabadellInfoResponse,
   Packs,
   PackResponse,
   ProductResponse,
   OrderProExtras,
-  PerkResponse
+  PerkResponse, PaymentMethodCardResponse, FinancialCard, PaymentMethodResponse
 } from '../app/core/payments/payment.interface';
 import { PurchasesModel } from '../app/core/payments/purchase.model';
+import { STRIPE_CARD } from './stripe.fixtures.spec';
 
 export const FINANCIAL_CARD: FinancialCard = {
   expire_date: 61598188800000,
@@ -527,6 +527,37 @@ export const PERK_RESPONSE: PerkResponse[] = [{
   subscription_id: null,
   total: 0
 }];
+
+export const PAYMENT_METHOD_CARD_RESPONSE: PaymentMethodCardResponse[] = [
+  {
+    brand: 'VISA',
+    default: true,
+    expiration_month: 2,
+    expiration_year: 2020,
+    id: 'pm_a0b1c2',
+    last_digits: '4242'
+  },
+  {
+    brand: 'VISA',
+    default: false,
+    expiration_month: 4,
+    expiration_year: 2024,
+    id: 'pm_d3e4f5',
+    last_digits: '2121'
+  }
+];
+
+export const PAYMENT_METHOD_DATA: PaymentMethodResponse = {
+  billing_details: null,
+  card: STRIPE_CARD,
+  created: 8891123123,
+  customer: 'testuser',
+  id: 'pm_a0b1c2',
+  livemode: false,
+  metadata: null,
+  object: '',
+  type: ''
+};
 
 export function createPerksModelFixture(): PerksModel {
 

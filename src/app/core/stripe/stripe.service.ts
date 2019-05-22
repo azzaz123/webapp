@@ -64,17 +64,12 @@ export class StripeService {
       .do((financialCards: FinancialCard[]) => this.financialCards = financialCards);
   }
 
-  public getCard(paymentId: string): Observable<FinancialCard> {
-    return this.http.get(`${this.API_URL}/c2b/stripe/payment_methods/card`, paymentId)
-      .map((r: Response) => r.json())
-  }
-
-  public deleteCard(card: FinancialCard): Observable<any> {
-    return this.http.post(this.API_URL + '/xxx')
+  public deleteCard(paymentMethodId: string) {
+    return this.http.post(`${this.API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/detach`)
   }
 
   public addNewCard(paymentMethodId: string) {
-    return this.http.post(`${this.API_URL}/c2b/stripe/payment_method/${paymentMethodId}/attach`)
+    return this.http.put(`${this.API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/attach`)
   }
 
   public createStripeCard(cardElement: any): Promise<any> {

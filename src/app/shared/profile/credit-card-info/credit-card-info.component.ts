@@ -4,6 +4,8 @@ import { PaymentService } from '../../../core/payments/payment.service';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from './financial-card';
+import { ToastrService } from 'ngx-toastr';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-credit-card-info',
@@ -19,7 +21,9 @@ export class CreditCardInfoComponent implements OnInit {
 
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,
-              private stripeService: StripeService) { }
+              private stripeService: StripeService,
+              private toastr: ToastrService,
+              private i18n: I18nService) { }
 
   ngOnInit() {
     this.isStripe = this.stripeService.isPaymentMethodStripe();
@@ -45,12 +49,13 @@ export class CreditCardInfoComponent implements OnInit {
     });
     modalRef.componentInstance.type = 4;
     modalRef.result.then(() => {
-      this.stripeService.deleteCard(this.financialCard).subscribe((response: Response) => {
-        console.log('delete service response ', response);
+      this.stripeService.deleteCard(this.financialCard.id).subscribe(() => {
         this.onDeleteStripeCard.emit(this.financialCard);
         this.financialCard = null;
       });
-    }, (error: any) => {console.log('delete service error', error);});
+    }, (error: any) => {
+      this.toastr.error(this.i18n.getTranslations('bulkDeleteError'));
+    });
   }
 
 }

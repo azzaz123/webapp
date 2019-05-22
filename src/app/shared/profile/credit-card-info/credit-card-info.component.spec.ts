@@ -5,20 +5,26 @@ import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PaymentService } from '../../../core/payments/payment.service';
-import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
+import { StripeService } from '../../../core/stripe/stripe.service';
+import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
+import { ToastrService } from 'ngx-toastr';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 describe('CreditCardInfoComponent', () => {
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;
   let paymentService: PaymentService;
+  let stripeService: StripeService;
   let modalService: NgbModal;
-  const componentInstance: any = {}
+  let toastrService: ToastrService;
+  const componentInstance: any = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CreditCardInfoComponent],
       providers: [
+        I18nService,
         {
           provide: PaymentService, useValue: {
           getFinancialCard() {
@@ -38,7 +44,20 @@ describe('CreditCardInfoComponent', () => {
               }
             }
         }
+        },
+        {
+          provide: StripeService, useValue: {
+          isPaymentMethodStripe() {
+            return true
+          }
         }
+        },
+        {
+          provide: ToastrService, useValue: {
+          error() {
+          }
+        }
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -50,17 +69,16 @@ describe('CreditCardInfoComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     paymentService = TestBed.get(PaymentService);
+    stripeService = TestBed.get(StripeService);
     modalService = TestBed.get(NgbModal);
+    toastrService = TestBed.get(ToastrService);
   });
 
   describe('ngOnInit', () => {
-    it('should call getFinancialCard and set it', () => {
-      spyOn(paymentService, 'getFinancialCard').and.callThrough();
-
+    it('should get if Stripe is used', () => {
       component.ngOnInit();
 
-      expect(paymentService.getFinancialCard).toHaveBeenCalled();
-      expect(component.financialCard).toEqual(FINANCIAL_CARD);
+      expect(component.isStripe).toBe(true);
     });
   });
 

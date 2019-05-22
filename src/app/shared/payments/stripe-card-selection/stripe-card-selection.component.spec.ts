@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
 import { StripeCardSelectionComponent } from './stripe-card-selection.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
+import { FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 
 describe('CardSelectionComponent', () => {
   let component: StripeCardSelectionComponent;
@@ -41,13 +42,13 @@ describe('CardSelectionComponent', () => {
     it('should get and set financial card and emit true if present', () => {
       let resp: boolean;
       spyOn(stripeService, 'getCards').and.returnValue(Observable.of([FINANCIAL_CARD]));
-      component.hasCard.subscribe((hasCard: boolean) => {
+      component.hasStripeCard.subscribe((hasCard: boolean) => {
         resp = hasCard;
       });
 
       component.ngOnInit();
 
-      expect(component.financialCards).toEqual([FINANCIAL_CARD]);
+      expect(component.financialCards).toEqual(FINANCIAL_CARD_OPTION);
       expect(resp).toBe(true);
     });
 
@@ -55,7 +56,7 @@ describe('CardSelectionComponent', () => {
       let resp: boolean;
       component.financialCards = undefined;
       spyOn(stripeService, 'getCards').and.returnValue(Observable.throw({}));
-      component.hasCard.subscribe((hasCard: boolean) => {
+      component.hasStripeCard.subscribe((hasCard: boolean) => {
         resp = hasCard;
       });
 
