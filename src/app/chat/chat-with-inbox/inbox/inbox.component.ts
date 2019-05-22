@@ -113,7 +113,7 @@ export class InboxComponent implements OnInit, OnDestroy  {
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.archivedConversations = conversations;
     });
-    
+
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
