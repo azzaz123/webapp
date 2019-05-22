@@ -6,13 +6,48 @@ import { InboxService } from '../../../core/inbox/inbox.service';
 import { ConversationService } from '../../../core/inbox/conversation.service';
 import { Message } from '../../../core/message/message';
 import { debug } from 'util';
+import { trigger, transition, style, animate, keyframes } from '@angular/animations';
+import { UserService } from '../../../core/user/user.service';
 
 enum InboxState { Inbox, Archived }
 
 @Component({
   selector: 'tsl-inbox',
   templateUrl: './inbox.component.html',
-  styleUrls: ['./inbox.component.scss']
+  styleUrls: ['./inbox.component.scss'],
+  animations: [trigger('appearInOut', [
+    transition(':enter', [   // :enter is alias to 'void => *'
+      style({
+        transform: 'translateY(-180%)',
+        opacity: 0
+      }),
+      animate('300ms ease-in-out', keyframes([
+        style({
+          transform: 'translateY(20%)',
+          opacity: 1,
+          offset: 0.9
+        }),
+        style({
+          transform: 'translateY(0)',
+          offset: 1
+        })
+      ]))
+    ]),
+    transition(':leave', [   // :leave is alias to '* => void'
+      animate('300ms ease-in-out', keyframes([
+        style({
+          transform: 'translateY(20%)',
+          opacity: 0.4,
+          offset: 0.1
+        }),
+        style({
+          transform: 'translateY(-180%)',
+          opacity: 0,
+          offset: 1
+        })
+      ]))
+    ])
+  ])]
 })
 export class InboxComponent implements OnInit, OnDestroy  {
   @Output() public loadingEvent = new EventEmitter<any>();
@@ -27,10 +62,12 @@ export class InboxComponent implements OnInit, OnDestroy  {
   private conversationElementHeight = 100;
   public errorRetrievingInbox = false;
   private conversation: InboxConversation;
+  public isProfessional: boolean;
 
   constructor(private inboxService: InboxService,
     private eventService: EventService,
-    private conversationService: ConversationService) {}
+    private conversationService: ConversationService,
+    private userService: UserService) {}
 
   set loading(value: boolean) {
     this._loading = value;
@@ -76,6 +113,10 @@ export class InboxComponent implements OnInit, OnDestroy  {
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.archivedConversations = conversations;
     });
+
+    this.userService.isProfessional().subscribe((value: boolean) => {
+      this.isProfessional = value;
+    });
   }
 
   ngOnDestroy() {
@@ -91,7 +132,7 @@ export class InboxComponent implements OnInit, OnDestroy  {
 
   private bindNewMessageToast() {
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
-      if (message.fromSelf) {
+      if (message.fromSelf && this.conversation.id === message.thread) {
         this.scrollToTop();
       } else {
         this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.75;
