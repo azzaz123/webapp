@@ -54,7 +54,7 @@ describe('StripeService', () => {
         },
         {
           provide: PaymentService, useValue: {
-          paymentIntent() {
+          paymentIntents() {
             return Observable.of({
               token: 'a1-b2-c3-d4'
             })
@@ -74,14 +74,14 @@ describe('StripeService', () => {
   describe('buy', () => {
     const paymentId = 'a1-b2-c3-d4';
     const orderId = '1';
-    it('should call paymentIntent', () => {
+    it('should call paymentIntents', () => {
       const PAYMENT_INTENT_RESPONSE = {
         token: paymentId,
       };
       let response: any;
 
       userService.me = jasmine.createSpy().and.returnValue(Observable.of(USER_DATA));
-      paymentService.paymentIntent(orderId, paymentId).subscribe((data: PaymentIntents) => {
+      paymentService.paymentIntents(orderId, paymentId).subscribe((data: PaymentIntents) => {
         response = data;
       });
 

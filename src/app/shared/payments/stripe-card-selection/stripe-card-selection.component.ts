@@ -1,10 +1,7 @@
-import { Component, EventEmitter, forwardRef, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ErrorsService } from '../../../core/errors/errors.service';
-import { IOption } from 'ng-select';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
-import { StripeCard, FinancialCardOption, PaymentMethodCardResponse } from '../../../core/payments/payment.interface';
+import { FinancialCardOption } from '../../../core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-stripe-card-selection',
@@ -15,7 +12,6 @@ export class StripeCardSelectionComponent implements OnInit {
 
   private _model: boolean = false;
   public financialCards: FinancialCardOption[];
-  //public financialCards: FinancialCard;
   public card: string = '';
   @Output() hasStripeCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onSelectExistingCard: EventEmitter<any> = new EventEmitter<any>();
@@ -24,9 +20,7 @@ export class StripeCardSelectionComponent implements OnInit {
   private onModelChange: any = () => {};
   private onTouched: any = () => {};
 
-  constructor(private stripeService: StripeService,
-              private modalService: NgbModal,
-              private errorService: ErrorsService) { }
+  constructor(private stripeService: StripeService) { }
 
   ngOnInit() {
     this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
@@ -72,8 +66,8 @@ export class StripeCardSelectionComponent implements OnInit {
   }
 
   public setFinancialCard(selectedCard: FinancialCardOption) {
-    //@TODO create paymentIntent with the payment method id (selectedCard.id)
     this.onSelectExistingCard.emit();
+    this.stripeService.buyWithSavedCard(orderId, paymentId, selectedCard.id);
   }
 
 }

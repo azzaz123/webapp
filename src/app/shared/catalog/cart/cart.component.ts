@@ -204,21 +204,4 @@ export class CartComponent implements OnInit, OnDestroy {
     this.showCard = false;
   }
 
-  /*public addNewCard() {
-   let modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {windowClass: 'review'});
-   modalRef.result.then((financialCard: FinancialCard) => {
-     const existingCard = this.financialCards.filter((stripeCard: FinancialCard) => {
-      return stripeCard.id === financialCard.id;
-     });
-     if (!existingCard.length) {
-      this.stripeService.addNewCard(financialCard.id).subscribe((response: any) => {
-        this.financialCards.push(financialCard);
-      }, () => {
-      this.errorService.i18nError('addNewCardError');
-     });
-     }
-     modalRef = null;
-   }, () => {});
-  }*/
-
 }

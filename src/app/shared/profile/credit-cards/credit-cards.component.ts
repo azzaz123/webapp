@@ -1,9 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, Input } from '@angular/core';
 import { FinancialCard } from '../../../core/payments/payment.interface';
 import { PaymentService } from '../../../core/payments/payment.service';
-import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
-import { StripeService } from '../../../core/stripe/stripe.service';
 
 @Component({
   selector: 'tsl-credit-cards',
@@ -14,9 +11,7 @@ export class CreditCardsComponent implements OnInit {
 
   @Input() financialCard: FinancialCard;
 
-  constructor(private paymentService: PaymentService,
-              private modalService: NgbModal,
-              private stripeService: StripeService) { }
+  constructor(private paymentService: PaymentService) { }
 
   ngOnInit() {
     this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
@@ -24,7 +19,7 @@ export class CreditCardsComponent implements OnInit {
     });
   }
 
-  public onDeleteCard(financialCard: FinancialCard): void {
+  public onDeleteCard(): void {
     this.financialCard = null;
   }
 }

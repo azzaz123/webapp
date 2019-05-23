@@ -168,6 +168,30 @@ describe('CartComponent', () => {
     });
   });
 
+  describe('hasStripeCard', () => {
+    it('should set true if stripe card exists', () => {
+      component.hasStripeCard(true);
+
+      expect(component.isStripeCard).toEqual(true);
+    });
+  });
+
+  describe('addNewCard', () => {
+    it('should set showCard to true', () => {
+      component.addNewCard();
+
+      expect(component.showCard).toEqual(true);
+    });
+  });
+
+  describe('hideNewCard', () => {
+    it('should set showCard to true', () => {
+      component.hideNewCard();
+
+      expect(component.showCard).toEqual(false);
+    });
+  });
+
   describe('ngOnDestroy', () => {
     it('should set active false', () => {
       component.ngOnDestroy();

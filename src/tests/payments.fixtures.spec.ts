@@ -20,6 +20,25 @@ export const FINANCIAL_CARD: FinancialCard = {
   number: '1234***********1111'
 };
 
+export const FINANCIAL_STRIPE_CARD: FinancialCard = {
+  expire_date: '01/2021',
+  id: 'pm_2f2f2f',
+  number: '4242',
+  favorite: true,
+  stripeCard: {
+    brand: null,
+    checks: null,
+    country: null,
+    exp_month: 2,
+    exp_year: 2020,
+    funding: null,
+    generated_from: null,
+    last4: '4242',
+    three_d_secure_usage: { supported : null },
+    wallet: null
+  }
+};
+
 export const SABADELL_RESPONSE: SabadellInfoResponse = {
   merchant_parameters: 'eyJEU19NRVJDSEFOVF9BTU9VTlQi',
   signature: '/XvjPsRtYubYTmKLCGkpA6XxOXj/rJ3sdGZl0+gz3lw=',
@@ -530,7 +549,7 @@ export const PERK_RESPONSE: PerkResponse[] = [{
 
 export const PAYMENT_METHOD_CARD_RESPONSE: PaymentMethodCardResponse[] = [
   {
-    brand: 'VISA',
+    brand: null,
     default: true,
     expiration_month: 2,
     expiration_year: 2020,
@@ -538,7 +557,7 @@ export const PAYMENT_METHOD_CARD_RESPONSE: PaymentMethodCardResponse[] = [
     last_digits: '4242'
   },
   {
-    brand: 'VISA',
+    brand: null,
     default: false,
     expiration_month: 4,
     expiration_year: 2024,

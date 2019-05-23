@@ -22,6 +22,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UnsubscribeModalComponent } from '../unsubscribe-modal/unsubscribe-modal.component';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
 import { LOCATION_MODAL_TIMEOUT } from '../../shared/geolocation/location-select/location-select.component';
+import { StripeService } from '../../core/stripe/stripe.service';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
@@ -33,6 +34,7 @@ describe('ProfileInfoComponent', () => {
   let errorsService: ErrorsService;
   let http: HttpService;
   let modalService: NgbModal;
+  let stripeService: StripeService;
   let mockBackend: MockBackend;
 
   const componentInstance: any = {
@@ -80,7 +82,14 @@ describe('ProfileInfoComponent', () => {
             };
           }
         }
+        },
+        {
+          provide: StripeService, useValue: {
+          isPaymentMethodStripe() {
+            return true
+          }
         }
+        },
       ],
       declarations: [ProfileInfoComponent, ProfileFormComponent, SwitchComponent],
       schemas: [NO_ERRORS_SCHEMA]
@@ -94,6 +103,7 @@ describe('ProfileInfoComponent', () => {
     errorsService = TestBed.get(ErrorsService);
     http = TestBed.get(HttpService);
     modalService = TestBed.get(NgbModal);
+    stripeService = TestBed.get(StripeService);
     mockBackend = TestBed.get(MockBackend);
     spyOn(userService, 'me').and.callThrough();
     component.formComponent = TestBed.createComponent(ProfileFormComponent).componentInstance;
@@ -104,6 +114,15 @@ describe('ProfileInfoComponent', () => {
 
     it('should call userService.me', () => {
       expect(userService.me).toHaveBeenCalled();
+    });
+
+    it('should call stripeService.isPaymentMethodStripe', () => {
+      spyOn(stripeService, 'isPaymentMethodStripe').and.returnValue(true);
+
+      component.ngOnInit();
+
+      expect(stripeService.isPaymentMethodStripe).toHaveBeenCalled();
+      expect(component.isStripe).toBe(true);
     });
 
     it('should set profileForm with user data', () => {

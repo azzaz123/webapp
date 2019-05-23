@@ -39,13 +39,6 @@ export class StripeCardsComponent implements OnInit {
     }
   }
 
-  /*public onSetFavoriteCard(stripeCard: FinancialCard): void {
-    const index = this.stripeCards.indexOf(stripeCard);
-    for (let i = 0; i < this.stripeCards.length; i++) {
-      this.stripeCards[i].favorite = i === index ? true : false;
-    }
-  }*/
-
   public addNewCard() {
     let modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {windowClass: 'review'});
     modalRef.result.then((financialCard: FinancialCard) => {

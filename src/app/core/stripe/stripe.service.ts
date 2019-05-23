@@ -34,13 +34,13 @@ export class StripeService {
 
   public buy(orderId: string, paymentId: string, hasFinancialCard: boolean, cardType: string, card: any): void {
     if (!hasFinancialCard || hasFinancialCard && cardType === 'new') {
-      this.paymentService.paymentIntent(orderId, paymentId).subscribe((response: PaymentIntents) => {
+      this.paymentService.paymentIntents(orderId, paymentId).subscribe((response: PaymentIntents) => {
         this.payment(response.token, card).then((response: any) => {
           this.handlePayment(response);
         });
       });
     } else {
-      this.paymentService.paymentIntent(orderId, paymentId).subscribe((response: PaymentIntents) => {
+      this.paymentService.paymentIntents(orderId, paymentId).subscribe((response: PaymentIntents) => {
         this.payment(response.token, card).then((response: PaymentIntent) => {
           this.handlePayment(response);
         });
@@ -61,6 +61,7 @@ export class StripeService {
     return this.http.get(`${this.API_URL}/c2b/stripe/payment_methods/cards`)
       .map((r: Response) => r.json())
       .map((financialCards: PaymentMethodCardResponse[]) => this.mapPaymentMethodCard(financialCards))
+      .do((financialCards: FinancialCard[]) => console.log(financialCards))
       .do((financialCards: FinancialCard[]) => this.financialCards = financialCards);
   }
 
@@ -75,6 +76,12 @@ export class StripeService {
   public createStripeCard(cardElement: any): Promise<any> {
     return this.createStripePaymentMethod(cardElement).then((response: any) => {
       return response.paymentMethod;
+    });
+  }
+
+  public buyWithSavedCard(orderId: string, paymentId: string, paymentMethodId: string) {
+    this.paymentService.paymentIntentsConfirm(orderId, paymentId, paymentMethodId).subscribe((response: PaymentIntents) => {
+      
     });
   }
 
@@ -125,7 +132,18 @@ export class StripeService {
         stripeCard.id,
         stripeCard.last_digits,
         null,
-        null
+        {
+          brand: stripeCard.brand,
+          checks: null,
+          country: null,
+          exp_month: stripeCard.expiration_month,
+          exp_year: stripeCard.expiration_year,
+          funding: null,
+          generated_from: null,
+          last4: stripeCard.last_digits,
+          three_d_secure_usage: { supported: null},
+          wallet: null
+        }
       );
     });
   }

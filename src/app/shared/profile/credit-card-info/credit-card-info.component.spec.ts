@@ -49,6 +49,9 @@ describe('CreditCardInfoComponent', () => {
           provide: StripeService, useValue: {
           isPaymentMethodStripe() {
             return true
+          },
+          deleteCard() {
+            return Observable.of({})
           }
         }
         },
@@ -103,4 +106,30 @@ describe('CreditCardInfoComponent', () => {
       expect(component.financialCard).toBeNull();
     });
   });
+
+  describe('deleteStripeCreditCard', () => {
+    let deleteStripeCardButton;
+    beforeEach(fakeAsync(() => {
+      spyOn(modalService, 'open').and.callThrough();
+      spyOn(stripeService, 'deleteCard').and.callThrough();
+      spyOn(component.onDeleteStripeCard, 'emit');
+      spyOn(component, 'deleteStripeCard').and.callThrough();
+      deleteStripeCardButton = fixture.debugElement.nativeElement.querySelector('delete-link');
+      deleteStripeCardButton.click();
+    }));
+
+    it('should open modal', () => {
+      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
+        windowClass: 'modal-prompt'
+      });
+      expect(componentInstance.type).toBe(4);
+      expect(component.onDeleteStripeCard.emit).toHaveBeenCalledWith(FINANCIAL_CARD);
+    });
+
+    it('should call deleteCard and rest card', () => {
+      expect(stripeService.deleteCard).toHaveBeenCalled();
+      expect(component.financialCard).toBeNull();
+    });
+  });
+
 });

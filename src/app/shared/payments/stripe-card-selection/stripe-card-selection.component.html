@@ -1,7 +1,7 @@
 <div class="select-card" *ngIf="financialCards">
   <ng-select placeholder="Select your card" class="form-control" i18n-placeholder placeholder="Select your card"
              [options]="financialCards" [(ngModel)]="selectedFinancialCard" bindLabel="number" bindValue="number"
-             (selected)="setFinancialCard($event)">
+             (selected)="setFinancialCard($event)" name="financialCard" ngDefaultControl>
     <ng-template #optionTemplate let-option="option" let-index="index">
         <div class="card-body">
           <mat-icon svgIcon="card" class="card-icon"></mat-icon>
@@ -11,4 +11,3 @@
     </ng-template>
   </ng-select>
 </div>
-<!-- {{financialCard?.expire_date | date:'MM/yy'}} -->

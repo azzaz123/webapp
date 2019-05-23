@@ -83,7 +83,7 @@ export interface BillingInfoResponse {
 }
 
 export interface FinancialCard {
-  expire_date: number;
+  expire_date: number | string;
   id: string;
   number: string;
   favorite?: boolean;

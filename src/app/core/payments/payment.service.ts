@@ -63,9 +63,17 @@ export class PaymentService {
     });
   }
 
-  public paymentIntent(orderId: string, paymentId: string): Observable<PaymentIntents> {
+  public paymentIntents(orderId: string, paymentId: string): Observable<PaymentIntents> {
     return this.http.post(`${this.API_URL}/c2b/stripe/payment_intents/${paymentId}`, {
       order_id: orderId
+    })
+      .map((r: Response) => r.json());
+  }
+
+  public paymentIntentsConfirm(orderId: string, paymentId: string, paymentMethodId: string): Observable<PaymentIntents> {
+    return this.http.post(`${this.API_URL}/c2b/stripe/payment_intents/${paymentId}/confirm`, {
+      order_id: orderId,
+      paymentMethodId: paymentMethodId
     })
       .map((r: Response) => r.json());
   }

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { ErrorsService } from '../../../core/errors/errors.service';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 
 @Component({
@@ -15,8 +14,7 @@ export class NewCardModalComponent {
   public loading: boolean;
 
   constructor(public activeModal: NgbActiveModal,
-              private stripeService: StripeService,
-              private errorService: ErrorsService) {
+              private stripeService: StripeService) {
   }
 
   public onCreateCard(paymentMethod: PaymentMethodResponse) {

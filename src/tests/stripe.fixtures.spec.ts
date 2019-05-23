@@ -2,15 +2,15 @@ import { FinancialCard } from '../app/shared/profile/credit-card-info/financial-
 import { FinancialCardOption, StripeCard } from '../app/core/payments/payment.interface';
 
 export const STRIPE_CARD: StripeCard = {
-  brand: 'VISA',
+  brand: null,
   checks: null,
-  country: 'US',
+  country: null,
   exp_month: 2,
   exp_year: 2020,
   funding: null,
-  generated_from: 2812812,
+  generated_from: null,
   last4: '4242',
-  three_d_secure_usage: { supported : true },
+  three_d_secure_usage: { supported : null },
   wallet: null
 };
 
@@ -18,19 +18,19 @@ export const FINANCIAL_CARD_OPTION: FinancialCardOption[] = [
   {
     value: '4242',
     label: '4242',
-    expire_date: '02/2024',
+    expire_date: '01/2021',
     id: 'pm_2f2f2f',
     number: '4242',
     favorite: true,
-    stripeCard: null
+    stripeCard: STRIPE_CARD
   },
   {
-    value: '4242',
-    label: '4242',
-    expire_date: '02/2024',
-    id: 'pm_2f2f2f',
-    number: '4242',
-    favorite: true,
+    value: '2121',
+    label: '2121',
+    expire_date: '01/2021',
+    id: 'pm_6u6u6u',
+    number: '2121',
+    favorite: false,
     stripeCard: null
   }
 ];
