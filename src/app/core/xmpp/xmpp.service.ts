@@ -300,13 +300,17 @@ export class XmppService {
       }
       return Observable.of({});
     })
-    .do(() => user.blocked = true);
+    .do(() => { user.blocked = true;
+                this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
+              });
   }
 
   public unblockUser(user: User | InboxUser): Observable<any> {
     _.remove(this.blockedUsers, (userId) => userId === user.id);
     return this.setPrivacyList(this.blockedUsers)
-    .do(() => user.blocked = false);
+    .do(() => { user.blocked = false;
+                this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
+              });
   }
 
   private onPrivacyListChange(iq: any) {
