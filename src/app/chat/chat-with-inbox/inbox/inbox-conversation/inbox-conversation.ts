@@ -1,6 +1,6 @@
 import { InboxMessage } from '../../message/inbox-message';
 import { InboxUser, InboxUserPlaceholder } from '../inbox-user';
-import { InboxItem, InboxImage, InboxItemPlaceholder } from '../inbox-item';
+import { InboxItem, InboxImage, InboxItemPlaceholder, INBOX_ITEM_STATUSES } from '../inbox-item';
 import { environment } from '../../../../../environments/environment';
 
 export class InboxConversation {
@@ -17,7 +17,12 @@ export class InboxConversation {
     }
 
     public active = false;
-    public cannotChat = false;
+
+    get cannotChat(): boolean {
+        return  this.user.blocked
+                || !this.user.available
+                || this.item.status === INBOX_ITEM_STATUSES.notAvailable;
+    }
 
     get id(): string {
         return this._id;
@@ -93,7 +98,7 @@ export class InboxConversation {
         const user = this.buildInboxUser(json.with_user);
         const item = this.buildInboxItem(json.item);
         const messages = this.buildInboxMessages(json, withSelfId);
-        const nextPageToken = json.next_from || null;
+        const nextPageToken = json.messages.next_from || null;
         const lastMessage = messages[0];
         const dateModified = lastMessage ? lastMessage.date : null;
         return new InboxConversation(json.hash, dateModified, user, item, nextPageToken, messages, json.phone_shared,
@@ -119,15 +124,14 @@ export class InboxConversation {
         if (!item) {
             return InboxItemPlaceholder;
         }
-        return new InboxItem(item.hash, item.price, item.title, image, item.status, item.is_mine);
+        const itemUrl = `${environment.siteUrl}item/${item.slug}`;
+        return new InboxItem(item.hash, item.price, item.title, image, itemUrl, item.status, item.is_mine);
     }
 
     private static buildInboxMessages(conversation, id) {
         // TODO - handle third voice type message (type === '? TBD');
-        const textMessages = conversation.messages.messages.filter(m => m.type === 'text')
-            .map(m => new InboxMessage(m.id, conversation.hash, m.text,
-                m.from_self ? id : (conversation.with_user ? conversation.with_user.hash : null), m.from_self, new Date(m.timestamp),
-                m.status, m.payload));
+        const textMessages = InboxMessage.messsagesFromJson(conversation.messages.messages,
+            conversation.hash, id, conversation.with_user ? conversation.with_user.id : null);
         return textMessages;
     }
 }

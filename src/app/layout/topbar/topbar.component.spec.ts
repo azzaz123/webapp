@@ -57,20 +57,20 @@ describe('TopbarComponent', () => {
             me(): Observable<User> {
               return Observable.of(MOCK_USER);
             },
-          isProfessional() {
+            isProfessional() {
               return Observable.of(true);
-          }
+            }
           },
         },
         {
           provide: PaymentService, useValue: {
-          getCreditInfo() {
-            return Observable.of({
-              currencyName: CURRENCY,
-              credit: CREDITS
-            });
+            getCreditInfo() {
+              return Observable.of({
+                currencyName: CURRENCY,
+                credit: CREDITS
+              });
+            }
           }
-        }
         },
         {
           provide: WindowRef, useValue: {
@@ -83,23 +83,23 @@ describe('TopbarComponent', () => {
         },
         {
           provide: MessageService, useValue: {
-          totalUnreadMessages$: Observable.of(1)
-        }
+            totalUnreadMessages$: Observable.of(1)
+          }
         },
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         },
         {
           provide: CookieService, useValue: {
-          put(key, value) {
+            put(key, value) {
+            }
           }
-        }
         },
         EventService, ...TEST_HTTP_PROVIDERS],
       declarations: [TopbarComponent, CustomCurrencyPipe],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
     userService = TestBed.get(UserService);
   }));
 
@@ -174,15 +174,6 @@ describe('TopbarComponent', () => {
     });
   });
 
-  describe('update coordinate', () => {
-    const newCoordinates = {'latitude': 41.2, 'longitude': 2.1};
-    it('should update the user coordinates', () => {
-      component.coordinates = {'latitude': 0.0, 'longitude': 0.0};
-      component.onCoordinateUpdate(newCoordinates);
-      expect(component.coordinates).toEqual(newCoordinates);
-    });
-  });
-
   describe('update keyword', () => {
     const newKeyword = 'iphone';
     it('should update the keyword', () => {
@@ -201,19 +192,12 @@ describe('TopbarComponent', () => {
       };
     });
 
-    describe('update category', () => {
-      it('should update the category and call the form submit', () => {
-        spyOn(component, 'submitForm').and.callThrough();
-        component.onCategoryUpdate(CATEGORY_DATA_WEB[0]);
-        expect(component.category).toEqual(CATEGORY_DATA_WEB[0].categoryId);
-        expect(component.submitForm).toHaveBeenCalled();
-      });
-    });
-
     describe('update search', () => {
       it('should update the category and keyword and call the form submit', () => {
         spyOn(component, 'submitForm').and.callThrough();
+
         component.onSearchUpdate(SUGGESTER_DATA_WEB[0]);
+
         expect(component.category).toEqual(SUGGESTER_DATA_WEB[0].category_id);
         expect(component.kws).toEqual(SUGGESTER_DATA_WEB[0].suggestion);
         expect(component.submitForm).toHaveBeenCalled();
@@ -223,7 +207,9 @@ describe('TopbarComponent', () => {
     describe('search submit', () => {
       it('should update the keyword and call the form submit', () => {
         spyOn(component, 'submitForm').and.callThrough();
+
         component.onSearchSubmit(SUGGESTER_DATA_WEB[0].suggestion);
+
         expect(component.kws).toEqual(SUGGESTER_DATA_WEB[0].suggestion);
         expect(component.submitForm).toHaveBeenCalled();
       });
@@ -231,27 +217,20 @@ describe('TopbarComponent', () => {
 
     it('should redirect to the web when category is set', () => {
       component.category = CATEGORY_DATA_WEB[1].categoryId;
-      component.submitForm();
-      expect(windowRef.nativeWindow.location.href)
-      .toEqual(environment.siteUrl.replace('es', 'www') + 'search?catIds=15245' + '&kws=' + '&verticalId=');
-    });
 
-    it('should redirect to the web when category is not set', () => {
-      component.categoryEl = {
-        nativeElement: {
-          value: '15245'
-        }
-      };
       component.submitForm();
+
       expect(windowRef.nativeWindow.location.href)
-      .toEqual(environment.siteUrl.replace('es', 'www')  + 'search?catIds=15245' + '&kws=' + '&verticalId=');
+        .toEqual(environment.siteUrl.replace('es', 'www') + 'search?catIds=15245' + '&kws=');
     });
 
     it('should submit the search form for cars', () => {
       component.category = CATEGORY_DATA_WEB[0].categoryId;
+
       component.submitForm();
+
       expect(windowRef.nativeWindow.location.href)
-      .toEqual(environment.siteUrl.replace('es', 'www')  + 'search?catIds=100' + '&kws=' + '&verticalId=100');
+        .toEqual(environment.siteUrl.replace('es', 'www') + 'search?catIds=100' + '&kws=');
     });
   });
 

@@ -58,27 +58,18 @@ describe('Component: Conversation', () => {
   describe('cannotChat', () => {
     it('should set conversation.cannotChat to TRUE when the conversation user is not available', () => {
       component.conversation.user.available = false;
-      expect(component.conversation.cannotChat).toBe(false);
-
-      component.ngOnChanges();
 
       expect(component.conversation.cannotChat).toBe(true);
     });
 
     it('should set conversation.cannotChat to TRUE when the conversation user is blocked', () => {
       component.conversation.user.blocked = true;
-      expect(component.conversation.cannotChat).toBe(false);
-
-      component.ngOnChanges();
 
       expect(component.conversation.cannotChat).toBe(true);
     });
 
     it('should set conversation.cannotChat to TRUE when the conversation item is not available', () => {
       component.conversation.item.status = INBOX_ITEM_STATUSES.notAvailable;
-      expect(component.conversation.cannotChat).toBe(false);
-
-      component.ngOnChanges();
 
       expect(component.conversation.cannotChat).toBe(true);
     });
@@ -87,9 +78,6 @@ describe('Component: Conversation', () => {
       component.conversation.item.status = INBOX_ITEM_STATUSES.available;
       component.conversation.user.blocked = false;
       component.conversation.user.available = true;
-      expect(component.conversation.cannotChat).toBe(false);
-
-      component.ngOnChanges();
 
       expect(component.conversation.cannotChat).toBe(false);
     });

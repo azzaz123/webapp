@@ -21,8 +21,14 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { ITEM_ID } from '../../../../tests/item.fixtures.spec';
 import { BlockUserService } from '../../../core/conversation/block-user.service';
 import { ConversationService } from '../../../core/inbox/conversation.service';
+import { User } from '../../../core/user/user';
 
 class MockUserService {
+
+  public user: User = new User('fakeId', 'microName', null,
+                                null, null, null, null, null, null,
+                                null, null, null, null, null, null,
+                                null, null, null, null, null, null, null);
 
   public reportUser(): Observable<any> {
     return Observable.of({});
@@ -46,7 +52,9 @@ class MockedToastr {
   }
 }
 
-class MockConversationService {}
+class MockConversationService {
+  public loadMoreMessages() {}
+}
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -111,13 +119,13 @@ describe('CurrentConversationComponent', () => {
       it(`should call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message belonging
       to the currentConversation`, fakeAsync(() => {
         const newMessage = new InboxMessage('someId', component.currentConversation.id, 'hola!',
-        component.currentConversation.messages[0].from, true, new Date(), messageStatus.RECEIVED);
+        component.currentConversation.messages[0].from, false, new Date(), messageStatus.RECEIVED);
 
         component.ngOnInit();
         eventService.emit(EventService.MESSAGE_ADDED, newMessage);
         tick(1000);
 
-        expect(realTime.sendRead).toHaveBeenCalledWith(component.currentConversation.user.id, component.currentConversation.id);
+        expect(realTime.sendRead).toHaveBeenCalledWith('fakeId', component.currentConversation.id);
       }));
 
       it(`should NOT call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message NOT belonging
@@ -350,5 +358,45 @@ describe('CurrentConversationComponent', () => {
       expect(blockService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been unblocked');
     }));
+  });
+
+  describe('hasMoreMessages', () => {
+    it('should return TRUE if currentConversation has nextPageToken', () => {
+      component.currentConversation = MOCK_CONVERSATION();
+      component.currentConversation.nextPageToken = 'someToken';
+
+      const result = component.hasMoreMessages();
+
+      expect(result).toBeTruthy();
+    });
+
+    it('should return FALSE if currentConversation has not nextPageToken', () => {
+      component.currentConversation = MOCK_CONVERSATION();
+      component.currentConversation.nextPageToken = null;
+
+      const result = component.hasMoreMessages();
+
+      expect(result).toBeFalsy();
+    });
+  });
+
+  describe('loadMoreMessages', () => {
+    it('should call conversationService to loadMoreMessages() if isLoadingMore is FALSE', () => {
+      spyOn(conversationService, 'loadMoreMessages').and.callThrough();
+      component['isLoadingMoreMessages'] = false;
+
+      component.loadMoreMessages();
+
+      expect(conversationService.loadMoreMessages).toHaveBeenCalled();
+    });
+
+    it('should NOT call conversationService to loadMoreMessages() if isLoadingMore is FALSE', () => {
+      spyOn(conversationService, 'loadMoreMessages').and.callThrough();
+      component['isLoadingMoreMessages'] = true;
+
+      component.loadMoreMessages();
+
+      expect(conversationService.loadMoreMessages).not.toHaveBeenCalled();
+    });
   });
 });

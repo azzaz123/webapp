@@ -18,7 +18,9 @@ export class ConversationService {
   private API_URL = 'bff/messaging/conversation/';
   private ARCHIVE_URL = '/api/v3/instant-messaging/conversations/archive';
   private UNARCHIVE_URL = '/api/v3/instant-messaging/conversations/unarchive';
+  private MORE_MESSAGES_URL = '/api/v3/instant-messaging/archive/conversation/CONVERSATION_HASH/messages';
   private _selfId: string;
+  private max_messages = 20;
 
   constructor(
     private http: HttpService,
@@ -138,8 +140,8 @@ export class ConversationService {
         this.persistencyService.updateInboxMessageStatus(message, messageStatus.READ);
       });
       if (!markMessagesFromSelf) {
-        conversation.unreadCounter -= unreadMessages.length;
-        this.messageService.totalUnreadMessages -= unreadMessages.length;
+        this.messageService.totalUnreadMessages -= conversation.unreadCounter;
+        conversation.unreadCounter = 0;
       }
     }
   }
@@ -195,6 +197,11 @@ export class ConversationService {
 
   public archive(conversation: InboxConversation): Observable<InboxConversation> {
     return this.archiveConversation(conversation.id)
+    .catch((err) => {
+      if (err.status === 409) {
+        return Observable.of(conversation);
+      } else { return Observable.throwError(err); }
+    })
     .map(() => {
       this.eventService.emit(EventService.CONVERSATION_ARCHIVED, conversation);
       return conversation;
@@ -203,6 +210,11 @@ export class ConversationService {
 
   public unarchive(conversation: InboxConversation): Observable<InboxConversation> {
     return this.unarchiveConversation(conversation.id)
+    .catch((err) => {
+      if (err.status === 409) {
+        return Observable.of(conversation);
+      } else { return Observable.throwError(err); }
+    })
     .map(() => {
       this.eventService.emit(EventService.CONVERSATION_UNARCHIVED, conversation);
       return conversation;
@@ -219,5 +231,37 @@ export class ConversationService {
     return this.http.put(this.UNARCHIVE_URL, {
       conversation_ids: [conversationId]
     });
+  }
+
+  public loadMoreMessages(conversationId: string) {
+    let conversation = this.conversations.find( (conver) => conver.id === conversationId);
+    if (!conversation) {
+      conversation = this.archivedConversations.find( (conver) => conver.id === conversationId);
+    }
+
+    if (conversation) {
+      this.loadMoreMessagesFor$(conversation)
+      .subscribe((conv: InboxConversation) => {
+        this.eventService.emit(EventService.MORE_MESSAGES_LOADED, conv);
+      });
+    }
+  }
+
+  private loadMoreMessagesFor$(conversation: InboxConversation): Observable<InboxConversation> {
+    return this.getMoreMessages$(conversation.id, conversation.nextPageToken).delay(1000)
+    .map((res) => {
+      const json = res.json();
+      const newmessages = InboxMessage.messsagesFromJson(json.messages , conversation.id, this.selfId, conversation.user.id);
+      newmessages.forEach((mess) => conversation.messages.push(mess));
+      conversation.nextPageToken = json.next_from;
+      return conversation;
+    });
+  }
+
+  private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<any> {
+    const url = this.MORE_MESSAGES_URL.replace('CONVERSATION_HASH', conversationId);
+    return this.http.get(url,
+      { max_messages : this.max_messages,
+      from : nextPageToken });
   }
 }

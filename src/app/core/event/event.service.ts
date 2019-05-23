@@ -9,6 +9,7 @@ export class EventService {
   public static USER_LOGOUT = 'logoutEvent';
   public static NEW_MESSAGE = 'newMessage';
   public static MESSAGE_ADDED = 'messageAdded';
+  public static MORE_MESSAGES_LOADED = 'moreMessagesLoaded';
   public static CHAT_SIGNAL = 'chatSignal';
   public static CHAT_LAST_RECEIVED_TS = 'chatLastReceivedTs';
   public static MESSAGE_READ_ACK = 'messageReadAck';
