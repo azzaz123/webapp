@@ -71,7 +71,9 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.currentConversation = null;
-    this.newMessageSubscription.unsubscribe();
+    if (this.newMessageSubscription) {
+      this.newMessageSubscription.unsubscribe();
+    }
   }
 
   public showDate(currentMessage: InboxMessage, nextMessage: InboxMessage): boolean {
