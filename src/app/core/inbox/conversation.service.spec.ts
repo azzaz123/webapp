@@ -504,4 +504,66 @@ describe('ConversationService', () => {
         });
     });
   });
+
+  describe('archive conversation', () => {
+    beforeEach(() => {
+      spyOn(eventService, 'emit').and.callThrough();
+      eventService.emit(EventService.INBOX_LOADED, createInboxConversationsArray(12));
+    });
+
+    it('with success should emit CONVERSATION_ARCHIVED event', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+
+      service.archive(service.conversations[0]).subscribe();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]);
+    });
+
+    it('with 409 error should emit CONVERSATION_ARCHIVED event', () => {
+      spyOn(http, 'put').and.returnValue(Observable.throwError({status: 409}));
+
+      service.archive(service.conversations[0]).subscribe();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]);
+    });
+
+    it('with error should NOT emit CONVERSATION_ARCHIVED event', () => {
+      spyOn(http, 'put').and.returnValue(Observable.throwError(new Error('Error')));
+
+      service.archive(service.conversations[0]).subscribe();
+
+      expect(eventService.emit).not.toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]);
+    });
+  });
+
+  describe('unarchive conversation', () => {
+    beforeEach(() => {
+      spyOn(eventService, 'emit').and.callThrough();
+      eventService.emit(EventService.ARCHIVED_INBOX_LOADED, createInboxConversationsArray(12));
+    });
+
+    it('with success should emit CONVERSATION_UNARCHIVED event', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+
+      service.unarchive(service.archivedConversations[0]).subscribe();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]);
+    });
+
+    it('with 409 error should emit CONVERSATION_UNARCHIVED event', () => {
+      spyOn(http, 'put').and.returnValue(Observable.throwError({status: 409}));
+
+      service.unarchive(service.archivedConversations[0]).subscribe();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]);
+    });
+
+    it('with error should NOT emit CONVERSATION_UNARCHIVED event', () => {
+      spyOn(http, 'put').and.returnValue(Observable.throwError(new Error('Error')));
+
+      service.unarchive(service.archivedConversations[0]).subscribe();
+
+      expect(eventService.emit).not.toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]);
+    });
+  });
 });
