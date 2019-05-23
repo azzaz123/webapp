@@ -1,13 +1,12 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { InboxConversation } from './inbox-conversation';
-import { INBOX_ITEM_STATUSES } from '../inbox-item';
 
 @Component({
   selector: 'tsl-inbox-conversation',
   templateUrl: './inbox-conversation.component.html',
   styleUrls: ['./inbox-conversation.component.scss']
 })
-export class InboxConversationComponent implements OnChanges {
+export class InboxConversationComponent {
 
   @Input() conversation: InboxConversation;
 
@@ -22,9 +21,6 @@ export class InboxConversationComponent implements OnChanges {
   };
 
   constructor() { }
-
-  ngOnChanges() { }
-
 
   public dateIsThisYear(): boolean {
     if (this.conversation && this.conversation.modifiedDate) {
