@@ -41,7 +41,7 @@ $form-control-height: 50px;
         }
       }
     }
-    &:focus, &.ng-dirty.ng-invalid:focus, &.ng-dirty.ng-valid:focus {
+    &:focus:not([readonly]), &.ng-dirty.ng-invalid:focus, &.ng-dirty.ng-valid:focus {
       border-color: $walla-main;
       color: $blue-grey-1;
       outline: none;

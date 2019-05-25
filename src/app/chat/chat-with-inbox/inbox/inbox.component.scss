@@ -2,6 +2,9 @@
 
 $title-height: 64px;
 $filters-nav-height: 38px;
+$inbox-width: 340px;
+$inbox-height: 403px;
+$inbox-header-height: 66px;
 
 h2 {
   margin: $spacing-ml;
@@ -10,43 +13,45 @@ h2 {
   letter-spacing: $letter-spacing;
   .badge {
     margin-left: 10px;
-    vertical-align: middle;
+    vertical-align: middle; 
   }
 }
 
 .header {
-  border-bottom: 1px solid $blue-grey-5;
+    border-bottom: 0px solid $blue-grey-5;
 }
 
 .scroll-panel {
-  scroll-behavior: smooth;
-  display: block;
-  height: calc(100vh - #{$topbar-height});
-  overflow-y: auto;
-  overflow-x: hidden;
-  width: 100%;
-  &.professional {
-    height: calc(100vh - #{$topbar-height} - #{$title-height} - #{$filters-nav-height});
-  }
-  .btn.new-messages-toast {
-    display: flex;
-    align-items: center;
-    font-size: $font-size-s;
-    border-radius: 100px;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    z-index: 99;
-    margin-top: $spacing-ms;
-    padding: $spacing-s $spacing-ml;
-    transform: translateX(-50%);
-    box-shadow: 0 1px 3px 0 rgba($black, 0.16);
-    mat-icon {
-      width: 9px;
-      height: 100%;
-      margin-right: $spacing-s;
-    }
-  }
+	scroll-behavior: smooth;
+	display: block;
+	height: calc(100vh - (#{$topbar-height} + #{$inbox-header-height}));
+	overflow-y: auto;
+	overflow-x: hidden;
+	width: 100%;
+
+	&.professional {
+		height: calc(100vh - #{$topbar-height} - #{$inbox-header-height} - #{$title-height} - 12px);
+	}
+
+	 .btn.new-messages-toast {
+	    display: flex;
+	    align-items: center;
+	    font-size: $font-size-s;
+	    border-radius: 100px;
+	    position: absolute;
+	    top: $inbox-header-height;
+	    left: 25%;
+	    z-index: 80;
+	    margin-top: $spacing-ms;
+      padding: $spacing-s $spacing-ml;
+	    box-shadow: 0 1px 3px 0 rgba($black, 0.16);
+
+	     mat-icon {
+	      width: 9px;
+	      height: 100%;
+	      margin-right: $spacing-s;
+	    }
+	}
 }
 
 .inboxError {
@@ -69,9 +74,16 @@ tsl-process-all-button {
 #loader {
   padding-top: $spacing-ml;
   mat-icon {
-    width: 339px;
-    height: 487px;
+    width: 340px;
+    height: 403px;
   }
+}
+
+.isLoading {
+    /* Keyword value */
+    animation: fadeInFromNone 0.7s ease-in-out alternate-reverse;
+    animation-iteration-count: infinite;
+    animation-timing-function:linear;
 }
 
 .load-more-container {
@@ -81,23 +93,72 @@ tsl-process-all-button {
   height: $load-more-container-height;
   text-align: center;
   .load-more {
-    color: $walla-main;
-    position: relative;
-    text-transform: uppercase;
-    font-size: $font-size-xs;
-    font-weight: bold;
-    .spinner {
-      height: $spinner-size;
-      width: $spinner-size;
-      svg {
-        position: absolute;
-        top: 0;
-        left: -#{$spacing-ml + 5px};
+      color: $walla-main;
+      position: relative;
+      text-transform: uppercase;
+      font-size: $font-size-xs;
+      font-weight: bold;
+      .spinner {
+          height: $spinner-size;
+          width: $spinner-size;
+          svg {
+              position: absolute;
+              top: 0;
+              left: -#{$spacing-ml + 5px};
+          }
       }
+      &:hover {
+          cursor: pointer;
+          text-decoration: none;
+      }
+  }
+}
+
+#inbox-empty {
+  padding-top: $spacing-ml;
+  mat-icon {
+    width: $inbox-width;
+    height: $inbox-height;
+  }
+}
+
+#header-empty {
+  mat-icon {
+    width: $inbox-width;
+    height: $inbox-header-height;
+  }
+  border-bottom: 1px solid $blue-grey-5;
+}
+
+.inbox-header-menu {
+  height: $inbox-header-height;
+  border-bottom: 1px solid $blue-grey-4;
+  display: flex;
+  align-content: center;
+  background-color: $white;
+  z-index: 99;
+  .dropdown-header {
+    display: flex;
+    align-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    .header-title {
+      display: flex;
+      font-size: 16px;
     }
-    &:hover {
-      cursor: pointer;
-      text-decoration: none;
+    mat-icon {
+      height: 24px;
+      width: 24px;
+      display: flex;
+    }
+  }
+  .dropdown-menu {
+    margin-left: 12px;
+  }
+  .dropdown-item {
+    cursor: pointer;
+    .active {
+      background: solid $blue-grey-5;
     }
   }
 }

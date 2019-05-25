@@ -62,6 +62,8 @@ import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe
 import { ActivateItemsModalComponent } from './catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { UploaderModule } from './uploader/uploader.module';
+import { UserCoverComponent } from './user-cover/user-cover.component';
+import { CoverUploadComponent } from './profile/cover-upload/cover-upload.component';
 import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
 
@@ -128,6 +130,8 @@ import { StripeCardElementComponent } from './payments/stripe/stripe-card-elemen
     ExitConfirmationModalComponent,
     CountdownComponent,
     ThousandSuffixesPipe,
+    UserCoverComponent,
+    CoverUploadComponent,
     KeywordSuggesterComponent,
     StripeCardElementComponent
   ],
@@ -181,6 +185,8 @@ import { StripeCardElementComponent } from './payments/stripe/stripe-card-elemen
     ThousandSuffixesPipe,
     ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
+    UserCoverComponent,
+    CoverUploadComponent,
     KeywordSuggesterComponent,
     StripeCardElementComponent
   ],

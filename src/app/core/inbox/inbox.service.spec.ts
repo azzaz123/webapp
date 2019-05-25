@@ -8,28 +8,24 @@ import { MockedPersistencyService } from '../../../tests/persistency.fixtures.sp
 import { Observable } from 'rxjs';
 import { MOCK_INBOX_API_RESPONSE, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { ResponseOptions, Response } from '@angular/http';
-import { TrackingService } from '../tracking/tracking.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
 import { FeatureflagService } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
-import { InboxMessage, messageStatus } from '../../chat/chat-with-inbox/message/inbox-message';
-import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-item';
 import { UserService } from '../user/user.service';
-import { MockedUserService } from '../../../tests/user.fixtures.spec';
+import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
-import { Message } from '../message/message';
+import { ConversationService } from './conversation.service';
 
 let service: InboxService;
 let http: HttpService;
 let persistencyService: PersistencyService;
 let messageService: MessageService;
+let conversationService: ConversationService;
 let featureflagService: FeatureflagService;
 let eventService: EventService;
 let userService: UserService;
-let selfId: string;
 
 describe('InboxService', () => {
   beforeEach(() => {
@@ -39,9 +35,9 @@ describe('InboxService', () => {
         ...TEST_HTTP_PROVIDERS,
         EventService,
         { provide: PersistencyService, useClass: MockedPersistencyService },
-        { provide: TrackingService, useClass: MockTrackingService },
         { provide: MessageService, useClass: MockMessageService },
         { provide: UserService, useClass: MockedUserService },
+        { provide: ConversationService, useValue: { subscribeChatEvents() {} }},
         { provide: FeatureflagService, useValue: {
             getFlag() {
               return Observable.of(false);
@@ -54,17 +50,18 @@ describe('InboxService', () => {
     http = TestBed.get(HttpService);
     persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
+    conversationService = TestBed.get(ConversationService);
     featureflagService = TestBed.get(FeatureflagService);
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);
-    selfId = userService.user.id;
+    spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
   });
 
   describe('getInboxFeatureFlag', () => {
     it('should call featureflagService.getFlag when called', () => {
       spyOn(featureflagService, 'getFlag');
 
-      service.getInboxFeatureFlag();
+      service.getInboxFeatureFlag$();
 
       expect(featureflagService.getFlag).toHaveBeenCalledWith('web_inbox_projections');
     });
@@ -75,32 +72,20 @@ describe('InboxService', () => {
     let parsedConversationsResponse;
     beforeEach(() => {
       spyOn(http, 'get').and.returnValue(Observable.of(res));
-      parsedConversationsResponse = service['buildConversations'](JSON.parse(MOCK_INBOX_API_RESPONSE).conversations);
     });
 
     it('should set selfId as the of the logged in used', () => {
-      spyOn(eventService, 'subscribe');
-
       service.init();
 
       expect(service['selfId']).toBe(userService.user.id);
     });
 
-    it('should subscribe to the NEW_MESSAGE and CHAT_SIGNAL events', () => {
-      spyOn(eventService, 'subscribe');
-      const eventServiceSubscribeArgs = [];
-
-      service.init();
-      eventService.subscribe['calls'].allArgs().map(call => eventServiceSubscribeArgs.push(call[0]));
-
-      expect(eventServiceSubscribeArgs).toContain(EventService.NEW_MESSAGE);
-      expect(eventServiceSubscribeArgs).toContain(EventService.CHAT_SIGNAL);
-    });
-
     it('should make an HTTP get request to get the inbox', () => {
       service.init();
 
-      expect(http.get).toHaveBeenCalledWith(service['API_URL']);
+      expect(http.get).toHaveBeenCalledWith(service['API_URL'], {
+        page_size: service['pageSize']
+      });
     });
 
     it('should return an array of InboxConversation`s with the correct lastMesage for each', () => {
@@ -110,42 +95,14 @@ describe('InboxService', () => {
 
       service.conversations.map((conv, index) => {
         expect(conv instanceof InboxConversation).toBe(true);
-        expect(conv.lastMessage.id).toEqual(apiResponse[index].messages[0].id);
+        expect(conv.lastMessage.id).toEqual(apiResponse[index].messages.messages[0].id);
       });
-    });
-
-    it('should set the number of unreadMessages in messageService', () => {
-      let expectedUnreadCount = 0;
-      res.json().conversations.filter(c => c.unread_messages).map(c => expectedUnreadCount += + c.unread_messages);
-
-      service.init();
-
-      expect(messageService.totalUnreadMessages).toBe(expectedUnreadCount);
-    });
-
-    it('should save the messages from each conversation via persistencyService', () => {
-      spyOn(persistencyService, 'saveInboxMessages');
-
-      service.init();
-
-      res.json().conversations.map(conv => {
-        const messages = [];
-        conv.messages.map(msg => messages.push(new InboxMessage(msg.id, conv.hash, msg.text, msg.from_user_hash,
-          msg.from_user_hash === selfId, new Date(msg.timestamp), msg.status, msg.payload)));
-        expect(persistencyService.saveInboxMessages).toHaveBeenCalledWith(messages);
-      });
-    });
-
-    it('should call persistencyService.updateStoredInbox after the inbox response is returned', () => {
-      spyOn(persistencyService, 'updateStoredInbox');
-
-      service.init();
-
-      expect(persistencyService.updateStoredInbox).toHaveBeenCalledWith(parsedConversationsResponse);
     });
 
     it('should emit a EventService.INBOX_LOADED after getInbox returns', () => {
       spyOn(eventService, 'emit').and.callThrough();
+      service['selfId'] = MOCK_USER.id;
+      parsedConversationsResponse = service['buildConversations'](JSON.parse(MOCK_INBOX_API_RESPONSE).conversations);
 
       service.init();
 
@@ -160,218 +117,20 @@ describe('InboxService', () => {
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, true);
     });
 
-    describe('when a NEW_MESSAGE event is emitted', () => {
-      let conversation, currentLastMessage;
-      beforeEach(() => {
-        service.init();
-        conversation = service.conversations[0];
-        currentLastMessage = conversation.lastMessage;
-      });
+    it('should call conversationService.subscribeChatEvents', () => {
+      spyOn(conversationService, 'subscribeChatEvents');
 
-      it('should update the lastMessage and the modifiedDate wth the new message', () => {
-        const newMessage = new Message('mockId', conversation.id, 'hola!', 'mockUserId', new Date(), messageStatus.SENT);
-        const newInboxMessage = new InboxMessage(newMessage.id, conversation.id, newMessage.message, newMessage.from, newMessage.fromSelf,
-          newMessage.date, newMessage.status);
+      service.init();
 
-        eventService.emit(EventService.NEW_MESSAGE, newMessage);
-
-        expect(service.conversations[0].lastMessage).toEqual(newInboxMessage);
-        expect(service.conversations[0].modifiedDate).toEqual(newInboxMessage.date);
-      });
-
-      it('should bump the conversation to 1st position', () => {
-        const conversationToBump = service.conversations[1];
-        const newMessage = new InboxMessage('mockId', conversationToBump.id, 'hola!', 'mockUserId', true,
-        new Date(), messageStatus.SENT);
-
-        eventService.emit(EventService.NEW_MESSAGE, newMessage);
-
-        expect(service.conversations.indexOf(conversationToBump)).toBe(0);
-      });
-
-      it('should NOT update the lastMessage NOR the modifiedDate if the new message has the same ID as the current lastMessage', () => {
-        const newMessage = new InboxMessage(currentLastMessage.id, conversation.id, 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.RECEIVED);
-        eventService.emit(EventService.NEW_MESSAGE, newMessage);
-
-        expect(conversation.lastMessage).toEqual(currentLastMessage);
-        expect(conversation.modifiedDate).toEqual(currentLastMessage.date);
-      });
-
-      it('should NOT bump the conversation to 1st position if the new message has the same ID as the current lastMessage', () => {
-        const conversationToBump = service.conversations[1];
-        currentLastMessage = conversationToBump.lastMessage.id;
-        const newMessage = new InboxMessage(conversationToBump.lastMessage.id, conversationToBump.id, 'hola!', 'mockUserId', true,
-        new Date(), messageStatus.SENT);
-
-        eventService.emit(EventService.NEW_MESSAGE, newMessage);
-
-        expect(service.conversations.indexOf(conversationToBump)).not.toBe(0);
-      });
-
-      it('should increment the unread counters by one for each new message not fromSelf', () => {
-        const unreadCounterBefore = service.conversations[0].unreadCounter;
-        const count = 3;
-        for (let i = 0; i < count; i++) {
-          const msg = new InboxMessage('mockId' + i, conversation.id, 'hola!', 'mockUserId', false, new Date(),
-            messageStatus.SENT);
-          eventService.emit(EventService.NEW_MESSAGE, msg);
-        }
-
-        expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore + count);
-        expect(messageService.totalUnreadMessages).toEqual(unreadCounterBefore + count);
-      });
-
-      it('should NOT increase the unread counts if the new message has the same ID as the current lastMessage', () => {
-        const unreadCounterBefore = service.conversations[0].unreadCounter;
-        const newMessage = new InboxMessage(currentLastMessage.id, conversation.id, 'hola!', 'mockUserId', false, new Date(),
-          messageStatus.READ);
-
-        eventService.emit(EventService.NEW_MESSAGE, newMessage);
-
-        expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore);
-        expect(messageService.totalUnreadMessages).toEqual(unreadCounterBefore);
-      });
-
-      it('should only increase the unread counters for new messages NOT fromSelf and with unique IDs', () => {
-        const unreadCounterBefore = service.conversations[0].unreadCounter;
-        const newMessage = new InboxMessage('mockId', conversation.id, 'hola!', 'mockUserId', false, new Date(), messageStatus.SENT);
-
-        eventService.emit(EventService.NEW_MESSAGE, newMessage);
-        eventService.emit(EventService.NEW_MESSAGE, newMessage);
-        eventService.emit(EventService.NEW_MESSAGE, newMessage);
-
-        expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore + 1);
-        expect(messageService.totalUnreadMessages).toEqual(unreadCounterBefore + 1);
-      });
-
-      it('should NOT increase conversation.unreadCount NOR messageService.totalUnreadMessages for new messages fromSelf', () => {
-        const newMessage = new InboxMessage('mockId', conversation, 'hola!', 'mockUserId', true, new Date(), messageStatus.SENT);
-        const unreadCounterBefore = service.conversations[0].unreadCounter;
-
-        eventService.emit(EventService.NEW_MESSAGE, newMessage);
-
-        expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore);
-        expect(messageService.totalUnreadMessages).toEqual(unreadCounterBefore);
-      });
-    });
-
-    describe('when a CHAT_SIGNAL event is emitted', () => {
-      let conversation, lastMessage, dateAfter, dateBefore;
-      beforeEach(() => {
-        service.init();
-        conversation = service.conversations[0];
-        lastMessage = conversation.lastMessage;
-        lastMessage.status = null;
-        lastMessage.fromSelf = false;
-        dateBefore = lastMessage.date.getTime() - 2000;
-        dateAfter = lastMessage.date.getTime() + 2000;
-      });
-
-      it('should update the status of the lastMessage to SENT when a CHAT_SIGNAL event is emitted with a sentSignal', () => {
-        const sentSingal = new ChatSignal(chatSignalType.SENT, conversation.id, null, lastMessage.id);
-
-        eventService.emit(EventService.CHAT_SIGNAL, sentSingal);
-
-        expect(conversation.lastMessage.status).toBe(messageStatus.SENT);
-      });
-
-      it('should update the status of the lastMessage to RECEIVED when a CHAT_SIGNAL event is emitted with a receivedSignal', () => {
-        const receivedSingal = new ChatSignal(chatSignalType.RECEIVED, conversation.id, null, lastMessage.id);
-
-        eventService.emit(EventService.CHAT_SIGNAL, receivedSingal);
-
-        expect(conversation.lastMessage.status).toBe(messageStatus.RECEIVED);
-      });
-
-      it(`should update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal that meets the
-        conditions: signal timestamp is after lastMessage timestamp AND signal fromSelf is the reverse of lastMessage fromSelf
-        (because a READ signal fromSelf is meant to mark as read messages from the other user (!fromSelf))`, () => {
-          const readSingalfromSelf = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
-          lastMessage.fromSelf = false;
-
-          eventService.emit(EventService.CHAT_SIGNAL, readSingalfromSelf);
-
-          expect(conversation.lastMessage.status).toBe(messageStatus.READ);
-
-          const readSingalfromOther = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, false);
-          lastMessage.status = messageStatus.RECEIVED;
-          lastMessage.fromSelf = true;
-
-          eventService.emit(EventService.CHAT_SIGNAL, readSingalfromOther);
-
-          expect(conversation.lastMessage.status).toBe(messageStatus.READ);
-        });
-
-      it(`should NOT update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal that does not
-        meet the conditions: signal timestamp is after lastMessage timestamp AND signal fromSelf is the reverse of lastMessage fromSelf
-        (because a READ signal fromSelf is meant to mark as read messages from the other user (!fromSelf))`, () => {
-          const readSingalfromSelf = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, false);
-          lastMessage.fromSelf = false;
-
-          eventService.emit(EventService.CHAT_SIGNAL, readSingalfromSelf);
-
-          expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
-
-          const readSingalfromOther = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
-          lastMessage.status = messageStatus.RECEIVED;
-          lastMessage.fromSelf = true;
-
-          eventService.emit(EventService.CHAT_SIGNAL, readSingalfromOther);
-
-          expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
-        });
-
-      it(`should NOT update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal with
-        timestamp before the lastMessage timestamp`, () => {
-          const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateBefore);
-
-          eventService.emit(EventService.CHAT_SIGNAL, readSingal);
-
-          expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
-        });
-
-      it(`should set the unread counters to 0 when a CHAT_SIGNAL event is emitted with a readSignal that is fromSelf AND with
-        timestamp after the lastMessage timestamp`, () => {
-          const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
-          messageService.totalUnreadMessages = 12;
-          conversation.unreadCounter = 7;
-
-          eventService.emit(EventService.CHAT_SIGNAL, readSingal);
-
-          expect(conversation.unreadCounter).toBe(0);
-          expect(messageService.totalUnreadMessages).toBe(12 - 7);
-        });
-
-      it(`should NOT update the unread counters when a CHAT_SIGNAL event is emitted with a readSignal that is fromSelf and with a timestamp
-        before the lastMessage timestamp`, () => {
-          const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateBefore, null, true);
-          messageService.totalUnreadMessages = 12;
-          conversation.unreadCounter = 7;
-
-          eventService.emit(EventService.CHAT_SIGNAL, readSingal);
-
-          expect(conversation.unreadCounter).toBe(7);
-          expect(messageService.totalUnreadMessages).toBe(12);
-        });
-
-      it('should NOT update the unread counters when a CHAT_SIGNAL event is emitted with a readSignal that is NOT fromSelf', () => {
-        const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, false);
-        messageService.totalUnreadMessages = 12;
-        conversation.unreadCounter = 7;
-
-        eventService.emit(EventService.CHAT_SIGNAL, readSingal);
-
-        expect(conversation.unreadCounter).toBe(7);
-        expect(messageService.totalUnreadMessages).toBe(12);
-      });
+      expect(conversationService.subscribeChatEvents).toHaveBeenCalled();
     });
   });
 
   describe('when the http request throws an error', () => {
     beforeEach(() => {
-      spyOn<any>(service, 'getInbox').and.returnValue(Observable.throw(''));
-      spyOn(persistencyService, 'getStoredInbox').and.returnValue(Observable.of(createInboxConversationsArray(2)));
+      spyOn<any>(service, 'getInbox$').and.returnValue(Observable.throwError(''));
+      spyOn(persistencyService, 'getStoredInbox').and.returnValue((createInboxConversationsArray(2)));
+      spyOn(persistencyService, 'getArchivedStoredInbox').and.returnValue(createInboxConversationsArray(2));
     });
 
     it('should set errorRetrievingInbox to true', () => {
@@ -522,6 +281,88 @@ describe('InboxService', () => {
       service.init();
 
       expect(service.conversations[0].user).toEqual(InboxUserPlaceholder);
+    });
+  });
+
+  describe('loadMorePages', () => {
+    const res: Response = new Response(new ResponseOptions({ body: MOCK_INBOX_API_RESPONSE }));
+    const res2: Response = new Response(new ResponseOptions({ body: MOCK_INBOX_API_RESPONSE }));
+    let modifiedResponse;
+    beforeEach(() => {
+      modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE);
+    });
+    it('should emit CHAT_CAN_PROCESS_RT with false', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res), Observable.of(res2));
+
+      service.init();
+
+      service.loadMorePages();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, false);
+    });
+
+    it('should make an HTTP get request to get the inbox next page using next_from', () => {
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res), Observable.of(res2));
+      const expectedRes = res.json();
+
+      service.init();
+
+      service.loadMorePages();
+
+      expect(http.get).toHaveBeenCalledWith(service['API_URL'], {
+        page_size: service['pageSize'],
+        from: expectedRes.next_from
+      });
+    });
+
+    it('should not add existing conversations', () => {
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res), Observable.of(res2));
+
+      service.init();
+
+      service.loadMorePages();
+
+      expect(service.conversations.length).toBe(res.json().conversations.length);
+    });
+
+    it('should add not existing conversations', () => {
+      modifiedResponse.conversations.map(conv => conv.hash = conv.hash + 'new');
+      const apiResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res), Observable.of(apiResponse));
+
+      service.init();
+
+      service.loadMorePages();
+
+      expect(service.conversations.length).toBe(res.json().conversations.length + res2.json().conversations.length);
+    });
+  });
+
+  describe('shouldLoadMorePages', () => {
+    const res: Response = new Response(new ResponseOptions({ body: MOCK_INBOX_API_RESPONSE }));
+    const res2: Response = new Response(new ResponseOptions({ body: MOCK_INBOX_API_RESPONSE }));
+    let modifiedResponse;
+
+    beforeEach(() => modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE));
+
+    it('should return TRUE if APIResponse has next_from', () => {
+      spyOn(http, 'get').and.returnValues(Observable.of(res), Observable.of(res2));
+
+      service.init();
+
+      expect(service.shouldLoadMorePages()).toBe(true);
+    });
+
+    it('should return FALSE if APIResponse has not next_from', () => {
+      delete modifiedResponse.next_from;
+      spyOn(http, 'get').and.returnValues(Observable.of(
+        new Response(new ResponseOptions({ body: modifiedResponse }))),
+         Observable.of(new Response(new ResponseOptions({ body: modifiedResponse }))));
+
+      service.init();
+
+      expect(service.shouldLoadMorePages()).toBe(false);
     });
   });
 });

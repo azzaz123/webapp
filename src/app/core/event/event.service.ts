@@ -9,6 +9,7 @@ export class EventService {
   public static USER_LOGOUT = 'logoutEvent';
   public static NEW_MESSAGE = 'newMessage';
   public static MESSAGE_ADDED = 'messageAdded';
+  public static MORE_MESSAGES_LOADED = 'moreMessagesLoaded';
   public static CHAT_SIGNAL = 'chatSignal';
   public static CHAT_LAST_RECEIVED_TS = 'chatLastReceivedTs';
   public static MESSAGE_READ_ACK = 'messageReadAck';
@@ -16,6 +17,7 @@ export class EventService {
   public static MESSAGE_RECEIVED_ACK = 'messageReceivedAck';
   public static CHAT_CAN_PROCESS_RT = 'chatCanProcessRt';
   public static INBOX_LOADED = 'inboxLoaded';
+  public static ARCHIVED_INBOX_LOADED = 'archivedInboxLoaded';
   public static CONNECTION_ERROR = 'connectionError';
   public static CONNECTION_RESTORED = 'connectionRestored';
   public static CHAT_RT_CONNECTED = 'chatRealTimeConnected';

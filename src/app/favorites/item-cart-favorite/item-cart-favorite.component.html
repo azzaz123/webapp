@@ -7,7 +7,7 @@
     <span> {{item.title}} </span>
   </tsl-card-content>
   <tsl-card-footer (click)="removeFavoriteModal($event)">
-    <mat-icon svgIcon="heart" class="cart-footer-icon" [ngClass]="{active: item.favorited}"></mat-icon>
+    <mat-icon svgIcon="heart-full" class="cart-footer-icon" [ngClass]="{active: item.favorited}"></mat-icon>
     <div class="cart-footer-text" i18n> Remove </div>
   </tsl-card-footer>
 </tsl-card>

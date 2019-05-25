@@ -35,6 +35,7 @@ export interface UploadOutput {
   file?: UploadFile;
   reason?: string;
   files?: UploadFile[];
+  imageType?: string;
 }
 
 export interface UploadInput {
@@ -49,6 +50,7 @@ export interface UploadInput {
   headers?: { [key: string]: string };
   concurrency?: number;
   files?: UploadFile[];
+  imageType?: string;
 }
 
 export interface NgUploaderOptions {

@@ -8,7 +8,7 @@ import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { Response } from '@angular/http';
-import { UserLocation, UserResponse, MotorPlan, ProfileSubscriptionInfo } from './user-response.interface';
+import { UserLocation, UserResponse, MotorPlan, ProfileSubscriptionInfo, Image } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -22,6 +22,7 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
+import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -134,7 +135,7 @@ export class UserService extends ResourceService {
     }
   }
 
-  public calculateDistanceFromItem(user: User, item: Item): number {
+  public calculateDistanceFromItem(user: User | InboxUser, item: Item): number {
     if (!user.location || !this.user.location) {
       return null;
     }
@@ -163,10 +164,10 @@ export class UserService extends ResourceService {
   }
 
   public reportUser(userId: string,
-                    itemId: number,
+                    itemId: number | string,
                     comments: string,
                     reason: number,
-                    thread: number): Observable<any> {
+                    thread: number | string): Observable<any> {
 
     const data: any = {
       itemId: itemId,
@@ -184,6 +185,11 @@ export class UserService extends ResourceService {
 
   public getProInfo(): Observable<UserProInfo> {
     return this.http.get(this.API_URL_PROTOOL + '/extraInfo')
+      .map((r: Response) => r.json());
+  }
+
+  public getUserCover(): Observable<Image> {
+    return this.http.get(this.API_URL + '/me/cover-image')
       .map((r: Response) => r.json());
   }
 
@@ -338,6 +344,17 @@ export class UserService extends ResourceService {
 
   public isProfessional(): Observable<boolean> {
     return this.hasPerm('professional');
+  }
+
+  public isProUser(): Observable<boolean> {
+    return Observable.forkJoin([
+      this.isProfessional(),
+      this.getMotorPlan(),
+      this.me()
+    ])
+      .map((values: any[]) => {
+        return values[0] || !!(values[1] && values[1].type) || values[2].featured;
+      });
   }
 
   public getMotorPlan(): Observable<MotorPlan> {

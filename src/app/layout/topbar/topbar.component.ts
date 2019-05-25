@@ -35,12 +35,12 @@ export class TopbarComponent implements OnInit {
   public currencyName: string;
 
   constructor(public userService: UserService,
-              private windowRef: WindowRef,
-              public messageService: MessageService,
-              private paymentService: PaymentService,
-              private eventService: EventService,
-              private cookieService: CookieService,
-              @Inject('SUBDOMAIN') private subdomain: string) {
+    private windowRef: WindowRef,
+    public messageService: MessageService,
+    private paymentService: PaymentService,
+    private eventService: EventService,
+    private cookieService: CookieService,
+    @Inject('SUBDOMAIN') private subdomain: string) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
   }
 
@@ -76,11 +76,9 @@ export class TopbarComponent implements OnInit {
   }
 
   public submitForm() {
-    const categoryId = (this.category) ? this.category : this.categoryEl.nativeElement.value;
+    const categoryId = (this.category) ? this.category : '';
     const kws = (this.kws) ? this.kws : '';
-    const verticalId = (categoryId === 100) ? categoryId : '';
-    this.windowRef.nativeWindow.location.href = this.homeUrl + 'search?catIds=' + categoryId + '&kws=' + kws
-      + '&verticalId=' + verticalId;
+    this.windowRef.nativeWindow.location.href = `${this.homeUrl}search?catIds=${categoryId}&kws=${kws}`;
   }
 
   public onSearchSubmit(newSearchSubmit: string) {
@@ -91,15 +89,6 @@ export class TopbarComponent implements OnInit {
   public onSearchUpdate(newSearch: SuggesterResponse) {
     this.kws = newSearch.suggestion;
     this.category = newSearch.category_id;
-    this.submitForm();
-  }
-
-  public onCoordinateUpdate(newCoordinate: Coordinate) {
-    this.coordinates = newCoordinate;
-  }
-
-  public onCategoryUpdate(newCategory: CategoryResponse) {
-    this.category = newCategory.categoryId;
     this.submitForm();
   }
 

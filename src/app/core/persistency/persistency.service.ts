@@ -28,13 +28,15 @@ import { InboxMessage, statusOrder } from '../../chat/chat-with-inbox/message/in
 export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
   private _conversationsDb: Database<any>;
-  private _inboxDb: Database<any>;
+  private _inboxDb: Database<StoredInboxConversation>;
+  private _archivedInboxDb: Database<StoredInboxConversation>;
   private clickstreamDb: any;
   private storedMessages: AllDocsResponse<StoredMessage>;
   private latestVersion = 2.0;
   public clickstreamDbName = 'clickstreamEvents';
   private eventsStore;
   private packagedEventsStore = 'packagedEvents';
+  private userId: string;
 
   constructor(
     private userService: UserService,
@@ -42,42 +44,80 @@ export class PersistencyService {
   ) {
     this.eventService.subscribe(EventService.USER_LOGIN, () => {
       this.userService.me().subscribe((user: User) => {
+        this.userId = user.id;
         this.initClickstreamDb(this.clickstreamDbName);
-        this.eventsStore = 'events-' + user.id;
-        this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
-        this.initInboxDb(user.id);
+        this.eventsStore = 'events-' + this.userId;
+        this._messagesDb = new PouchDB('messages-' + this.userId, { auto_compaction: true });
+        this.initInboxDb(this.userId);
+        this.initArchivedInboxDb(this.userId);
         this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
           this.messagesDb.destroy().then(() => {
-            this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
+            this._messagesDb = new PouchDB('messages-' + this.userId, { auto_compaction: true });
             this.saveDbVersion(this.messagesDb, this.latestVersion);
             this.eventService.emit(EventService.DB_READY);
           });
-          this.destroyDbs('messages', 'conversations', 'conversations-' + user.id);
+          this.destroyDbs('messages', 'conversations', 'conversations-' + this.userId);
         });
       });
     });
+    this.subscribeEventInboxLoaded();
+    this.subscribeEventArchivedInboxLoaded();
     this.subscribeEventNewMessage();
+  }
+
+  private subscribeEventInboxLoaded() {
+    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
+      this.updateStoredInbox(conversations);
+      conversations.map(conv => this.saveInboxMessages(conv.messages));
+    });
+  }
+
+  private subscribeEventArchivedInboxLoaded() {
+    this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
+      this.updateStoredArchivedInbox(conversations);
+      conversations.map(conv => this.saveInboxMessages(conv.messages));
+    });
   }
 
   set messagesDb(value: PouchDB.Database<any>) {
     this._messagesDb = value;
   }
 
-  set inboxDb(value: PouchDB.Database<any>) {
+  set inboxDb(value: PouchDB.Database<StoredInboxConversation>) {
     this._inboxDb = value;
+  }
+
+  set archivedInboxDb(value: PouchDB.Database<StoredInboxConversation>) {
+    this._archivedInboxDb = value;
   }
 
   public initInboxDb(userId: string) {
     this.inboxDb = new PouchDB('inbox-' + userId, { auto_compaction: true });
   }
 
-  public updateStoredInbox(conversations: InboxConversation[]): Observable<any> {
+  public initArchivedInboxDb(userId: string) {
+    this.inboxDb = new PouchDB('archivedInbox-' + userId, { auto_compaction: true });
+  }
+
+  private updateStoredInbox(conversations: InboxConversation[]): Observable<any> {
     return Observable.fromPromise(
       this.inboxDb.destroy().then(() => {
-        this.inboxDb = new PouchDB('inbox-' + this.userService.user.id, { auto_compaction: true });
+        this.inboxDb = new PouchDB('inbox-' + this.userId, { auto_compaction: true });
         const inboxToSave = conversations.map((conversation: InboxConversation) =>
           new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
-            conversation.phoneShared, conversation.unreadCounter, conversation.lastMessage));
+            conversation.phoneShared, conversation.unreadCounter, conversation.nextPageToken, conversation.lastMessage));
+        return Observable.fromPromise(this.inboxDb.bulkDocs(inboxToSave));
+      })
+    );
+  }
+
+  private updateStoredArchivedInbox(conversations: InboxConversation[]): Observable<any> {
+    return Observable.fromPromise(
+      this.inboxDb.destroy().then(() => {
+        this.inboxDb = new PouchDB('archivedInbox-' + this.userId, { auto_compaction: true });
+        const inboxToSave = conversations.map((conversation: InboxConversation) =>
+          new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
+            conversation.phoneShared, conversation.unreadCounter, conversation.nextPageToken, conversation.lastMessage));
         return Observable.fromPromise(this.inboxDb.bulkDocs(inboxToSave));
       })
     );
@@ -89,16 +129,23 @@ export class PersistencyService {
     }));
   }
 
+  public getArchivedStoredInbox(): Observable<InboxConversation[]> {
+    return Observable.fromPromise((this.archivedInboxDb.allDocs( { include_docs: true })).then((data) => {
+      return this.mapToInboxConversation(data);
+    }));
+  }
+
   private mapToInboxConversation(data): InboxConversation[] {
     return data.rows.map(row => {
       const conv = row.doc;
       const user = new InboxUser(conv.user._id, conv.user._microName, conv.user._blocked, conv.user._available,
         conv.user_profileUrl, conv.user.avatarUrl, conv.user._responseRate, conv.user._score, conv.user._location);
-      const item = new InboxItem(conv.item._id, conv.item._price, conv.item._title, conv.item._mainImage, conv.item._status);
+      const item = new InboxItem(conv.item._id, conv.item._price, conv.item._title, conv.item._mainImage, conv.item._itemUrl,
+        conv.item._status, conv.item._isMine);
       const lastMessage = new InboxMessage(conv.lastMessage._id, conv.lastMessage._thread, conv.lastMessage._message,
-        conv.lastMessage._from, conv.lastMessage._fromSelf, conv.lastMessage._date,
+        conv.lastMessage._fromSelf, conv.lastMessage._date,
         conv.lastMessage._status, conv.lastMessage._payload, conv.lastMessage._phoneRequest);
-      return new InboxConversation(conv._id, conv.modifiedDate, user, item, conv.messages, conv.phoneShared,
+      return new InboxConversation(conv._id, conv.modifiedDate, user, item, conv.nextPageToken, conv.messages, conv.phoneShared,
         conv.unreadCounter, lastMessage);
     });
   }
@@ -179,8 +226,12 @@ export class PersistencyService {
     return this._messagesDb;
   }
 
-  get inboxDb(): PouchDB.Database<any> {
+  get inboxDb(): PouchDB.Database<StoredInboxConversation> {
     return this._inboxDb;
+  }
+
+  get archivedInboxDb(): PouchDB.Database<StoredInboxConversation> {
+    return this._archivedInboxDb;
   }
 
   get conversationsDb(): PouchDB.Database<any> {

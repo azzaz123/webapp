@@ -199,10 +199,9 @@ export class MockedPersistencyService {
   public saveMetaInformation(data: any) {
   }
 
-  public updateStoredInbox() {
-  }
-
   public getStoredInbox() {}
+
+  public getArchivedStoredInbox() {}
 
   public getMetaInformation() {
   }

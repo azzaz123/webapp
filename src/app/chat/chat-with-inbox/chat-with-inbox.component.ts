@@ -11,11 +11,10 @@ import { InboxConversation } from './inbox/inbox-conversation/inbox-conversation
 })
 export class ChatWithInboxComponent implements OnInit, OnDestroy {
 
-  public conversationsLoaded: boolean;
+  public conversationsLoading: boolean;
   public conversationsTotal: number;
   public connectionError: boolean;
   public firstLoad: boolean;
-  public userWebSlug: string;
   public isProfessional: boolean;
   public currentConversation: InboxConversation;
 
@@ -30,7 +29,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.eventService.subscribe(EventService.CONNECTION_ERROR, () => {
       this.connectionError = true;
-      this.conversationsLoaded = true;
+      this.conversationsLoading = false;
     });
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.connectionError = false;
@@ -44,8 +43,8 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
     this.adService.stopAdsRefresh();
   }
 
-  public onLoaded(event: any) {
-    this.conversationsLoaded = event.firstPage ? event.loaded : true;
+  public onLoad(event: any) {
+    this.conversationsLoading = event.loading;
     this.conversationsTotal = event.total;
   }
 }

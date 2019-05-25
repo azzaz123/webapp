@@ -10,6 +10,8 @@ import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
 
 @Injectable()
 export class XmppService {
@@ -23,8 +25,8 @@ export class XmppService {
   public blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private realtimeQ: Array<XmppBodyMessage> = [];
-  private canProcessRealtime = true;
-  private xmppError = { mesasge: 'XMPP disconnected' };
+  private canProcessRealtime = false;
+  private xmppError = { message: 'XMPP disconnected' };
 
   constructor(private eventService: EventService) {
   }
@@ -45,7 +47,7 @@ export class XmppService {
     }
   }
 
-  public sendMessage(conversation: Conversation, body: string) {
+  public sendMessage(conversation: Conversation| InboxConversation, body: string) {
     const message = this.createXmppMessage(conversation, this.client.nextId(), body);
     this.onNewMessage(_.clone(message), true);
     this.client.sendMessage(message);
@@ -57,7 +59,7 @@ export class XmppService {
     this.client.sendMessage(msg);
   }
 
-  private createXmppMessage(conversation: Conversation, id: string, body: string): XmppBodyMessage {
+  private createXmppMessage(conversation: Conversation | InboxConversation, id: string, body: string): XmppBodyMessage {
     const message: XmppBodyMessage = {
       id: id,
       to: this.createJid(conversation.user.id),
@@ -90,7 +92,7 @@ export class XmppService {
 
   public disconnectError(): Observable<boolean> {
     if (!this.clientConnected) {
-      return Observable.throw(this.xmppError);
+      return Observable.throwError(this.xmppError);
     }
     return Observable.of(true);
   }
@@ -151,6 +153,7 @@ export class XmppService {
       if (message.read) {
         this.eventService.emit(EventService.MESSAGE_READ_ACK);
       }
+      this.buildChatSignal(message);
     });
 
     this.client.on('disconnected', () => {
@@ -288,7 +291,7 @@ export class XmppService {
     });
   }
 
-  public blockUser(user: User): Observable<any> {
+  public blockUser(user: User | InboxUser): Observable<any> {
     this.blockedUsers.push(user.id);
     return this.setPrivacyList(this.blockedUsers)
     .flatMap(() => {
@@ -297,13 +300,17 @@ export class XmppService {
       }
       return Observable.of({});
     })
-    .do(() => user.blocked = true);
+    .do(() => { user.blocked = true;
+                this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
+              });
   }
 
-  public unblockUser(user: User): Observable<any> {
+  public unblockUser(user: User | InboxUser): Observable<any> {
     _.remove(this.blockedUsers, (userId) => userId === user.id);
     return this.setPrivacyList(this.blockedUsers)
-    .do(() => user.blocked = false);
+    .do(() => { user.blocked = false;
+                this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
+              });
   }
 
   private onPrivacyListChange(iq: any) {

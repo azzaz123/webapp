@@ -4,26 +4,31 @@ import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { MessageService } from '../message/message.service';
-import { InboxItem, InboxItemPlaceholder, InboxImage } from '../../chat/chat-with-inbox/inbox/inbox-item';
-import { InboxUser, InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
 import { FeatureflagService } from '../user/featureflag.service';
-import { InboxMessage, messageStatus, statusOrder } from '../../chat/chat-with-inbox/message/inbox-message';
 import { EventService } from '../event/event.service';
-import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
-import { Message } from '../message/message';
 import { UserService } from '../user/user.service';
+import { environment } from '../../../environments/environment';
+import { ConversationService } from './conversation.service';
+import { Response } from '@angular/http';
 
+const USER_BASE_PATH = environment.siteUrl +  'user/';
 @Injectable()
 
 export class InboxService {
-  private API_URL = 'bff/messaging/inboxes/mine';
-  private _conversations: InboxConversation[];
+  private API_URL = 'bff/messaging/inbox';
+  private ARCHIVED_API_URL = '/bff/messaging/archived';
+  private _conversations: InboxConversation[] = [];
+  private _archivedConversations: InboxConversation[] = [];
   private selfId: string;
+  private nextPageToken: number = null;
+  private nextArchivedPageToken: number = null;
+  private pageSize = 30;
   public errorRetrievingInbox = false;
 
   constructor(private http: HttpService,
     private persistencyService: PersistencyService,
     private messageService: MessageService,
+    private conversationService: ConversationService,
     private featureflagService: FeatureflagService,
     private eventService: EventService,
     private userService: UserService) {
@@ -38,132 +43,170 @@ export class InboxService {
     return this._conversations;
   }
 
-  public getInboxFeatureFlag(): Observable<boolean> {
+  set archivedConversations(value: InboxConversation[]) {
+    this._archivedConversations = value;
+  }
+
+  get archivedConversations(): InboxConversation[] {
+    return this._archivedConversations;
+  }
+
+  public getInboxFeatureFlag$(): Observable<boolean> {
     return this.featureflagService.getFlag('web_inbox_projections');
   }
 
   public init() {
+    this.conversationService.subscribeChatEvents();
     this.selfId = this.userService.user.id;
-    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
-      const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from,
-        message.fromSelf, message.date, message.status, message.payload, message.phoneRequest);
-      this.processNewMessage(inboxMessage);
-    });
-    this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
-      this.processChatSignal(signal);
-    });
-    this.getInbox()
+    this.conversationService.selfId = this.selfId;
+    this.subscribeArchiveEvents();
+    this.subscribeUnarchiveEvents();
+    Observable.forkJoin(this.getInbox$(), this.getArchivedInbox$())
     .catch(() => {
       this.errorRetrievingInbox = true;
-      return this.persistencyService.getStoredInbox();
+      return [this.persistencyService.getStoredInbox(), this.persistencyService.getArchivedStoredInbox()];
     })
-    .subscribe((conversations: InboxConversation[]) => {
+    .subscribe((result) => {
+      const conversations = result[0];
+      const archived = result[1];
       this.eventService.emit(EventService.INBOX_LOADED, conversations);
+      this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, archived);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
-  }
 
-  private getInbox(): Observable<any> {
-    this.messageService.totalUnreadMessages = 0;
-    return this.http.get(this.API_URL)
-    .map(res => {
-      const r = res.json();
-      this.conversations = this.buildConversations(r.conversations);
-      this.saveInbox(this.conversations);
-      return this.conversations;
+    this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (blockedUsers: string[]) => {
+      blockedUsers.map(id => {
+        this.conversations.filter(conv => conv.user.id === id && !conv.user.blocked)
+        .map(conv => conv.user.blocked = true);
+        this.archivedConversations.filter(conv => conv.user.id === id && !conv.user.blocked)
+        .map(conv => conv.user.blocked = true);
+      });
+      this.conversations.filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
+      .map(conv => conv.user.blocked = false);
+      this.archivedConversations.filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
+      .map(conv => conv.user.blocked = false);
     });
   }
 
-  private saveInbox(inboxConversations: InboxConversation[]) {
-    this.persistencyService.updateStoredInbox(inboxConversations);
+  public loadMorePages() {
+    this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
+    this.getNextPage$()
+      .catch(() => {
+        this.errorRetrievingInbox = true;
+        return Observable.of([]);
+      })
+      .subscribe((conversations: InboxConversation[]) => {
+        this.eventService.emit(EventService.INBOX_LOADED, conversations);
+        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+      });
   }
 
-  private processNewMessage(newMessage: InboxMessage) {
-    const conversation = this.conversations.find(c => c.id === newMessage.thread);
-    if (conversation) {
-      if (conversation.lastMessage && conversation.lastMessage.id !== newMessage.id) {
-        this.bumpConversation(conversation);
-        conversation.lastMessage = newMessage;
-        conversation.modifiedDate = conversation.lastMessage.date;
-        if (!newMessage.fromSelf) {
-          conversation.unreadCounter++;
-          this.messageService.totalUnreadMessages++;
-        }
-      }
-    }
+  public shouldLoadMorePages(): boolean {
+    return this.nextPageToken !== null;
   }
 
-  private bumpConversation(conversation: InboxConversation) {
-    const index: number = this.conversations.indexOf(conversation);
-    if (index > 0) {
-      this.conversations.splice(index, 1);
-      this.conversations.unshift(conversation);
-    }
+  public loadMoreArchivedPages() {
+    this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
+    this.getNextArchivedPage$()
+      .catch(() => {
+        this.errorRetrievingInbox = true;
+        return Observable.of([]);
+      })
+      .subscribe((conversations: InboxConversation[]) => {
+        this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
+        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+      });
   }
 
-  private processChatSignal(signal: ChatSignal) {
-    const conversation = this.conversations.find(c => c.id === signal.thread);
-    const newStatus = signal.type;
-    if (conversation) {
-      const lastMessage = conversation.lastMessage;
-    if (signal.type === chatSignalType.READ) {
-      if (signal.fromSelf !== lastMessage.fromSelf && signal.timestamp >= lastMessage.date.getTime()) {
-        lastMessage.status = messageStatus.READ;
-        this.updateUnreadCounters(signal, conversation);
-      }
-    } else if (signal.messageId === lastMessage.id  && statusOrder.indexOf(newStatus) > statusOrder.indexOf(lastMessage.status)) {
-      lastMessage.status = newStatus;
-    }
-  }
+  public shouldLoadMoreArchivedPages(): boolean {
+    return this.nextArchivedPageToken !== null;
   }
 
-  private updateUnreadCounters(signal: ChatSignal, conversation: InboxConversation) {
-    if (signal.fromSelf) {
-      this.messageService.totalUnreadMessages -= conversation.unreadCounter;
-      conversation.unreadCounter = 0;
-    }
+  private getInbox$(): Observable<any> {
+    this.messageService.totalUnreadMessages = 0;
+    return this.http.get(this.API_URL, {
+      page_size: this.pageSize
+    })
+    .map(res => {
+      return this.conversations = this.processInboxResponse(res);
+    });
+  }
+
+  private getArchivedInbox$(): Observable<any> {
+    return this.http.get(this.ARCHIVED_API_URL, {
+      page_size: this.pageSize
+    })
+    .map(res => {
+      return this.archivedConversations = this.processArchivedInboxResponse(res);
+    });
+  }
+
+  private getNextPage$(): Observable<any> {
+      return this.http.get(this.API_URL, {
+        page_size: this.pageSize,
+        from: this.nextPageToken
+      })
+      .map(res => {
+        return this.conversations = this.conversations.concat(this.processInboxResponse(res));
+      });
+  }
+
+  private getNextArchivedPage$(): Observable<any> {
+    return this.http.get(this.API_URL, {
+      page_size: this.pageSize,
+      from: this.nextArchivedPageToken
+    })
+    .map(res => {
+      return this.conversations = this.conversations.concat(this.processArchivedInboxResponse(res));
+    });
+}
+
+  private processInboxResponse(res: Response): InboxConversation[] {
+    const r = res.json();
+    this.nextPageToken = r.next_from || null;
+    // In order to avoid adding repeated conversations
+    const newConvs = r.conversations.filter(newConv => {
+      return (this.conversations
+        && this.conversations.find(existingConv => existingConv.id === newConv.hash)) ? null : newConv;
+    });
+    return this.buildConversations(newConvs);
+  }
+
+  private processArchivedInboxResponse(res: Response): InboxConversation[] {
+    const r = res.json();
+    this.nextArchivedPageToken = r.next_from || null;
+    // In order to avoid adding repeated conversations
+    const newConvs = r.conversations.filter(newConv => {
+      return (this.archivedConversations
+        && this.archivedConversations.find(existingConv => existingConv.id === newConv.hash)) ? null : newConv;
+    });
+    return newConvs.map((conv) => InboxConversation.fromJSON(conv, this.selfId) );
   }
 
   private buildConversations(conversations): InboxConversation[] {
     return conversations.map((conv) => {
-      const user = this.buildInboxUser(conv.with_user);
-      const item = this.buildInboxItem(conv.item);
-      const messages = this.buildInboxMessages(conv);
-      const lastMessage = messages[0];
-      const dateModified = lastMessage.date;
-      const conversation = new InboxConversation(conv.hash, dateModified, user, item, messages, conv.phone_shared,
-        conv.unread_messages, lastMessage);
+      const conversation = InboxConversation.fromJSON(conv, this.selfId);
       this.messageService.totalUnreadMessages += conversation.unreadCounter;
       return conversation;
     });
   }
 
-  private buildInboxUser(user: any): InboxUser {
-    if (!user) {
-      return InboxUserPlaceholder;
-    }
-    const userBlocked = Boolean(user.available && user.blocked);
-    return new InboxUser(user.hash, user.name, userBlocked, user.available, user.slug, user.image_url, user.response_rate,
-      user.score, user.location);
+  private subscribeArchiveEvents() {
+    this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, (conversation) => {
+      const index = this.conversations.indexOf(conversation);
+      this.conversations.splice(index, 1);
+      this.archivedConversations.unshift(conversation);
+      this.archivedConversations.sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
+    });
   }
 
-  private buildInboxItem(item: any): InboxItem {
-    const image: InboxImage = {
-      urls_by_size: {
-        small: item && item.image_url ? item.image_url : null
-      }
-    };
-    if (!item) {
-      return InboxItemPlaceholder;
-    }
-    return new InboxItem(item.hash, item.price, item.title, image, item.status);
+  private subscribeUnarchiveEvents() {
+    this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, (conversation) => {
+      const index = this.archivedConversations.indexOf(conversation);
+      this.archivedConversations.splice(index, 1);
+      this.conversations.unshift(conversation);
+      this.conversations.sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
+    });
   }
 
-  private buildInboxMessages(conversation) {
-    // TODO - handle third voice type message (type === 'TBD');
-    const textMessages = conversation.messages.filter(m => m.type === 'text').map(m => new InboxMessage(m.id, conversation.hash, m.text,
-      m.from_user_hash, m.from_user_hash === this.selfId, new Date(m.timestamp), m.status, m.payload));
-    this.persistencyService.saveInboxMessages(textMessages);
-    return textMessages;
-  }
 }
