@@ -27,6 +27,7 @@ import { CardSelectionComponent } from '../../payments/card-selection/card-selec
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
+import { FINANCIAL_CARD_OPTION, STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -184,11 +185,15 @@ describe('CartComponent', () => {
     });
   });
 
-  describe('hideNewCard', () => {
-    it('should set showCard to true', () => {
-      component.hideNewCard();
+  describe('setSavedCard', () => {
+    it('should set showCard to false, savedCard to true and setCardInfo', () => {
+      spyOn(component, 'setCardInfo').and.callThrough();
+
+      component.setSavedCard(STRIPE_CARD_OPTION);
 
       expect(component.showCard).toEqual(false);
+      expect(component.savedCard).toEqual(true);
+      expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
 

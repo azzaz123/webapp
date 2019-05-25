@@ -35,6 +35,14 @@ export const FINANCIAL_CARD_OPTION: FinancialCardOption[] = [
   }
 ];
 
+export const STRIPE_CARD_OPTION: any = {
+  expire_date: '01/2021',
+  id: 'pm_2f2f2f',
+  number: '4242',
+  favorite: true,
+  stripeCard: STRIPE_CARD
+};
+
 export function createFinancialCardFixture(): FinancialCard {
 
   return new FinancialCard(
@@ -42,6 +50,16 @@ export function createFinancialCardFixture(): FinancialCard {
     'pm_a0b1c2',
     '4242',
     null,
+    STRIPE_CARD
+  );
+}
+export function createFavoriteFinancialCardFixture(): FinancialCard {
+
+  return new FinancialCard(
+    '01/2021',
+    'pm_2f2f2f',
+    '4242',
+    true,
     STRIPE_CARD
   );
 }

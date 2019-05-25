@@ -4,8 +4,6 @@ import { StripeService } from '../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { NewCardModalComponent } from '../../modals/new-card-modal/new-card-modal.component';
 import { FinancialCard } from '../credit-card-info/financial-card';
-import * as _ from 'lodash';
-import { PaymentMethodResponse, StripeCard, PaymentMethodCardResponse } from '../../../core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -23,12 +21,8 @@ export class StripeCardsComponent implements OnInit {
   ngOnInit() {
     this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
       this.stripeCards = stripeCards;
-    }, (error) => {
-      if (error.text()) {
-        this.errorService.show(error);
-      } else {
+    }, () => {
         this.errorService.i18nError('getStripeCardsError');
-      }
     });
   }
 
@@ -46,7 +40,7 @@ export class StripeCardsComponent implements OnInit {
         return stripeCard.id === financialCard.id;
       });
       if (!existingCard.length) {
-        this.stripeService.addNewCard(financialCard.id).subscribe((response: any) => {
+        this.stripeService.addNewCard(financialCard.id).subscribe(() => {
           this.stripeCards.push(financialCard);
         }, () => {
           this.errorService.i18nError('addNewCardError');

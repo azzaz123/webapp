@@ -189,4 +189,5 @@ export interface CreditInfo {
 
 export interface PaymentIntents {
   token: string;
+  status?: string;
 }

@@ -8,7 +8,7 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { Response } from '@angular/http';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
-import { CreditInfo, FinancialCard } from '../../../core/payments/payment.interface';
+import { CreditInfo, FinancialCard, FinancialCardOption } from '../../../core/payments/payment.interface';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
@@ -35,6 +35,7 @@ export class CartComponent implements OnInit, OnDestroy {
   public card: any;
   public isStripe: boolean;
   public showCard = false;
+  public savedCard = false;
 
   constructor(private cartService: CartService,
               private itemService: ItemService,
@@ -89,7 +90,11 @@ export class CartComponent implements OnInit, OnDestroy {
       this.track(order);
       if (response.payment_needed) {
         if (this.isStripe) {
-          this.stripeService.buy(orderId, paymentId, this.hasFinancialCard, this.cardType, this.card);
+          if (this.savedCard) {
+            this.stripeService.buyWithSavedCard(orderId, paymentId, this.card.id);
+          } else {
+            this.stripeService.buy(orderId, paymentId, this.hasFinancialCard, this.cardType, this.card);
+          }
         } else {
           this.buy(orderId);
         }
@@ -111,8 +116,8 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private managePaymentResponse(paymentResponse: string): void {
-    switch(paymentResponse) {
-      case 'succeeded': {
+    switch(paymentResponse.toUpperCase()) {
+      case 'SUCCEEDED': {
         this.success();
         break;
       }
@@ -198,10 +203,13 @@ export class CartComponent implements OnInit, OnDestroy {
 
   public addNewCard() {
     this.showCard = true;
+    this.savedCard = false;
   }
 
-  public hideNewCard() {
+  public setSavedCard(selectedCard: FinancialCardOption) {
     this.showCard = false;
+    this.savedCard = true;
+    this.setCardInfo(selectedCard);
   }
 
 }

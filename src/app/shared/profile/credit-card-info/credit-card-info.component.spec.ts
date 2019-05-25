@@ -109,16 +109,20 @@ describe('CreditCardInfoComponent', () => {
 
   describe('deleteStripeCreditCard', () => {
     let deleteStripeCardButton;
+    const event = new MouseEvent('click');
     beforeEach(fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
       spyOn(stripeService, 'deleteCard').and.callThrough();
       spyOn(component.onDeleteStripeCard, 'emit');
       spyOn(component, 'deleteStripeCard').and.callThrough();
-      deleteStripeCardButton = fixture.debugElement.nativeElement.querySelector('delete-link');
+      spyOn(event, 'preventDefault');
+      deleteStripeCardButton = fixture.debugElement.nativeElement.querySelector('a');
       deleteStripeCardButton.click();
     }));
 
     it('should open modal', () => {
+      component.deleteStripeCard(event);
+
       expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
         windowClass: 'modal-prompt'
       });
@@ -127,6 +131,8 @@ describe('CreditCardInfoComponent', () => {
     });
 
     it('should call deleteCard and rest card', () => {
+      component.deleteStripeCard(event);
+
       expect(stripeService.deleteCard).toHaveBeenCalled();
       expect(component.financialCard).toBeNull();
     });

@@ -50,6 +50,20 @@ export class StripeService {
     }
   }
 
+  public buyWithSavedCard(orderId: string, paymentId: string, paymentMethodId: string): void  {
+    this.paymentService.paymentIntentsConfirm(orderId, paymentId, paymentMethodId).subscribe((response: PaymentIntents) => {
+      if (response.status !== 'SUCCEEDED') {
+        return this.handleStripeCardAction(response.token, orderId, paymentId, paymentMethodId).then((response: any) => {
+          return response;
+        });
+      } else {
+        this.eventService.emit('paymentResponse', response.status);
+      }
+    }, () => {
+      this.router.navigate(['catalog/list', { code: -1 }]);
+    });
+  }
+
   public isPaymentMethodStripe(): boolean {
     return this.PAYMENT_PROVIDER_STRIPE;
   }
@@ -61,7 +75,6 @@ export class StripeService {
     return this.http.get(`${this.API_URL}/c2b/stripe/payment_methods/cards`)
       .map((r: Response) => r.json())
       .map((financialCards: PaymentMethodCardResponse[]) => this.mapPaymentMethodCard(financialCards))
-      .do((financialCards: FinancialCard[]) => console.log(financialCards))
       .do((financialCards: FinancialCard[]) => this.financialCards = financialCards);
   }
 
@@ -79,11 +92,19 @@ export class StripeService {
     });
   }
 
-  public buyWithSavedCard(orderId: string, paymentId: string, paymentMethodId: string) {
-    this.paymentService.paymentIntentsConfirm(orderId, paymentId, paymentMethodId).subscribe((response: PaymentIntents) => {
-      
+  handleStripeCardAction = async (token: string, orderId: string, paymentId: string, paymentMethodId: string) => {
+    return await stripe.handleCardAction(
+      token
+    ).then(function(result) {
+      if (result.error) {
+        this.eventService.emit('paymentResponse', result.error);
+      } else {
+        this.paymentService.paymentIntentsConfirm(orderId, paymentId, paymentMethodId).subscribe((response: PaymentIntents) => {
+          this.eventService.emit('paymentResponse', response.status);
+        });
+      }
     });
-  }
+  };
 
   createStripePaymentMethod = async (cardElement: any) => {
     return await stripe.createPaymentMethod(

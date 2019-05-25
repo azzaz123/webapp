@@ -14,7 +14,7 @@ export class StripeCardSelectionComponent implements OnInit {
   public financialCards: FinancialCardOption[];
   public card: string = '';
   @Output() hasStripeCard: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onSelectExistingCard: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onSelectExistingCard: EventEmitter<FinancialCardOption> = new EventEmitter<FinancialCardOption>();
 
 
   private onModelChange: any = () => {};
@@ -66,8 +66,7 @@ export class StripeCardSelectionComponent implements OnInit {
   }
 
   public setFinancialCard(selectedCard: FinancialCardOption) {
-    this.onSelectExistingCard.emit();
-    this.stripeService.buyWithSavedCard(orderId, paymentId, selectedCard.id);
+    this.onSelectExistingCard.emit(selectedCard);
   }
 
 }

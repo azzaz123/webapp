@@ -13,6 +13,7 @@ import { FinancialCard } from '../../shared/profile/credit-card-info/financial-c
 import { PAYMENT_METHOD_CARD_RESPONSE, PAYMENT_METHOD_DATA } from '../../../tests/payments.fixtures.spec';
 import { ResponseOptions, Response } from '@angular/http';
 import { createFinancialCardFixture } from '../../../tests/stripe.fixtures.spec';
+import { PaymentIntent } from './stripe.interface';
 
 
 describe('StripeService', () => {
@@ -58,6 +59,12 @@ describe('StripeService', () => {
             return Observable.of({
               token: 'a1-b2-c3-d4'
             })
+          },
+          paymentIntentsConfirm() {
+            return Observable.of({
+              token: 'a1-b2-c3-d4',
+              status: 'SUCCEEDED'
+            })
           }
         }
         }
@@ -74,11 +81,12 @@ describe('StripeService', () => {
   describe('buy', () => {
     const paymentId = 'a1-b2-c3-d4';
     const orderId = '1';
+
     it('should call paymentIntents', () => {
       const PAYMENT_INTENT_RESPONSE = {
         token: paymentId,
       };
-      let response: any;
+      let response: PaymentIntents;
 
       userService.me = jasmine.createSpy().and.returnValue(Observable.of(USER_DATA));
       paymentService.paymentIntents(orderId, paymentId).subscribe((data: PaymentIntents) => {
@@ -86,6 +94,48 @@ describe('StripeService', () => {
       });
 
       expect(response).toEqual(PAYMENT_INTENT_RESPONSE);
+    });
+  });
+
+  describe('buyWithSavedCard', () => {
+    const paymentId = 'a1-b2-c3-d4';
+    const orderId = '1';
+    const paymentMethodId = 'pm_a1b2c3d4';
+    const PAYMENT_INTENT_RESPONSE = {
+      token: paymentId,
+      status: 'SUCCEEDED'
+    };
+    const PAYMENT_INTENT_RESPONSE_FAIL = {
+      token: paymentId,
+      status: 'NEEDS_ACTION'
+    };
+
+    it('should call paymentIntentsConfirm', () => {
+      let response: PaymentIntents;
+
+      paymentService.paymentIntentsConfirm(orderId, paymentId, paymentMethodId).subscribe((data: PaymentIntents) => {
+        response = data;
+      });
+
+      expect(response).toEqual(PAYMENT_INTENT_RESPONSE);
+    });
+
+    it('should emit paymentResponse if payment intent is success', () => {
+      spyOn(paymentService, 'paymentIntentsConfirm').and.returnValue(Observable.of(PAYMENT_INTENT_RESPONSE));
+      spyOn(eventService, 'emit');
+
+      service.buyWithSavedCard(orderId, paymentId, paymentMethodId);
+
+      expect(eventService.emit).toHaveBeenCalledWith('paymentResponse', PAYMENT_INTENT_RESPONSE.status);
+    });
+
+    it('should call handleStripeCardAction if payment intent is not success', () => {
+      spyOn(paymentService, 'paymentIntentsConfirm').and.returnValue(Observable.of(PAYMENT_INTENT_RESPONSE_FAIL));
+      spyOn(service, 'handleStripeCardAction').and.callThrough();
+
+      service.buyWithSavedCard(orderId, paymentId, paymentMethodId);
+
+      expect(service.handleStripeCardAction).toHaveBeenCalledWith(PAYMENT_INTENT_RESPONSE_FAIL.token, orderId, paymentId, paymentMethodId);
     });
   });
 
@@ -121,14 +171,25 @@ describe('StripeService', () => {
     });
   });
 
-  describe('addNewCrd', () => {
-    it('should call the endpoint with post', fakeAsync(() => {
+  describe('addNewCard', () => {
+    it('should call the endpoint with put', fakeAsync(() => {
       const paymentMethodId = 'a0b1c2';
       spyOn(http, 'put').and.returnValue(Observable.of({}));
 
       service.addNewCard(paymentMethodId).subscribe();
 
       expect(http.put).toHaveBeenCalledWith(`api/v3/payments/c2b/stripe/payment_methods/${paymentMethodId}/attach`);
+    }));
+  });
+
+  describe('deleteCard', () => {
+    it('should call the endpoint with post', fakeAsync(() => {
+      const paymentMethodId = 'a0b1c2';
+      spyOn(http, 'post').and.returnValue(Observable.of({}));
+
+      service.deleteCard(paymentMethodId).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith(`api/v3/payments/c2b/stripe/payment_methods/${paymentMethodId}/detach`);
     }));
   });
 

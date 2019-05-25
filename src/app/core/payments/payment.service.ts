@@ -73,7 +73,7 @@ export class PaymentService {
   public paymentIntentsConfirm(orderId: string, paymentId: string, paymentMethodId: string): Observable<PaymentIntents> {
     return this.http.post(`${this.API_URL}/c2b/stripe/payment_intents/${paymentId}/confirm`, {
       order_id: orderId,
-      paymentMethodId: paymentMethodId
+      payment_method_id: paymentMethodId
     })
       .map((r: Response) => r.json());
   }
