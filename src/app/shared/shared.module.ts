@@ -65,6 +65,7 @@ import { UploaderModule } from './uploader/uploader.module';
 import { UserCoverComponent } from './user-cover/user-cover.component';
 import { CoverUploadComponent } from './profile/cover-upload/cover-upload.component';
 import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
+import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
 
 @NgModule({
   imports: [
@@ -131,7 +132,8 @@ import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester
     ThousandSuffixesPipe,
     UserCoverComponent,
     CoverUploadComponent,
-    KeywordSuggesterComponent
+    KeywordSuggesterComponent,
+    StripeCardElementComponent
   ],
   declarations: [
     AdComponent,
@@ -185,7 +187,8 @@ import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester
     DeactivateItemsModalComponent,
     UserCoverComponent,
     CoverUploadComponent,
-    KeywordSuggesterComponent
+    KeywordSuggesterComponent,
+    StripeCardElementComponent
   ],
   providers: [
     DecimalPipe,

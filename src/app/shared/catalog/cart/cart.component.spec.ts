@@ -26,6 +26,7 @@ import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
 import { CardSelectionComponent } from '../../payments/card-selection/card-selection.component';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
+import { StripeService } from '../../../core/stripe/stripe.service';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -37,6 +38,7 @@ describe('CartComponent', () => {
   let router: Router;
   let trackingService: TrackingService;
   let eventService: EventService;
+  let stripeService: StripeService;
 
   const CART = new Cart();
   const CART_CHANGE: CartChange = {
@@ -103,7 +105,15 @@ describe('CartComponent', () => {
           navigate() {
           }
         }
+        },
+        {
+          provide: StripeService, useValue: {
+          buy() {},
+          isPaymentMethodStripe() {
+            return true;
+          }
         }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -120,6 +130,7 @@ describe('CartComponent', () => {
     router = TestBed.get(Router);
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
+    stripeService = TestBed.get(StripeService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     component.creditInfo = {
       currencyName: 'wallacoins',
@@ -137,8 +148,15 @@ describe('CartComponent', () => {
 
       expect(cartService.createInstance).toHaveBeenCalledWith(new Cart());
     });
+
     it('should set cart', () => {
       expect(component.cart).toEqual(CART);
+    });
+
+    describe('check isStripe payment method', () => {
+      it('should set isStripe to true', () => {
+        expect(component.isStripe).toBe(true);
+      });
     });
   });
 
@@ -202,6 +220,7 @@ describe('CartComponent', () => {
         component.sabadellSubmit.subscribe((id: string) => {
           eventId = id;
         });
+        component.isStripe = false;
       });
 
       it('should set localStorage with transaction type', () => {

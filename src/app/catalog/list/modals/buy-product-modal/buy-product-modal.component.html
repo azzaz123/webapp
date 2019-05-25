@@ -59,14 +59,20 @@
         <span class="amount">{{totalToPay | customCurrency}}</span>
       </div>
     </div>
-    <div class="credit-card" [hidden]="creditInfo?.credit >= orderEvent.total">
+    <tsl-stripe-card-element *ngIf="isStripe" [cart]="cart" (stripeCardToken)="checkout($event)"
+                             (stripeCard)="setCardInfo($event)" [loading]="loading"
+    ></tsl-stripe-card-element>
+    <div class="credit-card" [hidden]="creditInfo?.credit >= orderEvent.total || isStripe">
       <tsl-card-selection [(ngModel)]="cardType" (hasCard)="hasCard($event)"></tsl-card-selection>
     </div>
-    <tsl-button className="btn-block btn-primary"
+    <tsl-button [hidden]="isStripe"
+                className="btn-block btn-primary"
                 (click)="checkout()"
                 [loading]="loading"
                 i18n>Continue</tsl-button>
-    <p class="note" *ngIf="!hasFinancialCard && creditInfo?.credit < orderEvent.total" i18n>We don't save details of this transaction. The purchase is made via Banco Sabadell.</p>
+    <p class="note" *ngIf="!hasFinancialCard && creditInfo?.credit < orderEvent.total && !isStripe" i18n>
+      We don't save details of this transaction. The purchase is made via Banco Sabadell.
+    </p>
   </div>
 </div>
-<tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>
+<tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>

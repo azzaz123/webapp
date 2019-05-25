@@ -11,6 +11,7 @@ import { PaymentService } from '../../../core/payments/payment.service';
 import { CartChange } from '../../../shared/catalog/cart/cart-item.interface';
 import { Pack } from '../../../core/payments/pack';
 import { OrderProExtras } from '../../../core/payments/payment.interface';
+import { StripeService } from '../../../core/stripe/stripe.service';
 
 @Component({
   selector: 'tsl-cart-extras-pro',
@@ -26,6 +27,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public cardType = 'old';
   private active = true;
+  public isStripe: boolean;
   @Output() billingInfoMissing: EventEmitter<boolean> = new EventEmitter();
   @Input() billingInfoForm: FormGroup;
   @Input() billingInfoFormEnabled: boolean;
@@ -36,9 +38,11 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
               private errorService: ErrorsService,
               private trackingService: TrackingService,
               private router: Router,
-              private errorsService: ErrorsService) { }
+              private errorsService: ErrorsService,
+              private stripeService: StripeService) { }
 
   ngOnInit() {
+    this.isStripe = this.stripeService.isPaymentMethodStripe();
     this.cartService.createInstance(new CartProExtras());
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
@@ -83,6 +87,9 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   private processCheckout() {
     const order: OrderProExtras = this.cart.prepareOrder();
+    if (this.isStripe) {
+      order.provider = 'STRIPE';
+    }
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
       this.track(order);
       this.buy(order.id);

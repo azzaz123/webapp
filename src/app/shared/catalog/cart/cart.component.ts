@@ -12,6 +12,8 @@ import { CreditInfo, FinancialCard } from '../../../core/payments/payment.interf
 import { PaymentService } from '../../../core/payments/payment.service';
 import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
+import { StripeService } from '../../../core/stripe/stripe.service';
+import { UUID } from 'angular2-uuid/index';
 
 @Component({
   selector: 'tsl-cart',
@@ -29,6 +31,8 @@ export class CartComponent implements OnInit, OnDestroy {
   public hasFinancialCard: boolean;
   public cardType = 'old';
   public loading: boolean;
+  public card: any;
+  public isStripe: boolean;
 
   constructor(private cartService: CartService,
     private itemService: ItemService,
@@ -36,7 +40,8 @@ export class CartComponent implements OnInit, OnDestroy {
     private trackingService: TrackingService,
     private paymentService: PaymentService,
     private eventService: EventService,
-    private router: Router) {
+    private router: Router,
+    private stripeService: StripeService) {
       this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
         this.cart = cartChange.cart;
       });
@@ -44,6 +49,13 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
+    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    
+    if (this.isStripe) {
+      this.eventService.subscribe('paymentResponse', (response) => {
+        this.managePaymentResponse(response);
+      }); 
+    }
   }
 
   ngOnDestroy() {
@@ -62,8 +74,9 @@ export class CartComponent implements OnInit, OnDestroy {
   checkout() {
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
+    const paymentId: string = UUID.UUID();
     this.loading = true;
-    this.itemService.purchaseProductsWithCredits(order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
+    this.itemService.purchaseProductsWithCredits(order, orderId, this.isStripe).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (-this.usedCredits > 0) {
         localStorage.setItem('transactionType', 'bumpWithCredits');
         localStorage.setItem('transactionSpent', (-this.usedCredits).toString());
@@ -73,7 +86,11 @@ export class CartComponent implements OnInit, OnDestroy {
       this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
       this.track(order);
       if (response.payment_needed) {
-        this.buy(orderId);
+        if (this.isStripe) {
+          this.stripeService.buy(orderId, paymentId, this.hasFinancialCard, this.cardType, this.card);
+        } else {
+          this.buy(orderId);
+        }
       } else {
         this.success();
       }
@@ -85,6 +102,23 @@ export class CartComponent implements OnInit, OnDestroy {
         this.errorService.i18nError('bumpError');
       }
     });
+  }
+
+  public setCardInfo(card: any): void {
+    this.card = card;
+  }
+
+  private managePaymentResponse(paymentResponse: string): void {
+    switch(paymentResponse) {
+      case 'succeeded': {
+        this.success();
+        break;
+      }
+      default: {
+        this.router.navigate(['catalog/list', { code: -1 }]);
+        break;
+      }
+    }
   }
 
   private buy(orderId: string) {

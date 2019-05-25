@@ -47,6 +47,7 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
+import { HttpHeaders } from '@angular/common/http';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -57,6 +58,8 @@ export const ITEM_STATUSES: any = {
   'pending': ONHOLD_ID,
   'sold': SOLD_OUTSIDE
 };
+
+export const PAYMENT_PROVIDER = 'STRIPE';
 
 @Injectable()
 export class ItemService extends ResourceService {
@@ -445,15 +448,24 @@ export class ItemService extends ResourceService {
     .map((r: Response) => r.json());
   }
 
-  public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
-    return this.http.post(this.API_URL_WEB + '/purchase/products/' + orderId, orderParams)
+  public purchaseProducts(orderParams: Order[], orderId: string, isStripe: boolean): Observable<string[]> {
+    let options: RequestOptions = null;
+    if (isStripe) {
+      options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+    }
+    return this.http.post(this.API_URL_WEB + '/purchase/products/' + orderId, orderParams, options)
     .map((r: Response) => r.json());
   }
 
-  public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
-    return this.http.post(this.API_URL_WEB + '/purchase/products/credit/' + orderId, orderParams)
+  public purchaseProductsWithCredits(orderParams: Order[], orderId: string, isStripe: boolean): Observable<PurchaseProductsWithCreditsResponse> {
+    let options: RequestOptions = null;
+    if (isStripe) {
+      options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+    }
+    return this.http.post(this.API_URL_WEB + '/purchase/products/credit/' + orderId, orderParams, options)
       .map((r: Response) => r.json());
   }
+
   public update(item: any, itemType: string): Observable<any> {
     let url: string = this.API_URL + '/';
     if (itemType === ITEM_TYPES.CARS) {
