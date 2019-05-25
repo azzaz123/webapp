@@ -71,16 +71,16 @@ export class ListComponent implements OnInit, OnDestroy {
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
-              private trackingService: TrackingService,
-              private modalService: NgbModal,
-              private route: ActivatedRoute,
-              private paymentService: PaymentService,
-              private errorService: ErrorsService,
-              private router: Router,
-              private userService: UserService,
-              private eventService: EventService,
-              protected i18n: I18nService,
-              private stripeService: StripeService) {
+    private trackingService: TrackingService,
+    private modalService: NgbModal,
+    private route: ActivatedRoute,
+    private paymentService: PaymentService,
+    private errorService: ErrorsService,
+    private router: Router,
+    public userService: UserService,
+    private eventService: EventService,
+    protected i18n: I18nService,
+    private stripeService: StripeService) {
   }
 
   ngOnInit() {

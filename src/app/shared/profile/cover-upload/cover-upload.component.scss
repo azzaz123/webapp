@@ -1,0 +1,68 @@
+@import "~style/common";
+
+h3 {
+  font-size: $font-size-s;
+  font-weight: bold;
+}
+.box-content {
+  padding-top: 0;
+}
+.profile-pic {
+  &.top {
+    margin-bottom: $spacing-xl;
+  }
+  h2 {
+    font-size: $font-size-m;
+    font-weight: normal;
+    color: $blue-grey-1;
+  }
+  p {
+    font-size: $font-size-s;
+    line-height: 1.29;
+    color: $blue-grey-2;
+    margin-bottom: 0;
+  }
+  .col-4 {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .col-6 {
+    display: flex;
+    align-items: center;
+  }
+  tsl-user-avatar, tsl-user-cover {
+    margin-right: $spacing-ml;
+  }
+  .btn-upload {
+    background-color: $blue-grey-5;
+    border: solid 1px $blue-grey-4;
+    color: $blue-grey-2;
+    font-size: $font-size-s;
+    padding: $spacing-s $spacing-ml;
+    cursor: pointer;
+    border-radius: $button-border-radius;
+    &:hover:not(.disabled) {
+      background-color: $blue-grey-4;
+    }
+    input {
+      display: none;
+    }
+    .spinner {
+      @include square(15px);
+      margin-right: $spacing-xs;
+      vertical-align: bottom;
+    }
+  }
+}
+
+.not-pro {
+  .title {
+    color: $blue-grey-4;
+  }
+  tsl-user-cover /deep/ {
+    .avatar-rounded {
+      background: $white !important;
+      border: 1px solid $blue-grey-5;
+    }
+  }
+}

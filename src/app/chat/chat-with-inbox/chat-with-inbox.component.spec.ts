@@ -4,13 +4,11 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { TrackingService } from '../../core/tracking/tracking.service';
 import { AdService } from '../../core/ad/ad.service';
 import { HttpService } from '../../core/http/http.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { EventService } from '../../core/event/event.service';
 import { UserService } from '../../core/user/user.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 
@@ -32,7 +30,6 @@ describe('Component: ChatWithInboxComponent', () => {
       imports: [NgbModule.forRoot(), FormsModule, NgxPermissionsModule],
       providers: [
         ChatWithInboxComponent,
-        {provide: TrackingService, useClass: MockTrackingService},
         {provide: UserService, useClass: MockUserService},
         {provide: HttpService, useValue: {}},
         I18nService,
@@ -54,55 +51,41 @@ describe('Component: ChatWithInboxComponent', () => {
     adService = TestBed.get(AdService);
   });
 
-  it('should set the conversationsLoaded value to FALSE when event.loaded is false', () => {
-    component.onLoaded({
-      loaded: false,
+  it('should set the conversationsLoading value to FALSE when event.loading is false', () => {
+    component.onLoad({
+      loading: false,
       total: 0,
-      firstPage: true
     });
 
-    expect(component.conversationsLoaded).toBe(false);
+    expect(component.conversationsLoading).toBe(false);
     expect(component.conversationsTotal).toBe(0);
   });
 
-  it('should set the conversationsLoaded value to TRUE when event.loaded AND event.firstPage are true', () => {
-    component.onLoaded({
-      loaded: false,
+  it('should set the conversationsLoading value to TRUE when event.loading is true', () => {
+    component.onLoad({
+      loading: false,
       total: 0,
-      firstPage: true
     });
 
-    expect(component.conversationsLoaded).toBe(false);
+    expect(component.conversationsLoading).toBe(false);
     expect(component.conversationsTotal).toBe(0);
 
-    component.onLoaded({
-      loaded: true,
+    component.onLoad({
+      loading: true,
       total: 10,
-      firstPage: true
     });
 
-    expect(component.conversationsLoaded).toBe(true);
+    expect(component.conversationsLoading).toBe(true);
     expect(component.conversationsTotal).toBe(10);
   });
 
-  it('should set the conversationsLoaded value to TRUE when event.firstPage is NOT true', () => {
-    component.onLoaded({
-      loaded: false,
-      total: 0,
-      firstPage: false
-    });
-
-    expect(component.conversationsLoaded).toBe(true);
-    expect(component.conversationsTotal).toBe(0);
-  });
-
   describe('ngOnInit', () => {
-    it('should set connectionError and conversationLoaded to TRUE when a EventService.CONNECTION_ERROR is emitted', () => {
+    it('should set connectionError and conversationLoading to FALSE when a EventService.CONNECTION_ERROR is emitted', () => {
       component.ngOnInit();
       eventService.emit(EventService.CONNECTION_ERROR);
 
       expect(component.connectionError).toBe(true);
-      expect(component.conversationsLoaded).toBe(true);
+      expect(component.conversationsLoading).toBe(false);
     });
 
     it('should set connectionError to FALSE when a EventService.CONNECTION_RESTORED event is emitted', () => {

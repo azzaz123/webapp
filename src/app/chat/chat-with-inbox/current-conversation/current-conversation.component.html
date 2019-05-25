@@ -1,46 +1,75 @@
-<div id="messaging">
-    <div id="top-bar">
-        <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
-            target="_blank" class="user-avatar">
-            <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
-        </a>
-        <tsl-user-avatar *ngIf="!currentConversation?.user.profileUrl" [user]="this.currentConversation.user" size="40">
-        </tsl-user-avatar>
-        <div class="conversation-header-user-info">
-            <h5>{{currentConversation?.user.microName}}</h5>
-            <!-- <div *ngxPermissionsOnly="['isNormal']">
-              <tsl-stars *ngIf="currentConversation.user.scoringStars > -1"
-                  [stars]="currentConversation.user.scoringStars" [normalized]="false"></tsl-stars>
-          </div> -->
+<div id="empty-state" *ngIf="!currentConversation">
+    <div class="empty" *ngIf="emptyInbox">
+        <div>
+            <mat-icon svgIcon="empty-inbox-conversation"></mat-icon>
         </div>
-        <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
-            <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
-            <div ngbDropdownMenu>
-                <!-- <button class="dropdown-item" (click)="archiveConversation()" i18n
-                  *ngIf="!currentConversation?.archived">Delete conversation</button>
-              <button class="dropdown-item" (click)="reportListingAction()"
-                  *ngIf="currentConversation?.item.owner !== userService.user?.id" i18n>Report this Listing</button>
-              <button class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
-              <button [hidden]="currentConversation.user.blocked" class="dropdown-item warn"
-                  (click)="blockUserAction()" i18n>Block this User</button>
-              <button [hidden]="!currentConversation.user.blocked" class="dropdown-item warn"
-                  (click)="unblockUserAction()" i18n>Unblock this User</button> -->
+    </div>
+    <div class="content" *ngIf="!emptyInbox">
+        <mat-icon svgIcon="empty-state" class="image"></mat-icon>
+        <p *ngIf="conversationsTotal > 0 && !connectionError" i18n>Choose a conversation<br />
+            from the list on the left</p>
+        <p *ngIf="conversationsTotal === 0 && !connectionError" i18n>There are no messages</p>
+        <p *ngIf="connectionError" i18n>Service not available at the moment.<br />
+            Try again later.</p>
+    </div>
+</div>
+<div *ngIf="currentConversation">
+    <div id="messaging">
+        <div id="top-bar">
+            <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
+                target="_blank" class="user-avatar">
+                <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
+            </a>
+            <tsl-user-avatar *ngIf="!currentConversation?.user.profileUrl" [user]="this.currentConversation.user" size="40">
+            </tsl-user-avatar>
+            <div class="conversation-header-user-info">
+                <h5>{{currentConversation?.user.microName}}</h5>
+                <!-- <div *ngxPermissionsOnly="['isNormal']">
+                  <tsl-stars *ngIf="currentConversation.user.scoringStars > -1"
+                      [stars]="currentConversation.user.scoringStars" [normalized]="false"></tsl-stars>
+              </div> -->
+            </div>
+            <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
+                <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
+                <div ngbDropdownMenu>
+                    <button class="dropdown-item" (click)="archiveConversation()" i18n
+                      [hidden]="currentConversationisArchived">Archive conversation</button>
+                      <button class="dropdown-item" (click)="unarchiveConversation()" i18n
+                      [hidden]="!currentConversationisArchived">Unarchive conversation</button>
+                    <button class="dropdown-item" (click)="reportListingAction()"
+                      *ngIf="!itemIsMine && conversationChattable" i18n>Report this Listing</button>
+                    <button *ngIf="conversationChattable" class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
+                    <button [hidden]="currentConversation.user.blocked" class="dropdown-item warn"
+                      (click)="blockUserAction()" i18n>Block this User</button>
+                    <button [hidden]="!currentConversation.user.blocked" class="dropdown-item warn"
+                      (click)="unblockUserAction()" i18n>Unblock this User</button>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="messages-panel-container" #messagesPanel>
-        <div *ngFor="let message of currentConversation?.messages; let i = index">
-            <h6 *ngIf="showDate(message, currentConversation.messages[i+1])">
-                {{message.date | amCalendar:momentConfig}}
-            </h6>
-            <tsl-inbox-message [message]="message"
-                [currentConversation]="message.phoneRequest ? currentConversation : null"></tsl-inbox-message>
+        
+        <div class="messages-panel-container" #messagesPanel>
+            <div class="messages-info-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}" #messagesInfoContainer>
+                <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-container">
+                    <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
+                        <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
+                        <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
+                    </div>
+                        <tsl-inbox-message [message]="message"
+                            [currentConversation]="message.phoneRequest ? currentConversation : null"></tsl-inbox-message>
+                </div>
+            </div>
+            <div *ngIf="hasMoreMessages()" class="more-messages-loader" #loadMoreMessagesDiv>
+                <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages()" i18n>Load more..</span>
+                <span *ngIf="isLoadingMoreMessages"><mat-icon svgIcon="spinner" class="spinner"></mat-icon></span>
+            </div>
         </div>
+        <tsl-input [currentConversation]="currentConversation"></tsl-input>
     </div>
-    <tsl-input [currentConversation]="currentConversation"></tsl-input>
-</div>
-
-
-<div id="conversation-meta" *ngIf="currentConversation">
+    
+    
+    <div id="conversation-meta">
+            <tsl-inbox-user-detail [user]="currentConversation.user"></tsl-inbox-user-detail>
+            <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
+            <tsl-ad slotid="div-gpt-ad-1508490196308-0"></tsl-ad>
+    </div>
 </div>

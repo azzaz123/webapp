@@ -1,15 +1,16 @@
 export interface UserData {
-  first_name: string;
-  last_name: string;
+  first_name?: string;
+  last_name?: string;
   language_id?: string;
-  birth_date: string;
-  gender: string;
+  birth_date?: string;
+  gender?: string;
 }
 
 export interface UserProData {
   description?: string;
   opening_hours?: string;
   phone_number?: string;
+  link?: string;
 }
 
 export interface UserProDataNotifications {

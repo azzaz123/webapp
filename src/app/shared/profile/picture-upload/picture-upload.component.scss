@@ -1,6 +1,16 @@
 @import "~style/common";
 
+h3 {
+  font-size: $font-size-s;
+  font-weight: bold;
+}
+.box-content {
+  padding-bottom: 0;
+}
 .profile-pic {
+  &.top {
+    margin-bottom: $spacing-xl;
+  }
   h2 {
     font-size: $font-size-m;
     font-weight: normal;
@@ -14,9 +24,14 @@
   }
   .col-4 {
     display: flex;
+    justify-content: flex-end;
+  }
+  .col-6 {
+    display: flex;
     align-items: center;
   }
-  tsl-user-avatar {
+
+  tsl-user-avatar, tsl-user-cover {
     margin-right: $spacing-ml;
   }
   .btn-upload {
@@ -24,8 +39,7 @@
     border: solid 1px $blue-grey-4;
     color: $blue-grey-2;
     font-size: $font-size-s;
-    padding: $spacing-ms $spacing-ml;
-    margin-left: $spacing-xxl;
+    padding: $spacing-s $spacing-ml;
     cursor: pointer;
     border-radius: $button-border-radius;
     &:hover:not(.disabled) {

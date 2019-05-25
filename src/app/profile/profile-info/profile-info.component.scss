@@ -1,193 +1,31 @@
 @import "~style/common";
 
-$border: solid 1px $blue-grey-5;
-.box {
-  background-color: $white;
-  border-radius: $border-radius;
-  border: $border;
-  margin-bottom: $spacing-ml;
-  .box-content {
-    padding: $spacing-xl $spacing-xxl;
-    .section-title {
-      position: absolute;
-      font-size: $font-size-s;
-      font-weight: bold;
-    }
-  }
-  &.pro-box {
-    .section-title {
-      color: $skyblue-main;
-    }
-  }
-  .box-section {
-    padding: 0 0 $spacing-xl;
-    border-bottom: $border;
-  }
-  .box-header {
-    border-bottom: $border;
-    padding-top: 0;
-    h1 {
-      font-weight: bold;
-      color: $blue-grey-2;
-      font-size: $font-size-ll;
-      letter-spacing: 0.6px;
-    }
-    .public-profile {
-      font-size: $font-size-s;
-    }
-    .btn-primary {
-      float: right;
-      padding: $spacing-ms $spacing-xl;
-    }
-  }
-  .profile-pic {
-    h2 {
-      font-size: $font-size-m;
-      font-weight: normal;
-      color: $blue-grey-1;
-    }
-    p {
-      font-size: $font-size-s;
-      line-height: $line-height-ml;
-      color: $blue-grey-2;
-      margin-bottom: 0;
-    }
-    .col-4 {
-      display: flex;
-      align-items: center;
-    }
-    tsl-user-avatar {
-      margin-right: $spacing-ml;
-    }
-    .btn-upload {
-      background-color: $blue-grey-5;
-      border: solid 1px $blue-grey-4;
-      color: $blue-grey-2;
-      font-size: $font-size-s;
-      padding: $spacing-ms $spacing-ml;
-      margin-left: $spacing-xxl;
-      cursor: pointer;
-      border-radius: $button-border-radius;
-      &:hover:not(.disabled) {
-        background-color: $blue-grey-4;
-      }
-      input {
-        display: none;
-      }
-      .spinner {
-        @include square(15px);
-        margin-right: $spacing-s;
-        vertical-align: bottom;
-      }
-    }
-  }
-  .form-group {
-    &:last-of-type {
-      margin-bottom: 0;
-    }
-    > label, > div:first-child {
-      text-align: right;
-      line-height: $line-height-l;
-      color: $blue-grey-1;
-      font-size: $font-size-m;
-      padding-right: $spacing-xxxl;
-      margin: 0;
-    }
-    .btn-group {
-      width: 100%;
-    }
-    .select {
-      height: 100px;
-      width: calc(50% - #{$spacing-ml / 2});
-      border-radius: $border-radius;
-      border: solid 2px $blue-grey-5;
-      cursor: pointer;
-      padding: 0;
-      text-align: center;
-      line-height: $line-height-xxl;
-      [ngbButton] {
-        display: none;
-      }
-      &:first-of-type {
-        margin-right: $spacing-m;
-      }
-      mat-icon {
-        @include square(42px);
-        margin-top: $spacing-l;
-        margin-bottom: $spacing-m;
-        /deep/ path {
-          transition: fill 0.2s ease-in-out;
-        }
-      }
-      div {
-        margin-top: -$spacing-ms;
-        font-size: $font-size-s;
-      }
-      &.active {
-        background-color: $blue-grey-2;
-        border-color: transparent;
-        box-shadow: 0 2px 6px 0 rgba($blue-grey-2, 0.2);
-        mat-icon {
-          /deep/ path {
-            fill: $white;
-          }
-        }
-        div {
-          font-weight: bold;
-          color: $white;
-        }
-      }
-      &:hover:not(.active) {
-        border-color: $blue-grey-2;
-        mat-icon {
-          /deep/ path {
-            fill: $blue-grey-2;
-          }
-        }
-      }
-    }
-    tsl-location-box {
-      /deep/ .box {
-        h2 {
-          display: none;
-        }
-        p {
-          font-size: $font-size-s;
-        }
-        .form-group .form-control {
-          width: calc(100% - 13px);
-        }
-        tsl-here-maps {
-          margin-right: $spacing-ms;
-        }
-      }
-    }
-  }
-  .unsubscribe-section {
-    padding-top: $spacing-xl;
-    text-align: center;
-    a {
-      text-decoration: underline;
-      color: $blue-grey-4;
-      font-size: $font-size-s;
-      cursor: pointer;
-      &:hover {
-        text-decoration: none;
-      }
-    }
-  }
+$right-gutter: 35px;
 
-  &.disabled {
-    .form-group {
-      & > label {
-        color: $color-pro-faded;
-      }
-      input, textarea {
-        background: $color-pro-faded-light url(/assets/icons/disabled-lock.svg) no-repeat calc(100% - 15px) 10px;
-      }
-      .form-control:focus {
-        border-color: transparent;
-      }
+#description {
+  min-height: 90px;
+}
+
+.switch {
+  text-align: right;
+  padding-right: $right-gutter;
+  margin: 0;
+}
+
+.center {
+  margin-top: 12px !important;
+}
+
+.form-control[readonly] {
+  background: $white;
+  border: 1px solid $blue-grey-5;
+}
+
+.pro-section {
+  margin-bottom: $spacing-xl;
+  &.not-pro {
+    label {
+      color: $blue-grey-4;
     }
   }
 }

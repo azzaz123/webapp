@@ -4,7 +4,6 @@ import { MatIconModule } from '@angular/material';
 import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { CategoriesListComponent } from './topbar/categories-list/categories-list.component';
 import { UserModule } from '../core/user/user.module';
 import { SuggesterComponent } from './topbar/suggester/suggester.component';
 import { CategoryService } from '../core/category/category.service';
@@ -31,7 +30,7 @@ import { SharedModule } from '../shared/shared.module';
     TopbarComponent,
     SidebarComponent
   ],
-  declarations: [TopbarComponent, CategoriesListComponent, SuggesterComponent, SidebarComponent],
+  declarations: [TopbarComponent, SuggesterComponent, SidebarComponent],
   providers: [GeolocationService, CategoryService, SuggesterService]
 })
 export class LayoutModule {

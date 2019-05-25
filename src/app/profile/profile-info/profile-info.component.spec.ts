@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { competitorLinks, ProfileInfoComponent } from './profile-info.component';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,20 +8,18 @@ import { UserService } from '../../core/user/user.service';
 import { MockBackend } from '@angular/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { I18nService } from '../../core/i18n/i18n.service';
 import { Observable } from 'rxjs';
 import {
+  IMAGE,
   MOCK_FULL_USER,
-  USER_DATA,
-  USER_EXTRA_INFO,
-  USER_LOCATION_COORDINATES
+  USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES,
+  USER_PRO_DATA,
+  USER_EXTRA_INFO
 } from '../../../tests/user.fixtures.spec';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from '../../shared/switch/switch.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { UnsubscribeModalComponent } from '../unsubscribe-modal/unsubscribe-modal.component';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
-import { LOCATION_MODAL_TIMEOUT } from '../../shared/geolocation/location-select/location-select.component';
 import { StripeService } from '../../core/stripe/stripe.service';
 
 const USER_BIRTH_DATE = '2018-04-12';
@@ -33,13 +31,9 @@ describe('ProfileInfoComponent', () => {
   let userService: UserService;
   let errorsService: ErrorsService;
   let http: HttpService;
-  let modalService: NgbModal;
   let stripeService: StripeService;
   let mockBackend: MockBackend;
-
-  const componentInstance: any = {
-    init: jasmine.createSpy('init')
-  };
+  let modalService: NgbModal;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -50,20 +44,34 @@ describe('ProfileInfoComponent', () => {
       ],
       providers: [
         ...TEST_HTTP_PROVIDERS,
-        I18nService,
+        {
+          provide: NgbModal, useValue: {
+          open() {
+          }
+        }
+        },
         {
           provide: UserService, useValue: {
           user: MOCK_FULL_USER,
           me() {
             return Observable.of(MOCK_FULL_USER);
           },
-          updateStoreLocation() {
+          isProUser() {
+            return Observable.of({});
+          },
+          getProInfo() {
+            return Observable.of({});
+          },
+          getUserCover() {
+            return Observable.of({});
+          },
+          updateProInfo() {
+            return Observable.of({});
+          },
+          edit() {
             return Observable.of({});
           }
         }
-        },
-        {
-          provide: 'SUBDOMAIN', useValue: 'www'
         },
         {
           provide: ErrorsService, useValue: {
@@ -89,7 +97,7 @@ describe('ProfileInfoComponent', () => {
             return true
           }
         }
-        },
+        }
       ],
       declarations: [ProfileInfoComponent, ProfileFormComponent, SwitchComponent],
       schemas: [NO_ERRORS_SCHEMA]
@@ -102,18 +110,26 @@ describe('ProfileInfoComponent', () => {
     userService = TestBed.get(UserService);
     errorsService = TestBed.get(ErrorsService);
     http = TestBed.get(HttpService);
-    modalService = TestBed.get(NgbModal);
     stripeService = TestBed.get(StripeService);
     mockBackend = TestBed.get(MockBackend);
+    modalService = TestBed.get(NgbModal);
     spyOn(userService, 'me').and.callThrough();
+    spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
+    spyOn(userService, 'getUserCover').and.returnValue(Observable.of(IMAGE));
     component.formComponent = TestBed.createComponent(ProfileFormComponent).componentInstance;
     fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
 
-    it('should call userService.me', () => {
+    it('should call userService.me and set user', () => {
       expect(userService.me).toHaveBeenCalled();
+      expect(component.user).toBe(MOCK_FULL_USER);
+    });
+
+    it('should call userService.isProUser and set isPro', () => {
+      expect(userService.isProUser).toHaveBeenCalled();
+      expect(component.isPro).toBe(true);
     });
 
     it('should call stripeService.isPaymentMethodStripe', () => {
@@ -132,6 +148,20 @@ describe('ProfileInfoComponent', () => {
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
       expect(component.profileForm.get('extra_info').value).toEqual(USER_EXTRA_INFO);
     });
+
+    it('should set profileForm with basic user data if userInfo throws error', () => {
+      spyOn(userService, 'getProInfo').and.returnValue(Observable.throwError(''));
+
+      component.ngOnInit();
+
+      expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
+      expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
+    });
+
+    it('should call userService.getUserCover and set cover', () => {
+      expect(userService.getUserCover).toHaveBeenCalled();
+      expect(component.user.coverImage).toBe(IMAGE);
+    });
   });
 
   describe('canExit', () => {
@@ -145,65 +175,104 @@ describe('ProfileInfoComponent', () => {
   });
 
   describe('onSubmit', () => {
-    it('should call onSubmit', () => {
-      spyOn(component.formComponent, 'onSubmit');
+    describe('valid form', () => {
 
-      component.onSubmit();
+      const BASIC_DATA = {
+        first_name: USER_DATA.first_name,
+        last_name: USER_DATA.last_name
+      };
 
-      expect(component.formComponent.onSubmit).toHaveBeenCalledWith(MOCK_FULL_USER);
+      const DATA = {
+        ...BASIC_DATA,
+        ...USER_PRO_DATA,
+      };
+
+      beforeEach(() => {
+        spyOn(userService, 'edit').and.callThrough();
+        spyOn(userService, 'updateProInfo').and.callThrough();
+        spyOn(errorsService, 'i18nSuccess');
+        component.profileForm.patchValue(DATA);
+        component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
+        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
+        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
+        component.formComponent.hasNotSavedChanges = true;
+
+        component.onSubmit();
+      });
+
+      it('should call updateProInfo and edit', () => {
+        expect(userService.updateProInfo).toHaveBeenCalledWith(DATA);
+        expect(userService.edit).toHaveBeenCalledWith(USER_EDIT_DATA);
+      });
+
+      it('should call i18nSuccess', () => {
+        expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
+      });
+
+      it('should set hasNotSavedChanges to false', () => {
+        expect(component.formComponent.hasNotSavedChanges).toBe(false);
+      });
+
     });
 
-    it('should not call submit  when have competitors link', () => {
-      spyOn(component.formComponent, 'onSubmit');
+    describe('invalid form', () => {
 
-      competitorLinks.forEach(competitorLink => {
-        component.profileForm.get('extra_info').get('link').setValue(competitorLink);
+      beforeEach(() => {
+        spyOn(errorsService, 'i18nError');
+        component.profileForm.get('first_name').patchValue('');
+        component.profileForm.get('last_name').patchValue('');
+        component.profileForm.get('phone_number').patchValue('');
+        component.profileForm.get('description').patchValue('');
+        component.profileForm.get('opening_hours').patchValue('');
+        component.profileForm.get('link').patchValue('');
+
         component.onSubmit();
+      });
 
-        expect(component.formComponent.onSubmit).not.toHaveBeenCalled();
+      it('should set dirty invalid fields', () => {
+        expect(component.profileForm.get('location.address').dirty).toBeTruthy();
+      });
+
+      it('should call i18nError if form is invalid', () => {
+        expect(errorsService.i18nError).toHaveBeenCalledWith('formErrors');
       });
     });
 
-    it('should throw error toast when have competitors link', () => {
-      spyOn(errorsService, 'i18nError');
+    describe('invalid link', () => {
 
-      competitorLinks.forEach(competitorLink => {
-        component.profileForm.get('extra_info').get('link').setValue(competitorLink);
-        component.onSubmit();
+      beforeEach(() => {
+        spyOn(userService, 'updateProInfo').and.callThrough();
+        component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
+        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
+        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
+      });
 
-        expect(errorsService.i18nError).toHaveBeenCalledWith('linkError');
+      it('should not call updateProInfo  when have competitors link', () => {
+        competitorLinks.forEach(competitorLink => {
+          component.profileForm.get('link').setValue(competitorLink);
+          component.onSubmit();
+
+          expect(userService.updateProInfo).not.toHaveBeenCalled();
+        });
+      });
+
+      it('should throw error toast when have competitors link', () => {
+        spyOn(errorsService, 'i18nError');
+
+        competitorLinks.forEach(competitorLink => {
+          component.profileForm.get('link').setValue(competitorLink);
+          component.onSubmit();
+
+          expect(errorsService.i18nError).toHaveBeenCalledWith('linkError');
+        });
       });
     });
-  });
 
-  describe('openUnsubscribeModal', () => {
-    it('should open modal', () => {
-      spyOn(modalService, 'open');
-
-      component.openUnsubscribeModal();
-
-      expect(modalService.open).toHaveBeenCalledWith(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
-    });
-  });
-
-  describe('validation', () => {
-
-    it('should set birth_date valid if value is valid', () => {
-      component.profileForm.get('birth_date').setValue('1987-05-25');
-
-      expect(component.profileForm.get('birth_date').valid).toBe(true);
-    });
-
-    it('should set birth_date invalid if value is invalid', () => {
-      component.profileForm.get('birth_date').setValue('19870-05-25');
-
-      expect(component.profileForm.get('birth_date').valid).toBe(false);
-    });
   });
 
   describe('openBecomeProModal', () => {
     it('should open modal if user is not featured', () => {
-      component.user.featured = false;
+      component.isPro = false;
       spyOn(modalService, 'open');
 
       component.openBecomeProModal();
@@ -212,62 +281,4 @@ describe('ProfileInfoComponent', () => {
     });
   });
 
-  describe('open', () => {
-    let element: any;
-    beforeEach(fakeAsync(() => {
-      element = {
-        blur() {
-        }
-      };
-      spyOn<any>(element, 'blur');
-    }));
-
-    describe('with no user values', () => {
-      beforeEach(fakeAsync(() => {
-        spyOn(modalService, 'open').and.returnValue({
-          componentInstance: componentInstance,
-          result: Promise.resolve(USER_LOCATION_COORDINATES)
-        });
-        spyOn(userService, 'updateStoreLocation').and.callThrough();
-        component.open(element);
-        tick(LOCATION_MODAL_TIMEOUT);
-      }));
-
-      it('should blur element', () => {
-        expect(element.blur).toHaveBeenCalled();
-      });
-
-      it('should open modal', () => {
-        expect(modalService.open).toHaveBeenCalled();
-      });
-
-      it('should set location', () => {
-        expect(component.profileForm.get('extra_info.address').value).toEqual(USER_LOCATION_COORDINATES.name);
-        expect(component.user.extraInfo.latitude).toEqual(USER_LOCATION_COORDINATES.latitude);
-        expect(component.user.extraInfo.longitude).toEqual(USER_LOCATION_COORDINATES.longitude);
-      });
-
-      it('should call init with no params', () => {
-        expect(componentInstance.init).toHaveBeenCalled();
-      });
-
-      it('should call updateStoreLocation', () => {
-        expect(userService.updateStoreLocation).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
-      });
-    });
-
-    describe('with user values', () => {
-      it('should set location on modal instance', fakeAsync(() => {
-        component.user.extraInfo.latitude = USER_LOCATION_COORDINATES.latitude;
-        component.user.extraInfo.longitude = USER_LOCATION_COORDINATES.longitude;
-        component.user.extraInfo.address = USER_LOCATION_COORDINATES.name;
-
-        component.open(element);
-        tick(LOCATION_MODAL_TIMEOUT);
-
-        expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
-      }));
-    });
-
-  });
 });

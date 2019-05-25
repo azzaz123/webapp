@@ -5,11 +5,10 @@ import { UserService } from '../user/user.service';
 import { Router } from '@angular/router';
 import { EventService } from '../event/event.service';
 import {
-  PaymentIntents, PaymentMethodResponse, StripeCard, FinancialCardOption, PaymentMethodCardResponse
+  PaymentIntents, PaymentMethodResponse, PaymentMethodCardResponse
 } from '../payments/payment.interface';
 import { PaymentIntent } from './stripe.interface';
 import { HttpService } from '../http/http.service';
-//import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
 import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';

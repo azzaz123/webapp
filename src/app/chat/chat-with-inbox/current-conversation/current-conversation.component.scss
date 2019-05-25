@@ -19,19 +19,43 @@
   overflow-y: scroll;
   padding: $spacing-ml;
   width: 100%;
+  position: relative;
 }
 
-h6 {
-  display: block;
-  width: 100%;
+.message-container {
   text-align: center;
-  margin: $spacing-ml 0;
-  text-transform: uppercase;
-  color: $blue-grey-2;
-  font-weight: bold;
+}
+
+.messages-info-container {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.date-marker {
+  display: inline-flex;
+  text-align: center;
+  padding: $spacing-xxs $spacing-s;
+  background-color: $blue-grey-4;
+  border-radius: 10px;
+  margin: $spacing-ms 0;
+  color: $white;
   font-size: $font-size-xs;
 }
 
+.more-messages-loader {
+  position: relative;
+  top: 0px;
+  left: 0px;;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  width: 100%;
+  text-align: center;
+  font-size: $font-size-xs;
+  cursor: pointer;
+  :hover {
+    color: $walla-main;
+  }
+}
 
 #top-bar {
   padding: $spacing-ml;
@@ -72,11 +96,6 @@ h6 {
       font-weight: bold;
       margin-bottom: 0;
     }
-
-    tsl-stars{
-      height: 17px;
-      padding-top: 2px;
-    }
   }
 
   span {
@@ -113,5 +132,45 @@ h6 {
 
   tsl-user {
     margin-bottom: $spacing-ml;
+  }
+}
+
+#empty-state {
+  height: 100vh;
+  position: relative;
+  background: $white;
+  .content {
+    @include in-the-middle;
+    text-align: center;
+    .image {
+      width: 211px;
+      height: 220px;
+    }
+    p {
+      font-size: $font-size-m;
+      color: $blue-grey-2;
+      line-height: 24px;
+    }
+  }
+}
+
+.empty {
+  position: relative;
+  background: $white;
+  display: flex;
+  mat-icon{
+    width: 100vh;
+    height: 100vh;
+  }
+}
+
+.spinner {
+  $spinner-size: 14px;
+  height: $spinner-size;
+  width: $spinner-size;
+  svg {
+      position: absolute;
+      top: 0;
+      left: -#{$spacing-ml + 5px};
   }
 }

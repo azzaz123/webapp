@@ -1,10 +1,11 @@
 import { Model } from '../resource/model.interface';
-import { UserExtrainfo, UserLocation, UserStats, UserValidations } from './user-response.interface';
+import { UserExtrainfo, UserLocation, UserStats, UserValidations, Image } from './user-response.interface';
 import { Item } from '../item/item';
 import { environment } from '../../../environments/environment';
 
 export const USER_BASE_PATH = 'http://es.wallapop.com/user/';
 export const PLACEHOLDER_AVATAR = '/assets/images/user.png';
+export const PLACEHOLDER_COVER = '/assets/images/cover.svg';
 export const PERMISSIONS = {
   'normal': 'isNormal',
   'professional': 'isProfessional',
@@ -19,6 +20,7 @@ export class User implements Model {
   private _sellingItem: Item;
   private _itemsCount: number;
   private _blocked: boolean;
+
   constructor(private _id: string,
               private _microName?: string,
               private _image?: any,
@@ -39,11 +41,13 @@ export class User implements Model {
               private _gender?: string,
               private _email?: string,
               private _featured = false,
-              private _extraInfo?: UserExtrainfo) {
+              private _extraInfo?: UserExtrainfo,
+              private _coverImage?: Image) {
 
     this._webLink = webSlug ? USER_BASE_PATH + webSlug : null;
     this._type = this.mapType(this._type);
   }
+
   get id(): string {
     return this._id;
   }
@@ -210,6 +214,38 @@ export class User implements Model {
 
   get extraInfo(): UserExtrainfo {
     return this._extraInfo;
+  }
+
+  get coverImage(): any {
+    return this._coverImage;
+  }
+
+  set coverImage(value: any) {
+    this._coverImage = value;
+  }
+
+  public setCoverImageUrl(url: string) {
+    if (!this._coverImage) {
+      this._coverImage = {
+        id: '',
+        original_width: 0,
+        original_height: 0,
+        average_hex_color: '',
+        urls_by_size: {
+          original: url,
+          small: url,
+          large: url,
+          medium: url,
+          xlarge: url
+        }
+      }
+    } else {
+      this._coverImage.urls_by_size.original = url;
+      this._coverImage.urls_by_size.small = url;
+      this._coverImage.urls_by_size.large = url;
+      this._coverImage.urls_by_size.medium = url;
+      this._coverImage.urls_by_size.xlarge = url;
+    }
   }
 
   getUrl(subdomain: string) {

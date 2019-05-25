@@ -1,21 +1,15 @@
 <div id="left-panel">
     <tsl-connection-alert></tsl-connection-alert>
-    <tsl-inbox (loaded)="onLoaded($event)"></tsl-inbox>
+    <tsl-inbox (loadingEvent)="onLoad($event)"></tsl-inbox>
 </div>
-<div id="center-panel" *ngIf="currentConversation">
-    <tsl-current-conversation [currentConversation]=currentConversation></tsl-current-conversation>
+<div id="center-panel" *ngIf="!conversationsLoading">
+    <tsl-current-conversation [currentConversation]="currentConversation" 
+    [conversationsTotal]="conversationsTotal"
+    [connectionError]="connectionError"></tsl-current-conversation>
 </div>
 
-<div id="empty-state" *ngIf="!currentConversation">
+<div id="loading-state" *ngIf="conversationsLoading">
     <div class="content">
-        <div [hidden]="!conversationsLoaded">
-            <mat-icon svgIcon="empty-state" class="image"></mat-icon>
-            <h2 *ngIf="conversationsTotal > 0 && !connectionError" i18n>Choose a conversation<br />
-                from the list on the left</h2>
-            <h2 *ngIf="conversationsTotal == 0 && !connectionError" i18n>There are no messages</h2>
-            <h2 *ngIf="connectionError" i18n>Service not available at the moment.<br />
-                Try again later.</h2>
-        </div>
-        <tsl-spinner [hidden]="conversationsLoaded" [firstLoad]="firstLoad"></tsl-spinner>
+        <tsl-spinner [firstLoad]="firstLoad"></tsl-spinner>
     </div>
 </div>

@@ -1,72 +1,77 @@
 @import "~style/common";
 
-:host /deep/ {
-  margin-left: $spacing-ms;
+:host {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 0 $spacing-m;
 }
 
-:host /deep/ input {
-  & {
-    border: none;
-    width: 190px - 36px;
+.wallapop-search-input {
+  position: relative;
+  width: 100%;
+  input {
+    width: 100%;
+    height: 42px;
+    border-radius: 21px;
+    background-color: $blue-grey-5;
+    border: 1px solid transparent;
+    font-family: $wallie;
+    position: relative;
+    appearance: none;
+    font-size: $font-size-s;
     color: $blue-grey-1;
-    -webkit-transition-property: width;
-    transition-property: width;
-    transition-duration: 0.2s;
-    transition-timing-function: linear;
-    white-space: nowrap;
+    padding: 0 $spacing-xl 0 $spacing-xxl;
+    transition: width 200ms ease;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: $font-size-s;
+    white-space: nowrap;
+    outline: none;
+    &::placeholder {
+      color: $blue-grey-1;
+    }
+    &:focus {
+      border: solid 1px $walla-main;
+      background-color: $white;
+    }
   }
-  &.active {
-    width: 250px - 36px;
-  }
-  &::-webkit-input-placeholder {
-    color: $walla-main;
-    opacity: 0.9;
-  }
-  &::-moz-placeholder {
-    color: $blue-grey-2;
-    opacity: 0.9;
-  }
-  &::-ms-placeholder {
-    color: $blue-grey-2;
-    opacity: 0.9;
-  }
-  &::placeholder {
-    color: $blue-grey-2;
-    opacity: 0.9;
+  &:before {
+    content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNyI+PHBhdGggZmlsbD0iIzI1MzIzOCIgZD0iTTExLjcyIDEyLjQ1NmEuOTY1Ljk2NSAwIDAgMSAxLjM2IDBsMi4yMjYgMi4yMWEuOTU1Ljk1NSAwIDAgMSAwIDEuMzU2Ljk2NS45NjUgMCAwIDEtMS4zNTkgMGwtMi4yMjctMi4yMWEuOTU1Ljk1NSAwIDAgMSAwLTEuMzU2em0tLjIzLTEuMzI3YTYuNDE4IDYuNDE4IDAgMCAxLTkuMDMgMCA2LjMxIDYuMzEgMCAwIDEgMC04Ljk3IDYuNDE4IDYuNDE4IDAgMCAxIDkuMDMgMCA2LjMxIDYuMzEgMCAwIDEgMCA4Ljk3em0tMS4xNDgtMS4xNGE0LjcwNiA0LjcwNiAwIDAgMCAwLTYuNjkgNC43ODUgNC43ODUgMCAwIDAtNi43MzMgMCA0LjcwNiA0LjcwNiAwIDAgMCAwIDYuNjkgNC43ODUgNC43ODUgMCAwIDAgNi43MzMgMHoiLz48L3N2Zz4=);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 13px;
+    width: 16px;
+    height: 16px;
+    z-index: 1;
   }
 }
-
 
 :host /deep/ .dropdown-menu {
-  & {
-    padding: 0;
-    overflow: hidden;
-    margin: $spacing-s 0 0;
-    left: 0 !important;
-    width: 100%;
-  }
+  padding: 0;
+  overflow: hidden;
+  margin: $spacing-xs 0 0;
+  left: 0 !important;
+  width: 500px;
 }
 :host /deep/ .dropdown-item {
-  & {
-    background-color: transparent;
-    cursor: pointer;
-    color: $blue-grey-1;
-    border-bottom: 1px solid $blue-grey-5;
-    padding: $spacing-s $spacing-ml;
-    transition: all .15s linear;
-    & .suggestion {
-      display: grid;
-      line-height: $line-height-ml;
-      & .title {
-        font-size: $font-size-m;
-      }
-      & .category {
-        color: $walla-main;
-        font-size: $font-size-s;
-      }
+  background-color: transparent;
+  cursor: pointer;
+  color: $blue-grey-1;
+  border-bottom: 1px solid $blue-grey-5;
+  padding: $spacing-s $spacing-ml;
+  transition: all 0.15s linear;
+  & .suggestion {
+    display: grid;
+    line-height: $line-height-ml;
+    & .title {
+      font-size: $font-size-m;
+    }
+    & .category {
+      color: $walla-main;
+      font-size: $font-size-s;
     }
   }
 }

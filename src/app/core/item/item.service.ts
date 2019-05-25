@@ -312,7 +312,7 @@ export class ItemService extends ResourceService {
   public reportListing(itemId: number | string,
                        comments: string,
                        reason: number,
-                       thread: number): Observable<any> {
+                       thread: number | string): Observable<any> {
     return this.http.post(this.API_URL + '/' + itemId + '/report', {
       comments: comments,
       reason: ITEM_BAN_REASONS[reason]

@@ -320,14 +320,15 @@ export const USERS_STATS = {
 export const USER_EDIT_DATA: UserData = {
   first_name: USER_DATA.first_name,
   last_name: USER_DATA.last_name,
-  birth_date: '1987-02-10T00:00:00.000Z',
-  gender: 'M'
+  birth_date: '2018-04-12',
+  gender: USER_GENDER
 };
 
 export const USER_PRO_DATA: UserProData = {
   description: 'description',
   opening_hours: 'opening_hours',
-  phone_number: 'phone_number'
+  phone_number: 'phone_number',
+  link: 'link'
 };
 
 export const USER_PRO_INFO_NOTIFICATIONS: UserProDataNotifications = {

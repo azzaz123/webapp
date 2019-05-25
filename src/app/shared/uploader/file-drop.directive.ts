@@ -14,8 +14,9 @@ import { UploaderService } from './uploader.service';
 export class FileDropDirective implements OnInit, OnDestroy {
 
   @Input() uploadInput: EventEmitter<UploadInput>;
-  @Output() uploadOutput: EventEmitter<UploadOutput>;
   @Input() options: NgUploaderOptions;
+  @Input() imageType: string;
+  @Output() uploadOutput: EventEmitter<UploadOutput>;
 
   isServer: boolean = isPlatformServer(this.platform_id);
   el: HTMLInputElement;
@@ -45,7 +46,7 @@ export class FileDropDirective implements OnInit, OnDestroy {
     });
 
     if (this.uploadInput instanceof EventEmitter) {
-      this.subscription = this.upload.initInputEvents(this.uploadInput);
+      this.subscription = this.upload.initInputEvents(this.uploadInput, this.imageType);
     }
 
     this.el.addEventListener('drop', this.stopEvent, false);

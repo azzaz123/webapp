@@ -152,3 +152,9 @@
   border-radius: 50%;
   background: url(/assets/images/listing-fee.svg) no-repeat center;
 }
+
+.NewCard--add {
+  font-size: $font-size-s;
+  color: $walla-main;
+  cursor: pointer;
+}

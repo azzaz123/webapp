@@ -11,7 +11,4 @@ export class InboxMessageComponent {
 
   @Input() message: InboxMessage;
   @Input() currentConversation: InboxConversation;
-
-  constructor() { }
-
 }

@@ -56,6 +56,10 @@ export class InboxMessage {
         this._status = value;
     }
 
+    set from(value: string) {
+        this._from = value;
+    }
+
     get from(): string {
         return this._from;
     }
@@ -78,6 +82,14 @@ export class InboxMessage {
 
     get phoneRequest(): string {
         return this._phoneRequest;
+    }
+
+    public static messsagesFromJson(json: any, conversationId: string, currentUserId: string, otherUserId: string): InboxMessage[] {
+        const textMessages = json.filter(m => m.type === 'text')
+            .map(m => new InboxMessage(m.id, conversationId, m.text,
+                m.from_self ? currentUserId : otherUserId, m.from_self, new Date(m.timestamp),
+                m.status, m.payload));
+        return textMessages;
     }
 
 }

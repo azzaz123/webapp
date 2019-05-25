@@ -17,6 +17,7 @@ import { EventService } from '../event/event.service';
 import { I18nService } from '../i18n/i18n.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { RealTimeService } from './real-time.service';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 
 @Injectable()
 export class MessageService {
@@ -184,7 +185,7 @@ export class MessageService {
     return message;
   }
 
-  public send(conversation: Conversation, message: string) {
+  public send(conversation: Conversation | InboxConversation, message: string) {
     this.realTime.sendMessage(conversation, message);
   }
 

@@ -7,7 +7,7 @@ import { UUID } from 'angular2-uuid';
 import { PurchaseProductsWithCreditsResponse } from '../../../../core/item/item-response.interface';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { CreditInfo, FinancialCardOption } from '../../../../core/payments/payment.interface';
 import { Response } from '@angular/http';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 
@@ -28,7 +28,10 @@ export class BuyProductModalComponent implements OnInit {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public creditInfo: CreditInfo;
   public card: any;
-  public isStripe: boolean;
+  public isStripe = false;
+  public isStripeCard = false;
+  public showCard = false;
+  public savedCard = false;
 
   constructor(private itemService: ItemService,
               public activeModal: NgbActiveModal,
@@ -84,6 +87,10 @@ export class BuyProductModalComponent implements OnInit {
     this.mainLoading = false;
   }
 
+  public hasStripeCard(hasCard: boolean) {
+    this.isStripeCard = hasCard;
+  }
+
   public checkout() {
     this.loading = true;
     const orderId: string = UUID.UUID();
@@ -106,7 +113,11 @@ export class BuyProductModalComponent implements OnInit {
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
           if (this.isStripe) {
-            this.stripeService.buy(orderId, paymentId, this.hasFinancialCard, this.cardType, this.card);
+            if (this.savedCard) {
+              this.stripeService.buyWithSavedCard(orderId, paymentId, this.card.id);
+            } else {
+              this.stripeService.buy(orderId, paymentId, this.hasFinancialCard, this.cardType, this.card);
+            }
           } else {
             this.buy(orderId);
           }
@@ -157,6 +168,17 @@ export class BuyProductModalComponent implements OnInit {
     } else {
       return this.creditInfo.credit;
     }
+  }
+
+  public addNewCard() {
+    this.showCard = true;
+    this.savedCard = false;
+  }
+
+  public setSavedCard(selectedCard: FinancialCardOption) {
+    this.showCard = false;
+    this.savedCard = true;
+    this.setCardInfo(selectedCard);
   }
 
 }
