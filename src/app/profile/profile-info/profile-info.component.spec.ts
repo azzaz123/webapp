@@ -13,17 +13,13 @@ import {
   IMAGE,
   MOCK_FULL_USER,
   USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES,
-  USER_PRO_DATA,
-  USER_EXTRA_INFO
+  USER_PRO_DATA
 } from '../../../tests/user.fixtures.spec';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from '../../shared/switch/switch.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
 import { StripeService } from '../../core/stripe/stripe.service';
-
-const USER_BIRTH_DATE = '2018-04-12';
-const USER_GENDER = 'M';
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -34,6 +30,7 @@ describe('ProfileInfoComponent', () => {
   let stripeService: StripeService;
   let mockBackend: MockBackend;
   let modalService: NgbModal;
+  const modalInstance: any = null;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -85,7 +82,7 @@ describe('ProfileInfoComponent', () => {
           provide: NgbModal, useValue: {
           open() {
             return {
-              componentInstance: componentInstance,
+              componentInstance: modalInstance,
               result: Promise.resolve(true)
             };
           }
@@ -133,20 +130,14 @@ describe('ProfileInfoComponent', () => {
     });
 
     it('should call stripeService.isPaymentMethodStripe', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe').and.returnValue(true);
-
       component.ngOnInit();
 
-      expect(stripeService.isPaymentMethodStripe).toHaveBeenCalled();
       expect(component.isStripe).toBe(true);
     });
 
     it('should set profileForm with user data', () => {
       expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
       expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
-      expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
-      expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
-      expect(component.profileForm.get('extra_info').value).toEqual(USER_EXTRA_INFO);
     });
 
     it('should set profileForm with basic user data if userInfo throws error', () => {

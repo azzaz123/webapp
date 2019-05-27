@@ -113,11 +113,7 @@ export class BuyProductModalComponent implements OnInit {
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
           if (this.isStripe) {
-            if (this.savedCard) {
-              this.stripeService.buyWithSavedCard(orderId, paymentId, this.card.id);
-            } else {
-              this.stripeService.buy(orderId, paymentId, this.hasFinancialCard, this.cardType, this.card);
-            }
+            this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
           } else {
             this.buy(orderId);
           }

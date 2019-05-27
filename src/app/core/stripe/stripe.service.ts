@@ -31,27 +31,31 @@ export class StripeService {
     });
   }
 
-  public buy(orderId: string, paymentId: string, hasFinancialCard: boolean, cardType: string, card: any): void {
-    if (!hasFinancialCard || hasFinancialCard && cardType === 'new') {
+  public buy(orderId: string, paymentId: string, isStripeCard: boolean, isSaved: boolean, card: any): void {
+    if (!isStripeCard || isStripeCard && !isSaved) {
       this.paymentService.paymentIntents(orderId, paymentId).subscribe((response: PaymentIntents) => {
         this.payment(response.token, card).then((response: any) => {
           this.handlePayment(response);
         });
       });
     } else {
-      this.paymentService.paymentIntents(orderId, paymentId).subscribe((response: PaymentIntents) => {
-        this.payment(response.token, card).then((response: PaymentIntent) => {
+      this.paymentService.paymentIntentsConfirm(orderId, paymentId, card.id).subscribe((response: PaymentIntents) => {
+        if (response.status.toUpperCase() !== 'SUCCEEDED') {
+          this.savedPayment(response.token).then((response: any) => {
+            this.handlePayment(response);
+          });
+        } else {
           this.handlePayment(response);
-        });
+        }
       }, () => {
         this.router.navigate(['catalog/list', { code: -1 }]);
       });
     }
   }
 
-  public buyWithSavedCard(orderId: string, paymentId: string, paymentMethodId: string): void  {
+  /*public buyWithSavedCard(orderId: string, paymentId: string, paymentMethodId: string): void  {
     this.paymentService.paymentIntentsConfirm(orderId, paymentId, paymentMethodId).subscribe((response: PaymentIntents) => {
-      if (response.status !== 'SUCCEEDED') {
+      if (response.status.toUpperCase() !== 'SUCCEEDED') {
         return this.handleStripeCardAction(response.token, orderId, paymentId, paymentMethodId).then((response: any) => {
           return response;
         });
@@ -61,7 +65,7 @@ export class StripeService {
     }, () => {
       this.router.navigate(['catalog/list', { code: -1 }]);
     });
-  }
+  }*/
 
   public isPaymentMethodStripe(): boolean {
     return this.PAYMENT_PROVIDER_STRIPE;
@@ -91,7 +95,7 @@ export class StripeService {
     });
   }
 
-  handleStripeCardAction = async (token: string, orderId: string, paymentId: string, paymentMethodId: string) => {
+  /*handleStripeCardAction = async (token: string, orderId: string, paymentId: string, paymentMethodId: string) => {
     return await stripe.handleCardAction(
       token
     ).then(function(result) {
@@ -103,7 +107,7 @@ export class StripeService {
         });
       }
     });
-  };
+  };*/
 
   createStripePaymentMethod = async (cardElement: any) => {
     return await stripe.createPaymentMethod(
@@ -114,11 +118,13 @@ export class StripeService {
 
   handlePayment = (paymentResponse)  => {
     const { paymentIntent, error } = paymentResponse;
+    const response = paymentIntent ? paymentIntent.status : paymentResponse.status;
+    const responseError = error ? error.code : paymentResponse.error;
 
-    if (error) {
-      this.eventService.emit('paymentResponse', error);
+    if (responseError) {
+      this.eventService.emit('paymentResponse', responseError);
     } else {
-      this.eventService.emit('paymentResponse', paymentIntent.status);
+      this.eventService.emit('paymentResponse', response);
     }
   };
 
@@ -132,6 +138,12 @@ export class StripeService {
           owner: {name: this.fullName}
         }
       }
+    );
+  };
+
+  savedPayment = async (token) => {
+    return await stripe.handleCardPayment(
+      token
     );
   };
 

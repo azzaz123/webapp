@@ -29,13 +29,14 @@ export class CartComponent implements OnInit, OnDestroy {
   public types: string[] = BUMP_TYPES;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public hasFinancialCard: boolean;
-  public isStripeCard: boolean;
+  public isStripeCard = true;
   public cardType = 'old';
   public loading: boolean;
   public card: any;
   public isStripe: boolean;
   public showCard = false;
-  public savedCard = false;
+  public savedCard = true;
+  public selectedCard = false;
 
   constructor(private cartService: CartService,
               private itemService: ItemService,
@@ -90,11 +91,7 @@ export class CartComponent implements OnInit, OnDestroy {
       this.track(order);
       if (response.payment_needed) {
         if (this.isStripe) {
-          if (this.savedCard) {
-            this.stripeService.buyWithSavedCard(orderId, paymentId, this.card.id);
-          } else {
-            this.stripeService.buy(orderId, paymentId, this.hasFinancialCard, this.cardType, this.card);
-          }
+          this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
         } else {
           this.buy(orderId);
         }
@@ -116,7 +113,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private managePaymentResponse(paymentResponse: string): void {
-    switch(paymentResponse.toUpperCase()) {
+    switch(paymentResponse && paymentResponse.toUpperCase()) {
       case 'SUCCEEDED': {
         this.success();
         break;
@@ -206,9 +203,15 @@ export class CartComponent implements OnInit, OnDestroy {
     this.savedCard = false;
   }
 
+  public removeNewCard() {
+    this.showCard = false;
+    this.savedCard = true;
+  }
+
   public setSavedCard(selectedCard: FinancialCardOption) {
     this.showCard = false;
     this.savedCard = true;
+    this.selectedCard = true;
     this.setCardInfo(selectedCard);
   }
 

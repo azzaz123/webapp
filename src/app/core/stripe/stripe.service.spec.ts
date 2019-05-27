@@ -97,7 +97,7 @@ describe('StripeService', () => {
     });
   });
 
-  describe('buyWithSavedCard', () => {
+  /*describe('buyWithSavedCard', () => {
     const paymentId = 'a1-b2-c3-d4';
     const orderId = '1';
     const paymentMethodId = 'pm_a1b2c3d4';
@@ -137,7 +137,7 @@ describe('StripeService', () => {
 
       expect(service.handleStripeCardAction).toHaveBeenCalledWith(PAYMENT_INTENT_RESPONSE_FAIL.token, orderId, paymentId, paymentMethodId);
     });
-  });
+  });*/
 
   describe('isPaymentMethodStripe', () => {
     it('should set stripe to true if PAYMENT_PROVIDER_STRIPE is true', () => {

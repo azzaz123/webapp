@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, tick, TestBed } from '@angular/core/testing';
 
 import { CreditCardInfoComponent } from './credit-card-info.component';
 import { Observable } from 'rxjs';
@@ -7,11 +7,12 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
+import { FINANCIAL_CARD, FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { createFinancialCardFixture } from '../../../../tests/stripe.fixtures.spec';
 
-describe('CreditCardInfoComponent', () => {
+fdescribe('CreditCardInfoComponent', () => {
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;
   let paymentService: PaymentService;
@@ -114,14 +115,15 @@ describe('CreditCardInfoComponent', () => {
       spyOn(modalService, 'open').and.callThrough();
       spyOn(stripeService, 'deleteCard').and.callThrough();
       spyOn(component.onDeleteStripeCard, 'emit');
-      spyOn(component, 'deleteStripeCard').and.callThrough();
       spyOn(event, 'preventDefault');
       deleteStripeCardButton = fixture.debugElement.nativeElement.querySelector('a');
       deleteStripeCardButton.click();
     }));
 
     it('should open modal', () => {
+      component.financialCard = createFinancialCardFixture();
       component.deleteStripeCard(event);
+      tick();
 
       expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
         windowClass: 'modal-prompt'
@@ -131,11 +133,12 @@ describe('CreditCardInfoComponent', () => {
     });
 
     it('should call deleteCard and rest card', () => {
+      component.financialCard = createFinancialCardFixture();
       component.deleteStripeCard(event);
+      tick();
 
       expect(stripeService.deleteCard).toHaveBeenCalled();
       expect(component.financialCard).toBeNull();
     });
   });
-
 });
