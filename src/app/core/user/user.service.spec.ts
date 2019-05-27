@@ -51,6 +51,7 @@ import { UserLocation, MotorPlan, ProfileSubscriptionInfo, Image } from './user-
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
+import { SplitTestService } from '../tracking/split-test.service';
 
 describe('Service: User', () => {
 
@@ -64,6 +65,7 @@ describe('Service: User', () => {
   let cookieService: CookieService;
   let permissionService: NgxPermissionsService;
   let featureflagService: FeatureflagService;
+  let splitTestService: SplitTestService;
   const mockMotorPlan = {
     type: 'motor_plan_pro',
     subtype: 'sub_premium'
@@ -106,6 +108,11 @@ describe('Service: User', () => {
             return Observable.of(true);
           }
         }
+        },
+        {
+          provide: SplitTestService, useValue: {
+          reset() {}
+        }
         }
       ]
     });
@@ -119,6 +126,7 @@ describe('Service: User', () => {
     cookieService = TestBed.get(CookieService);
     permissionService = TestBed.get(NgxPermissionsService);
     featureflagService = TestBed.get(FeatureflagService);
+    splitTestService = TestBed.get(SplitTestService);
   });
 
   it('should create an instance', () => {
@@ -329,6 +337,7 @@ describe('Service: User', () => {
       spyOn(http, 'postNoBase').and.returnValue(Observable.of(new Response(res)));
       spyOn(permissionService, 'flushPermissions').and.returnValue({});
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
+      spyOn(splitTestService, 'reset');
 
       event.subscribe(EventService.USER_LOGOUT, (param) => {
         redirectUrl = param;
@@ -356,6 +365,10 @@ describe('Service: User', () => {
 
     it('should call flush permissions', () => {
       expect(permissionService.flushPermissions).toHaveBeenCalled();
+    });
+
+    it('should reset the split test service session', () => {
+      expect(splitTestService.reset).toHaveBeenCalled();
     });
   });
 

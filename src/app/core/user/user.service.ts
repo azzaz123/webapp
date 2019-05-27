@@ -23,6 +23,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
 import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
+import { SplitTestService } from '../tracking/split-test.service';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -45,6 +46,7 @@ export class UserService extends ResourceService {
               private cookieService: CookieService,
               private permissionService: NgxPermissionsService,
               private featureflagService: FeatureflagService,
+              private splitTestService: SplitTestService,
               @Inject('SUBDOMAIN') private subdomain: string) {
     super(http);
   }
@@ -73,6 +75,7 @@ export class UserService extends ResourceService {
       this.accessTokenService.deleteAccessToken();
       this.permissionService.flushPermissions();
       this.event.emit(EventService.USER_LOGOUT, redirectUrl);
+      this.splitTestService.reset();
     });
   }
 
