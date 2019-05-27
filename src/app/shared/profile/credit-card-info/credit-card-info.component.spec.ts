@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { createFinancialCardFixture } from '../../../../tests/stripe.fixtures.spec';
 
-fdescribe('CreditCardInfoComponent', () => {
+describe('CreditCardInfoComponent', () => {
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;
   let paymentService: PaymentService;
@@ -120,7 +120,7 @@ fdescribe('CreditCardInfoComponent', () => {
       deleteStripeCardButton.click();
     }));
 
-    it('should open modal', () => {
+    it('should open modal', fakeAsync(() => {
       component.financialCard = createFinancialCardFixture();
       component.deleteStripeCard(event);
       tick();
@@ -129,16 +129,16 @@ fdescribe('CreditCardInfoComponent', () => {
         windowClass: 'modal-prompt'
       });
       expect(componentInstance.type).toBe(4);
-      expect(component.onDeleteStripeCard.emit).toHaveBeenCalledWith(FINANCIAL_CARD);
-    });
+      expect(component.onDeleteStripeCard.emit).toHaveBeenCalledWith(createFinancialCardFixture());
+    }));
 
-    it('should call deleteCard and rest card', () => {
+    it('should call deleteCard and rest card', fakeAsync(() => {
       component.financialCard = createFinancialCardFixture();
       component.deleteStripeCard(event);
       tick();
 
       expect(stripeService.deleteCard).toHaveBeenCalled();
       expect(component.financialCard).toBeNull();
-    });
+    }));
   });
 });
