@@ -18,6 +18,8 @@ import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ResponseOptions, Response } from '@angular/http';
 import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs';
+import { ItemService } from '../item/item.service';
+import { MockedItemService } from '../../../tests/item.fixtures.spec';
 
 let service: ConversationService;
 let http: HttpService;
@@ -26,6 +28,7 @@ let realTime: RealTimeService;
 let persistencyService: PersistencyService;
 let messageService: MessageService;
 let userService: UserService;
+let itemService: ItemService;
 
 
 describe('ConversationService', () => {
@@ -38,7 +41,8 @@ describe('ConversationService', () => {
         {provide: RealTimeService, useValue: { sendRead() {}} },
         {provide: PersistencyService, useClass: MockedPersistencyService},
         {provide: MessageService, useValue: { totalUnreadMessages: 0 }},
-        {provide: UserService, useClass: MockedUserService}
+        {provide: UserService, useClass: MockedUserService},
+        {provide: ItemService, useClass: MockedItemService}
       ]
     });
     service = TestBed.get(ConversationService);
@@ -48,6 +52,7 @@ describe('ConversationService', () => {
     persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
     userService = TestBed.get(UserService);
+    itemService = TestBed.get(ItemService);
     spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
     service.subscribeChatEvents();
     service.archivedConversations = [];
