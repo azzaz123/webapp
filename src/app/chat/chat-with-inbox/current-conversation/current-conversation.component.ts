@@ -67,6 +67,12 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         this.isLoadingMoreMessages = false;
         this.currentConversation = conversation;
     });
+
+    this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation: InboxConversation) => {
+      if (conversation !== this.currentConversation) {
+        this.currentConversation = conversation;
+      }
+    });
   }
 
   ngOnDestroy() {
