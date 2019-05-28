@@ -59,10 +59,11 @@
         <span class="amount">{{totalToPay | customCurrency}}</span>
       </div>
     </div>
-    <tsl-stripe-card-selection *ngIf="isStripe && hasStripeCard" (onSelectExistingCard)="setSavedCard($event)"
+    <tsl-stripe-card-selection *ngIf="isStripe && isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
                                (hasStripeCard)="hasStripeCard($event)"
     ></tsl-stripe-card-selection>
-    <div class="NewCard--add" (click)="addNewCard()" i18n>+ Add another credit card</div>
+    <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="isStripe && savedCard" i18n>+ Add another credit card</div>
+    <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="isStripe && showCard && isStripeCard" i18n>Use saved card</div>
     <tsl-stripe-card-element *ngIf="isStripe && showCard" [type]="'bump'" [cart]="cart" (stripeCardToken)="checkout($event)"
                              (stripeCard)="setCardInfo($event)" [loading]="loading"
     ></tsl-stripe-card-element>
@@ -73,6 +74,7 @@
                 className="btn-block btn-primary"
                 (click)="checkout()"
                 [loading]="loading"
+                [disabled]="isStripe && !selectedCard"
                 i18n>Continue</tsl-button>
     <p class="note" *ngIf="!hasFinancialCard && creditInfo?.credit < orderEvent.total && !isStripe" i18n>
       We don't save details of this transaction. The purchase is made via Banco Sabadell.

@@ -28,10 +28,11 @@ export class BuyProductModalComponent implements OnInit {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public creditInfo: CreditInfo;
   public card: any;
-  public isStripe = false;
-  public isStripeCard = false;
+  public isStripe: boolean;
+  public isStripeCard = true;
   public showCard = false;
-  public savedCard = false;
+  public savedCard = true;
+  public selectedCard = false;
 
   constructor(private itemService: ItemService,
               public activeModal: NgbActiveModal,
@@ -171,9 +172,15 @@ export class BuyProductModalComponent implements OnInit {
     this.savedCard = false;
   }
 
+  public removeNewCard() {
+    this.showCard = false;
+    this.savedCard = true;
+  }
+
   public setSavedCard(selectedCard: FinancialCardOption) {
     this.showCard = false;
     this.savedCard = true;
+    this.selectedCard = true;
     this.setCardInfo(selectedCard);
   }
 
