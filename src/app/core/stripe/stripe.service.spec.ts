@@ -97,48 +97,6 @@ describe('StripeService', () => {
     });
   });
 
-  /*describe('buyWithSavedCard', () => {
-    const paymentId = 'a1-b2-c3-d4';
-    const orderId = '1';
-    const paymentMethodId = 'pm_a1b2c3d4';
-    const PAYMENT_INTENT_RESPONSE = {
-      token: paymentId,
-      status: 'SUCCEEDED'
-    };
-    const PAYMENT_INTENT_RESPONSE_FAIL = {
-      token: paymentId,
-      status: 'NEEDS_ACTION'
-    };
-
-    it('should call paymentIntentsConfirm', () => {
-      let response: PaymentIntents;
-
-      paymentService.paymentIntentsConfirm(orderId, paymentId, paymentMethodId).subscribe((data: PaymentIntents) => {
-        response = data;
-      });
-
-      expect(response).toEqual(PAYMENT_INTENT_RESPONSE);
-    });
-
-    it('should emit paymentResponse if payment intent is success', () => {
-      spyOn(paymentService, 'paymentIntentsConfirm').and.returnValue(Observable.of(PAYMENT_INTENT_RESPONSE));
-      spyOn(eventService, 'emit');
-
-      service.buyWithSavedCard(orderId, paymentId, paymentMethodId);
-
-      expect(eventService.emit).toHaveBeenCalledWith('paymentResponse', PAYMENT_INTENT_RESPONSE.status);
-    });
-
-    it('should call handleStripeCardAction if payment intent is not success', () => {
-      spyOn(paymentService, 'paymentIntentsConfirm').and.returnValue(Observable.of(PAYMENT_INTENT_RESPONSE_FAIL));
-      spyOn(service, 'handleStripeCardAction').and.callThrough();
-
-      service.buyWithSavedCard(orderId, paymentId, paymentMethodId);
-
-      expect(service.handleStripeCardAction).toHaveBeenCalledWith(PAYMENT_INTENT_RESPONSE_FAIL.token, orderId, paymentId, paymentMethodId);
-    });
-  });*/
-
   describe('isPaymentMethodStripe', () => {
     it('should set stripe to true if PAYMENT_PROVIDER_STRIPE is true', () => {
       service.PAYMENT_PROVIDER_STRIPE = true;
