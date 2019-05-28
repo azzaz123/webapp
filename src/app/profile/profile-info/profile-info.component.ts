@@ -6,7 +6,6 @@ import { CanComponentDeactivate } from '../../shared/guards/can-component-deacti
 import { User } from '../../core/user/user';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { ErrorsService } from '../../core/errors/errors.service';
-import { StripeService } from '../../core/stripe/stripe.service';
 import { UserProInfo } from '../../core/user/user-info.interface';
 import { Image } from '../../core/user/user-response.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -30,7 +29,6 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
 
   public profileForm: FormGroup;
   public allowSegmentation: boolean;
-  public isStripe: boolean;
   private userInfo: UserProInfo;
   public user: User;
   public isPro: boolean;
@@ -40,8 +38,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   constructor(private userService: UserService,
               private fb: FormBuilder,
               private errorsService: ErrorsService,
-              private modalService: NgbModal,
-              private stripeService: StripeService) {
+              private modalService: NgbModal) {
     this.profileForm = fb.group({
       first_name: '',
       last_name: '',
@@ -58,7 +55,6 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   }
 
   ngOnInit() {
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
     this.userService.me().subscribe((user: User) => {
       this.user = user;
     });

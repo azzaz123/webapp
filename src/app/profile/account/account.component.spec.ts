@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Rx';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { StripeService } from '../../core/stripe/stripe.service';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
@@ -21,6 +22,7 @@ describe('AccountComponent', () => {
   let modalService: NgbModal;
   let userService: UserService;
   let errorsService: ErrorsService;
+  let stripeService: StripeService;
 
   const componentInstance: any = {
     init: jasmine.createSpy('init')
@@ -63,6 +65,13 @@ describe('AccountComponent', () => {
             };
           }
         }
+        },
+        {
+          provide: StripeService, useValue: {
+          isPaymentMethodStripe() {
+            return true
+          }
+        }
         }
       ],
       declarations: [ AccountComponent, ProfileFormComponent ],
@@ -80,6 +89,7 @@ describe('AccountComponent', () => {
     fixture.detectChanges();
     errorsService = TestBed.get(ErrorsService);
     modalService = TestBed.get(NgbModal);
+    stripeService = TestBed.get(StripeService);
   });
 
   describe('ngOnInit', () => {
@@ -122,6 +132,12 @@ describe('AccountComponent', () => {
 
       it('should set hasNotSavedChanges to false', () => {
         expect(component.formComponent.hasNotSavedChanges).toBe(false);
+      });
+
+      it('should call stripeService.isPaymentMethodStripe', () => {
+        component.ngOnInit();
+
+        expect(component.isStripe).toBe(true);
       });
     });
 

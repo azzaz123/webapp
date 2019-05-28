@@ -19,7 +19,6 @@ import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-
 import { SwitchComponent } from '../../shared/switch/switch.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
-import { StripeService } from '../../core/stripe/stripe.service';
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -27,7 +26,6 @@ describe('ProfileInfoComponent', () => {
   let userService: UserService;
   let errorsService: ErrorsService;
   let http: HttpService;
-  let stripeService: StripeService;
   let mockBackend: MockBackend;
   let modalService: NgbModal;
   const modalInstance: any = null;
@@ -87,13 +85,6 @@ describe('ProfileInfoComponent', () => {
             };
           }
         }
-        },
-        {
-          provide: StripeService, useValue: {
-          isPaymentMethodStripe() {
-            return true
-          }
-        }
         }
       ],
       declarations: [ProfileInfoComponent, ProfileFormComponent, SwitchComponent],
@@ -107,7 +98,6 @@ describe('ProfileInfoComponent', () => {
     userService = TestBed.get(UserService);
     errorsService = TestBed.get(ErrorsService);
     http = TestBed.get(HttpService);
-    stripeService = TestBed.get(StripeService);
     mockBackend = TestBed.get(MockBackend);
     modalService = TestBed.get(NgbModal);
     spyOn(userService, 'me').and.callThrough();
@@ -127,12 +117,6 @@ describe('ProfileInfoComponent', () => {
     it('should call userService.isProUser and set isPro', () => {
       expect(userService.isProUser).toHaveBeenCalled();
       expect(component.isPro).toBe(true);
-    });
-
-    it('should call stripeService.isPaymentMethodStripe', () => {
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(true);
     });
 
     it('should set profileForm with user data', () => {
