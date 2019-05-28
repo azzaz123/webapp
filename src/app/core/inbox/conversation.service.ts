@@ -308,12 +308,12 @@ export class ConversationService {
       return Observable.forkJoin(
         this.userService.get(response.other_user_id),
         this.itemService.get(itemId),
-        this.getConversation(response.conversation_id)
+        this.getConversation(response.conversation_id).catch(() => Observable.of(null))
       ).map((data: any) => {
         const userResponse = data[0];
         const itemResponse = data[1];
         const inboxFetched = data[2];
-        if (inboxFetched.id === response.conversation_id) {
+        if (inboxFetched) {
           return inboxFetched;
         }
         const userImage = userResponse.image ? userResponse.image.urls_by_size.small : null;
