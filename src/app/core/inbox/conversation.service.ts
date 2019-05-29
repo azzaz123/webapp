@@ -275,10 +275,8 @@ export class ConversationService {
 
   public openConversationWith$(itemId: string): Observable<InboxConversation> {
     if (this.conversations && this.archivedConversations) {
-      let localConversation = this.conversations.find((conver) => conver.item.id === itemId && !conver.item.isMine);
-      if (!localConversation) {
-        localConversation = this.archivedConversations.find((conver) => conver.item.id === itemId && !conver.item.isMine);
-      }
+      const localConversation = this.conversations.find((conver) => conver.item.id === itemId && !conver.item.isMine) 
+      || this.archivedConversations.find((conver) => conver.item.id === itemId && !conver.item.isMine);
 
       if (localConversation) {
         this.openConversation(localConversation);
