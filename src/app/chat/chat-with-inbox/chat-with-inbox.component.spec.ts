@@ -11,6 +11,8 @@ import { EventService } from '../../core/event/event.service';
 import { UserService } from '../../core/user/user.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
+import { ActivatedRoute } from '@angular/router';
+import { ConversationService } from '../../core/inbox/conversation.service';
 
 class MockUserService {
   public isProfessional() {
@@ -23,6 +25,8 @@ describe('Component: ChatWithInboxComponent', () => {
   let component: ChatWithInboxComponent;
   let eventService: EventService;
   let adService: AdService;
+  let activatedRoute: ActivatedRoute;
+  let conversationService: ConversationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -32,6 +36,16 @@ describe('Component: ChatWithInboxComponent', () => {
         ChatWithInboxComponent,
         {provide: UserService, useClass: MockUserService},
         {provide: HttpService, useValue: {}},
+        {provide: ConversationService, useValue: {
+          openConversationWith$(): Observable<any> {
+            return Observable.empty();
+          }
+        }},
+        {
+          provide: ActivatedRoute, useValue: {
+            params: Observable.of({})
+        }
+        },
         I18nService,
         EventService,
         {
@@ -49,6 +63,8 @@ describe('Component: ChatWithInboxComponent', () => {
     component = TestBed.createComponent(ChatWithInboxComponent).componentInstance;
     eventService = TestBed.get(EventService);
     adService = TestBed.get(AdService);
+    activatedRoute = TestBed.get(ActivatedRoute);
+    conversationService = TestBed.get(ConversationService);
   });
 
   it('should set the conversationsLoading value to FALSE when event.loading is false', () => {
