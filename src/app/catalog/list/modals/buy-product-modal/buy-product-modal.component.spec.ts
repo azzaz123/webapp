@@ -4,7 +4,7 @@ import { BuyProductModalComponent } from './buy-product-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, Subject } from 'rxjs';
 import { MOCK_ITEM_V3, ORDER_EVENT } from '../../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../../core/item/item.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +13,8 @@ import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
 import { UUID } from 'angular2-uuid';
 import { OrderEvent } from '../../selected-items/selected-product.interface';
+import { StripeService } from '../../../../core/stripe/stripe.service';
+import { Router } from '@angular/router';
 
 describe('BuyProductModalComponent', () => {
   let component: BuyProductModalComponent;
@@ -21,6 +23,9 @@ describe('BuyProductModalComponent', () => {
   let activeModal: NgbActiveModal;
   let paymentService: PaymentService;
   let eventService: EventService;
+  let stripeService: StripeService;
+  let router: Router;
+  const routerEvents: Subject<any> = new Subject();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -28,6 +33,13 @@ describe('BuyProductModalComponent', () => {
       providers: [
         DecimalPipe,
         EventService,
+        {
+          provide: Router, useValue: {
+            navigate() {
+          },
+          events: routerEvents
+        }
+        },
         {
           provide: ItemService, useValue: {
           get() {
@@ -57,7 +69,15 @@ describe('BuyProductModalComponent', () => {
             return Observable.of('');
           }
         }
+        },
+        {
+          provide: StripeService, useValue: {
+          buy() {},
+          isPaymentMethodStripe() {
+            return true;
+          }
         }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -73,6 +93,8 @@ describe('BuyProductModalComponent', () => {
     activeModal = TestBed.get(NgbActiveModal);
     paymentService = TestBed.get(PaymentService);
     eventService = TestBed.get(EventService);
+    stripeService = TestBed.get(StripeService);
+    router = TestBed.get(Router);
   });
 
   describe('ngOnInit', () => {
@@ -84,6 +106,12 @@ describe('BuyProductModalComponent', () => {
 
       expect(component.item).toEqual(MOCK_ITEM_V3);
       expect(component.item.urgent).toBe(true);
+    });
+
+    describe('check isStripe payment method', () => {
+      it('should set isStripe to true', () => {
+        expect(component.isStripe).toBe(true);
+      });
     });
 
     it('should call getCreditInfo and set it', () => {
@@ -193,6 +221,7 @@ describe('BuyProductModalComponent', () => {
           factor: 100
         };
         component.orderEvent = {...ORDER_EVENT} as OrderEvent;
+        component.isStripe = false;
       });
 
       it('should set localStorage with transaction amount', () => {
