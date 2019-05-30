@@ -24,6 +24,7 @@ import { UserService } from '../core/user/user.service';
 import { MOCK_USER, USER_ID } from '../../tests/user.fixtures.spec';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
 import Spy = jasmine.Spy;
+import { StripeService } from '../core/stripe/stripe.service';
 
 describe('WallacoinsComponent', () => {
   let component: WallacoinsComponent;
@@ -33,6 +34,7 @@ describe('WallacoinsComponent', () => {
   let router: Router;
   let eventService: EventService;
   let userService: UserService;
+  let stripeService: StripeService;
   const CREDITS_PACKS: Pack[] = createWallacoinsPacksFixture().wallacoins;
   const PERKS: PerksModel = createPerksModelFixture();
   const PACK = new Pack(
@@ -96,6 +98,13 @@ describe('WallacoinsComponent', () => {
             }
         }
         },
+        {
+          provide: StripeService, useValue: {
+          isPaymentMethodStripe() {
+            return false;
+          }
+        }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -111,6 +120,7 @@ describe('WallacoinsComponent', () => {
     modalService = TestBed.get(NgbModal);
     router = TestBed.get(Router);
     eventService = TestBed.get(EventService);
+    stripeService = TestBed.get(StripeService);
   });
 
   describe('ngOnInit', () => {

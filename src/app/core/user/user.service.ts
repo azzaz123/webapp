@@ -22,6 +22,7 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
+import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -134,7 +135,7 @@ export class UserService extends ResourceService {
     }
   }
 
-  public calculateDistanceFromItem(user: User, item: Item): number {
+  public calculateDistanceFromItem(user: User | InboxUser, item: Item): number {
     if (!user.location || !this.user.location) {
       return null;
     }
@@ -348,10 +349,11 @@ export class UserService extends ResourceService {
   public isProUser(): Observable<boolean> {
     return Observable.forkJoin([
       this.isProfessional(),
-      this.getMotorPlan()
+      this.getMotorPlan(),
+      this.me()
     ])
       .map((values: any[]) => {
-        return values[0] || !!(values[1] && values[1].type);
+        return values[0] || !!(values[1] && values[1].type) || values[2].featured;
       });
   }
 

@@ -13,7 +13,7 @@ export class ChatComponent implements OnInit {
   constructor(private inboxService: InboxService) { }
 
   ngOnInit() {
-    this.inboxService.getInboxFeatureFlag().subscribe(val => {
+    this.inboxService.getInboxFeatureFlag$().subscribe(val => {
       this.inboxFeatureflagValue = val;
     });
   }

@@ -17,7 +17,7 @@ describe('Component: Chat', () => {
       providers: [
         ChatComponent,
         { provide: InboxService, useValue: {
-            getInboxFeatureFlag() {
+            getInboxFeatureFlag$() {
               return Observable.of(true);
             }
         }}
@@ -34,16 +34,16 @@ describe('Component: Chat', () => {
 
   describe('ngOnInit', () => {
     it('should call inboxService.inboxFeatureflagValue', () => {
-      spyOn(inboxService, 'getInboxFeatureFlag').and.callThrough();
+      spyOn(inboxService, 'getInboxFeatureFlag$').and.callThrough();
 
       component.ngOnInit();
 
-      expect(inboxService.getInboxFeatureFlag).toHaveBeenCalled();
+      expect(inboxService.getInboxFeatureFlag$).toHaveBeenCalled();
     });
 
     it('should set inboxFeatureflagValue to the value returned by inboxService.inboxFeatureflagValue', () => {
       const expectedValue = true;
-      spyOn(inboxService, 'getInboxFeatureFlag').and.returnValue(Observable.of(expectedValue));
+      spyOn(inboxService, 'getInboxFeatureFlag$').and.returnValue(Observable.of(expectedValue));
 
       component.ngOnInit();
 

@@ -64,11 +64,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
       this.userInfo = userInfo;
       this.setUserData();
     }, () => {
-      this.profileForm.patchValue({
-        first_name: this.user.firstName,
-        last_name: this.user.lastName
-      });
-      this.formComponent.hasNotSavedChanges = false;
+      this.setUserData();
     });
     this.userService.getUserCover().subscribe((avatar: Image) => {
       this.user.coverImage = avatar;
@@ -76,10 +72,12 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   }
 
   private setUserData() {
-    if (this.userInfo) {
+    this.profileForm.patchValue({
+      first_name: this.user.firstName,
+      last_name: this.user.lastName
+    });
+    if(this.userInfo && this.isPro) {
       this.profileForm.patchValue({
-        first_name: this.user.firstName,
-        last_name: this.user.lastName,
         phone_number: this.userInfo.phone_number,
         description: this.userInfo.description,
         opening_hours: this.userInfo.opening_hours,

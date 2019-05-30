@@ -61,6 +61,19 @@ describe('PaymentService', () => {
     });
   });
 
+  describe('payment intent', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'post').and.callThrough();
+      const paymentIntent = 'a1-b2-c3-d4';
+
+      service.paymentIntent('1', paymentIntent).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith(`api/v3/payments/c2b/stripe/payment_intents/${paymentIntent}`, {
+        order_id: '1'
+      });
+    });
+  });
+
   describe('getFinancialCard', () => {
     let response: FinancialCard;
     it('should call endpoint', () => {

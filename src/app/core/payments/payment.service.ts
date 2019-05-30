@@ -11,7 +11,7 @@ import {
   ProductResponse,
   Products,
   SabadellInfoResponse,
-  ScheduledStatus
+  ScheduledStatus, PaymentIntents
 } from './payment.interface';
 import { HttpService } from '../http/http.service';
 import * as _ from 'lodash';
@@ -61,6 +61,13 @@ export class PaymentService {
     return this.http.post(this.API_URL + '/c2b/sabadell/tpv/pay', {
       order_id: orderId
     });
+  }
+
+  public paymentIntent(orderId: string, paymentId: string): Observable<PaymentIntents> {
+    return this.http.post(`${this.API_URL}/c2b/stripe/payment_intents/${paymentId}`, {
+      order_id: orderId
+    })
+      .map((r: Response) => r.json());
   }
 
   public getPacks(product?: Products): Observable<Packs> {

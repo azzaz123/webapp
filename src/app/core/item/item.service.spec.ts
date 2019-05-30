@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { ItemService, PUBLISHED_ID, ONHOLD_ID } from './item.service';
+import { ItemService, PUBLISHED_ID, ONHOLD_ID, PAYMENT_PROVIDER } from './item.service';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Headers, RequestMethod, RequestOptions, Response, ResponseOptions } from '@angular/http';
 import {
@@ -524,10 +524,12 @@ describe('Service: Item', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(['1234'])});
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
       let resp: string[];
-      service.purchaseProducts([ORDER], 'UUID').subscribe((r: string[]) => {
+      let options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+
+      service.purchaseProducts([ORDER], 'UUID', true).subscribe((r: string[]) => {
         resp = r;
       });
-      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/UUID', [ORDER]);
+      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/UUID', [ORDER], options);
       expect(resp).toEqual(['1234']);
     });
   });
@@ -541,10 +543,12 @@ describe('Service: Item', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESP)});
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
       let resp: PurchaseProductsWithCreditsResponse;
-      service.purchaseProductsWithCredits([ORDER], 'UUID').subscribe((r: PurchaseProductsWithCreditsResponse) => {
+      let options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+
+      service.purchaseProductsWithCredits([ORDER], 'UUID', true).subscribe((r: PurchaseProductsWithCreditsResponse) => {
         resp = r;
       });
-      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/credit/UUID', [ORDER]);
+      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/credit/UUID', [ORDER], options);
       expect(resp).toEqual(RESP);
     });
   });

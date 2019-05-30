@@ -64,6 +64,7 @@ export interface OrderProExtras {
   packs: Array<string>;
   id: string;
   origin?: string;
+  provider?: string;
 }
 
 export interface BillingInfoResponse {
@@ -117,4 +118,8 @@ export interface CreditInfo {
   currencyName: string;
   credit: number;
   factor: number;
+}
+
+export interface PaymentIntents {
+  token: string;
 }

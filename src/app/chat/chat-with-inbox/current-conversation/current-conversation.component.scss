@@ -19,11 +19,18 @@
   overflow-y: scroll;
   padding: $spacing-ml;
   width: 100%;
+  position: relative;
 }
 
 .message-container {
   text-align: center;
 }
+
+.messages-info-container {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 .date-marker {
   display: inline-flex;
   text-align: center;
@@ -35,6 +42,20 @@
   font-size: $font-size-xs;
 }
 
+.more-messages-loader {
+  position: relative;
+  top: 0px;
+  left: 0px;;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  width: 100%;
+  text-align: center;
+  font-size: $font-size-xs;
+  cursor: pointer;
+  :hover {
+    color: $walla-main;
+  }
+}
 
 #top-bar {
   padding: $spacing-ml;
@@ -74,11 +95,6 @@
       font-size: $font-size-m;
       font-weight: bold;
       margin-bottom: 0;
-    }
-
-    tsl-stars{
-      height: 17px;
-      padding-top: 2px;
     }
   }
 
@@ -145,5 +161,16 @@
   mat-icon{
     width: 100vh;
     height: 100vh;
+  }
+}
+
+.spinner {
+  $spinner-size: 14px;
+  height: $spinner-size;
+  width: $spinner-size;
+  svg {
+      position: absolute;
+      top: 0;
+      left: -#{$spacing-ml + 5px};
   }
 }
