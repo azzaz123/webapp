@@ -20,6 +20,8 @@ import {
 } from '../../../../tests/payments.fixtures.spec';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { StripeService } from '../../../core/stripe/stripe.service';
+import { EventService } from '../../../core/event/event.service';
+import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 
 describe('CartExtrasProComponent', () => {
   let component: CartExtrasProComponent;
@@ -30,6 +32,7 @@ describe('CartExtrasProComponent', () => {
   let router: Router;
   let trackingService: TrackingService;
   let stripeService: StripeService;
+  let eventService: EventService;
 
   const CART_PRO_EXTRAS = new CartProExtras();
   const CART_CHANGE: CartChange = {
@@ -44,6 +47,7 @@ describe('CartExtrasProComponent', () => {
       declarations: [ CartExtrasProComponent, CustomCurrencyPipe ],
       providers: [
         DecimalPipe,
+        EventService,
         {
           provide: CartService, useValue: {
             createInstance() { },
@@ -118,6 +122,7 @@ describe('CartExtrasProComponent', () => {
     router = TestBed.get(Router);
     trackingService = TestBed.get(TrackingService);
     stripeService = TestBed.get(StripeService);
+    eventService = TestBed.get(EventService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     fixture.detectChanges();
   });
@@ -149,6 +154,34 @@ describe('CartExtrasProComponent', () => {
       component.hasCard(true);
 
       expect(component.hasFinancialCard).toEqual(true);
+    });
+  });
+
+  describe('hasStripeCard', () => {
+    it('should set true if stripe card exists', () => {
+      component.hasStripeCard(true);
+
+      expect(component.isStripeCard).toEqual(true);
+    });
+  });
+
+  describe('addNewCard', () => {
+    it('should set showCard to true', () => {
+      component.addNewCard();
+
+      expect(component.showCard).toEqual(true);
+    });
+  });
+
+  describe('setSavedCard', () => {
+    it('should set showCard to false, savedCard to true and setCardInfo', () => {
+      spyOn(component, 'setCardInfo').and.callThrough();
+
+      component.setSavedCard(STRIPE_CARD_OPTION);
+
+      expect(component.showCard).toEqual(false);
+      expect(component.savedCard).toEqual(true);
+      expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
 

@@ -184,3 +184,12 @@ tsl-button {
     color: $blue-grey-3;
   }
 }
+
+.Cart__NewCard {
+  &--add, &--used {
+    margin-bottom: $spacing-s;
+    font-size: $font-size-s;
+    color: $walla-main;
+    cursor: pointer;
+  }
+}
