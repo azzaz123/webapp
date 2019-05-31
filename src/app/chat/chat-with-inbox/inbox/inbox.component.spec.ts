@@ -246,22 +246,6 @@ describe('Component: InboxComponent', () => {
       newlySelectedConversation = CREATE_MOCK_INBOX_CONVERSATION('some-new-conv-id');
     });
 
-    it('should set active to FALSE to the currently selected conversation, if one exists', () => {
-      component.setCurrentConversation(previouslySelectedConversation);
-      expect(previouslySelectedConversation.active).toBe(true);
-
-      component.setCurrentConversation(newlySelectedConversation);
-
-      expect(previouslySelectedConversation.active).toBe(false);
-    });
-
-    it('should set component.conversation as the new conversation and set active to TRUE', () => {
-      component.setCurrentConversation(newlySelectedConversation);
-
-      expect(component['conversation']).toEqual(newlySelectedConversation);
-      expect(newlySelectedConversation.active).toBe(true);
-    });
-
     it('should should call conversationService.openConversation with the new conversation', () => {
       spyOn(conversationService, 'openConversation').and.callThrough();
 

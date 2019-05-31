@@ -72,6 +72,8 @@ export class InboxService {
       this.eventService.emit(EventService.INBOX_LOADED, conversations);
       this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, archived);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+      this.eventService.emit(EventService.INBOX_READY, true);
+      this.eventService.emit(EventService.ARCHIVED_INBOX_READY, true);
     });
 
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (blockedUsers: string[]) => {
