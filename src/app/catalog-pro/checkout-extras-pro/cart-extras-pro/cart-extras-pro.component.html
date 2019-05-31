@@ -4,7 +4,7 @@
     <span i18n>Delete list</span>
   </a>
 </div>
-<div class="cart-wrapper" [ngClass]="{'has-financial-card': hasFinancialCard}">
+<div class="cart-wrapper" [ngClass]="{'has-financial-card': hasFinancialCard || isStripeCard}">
   <div class="scroll-panel">
     <ul *ngIf="cart" class="items-list">
       <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
@@ -69,7 +69,7 @@
             (click)="saveAndCheckout()"
             id="qa-checkout-pro-save-buy"
             i18n>Continue to Checkout</tsl-button>
-<div class="secure-payment">
+<div class="secure-payment" [hidden]="isStripe">
   <mat-icon svgIcon="secure-card"></mat-icon>
   <span i18n>Secure payment through Sabadell</span>
 </div>
