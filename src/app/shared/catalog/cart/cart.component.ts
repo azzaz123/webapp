@@ -78,7 +78,6 @@ export class CartComponent implements OnInit, OnDestroy {
   checkout() {
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
-    const paymentId: string = UUID.UUID();
     this.loading = true;
     this.itemService.purchaseProductsWithCredits(order, orderId, this.isStripe).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (-this.usedCredits > 0) {
@@ -91,7 +90,7 @@ export class CartComponent implements OnInit, OnDestroy {
       this.track(order);
       if (response.payment_needed) {
         if (this.isStripe) {
-          this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
+          this.buyStripe(orderId);
         } else {
           this.buy(orderId);
         }
@@ -134,6 +133,17 @@ export class CartComponent implements OnInit, OnDestroy {
       }, () => {
         this.router.navigate(['catalog/list', { code: -1 }]);
       });
+    }
+  }
+  
+  private buyStripe(orderId: string) {
+    const paymentId: string = UUID.UUID();
+    
+    if (this.selectedCard || !this.savedCard) {
+      this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
+    } else {
+      this.loading = false;
+      this.errorService.i18nError('noCardSelectedError');
     }
   }
 

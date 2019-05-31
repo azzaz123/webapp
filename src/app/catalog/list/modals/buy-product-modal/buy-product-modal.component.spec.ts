@@ -16,6 +16,7 @@ import { OrderEvent } from '../../selected-items/selected-product.interface';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { Router } from '@angular/router';
 import { STRIPE_CARD_OPTION } from '../../../../../tests/stripe.fixtures.spec';
+import { ErrorsService } from '../../../../core/errors/errors.service';
 
 describe('BuyProductModalComponent', () => {
   let component: BuyProductModalComponent;
@@ -25,6 +26,7 @@ describe('BuyProductModalComponent', () => {
   let paymentService: PaymentService;
   let eventService: EventService;
   let stripeService: StripeService;
+  let errorService: ErrorsService;
   let router: Router;
   const routerEvents: Subject<any> = new Subject();
 
@@ -34,6 +36,14 @@ describe('BuyProductModalComponent', () => {
       providers: [
         DecimalPipe,
         EventService,
+        {
+          provide: ErrorsService, useValue: {
+            i18nError() {
+            },
+            show() {
+            }
+        }
+        },
         {
           provide: Router, useValue: {
             navigate() {
@@ -95,6 +105,7 @@ describe('BuyProductModalComponent', () => {
     paymentService = TestBed.get(PaymentService);
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
+    errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
   });
 
