@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -48,11 +47,10 @@ describe('StripeCardSelectionComponent', () => {
       spyOn(stripeService, 'getCards').and.returnValue(Observable.of([FINANCIAL_STRIPE_CARD]));
       spyOn(component.hasStripeCard, 'emit');
 
-
       component.ngOnInit();
 
       expect(component.financialCards[0]).toEqual(FINANCIAL_CARD_OPTION[0]);
-      expect(component.hasStripeCard.emit).toHaveBeenCalledWith(!!component.financialCards);
+      expect(component.hasStripeCard.emit).toHaveBeenCalledWith(true);
     });
 
     it('should get financial card and emit false if not present', () => {

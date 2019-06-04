@@ -134,10 +134,18 @@ describe('AccountComponent', () => {
         expect(component.formComponent.hasNotSavedChanges).toBe(false);
       });
 
-      it('should call stripeService.isPaymentMethodStripe', () => {
+      it('should set isStripe to PAYMENT_PROVIDER_STRIPE value (true)', () => {
         component.ngOnInit();
 
         expect(component.isStripe).toBe(true);
+      });
+
+      it('should set isStripe to PAYMENT_PROVIDER_STRIPE value (false)', () => {
+        spyOn(stripeService, 'isPaymentMethodStripe').and.returnValue(false);
+
+        component.ngOnInit();
+
+        expect(component.isStripe).toBe(false);
       });
     });
 

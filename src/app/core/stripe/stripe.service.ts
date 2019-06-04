@@ -7,7 +7,6 @@ import { EventService } from '../event/event.service';
 import {
   PaymentIntents, PaymentMethodResponse, PaymentMethodCardResponse
 } from '../payments/payment.interface';
-import { PaymentIntent } from './stripe.interface';
 import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
@@ -17,7 +16,7 @@ import { FinancialCard } from '../../shared/profile/credit-card-info/financial-c
 export class StripeService {
 
   public fullName: string;
-  public PAYMENT_PROVIDER_STRIPE = true;
+  public PAYMENT_PROVIDER_STRIPE = false;
   private API_URL = 'api/v3/payments';
   private financialCards: FinancialCard[];
 
@@ -81,12 +80,7 @@ export class StripeService {
     });
   }
 
-  createStripePaymentMethod = async (cardElement: any) => {
-    return await stripe.createPaymentMethod(
-      'card',
-      cardElement
-    );
-  };
+  createStripePaymentMethod = async (cardElement: any) => await stripe.createPaymentMethod('card', cardElement);
 
   handlePayment = (paymentResponse)  => {
     const { paymentIntent, error } = paymentResponse;
@@ -113,11 +107,7 @@ export class StripeService {
     );
   };
 
-  savedPayment = async (token) => {
-    return await stripe.handleCardPayment(
-      token
-    );
-  };
+  savedPayment = async (token) => await stripe.handleCardPayment(token);
 
   public mapResponse(res: PaymentMethodResponse): FinancialCard {
       return new FinancialCard(
