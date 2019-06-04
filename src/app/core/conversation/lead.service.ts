@@ -117,10 +117,10 @@ export abstract class LeadService {
       return Observable.of(conversation);
     }
     return this.userService.get(conversation.user_id)
-    .map((user: User) => {
-      conversation.user = user;
-      return conversation;
-    });
+      .map((user: User) => {
+        conversation.user = user;
+        return conversation;
+      });
   }
 
   protected getItem(conversation: LeadResponse): Observable<Lead> {
