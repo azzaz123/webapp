@@ -122,8 +122,7 @@ export abstract class LeadService {
       return conversation;
     });
   }
-
-
+  
   protected getItem(conversation: LeadResponse): Observable<Lead> {
     if (!conversation.item_id) {
       return Observable.of(conversation)
