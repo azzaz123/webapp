@@ -12,6 +12,7 @@ import { Pack } from '../../core/payments/pack';
 import { UUID } from 'angular2-uuid';
 import { StripeService } from '../../core/stripe/stripe.service';
 import { EventService } from '../../core/event/event.service';
+import { STRIPE_CARD_OPTION } from '../../../tests/stripe.fixtures.spec';
 
 describe('BuyWallacoinsModalComponent', () => {
   let component: BuyWallacoinsModalComponent;
@@ -88,6 +89,36 @@ describe('BuyWallacoinsModalComponent', () => {
       component.hasCard(true);
 
       expect(component.hasFinancialCard).toEqual(true);
+    });
+  });
+
+  describe('addNewCard', () => {
+    it('should set showCard and savedCard', () => {
+      component.addNewCard();
+
+      expect(component.showCard).toBe(true);
+      expect(component.savedCard).toBe(false);
+    });
+  });
+
+  describe('removeNewCard', () => {
+    it('should set showCard and savedCard', () => {
+      component.removeNewCard();
+
+      expect(component.showCard).toBe(false);
+      expect(component.savedCard).toBe(true);
+    });
+  });
+
+  describe('setSavedCard', () => {
+    it('should set showCard and savedCard and call setCardInfo', () => {
+      spyOn(component, 'setCardInfo').and.callThrough();
+      component.setSavedCard(STRIPE_CARD_OPTION);
+
+      expect(component.showCard).toBe(false);
+      expect(component.savedCard).toBe(true);
+      expect(component.selectedCard).toBe(true);
+      expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
 

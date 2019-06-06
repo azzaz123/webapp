@@ -229,6 +229,15 @@ describe('BuyProductModalComponent', () => {
     });
   });
 
+  describe('removeNewCard', () => {
+    it('should set showCard and savedCard', () => {
+      component.removeNewCard();
+
+      expect(component.showCard).toBe(false);
+      expect(component.savedCard).toBe(true);
+    });
+  });
+
   describe('setSavedCard', () => {
       it('should set showCard and savedCard and call setCardInfo', () => {
         spyOn(component, 'setCardInfo').and.callThrough();
@@ -236,6 +245,7 @@ describe('BuyProductModalComponent', () => {
 
         expect(component.showCard).toBe(false);
         expect(component.savedCard).toBe(true);
+        expect(component.selectedCard).toBe(true);
         expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
@@ -301,6 +311,18 @@ describe('BuyProductModalComponent', () => {
               component.checkout();
 
               expect(eventId).toBe('UUID');
+            });
+
+            it('should buy with stripe', () => {
+              spyOn(stripeService, 'buy').and.callThrough();
+              const orderId = 'UUID';
+              const paymentId = 'UUID';
+              component.isStripe = true;
+              component.savedCard = false;
+
+              component.checkout();
+
+              expect(stripeService.buy).toHaveBeenCalledWith(orderId, paymentId, component.isStripeCard, component.savedCard, component.card);
             });
           });
 
