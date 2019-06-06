@@ -18,7 +18,7 @@
                     (click)="onSubmit()" i18n
         >Continue to Checkout</tsl-button>
         <tsl-button *ngIf="type === 'new'"
-                    id="checkout-card-button"
+                    id="checkout-card-button-new"
                     className="btn-primary btn-medium stripe"
                     [loading]="newLoading"
                     (click)="createNewCard()" i18n

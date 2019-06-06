@@ -43,6 +43,8 @@ export class EventService {
   public static HTTP_REQUEST_FAILED = 'httpRequestFailed';
   public static REQUEST_PHONE = 'requestPhone';
   public static PRIVACY_LIST_UPDATED = 'privacyListUpdated';
+  public static INBOX_READY = 'inboxReady';
+  public static ARCHIVED_INBOX_READY = 'archivedInboxReady';
 
   private subjects: any = {};
 

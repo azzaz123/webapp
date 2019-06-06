@@ -192,15 +192,10 @@
   <msg id="3339021787040924237"><source>app/layout/topbar/suggester/suggester.component.html:2</source>Search in All categories</msg>
   <msg id="4662529977781351630"><source>app/calls/calls.component.html:12</source>Calls</msg>
   <msg id="4812531333997465"><source>app/calls/calls.component.html:15</source>Here you can manage and see the information related with your calls</msg>
-  <msg id="8953033926734869941"><source>app/calls/calls.component.html:35</source>Name</msg>
-  <msg id="1601325288134771573"><source>app/calls/calls.component.html:38</source>Car</msg>
-  <msg id="3262236020277300799"><source>app/calls/calls.component.html:41</source>Phone</msg>
-  <msg id="3973931101896534797"><source>app/calls/calls.component.html:44</source>Date</msg>
-  <msg id="7410432243549869948"><source>app/calls/calls.component.html:47</source>Duration</msg>
-  <msg id="467152698327190533"><source>app/calls/calls.component.html:50</source>Process</msg>
-  <msg id="1101605949675282361"><source>app/calls/calls.component.html:67</source>You have no phone calls yet</msg>
-  <msg id="2020807334375818266"><source>app/calls/call-item/call-item.component.html:46</source>You have no conversations with this user</msg>
-  <msg id="3806530088285207761"><source>app/calls/call-item/call-item.component.html:53</source>View all messages</msg>
+  <msg id="3973931101896534797"><source>app/calls/calls.component.html:35</source>Date</msg>
+  <msg id="3262236020277300799"><source>app/calls/calls.component.html:38</source>Phone</msg>
+  <msg id="7410432243549869948"><source>app/calls/calls.component.html:41</source>Duration</msg>
+  <msg id="1101605949675282361"><source>app/calls/calls.component.html:61</source>You have no phone calls yet</msg>
   <msg id="6314007099242784066"><source>app/calls/user-card-calls/user-card-calls.component.html:3</source>User rating</msg>
   <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/calls/user-card-calls/user-card-calls.component.html:10</source><source>app/chat/user-detail/user-detail.component.html:6</source><source>app/chat/user-card/user-card.component.html:14</source><ph name="DISTANCE"><ex>{{user.itemDistance | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you</msg>
   <msg id="9119757647796405986"><source>app/calls/user-card-calls/user-card-calls.component.html:11</source><source>app/chat/user-detail/user-detail.component.html:7</source><source>app/chat/user-card/user-card.component.html:15</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:7</source>No location</msg>

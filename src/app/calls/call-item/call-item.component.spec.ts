@@ -20,11 +20,8 @@ import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 describe('CallItemComponent', () => {
   let component: CallItemComponent;
   let fixture: ComponentFixture<CallItemComponent>;
-  let eventService: EventService;
-  let route: ActivatedRoute;
   let trackingService: TrackingService;
   let callService: CallsService;
-  let conversationService: ConversationService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,7 +32,6 @@ describe('CallItemComponent', () => {
       declarations: [CallItemComponent, CallStatusLabelPipe],
       providers: [
         I18nService,
-        EventService,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ActivatedRoute, useValue: {
@@ -48,12 +44,6 @@ describe('CallItemComponent', () => {
           }
         }
         },
-        {
-          provide: ConversationService, useValue: {
-          stream() {
-          }
-        }
-        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -64,11 +54,8 @@ describe('CallItemComponent', () => {
     fixture = TestBed.createComponent(CallItemComponent);
     component = fixture.componentInstance;
     component.call = MOCK_CALL();
-    eventService = TestBed.get(EventService);
-    route = TestBed.get(ActivatedRoute);
     trackingService = TestBed.get(TrackingService);
     callService = TestBed.get(CallsService);
-    conversationService = TestBed.get(ConversationService);
     fixture.detectChanges();
   });
 
@@ -80,49 +67,6 @@ describe('CallItemComponent', () => {
       component.ngOnChanges();
 
       expect(component.messages.length).toBe(4);
-    });
-    it('should call changeExpandedState if there is the permalink', () => {
-      route.queryParams = Observable.of({
-        c: CALL_ID
-      });
-      spyOn(component, 'changeExpandedState');
-      component.call = MOCK_CALL();
-
-      component.ngOnChanges();
-
-      expect(component.changeExpandedState).toHaveBeenCalled();
-    });
-    it('should call NOT changeExpandedState if the call is not found', () => {
-      route.queryParams = Observable.of({
-        c: '2'
-      });
-      spyOn(component, 'changeExpandedState');
-      component.call = MOCK_CALL();
-
-      component.ngOnChanges();
-
-      expect(component.changeExpandedState).not.toHaveBeenCalled();
-    });
-  });
-  describe('changeExpandedState', () => {
-    beforeEach(() => {
-      spyOn(eventService, 'emit');
-    });
-    it('should emit an event to close other calls if the current is not active and track', () => {
-      spyOn(trackingService, 'track');
-      component.open = false;
-
-      component.changeExpandedState();
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CLOSE_EXPANDED_CALLS);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_OPENED, {lead_id: component.call.id});
-    });
-    it('should not emit the event if the open call is the active', () => {
-      component.open = true;
-
-      component.changeExpandedState();
-
-      expect(eventService.emit).not.toHaveBeenCalled();
     });
   });
   describe('onAnimationDone', () => {
