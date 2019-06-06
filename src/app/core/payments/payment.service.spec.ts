@@ -61,6 +61,35 @@ describe('PaymentService', () => {
     });
   });
 
+  describe('paymentIntents', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'post').and.callThrough();
+      const paymentIntent = 'a1-b2-c3-d4';
+
+      service.paymentIntents('1', paymentIntent).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith(`api/v3/payments/c2b/stripe/payment_intents/${paymentIntent}`, {
+        order_id: '1'
+      });
+    });
+  });
+
+  describe('paymentIntentsConfirm', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'post').and.callThrough();
+      const paymentIntent = 'a1-b2-c3-d4';
+      const orderId = '1';
+      const paymentMethodId = 'pm_a1b2c3d4';
+
+      service.paymentIntentsConfirm(orderId, paymentIntent, paymentMethodId).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith(`api/v3/payments/c2b/stripe/payment_intents/${paymentIntent}/confirm`, {
+        order_id: orderId,
+        payment_method_id: paymentMethodId
+      });
+    });
+  });
+
   describe('getFinancialCard', () => {
     let response: FinancialCard;
     it('should call endpoint', () => {

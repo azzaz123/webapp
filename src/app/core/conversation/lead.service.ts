@@ -112,17 +112,25 @@ export abstract class LeadService {
   }
 
   protected getUser(conversation: LeadResponse): Observable<LeadResponse> {
+    if (!conversation.user_id) {
+      conversation.user = new User(null);
+      return Observable.of(conversation);
+    }
     return this.userService.get(conversation.user_id)
-    .map((user: User) => {
-      conversation.user = user;
-      return conversation;
-    });
+      .map((user: User) => {
+        conversation.user = user;
+        return conversation;
+      });
   }
 
   protected getItem(conversation: LeadResponse): Observable<Lead> {
+    if (!conversation.item_id) {
+      return Observable.of(conversation)
+        .map((data: LeadResponse) => this.mapRecordData(data));
+    }
     return this.itemService.get(conversation.item_id)
-    .map((item: Item) => this.setItem(conversation, item))
-    .map((data: LeadResponse) => this.mapRecordData(data));
+      .map((item: Item) => this.setItem(conversation, item))
+      .map((data: LeadResponse) => this.mapRecordData(data));
   }
 
   protected setItem(conv: LeadResponse, item: Item): LeadResponse {

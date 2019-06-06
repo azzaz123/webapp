@@ -26,6 +26,8 @@ import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
 import { CardSelectionComponent } from '../../payments/card-selection/card-selection.component';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
+import { StripeService } from '../../../core/stripe/stripe.service';
+import { FINANCIAL_CARD_OPTION, STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -37,6 +39,7 @@ describe('CartComponent', () => {
   let router: Router;
   let trackingService: TrackingService;
   let eventService: EventService;
+  let stripeService: StripeService;
 
   const CART = new Cart();
   const CART_CHANGE: CartChange = {
@@ -103,7 +106,15 @@ describe('CartComponent', () => {
           navigate() {
           }
         }
+        },
+        {
+          provide: StripeService, useValue: {
+          buy() {},
+          isPaymentMethodStripe() {
+            return true;
+          }
         }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -120,6 +131,7 @@ describe('CartComponent', () => {
     router = TestBed.get(Router);
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
+    stripeService = TestBed.get(StripeService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     component.creditInfo = {
       currencyName: 'wallacoins',
@@ -137,8 +149,15 @@ describe('CartComponent', () => {
 
       expect(cartService.createInstance).toHaveBeenCalledWith(new Cart());
     });
+
     it('should set cart', () => {
       expect(component.cart).toEqual(CART);
+    });
+
+    describe('check isStripe payment method', () => {
+      it('should set isStripe to true', () => {
+        expect(component.isStripe).toBe(true);
+      });
     });
   });
 
@@ -147,6 +166,34 @@ describe('CartComponent', () => {
       component.hasCard(true);
 
       expect(component.hasFinancialCard).toEqual(true);
+    });
+  });
+
+  describe('hasStripeCard', () => {
+    it('should set true if stripe card exists', () => {
+      component.hasStripeCard(true);
+
+      expect(component.isStripeCard).toEqual(true);
+    });
+  });
+
+  describe('addNewCard', () => {
+    it('should set showCard to true', () => {
+      component.addNewCard();
+
+      expect(component.showCard).toEqual(true);
+    });
+  });
+
+  describe('setSavedCard', () => {
+    it('should set showCard to false, savedCard to true and setCardInfo', () => {
+      spyOn(component, 'setCardInfo').and.callThrough();
+
+      component.setSavedCard(STRIPE_CARD_OPTION);
+
+      expect(component.showCard).toEqual(false);
+      expect(component.savedCard).toEqual(true);
+      expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
 
@@ -202,6 +249,7 @@ describe('CartComponent', () => {
         component.sabadellSubmit.subscribe((id: string) => {
           eventId = id;
         });
+        component.isStripe = false;
       });
 
       it('should set localStorage with transaction type', () => {

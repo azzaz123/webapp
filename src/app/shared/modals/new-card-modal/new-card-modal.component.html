@@ -1,0 +1,11 @@
+<div class="NewCardModal">
+    <div class="modal-close" (click)="activeModal.dismiss()">
+        <mat-icon svgIcon="cross"></mat-icon>
+    </div>
+    <div class="NewCardModal__header">
+        <h1 i18n>Add a new credit card</h1>
+    </div>
+    <div class="NewCardModal__body">
+        <tsl-stripe-card-element [newLoading]="loading" (onStripeCardCreate)="onCreateCard($event)" [type]="'new'"></tsl-stripe-card-element>
+    </div>
+</div>

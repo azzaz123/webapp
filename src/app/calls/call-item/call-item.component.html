@@ -1,56 +1,25 @@
-<div class="call" [ngClass]="{'active': open}">
-  <div class="row" (click)="changeExpandedState()">
-    <div class="col-3 col-user-name">
-      <mat-icon svgIcon="caret"></mat-icon>
-      <tsl-user-avatar [size]="50" [user]="call.user"></tsl-user-avatar>
-      <span>{{call.user.microName}}</span>
+<div class="call">
+  <div class="row">
+    <div class="col-3">
+      <span>{{call.modifiedDate | amCalendar:momentConfig}}</span>
     </div>
-    <div class="col-3 col-item-title">
-      <span>{{call.item.title}}</span>
-    </div>
-    <div class="col-2 col-phone">
+    <div class="col-6 col-phone">
       <span [ngSwitch]="call.callStatus" class="icon">
         <mat-icon *ngSwitchCase="'ANSWERED'" class="call-received" svgIcon="call-received"></mat-icon>
         <mat-icon *ngSwitchCase="'MISSED'" class="call-missed" svgIcon="call-missed" class="call-missed"></mat-icon>
         <mat-icon *ngSwitchDefault class="call-shared" svgIcon="call-shared"></mat-icon>
       </span>
-      <div>
+      <div class="phone-info">
         <span>{{call.phone}}</span>
-        <p>{{call.callStatus | callStatusLabel}}</p>
+        <span class="status">{{call.callStatus | callStatusLabel}}</span>
       </div>
     </div>
-    <div class="col-2">
-      <span>{{call.modifiedDate | amCalendar:momentConfig}}</span>
-    </div>
-    <div class="col-1">
+    <div class="col-2 duration">
       <span>{{formattedDuration}}</span>
     </div>
-    <div class="col-1">
+    <div class="col-1 process">
       <tsl-archive-button [lead]="call" (click)="archived = true" [hidden]="call.archived"></tsl-archive-button>
       <tsl-unarchive-button [lead]="call" [hidden]="!call.archived"></tsl-unarchive-button>
-    </div>
-  </div>
-  <div class="row call-expanded" *ngIf="open">
-    <div class="call-expanded-user-info">
-      <tsl-user-card-calls [user]="call.user"></tsl-user-card-calls>
-    </div>
-    <div class="call-expanded-messages">
-      <div class="messages-container">
-        <tsl-message *ngFor="let message of messages; let i = index"
-                     [message]="message"
-                     [hidden]="!messages.length"
-                     [callsPanel]="true"
-                     [showUserInfo]="messages[i-1]?.user.id !== messages[i]?.user.id"></tsl-message>
-        <div class="empty-state-container" [hidden]="messages.length">
-          <mat-icon svgIcon="empty-messages" class="messages-empty-state"></mat-icon>
-          <p i18n>You have no conversations with this user</p>
-        </div>
-      </div>
-      <a [routerLink]="['/chat']"
-         [hidden]="!messages.length"
-         tslTrackEvent="PHONE_LEAD_VIEWED_CONVERSATION"
-         [params]="{lead_id: call.id}"
-         [queryParams]="{c: call.id, archive: call.archived ? true : false}" i18n>View all messages</a>
     </div>
   </div>
 </div>

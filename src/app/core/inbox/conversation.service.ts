@@ -9,7 +9,13 @@ import { PersistencyService } from '../persistency/persistency.service';
 import { Message } from '../message/message';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
-import { Response } from '@angular/http';
+import { Response, RequestOptions, Headers } from '@angular/http';
+import { ConversationResponse } from '../conversation/conversation-response.interface';
+import { UserService } from '../user/user.service';
+import { ItemService } from '../item/item.service';
+import { InboxUserPlaceholder, InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
+import { InboxItemPlaceholder, InboxItem } from '../../chat/chat-with-inbox/inbox/inbox-item';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,14 +24,18 @@ export class ConversationService {
   private API_URL = 'bff/messaging/conversation/';
   private ARCHIVE_URL = '/api/v3/instant-messaging/conversations/archive';
   private UNARCHIVE_URL = '/api/v3/instant-messaging/conversations/unarchive';
+  private MORE_MESSAGES_URL = '/api/v3/instant-messaging/archive/conversation/CONVERSATION_HASH/messages';
   private _selfId: string;
+  private max_messages = 20;
 
   constructor(
     private http: HttpService,
     private realTime: RealTimeService,
     private messageService: MessageService,
     private persistencyService: PersistencyService,
-    private eventService: EventService) {
+    private eventService: EventService,
+    private userService: UserService, // To be removed
+    private itemService: ItemService) { // To be removed
     }
 
   public conversations: InboxConversation[];
@@ -138,8 +148,8 @@ export class ConversationService {
         this.persistencyService.updateInboxMessageStatus(message, messageStatus.READ);
       });
       if (!markMessagesFromSelf) {
-        conversation.unreadCounter -= unreadMessages.length;
-        this.messageService.totalUnreadMessages -= unreadMessages.length;
+        this.messageService.totalUnreadMessages -= conversation.unreadCounter;
+        conversation.unreadCounter = 0;
       }
     }
   }
@@ -195,6 +205,11 @@ export class ConversationService {
 
   public archive(conversation: InboxConversation): Observable<InboxConversation> {
     return this.archiveConversation(conversation.id)
+    .catch((err) => {
+      if (err.status === 409) {
+        return Observable.of(conversation);
+      } else { return Observable.throwError(err); }
+    })
     .map(() => {
       this.eventService.emit(EventService.CONVERSATION_ARCHIVED, conversation);
       return conversation;
@@ -203,6 +218,11 @@ export class ConversationService {
 
   public unarchive(conversation: InboxConversation): Observable<InboxConversation> {
     return this.unarchiveConversation(conversation.id)
+    .catch((err) => {
+      if (err.status === 409) {
+        return Observable.of(conversation);
+      } else { return Observable.throwError(err); }
+    })
     .map(() => {
       this.eventService.emit(EventService.CONVERSATION_UNARCHIVED, conversation);
       return conversation;
@@ -218,6 +238,93 @@ export class ConversationService {
   private unarchiveConversation(conversationId: string): Observable<any> {
     return this.http.put(this.UNARCHIVE_URL, {
       conversation_ids: [conversationId]
+    });
+  }
+
+  public loadMoreMessages(conversationId: string) {
+    let conversation = this.conversations.find( (conver) => conver.id === conversationId);
+    if (!conversation) {
+      conversation = this.archivedConversations.find( (conver) => conver.id === conversationId);
+    }
+
+    if (conversation) {
+      this.loadMoreMessagesFor$(conversation)
+      .subscribe((conv: InboxConversation) => {
+        this.eventService.emit(EventService.MORE_MESSAGES_LOADED, conv);
+      });
+    }
+  }
+
+  private loadMoreMessagesFor$(conversation: InboxConversation): Observable<InboxConversation> {
+    return this.getMoreMessages$(conversation.id, conversation.nextPageToken).delay(1000)
+    .map((res) => {
+      const json = res.json();
+      const newmessages = InboxMessage.messsagesFromJson(json.messages , conversation.id, this.selfId, conversation.user.id);
+      newmessages.forEach((mess) => conversation.messages.push(mess));
+      conversation.nextPageToken = json.next_from;
+      return conversation;
+    });
+  }
+
+  private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<any> {
+    const url = this.MORE_MESSAGES_URL.replace('CONVERSATION_HASH', conversationId);
+    return this.http.get(url,
+      { max_messages : this.max_messages,
+      from : nextPageToken });
+  }
+
+  public openConversationWith$(itemId: string): Observable<InboxConversation> {
+    if (this.conversations && this.archivedConversations) {
+      const localConversation = this.conversations.find((conver) => conver.item.id === itemId && !conver.item.isMine) 
+      || this.archivedConversations.find((conver) => conver.item.id === itemId && !conver.item.isMine);
+
+      if (localConversation) {
+        this.openConversation(localConversation);
+        return Observable.of(localConversation);
+      }
+
+      // Then try to fetch the conversation by item
+      return this.fetchConversationByItem$(itemId)
+      .map((inboxConversation) => {
+        this.conversations.unshift(inboxConversation);
+        this.openConversation(inboxConversation);
+        return inboxConversation;
+      });
+
+    }
+
+    return Observable.throwError(new Error('Not found'));
+  }
+
+  // TODO: This method is using the old way of creating a new conversation. Change it when BE does their job.
+  private fetchConversationByItem$(itemId: string): Observable<InboxConversation> {
+    const options = new RequestOptions(); // Will remove this import
+    options.headers = new Headers(); // Will remove this import
+    options.headers.append('Content-Type', 'application/json');
+    return this.http.post('api/v3/conversations', JSON.stringify({item_id: itemId}), options).flatMap((r: Response) => {
+      const response: ConversationResponse = r.json(); // Will remove this import
+      return Observable.forkJoin(
+        this.userService.get(response.other_user_id),
+        this.itemService.get(itemId),
+        this.getConversation(response.conversation_id).catch(() => Observable.of(null))
+      ).map((data: any) => {
+        const userResponse = data[0];
+        const itemResponse = data[1];
+        const inboxFetched = data[2];
+        if (inboxFetched) {
+          return inboxFetched;
+        }
+        const userImage = userResponse.image ? userResponse.image.urls_by_size.small : null;
+        const inboxUser = new InboxUser(userResponse.id, userResponse.microName,
+          false, true, `${environment.siteUrl}user/${userResponse.webSlug}`,
+          userImage, null, userResponse.scoringStars,
+          {longitude: userResponse.approximated_longitude, latitude: userResponse.approximated_latitude });
+        const inboxItem = new InboxItem(itemResponse.id, {currency: itemResponse.currencyCode, amount: itemResponse.salePrice },
+          itemResponse.title, itemResponse.mainImage, `${environment.siteUrl}user/${itemResponse.webSlug}`,
+          'undefined', false);
+        return new InboxConversation(response.conversation_id, new Date(),
+        inboxUser, inboxItem, null, [], false, 0, null);
+      });
     });
   }
 }

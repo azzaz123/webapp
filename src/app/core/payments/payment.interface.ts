@@ -1,4 +1,5 @@
 import { Pack } from './pack';
+import { IOption } from 'ng-select/option.interface';
 export interface PerkResponse {
   expire_date: number;
   create_date: number;
@@ -64,6 +65,7 @@ export interface OrderProExtras {
   packs: Array<string>;
   id: string;
   origin?: string;
+  provider?: string;
 }
 
 export interface BillingInfoResponse {
@@ -81,9 +83,75 @@ export interface BillingInfoResponse {
 }
 
 export interface FinancialCard {
-  expire_date: number;
+  expire_date: number | string;
   id: string;
   number: string;
+  favorite?: boolean;
+  stripeCard?: StripeCard;
+}
+
+export interface FinancialCardOption extends IOption {
+  expire_date: string;
+  id: string;
+  number: string;
+  favorite?: boolean;
+  stripeCard?: StripeCard;
+}
+
+export interface CardCheck {
+  address_line1_check: string;
+  address_postal_code_check: string;
+  cvc_check: string;
+}
+
+export interface StripeCard {
+  brand: string;
+  checks: CardCheck;
+  country: string;
+  exp_month: number;
+  exp_year: number;
+  funding: string;
+  generated_from: number;
+  last4: string;
+  three_d_secure_usage: { supported : boolean };
+  wallet: string;
+}
+
+export interface Address {
+  city: string;
+  country: string;
+  line1: string;
+  line2: string;
+  postal_code: number;
+  state: string;
+}
+
+export interface BillingDetails {
+  address: Address;
+  email: string;
+  name: string;
+  phone: number;
+}
+
+export interface PaymentMethodResponse {
+  billing_details: BillingDetails;
+  card: StripeCard;
+  created: number;
+  customer: string;
+  id: string;
+  livemode: boolean;
+  metadata: any;
+  object: string;
+  type: string;
+}
+
+export interface PaymentMethodCardResponse {
+  brand: string;
+  default: boolean;
+  expiration_month: number;
+  expiration_year: number;
+  id: string;
+  last_digits: string;
 }
 
 export interface Order {
@@ -117,4 +185,9 @@ export interface CreditInfo {
   currencyName: string;
   credit: number;
   factor: number;
+}
+
+export interface PaymentIntents {
+  token: string;
+  status?: string;
 }

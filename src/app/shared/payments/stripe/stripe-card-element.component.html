@@ -1,0 +1,27 @@
+<div id="stripe">
+    <form id="payment-form" method="POST" action="/orders">
+        <fieldset>
+            <div class="form-row">
+                <div class="field">
+                    <div id="checkout-card" class="input empty"></div>
+                </div>
+            </div>
+        </fieldset>
+        <div id="card-errors" role="alert" *ngIf="error">
+            {{ error }}
+        </div>
+        <tsl-button [hidden]="type === 'new'"
+                    id="checkout-card-button"
+                    className="btn-primary btn-medium stripe"
+                    [disabled]="type === 'cart' && !cart?.total"
+                    [loading]="loading"
+                    (click)="onSubmit()" i18n
+        >Continue to Checkout</tsl-button>
+        <tsl-button *ngIf="type === 'new'"
+                    id="checkout-card-button-new"
+                    className="btn-primary btn-medium stripe"
+                    [loading]="newLoading"
+                    (click)="createNewCard()" i18n
+        >Save</tsl-button>
+    </form>
+</div>

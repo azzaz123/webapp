@@ -43,6 +43,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   }
 
   private newMessageSubscription: Subscription;
+  public isLoadingMoreMessages = false;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -60,11 +61,25 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
       (message: InboxMessage) => this.sendRead(message));
+
+    this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED,
+      (conversation: InboxConversation) => {
+        this.isLoadingMoreMessages = false;
+        this.currentConversation = conversation;
+    });
+
+    this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation: InboxConversation) => {
+      if (conversation !== this.currentConversation) {
+        this.currentConversation = conversation;
+      }
+    });
   }
 
   ngOnDestroy() {
     this.currentConversation = null;
-    this.newMessageSubscription.unsubscribe();
+    if (this.newMessageSubscription) {
+      this.newMessageSubscription.unsubscribe();
+    }
   }
 
   public showDate(currentMessage: InboxMessage, nextMessage: InboxMessage): boolean {
@@ -76,10 +91,10 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   }
 
   private sendRead(message: InboxMessage) {
-    if (this.currentConversation && this.currentConversation.id === message.thread) {
+    if (this.currentConversation && this.currentConversation.id === message.thread && !message.fromSelf) {
       Visibility.onVisible(() => {
         setTimeout(() => {
-          this.realTime.sendRead(this.currentConversation.user.id, this.currentConversation.id);
+          this.realTime.sendRead(this.userService.user.id, this.currentConversation.id);
         }, 1000);
       });
     }
@@ -164,5 +179,17 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   get currentConversationisArchived(): boolean {
     return this.conversationService.isConversationArchived(this.currentConversation);
+  }
+
+  public hasMoreMessages(): boolean {
+    return this.currentConversation.nextPageToken !== null && this.currentConversation.nextPageToken !== undefined;
+  }
+
+  public loadMoreMessages() {
+    if (this.isLoadingMoreMessages) {
+      return;
+    }
+    this.isLoadingMoreMessages = true;
+    this.conversationService.loadMoreMessages(this.currentConversation.id);
   }
 }

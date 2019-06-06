@@ -65,6 +65,12 @@ import { UploaderModule } from './uploader/uploader.module';
 import { UserCoverComponent } from './user-cover/user-cover.component';
 import { CoverUploadComponent } from './profile/cover-upload/cover-upload.component';
 import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
+import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
+import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.component';
+import { CreditCardsComponent } from './profile/credit-cards/credit-cards.component';
+import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
+import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
+import { SelectModule } from 'ng-select';
 
 @NgModule({
   imports: [
@@ -80,7 +86,8 @@ import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester
     NgbDropdownModule,
     TrackingModule,
     RouterModule,
-    UploaderModule
+    UploaderModule,
+    SelectModule
   ],
   exports: [
     CardModule,
@@ -131,7 +138,13 @@ import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester
     ThousandSuffixesPipe,
     UserCoverComponent,
     CoverUploadComponent,
-    KeywordSuggesterComponent
+    KeywordSuggesterComponent,
+    StripeCardElementComponent,
+    StripeCardsComponent,
+    CreditCardsComponent,
+    NewCardModalComponent,
+    StripeCardSelectionComponent,
+    SelectModule
   ],
   declarations: [
     AdComponent,
@@ -185,7 +198,12 @@ import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester
     DeactivateItemsModalComponent,
     UserCoverComponent,
     CoverUploadComponent,
-    KeywordSuggesterComponent
+    KeywordSuggesterComponent,
+    StripeCardElementComponent,
+    StripeCardsComponent,
+    CreditCardsComponent,
+    NewCardModalComponent,
+    StripeCardSelectionComponent
   ],
   providers: [
     DecimalPipe,
@@ -204,7 +222,8 @@ import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester
     PasswordModalComponent,
     ExitConfirmationModalComponent,
     ActivateItemsModalComponent,
-    DeactivateItemsModalComponent
+    DeactivateItemsModalComponent,
+    NewCardModalComponent
   ]
 })
 export class SharedModule { }

@@ -1,36 +1,21 @@
 <tsl-archivable>
-  <tsl-user-avatar [size]="60" [user]="call.user"></tsl-user-avatar>
   <div class="call-info">
     <div class="call-user-row">
-      <div class="call-user-name">
-        <span>{{call.user.microName}}</span>
-      </div>
       <div class="call-meta">
         <span class="call-date">{{call.modifiedDate | amCalendar:momentConfig }}</span>
       </div>
     </div>
-    <div class="call-item-row">
-      <div class="call-item-row-left">
-        <p class="call-item-title">
-          <span>
-              {{call.item.title}}
-          </span>
-        </p>
-      </div>
-      <div class="call-item-row-right">
-
-      </div>
-    </div>
-    <div class="call-data-row">
-      <p [ngSwitch]="call.callStatus">
+    <div class="call-data-row" [ngSwitch]="call.callStatus">
         <span placement="top" [ngbTooltip]="call.callStatus | callStatusLabel">
           <mat-icon *ngSwitchCase="'ANSWERED'" svgIcon="call-received"></mat-icon>
           <mat-icon *ngSwitchCase="'MISSED'" svgIcon="call-missed" class="call-missed"></mat-icon>
           <mat-icon *ngSwitchDefault svgIcon="call-shared"></mat-icon>
         </span>
-        {{call.phone}}
-      </p>
+        <div class="phone-info">
+          <span>{{call.phone}}</span>
+          <span class="status">{{call.callStatus | callStatusLabel}}</span>
+        </div>
     </div>
+    <tsl-archive-button [lead]="call" (click)="archived = true"></tsl-archive-button>
   </div>
-  <tsl-archive-button [lead]="call" (click)="archived = true"></tsl-archive-button>
 </tsl-archivable>

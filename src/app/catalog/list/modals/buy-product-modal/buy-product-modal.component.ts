@@ -7,8 +7,9 @@ import { UUID } from 'angular2-uuid';
 import { PurchaseProductsWithCreditsResponse } from '../../../../core/item/item-response.interface';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
-import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { CreditInfo, FinancialCardOption } from '../../../../core/payments/payment.interface';
 import { Response } from '@angular/http';
+import { StripeService } from '../../../../core/stripe/stripe.service';
 
 @Component({
   selector: 'tsl-buy-product-modal',
@@ -26,19 +27,27 @@ export class BuyProductModalComponent implements OnInit {
   public loading: boolean;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public creditInfo: CreditInfo;
+  public card: any;
+  public isStripe = false;
+  public isStripeCard = false;
+  public showCard = false;
+  public savedCard = false;
 
   constructor(private itemService: ItemService,
-    public activeModal: NgbActiveModal,
-    private paymentService: PaymentService,
-    private eventService: EventService) { }
+              public activeModal: NgbActiveModal,
+              private paymentService: PaymentService,
+              private eventService: EventService,
+              private stripeService: StripeService) { }
 
   ngOnInit() {
+    this.isStripe = this.stripeService.isPaymentMethodStripe();
     this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
       this.item = item;
       if (this.type === 'urgent') {
         this.item.urgent = true;
       }
     });
+
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
       if (creditInfo.credit === 0) {
         creditInfo.currencyName = 'wallacredits';
@@ -46,6 +55,12 @@ export class BuyProductModalComponent implements OnInit {
       }
       this.creditInfo = creditInfo;
     });
+
+    if (this.isStripe) {
+      this.eventService.subscribe('paymentResponse', (response) => {
+        this.managePaymentResponse(response);
+      });
+    }
   }
 
   get withCredits(): boolean {
@@ -72,11 +87,16 @@ export class BuyProductModalComponent implements OnInit {
     this.mainLoading = false;
   }
 
+  public hasStripeCard(hasCard: boolean) {
+    this.isStripeCard = hasCard;
+  }
+
   public checkout() {
     this.loading = true;
     const orderId: string = UUID.UUID();
     const creditsToPay = this.usedCredits(this.orderEvent.total);
-    this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
+    const paymentId: string = UUID.UUID();
+    this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId, this.isStripe).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (response.items_failed && response.items_failed.length) {
         this.activeModal.close('error');
       } else {
@@ -92,7 +112,12 @@ export class BuyProductModalComponent implements OnInit {
         }
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
-          this.buy(orderId);
+          if (this.isStripe) {
+            this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
+          } else {
+            this.buy(orderId);
+          }
+
         } else {
           this.activeModal.close('success');
         }
@@ -115,6 +140,23 @@ export class BuyProductModalComponent implements OnInit {
     }
   }
 
+  private managePaymentResponse(paymentResponse) {
+    switch(paymentResponse) {
+      case 'succeeded': {
+        this.activeModal.close('success');
+        break;
+      }
+      default: {
+        this.activeModal.close('error');
+        break;
+      }
+    }
+  }
+
+  public setCardInfo(card: any) {
+    this.card = card;
+  }
+
   private usedCredits(orderTotal: number): number {
     const totalCreditsToPay: number = orderTotal * this.creditInfo.factor;
     if (totalCreditsToPay < this.creditInfo.credit) {
@@ -122,6 +164,17 @@ export class BuyProductModalComponent implements OnInit {
     } else {
       return this.creditInfo.credit;
     }
+  }
+
+  public addNewCard() {
+    this.showCard = true;
+    this.savedCard = false;
+  }
+
+  public setSavedCard(selectedCard: FinancialCardOption) {
+    this.showCard = false;
+    this.savedCard = true;
+    this.setCardInfo(selectedCard);
   }
 
 }

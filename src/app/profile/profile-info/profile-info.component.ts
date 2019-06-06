@@ -28,6 +28,7 @@ export const competitorLinks = [
 export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
 
   public profileForm: FormGroup;
+  public allowSegmentation: boolean;
   private userInfo: UserProInfo;
   public user: User;
   public isPro: boolean;

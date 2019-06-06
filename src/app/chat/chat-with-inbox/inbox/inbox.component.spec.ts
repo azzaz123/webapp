@@ -13,6 +13,8 @@ import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '.
 import { EventService } from '../../../core/event/event.service';
 import { ConversationService } from '../../../core/inbox/conversation.service';
 import { InboxConversation } from './inbox-conversation/inbox-conversation';
+import { UserService } from '../../../core/user/user.service';
+import { Observable } from 'rxjs';
 
 
 describe('Component: InboxComponent', () => {
@@ -20,6 +22,7 @@ describe('Component: InboxComponent', () => {
   let inboxService: InboxService;
   let http: HttpService;
   let eventService: EventService;
+  let userService: UserService;
   let conversationService: ConversationService;
 
   beforeEach(() => {
@@ -39,6 +42,11 @@ describe('Component: InboxComponent', () => {
           loadMoreArchivedPages() {},
           shouldLoadMoreArchivedPages() {}
         }},
+        {provide: UserService, useValue: {
+          isProfessional(): Observable<boolean> {
+            return Observable.of(false);
+           }
+         }},
         {provide: ConversationService, useValue: {
           openConversation() {}
         }}
@@ -49,6 +57,7 @@ describe('Component: InboxComponent', () => {
     http = TestBed.get(HttpService);
     inboxService = TestBed.get(InboxService);
     eventService = TestBed.get(EventService);
+    userService = TestBed.get(UserService);
     conversationService = TestBed.get(ConversationService);
   });
 
@@ -235,22 +244,6 @@ describe('Component: InboxComponent', () => {
     beforeEach(() => {
       previouslySelectedConversation = CREATE_MOCK_INBOX_CONVERSATION('old-conv-id');
       newlySelectedConversation = CREATE_MOCK_INBOX_CONVERSATION('some-new-conv-id');
-    });
-
-    it('should set active to FALSE to the currently selected conversation, if one exists', () => {
-      component.setCurrentConversation(previouslySelectedConversation);
-      expect(previouslySelectedConversation.active).toBe(true);
-
-      component.setCurrentConversation(newlySelectedConversation);
-
-      expect(previouslySelectedConversation.active).toBe(false);
-    });
-
-    it('should set component.conversation as the new conversation and set active to TRUE', () => {
-      component.setCurrentConversation(newlySelectedConversation);
-
-      expect(component['conversation']).toEqual(newlySelectedConversation);
-      expect(newlySelectedConversation.active).toBe(true);
     });
 
     it('should should call conversationService.openConversation with the new conversation', () => {

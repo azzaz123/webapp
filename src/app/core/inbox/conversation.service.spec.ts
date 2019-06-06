@@ -18,6 +18,8 @@ import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ResponseOptions, Response } from '@angular/http';
 import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs';
+import { ItemService } from '../item/item.service';
+import { MockedItemService } from '../../../tests/item.fixtures.spec';
 
 let service: ConversationService;
 let http: HttpService;
@@ -26,6 +28,7 @@ let realTime: RealTimeService;
 let persistencyService: PersistencyService;
 let messageService: MessageService;
 let userService: UserService;
+let itemService: ItemService;
 
 
 describe('ConversationService', () => {
@@ -38,7 +41,8 @@ describe('ConversationService', () => {
         {provide: RealTimeService, useValue: { sendRead() {}} },
         {provide: PersistencyService, useClass: MockedPersistencyService},
         {provide: MessageService, useValue: { totalUnreadMessages: 0 }},
-        {provide: UserService, useClass: MockedUserService}
+        {provide: UserService, useClass: MockedUserService},
+        {provide: ItemService, useClass: MockedItemService}
       ]
     });
     service = TestBed.get(ConversationService);
@@ -48,6 +52,7 @@ describe('ConversationService', () => {
     persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
     userService = TestBed.get(UserService);
+    itemService = TestBed.get(ItemService);
     spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
     service.subscribeChatEvents();
     service.archivedConversations = [];
@@ -441,7 +446,7 @@ describe('ConversationService', () => {
 
         it(`should set messageService.totalUnreadMessages counter to 0 if the number of messages that are being marked as READ is greater
         than the existing counter (disallow negative values in counter)`, () => {
-            mockedConversation.unreadCounter = 1;
+            mockedConversation.unreadCounter = 5;
 
             const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
             service.processNewChatSignal(signal);
@@ -502,6 +507,52 @@ describe('ConversationService', () => {
             expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.SENT);
           });
         });
+    });
+  });
+
+  describe('archive conversation', () => {
+    beforeEach(() => {
+      spyOn(eventService, 'emit').and.callThrough();
+      service.conversations = createInboxConversationsArray(1);
+    });
+
+    it('with success should emit CONVERSATION_ARCHIVED event', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+
+      service.archive(service.conversations[0]).subscribe().unsubscribe();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]);
+    });
+
+    it('with 409 error should emit CONVERSATION_ARCHIVED event', () => {
+      spyOn(http, 'put').and.returnValue(Observable.throwError({status: 409}));
+
+      service.archive(service.conversations[0]).subscribe().unsubscribe();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]);
+    });
+  });
+
+  describe('unarchive conversation', () => {
+    beforeEach(() => {
+      spyOn(eventService, 'emit').and.callThrough();
+      service.archivedConversations = createInboxConversationsArray(1);
+    });
+
+    it('with success should emit CONVERSATION_UNARCHIVED event', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+
+      service.unarchive(service.archivedConversations[0]).subscribe().unsubscribe();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]);
+    });
+
+    it('with 409 error should emit CONVERSATION_UNARCHIVED event', () => {
+      spyOn(http, 'put').and.returnValue(Observable.throwError({status: 409}));
+
+      service.unarchive(service.archivedConversations[0]).subscribe().unsubscribe();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]);
     });
   });
 });

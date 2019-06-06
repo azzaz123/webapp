@@ -1,6 +1,6 @@
 <tsl-card (click)="goToProfileDetail()">
   <tsl-card-image>
-    <tsl-profile-images *ngFor="let number of [0,1,2,3]" [profileImage]="profile?.item_images[number]" size="profile"
+    <tsl-profile-images *ngFor="let number of [0,1,2,3]" [profileImage]="profile?.item_images && profile?.item_images[number]" size="profile"
                         fallbackLight="true">
     </tsl-profile-images>
     <span *ngIf="profile?.is_professional" class="badge badge-pro featured"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span>

@@ -21,6 +21,7 @@ import { ItemChangeEvent } from '../../catalog/list/catalog-item/item-change.int
 import { FinancialCard } from '../../core/payments/payment.interface';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Order, Product } from '../../core/item/item-response.interface';
+import { StripeService } from '../../core/stripe/stripe.service';
 
 @Component({
   selector: 'tsl-catalog-pro-list',
@@ -47,6 +48,7 @@ export class CatalogProListComponent implements OnInit {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public subscriptionPlan: number;
   private uploadModalRef: NgbModalRef;
+  public isStripe: boolean;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
 
@@ -59,9 +61,11 @@ export class CatalogProListComponent implements OnInit {
               private errorService: ErrorsService,
               private router: Router,
               private route: ActivatedRoute,
-              private paymentService: PaymentService) { }
+              private paymentService: PaymentService,
+              private stripeService: StripeService) { }
 
   ngOnInit() {
+    this.isStripe = this.stripeService.isPaymentMethodStripe();
     this.getCounters();
     this.getItems();
     const sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
@@ -264,7 +268,7 @@ export class CatalogProListComponent implements OnInit {
 
   public feature(orderEvent: OrderEvent) {
     const orderId: string = UUID.UUID();
-    this.itemService.purchaseProducts(orderEvent.order, orderId).subscribe((failedProducts: string[]) => {
+    this.itemService.purchaseProducts(orderEvent.order, orderId, this.isStripe).subscribe((failedProducts: string[]) => {
       if (failedProducts && failedProducts.length) {
         this.errorService.i18nError('bumpError');
       } else {

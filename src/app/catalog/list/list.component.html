@@ -96,6 +96,6 @@
                     [items]="items"
                     (onAction)="onAction($event)"
 ></tsl-selected-items>
-<tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>
+<tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>
 <tsl-bump-tutorial></tsl-bump-tutorial>
 <button [hidden]="true" tslItemSold></button>

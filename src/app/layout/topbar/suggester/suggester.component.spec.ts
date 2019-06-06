@@ -14,7 +14,7 @@ describe('SuggesterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SuggesterComponent ],
+      declarations: [SuggesterComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
@@ -25,7 +25,7 @@ describe('SuggesterComponent', () => {
           }
         }, EventService]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -42,12 +42,16 @@ describe('SuggesterComponent', () => {
     });
     it('should search for suggestions from input text', () => {
       const input = 'mesa';
+
       component.suggest(Observable.of(input)).subscribe();
+
       expect(suggesterService.getSuggestions).toHaveBeenCalled();
     });
     it('should search for suggestions from input < 3', () => {
       const input = 'me';
+
       component.suggest(Observable.of(input)).subscribe();
+
       expect(suggesterService.getSuggestions).toHaveBeenCalled();
     });
   });
@@ -55,7 +59,9 @@ describe('SuggesterComponent', () => {
   describe('select suggestion', (): void => {
     it('should emit an event with the selected suggestion', () => {
       spyOn(component.newSearch, 'emit');
+
       component.selectSuggestion(SUGGESTER_DATA_WEB[0]);
+
       expect(component.newSearch.emit).toHaveBeenCalledWith(SUGGESTER_DATA_WEB[0]);
     });
   });
@@ -68,7 +74,9 @@ describe('SuggesterComponent', () => {
         }
       };
       spyOn(component.newSearchSubmit, 'emit');
+
       component.searchSubmit();
+
       expect(component.newSearchSubmit.emit).toHaveBeenCalledWith('mesa');
     });
   });
@@ -81,7 +89,9 @@ describe('SuggesterComponent', () => {
         }
       };
       spyOn(component.newKeyword, 'emit');
+
       component.updateKeyword();
+
       expect(component.newKeyword.emit).toHaveBeenCalledWith('iphone');
     });
   });

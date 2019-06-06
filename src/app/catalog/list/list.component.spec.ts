@@ -38,6 +38,8 @@ import { AvailableSlots } from '../../core/user/user-stats.interface';
 import { ItemFlags } from '../../core/item/item-response.interface';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
+import { StripeService } from '../../core/stripe/stripe.service';
+import { CreditInfo } from '../../core/payments/payment.interface';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -56,6 +58,7 @@ describe('ListComponent', () => {
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   let eventService: EventService;
+  let stripeService: StripeService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
@@ -75,6 +78,7 @@ describe('ListComponent', () => {
       providers: [
         I18nService,
         EventService,
+        StripeService,
         { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: ItemService, useValue: {
@@ -178,6 +182,13 @@ describe('ListComponent', () => {
           }
           }
         },
+        {
+          provide: StripeService, useValue: {
+          isPaymentMethodStripe() {
+            return true
+          }
+        }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -197,6 +208,7 @@ describe('ListComponent', () => {
     errorService = TestBed.get(ErrorsService);
     userService = TestBed.get(UserService);
     eventService = TestBed.get(EventService);
+    stripeService = TestBed.get(StripeService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -206,22 +218,26 @@ describe('ListComponent', () => {
 
   describe('ngOnInit', () => {
 
-    /*beforeEach(() => {
-      spyOn(paymentService, 'getCreditInfo').and.callThrough();
+    describe('check isStripe payment method', () => {
+      it('should set isStripe to true', () => {
+        expect(component.isStripe).toBe(true);
+      });
     });
 
-    it('should emit the updated total credits if transactionSpent exists', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue(TRANSACTION_SPENT);
-      spyOn(eventService, 'emit');
-      route.params = Observable.of({
-        code: 200
+    describe('getCreditInfo', () => {
+      it('should set the creditInfo', () => {
+        const creditInfo: CreditInfo = {
+          currencyName: 'wallacoins',
+          credit: 2000,
+          factor: 100
+        };
+        spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+
+        component.ngOnInit();
+
+        expect(component.creditInfo).toEqual(creditInfo);
       });
-
-      component.ngOnInit();
-      tick();
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, CREDITS);
-    }));*/
+    });
 
     it('should open bump confirmation modal', fakeAsync(() => {
       spyOn(router, 'navigate');

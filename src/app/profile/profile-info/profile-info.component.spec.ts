@@ -13,8 +13,7 @@ import {
   IMAGE,
   MOCK_FULL_USER,
   USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES,
-  USER_PRO_DATA,
-  USER_PRO_INFO_RESPONSE
+  USER_PRO_DATA
 } from '../../../tests/user.fixtures.spec';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from '../../shared/switch/switch.component';
@@ -29,6 +28,7 @@ describe('ProfileInfoComponent', () => {
   let http: HttpService;
   let mockBackend: MockBackend;
   let modalService: NgbModal;
+  const modalInstance: any = null;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -76,6 +76,16 @@ describe('ProfileInfoComponent', () => {
           }
         }
         },
+        {
+          provide: NgbModal, useValue: {
+          open() {
+            return {
+              componentInstance: modalInstance,
+              result: Promise.resolve(true)
+            };
+          }
+        }
+        }
       ],
       declarations: [ProfileInfoComponent, ProfileFormComponent, SwitchComponent],
       schemas: [NO_ERRORS_SCHEMA]
@@ -109,19 +119,9 @@ describe('ProfileInfoComponent', () => {
       expect(component.isPro).toBe(true);
     });
 
-    it('should call userService.getProInfo and set userInfo and for if present', () => {
-      spyOn(userService, 'getProInfo').and.returnValue(Observable.of(USER_PRO_INFO_RESPONSE));
-
-      component.ngOnInit();
-
-      expect(userService.getProInfo).toHaveBeenCalled();
-      expect(component['userInfo']).toEqual(USER_PRO_INFO_RESPONSE);
+    it('should set profileForm with user data', () => {
       expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
       expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
-      expect(component.profileForm.get('phone_number').value).toEqual(USER_PRO_DATA.phone_number);
-      expect(component.profileForm.get('description').value).toEqual(USER_PRO_DATA.description);
-      expect(component.profileForm.get('opening_hours').value).toEqual(USER_PRO_DATA.opening_hours);
-      expect(component.profileForm.get('link').value).toEqual(USER_PRO_DATA.link);
     });
 
     it('should set profileForm with basic user data if userInfo throws error', () => {
@@ -255,6 +255,5 @@ describe('ProfileInfoComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {windowClass: 'become-pro'});
     });
   });
-
 
 });

@@ -8,10 +8,12 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { Response } from '@angular/http';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
-import { CreditInfo, FinancialCard } from '../../../core/payments/payment.interface';
+import { CreditInfo, FinancialCard, FinancialCardOption } from '../../../core/payments/payment.interface';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
+import { StripeService } from '../../../core/stripe/stripe.service';
+import { UUID } from 'angular2-uuid/index';
 
 @Component({
   selector: 'tsl-cart',
@@ -27,16 +29,23 @@ export class CartComponent implements OnInit, OnDestroy {
   public types: string[] = BUMP_TYPES;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public hasFinancialCard: boolean;
+  public isStripeCard = true;
   public cardType = 'old';
   public loading: boolean;
+  public card: any;
+  public isStripe: boolean;
+  public showCard = false;
+  public savedCard = true;
+  public selectedCard = false;
 
   constructor(private cartService: CartService,
-    private itemService: ItemService,
-    private errorService: ErrorsService,
-    private trackingService: TrackingService,
-    private paymentService: PaymentService,
-    private eventService: EventService,
-    private router: Router) {
+              private itemService: ItemService,
+              private errorService: ErrorsService,
+              private trackingService: TrackingService,
+              private paymentService: PaymentService,
+              private eventService: EventService,
+              private router: Router,
+              private stripeService: StripeService) {
       this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
         this.cart = cartChange.cart;
       });
@@ -44,6 +53,13 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
+    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    
+    if (this.isStripe) {
+      this.eventService.subscribe('paymentResponse', (response) => {
+        this.managePaymentResponse(response);
+      }); 
+    }
   }
 
   ngOnDestroy() {
@@ -62,8 +78,9 @@ export class CartComponent implements OnInit, OnDestroy {
   checkout() {
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
+    const paymentId: string = UUID.UUID();
     this.loading = true;
-    this.itemService.purchaseProductsWithCredits(order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
+    this.itemService.purchaseProductsWithCredits(order, orderId, this.isStripe).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (-this.usedCredits > 0) {
         localStorage.setItem('transactionType', 'bumpWithCredits');
         localStorage.setItem('transactionSpent', (-this.usedCredits).toString());
@@ -73,7 +90,11 @@ export class CartComponent implements OnInit, OnDestroy {
       this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
       this.track(order);
       if (response.payment_needed) {
-        this.buy(orderId);
+        if (this.isStripe) {
+          this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
+        } else {
+          this.buy(orderId);
+        }
       } else {
         this.success();
       }
@@ -85,6 +106,23 @@ export class CartComponent implements OnInit, OnDestroy {
         this.errorService.i18nError('bumpError');
       }
     });
+  }
+
+  public setCardInfo(card: any): void {
+    this.card = card;
+  }
+
+  private managePaymentResponse(paymentResponse: string): void {
+    switch(paymentResponse && paymentResponse.toUpperCase()) {
+      case 'SUCCEEDED': {
+        this.success();
+        break;
+      }
+      default: {
+        this.router.navigate(['catalog/list', { code: -1 }]);
+        break;
+      }
+    }
   }
 
   private buy(orderId: string) {
@@ -131,6 +169,11 @@ export class CartComponent implements OnInit, OnDestroy {
     this.hasFinancialCard = hasCard;
   }
 
+  public hasStripeCard(hasCard: boolean) {
+    this.isStripeCard = hasCard;
+  }
+
+
   get totalToPay(): number {
     if (!this.cart) {
       return 0;
@@ -153,6 +196,23 @@ export class CartComponent implements OnInit, OnDestroy {
     } else {
       return -this.creditInfo.credit;
     }
+  }
+
+  public addNewCard() {
+    this.showCard = true;
+    this.savedCard = false;
+  }
+
+  public removeNewCard() {
+    this.showCard = false;
+    this.savedCard = true;
+  }
+
+  public setSavedCard(selectedCard: FinancialCardOption) {
+    this.showCard = false;
+    this.savedCard = true;
+    this.selectedCard = true;
+    this.setCardInfo(selectedCard);
   }
 
 }
