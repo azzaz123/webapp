@@ -10,6 +10,7 @@ import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo, FinancialCardOption } from '../../../../core/payments/payment.interface';
 import { Response } from '@angular/http';
 import { StripeService } from '../../../../core/stripe/stripe.service';
+import { ErrorsService } from '../../../../core/errors/errors.service';
 
 @Component({
   selector: 'tsl-buy-product-modal',
@@ -28,16 +29,18 @@ export class BuyProductModalComponent implements OnInit {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public creditInfo: CreditInfo;
   public card: any;
-  public isStripe = false;
-  public isStripeCard = false;
+  public isStripe: boolean;
+  public isStripeCard = true;
   public showCard = false;
-  public savedCard = false;
+  public savedCard = true;
+  public selectedCard = false;
 
   constructor(private itemService: ItemService,
               public activeModal: NgbActiveModal,
               private paymentService: PaymentService,
               private eventService: EventService,
-              private stripeService: StripeService) { }
+              private stripeService: StripeService,
+              private errorService: ErrorsService) { }
 
   ngOnInit() {
     this.isStripe = this.stripeService.isPaymentMethodStripe();
@@ -95,7 +98,6 @@ export class BuyProductModalComponent implements OnInit {
     this.loading = true;
     const orderId: string = UUID.UUID();
     const creditsToPay = this.usedCredits(this.orderEvent.total);
-    const paymentId: string = UUID.UUID();
     this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId, this.isStripe).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (response.items_failed && response.items_failed.length) {
         this.activeModal.close('error');
@@ -113,11 +115,10 @@ export class BuyProductModalComponent implements OnInit {
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
           if (this.isStripe) {
-            this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
+            this.buyStripe(orderId);
           } else {
             this.buy(orderId);
           }
-
         } else {
           this.activeModal.close('success');
         }
@@ -137,6 +138,17 @@ export class BuyProductModalComponent implements OnInit {
       }, () => {
         this.activeModal.close('error');
       });
+    }
+  }
+
+  private buyStripe(orderId: string) {
+    const paymentId: string = UUID.UUID();
+
+    if (this.selectedCard || !this.savedCard) {
+      this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
+    } else {
+      this.loading = false;
+      this.errorService.i18nError('noCardSelectedError');
     }
   }
 
@@ -171,9 +183,15 @@ export class BuyProductModalComponent implements OnInit {
     this.savedCard = false;
   }
 
+  public removeNewCard() {
+    this.showCard = false;
+    this.savedCard = true;
+  }
+
   public setSavedCard(selectedCard: FinancialCardOption) {
     this.showCard = false;
     this.savedCard = true;
+    this.selectedCard = true;
     this.setCardInfo(selectedCard);
   }
 

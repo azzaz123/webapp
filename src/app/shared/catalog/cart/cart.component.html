@@ -108,7 +108,7 @@
                            (stripeCard)="setCardInfo($event)" [loading]="loading"
   ></tsl-stripe-card-element>
   <tsl-button [hidden]="isStripe && !savedCard"
-              [disabled]="(!cart?.total || loading) || (isStripe && !selectedCard)"
+              [disabled]="(!cart?.total || loading)"
               [loading]="loading"
               (click)="checkout()"
               id="qa-checkout-buy"

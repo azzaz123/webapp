@@ -153,8 +153,15 @@
   background: url(/assets/images/listing-fee.svg) no-repeat center;
 }
 
-.NewCard--add {
-  font-size: $font-size-s;
-  color: $walla-main;
-  cursor: pointer;
+tsl-stripe-card-selection {
+  width: 100%;
+}
+
+.Cart__NewCard {
+  &--add, &--used {
+    margin-bottom: $spacing-s;
+    font-size: $font-size-s;
+    color: $walla-main;
+    cursor: pointer;
+  }
 }
