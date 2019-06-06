@@ -15,6 +15,7 @@ import { UUID } from 'angular2-uuid';
 import { OrderEvent } from '../../selected-items/selected-product.interface';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { Router } from '@angular/router';
+import { STRIPE_CARD_OPTION } from '../../../../../tests/stripe.fixtures.spec';
 
 describe('BuyProductModalComponent', () => {
   let component: BuyProductModalComponent;
@@ -192,12 +193,39 @@ describe('BuyProductModalComponent', () => {
   });
 
   describe('hasCard', () => {
-
     it('should set card if present', () => {
       component.hasCard(true);
 
       expect(component.hasFinancialCard).toBe(true);
       expect(component.mainLoading).toBe(false);
+    });
+  });
+
+  describe('hasStripeCard', () => {
+    it('should set if stripeCard is present', () => {
+      component.hasStripeCard(true);
+
+      expect(component.isStripeCard).toBe(true);
+    });
+  });
+
+  describe('addNewCard', () => {
+    it('should set showCard and savedCard', () => {
+      component.addNewCard();
+
+      expect(component.showCard).toBe(true);
+      expect(component.savedCard).toBe(false);
+    });
+  });
+
+  describe('setSavedCard', () => {
+      it('should set showCard and savedCard and call setCardInfo', () => {
+        spyOn(component, 'setCardInfo').and.callThrough();
+        component.setSavedCard(STRIPE_CARD_OPTION);
+
+        expect(component.showCard).toBe(false);
+        expect(component.savedCard).toBe(true);
+        expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
 

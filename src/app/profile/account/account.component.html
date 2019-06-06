@@ -40,7 +40,8 @@
         </div>
       </div>
     </div>
-    <tsl-credit-card-info></tsl-credit-card-info>
+    <tsl-credit-cards [hidden]="isStripe"></tsl-credit-cards>
+    <tsl-stripe-cards *ngIf="isStripe"></tsl-stripe-cards>
     <div class="box profile-box">
       <div class="box-content">
         <div class="row box-section">
