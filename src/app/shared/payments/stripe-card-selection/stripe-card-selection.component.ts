@@ -16,7 +16,6 @@ export class StripeCardSelectionComponent implements OnInit {
   @Output() hasStripeCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onSelectExistingCard: EventEmitter<FinancialCardOption> = new EventEmitter<FinancialCardOption>();
 
-
   private onModelChange: any = () => {};
   private onTouched: any = () => {};
 

@@ -3,7 +3,8 @@
 $transition-time: .15s;
 $check-width-and-spacing: 50px;
 :host {
-  display: block;
+  display: flex;
+  flex-direction: row;
   padding: $spacing-ml $spacing-ms $spacing-ml $spacing-ml;
   box-sizing: border-box;
   border-left: 2px solid transparent;
@@ -19,11 +20,11 @@ $check-width-and-spacing: 50px;
   &.active {
     background-color: rgba($blue-grey-4, .4);
   }
+  tsl-archivable {
+    width: 100%;
+  }
   tsl-archive-button, tsl-unarchive-button {
     @include hide();
-    position: absolute;
-    top: 43px;
-    right: 12px;
   }
   &:hover {
     background-color: rgba($blue-grey-2, .1);
@@ -36,6 +37,7 @@ $check-width-and-spacing: 50px;
     }
   }
 }
+
 tsl-user-avatar {
   @include square-avatar($item-avatar-size);
   float: left;
@@ -45,12 +47,12 @@ tsl-user-avatar {
 }
 .call-info {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  margin-left: $item-avatar-space;
-  max-width: calc(100% - #{$item-avatar-size} - #{$item-avatar-margin});
+  align-items: center;
   color: $blue-grey-1;
+  font-size: $font-size-s;
   p {
     font-size: $font-size-s;
     margin-bottom: 0;
@@ -61,6 +63,8 @@ tsl-user-avatar {
     display: flex;
     flex-direction: row;
     vertical-align: super;
+    margin-right: $spacing-ms;
+    width: 15%;
     .call-user-name {
       font-weight: bold;
       font-size: $font-size-s;
@@ -119,9 +123,12 @@ tsl-user-avatar {
   }
   .call-data-row {
     line-height: $line-height-m;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 60%;
     p{
       color: $blue-grey-2;
-      margin: $spacing-ms 0;
       &:last-child {
         margin-bottom: 0;
       }
@@ -133,6 +140,14 @@ tsl-user-avatar {
     }
     .call-missed {
       width: 20px;
+    }
+    .phone-info {
+      display: flex;
+      flex-direction: column;
+      margin: 0 $spacing-ms;
+      .status {
+        color:  $blue-grey-3;
+      }
     }
   }
 }

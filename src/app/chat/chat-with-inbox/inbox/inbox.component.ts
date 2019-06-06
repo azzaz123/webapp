@@ -117,6 +117,17 @@ export class InboxComponent implements OnInit, OnDestroy  {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
+
+    this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation => {
+      if (this.conversation !== conversation) {
+        this.unselectCurrentConversation();
+        this.conversation = conversation;
+        conversation.active = true;
+      }
+      if (this.archivedConversations.find((c) => c === conversation) && this.componentState === InboxState.Inbox) {
+        this.componentState = InboxState.Archived;
+      }
+    }));
   }
 
   ngOnDestroy() {
@@ -157,9 +168,6 @@ export class InboxComponent implements OnInit, OnDestroy  {
   }
 
   public setCurrentConversation(newCurrentConversation: InboxConversation) {
-    this.unselectCurrentConversation();
-    this.conversation = newCurrentConversation;
-    newCurrentConversation.active = true;
     this.conversationService.openConversation(newCurrentConversation);
   }
 

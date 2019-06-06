@@ -24,7 +24,7 @@ import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { UserService } from './core/user/user.service';
 import { DebugService } from './core/debug/debug.service';
-import { MOCK_USER, USER_DATA, USER_ID } from '../tests/user.fixtures.spec';
+import { MOCK_USER, USER_DATA, USER_ID, MOCK_FULL_USER } from '../tests/user.fixtures.spec';
 import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
@@ -203,7 +203,8 @@ describe('App', () => {
         },
         {
           provide: SplitTestService, useValue: {
-            init() {}
+            init() {},
+            identify() {}
           }
         },
         {
@@ -650,13 +651,28 @@ describe('App', () => {
     });
   });
 
-  describe('Taplytics', () => {
-    it('should initialize the Taplytics library when creating the app', () => {
+  describe('Split test service', () => {
+    it('should initialize the library when creating the app', () => {
       spyOn(splitTestService, 'init');
 
       component.ngOnInit();
 
       expect(splitTestService.init).toHaveBeenCalled();
     });
+
+    it('should identify the user', () => {
+      spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_FULL_USER));
+      spyOn(splitTestService, 'identify');
+
+      component.ngOnInit();
+      eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+      expect(splitTestService.identify).toHaveBeenCalledWith({
+        user_id: MOCK_FULL_USER.id,
+        email: MOCK_FULL_USER.email,
+        gender: MOCK_FULL_USER.gender
+      });
+    });
   });
+
 });

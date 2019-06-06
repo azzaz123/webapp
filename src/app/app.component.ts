@@ -151,6 +151,11 @@ export class AppComponent implements OnInit {
           this.initRealTimeChat(user, accessToken);
           appboy.changeUser(user.id);
           appboy.openSession();
+          this.splitTestService.identify({
+            user_id: user.id || null,
+            email: user.email || null,
+            gender: user.gender || null
+          });
           if (!this.cookieService.get('app_session_id')) {
             this.trackAppOpen();
             this.updateSessionCookie();

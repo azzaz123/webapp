@@ -94,7 +94,6 @@ h1 {
   font-size: $font-size-xs;
   font-weight: bold;
   text-transform: uppercase;
-  padding: 0 $spacing-s;
   overflow: hidden;
   clear: both;
 }
@@ -252,8 +251,7 @@ ul, li {
 tsl-button {
   display: block;
   /deep/ .btn {
-    width: calc(100% - #{$button-margin * 2});
-    margin: $button-margin;
+    width: 100%;
     margin-top: 0;
   }
 }
@@ -275,7 +273,7 @@ tsl-button {
 
 .Cart__NewCard {
   &--add, &--used {
-    margin-bottom: $spacing-s;
+    margin: $spacing-s 0;
     font-size: $font-size-s;
     color: $walla-main;
     cursor: pointer;

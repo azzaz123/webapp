@@ -69,7 +69,7 @@ describe('WallacoinsComponent', () => {
             open() {
               return {
                 componentInstance: {},
-                result: Promise.resolve()
+                result: Promise.resolve('success')
               }
             }
         }
@@ -167,11 +167,11 @@ describe('WallacoinsComponent', () => {
   });
 
   describe('openBuyModal', () => {
-
     beforeEach(fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
       spyOn(paymentService, 'getPerks').and.callThrough();
       spyOn(router, 'navigate');
+      spyOn(eventService, 'emit');
 
       component.openBuyModal(CREDITS_PACKS[0], 1);
     }));
@@ -186,6 +186,10 @@ describe('WallacoinsComponent', () => {
 
     it('should redirect to catalog', () => {
       expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
+    });
+
+    it('should emit TOTAL_CREDITS_UPDATED if response is success', () => {
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, component.wallacoins);
     });
   });
 
