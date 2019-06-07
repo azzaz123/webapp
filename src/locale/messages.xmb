@@ -484,7 +484,7 @@
   <msg id="6996799422725544865"><source>app/profile/profile-info/profile-info.component.html:45</source>Description:</msg>
   <msg id="138907429214820806"><source>app/profile/profile-info/profile-info.component.html:53</source>Opening Hours:</msg>
   <msg id="2595624684026123810"><source>app/profile/profile-info/profile-info.component.html:61</source>Telephone:</msg>
-  <msg id="3643126325438921021"><source>app/profile/profile-info/profile-info.component.html:65</source>Your tracking phone, not this one, will be shown on your web profile.</msg>
+  <msg id="3059462504958938177"><source>app/profile/profile-info/profile-info.component.html:65</source>This telephone number will never be public, we will assign you a tracking number and it will be what customers will see.</msg>
   <msg id="4644971093370005279"><source>app/profile/profile-info/profile-info.component.html:69</source>Web:</msg>
   <msg id="2921056091899795948"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.html:10</source>Are you sure you want to close your account?</msg>
   <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.html:11</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
