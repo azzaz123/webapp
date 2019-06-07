@@ -73,7 +73,7 @@
             [hidden]="fixedCategory"
             i18n-placeholder
             placeholder="Category"
-            (selected)="onCategoryChange($event)"
+            (selected)="handleItemExtraInfo(true, $event)"
             class="form-control"
             formControlName="category_id"
             [ngbPopover]="coachmarkPrice"
@@ -85,7 +85,10 @@
             [options]="categories"
             noFilter="10"
           >
-            <ng-template #optionTemplate let-option="option">
+            <ng-template
+                    #optionTemplate
+                    let-option="option"
+            >
               <div (click)="setCategory(option.value)">
                 <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
                 {{ option?.label }}
@@ -156,10 +159,25 @@
       </div>
     </ng-template>
   </div>
-  <div class="box" *ngIf="extraInfoEnabled">
+  <div class="box" *ngIf="showExtraFields">
     <h2><span i18n>The more precise, the better</span></h2>
     <div class="row" formGroupName="extra_info">
-      <div class="col-sm-4">
+      <div class="col-sm-12" *ngIf="isFashionCategory">
+        <div class="form-group last">
+          <label i18n>Choose the gender of the garment</label>
+          <div ngbRadioGroup name="radioGender" formControlName="gender" class="input-radio" (change)="initializeItemExtraInfo(null)">
+            <label ngbButtonLabel>
+              <input ngbButton type="radio" value="female">
+              <span i18n>Female</span>
+            </label>
+            <label ngbButtonLabel>
+              <input ngbButton type="radio" value="male">
+              <span i18n>Male</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4" *ngIf="currentCategory.has_object_type">
         <div class="form-group last" formGroupName="object_type">
           <label for="objectType">{{ objectTypeTitle }}</label>
           <ng-select
@@ -170,24 +188,25 @@
             placeholder="Select a type"
             [options]="objectTypes"
             noFilter="10"
+            (selected)="initializeItemExtraInfo($event.value)"
           ></ng-select>
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-4" *ngIf="currentCategory.has_brand">
         <div class="form-group last">
           <label for="brand" i18n>Brand</label>
           <tsl-keyword-suggester
-            placeholder="brand_example"
-            [initialValue]="item?.extraInfo?.brand"
-            [value]="selectedBrand"
-            [suggestions]="brandSuggestions"
-            (inputChange)="getBrands($event)"
-            (suggestionSelect)="selectBrandOrModel($event, 'brand')"
+                  [placeholder]="getBrandPlaceholder()"
+                  [initialValue]="item?.extraInfo?.brand"
+                  [value]="selectedBrand"
+                  [suggestions]="brandSuggestions"
+                  (inputChange)="getBrands($event)"
+                  (suggestionSelect)="selectBrandOrModel($event, 'brand')"
           >
           </tsl-keyword-suggester>
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-4" *ngIf="currentCategory.has_model">
         <div class="form-group last">
           <label for="model" i18n>Model</label>
           <tsl-keyword-suggester
@@ -199,6 +218,13 @@
             (suggestionSelect)="selectBrandOrModel($event, 'model')"
           >
           </tsl-keyword-suggester>
+        </div>
+      </div>
+      <div class="col-sm-4" *ngIf="isFashionCategory">
+        <div class="form-group last" formGroupName="size">
+          <label for="size" i18n>Size</label>
+          <ng-select class="form-control" formControlName="id" id="fashionSizes" i18n-placeholder
+            placeholder="Select a size" [options]="sizes" noFilter="10" (opened)="getSizes()"></ng-select>
         </div>
       </div>
     </div>

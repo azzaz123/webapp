@@ -326,7 +326,11 @@ export interface ItemExtraInfo {
     id: string;
   };
   brand: string;
-  model: string;
+  model?: string;
+  gender?: string;
+  size?: {
+    id: string;
+  };
 }
 
 export interface ItemDataResponse {
