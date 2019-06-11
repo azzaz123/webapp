@@ -5,7 +5,7 @@
   padding: $spacing-xxxl $spacing-ml $spacing-xl;
   h1 {
     font-size: $font-size-ll;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     margin-bottom: $spacing-l;
     &.red {
       color: $negative-main;

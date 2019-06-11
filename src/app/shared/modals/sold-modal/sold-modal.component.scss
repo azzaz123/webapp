@@ -11,7 +11,7 @@
 h1 {
   color: $walla-main;
   font-size: $font-size-l;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   text-align: center;
 }
 
@@ -51,7 +51,7 @@ h1 {
           margin: 0;
           font-size: $font-size-m;
           &.name {
-            font-weight: bold;
+            font-weight: $font-weight-chunky;
             color: $blue-grey-1;
           }
           &.message {

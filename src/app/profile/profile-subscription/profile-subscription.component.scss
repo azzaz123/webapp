@@ -12,7 +12,7 @@
 
 h2 {
   font-size: $font-size-l;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   color: $walla-main;
   margin-top: $spacing-xxxl;
 }
@@ -24,13 +24,13 @@ h2 {
 }
 
 .contact {
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   color: $yellow-dark;
 }
 
 .email, .email a {
   color: $blue-grey-1;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
 }
 
 h2, .description {
@@ -52,12 +52,12 @@ h2, .description {
   .name {
     color: $blue-grey-1;
     font-size: $font-size-l;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
   }
   .price {
     font-size: $font-size-lll;
     color: $yellow-dark;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     border-bottom: 2px solid $blue-grey-5;
     padding-bottom: $spacing-ms;
     margin-bottom: $spacing-m;

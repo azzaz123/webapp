@@ -5,7 +5,7 @@ $filters-nav-height: 38px;
 
 h2 {
   margin: $spacing-ml;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   font-size: $font-size-ll;
   letter-spacing: $letter-spacing;
   display: flex;
@@ -60,7 +60,7 @@ tsl-process-all-button {
     position: relative;
     text-transform: uppercase;
     font-size: $font-size-xs;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     .spinner {
       height: $spinner-size;
       width: $spinner-size;

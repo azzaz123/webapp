@@ -160,7 +160,7 @@ $menu-width-and-spacing: 10px;
       display: flex;
       flex-direction: row;
       vertical-align: super;
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       font-size: $font-size-m;
       display: flex;
       @include text-truncate;

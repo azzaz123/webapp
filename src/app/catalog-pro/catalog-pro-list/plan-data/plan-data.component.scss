@@ -13,7 +13,7 @@
   font-size: $font-size-xs;
   h3 {
     font-size: $font-size-xs;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     text-transform: uppercase;
     margin-bottom: $spacing-ms;
   }
@@ -64,7 +64,7 @@
 
 .number {
   font-size: $font-size-3L;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
 }
 
 .text {

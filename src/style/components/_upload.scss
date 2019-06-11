@@ -7,7 +7,7 @@
     padding: $spacing-ml;
     margin-bottom: $spacing-ml;
     h2 {
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       text-transform: uppercase;
       color: $walla-main;
       font-size: $font-size-s;
@@ -80,7 +80,7 @@
         top: 100%;
         text-transform: uppercase;
         color: $blue-grey-2;
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
         font-size: $font-size-xxxs;
         letter-spacing: .4px;
         line-height: $line-height-m;
@@ -156,7 +156,7 @@
           width: calc(100% + 24px);
           margin-top: 0;
           strong {
-            font-weight: bold;
+            font-weight: $font-weight-chunky;
           }
         }
       }

@@ -62,7 +62,7 @@
             }
             h2 {
               font-size: $font-size-ll;
-              font-weight: bold;
+              font-weight: $font-weight-chunky;
               margin: $spacing-ml 0 $spacing-ms;
               width: 80%;
             }
@@ -82,7 +82,7 @@
               }
               .price {
                 font-size: $font-size-xxxl;
-                font-weight: bold;
+                font-weight: $font-weight-chunky;
                 color: $white;
                 line-height: $line-height-xxl;
               }
@@ -133,7 +133,7 @@
             margin-right: $spacing-xxxl;
             h2 {
               font-size: $font-size-ll;
-              font-weight: bold;
+              font-weight: $font-weight-chunky;
             }
             p {
               color: $blue-grey-3;

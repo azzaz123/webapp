@@ -18,7 +18,7 @@
 .cart-pro-title {
     font-size: $font-size-s;
     color: $blue-grey-1;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     margin: 0;
 }
 
@@ -83,7 +83,7 @@
         text-overflow: ellipsis;
     }
     .cart-days {
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
     }
     .type-total {
         padding: $spacing-ms;
@@ -122,7 +122,7 @@
     }
     .price {
         color: $blue-grey-2;
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
     }
     .citybump {
         color: $walla-main
@@ -136,7 +136,7 @@
         flex: 1;
     }
     .planned-label {
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
         color: $blue-grey-2;
     }
     .close-icon {
@@ -167,7 +167,7 @@
     align-items: center;
     justify-content: space-between;
     color: $blue-grey-1;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     .cart-balance-title {
         font-size: $font-size-xs;
         text-transform: uppercase;

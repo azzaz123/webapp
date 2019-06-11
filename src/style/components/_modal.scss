@@ -77,7 +77,7 @@ $modal-border-radius: 0.3rem;
     }
   }
   h2 {
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     font-size: $font-size-m;
     margin-bottom: 0;
     line-height: $line-height-ml;
@@ -300,7 +300,7 @@ $modal-border-radius: 0.3rem;
     }
     h1 {
       font-size: $font-size-l;
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
     }
     p {
       opacity: .8;
@@ -330,7 +330,7 @@ $modal-border-radius: 0.3rem;
       }
     }
     .modal-title {
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       font-size: $font-size-l;
       margin-bottom: $spacing-ms;
       &.fail {

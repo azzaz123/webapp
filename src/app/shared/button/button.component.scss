@@ -65,7 +65,7 @@ $vertical-padding: $spacing-ms;
     color: $magenta-main;
     cursor: default;
     font-size: $font-size-s;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     border-radius: 5px;
     width: 170px;
   }
