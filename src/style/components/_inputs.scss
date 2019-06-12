@@ -288,3 +288,40 @@ input::-webkit-calendar-picker-indicator{
     }
   }
 }
+
+.input-radio {
+  display: flex;
+  align-items: center;
+  label {
+    display: flex;
+    align-items: center;
+    box-shadow: none !important;
+    cursor: pointer;
+    span {
+      margin-left: $spacing-xs;
+    }
+  }
+  input {
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    background-color: $blue-grey-5;
+    border: 1px solid $blue-grey-4;
+    appearance: none;
+    position: relative;
+    cursor: pointer;
+    &:checked {
+      &:after {
+        content: '';
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: $walla-main;
+        border-radius: 50%;
+      }
+    }
+  }
+}

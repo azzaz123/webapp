@@ -50,11 +50,13 @@ describe('KeywordSuggesterComponent', () => {
 
       expect(component.suggestionValue).toEqual('Apple');
     });
+  });
 
+  describe('ngOnChanges', () => {
     it('should get the translation for the placeholder', () => {
       spyOn(i18n, 'getTranslations').and.callThrough();
 
-      component.ngOnInit();
+      component.ngOnChanges({ placeholder: { currentValue: 'Brand' } });
 
       expect(i18n.getTranslations).toHaveBeenCalledWith('Brand');
     });

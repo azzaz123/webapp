@@ -3,7 +3,6 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   OnInit,
   Output,
   ViewChild,
@@ -28,14 +27,14 @@ import { Subject } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { SplitTestService } from '../../core/tracking/split-test.service';
 
-const CATEGORIES_WITH_BRAND_AND_MODEL = ['16000'];
+const CATEGORIES_WITH_EXTRA_FIELDS = ['16000', '12465'];
 
 @Component({
   selector: 'tsl-upload-product',
   templateUrl: './upload-product.component.html',
   styleUrls: ['./upload-product.component.scss']
 })
-export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
+export class UploadProductComponent implements OnInit, AfterContentInit {
 
   @Input() categoryId: string;
   @Input() item: Item;
@@ -47,11 +46,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Input() suggestionValue: string;
 
   public itemTypes: any = ITEM_TYPES;
-  public extraInfoEnabled = false;
+  public currentCategory: CategoryOption;
   public objectTypeTitle: string;
   public objectTypes: IOption[];
   public brands: IOption[];
   public models: IOption[];
+  public sizes: IOption[];
   public brandSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public selectedBrand: Subject<string> = new Subject();
@@ -98,6 +98,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public isUrgent = false;
   public customMake = false;
   public customModel = false;
+  public isFashionCategory = false;
+  public showExtraFields = false;
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -125,7 +127,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           id: null
         }),
         brand: null,
-        model: null
+        model: null,
+        size: fb.group({
+          id: null
+        }),
+        gender: null
       }),
       delivery_info: [null],
       location: this.fb.group({
@@ -140,21 +146,40 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngOnInit() {
-    if (this.item) {
-      this.uploadForm.patchValue({
-        id: this.item.id,
-        title: this.item.title,
-        sale_price: this.item.salePrice,
-        currency_code: this.item.currencyCode,
-        description: this.item.description,
-        sale_conditions: this.item.saleConditions,
-        category_id: this.item.categoryId.toString(),
-        delivery_info: this.getDeliveryInfo(),
-        extra_info: this.item.extraInfo ? this.item.extraInfo : {}
+    this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
+      this.categories = categories.filter((category: CategoryOption) => {
+        return !this.categoryService.isHeroCategory(+category.value);
       });
+      if (!this.item) {
+        if (this.categoryId && this.categoryId !== '-1') {
+          this.uploadForm.get('category_id').patchValue(this.categoryId);
+          const fixedCategory = _.find(categories, { value: this.categoryId });
+          this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+          this.uploadForm.get('delivery_info').patchValue(null);
+        } else {
+          this.fixedCategory = null;
+        }
+      } else {
+        const selectedCategory = _.find(categories, { value: this.item.categoryId.toString() });
+        if (this.categoryService.isHeroCategory(this.item.categoryId)) {
+          this.fixedCategory = selectedCategory ? selectedCategory.label : null;
+        }
+        this.uploadForm.patchValue({
+          id: this.item.id,
+          title: this.item.title,
+          sale_price: this.item.salePrice,
+          currency_code: this.item.currencyCode,
+          description: this.item.description,
+          sale_conditions: this.item.saleConditions ? this.item.saleConditions : {},
+          category_id: this.item.categoryId.toString(),
+          delivery_info: this.getDeliveryInfo(),
+          extra_info: this.item.extraInfo ? this.item.extraInfo : {}
+        });
+        this.oldDeliveryValue = this.getDeliveryInfo();
+        this.handleItemExtraInfo(false, selectedCategory);
+      }
       this.detectFormChanges();
-      this.oldDeliveryValue = this.getDeliveryInfo();
-    }
+    });
   }
 
   private detectFormChanges() {
@@ -181,30 +206,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }).value;
   }
 
-  ngOnChanges(changes?: any) {
-    this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
-      this.categories = categories.filter((category: CategoryOption) => {
-        return !this.categoryService.isHeroCategory(+category.value);
-      });
-      if (!this.item) {
-        if (this.categoryId && this.categoryId !== '-1') {
-          this.uploadForm.get('category_id').patchValue(this.categoryId);
-          const fixedCategory = _.find(categories, { value: this.categoryId });
-          this.fixedCategory = fixedCategory ? fixedCategory.label : null;
-          this.uploadForm.get('delivery_info').patchValue(null);
-        } else {
-          this.fixedCategory = null;
-        }
-      } else {
-        const selectedCategory = _.find(categories, { value: this.item.categoryId.toString() });
-        if (this.categoryService.isHeroCategory(this.item.categoryId)) {
-          this.fixedCategory = selectedCategory ? selectedCategory.label : null;
-        }
-        this.onCategoryChange(selectedCategory);
-      }
-    });
-  }
-
   ngAfterContentInit() {
     if (!this.item && this.titleField && !this.focused) {
       this.titleField.nativeElement.focus();
@@ -215,7 +216,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
-      if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(this.uploadForm.value.category_id)) {
+      if (CATEGORIES_WITH_EXTRA_FIELDS.includes(this.uploadForm.value.category_id)) {
         if (this.uploadForm.value.extra_info.brand === '') {
           this.uploadForm.value.extra_info.brand = null;
         }
@@ -258,7 +259,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
       appboy.logCustomEvent('List', { platform: 'web' });
-      if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(this.uploadForm.value.category_id)) {
+      if (CATEGORIES_WITH_EXTRA_FIELDS.includes(this.uploadForm.value.category_id)) {
         this.splitTestService.track('UploadCompleted');
       }
     }
@@ -323,18 +324,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.locationSelected.emit(this.categoryId);
   }
 
-  public onCategoryChange(category: CategoryOption) {
-    if (CATEGORIES_WITH_BRAND_AND_MODEL.includes(category.value)) {
-      this.extraInfoEnabled = true;
-      this.objectTypeTitle = category.object_type_title;
-      this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
-        this.objectTypes = _.reverse(objectTypes);
-      });
-    } else {
-      this.extraInfoEnabled = false;
-    }
-  }
-
   public getBrands(brandKeyword: string) {
     const suggestions: KeywordSuggestion[] = [];
 
@@ -380,20 +369,33 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       });
   }
 
+  public getSizes() {
+    const objectTypeId = this.uploadForm.value.extra_info.object_type.id;
+    const gender = this.uploadForm.value.extra_info.gender;
+
+    if (objectTypeId && gender) {
+      this.generalSuggestionsService.getSizes(objectTypeId, gender).subscribe((sizes: IOption[]) => {
+        this.sizes = sizes;
+      });
+    }
+  }
+
   public selectBrandOrModel(value, type: string) {
-    if (typeof value === 'string') {
-      if (type === 'brand') {
-        this.setBrand(value);
-      }
-      if (type === 'model') {
-        this.setModel(value);
-      }
-    } else if (typeof value === 'object') {
-      if (value.brand) {
-        this.setBrand(value.brand);
-      }
-      if (value.model) {
-        this.setModel(value.model);
+    if (value) {
+      if (typeof value === 'string') {
+        if (type === 'brand') {
+          this.setBrand(value);
+        }
+        if (type === 'model') {
+          this.setModel(value);
+        }
+      } else if (typeof value === 'object') {
+        if (value.brand) {
+          this.setBrand(value.brand);
+        }
+        if (value.model) {
+          this.setModel(value.model);
+        }
       }
     }
   }
@@ -414,6 +416,64 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         model
       }
     });
+  }
+
+  public handleItemExtraInfo(initializeExtraInfo: boolean, category: CategoryOption) {
+    this.currentCategory = category;
+    this.isFashionCategory = this.categoryService.isFashionCategory(parseInt(category.value, 10));
+
+    if (category.has_object_type || category.has_brand || category.has_model) {
+      if (this.isFashionCategory) {
+        this.splitTestService.getVariable('WebFashionUploadEnabled', false).subscribe((WebFashionUploadEnabled: boolean) => {
+          this.showExtraFields = WebFashionUploadEnabled;
+        });
+      } else {
+        this.showExtraFields = true;
+      }
+      if (!this.item) {
+        this.splitTestService.track('CategoryWithBrandModelSelected');
+      }
+      if (category.has_object_type) {
+        this.objectTypeTitle = category.object_type_title;
+        this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
+          this.objectTypes = _.reverse(objectTypes);
+        });
+      }
+    }
+
+    if (initializeExtraInfo) {
+      this.initializeItemExtraInfo(null);
+    }
+
+    if (this.isFashionCategory) {
+      this.getSizes();
+    }
+  }
+
+  public initializeItemExtraInfo(objectType) {
+    this.uploadForm.patchValue({
+      extra_info: {
+        object_type: {
+          id: objectType
+        },
+        brand: null,
+        model: null,
+        size: {
+          id: null
+        },
+        gender: this.isFashionCategory ? this.uploadForm.value.extra_info.gender : null
+      }
+    });
+
+    delete this.sizes;
+    this.setModel(null);
+    this.setBrand(null);
+
+    this.getBrandPlaceholder();
+  }
+
+  public getBrandPlaceholder() {
+    return this.isFashionCategory ? 'fashion_brand_example' : 'phones_brand_example';
   }
 
   public onDeliveryChange(newDeliveryValue: any) {

@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --aot",
+    "start": "ng serve",
     "builddev": "ng build --aot --i18n-locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "builddocker": "ng build --configuration=docker --aot --i18n-locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "builddocker-en": "ng build --configuration=docker --aot --no-progress",
