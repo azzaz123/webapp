@@ -14,6 +14,7 @@ export class LocationBoxComponent implements OnInit {
   @Input() form: FormGroup;
   @Input() name: string;
   @Input() title: string;
+  @Input() updateLocation = true;
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   public user: User;
   public coordinates: Coordinate;

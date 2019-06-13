@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 import { User } from '../../core/user/user';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
@@ -77,7 +78,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
       first_name: this.user.firstName,
       last_name: this.user.lastName
     });
-    if(this.userInfo && this.isPro) {
+    if (this.userInfo && this.isPro) {
       this.profileForm.patchValue({
         phone_number: this.userInfo.phone_number,
         description: this.userInfo.description,
@@ -106,6 +107,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
       }
     }
     if (this.profileForm.valid) {
+      const profileFormLocation = this.profileForm.value.location;
       delete this.profileForm.value.location;
       this.userService.updateProInfo(this.profileForm.value).subscribe(() => {
         this.userService.edit({
@@ -114,8 +116,17 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
           birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
           gender: this.user.gender
         }).subscribe(() => {
-          this.errorsService.i18nSuccess('userEdited');
-          this.formComponent.hasNotSavedChanges = false;
+          if (!_.isEqual(this.user.location, profileFormLocation)) {
+            this.userService.updateLocation({
+              latitude: profileFormLocation.latitude, longitude: profileFormLocation.longitude
+            }).subscribe(() => {
+              this.errorsService.i18nSuccess('userEdited');
+              this.formComponent.hasNotSavedChanges = false;
+            });
+          } else {
+            this.errorsService.i18nSuccess('userEdited');
+            this.formComponent.hasNotSavedChanges = false;
+          }
         });
       });
     } else {
