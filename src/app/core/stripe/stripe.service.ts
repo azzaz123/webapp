@@ -16,7 +16,7 @@ import { FinancialCard } from '../../shared/profile/credit-card-info/financial-c
 export class StripeService {
 
   public fullName: string;
-  public PAYMENT_PROVIDER_STRIPE = true;
+  public PAYMENT_PROVIDER_STRIPE = false;
   private API_URL = 'api/v3/payments';
   private financialCards: FinancialCard[];
 

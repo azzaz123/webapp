@@ -313,7 +313,7 @@ export class CatalogProListComponent implements OnInit {
           const code = result === 'success' ? 200 : -1;
           this.deselect();
           setTimeout(() => {
-            this.router.navigate(['catalog/list', {code: code}]);
+            this.router.navigate(['catalog/list', {code}]);
           }, 1000);
         } else {
           this.paymentService.pay(orderId).subscribe(() => {
