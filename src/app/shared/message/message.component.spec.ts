@@ -1,15 +1,16 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { MessageComponent } from './message.component';
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
-import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
-import { USER_ID, USER_WEB_SLUG } from '../../../tests/user.fixtures.spec';
-import { User } from '../../core/user/user';
-import { By } from '@angular/platform-browser';
-import { phoneRequestState, Message } from '../../core/message/message';
-import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { ConversationService } from '../../core/conversation/conversation.service';
-import { environment } from '../../../environments/environment';
+import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
+import {MessageComponent} from './message.component';
+import {NO_ERRORS_SCHEMA, DebugElement} from '@angular/core';
+import {MOCK_MESSAGE} from '../../../tests/message.fixtures.spec';
+import {USER_ID, USER_WEB_SLUG} from '../../../tests/user.fixtures.spec';
+import {User} from '../../core/user/user';
+import {By} from '@angular/platform-browser';
+import {phoneRequestState, Message} from '../../core/message/message';
+import {MOCK_CONVERSATION} from '../../../tests/conversation.fixtures.spec';
+import {ConversationService} from '../../core/conversation/conversation.service';
+import {environment} from '../../../environments/environment';
+import {LinkTransformPipe} from '../pipes/link-transform';
 
 const WEB_SLUG_USER = 'https://www.wallapop.com/user/';
 
@@ -21,7 +22,10 @@ describe('Component: Message', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MessageComponent],
+      declarations: [
+        MessageComponent,
+        LinkTransformPipe
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {provide: 'SUBDOMAIN', useValue: 'www'},

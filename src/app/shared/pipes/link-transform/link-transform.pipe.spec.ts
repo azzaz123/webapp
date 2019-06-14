@@ -27,6 +27,13 @@ describe('LinkTransformPipe', () => {
       .toEqual(`First link <a href="https://es.wallapop.com" target="_blank">https://es.wallapop.com</a> second link <a href="https://es.wallapop.com" target="_blank">https://es.wallapop.com</a>`);
   });
 
+  it('should transform message without protocol to clickable link', () => {
+    const pipe = new LinkTransformPipe();
+
+    expect(pipe.transform('Link: www.wallapop.com'))
+      .toEqual('Link: <a href="//www.wallapop.com" target="_blank">www.wallapop.com</a>');
+  });
+
   it('should not transform message', () => {
     const pipe = new LinkTransformPipe();
 
