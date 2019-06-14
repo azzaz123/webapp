@@ -9,19 +9,32 @@ describe('LinkTransformPipe', () => {
   it('should transform message with link to message with clickable link', () => {
     const pipe = new LinkTransformPipe();
 
-    expect(pipe.transform('Basic clicable link: https://es.wallapop.com'))
-      .toEqual('Basic clicable link: <a href="https://es.wallapop.com" target="_blank">https://es.wallapop.com</a>');
+    expect(pipe.transform('Link: https://es.wallapop.com'))
+      .toEqual('Link: <a href="https://es.wallapop.com" target="_blank">https://es.wallapop.com</a>');
   });
 
   it('should transform message with double link to message with clickable link', () => {
     const pipe = new LinkTransformPipe();
 
-    expect(pipe.transform('Basic clicable link: https://es.wallapop.com, second link https://google.com'))
-      .toEqual(`Basic clicable link: <a href="https://es.wallapop.com" target="_blank">https://es.wallapop.com</a>,
-second link <a href="https://google.com" target="_blank">https://google.com</a>`);
+    expect(pipe.transform('First link https://es.wallapop.com second link https://www.google.pl'))
+      .toEqual(`First link <a href="https://es.wallapop.com" target="_blank">https://es.wallapop.com</a> second link <a href="https://www.google.pl" target="_blank">https://www.google.pl</a>`);
+  });
 
-    expect(pipe.transform('Basic clicable link: https://es.wallapop.com, second link https://es.wallapop.com'))
-      .toEqual(`Basic clicable link: <a href="https://es.wallapop.com" target="_blank">https://es.wallapop.com</a>,
-second link <a href="https://es.wallapop.com" target="_blank">https://es.wallapop.com</a>`);
+  it('should transform message with double repetitive link to message with clickable link', () => {
+    const pipe = new LinkTransformPipe();
+
+    expect(pipe.transform('First link https://es.wallapop.com second link https://es.wallapop.com'))
+      .toEqual(`First link <a href="https://es.wallapop.com" target="_blank">https://es.wallapop.com</a> second link <a href="https://es.wallapop.com" target="_blank">https://es.wallapop.com</a>`);
+  });
+
+  it('should not transform message', () => {
+    const pipe = new LinkTransformPipe();
+
+    expect(pipe.transform('Do not transform message')).toEqual('Do not transform message');
+    expect(pipe.transform('Do not transform message http')).toEqual('Do not transform message http');
+    expect(pipe.transform('Do not transform message http://')).toEqual('Do not transform message http://');
+    expect(pipe.transform('Do not transform message www')).toEqual('Do not transform message www');
+    expect(pipe.transform('Do not transform message www.wallapop')).toEqual('Do not transform message www.wallapop');
+    expect(pipe.transform('Do not transform message wallapop.com')).toEqual('Do not transform message wallapop.com');
   });
 });

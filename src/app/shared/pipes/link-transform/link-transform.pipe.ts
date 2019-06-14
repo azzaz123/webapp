@@ -5,15 +5,15 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class LinkTransformPipe implements PipeTransform {
 
-  private static readonly LINK_REG_EXP = new RegExp(/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/);
+  private static readonly LINK_REG_EXP = /(https?:\/\/(?:www\.|(?!www))[\w\d][\w\d-]+[\w\d]\.[^\s]{2,}|www\.[\w\d][\w\d-]+[\w\d]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[\w\d]+\.[^\s]{2,}|www\.[\w\d]+\.[^\s]{2,})/g;
 
   private static getFormattedLink(link: string): string {
     return `<a href="${link}" target="_blank">${link}</a>`;
   }
 
   transform(value: string, args?: any): any {
-    new Set(LinkTransformPipe.LINK_REG_EXP.exec(value))
-      .forEach(link => value = value.replace(link, LinkTransformPipe.getFormattedLink(link)));
+    new Set(value.match(LinkTransformPipe.LINK_REG_EXP))
+      .forEach(link => value = value.replace(new RegExp(link, 'g'), LinkTransformPipe.getFormattedLink(link)));
 
     return value;
   }
