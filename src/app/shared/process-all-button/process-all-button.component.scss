@@ -2,7 +2,7 @@
 
 :host {
   a {
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     font-size: $font-size-xs;
     color: $walla-main;
     text-transform: uppercase;

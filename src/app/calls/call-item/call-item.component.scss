@@ -149,7 +149,7 @@ tsl-user-avatar {
       text-transform: uppercase;
       text-align: center;
       font-size: $font-size-xs;
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       &:hover {
         text-decoration: none;
         background: rgba($blue-grey-5, .1);

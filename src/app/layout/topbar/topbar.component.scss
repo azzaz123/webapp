@@ -89,7 +89,7 @@
       }
     }
     &.active {
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       color: $walla-main;
       & .horizontal-line {
         display: block;
@@ -211,7 +211,7 @@
     /deep/ button {
       display: flex;
       align-items: center;
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       font-size: $font-size-s;
       padding-left: $spacing-s;
       padding-top: $spacing-s;

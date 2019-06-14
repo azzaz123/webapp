@@ -5,7 +5,7 @@ $height: 40px;
 
 h2 {
   font-size: $font-size-ll;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   display: flex;
   align-items: center;
 }
@@ -59,7 +59,7 @@ tsl-button /deep/ .simple  {
   background-color: transparent;
   color: $walla-main;
   font-size: $font-size-m;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   text-decoration: underline;
   &:hover {
     background-color: transparent;
@@ -108,7 +108,7 @@ tsl-selected-items {
   justify-content: space-between;
   margin-top: 1%;
   .upload {
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
   }
 }
 
@@ -177,7 +177,7 @@ tsl-search-input, .nav {
 
 tsl-select {
   font-size: $font-size-xs;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   color: $blue-grey-2;
   text-transform: uppercase;
   letter-spacing: 0.5px;

@@ -30,7 +30,7 @@ html, body {
 .price .right {
   font-size: 20px;
   color: #13c1ac;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   float: none !important;
 }
 .ticket-header .price .right p {
@@ -105,7 +105,7 @@ div.evuala-select ul.options {
 .datosDeLaOperacion h3 {
   color: #253238;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   color: #333333;
   padding: 16px;
 }

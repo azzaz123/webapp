@@ -50,7 +50,7 @@
       }
       .label {
         color: $walla-main;
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
       }
       mat-icon /deep/ {
         g g, path {

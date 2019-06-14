@@ -73,7 +73,7 @@ $menu-width-and-spacing: 10px;
     flex-direction: row;
     vertical-align: super;
     .conversation-item-title {
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       font-size: $font-size-s;
       display: flex;
     }
@@ -150,7 +150,7 @@ $menu-width-and-spacing: 10px;
   font-size: $font-size-xs;
   color: $blue-grey-2;
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
 }
 
 a {

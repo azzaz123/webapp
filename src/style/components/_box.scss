@@ -16,7 +16,7 @@ $border: solid 1px $blue-grey-5;
     border-bottom: $border;
     padding-top: 0;
     h1 {
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       color: $blue-grey-2;
       font-size: $font-size-ll;
       letter-spacing: 0.6px;
