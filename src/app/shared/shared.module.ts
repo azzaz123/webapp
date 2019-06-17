@@ -71,7 +71,7 @@ import { CreditCardsComponent } from './profile/credit-cards/credit-cards.compon
 import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { SelectModule } from 'ng-select';
-import {LinkTransformPipe} from './pipes';
+import { LinkTransformPipe } from './pipes';
 
 @NgModule({
   imports: [
@@ -230,4 +230,5 @@ import {LinkTransformPipe} from './pipes';
     NewCardModalComponent
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+}
