@@ -212,6 +212,16 @@ export class UserService extends ResourceService {
       .map((r: Response) => r.json());
   }
 
+  public updateSearchLocationCookies(location: Coordinate) {
+    const expirationDate = new Date();
+    expirationDate.setTime(expirationDate.getTime() + (15 * 60 * 1000));
+    const cookieOptions = {expires: expirationDate, domain: '.wallapop.com'};
+
+    this.cookieService.put('searchLat', location.latitude.toString(), cookieOptions);
+    this.cookieService.put('searchLng', location.longitude.toString(), cookieOptions);
+    this.cookieService.put('searchPosName', location.name, cookieOptions);
+  }
+
   public updateStoreLocation(coordinates: Coordinate): Observable<any> {
     return this.http.post(this.API_URL + '/me/bumped-profile/store-location', {
       latitude: coordinates.latitude,
