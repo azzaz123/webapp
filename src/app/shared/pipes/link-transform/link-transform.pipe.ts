@@ -21,7 +21,7 @@ export class LinkTransformPipe implements PipeTransform {
 
   transform(message: string, args?: any): string {
     new Set(message.match(LinkTransformPipe.LINK_REG_EXP))
-      .forEach(link => message = message.replace(new RegExp(link, 'g'), LinkTransformPipe.getFormattedLink(link)));
+      .forEach(link => message = message.split(link).join(LinkTransformPipe.getFormattedLink(link)));
 
     return message;
   }
