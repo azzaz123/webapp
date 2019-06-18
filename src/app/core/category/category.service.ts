@@ -13,6 +13,7 @@ export class CategoryService {
   private uploadCategories: CategoryOption[];
   private categories: CategoryResponse[];
   private heroCategoriesIds = [100, 13200, 13000, 21000];
+  private fashionCategoryId = 12465;
 
   constructor(private http: HttpService,
               private i18n: I18nService) {
@@ -46,6 +47,10 @@ export class CategoryService {
 
   public isHeroCategory(categoryId: number) {
     return this.heroCategoriesIds.indexOf(categoryId) !== -1;
+  }
+
+  public isFashionCategory(categoryId: number) {
+    return categoryId === this.fashionCategoryId;
   }
 
   private toSelectOptions(categories: CategoryConsumerGoodsResponse[]): CategoryOption[] {

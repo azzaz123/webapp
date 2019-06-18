@@ -100,12 +100,16 @@ export class WallacoinsComponent implements OnInit {
 
   public openBuyModal(pack: Pack, packIndex: number) {
     const modal: NgbModalRef = this.modalService.open(BuyWallacoinsModalComponent, {windowClass: 'modal-standard'});
+    let code = '-1';
     modal.componentInstance.pack = pack;
     modal.componentInstance.packIndex = packIndex;
     modal.componentInstance.isStripe = this.isStripe;
-    modal.result.then(() => {
-      this.updateRemainingCredit(pack);
-      this.openConfirmModal(pack);
+    modal.result.then((response) => {
+      if (response === 'success') {
+        code = '200';
+        this.updateRemainingCredit(pack);
+      }
+      this.openConfirmModal(pack, code);
     }, () => {
     });
   }

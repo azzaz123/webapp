@@ -10,3 +10,13 @@ export interface BrandModel {
   brand: string;
   model: string;
 }
+
+export interface Size {
+  id: string;
+  text: string;
+}
+
+export interface SizesResponse {
+  male: Size[];
+  female: Size[];
+}

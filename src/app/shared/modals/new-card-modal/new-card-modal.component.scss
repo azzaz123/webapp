@@ -1,0 +1,13 @@
+@import "~style/common";
+
+.NewCardModal {
+  padding: $spacing-xxl $spacing-xxxl;
+  .NewCardModal__header {
+    h1 {
+      font-size: $font-size-l;
+      font-family: $wallie;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+}

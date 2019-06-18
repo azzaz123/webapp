@@ -10,6 +10,9 @@ import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pack } from '../../core/payments/pack';
 import { UUID } from 'angular2-uuid';
+import { StripeService } from '../../core/stripe/stripe.service';
+import { EventService } from '../../core/event/event.service';
+import { STRIPE_CARD_OPTION } from '../../../tests/stripe.fixtures.spec';
 
 describe('BuyWallacoinsModalComponent', () => {
   let component: BuyWallacoinsModalComponent;
@@ -17,28 +20,31 @@ describe('BuyWallacoinsModalComponent', () => {
   let paymentService: PaymentService;
   let activeModal: NgbActiveModal;
   let errorService: ErrorsService;
+  let stripeService: StripeService;
+  let eventService: EventService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BuyWallacoinsModalComponent, CustomCurrencyPipe],
       providers: [
+        EventService,
         DecimalPipe,
         {
           provide: ErrorsService, useValue: {
-          show() {
-          },
-          i18nError() {
-          }
+            show() {
+            },
+            i18nError() {
+            }
         }
         },
         {
           provide: PaymentService, useValue: {
-          orderExtrasProPack() {
-            return Observable.of({});
-          },
-          pay() {
-            return Observable.of({});
-          }
+            orderExtrasProPack() {
+              return Observable.of({});
+            },
+            pay() {
+              return Observable.of({});
+            }
         }
         },
         {
@@ -46,7 +52,14 @@ describe('BuyWallacoinsModalComponent', () => {
             close() {
             }
         }
+        },
+        {
+          provide: StripeService, useValue: {
+            isPaymentMethodStripe() {
+              return true;
+            }
         }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -67,6 +80,8 @@ describe('BuyWallacoinsModalComponent', () => {
     paymentService = TestBed.get(PaymentService);
     activeModal = TestBed.get(NgbActiveModal);
     errorService = TestBed.get(ErrorsService);
+    stripeService = TestBed.get(StripeService);
+    eventService = TestBed.get(EventService);
   });
 
   describe('hasCard', () => {
@@ -74,6 +89,36 @@ describe('BuyWallacoinsModalComponent', () => {
       component.hasCard(true);
 
       expect(component.hasFinancialCard).toEqual(true);
+    });
+  });
+
+  describe('addNewCard', () => {
+    it('should set showCard and savedCard', () => {
+      component.addNewCard();
+
+      expect(component.showCard).toBe(true);
+      expect(component.savedCard).toBe(false);
+    });
+  });
+
+  describe('removeNewCard', () => {
+    it('should set showCard and savedCard', () => {
+      component.removeNewCard();
+
+      expect(component.showCard).toBe(false);
+      expect(component.savedCard).toBe(true);
+    });
+  });
+
+  describe('setSavedCard', () => {
+    it('should set showCard and savedCard and call setCardInfo', () => {
+      spyOn(component, 'setCardInfo').and.callThrough();
+      component.setSavedCard(STRIPE_CARD_OPTION);
+
+      expect(component.showCard).toBe(false);
+      expect(component.savedCard).toBe(true);
+      expect(component.selectedCard).toBe(true);
+      expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
 

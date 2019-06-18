@@ -15,6 +15,8 @@ import { UUID } from 'angular2-uuid';
 import { OrderEvent } from '../../selected-items/selected-product.interface';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { Router } from '@angular/router';
+import { STRIPE_CARD_OPTION } from '../../../../../tests/stripe.fixtures.spec';
+import { ErrorsService } from '../../../../core/errors/errors.service';
 
 describe('BuyProductModalComponent', () => {
   let component: BuyProductModalComponent;
@@ -24,6 +26,7 @@ describe('BuyProductModalComponent', () => {
   let paymentService: PaymentService;
   let eventService: EventService;
   let stripeService: StripeService;
+  let errorService: ErrorsService;
   let router: Router;
   const routerEvents: Subject<any> = new Subject();
 
@@ -33,6 +36,14 @@ describe('BuyProductModalComponent', () => {
       providers: [
         DecimalPipe,
         EventService,
+        {
+          provide: ErrorsService, useValue: {
+            i18nError() {
+            },
+            show() {
+            }
+        }
+        },
         {
           provide: Router, useValue: {
             navigate() {
@@ -94,6 +105,7 @@ describe('BuyProductModalComponent', () => {
     paymentService = TestBed.get(PaymentService);
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
+    errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
   });
 
@@ -192,12 +204,49 @@ describe('BuyProductModalComponent', () => {
   });
 
   describe('hasCard', () => {
-
     it('should set card if present', () => {
       component.hasCard(true);
 
       expect(component.hasFinancialCard).toBe(true);
       expect(component.mainLoading).toBe(false);
+    });
+  });
+
+  describe('hasStripeCard', () => {
+    it('should set if stripeCard is present', () => {
+      component.hasStripeCard(true);
+
+      expect(component.isStripeCard).toBe(true);
+    });
+  });
+
+  describe('addNewCard', () => {
+    it('should set showCard and savedCard', () => {
+      component.addNewCard();
+
+      expect(component.showCard).toBe(true);
+      expect(component.savedCard).toBe(false);
+    });
+  });
+
+  describe('removeNewCard', () => {
+    it('should set showCard and savedCard', () => {
+      component.removeNewCard();
+
+      expect(component.showCard).toBe(false);
+      expect(component.savedCard).toBe(true);
+    });
+  });
+
+  describe('setSavedCard', () => {
+      it('should set showCard and savedCard and call setCardInfo', () => {
+        spyOn(component, 'setCardInfo').and.callThrough();
+        component.setSavedCard(STRIPE_CARD_OPTION);
+
+        expect(component.showCard).toBe(false);
+        expect(component.savedCard).toBe(true);
+        expect(component.selectedCard).toBe(true);
+        expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
 
@@ -262,6 +311,18 @@ describe('BuyProductModalComponent', () => {
               component.checkout();
 
               expect(eventId).toBe('UUID');
+            });
+
+            it('should buy with stripe', () => {
+              spyOn(stripeService, 'buy').and.callThrough();
+              const orderId = 'UUID';
+              const paymentId = 'UUID';
+              component.isStripe = true;
+              component.savedCard = false;
+
+              component.checkout();
+
+              expect(stripeService.buy).toHaveBeenCalledWith(orderId, paymentId, component.isStripeCard, component.savedCard, component.card);
             });
           });
 

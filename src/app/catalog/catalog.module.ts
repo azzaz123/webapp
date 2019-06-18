@@ -20,6 +20,7 @@ import { BuyProductModalComponent } from './list/modals/buy-product-modal/buy-pr
 import { ReactivateConfirmationModalComponent } from './list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { UpgradePlanModalComponent } from './list/modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { ListingfeeConfirmationModalComponent } from './list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
+import { SelectModule } from 'ng-select';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { ListingfeeConfirmationModalComponent } from './list/modals/listingfee-c
     ReactiveFormsModule,
     TrackingModule,
     NgbButtonsModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    SelectModule
   ],
   providers: [
     BumpTutorialService,
