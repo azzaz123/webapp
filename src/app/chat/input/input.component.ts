@@ -37,10 +37,14 @@ export class InputComponent implements OnChanges, OnInit {
     if (!this.disable) {
       const message = messageArea.value.trim();
       if (!_.isEmpty(message)) {
-        this.trackingService.track(TrackingService.SEND_BUTTON, {
-          thread_id: this.currentConversation.id,
-        });
-        this.messageService.send(this.currentConversation, message);
+        if (this.hasLinkInMessage(message)) {
+          this.modalService.open(BlockSendLinkComponent, {windowClass: 'modal-transparent'});
+        } else {
+          this.trackingService.track(TrackingService.SEND_BUTTON, {
+            thread_id: this.currentConversation.id,
+          });
+          this.messageService.send(this.currentConversation, message);
+        }
       }
       messageArea.value = '';
     }
