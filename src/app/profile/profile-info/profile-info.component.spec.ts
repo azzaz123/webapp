@@ -230,7 +230,7 @@ describe('ProfileInfoComponent', () => {
         spyOn(userService, 'updateLocation').and.callThrough();
         spyOn(userService, 'updateSearchLocationCookies').and.callThrough();
         spyOn(errorsService, 'i18nSuccess');
-        component.updateLocation = false;
+        component.updateLocationWhenSearching = false;
         component.profileForm.patchValue(DATA);
         component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
         component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
