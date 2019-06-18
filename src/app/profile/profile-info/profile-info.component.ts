@@ -34,7 +34,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   private userInfo: UserProInfo;
   public user: User;
   public isPro: boolean;
-  public updateLocation = true;
+  public updateLocationWhenSearching = false;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
 
