@@ -445,6 +445,7 @@ describe('CatalogProListComponent', () => {
   describe('feature', () => {
     let eventId: string;
     beforeEach(() => {
+      component.isStripe = false;
       spyOn(UUID, 'UUID').and.returnValue('UUID');
     });
     describe('success', () => {
@@ -468,7 +469,7 @@ describe('CatalogProListComponent', () => {
         });
 
         it('should call purchaseProducts', () => {
-          expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', true);
+          expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', false);
         });
 
         it('should call getFinancialCard', () => {
@@ -505,7 +506,7 @@ describe('CatalogProListComponent', () => {
           });
 
           it('should call purchaseProducts', () => {
-            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', true);
+            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', false);
           });
 
           it('should call getFinancialCard', () => {
@@ -553,7 +554,7 @@ describe('CatalogProListComponent', () => {
             });
 
             it('should call purchaseProducts', () => {
-              expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', true);
+              expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', false);
             });
 
             it('should call getFinancialCard', () => {
@@ -592,7 +593,7 @@ describe('CatalogProListComponent', () => {
             });
 
             it('should call purchaseProducts', () => {
-              expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', true);
+              expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', false);
             });
 
             it('should call getFinancialCard', () => {
@@ -625,7 +626,7 @@ describe('CatalogProListComponent', () => {
           });
 
           it('should call purchaseProducts', () => {
-            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', true);
+            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', false);
           });
 
           it('should call getFinancialCard', () => {
