@@ -44,9 +44,11 @@ export class InputComponent implements OnChanges, OnInit {
             thread_id: this.currentConversation.id,
           });
           this.messageService.send(this.currentConversation, message);
+          messageArea.value = '';
         }
+      } else {
+        messageArea.value = '';
       }
-      messageArea.value = '';
     }
   }
 

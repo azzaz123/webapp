@@ -5,7 +5,7 @@
             (keydown.enter)="sendMessage(messageArea, $event)"
             [disabled]="disable"
             [ngClass]="{selected: messageArea.value.trim() && !disable}"
-            maxlength="300"
-            [attr.value]="messageArea.value"></textarea>
+            [attr.value]="messageArea.value"
+            maxlength="300"></textarea>
   <a id="send" (click)="sendMessage(messageArea, $event)" [ngClass]="{selected: messageArea.value.trim() && !disable}"><mat-icon svgIcon="send"></mat-icon></a>
 </form>
