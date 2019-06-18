@@ -10,10 +10,14 @@ import { EventService } from '../../core/event/event.service';
 import { MOCK_CONVERSATION, SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 class MockMessageService {
   send(c: Conversation, t: string): void {
   }
+}
+
+class NgbModalMock {
 }
 
 describe('Component: Input', () => {
@@ -29,6 +33,7 @@ describe('Component: Input', () => {
       declarations: [InputComponent],
       providers: [
         {provide: MessageService, useClass: MockMessageService},
+        {provide: NgbModal, useClass: NgbModalMock},
         EventService,
         {provide: TrackingService, useValue: {
           track() {}

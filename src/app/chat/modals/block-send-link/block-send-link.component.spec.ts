@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BlockSendLinkComponent } from './block-send-link.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('BlockSendLinkComponent', () => {
   let component: BlockSendLinkComponent;
@@ -8,9 +9,10 @@ describe('BlockSendLinkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BlockSendLinkComponent ]
+      declarations: [BlockSendLinkComponent],
+      providers: [NgbActiveModal]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

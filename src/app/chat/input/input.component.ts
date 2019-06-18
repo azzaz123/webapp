@@ -36,7 +36,7 @@ export class InputComponent implements OnChanges, OnInit {
     $event.preventDefault();
     if (!this.disable) {
       const message = messageArea.value.trim();
-      if (_.isEmpty(message)) {
+      if (!_.isEmpty(message)) {
         this.trackingService.track(TrackingService.SEND_BUTTON, {
           thread_id: this.currentConversation.id,
         });
