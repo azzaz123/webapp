@@ -10,14 +10,17 @@ import { EventService } from '../../core/event/event.service';
 import { MOCK_CONVERSATION, SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-class MockMessageService {
+class MessageServiceMock {
   send(c: Conversation, t: string): void {
   }
 }
 
 class NgbModalMock {
+  open(content: any, options?: NgbModalOptions): NgbModalRef {
+    return null;
+  }
 }
 
 describe('Component: Input', () => {
@@ -27,12 +30,13 @@ describe('Component: Input', () => {
   let fixture: ComponentFixture<InputComponent>;
   let eventService: EventService;
   let trackingService: TrackingService;
+  let modalService: NgbModal;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [InputComponent],
       providers: [
-        {provide: MessageService, useClass: MockMessageService},
+        {provide: MessageService, useClass: MessageServiceMock},
         {provide: NgbModal, useClass: NgbModalMock},
         EventService,
         {provide: TrackingService, useValue: {
@@ -47,6 +51,7 @@ describe('Component: Input', () => {
     messageService = TestBed.get(MessageService);
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
+    modalService = TestBed.get(NgbModal);
     spyOn(messageService, 'send');
   });
 
@@ -80,6 +85,7 @@ describe('Component: Input', () => {
     beforeEach(() => {
       spyOn(EVENT, 'preventDefault');
       spyOn(trackingService, 'track');
+      spyOn(modalService, 'open');
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       component.currentConversation = conversation;
     });
@@ -92,6 +98,7 @@ describe('Component: Input', () => {
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(textarea.value).toBe('');
+      expect(modalService.open).not.toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id});
       expect(trackingService.track).toHaveBeenCalledTimes(1);
@@ -105,6 +112,7 @@ describe('Component: Input', () => {
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(textarea.value).toBe('');
+      expect(modalService.open).not.toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id});
       expect(trackingService.track).toHaveBeenCalledTimes(1);
@@ -116,6 +124,7 @@ describe('Component: Input', () => {
       component.sendMessage(textarea, EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
+      expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(textarea.value).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
@@ -127,6 +136,7 @@ describe('Component: Input', () => {
       component.sendMessage(textarea, EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
+      expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(textarea.value).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
@@ -139,6 +149,18 @@ describe('Component: Input', () => {
       component.sendMessage(textarea, EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
+      expect(modalService.open).not.toHaveBeenCalled();
+      expect(messageService.send).not.toHaveBeenCalled();
+      expect(trackingService.track).not.toHaveBeenCalled();
+    });
+
+    it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains link', () => {
+      component.disable = false;
+      textarea.value = 'Hi, here is a link: www.link-to-something.com ;*';
+
+      component.sendMessage(textarea, EVENT);
+      expect(EVENT.preventDefault).toHaveBeenCalled();
+      expect(modalService.open).toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(trackingService.track).not.toHaveBeenCalled();
     });
