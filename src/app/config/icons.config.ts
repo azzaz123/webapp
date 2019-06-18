@@ -33,6 +33,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('report-listing-11', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/resale.svg'));
   matIconRegistry.addSvgIcon('report-listing-12', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/ad.svg'));
   matIconRegistry.addSvgIcon('report-user-4', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/suspicious.svg'));
+  matIconRegistry.addSvgIcon('suspicious-icon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/suspiciousIcon.svg'));
   matIconRegistry.addSvgIcon('report-user-3', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/scam.svg'));
   matIconRegistry.addSvgIcon('report-user-6', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/no-show.svg'));
   matIconRegistry.addSvgIcon('report-user-5', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/behaviour.svg'));
