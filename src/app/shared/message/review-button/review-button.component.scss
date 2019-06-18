@@ -17,7 +17,7 @@ tsl-button {
     margin-right: $spacing-xs;
   }
   span {
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     font-size: $font-size-s;
   }
 }

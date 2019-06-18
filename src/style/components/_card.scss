@@ -9,7 +9,7 @@
   .card-title {
     font-size: $font-size-m;
     color: $blue-grey-1;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
   }
   &:hover, &:focus {
     box-shadow: 0 2px 6px 0 rgba(54, 70, 79, 0.07);

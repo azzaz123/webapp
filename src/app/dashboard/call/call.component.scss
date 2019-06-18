@@ -66,7 +66,7 @@ tsl-user-avatar {
     margin-right: $spacing-ms;
     width: 15%;
     .call-user-name {
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       font-size: $font-size-s;
       display: flex;
       @include text-truncate;
@@ -117,7 +117,7 @@ tsl-user-avatar {
   }
   .call-date {
     font-size: $font-size-xs;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     color: $blue-grey-2;
     text-transform: uppercase;
   }

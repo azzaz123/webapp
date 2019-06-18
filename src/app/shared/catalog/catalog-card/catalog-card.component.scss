@@ -161,7 +161,7 @@ $feature-button-width: 170px;
     margin-right: $spacing-m;
   }
   .price {
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     font-size: $font-size-l;
     @include text-truncate();
   }
@@ -195,7 +195,7 @@ $feature-button-width: 170px;
       }
     }
     .type {
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
     }
   }
   .zonebump{
@@ -257,7 +257,7 @@ $feature-button-width: 170px;
         color: $walla-main;
         cursor: default;
         font-size: $font-size-s;
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
       }
       &.btn-sold {
         &:hover, &.active {

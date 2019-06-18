@@ -13,7 +13,7 @@
 h1 {
     font-size: $font-size-ll;
     color: $walla-main;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     margin-bottom: $spacing-xl;
 }
 
@@ -22,7 +22,7 @@ h2 {
     color: $blue-grey-1;
     font-weight: normal;
     strong {
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
     }
 }
 

@@ -6,11 +6,11 @@ $right-gutter: 35px;
   .profile-box {
     h3 {
       font-size: $font-size-s;
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
     }
     .box-header {
       h1 {
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
         color: $blue-grey-2;
         font-size: $font-size-ll;
         letter-spacing: 0.6px;
@@ -73,7 +73,7 @@ $right-gutter: 35px;
             }
           }
           div {
-            font-weight: bold;
+            font-weight: $font-weight-chunky;
             color: $white;
           }
         }
