@@ -4,6 +4,9 @@ import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { InboxConversation } from '../chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BlockSendLinkComponent } from '../modals/block-send-link';
+import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 
 @Component({
   selector: 'tsl-input',
@@ -18,8 +21,8 @@ export class InputComponent implements OnChanges, OnInit {
 
   constructor(private messageService: MessageService,
               private eventService: EventService,
-              private trackingService: TrackingService
-              ) {
+              private trackingService: TrackingService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -54,5 +57,9 @@ export class InputComponent implements OnChanges, OnInit {
     }
     this.disable = this.currentConversation instanceof Conversation ? this.currentConversation.user.blocked
     : this.currentConversation.cannotChat;
+  }
+
+  private hasLinkInMessage(message: string): boolean {
+    return LinkTransformPipe.LINK_REG_EXP.test(message);
   }
 }
