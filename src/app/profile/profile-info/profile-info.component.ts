@@ -11,6 +11,7 @@ import { UserProInfo } from '../../core/user/user-info.interface';
 import { Image } from '../../core/user/user-response.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
+import { Coordinate } from '../../core/geolocation/address-response.interface';
 
 export const competitorLinks = [
   'coches.net',
@@ -33,6 +34,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   private userInfo: UserProInfo;
   public user: User;
   public isPro: boolean;
+  public updateLocation = true;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
 
@@ -115,17 +117,18 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
           last_name: this.profileForm.value.last_name,
           birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
           gender: this.user.gender
+        }).finally(() => {
+          this.errorsService.i18nSuccess('userEdited');
+          this.formComponent.hasNotSavedChanges = false;
         }).subscribe(() => {
-          if (!_.isEqual(this.user.location, profileFormLocation)) {
-            this.userService.updateLocation({
-              latitude: profileFormLocation.latitude, longitude: profileFormLocation.longitude
-            }).subscribe(() => {
-              this.errorsService.i18nSuccess('userEdited');
-              this.formComponent.hasNotSavedChanges = false;
-            });
-          } else {
-            this.errorsService.i18nSuccess('userEdited');
-            this.formComponent.hasNotSavedChanges = false;
+          if (this.user.location.approximated_latitude !== profileFormLocation.latitude ||
+            this.user.location.approximated_longitude !== profileFormLocation.longitude) {
+              const newLocation: Coordinate = {
+                latitude: profileFormLocation.latitude, longitude: profileFormLocation.longitude
+              };
+              this.userService.updateLocation(newLocation).subscribe(() => {
+                this.userService.updateSearchLocationCookies(newLocation);
+              });
           }
         });
       });

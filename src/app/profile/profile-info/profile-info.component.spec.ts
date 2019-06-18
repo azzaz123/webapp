@@ -65,6 +65,11 @@ describe('ProfileInfoComponent', () => {
           },
           edit() {
             return Observable.of({});
+          },
+          updateLocation() {
+            return Observable.of({});
+          },
+          updateSearchLocationCookies() {
           }
         }
         },
@@ -165,11 +170,13 @@ describe('ProfileInfoComponent', () => {
       beforeEach(() => {
         spyOn(userService, 'edit').and.callThrough();
         spyOn(userService, 'updateProInfo').and.callThrough();
+        spyOn(userService, 'updateLocation').and.callThrough();
+        spyOn(userService, 'updateSearchLocationCookies').and.callThrough();
         spyOn(errorsService, 'i18nSuccess');
         component.profileForm.patchValue(DATA);
         component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
-        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
-        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
+        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude + 1);
+        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude + 1);
         component.formComponent.hasNotSavedChanges = true;
 
         component.onSubmit();
@@ -188,6 +195,59 @@ describe('ProfileInfoComponent', () => {
         expect(component.formComponent.hasNotSavedChanges).toBe(false);
       });
 
+      it('should call updateLocation', () => {
+        expect(userService.updateLocation).toHaveBeenCalledWith({
+          latitude: USER_LOCATION_COORDINATES.latitude + 1,
+          longitude: USER_LOCATION_COORDINATES.longitude + 1
+        });
+      });
+
+      it('should set search location cookies', () => {
+        expect(userService.updateSearchLocationCookies).toHaveBeenCalledWith({
+          latitude: USER_LOCATION_COORDINATES.latitude + 1,
+          longitude: USER_LOCATION_COORDINATES.longitude + 1
+        });
+      });
+    });
+
+    describe('valid form with same location in form and user', () => {
+
+      const BASIC_DATA = {
+        first_name: USER_DATA.first_name,
+        last_name: USER_DATA.last_name
+      };
+
+      const DATA = {
+        ...BASIC_DATA,
+        ...USER_PRO_DATA,
+      };
+
+      beforeEach(() => {
+        spyOn(userService, 'edit').and.callThrough();
+        spyOn(userService, 'updateProInfo').and.callThrough();
+        spyOn(userService, 'updateLocation').and.callThrough();
+        spyOn(userService, 'updateSearchLocationCookies').and.callThrough();
+        spyOn(errorsService, 'i18nSuccess');
+        component.updateLocation = false;
+        component.profileForm.patchValue(DATA);
+        component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
+        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
+        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
+        component.formComponent.hasNotSavedChanges = true;
+
+        component.user.location.approximated_latitude = USER_LOCATION_COORDINATES.latitude;
+        component.user.location.approximated_longitude = USER_LOCATION_COORDINATES.longitude;
+
+        component.onSubmit();
+      });
+
+      it('should not call updateLocation', () => {
+        expect(userService.updateLocation).toHaveBeenCalledTimes(0);
+      });
+
+      it('should not change any cookie value', () => {
+        expect(userService.updateSearchLocationCookies).toHaveBeenCalledTimes(0);
+      });
     });
 
     describe('invalid form', () => {
