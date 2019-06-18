@@ -198,14 +198,16 @@ describe('ProfileInfoComponent', () => {
       it('should call updateLocation', () => {
         expect(userService.updateLocation).toHaveBeenCalledWith({
           latitude: USER_LOCATION_COORDINATES.latitude + 1,
-          longitude: USER_LOCATION_COORDINATES.longitude + 1
+          longitude: USER_LOCATION_COORDINATES.longitude + 1,
+          name: USER_LOCATION_COORDINATES.name
         });
       });
 
       it('should set search location cookies', () => {
         expect(userService.updateSearchLocationCookies).toHaveBeenCalledWith({
           latitude: USER_LOCATION_COORDINATES.latitude + 1,
-          longitude: USER_LOCATION_COORDINATES.longitude + 1
+          longitude: USER_LOCATION_COORDINATES.longitude + 1,
+          name: USER_LOCATION_COORDINATES.name
         });
       });
     });

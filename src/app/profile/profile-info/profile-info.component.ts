@@ -124,7 +124,9 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
           if (this.user.location.approximated_latitude !== profileFormLocation.latitude ||
             this.user.location.approximated_longitude !== profileFormLocation.longitude) {
               const newLocation: Coordinate = {
-                latitude: profileFormLocation.latitude, longitude: profileFormLocation.longitude
+                latitude: profileFormLocation.latitude,
+                longitude: profileFormLocation.longitude,
+                name: profileFormLocation.address
               };
               this.userService.updateLocation(newLocation).subscribe(() => {
                 this.userService.updateSearchLocationCookies(newLocation);
