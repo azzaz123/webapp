@@ -6,7 +6,7 @@
 
 <div class="message-body" *ngIf="!message.payload" [ngClass]="{'without-avatar': !showUserInfo, 'calls-panel': callsPanel, 'from-self': message.fromSelf, 'phone-request': message.phoneRequest}">
   <p>
-    <span *ngIf="!message.payload">{{message.message}}</span>
+    <span *ngIf="!message.payload" [innerHTML]="message.message | linkTransform"></span>
     <button *ngIf="message.phoneRequest === phoneRequestState.pending" class="btn" (click)="openDialog()" i18n>Leave your number</button>
     <span *ngIf="message.phoneRequest === phoneRequestState.answered" class="new-line" i18n>Phone sent ;)</span>
     <small class="message-date">{{message.date | date:'shortTime'}}</small>
