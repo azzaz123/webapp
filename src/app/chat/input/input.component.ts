@@ -7,6 +7,7 @@ import { InboxConversation } from '../chat-with-inbox/inbox/inbox-conversation/i
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-input',
@@ -35,7 +36,7 @@ export class InputComponent implements OnChanges, OnInit {
     $event.preventDefault();
     if (!this.disable) {
       const message = messageArea.value.trim();
-      if (message !== '') {
+      if (_.isEmpty(message)) {
         this.trackingService.track(TrackingService.SEND_BUTTON, {
           thread_id: this.currentConversation.id,
         });
