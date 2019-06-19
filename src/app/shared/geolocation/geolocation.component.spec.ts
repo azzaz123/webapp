@@ -45,8 +45,8 @@ describe('GeolocationComponent', () => {
         },
         {
           provide: UserService, useValue: {
-          updateSearchLocationCookies() {
-          }
+            updateSearchLocationCookies() {
+            }
         }
         },
         EventService]

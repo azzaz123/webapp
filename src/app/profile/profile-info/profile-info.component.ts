@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
-import * as _ from 'lodash';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 import { User } from '../../core/user/user';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
