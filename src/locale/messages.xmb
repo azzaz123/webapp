@@ -375,6 +375,9 @@
   <msg id="6146618115870222180"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:2</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:2</source>Your Messages</msg>
   <msg id="8848709900682152607"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:5</source>Mark everything as Processed</msg>
   <msg id="33149636091572968"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:27</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:51</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:75</source>Load more</msg>
+  <msg id="8776614783712961708"><source>app/chat/modals/block-send-link/block-send-link.component.html:3</source>Oh, go!</msg>
+  <msg id="3345227992092802987"><source>app/chat/modals/block-send-link/block-send-link.component.html:4</source>You can not send links (unrelated to wallapop) on this chat. That&apos;s how many scams start, so better safe than sorry!</msg>
+  <msg id="5601530442010506564"><source>app/chat/modals/block-send-link/block-send-link.component.html:7</source>Got it</msg>
   <msg id="4896863464728200563"><source>app/chat/input/input.component.html:2</source>Write a message...</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.html:2</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.html:3</source>Connected</msg>
