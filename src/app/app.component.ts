@@ -88,6 +88,7 @@ export class AppComponent implements OnInit {
     appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
+    this.splitTestService.init();
     this.subscribeEventUserLogin();
     this.subscribeEventUserLogout();
     this.subscribeChatEvents();
@@ -100,7 +101,6 @@ export class AppComponent implements OnInit {
     this.connectionService.checkConnection();
     this.conversationService.firstLoad = true;
     this.trackingService.trackAccumulatedEvents();
-    this.splitTestService.init();
 
     __cmp('init', quancastOptions[this.i18n.locale]);
   }
