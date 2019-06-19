@@ -15,7 +15,7 @@ describe('LinkTransformPipe', () => {
 
   it('should transform message with link with parameters to message with clickable link', () => {
     const pipe = new LinkTransformPipe();
-w
+
     expect(pipe.transform('Link: https://es.wallapop.com?key=value'))
       .toEqual('Link: <a href="https://es.wallapop.com?key=value" target="_blank">https://es.wallapop.com?key=value</a>');
   });
