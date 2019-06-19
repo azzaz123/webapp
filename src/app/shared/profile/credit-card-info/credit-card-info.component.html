@@ -2,7 +2,7 @@
   <div class="credit-card-field">
     <div class="info">
       <mat-icon svgIcon="card" class="card-icon"></mat-icon>
-      <div class="number">**** **** **** {{financialCard?.number}}</div>
+      <div class="number"><span *ngIf="isStripe">**** **** **** </span>{{financialCard?.number}}</div>
       <div class="date" *ngIf="isStripe">{{financialCard?.expire_date}}</div>
       <div class="date" *ngIf="!isStripe">{{financialCard?.expire_date | date:'MM/yy'}}</div>
     </div>

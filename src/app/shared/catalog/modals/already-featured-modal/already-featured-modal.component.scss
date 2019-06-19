@@ -27,7 +27,7 @@ p {
   margin: 0 auto $spacing-xl auto;
 }
 h1 {
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   color: $blue-grey-1;
   font-size: $font-size-xs;
   margin-bottom: $spacing-l;

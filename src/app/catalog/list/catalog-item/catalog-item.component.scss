@@ -152,7 +152,7 @@ $feature-button-width: 170px;
     flex-grow: 4;
     max-width: 700px;
     .info-price {
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       font-size: $font-size-l;
       width: 100%;
       @include text-truncate();
@@ -185,7 +185,7 @@ $feature-button-width: 170px;
     font-size: $font-size-s;
     color: $magenta-main;
     min-width: 250px;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     &.onHold {
       align-self: stretch;
       display: flex;
@@ -232,7 +232,7 @@ $feature-button-width: 170px;
         color: $walla-main;
         cursor: default;
         font-size: $font-size-s;
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
       }
       &.btn-sold {
         &:hover {
@@ -269,7 +269,7 @@ $feature-button-width: 170px;
         border-color: transparent;
         border-radius: 20px;
         font-size: $font-size-s;
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
         mat-icon {
           position: absolute;
           left: 10px;

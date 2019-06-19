@@ -1,8 +1,8 @@
 @import "~style/common";
-@import 'fonts-import';
 @import './animations';
 @import '~bootstrap/scss/bootstrap';
 @import './components/components';
+@import '~web-styleguide/scss/fonts';
 
 html, body {
   overflow: hidden;
@@ -10,7 +10,7 @@ html, body {
 }
 
 body {
-  font-family: $wallie;
+  font-family: $wallie, Helvetica;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -78,7 +78,7 @@ button {
 }
 
 button, input, optgroup, select, textarea {
-  font-family: $wallie;
+  font-family: $wallie, Helvetica;
 }
 
 .page-profile .popover {

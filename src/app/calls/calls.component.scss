@@ -14,7 +14,7 @@
         color: $blue-grey-2;
         text-transform: uppercase;
         font-size: $font-size-xs;
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
       }
       .col-md-1:last-child {
         text-align: right;

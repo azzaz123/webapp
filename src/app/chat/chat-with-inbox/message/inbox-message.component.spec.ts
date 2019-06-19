@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { InboxMessageComponent } from './inbox-message.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
+import { LinkTransformPipe } from '../../../shared/pipes/link-transform';
 
 describe('InboxMessageComponent', () => {
   let component: InboxMessageComponent;
@@ -9,10 +10,10 @@ describe('InboxMessageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InboxMessageComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ],
+      declarations: [InboxMessageComponent, LinkTransformPipe],
+      schemas: [NO_ERRORS_SCHEMA],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

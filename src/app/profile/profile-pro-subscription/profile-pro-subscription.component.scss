@@ -12,7 +12,7 @@
 
 h2 {
   font-size: $font-size-l;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   display: flex;
   align-items: center;
   mat-icon {
@@ -28,7 +28,7 @@ h2 {
 }
 
 .contact {
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   color: $blue-grey-2;
 }
 
@@ -62,7 +62,7 @@ h2, .description {
       border-radius: 50%;
       @include square($height);
       line-height: $height;
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       font-size: $font-size-xl;
       color: $blue-grey-2;
       letter-spacing: -1.5px;
@@ -84,7 +84,7 @@ h2, .description {
   .price {
     font-size: $font-size-m;
     color: $blue-grey-2;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     flex-grow: 1;
   }
   .discount {
@@ -99,7 +99,7 @@ h2, .description {
   .expire {
     display: none;
     font-size: $font-size-xs;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
   }
   &.selected {
     border-width: 3px;
@@ -182,7 +182,7 @@ h2, .description {
     color: $yellow-dark;
   }
   .name {
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     color: $blue-grey-1;
     font-size: $font-size-l;
     padding-bottom: $spacing-ms;
@@ -220,7 +220,7 @@ h2, .description {
 }
 
 .open-visibility {
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   color: $blue-grey-2;
   font-size: $font-size-s;
   text-decoration: underline;

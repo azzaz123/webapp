@@ -13,7 +13,7 @@
       height: 100%;
       color: $blue-grey-2;
       text-transform: uppercase;
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       padding: 0;
       &:hover {
         color: darken($blue-grey-2, 10%);
