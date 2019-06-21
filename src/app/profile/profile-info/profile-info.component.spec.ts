@@ -225,11 +225,8 @@ describe('ProfileInfoComponent', () => {
       };
 
       beforeEach(() => {
-        spyOn(userService, 'edit').and.callThrough();
-        spyOn(userService, 'updateProInfo').and.callThrough();
         spyOn(userService, 'updateLocation').and.callThrough();
         spyOn(userService, 'updateSearchLocationCookies').and.callThrough();
-        spyOn(errorsService, 'i18nSuccess');
         component.updateLocationWhenSearching = false;
         component.profileForm.patchValue(DATA);
         component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
