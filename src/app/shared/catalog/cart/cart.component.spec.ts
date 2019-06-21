@@ -110,8 +110,8 @@ describe('CartComponent', () => {
         {
           provide: StripeService, useValue: {
           buy() {},
-          isPaymentMethodStripe() {
-            return true;
+          isPaymentMethodStripe$() {
+            return Observable.of(true);
           }
         }
         },
@@ -154,10 +154,21 @@ describe('CartComponent', () => {
       expect(component.cart).toEqual(CART);
     });
 
-    describe('check isStripe payment method', () => {
-      it('should set isStripe to true', () => {
-        expect(component.isStripe).toBe(true);
-      });
+    it('should call stripeService.isPaymentMethodStripe$', () => {
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
+    });
+
+    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
+      const expectedValue = true;
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+
+      component.ngOnInit();
+
+      expect(component.isStripe).toBe(expectedValue);
     });
   });
 

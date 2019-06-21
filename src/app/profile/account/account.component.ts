@@ -33,7 +33,9 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+    });
     this.userService.me().subscribe((user: User) => {
       this.user = user;
       this.profileForm.patchValue({

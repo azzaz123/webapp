@@ -11,6 +11,7 @@ import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
+import { FeatureflagService } from '../user/featureflag.service';
 
 @Injectable()
 export class StripeService {
@@ -24,7 +25,8 @@ export class StripeService {
               private userService: UserService,
               private router: Router,
               private eventService: EventService,
-              private http: HttpService) {
+              private http: HttpService,
+              private featureflagService: FeatureflagService) {
     this.userService.me().subscribe((user: User) => {
       this.fullName = `${user.firstName} ${user.lastName}`
     });
@@ -52,8 +54,8 @@ export class StripeService {
     }
   }
 
-  public isPaymentMethodStripe(): boolean {
-    return this.PAYMENT_PROVIDER_STRIPE;
+  public isPaymentMethodStripe$(): Observable<boolean> {
+    return this.featureflagService.getFlag('web_stripe');
   }
 
   public getCards(): Observable<FinancialCard[]> {

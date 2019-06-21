@@ -65,7 +65,9 @@ export class CatalogProListComponent implements OnInit {
               private stripeService: StripeService) { }
 
   ngOnInit() {
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+    });
     this.getCounters();
     this.getItems();
     const sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
