@@ -165,6 +165,16 @@ describe('Component: Input', () => {
       expect(trackingService.track).not.toHaveBeenCalled();
     });
 
+    it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time', () => {
+      component.disable = false;
+      textarea.value = 'Can U access to my webpage outside https://wallapop.com that is www.notAllowedURL.com';
+
+      component.sendMessage(textarea, EVENT);
+      expect(EVENT.preventDefault).toHaveBeenCalled();
+      expect(modalService.open).toHaveBeenCalled();
+      expect(messageService.send).not.toHaveBeenCalled();
+      expect(trackingService.track).not.toHaveBeenCalled();
+    });
   });
 
   describe('ngOnChanges', () => {

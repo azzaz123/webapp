@@ -67,6 +67,10 @@ export class InputComponent implements OnChanges, OnInit {
   }
 
   private hasLinkInMessage(message: string): boolean {
-    return !_.isEmpty(message.match(LinkTransformPipe.LINK_REG_EXP)) && _.isEmpty(message.match(LinkTransformPipe.WALLAPOP_REG_EXP));
+    return !_.isEmpty(this.findLinksWhereLinkIsNotWallapop(message));
+  }
+
+  private findLinksWhereLinkIsNotWallapop(message: string): string[] {
+    return _.find(message.match(LinkTransformPipe.LINK_REG_EXP), link => _.isEmpty(link.match(LinkTransformPipe.WALLAPOP_REG_EXP)));
   }
 }
