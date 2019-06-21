@@ -67,6 +67,6 @@ export class InputComponent implements OnChanges, OnInit {
   }
 
   private hasLinkInMessage(message: string): boolean {
-    return !_.isEmpty(message.match(LinkTransformPipe.LINK_REG_EXP));
+    return !_.isEmpty(message.match(LinkTransformPipe.LINK_REG_EXP)) && _.isEmpty(message.match(LinkTransformPipe.WALLAPOP_REG_EXP));
   }
 }

@@ -1,4 +1,4 @@
-import {LinkTransformPipe} from './link-transform.pipe';
+import { LinkTransformPipe } from './link-transform.pipe';
 
 describe('LinkTransformPipe', () => {
   it('create an instance', () => {
@@ -39,6 +39,8 @@ describe('LinkTransformPipe', () => {
 
     expect(pipe.transform('Link: www.wallapop.com'))
       .toEqual('Link: <a href="//www.wallapop.com" target="_blank">www.wallapop.com</a>');
+    expect(pipe.transform('Link: wallapop.com'))
+      .toEqual('Link: <a href="//wallapop.com" target="_blank">wallapop.com</a>');
   });
 
   it('should not transform message', () => {
@@ -49,6 +51,18 @@ describe('LinkTransformPipe', () => {
     expect(pipe.transform('Do not transform message http://')).toEqual('Do not transform message http://');
     expect(pipe.transform('Do not transform message www')).toEqual('Do not transform message www');
     expect(pipe.transform('Do not transform message www.wallapop')).toEqual('Do not transform message www.wallapop');
-    expect(pipe.transform('Do not transform message wallapop.com')).toEqual('Do not transform message wallapop.com');
+  });
+
+  it('should return true if is in wallapop domain', () => {
+    expect('wallapop.com'.match(LinkTransformPipe.WALLAPOP_REG_EXP)).toBeTruthy();
+    expect('www.wallapop.com'.match(LinkTransformPipe.WALLAPOP_REG_EXP)).toBeTruthy();
+    expect('http://www.wallapop.com'.match(LinkTransformPipe.WALLAPOP_REG_EXP)).toBeTruthy();
+    expect('https://www.wallapop.com'.match(LinkTransformPipe.WALLAPOP_REG_EXP)).toBeTruthy();
+    expect('https://www.wallapop.com?key=value'.match(LinkTransformPipe.WALLAPOP_REG_EXP)).toBeTruthy();
+    expect('www.co.uk.wallapop.com'.match(LinkTransformPipe.WALLAPOP_REG_EXP)).toBeTruthy();
+  });
+
+  it('should return false if is not in wallapop domain', () => {
+    expect('www.walla.com'.match(LinkTransformPipe.WALLAPOP_REG_EXP)).toBeFalsy();
   });
 });
