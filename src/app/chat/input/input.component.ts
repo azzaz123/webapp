@@ -4,6 +4,10 @@ import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { InboxConversation } from '../chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BlockSendLinkComponent } from '../modals/block-send-link';
+import { LinkTransformPipe } from '../../shared/pipes/link-transform';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-input',
@@ -18,8 +22,8 @@ export class InputComponent implements OnChanges, OnInit {
 
   constructor(private messageService: MessageService,
               private eventService: EventService,
-              private trackingService: TrackingService
-              ) {
+              private trackingService: TrackingService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -32,13 +36,19 @@ export class InputComponent implements OnChanges, OnInit {
     $event.preventDefault();
     if (!this.disable) {
       const message = messageArea.value.trim();
-      if (message !== '') {
-        this.trackingService.track(TrackingService.SEND_BUTTON, {
-          thread_id: this.currentConversation.id,
-        });
-        this.messageService.send(this.currentConversation, message);
+      if (!_.isEmpty(message)) {
+        if (this.hasLinkInMessage(message)) {
+          this.modalService.open(BlockSendLinkComponent, {windowClass: 'modal-transparent'});
+        } else {
+          this.trackingService.track(TrackingService.SEND_BUTTON, {
+            thread_id: this.currentConversation.id,
+          });
+          this.messageService.send(this.currentConversation, message);
+          messageArea.value = '';
+        }
+      } else {
+        messageArea.value = '';
       }
-      messageArea.value = '';
     }
   }
 
@@ -54,5 +64,13 @@ export class InputComponent implements OnChanges, OnInit {
     }
     this.disable = this.currentConversation instanceof Conversation ? this.currentConversation.user.blocked
     : this.currentConversation.cannotChat;
+  }
+
+  private hasLinkInMessage(message: string): boolean {
+    return !_.isEmpty(this.findLinksWhereLinkIsNotWallapop(message));
+  }
+
+  private findLinksWhereLinkIsNotWallapop(message: string): string[] {
+    return _.find(message.match(LinkTransformPipe.LINK_REG_EXP), link => _.isEmpty(link.match(LinkTransformPipe.WALLAPOP_REG_EXP)));
   }
 }

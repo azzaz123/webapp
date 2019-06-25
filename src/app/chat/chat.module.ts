@@ -33,6 +33,7 @@ import { UnarchiveInboxConversationComponent } from './chat-with-inbox/modals/un
 import { ArchivedInboxConversationComponent } from './chat-with-inbox/inbox/archived-inbox-conversation/archived-inbox-conversation.component';
 import { InboxUserDetailComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component';
 import { InboxItemDetailComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component';
+import { BlockSendLinkComponent } from './modals/block-send-link';
 
 @NgModule({
   imports: [
@@ -74,7 +75,8 @@ import { InboxItemDetailComponent } from './chat-with-inbox/inbox/inbox-metadata
     CurrentConversationComponent,
     InboxMessageComponent,
     InboxUserDetailComponent,
-    InboxItemDetailComponent
+    InboxItemDetailComponent,
+    BlockSendLinkComponent
   ],
   entryComponents: [
     ArchiveConversationComponent,
@@ -83,7 +85,8 @@ import { InboxItemDetailComponent } from './chat-with-inbox/inbox/inbox-metadata
     ReportListingComponent,
     ReportUserComponent,
     BlockUserComponent,
-    UnblockUserComponent
+    UnblockUserComponent,
+    BlockSendLinkComponent
   ]
 })
 export class ChatModule {
