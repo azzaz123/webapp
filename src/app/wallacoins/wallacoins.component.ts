@@ -48,7 +48,9 @@ export class WallacoinsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+    });
     this.openTutorialModal();
     this.carouselOptions = {
       grid: {xs: 3, sm: 3, md: 3, lg: 3, all: 0},

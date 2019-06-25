@@ -43,7 +43,9 @@ export class BuyProductModalComponent implements OnInit {
               private errorService: ErrorsService) { }
 
   ngOnInit() {
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+    });
     this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
       this.item = item;
       if (this.type === 'urgent') {

@@ -55,7 +55,7 @@ describe('BuyWallacoinsModalComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-            isPaymentMethodStripe() {
+            isPaymentMethodStripe$() {
               return true;
             }
         }

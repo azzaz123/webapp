@@ -76,7 +76,7 @@ describe('CartProExtras', () => {
 
       const order: OrderProExtras = cart.prepareOrder();
 
-      expect(order).toEqual(ORDER_CART_EXTRAS_PRO);
+      expect(order.id).toEqual(ORDER_CART_EXTRAS_PRO.id);
     });
   });
 });

@@ -30,12 +30,14 @@ export class CreditCardModalComponent implements OnInit {
               private eventService: EventService) { }
 
   ngOnInit() {
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
-    if (this.isStripe) {
-      this.eventService.subscribe('paymentResponse', (response) => {
-        this.managePaymentResponse(response);
-      });
-    }
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+      if (this.isStripe) {
+        this.eventService.subscribe('paymentResponse', (response) => {
+          this.managePaymentResponse(response);
+        });
+      }
+    });
   }
 
   public checkout (orderId: string) {

@@ -53,7 +53,9 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+    });
     
     if (this.isStripe) {
       this.eventService.subscribe('paymentResponse', (response) => {
