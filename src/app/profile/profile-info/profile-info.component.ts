@@ -127,7 +127,8 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
                 longitude: profileFormLocation.longitude,
                 name: profileFormLocation.address
               };
-              this.userService.updateLocation(newLocation).subscribe(() => {
+              this.userService.updateLocation(newLocation).subscribe(newUserLocation => {
+                this.userService.user.location = newUserLocation;
                 this.userService.updateSearchLocationCookies(newLocation);
               });
           }
