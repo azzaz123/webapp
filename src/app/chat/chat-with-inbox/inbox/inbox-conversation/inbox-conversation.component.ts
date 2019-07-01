@@ -28,4 +28,8 @@ export class InboxConversationComponent {
     }
     return false;
   }
+
+  public userIsAvailable(): boolean {
+    return this.conversation.user.available;
+  }
 }

@@ -1,5 +1,6 @@
 <div [ngClass]="{'faded': conversation.cannotChat}">
-  <tsl-item-avatar [item]="conversation?.item"></tsl-item-avatar>
+
+  <tsl-item-avatar [item]="conversation?.item" [showAvailableStatus]="userIsAvailable()"></tsl-item-avatar>
   <div class="conversation-info" *ngIf="conversation">
     <div class="user-name-row" [ngClass]="{'has-phone': true}">
       <div class="user-name-row-left">
