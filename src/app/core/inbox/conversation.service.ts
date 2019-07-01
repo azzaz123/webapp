@@ -320,7 +320,7 @@ export class ConversationService {
           userImage, null, userResponse.scoringStars,
           {longitude: userResponse.approximated_longitude, latitude: userResponse.approximated_latitude });
         const inboxItem = new InboxItem(itemResponse.id, {currency: itemResponse.currencyCode, amount: itemResponse.salePrice },
-          itemResponse.title, itemResponse.mainImage, `${environment.siteUrl}user/${itemResponse.webSlug}`,
+          itemResponse.title, itemResponse.mainImage, `${environment.siteUrl}item/${itemResponse.webSlug}`,
           'undefined', false);
         return new InboxConversation(response.conversation_id, new Date(),
         inboxUser, inboxItem, null, [], false, 0, null);
