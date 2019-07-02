@@ -28,8 +28,4 @@ export class ArchivedInboxConversationComponent {
     }
     return false;
   }
-
-  public userIsAvailable(): boolean {
-    return this.conversation.user.available;
-  }
 }
