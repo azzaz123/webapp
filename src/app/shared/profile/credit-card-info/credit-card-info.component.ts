@@ -26,7 +26,9 @@ export class CreditCardInfoComponent implements OnInit {
               private i18n: I18nService) { }
 
   ngOnInit() {
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+    });
   }
 
   deleteCreditCard() {

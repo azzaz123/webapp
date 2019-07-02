@@ -100,9 +100,9 @@ describe('WallacoinsComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-          isPaymentMethodStripe() {
-            return false;
-          }
+            isPaymentMethodStripe$() {
+              return Observable.of(true);
+            }
         }
         },
       ],
@@ -163,6 +163,23 @@ describe('WallacoinsComponent', () => {
       component.ngOnInit();
 
       expect(component['openTutorialModal']).toHaveBeenCalled();
+    });
+
+    it('should call stripeService.isPaymentMethodStripe$', () => {
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
+    });
+
+    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
+      const expectedValue = true;
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+
+      component.ngOnInit();
+
+      expect(component.isStripe).toBe(expectedValue);
     });
   });
 

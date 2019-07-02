@@ -84,7 +84,9 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+    });
     this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
       if (motorPlan) {
         const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');

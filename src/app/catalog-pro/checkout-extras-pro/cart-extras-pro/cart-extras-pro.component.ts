@@ -50,7 +50,9 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
               private eventService: EventService) { }
 
   ngOnInit() {
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+    });
     this.cartService.createInstance(new CartProExtras());
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;

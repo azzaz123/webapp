@@ -48,18 +48,18 @@ describe('CreditCardInfoComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-          isPaymentMethodStripe() {
-            return true
-          },
-          deleteCard() {
-            return Observable.of({})
-          }
+            isPaymentMethodStripe$() {
+              return Observable.of(true);
+            },
+            deleteCard() {
+              return Observable.of({})
+            }
         }
         },
         {
           provide: ToastrService, useValue: {
-          error() {
-          }
+            error() {
+            }
         }
         },
       ],
@@ -79,10 +79,21 @@ describe('CreditCardInfoComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should get if Stripe is used', () => {
+    it('should call stripeService.isPaymentMethodStripe$', () => {
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
+
       component.ngOnInit();
 
-      expect(component.isStripe).toBe(true);
+      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
+    });
+
+    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
+      const expectedValue = true;
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+
+      component.ngOnInit();
+
+      expect(component.isStripe).toBe(expectedValue);
     });
   });
 

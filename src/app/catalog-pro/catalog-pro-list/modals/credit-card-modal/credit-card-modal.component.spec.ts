@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { I18nService } from '../../../../core/i18n/i18n.service';
 import { UUID } from 'angular2-uuid/index';
+import { Observable } from 'rxjs';
 
 describe('CreditCardModalComponent', () => {
   let component: CreditCardModalComponent;
@@ -40,10 +41,10 @@ describe('CreditCardModalComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-          isPaymentMethodStripe() {
-            return true;
-          },
-          buy() {},
+            isPaymentMethodStripe$() {
+              return Observable.of(false);
+            },
+            buy() {},
         }
         },
         {
@@ -77,18 +78,23 @@ describe('CreditCardModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('OnInit', () => {
-    it('should call isStripe service', async (() => {
-      spyOn(stripeService, 'isPaymentMethodStripe');
+    it('should call stripeService.isPaymentMethodStripe$', () => {
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
 
       component.ngOnInit();
 
-      expect(stripeService.isPaymentMethodStripe).toHaveBeenCalled();
-    }));
+      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
+    });
+
+    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
+      const expectedValue = true;
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+
+      component.ngOnInit();
+
+      expect(component.isStripe).toBe(expectedValue);
+    });
   });
   
   describe('hasStripeCard', () => {

@@ -33,7 +33,7 @@ export class CartComponent implements OnInit, OnDestroy {
   public cardType = 'old';
   public loading: boolean;
   public card: any;
-  public isStripe: boolean;
+  public isStripe = false;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
@@ -53,13 +53,14 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
-    
-    if (this.isStripe) {
-      this.eventService.subscribe('paymentResponse', (response) => {
-        this.managePaymentResponse(response);
-      }); 
-    }
+    this.stripeService.isPaymentMethodStripe$().subscribe(isStripe => {
+      this.isStripe = isStripe;
+      if (this.isStripe) {
+        this.eventService.subscribe('paymentResponse', (response) => {
+          this.managePaymentResponse(response);
+        });
+      }
+    });
   }
 
   ngOnDestroy() {

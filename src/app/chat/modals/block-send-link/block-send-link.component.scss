@@ -1,0 +1,23 @@
+@import "~style/common";
+
+.modal-body {
+  p {
+    font-size: $font-size-ll;
+
+    &.error-message {
+      color: $brand-danger;
+    }
+
+    &.info-message {
+      color: $color-grey-lighter;
+    }
+  }
+}
+
+.modal-footer {
+  justify-content: center;
+
+  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.btn-gray):not(.custom-radio) {
+    color: $color-grey-lighter
+  }
+}
