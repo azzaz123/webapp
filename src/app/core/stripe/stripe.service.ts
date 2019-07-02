@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
 import { FeatureflagService } from '../user/featureflag.service';
-import { environment } from '../../../environments/environment.docker';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class StripeService {
