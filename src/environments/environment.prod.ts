@@ -9,5 +9,5 @@ export const environment: any = {
   appboy: '47b54d36-7a86-4c05-9bfc-2d7b8aadd1ce',
   taplytics: 'fc538b9af5eb4ce8b714ae26f3ae15cf',
   clickStreamURL: 'https://collector.wallapop.com/clickstream.json/sendEvents',
-  stripeKey: 'pk_test_YMrctQusG3vLNQkCSRYKdqwF'
+  stripeKey: 'pk_live_qTxprCtXsKPFKRnDs2OvVIeR'
 };

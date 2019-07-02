@@ -40,6 +40,7 @@ import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface
 import { InboxService } from './core/inbox/inbox.service';
 import { createInboxConversationsArray } from '../tests/inbox.fixtures.spec';
 import { SplitTestService } from './core/tracking/split-test.service';
+import { StripeService } from './core/stripe/stripe.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -60,6 +61,7 @@ let modalService: NgbModal;
 let connectionService: ConnectionService;
 let paymentService: PaymentService;
 let splitTestService: SplitTestService;
+let stripeService: StripeService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -213,6 +215,11 @@ describe('App', () => {
             }
         }
         },
+        {
+          provide: StripeService, useValue: {
+            init() {}
+          }
+        },
         ...
           TEST_HTTP_PROVIDERS
       ],
@@ -237,6 +244,7 @@ describe('App', () => {
     connectionService = TestBed.get(ConnectionService);
     paymentService = TestBed.get(PaymentService);
     splitTestService = TestBed.get(SplitTestService);
+    stripeService = TestBed.get(StripeService);
     spyOn(notificationService, 'init');
   });
 
@@ -672,6 +680,14 @@ describe('App', () => {
         email: MOCK_FULL_USER.email,
         gender: MOCK_FULL_USER.gender
       });
+    });
+  });
+
+  describe('Stripe', () => {
+    it('should call initialize Stripe library', () => {
+      spyOn(stripeService, 'init');
+      component.ngOnInit();
+      expect(stripeService.init).toHaveBeenCalledTimes(1);
     });
   });
 
