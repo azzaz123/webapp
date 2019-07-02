@@ -65,7 +65,7 @@ let stripeService: StripeService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
-fdescribe('App', () => {
+describe('App', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
