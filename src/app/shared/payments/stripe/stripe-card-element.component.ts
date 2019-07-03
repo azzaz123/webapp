@@ -79,7 +79,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   }
 
   private initStripe() {
-    const elements = stripe.elements({
+    const elements = this.stripeService.lib.elements({
       locale: this.i18n.locale
     });
 
@@ -108,7 +108,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   }
 
   public async onSubmit() {
-    const { token, error } = await stripe.createToken(this.card);
+    const { token, error } = await this.stripeService.createToken(this.card);
 
     if (error) {
       console.warn('Error:', error);

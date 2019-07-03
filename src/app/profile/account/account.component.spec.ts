@@ -68,9 +68,9 @@ describe('AccountComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-          isPaymentMethodStripe() {
-            return true
-          }
+            isPaymentMethodStripe$() {
+              return Observable.of(true);
+            }
         }
         }
       ],
@@ -101,6 +101,23 @@ describe('AccountComponent', () => {
     it('should set profileForm with user data', () => {
       expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
+    });
+
+    it('should call stripeService.isPaymentMethodStripe$', () => {
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
+    });
+
+    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
+      const expectedValue = true;
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+
+      component.ngOnInit();
+
+      expect(component.isStripe).toBe(expectedValue);
     });
   });
 
@@ -141,7 +158,7 @@ describe('AccountComponent', () => {
       });
 
       it('should set isStripe to PAYMENT_PROVIDER_STRIPE value (false)', () => {
-        spyOn(stripeService, 'isPaymentMethodStripe').and.returnValue(false);
+        spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(false));
 
         component.ngOnInit();
 

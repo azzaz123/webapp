@@ -114,8 +114,8 @@ describe('CatalogProListComponent', () => {
             show() {
               return Observable.of({});
             },
-          i18nError() {
-          }
+            i18nError() {
+            }
           }
         },
         {
@@ -143,9 +143,9 @@ describe('CatalogProListComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-          isPaymentMethodStripe() {
-            return true;
-          }
+            isPaymentMethodStripe$() {
+              return Observable.of(true);
+            }
         }
         },
       ],
@@ -165,6 +165,7 @@ describe('CatalogProListComponent', () => {
     route = TestBed.get(ActivatedRoute);
     errorService = TestBed.get(ErrorsService);
     paymentService = TestBed.get(PaymentService);
+    stripeService = TestBed.get(StripeService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemServiceSpy = spyOn(itemService, 'mines').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -332,10 +333,21 @@ describe('CatalogProListComponent', () => {
       expect(errorService.i18nError).toHaveBeenCalledWith('alreadyFeatured');
     }));
 
-    describe('check isStripe payment method', () => {
-      it('should set isStripe to true', () => {
-        expect(component.isStripe).toBe(true);
-      });
+    it('should call stripeService.isPaymentMethodStripe$', () => {
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
+    });
+
+    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
+      const expectedValue = true;
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+
+      component.ngOnInit();
+
+      expect(component.isStripe).toBe(expectedValue);
     });
   });
 

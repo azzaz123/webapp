@@ -23,3 +23,4 @@ declare let Adomik: any;
 declare let stripe: any;
 declare let elements: any;
 declare let paymentIntent: any;
+declare let Stripe: any;

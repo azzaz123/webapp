@@ -14,6 +14,7 @@ import { PAYMENT_METHOD_CARD_RESPONSE, PAYMENT_METHOD_DATA } from '../../../test
 import { ResponseOptions, Response } from '@angular/http';
 import { createFinancialCardFixture } from '../../../tests/stripe.fixtures.spec';
 import { PaymentIntent } from './stripe.interface';
+import { FeatureflagService } from '../user/featureflag.service';
 
 
 describe('StripeService', () => {
@@ -23,6 +24,7 @@ describe('StripeService', () => {
   let eventService: EventService;
   let paymentService: PaymentService;
   let userService: UserService;
+  let featureflagService: FeatureflagService;
   let router: Router;
   const routerEvents: Subject<any> = new Subject();
 
@@ -67,6 +69,12 @@ describe('StripeService', () => {
             })
           }
         }
+        },
+        { provide: FeatureflagService, useValue: {
+          getFlag() {
+            return Observable.of(false);
+          }
+        }
         }
       ]
     });
@@ -75,6 +83,7 @@ describe('StripeService', () => {
     eventService = TestBed.get(EventService);
     paymentService = TestBed.get(PaymentService);
     userService = TestBed.get(UserService);
+    featureflagService = TestBed.get(FeatureflagService);
     router = TestBed.get(Router);
   });
 
@@ -98,18 +107,12 @@ describe('StripeService', () => {
   });
 
   describe('isPaymentMethodStripe', () => {
-    it('should set stripe to true if PAYMENT_PROVIDER_STRIPE is true', () => {
-      service.PAYMENT_PROVIDER_STRIPE = true;
-      const isStripe = service.isPaymentMethodStripe();
+    it('should call featureflagService.getFlag when called', () => {
+      spyOn(featureflagService, 'getFlag');
 
-      expect(isStripe).toBe(true);
-    });
+      service.isPaymentMethodStripe$();
 
-    it('should set stripe to false if PAYMENT_PROVIDER_STRIPE is false', () => {
-      service.PAYMENT_PROVIDER_STRIPE = false;
-      const isStripe = service.isPaymentMethodStripe();
-
-      expect(isStripe).toBe(false);
+      expect(featureflagService.getFlag).toHaveBeenCalledWith('web_stripe');
     });
   });
 

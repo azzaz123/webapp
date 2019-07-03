@@ -11,9 +11,14 @@ import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
+import { FeatureflagService } from '../user/featureflag.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class StripeService {
+
+  public lib: any;
+  public elements: any;
 
   public fullName: string;
   public PAYMENT_PROVIDER_STRIPE = false;
@@ -24,10 +29,18 @@ export class StripeService {
               private userService: UserService,
               private router: Router,
               private eventService: EventService,
-              private http: HttpService) {
+              private http: HttpService,
+              private featureflagService: FeatureflagService) {
     this.userService.me().subscribe((user: User) => {
       this.fullName = `${user.firstName} ${user.lastName}`
     });
+  }
+
+  public init() {
+    this.lib = Stripe(environment.stripeKey, {
+      betas: ['payment_intent_beta_3']
+    });
+    this.elements = this.lib.elements();
   }
 
   public buy(orderId: string, paymentId: string, isStripeCard: boolean, isSaved: boolean, card: any): void {
@@ -52,8 +65,8 @@ export class StripeService {
     }
   }
 
-  public isPaymentMethodStripe(): boolean {
-    return this.PAYMENT_PROVIDER_STRIPE;
+  public isPaymentMethodStripe$(): Observable<boolean> {
+    return this.featureflagService.getFlag('web_stripe');
   }
 
   public getCards(): Observable<FinancialCard[]> {
@@ -80,7 +93,7 @@ export class StripeService {
     });
   }
 
-  createStripePaymentMethod = async (cardElement: any) => await stripe.createPaymentMethod('card', cardElement);
+  createStripePaymentMethod = async (cardElement: any) => await this.lib.createPaymentMethod('card', cardElement);
 
   handlePayment = (paymentResponse)  => {
     const { paymentIntent, error } = paymentResponse;
@@ -95,7 +108,7 @@ export class StripeService {
   };
 
   payment = async (token, card) => {
-    return await stripe.handleCardPayment(
+    return await this.lib.handleCardPayment(
       token,
       card,
       {
@@ -107,7 +120,7 @@ export class StripeService {
     );
   };
 
-  savedPayment = async (token) => await stripe.handleCardPayment(token);
+  savedPayment = async (token) => await this.lib.handleCardPayment(token);
 
   public mapResponse(res: PaymentMethodResponse): FinancialCard {
       return new FinancialCard(
@@ -140,6 +153,10 @@ export class StripeService {
         }
       );
     });
+  }
+
+  public createToken(param: any) {
+    return this.lib.createToken(param);
   }
 
 }

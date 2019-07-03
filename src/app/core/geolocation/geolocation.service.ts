@@ -25,7 +25,7 @@ export class GeolocationService {
     const params: any =  {
       placeId: placeId,
     };
-    return this.http.getNoBase(environment.siteUrl + '/maps/here/place', params)
+    return this.http.getNoBase(environment.siteUrl + 'maps/here/place', params)
       .map(res => res.json())
       .map((res: any) => {
         return {
