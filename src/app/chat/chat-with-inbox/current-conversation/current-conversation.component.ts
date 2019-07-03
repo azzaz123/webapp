@@ -141,16 +141,20 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   public blockUserAction() {
     this.modalService.open(BlockUserComponent).result.then(() => {
-      this.blockUserXmppService.blockUser(this.currentConversation.user).subscribe(() => {
-        this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
+      this.blockUserService.blockUser(this.currentConversation.user.id).subscribe(() => {
+        this.blockUserXmppService.blockUser(this.currentConversation.user).subscribe(() => {
+          this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
+        });
       });
     });
   }
 
   public unblockUserAction() {
     this.modalService.open(UnblockUserComponent).result.then(() => {
-      this.blockUserXmppService.unblockUser(this.currentConversation.user).subscribe(() => {
-        this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
+      this.blockUserService.unblockUser(this.currentConversation.user.id).subscribe(() => {
+        this.blockUserXmppService.unblockUser(this.currentConversation.user).subscribe(() => {
+          this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
+        });
       });
     });
   }

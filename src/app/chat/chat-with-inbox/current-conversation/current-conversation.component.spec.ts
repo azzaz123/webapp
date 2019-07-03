@@ -22,6 +22,7 @@ import { ITEM_ID } from '../../../../tests/item.fixtures.spec';
 import { BlockUserXmppService } from '../../../core/conversation/block-user-xmpp.service';
 import { ConversationService } from '../../../core/inbox/conversation.service';
 import { User } from '../../../core/user/user';
+import { BlockUserService } from '../../../core/conversation/block-user.service';
 
 class MockUserService {
 
@@ -56,6 +57,17 @@ class MockConversationService {
   public loadMoreMessages() {}
 }
 
+class BlockUserServiceMock {
+
+  blockUser(userHash: string) {
+    return Observable.of();
+  }
+
+  unblockUser(userHash: string) {
+    return Observable.of();
+  }
+}
+
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
   let fixture: ComponentFixture<CurrentConversationComponent>;
@@ -66,7 +78,8 @@ describe('CurrentConversationComponent', () => {
   let userService: UserService;
   let trackingService: TrackingService;
   let modalService: NgbModal;
-  let blockService: BlockUserXmppService;
+  let blockUserService: BlockUserService;
+  let blockUserXmppService: BlockUserXmppService;
   let conversationService: ConversationService;
 
   beforeEach(() => {
@@ -81,6 +94,7 @@ describe('CurrentConversationComponent', () => {
         { provide: UserService, useClass: MockUserService },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: ConversationService, useClass: MockConversationService },
+        { provide: BlockUserService, useClass: BlockUserServiceMock },
         I18nService,
         {
           provide: BlockUserXmppService, useValue: {
@@ -102,7 +116,8 @@ describe('CurrentConversationComponent', () => {
     itemService = TestBed.get(ItemService);
     toastr = TestBed.get(ToastrService);
     modalService = TestBed.get(NgbModal);
-    blockService = TestBed.get(BlockUserXmppService);
+    blockUserService = TestBed.get(BlockUserService);
+    blockUserXmppService = TestBed.get(BlockUserXmppService);
     conversationService = TestBed.get(ConversationService);
   });
 
@@ -329,13 +344,14 @@ describe('CurrentConversationComponent', () => {
 
     it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
-      spyOn(blockService, 'blockUser').and.returnValue(Observable.of({}));
       spyOn(toastr, 'success').and.callThrough();
+      spyOn(blockUserService, 'blockUser').and.returnValue(Observable.of({}));
+      spyOn(blockUserXmppService, 'blockUser').and.returnValue(Observable.of({}));
 
       component.blockUserAction();
       tick();
 
-      expect(blockService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
+      expect(blockUserXmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been blocked');
     }));
   });
@@ -349,13 +365,14 @@ describe('CurrentConversationComponent', () => {
 
     it('should close the modal, call unblockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
-      spyOn(blockService, 'unblockUser').and.returnValue(Observable.of({}));
+      spyOn(blockUserXmppService, 'unblockUser').and.returnValue(Observable.of({}));
+      spyOn(blockUserService, 'unblockUser').and.returnValue(Observable.of({}));
       spyOn(toastr, 'success').and.callThrough();
 
       component.unblockUserAction();
       tick();
 
-      expect(blockService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
+      expect(blockUserXmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been unblocked');
     }));
   });
