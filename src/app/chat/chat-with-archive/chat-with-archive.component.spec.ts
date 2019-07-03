@@ -22,7 +22,7 @@ import { Item } from '../../core/item/item';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
 import { MOCK_CONVERSATION, SURVEY_RESPONSES } from '../../../tests/conversation.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { BlockUserXmppService } from '../../core/conversation/block-user-xmpp.service';
+import { BlockUserXmppService } from '../../core/conversation/block-user';
 import { environment } from '../../../environments/environment';
 
 class MockConversationService {

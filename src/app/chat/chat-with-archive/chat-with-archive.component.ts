@@ -15,7 +15,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { UserService } from '../../core/user/user.service';
 import { EventService } from '../../core/event/event.service';
 import { PersistencyService } from '../../core/persistency/persistency.service';
-import { BlockUserXmppService } from '../../core/conversation/block-user-xmpp.service';
+import { BlockUserXmppService } from '../../core/conversation/block-user';
 
 @Component({
   selector: 'tsl-chat-with-archive',

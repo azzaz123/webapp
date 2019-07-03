@@ -14,7 +14,7 @@ import { CallTotals } from './totals.interface';
 import { CallResponse } from './call-response.interface';
 import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
-import { BlockUserXmppService } from './block-user-xmpp.service';
+import { BlockUserXmppService } from './block-user';
 
 @Injectable()
 export class CallsService extends LeadService {

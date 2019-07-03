@@ -21,7 +21,7 @@ import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/con
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
-import { BlockUserXmppService } from './block-user-xmpp.service';
+import { BlockUserXmppService } from './block-user';
 
 @Injectable()
 export class MockService extends LeadService {

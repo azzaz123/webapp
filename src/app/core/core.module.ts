@@ -25,12 +25,12 @@ import { PushNotificationsModule } from 'ng-push';
 import { ReviewService } from './review/review.service';
 import { ConnectionService } from './connection/connection.service';
 import { RealTimeService } from './message/real-time.service';
-import { BlockUserXmppService } from './conversation/block-user-xmpp.service';
+import { BlockUserXmppService } from './conversation/block-user';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
 import { InboxService } from './inbox/inbox.service';
 import { StripeService } from './stripe/stripe.service';
-import { BlockUserService } from './conversation/block-user.service';
+import { BlockUserService } from './conversation/block-user';
 
 @NgModule({
   imports: [

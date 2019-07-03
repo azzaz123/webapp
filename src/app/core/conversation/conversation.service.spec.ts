@@ -46,7 +46,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 import { RealTimeService } from '../message/real-time.service';
-import { BlockUserXmppService } from './block-user-xmpp.service';
+import { BlockUserXmppService } from './block-user';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 
 let service: ConversationService;

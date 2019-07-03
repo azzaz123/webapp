@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { BlockUserService } from './block-user.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 
 describe('BlockUserService', () => {
   beforeEach(() => TestBed.configureTestingModule({

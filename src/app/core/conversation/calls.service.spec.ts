@@ -21,7 +21,7 @@ import { Conversation } from './conversation';
 import { createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { CallTotals } from './totals.interface';
 import { ConnectionService } from '../connection/connection.service';
-import { BlockUserXmppService } from './block-user-xmpp.service';
+import { BlockUserXmppService } from './block-user';
 import { RealTimeService } from '../message/real-time.service';
 
 let service: CallsService;
