@@ -36,7 +36,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     private trackingService: TrackingService,
     private userService: UserService,
     private itemService: ItemService,
-    private blockService: BlockUserXmppService,
+    private blockUserXmppService: BlockUserXmppService,
     private i18n: I18nService,
     private realTime: RealTimeService,
     private conversationService: ConversationService) {
@@ -139,7 +139,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   public blockUserAction() {
     this.modalService.open(BlockUserComponent).result.then(() => {
-      this.blockService.blockUser(this.currentConversation.user).subscribe(() => {
+      this.blockUserXmppService.blockUser(this.currentConversation.user).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
       });
     });
@@ -147,7 +147,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   public unblockUserAction() {
     this.modalService.open(UnblockUserComponent).result.then(() => {
-      this.blockService.unblockUser(this.currentConversation.user).subscribe(() => {
+      this.blockUserXmppService.unblockUser(this.currentConversation.user).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
       });
     });
