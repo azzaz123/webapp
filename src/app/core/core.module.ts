@@ -30,6 +30,7 @@ import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
 import { InboxService } from './inbox/inbox.service';
 import { StripeService } from './stripe/stripe.service';
+import { BlockUserService } from './conversation/block-user.service';
 
 @NgModule({
   imports: [
@@ -73,6 +74,7 @@ export class CoreModule {
         XmppService,
         RealTimeService,
         InboxService,
+        BlockUserService,
         BlockUserXmppService,
         ReviewService,
         AdService,

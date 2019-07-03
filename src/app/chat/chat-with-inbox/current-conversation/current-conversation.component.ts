@@ -18,6 +18,7 @@ import { UnblockUserComponent } from '../../modals/unblock-user/unblock-user.com
 import { ConversationService } from '../../../core/inbox/conversation.service';
 import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conversation/archive-inbox-conversation.component';
 import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component';
+import { BlockUserService } from '../../../core/conversation/block-user.service';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -36,6 +37,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     private trackingService: TrackingService,
     private userService: UserService,
     private itemService: ItemService,
+    private blockUserService: BlockUserService,
     private blockUserXmppService: BlockUserXmppService,
     private i18n: I18nService,
     private realTime: RealTimeService,
