@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="messages-panel-container" #messagesPanel>
             <div class="messages-info-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}" #messagesInfoContainer>
                 <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-container">
@@ -65,8 +65,8 @@
         </div>
         <tsl-input [currentConversation]="currentConversation"></tsl-input>
     </div>
-    
-    
+
+
     <div id="conversation-meta">
             <tsl-inbox-user-detail [user]="currentConversation.user"></tsl-inbox-user-detail>
             <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
