@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
 
 @Injectable()
-export class BlockUserService {
+export class BlockUserXmppService {
 
   constructor(private xmpp: XmppService) { }
 

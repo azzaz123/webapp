@@ -15,7 +15,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { UserService } from '../../core/user/user.service';
 import { EventService } from '../../core/event/event.service';
 import { PersistencyService } from '../../core/persistency/persistency.service';
-import { BlockUserService } from '../../core/conversation/block-user.service';
+import { BlockUserXmppService } from '../../core/conversation/block-user-xmpp.service';
 
 @Component({
   selector: 'tsl-chat-with-archive',
@@ -41,7 +41,7 @@ export class ChatWithArchiveComponent implements OnInit, OnDestroy {
               private i18n: I18nService,
               public userService: UserService,
               private eventService: EventService,
-              public blockService: BlockUserService,
+              public blockService: BlockUserXmppService,
               private persistencyService: PersistencyService,
               private adService: AdService,
               @Inject('SUBDOMAIN') private subdomain: string) {

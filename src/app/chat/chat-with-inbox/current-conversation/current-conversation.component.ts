@@ -13,7 +13,7 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { ReportListingComponent } from '../../modals/report-listing/report-listing.component';
 import { ItemService } from '../../../core/item/item.service';
 import { BlockUserComponent } from '../../modals/block-user/block-user.component';
-import { BlockUserService } from '../../../core/conversation/block-user.service';
+import { BlockUserXmppService } from '../../../core/conversation/block-user-xmpp.service';
 import { UnblockUserComponent } from '../../modals/unblock-user/unblock-user.component';
 import { ConversationService } from '../../../core/inbox/conversation.service';
 import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conversation/archive-inbox-conversation.component';
@@ -36,7 +36,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     private trackingService: TrackingService,
     private userService: UserService,
     private itemService: ItemService,
-    private blockService: BlockUserService,
+    private blockService: BlockUserXmppService,
     private i18n: I18nService,
     private realTime: RealTimeService,
     private conversationService: ConversationService) {

@@ -19,7 +19,7 @@ import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec'
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ITEM_ID } from '../../../../tests/item.fixtures.spec';
-import { BlockUserService } from '../../../core/conversation/block-user.service';
+import { BlockUserXmppService } from '../../../core/conversation/block-user-xmpp.service';
 import { ConversationService } from '../../../core/inbox/conversation.service';
 import { User } from '../../../core/user/user';
 
@@ -66,7 +66,7 @@ describe('CurrentConversationComponent', () => {
   let userService: UserService;
   let trackingService: TrackingService;
   let modalService: NgbModal;
-  let blockService: BlockUserService;
+  let blockService: BlockUserXmppService;
   let conversationService: ConversationService;
 
   beforeEach(() => {
@@ -83,7 +83,7 @@ describe('CurrentConversationComponent', () => {
         { provide: ConversationService, useClass: MockConversationService },
         I18nService,
         {
-          provide: BlockUserService, useValue: {
+          provide: BlockUserXmppService, useValue: {
             blockUser() {
             },
             unblockUser() {
@@ -102,7 +102,7 @@ describe('CurrentConversationComponent', () => {
     itemService = TestBed.get(ItemService);
     toastr = TestBed.get(ToastrService);
     modalService = TestBed.get(NgbModal);
-    blockService = TestBed.get(BlockUserService);
+    blockService = TestBed.get(BlockUserXmppService);
     conversationService = TestBed.get(ConversationService);
   });
 

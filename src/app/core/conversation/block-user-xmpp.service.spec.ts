@@ -1,6 +1,6 @@
 import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 
-import { BlockUserService } from './block-user.service';
+import { BlockUserXmppService } from './block-user-xmpp.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
@@ -9,21 +9,21 @@ import { TrackingService } from '../tracking/tracking.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { Observable } from 'rxjs';
 
-let service: BlockUserService;
+let service: BlockUserXmppService;
 let xmppService: XmppService;
 
-describe('BlockUserService', () => {
+describe('BlockUserXmppService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        BlockUserService,
+        BlockUserXmppService,
         XmppService,
         EventService,
         {provide: PersistencyService, useClass: MockedPersistencyService},
         {provide: TrackingService, useValue: {}}
       ]
     });
-    service = TestBed.get(BlockUserService);
+    service = TestBed.get(BlockUserXmppService);
     xmppService = TestBed.get(XmppService);
   });
 

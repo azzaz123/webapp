@@ -25,7 +25,7 @@ import { PushNotificationsModule } from 'ng-push';
 import { ReviewService } from './review/review.service';
 import { ConnectionService } from './connection/connection.service';
 import { RealTimeService } from './message/real-time.service';
-import { BlockUserService } from './conversation/block-user.service';
+import { BlockUserXmppService } from './conversation/block-user-xmpp.service';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
 import { InboxService } from './inbox/inbox.service';
@@ -73,7 +73,7 @@ export class CoreModule {
         XmppService,
         RealTimeService,
         InboxService,
-        BlockUserService,
+        BlockUserXmppService,
         ReviewService,
         AdService,
         ConnectionService,
