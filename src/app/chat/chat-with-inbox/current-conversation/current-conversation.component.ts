@@ -1,23 +1,23 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { InboxMessage } from '../message/inbox-message';
-import { InboxConversation } from '../inbox/inbox-conversation/inbox-conversation';
+import { InboxMessage } from '../message';
+import { InboxConversation } from '../inbox';
 import { EventService } from '../../../core/event/event.service';
 import { RealTimeService } from '../../../core/message/real-time.service';
 import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { TrackingService } from '../../../core/tracking/tracking.service';
-import { ReportUserComponent } from '../../modals/report-user/report-user.component';
+import { ReportUserComponent } from '../../modals/report-user';
 import { UserService } from '../../../core/user/user.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
-import { ReportListingComponent } from '../../modals/report-listing/report-listing.component';
+import { ReportListingComponent } from '../../modals/report-listing';
 import { ItemService } from '../../../core/item/item.service';
-import { BlockUserComponent } from '../../modals/block-user/block-user.component';
+import { BlockUserComponent } from '../../modals/block-user';
 import { BlockUserXmppService } from '../../../core/conversation/block-user';
-import { UnblockUserComponent } from '../../modals/unblock-user/unblock-user.component';
+import { UnblockUserComponent } from '../../modals/unblock-user';
 import { ConversationService } from '../../../core/inbox/conversation.service';
-import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conversation/archive-inbox-conversation.component';
-import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component';
+import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conversation';
+import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-conversation';
 import { BlockUserService } from '../../../core/conversation/block-user';
 
 @Component({
