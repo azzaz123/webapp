@@ -4,12 +4,12 @@ import { CurrentConversationComponent } from './current-conversation.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
-import { InboxMessage } from '../message/inbox-message';
+import { InboxMessage } from '../message';
 import { USER_ID } from '../../../../tests/user.fixtures.spec';
 import { messageStatus } from '../../../core/message/message';
 import { RealTimeService } from '../../../core/message/real-time.service';
 import { EventService } from '../../../core/event/event.service';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { ItemService } from '../../../core/item/item.service';
 import { UserService } from '../../../core/user/user.service';
@@ -335,7 +335,7 @@ describe('CurrentConversationComponent', () => {
     });
   });
 
-  describe('blockUserAction', () => {
+  describe('blockUserAction if backend return 200', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve()
@@ -351,12 +351,35 @@ describe('CurrentConversationComponent', () => {
       component.blockUserAction();
       tick();
 
+      expect(blockUserService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
       expect(blockUserXmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been blocked');
     }));
   });
 
-  describe('unblockUserAction', () => {
+  describe('blockUserAction if backend return 400', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve()
+      });
+    });
+
+    it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
+      component.currentConversation = MOCK_CONVERSATION();
+      spyOn(blockUserService, 'blockUser').and.returnValue(throwError(400));
+      spyOn(blockUserXmppService, 'blockUser').and.returnValue(Observable.of({}));
+      spyOn(toastr, 'success').and.callThrough();
+
+      component.blockUserAction();
+      tick();
+
+      expect(blockUserService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(blockUserXmppService.blockUser).not.toHaveBeenCalled();
+      expect(toastr.success).not.toHaveBeenCalled();
+    }));
+  });
+
+  describe('unblockUserAction if backend return 200', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve()
@@ -372,8 +395,31 @@ describe('CurrentConversationComponent', () => {
       component.unblockUserAction();
       tick();
 
+      expect(blockUserService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
       expect(blockUserXmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been unblocked');
+    }));
+  });
+
+  describe('unblockUserAction if backend return 400', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve()
+      });
+    });
+
+    it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
+      component.currentConversation = MOCK_CONVERSATION();
+      spyOn(blockUserService, 'unblockUser').and.returnValue(throwError(400));
+      spyOn(blockUserXmppService, 'unblockUser').and.returnValue(Observable.of({}));
+      spyOn(toastr, 'success').and.callThrough();
+
+      component.unblockUserAction();
+      tick();
+
+      expect(blockUserService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(blockUserXmppService.unblockUser).not.toHaveBeenCalled();
+      expect(toastr.success).not.toHaveBeenCalled();
     }));
   });
 

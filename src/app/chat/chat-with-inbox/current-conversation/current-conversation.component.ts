@@ -145,6 +145,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         this.blockUserXmppService.blockUser(this.currentConversation.user).subscribe(() => {
           this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
         });
+      }, () => {
       });
     });
   }
@@ -155,6 +156,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         this.blockUserXmppService.unblockUser(this.currentConversation.user).subscribe(() => {
           this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
         });
+      }, () => {
       });
     });
   }
