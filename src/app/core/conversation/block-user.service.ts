@@ -12,10 +12,10 @@ export class BlockUserService {
   }
 
   public blockUser(userHash: string): Observable<any> {
-    return this.http.put('/api/v3/instant-messaging/privacy/users', { 'block_user_hashes': [userHash] });
+    return this.http.put('api/v3/instant-messaging/privacy/users', { 'block_user_hashes': [userHash] });
   }
 
   public unblockUser(userHash: string): Observable<any> {
-    return this.http.delete('/api/v3/instant-messaging/privacy/users', { body: { 'unblock_user_hashed': [userHash] } });
+    return this.http.delete('api/v3/instant-messaging/privacy/users', { body: { 'unblock_user_hashed': [userHash] } });
   }
 }
