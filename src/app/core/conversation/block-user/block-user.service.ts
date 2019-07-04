@@ -16,6 +16,6 @@ export class BlockUserService {
   }
 
   public unblockUser(userHash: string): Observable<any> {
-    return this.http.delete('api/v3/instant-messaging/privacy/users', { body: { 'unblock_user_hashed': [userHash] } });
+    return this.http.delete('api/v3/instant-messaging/privacy/user', { body: { 'unblock_user_hashes': [userHash] } });
   }
 }
