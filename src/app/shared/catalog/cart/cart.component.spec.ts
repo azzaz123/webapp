@@ -112,6 +112,9 @@ describe('CartComponent', () => {
           buy() {},
           isPaymentMethodStripe$() {
             return Observable.of(true);
+          },
+          getCards() {
+            return Observable.of(true);
           }
         }
         },
