@@ -302,6 +302,21 @@ describe('ProfileInfoComponent', () => {
       });
     });
 
+    describe('invalid phone number', () => {
+      it('should not call updateProInfo when phone number is not valid', () => {
+        spyOn(userService, 'updateProInfo').and.callThrough();
+        component.profileForm.get('phone_number').patchValue('invalid_number123');
+        component.onSubmit();
+        expect(userService.updateProInfo).not.toHaveBeenCalled();
+      });
+
+      it('should throw error toast when phone number is not valid', () => {
+        spyOn(errorsService, 'i18nError');
+        component.profileForm.get('phone_number').patchValue('invalid_number123');
+        component.onSubmit();
+        expect(errorsService.i18nError).toHaveBeenCalledWith('phoneNumberError');
+      });
+    });
   });
 
   describe('openBecomeProModal', () => {

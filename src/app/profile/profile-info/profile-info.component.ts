@@ -11,6 +11,7 @@ import { Image } from '../../core/user/user-response.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
+import { isValidNumber } from 'libphonenumber-js';
 
 export const competitorLinks = [
   'coches.net',
@@ -95,6 +96,15 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   }
 
   public onSubmit() {
+    const phoneNumberControl = this.profileForm.get('phone_number');
+    if (this.isPro && phoneNumberControl.value) {
+      if (!isValidNumber(phoneNumberControl.value, 'ES')) {
+        phoneNumberControl.setErrors({incorrect: true});
+        this.errorsService.i18nError('phoneNumberError');
+        return;
+      }
+    }
+
     const linkControl = this.profileForm.get('link');
     if (linkControl.value ) {
       competitorLinks.forEach(competitor  => {
@@ -107,6 +117,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
         return;
       }
     }
+
     if (this.profileForm.valid) {
       const profileFormLocation = this.profileForm.value.location;
       delete this.profileForm.value.location;
