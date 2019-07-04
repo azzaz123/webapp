@@ -23,7 +23,7 @@ export class StripeCardSelectionComponent implements OnInit {
 
   constructor(
     private stripeService: StripeService,
-    private i18nservice: I18nService
+    private i18nService: I18nService
   ) { }
 
   ngOnInit() {
@@ -33,7 +33,7 @@ export class StripeCardSelectionComponent implements OnInit {
     }, () => {
       this.hasStripeCard.emit(false);
     });
-    this.notFoundMsg = this.i18nservice.getTranslations('noResultsFound');
+    this.notFoundMsg = this.i18nService.getTranslations('noResultsFound');
   }
 
   private toSelectOptions(card: FinancialCard): FinancialCardOption {
