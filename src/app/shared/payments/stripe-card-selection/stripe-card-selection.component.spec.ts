@@ -8,6 +8,7 @@ import { StripeCardSelectionComponent } from './stripe-card-selection.component'
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { EventService } from '../../../core/event/event.service';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 describe('StripeCardSelectionComponent', () => {
   let component: StripeCardSelectionComponent;
@@ -21,6 +22,7 @@ describe('StripeCardSelectionComponent', () => {
       declarations: [ StripeCardSelectionComponent ],
       providers: [
         EventService,
+        I18nService,
         {
         provide: StripeService, useValue: {
           getCards() {

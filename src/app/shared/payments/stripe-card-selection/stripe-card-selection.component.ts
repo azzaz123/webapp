@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 import { FinancialCardOption } from '../../../core/payments/payment.interface';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-stripe-card-selection',
@@ -13,13 +14,17 @@ export class StripeCardSelectionComponent implements OnInit {
   private _model: boolean = false;
   public financialCards: FinancialCardOption[];
   public card: string = '';
+  private notFoundMsg = '';
   @Output() hasStripeCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onSelectExistingCard: EventEmitter<FinancialCardOption> = new EventEmitter<FinancialCardOption>();
 
   private onModelChange: any = () => {};
   private onTouched: any = () => {};
 
-  constructor(private stripeService: StripeService) { }
+  constructor(
+    private stripeService: StripeService,
+    private i18nservice: I18nService
+  ) { }
 
   ngOnInit() {
     this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
@@ -28,6 +33,7 @@ export class StripeCardSelectionComponent implements OnInit {
     }, () => {
       this.hasStripeCard.emit(false);
     });
+    this.notFoundMsg = this.i18nservice.getTranslations('noResultsFound');
   }
 
   private toSelectOptions(card: FinancialCard): FinancialCardOption {
