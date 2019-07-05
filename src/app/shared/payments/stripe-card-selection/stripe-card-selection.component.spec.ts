@@ -70,7 +70,9 @@ describe('StripeCardSelectionComponent', () => {
 
     it('should ask to i18nService for `noResultsFound` translation', () => {
       spyOn(i18nService, 'getTranslations').and.callThrough();
+
       component.ngOnInit();
+
       expect(i18nService.getTranslations).toHaveBeenCalledTimes(1);
       expect(i18nService.getTranslations).toHaveBeenCalledWith('noResultsFound');
     });

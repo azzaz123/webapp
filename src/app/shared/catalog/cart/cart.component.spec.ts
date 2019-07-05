@@ -176,7 +176,9 @@ describe('CartComponent', () => {
 
     it('should call addNewCard method when there are no Stripe cards', () => {
       spyOn(component, 'addNewCard').and.callThrough();
+
       component.ngOnInit();
+
       expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
   });
