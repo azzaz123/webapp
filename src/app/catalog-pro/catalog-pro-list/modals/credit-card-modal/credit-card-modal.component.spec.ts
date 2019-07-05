@@ -45,6 +45,9 @@ describe('CreditCardModalComponent', () => {
               return Observable.of(false);
             },
             buy() {},
+            getCards() {
+              return Observable.of([]);
+            }
         }
         },
         {
@@ -95,8 +98,17 @@ describe('CreditCardModalComponent', () => {
 
       expect(component.isStripe).toBe(expectedValue);
     });
+
+    it('should call addNewCard when Stripe and when no saved cards', () => {
+      spyOn(component, 'addNewCard');
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(true));
+
+      component.ngOnInit();
+
+      expect(component.addNewCard).toHaveBeenCalledTimes(1);
+    });
   });
-  
+
   describe('hasStripeCard', () => {
     it('should set if stripeCard is present', () => {
       component.hasStripeCard(true);

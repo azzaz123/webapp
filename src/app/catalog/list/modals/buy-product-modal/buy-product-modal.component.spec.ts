@@ -86,6 +86,9 @@ describe('BuyProductModalComponent', () => {
           buy() {},
           isPaymentMethodStripe$() {
             return Observable.of(true);
+          },
+          getCards() {
+            return Observable.of([]);
           }
         }
         },
@@ -165,6 +168,15 @@ describe('BuyProductModalComponent', () => {
         credit: 0,
         factor: 1
       });
+    });
+
+    it('should call addNewCard when Stripe and when no saved cards', () => {
+      spyOn(component, 'addNewCard');
+
+      component.isStripe = true;
+      component.ngOnInit();
+
+      expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
   });
 
