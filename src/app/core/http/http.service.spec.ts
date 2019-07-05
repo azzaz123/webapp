@@ -1030,16 +1030,16 @@ describe('Service: Http', () => {
     });
   });
 
-  describe('should add body to options', () => {
-    it('body should be empty if options has no configured body', () => {
-      const options = null;
-      expect(httpService.getOptions(options, 'url', 'GET').body).toEqual(null);
+  describe('should body', () => {
+    it('be empty', () => {
+      const options = httpService.getOptions(null, 'url', 'GET');
+      expect(options.body).toEqual(null);
     });
 
-    it('body should has body if options has body', () => {
+    it('has payload', () => {
       const payload = { payload: 'payload' };
-      const options = { body: payload };
-      expect(httpService.getOptions(options, 'url', 'GET').body).toEqual(payload);
+      const options = httpService.getOptions({ body: payload }, 'url', 'GET');
+      expect(options.body).toEqual(payload);
     });
   });
 });
