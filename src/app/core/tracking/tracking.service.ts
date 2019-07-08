@@ -942,7 +942,7 @@ export class TrackingService {
     delete newEvent.sessions[0].window;
     const stringifiedEvent: string = JSON.stringify(newEvent);
     const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
-    return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body);
+    return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body).subscribe();
   }
 
   private sendMultipleEvents(events: Array<TrackingEventData>) {
