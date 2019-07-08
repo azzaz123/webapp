@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { RealTimeService } from '../message/real-time.service';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation';
 import { EventService } from '../event/event.service';
-import { InboxMessage, messageStatus, statusOrder } from '../../chat/chat-with-inbox/message/inbox-message';
+import { InboxMessage, messageStatus, MessageType, statusOrder } from '../../chat/chat-with-inbox/message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { Message } from '../message/message';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
-import { Response, RequestOptions, Headers } from '@angular/http';
+import { Headers, RequestOptions, Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
-import { InboxUserPlaceholder, InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
-import { InboxItemPlaceholder, InboxItem } from '../../chat/chat-with-inbox/inbox/inbox-item';
+import { InboxUser, InboxItem } from '../../chat/chat-with-inbox/inbox';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -56,7 +55,7 @@ export class ConversationService {
     });
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
       const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
-        message.status, message.payload, message.phoneRequest);
+        message.status, MessageType.TEXT, message.payload, message.phoneRequest);
       this.processNewMessage(inboxMessage);
     });
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {

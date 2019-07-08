@@ -1,3 +1,10 @@
+export enum MessageType {
+  TEXT = 'text',
+  SECURITY_WARNING = 'security_warning',
+  PRICE_DROP = 'price_drop',
+  REVIEW = 'review',
+}
+
 export const messageStatus = {
     PENDING: 'pending',
     SENT: 'sent',
@@ -25,6 +32,7 @@ export class InboxMessage {
         private _fromSelf: boolean,
         private _date: Date,
         private _status: string,
+        private _type: MessageType,
         private _payload?: MessagePayload,
         private _phoneRequest?: string) { }
 
@@ -56,6 +64,10 @@ export class InboxMessage {
         this._status = value;
     }
 
+    get type(): MessageType {
+      return this._type;
+    }
+
     set from(value: string) {
         this._from = value;
     }
@@ -85,10 +97,15 @@ export class InboxMessage {
     }
 
     public static messsagesFromJson(json: any, conversationId: string, currentUserId: string, otherUserId: string): InboxMessage[] {
-        const textMessages = json.filter(m => m.type === 'text')
-            .map(m => new InboxMessage(m.id, conversationId, m.text,
+        const textMessages = json
+          // .filter(m => m.type === 'text')
+            .map((m) => {
+              // console.log(m.type);
+              return new InboxMessage(m.id, conversationId, m.text,
                 m.from_self ? currentUserId : otherUserId, m.from_self, new Date(m.timestamp),
-                m.status, m.payload));
+                m.status, m.type, m.payload);
+            } );
+
         return textMessages;
     }
 
