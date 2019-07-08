@@ -45,6 +45,17 @@ export class BuyProductModalComponent implements OnInit {
   ngOnInit() {
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = val;
+      if (this.isStripe) {
+        this.eventService.subscribe('paymentResponse', (response) => {
+          this.managePaymentResponse(response);
+        });
+  
+        this.stripeService.getCards().subscribe(cards => {
+          if (cards.length === 0) {
+            this.addNewCard();
+          }
+        });
+      }
     });
     this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
       this.item = item;
@@ -60,12 +71,6 @@ export class BuyProductModalComponent implements OnInit {
       }
       this.creditInfo = creditInfo;
     });
-
-    if (this.isStripe) {
-      this.eventService.subscribe('paymentResponse', (response) => {
-        this.managePaymentResponse(response);
-      });
-    }
   }
 
   get withCredits(): boolean {

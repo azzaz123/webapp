@@ -112,6 +112,9 @@ describe('CartComponent', () => {
           buy() {},
           isPaymentMethodStripe$() {
             return Observable.of(true);
+          },
+          getCards() {
+            return Observable.of([]);
           }
         }
         },
@@ -169,6 +172,14 @@ describe('CartComponent', () => {
       component.ngOnInit();
 
       expect(component.isStripe).toBe(expectedValue);
+    });
+
+    it('should call addNewCard method when there are no Stripe cards', () => {
+      spyOn(component, 'addNewCard').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
   });
 

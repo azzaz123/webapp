@@ -57,6 +57,9 @@ describe('BuyWallacoinsModalComponent', () => {
           provide: StripeService, useValue: {
             isPaymentMethodStripe$() {
               return true;
+            },
+            getCards() {
+              return Observable.of([]);
             }
         }
         },
@@ -82,6 +85,17 @@ describe('BuyWallacoinsModalComponent', () => {
     errorService = TestBed.get(ErrorsService);
     stripeService = TestBed.get(StripeService);
     eventService = TestBed.get(EventService);
+  });
+
+  describe('ngOnInit', () => {
+    it('should call addNewCard when Stripe and when no saved cards', () => {
+      spyOn(component, 'addNewCard');
+
+      component.isStripe = true;
+      component.ngOnInit();
+
+      expect(component.addNewCard).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('hasCard', () => {
