@@ -9,7 +9,7 @@
       <span *ngIf="message.payload" [innerHTML]="message.text | linkTransform"></span>
       <!-- <button *ngIf="message.phoneRequest === phoneRequestState.pending" class="btn" (click)="openDialog()" i18n>Leave your number</button> -->
       <!-- <span *ngIf="message.phoneRequest === phoneRequestState.answered" class="new-line" i18n>Phone sent ;)</span> -->
-      <tsl-third-voice-button *ngIf="isReview()" [message]="message"></tsl-third-voice-button>
+      <tsl-third-voice-button *ngIf="isReview()" [message]="message" [user]="user" [item]="item"></tsl-third-voice-button>
       <small class="message-date" [ngClass]="{'third-voice': isReview()}">{{message.date | date:'shortTime'}}</small>
       <span *ngIf="message.fromSelf" class="message-status" [ngClass]="message.status"></span>
     </div>
