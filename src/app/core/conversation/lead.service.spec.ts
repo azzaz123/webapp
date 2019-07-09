@@ -21,7 +21,7 @@ import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/con
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
-import { BlockUserService } from './block-user.service';
+import { BlockUserXmppService } from './block-user';
 
 @Injectable()
 export class MockService extends LeadService {
@@ -34,7 +34,7 @@ export class MockService extends LeadService {
               itemService: ItemService,
               event: EventService,
               realTime: RealTimeService,
-              blockService: BlockUserService,
+              blockService: BlockUserXmppService,
               connectionService: ConnectionService) {
     super(http, userService, itemService, event, realTime, blockService, connectionService);
   }
@@ -81,7 +81,7 @@ describe('LeadService', () => {
         {provide: UserService, useClass: MockedUserService},
         {provide: ItemService, useClass: MockedItemService},
         {provide: RealTimeService, useValue: {}},
-        {provide: BlockUserService, useValue: { getBlockedUsers() { return ['1', '2', '3']; } }},
+        {provide: BlockUserXmppService, useValue: { getBlockedUsers() { return ['1', '2', '3']; } }},
         {
           provide: ConnectionService, useValue: {}
         }

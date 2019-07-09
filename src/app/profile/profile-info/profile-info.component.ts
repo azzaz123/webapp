@@ -10,6 +10,8 @@ import { UserProInfo } from '../../core/user/user-info.interface';
 import { Image } from '../../core/user/user-response.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
+import { Coordinate } from '../../core/geolocation/address-response.interface';
+import { isValidNumber } from 'libphonenumber-js';
 
 export const competitorLinks = [
   'coches.net',
@@ -32,6 +34,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   private userInfo: UserProInfo;
   public user: User;
   public isPro: boolean;
+  public updateLocationWhenSearching = false;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
 
@@ -77,7 +80,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
       first_name: this.user.firstName,
       last_name: this.user.lastName
     });
-    if(this.userInfo && this.isPro) {
+    if (this.userInfo && this.isPro) {
       this.profileForm.patchValue({
         phone_number: this.userInfo.phone_number,
         description: this.userInfo.description,
@@ -93,6 +96,15 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   }
 
   public onSubmit() {
+    const phoneNumberControl = this.profileForm.get('phone_number');
+    if (this.isPro && phoneNumberControl.value) {
+      if (!isValidNumber(phoneNumberControl.value, 'ES')) {
+        phoneNumberControl.setErrors({incorrect: true});
+        this.errorsService.i18nError('phoneNumberError');
+        return;
+      }
+    }
+
     const linkControl = this.profileForm.get('link');
     if (linkControl.value ) {
       competitorLinks.forEach(competitor  => {
@@ -105,7 +117,9 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
         return;
       }
     }
+
     if (this.profileForm.valid) {
+      const profileFormLocation = this.profileForm.value.location;
       delete this.profileForm.value.location;
       this.userService.updateProInfo(this.profileForm.value).subscribe(() => {
         this.userService.edit({
@@ -113,9 +127,22 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
           last_name: this.profileForm.value.last_name,
           birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
           gender: this.user.gender
-        }).subscribe(() => {
+        }).finally(() => {
           this.errorsService.i18nSuccess('userEdited');
           this.formComponent.hasNotSavedChanges = false;
+        }).subscribe(() => {
+          if (this.user.location.approximated_latitude !== profileFormLocation.latitude ||
+            this.user.location.approximated_longitude !== profileFormLocation.longitude) {
+              const newLocation: Coordinate = {
+                latitude: profileFormLocation.latitude,
+                longitude: profileFormLocation.longitude,
+                name: profileFormLocation.address
+              };
+              this.userService.updateLocation(newLocation).subscribe(newUserLocation => {
+                this.userService.user.location = newUserLocation;
+                this.userService.updateSearchLocationCookies(newLocation);
+              });
+          }
         });
       });
     } else {

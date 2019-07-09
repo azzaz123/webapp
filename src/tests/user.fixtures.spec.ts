@@ -327,7 +327,7 @@ export const USER_EDIT_DATA: UserData = {
 export const USER_PRO_DATA: UserProData = {
   description: 'description',
   opening_hours: 'opening_hours',
-  phone_number: 'phone_number',
+  phone_number: '612345678',
   link: 'link'
 };
 

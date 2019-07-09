@@ -1,5 +1,5 @@
 <div class="select-card" *ngIf="financialCards">
-  <ng-select placeholder="Select your card" class="form-control" i18n-placeholder placeholder="Select your card"
+  <ng-select placeholder="Select your card" [notFoundMsg]="notFoundMsg" class="form-control" i18n-placeholder placeholder="Select your card"
              [options]="financialCards" [(ngModel)]="selectedFinancialCard" bindLabel="number" bindValue="number"
              (selected)="setFinancialCard($event)" name="financialCard" ngDefaultControl>
     <ng-template #optionTemplate let-option="option" let-index="index">

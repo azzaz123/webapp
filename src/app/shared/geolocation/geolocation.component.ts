@@ -4,6 +4,8 @@ import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { GeolocationService } from '../../core/geolocation/geolocation.service';
 import { GeolocationResponse } from '../../core/geolocation/geolocation-response.interface';
 import { CookieService } from 'ngx-cookie';
+import { UserService } from '../../core/user/user.service';
+import { UserLocation } from '../../core/user/user-response.interface';
 
 @Component({
   selector: 'tsl-geolocation',
@@ -21,7 +23,10 @@ export class GeolocationComponent implements OnInit, OnChanges {
   public model: any = {description: ''};
   @ViewChild('pacInputHeader') searchInputEl: ElementRef;
 
-  constructor(private geolocationService: GeolocationService, private cookieService: CookieService) { }
+  constructor(
+    private geolocationService: GeolocationService,
+    private cookieService: CookieService,
+    private userService: UserService) { }
 
   ngOnInit() {
     const searchPosName = this.cookieService.get('searchPosName');
@@ -55,13 +60,12 @@ export class GeolocationComponent implements OnInit, OnChanges {
       this.newCoordinate.emit(data);
 
       if (this.updateLocation) {
-        const expirationDate = new Date();
-        expirationDate.setTime(expirationDate.getTime() + (15 * 60 * 1000));
-        const cookieOptions = {expires: expirationDate, domain: '.wallapop.com'};
-
-        this.cookieService.put('searchLat', data.latitude.toString(), cookieOptions);
-        this.cookieService.put('searchLng', data.longitude.toString(), cookieOptions);
-        this.cookieService.put('searchPosName', address.item.description, cookieOptions);
+        const newLocation: Coordinate = {
+          latitude: data.latitude,
+          longitude: data.longitude,
+          name: address.item.description
+        };
+        this.userService.updateSearchLocationCookies(newLocation);
       }
     });
   }

@@ -40,7 +40,7 @@
                 [disabled]="isStripe && !selectedCard"
                 [tslTrackEvent]="hasFinancialCard ? 'PURCHASE_CONFIRM_PACK_CREDITS' : 'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
                 i18n>Buy now</tsl-button>
-    <p class="note" [hidden]="hasFinancialCard" i18n>We don't save details of this transaction. The purchase is made via Banco Sabadell.</p>
+    <p class="note" [hidden]="hasFinancialCard || isStripe" i18n>We don't save details of this transaction. The purchase is made via Banco Sabadell.</p>
   </div>
 </div>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

@@ -59,6 +59,11 @@ export class CartComponent implements OnInit, OnDestroy {
         this.eventService.subscribe('paymentResponse', (response) => {
           this.managePaymentResponse(response);
         });
+        this.stripeService.getCards().subscribe(cards => {
+          if (cards.length === 0) {
+            this.addNewCard();
+          }
+        });
       }
     });
   }
@@ -157,7 +162,15 @@ export class CartComponent implements OnInit, OnDestroy {
   private track(order: Order[]) {
     const result = order.map(purchase => ({ item_id: purchase.item_id, bump_type: purchase.product_id }));
     const itemsIds = Object.keys(order).map(key => order[key].item_id);
-    this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, { selected_products: result });
+
+    const payment_method = this.isStripe ? 'STRIPE' : 'SABADELL';
+    this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART,
+      {
+        selected_products: result,
+        payment_method
+      }
+    );
+
     ga('send', 'event', 'Item', 'bump-cart');
     gtag('event', 'conversion', { 'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM' });
     fbq('track', 'Purchase', {

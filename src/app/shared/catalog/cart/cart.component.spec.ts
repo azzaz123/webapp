@@ -112,6 +112,9 @@ describe('CartComponent', () => {
           buy() {},
           isPaymentMethodStripe$() {
             return Observable.of(true);
+          },
+          getCards() {
+            return Observable.of([]);
           }
         }
         },
@@ -169,6 +172,14 @@ describe('CartComponent', () => {
       component.ngOnInit();
 
       expect(component.isStripe).toBe(expectedValue);
+    });
+
+    it('should call addNewCard method when there are no Stripe cards', () => {
+      spyOn(component, 'addNewCard').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -362,16 +373,40 @@ describe('CartComponent', () => {
 
         it('should redirect to code 200', () => {
           expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
-            selected_products: CART_ORDER_TRACK
-          });
         });
 
         it('should call deselectItems', () => {
           expect(itemService.deselectItems).toHaveBeenCalled();
           expect(itemService.selectedAction).toBeNull();
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
-            selected_products: CART_ORDER_TRACK
+        });
+
+      });
+
+      describe('tracking', () => {
+
+        describe('Sabadell', () => {
+
+          it('should call track of trackingService with valid attributes', () => {
+            component.checkout();
+
+            expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
+              selected_products: CART_ORDER_TRACK,
+              payment_method: 'SABADELL'
+            });
+          });
+
+        });
+
+        describe('Stripe', () => {
+          it('should call track of trackingService with valid attributes', () => {
+            component.isStripe = true;
+
+            component.checkout();
+
+            expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
+              selected_products: CART_ORDER_TRACK,
+              payment_method: 'STRIPE'
+            });
           });
         });
       });

@@ -14,7 +14,7 @@ import { CallTotals } from './totals.interface';
 import { CallResponse } from './call-response.interface';
 import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
-import { BlockUserService } from './block-user.service';
+import { BlockUserXmppService } from './block-user';
 
 @Injectable()
 export class CallsService extends LeadService {
@@ -30,7 +30,7 @@ export class CallsService extends LeadService {
               itemService: ItemService,
               event: EventService,
               realTime: RealTimeService,
-              blockService: BlockUserService,
+              blockService: BlockUserXmppService,
               connectionService: ConnectionService,
               private conversationService: ConversationService ) {
     super(http, userService, itemService, event, realTime, blockService, connectionService);
