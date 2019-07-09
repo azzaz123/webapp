@@ -10,7 +10,7 @@ import { MessageType } from '../inbox-message';
 })
 export class ThirdVoiceMessageComponent extends MessageComponent implements OnInit {
 
-  public static allowMessageTypes = [MessageType.PRICE_DROP, MessageType.REVIEW, MessageType.SECURITY_WARNING];
+  public static ALLOW_MESSAGES_TYPES = [MessageType.PRICE_DROP, MessageType.REVIEW, MessageType.SECURITY_WARNING];
 
   ngOnInit() {
     super.ngOnInit();

@@ -10,7 +10,7 @@ import { MessageType } from '../inbox-message';
 })
 export class TextMessageComponent extends MessageComponent implements OnInit {
 
-  public static allowMessageTypes = [MessageType.TEXT];
+  public static ALLOW_MESSAGES_TYPES = [MessageType.TEXT];
 
   ngOnInit() {
     super.ngOnInit();

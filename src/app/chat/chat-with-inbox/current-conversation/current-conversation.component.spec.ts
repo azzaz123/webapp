@@ -399,4 +399,28 @@ describe('CurrentConversationComponent', () => {
       expect(conversationService.loadMoreMessages).not.toHaveBeenCalled();
     });
   });
+
+  describe('messagesVisibility', () => {
+    it('should show text message', () => {
+      expect(component.isTextMessage(MessageType.TEXT)).toBeTruthy();
+    });
+
+    it('should not show text message', () => {
+      expect(component.isTextMessage(null)).toBeFalsy();
+      expect(component.isTextMessage(MessageType.SECURITY_WARNING)).toBeFalsy();
+      expect(component.isTextMessage(MessageType.REVIEW)).toBeFalsy();
+      expect(component.isTextMessage(MessageType.PRICE_DROP)).toBeFalsy();
+    });
+
+    it('should show message third voice', () => {
+      expect(component.isThirdVoiceMessage(MessageType.SECURITY_WARNING)).toBeTruthy();
+      expect(component.isThirdVoiceMessage(MessageType.REVIEW)).toBeTruthy();
+      expect(component.isThirdVoiceMessage(MessageType.PRICE_DROP)).toBeTruthy();
+    });
+
+    it('should not show message third voice', () => {
+      expect(component.isThirdVoiceMessage(null)).toBeFalsy();
+      expect(component.isThirdVoiceMessage(MessageType.TEXT)).toBeFalsy();
+    });
+  });
 });
