@@ -423,20 +423,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
     this.isFashionCategory = this.categoryService.isFashionCategory(parseInt(category.value, 10));
 
     if (category.has_object_type || category.has_brand || category.has_model) {
-      if (this.isFashionCategory) {
-        this.splitTestService.getVariable('WebFashionUploadEnabled', false).subscribe((WebFashionUploadEnabled: boolean) => {
-          this.showExtraFields = WebFashionUploadEnabled;
-        });
-      } else {
-        this.showExtraFields = true;
-      }
+      this.showExtraFields = true;
       if (!this.item) {
         this.splitTestService.track('CategoryWithBrandModelSelected');
       }
       if (category.has_object_type) {
         this.objectTypeTitle = category.object_type_title;
         this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
-          this.objectTypes = _.reverse(objectTypes);
+          this.objectTypes = objectTypes;
         });
       }
     }
