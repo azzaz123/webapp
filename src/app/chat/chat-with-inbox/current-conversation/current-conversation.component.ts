@@ -40,7 +40,8 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     private trackingService: TrackingService,
     private userService: UserService,
     private itemService: ItemService,
-    private blockService: BlockUserService,
+    private blockUserService: BlockUserService,
+    private blockUserXmppService: BlockUserXmppService,
     private i18n: I18nService,
     private realTime: RealTimeService,
     private conversationService: ConversationService) {
@@ -143,16 +144,22 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   public blockUserAction() {
     this.modalService.open(BlockUserComponent).result.then(() => {
-      this.blockService.blockUser(this.currentConversation.user).subscribe(() => {
-        this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
+      this.blockUserService.blockUser(this.currentConversation.user.id).subscribe(() => {
+        this.blockUserXmppService.blockUser(this.currentConversation.user).subscribe(() => {
+          this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
+        });
+      }, () => {
       });
     });
   }
 
   public unblockUserAction() {
     this.modalService.open(UnblockUserComponent).result.then(() => {
-      this.blockService.unblockUser(this.currentConversation.user).subscribe(() => {
-        this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
+      this.blockUserService.unblockUser(this.currentConversation.user.id).subscribe(() => {
+        this.blockUserXmppService.unblockUser(this.currentConversation.user).subscribe(() => {
+          this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
+        });
+      }, () => {
       });
     });
   }

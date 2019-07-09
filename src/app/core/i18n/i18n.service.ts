@@ -77,6 +77,7 @@ export class I18nService {
       formErrors: 'Check the red fields',
       formErrorsTitle: 'Oops!',
       linkError: 'The web link is not valid',
+      phoneNumberError: 'The phone number has an invalid format',
       userEdited: 'Your data has been edited correctly',
       notValidPassword: 'Current password is not valid',
       passwordMatch: 'Passwords don\'t match',
@@ -127,7 +128,8 @@ export class I18nService {
       model: 'Model',
       phones_brand_example: 'E.g: Apple',
       fashion_brand_example: 'E.g: Zara',
-      model_example: 'E.g: iPhone'
+      model_example: 'E.g: iPhone',
+      noResultsFound: 'No results found'
     },
     es: {
       daysMomentConfig: {
@@ -204,6 +206,7 @@ export class I18nService {
       formErrors: 'Revisa los campos en rojo',
       formErrorsTitle: '¡Ojo!',
       linkError: 'La web no es válida',
+      phoneNumberError: 'El número de teléfono tiene un formato inválido',
       userEdited: 'Tus datos se han editado correctamente',
       notValidPassword: 'La contraseña actual no es válida',
       passwordMatch: 'Las contraseñas no coinciden',
@@ -255,6 +258,7 @@ export class I18nService {
       phones_brand_example: 'P. ej: Apple',
       fashion_brand_example: 'P. ej: Zara',
       model_example: 'P. ej: iPhone',
+      noResultsFound: 'No hay resultados'
     }
   };
 

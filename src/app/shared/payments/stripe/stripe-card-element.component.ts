@@ -15,6 +15,7 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -51,7 +52,8 @@ export class StripeCardElementComponent implements ControlValueAccessor {
 
   constructor(private cd: ChangeDetectorRef,
               private i18n: I18nService,
-              private stripeService: StripeService) {
+              private stripeService: StripeService,
+              private toastrService: ToastrService) {
   }
 
   ngAfterViewInit() {
@@ -111,9 +113,9 @@ export class StripeCardElementComponent implements ControlValueAccessor {
     const { token, error } = await this.stripeService.createToken(this.card);
 
     if (error) {
-      console.warn('Error:', error);
+      this.toastrService.error(error.message);
     } else {
-      this.stripeCardToken.emit(token)
+      this.stripeCardToken.emit(token);
     }
   }
 

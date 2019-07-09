@@ -93,6 +93,9 @@ describe('CartExtrasProComponent', () => {
               return Observable.of(true);
             },
             buy() {},
+            getCards() {
+              return Observable.of(true);
+            }
         }
         },
       ],

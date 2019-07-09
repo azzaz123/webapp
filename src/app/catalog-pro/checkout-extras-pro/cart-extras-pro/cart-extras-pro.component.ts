@@ -30,7 +30,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   public cardType = 'old';
   private active = true;
   public card: any;
-  public isStripe: boolean;
+  public isStripe = false;
   public isStripeCard = true;
   public showCard = false;
   public savedCard = true;
@@ -52,16 +52,21 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = val;
+      if (this.isStripe) {
+        this.eventService.subscribe('paymentResponse', (response) => {
+          this.managePaymentResponse(response);
+        });
+        this.stripeService.getCards().subscribe(cards => {
+          if (cards.length === 0) {
+            this.addNewCard();
+          }
+        });
+      }
     });
     this.cartService.createInstance(new CartProExtras());
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
     });
-    if (this.isStripe) {
-      this.eventService.subscribe('paymentResponse', (response) => {
-        this.managePaymentResponse(response);
-      });
-    }
   }
 
   ngOnDestroy() {

@@ -1030,4 +1030,16 @@ describe('Service: Http', () => {
     });
   });
 
+  describe('should body', () => {
+    it('be empty', () => {
+      const options = httpService.getOptions(null, 'url', 'GET');
+      expect(options.body).toEqual(null);
+    });
+
+    it('has payload', () => {
+      const payload = { payload: 'payload' };
+      const options = httpService.getOptions({ body: payload }, 'url', 'GET');
+      expect(options.body).toEqual(payload);
+    });
+  });
 });

@@ -59,6 +59,11 @@ export class CartComponent implements OnInit, OnDestroy {
         this.eventService.subscribe('paymentResponse', (response) => {
           this.managePaymentResponse(response);
         });
+        this.stripeService.getCards().subscribe(cards => {
+          if (cards.length === 0) {
+            this.addNewCard();
+          }
+        });
       }
     });
   }
