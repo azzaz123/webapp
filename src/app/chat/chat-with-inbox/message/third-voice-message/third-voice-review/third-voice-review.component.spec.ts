@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ThirdVoiceButtonComponent } from './third-voice-button.component';
+import { ThirdVoiceReviewComponent } from './third-voice-review.component';
 
-describe('ThirdVoiceButtonComponent', () => {
-  let component: ThirdVoiceButtonComponent;
-  let fixture: ComponentFixture<ThirdVoiceButtonComponent>;
+describe('ThirdVoiceReviewComponent', () => {
+  let component: ThirdVoiceReviewComponent;
+  let fixture: ComponentFixture<ThirdVoiceReviewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ThirdVoiceButtonComponent ]
+      declarations: [ ThirdVoiceReviewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ThirdVoiceButtonComponent);
+    fixture = TestBed.createComponent(ThirdVoiceReviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

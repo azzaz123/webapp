@@ -16,7 +16,6 @@
 <div *ngIf="currentConversation">
     <div id="messaging">
         <div id="top-bar">
-          {{currentConversation}}
             <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
                 target="_blank" class="user-avatar">
                 <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>

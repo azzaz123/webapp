@@ -12,10 +12,10 @@ import { InboxMessage } from '../../inbox-message';
 
 @Component({
   selector: 'tsl-third-voice-button',
-  templateUrl: './third-voice-button.component.html',
-  styleUrls: ['./third-voice-button.component.scss']
+  templateUrl: './third-voice-review.component.html',
+  styleUrls: ['./third-voice-review.component.scss']
 })
-export class ThirdVoiceButtonComponent implements OnInit {
+export class ThirdVoiceReviewComponent implements OnInit {
 
   @Input() message: InboxMessage;
   @Input() user: InboxUser;

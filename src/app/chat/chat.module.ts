@@ -33,9 +33,9 @@ import { ArchivedInboxConversationComponent } from './chat-with-inbox/inbox/arch
 import { InboxUserDetailComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component';
 import { InboxItemDetailComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component';
 import { BlockSendLinkComponent } from './modals/block-send-link';
-import { ThirdVoiceMessageComponent } from './chat-with-inbox/message/third-voice-message/third-voice-message.component';
+import { ThirdVoiceMessageComponent } from './chat-with-inbox/message/third-voice-message';
 import { TextMessageComponent } from './chat-with-inbox/message/text-message';
-import { ThirdVoiceButtonComponent } from './chat-with-inbox/message/third-voice-message/third-voice-button/third-voice-button.component';
+import { ThirdVoiceReviewComponent } from './chat-with-inbox/message/third-voice-message/third-voice-review';
 
 @NgModule({
   imports: [
@@ -80,7 +80,7 @@ import { ThirdVoiceButtonComponent } from './chat-with-inbox/message/third-voice
     BlockSendLinkComponent,
     TextMessageComponent,
     ThirdVoiceMessageComponent,
-    ThirdVoiceButtonComponent
+    ThirdVoiceReviewComponent
   ],
   entryComponents: [
     ArchiveConversationComponent,
