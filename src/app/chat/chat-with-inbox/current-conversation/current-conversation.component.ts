@@ -14,7 +14,6 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { ReportListingComponent } from '../../modals/report-listing';
 import { ItemService } from '../../../core/item/item.service';
 import { BlockUserComponent } from '../../modals/block-user';
-import { BlockUserService } from '../../../core/conversation/block-user.service';
 import { UnblockUserComponent } from '../../modals/unblock-user';
 import { ConversationService } from '../../../core/inbox/conversation.service';
 import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conversation';
@@ -22,6 +21,7 @@ import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-c
 import { TextMessageComponent } from '../message/text-message';
 import { ThirdVoiceMessageComponent } from '../message/third-voice-message';
 import * as _ from 'lodash';
+import { BlockUserService, BlockUserXmppService } from '../../../core/conversation/block-user';
 
 @Component({
   selector: 'tsl-current-conversation',
