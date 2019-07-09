@@ -19,7 +19,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
-import { BlockUserService } from './block-user.service';
+import { BlockUserXmppService } from './block-user';
 
 @Injectable()
 export abstract class LeadService {
@@ -38,7 +38,7 @@ export abstract class LeadService {
               protected itemService: ItemService,
               protected event: EventService,
               protected realTime: RealTimeService,
-              protected blockService: BlockUserService,
+              protected blockService: BlockUserXmppService,
               protected connectionService: ConnectionService) {
   }
 
