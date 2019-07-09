@@ -1,16 +1,17 @@
-<div class="message-body" *ngIf="!message.payload" [ngClass]="{'from-self': message.fromSelf, 'phone-request': message.phoneRequest}">
-  <p>
-    <span *ngIf="!message.payload" [innerHTML]="message.text | linkTransform"></span>
-    <!-- <button *ngIf="message.phoneRequest === phoneRequestState.pending" class="btn" (click)="openDialog()" i18n>Leave your number</button> -->
-    <!-- <span *ngIf="message.phoneRequest === phoneRequestState.answered" class="new-line" i18n>Phone sent ;)</span> -->
-    <small class="message-date">{{message.date | date:'shortTime'}}</small>
-    <span *ngIf="message.fromSelf" class="message-status" [ngClass]="message.status"></span>
-  </p>
-</div>
+<div class="message-body" *ngIf="message.payload"
+     [ngClass]="{'from-self': message.fromSelf, 'phone-request': message.phoneRequest}">
 
-<!--
-<div *ngIf="message.payload" class="third-voice">
-  {{message.payload.text}}
-  <tsl-review-button [message]="message" *ngIf="message.payload.type === 'review'"></tsl-review-button>
+  <div class="message-cloud">
+    <div class="icon-content">
+<!--      <mat-icon svgIcon="robot"></mat-icon>-->
+      <img src="../../../../../assets/icons/robot.svg"/>
+    </div>
+    <div class="message-content">
+      <span *ngIf="message.payload" [innerHTML]="message.text | linkTransform"></span>
+      <!-- <button *ngIf="message.phoneRequest === phoneRequestState.pending" class="btn" (click)="openDialog()" i18n>Leave your number</button> -->
+      <!-- <span *ngIf="message.phoneRequest === phoneRequestState.answered" class="new-line" i18n>Phone sent ;)</span> -->
+      <small class="message-date">{{message.date | date:'shortTime'}}</small>
+      <span *ngIf="message.fromSelf" class="message-status" [ngClass]="message.status"></span>
+    </div>
+  </div>
 </div>
--->

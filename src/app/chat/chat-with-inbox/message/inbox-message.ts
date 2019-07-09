@@ -101,18 +101,14 @@ export class InboxMessage {
     }
 
     public static messsagesFromJson(json: any, conversationId: string, currentUserId: string, otherUserId: string): InboxMessage[] {
-        const textMessages = json
-          // .filter(m => m.type === 'text')
-            .map((m) => {
-              // console.log(m.type);
-              return new InboxMessage(m.id, conversationId, m.text,
-                m.from_self ? currentUserId : otherUserId, m.from_self, new Date(m.timestamp),
-                m.status, m.type, m.payload);
-            } );
-
-        return textMessages;
+        return json.map(message => this.buildMessage(message, conversationId, currentUserId, otherUserId));
     }
 
+  private static buildMessage(message: any, conversationId: string, currentUserId: string, otherUserId: string) {
+    return new InboxMessage(message.id, conversationId, message.text,
+      message.from_self ? currentUserId : otherUserId, message.from_self, new Date(message.timestamp),
+      message.status, message.type, message.payload);
+  }
 }
 
 export interface MessagePayload {

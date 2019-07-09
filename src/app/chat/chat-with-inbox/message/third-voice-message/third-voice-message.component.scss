@@ -1,3 +1,20 @@
-.message-body {
+@import "~style/common";
+
+.message-body .message-cloud {
   background-color: #c6edf6;
+  color: $softblue-dark;
+
+  .icon-content {
+    width: min-content;
+    float: left;
+  }
+
+  .message-content {
+    padding-top: 5px;
+    padding-left: 40px;
+
+    .message-date {
+      color: $softblue-dark;
+    }
+  }
 }

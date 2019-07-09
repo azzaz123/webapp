@@ -24,7 +24,7 @@ h5 {
   span {
     white-space: pre-wrap;
   }
-  p {
+  .message-cloud {
     flex: 0 0 auto;
     width: fit-content;
     padding: $spacing-s $spacing-ms;
@@ -71,32 +71,3 @@ h5 {
   position: relative;
   bottom: -2px;
 }
-
-// .third-voice {
-//   text-align: center;
-//   margin: $spacing-ms 112px;
-//   border: 1px solid $blue-grey-5;
-//   border-radius: $border-radius;
-//   padding: $spacing-m;
-//   font-size: $font-size-s;
-// }
-
-// .phone-request {
-//   position: relative;
-//   flex-direction: column;
-//   max-width: 323px;
-//   .btn {
-//     display: block;
-//     width: auto;
-//     border-radius: 20px;
-//     color: $walla-main;
-//     margin: $spacing-ml auto 0;
-//   }
-//   span.new-line {
-//     display: block;
-//     color: $blue-grey-3;
-//     text-align: center;
-//     padding-bottom: $spacing-ms;
-//     margin-top: $spacing-xxl;
-//   }
-// }
