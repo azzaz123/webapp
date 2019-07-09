@@ -54,8 +54,11 @@
                         <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
                         <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
                     </div>
-                        <tsl-inbox-message [message]="message"
-                            [currentConversation]="message.phoneRequest ? currentConversation : null"></tsl-inbox-message>
+
+                    <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message"
+                                      [currentConversation]="currentConversation"></tsl-text-message>
+                    <tsl-third-voice-message *ngIf="isThirdVoiceMessage(message.type)" [message]="message"
+                                             [currentConversation]="currentConversation" class=""></tsl-third-voice-message>
                 </div>
             </div>
             <div *ngIf="hasMoreMessages()" class="more-messages-loader" #loadMoreMessagesDiv>
