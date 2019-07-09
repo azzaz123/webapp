@@ -1,6 +1,5 @@
 export enum MessageType {
   TEXT = 'text',
-  SECURITY_WARNING = 'security_warning',
   PRICE_DROP = 'price_drop',
   REVIEW = 'review',
 }
@@ -104,11 +103,11 @@ export class InboxMessage {
         return json.map(message => this.buildMessage(message, conversationId, currentUserId, otherUserId));
     }
 
-  private static buildMessage(message: any, conversationId: string, currentUserId: string, otherUserId: string) {
-    return new InboxMessage(message.id, conversationId, message.text,
-      message.from_self ? currentUserId : otherUserId, message.from_self, new Date(message.timestamp),
-      message.status, message.type, message.payload);
-  }
+    private static buildMessage(message: any, conversationId: string, currentUserId: string, otherUserId: string) {
+        return new InboxMessage(message.id, conversationId, message.text,
+          message.from_self ? currentUserId : otherUserId, message.from_self, new Date(message.timestamp),
+          message.status, message.type, message.payload);
+    }
 }
 
 export interface MessagePayload {

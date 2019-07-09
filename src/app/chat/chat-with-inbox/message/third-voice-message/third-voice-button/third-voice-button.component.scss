@@ -1,0 +1,23 @@
+@import "~style/common";
+
+:host {
+  display: block;
+}
+
+tsl-button {
+  font-size: $font-size-s;
+  margin-top: $spacing-ms;
+}
+
+.thanks {
+  margin-top: $spacing-m;
+  mat-icon {
+    width: $spacing-m;
+    height: $spacing-ms;
+    margin-right: $spacing-xs;
+  }
+  span {
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-s;
+  }
+}

@@ -15,6 +15,14 @@
 
     .message-date {
       color: $softblue-dark;
+      &.third-voice {
+        height: 0;
+        bottom: $spacing-m;
+      }
+    }
+
+    tsl-third-voice-button {
+      text-align: center;
     }
   }
 }
