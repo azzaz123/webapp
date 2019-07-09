@@ -13,7 +13,8 @@ import { Headers, RequestOptions, Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
-import { InboxUser, InboxItem } from '../../chat/chat-with-inbox/inbox';
+import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
+import { InboxItem } from '../../chat/chat-with-inbox/inbox/inbox-item';
 import { environment } from '../../../environments/environment';
 
 @Injectable({

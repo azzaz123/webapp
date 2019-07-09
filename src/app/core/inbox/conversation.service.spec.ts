@@ -9,7 +9,7 @@ import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '.
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { chatSignalType, ChatSignal } from '../message/chat-signal.interface';
 import { Message } from '../message/message';
-import { messageStatus, InboxMessage } from '../../chat/chat-with-inbox/message/inbox-message';
+import {messageStatus, InboxMessage, MessageType} from '../../chat/chat-with-inbox/message/inbox-message';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
@@ -63,7 +63,7 @@ describe('ConversationService', () => {
       spyOn(service, 'processNewMessage');
       const message = new Message('mockId', 'thread-id', 'hola!', 'mockUserId', new Date(), messageStatus.SENT);
       const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf,
-        message.date, message.status, message.payload, message.phoneRequest);
+        message.date, message.status, MessageType.TEXT, message.payload, message.phoneRequest);
 
       eventService.emit(EventService.NEW_MESSAGE, message);
 
@@ -128,7 +128,7 @@ describe('ConversationService', () => {
 
     describe('when called with a message that does not already exist', () => {
       beforeEach(() => {
-        newInboxMessage = new InboxMessage('newMessageId', conversations[0].id, 'hole', 'mockUserId', true, new Date(), messageStatus.SENT);
+        newInboxMessage = new InboxMessage('newMessageId', conversations[0].id, 'hole', 'mockUserId', true, new Date(), messageStatus.SENT, MessageType.TEXT);
       });
 
       it('should prepend the new message to the conversation messages array', () => {
@@ -152,7 +152,7 @@ describe('ConversationService', () => {
       it('should bump the conversation to 1st position', () => {
         const conversationToBump = service.conversations[1];
         const message = new InboxMessage('mockId', conversationToBump.id, 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.SENT);
+          new Date(), messageStatus.SENT, MessageType.TEXT);
 
           service.processNewMessage(message);
 
@@ -180,7 +180,7 @@ describe('ConversationService', () => {
         const count = 3;
         for (let i = 0; i < count; i++) {
           const msg = new InboxMessage('mockId' + i, conversations[0].id, 'hola!', 'mockUserId', false, new Date(),
-            messageStatus.SENT);
+            messageStatus.SENT, MessageType.TEXT);
             service.processNewMessage(msg);
         }
 
@@ -190,7 +190,7 @@ describe('ConversationService', () => {
 
       it('should only increment the unread counters for new messages NOT fromSelf AND with unique IDs', () => {
         const unreadCounterBefore = service.conversations[0].unreadCounter;
-        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', false, new Date(), messageStatus.SENT);
+        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', false, new Date(), messageStatus.SENT, MessageType.TEXT);
 
         service.processNewMessage(message);
         service.processNewMessage(message);
@@ -201,7 +201,7 @@ describe('ConversationService', () => {
       });
 
       it('should not increment the conversation.unreadCount nor the messageService.totalUnreadMessages for new messages fromSelf', () => {
-        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', true, new Date(), messageStatus.SENT);
+        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', true, new Date(), messageStatus.SENT, MessageType.TEXT);
         const unreadCounterBefore = service.conversations[0].unreadCounter;
 
         service.processNewMessage(message);
@@ -215,7 +215,7 @@ describe('ConversationService', () => {
       beforeEach(() => {
         currentLastMessage = conversations[0].lastMessage;
         newInboxMessage = new InboxMessage(conversations[0].messages[0].id, conversations[0].id, 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.RECEIVED);
+          new Date(), messageStatus.RECEIVED, MessageType.TEXT);
           service.processNewMessage(newInboxMessage);
       });
 
@@ -236,7 +236,7 @@ describe('ConversationService', () => {
       it('should not bump the conversation to 1st position', () => {
         const conversationToBump = service.conversations[1];
         const message = new InboxMessage(conversationToBump.lastMessage.id, conversationToBump.id, 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.SENT);
+          new Date(), messageStatus.SENT, MessageType.TEXT);
 
           service.processNewMessage(message);
 
@@ -246,7 +246,7 @@ describe('ConversationService', () => {
       it('should NOT increase the unread counts if the new message has the same ID as the current lastMessage', () => {
         const unreadCounterBefore = service.conversations[0].unreadCounter;
         const message = new InboxMessage(currentLastMessage.id, conversations[0].id, 'hola!', 'mockUserId', false, new Date(),
-          messageStatus.READ);
+          messageStatus.READ, MessageType.TEXT);
 
         service.processNewMessage(message);
 
@@ -259,7 +259,7 @@ describe('ConversationService', () => {
       beforeEach(() => {
         currentLastMessage = conversations[0].lastMessage;
         newInboxMessage = new InboxMessage('newMessageId', 'newConversationId', 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.RECEIVED);
+          new Date(), messageStatus.RECEIVED, MessageType.TEXT);
       });
 
       it('should call fetch new conversation', () => {

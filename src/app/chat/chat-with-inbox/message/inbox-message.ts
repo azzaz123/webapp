@@ -68,6 +68,10 @@ export class InboxMessage {
       return this._type;
     }
 
+    set type(value: MessageType) {
+      this._type = value;
+    }
+
     set from(value: string) {
         this._from = value;
     }
