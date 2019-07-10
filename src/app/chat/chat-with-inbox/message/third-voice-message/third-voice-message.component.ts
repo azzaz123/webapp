@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { MessageComponent } from '../message.component';
 import { MessageType } from '../inbox-message';
+import { InboxItem, InboxUser } from '../../inbox';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-third-voice-message',
@@ -12,11 +14,14 @@ export class ThirdVoiceMessageComponent extends MessageComponent implements OnIn
 
   public static ALLOW_MESSAGES_TYPES = [MessageType.PRICE_DROP, MessageType.REVIEW];
 
+  @Input() user: InboxUser;
+  @Input() item: InboxItem;
+
   ngOnInit() {
     super.ngOnInit();
   }
 
   public isReview(): boolean {
-    return this.message.type === MessageType.REVIEW;
+    return _.eq(this.message.type, MessageType.REVIEW);
   }
 }

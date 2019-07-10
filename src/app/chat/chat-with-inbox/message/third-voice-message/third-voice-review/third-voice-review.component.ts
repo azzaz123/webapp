@@ -1,9 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ConversationService } from '../../../../../core/conversation/conversation.service';
 import { ReviewService } from '../../../../../core/review/review.service';
-import { UserService } from '../../../../../core/user/user.service';
 import { ReviewModalComponent } from '../../../../../shared/modals/review-modal/review-modal.component';
 import { SoldModalComponent } from '../../../../../shared/modals/sold-modal/sold-modal.component';
 import { ConversationUser } from '../../../../../core/item/item-response.interface';
@@ -21,28 +19,28 @@ export class ThirdVoiceReviewComponent implements OnInit {
   @Input() user: InboxUser;
   @Input() item: InboxItem;
 
-  public showButton: boolean;
+  public showButton = true;
 
-  constructor(private conversationService: ConversationService,
-              private reviewService: ReviewService,
-              private userService: UserService,
+  constructor(private reviewService: ReviewService,
               private modalService: NgbModal) {
   }
 
   ngOnInit() {
-    const alreadyReviewed: string = localStorage.getItem(this.getStorageKey());
-    if (!alreadyReviewed) {
-      this.reviewService.check(this.item.id).subscribe((isReviewed: boolean) => {
-        if (isReviewed) {
-          localStorage.setItem(this.getStorageKey(), 'true');
-          this.showButton = false;
-        } else {
-          this.showButton = true;
+    this.showButton = true;
+    const localReview: string = localStorage.getItem(this.getStorageKey());
+    if (!localReview) {
+      this.reviewService.check(this.item.id).subscribe((globalReview: boolean) => {
+        if (globalReview) {
+          this.setItemAsReviewed();
         }
       });
     } else {
       this.showButton = false;
     }
+  }
+
+  public openDialog(): void {
+    this.item.isMine ? this.reviewAsSeller() : this.reviewAsBuyer();
   }
 
   private buildConversationUser(): ConversationUser {
@@ -52,15 +50,11 @@ export class ThirdVoiceReviewComponent implements OnInit {
     } as ConversationUser;
   }
 
-  public openDialog() {
-    this.item.isMine ? this.reviewAsSeller() : this.reviewAsBuyer();
-  }
-
   private getStorageKey(): string {
     return `${this.user.id}.item.${this.item.id}.reviewed`;
   }
 
-  private reviewSent() {
+  private setItemAsReviewed() {
     this.showButton = false;
     localStorage.setItem(this.getStorageKey(), 'true');
   }
@@ -70,7 +64,7 @@ export class ThirdVoiceReviewComponent implements OnInit {
     modalRef.componentInstance.item = this.item;
     modalRef.componentInstance.userToReview = this.buildConversationUser();
     modalRef.componentInstance.thread = this.message.thread;
-    modalRef.result.then(() => this.reviewSent(), () => {
+    modalRef.result.then(() => this.setItemAsReviewed(), () => {
     });
   }
 

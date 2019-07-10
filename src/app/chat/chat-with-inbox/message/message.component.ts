@@ -7,9 +7,6 @@ import { InboxItem, InboxUser } from '../inbox';
 export abstract class MessageComponent implements OnInit {
 
   @Input() message: InboxMessage;
-  @Input() user: InboxUser;
-  @Input() item: InboxItem;
-
   @Input() currentConversation: InboxConversation;
 
   ngOnInit() {

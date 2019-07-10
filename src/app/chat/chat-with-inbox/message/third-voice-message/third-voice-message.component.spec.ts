@@ -4,6 +4,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ThirdVoiceMessageComponent } from './third-voice-message.component';
 import { LinkTransformPipe } from '../../../../shared/pipes/link-transform';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../../tests/inbox.fixtures.spec';
+import { ThirdVoiceReviewComponent } from './third-voice-review';
+import { MessageType } from '../inbox-message';
 
 describe('ThirdVoiceMessageComponent', () => {
   let component: ThirdVoiceMessageComponent;
@@ -11,10 +13,13 @@ describe('ThirdVoiceMessageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ThirdVoiceMessageComponent, LinkTransformPipe],
+      declarations: [
+        ThirdVoiceMessageComponent,
+        ThirdVoiceReviewComponent,
+        LinkTransformPipe],
       schemas: [NO_ERRORS_SCHEMA],
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
@@ -26,5 +31,21 @@ describe('ThirdVoiceMessageComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should return false if message id review', () => {
+    component.message.type = null;
+    expect(component.isReview()).toBeFalsy();
+
+    component.message.type = MessageType.TEXT;
+    expect(component.isReview()).toBeFalsy();
+
+    component.message.type = MessageType.PRICE_DROP;
+    expect(component.isReview()).toBeFalsy();
+  });
+
+  it('should return true if message id review', () => {
+    component.message.type = MessageType.REVIEW;
+    expect(component.isReview()).toBeTruthy();
   });
 });

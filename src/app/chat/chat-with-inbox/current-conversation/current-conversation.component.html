@@ -55,8 +55,7 @@
                         <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
                     </div>
 
-                    <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message" [user]="currentConversation.user"
-                                      [item]="currentConversation.item" [currentConversation]="currentConversation"></tsl-text-message>
+                    <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message"></tsl-text-message>
                     <tsl-third-voice-message *ngIf="isThirdVoiceMessage(message.type)" [message]="message" [user]="currentConversation.user"
                                              [item]="currentConversation.item" [currentConversation]="currentConversation" class=""></tsl-third-voice-message>
                 </div>
