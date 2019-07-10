@@ -3,7 +3,7 @@
 
   <div class="message-cloud">
     <div class="icon-content">
-      <img src="/assets/icons/robot.svg"/>
+      <mat-icon svgIcon="robot"></mat-icon>
     </div>
     <div class="message-content">
       <span *ngIf="message.payload" [innerHTML]="message.text | linkTransform"></span>
