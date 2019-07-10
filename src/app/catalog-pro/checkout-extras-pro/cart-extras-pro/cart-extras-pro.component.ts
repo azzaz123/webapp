@@ -141,7 +141,12 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   }
 
   private track(order: OrderProExtras) {
-    this.trackingService.track(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {selected_packs: order.packs});
+    const payment_method = this.isStripe ? 'STRIPE' : 'SABADELL';
+    this.trackingService.track(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART,
+      {
+        selected_packs: order.packs,
+        payment_method
+      });
   }
 
   public hasCard(hasCard: boolean) {
