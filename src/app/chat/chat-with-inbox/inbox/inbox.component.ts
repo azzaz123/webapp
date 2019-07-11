@@ -61,6 +61,7 @@ export class InboxComponent implements OnInit, OnDestroy  {
   private _loadingMore = false;
   private conversationElementHeight = 100;
   public errorRetrievingInbox = false;
+  public errorRetrievingArchived = false;
   private conversation: InboxConversation;
   public isProfessional: boolean;
 
@@ -139,6 +140,8 @@ export class InboxComponent implements OnInit, OnDestroy  {
     this.loading = false;
     this.loadingMore = false;
     this.errorRetrievingInbox = this.inboxService.errorRetrievingInbox;
+    this.errorRetrievingArchived = this.inboxService.errorRetrievingArchived;
+    this.showInbox();
   }
 
   private bindNewMessageToast() {
