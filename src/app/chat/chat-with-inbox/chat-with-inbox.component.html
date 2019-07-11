@@ -1,6 +1,6 @@
 <div id="left-panel">
     <tsl-connection-alert></tsl-connection-alert>
-    <tsl-inbox (loadingEvent)="onLoad($event)"></tsl-inbox>
+    <tsl-inbox (loadingEvent)="onLoad($event)" (loadingError)="onChangeInboxOrArchivedDropdown($event)"></tsl-inbox>
 </div>
 <div id="center-panel" *ngIf="!conversationsLoading">
     <tsl-current-conversation [currentConversation]="currentConversation" 
