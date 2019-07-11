@@ -30,6 +30,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   @Input() currentConversation: InboxConversation;
   @Input() conversationsTotal: number;
   @Input() connectionError: boolean;
+  @Input() loadingError: boolean;
 
   constructor(private eventService: EventService,
     private modalService: NgbModal,

@@ -5,7 +5,8 @@
 <div id="center-panel" *ngIf="!conversationsLoading">
     <tsl-current-conversation [currentConversation]="currentConversation" 
     [conversationsTotal]="conversationsTotal"
-    [connectionError]="connectionError"></tsl-current-conversation>
+    [connectionError]="connectionError"
+    [loadingError]="loadingError"></tsl-current-conversation>
 </div>
 
 <div id="loading-state" *ngIf="conversationsLoading">
