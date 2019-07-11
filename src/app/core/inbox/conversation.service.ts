@@ -55,13 +55,17 @@ export class ConversationService {
       this.archivedConversations = conversations;
     });
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
-      const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
-        message.status, MessageType.TEXT, message.payload, message.phoneRequest);
-      this.processNewMessage(inboxMessage);
+      this.processNewMessage(this.buildInboxMessage(message));
     });
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processNewChatSignal(signal);
     });
+  }
+
+  public buildInboxMessage(message: Message) {
+    const messageType = message.payload ? message.payload.type as MessageType : MessageType.TEXT;
+    return new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
+      message.status, messageType, message.payload, message.phoneRequest);
   }
 
   set selfId(value: string) {
@@ -275,7 +279,7 @@ export class ConversationService {
 
   public openConversationWith$(itemId: string): Observable<InboxConversation> {
     if (this.conversations && this.archivedConversations) {
-      const localConversation = this.conversations.find((conver) => conver.item.id === itemId && !conver.item.isMine) 
+      const localConversation = this.conversations.find((conver) => conver.item.id === itemId && !conver.item.isMine)
       || this.archivedConversations.find((conver) => conver.item.id === itemId && !conver.item.isMine);
 
       if (localConversation) {

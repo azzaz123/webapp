@@ -1,6 +1,9 @@
 export enum MessageType {
   TEXT = 'text',
+  /** Projections */
   PRICE_DROP = 'price_drop',
+  /** Real Time Service */
+  DROP_PRICE = 'drop_price',
   REVIEW = 'review',
 }
 

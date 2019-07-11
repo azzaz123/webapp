@@ -57,7 +57,7 @@
 
                     <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message"></tsl-text-message>
                     <tsl-third-voice-message *ngIf="isThirdVoiceMessage(message.type)" [message]="message" [user]="currentConversation.user"
-                                             [item]="currentConversation.item" [currentConversation]="currentConversation" class=""></tsl-third-voice-message>
+                                             [item]="currentConversation.item"></tsl-third-voice-message>
                 </div>
             </div>
             <div *ngIf="hasMoreMessages()" class="more-messages-loader" #loadMoreMessagesDiv>
