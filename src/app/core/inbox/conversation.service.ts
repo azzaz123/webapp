@@ -16,6 +16,7 @@ import { ItemService } from '../item/item.service';
 import { InboxUserPlaceholder, InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
 import { InboxItemPlaceholder, InboxItem } from '../../chat/chat-with-inbox/inbox/inbox-item';
 import { environment } from '../../../environments/environment';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -200,7 +201,7 @@ export class ConversationService {
   }
 
   public isConversationArchived(conversation: InboxConversation): boolean {
-    return this.archivedConversations.includes(conversation);
+    return _.includes(this.archivedConversations, conversation);
   }
 
   public archive(conversation: InboxConversation): Observable<InboxConversation> {
