@@ -9,7 +9,7 @@ import { debug } from 'util';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { UserService } from '../../../core/user/user.service';
 
-enum InboxState { Inbox, Archived }
+export enum InboxState { Inbox, Archived }
 
 @Component({
   selector: 'tsl-inbox',
