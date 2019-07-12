@@ -140,7 +140,7 @@ describe('CurrentConversationComponent', () => {
         eventService.emit(EventService.MESSAGE_ADDED, newMessage);
         tick(1000);
 
-        expect(realTime.sendRead).toHaveBeenCalledWith('fakeId', component.currentConversation.id);
+        expect(realTime.sendRead).toHaveBeenCalledWith(newMessage.from, component.currentConversation.id);
       }));
 
       it(`should NOT call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message NOT belonging
