@@ -250,6 +250,19 @@ describe('BuyWallacoinsModalComponent', () => {
         });
       });
     });
+  });
+
+  describe('getTrackingAttributes', () => {
+
+    it('should return valid object when Sabadell', () => {
+      expect(component.getTrackingAttributes()).toEqual({ payment_method: 'SABADELL' });
+    });
+
+    it('should return valid object when Stripe', () => {
+      component.isStripe = true;
+
+      expect(component.getTrackingAttributes()).toEqual({ payment_method: 'STRIPE' });
+    });
 
   });
 });

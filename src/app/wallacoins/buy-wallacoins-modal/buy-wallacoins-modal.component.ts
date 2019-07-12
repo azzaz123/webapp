@@ -143,4 +143,8 @@ export class BuyWallacoinsModalComponent implements OnInit {
     this.setCardInfo(selectedCard);
   }
 
+  public getTrackingAttributes(): Object {
+    const payment_method = this.isStripe ? 'STRIPE' : 'SABADELL';
+    return { payment_method };
+  }
 }
