@@ -267,13 +267,30 @@ describe('CartExtrasProComponent', () => {
       describe('if paymentService OrderExtrasProPack is successful', () => {
         beforeEach(() => {
           spyOn(trackingService, 'track');
-
-          component.checkout();
         });
 
-        it('should call track', () => {
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {
-            selected_packs: ORDER_CART_EXTRAS_PRO.packs
+        describe('tracking', () => {
+          describe('Stripe', () => {
+            it('should call track with valid values', () => {
+              component.checkout();
+
+              expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {
+                selected_packs: ORDER_CART_EXTRAS_PRO.packs,
+                payment_method: 'STRIPE'
+              });
+            });
+          });
+
+          describe('Sabadell', () => {
+            it('should call track with valid values', () => {
+              component.isStripe = false;
+              component.checkout();
+
+              expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {
+                selected_packs: ORDER_CART_EXTRAS_PRO.packs,
+                payment_method: 'SABADELL'
+              });
+            });
           });
         });
 
