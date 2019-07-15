@@ -525,15 +525,6 @@ describe('UploadProductComponent', () => {
     });
 
     describe('if the selected category is the fashion category', () => {
-      it('should get the value for the Taplytics `WebFashionUploadEnabled` experiment', () => {
-        spyOn(categoryService, 'isFashionCategory').and.returnValue(true);
-        spyOn(splitTestService, 'getVariable').and.returnValue(Observable.of(true));
-
-        component.handleItemExtraInfo(false, CATEGORIES_OPTIONS_CONSUMER_GOODS[0]);
-
-        expect(splitTestService.getVariable).toHaveBeenCalledWith('WebFashionUploadEnabled', false);
-      });
-
       it('should get the sizes', () => {
         spyOn(component, 'getSizes');
         spyOn(categoryService, 'isFashionCategory').and.returnValue(true);

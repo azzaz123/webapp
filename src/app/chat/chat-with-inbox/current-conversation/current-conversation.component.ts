@@ -20,8 +20,8 @@ import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conve
 import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-conversation';
 import { TextMessageComponent } from '../message/text-message';
 import { ThirdVoiceMessageComponent } from '../message/third-voice-message';
-import * as _ from 'lodash';
 import { BlockUserService, BlockUserXmppService } from '../../../core/conversation/block-user';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -96,10 +96,10 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   }
 
   private sendRead(message: InboxMessage) {
-    if (this.currentConversation && this.currentConversation.id === message.thread && !message.fromSelf) {
+    if (_.eq(this.currentConversation.id, message.thread) && !message.fromSelf) {
       Visibility.onVisible(() => {
         setTimeout(() => {
-          this.realTime.sendRead(this.userService.user.id, this.currentConversation.id);
+          this.realTime.sendRead(message.from, message.thread);
         }, 1000);
       });
     }
