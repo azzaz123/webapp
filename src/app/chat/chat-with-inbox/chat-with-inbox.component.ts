@@ -73,7 +73,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
     }
 
     this.route.queryParams.subscribe((params: any) => {
-      const itemId = params.itemId; // TODO: this params will include userId 
+      const itemId = params.itemId; // TODO: this params will include userId
 
       // Try to find the conversation within the downloaded ones
       this.conversationsLoading = true;
