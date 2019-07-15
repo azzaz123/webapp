@@ -79,6 +79,11 @@ $vertical-padding: $spacing-ms;
     background-color: $blue-grey-5;
     color: $blue-grey-3;
   }
+  &.btn-third-voice {
+    background-color: $softblue-dark;
+    font-size: $font-size-s;
+    padding: $spacing-ms $spacing-ml;
+  }
 }
 
 

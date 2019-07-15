@@ -33,7 +33,7 @@
   <div id="conversations" [hidden]="loading">
     <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We couldn't load your inbox due to whatever reasons :)</div>
     <div *ngIf="hasConversations()" id="inbox-data">
-      <tsl-inbox-conversation *ngFor="let conversation of conversations" 
+      <tsl-inbox-conversation *ngFor="let conversation of conversations"
         [conversation]="conversation"
         [ngClass]="{'active': conversation?.active}" (click)="setCurrentConversation(conversation)">
       </tsl-inbox-conversation>

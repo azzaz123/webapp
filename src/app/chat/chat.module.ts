@@ -27,13 +27,15 @@ import { InboxConversationComponent } from './chat-with-inbox/inbox/inbox-conver
 import { ChatWithInboxComponent } from './chat-with-inbox/chat-with-inbox.component';
 import { ChatWithArchiveComponent } from './chat-with-archive/chat-with-archive.component';
 import { CurrentConversationComponent } from './chat-with-inbox/current-conversation/current-conversation.component';
-import { InboxMessageComponent } from './chat-with-inbox/message/inbox-message.component';
 import { ArchiveInboxConversationComponent } from './chat-with-inbox/modals/archive-inbox-conversation/archive-inbox-conversation.component';
 import { UnarchiveInboxConversationComponent } from './chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component';
 import { ArchivedInboxConversationComponent } from './chat-with-inbox/inbox/archived-inbox-conversation/archived-inbox-conversation.component';
 import { InboxUserDetailComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component';
 import { InboxItemDetailComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component';
 import { BlockSendLinkComponent } from './modals/block-send-link';
+import { ThirdVoiceMessageComponent } from './chat-with-inbox/message/third-voice-message';
+import { TextMessageComponent } from './chat-with-inbox/message/text-message';
+import { ThirdVoiceReviewComponent } from './chat-with-inbox/message/third-voice-message/third-voice-review';
 
 @NgModule({
   imports: [
@@ -73,10 +75,12 @@ import { BlockSendLinkComponent } from './modals/block-send-link';
     ChatWithInboxComponent,
     ChatWithArchiveComponent,
     CurrentConversationComponent,
-    InboxMessageComponent,
     InboxUserDetailComponent,
     InboxItemDetailComponent,
-    BlockSendLinkComponent
+    BlockSendLinkComponent,
+    TextMessageComponent,
+    ThirdVoiceMessageComponent,
+    ThirdVoiceReviewComponent
   ],
   entryComponents: [
     ArchiveConversationComponent,

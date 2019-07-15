@@ -1,0 +1,27 @@
+@import "~style/common";
+
+.message-body .message-cloud {
+  background-color: $softblue-light;
+  color: $softblue-dark;
+
+  .icon-content {
+    float: left;
+  }
+
+  .message-content {
+    padding-top: 3px;
+    padding-left: 35px;
+
+    .message-date {
+      color: $softblue-dark;
+      &.third-voice {
+        height: 0;
+        bottom: $spacing-m;
+      }
+    }
+
+    tsl-third-voice-button {
+      text-align: center;
+    }
+  }
+}

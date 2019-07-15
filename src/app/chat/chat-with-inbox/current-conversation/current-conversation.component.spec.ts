@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { CurrentConversationComponent } from './current-conversation.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
-import { InboxMessage } from '../message';
+import { InboxMessage, MessageType } from '../message/inbox-message';
 import { USER_ID } from '../../../../tests/user.fixtures.spec';
 import { messageStatus } from '../../../core/message/message';
 import { RealTimeService } from '../../../core/message/real-time.service';
@@ -134,19 +134,19 @@ describe('CurrentConversationComponent', () => {
       it(`should call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message belonging
       to the currentConversation`, fakeAsync(() => {
         const newMessage = new InboxMessage('someId', component.currentConversation.id, 'hola!',
-        component.currentConversation.messages[0].from, false, new Date(), messageStatus.RECEIVED);
+          component.currentConversation.messages[0].from, false, new Date(), messageStatus.RECEIVED, MessageType.TEXT);
 
         component.ngOnInit();
         eventService.emit(EventService.MESSAGE_ADDED, newMessage);
         tick(1000);
 
-        expect(realTime.sendRead).toHaveBeenCalledWith('fakeId', component.currentConversation.id);
+        expect(realTime.sendRead).toHaveBeenCalledWith(newMessage.from, component.currentConversation.id);
       }));
 
       it(`should NOT call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message NOT belonging
         to the currentConversation`, fakeAsync(() => {
         const newMessage = new InboxMessage('someId', 'other-thread-id', 'hola!',
-        component.currentConversation.messages[0].from, true, new Date(), messageStatus.RECEIVED);
+          component.currentConversation.messages[0].from, true, new Date(), messageStatus.RECEIVED, MessageType.TEXT);
 
         component.ngOnInit();
         eventService.emit(EventService.MESSAGE_ADDED, newMessage);
@@ -159,7 +159,7 @@ describe('CurrentConversationComponent', () => {
     it('should  NOT call realTime.sendRead when a MESSAGE_ADDED event AND the browser window is NOT visible', fakeAsync(() => {
       spyOn(Visibility, 'onVisible').and.callFake(() => false);
       const newMessage = new InboxMessage('someId', component.currentConversation.id, 'hola!',
-        component.currentConversation.messages[0].from, true, new Date(), messageStatus.RECEIVED);
+        component.currentConversation.messages[0].from, true, new Date(), messageStatus.RECEIVED, MessageType.TEXT);
 
       component.ngOnInit();
       eventService.emit(EventService.MESSAGE_ADDED, newMessage);
@@ -205,7 +205,7 @@ describe('CurrentConversationComponent', () => {
     beforeEach(() => {
       currentMessage = component.currentConversation.messages[0];
       nextMessage = new InboxMessage('123', component.currentConversation.id, 'new msg', USER_ID, true, new Date(),
-      messageStatus.RECEIVED);
+        messageStatus.RECEIVED, MessageType.TEXT);
     });
 
     it('should return TRUE if it is called without a nextMessage parameter', () => {
@@ -460,6 +460,28 @@ describe('CurrentConversationComponent', () => {
       component.loadMoreMessages();
 
       expect(conversationService.loadMoreMessages).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('messagesVisibility', () => {
+    it('should show text message', () => {
+      expect(component.isTextMessage(MessageType.TEXT)).toBeTruthy();
+    });
+
+    it('should not show text message', () => {
+      expect(component.isTextMessage(null)).toBeFalsy();
+      expect(component.isTextMessage(MessageType.REVIEW)).toBeFalsy();
+      expect(component.isTextMessage(MessageType.PRICE_DROP)).toBeFalsy();
+    });
+
+    it('should show message third voice', () => {
+      expect(component.isThirdVoiceMessage(MessageType.REVIEW)).toBeTruthy();
+      expect(component.isThirdVoiceMessage(MessageType.PRICE_DROP)).toBeTruthy();
+    });
+
+    it('should not show message third voice', () => {
+      expect(component.isThirdVoiceMessage(null)).toBeFalsy();
+      expect(component.isThirdVoiceMessage(MessageType.TEXT)).toBeFalsy();
     });
   });
 });
