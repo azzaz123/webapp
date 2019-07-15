@@ -35,17 +35,17 @@ describe('ThirdVoiceMessageComponent', () => {
 
   it('should return false if message id review', () => {
     component.message.type = null;
-    expect(component.isReview()).toBeFalsy();
+    expect(component.isReview()).toBe(false);
 
     component.message.type = MessageType.TEXT;
-    expect(component.isReview()).toBeFalsy();
+    expect(component.isReview()).toBe(false);
 
     component.message.type = MessageType.PRICE_DROP;
-    expect(component.isReview()).toBeFalsy();
+    expect(component.isReview()).toBe(false);
   });
 
   it('should return true if message id review', () => {
     component.message.type = MessageType.REVIEW;
-    expect(component.isReview()).toBeTruthy();
+    expect(component.isReview()).toBe(true);
   });
 });

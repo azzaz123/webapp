@@ -82,7 +82,7 @@ $vertical-padding: $spacing-ms;
   &.btn-third-voice {
     background-color: $softblue-dark;
     font-size: $font-size-s;
-    padding: 10px 20px;
+    padding: $spacing-ms $spacing-ml;
   }
 }
 

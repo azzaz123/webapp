@@ -179,7 +179,6 @@ describe('ThirdVoiceReviewComponent', () => {
 
       it('should open the SoldModalComponent', fakeAsync(() => {
         expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, { windowClass: 'review' });
-        // expect(modalService.open).toHaveBeenCalled();
       }));
 
       it('should set item in the modal component', () => {

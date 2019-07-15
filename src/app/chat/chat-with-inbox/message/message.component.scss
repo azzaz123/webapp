@@ -26,7 +26,7 @@ h5 {
   }
   .message-cloud {
     flex: 0 0 auto;
-    width: fit-content;
+    max-width: 100%;
     padding: $spacing-s $spacing-ms;
     border-radius: 20px;
     border: 1px solid $blue-grey-5;

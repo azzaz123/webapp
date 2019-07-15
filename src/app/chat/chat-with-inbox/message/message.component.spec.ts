@@ -19,14 +19,18 @@ describe('MessageComponent', () => {
   it('should clear inbox conversation', () => {
     component.message.phoneRequest = 'PHONE_NUMBER';
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
+
     component.ngOnInit();
+
     expect(component.currentConversation).not.toBeNull();
   });
 
   it('should not clear inbox conversation', () => {
     component.message.phoneRequest = null;
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
+
     component.ngOnInit();
+
     expect(component.currentConversation).toBeNull();
   });
 });
