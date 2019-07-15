@@ -811,6 +811,7 @@
   <translation id="4940843552280014819">+ Añadir nueva tarjeta</translation>
   <translation id="8429052002955936753">Selecciona tu tarjeta</translation>
   <translation id="3059462504958938177">Este teléfono nunca será público, se te asignará un número de tracking que será el que verán los clientes.</translation>
+  <translation id="6260849581441982349">¡Oh, no!</translation>
   <translation id="8776614783712961708">¡Oh, no!</translation>
   <translation id="3345227992092802987">¡No puedes mandar enlaces (no relacionados a wallapop) en esta conversación!</translation>
   <translation id="6158688416374751486">Añade un precio justo y el area en metros cuadrados. Cuéntanos también el estado de la propiedad</translation>
@@ -830,4 +831,5 @@
     <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>
     km de ti
   </translation>
+  <translation id="6721544969146753310">Gracias por la valoración</translation>
 </translationbundle>

@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { RealTimeService } from '../message/real-time.service';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation';
 import { EventService } from '../event/event.service';
-import { InboxMessage, messageStatus, statusOrder } from '../../chat/chat-with-inbox/message/inbox-message';
+import { InboxMessage, messageStatus, MessageType, statusOrder } from '../../chat/chat-with-inbox/message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { Message } from '../message/message';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
-import { Response, RequestOptions, Headers } from '@angular/http';
+import { Headers, RequestOptions, Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
-import { InboxUserPlaceholder, InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
-import { InboxItemPlaceholder, InboxItem } from '../../chat/chat-with-inbox/inbox/inbox-item';
+import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
+import { InboxItem } from '../../chat/chat-with-inbox/inbox/inbox-item';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -55,13 +55,17 @@ export class ConversationService {
       this.archivedConversations = conversations;
     });
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
-      const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
-        message.status, message.payload, message.phoneRequest);
-      this.processNewMessage(inboxMessage);
+      this.processNewMessage(this.buildInboxMessage(message));
     });
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processNewChatSignal(signal);
     });
+  }
+
+  public buildInboxMessage(message: Message) {
+    const messageType = message.payload ? message.payload.type as MessageType : MessageType.TEXT;
+    return new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
+      message.status, messageType, message.payload, message.phoneRequest);
   }
 
   set selfId(value: string) {
@@ -275,7 +279,7 @@ export class ConversationService {
 
   public openConversationWith$(itemId: string): Observable<InboxConversation> {
     if (this.conversations && this.archivedConversations) {
-      const localConversation = this.conversations.find((conver) => conver.item.id === itemId && !conver.item.isMine) 
+      const localConversation = this.conversations.find((conver) => conver.item.id === itemId && !conver.item.isMine)
       || this.archivedConversations.find((conver) => conver.item.id === itemId && !conver.item.isMine);
 
       if (localConversation) {
