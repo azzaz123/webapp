@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 
 import { AccessTokenService } from '../access-token.service';
+import { environment } from '../../../../environments/environment';
 
 export const TOKEN_AUTHORIZATION_HEADER_NAME = 'Authorization';
 export const TOKEN_TIMESTAMP_HEADER_NAME = 'Timestamp';
@@ -29,8 +30,9 @@ export class TokenInterceptor implements HttpInterceptor {
 
       if (request.url.indexOf('v3') !== -1) {
         const timestamp = new Date().getTime();
+        const endpoint = request.url.replace(environment.baseUrl, '');
         setHeaders[TOKEN_TIMESTAMP_HEADER_NAME] = timestamp.toString();
-        setHeaders[TOKEN_SIGNATURE_HEADER_NAME] = this.getSignature(request.url, request.method, timestamp);
+        setHeaders[TOKEN_SIGNATURE_HEADER_NAME] = this.getSignature(endpoint, request.method, timestamp);
       }
       request = request.clone({setHeaders});
     }
