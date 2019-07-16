@@ -65,7 +65,12 @@
                 <span *ngIf="isLoadingMoreMessages"><mat-icon svgIcon="spinner" class="spinner"></mat-icon></span>
             </div>
         </div>
-        <tsl-input [currentConversation]="currentConversation"></tsl-input>
+
+      <div class="scroll-message-container">
+        <tsl-scrolling-message [noMessages]="2"></tsl-scrolling-message>
+      </div>
+
+      <tsl-input [currentConversation]="currentConversation"></tsl-input>
     </div>
 
 

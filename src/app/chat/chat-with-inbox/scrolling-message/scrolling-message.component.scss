@@ -1,0 +1,39 @@
+@import "~style/common";
+
+.btn-scrolling {
+  width: 42px;
+  height: 42px;
+  border-radius: 21px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+  background-color: #ffffff;
+  text-align: center;
+  padding: 7px;
+  position: absolute;
+  right: 25px;
+  bottom: 25px;
+
+  .badge-pill {
+    position: absolute;
+    top: -$spacing-ms;
+    left: -$spacing-ms;
+    background-color: $warn;
+    font-size: $font-size-xs;
+    padding: 0;
+
+    &.badge-pill-sm {
+      height: $font-size-s;
+      width: $font-size-s;
+    }
+
+    &.badge-pill-lg {
+      height: $font-size-lll;
+      width: $font-size-lll;
+    }
+
+    span {
+      line-height: $font-size-lll;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}
