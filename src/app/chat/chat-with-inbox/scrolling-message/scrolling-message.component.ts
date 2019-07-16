@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
 
 @Component({
@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 export class ScrollingMessageComponent {
 
   @Input() noMessages: number;
+  @Output() clickScroll = new EventEmitter();
 
   isNullOrUndefinedOrEmpty(): boolean {
     return this.noMessages === null || this.noMessages === undefined || _.eq(this.noMessages, 0);
@@ -20,5 +21,9 @@ export class ScrollingMessageComponent {
 
   hasGtThanOneMessage(): boolean {
     return _.gt(this.noMessages, 1);
+  }
+
+  onClickScrollDown(): void {
+    this.clickScroll.emit();
   }
 }

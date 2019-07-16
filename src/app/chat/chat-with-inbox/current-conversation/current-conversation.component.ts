@@ -115,7 +115,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         this.currentConversation.id
       ).subscribe(() => {
         this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
-          {user_id: this.currentConversation.user.id, reason_id: result.reason});
+          { user_id: this.currentConversation.user.id, reason_id: result.reason });
         this.toastr.success(this.i18n.getTranslations('reportUserSuccess'));
       });
     });
@@ -210,5 +210,12 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   public isThirdVoiceMessage(messageType: MessageType): boolean {
     return _.includes(ThirdVoiceMessageComponent.ALLOW_MESSAGES_TYPES, messageType);
+  }
+
+  public scrollToLastMessage(): void {
+    const lastMessage = document.querySelector('.message-body');
+    if (lastMessage) {
+      lastMessage.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }

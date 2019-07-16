@@ -4,5 +4,5 @@
     <span *ngIf="hasGtThanOneMessage()">{{noMessages}}</span>
   </div>
 
-  <mat-icon svgIcon="ico-message"></mat-icon>
+  <mat-icon (click)="onClickScrollDown()" svgIcon="ico-message"></mat-icon>
 </div>
