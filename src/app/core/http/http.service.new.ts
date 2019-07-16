@@ -15,43 +15,53 @@ export class HttpServiceNew {
   constructor(private http: HttpClient) {}
 
   public get<T = any>(endpoint: string, params?: IDictionary[], options: IRequestOptions = {}): Observable<T> {
-      this.addParamsToOptions(params, options);
+    this.addParamsToOptions(params, options);
 
-      return this.http.get<T>(environment.baseUrl + endpoint, options)
-        .pipe(
-          catchError((errorResponse: HttpErrorResponse) => this.catchErrorFn(errorResponse)),
-          finalize(this.finalizeFn())
-        );
+    return this.http.get<T>(environment.baseUrl + endpoint, options)
+      .pipe(
+        catchError((errorResponse: HttpErrorResponse) => this.catchErrorFn(errorResponse)),
+        finalize(this.finalizeFn())
+      );
+  }
+
+  public getNoBase<T = any>(url: string, params?: IDictionary[], options: IRequestOptions = {}): Observable<T> {
+    this.addParamsToOptions(params, options);
+
+    return this.http.get<T>(url, options)
+      .pipe(
+        catchError((errorResponse: HttpErrorResponse) => this.catchErrorFn(errorResponse)),
+        finalize(this.finalizeFn())
+      );
   }
 
   public post<T = any>(endpoint: string, body: any = {}, params?: IDictionary[], options: IRequestOptions = {}): Observable<T> {
-      this.addParamsToOptions(params, options);
+    this.addParamsToOptions(params, options);
 
-      return this.http.post<T>(environment.baseUrl + endpoint, body, options)
-        .pipe(
-          catchError((errorResponse: HttpErrorResponse) => this.catchErrorFn(errorResponse)),
-          finalize(this.finalizeFn())
-        );
+    return this.http.post<T>(environment.baseUrl + endpoint, body, options)
+      .pipe(
+        catchError((errorResponse: HttpErrorResponse) => this.catchErrorFn(errorResponse)),
+        finalize(this.finalizeFn())
+      );
   }
 
   public put<T = any>(endpoint: string, body: any = {}, params?: IDictionary[], options: IRequestOptions = {}): Observable<T> {
-      this.addParamsToOptions(params, options);
+    this.addParamsToOptions(params, options);
 
-      return this.http.put<T>(environment.baseUrl + endpoint, body, options)
-        .pipe(
-          catchError((errorResponse: HttpErrorResponse) => this.catchErrorFn(errorResponse)),
-          finalize(this.finalizeFn())
-        );
+    return this.http.put<T>(environment.baseUrl + endpoint, body, options)
+      .pipe(
+        catchError((errorResponse: HttpErrorResponse) => this.catchErrorFn(errorResponse)),
+        finalize(this.finalizeFn())
+      );
   }
 
   public delete<T = any>(endpoint: string, params?: IDictionary[], options: IRequestOptions = {}): Observable<T> {
-      this.addParamsToOptions(params, options);
+    this.addParamsToOptions(params, options);
 
-      return this.http.delete<T>(environment.baseUrl + endpoint, options)
-        .pipe(
-          catchError((errorResponse: HttpErrorResponse) => this.catchErrorFn(errorResponse)),
-          finalize(this.finalizeFn())
-        );
+    return this.http.delete<T>(environment.baseUrl + endpoint, options)
+      .pipe(
+        catchError((errorResponse: HttpErrorResponse) => this.catchErrorFn(errorResponse)),
+        finalize(this.finalizeFn())
+      );
   }
 
   public addParamsToOptions(params: IDictionary[], options: IRequestOptions): void {

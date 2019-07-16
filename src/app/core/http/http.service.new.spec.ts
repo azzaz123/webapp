@@ -7,9 +7,10 @@ import { environment } from '../../../environments/environment';
 import { IDictionary } from '../../shared/models/dictionary.interface';
 import { HttpModuleNew } from './http.module.new';
 
-const ENDPOINT_NAME: string = 'endpoint';
-const BASE_WITH_ENDPOINT: string = environment.baseUrl + ENDPOINT_NAME;
-const BASE_WITH_ENDP_AND_PARAMS: string = `${BASE_WITH_ENDPOINT}?foo=123&bar=456`;
+const ENDPOINT_NAME = 'endpoint';
+const BASE_WITH_ENDPOINT = environment.baseUrl + ENDPOINT_NAME;
+const BASE_WITH_ENDP_AND_PARAMS = `${BASE_WITH_ENDPOINT}?foo=123&bar=456`;
+const EXTERNAL_SITE_WITH_PARAMS = `${environment.siteUrl}?foo=123&bar=456`;
 
 const MOCK_DATA: Array<any> = [
     {
@@ -103,6 +104,49 @@ describe('HttpServiceNew', () => {
 
             httpService.get<Array<any>>(ENDPOINT_NAME).subscribe(response => dataResponse = response);
             const req: TestRequest = httpMock.expectOne(BASE_WITH_ENDPOINT);
+            req.flush(MOCK_DATA);
+
+            expect(dataResponse).toBe(MOCK_DATA);
+            expect(req.request.method).toBe('GET');
+        });
+    });
+
+    describe('GET (no base)', () => {
+        it('should use only URL passed', () => {
+            httpService.getNoBase(environment.siteUrl).subscribe();
+            const req: TestRequest = httpMock.expectOne(environment.siteUrl);
+            req.flush({});
+
+            expect(req.request.url).toBe(environment.siteUrl);
+            expect(req.request.method).toBe('GET');
+        });
+
+        it('should capture error in observable', () => {
+            let errorResponse: HttpErrorResponse;
+
+            httpService.getNoBase(environment.siteUrl).subscribe(null, error => errorResponse = error);
+            const req: TestRequest = httpMock.expectOne(environment.siteUrl);
+            req.error(MOCK_ERROR_EVENT);
+
+            expect(errorResponse.error.message).toBe(MOCK_ERROR_EVENT.message);
+            expect(req.request.method).toBe('GET');
+        });
+
+        it('should add parameters to URL', () => {
+            httpService.getNoBase(environment.siteUrl, MOCK_PARAMETERS).subscribe();
+            const req: TestRequest = httpMock.expectOne(EXTERNAL_SITE_WITH_PARAMS);
+            req.flush({});
+
+            expect(req.request.url).toBe(environment.siteUrl);
+            expect(req.request.urlWithParams).toBe(EXTERNAL_SITE_WITH_PARAMS);
+            expect(req.request.method).toBe('GET');
+        });
+
+        it('should return valid object from backend response', () => {
+            let dataResponse: Array<any>;
+
+            httpService.getNoBase<Array<any>>(environment.siteUrl).subscribe(response => dataResponse = response);
+            const req: TestRequest = httpMock.expectOne(environment.siteUrl);
             req.flush(MOCK_DATA);
 
             expect(dataResponse).toBe(MOCK_DATA);
