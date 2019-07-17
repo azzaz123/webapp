@@ -378,7 +378,6 @@
   <msg id="33149636091572968"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:27</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:52</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:76</source>Load more</msg>
   <msg id="6260849581441982349"><source>app/chat/modals/block-send-link/block-send-link.component.html:3</source>Oh, no!</msg>
   <msg id="33149636091572968"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:27</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:51</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:75</source>Load more</msg>
-  <msg id="6260849581441982349"><source>app/chat/modals/block-send-link/block-send-link.component.html:3</source>Oh, no!</msg>
   <msg id="3345227992092802987"><source>app/chat/modals/block-send-link/block-send-link.component.html:4</source>You can not send links (unrelated to wallapop) on this chat. That&apos;s how many scams start, so better safe than sorry!</msg>
   <msg id="5601530442010506564"><source>app/chat/modals/block-send-link/block-send-link.component.html:7</source>Got it</msg>
   <msg id="4896863464728200563"><source>app/chat/input/input.component.html:2</source>Write a message...</msg>
