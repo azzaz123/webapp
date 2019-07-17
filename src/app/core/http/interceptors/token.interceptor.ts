@@ -26,7 +26,10 @@ export class TokenInterceptor implements HttpInterceptor {
 
     if (this.accessTokenService.accessToken) {
       const setHeaders: any = {};
-      setHeaders[TOKEN_AUTHORIZATION_HEADER_NAME] = `Bearer ${this.accessTokenService.accessToken}`;
+
+      if (!request.headers.has(TOKEN_AUTHORIZATION_HEADER_NAME)) {
+        setHeaders[TOKEN_AUTHORIZATION_HEADER_NAME] = `Bearer ${this.accessTokenService.accessToken}`;
+      }
 
       if (request.url.indexOf('v3') !== -1) {
         const timestamp = new Date().getTime();

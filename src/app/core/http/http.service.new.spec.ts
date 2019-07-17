@@ -215,6 +215,58 @@ describe('HttpServiceNew', () => {
         });
     });
 
+    describe('POST (no base)', () => {
+        it('should use only URL passed', () => {
+            httpService.postNoBase(environment.siteUrl).subscribe();
+            const req: TestRequest = httpMock.expectOne(environment.siteUrl);
+            req.flush({});
+
+            expect(req.request.url).toBe(environment.siteUrl);
+            expect(req.request.method).toBe('POST');
+        });
+
+        it('should capture error in observable', () => {
+            let errorResponse: HttpErrorResponse;
+
+            httpService.postNoBase(environment.siteUrl).subscribe(null, error => errorResponse = error);
+            const req: TestRequest = httpMock.expectOne(environment.siteUrl);
+            req.error(MOCK_ERROR_EVENT);
+
+            expect(errorResponse.error.message).toBe(MOCK_ERROR_EVENT.message);
+            expect(req.request.method).toBe('POST');
+        });
+
+        it('should return valid object from backend response', () => {
+            let dataResponse: Array<any>;
+
+            httpService.postNoBase<Array<any>>(environment.siteUrl).subscribe(response => dataResponse = response);
+            const req: TestRequest = httpMock.expectOne(environment.siteUrl);
+            req.flush(MOCK_DATA);
+
+            expect(dataResponse).toBe(MOCK_DATA);
+            expect(req.request.method).toBe('POST');
+        });
+
+        it('should send proper body to backend', () => {
+            httpService.postNoBase(environment.siteUrl, MOCK_DATA).subscribe();
+            const req: TestRequest = httpMock.expectOne(environment.siteUrl);
+            req.flush(MOCK_DATA);
+
+            expect(req.request.body).toEqual(MOCK_DATA);
+            expect(req.request.method).toBe('POST');
+        });
+
+        it('should add parameters to URL', () => {
+            httpService.postNoBase(environment.siteUrl, MOCK_DATA, MOCK_PARAMETERS).subscribe();
+            const req: TestRequest = httpMock.expectOne(EXTERNAL_SITE_WITH_PARAMS);
+            req.flush(MOCK_DATA);
+
+            expect(req.request.url).toBe(environment.siteUrl);
+            expect(req.request.urlWithParams).toBe(EXTERNAL_SITE_WITH_PARAMS);
+            expect(req.request.method).toBe('POST');
+        });
+    });
+
     describe('PUT', () => {
         it('should have base URL at the beginning of every request', () => {
             httpService.put('').subscribe();

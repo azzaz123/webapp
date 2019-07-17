@@ -44,6 +44,16 @@ export class HttpServiceNew {
       );
   }
 
+  public postNoBase<T = any>(url: string, body: any = {}, params?: IDictionary[], options: IRequestOptions = {}): Observable<T> {
+    this.addParamsToOptions(params, options);
+
+    return this.http.post<T>(url, body, options)
+      .pipe(
+        catchError((errorResponse: HttpErrorResponse) => this.catchErrorFn(errorResponse)),
+        finalize(this.finalizeFn())
+      );
+  }
+
   public put<T = any>(endpoint: string, body: any = {}, params?: IDictionary[], options: IRequestOptions = {}): Observable<T> {
     this.addParamsToOptions(params, options);
 
