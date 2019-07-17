@@ -1,8 +1,9 @@
 <div class="btn-scrolling">
   <div *ngIf="!isNullOrUndefinedOrEmpty()" [ngClass]="hasEqOneMessage() ? 'badge-pill-sm':  'badge-pill-lg'"
        class="badge badge-primary badge-pill">
+    <span *ngIf="hasEqOneMessage()"></span>
     <span *ngIf="hasGtThanOneMessage()">{{noMessages}}</span>
   </div>
 
-  <mat-icon (click)="onClickScrollDown()" svgIcon="ico-message"></mat-icon>
+  <mat-icon (click)="onClickScrollDown()" svgIcon="scroll-arrow"></mat-icon>
 </div>
