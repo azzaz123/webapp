@@ -130,9 +130,9 @@ export class PersistencyService {
   }
 
   public getArchivedStoredInbox(): Observable<InboxConversation[]> {
-    return Observable.fromPromise((this.archivedInboxDb.allDocs( { include_docs: true })).then((data) => {
+    return this.archivedInboxDb ? Observable.fromPromise((this.archivedInboxDb.allDocs( { include_docs: true })).then((data) => {
       return this.mapToInboxConversation(data);
-    }));
+    })) : Observable.of([]);
   }
 
   private mapToInboxConversation(data): InboxConversation[] {

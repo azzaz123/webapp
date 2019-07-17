@@ -1,19 +1,19 @@
-<div id="empty-state" *ngIf="!currentConversation">
-    <div class="empty" *ngIf="emptyInbox">
+<div id="empty-state" *ngIf="!currentConversation || loadingError">
+    <div class="empty" *ngIf="emptyInbox && !loadingError">
         <div>
             <mat-icon svgIcon="empty-inbox-conversation"></mat-icon>
         </div>
     </div>
-    <div class="content" *ngIf="!emptyInbox">
+    <div class="content" *ngIf="!emptyInbox || loadingError">
         <mat-icon svgIcon="empty-state" class="image"></mat-icon>
-        <p *ngIf="conversationsTotal > 0 && !connectionError" i18n>Choose a conversation<br />
+        <p *ngIf="!emptyInbox && !connectionError && !loadingError" i18n>Choose a conversation<br />
             from the list on the left</p>
-        <p *ngIf="conversationsTotal === 0 && !connectionError" i18n>There are no messages</p>
-        <p *ngIf="connectionError" i18n>Service not available at the moment.<br />
+        <p *ngIf="emptyInbox && !connectionError && !loadingError" i18n>There are no messages</p>
+        <p *ngIf="connectionError || loadingError" i18n>Service not available at the moment.<br />
             Try again later.</p>
     </div>
 </div>
-<div *ngIf="currentConversation">
+<div *ngIf="currentConversation && !loadingError">
     <div id="messaging">
         <div id="top-bar">
             <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"

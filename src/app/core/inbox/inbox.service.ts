@@ -24,6 +24,7 @@ export class InboxService {
   private nextArchivedPageToken: number = null;
   private pageSize = 30;
   public errorRetrievingInbox = false;
+  public errorRetrievingArchived = false;
 
   constructor(private http: HttpService,
     private persistencyService: PersistencyService,
@@ -33,7 +34,6 @@ export class InboxService {
     private eventService: EventService,
     private userService: UserService) {
     }
-
 
   set conversations(value: InboxConversation[]) {
     this._conversations = value;
@@ -61,19 +61,27 @@ export class InboxService {
     this.conversationService.selfId = this.selfId;
     this.subscribeArchiveEvents();
     this.subscribeUnarchiveEvents();
-    Observable.forkJoin(this.getInbox$(), this.getArchivedInbox$())
+
+    this.getInbox$()
     .catch(() => {
       this.errorRetrievingInbox = true;
-      return [this.persistencyService.getStoredInbox(), this.persistencyService.getArchivedStoredInbox()];
+      return this.persistencyService.getStoredInbox();
     })
-    .subscribe((result) => {
-      const conversations = result[0];
-      const archived = result[1];
-      this.eventService.emit(EventService.INBOX_LOADED, conversations);
-      this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, archived);
-      this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+    .subscribe((conversations) => {
       this.eventService.emit(EventService.INBOX_READY, true);
+      this.eventService.emit(EventService.INBOX_LOADED, conversations);
+      this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+    });
+
+    this.getArchivedInbox$()
+    .catch(() => {
+      this.errorRetrievingArchived = true;
+      return this.persistencyService.getArchivedStoredInbox();
+    })
+    .subscribe((conversations) => {
       this.eventService.emit(EventService.ARCHIVED_INBOX_READY, true);
+      this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
+      this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
 
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (blockedUsers: string[]) => {
@@ -111,7 +119,7 @@ export class InboxService {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getNextArchivedPage$()
       .catch(() => {
-        this.errorRetrievingInbox = true;
+        this.errorRetrievingArchived = true;
         return Observable.of([]);
       })
       .subscribe((conversations: InboxConversation[]) => {
@@ -161,7 +169,7 @@ export class InboxService {
     .map(res => {
       return this.conversations = this.conversations.concat(this.processArchivedInboxResponse(res));
     });
-}
+  }
 
   private processInboxResponse(res: Response): InboxConversation[] {
     const r = res.json();
@@ -182,7 +190,7 @@ export class InboxService {
       return (this.archivedConversations
         && this.archivedConversations.find(existingConv => existingConv.id === newConv.hash)) ? null : newConv;
     });
-    return newConvs.map((conv) => InboxConversation.fromJSON(conv, this.selfId) );
+    return newConvs.map((conv) => InboxConversation.fromJSON(conv, this.selfId));
   }
 
   private buildConversations(conversations): InboxConversation[] {

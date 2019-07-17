@@ -9,7 +9,7 @@ import { debug } from 'util';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { UserService } from '../../../core/user/user.service';
 
-enum InboxState { Inbox, Archived }
+export enum InboxState { Inbox, Archived }
 
 @Component({
   selector: 'tsl-inbox',
@@ -49,8 +49,10 @@ enum InboxState { Inbox, Archived }
     ])
   ])]
 })
-export class InboxComponent implements OnInit, OnDestroy  {
+export class InboxComponent implements OnInit, OnDestroy {
+
   @Output() public loadingEvent = new EventEmitter<any>();
+  @Output() public loadingError = new EventEmitter<any>();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
   public conversations: InboxConversation[] = [];
@@ -61,13 +63,15 @@ export class InboxComponent implements OnInit, OnDestroy  {
   private _loadingMore = false;
   private conversationElementHeight = 100;
   public errorRetrievingInbox = false;
+  public errorRetrievingArchived = false;
   private conversation: InboxConversation;
   public isProfessional: boolean;
 
   constructor(private inboxService: InboxService,
-    private eventService: EventService,
-    private conversationService: ConversationService,
-    private userService: UserService) {}
+              private eventService: EventService,
+              private conversationService: ConversationService,
+              private userService: UserService) {
+  }
 
   set loading(value: boolean) {
     this._loading = value;
@@ -96,6 +100,7 @@ export class InboxComponent implements OnInit, OnDestroy  {
   get isArchived(): boolean {
     return this.componentState === InboxState.Archived;
   }
+
   ngOnInit() {
     this.componentState = InboxState.Inbox;
     this.bindNewMessageToast();
@@ -139,6 +144,8 @@ export class InboxComponent implements OnInit, OnDestroy  {
     this.loading = false;
     this.loadingMore = false;
     this.errorRetrievingInbox = this.inboxService.errorRetrievingInbox;
+    this.errorRetrievingArchived = this.inboxService.errorRetrievingArchived;
+    this.showInbox();
   }
 
   private bindNewMessageToast() {
@@ -152,10 +159,12 @@ export class InboxComponent implements OnInit, OnDestroy  {
   }
 
   public showInbox() {
+    this.loadingError.emit(this.errorRetrievingInbox);
     this.componentState = InboxState.Inbox;
   }
 
   public showArchive() {
+    this.loadingError.emit(this.errorRetrievingArchived);
     this.componentState = InboxState.Archived;
   }
 
