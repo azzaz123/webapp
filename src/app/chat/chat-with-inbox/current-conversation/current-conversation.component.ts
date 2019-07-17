@@ -67,7 +67,12 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
-      (message: InboxMessage) => this.lastInboxMessage = message);
+      (message: InboxMessage) => {
+        this.lastInboxMessage = message;
+        if (this.isEndOfConversation) {
+          this.sendReadForLastInboxMessage();
+        }
+      });
 
     this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED,
       (conversation: InboxConversation) => {
@@ -80,8 +85,6 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         this.currentConversation = conversation;
       }
     });
-
-    this.sendReadForLastInboxMessage();
   }
 
   ngOnDestroy() {
@@ -93,8 +96,6 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   @HostListener('scroll', ['$event'])
   onScrollMessages(event: any) {
-    // visible height + pixel scrolled >= total height
-    console.log(`${event.target.offsetHeight + event.target.scrollTop}  ${event.target.scrollHeight}`);
     if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - 50) {
       this.sendReadForLastInboxMessage();
       this.isEndOfConversation = true;
