@@ -93,6 +93,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('send', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/send.svg'));
   matIconRegistry.addSvgIcon('wall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wall.svg'));
   matIconRegistry.addSvgIcon('check', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/check.svg'));
+  matIconRegistry.addSvgIcon('check-blue', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/check-blue.svg'));
   matIconRegistry.addSvgIcon('navigation_catalog', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_catalog.svg'));
   matIconRegistry.addSvgIcon('navigation_messages', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_messages.svg'));
   matIconRegistry.addSvgIcon('navigation_favorites', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_favorites.svg'));
@@ -274,4 +275,5 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('listing-fee-car-icon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/listing-fee-icon.svg'));
   matIconRegistry.addSvgIcon('listing-fee-car-icon-wings', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/listing-fee-icon-wings.svg'));
   matIconRegistry.addSvgIcon('pro-seal', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/pro-seal.svg'));
+  matIconRegistry.addSvgIcon('robot', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/robot.svg'));
 }
