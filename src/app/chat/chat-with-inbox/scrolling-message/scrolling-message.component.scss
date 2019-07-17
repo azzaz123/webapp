@@ -9,8 +9,8 @@
   text-align: center;
   padding: 7px;
   position: absolute;
-  right: 25px;
-  bottom: 25px;
+  right: $line-height-ml;
+  bottom: $line-height-ml;
   transition: opacity 0.25s;
 
   .badge-pill {

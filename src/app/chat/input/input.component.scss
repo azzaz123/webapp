@@ -8,9 +8,7 @@ form {
   textarea {
     border-radius: 100px;
     max-height: $input-height;
-    width: calc(100% - #{$spacing-ml * 2});
-    margin: 0 $spacing-ml;
-    margin-bottom: $spacing-ml;
+    width: 100%;
     height: $input-height;
     line-height: $input-height;
     padding: 0 #{$send-icon-size + $spacing-m} 0 $spacing-m;
@@ -38,7 +36,7 @@ form {
   #send {
     cursor: pointer;
     position: absolute;
-    right: 25px;
+    right: 5px;
     top: 5px;
     border-radius: 50%;
     background: $blue-grey-4;

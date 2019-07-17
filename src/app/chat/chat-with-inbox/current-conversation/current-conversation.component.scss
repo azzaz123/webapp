@@ -13,7 +13,7 @@
 
 
 .messages-panel-container {
-  height: calc(100vh - #{$chat-topbar-height + $chat-input + $topbar-height});
+  height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height});
   display: flex;
   flex-direction: column-reverse;
   overflow-y: scroll;
@@ -177,4 +177,10 @@
 
 .scroll-message-container {
   position: relative;
+}
+
+.send-message-container {
+  position: relative;
+  padding: $line-height-ms $line-height-ml;
+  border-top: 1px solid $color-inbox-background;
 }

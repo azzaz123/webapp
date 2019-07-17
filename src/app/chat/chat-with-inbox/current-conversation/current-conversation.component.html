@@ -70,7 +70,9 @@
             <tsl-scrolling-message [isVisible]="!isEndOfConversation" [noMessages]="currentConversation.unreadCounter" (clickScroll)="scrollToLastMessage()"></tsl-scrolling-message>
         </div>
 
-        <tsl-input [currentConversation]="currentConversation"></tsl-input>
+        <div class="send-message-container">
+          <tsl-input [currentConversation]="currentConversation"></tsl-input>
+        </div>
     </div>
 
 
