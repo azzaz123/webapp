@@ -11,6 +11,7 @@
   position: absolute;
   right: 25px;
   bottom: 25px;
+  transition: opacity 0.25s;
 
   .badge-pill {
     position: absolute;
@@ -19,6 +20,7 @@
     background-color: $warn;
     font-size: $font-size-xs;
     padding: 0;
+    transition: opacity 0.25s;
 
     &.badge-pill-sm {
       top: -6px;
@@ -42,4 +44,12 @@
   mat-icon {
     margin: 10px 5px;
   }
+}
+
+.visible {
+  opacity: 1;
+}
+
+.hidden {
+  opacity: 0;
 }

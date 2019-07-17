@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 export class ScrollingMessageComponent {
 
   @Input() noMessages: number;
+  @Input() isVisible = true;
   @Output() clickScroll = new EventEmitter();
 
   isNullOrUndefinedOrEmpty(): boolean {
