@@ -30,6 +30,8 @@ import * as _ from 'lodash';
 })
 export class CurrentConversationComponent implements OnInit, OnDestroy {
 
+  private readonly MESSAGE_HEIGHT = 50;
+
   @Input() currentConversation: InboxConversation;
   @Input() conversationsTotal: number;
   @Input() connectionError: boolean;
@@ -96,7 +98,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   @HostListener('scroll', ['$event'])
   onScrollMessages(event: any) {
-    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - 50) {
+    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - this.MESSAGE_HEIGHT) {
       this.sendReadForLastInboxMessage();
       this.isEndOfConversation = true;
     } else {
