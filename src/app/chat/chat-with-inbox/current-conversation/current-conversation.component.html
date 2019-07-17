@@ -66,11 +66,11 @@
             </div>
         </div>
 
-      <div class="scroll-message-container">
-        <tsl-scrolling-message [noMessages]="1" (clickScroll)="scrollToLastMessage()"></tsl-scrolling-message>
-      </div>
+        <div class="scroll-message-container">
+            <tsl-scrolling-message [noMessages]="currentConversation.unreadCounter" (clickScroll)="scrollToLastMessage()"></tsl-scrolling-message>
+        </div>
 
-      <tsl-input [currentConversation]="currentConversation"></tsl-input>
+        <tsl-input [currentConversation]="currentConversation"></tsl-input>
     </div>
 
 

@@ -95,6 +95,13 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     return date.getFullYear() === new Date().getFullYear();
   }
 
+  public sendReadForLastInboxMessage() {
+    if (this.lastInboxMessage !== null) {
+      this.sendRead(this.lastInboxMessage);
+      this.lastInboxMessage = null;
+    }
+  }
+
   private sendRead(message: InboxMessage) {
     if (_.eq(this.currentConversation.id, message.thread) && !message.fromSelf) {
       Visibility.onVisible(() => {
@@ -216,6 +223,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     const lastMessage = document.querySelector('.message-body');
     if (lastMessage) {
       lastMessage.scrollIntoView({ behavior: 'smooth' });
+      this.sendReadForLastInboxMessage();
     }
   }
 }

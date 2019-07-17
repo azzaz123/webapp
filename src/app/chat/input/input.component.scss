@@ -17,7 +17,7 @@ form {
     outline: none;
     resize: none;
     overflow: hidden;
-    border: 2px solid $blue-grey-5;
+    border: 1px solid $blue-grey-5;
     transition: .15s ease all;
     &:focus {
       border-color: $walla-main;
@@ -32,7 +32,7 @@ form {
       }
     }
     &.selected {
-      border: 2px solid $walla-main;
+      border: 1px solid $walla-main;
     }
   }
   #send {
