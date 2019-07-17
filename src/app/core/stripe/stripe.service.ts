@@ -32,7 +32,7 @@ export class StripeService {
               private http: HttpService,
               private featureflagService: FeatureflagService) {
     this.userService.me().subscribe((user: User) => {
-      this.fullName = `${user.firstName} ${user.lastName}`
+      this.fullName = user ?  `${user.firstName} ${user.lastName}` : '';
     });
   }
 
