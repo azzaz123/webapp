@@ -1,5 +1,5 @@
 <div class="btn-scrolling" [ngClass]="isVisible ? 'visible' : 'hidden'">
-  <div [ngClass]="{'badge-pill-sm': hasEqOneMessage(), 'badge-pill-lg': !hasEqOneMessage(), 'visible': !isNullOrUndefinedOrEmpty(), 'hidden': isNullOrUndefinedOrEmpty()}" class="badge badge-primary badge-pill">
+  <div *ngIf="!isNullOrUndefinedOrEmpty()" [ngClass]="{'badge-pill-sm': hasEqOneMessage(), 'badge-pill-lg': !hasEqOneMessage()}" class="badge badge-primary badge-pill">
     <span>{{hasGtThanOneMessage() ? noMessages : ''}}</span>
   </div>
 

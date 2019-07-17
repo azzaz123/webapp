@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, HostListener } from '@angular/core';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxMessage, MessageType } from '../message';
@@ -49,6 +49,8 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
+  private lastInboxMessage: InboxMessage;
+  private isEndOfConversation = true;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -65,7 +67,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
-      (message: InboxMessage) => this.sendRead(message));
+      (message: InboxMessage) => this.lastInboxMessage = message);
 
     this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED,
       (conversation: InboxConversation) => {
@@ -78,12 +80,26 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         this.currentConversation = conversation;
       }
     });
+
+    this.sendReadForLastInboxMessage();
   }
 
   ngOnDestroy() {
     this.currentConversation = null;
     if (this.newMessageSubscription) {
       this.newMessageSubscription.unsubscribe();
+    }
+  }
+
+  @HostListener('scroll', ['$event'])
+  onScrollMessages(event: any) {
+    // visible height + pixel scrolled >= total height
+    console.log(`${event.target.offsetHeight + event.target.scrollTop}  ${event.target.scrollHeight}`);
+    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - 50) {
+      this.sendReadForLastInboxMessage();
+      this.isEndOfConversation = true;
+    } else {
+      this.isEndOfConversation = false;
     }
   }
 
@@ -96,7 +112,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   }
 
   public sendReadForLastInboxMessage() {
-    if (this.lastInboxMessage !== null) {
+    if (this.lastInboxMessage) {
       this.sendRead(this.lastInboxMessage);
       this.lastInboxMessage = null;
     }
@@ -224,6 +240,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     if (lastMessage) {
       lastMessage.scrollIntoView({ behavior: 'smooth' });
       this.sendReadForLastInboxMessage();
+      this.isEndOfConversation = true;
     }
   }
 }
