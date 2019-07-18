@@ -66,6 +66,10 @@ export class InputComponent implements OnChanges, OnInit {
     : this.currentConversation.cannotChat;
   }
 
+  getPlaceholder(): string {
+    return this.disable ? '' : 'Write a message...';
+  }
+
   private hasLinkInMessage(message: string): boolean {
     return !_.isEmpty(this.findLinksWhereLinkIsNotWallapop(message));
   }
