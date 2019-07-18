@@ -7,5 +7,7 @@
             [ngClass]="{selected: messageArea.value.trim() && !disable}"
             [attr.value]="messageArea.value"
             maxlength="300"></textarea>
-  <a id="send" (click)="sendMessage(messageArea, $event)" [ngClass]="{selected: messageArea.value.trim() && !disable}"><mat-icon svgIcon="send"></mat-icon></a>
+  <a id="send" (click)="sendMessage(messageArea, $event)" [ngClass]="{selected: messageArea.value.trim() && !disable}">
+    <mat-icon svgIcon="send"></mat-icon>
+  </a>
 </form>

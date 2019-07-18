@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, HostListener } from '@angular/core';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxMessage, MessageType } from '../message';
@@ -30,6 +30,8 @@ import * as _ from 'lodash';
 })
 export class CurrentConversationComponent implements OnInit, OnDestroy {
 
+  private readonly MESSAGE_HEIGHT = 50;
+
   @Input() currentConversation: InboxConversation;
   @Input() conversationsTotal: number;
   @Input() connectionError: boolean;
@@ -50,6 +52,8 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
+  private lastInboxMessage: InboxMessage;
+  private isEndOfConversation = true;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -66,7 +70,12 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
-      (message: InboxMessage) => this.sendRead(message));
+      (message: InboxMessage) => {
+        this.lastInboxMessage = message;
+        if (this.isEndOfConversation) {
+          this.sendReadForLastInboxMessage();
+        }
+      });
 
     this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED,
       (conversation: InboxConversation) => {
@@ -88,12 +97,29 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener('scroll', ['$event'])
+  onScrollMessages(event: any) {
+    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - this.MESSAGE_HEIGHT) {
+      this.sendReadForLastInboxMessage();
+      this.isEndOfConversation = true;
+    } else {
+      this.isEndOfConversation = false;
+    }
+  }
+
   public showDate(currentMessage: InboxMessage, nextMessage: InboxMessage): boolean {
     return nextMessage ? new Date(currentMessage.date).toDateString() !== new Date(nextMessage.date).toDateString() : true;
   }
 
   public dateIsThisYear(date: Date) {
     return date.getFullYear() === new Date().getFullYear();
+  }
+
+  public sendReadForLastInboxMessage() {
+    if (this.lastInboxMessage) {
+      this.sendRead(this.lastInboxMessage);
+      this.lastInboxMessage = null;
+    }
   }
 
   private sendRead(message: InboxMessage) {
@@ -116,7 +142,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         this.currentConversation.id
       ).subscribe(() => {
         this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
-          {user_id: this.currentConversation.user.id, reason_id: result.reason});
+          { user_id: this.currentConversation.user.id, reason_id: result.reason });
         this.toastr.success(this.i18n.getTranslations('reportUserSuccess'));
       });
     });
@@ -211,5 +237,14 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   public isThirdVoiceMessage(messageType: MessageType): boolean {
     return _.includes(ThirdVoiceMessageComponent.ALLOW_MESSAGES_TYPES, messageType);
+  }
+
+  public scrollToLastMessage(): void {
+    const lastMessage = document.querySelector('.message-body');
+    if (lastMessage) {
+      lastMessage.scrollIntoView({ behavior: 'smooth' });
+      this.sendReadForLastInboxMessage();
+      this.isEndOfConversation = true;
+    }
   }
 }

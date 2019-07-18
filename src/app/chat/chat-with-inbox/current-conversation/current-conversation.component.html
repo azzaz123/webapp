@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="messages-panel-container" #messagesPanel>
+        <div class="messages-panel-container" #messagesPanel (scroll)="onScrollMessages($event)">
             <div class="messages-info-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}" #messagesInfoContainer>
                 <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-container">
                     <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
@@ -65,7 +65,14 @@
                 <span *ngIf="isLoadingMoreMessages"><mat-icon svgIcon="spinner" class="spinner"></mat-icon></span>
             </div>
         </div>
-        <tsl-input [currentConversation]="currentConversation"></tsl-input>
+
+        <div class="scroll-message-container">
+            <tsl-scrolling-message [isVisible]="!isEndOfConversation" [noMessages]="currentConversation.unreadCounter" (clickScroll)="scrollToLastMessage()"></tsl-scrolling-message>
+        </div>
+
+        <div class="send-message-container">
+          <tsl-input [currentConversation]="currentConversation"></tsl-input>
+        </div>
     </div>
 
 

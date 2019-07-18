@@ -36,6 +36,7 @@ import { BlockSendLinkComponent } from './modals/block-send-link';
 import { ThirdVoiceMessageComponent } from './chat-with-inbox/message/third-voice-message';
 import { TextMessageComponent } from './chat-with-inbox/message/text-message';
 import { ThirdVoiceReviewComponent } from './chat-with-inbox/message/third-voice-message/third-voice-review';
+import { ScrollingMessageComponent } from './chat-with-inbox/scrolling-message';
 
 @NgModule({
   imports: [
@@ -80,7 +81,8 @@ import { ThirdVoiceReviewComponent } from './chat-with-inbox/message/third-voice
     BlockSendLinkComponent,
     TextMessageComponent,
     ThirdVoiceMessageComponent,
-    ThirdVoiceReviewComponent
+    ThirdVoiceReviewComponent,
+    ScrollingMessageComponent
   ],
   entryComponents: [
     ArchiveConversationComponent,
