@@ -40,6 +40,16 @@
   margin: $spacing-ms 0;
   color: $white;
   font-size: $font-size-xs;
+
+  &.date-marker-error {
+    color: $magenta-dark;
+    background-color: $negative-soft;
+
+    mat-icon {
+      width: 14px;
+      height: 10px;
+    }
+  }
 }
 
 .more-messages-loader {

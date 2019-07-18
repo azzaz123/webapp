@@ -49,7 +49,7 @@
 
         <div class="messages-panel-container" #messagesPanel (scroll)="onScrollMessages($event)">
             <div class="messages-info-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}" #messagesInfoContainer>
-                <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-container">
+                <div *ngFor="let message of currentConversation?.messages; let i = index; first as isFirst" class="message-container">
                     <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
                         <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
                         <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
@@ -58,6 +58,22 @@
                     <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message"></tsl-text-message>
                     <tsl-third-voice-message *ngIf="isThirdVoiceMessage(message.type)" [message]="message" [user]="currentConversation.user"
                                              [item]="currentConversation.item"></tsl-third-voice-message>
+                    <div *ngIf="isFirst && currentConversation.user.blocked" class="date-marker date-marker-error">
+                        <mat-icon svgIcon="blocked-error"></mat-icon>
+                        <span i18n>You have blocked this user. Unblock it to continue chatting</span>
+                    </div>
+
+                    <div *ngIf="isFirst && !currentConversation.user.blocked && !currentConversation.user.available"
+                         class="date-marker date-marker-error">
+                        <mat-icon svgIcon="not-available-error"></mat-icon>
+                        <span i18n>This user is not available</span>
+                    </div>
+
+                    <div *ngIf="isFirst && !currentConversation.user.blocked && currentConversation.user.available && currentConversation.item.notAvailable"
+                         class="date-marker date-marker-error">
+                        <mat-icon svgIcon="not-available-error"></mat-icon>
+                        <span i18n>This product is not available</span>
+                    </div>
                 </div>
             </div>
             <div *ngIf="hasMoreMessages()" class="more-messages-loader" #loadMoreMessagesDiv>
