@@ -131,7 +131,8 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
           this.errorsService.i18nSuccess('userEdited');
           this.formComponent.hasNotSavedChanges = false;
         }).subscribe(() => {
-          if (this.user.location.approximated_latitude !== profileFormLocation.latitude ||
+          if (!this.user.location ||
+            this.user.location.approximated_latitude !== profileFormLocation.latitude ||
             this.user.location.approximated_longitude !== profileFormLocation.longitude) {
               const newLocation: Coordinate = {
                 latitude: profileFormLocation.latitude,
