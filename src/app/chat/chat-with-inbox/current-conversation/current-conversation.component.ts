@@ -224,7 +224,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     return this.currentConversation.nextPageToken !== null && this.currentConversation.nextPageToken !== undefined;
   }
 
-  public loadMoreMessages(scrollHeight: number) {
+  public loadMoreMessages(scrollHeight: number = 0) {
     if (this.isLoadingMoreMessages) {
       return;
     }
