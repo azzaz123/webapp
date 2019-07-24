@@ -44,7 +44,9 @@
     </div>
 
     <tsl-messages-panel [currentConversation]="currentConversation"></tsl-messages-panel>
-    <tsl-input [currentConversation]="currentConversation"></tsl-input>
+    <div class="input-container">
+        <tsl-input [currentConversation]="currentConversation"></tsl-input>
+    </div>
 </div>
 <div id="empty-state" *ngIf="!currentConversation">
     <div class="content">

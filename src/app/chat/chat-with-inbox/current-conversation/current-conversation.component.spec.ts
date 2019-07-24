@@ -27,9 +27,9 @@ import { BlockUserService } from '../../../core/conversation/block-user';
 class MockUserService {
 
   public user: User = new User('fakeId', 'microName', null,
-                                null, null, null, null, null, null,
-                                null, null, null, null, null, null,
-                                null, null, null, null, null, null, null);
+    null, null, null, null, null, null,
+    null, null, null, null, null, null,
+    null, null, null, null, null, null, null);
 
   public reportUser(): Observable<any> {
     return Observable.of({});
@@ -54,7 +54,8 @@ class MockedToastr {
 }
 
 class MockConversationService {
-  public loadMoreMessages() {}
+  public loadMoreMessages() {
+  }
 }
 
 class BlockUserServiceMock {
@@ -65,6 +66,11 @@ class BlockUserServiceMock {
 
   unblockUser(userHash: string) {
     return Observable.of();
+  }
+}
+
+class MessageHTMLElementMock {
+  scrollIntoView(arg?: boolean | ScrollIntoViewOptions): void {
   }
 }
 
@@ -483,5 +489,55 @@ describe('CurrentConversationComponent', () => {
       expect(component.isThirdVoiceMessage(null)).toBeFalsy();
       expect(component.isThirdVoiceMessage(MessageType.TEXT)).toBeFalsy();
     });
+  });
+
+  describe('scrollMessages', () => {
+    it('should not scroll to last message', () => {
+      spyOn(document, 'querySelector').and.returnValues(null);
+      spyOn(component, 'sendReadForLastInboxMessage');
+
+      component.scrollToLastMessage();
+
+      expect(document.querySelector).toHaveBeenCalledWith('.message-body');
+      expect(component.sendReadForLastInboxMessage).not.toHaveBeenCalled();
+    });
+
+    it('should scroll to last message', () => {
+      const messageHTMLMock = new MessageHTMLElementMock();
+      spyOn(document, 'querySelector').and.returnValues(messageHTMLMock);
+      spyOn(component, 'sendReadForLastInboxMessage');
+
+      component.scrollToLastMessage();
+
+      expect(document.querySelector).toHaveBeenCalledWith('.message-body');
+      expect(component.sendReadForLastInboxMessage).toHaveBeenCalled();
+      expect(component['isEndOfConversation']).toEqual(true);
+    });
+  });
+
+  describe('sendReadSignal', () => {
+
+    it('should not scroll to last message', () => {
+      component['lastInboxMessage'] = null;
+      spyOn(realTime, 'sendRead');
+
+      component.sendReadForLastInboxMessage();
+
+      expect(realTime.sendRead).not.toHaveBeenCalled();
+    });
+
+    it('should scroll to last message', fakeAsync(() => {
+      spyOn(Visibility, 'onVisible').and.callFake((callback: Function) => callback());
+
+      const inboxMessage = new InboxMessage('123', component.currentConversation.id, 'new msg', USER_ID, false, new Date(),
+        messageStatus.RECEIVED, MessageType.TEXT);
+      component['lastInboxMessage'] = inboxMessage;
+      spyOn(realTime, 'sendRead');
+
+      component.sendReadForLastInboxMessage();
+      tick(1000);
+
+      expect(realTime.sendRead).toHaveBeenCalledWith(inboxMessage.from, inboxMessage.thread);
+    }));
   });
 });

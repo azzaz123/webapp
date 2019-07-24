@@ -1,0 +1,7 @@
+<div class="btn-scrolling" [ngClass]="isVisible ? 'visible' : 'hidden'">
+  <div *ngIf="!isNullOrUndefinedOrEmpty()" [ngClass]="{'badge-pill-sm': hasEqOneMessage(), 'badge-pill-lg': !hasEqOneMessage()}" class="badge badge-primary badge-pill">
+    <span>{{hasGtThanOneMessage() ? noMessages : ''}}</span>
+  </div>
+
+  <mat-icon (click)="onClickScrollDown()" svgIcon="scroll-arrow"></mat-icon>
+</div>
