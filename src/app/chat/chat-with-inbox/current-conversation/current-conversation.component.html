@@ -47,22 +47,29 @@
             </div>
         </div>
 
-        <div class="messages-panel-container" #messagesPanel (scroll)="onScrollMessages($event)">
-            <div class="messages-info-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}" #messagesInfoContainer>
-                <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-container">
-                    <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
-                        <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
-                        <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
-                    </div>
+        <div class="messages-panel-container" #scrollElement [scrollTop]="scrollElement.scrollHeight - scrollHeight" (scroll)="onScrollMessages($event)">
+            <div class="message-panel-wrapper">
 
-                    <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message"></tsl-text-message>
-                    <tsl-third-voice-message *ngIf="isThirdVoiceMessage(message.type)" [message]="message" [user]="currentConversation.user"
-                                             [item]="currentConversation.item"></tsl-third-voice-message>
+                <div class="message-panel-empty"></div>
+
+                <div *ngIf="hasMoreMessages()" class="more-messages-loader">
+                    <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
+                          i18n>Load more..</span>
+                    <span *ngIf="isLoadingMoreMessages"><mat-icon svgIcon="spinner" class="spinner"></mat-icon></span>
                 </div>
-            </div>
-            <div *ngIf="hasMoreMessages()" class="more-messages-loader" #loadMoreMessagesDiv>
-                <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages()" i18n>Load more..</span>
-                <span *ngIf="isLoadingMoreMessages"><mat-icon svgIcon="spinner" class="spinner"></mat-icon></span>
+
+                <div class="messages-info-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}">
+                    <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-container">
+                        <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
+                            <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
+                            <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
+                        </div>
+
+                        <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message"></tsl-text-message>
+                        <tsl-third-voice-message *ngIf="isThirdVoiceMessage(message.type)" [message]="message" [user]="currentConversation.user"
+                                                 [item]="currentConversation.item"></tsl-third-voice-message>
+                    </div>
+                </div>
             </div>
         </div>
 
