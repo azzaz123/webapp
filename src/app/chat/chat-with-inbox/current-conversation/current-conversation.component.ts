@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxMessage, MessageType } from '../message';
@@ -28,9 +28,10 @@ import * as _ from 'lodash';
   templateUrl: './current-conversation.component.html',
   styleUrls: ['./current-conversation.component.scss']
 })
-export class CurrentConversationComponent implements OnInit, OnDestroy {
+export class CurrentConversationComponent implements OnInit, OnChanges, OnDestroy {
 
   public readonly BOTTOM_BUFFER_ZONE = 100;
+  private MESSAGE_HEIGHT = 42;
 
   @Input() currentConversation: InboxConversation;
   @Input() conversationsTotal: number;
@@ -55,6 +56,8 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   private lastInboxMessage: InboxMessage;
   private isEndOfConversation = true;
   public scrollHeight = 0;
+  public scrollLocalPosition = 0;
+  public noMessages = 0;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -73,6 +76,8 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
       (message: InboxMessage) => {
         this.lastInboxMessage = message;
+        this.noMessages += 1;
+        this.scrollHeight = this.scrollLocalPosition + this.noMessages * this.MESSAGE_HEIGHT;
         if (this.isEndOfConversation) {
           this.sendReadForLastInboxMessage();
         }
@@ -91,6 +96,10 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.scrollLocalPosition = 0;
+  }
+
   ngOnDestroy() {
     this.currentConversation = null;
     if (this.newMessageSubscription) {
@@ -100,6 +109,8 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   @HostListener('scroll', ['$event'])
   onScrollMessages(event: any) {
+    this.noMessages = 0;
+    this.scrollLocalPosition = event.target.scrollHeight - event.target.scrollTop;
     if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - this.BOTTOM_BUFFER_ZONE) {
       this.sendReadForLastInboxMessage();
       this.isEndOfConversation = true;

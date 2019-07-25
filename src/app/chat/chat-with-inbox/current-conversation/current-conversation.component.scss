@@ -25,16 +25,12 @@
     flex-grow: 1;
   }
 
-  .message-panel-wrapper {
-    height: 100%;
+  .messages-info-container {
+    display: flex;
+    flex-direction: column-reverse;
 
-    .messages-info-container {
-      display: flex;
-      flex-direction: column-reverse;
-
-      .message-container {
-        text-align: center;
-      }
+    .message-container {
+      text-align: center;
     }
   }
 }
