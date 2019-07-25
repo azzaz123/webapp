@@ -25,13 +25,17 @@
     flex-grow: 1;
   }
 
-  .messages-info-container {
+  .message-container {
     display: flex;
     flex-direction: column-reverse;
 
-    .message-container {
+    .message-wrapper {
       text-align: center;
     }
+  }
+
+  .notification-container {
+    margin: 0 auto;
   }
 }
 
@@ -41,7 +45,7 @@
   padding: $spacing-xxs $spacing-s;
   background-color: $blue-grey-4;
   border-radius: 10px;
-  margin: $spacing-ms 0;
+  margin: 0;
   color: $white;
   font-size: $font-size-xs;
 
@@ -66,6 +70,7 @@
   text-align: center;
   font-size: $font-size-xs;
   cursor: pointer;
+
   :hover {
     color: $walla-main;
   }
@@ -81,9 +86,11 @@
 
   &.professional {
     height: 103px;
+
     tsl-user-avatar {
       display: none;
     }
+
     h5 {
       margin-top: -25px;
     }
@@ -104,6 +111,7 @@
   .conversation-header-user-info {
     display: inline-block;
     flex-grow: 1;
+
     h5 {
       color: $blue-grey-1;
       font-size: $font-size-m;
@@ -119,16 +127,20 @@
 
 .conversation-header-menu {
   height: 24px;
+
   mat-icon {
     cursor: pointer;
     padding: 0 3px;
+
     /deep/ #MVP {
       fill: $blue-grey-2;
     }
   }
+
   .dropdown-item {
     padding: ($spacing-ml /2) $spacing-ml;
     cursor: pointer;
+
     &.warn {
       color: $warn;
     }
@@ -153,13 +165,16 @@
   height: 100vh;
   position: relative;
   background: $white;
+
   .content {
     @include in-the-middle;
     text-align: center;
+
     .image {
       width: 211px;
       height: 220px;
     }
+
     p {
       font-size: $font-size-m;
       color: $blue-grey-2;
@@ -172,7 +187,8 @@
   position: relative;
   background: $color-inbox-background;
   display: flex;
-  mat-icon{
+
+  mat-icon {
     width: 100vh;
     height: 100vh;
   }
@@ -182,10 +198,11 @@
   $spinner-size: 14px;
   height: $spinner-size;
   width: $spinner-size;
+
   svg {
-      position: absolute;
-      top: 0;
-      left: -#{$spacing-ml + 5px};
+    position: absolute;
+    top: 0;
+    left: -#{$spacing-ml + 5px};
   }
 }
 
