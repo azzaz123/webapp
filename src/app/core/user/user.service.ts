@@ -62,10 +62,24 @@ export class UserService extends ResourceService {
     )
       .map((r: Response) => r.json())
       .map((r: LoginResponse) => this.storeData(r));
+
+    // TODO: Use new HttpService
+    // const headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    // const options: IRequestOptions = { headers };
+    // const body: HttpParams = new HttpParams()
+    //   .set('emailAddress', data.emailAddress)
+    //   .set('installationType', data.installationType)
+    //   .set('password', data.password);
+
+    // return this.httpNew.post<LoginResponse>('shnm-portlet/api/v1/access.json/login3', body.toString(), null, options)
+    //   .map((r: LoginResponse) => this.storeData(r));
   }
 
   public logout() {
     const URL = environment.siteUrl.replace('es', this.subdomain);
+
+    // TODO: Use new HttpService
+    // this.httpNew.postNoBase<string>(URL + 'rest/logout', null, null, { responseType: 'text' as 'json'} ).subscribe(response => {
     this.http.postNoBase(URL + 'rest/logout', undefined, undefined, true).subscribe((response) => {
       const redirectUrl: any = response['_body'];
       const cookieOptions = environment.name === 'local' ? {domain: 'localhost'} : {domain: '.wallapop.com'};

@@ -4,10 +4,10 @@
   width: 42px;
   height: 42px;
   border-radius: 21px;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
-  background-color: #ffffff;
+  box-shadow: 0 1px 4px 0 rgba($black, 0.25);
+  background-color: $white;
   text-align: center;
-  padding: 7px;
+  padding: $spacing-s;
   position: absolute;
   right: 25px;
   bottom: $line-height-ml;

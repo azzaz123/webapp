@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, HostListener } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxMessage, MessageType } from '../message';
@@ -30,7 +30,7 @@ import * as _ from 'lodash';
 })
 export class CurrentConversationComponent implements OnInit, OnDestroy {
 
-  private readonly MESSAGE_HEIGHT = 50;
+  public readonly BOTTOM_BUFFER_ZONE = 100;
 
   @Input() currentConversation: InboxConversation;
   @Input() conversationsTotal: number;
@@ -54,6 +54,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
   public isLoadingMoreMessages = false;
   private lastInboxMessage: InboxMessage;
   private isEndOfConversation = true;
+  public scrollHeight = 0;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -99,7 +100,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   @HostListener('scroll', ['$event'])
   onScrollMessages(event: any) {
-    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - this.MESSAGE_HEIGHT) {
+    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - this.BOTTOM_BUFFER_ZONE) {
       this.sendReadForLastInboxMessage();
       this.isEndOfConversation = true;
     } else {
@@ -223,11 +224,12 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     return this.currentConversation.nextPageToken !== null && this.currentConversation.nextPageToken !== undefined;
   }
 
-  public loadMoreMessages() {
+  public loadMoreMessages(scrollHeight: number = 0) {
     if (this.isLoadingMoreMessages) {
       return;
     }
     this.isLoadingMoreMessages = true;
+    this.scrollHeight = scrollHeight;
     this.conversationService.loadMoreMessages(this.currentConversation.id);
   }
 
