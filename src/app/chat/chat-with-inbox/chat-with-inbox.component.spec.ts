@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChatWithInboxComponent } from './chat-with-inbox.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -20,9 +20,9 @@ class MockUserService {
   }
 }
 
-
 describe('Component: ChatWithInboxComponent', () => {
   let component: ChatWithInboxComponent;
+  let fixture: ComponentFixture<ChatWithInboxComponent>;
   let eventService: EventService;
   let adService: AdService;
   let activatedRoute: ActivatedRoute;
@@ -30,21 +30,23 @@ describe('Component: ChatWithInboxComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChatWithInboxComponent ],
+      declarations: [ChatWithInboxComponent],
       imports: [NgbModule.forRoot(), FormsModule, NgxPermissionsModule],
       providers: [
         ChatWithInboxComponent,
-        {provide: UserService, useClass: MockUserService},
-        {provide: HttpService, useValue: {}},
-        {provide: ConversationService, useValue: {
-          openConversationWith$(): Observable<any> {
-            return Observable.empty();
+        { provide: UserService, useClass: MockUserService },
+        { provide: HttpService, useValue: {} },
+        {
+          provide: ConversationService, useValue: {
+            openConversationWith$(): Observable<any> {
+              return Observable.empty();
+            }
           }
-        }},
+        },
         {
           provide: ActivatedRoute, useValue: {
             params: Observable.of({})
-        }
+          }
         },
         I18nService,
         EventService,
@@ -60,11 +62,13 @@ describe('Component: ChatWithInboxComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
-    component = TestBed.createComponent(ChatWithInboxComponent).componentInstance;
+    fixture = TestBed.createComponent(ChatWithInboxComponent);
+    component = fixture.componentInstance;
     eventService = TestBed.get(EventService);
     adService = TestBed.get(AdService);
     activatedRoute = TestBed.get(ActivatedRoute);
     conversationService = TestBed.get(ConversationService);
+    fixture.autoDetectChanges();
   });
 
   it('should set the conversationsLoading value to FALSE when event.loading is false', () => {
@@ -115,10 +119,29 @@ describe('Component: ChatWithInboxComponent', () => {
       const mockConversation = CREATE_MOCK_INBOX_CONVERSATION();
       component.ngOnInit();
 
-
       eventService.emit(EventService.CURRENT_CONVERSATION_SET, mockConversation);
 
       expect(component.currentConversation).toEqual(mockConversation);
+    });
+  });
+
+  describe('onChangeInboxOrArchivedDropdown', () => {
+
+    it('should update model when conversations are NOT available', () => {
+      const mockConversation = CREATE_MOCK_INBOX_CONVERSATION();
+      component.currentConversation = mockConversation;
+      component.onChangeInboxOrArchivedDropdown(false);
+
+      expect(component.loadingError).toBeFalsy();
+      expect(component.currentConversation).toEqual(mockConversation);
+    });
+
+    it('should update model when conversations are available', () => {
+      component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
+      component.onChangeInboxOrArchivedDropdown(true);
+
+      expect(component.loadingError).toBeTruthy();
+      expect(component.currentConversation).toBeNull();
     });
   });
 

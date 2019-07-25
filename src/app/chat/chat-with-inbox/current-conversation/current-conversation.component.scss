@@ -13,22 +13,26 @@
 
 
 .messages-panel-container {
-  height: calc(100vh - #{$chat-topbar-height + $chat-input + $topbar-height});
+  height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height});
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   overflow-y: scroll;
   padding: $spacing-ml;
   width: 100%;
   position: relative;
-}
 
-.message-container {
-  text-align: center;
-}
+  .message-panel-empty {
+    flex-grow: 1;
+  }
 
-.messages-info-container {
-  display: flex;
-  flex-direction: column-reverse;
+  .messages-info-container {
+    display: flex;
+    flex-direction: column-reverse;
+
+    .message-container {
+      text-align: center;
+    }
+  }
 }
 
 .date-marker {
@@ -173,4 +177,14 @@
       top: 0;
       left: -#{$spacing-ml + 5px};
   }
+}
+
+.scroll-message-container {
+  position: relative;
+}
+
+.send-message-container {
+  position: relative;
+  padding: $line-height-ms $line-height-ml;
+  border-top: 1px solid $color-inbox-background;
 }

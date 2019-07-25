@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxMessage, MessageType } from '../message';
@@ -28,11 +28,15 @@ import * as _ from 'lodash';
   templateUrl: './current-conversation.component.html',
   styleUrls: ['./current-conversation.component.scss']
 })
-export class CurrentConversationComponent implements OnInit, OnDestroy {
+export class CurrentConversationComponent implements OnInit, OnChanges, OnDestroy {
+
+  public readonly BOTTOM_BUFFER_ZONE = 100;
+  private MESSAGE_HEIGHT = 42;
 
   @Input() currentConversation: InboxConversation;
   @Input() conversationsTotal: number;
   @Input() connectionError: boolean;
+  @Input() loadingError: boolean;
 
   constructor(private eventService: EventService,
     private modalService: NgbModal,
@@ -49,6 +53,11 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
+  private lastInboxMessage: InboxMessage;
+  private isEndOfConversation = true;
+  public scrollHeight = 0;
+  public scrollLocalPosition = 0;
+  public noMessages = 0;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -65,7 +74,16 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
-      (message: InboxMessage) => this.sendRead(message));
+      (message: InboxMessage) => {
+        this.lastInboxMessage = message;
+        if (this.isEndOfConversation) {
+          this.sendReadForLastInboxMessage();
+          this.scrollHeight = this.scrollLocalPosition;
+        } else {
+          this.noMessages += 1;
+          this.scrollHeight = this.scrollLocalPosition + this.noMessages * this.MESSAGE_HEIGHT;
+        }
+      });
 
     this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED,
       (conversation: InboxConversation) => {
@@ -80,10 +98,26 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.scrollLocalPosition = 0;
+  }
+
   ngOnDestroy() {
     this.currentConversation = null;
     if (this.newMessageSubscription) {
       this.newMessageSubscription.unsubscribe();
+    }
+  }
+
+  @HostListener('scroll', ['$event'])
+  onScrollMessages(event: any) {
+    this.noMessages = 0;
+    this.scrollLocalPosition = event.target.scrollHeight - event.target.scrollTop;
+    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - this.BOTTOM_BUFFER_ZONE) {
+      this.sendReadForLastInboxMessage();
+      this.isEndOfConversation = true;
+    } else {
+      this.isEndOfConversation = false;
     }
   }
 
@@ -93,6 +127,13 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   public dateIsThisYear(date: Date) {
     return date.getFullYear() === new Date().getFullYear();
+  }
+
+  public sendReadForLastInboxMessage() {
+    if (this.lastInboxMessage) {
+      this.sendRead(this.lastInboxMessage);
+      this.lastInboxMessage = null;
+    }
   }
 
   private sendRead(message: InboxMessage) {
@@ -115,7 +156,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         this.currentConversation.id
       ).subscribe(() => {
         this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
-          {user_id: this.currentConversation.user.id, reason_id: result.reason});
+          { user_id: this.currentConversation.user.id, reason_id: result.reason });
         this.toastr.success(this.i18n.getTranslations('reportUserSuccess'));
       });
     });
@@ -196,11 +237,12 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     return this.currentConversation.nextPageToken !== null && this.currentConversation.nextPageToken !== undefined;
   }
 
-  public loadMoreMessages() {
+  public loadMoreMessages(scrollHeight: number = 0) {
     if (this.isLoadingMoreMessages) {
       return;
     }
     this.isLoadingMoreMessages = true;
+    this.scrollHeight = scrollHeight;
     this.conversationService.loadMoreMessages(this.currentConversation.id);
   }
 
@@ -210,5 +252,14 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   public isThirdVoiceMessage(messageType: MessageType): boolean {
     return _.includes(ThirdVoiceMessageComponent.ALLOW_MESSAGES_TYPES, messageType);
+  }
+
+  public scrollToLastMessage(): void {
+    const lastMessage = document.querySelector('.message-body');
+    if (lastMessage) {
+      lastMessage.scrollIntoView({ behavior: 'smooth' });
+      this.sendReadForLastInboxMessage();
+      this.isEndOfConversation = true;
+    }
   }
 }

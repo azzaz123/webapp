@@ -30,7 +30,6 @@ let messageService: MessageService;
 let userService: UserService;
 let itemService: ItemService;
 
-
 describe('ConversationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -154,7 +153,7 @@ describe('ConversationService', () => {
         const message = new InboxMessage('mockId', conversationToBump.id, 'hola!', 'mockUserId', true,
           new Date(), messageStatus.SENT, MessageType.TEXT);
 
-          service.processNewMessage(message);
+        service.processNewMessage(message);
 
         expect(service.conversations.indexOf(conversationToBump)).toBe(0);
       });
@@ -238,7 +237,7 @@ describe('ConversationService', () => {
         const message = new InboxMessage(conversationToBump.lastMessage.id, conversationToBump.id, 'hola!', 'mockUserId', true,
           new Date(), messageStatus.SENT, MessageType.TEXT);
 
-          service.processNewMessage(message);
+        service.processNewMessage(message);
 
         expect(service.conversations.indexOf(conversationToBump)).not.toBe(0);
       });
@@ -353,7 +352,6 @@ describe('ConversationService', () => {
           const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
           service.processNewChatSignal(signal);
 
-
           expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(unreadCount);
           expectedMarkedAsRead.forEach(m => {
             expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
@@ -427,13 +425,13 @@ describe('ConversationService', () => {
 
         it(`should set unreadMessages counter of the conversation to 0 if the number of messages that are being marked as READ is greater
         than the existing counter (disallow negative values in counter)`, () => {
-            mockedConversation.unreadCounter = 1;
+          mockedConversation.unreadCounter = 1;
 
-            const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-            service.processNewChatSignal(signal);
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          service.processNewChatSignal(signal);
 
-            expect(mockedConversation.unreadCounter).toBe(0);
-          });
+          expect(mockedConversation.unreadCounter).toBe(0);
+        });
 
         it('should decrase messageService.totalUnreadMessages counter by the number of messages that are being marked as READ', () => {
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
@@ -446,13 +444,13 @@ describe('ConversationService', () => {
 
         it(`should set messageService.totalUnreadMessages counter to 0 if the number of messages that are being marked as READ is greater
         than the existing counter (disallow negative values in counter)`, () => {
-            mockedConversation.unreadCounter = 5;
+          mockedConversation.unreadCounter = 5;
 
-            const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-            service.processNewChatSignal(signal);
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          service.processNewChatSignal(signal);
 
-            expect(messageService.totalUnreadMessages).toBe(0);
-          });
+          expect(messageService.totalUnreadMessages).toBe(0);
+        });
       });
     });
 
@@ -483,30 +481,30 @@ describe('ConversationService', () => {
 
       it(`should update message status ONLY for messages that meet the criteria:
         message status is missing OR message status is NULL OR the new status order is greater than the current status order`, () => {
-          mockedConversation.messages[0].status = messageStatus.SENT;
-          mockedConversation.messages[1].status = null;
-          mockedConversation.messages[2].status = messageStatus.RECEIVED;
+        mockedConversation.messages[0].status = messageStatus.SENT;
+        mockedConversation.messages[1].status = null;
+        mockedConversation.messages[2].status = messageStatus.RECEIVED;
 
-          const signal1 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[0].id);
-          const signal2 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[1].id);
-          const signal3 = new ChatSignal(chatSignalType.SENT, mockedConversation.id, timestamp, mockedConversation.messages[2].id);
+        const signal1 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[0].id);
+        const signal2 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[1].id);
+        const signal3 = new ChatSignal(chatSignalType.SENT, mockedConversation.id, timestamp, mockedConversation.messages[2].id);
 
-          service.processNewChatSignal(signal1);
-          service.processNewChatSignal(signal2);
-          service.processNewChatSignal(signal3);
+        service.processNewChatSignal(signal1);
+        service.processNewChatSignal(signal2);
+        service.processNewChatSignal(signal3);
 
-          const expectedChangedMessages = mockedConversation.messages.slice(0, 2);
-          const expectedNotChangedMessages = mockedConversation.messages.slice(-1);
+        const expectedChangedMessages = mockedConversation.messages.slice(0, 2);
+        const expectedNotChangedMessages = mockedConversation.messages.slice(-1);
 
-          expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(2);
-          expectedChangedMessages.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, messageStatus.RECEIVED);
-          });
-
-          expectedNotChangedMessages.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.SENT);
-          });
+        expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(2);
+        expectedChangedMessages.forEach(m => {
+          expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, messageStatus.RECEIVED);
         });
+
+        expectedNotChangedMessages.forEach(m => {
+          expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.SENT);
+        });
+      });
     });
   });
 
@@ -525,7 +523,7 @@ describe('ConversationService', () => {
     });
 
     it('with 409 error should emit CONVERSATION_ARCHIVED event', () => {
-      spyOn(http, 'put').and.returnValue(Observable.throwError({status: 409}));
+      spyOn(http, 'put').and.returnValue(Observable.throwError({ status: 409 }));
 
       service.archive(service.conversations[0]).subscribe().unsubscribe();
 
@@ -548,11 +546,35 @@ describe('ConversationService', () => {
     });
 
     it('with 409 error should emit CONVERSATION_UNARCHIVED event', () => {
-      spyOn(http, 'put').and.returnValue(Observable.throwError({status: 409}));
+      spyOn(http, 'put').and.returnValue(Observable.throwError({ status: 409 }));
 
       service.unarchive(service.archivedConversations[0]).subscribe().unsubscribe();
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]);
+    });
+  });
+
+  describe('isConversationArchived', () => {
+    it('should check if conversation is archived', () => {
+      const mockConversation = CREATE_MOCK_INBOX_CONVERSATION();
+
+      service.archivedConversations = null;
+      expect(service.isConversationArchived(null)).toBeFalsy();
+
+      service.archivedConversations = [];
+      expect(service.isConversationArchived(null)).toBeFalsy();
+
+      service.archivedConversations = [mockConversation];
+      expect(service.isConversationArchived(null)).toBeFalsy();
+
+      service.archivedConversations = null;
+      expect(service.isConversationArchived(mockConversation)).toBeFalsy();
+
+      service.archivedConversations = [];
+      expect(service.isConversationArchived(mockConversation)).toBeFalsy();
+
+      service.archivedConversations = [mockConversation];
+      expect(service.isConversationArchived(mockConversation)).toBeTruthy();
     });
   });
 });

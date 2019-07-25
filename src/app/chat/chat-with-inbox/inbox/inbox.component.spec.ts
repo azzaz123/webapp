@@ -2,7 +2,7 @@
 
 import { TestBed } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
-import { InboxComponent } from './inbox.component';
+import { InboxComponent, InboxState } from './inbox.component';
 import { InboxConversationComponent } from '../inbox/inbox-conversation/inbox-conversation.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpService } from '../../../core/http/http.service';
@@ -15,7 +15,6 @@ import { ConversationService } from '../../../core/inbox/conversation.service';
 import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { UserService } from '../../../core/user/user.service';
 import { Observable } from 'rxjs';
-
 
 describe('Component: InboxComponent', () => {
   let component: InboxComponent;
@@ -36,20 +35,31 @@ describe('Component: InboxComponent', () => {
       providers: [
         EventService,
         ...TEST_HTTP_PROVIDERS,
-        {provide: InboxService, useValue: {
-          loadMorePages() {},
-          shouldLoadMorePages() {},
-          loadMoreArchivedPages() {},
-          shouldLoadMoreArchivedPages() {}
-        }},
-        {provide: UserService, useValue: {
-          isProfessional(): Observable<boolean> {
-            return Observable.of(false);
-           }
-         }},
-        {provide: ConversationService, useValue: {
-          openConversation() {}
-        }}
+        {
+          provide: InboxService, useValue: {
+            loadMorePages() {
+            },
+            shouldLoadMorePages() {
+            },
+            loadMoreArchivedPages() {
+            },
+            shouldLoadMoreArchivedPages() {
+            }
+          }
+        },
+        {
+          provide: UserService, useValue: {
+            isProfessional(): Observable<boolean> {
+              return Observable.of(false);
+            }
+          }
+        },
+        {
+          provide: ConversationService, useValue: {
+            openConversation() {
+            }
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
@@ -60,7 +70,6 @@ describe('Component: InboxComponent', () => {
     userService = TestBed.get(UserService);
     conversationService = TestBed.get(ConversationService);
   });
-
 
   describe('ngOnInit', () => {
     const mockedInboxConversations = createInboxConversationsArray(3);
@@ -295,6 +304,24 @@ describe('Component: InboxComponent', () => {
       const result = component.showLoadMore();
 
       expect(result).toBe(true);
+    });
+  });
+
+  describe('changeState', () => {
+    it('should change state to Inbox', () => {
+      spyOn(component.loadingError, 'emit');
+
+      component.showInbox();
+      expect(component.loadingError.emit).toHaveBeenCalled();
+      expect(component.componentState).toEqual(InboxState.Inbox);
+    });
+
+    it('should change state to Archived', () => {
+      spyOn(component.loadingError, 'emit');
+
+      component.showArchive();
+      expect(component.loadingError.emit).toHaveBeenCalled();
+      expect(component.componentState).toEqual(InboxState.Archived);
     });
   });
 });
