@@ -76,10 +76,12 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
       (message: InboxMessage) => {
         this.lastInboxMessage = message;
-        this.noMessages += 1;
-        this.scrollHeight = this.scrollLocalPosition + this.noMessages * this.MESSAGE_HEIGHT;
         if (this.isEndOfConversation) {
           this.sendReadForLastInboxMessage();
+          this.scrollHeight = this.scrollLocalPosition;
+        } else {
+          this.noMessages += 1;
+          this.scrollHeight = this.scrollLocalPosition + this.noMessages * this.MESSAGE_HEIGHT;
         }
       });
 
