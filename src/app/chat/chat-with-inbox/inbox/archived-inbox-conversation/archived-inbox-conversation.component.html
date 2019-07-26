@@ -1,42 +1,34 @@
-<div [ngClass]="{'faded': conversation.cannotChat}">
-  <tsl-item-avatar [item]="conversation?.item" [showAvailableStatus]="conversation.user.available"></tsl-item-avatar>
-  <div class="conversation-info" *ngIf="conversation">
-    <div class="user-name-row" [ngClass]="{'has-phone': true}">
-      <div class="user-name-row-left">
-        <p class="user-name">
-          <span *ngIf="conversation.phoneShared">
-            <mat-icon svgIcon="call-shared"></mat-icon>
-          </span>
-          <span *ngIf="!conversation.user.available">
-            <mat-icon svgIcon="not-available" class="not-available"></mat-icon>
-          </span>
-          <span *ngIf="conversation.user.blocked">
-            <mat-icon svgIcon="blocked" class="blocked"></mat-icon>
-          </span>
-          <span>{{conversation.user.microName}}</span>
-        </p>
+<tsl-item-avatar [item]="conversation?.item" [showAvailableStatus]="conversation.user.available"></tsl-item-avatar>
+<div class="conversation-info" *ngIf="conversation">
+  <div class="user-name-row" [ngClass]="{'has-phone': true}">
+    <div class="user-name-row-left">
+      <p class="user-name">
+        <span *ngIf="conversation.phoneShared">
+          <mat-icon svgIcon="call-shared"></mat-icon>
+        </span>
+        <span>{{conversation.user.microName}}</span>
+      </p>
+    </div>
+    <div class="user-name-row-right">
+      <span class="message-date" *ngIf="dateIsThisYear()">{{conversation?.modifiedDate| amCalendar:momentConfig }}</span>
+      <span class="message-date" *ngIf="!dateIsThisYear()">{{conversation?.modifiedDate| amDateFormat:'D MMM. YYYY' }}</span>
+    </div>
+  </div>
+
+  <div class="item-message-row">
+    <div class="item-title-message-column">
+      <div class="item-title-row">
+        <span>{{conversation.item.title}}</span>
       </div>
-      <div class="user-name-row-right">
-        <span class="message-date" *ngIf="dateIsThisYear()">{{conversation?.modifiedDate| amCalendar:momentConfig }}</span>
-        <span class="message-date" *ngIf="!dateIsThisYear()">{{conversation?.modifiedDate| amDateFormat:'D MMM. YYYY' }}</span>
+
+      <div class="message-row" [ngClass]="{'showStatus': conversation.lastMessage && conversation.lastMessage.fromSelf && conversation.lastMessage.status }">
+        <div class="message-status" [ngClass]="conversation.lastMessage.status" *ngIf="conversation.lastMessage && conversation.lastMessage.fromSelf && conversation.lastMessage.status"></div>
+        <p *ngIf="conversation.lastMessage" class="message">{{conversation.lastMessage.text}}</p>
       </div>
     </div>
-
-    <div class="item-message-row">
-      <div class="item-title-message-column">
-        <div class="item-title-row">
-          <span>{{conversation.item.title}}</span>
-        </div>
-        
-        <div class="message-row" [ngClass]="{'showStatus': conversation.lastMessage && conversation.lastMessage.fromSelf && conversation.lastMessage.status }">
-          <div class="message-status" [ngClass]="conversation.lastMessage.status" *ngIf="conversation.lastMessage && conversation.lastMessage.fromSelf && conversation.lastMessage.status"></div>
-          <p *ngIf="conversation.lastMessage" class="message">{{conversation.lastMessage.text}}</p>
-        </div>
-      </div>
-      <div class="unread-counter-column">
-        <div class="badge badge-primary badge-pill">
-          <span i18n>Archived </span>
-        </div>
+    <div class="unread-counter-column">
+      <div class="badge badge-primary badge-pill">
+        <span i18n>Archived </span>
       </div>
     </div>
   </div>
