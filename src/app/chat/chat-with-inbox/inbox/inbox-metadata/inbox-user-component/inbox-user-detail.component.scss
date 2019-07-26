@@ -6,7 +6,7 @@
 
 .card {
   &.faded {
-    .card-block, tsl-user-avatar {
+    .card-block, .avatar-block {
       opacity: 0.5;
     }
   }
