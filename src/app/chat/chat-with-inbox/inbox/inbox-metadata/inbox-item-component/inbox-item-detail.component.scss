@@ -9,6 +9,13 @@
 
   .image-overlay {
     position: relative;
+
+    tsl-status-icon {
+      position: absolute;
+      top: $spacing-s;
+      left: $spacing-s;
+    }
+
     .card-img-top {
       object-fit: cover;
       width: 100%;

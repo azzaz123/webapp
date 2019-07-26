@@ -2,8 +2,8 @@
    [params]="{id: item.id, title: item.title, sale_price: item.price.amount}" [ngClass]="{'faded': item.notAvailable }">
 
   <div class="image-overlay">
-    <img class="card-img-top" src="{{itemImageUrl}}"
-         onError="this.src='/assets/images/fake-item.png'"/>
+    <tsl-status-icon [unavailable]="item.notAvailable"></tsl-status-icon>
+    <img class="card-img-top" src="{{itemImageUrl}}" onError="this.src='/assets/images/fake-item.png'"/>
     <a class="btn btn-edit" target='_blank' (click)='$event.stopPropagation()'
        [routerLink]="['/catalog/edit/', item.id]" tslTrackEvent="CHAT_EDITITEM" [params]="{item_id: item.id}"
        *ngIf='canEdit()'>
