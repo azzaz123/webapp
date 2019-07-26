@@ -66,16 +66,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
     size: '20x38x40cm',
     value: {
       min_weight_kg: 0,
-      max_weight_kg: 2
-    }
-  }, {
-    size: '20x38x40cm',
-    value: {
-      min_weight_kg: 2,
       max_weight_kg: 5
     }
-  },
-  {
+  }, {
     size: '30x40x50cm',
     value: {
       min_weight_kg: 5,
