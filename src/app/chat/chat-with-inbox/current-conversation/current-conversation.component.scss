@@ -17,7 +17,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  padding: $spacing-ml;
+  padding: $spacing-ms $spacing-ml;
   width: 100%;
   position: relative;
 
@@ -115,7 +115,7 @@
     h5 {
       color: $blue-grey-1;
       font-size: $font-size-m;
-      font-weight: $font-weight-chunky;
+      font-weight: normal;
       margin-bottom: 0;
     }
   }
@@ -214,4 +214,10 @@
   position: relative;
   padding: $line-height-ms $line-height-ml;
   border-top: 1px solid $color-inbox-background;
+}
+
+.faded {
+  tsl-user-avatar, .conversation-header-user-info {
+    opacity: 0.5;
+  }
 }

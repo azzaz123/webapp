@@ -15,7 +15,7 @@
 </div>
 <div *ngIf="currentConversation && !loadingError">
     <div id="messaging">
-        <div id="top-bar">
+        <div id="top-bar" [ngClass]="{'faded': !currentConversation.user.available}">
             <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
                 target="_blank" class="user-avatar">
                 <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
@@ -24,10 +24,6 @@
             </tsl-user-avatar>
             <div class="conversation-header-user-info">
                 <h5>{{currentConversation?.user.microName}}</h5>
-                <!-- <div *ngxPermissionsOnly="['isNormal']">
-                  <tsl-stars *ngIf="currentConversation.user.scoringStars > -1"
-                      [stars]="currentConversation.user.scoringStars" [normalized]="false"></tsl-stars>
-              </div> -->
             </div>
             <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
                 <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
@@ -97,7 +93,6 @@
           <tsl-input [currentConversation]="currentConversation"></tsl-input>
         </div>
     </div>
-
 
     <div id="conversation-meta">
             <tsl-inbox-user-detail [user]="currentConversation.user"></tsl-inbox-user-detail>
