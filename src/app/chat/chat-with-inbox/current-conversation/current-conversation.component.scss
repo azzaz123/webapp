@@ -188,3 +188,8 @@
   padding: $line-height-ms $line-height-ml;
   border-top: 1px solid $color-inbox-background;
 }
+
+.message-owner + .not-message-owner,
+.not-message-owner + .message-owner {
+  margin-bottom: 16px;
+}

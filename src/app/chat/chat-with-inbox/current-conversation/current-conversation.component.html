@@ -57,7 +57,8 @@
             </div>
 
             <div class="messages-info-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}">
-                <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-container">
+                <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-container"
+                     [ngClass]="{'message-owner': message.fromSelf, 'not-message-owner': !message.fromSelf}">
                     <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
                         <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
                         <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
