@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 import * as _ from 'lodash';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-input',
@@ -23,7 +24,8 @@ export class InputComponent implements OnChanges, OnInit {
   constructor(private messageService: MessageService,
               private eventService: EventService,
               private trackingService: TrackingService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private i18n: I18nService) {
   }
 
   ngOnInit() {
@@ -67,7 +69,7 @@ export class InputComponent implements OnChanges, OnInit {
   }
 
   getPlaceholder(): string {
-    return this.disable ? '' : 'Write a message...';
+    return this.disable ? '' : this.i18n.getTranslations('writeMessage');
   }
 
   private hasLinkInMessage(message: string): boolean {

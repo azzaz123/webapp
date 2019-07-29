@@ -11,6 +11,7 @@ import { MOCK_CONVERSATION, SECOND_MOCK_CONVERSATION } from '../../../tests/conv
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 class MessageServiceMock {
   send(c: Conversation, t: string): void {
@@ -36,6 +37,7 @@ describe('Component: Input', () => {
     TestBed.configureTestingModule({
       declarations: [InputComponent],
       providers: [
+        I18nService,
         {provide: MessageService, useClass: MessageServiceMock},
         {provide: NgbModal, useClass: NgbModalMock},
         EventService,
