@@ -84,7 +84,8 @@ describe('InboxService', () => {
       service.init();
 
       expect(http.get).toHaveBeenCalledWith(service['API_URL'], {
-        page_size: service['pageSize']
+        page_size: service['pageSize'],
+        max_messages: ConversationService.MESSAGES_IN_CONVERSATION
       });
     });
 
