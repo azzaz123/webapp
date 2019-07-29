@@ -51,9 +51,11 @@
             <div class="message-panel-empty"></div>
 
             <div *ngIf="hasMoreMessages()" class="more-messages-loader">
-                <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
-                      i18n>Load more..</span>
-                <span *ngIf="isLoadingMoreMessages"><mat-icon svgIcon="spinner" class="spinner"></mat-icon></span>
+                <a class="load-more">
+                    <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
+                          i18n>Load more..</span>
+                    <mat-icon *ngIf="isLoadingMoreMessages" svgIcon="spinner" class="spinner"></mat-icon>
+                </a>
             </div>
 
             <div class="messages-info-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}">
