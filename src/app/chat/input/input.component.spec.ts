@@ -64,7 +64,7 @@ describe('Component: Input', () => {
       component.ngOnInit();
       eventService.emit(EventService.PRIVACY_LIST_UPDATED, [USER_ID]);
 
-      expect(component.disable).toBe(true);
+      expect(component.isUserDisable).toBe(true);
     });
     it('should disable input when the user has been unblocked', () => {
       component.currentConversation = MOCK_CONVERSATION();
@@ -72,7 +72,7 @@ describe('Component: Input', () => {
       component.ngOnInit();
       eventService.emit(EventService.PRIVACY_LIST_UPDATED, []);
 
-      expect(component.disable).toBe(false);
+      expect(component.isUserDisable).toBe(false);
     });
   });
 
@@ -146,7 +146,7 @@ describe('Component: Input', () => {
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if disabled', () => {
       textarea.value = TEXT;
-      component.disable = true;
+      component.isUserDisable = true;
 
       component.sendMessage(textarea, EVENT);
 
@@ -157,7 +157,7 @@ describe('Component: Input', () => {
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains link', () => {
-      component.disable = false;
+      component.isUserDisable = false;
       textarea.value = 'Hi, here is a link: www.link-to-something.com ;*';
 
       component.sendMessage(textarea, EVENT);
@@ -168,7 +168,7 @@ describe('Component: Input', () => {
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time', () => {
-      component.disable = false;
+      component.isUserDisable = false;
       textarea.value = 'Can U access to my webpage outside https://wallapop.com that is www.notAllowedURL.com';
 
       component.sendMessage(textarea, EVENT);
@@ -222,17 +222,17 @@ describe('Component: Input', () => {
 
       component.ngOnChanges();
 
-      expect(component.disable).toBe(true);
+      expect(component.isUserDisable).toBe(true);
     });
 
     it('should enable input if user is blocked', () => {
-      component.disable = true;
+      component.isUserDisable = true;
       component.currentConversation = MOCK_CONVERSATION();
       component.currentConversation.user.blocked = false;
 
       component.ngOnChanges();
 
-      expect(component.disable).toBe(false);
+      expect(component.isUserDisable).toBe(false);
     });
 
   });
