@@ -97,6 +97,7 @@ export interface CarContent extends ItemContent {
   num_seats?: number;
   condition?: string;
   version?: string;
+  financed_price?: number;
 }
 
 export interface RealestateContent extends ItemContent {

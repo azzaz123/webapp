@@ -200,6 +200,7 @@ export class ItemService extends ResourceService {
       content.num_seats,
       content.condition,
       content.version,
+      content.financed_price,
       content.publish_date,
       content.image
     );
