@@ -355,6 +355,42 @@ describe('CartComponent', () => {
             });
           });
         });
+
+        describe('track', () => {
+
+          beforeEach(() => {
+            component.creditInfo.credit = 0;
+            component.cart = CART;
+            component.cart.total = 1;
+          });
+
+          describe('Sabadell', () => {
+
+            it('should call track of trackingService with valid attributes', () => {
+              component.checkout();
+
+              expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
+                selected_products: CART_ORDER_TRACK,
+                payment_method: 'SABADELL'
+              });
+            });
+
+          });
+
+          describe('Stripe', () => {
+            it('should call track of trackingService with valid attributes', () => {
+              component.isStripe = true;
+
+              component.checkout();
+
+              expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
+                selected_products: CART_ORDER_TRACK,
+                payment_method: 'STRIPE'
+              });
+            });
+          });
+
+        });
       });
 
       describe('with payment_needed false', () => {
@@ -380,35 +416,12 @@ describe('CartComponent', () => {
           expect(itemService.selectedAction).toBeNull();
         });
 
-      });
-
-      describe('tracking', () => {
-
-        describe('Sabadell', () => {
-
-          it('should call track of trackingService with valid attributes', () => {
-            component.checkout();
-
-            expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
-              selected_products: CART_ORDER_TRACK,
-              payment_method: 'SABADELL'
-            });
-          });
-
-        });
-
-        describe('Stripe', () => {
-          it('should call track of trackingService with valid attributes', () => {
-            component.isStripe = true;
-
-            component.checkout();
-
-            expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
-              selected_products: CART_ORDER_TRACK,
-              payment_method: 'STRIPE'
-            });
+        it('should call track of trackingService without any payment_method attribute', () => {
+          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
+            selected_products: CART_ORDER_TRACK
           });
         });
+
       });
 
     });
