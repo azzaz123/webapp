@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable */
+/* tslint:isUserDisable:no-unused-variable */
 
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
