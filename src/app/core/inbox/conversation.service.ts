@@ -22,12 +22,12 @@ import * as _ from 'lodash';
   providedIn: 'root'
 })
 export class ConversationService {
+  public static  readonly MESSAGES_IN_CONVERSATION = 30;
   private API_URL = 'bff/messaging/conversation/';
   private ARCHIVE_URL = '/api/v3/instant-messaging/conversations/archive';
   private UNARCHIVE_URL = '/api/v3/instant-messaging/conversations/unarchive';
   private MORE_MESSAGES_URL = '/api/v3/instant-messaging/archive/conversation/CONVERSATION_HASH/messages';
   private _selfId: string;
-  private max_messages = 20;
 
   constructor(
     private http: HttpService,
@@ -274,7 +274,7 @@ export class ConversationService {
   private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<any> {
     const url = this.MORE_MESSAGES_URL.replace('CONVERSATION_HASH', conversationId);
     return this.http.get(url,
-      { max_messages : this.max_messages,
+      { max_messages : ConversationService.MESSAGES_IN_CONVERSATION,
       from : nextPageToken });
   }
 

@@ -14,8 +14,6 @@
 
 .messages-panel-container {
   height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height});
-  display: flex;
-  flex-direction: column;
   overflow-y: scroll;
   padding: $spacing-ms $spacing-ml;
   width: 100%;
@@ -23,6 +21,26 @@
 
   .message-panel-empty {
     flex-grow: 1;
+  }
+
+  .more-messages-loader {
+    text-align: center;
+    font-size: $font-size-xs;
+    cursor: pointer;
+    padding-bottom: $line-height-s;
+
+    .load-more {
+      color: $walla-main;
+      position: relative;
+      text-transform: uppercase;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-chunky;
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: none;
+      }
+    }
   }
 
   .message-container {
@@ -35,6 +53,7 @@
   }
 
   .notification-container {
+    text-align: center;
     margin: 0 auto;
   }
 }
@@ -57,22 +76,6 @@
       width: 14px;
       height: 10px;
     }
-  }
-}
-
-.more-messages-loader {
-  position: relative;
-  top: 0px;
-  left: 0px;;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  width: 100%;
-  text-align: center;
-  font-size: $font-size-xs;
-  cursor: pointer;
-
-  :hover {
-    color: $walla-main;
   }
 }
 
