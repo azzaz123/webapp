@@ -29,6 +29,7 @@
     text-align: center;
     font-size: $font-size-xs;
     cursor: pointer;
+    padding-bottom: $line-height-s;
 
     .load-more {
       color: $walla-main;
@@ -44,7 +45,7 @@
     }
   }
 
-  .messages-info-container {
+  .message-container {
     display: flex;
     flex-direction: column-reverse;
 
