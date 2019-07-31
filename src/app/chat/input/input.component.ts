@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 import * as _ from 'lodash';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-input',
@@ -18,23 +19,24 @@ export class InputComponent implements OnChanges, OnInit {
 
   @Input() currentConversation: Conversation | InboxConversation;
   @ViewChild('messageArea') messageArea: ElementRef;
-  public disable: boolean;
+  public isUserDisable: boolean;
 
   constructor(private messageService: MessageService,
               private eventService: EventService,
               private trackingService: TrackingService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private i18n: I18nService) {
   }
 
   ngOnInit() {
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
-      this.disable = userIds.indexOf(this.currentConversation.user.id) !== -1;
+      this.isUserDisable = userIds.indexOf(this.currentConversation.user.id) !== -1;
     });
   }
 
   sendMessage(messageArea: HTMLInputElement, $event: Event) {
     $event.preventDefault();
-    if (!this.disable) {
+    if (!this.isUserDisable) {
       const message = messageArea.value.trim();
       if (!_.isEmpty(message)) {
         if (this.hasLinkInMessage(message)) {
@@ -62,8 +64,16 @@ export class InputComponent implements OnChanges, OnInit {
         this.messageArea.nativeElement.value = '';
       }
     }
-    this.disable = this.currentConversation instanceof Conversation ? this.currentConversation.user.blocked
-    : this.currentConversation.cannotChat;
+    this.isUserDisable = this.currentConversation instanceof Conversation ? this.currentConversation.user.blocked
+      : this.currentConversation.cannotChat;
+  }
+
+  getPlaceholder(): string {
+    return this.isUserDisable || !this.isMessagingAvailable() ? '' : this.i18n.getTranslations('writeMessage');
+  }
+
+  public isMessagingAvailable(): boolean {
+    return !this.isUserDisable && !this.currentConversation.item.notAvailable;
   }
 
   private hasLinkInMessage(message: string): boolean {

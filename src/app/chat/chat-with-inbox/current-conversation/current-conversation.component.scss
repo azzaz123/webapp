@@ -17,7 +17,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  padding: $spacing-ml;
+  padding: $spacing-ms $spacing-ml;
   width: 100%;
   position: relative;
 
@@ -48,9 +48,13 @@
     display: flex;
     flex-direction: column-reverse;
 
-    .message-container {
+    .message-wrapper {
       text-align: center;
     }
+  }
+
+  .notification-container {
+    margin: 0 auto;
   }
 }
 
@@ -60,9 +64,19 @@
   padding: $spacing-xxs $spacing-s;
   background-color: $blue-grey-4;
   border-radius: 10px;
-  margin: $spacing-ms 0;
+  margin: 0;
   color: $white;
   font-size: $font-size-xs;
+
+  &.date-marker-error {
+    color: $magenta-dark;
+    background-color: $negative-soft;
+
+    mat-icon {
+      width: 14px;
+      height: 10px;
+    }
+  }
 }
 
 #top-bar {
@@ -104,7 +118,7 @@
     h5 {
       color: $blue-grey-1;
       font-size: $font-size-m;
-      font-weight: $font-weight-chunky;
+      font-weight: normal;
       margin-bottom: 0;
     }
   }
@@ -203,4 +217,10 @@
   position: relative;
   padding: $line-height-ms $line-height-ml;
   border-top: 1px solid $color-inbox-background;
+}
+
+.faded {
+  tsl-user-avatar, .conversation-header-user-info {
+    opacity: 0.5;
+  }
 }

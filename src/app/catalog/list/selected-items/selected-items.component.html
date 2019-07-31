@@ -26,6 +26,7 @@
                 id="qa-feature-continue"
             [routerLink]="['/catalog/checkout']"
             tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE"
+            [params]="{ payment_method: isStripe ? 'STRIPE' : 'SABADELL' }"
             i18n="Continue to cart|selected-items-button">Continue</tsl-button>
   </div>
 </div>
