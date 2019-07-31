@@ -202,6 +202,7 @@ export interface CarUploadForm extends ItemUploadForm {
   brand: string;
   year: string;
   version: string;
+  financed_price: number;
   num_seats: number;
   num_doors: number;
   body_type: string;
