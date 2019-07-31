@@ -1,13 +1,13 @@
 <form>
-  <textarea i18n-placeholder placeholder="Write a message..."
+  <textarea i18n-placeholder placeholder="{{getPlaceholder()}}"
             #messageArea
             (keyup)="messageArea.value"
             (keydown.enter)="sendMessage(messageArea, $event)"
-            [disabled]="disable"
-            [ngClass]="{selected: messageArea.value.trim() && !disable}"
+            [disabled]="!isMessagingAvailable()"
+            [ngClass]="{selected: messageArea.value.trim() && isMessagingAvailable()}"
             [attr.value]="messageArea.value"
             maxlength="300"></textarea>
-  <a id="send" (click)="sendMessage(messageArea, $event)" [ngClass]="{selected: messageArea.value.trim() && !disable}">
+  <a id="send" (click)="sendMessage(messageArea, $event)" [ngClass]="{selected: messageArea.value.trim() && !isMessagingAvailable()}">
     <mat-icon svgIcon="send"></mat-icon>
   </a>
 </form>

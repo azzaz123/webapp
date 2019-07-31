@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable */
+/* tslint:isUserDisable:no-unused-variable */
 
 import { InboxConversationComponent } from './inbox-conversation.component';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';

@@ -1,10 +1,12 @@
 <a class="card" href="{{item.itemUrl}}" (click)="prevent($event)" target="_blank" tslTrackEvent="PRODUCT_VIEWED"
-   [params]="{id: item.id, title: item.title, sale_price: item.price.amount}">
+   [params]="{id: item.id, title: item.title, sale_price: item.price.amount}" [ngClass]="{'faded': item.notAvailable }">
+
   <div class="image-overlay">
-    <img class="card-img-top" src="{{itemImageUrl}}"
-         onError="this.src='/assets/images/fake-item.png'"/>
-    <a class="btn btn-edit" target='_blank' (click)='$event.stopPropagation()' [routerLink]="['/catalog/edit/', item.id]" tslTrackEvent="CHAT_EDITITEM" [params]="{item_id: item.id}"
-      *ngIf='canEdit()'>
+    <tsl-status-icon [unavailable]="item.notAvailable"></tsl-status-icon>
+    <img class="card-img-top" src="{{itemImageUrl}}" onError="this.src='/assets/images/fake-item.png'"/>
+    <a class="btn btn-edit" target='_blank' (click)='$event.stopPropagation()'
+       [routerLink]="['/catalog/edit/', item.id]" tslTrackEvent="CHAT_EDITITEM" [params]="{item_id: item.id}"
+       *ngIf='canEdit()'>
       <mat-icon svgIcon="btn-edit"></mat-icon>
     </a>
     <div class="image-bottom">
@@ -12,13 +14,17 @@
       <tsl-item-reserved [item]="item" *ngIf="!item.sold"></tsl-item-reserved>
     </div>
   </div>
- <div class="actions-block" *ngIf='canEdit()'>
+
+  <div class="actions-block" *ngIf='canEdit()'>
     <tsl-button className="btn-reserve" (click)="prevent($event, true); toggleReserve()">
       <span i18n *ngIf='!item.reserved'>Reserve</span>
       <span i18n *ngIf='item.reserved'>Unreserve</span>
     </tsl-button>
-    <tsl-button className="btn-sold" (click)="prevent($event, true)" tslItemSold (callback)="trackSoldEvent(item)" [item]="item" i18n>Sold</tsl-button>
+    <tsl-button className="btn-sold" (click)="prevent($event, true)" tslItemSold (callback)="trackSoldEvent(item)"
+                [item]="item" i18n>Sold
+    </tsl-button>
   </div>
+
   <div class="card-block">
     <h5 class="card-title">{{item.title}}</h5>
     <div class="card-item-info">
