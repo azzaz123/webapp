@@ -34,7 +34,7 @@
                       [hidden]="!currentConversationisArchived">Unarchive conversation</button>
                     <button class="dropdown-item" (click)="reportListingAction()"
                       *ngIf="!itemIsMine && conversationChattable || (currentConversation.user.blocked && !currentConversation.item.notAvailable)" i18n>Report this Listing</button>
-                    <button *ngIf="conversationChattable || currentConversation.user.blocked"
+                    <button *ngIf="conversationChattable || currentConversation.user.blocked || currentConversation.user.available"
                             class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
                     <button [hidden]="!currentConversation.user.id || currentConversation.user.blocked" class="dropdown-item warn"
                       (click)="blockUserAction()" i18n>Block this User</button>
