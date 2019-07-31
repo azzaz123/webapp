@@ -164,12 +164,8 @@ export class CartComponent implements OnInit, OnDestroy {
     const itemsIds = Object.keys(order).map(key => order[key].item_id);
 
     const payment_method = this.isStripe ? 'STRIPE' : 'SABADELL';
-    this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART,
-      {
-        selected_products: result,
-        payment_method
-      }
-    );
+    const attributes = this.totalToPay === 0 ? { selected_products: result } : { selected_products: result, payment_method };
+    this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, attributes);
 
     ga('send', 'event', 'Item', 'bump-cart');
     gtag('event', 'conversion', { 'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM' });

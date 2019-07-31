@@ -27,6 +27,7 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
 
   @HostBinding('@enterFromBottom') public animation: void;
   @Input() items: Item[];
+  @Input() isStripe = false;
   @Output() onAction: EventEmitter<OrderEvent> = new EventEmitter();
   public selectedItems: Item[];
   private active = true;

@@ -129,7 +129,8 @@ export class I18nService {
       phones_brand_example: 'E.g: Apple',
       fashion_brand_example: 'E.g: Zara',
       model_example: 'E.g: iPhone',
-      noResultsFound: 'No results found'
+      noResultsFound: 'No results found',
+      writeMessage: 'Write a message...'
     },
     es: {
       daysMomentConfig: {
@@ -258,7 +259,8 @@ export class I18nService {
       phones_brand_example: 'P. ej: Apple',
       fashion_brand_example: 'P. ej: Zara',
       model_example: 'P. ej: iPhone',
-      noResultsFound: 'No hay resultados'
+      noResultsFound: 'No hay resultados',
+      writeMessage: 'Escribe un mensaje...'
     }
   };
 
