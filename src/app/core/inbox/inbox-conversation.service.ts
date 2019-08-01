@@ -9,7 +9,7 @@ import { PersistencyService } from '../persistency/persistency.service';
 import { Message } from '../message/message';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
-import { Headers, RequestOptions, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
@@ -22,7 +22,7 @@ import * as _ from 'lodash';
   providedIn: 'root'
 })
 export class InboxConversationService {
-  public static  readonly MESSAGES_IN_CONVERSATION = 30;
+  public static readonly MESSAGES_IN_CONVERSATION = 30;
   private API_URL = 'bff/messaging/conversation/';
   private ARCHIVE_URL = '/api/v3/instant-messaging/conversations/archive';
   private UNARCHIVE_URL = '/api/v3/instant-messaging/conversations/unarchive';
@@ -179,17 +179,17 @@ export class InboxConversationService {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getConversation(message.thread)
     .subscribe((conversation) => {
-      this.conversations.unshift(conversation);
-      this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
-      this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-    },
-    (err) => {
-      // This is to display incoming messages if for some reason fetching the conversation fails.
-      const conversation = InboxConversation.errorConversationFromMessage(message);
-      this.conversations.unshift(conversation);
-      this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
-      this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-    });
+        this.conversations.unshift(conversation);
+        this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
+        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+      },
+      (err) => {
+        // This is to display incoming messages if for some reason fetching the conversation fails.
+        const conversation = InboxConversation.errorConversationFromMessage(message);
+        this.conversations.unshift(conversation);
+        this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
+        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+      });
   }
 
   private getConversation(id: String): Observable<InboxConversation> {
@@ -213,7 +213,9 @@ export class InboxConversationService {
     .catch((err) => {
       if (err.status === 409) {
         return Observable.of(conversation);
-      } else { return Observable.throwError(err); }
+      } else {
+        return Observable.throwError(err);
+      }
     })
     .map(() => {
       this.eventService.emit(EventService.CONVERSATION_ARCHIVED, conversation);
@@ -226,7 +228,9 @@ export class InboxConversationService {
     .catch((err) => {
       if (err.status === 409) {
         return Observable.of(conversation);
-      } else { return Observable.throwError(err); }
+      } else {
+        return Observable.throwError(err);
+      }
     })
     .map(() => {
       this.eventService.emit(EventService.CONVERSATION_UNARCHIVED, conversation);
@@ -247,9 +251,9 @@ export class InboxConversationService {
   }
 
   public loadMoreMessages(conversationId: string) {
-    let conversation = this.conversations.find( (conver) => conver.id === conversationId);
+    let conversation = this.conversations.find((conver) => conver.id === conversationId);
     if (!conversation) {
-      conversation = this.archivedConversations.find( (conver) => conver.id === conversationId);
+      conversation = this.archivedConversations.find((conver) => conver.id === conversationId);
     }
 
     if (conversation) {
@@ -264,7 +268,7 @@ export class InboxConversationService {
     return this.getMoreMessages$(conversation.id, conversation.nextPageToken).delay(1000)
     .map((res) => {
       const json = res.json();
-      const newmessages = InboxMessage.messsagesFromJson(json.messages , conversation.id, this.selfId, conversation.user.id);
+      const newmessages = InboxMessage.messsagesFromJson(json.messages, conversation.id, this.selfId, conversation.user.id);
       newmessages.forEach((mess) => conversation.messages.push(mess));
       conversation.nextPageToken = json.next_from;
       return conversation;
@@ -274,8 +278,10 @@ export class InboxConversationService {
   private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<any> {
     const url = this.MORE_MESSAGES_URL.replace('CONVERSATION_HASH', conversationId);
     return this.http.get(url,
-      { max_messages : InboxConversationService.MESSAGES_IN_CONVERSATION,
-      from : nextPageToken });
+      {
+        max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION,
+        from: nextPageToken
+      });
   }
 
   public openConversationWith$(itemId: string): Observable<InboxConversation> {
