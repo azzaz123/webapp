@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ConversationService } from './conversation.service';
+import { InboxConversationService } from './inbox-conversation.service';
 import { MessageService } from '../message/message.service';
 import { RealTimeService } from '../message/real-time.service';
 import { PersistencyService } from '../persistency/persistency.service';
@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 import { ItemService } from '../item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 
-let service: ConversationService;
+let service: InboxConversationService;
 let http: HttpService;
 let eventService: EventService;
 let realTime: RealTimeService;
@@ -30,11 +30,11 @@ let messageService: MessageService;
 let userService: UserService;
 let itemService: ItemService;
 
-describe('ConversationService', () => {
+describe('InboxConversationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ConversationService,
+        InboxConversationService,
         ...TEST_HTTP_PROVIDERS,
         EventService,
         {provide: RealTimeService, useValue: { sendRead() {}} },
@@ -44,7 +44,7 @@ describe('ConversationService', () => {
         {provide: ItemService, useClass: MockedItemService}
       ]
     });
-    service = TestBed.get(ConversationService);
+    service = TestBed.get(InboxConversationService);
     http = TestBed.get(HttpService);
     eventService = TestBed.get(EventService);
     realTime = TestBed.get(RealTimeService);

@@ -21,7 +21,7 @@ import * as _ from 'lodash';
 @Injectable({
   providedIn: 'root'
 })
-export class ConversationService {
+export class InboxConversationService {
   public static  readonly MESSAGES_IN_CONVERSATION = 30;
   private API_URL = 'bff/messaging/conversation/';
   private ARCHIVE_URL = '/api/v3/instant-messaging/conversations/archive';
@@ -274,7 +274,7 @@ export class ConversationService {
   private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<any> {
     const url = this.MORE_MESSAGES_URL.replace('CONVERSATION_HASH', conversationId);
     return this.http.get(url,
-      { max_messages : ConversationService.MESSAGES_IN_CONVERSATION,
+      { max_messages : InboxConversationService.MESSAGES_IN_CONVERSATION,
       from : nextPageToken });
   }
 

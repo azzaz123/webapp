@@ -8,7 +8,7 @@ import { FeatureflagService } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
-import { ConversationService } from './conversation.service';
+import { InboxConversationService } from './inbox-conversation.service';
 import { Response } from '@angular/http';
 
 const USER_BASE_PATH = environment.siteUrl +  'user/';
@@ -29,7 +29,7 @@ export class InboxService {
   constructor(private http: HttpService,
     private persistencyService: PersistencyService,
     private messageService: MessageService,
-    private conversationService: ConversationService,
+    private conversationService: InboxConversationService,
     private featureflagService: FeatureflagService,
     private eventService: EventService,
     private userService: UserService) {
@@ -136,7 +136,7 @@ export class InboxService {
     this.messageService.totalUnreadMessages = 0;
     return this.http.get(this.API_URL, {
       page_size: this.pageSize,
-      max_messages: ConversationService.MESSAGES_IN_CONVERSATION
+      max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION
     })
     .map(res => {
       return this.conversations = this.processInboxResponse(res);
