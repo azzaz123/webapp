@@ -12,11 +12,11 @@
              (click)="cart[type].collapsed = !cart[type].collapsed">
           <mat-icon class="wing-icon" svgIcon="wing-{{type}}"></mat-icon>
           <div class="type">
-            <span [ngSwitch]="type">
+            <span [ngSwitch]="type" class="bump-type">
               <ng-container *ngSwitchCase="'citybump'" i18n>City bump</ng-container>
               <ng-container *ngSwitchCase="'countrybump'" i18n>Country bump</ng-container>
             </span>
-            <strong> x {{cart[type].cartItems.length}}</strong><br />
+            <strong>x {{cart[type].cartItems.length}}</strong><br />
             <span class="price">{{cart[type].total | customCurrency}}</span>
           </div>
           <mat-icon class="arrow-icon" svgIcon="arrow-right"></mat-icon>

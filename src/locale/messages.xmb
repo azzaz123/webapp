@@ -176,7 +176,6 @@
   <msg id="5269877616047992907"><source>app/shared/catalog/cart/cart.component.html:75</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:39</source>spending</msg>
   <msg id="7484614059925376312"><source>app/shared/catalog/cart/cart.component.html:86</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:50</source>missing</msg>
   <msg id="6315786827665033981"><source>app/shared/catalog/cart/cart.component.html:97</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:58</source>Total to pay</msg>
-  <msg id="2139562606668810595"><source>app/shared/payments/stripe/stripe-card-element.component.html:6</source>Pay with your credit card</msg>
   <msg id="3650030434919639531"><source>app/shared/catalog/cart/cart.component.html:106</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:66</source><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:26</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:54</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.html:31</source>Use saved card</msg>
   <msg id="7274286978511770772"><source>app/shared/catalog/cart/cart.component.html:116</source><source>app/shared/payments/stripe/stripe-card-element.component.html:22</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:64</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:71</source>Continue to Checkout</msg>
   <msg id="3708302938863076299"><source>app/shared/catalog/cart/cart.component.html:119</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:19</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:74</source>Secure payment through Sabadell</msg>
@@ -363,7 +362,7 @@
   <msg id="8307062044109434285"><source>app/catalog-pro/checkout-pro/cart-pro/cart-pro.component.html:14</source>Country planned</msg>
   <msg id="1270706063203110386"><source>app/catalog-pro/checkout-pro/cart-pro/cart-pro.component.html:17</source>Anything planned yet</msg>
   <msg id="7608224812897171071"><source>app/catalog-pro/checkout-pro/cart-pro/cart-pro.component.html:19</source> planned</msg>
-  <msg id="1568259612874573576"><source>app/catalog-pro/checkout-pro/cart-pro/cart-pro.component.html:37</source>Balance </msg>
+  <msg id="6888797559367695264"><source>app/catalog-pro/checkout-pro/cart-pro/cart-pro.component.html:37</source>Balance</msg>
   <msg id="9139280231181462"><source>app/catalog-pro/checkout-pro/cart-pro/cart-pro.component.html:38</source>city</msg>
   <msg id="3598887185953670111"><source>app/catalog-pro/checkout-pro/cart-pro/cart-pro.component.html:40</source>country</msg>
   <msg id="9157216793820090491"><source>app/catalog-pro/checkout-pro/cart-pro/cart-pro.component.html:54</source>Apply bumps</msg>

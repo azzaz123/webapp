@@ -15,7 +15,7 @@
                (click)="cart[type].collapsed = !cart[type].collapsed">
             <mat-icon class="wing-icon" svgIcon="wing-{{type}}"></mat-icon>
             <div class="type">
-              <span [ngSwitch]="type">
+              <span [ngSwitch]="type" class="bump-type">
                 <ng-container *ngSwitchCase="'zonebump'">
                   <ng-container *ngIf="!provincialBump" i18n>Local bump</ng-container>
                   <ng-container *ngIf="provincialBump" i18n>Provincial bump</ng-container>
