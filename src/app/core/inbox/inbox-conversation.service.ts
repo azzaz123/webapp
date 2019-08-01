@@ -13,9 +13,7 @@ import { Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
-import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
-import { InboxItem } from '../../chat/chat-with-inbox/inbox/inbox-item';
-import { environment } from '../../../environments/environment';
+import { HttpServiceNew } from '../http/http.service.new';
 import * as _ from 'lodash';
 
 @Injectable({
@@ -31,13 +29,14 @@ export class InboxConversationService {
 
   constructor(
     private http: HttpService,
+    private httpClient: HttpServiceNew,
     private realTime: RealTimeService,
     private messageService: MessageService,
     private persistencyService: PersistencyService,
     private eventService: EventService,
     private userService: UserService, // To be removed
     private itemService: ItemService) { // To be removed
-    }
+  }
 
   public conversations: InboxConversation[];
   public archivedConversations: InboxConversation[];

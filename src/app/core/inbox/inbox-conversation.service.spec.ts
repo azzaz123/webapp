@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 import { InboxConversationService } from './inbox-conversation.service';
 import { MessageService } from '../message/message.service';
 import { RealTimeService } from '../message/real-time.service';
@@ -20,6 +22,7 @@ import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec
 import { Observable } from 'rxjs';
 import { ItemService } from '../item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
+import { HttpModuleNew } from '../http/http.module.new';
 
 let service: InboxConversationService;
 let http: HttpService;
@@ -33,6 +36,10 @@ let itemService: ItemService;
 describe('InboxConversationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        HttpModuleNew
+      ],
       providers: [
         InboxConversationService,
         ...TEST_HTTP_PROVIDERS,
