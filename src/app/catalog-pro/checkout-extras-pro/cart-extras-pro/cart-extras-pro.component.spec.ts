@@ -20,6 +20,8 @@ import {
 } from '../../../../tests/payments.fixtures.spec';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { StripeService } from '../../../core/stripe/stripe.service';
+import { EventService } from '../../../core/event/event.service';
+import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 
 describe('CartExtrasProComponent', () => {
   let component: CartExtrasProComponent;
@@ -30,6 +32,7 @@ describe('CartExtrasProComponent', () => {
   let router: Router;
   let trackingService: TrackingService;
   let stripeService: StripeService;
+  let eventService: EventService;
 
   const CART_PRO_EXTRAS = new CartProExtras();
   const CART_CHANGE: CartChange = {
@@ -44,6 +47,7 @@ describe('CartExtrasProComponent', () => {
       declarations: [ CartExtrasProComponent, CustomCurrencyPipe ],
       providers: [
         DecimalPipe,
+        EventService,
         {
           provide: CartService, useValue: {
             createInstance() { },
@@ -85,9 +89,13 @@ describe('CartExtrasProComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-          isPaymentMethodStripe() {
-            return false;
-          }
+            isPaymentMethodStripe$() {
+              return Observable.of(true);
+            },
+            buy() {},
+            getCards() {
+              return Observable.of(true);
+            }
         }
         },
       ],
@@ -118,6 +126,7 @@ describe('CartExtrasProComponent', () => {
     router = TestBed.get(Router);
     trackingService = TestBed.get(TrackingService);
     stripeService = TestBed.get(StripeService);
+    eventService = TestBed.get(EventService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     fixture.detectChanges();
   });
@@ -137,10 +146,21 @@ describe('CartExtrasProComponent', () => {
       expect(component.cart).toEqual(CART_PRO_EXTRAS);
     });
 
-    describe('check isStripe payment method', () => {
-      it('should set isStripe to false', () => {
-        expect(component.isStripe).toBe(false);
-      });
+    it('should call stripeService.isPaymentMethodStripe$', () => {
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
+    });
+
+    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
+      const expectedValue = true;
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+
+      component.ngOnInit();
+
+      expect(component.isStripe).toBe(expectedValue);
     });
   });
 
@@ -149,6 +169,34 @@ describe('CartExtrasProComponent', () => {
       component.hasCard(true);
 
       expect(component.hasFinancialCard).toEqual(true);
+    });
+  });
+
+  describe('hasStripeCard', () => {
+    it('should set true if stripe card exists', () => {
+      component.hasStripeCard(true);
+
+      expect(component.isStripeCard).toEqual(true);
+    });
+  });
+
+  describe('addNewCard', () => {
+    it('should set showCard to true', () => {
+      component.addNewCard();
+
+      expect(component.showCard).toEqual(true);
+    });
+  });
+
+  describe('setSavedCard', () => {
+    it('should set showCard to false, savedCard to true and setCardInfo', () => {
+      spyOn(component, 'setCardInfo').and.callThrough();
+
+      component.setSavedCard(STRIPE_CARD_OPTION);
+
+      expect(component.showCard).toEqual(false);
+      expect(component.savedCard).toEqual(true);
+      expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
 
@@ -219,13 +267,30 @@ describe('CartExtrasProComponent', () => {
       describe('if paymentService OrderExtrasProPack is successful', () => {
         beforeEach(() => {
           spyOn(trackingService, 'track');
-
-          component.checkout();
         });
 
-        it('should call track', () => {
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {
-            selected_packs: ORDER_CART_EXTRAS_PRO.packs
+        describe('tracking', () => {
+          describe('Stripe', () => {
+            it('should call track with valid values', () => {
+              component.checkout();
+
+              expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {
+                selected_packs: ORDER_CART_EXTRAS_PRO.packs,
+                payment_method: 'STRIPE'
+              });
+            });
+          });
+
+          describe('Sabadell', () => {
+            it('should call track with valid values', () => {
+              component.isStripe = false;
+              component.checkout();
+
+              expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {
+                selected_packs: ORDER_CART_EXTRAS_PRO.packs,
+                payment_method: 'SABADELL'
+              });
+            });
           });
         });
 
@@ -233,6 +298,7 @@ describe('CartExtrasProComponent', () => {
           describe('should call sabadellSubmit emit', () => {
             it('if there is not financial card', () => {
               component.hasFinancialCard = null;
+              component.isStripe = false;
 
               component.checkout();
 
@@ -241,6 +307,7 @@ describe('CartExtrasProComponent', () => {
 
             it('if the cardtype is new', () => {
               component.cardType = 'new';
+              component.isStripe = false;
 
               component.checkout();
 
@@ -256,6 +323,7 @@ describe('CartExtrasProComponent', () => {
 
             it('if there is a financial card and cartype is old', () => {
               spyOn(paymentService, 'pay').and.callThrough();
+              component.isStripe = false;
 
               component.checkout();
 
@@ -265,6 +333,7 @@ describe('CartExtrasProComponent', () => {
             it('should navigate to catalog with code 200 if the payment was ok', () => {
               spyOn(paymentService, 'pay').and.callThrough();
               spyOn(router, 'navigate').and.callThrough();
+              component.isStripe = false;
 
               component.checkout();
 
@@ -274,6 +343,7 @@ describe('CartExtrasProComponent', () => {
             it('should navigate to catalog with code -1 if the payment was ko', () => {
               spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
               spyOn(router, 'navigate').and.callThrough();
+              component.isStripe = false;
 
               component.checkout();
 

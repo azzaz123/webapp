@@ -8,36 +8,32 @@ form {
   textarea {
     border-radius: 100px;
     max-height: $input-height;
-    width: calc(100% - #{$spacing-ml * 2});
-    margin: 0 $spacing-ml;
-    margin-bottom: $spacing-ml;
+    width: 100%;
     height: $input-height;
     line-height: $input-height;
     padding: 0 #{$send-icon-size + $spacing-m} 0 $spacing-m;
     outline: none;
     resize: none;
     overflow: hidden;
-    border: 2px solid $blue-grey-5;
+    border: 1px solid $blue-grey-5;
+    transition: .15s ease all;
     &:focus {
-      border-color: $blue-grey-4;
+      border-color: $walla-main;
     }
     &::-webkit-input-placeholder {
       color: $blue-grey-3;
     }
     &[disabled] {
-      opacity: .5;
-      &::-webkit-input-placeholder {
-        color: $negative-main;
-      }
+      background: white;
     }
     &.selected {
-      border: 2px solid $walla-main;
+      border: 1px solid $walla-main;
     }
   }
   #send {
     cursor: pointer;
     position: absolute;
-    right: 25px;
+    right: 5px;
     top: 5px;
     border-radius: 50%;
     background: $blue-grey-4;

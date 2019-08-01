@@ -7,7 +7,7 @@
     <div *ngIf="isInbox" class="header-title" i18n>Inbox</div>
     <div *ngIf="isArchived" class="header-title" i18n>Archived Messages</div>
     <mat-icon class="header-icon" svgIcon="arrow-waterfall"></mat-icon>
-  </div> 
+  </div>
   <ul ngbDropdownMenu class="dropdown-menu">
       <li class="dropdown-item" [ngClass]="{'active': isInbox}" (click)="showInbox()">
         <a>
@@ -21,6 +21,7 @@
       </li>
   </ul>
 </div>
+
 <div *ngIf="!shouldDisplayHeader()" id="header-empty" [class]="loading ? 'isLoading' : ''">
   <mat-icon svgIcon="empty-header-inbox-placeholder"></mat-icon>
 </div>
@@ -31,9 +32,9 @@
     <span i18n>New messages</span>
   </button>
   <div id="conversations" [hidden]="loading">
-    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We couldn't load your inbox due to whatever reasons :)</div>
+    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We found some problems updating your inbox. Try again later.</div>
     <div *ngIf="hasConversations()" id="inbox-data">
-      <tsl-inbox-conversation *ngFor="let conversation of conversations" 
+      <tsl-inbox-conversation *ngFor="let conversation of conversations"
         [conversation]="conversation"
         [ngClass]="{'active': conversation?.active}" (click)="setCurrentConversation(conversation)">
       </tsl-inbox-conversation>
@@ -55,9 +56,9 @@
 
 <div *ngIf="isArchived" class="scroll-panel" [ngClass]="{professional: isProfessional}">
   <div id="conversations" [hidden]="loading">
-    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We couldn't load your inbox due to whatever reasons :)</div>
+    <div *ngIf="errorRetrievingArchived" class="inboxError" i18n>We found some problems updating your archived messages. Try again later.</div>
     <div *ngIf="hasArchivedConversations()" id="inbox-data">
-      <tsl-archived-inbox-conversation *ngFor="let conversation of archivedConversations" 
+      <tsl-archived-inbox-conversation *ngFor="let conversation of archivedConversations"
         [conversation]="conversation"
         [ngClass]="{'active': conversation?.active}" (click)="setCurrentConversation(conversation)">
       </tsl-archived-inbox-conversation>

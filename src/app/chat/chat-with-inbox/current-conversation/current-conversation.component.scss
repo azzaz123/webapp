@@ -13,22 +13,49 @@
 
 
 .messages-panel-container {
-  height: calc(100vh - #{$chat-topbar-height + $chat-input + $topbar-height});
-  display: flex;
-  flex-direction: column-reverse;
+  height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height});
   overflow-y: scroll;
-  padding: $spacing-ml;
+  padding: $spacing-ms $spacing-ml;
   width: 100%;
   position: relative;
-}
 
-.message-container {
-  text-align: center;
-}
+  .message-panel-empty {
+    flex-grow: 1;
+  }
 
-.messages-info-container {
-  display: flex;
-  flex-direction: column-reverse;
+  .more-messages-loader {
+    text-align: center;
+    font-size: $font-size-xs;
+    cursor: pointer;
+    padding-bottom: $line-height-s;
+
+    .load-more {
+      color: $walla-main;
+      position: relative;
+      text-transform: uppercase;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-chunky;
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .message-container {
+    display: flex;
+    flex-direction: column-reverse;
+
+    .message-wrapper {
+      text-align: center;
+    }
+  }
+
+  .notification-container {
+    text-align: center;
+    margin: 0 auto;
+  }
 }
 
 .date-marker {
@@ -37,23 +64,18 @@
   padding: $spacing-xxs $spacing-s;
   background-color: $blue-grey-4;
   border-radius: 10px;
-  margin: $spacing-ms 0;
+  margin: 0;
   color: $white;
   font-size: $font-size-xs;
-}
 
-.more-messages-loader {
-  position: relative;
-  top: 0px;
-  left: 0px;;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  width: 100%;
-  text-align: center;
-  font-size: $font-size-xs;
-  cursor: pointer;
-  :hover {
-    color: $walla-main;
+  &.date-marker-error {
+    color: $magenta-dark;
+    background-color: $negative-soft;
+
+    mat-icon {
+      width: 14px;
+      height: 10px;
+    }
   }
 }
 
@@ -67,9 +89,11 @@
 
   &.professional {
     height: 103px;
+
     tsl-user-avatar {
       display: none;
     }
+
     h5 {
       margin-top: -25px;
     }
@@ -90,10 +114,11 @@
   .conversation-header-user-info {
     display: inline-block;
     flex-grow: 1;
+
     h5 {
       color: $blue-grey-1;
       font-size: $font-size-m;
-      font-weight: bold;
+      font-weight: normal;
       margin-bottom: 0;
     }
   }
@@ -105,16 +130,20 @@
 
 .conversation-header-menu {
   height: 24px;
+
   mat-icon {
     cursor: pointer;
     padding: 0 3px;
+
     /deep/ #MVP {
       fill: $blue-grey-2;
     }
   }
+
   .dropdown-item {
     padding: ($spacing-ml /2) $spacing-ml;
     cursor: pointer;
+
     &.warn {
       color: $warn;
     }
@@ -139,13 +168,16 @@
   height: 100vh;
   position: relative;
   background: $white;
+
   .content {
     @include in-the-middle;
     text-align: center;
+
     .image {
       width: 211px;
       height: 220px;
     }
+
     p {
       font-size: $font-size-m;
       color: $blue-grey-2;
@@ -156,9 +188,10 @@
 
 .empty {
   position: relative;
-  background: $white;
+  background: $color-inbox-background;
   display: flex;
-  mat-icon{
+
+  mat-icon {
     width: 100vh;
     height: 100vh;
   }
@@ -168,9 +201,26 @@
   $spinner-size: 14px;
   height: $spinner-size;
   width: $spinner-size;
+
   svg {
-      position: absolute;
-      top: 0;
-      left: -#{$spacing-ml + 5px};
+    position: absolute;
+    top: 0;
+    left: -#{$spacing-ml + 5px};
+  }
+}
+
+.scroll-message-container {
+  position: relative;
+}
+
+.send-message-container {
+  position: relative;
+  padding: $line-height-ms $line-height-ml;
+  border-top: 1px solid $color-inbox-background;
+}
+
+.faded {
+  tsl-user-avatar, .conversation-header-user-info {
+    opacity: 0.5;
   }
 }

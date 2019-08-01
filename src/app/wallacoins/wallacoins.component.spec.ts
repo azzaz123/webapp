@@ -69,7 +69,7 @@ describe('WallacoinsComponent', () => {
             open() {
               return {
                 componentInstance: {},
-                result: Promise.resolve()
+                result: Promise.resolve('success')
               }
             }
         }
@@ -100,9 +100,9 @@ describe('WallacoinsComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-          isPaymentMethodStripe() {
-            return false;
-          }
+            isPaymentMethodStripe$() {
+              return Observable.of(true);
+            }
         }
         },
       ],
@@ -164,14 +164,31 @@ describe('WallacoinsComponent', () => {
 
       expect(component['openTutorialModal']).toHaveBeenCalled();
     });
+
+    it('should call stripeService.isPaymentMethodStripe$', () => {
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
+    });
+
+    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
+      const expectedValue = true;
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+
+      component.ngOnInit();
+
+      expect(component.isStripe).toBe(expectedValue);
+    });
   });
 
   describe('openBuyModal', () => {
-
     beforeEach(fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
       spyOn(paymentService, 'getPerks').and.callThrough();
       spyOn(router, 'navigate');
+      spyOn(eventService, 'emit');
 
       component.openBuyModal(CREDITS_PACKS[0], 1);
     }));
@@ -186,6 +203,10 @@ describe('WallacoinsComponent', () => {
 
     it('should redirect to catalog', () => {
       expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
+    });
+
+    it('should emit TOTAL_CREDITS_UPDATED if response is success', () => {
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, component.wallacoins);
     });
   });
 

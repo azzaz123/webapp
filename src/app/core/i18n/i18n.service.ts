@@ -77,6 +77,7 @@ export class I18nService {
       formErrors: 'Check the red fields',
       formErrorsTitle: 'Oops!',
       linkError: 'The web link is not valid',
+      phoneNumberError: 'The phone number has an invalid format',
       userEdited: 'Your data has been edited correctly',
       notValidPassword: 'Current password is not valid',
       passwordMatch: 'Passwords don\'t match',
@@ -86,6 +87,8 @@ export class I18nService {
       defaultErrorTitle: 'Oops!',
       defaultSuccessTitle: 'Yup!',
       bumpError: 'Some listings have not been bumped due to an error',
+      addNewCardError: 'This card could not be added',
+      getStripeCardsError: 'Your cards could not be retrieved',
       cantEditError: 'This item can not be modified because has a pending transaction.',
       settingsEdited: 'Your setting has been updated',
       last30Days: 'Last 30 days',
@@ -98,6 +101,7 @@ export class I18nService {
       deleteBillingInfoSuccess: 'Your billing info has been deleted',
       deleteBillingInfoError: 'There was a error deleting your billing info',
       packError: 'There was a error buying this pack',
+      noCardSelectedError: 'Please select a credit card',
       alreadyFeatured: 'You are trying to feature an item that is already planned.',
       phoneRequestMessage: 'Please contact us or leave us your phone number and we will contact you',
       phoneMessage: 'My phone number is ',
@@ -122,8 +126,11 @@ export class I18nService {
       cars_subscription_tutorial_phone_on_car: 'Your phone will appear in each car you have listed, so more buyers will contact you.',
       brand: 'Brand',
       model: 'Model',
-      brand_example: 'E.g: Apple',
-      model_example: 'E.g: iPhone'
+      phones_brand_example: 'E.g: Apple',
+      fashion_brand_example: 'E.g: Zara',
+      model_example: 'E.g: iPhone',
+      noResultsFound: 'No results found',
+      writeMessage: 'Write a message...'
     },
     es: {
       daysMomentConfig: {
@@ -200,6 +207,7 @@ export class I18nService {
       formErrors: 'Revisa los campos en rojo',
       formErrorsTitle: '¡Ojo!',
       linkError: 'La web no es válida',
+      phoneNumberError: 'El número de teléfono tiene un formato inválido',
       userEdited: 'Tus datos se han editado correctamente',
       notValidPassword: 'La contraseña actual no es válida',
       passwordMatch: 'Las contraseñas no coinciden',
@@ -209,6 +217,8 @@ export class I18nService {
       defaultErrorTitle: '¡Ups!',
       defaultSuccessTitle: '¡Bien!',
       bumpError: 'Algunos productos no se han destacado debido a un error',
+      addNewCardError: 'La tarjeta no ha podido ser guardada',
+      getStripeCardsError: 'No se han podido mostrar tus tarjetas',
       cantEditError: 'Este producto no se puede modificar, porque está en mitad de una transacción.',
       settingsEdited: 'Se ha actualizado tu configuración',
       last30Days: 'Últimos 30 días',
@@ -221,6 +231,7 @@ export class I18nService {
       deleteBillingInfoSuccess: 'Tu información de facturación ha sido borrada',
       deleteBillingInfoError: 'Hubo un error borrando tu información de facturación',
       packError: 'Hubo un error al comprar este paquete',
+      noCardSelectedError: 'Por favor selecciona una tarjeta de crédito',
       alreadyFeatured: '¡Ups! Estás intentando destacar un item que ya tiene planificados',
       phoneRequestMessage: 'Por favor contáctanos o deja tu número de teléfono y te contactaremos',
       phoneMessage: 'Mi número de teléfono es ',
@@ -245,8 +256,11 @@ export class I18nService {
       cars_subscription_tutorial_phone_on_car: 'Tu teléfono aparecerá en cada coche que tengas publicado, así más compradores te contactarán.',
       brand: 'Marca',
       model: 'Modelo',
-      brand_example: 'P. ej: Apple',
+      phones_brand_example: 'P. ej: Apple',
+      fashion_brand_example: 'P. ej: Zara',
       model_example: 'P. ej: iPhone',
+      noResultsFound: 'No hay resultados',
+      writeMessage: 'Escribe un mensaje...'
     }
   };
 

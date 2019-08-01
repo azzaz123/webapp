@@ -10,9 +10,17 @@ import { EventService } from '../../core/event/event.service';
 import { MOCK_CONVERSATION, SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
+import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { I18nService } from '../../core/i18n/i18n.service';
 
-class MockMessageService {
+class MessageServiceMock {
   send(c: Conversation, t: string): void {
+  }
+}
+
+class NgbModalMock {
+  open(content: any, options?: NgbModalOptions): NgbModalRef {
+    return null;
   }
 }
 
@@ -23,12 +31,15 @@ describe('Component: Input', () => {
   let fixture: ComponentFixture<InputComponent>;
   let eventService: EventService;
   let trackingService: TrackingService;
+  let modalService: NgbModal;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [InputComponent],
       providers: [
-        {provide: MessageService, useClass: MockMessageService},
+        I18nService,
+        {provide: MessageService, useClass: MessageServiceMock},
+        {provide: NgbModal, useClass: NgbModalMock},
         EventService,
         {provide: TrackingService, useValue: {
           track() {}
@@ -42,6 +53,7 @@ describe('Component: Input', () => {
     messageService = TestBed.get(MessageService);
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
+    modalService = TestBed.get(NgbModal);
     spyOn(messageService, 'send');
   });
 
@@ -52,7 +64,7 @@ describe('Component: Input', () => {
       component.ngOnInit();
       eventService.emit(EventService.PRIVACY_LIST_UPDATED, [USER_ID]);
 
-      expect(component.disable).toBe(true);
+      expect(component.isUserDisable).toBe(true);
     });
     it('should disable input when the user has been unblocked', () => {
       component.currentConversation = MOCK_CONVERSATION();
@@ -60,7 +72,7 @@ describe('Component: Input', () => {
       component.ngOnInit();
       eventService.emit(EventService.PRIVACY_LIST_UPDATED, []);
 
-      expect(component.disable).toBe(false);
+      expect(component.isUserDisable).toBe(false);
     });
   });
 
@@ -75,6 +87,7 @@ describe('Component: Input', () => {
     beforeEach(() => {
       spyOn(EVENT, 'preventDefault');
       spyOn(trackingService, 'track');
+      spyOn(modalService, 'open');
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       component.currentConversation = conversation;
     });
@@ -87,6 +100,7 @@ describe('Component: Input', () => {
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(textarea.value).toBe('');
+      expect(modalService.open).not.toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id});
       expect(trackingService.track).toHaveBeenCalledTimes(1);
@@ -100,6 +114,7 @@ describe('Component: Input', () => {
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(textarea.value).toBe('');
+      expect(modalService.open).not.toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id});
       expect(trackingService.track).toHaveBeenCalledTimes(1);
@@ -111,6 +126,7 @@ describe('Component: Input', () => {
       component.sendMessage(textarea, EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
+      expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(textarea.value).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
@@ -122,6 +138,7 @@ describe('Component: Input', () => {
       component.sendMessage(textarea, EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
+      expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(textarea.value).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
@@ -129,15 +146,37 @@ describe('Component: Input', () => {
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if disabled', () => {
       textarea.value = TEXT;
-      component.disable = true;
+      component.isUserDisable = true;
 
       component.sendMessage(textarea, EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
+      expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(trackingService.track).not.toHaveBeenCalled();
     });
 
+    it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains link', () => {
+      component.isUserDisable = false;
+      textarea.value = 'Hi, here is a link: www.link-to-something.com ;*';
+
+      component.sendMessage(textarea, EVENT);
+      expect(EVENT.preventDefault).toHaveBeenCalled();
+      expect(modalService.open).toHaveBeenCalled();
+      expect(messageService.send).not.toHaveBeenCalled();
+      expect(trackingService.track).not.toHaveBeenCalled();
+    });
+
+    it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time', () => {
+      component.isUserDisable = false;
+      textarea.value = 'Can U access to my webpage outside https://wallapop.com that is www.notAllowedURL.com';
+
+      component.sendMessage(textarea, EVENT);
+      expect(EVENT.preventDefault).toHaveBeenCalled();
+      expect(modalService.open).toHaveBeenCalled();
+      expect(messageService.send).not.toHaveBeenCalled();
+      expect(trackingService.track).not.toHaveBeenCalled();
+    });
   });
 
   describe('ngOnChanges', () => {
@@ -183,17 +222,17 @@ describe('Component: Input', () => {
 
       component.ngOnChanges();
 
-      expect(component.disable).toBe(true);
+      expect(component.isUserDisable).toBe(true);
     });
 
     it('should enable input if user is blocked', () => {
-      component.disable = true;
+      component.isUserDisable = true;
       component.currentConversation = MOCK_CONVERSATION();
       component.currentConversation.user.blocked = false;
 
       component.ngOnChanges();
 
-      expect(component.disable).toBe(false);
+      expect(component.isUserDisable).toBe(false);
     });
 
   });

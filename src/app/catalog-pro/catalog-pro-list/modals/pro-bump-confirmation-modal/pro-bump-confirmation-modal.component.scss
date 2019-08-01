@@ -25,7 +25,7 @@ p {
   margin: 0 auto $spacing-xl auto;
 }
 h1 {
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   color: $walla-main;
   font-size: $font-size-l;
   margin-bottom: $spacing-ms;

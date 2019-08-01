@@ -19,13 +19,27 @@ export class GeolocationService {
     };
     return this.http.getNoBase(environment.siteUrl + 'maps/places', params)
       .map(res => res.json());
+
+    // TODO:
+    // const params: IDictionary[] = [
+    //   {
+    //     key: 'query',
+    //     value: query
+    //   },
+    //   {
+    //     key: 'provider',
+    //     value: 'here'
+    //   }
+    // ];
+
+    // return this.httpNew.getNoBase(environment.siteUrl + 'maps/places', params);
   }
 
   public geocode(placeId: string): Observable<Coordinate> {
     const params: any =  {
       placeId: placeId,
     };
-    return this.http.getNoBase(environment.siteUrl + '/maps/here/place', params)
+    return this.http.getNoBase(environment.siteUrl + 'maps/here/place', params)
       .map(res => res.json())
       .map((res: any) => {
         return {
@@ -33,6 +47,23 @@ export class GeolocationService {
           name: placeId
         };
       });
+
+    // TODO:
+    // const params: IDictionary[] = [
+    //   {
+    //     key: 'placeId',
+    //     value: placeId
+    //   }
+    // ];
+
+    // return this.httpNew.getNoBase(environment.siteUrl + 'maps/here/place', params)
+    // .map(res => res.json())
+    //   .map((res: any) => {
+    //     return {
+    //       ...res,
+    //       name: placeId
+    //     };
+    //   });
   }
 
 }

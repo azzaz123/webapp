@@ -13,8 +13,7 @@ import {
   IMAGE,
   MOCK_FULL_USER,
   USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES,
-  USER_PRO_DATA,
-  USER_PRO_INFO_RESPONSE
+  USER_PRO_DATA
 } from '../../../tests/user.fixtures.spec';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from '../../shared/switch/switch.component';
@@ -29,6 +28,7 @@ describe('ProfileInfoComponent', () => {
   let http: HttpService;
   let mockBackend: MockBackend;
   let modalService: NgbModal;
+  const modalInstance: any = null;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -65,6 +65,11 @@ describe('ProfileInfoComponent', () => {
           },
           edit() {
             return Observable.of({});
+          },
+          updateLocation() {
+            return Observable.of({});
+          },
+          updateSearchLocationCookies() {
           }
         }
         },
@@ -76,6 +81,16 @@ describe('ProfileInfoComponent', () => {
           }
         }
         },
+        {
+          provide: NgbModal, useValue: {
+          open() {
+            return {
+              componentInstance: modalInstance,
+              result: Promise.resolve(true)
+            };
+          }
+        }
+        }
       ],
       declarations: [ProfileInfoComponent, ProfileFormComponent, SwitchComponent],
       schemas: [NO_ERRORS_SCHEMA]
@@ -109,19 +124,9 @@ describe('ProfileInfoComponent', () => {
       expect(component.isPro).toBe(true);
     });
 
-    it('should call userService.getProInfo and set userInfo and for if present', () => {
-      spyOn(userService, 'getProInfo').and.returnValue(Observable.of(USER_PRO_INFO_RESPONSE));
-
-      component.ngOnInit();
-
-      expect(userService.getProInfo).toHaveBeenCalled();
-      expect(component['userInfo']).toEqual(USER_PRO_INFO_RESPONSE);
+    it('should set profileForm with user data', () => {
       expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
       expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
-      expect(component.profileForm.get('phone_number').value).toEqual(USER_PRO_DATA.phone_number);
-      expect(component.profileForm.get('description').value).toEqual(USER_PRO_DATA.description);
-      expect(component.profileForm.get('opening_hours').value).toEqual(USER_PRO_DATA.opening_hours);
-      expect(component.profileForm.get('link').value).toEqual(USER_PRO_DATA.link);
     });
 
     it('should set profileForm with basic user data if userInfo throws error', () => {
@@ -165,11 +170,13 @@ describe('ProfileInfoComponent', () => {
       beforeEach(() => {
         spyOn(userService, 'edit').and.callThrough();
         spyOn(userService, 'updateProInfo').and.callThrough();
+        spyOn(userService, 'updateLocation').and.callThrough();
+        spyOn(userService, 'updateSearchLocationCookies').and.callThrough();
         spyOn(errorsService, 'i18nSuccess');
         component.profileForm.patchValue(DATA);
         component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
-        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
-        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
+        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude + 1);
+        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude + 1);
         component.formComponent.hasNotSavedChanges = true;
 
         component.onSubmit();
@@ -188,6 +195,58 @@ describe('ProfileInfoComponent', () => {
         expect(component.formComponent.hasNotSavedChanges).toBe(false);
       });
 
+      it('should call updateLocation', () => {
+        expect(userService.updateLocation).toHaveBeenCalledWith({
+          latitude: USER_LOCATION_COORDINATES.latitude + 1,
+          longitude: USER_LOCATION_COORDINATES.longitude + 1,
+          name: USER_LOCATION_COORDINATES.name
+        });
+      });
+
+      it('should set search location cookies', () => {
+        expect(userService.updateSearchLocationCookies).toHaveBeenCalledWith({
+          latitude: USER_LOCATION_COORDINATES.latitude + 1,
+          longitude: USER_LOCATION_COORDINATES.longitude + 1,
+          name: USER_LOCATION_COORDINATES.name
+        });
+      });
+    });
+
+    describe('valid form with same location in form and user', () => {
+
+      const BASIC_DATA = {
+        first_name: USER_DATA.first_name,
+        last_name: USER_DATA.last_name
+      };
+
+      const DATA = {
+        ...BASIC_DATA,
+        ...USER_PRO_DATA,
+      };
+
+      beforeEach(() => {
+        spyOn(userService, 'updateLocation').and.callThrough();
+        spyOn(userService, 'updateSearchLocationCookies').and.callThrough();
+        component.updateLocationWhenSearching = false;
+        component.profileForm.patchValue(DATA);
+        component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
+        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
+        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
+        component.formComponent.hasNotSavedChanges = true;
+
+        component.user.location.approximated_latitude = USER_LOCATION_COORDINATES.latitude;
+        component.user.location.approximated_longitude = USER_LOCATION_COORDINATES.longitude;
+
+        component.onSubmit();
+      });
+
+      it('should not call updateLocation', () => {
+        expect(userService.updateLocation).toHaveBeenCalledTimes(0);
+      });
+
+      it('should not change any cookie value', () => {
+        expect(userService.updateSearchLocationCookies).toHaveBeenCalledTimes(0);
+      });
     });
 
     describe('invalid form', () => {
@@ -243,6 +302,25 @@ describe('ProfileInfoComponent', () => {
       });
     });
 
+    describe('invalid phone number', () => {
+      it('should not call updateProInfo when phone number is not valid', () => {
+        spyOn(userService, 'updateProInfo').and.callThrough();
+
+        component.profileForm.get('phone_number').patchValue('invalid_number123');
+        component.onSubmit();
+
+        expect(userService.updateProInfo).not.toHaveBeenCalled();
+      });
+
+      it('should throw error toast when phone number is not valid', () => {
+        spyOn(errorsService, 'i18nError');
+
+        component.profileForm.get('phone_number').patchValue('invalid_number123');
+        component.onSubmit();
+
+        expect(errorsService.i18nError).toHaveBeenCalledWith('phoneNumberError');
+      });
+    });
   });
 
   describe('openBecomeProModal', () => {
@@ -255,6 +333,5 @@ describe('ProfileInfoComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {windowClass: 'become-pro'});
     });
   });
-
 
 });

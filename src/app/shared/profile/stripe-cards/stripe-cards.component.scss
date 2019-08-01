@@ -1,0 +1,54 @@
+@import "~style/common";
+
+.StripeCards {
+  h3 {
+    position: absolute;
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+  }
+}
+
+.StripeCards__group {
+  display: flex;
+  flex-direction: row;
+  margin-right: 0;
+  margin-left: 0;
+  justify-content: flex-start;
+}
+
+.StripeCards__card {
+  width: 300px;
+  margin: 0 $spacing-ms $spacing-ml;
+}
+
+.StripeCards__newCard {
+  color: $walla-main;
+  border: solid 1px $blue-grey-5;
+  padding: 0 $spacing-ml;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  align-items: center;
+  font-size: $font-size-s;
+  width: 300px;
+  height: 88px;
+  justify-content: center;
+  margin: 0 $spacing-ms $spacing-ml;
+  a {
+    font-size: $font-size-m;
+    cursor: pointer;
+  }
+  .card-icon {
+    flex: 0 0 34px;
+    margin-right: $spacing-m;
+  }
+  .number {
+    flex: 1;
+  }
+  .date {
+    color: $blue-grey-3;
+    span {
+      font-size: $font-size-xs;
+    }
+  }
+}

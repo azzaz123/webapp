@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Rx';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { StripeService } from '../../core/stripe/stripe.service';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
@@ -21,6 +22,7 @@ describe('AccountComponent', () => {
   let modalService: NgbModal;
   let userService: UserService;
   let errorsService: ErrorsService;
+  let stripeService: StripeService;
 
   const componentInstance: any = {
     init: jasmine.createSpy('init')
@@ -63,6 +65,13 @@ describe('AccountComponent', () => {
             };
           }
         }
+        },
+        {
+          provide: StripeService, useValue: {
+            isPaymentMethodStripe$() {
+              return Observable.of(true);
+            }
+        }
         }
       ],
       declarations: [ AccountComponent, ProfileFormComponent ],
@@ -80,6 +89,7 @@ describe('AccountComponent', () => {
     fixture.detectChanges();
     errorsService = TestBed.get(ErrorsService);
     modalService = TestBed.get(NgbModal);
+    stripeService = TestBed.get(StripeService);
   });
 
   describe('ngOnInit', () => {
@@ -91,6 +101,23 @@ describe('AccountComponent', () => {
     it('should set profileForm with user data', () => {
       expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
+    });
+
+    it('should call stripeService.isPaymentMethodStripe$', () => {
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
+    });
+
+    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
+      const expectedValue = true;
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+
+      component.ngOnInit();
+
+      expect(component.isStripe).toBe(expectedValue);
     });
   });
 
@@ -122,6 +149,20 @@ describe('AccountComponent', () => {
 
       it('should set hasNotSavedChanges to false', () => {
         expect(component.formComponent.hasNotSavedChanges).toBe(false);
+      });
+
+      it('should set isStripe to PAYMENT_PROVIDER_STRIPE value (true)', () => {
+        component.ngOnInit();
+
+        expect(component.isStripe).toBe(true);
+      });
+
+      it('should set isStripe to PAYMENT_PROVIDER_STRIPE value (false)', () => {
+        spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(false));
+
+        component.ngOnInit();
+
+        expect(component.isStripe).toBe(false);
       });
     });
 

@@ -23,7 +23,7 @@
       word-break: break-word;
       color: $blue-grey-1;
       font-size: $font-size-m;
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       width: 160px;
     }
     tsl-item-avatar {
@@ -65,7 +65,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     font-size: $font-size-m;
     &.with-credit {
       font-weight: normal;
@@ -119,7 +119,7 @@
     }
   }
   .total {
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
   }
   tsl-card-selection {
     width: 100%;
@@ -151,4 +151,17 @@
   background-color: $white;
   border-radius: 50%;
   background: url(/assets/images/listing-fee.svg) no-repeat center;
+}
+
+tsl-stripe-card-selection {
+  width: 100%;
+}
+
+.Cart__NewCard {
+  &--add, &--used {
+    margin-bottom: $spacing-s;
+    font-size: $font-size-s;
+    color: $walla-main;
+    cursor: pointer;
+  }
 }

@@ -1,34 +1,42 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { InboxMessage } from '../message/inbox-message';
-import { InboxConversation } from '../inbox/inbox-conversation/inbox-conversation';
+import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { InboxMessage, MessageType } from '../message';
+import { InboxConversation } from '../inbox/inbox-conversation';
 import { EventService } from '../../../core/event/event.service';
 import { RealTimeService } from '../../../core/message/real-time.service';
 import { Subscription } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { TrackingService } from '../../../core/tracking/tracking.service';
-import { ReportUserComponent } from '../../modals/report-user/report-user.component';
+import { ReportUserComponent } from '../../modals/report-user';
 import { UserService } from '../../../core/user/user.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
-import { ReportListingComponent } from '../../modals/report-listing/report-listing.component';
+import { ReportListingComponent } from '../../modals/report-listing';
 import { ItemService } from '../../../core/item/item.service';
-import { BlockUserComponent } from '../../modals/block-user/block-user.component';
-import { BlockUserService } from '../../../core/conversation/block-user.service';
-import { UnblockUserComponent } from '../../modals/unblock-user/unblock-user.component';
+import { BlockUserComponent } from '../../modals/block-user';
+import { UnblockUserComponent } from '../../modals/unblock-user';
 import { ConversationService } from '../../../core/inbox/conversation.service';
-import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conversation/archive-inbox-conversation.component';
-import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component';
+import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conversation';
+import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-conversation';
+import { TextMessageComponent } from '../message/text-message';
+import { ThirdVoiceMessageComponent } from '../message/third-voice-message';
+import { BlockUserService, BlockUserXmppService } from '../../../core/conversation/block-user';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-current-conversation',
   templateUrl: './current-conversation.component.html',
   styleUrls: ['./current-conversation.component.scss']
 })
-export class CurrentConversationComponent implements OnInit, OnDestroy {
+export class CurrentConversationComponent implements OnInit, OnChanges, OnDestroy {
+
+  public readonly BOTTOM_BUFFER_ZONE = 100;
+  private MESSAGE_HEIGHT = 42;
 
   @Input() currentConversation: InboxConversation;
   @Input() conversationsTotal: number;
   @Input() connectionError: boolean;
+  @Input() loadingError: boolean;
 
   constructor(private eventService: EventService,
     private modalService: NgbModal,
@@ -36,7 +44,8 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     private trackingService: TrackingService,
     private userService: UserService,
     private itemService: ItemService,
-    private blockService: BlockUserService,
+    private blockUserService: BlockUserService,
+    private blockUserXmppService: BlockUserXmppService,
     private i18n: I18nService,
     private realTime: RealTimeService,
     private conversationService: ConversationService) {
@@ -44,6 +53,11 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
+  private lastInboxMessage: InboxMessage;
+  private isEndOfConversation = true;
+  public scrollHeight = 0;
+  public scrollLocalPosition = 0;
+  public noMessages = 0;
 
   public momentConfig: any = {
     lastDay: '[Yesterday]',
@@ -60,13 +74,22 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
-      (message: InboxMessage) => this.sendRead(message));
+      (message: InboxMessage) => {
+        this.lastInboxMessage = message;
+        if (this.isEndOfConversation) {
+          this.sendReadForLastInboxMessage();
+          this.scrollHeight = this.scrollLocalPosition;
+        } else {
+          this.noMessages += 1;
+          this.scrollHeight = this.scrollLocalPosition + this.noMessages * this.MESSAGE_HEIGHT;
+        }
+      });
 
     this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED,
       (conversation: InboxConversation) => {
         this.isLoadingMoreMessages = false;
         this.currentConversation = conversation;
-    });
+      });
 
     this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation: InboxConversation) => {
       if (conversation !== this.currentConversation) {
@@ -75,10 +98,26 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.scrollLocalPosition = 0;
+  }
+
   ngOnDestroy() {
     this.currentConversation = null;
     if (this.newMessageSubscription) {
       this.newMessageSubscription.unsubscribe();
+    }
+  }
+
+  @HostListener('scroll', ['$event'])
+  onScrollMessages(event: any) {
+    this.noMessages = 0;
+    this.scrollLocalPosition = event.target.scrollHeight - event.target.scrollTop;
+    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - this.BOTTOM_BUFFER_ZONE) {
+      this.sendReadForLastInboxMessage();
+      this.isEndOfConversation = true;
+    } else {
+      this.isEndOfConversation = false;
     }
   }
 
@@ -90,18 +129,25 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     return date.getFullYear() === new Date().getFullYear();
   }
 
+  public sendReadForLastInboxMessage() {
+    if (this.lastInboxMessage) {
+      this.sendRead(this.lastInboxMessage);
+      this.lastInboxMessage = null;
+    }
+  }
+
   private sendRead(message: InboxMessage) {
-    if (this.currentConversation && this.currentConversation.id === message.thread && !message.fromSelf) {
+    if (_.eq(this.currentConversation.id, message.thread) && !message.fromSelf) {
       Visibility.onVisible(() => {
         setTimeout(() => {
-          this.realTime.sendRead(this.userService.user.id, this.currentConversation.id);
+          this.realTime.sendRead(message.from, message.thread);
         }, 1000);
       });
     }
   }
 
   public reportUserAction(): void {
-    this.modalService.open(ReportUserComponent, {windowClass: 'report'}).result.then((result: any) => {
+    this.modalService.open(ReportUserComponent, { windowClass: 'report' }).result.then((result: any) => {
       this.userService.reportUser(
         this.currentConversation.user.id,
         this.currentConversation.item.id,
@@ -110,14 +156,14 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         this.currentConversation.id
       ).subscribe(() => {
         this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
-          {user_id: this.currentConversation.user.id, reason_id: result.reason});
+          { user_id: this.currentConversation.user.id, reason_id: result.reason });
         this.toastr.success(this.i18n.getTranslations('reportUserSuccess'));
       });
     });
   }
 
   public reportListingAction(): void {
-    this.modalService.open(ReportListingComponent, {windowClass: 'report'}).result.then((result: any) => {
+    this.modalService.open(ReportListingComponent, { windowClass: 'report' }).result.then((result: any) => {
       this.itemService.reportListing(
         this.currentConversation.item.id,
         result.message,
@@ -125,7 +171,7 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
         this.currentConversation.id
       ).subscribe(() => {
         this.trackingService.track(TrackingService.PRODUCT_REPPORTED,
-          {product_id: this.currentConversation.item.id, reason_id: result.reason});
+          { product_id: this.currentConversation.item.id, reason_id: result.reason });
         this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
       }, (error: any) => {
         if (error.status === 403) {
@@ -139,16 +185,22 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
 
   public blockUserAction() {
     this.modalService.open(BlockUserComponent).result.then(() => {
-      this.blockService.blockUser(this.currentConversation.user).subscribe(() => {
-        this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
+      this.blockUserService.blockUser(this.currentConversation.user.id).subscribe(() => {
+        this.blockUserXmppService.blockUser(this.currentConversation.user).subscribe(() => {
+          this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
+        });
+      }, () => {
       });
     });
   }
 
   public unblockUserAction() {
     this.modalService.open(UnblockUserComponent).result.then(() => {
-      this.blockService.unblockUser(this.currentConversation.user).subscribe(() => {
-        this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
+      this.blockUserService.unblockUser(this.currentConversation.user.id).subscribe(() => {
+        this.blockUserXmppService.unblockUser(this.currentConversation.user).subscribe(() => {
+          this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
+        });
+      }, () => {
       });
     });
   }
@@ -185,11 +237,29 @@ export class CurrentConversationComponent implements OnInit, OnDestroy {
     return this.currentConversation.nextPageToken !== null && this.currentConversation.nextPageToken !== undefined;
   }
 
-  public loadMoreMessages() {
+  public loadMoreMessages(scrollHeight: number = 0) {
     if (this.isLoadingMoreMessages) {
       return;
     }
     this.isLoadingMoreMessages = true;
+    this.scrollHeight = scrollHeight;
     this.conversationService.loadMoreMessages(this.currentConversation.id);
+  }
+
+  public isTextMessage(messageType: MessageType): boolean {
+    return _.includes(TextMessageComponent.ALLOW_MESSAGES_TYPES, messageType);
+  }
+
+  public isThirdVoiceMessage(messageType: MessageType): boolean {
+    return _.includes(ThirdVoiceMessageComponent.ALLOW_MESSAGES_TYPES, messageType);
+  }
+
+  public scrollToLastMessage(): void {
+    const lastMessage = document.querySelector('.message-body');
+    if (lastMessage) {
+      lastMessage.scrollIntoView({ behavior: 'smooth' });
+      this.sendReadForLastInboxMessage();
+      this.isEndOfConversation = true;
+    }
   }
 }

@@ -163,6 +163,9 @@ export class HttpService extends Http {
       });
       newOptions = (<RequestOptions>options).merge(newOptions);
     }
+    if (options && options.body) {
+      newOptions.body = options.body;
+    }
     return newOptions;
   }
 

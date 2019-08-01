@@ -68,7 +68,7 @@ describe('Service: Tracking', () => {
       providers: [
         {
           provide: UserService, useClass: MockedUserService
-          },
+        },
         {
           provide: PersistencyService, useValue: {
             storeClickstreamEvent() { },
@@ -83,27 +83,27 @@ describe('Service: Tracking', () => {
               return Observable.of(true);
             },
             clickstreamDbName: 'mockName'
-        }
+          }
         },
         {
           provide: WindowRef, useValue: {
-          nativeWindow: {
-            screen: {
-              width: 1366,
-              height: 768
-            },
-            locale: 'es'
+            nativeWindow: {
+              screen: {
+                width: 1366,
+                height: 768
+              },
+              locale: 'es'
+            }
           }
-        }
         },
         {
           provide: CookieService, useValue: {
-          put(key, value) {
-          },
-          get(key) {
-            return 'a-b-c';
-          },
-        }
+            put(key, value) {
+            },
+            get(key) {
+              return 'a-b-c';
+            },
+          }
         },
         { provide: NavigatorService, useClass: MockedNavigatorService },
         TEST_HTTP_PROVIDERS,
@@ -166,8 +166,11 @@ describe('Service: Tracking', () => {
     it('should do a post to clickstream', () => {
       spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
       spyOn<any>(service, 'createNewEvent').and.callThrough();
-      service.track(TrackingService.NOTIFICATION_RECEIVED, {conversation_id: 'conversation'});
+
+      const result = service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
+
       expect(http.postNoBase['calls'].argsFor(0)[0]).toBe(environment.clickStreamURL);
+      expect(result).toBeTruthy();
     });
 
     it('should set the attribute professional to TRUE when the user.type is professional', () => {
@@ -190,7 +193,7 @@ describe('Service: Tracking', () => {
       const expectedAttributes = JSON.stringify({ conversation_id: 'conversation' });
 
       expect(http.postNoBase['calls'].argsFor(0)[1]).toContain(expectedAttributes);
-  });
+    });
   });
 
   describe('addTrackingEvent', () => {
@@ -231,35 +234,35 @@ describe('Service: Tracking', () => {
       eventService.emit(EventService.DB_READY, persistencyService.clickstreamDbName);
 
       expect(persistencyService.storeClickstreamEvent).toHaveBeenCalledWith(eventsArray[0]);
-  });
+    });
   });
 
   describe('trackAccumulatedEvents', () => {
     describe('when POST requests are sucessful', () => {
-    it('should send a batch of events accumulated when it has reached the maxBatchSize limit', () => {
-      spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
-      const maxBatchSize = 1000;
-      let x = 0;
+      it('should send a batch of events accumulated when it has reached the maxBatchSize limit', () => {
+        spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
+        const maxBatchSize = 1000;
+        let x = 0;
 
-      service.trackAccumulatedEvents();
-      while (x < maxBatchSize) {
+        service.trackAccumulatedEvents();
+        while (x < maxBatchSize) {
+          service.addTrackingEvent(eventsArray[0]);
+          x++;
+        }
+
+        expect(http.postNoBase['calls'].argsFor(0)[0]).toContain('clickstream.json/sendEvents');
+      });
+
+      it('should send a batch of events after the sendInterval time has passed', (fakeAsync(() => {
+        spyOn(http, 'postNoBase').and.callThrough();
+
+        service.trackAccumulatedEvents();
         service.addTrackingEvent(eventsArray[0]);
-        x++;
-      }
+        tick(sendInterval);
 
-      expect(http.postNoBase['calls'].argsFor(0)[0]).toContain('clickstream.json/sendEvents');
-    });
-
-    it('should send a batch of events after the sendInterval time has passed', (fakeAsync(() => {
-      spyOn(http, 'postNoBase').and.callThrough();
-
-      service.trackAccumulatedEvents();
-      service.addTrackingEvent(eventsArray[0]);
-      tick(sendInterval);
-
-      expect(http.postNoBase['calls'].argsFor(0)[0]).toContain('clickstream.json/sendEvents');
-      discardPeriodicTasks();
-    })));
+        expect(http.postNoBase['calls'].argsFor(0)[0]).toContain('clickstream.json/sendEvents');
+        discardPeriodicTasks();
+      })));
 
       it('should call persistencyService.storePackagedClickstreamEvents with an object containing the event', (fakeAsync(() => {
         spyOn(http, 'postNoBase').and.callThrough();
@@ -302,19 +305,19 @@ describe('Service: Tracking', () => {
         discardPeriodicTasks();
       })));
 
-    it('should add the event to the sentEvents array if the post request completes successfully', (fakeAsync(() => {
-      spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
-      const firstEvent = Object.assign({}, eventsArray[0]);
+      it('should add the event to the sentEvents array if the post request completes successfully', (fakeAsync(() => {
+        spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
+        const firstEvent = Object.assign({}, eventsArray[0]);
 
-      service.trackAccumulatedEvents();
-      service.addTrackingEvent(eventsArray[0]);
-      tick(sendInterval);
+        service.trackAccumulatedEvents();
+        service.addTrackingEvent(eventsArray[0]);
+        tick(sendInterval);
 
-      expect(service['sentEvents']).toContain(firstEvent);
-      expect(service['pendingTrackingEvents'].length).toBe(0);
-      discardPeriodicTasks();
-    })));
-  });
+        expect(service['sentEvents']).toContain(firstEvent);
+        expect(service['pendingTrackingEvents'].length).toBe(0);
+        discardPeriodicTasks();
+      })));
+    });
 
     describe('when POST requests return errors', () => {
       it('should NOT make a POST request if a previous POST request has failed (HTTP_REQUEST_FAILED emitted)', fakeAsync(() => {

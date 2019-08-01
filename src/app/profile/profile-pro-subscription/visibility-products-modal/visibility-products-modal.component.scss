@@ -19,7 +19,7 @@
 
 h1, h2 {
   color: $white;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
 }
 
 h1 {
@@ -52,7 +52,7 @@ h2 {
 
 .btn {
   border-radius: $button-border-radius;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   margin-top: $spacing-xl;
   padding: $spacing-ms $spacing-xl;
 }

@@ -49,7 +49,7 @@
     }
   }
   .price {
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
   }
   .title {
     margin: 0;
@@ -111,7 +111,7 @@
     font-size: $font-size-s;
     &.ng-valid {
       color: $blue-grey-2;
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
     }
     &.citybump {
       &:hover, &:focus {

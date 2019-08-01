@@ -19,7 +19,7 @@ $v-container-spacing: 40px;
 
 h2 {
   font-size: $font-size-xxl;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
 }
 
 .list-group-item {
@@ -74,7 +74,7 @@ $sidebar-title: 64px;
   }
   h3 {
     font-size: $font-size-xs;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     color: $blue-grey-2;
     margin-top: $spacing-ml;
     margin-bottom: $spacing-ms;

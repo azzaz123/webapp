@@ -33,6 +33,11 @@
   width: 100%;
 }
 
+#card-errors {
+  margin: 0 0 $spacing-s;
+  color: $negative-dark;
+}
+
 tsl-button {
   width: 100%;
   /deep/ button {

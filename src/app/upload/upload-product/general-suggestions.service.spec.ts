@@ -6,7 +6,8 @@ import { HttpService } from '../../core/http/http.service';
 import { IOption } from 'ng-select';
 import { ResponseOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs';
-import { BrandModel, Brand, Model } from '../brand-model.interface';
+import { BrandModel, Brand, Model, SizesResponse } from '../brand-model.interface';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 describe('GeneralSuggestionsService', () => {
 
@@ -17,6 +18,7 @@ describe('GeneralSuggestionsService', () => {
     TestBed.configureTestingModule({
       providers: [
         GeneralSuggestionsService,
+        I18nService,
         ...TEST_HTTP_PROVIDERS
       ]
     });
@@ -45,7 +47,7 @@ describe('GeneralSuggestionsService', () => {
     }));
 
     it('should call the object-type endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith(`${service['API_URL']}/object-type`, { category_id: CATEGORY });
+      expect(http.get).toHaveBeenCalledWith(`${service['API_URL']}/object-type`, { category_id: CATEGORY, language: 'en' });
     });
 
     it('should return the object type options', () => {
@@ -131,7 +133,7 @@ describe('GeneralSuggestionsService', () => {
   describe('getBrands', () => {
     let response: Brand[];
     const CATEGORY = 1;
-    const OBJECT_TYPE_ID = '2';
+    const OBJECT_TYPE_ID = 2;
     const SUGGESTION = 'suggestion';
 
     beforeEach(fakeAsync(() => {
@@ -155,6 +157,39 @@ describe('GeneralSuggestionsService', () => {
 
     it('should return the brand options', () => {
       expect(response).toEqual([{ brand: 'brand1' }, { brand: 'brand2' }]);
+    });
+  });
+
+  describe('getSizes', () => {
+    let response: IOption[];
+    const OBJECT_TYPE_ID = 2;
+
+    beforeEach(fakeAsync(() => {
+      const SIZES = {
+        female: [{
+          id: 34, text: '35'
+        }],
+        male: [{
+          id: 57, text: '48'
+        }]
+      };
+      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(SIZES) });
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+
+      service.getSizes(OBJECT_TYPE_ID, 'male').subscribe((r: IOption[]) => {
+        response = r;
+      });
+    }));
+
+    it('should call the size endpoint', () => {
+      expect(http.get).toHaveBeenCalledWith(`${service['FASHION_KEYS_URL']}/size`, { object_type_id: OBJECT_TYPE_ID, language: 'en' });
+    });
+
+    it('should return the size options', () => {
+      expect(response).toEqual([{
+        value: '57',
+        label: '48'
+      }]);
     });
   });
 

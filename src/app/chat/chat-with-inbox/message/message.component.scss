@@ -1,0 +1,73 @@
+@import "~style/common";
+
+:host {
+  display: block;
+  margin-bottom: $spacing-xs;
+  line-height: $line-height-ml;
+  overflow: hidden;
+
+}
+
+h5 {
+  font-weight: $font-weight-chunky;
+  font-size: $font-size-s;
+  color: $white;
+}
+
+.message-body {
+  color: $blue-grey-1;
+  margin-right: 100px;
+  display: flex;
+  text-align: left;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  span {
+    white-space: pre-wrap;
+  }
+  .message-cloud {
+    flex: 0 0 auto;
+    max-width: 100%;
+    padding: $spacing-s $spacing-ms;
+    border-radius: 20px;
+    border: 1px solid $blue-grey-5;
+    margin-bottom: 0;
+  }
+  &.from-self {
+    margin-right: 0;
+    margin-left: 100px;
+    position: relative;
+    flex-direction: row-reverse;
+    p {
+      padding-right: $spacing-xl;
+      background-color: $blue-grey-5;
+      float: right;
+    }
+  }
+}
+
+.message-status {
+  position: absolute;
+  bottom: 13px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  background: center bottom no-repeat;
+  &.pending { background-image: url(/assets/icons/msg-status-pending.svg); }
+  &.sent { background-image: url(/assets/icons/msg-status-sent.svg); }
+  &.received { background-image: url(/assets/icons/msg-status-received.svg); }
+  &.read { background-image: url(/assets/icons/msg-status-read-wallaColor.svg); }
+  &.error { background-image: url(/assets/icons/msg-status-error.svg); }
+  &.received, &.read {
+    right: 12px;
+  }
+}
+
+.message-date {
+  float: right;
+  font-size: $font-size-xxs;
+  white-space: pre;
+  margin: 0 $spacing-xs 0 $spacing-s;
+  color: $blue-grey-3;
+  position: relative;
+  bottom: -2px;
+}

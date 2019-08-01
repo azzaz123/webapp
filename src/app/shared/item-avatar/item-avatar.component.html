@@ -3,7 +3,7 @@
   [fallback]="fallback"
   [ngClass]="size">
   <span class="overlay" *ngIf="item?.featured || item?.sold || item?.reserved || item?.purchases || item?.notAvailable"></span>
-  <span class="not-available" *ngIf="item?.notAvailable">
+  <span class="not-available" *ngIf="item?.notAvailable && showAvailableStatus">
     <mat-icon svgIcon="not-available"></mat-icon>
   </span>
   <span class="sold" *ngIf="item?.sold && !item?.notAvailable">

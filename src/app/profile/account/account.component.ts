@@ -7,6 +7,7 @@ import { UserService } from '../../core/user/user.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { User } from '../../core/user/user';
 import * as moment from 'moment';
+import { StripeService } from '../../core/stripe/stripe.service';
 
 @Component({
   selector: 'tsl-account',
@@ -17,12 +18,14 @@ export class AccountComponent implements OnInit {
 
   public profileForm: FormGroup;
   public user: User;
+  public isStripe: boolean;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
   constructor(private modalService: NgbModal,
               private fb: FormBuilder,
               private userService: UserService,
-              private errorsService: ErrorsService) {
+              private errorsService: ErrorsService,
+              private stripeService: StripeService) {
     this.profileForm = fb.group({
       birth_date: ['', [Validators.required, this.dateValidator]],
       gender: ['', [Validators.required]],
@@ -30,6 +33,9 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+    });
     this.userService.me().subscribe((user: User) => {
       this.user = user;
       this.profileForm.patchValue({

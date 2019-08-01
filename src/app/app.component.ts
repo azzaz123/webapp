@@ -37,6 +37,7 @@ import { ChatSignal } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
 import { Subscription, Observable } from 'rxjs';
 import { SplitTestService } from './core/tracking/split-test.service';
+import { StripeService } from './core/stripe/stripe.service';
 
 @Component({
   selector: 'tsl-root',
@@ -80,14 +81,17 @@ export class AppComponent implements OnInit {
               private connectionService: ConnectionService,
               private paymentService: PaymentService,
               private callService: CallsService,
-              private splitTestService: SplitTestService) {
+              private splitTestService: SplitTestService,
+              private stripeService: StripeService ) {
     this.config();
   }
 
   ngOnInit() {
+    this.stripeService.init();
     appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
+    this.splitTestService.init();
     this.subscribeEventUserLogin();
     this.subscribeEventUserLogout();
     this.subscribeChatEvents();
@@ -100,7 +104,6 @@ export class AppComponent implements OnInit {
     this.connectionService.checkConnection();
     this.conversationService.firstLoad = true;
     this.trackingService.trackAccumulatedEvents();
-    this.splitTestService.init();
 
     __cmp('init', quancastOptions[this.i18n.locale]);
   }

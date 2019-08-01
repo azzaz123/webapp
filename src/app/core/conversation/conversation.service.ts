@@ -31,7 +31,7 @@ import 'rxjs/add/observable/forkJoin';
 import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 import { RealTimeService } from '../message/real-time.service';
-import { BlockUserService } from './block-user.service';
+import { BlockUserXmppService } from './block-user';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 
 @Injectable()
@@ -59,7 +59,7 @@ export class ConversationService extends LeadService {
               itemService: ItemService,
               event: EventService,
               realTime: RealTimeService,
-              blockService: BlockUserService,
+              blockService: BlockUserXmppService,
               connectionService: ConnectionService,
               private persistencyService: PersistencyService,
               protected messageService: MessageService,

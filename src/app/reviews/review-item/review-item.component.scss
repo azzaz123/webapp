@@ -15,7 +15,7 @@
     color: $blue-grey-3;
   }
   .review-title {
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     font-size: $font-size-l;
     white-space: nowrap;
     overflow: hidden;
@@ -42,7 +42,7 @@
   }
   .review-microname {
     color: $blue-grey-1;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     margin: 0 $spacing-xs;
   }
   &.row {

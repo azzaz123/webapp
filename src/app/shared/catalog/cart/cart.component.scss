@@ -92,9 +92,8 @@ h1 {
   justify-content: space-between;
   align-items: center;
   font-size: $font-size-xs;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   text-transform: uppercase;
-  padding: 0 $spacing-s;
   overflow: hidden;
   clear: both;
 }
@@ -200,7 +199,7 @@ ul, li {
   }
   .price {
     color: $blue-grey-2;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
   }
   .zonebump {
     color: $zone-bump;
@@ -252,8 +251,7 @@ ul, li {
 tsl-button {
   display: block;
   /deep/ .btn {
-    width: calc(100% - #{$button-margin * 2});
-    margin: $button-margin;
+    width: 100%;
     margin-top: 0;
   }
 }
@@ -270,5 +268,14 @@ tsl-button {
   span {
     font-size: $font-size-xs;
     color: $blue-grey-3;
+  }
+}
+
+.Cart__NewCard {
+  &--add, &--used {
+    margin: $spacing-s 0;
+    font-size: $font-size-s;
+    color: $walla-main;
+    cursor: pointer;
   }
 }

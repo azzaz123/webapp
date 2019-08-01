@@ -27,6 +27,7 @@ import { CardSelectionComponent } from '../../payments/card-selection/card-selec
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
+import { FINANCIAL_CARD_OPTION, STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -109,8 +110,11 @@ describe('CartComponent', () => {
         {
           provide: StripeService, useValue: {
           buy() {},
-          isPaymentMethodStripe() {
-            return true;
+          isPaymentMethodStripe$() {
+            return Observable.of(true);
+          },
+          getCards() {
+            return Observable.of([]);
           }
         }
         },
@@ -153,10 +157,29 @@ describe('CartComponent', () => {
       expect(component.cart).toEqual(CART);
     });
 
-    describe('check isStripe payment method', () => {
-      it('should set isStripe to true', () => {
-        expect(component.isStripe).toBe(true);
-      });
+    it('should call stripeService.isPaymentMethodStripe$', () => {
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
+    });
+
+    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
+      const expectedValue = true;
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+
+      component.ngOnInit();
+
+      expect(component.isStripe).toBe(expectedValue);
+    });
+
+    it('should call addNewCard method when there are no Stripe cards', () => {
+      spyOn(component, 'addNewCard').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -165,6 +188,34 @@ describe('CartComponent', () => {
       component.hasCard(true);
 
       expect(component.hasFinancialCard).toEqual(true);
+    });
+  });
+
+  describe('hasStripeCard', () => {
+    it('should set true if stripe card exists', () => {
+      component.hasStripeCard(true);
+
+      expect(component.isStripeCard).toEqual(true);
+    });
+  });
+
+  describe('addNewCard', () => {
+    it('should set showCard to true', () => {
+      component.addNewCard();
+
+      expect(component.showCard).toEqual(true);
+    });
+  });
+
+  describe('setSavedCard', () => {
+    it('should set showCard to false, savedCard to true and setCardInfo', () => {
+      spyOn(component, 'setCardInfo').and.callThrough();
+
+      component.setSavedCard(STRIPE_CARD_OPTION);
+
+      expect(component.showCard).toEqual(false);
+      expect(component.savedCard).toEqual(true);
+      expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
 
@@ -304,6 +355,42 @@ describe('CartComponent', () => {
             });
           });
         });
+
+        describe('track', () => {
+
+          beforeEach(() => {
+            component.creditInfo.credit = 0;
+            component.cart = CART;
+            component.cart.total = 1;
+          });
+
+          describe('Sabadell', () => {
+
+            it('should call track of trackingService with valid attributes', () => {
+              component.checkout();
+
+              expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
+                selected_products: CART_ORDER_TRACK,
+                payment_method: 'SABADELL'
+              });
+            });
+
+          });
+
+          describe('Stripe', () => {
+            it('should call track of trackingService with valid attributes', () => {
+              component.isStripe = true;
+
+              component.checkout();
+
+              expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
+                selected_products: CART_ORDER_TRACK,
+                payment_method: 'STRIPE'
+              });
+            });
+          });
+
+        });
       });
 
       describe('with payment_needed false', () => {
@@ -322,18 +409,19 @@ describe('CartComponent', () => {
 
         it('should redirect to code 200', () => {
           expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
-            selected_products: CART_ORDER_TRACK
-          });
         });
 
         it('should call deselectItems', () => {
           expect(itemService.deselectItems).toHaveBeenCalled();
           expect(itemService.selectedAction).toBeNull();
+        });
+
+        it('should call track of trackingService without any payment_method attribute', () => {
           expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
             selected_products: CART_ORDER_TRACK
           });
         });
+
       });
 
     });

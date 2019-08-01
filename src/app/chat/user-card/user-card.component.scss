@@ -64,7 +64,7 @@
       align-self: center;
       .selling-label {
         color: $blue-grey-2;
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
         font-size: $font-size-xs;
         text-transform: uppercase;
         margin-right: $spacing-xs;
@@ -78,7 +78,7 @@
       .items-count {
         font-size: $font-size-xs;
         color: $walla-main;
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
       }
     }
   }

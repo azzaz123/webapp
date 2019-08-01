@@ -6,7 +6,7 @@
   <div class="row" *ngIf="user">
     <div class="col-sm-12">
       <div class="form-group">
-        <tsl-location-select [form]="form" [name]="name" (locationSelected)="emitLocation()"></tsl-location-select>
+        <tsl-location-select [form]="form" [name]="name" [updateLocation]="updateLocation" (locationSelected)="emitLocation()"></tsl-location-select>
         <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small"></tsl-here-maps>
         <div class="fake-map" *ngIf="!coordinates"></div>
         <p i18n>This is the spot where your wallapop profile is located. We will show all your products here.</p>

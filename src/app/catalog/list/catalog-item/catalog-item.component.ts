@@ -20,6 +20,7 @@ export class CatalogItemComponent implements OnInit {
 
   @Input() item: Item;
   @Input() isPro: boolean;
+  @Input() paymentMethod: string;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
   @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
   public link: string;
@@ -162,7 +163,10 @@ export class CatalogItemComponent implements OnInit {
         total: +response.durations[0].market_code
       };
       localStorage.setItem('transactionType', 'purchaseListingFee');
-      this.trackingService.track(TrackingService.PURCHASE_LISTING_FEE_CATALOG, { item_id: this.item.id });
+      this.trackingService.track(TrackingService.PURCHASE_LISTING_FEE_CATALOG, {
+        item_id: this.item.id,
+        payment_method: this.paymentMethod
+      });
       this.purchaseListingFee.next(orderEvent);
     });
   }

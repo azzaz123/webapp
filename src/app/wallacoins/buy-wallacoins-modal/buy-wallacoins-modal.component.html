@@ -24,13 +24,24 @@
       <div class="total" i18n>Price</div>
       <div class="amount">{{pack.price | customCurrency}}</div>
     </div>
-    <tsl-card-selection [hidden]="!hasFinancialCard" [(ngModel)]="cardType" (hasCard)="hasCard($event)"></tsl-card-selection>
-    <tsl-button className="btn-block btn-primary"
+    <tsl-stripe-card-selection *ngIf="isStripe && isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+                               (hasStripeCard)="hasStripeCard($event)"
+    ></tsl-stripe-card-selection>
+    <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="isStripe && savedCard" i18n>+ Add another credit card</div>
+    <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="isStripe && showCard && isStripeCard" i18n>Use saved card</div>
+    <tsl-stripe-card-element *ngIf="isStripe && showCard" [type]="'bump'" [cart]="cart" (stripeCardToken)="checkout($event)"
+                             (stripeCard)="setCardInfo($event)" [loading]="loading"
+    ></tsl-stripe-card-element>
+    <tsl-card-selection [hidden]="!hasFinancialCard || isStripe" [(ngModel)]="cardType" (hasCard)="hasCard($event)"></tsl-card-selection>
+    <tsl-button [hidden]="isStripe && !savedCard"
+                className="btn-block btn-primary"
                 (click)="checkout()"
                 [loading]="loading"
-                [tslTrackEvent]="hasFinancialCard ? 'PURCHASE_CONFIRM_PACK_CREDITS' : 'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
+                [disabled]="isStripe && !selectedCard"
+                [tslTrackEvent]="hasFinancialCard || (isStripe && isStripeCard) ? 'PURCHASE_CONFIRM_PACK_CREDITS' : 'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
+                [params]="getTrackingAttributes()"
                 i18n>Buy now</tsl-button>
-    <p class="note" [hidden]="hasFinancialCard" i18n>We don't save details of this transaction. The purchase is made via Banco Sabadell.</p>
+    <p class="note" [hidden]="hasFinancialCard || isStripe" i18n>We don't save details of this transaction. The purchase is made via Banco Sabadell.</p>
   </div>
 </div>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

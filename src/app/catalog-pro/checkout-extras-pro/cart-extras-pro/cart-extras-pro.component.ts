@@ -10,8 +10,10 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { CartChange } from '../../../shared/catalog/cart/cart-item.interface';
 import { Pack } from '../../../core/payments/pack';
-import { OrderProExtras } from '../../../core/payments/payment.interface';
+import { OrderProExtras, FinancialCardOption } from '../../../core/payments/payment.interface';
 import { StripeService } from '../../../core/stripe/stripe.service';
+import { EventService } from '../../../core/event/event.service';
+import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'tsl-cart-extras-pro',
@@ -27,7 +29,12 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public cardType = 'old';
   private active = true;
-  public isStripe: boolean;
+  public card: any;
+  public isStripe = false;
+  public isStripeCard = true;
+  public showCard = false;
+  public savedCard = true;
+  public selectedCard = false;
   @Output() billingInfoMissing: EventEmitter<boolean> = new EventEmitter();
   @Input() billingInfoForm: FormGroup;
   @Input() billingInfoFormEnabled: boolean;
@@ -39,10 +46,23 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
               private trackingService: TrackingService,
               private router: Router,
               private errorsService: ErrorsService,
-              private stripeService: StripeService) { }
+              private stripeService: StripeService,
+              private eventService: EventService) { }
 
   ngOnInit() {
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+      if (this.isStripe) {
+        this.eventService.subscribe('paymentResponse', (response) => {
+          this.managePaymentResponse(response);
+        });
+        this.stripeService.getCards().subscribe(cards => {
+          if (cards.length === 0) {
+            this.addNewCard();
+          }
+        });
+      }
+    });
     this.cartService.createInstance(new CartProExtras());
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
@@ -87,12 +107,17 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   private processCheckout() {
     const order: OrderProExtras = this.cart.prepareOrder();
+    const paymentId: string = UUID.UUID();
     if (this.isStripe) {
       order.provider = 'STRIPE';
     }
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
       this.track(order);
-      this.buy(order.id);
+      if (this.isStripe) {
+        this.stripeService.buy(order.id, paymentId, this.isStripeCard, this.savedCard, this.card);
+      } else {
+        this.buy(order.id);
+      }
     }, (error: Response) => {
       this.loading = false;
       if (error.text()) {
@@ -116,10 +141,53 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   }
 
   private track(order: OrderProExtras) {
-    this.trackingService.track(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {selected_packs: order.packs});
+    const payment_method = this.isStripe ? 'STRIPE' : 'SABADELL';
+    this.trackingService.track(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART,
+      {
+        selected_packs: order.packs,
+        payment_method
+      });
   }
 
   public hasCard(hasCard: boolean) {
     this.hasFinancialCard = hasCard;
+  }
+
+  public hasStripeCard(hasCard: boolean) {
+    this.isStripeCard = hasCard;
+  }
+
+  public setCardInfo(card: any): void {
+    this.card = card;
+  }
+
+  private managePaymentResponse(paymentResponse: string): void {
+    switch(paymentResponse && paymentResponse.toUpperCase()) {
+      case 'SUCCEEDED': {
+        this.router.navigate(['pro/catalog/list', {code: '200', extras: true}]);
+        break;
+      }
+      default: {
+        this.router.navigate(['pro/catalog/list', {code: -1}]);
+        break;
+      }
+    }
+  }
+
+  public addNewCard() {
+    this.showCard = true;
+    this.savedCard = false;
+  }
+
+  public removeNewCard() {
+    this.showCard = false;
+    this.savedCard = true;
+  }
+
+  public setSavedCard(selectedCard: FinancialCardOption) {
+    this.showCard = false;
+    this.savedCard = true;
+    this.selectedCard = true;
+    this.setCardInfo(selectedCard);
   }
 }

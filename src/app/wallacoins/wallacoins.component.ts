@@ -48,7 +48,9 @@ export class WallacoinsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+    });
     this.openTutorialModal();
     this.carouselOptions = {
       grid: {xs: 3, sm: 3, md: 3, lg: 3, all: 0},
@@ -100,12 +102,16 @@ export class WallacoinsComponent implements OnInit {
 
   public openBuyModal(pack: Pack, packIndex: number) {
     const modal: NgbModalRef = this.modalService.open(BuyWallacoinsModalComponent, {windowClass: 'modal-standard'});
+    let code = '-1';
     modal.componentInstance.pack = pack;
     modal.componentInstance.packIndex = packIndex;
     modal.componentInstance.isStripe = this.isStripe;
-    modal.result.then(() => {
-      this.updateRemainingCredit(pack);
-      this.openConfirmModal(pack);
+    modal.result.then((response) => {
+      if (response === 'success') {
+        code = '200';
+        this.updateRemainingCredit(pack);
+      }
+      this.openConfirmModal(pack, code);
     }, () => {
     });
   }

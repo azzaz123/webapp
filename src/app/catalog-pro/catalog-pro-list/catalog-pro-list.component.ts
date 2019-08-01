@@ -65,7 +65,9 @@ export class CatalogProListComponent implements OnInit {
               private stripeService: StripeService) { }
 
   ngOnInit() {
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = val;
+    });
     this.getCounters();
     this.getItems();
     const sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
@@ -272,23 +274,30 @@ export class CatalogProListComponent implements OnInit {
       if (failedProducts && failedProducts.length) {
         this.errorService.i18nError('bumpError');
       } else {
-        this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
-          this.chooseCreditCard(orderId, orderEvent.total, financialCard);
-        }, () => {
-          this.setRedirectToTPV(true);
-          this.sabadellSubmit.emit(orderId);
-        });
+        if (this.isStripe) {
+          this.chooseCreditCard(orderId, orderEvent.total);
+        } else {
+          this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
+            this.chooseCreditCard(orderId, orderEvent.total, financialCard);
+          }, () => {
+            this.setRedirectToTPV(true);
+            this.sabadellSubmit.emit(orderId);
+          });
+        }
       }
     }, () => {
       this.deselect();
     });
   }
 
-  private chooseCreditCard(orderId: string, total: number, financialCard: FinancialCard) {
+  private chooseCreditCard(orderId: string, total: number, financialCard?: FinancialCard) {
     const modalRef: NgbModalRef = this.modalService.open(CreditCardModalComponent, {windowClass: 'credit-card'});
     modalRef.componentInstance.financialCard = financialCard;
     modalRef.componentInstance.total = total;
-    this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, {select_card: financialCard.id});
+    modalRef.componentInstance.orderId = orderId;
+    if (!this.isStripe) {
+      this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, {select_card: financialCard.id});
+    }
     modalRef.result.then((result: string) => {
       if (result === undefined) {
         this.isUrgent = false;
@@ -302,17 +311,25 @@ export class CatalogProListComponent implements OnInit {
         this.setRedirectToTPV(true);
         this.sabadellSubmit.emit(orderId);
       } else {
-        this.paymentService.pay(orderId).subscribe(() => {
+        if (this.isStripe) {
+          const code = result === 'success' ? 200 : -1;
           this.deselect();
           setTimeout(() => {
-            this.router.navigate(['catalog/list', {code: 200}]);
+            this.router.navigate(['catalog/list', {code}]);
           }, 1000);
-        }, () => {
-          this.deselect();
-          setTimeout(() => {
-            this.router.navigate(['catalog/list', {code: -1}]);
-          }, 1000);
-        });
+        } else {
+          this.paymentService.pay(orderId).subscribe(() => {
+            this.deselect();
+            setTimeout(() => {
+              this.router.navigate(['catalog/list', {code: 200}]);
+            }, 1000);
+          }, () => {
+            this.deselect();
+            setTimeout(() => {
+              this.router.navigate(['catalog/list', {code: -1}]);
+            }, 1000);
+          });
+        }
       }
     }, () => {
       this.deselect();

@@ -53,7 +53,7 @@ h1 {
   height: $total-height;
   line-height: $total-height;
   font-size: $font-size-xs;
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   padding: 0 $spacing-s;
   text-transform: uppercase;
   .price {
@@ -101,7 +101,7 @@ ul, li {
   }
   .price {
     color: $blue-grey-2;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
   }
   .citybump {
     color: $walla-main;
@@ -131,7 +131,7 @@ ul, li {
       flex: 1;
       .quantity {
         font-size: $font-size-m;
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
         color: $blue-grey-2;
         background-color: $blue-grey-5;
         border-radius: 4px;
@@ -182,5 +182,14 @@ tsl-button {
   span {
     font-size: $font-size-xs;
     color: $blue-grey-3;
+  }
+}
+
+.Cart__NewCard {
+  &--add, &--used {
+    margin-bottom: $spacing-s;
+    font-size: $font-size-s;
+    color: $walla-main;
+    cursor: pointer;
   }
 }

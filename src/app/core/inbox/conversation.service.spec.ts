@@ -9,7 +9,7 @@ import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '.
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { chatSignalType, ChatSignal } from '../message/chat-signal.interface';
 import { Message } from '../message/message';
-import { messageStatus, InboxMessage } from '../../chat/chat-with-inbox/message/inbox-message';
+import {messageStatus, InboxMessage, MessageType} from '../../chat/chat-with-inbox/message/inbox-message';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
@@ -29,7 +29,6 @@ let persistencyService: PersistencyService;
 let messageService: MessageService;
 let userService: UserService;
 let itemService: ItemService;
-
 
 describe('ConversationService', () => {
   beforeEach(() => {
@@ -63,7 +62,7 @@ describe('ConversationService', () => {
       spyOn(service, 'processNewMessage');
       const message = new Message('mockId', 'thread-id', 'hola!', 'mockUserId', new Date(), messageStatus.SENT);
       const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf,
-        message.date, message.status, message.payload, message.phoneRequest);
+        message.date, message.status, MessageType.TEXT, message.payload, message.phoneRequest);
 
       eventService.emit(EventService.NEW_MESSAGE, message);
 
@@ -128,7 +127,7 @@ describe('ConversationService', () => {
 
     describe('when called with a message that does not already exist', () => {
       beforeEach(() => {
-        newInboxMessage = new InboxMessage('newMessageId', conversations[0].id, 'hole', 'mockUserId', true, new Date(), messageStatus.SENT);
+        newInboxMessage = new InboxMessage('newMessageId', conversations[0].id, 'hole', 'mockUserId', true, new Date(), messageStatus.SENT, MessageType.TEXT);
       });
 
       it('should prepend the new message to the conversation messages array', () => {
@@ -152,9 +151,9 @@ describe('ConversationService', () => {
       it('should bump the conversation to 1st position', () => {
         const conversationToBump = service.conversations[1];
         const message = new InboxMessage('mockId', conversationToBump.id, 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.SENT);
+          new Date(), messageStatus.SENT, MessageType.TEXT);
 
-          service.processNewMessage(message);
+        service.processNewMessage(message);
 
         expect(service.conversations.indexOf(conversationToBump)).toBe(0);
       });
@@ -180,7 +179,7 @@ describe('ConversationService', () => {
         const count = 3;
         for (let i = 0; i < count; i++) {
           const msg = new InboxMessage('mockId' + i, conversations[0].id, 'hola!', 'mockUserId', false, new Date(),
-            messageStatus.SENT);
+            messageStatus.SENT, MessageType.TEXT);
             service.processNewMessage(msg);
         }
 
@@ -190,7 +189,7 @@ describe('ConversationService', () => {
 
       it('should only increment the unread counters for new messages NOT fromSelf AND with unique IDs', () => {
         const unreadCounterBefore = service.conversations[0].unreadCounter;
-        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', false, new Date(), messageStatus.SENT);
+        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', false, new Date(), messageStatus.SENT, MessageType.TEXT);
 
         service.processNewMessage(message);
         service.processNewMessage(message);
@@ -201,7 +200,7 @@ describe('ConversationService', () => {
       });
 
       it('should not increment the conversation.unreadCount nor the messageService.totalUnreadMessages for new messages fromSelf', () => {
-        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', true, new Date(), messageStatus.SENT);
+        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', true, new Date(), messageStatus.SENT, MessageType.TEXT);
         const unreadCounterBefore = service.conversations[0].unreadCounter;
 
         service.processNewMessage(message);
@@ -215,7 +214,7 @@ describe('ConversationService', () => {
       beforeEach(() => {
         currentLastMessage = conversations[0].lastMessage;
         newInboxMessage = new InboxMessage(conversations[0].messages[0].id, conversations[0].id, 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.RECEIVED);
+          new Date(), messageStatus.RECEIVED, MessageType.TEXT);
           service.processNewMessage(newInboxMessage);
       });
 
@@ -236,9 +235,9 @@ describe('ConversationService', () => {
       it('should not bump the conversation to 1st position', () => {
         const conversationToBump = service.conversations[1];
         const message = new InboxMessage(conversationToBump.lastMessage.id, conversationToBump.id, 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.SENT);
+          new Date(), messageStatus.SENT, MessageType.TEXT);
 
-          service.processNewMessage(message);
+        service.processNewMessage(message);
 
         expect(service.conversations.indexOf(conversationToBump)).not.toBe(0);
       });
@@ -246,7 +245,7 @@ describe('ConversationService', () => {
       it('should NOT increase the unread counts if the new message has the same ID as the current lastMessage', () => {
         const unreadCounterBefore = service.conversations[0].unreadCounter;
         const message = new InboxMessage(currentLastMessage.id, conversations[0].id, 'hola!', 'mockUserId', false, new Date(),
-          messageStatus.READ);
+          messageStatus.READ, MessageType.TEXT);
 
         service.processNewMessage(message);
 
@@ -259,7 +258,7 @@ describe('ConversationService', () => {
       beforeEach(() => {
         currentLastMessage = conversations[0].lastMessage;
         newInboxMessage = new InboxMessage('newMessageId', 'newConversationId', 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.RECEIVED);
+          new Date(), messageStatus.RECEIVED, MessageType.TEXT);
       });
 
       it('should call fetch new conversation', () => {
@@ -353,7 +352,6 @@ describe('ConversationService', () => {
           const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
           service.processNewChatSignal(signal);
 
-
           expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(unreadCount);
           expectedMarkedAsRead.forEach(m => {
             expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
@@ -427,13 +425,13 @@ describe('ConversationService', () => {
 
         it(`should set unreadMessages counter of the conversation to 0 if the number of messages that are being marked as READ is greater
         than the existing counter (disallow negative values in counter)`, () => {
-            mockedConversation.unreadCounter = 1;
+          mockedConversation.unreadCounter = 1;
 
-            const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-            service.processNewChatSignal(signal);
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          service.processNewChatSignal(signal);
 
-            expect(mockedConversation.unreadCounter).toBe(0);
-          });
+          expect(mockedConversation.unreadCounter).toBe(0);
+        });
 
         it('should decrase messageService.totalUnreadMessages counter by the number of messages that are being marked as READ', () => {
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
@@ -446,13 +444,13 @@ describe('ConversationService', () => {
 
         it(`should set messageService.totalUnreadMessages counter to 0 if the number of messages that are being marked as READ is greater
         than the existing counter (disallow negative values in counter)`, () => {
-            mockedConversation.unreadCounter = 5;
+          mockedConversation.unreadCounter = 5;
 
-            const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-            service.processNewChatSignal(signal);
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          service.processNewChatSignal(signal);
 
-            expect(messageService.totalUnreadMessages).toBe(0);
-          });
+          expect(messageService.totalUnreadMessages).toBe(0);
+        });
       });
     });
 
@@ -483,30 +481,30 @@ describe('ConversationService', () => {
 
       it(`should update message status ONLY for messages that meet the criteria:
         message status is missing OR message status is NULL OR the new status order is greater than the current status order`, () => {
-          mockedConversation.messages[0].status = messageStatus.SENT;
-          mockedConversation.messages[1].status = null;
-          mockedConversation.messages[2].status = messageStatus.RECEIVED;
+        mockedConversation.messages[0].status = messageStatus.SENT;
+        mockedConversation.messages[1].status = null;
+        mockedConversation.messages[2].status = messageStatus.RECEIVED;
 
-          const signal1 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[0].id);
-          const signal2 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[1].id);
-          const signal3 = new ChatSignal(chatSignalType.SENT, mockedConversation.id, timestamp, mockedConversation.messages[2].id);
+        const signal1 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[0].id);
+        const signal2 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[1].id);
+        const signal3 = new ChatSignal(chatSignalType.SENT, mockedConversation.id, timestamp, mockedConversation.messages[2].id);
 
-          service.processNewChatSignal(signal1);
-          service.processNewChatSignal(signal2);
-          service.processNewChatSignal(signal3);
+        service.processNewChatSignal(signal1);
+        service.processNewChatSignal(signal2);
+        service.processNewChatSignal(signal3);
 
-          const expectedChangedMessages = mockedConversation.messages.slice(0, 2);
-          const expectedNotChangedMessages = mockedConversation.messages.slice(-1);
+        const expectedChangedMessages = mockedConversation.messages.slice(0, 2);
+        const expectedNotChangedMessages = mockedConversation.messages.slice(-1);
 
-          expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(2);
-          expectedChangedMessages.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, messageStatus.RECEIVED);
-          });
-
-          expectedNotChangedMessages.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.SENT);
-          });
+        expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(2);
+        expectedChangedMessages.forEach(m => {
+          expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, messageStatus.RECEIVED);
         });
+
+        expectedNotChangedMessages.forEach(m => {
+          expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.SENT);
+        });
+      });
     });
   });
 
@@ -525,7 +523,7 @@ describe('ConversationService', () => {
     });
 
     it('with 409 error should emit CONVERSATION_ARCHIVED event', () => {
-      spyOn(http, 'put').and.returnValue(Observable.throwError({status: 409}));
+      spyOn(http, 'put').and.returnValue(Observable.throwError({ status: 409 }));
 
       service.archive(service.conversations[0]).subscribe().unsubscribe();
 
@@ -548,11 +546,35 @@ describe('ConversationService', () => {
     });
 
     it('with 409 error should emit CONVERSATION_UNARCHIVED event', () => {
-      spyOn(http, 'put').and.returnValue(Observable.throwError({status: 409}));
+      spyOn(http, 'put').and.returnValue(Observable.throwError({ status: 409 }));
 
       service.unarchive(service.archivedConversations[0]).subscribe().unsubscribe();
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]);
+    });
+  });
+
+  describe('isConversationArchived', () => {
+    it('should check if conversation is archived', () => {
+      const mockConversation = CREATE_MOCK_INBOX_CONVERSATION();
+
+      service.archivedConversations = null;
+      expect(service.isConversationArchived(null)).toBeFalsy();
+
+      service.archivedConversations = [];
+      expect(service.isConversationArchived(null)).toBeFalsy();
+
+      service.archivedConversations = [mockConversation];
+      expect(service.isConversationArchived(null)).toBeFalsy();
+
+      service.archivedConversations = null;
+      expect(service.isConversationArchived(mockConversation)).toBeFalsy();
+
+      service.archivedConversations = [];
+      expect(service.isConversationArchived(mockConversation)).toBeFalsy();
+
+      service.archivedConversations = [mockConversation];
+      expect(service.isConversationArchived(mockConversation)).toBeTruthy();
     });
   });
 });

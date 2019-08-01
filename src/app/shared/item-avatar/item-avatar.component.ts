@@ -14,6 +14,7 @@ export class ItemAvatarComponent implements OnChanges {
   @Input() fallbackLight: boolean;
   @Input() item: Item;
   @Input() size: string;
+  @Input() showAvailableStatus = true;
 
   constructor() {
   }

@@ -87,13 +87,23 @@
       <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
         <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
       </div>
-      <tsl-catalog-item *ngFor="let item of items" [item]="item" (itemChange)="itemChanged($event)" (purchaseListingFee)="purchaseListingFee($event)" class="col-md-12" [isPro]="selectedStatus === 'cars'"></tsl-catalog-item>
+      <tsl-catalog-item 
+        *ngFor="let item of items"
+        class="col-md-12" 
+        [item]="item"
+        [isPro]="selectedStatus === 'cars'"
+        [paymentMethod]="isStripe ? 'STRIPE' : 'SABADELL'"
+        (itemChange)="itemChanged($event)"
+        (purchaseListingFee)="purchaseListingFee($event)"
+      >
+      </tsl-catalog-item>
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
   </div>
 </div>
 <tsl-selected-items *ngIf="items.length && itemService.selectedItems.length"
                     [items]="items"
+                    [isStripe]="isStripe"
                     (onAction)="onAction($event)"
 ></tsl-selected-items>
 <tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>

@@ -10,9 +10,12 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
-import { FinancialCard } from '../../../core/payments/payment.interface';
 import { CartBase } from '../../catalog/cart/cart-base';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { StripeService } from '../../../core/stripe/stripe.service';
+import { FinancialCard } from '../../profile/credit-card-info/financial-card';
+import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -35,9 +38,11 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   @Input() type: string;
   @Input() cart: CartBase;
   @Input() loading: boolean;
+  @Input() newLoading: boolean;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
+  @Output() onStripeCardCreate: EventEmitter<PaymentMethodResponse> = new EventEmitter();
 
   cardHandler = this.onChange.bind(this);
   error: string;
@@ -46,7 +51,9 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   private onTouched: any = () => {};
 
   constructor(private cd: ChangeDetectorRef,
-              private i18n: I18nService) {
+              private i18n: I18nService,
+              private stripeService: StripeService,
+              private toastrService: ToastrService) {
   }
 
   ngAfterViewInit() {
@@ -74,7 +81,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   }
 
   private initStripe() {
-    const elements = stripe.elements({
+    const elements = this.stripeService.lib.elements({
       locale: this.i18n.locale
     });
 
@@ -103,13 +110,19 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   }
 
   public async onSubmit() {
-    const { token, error } = await stripe.createToken(this.card);
+    const { token, error } = await this.stripeService.createToken(this.card);
 
     if (error) {
-      console.warn('Error:', error);
+      this.toastrService.error(error.message);
     } else {
-      this.stripeCardToken.emit(token)
+      this.stripeCardToken.emit(token);
     }
+  }
+
+  public createNewCard() {
+    this.stripeService.createStripeCard(this.card).then((paymentMethod: PaymentMethodResponse) => {
+      this.onStripeCardCreate.emit(paymentMethod);
+    });
   }
 
   public get model(): boolean {

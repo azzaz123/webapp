@@ -1,0 +1,13 @@
+@import "~style/common";
+
+span {
+  position: absolute;
+  padding: 0 6px;
+  border-radius: 12px;
+  background-color: $white;
+
+  mat-icon {
+    width: 12px;
+    height: 12px;
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { KeywordSuggestion } from './keyword-suggestion.interface';
 import { Subject } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -8,7 +8,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
   templateUrl: './keyword-suggester.component.html',
   styleUrls: ['./keyword-suggester.component.scss']
 })
-export class KeywordSuggesterComponent implements OnInit {
+export class KeywordSuggesterComponent implements OnInit, OnChanges {
 
   @Input() value: Subject<string>;
   @Input() placeholder: string;
@@ -37,8 +37,11 @@ export class KeywordSuggesterComponent implements OnInit {
     if (this.initialValue) {
       this.setSuggestionValue(this.initialValue);
     }
-    if (this.placeholder) {
-      this.placeholderValue = this.i18n.getTranslations(this.placeholder);
+  }
+
+  ngOnChanges(changes?) {
+    if (changes.placeholder) {
+      this.placeholderValue = this.i18n.getTranslations(changes.placeholder.currentValue);
     }
   }
 

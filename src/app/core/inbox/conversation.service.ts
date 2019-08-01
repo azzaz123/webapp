@@ -1,32 +1,33 @@
 import { Injectable } from '@angular/core';
 import { RealTimeService } from '../message/real-time.service';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation';
 import { EventService } from '../event/event.service';
-import { InboxMessage, messageStatus, statusOrder } from '../../chat/chat-with-inbox/message/inbox-message';
+import { InboxMessage, messageStatus, MessageType, statusOrder } from '../../chat/chat-with-inbox/message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { Message } from '../message/message';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
-import { Response, RequestOptions, Headers } from '@angular/http';
+import { Headers, RequestOptions, Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
-import { InboxUserPlaceholder, InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
-import { InboxItemPlaceholder, InboxItem } from '../../chat/chat-with-inbox/inbox/inbox-item';
+import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
+import { InboxItem } from '../../chat/chat-with-inbox/inbox/inbox-item';
 import { environment } from '../../../environments/environment';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConversationService {
+  public static  readonly MESSAGES_IN_CONVERSATION = 30;
   private API_URL = 'bff/messaging/conversation/';
   private ARCHIVE_URL = '/api/v3/instant-messaging/conversations/archive';
   private UNARCHIVE_URL = '/api/v3/instant-messaging/conversations/unarchive';
   private MORE_MESSAGES_URL = '/api/v3/instant-messaging/archive/conversation/CONVERSATION_HASH/messages';
   private _selfId: string;
-  private max_messages = 20;
 
   constructor(
     private http: HttpService,
@@ -55,13 +56,17 @@ export class ConversationService {
       this.archivedConversations = conversations;
     });
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
-      const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
-        message.status, message.payload, message.phoneRequest);
-      this.processNewMessage(inboxMessage);
+      this.processNewMessage(this.buildInboxMessage(message));
     });
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processNewChatSignal(signal);
     });
+  }
+
+  public buildInboxMessage(message: Message) {
+    const messageType = message.payload ? message.payload.type as MessageType : MessageType.TEXT;
+    return new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
+      message.status, messageType, message.payload, message.phoneRequest);
   }
 
   set selfId(value: string) {
@@ -200,7 +205,7 @@ export class ConversationService {
   }
 
   public isConversationArchived(conversation: InboxConversation): boolean {
-    return this.archivedConversations.includes(conversation);
+    return _.includes(this.archivedConversations, conversation);
   }
 
   public archive(conversation: InboxConversation): Observable<InboxConversation> {
@@ -269,13 +274,13 @@ export class ConversationService {
   private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<any> {
     const url = this.MORE_MESSAGES_URL.replace('CONVERSATION_HASH', conversationId);
     return this.http.get(url,
-      { max_messages : this.max_messages,
+      { max_messages : ConversationService.MESSAGES_IN_CONVERSATION,
       from : nextPageToken });
   }
 
   public openConversationWith$(itemId: string): Observable<InboxConversation> {
     if (this.conversations && this.archivedConversations) {
-      const localConversation = this.conversations.find((conver) => conver.item.id === itemId && !conver.item.isMine) 
+      const localConversation = this.conversations.find((conver) => conver.item.id === itemId && !conver.item.isMine)
       || this.archivedConversations.find((conver) => conver.item.id === itemId && !conver.item.isMine);
 
       if (localConversation) {
@@ -301,7 +306,7 @@ export class ConversationService {
     const options = new RequestOptions(); // Will remove this import
     options.headers = new Headers(); // Will remove this import
     options.headers.append('Content-Type', 'application/json');
-    return this.http.post('api/v3/conversations', JSON.stringify({item_id: itemId}), options).flatMap((r: Response) => {
+    return this.http.post('api/v3/conversations', JSON.stringify({ item_id: itemId }), options).flatMap((r: Response) => {
       const response: ConversationResponse = r.json(); // Will remove this import
       return Observable.forkJoin(
         this.userService.get(response.other_user_id),
@@ -320,7 +325,7 @@ export class ConversationService {
           userImage, null, userResponse.scoringStars,
           {longitude: userResponse.approximated_longitude, latitude: userResponse.approximated_latitude });
         const inboxItem = new InboxItem(itemResponse.id, {currency: itemResponse.currencyCode, amount: itemResponse.salePrice },
-          itemResponse.title, itemResponse.mainImage, `${environment.siteUrl}user/${itemResponse.webSlug}`,
+          itemResponse.title, itemResponse.mainImage, `${environment.siteUrl}item/${itemResponse.webSlug}`,
           'undefined', false);
         return new InboxConversation(response.conversation_id, new Date(),
         inboxUser, inboxItem, null, [], false, 0, null);

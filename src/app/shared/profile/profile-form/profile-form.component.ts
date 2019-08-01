@@ -28,15 +28,12 @@ export class ProfileFormComponent implements OnInit {
 
   private detectFormChanges() {
     this.profileForm.valueChanges.subscribe((value) => {
-      const oldProfileData = _.omit(this.oldFormValue, ['location']);
-      const newProfileData = _.omit(value, ['location']);
-      if (!this.oldFormValue) {
+      if (!this.oldFormValue && value.first_name !== '') {
         this.oldFormValue = value;
       } else {
-        if (!_.isEqual(oldProfileData, newProfileData)) {
+        if (!_.isEqual(this.oldFormValue, value)) {
           this.hasNotSavedChanges = true;
         }
-        this.oldFormValue = value;
       }
     });
   }

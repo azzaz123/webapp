@@ -1,3 +1,12 @@
+export enum MessageType {
+  TEXT = 'text',
+  /** Projections */
+  PRICE_DROP = 'price_drop',
+  /** Real Time Service */
+  DROP_PRICE = 'drop_price',
+  REVIEW = 'review',
+}
+
 export const messageStatus = {
     PENDING: 'pending',
     SENT: 'sent',
@@ -25,6 +34,7 @@ export class InboxMessage {
         private _fromSelf: boolean,
         private _date: Date,
         private _status: string,
+        private _type: MessageType,
         private _payload?: MessagePayload,
         private _phoneRequest?: string) { }
 
@@ -56,6 +66,14 @@ export class InboxMessage {
         this._status = value;
     }
 
+    get type(): MessageType {
+      return this._type;
+    }
+
+    set type(value: MessageType) {
+      this._type = value;
+    }
+
     set from(value: string) {
         this._from = value;
     }
@@ -85,13 +103,14 @@ export class InboxMessage {
     }
 
     public static messsagesFromJson(json: any, conversationId: string, currentUserId: string, otherUserId: string): InboxMessage[] {
-        const textMessages = json.filter(m => m.type === 'text')
-            .map(m => new InboxMessage(m.id, conversationId, m.text,
-                m.from_self ? currentUserId : otherUserId, m.from_self, new Date(m.timestamp),
-                m.status, m.payload));
-        return textMessages;
+        return json.map(message => this.buildMessage(message, conversationId, currentUserId, otherUserId));
     }
 
+    private static buildMessage(message: any, conversationId: string, currentUserId: string, otherUserId: string) {
+        return new InboxMessage(message.id, conversationId, message.text,
+          message.from_self ? currentUserId : otherUserId, message.from_self, new Date(message.timestamp),
+          message.status, message.type, message.payload);
+    }
 }
 
 export interface MessagePayload {

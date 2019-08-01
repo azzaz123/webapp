@@ -1,15 +1,15 @@
-import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { CurrentConversationComponent } from './current-conversation.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
-import { InboxMessage } from '../message/inbox-message';
+import { InboxMessage, MessageType } from '../message/inbox-message';
 import { USER_ID } from '../../../../tests/user.fixtures.spec';
 import { messageStatus } from '../../../core/message/message';
 import { RealTimeService } from '../../../core/message/real-time.service';
 import { EventService } from '../../../core/event/event.service';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { ItemService } from '../../../core/item/item.service';
 import { UserService } from '../../../core/user/user.service';
@@ -19,16 +19,17 @@ import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec'
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ITEM_ID } from '../../../../tests/item.fixtures.spec';
-import { BlockUserService } from '../../../core/conversation/block-user.service';
+import { BlockUserXmppService } from '../../../core/conversation/block-user';
 import { ConversationService } from '../../../core/inbox/conversation.service';
 import { User } from '../../../core/user/user';
+import { BlockUserService } from '../../../core/conversation/block-user';
 
 class MockUserService {
 
   public user: User = new User('fakeId', 'microName', null,
-                                null, null, null, null, null, null,
-                                null, null, null, null, null, null,
-                                null, null, null, null, null, null, null);
+    null, null, null, null, null, null,
+    null, null, null, null, null, null,
+    null, null, null, null, null, null, null);
 
   public reportUser(): Observable<any> {
     return Observable.of({});
@@ -53,7 +54,24 @@ class MockedToastr {
 }
 
 class MockConversationService {
-  public loadMoreMessages() {}
+  public loadMoreMessages() {
+  }
+}
+
+class BlockUserServiceMock {
+
+  blockUser(userHash: string) {
+    return Observable.of();
+  }
+
+  unblockUser(userHash: string) {
+    return Observable.of();
+  }
+}
+
+class MessageHTMLElementMock {
+  scrollIntoView(arg?: boolean | ScrollIntoViewOptions): void {
+  }
 }
 
 describe('CurrentConversationComponent', () => {
@@ -66,7 +84,8 @@ describe('CurrentConversationComponent', () => {
   let userService: UserService;
   let trackingService: TrackingService;
   let modalService: NgbModal;
-  let blockService: BlockUserService;
+  let blockUserService: BlockUserService;
+  let blockUserXmppService: BlockUserXmppService;
   let conversationService: ConversationService;
 
   beforeEach(() => {
@@ -81,9 +100,10 @@ describe('CurrentConversationComponent', () => {
         { provide: UserService, useClass: MockUserService },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: ConversationService, useClass: MockConversationService },
+        { provide: BlockUserService, useClass: BlockUserServiceMock },
         I18nService,
         {
-          provide: BlockUserService, useValue: {
+          provide: BlockUserXmppService, useValue: {
             blockUser() {
             },
             unblockUser() {
@@ -102,7 +122,8 @@ describe('CurrentConversationComponent', () => {
     itemService = TestBed.get(ItemService);
     toastr = TestBed.get(ToastrService);
     modalService = TestBed.get(NgbModal);
-    blockService = TestBed.get(BlockUserService);
+    blockUserService = TestBed.get(BlockUserService);
+    blockUserXmppService = TestBed.get(BlockUserXmppService);
     conversationService = TestBed.get(ConversationService);
   });
 
@@ -119,19 +140,19 @@ describe('CurrentConversationComponent', () => {
       it(`should call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message belonging
       to the currentConversation`, fakeAsync(() => {
         const newMessage = new InboxMessage('someId', component.currentConversation.id, 'hola!',
-        component.currentConversation.messages[0].from, false, new Date(), messageStatus.RECEIVED);
+          component.currentConversation.messages[0].from, false, new Date(), messageStatus.RECEIVED, MessageType.TEXT);
 
         component.ngOnInit();
         eventService.emit(EventService.MESSAGE_ADDED, newMessage);
         tick(1000);
 
-        expect(realTime.sendRead).toHaveBeenCalledWith('fakeId', component.currentConversation.id);
+        expect(realTime.sendRead).toHaveBeenCalledWith(newMessage.from, component.currentConversation.id);
       }));
 
       it(`should NOT call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message NOT belonging
         to the currentConversation`, fakeAsync(() => {
         const newMessage = new InboxMessage('someId', 'other-thread-id', 'hola!',
-        component.currentConversation.messages[0].from, true, new Date(), messageStatus.RECEIVED);
+          component.currentConversation.messages[0].from, true, new Date(), messageStatus.RECEIVED, MessageType.TEXT);
 
         component.ngOnInit();
         eventService.emit(EventService.MESSAGE_ADDED, newMessage);
@@ -144,7 +165,7 @@ describe('CurrentConversationComponent', () => {
     it('should  NOT call realTime.sendRead when a MESSAGE_ADDED event AND the browser window is NOT visible', fakeAsync(() => {
       spyOn(Visibility, 'onVisible').and.callFake(() => false);
       const newMessage = new InboxMessage('someId', component.currentConversation.id, 'hola!',
-        component.currentConversation.messages[0].from, true, new Date(), messageStatus.RECEIVED);
+        component.currentConversation.messages[0].from, true, new Date(), messageStatus.RECEIVED, MessageType.TEXT);
 
       component.ngOnInit();
       eventService.emit(EventService.MESSAGE_ADDED, newMessage);
@@ -190,7 +211,7 @@ describe('CurrentConversationComponent', () => {
     beforeEach(() => {
       currentMessage = component.currentConversation.messages[0];
       nextMessage = new InboxMessage('123', component.currentConversation.id, 'new msg', USER_ID, true, new Date(),
-      messageStatus.RECEIVED);
+        messageStatus.RECEIVED, MessageType.TEXT);
     });
 
     it('should return TRUE if it is called without a nextMessage parameter', () => {
@@ -320,7 +341,7 @@ describe('CurrentConversationComponent', () => {
     });
   });
 
-  describe('blockUserAction', () => {
+  describe('blockUserAction if backend return 200', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve()
@@ -329,18 +350,42 @@ describe('CurrentConversationComponent', () => {
 
     it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
-      spyOn(blockService, 'blockUser').and.returnValue(Observable.of({}));
+      spyOn(toastr, 'success').and.callThrough();
+      spyOn(blockUserService, 'blockUser').and.returnValue(Observable.of({}));
+      spyOn(blockUserXmppService, 'blockUser').and.returnValue(Observable.of({}));
+
+      component.blockUserAction();
+      tick();
+
+      expect(blockUserService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(blockUserXmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
+      expect(toastr.success).toHaveBeenCalledWith('The user has been blocked');
+    }));
+  });
+
+  describe('blockUserAction if backend return 400', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve()
+      });
+    });
+
+    it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
+      component.currentConversation = MOCK_CONVERSATION();
+      spyOn(blockUserService, 'blockUser').and.returnValue(throwError(400));
+      spyOn(blockUserXmppService, 'blockUser').and.returnValue(Observable.of({}));
       spyOn(toastr, 'success').and.callThrough();
 
       component.blockUserAction();
       tick();
 
-      expect(blockService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
-      expect(toastr.success).toHaveBeenCalledWith('The user has been blocked');
+      expect(blockUserService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(blockUserXmppService.blockUser).not.toHaveBeenCalled();
+      expect(toastr.success).not.toHaveBeenCalled();
     }));
   });
 
-  describe('unblockUserAction', () => {
+  describe('unblockUserAction if backend return 200', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve()
@@ -349,14 +394,38 @@ describe('CurrentConversationComponent', () => {
 
     it('should close the modal, call unblockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
-      spyOn(blockService, 'unblockUser').and.returnValue(Observable.of({}));
+      spyOn(blockUserXmppService, 'unblockUser').and.returnValue(Observable.of({}));
+      spyOn(blockUserService, 'unblockUser').and.returnValue(Observable.of({}));
       spyOn(toastr, 'success').and.callThrough();
 
       component.unblockUserAction();
       tick();
 
-      expect(blockService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
+      expect(blockUserService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(blockUserXmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been unblocked');
+    }));
+  });
+
+  describe('unblockUserAction if backend return 400', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve()
+      });
+    });
+
+    it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
+      component.currentConversation = MOCK_CONVERSATION();
+      spyOn(blockUserService, 'unblockUser').and.returnValue(throwError(400));
+      spyOn(blockUserXmppService, 'unblockUser').and.returnValue(Observable.of({}));
+      spyOn(toastr, 'success').and.callThrough();
+
+      component.unblockUserAction();
+      tick();
+
+      expect(blockUserService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(blockUserXmppService.unblockUser).not.toHaveBeenCalled();
+      expect(toastr.success).not.toHaveBeenCalled();
     }));
   });
 
@@ -398,5 +467,77 @@ describe('CurrentConversationComponent', () => {
 
       expect(conversationService.loadMoreMessages).not.toHaveBeenCalled();
     });
+  });
+
+  describe('messagesVisibility', () => {
+    it('should show text message', () => {
+      expect(component.isTextMessage(MessageType.TEXT)).toBeTruthy();
+    });
+
+    it('should not show text message', () => {
+      expect(component.isTextMessage(null)).toBeFalsy();
+      expect(component.isTextMessage(MessageType.REVIEW)).toBeFalsy();
+      expect(component.isTextMessage(MessageType.PRICE_DROP)).toBeFalsy();
+    });
+
+    it('should show message third voice', () => {
+      expect(component.isThirdVoiceMessage(MessageType.REVIEW)).toBeTruthy();
+      expect(component.isThirdVoiceMessage(MessageType.PRICE_DROP)).toBeTruthy();
+    });
+
+    it('should not show message third voice', () => {
+      expect(component.isThirdVoiceMessage(null)).toBeFalsy();
+      expect(component.isThirdVoiceMessage(MessageType.TEXT)).toBeFalsy();
+    });
+  });
+
+  describe('scrollMessages', () => {
+    it('should not scroll to last message', () => {
+      spyOn(document, 'querySelector').and.returnValues(null);
+      spyOn(component, 'sendReadForLastInboxMessage');
+
+      component.scrollToLastMessage();
+
+      expect(document.querySelector).toHaveBeenCalledWith('.message-body');
+      expect(component.sendReadForLastInboxMessage).not.toHaveBeenCalled();
+    });
+
+    it('should scroll to last message', () => {
+      const messageHTMLMock = new MessageHTMLElementMock();
+      spyOn(document, 'querySelector').and.returnValues(messageHTMLMock);
+      spyOn(component, 'sendReadForLastInboxMessage');
+
+      component.scrollToLastMessage();
+
+      expect(document.querySelector).toHaveBeenCalledWith('.message-body');
+      expect(component.sendReadForLastInboxMessage).toHaveBeenCalled();
+      expect(component['isEndOfConversation']).toEqual(true);
+    });
+  });
+
+  describe('sendReadSignal', () => {
+
+    it('should not scroll to last message', () => {
+      component['lastInboxMessage'] = null;
+      spyOn(realTime, 'sendRead');
+
+      component.sendReadForLastInboxMessage();
+
+      expect(realTime.sendRead).not.toHaveBeenCalled();
+    });
+
+    it('should scroll to last message', fakeAsync(() => {
+      spyOn(Visibility, 'onVisible').and.callFake((callback: Function) => callback());
+
+      const inboxMessage = new InboxMessage('123', component.currentConversation.id, 'new msg', USER_ID, false, new Date(),
+        messageStatus.RECEIVED, MessageType.TEXT);
+      component['lastInboxMessage'] = inboxMessage;
+      spyOn(realTime, 'sendRead');
+
+      component.sendReadForLastInboxMessage();
+      tick(1000);
+
+      expect(realTime.sendRead).toHaveBeenCalledWith(inboxMessage.from, inboxMessage.thread);
+    }));
   });
 });

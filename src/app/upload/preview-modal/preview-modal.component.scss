@@ -25,7 +25,7 @@ h1 {
 }
 
 .price {
-  font-weight: bold;
+  font-weight: $font-weight-chunky;
   line-height: $line-height-xl;
   margin-bottom: $spacing-ms;
   margin-top: $spacing-ml;

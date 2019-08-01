@@ -8,7 +8,7 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { Response } from '@angular/http';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
-import { CreditInfo, FinancialCard } from '../../../core/payments/payment.interface';
+import { CreditInfo, FinancialCard, FinancialCardOption } from '../../../core/payments/payment.interface';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
@@ -29,19 +29,23 @@ export class CartComponent implements OnInit, OnDestroy {
   public types: string[] = BUMP_TYPES;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public hasFinancialCard: boolean;
+  public isStripeCard = true;
   public cardType = 'old';
   public loading: boolean;
   public card: any;
-  public isStripe: boolean;
+  public isStripe = false;
+  public showCard = false;
+  public savedCard = true;
+  public selectedCard = false;
 
   constructor(private cartService: CartService,
-    private itemService: ItemService,
-    private errorService: ErrorsService,
-    private trackingService: TrackingService,
-    private paymentService: PaymentService,
-    private eventService: EventService,
-    private router: Router,
-    private stripeService: StripeService) {
+              private itemService: ItemService,
+              private errorService: ErrorsService,
+              private trackingService: TrackingService,
+              private paymentService: PaymentService,
+              private eventService: EventService,
+              private router: Router,
+              private stripeService: StripeService) {
       this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
         this.cart = cartChange.cart;
       });
@@ -49,13 +53,19 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
-    this.isStripe = this.stripeService.isPaymentMethodStripe();
-    
-    if (this.isStripe) {
-      this.eventService.subscribe('paymentResponse', (response) => {
-        this.managePaymentResponse(response);
-      }); 
-    }
+    this.stripeService.isPaymentMethodStripe$().subscribe(isStripe => {
+      this.isStripe = isStripe;
+      if (this.isStripe) {
+        this.eventService.subscribe('paymentResponse', (response) => {
+          this.managePaymentResponse(response);
+        });
+        this.stripeService.getCards().subscribe(cards => {
+          if (cards.length === 0) {
+            this.addNewCard();
+          }
+        });
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -74,7 +84,6 @@ export class CartComponent implements OnInit, OnDestroy {
   checkout() {
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
-    const paymentId: string = UUID.UUID();
     this.loading = true;
     this.itemService.purchaseProductsWithCredits(order, orderId, this.isStripe).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (-this.usedCredits > 0) {
@@ -87,7 +96,7 @@ export class CartComponent implements OnInit, OnDestroy {
       this.track(order);
       if (response.payment_needed) {
         if (this.isStripe) {
-          this.stripeService.buy(orderId, paymentId, this.hasFinancialCard, this.cardType, this.card);
+          this.buyStripe(orderId);
         } else {
           this.buy(orderId);
         }
@@ -109,8 +118,8 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private managePaymentResponse(paymentResponse: string): void {
-    switch(paymentResponse) {
-      case 'succeeded': {
+    switch(paymentResponse && paymentResponse.toUpperCase()) {
+      case 'SUCCEEDED': {
         this.success();
         break;
       }
@@ -132,6 +141,17 @@ export class CartComponent implements OnInit, OnDestroy {
       });
     }
   }
+  
+  private buyStripe(orderId: string) {
+    const paymentId: string = UUID.UUID();
+    
+    if (this.selectedCard || !this.savedCard) {
+      this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
+    } else {
+      this.loading = false;
+      this.errorService.i18nError('noCardSelectedError');
+    }
+  }
 
   private success() {
     this.itemService.deselectItems();
@@ -142,7 +162,11 @@ export class CartComponent implements OnInit, OnDestroy {
   private track(order: Order[]) {
     const result = order.map(purchase => ({ item_id: purchase.item_id, bump_type: purchase.product_id }));
     const itemsIds = Object.keys(order).map(key => order[key].item_id);
-    this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, { selected_products: result });
+
+    const payment_method = this.isStripe ? 'STRIPE' : 'SABADELL';
+    const attributes = this.totalToPay === 0 ? { selected_products: result } : { selected_products: result, payment_method };
+    this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, attributes);
+
     ga('send', 'event', 'Item', 'bump-cart');
     gtag('event', 'conversion', { 'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM' });
     fbq('track', 'Purchase', {
@@ -164,6 +188,11 @@ export class CartComponent implements OnInit, OnDestroy {
   public hasCard(hasCard: boolean) {
     this.hasFinancialCard = hasCard;
   }
+
+  public hasStripeCard(hasCard: boolean) {
+    this.isStripeCard = hasCard;
+  }
+
 
   get totalToPay(): number {
     if (!this.cart) {
@@ -187,6 +216,23 @@ export class CartComponent implements OnInit, OnDestroy {
     } else {
       return -this.creditInfo.credit;
     }
+  }
+
+  public addNewCard() {
+    this.showCard = true;
+    this.savedCard = false;
+  }
+
+  public removeNewCard() {
+    this.showCard = false;
+    this.savedCard = true;
+  }
+
+  public setSavedCard(selectedCard: FinancialCardOption) {
+    this.showCard = false;
+    this.savedCard = true;
+    this.selectedCard = true;
+    this.setCardInfo(selectedCard);
   }
 
 }

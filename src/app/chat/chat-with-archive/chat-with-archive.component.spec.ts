@@ -22,7 +22,7 @@ import { Item } from '../../core/item/item';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
 import { MOCK_CONVERSATION, SURVEY_RESPONSES } from '../../../tests/conversation.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { BlockUserService } from '../../core/conversation/block-user.service';
+import { BlockUserXmppService } from '../../core/conversation/block-user';
 import { environment } from '../../../environments/environment';
 
 class MockConversationService {
@@ -74,7 +74,7 @@ describe('ChatWithArchiveComponent', () => {
   let trackingService: TrackingService;
   let toastr: ToastrService;
   let modalService: NgbModal;
-  let blockService: BlockUserService;
+  let blockService: BlockUserXmppService;
   let persistencyService: PersistencyService;
   let adService: AdService;
 
@@ -105,7 +105,7 @@ describe('ChatWithArchiveComponent', () => {
         I18nService,
         EventService,
         {
-          provide: BlockUserService, useValue: {
+          provide: BlockUserXmppService, useValue: {
           blockUser() {
           },
           unblockUser() {
@@ -132,7 +132,7 @@ describe('ChatWithArchiveComponent', () => {
     itemService = TestBed.get(ItemService);
     toastr = TestBed.get(ToastrService);
     modalService = TestBed.get(NgbModal);
-    blockService = TestBed.get(BlockUserService);
+    blockService = TestBed.get(BlockUserXmppService);
     persistencyService = TestBed.get(PersistencyService);
     adService = TestBed.get(AdService);
   });

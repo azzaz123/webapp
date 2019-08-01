@@ -51,7 +51,7 @@
       margin-bottom: $spacing-ms;
       .quantity {
         font-size: $font-size-xxxl;
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
         line-height: $font-size-xxxl;
         margin-top: $spacing-ms;
       }
@@ -73,7 +73,7 @@
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
       font-size: $font-size-m;
       margin-bottom: $spacing-ml;
       &.spacing {
@@ -82,7 +82,7 @@
     }
     .for-free {
       color: $walla-main;
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
     }
     .note {
       text-align: center;
@@ -94,6 +94,17 @@
     tsl-card-selection {
       width: 100%;
       margin-bottom: $spacing-ms;
+    }
+  }
+  tsl-stripe-card-selection {
+    width: 100%;
+  }
+  .Cart__NewCard {
+    &--add, &--used {
+      margin-bottom: $spacing-s;
+      font-size: $font-size-s;
+      color: $walla-main;
+      cursor: pointer;
     }
   }
 }

@@ -50,7 +50,7 @@
       h5 {
         color: $blue-grey-1;
         font-size: $font-size-m;
-        font-weight: bold;
+        font-weight: $font-weight-chunky;
         margin-bottom: 0;
       }
 
@@ -89,6 +89,10 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 99;
+  }
+
+  .input-container {
+    padding: 0 20px;
   }
 }
 

@@ -16,6 +16,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
 
   public conversationsLoading: boolean;
   public conversationsTotal: number;
+  public loadingError: boolean;
   public connectionError: boolean;
   public firstLoad: boolean;
   public isProfessional: boolean;
@@ -58,7 +59,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy () {
+  ngOnDestroy() {
     this.adService.stopAdsRefresh();
   }
 
@@ -67,13 +68,20 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
     this.conversationsTotal = event.total;
   }
 
+  public onChangeInboxOrArchivedDropdown(event: boolean) {
+    if (event) {
+      this.currentConversation = null;
+    }
+    this.loadingError = event;
+  }
+
   private openConversationIfNeeded() {
     if (this.currentConversation || !this.inboxLoaded()) {
       return;
     }
 
     this.route.queryParams.subscribe((params: any) => {
-      const itemId = params.itemId; // TODO: this params will include userId 
+      const itemId = params.itemId; // TODO: this params will include userId
 
       // Try to find the conversation within the downloaded ones
       this.conversationsLoading = true;
