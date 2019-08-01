@@ -5,6 +5,12 @@
 }
 
 .card {
+  &.faded {
+    .card-block, .avatar-block {
+      opacity: 0.5;
+    }
+  }
+
   color: $blue-grey-1;
   display: flex;
   flex-direction: row;
@@ -16,19 +22,27 @@
   }
   .card-block {
     text-align: left;
-    padding-right: 0px;
-    padding-left: 0px;
+    padding-right: 0;
+    padding-left: 0;
     margin-left: $spacing-ms;
-    margin-right: 0px;
+    margin-right: 0;
     h5 {
       font-family: $wallie;
       font-weight: 500;
-      font-size: $font-size-base; 
+      font-size: $font-size-base;
     }
     .card-title {
       margin-bottom: $spacing-s;
       line-height: $line-height-m;
       margin-top: -$spacing-s;
+    }
+  }
+
+  .avatar-block {
+    tsl-status-icon {
+      position: absolute;
+      top: $line-height-xxl;
+      right: 36px;
     }
   }
 }

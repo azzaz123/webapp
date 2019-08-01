@@ -135,7 +135,8 @@ export class InboxService {
   private getInbox$(): Observable<any> {
     this.messageService.totalUnreadMessages = 0;
     return this.http.get(this.API_URL, {
-      page_size: this.pageSize
+      page_size: this.pageSize,
+      max_messages: ConversationService.MESSAGES_IN_CONVERSATION
     })
     .map(res => {
       return this.conversations = this.processInboxResponse(res);

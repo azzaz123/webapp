@@ -37,6 +37,7 @@ import { ThirdVoiceMessageComponent } from './chat-with-inbox/message/third-voic
 import { TextMessageComponent } from './chat-with-inbox/message/text-message';
 import { ThirdVoiceReviewComponent } from './chat-with-inbox/message/third-voice-message/third-voice-review';
 import { ScrollingMessageComponent } from './chat-with-inbox/scrolling-message';
+import { StatusIconComponent } from './chat-with-inbox/inbox/inbox-metadata/status-icon';
 
 @NgModule({
   imports: [
@@ -82,7 +83,8 @@ import { ScrollingMessageComponent } from './chat-with-inbox/scrolling-message';
     TextMessageComponent,
     ThirdVoiceMessageComponent,
     ThirdVoiceReviewComponent,
-    ScrollingMessageComponent
+    ScrollingMessageComponent,
+    StatusIconComponent
   ],
   entryComponents: [
     ArchiveConversationComponent,
