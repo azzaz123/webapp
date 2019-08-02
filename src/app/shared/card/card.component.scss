@@ -30,6 +30,10 @@
       font-size: $font-size-l;
       color: $blue-grey-1;
       font-weight: $font-weight-chunky;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 75%;
     }
   }
 
