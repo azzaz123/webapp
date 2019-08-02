@@ -285,8 +285,8 @@ export class InboxConversationService {
 
   public openConversationWith$(itemId: string): Observable<InboxConversation> {
     if (this.conversations && this.archivedConversations) {
-      const localConversation = this.conversations.find((conver) => conver.item.id === itemId && !conver.item.isMine)
-      || this.archivedConversations.find((conver) => conver.item.id === itemId && !conver.item.isMine);
+      const localConversation = _.find(this.conversations, (conver) => conver.item.id === itemId && !conver.item.isMine)
+        || _.find(this.archivedConversations, (conver) => conver.item.id === itemId && !conver.item.isMine);
 
       if (localConversation) {
         this.openConversation(localConversation);
@@ -300,41 +300,12 @@ export class InboxConversationService {
         this.openConversation(inboxConversation);
         return inboxConversation;
       });
-
     }
-
     return Observable.throwError(new Error('Not found'));
   }
 
-  // TODO: This method is using the old way of creating a new conversation. Change it when BE does their job.
   private fetchConversationByItem$(itemId: string): Observable<InboxConversation> {
-    const options = new RequestOptions(); // Will remove this import
-    options.headers = new Headers(); // Will remove this import
-    options.headers.append('Content-Type', 'application/json');
-    return this.http.post('api/v3/conversations', JSON.stringify({ item_id: itemId }), options).flatMap((r: Response) => {
-      const response: ConversationResponse = r.json(); // Will remove this import
-      return Observable.forkJoin(
-        this.userService.get(response.other_user_id),
-        this.itemService.get(itemId),
-        this.getConversation(response.conversation_id).catch(() => Observable.of(null))
-      ).map((data: any) => {
-        const userResponse = data[0];
-        const itemResponse = data[1];
-        const inboxFetched = data[2];
-        if (inboxFetched) {
-          return inboxFetched;
-        }
-        const userImage = userResponse.image ? userResponse.image.urls_by_size.small : null;
-        const inboxUser = new InboxUser(userResponse.id, userResponse.microName,
-          false, true, `${environment.siteUrl}user/${userResponse.webSlug}`,
-          userImage, null, userResponse.scoringStars,
-          {longitude: userResponse.approximated_longitude, latitude: userResponse.approximated_latitude });
-        const inboxItem = new InboxItem(itemResponse.id, {currency: itemResponse.currencyCode, amount: itemResponse.salePrice },
-          itemResponse.title, itemResponse.mainImage, `${environment.siteUrl}item/${itemResponse.webSlug}`,
-          'undefined', false);
-        return new InboxConversation(response.conversation_id, new Date(),
-        inboxUser, inboxItem, null, [], false, 0, null);
-      });
-    });
+    return this.httpClient.post<ConversationResponse>('api/v3/conversations', { item_id: itemId })
+    .flatMap((response: ConversationResponse) => this.getConversation(response.conversation_id));
   }
 }
