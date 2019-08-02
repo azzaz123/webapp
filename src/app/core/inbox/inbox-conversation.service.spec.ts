@@ -72,10 +72,6 @@ describe('InboxConversationService', () => {
     service.archivedConversations = [];
   });
 
-  // afterEach(() => {
-  //   httpTestingController.verify();
-  // });
-
   describe('subscribe chat events', () => {
     it('should parse a Message to InboxMessage and call processNewMessages when a NEW_MESSAGE event is emitted', () => {
       spyOn(service, 'processNewMessage');
