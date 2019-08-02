@@ -68,8 +68,8 @@ export class InboxService {
       return this.persistencyService.getStoredInbox();
     })
     .subscribe((conversations) => {
-      this.eventService.emit(EventService.INBOX_READY, true);
       this.eventService.emit(EventService.INBOX_LOADED, conversations);
+      this.eventService.emit(EventService.INBOX_READY, true);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
 
@@ -79,8 +79,8 @@ export class InboxService {
       return this.persistencyService.getArchivedStoredInbox();
     })
     .subscribe((conversations) => {
-      this.eventService.emit(EventService.ARCHIVED_INBOX_READY, true);
       this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
+      this.eventService.emit(EventService.ARCHIVED_INBOX_READY, true);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
 
