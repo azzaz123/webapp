@@ -231,13 +231,13 @@ export class InboxConversationService {
   }
 
   private archiveConversation(conversationId: string): Observable<any> {
-    return this.httpClient.put(this.ARCHIVE_URL, {
+    return this.http.put(this.ARCHIVE_URL, {
       conversation_ids: [conversationId]
     });
   }
 
   private unarchiveConversation(conversationId: string): Observable<any> {
-    return this.httpClient.put(this.UNARCHIVE_URL, {
+    return this.http.put(this.UNARCHIVE_URL, {
       conversation_ids: [conversationId]
     });
   }
@@ -268,11 +268,12 @@ export class InboxConversationService {
   }
 
   private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<any> {
-    return this.httpClient.get(`/api/v3/instant-messaging/archive/conversation/${conversationId}/messages`,
-      [
-        { key: 'max_messages', value: InboxConversationService.MESSAGES_IN_CONVERSATION },
-        { key: 'from', value: nextPageToken }]
-    );
+    const url = this.MORE_MESSAGES_URL.replace('CONVERSATION_HASH', conversationId);
+    return this.http.get(url,
+      {
+        max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION,
+        from: nextPageToken
+      });
   }
 
   public openConversationByItemId$(itemId: string): Observable<InboxConversation> {
