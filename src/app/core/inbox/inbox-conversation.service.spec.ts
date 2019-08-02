@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { InboxConversationService } from './inbox-conversation.service';
 import { MessageService } from '../message/message.service';
@@ -11,7 +11,7 @@ import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '.
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { chatSignalType, ChatSignal } from '../message/chat-signal.interface';
 import { Message } from '../message/message';
-import {messageStatus, InboxMessage, MessageType} from '../../chat/chat-with-inbox/message/inbox-message';
+import { messageStatus, InboxMessage, MessageType } from '../../chat/chat-with-inbox/message/inbox-message';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
@@ -23,6 +23,7 @@ import { Observable } from 'rxjs';
 import { ItemService } from '../item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { HttpModuleNew } from '../http/http.module.new';
+import { environment } from '../../../environments/environment';
 
 let service: InboxConversationService;
 let http: HttpService;
@@ -32,6 +33,7 @@ let persistencyService: PersistencyService;
 let messageService: MessageService;
 let userService: UserService;
 let itemService: ItemService;
+let httpTestingController: HttpTestingController;
 
 describe('InboxConversationService', () => {
   beforeEach(() => {
@@ -44,11 +46,16 @@ describe('InboxConversationService', () => {
         InboxConversationService,
         ...TEST_HTTP_PROVIDERS,
         EventService,
-        {provide: RealTimeService, useValue: { sendRead() {}} },
-        {provide: PersistencyService, useClass: MockedPersistencyService},
-        {provide: MessageService, useValue: { totalUnreadMessages: 0 }},
-        {provide: UserService, useClass: MockedUserService},
-        {provide: ItemService, useClass: MockedItemService}
+        {
+          provide: RealTimeService, useValue: {
+            sendRead() {
+            }
+          }
+        },
+        { provide: PersistencyService, useClass: MockedPersistencyService },
+        { provide: MessageService, useValue: { totalUnreadMessages: 0 } },
+        { provide: UserService, useClass: MockedUserService },
+        { provide: ItemService, useClass: MockedItemService }
       ]
     });
     service = TestBed.get(InboxConversationService);
@@ -59,9 +66,14 @@ describe('InboxConversationService', () => {
     messageService = TestBed.get(MessageService);
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
+    httpTestingController = TestBed.get(HttpTestingController);
     spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
     service.subscribeChatEvents();
     service.archivedConversations = [];
+  });
+
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
   describe('subscribe chat events', () => {
@@ -187,7 +199,7 @@ describe('InboxConversationService', () => {
         for (let i = 0; i < count; i++) {
           const msg = new InboxMessage('mockId' + i, conversations[0].id, 'hola!', 'mockUserId', false, new Date(),
             messageStatus.SENT, MessageType.TEXT);
-            service.processNewMessage(msg);
+          service.processNewMessage(msg);
         }
 
         expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore + count);
@@ -222,7 +234,7 @@ describe('InboxConversationService', () => {
         currentLastMessage = conversations[0].lastMessage;
         newInboxMessage = new InboxMessage(conversations[0].messages[0].id, conversations[0].id, 'hola!', 'mockUserId', true,
           new Date(), messageStatus.RECEIVED, MessageType.TEXT);
-          service.processNewMessage(newInboxMessage);
+        service.processNewMessage(newInboxMessage);
       });
 
       it('should not add the duplicated message to the conversation', () => {
@@ -582,6 +594,21 @@ describe('InboxConversationService', () => {
 
       service.archivedConversations = [mockConversation];
       expect(service.isConversationArchived(mockConversation)).toBeTruthy();
+    });
+  });
+
+  fdescribe('fetchConversation', () => {
+    it('should fetch conversation if not exist locally', () => {
+      const ITEM_ID = 'ITEM_ID';
+
+      service.conversations = [];
+      service.archivedConversations = [];
+
+      service.openConversationByItemId$(ITEM_ID).subscribe();
+
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/conversations`);
+      expect(req.request.method).toEqual('POST');
+      expect(req.request.body).toEqual({ item_id: ITEM_ID });
     });
   });
 });

@@ -193,14 +193,7 @@ export class InboxConversationService {
 
   private getConversation(id: String): Observable<InboxConversation> {
     return this.http.get(this.API_URL + id)
-    .map((res: Response) => {
-      return this.buildConversation(res);
-    });
-  }
-
-  private buildConversation(res: Response): InboxConversation {
-    const json = res.json();
-    return InboxConversation.fromJSON(json, this._selfId);
+    .map((res: Response) => InboxConversation.fromJSON(res.json(), this._selfId));
   }
 
   public isConversationArchived(conversation: InboxConversation): boolean {
@@ -238,13 +231,13 @@ export class InboxConversationService {
   }
 
   private archiveConversation(conversationId: string): Observable<any> {
-    return this.http.put(this.ARCHIVE_URL, {
+    return this.httpClient.put(this.ARCHIVE_URL, {
       conversation_ids: [conversationId]
     });
   }
 
   private unarchiveConversation(conversationId: string): Observable<any> {
-    return this.http.put(this.UNARCHIVE_URL, {
+    return this.httpClient.put(this.UNARCHIVE_URL, {
       conversation_ids: [conversationId]
     });
   }
@@ -275,15 +268,14 @@ export class InboxConversationService {
   }
 
   private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<any> {
-    const url = this.MORE_MESSAGES_URL.replace('CONVERSATION_HASH', conversationId);
-    return this.http.get(url,
-      {
-        max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION,
-        from: nextPageToken
-      });
+    return this.httpClient.get(`/api/v3/instant-messaging/archive/conversation/${conversationId}/messages`,
+      [
+        { key: 'max_messages', value: InboxConversationService.MESSAGES_IN_CONVERSATION },
+        { key: 'from', value: nextPageToken }]
+    );
   }
 
-  public openConversationWith$(itemId: string): Observable<InboxConversation> {
+  public openConversationByItemId$(itemId: string): Observable<InboxConversation> {
     if (this.conversations && this.archivedConversations) {
       const localConversation = _.find(this.conversations, (conver) => conver.item.id === itemId && !conver.item.isMine)
         || _.find(this.archivedConversations, (conver) => conver.item.id === itemId && !conver.item.isMine);

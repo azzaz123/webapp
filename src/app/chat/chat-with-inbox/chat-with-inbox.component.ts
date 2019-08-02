@@ -85,7 +85,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
 
       // Try to find the conversation within the downloaded ones
       this.conversationsLoading = true;
-      this.conversationService.openConversationWith$(itemId)
+      this.conversationService.openConversationByItemId$(itemId)
       .catch(() => {
         return Observable.of({});
       })
