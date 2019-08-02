@@ -597,7 +597,7 @@ describe('InboxConversationService', () => {
     });
   });
 
-  fdescribe('fetchConversation', () => {
+  describe('fetchConversation', () => {
     it('should fetch conversation if not exist locally', () => {
       const ITEM_ID = 'ITEM_ID';
 
