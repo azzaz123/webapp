@@ -151,9 +151,9 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
       this.userService.reportUser(
         this.currentConversation.user.id,
         this.currentConversation.item.id,
-        result.message,
+        this.currentConversation.id,
         result.reason,
-        this.currentConversation.id
+        result.message
       ).subscribe(() => {
         this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
           { user_id: this.currentConversation.user.id, reason_id: result.reason });

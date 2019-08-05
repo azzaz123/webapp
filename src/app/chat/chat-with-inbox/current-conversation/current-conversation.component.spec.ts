@@ -261,9 +261,9 @@ describe('CurrentConversationComponent', () => {
 
       expect(userService.reportUser).toHaveBeenCalledWith(component.currentConversation.user.id,
         component.currentConversation.item.id,
-        'Report User Reason',
+        component.currentConversation.id,
         1,
-        component.currentConversation.id);
+        'Report User Reason');
       expect(toastr.success).toHaveBeenCalledWith('The user has been reported correctly');
     }));
 
