@@ -11,7 +11,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { EventService } from '../../../core/event/event.service';
-import { ConversationService } from '../../../core/inbox/conversation.service';
+import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
 import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { UserService } from '../../../core/user/user.service';
 import { Observable } from 'rxjs';
@@ -22,7 +22,7 @@ describe('Component: InboxComponent', () => {
   let http: HttpService;
   let eventService: EventService;
   let userService: UserService;
-  let conversationService: ConversationService;
+  let conversationService: InboxConversationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -55,7 +55,7 @@ describe('Component: InboxComponent', () => {
           }
         },
         {
-          provide: ConversationService, useValue: {
+          provide: InboxConversationService, useValue: {
             openConversation() {
             }
           }
@@ -68,7 +68,7 @@ describe('Component: InboxComponent', () => {
     inboxService = TestBed.get(InboxService);
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);
-    conversationService = TestBed.get(ConversationService);
+    conversationService = TestBed.get(InboxConversationService);
   });
 
   describe('ngOnInit', () => {

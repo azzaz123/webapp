@@ -12,7 +12,7 @@ import { UserService } from '../../core/user/user.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 import { ActivatedRoute } from '@angular/router';
-import { ConversationService } from '../../core/inbox/conversation.service';
+import { InboxConversationService } from '../../core/inbox/inbox-conversation.service';
 
 class MockUserService {
   public isProfessional() {
@@ -26,7 +26,7 @@ describe('Component: ChatWithInboxComponent', () => {
   let eventService: EventService;
   let adService: AdService;
   let activatedRoute: ActivatedRoute;
-  let conversationService: ConversationService;
+  let conversationService: InboxConversationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -37,7 +37,7 @@ describe('Component: ChatWithInboxComponent', () => {
         { provide: UserService, useClass: MockUserService },
         { provide: HttpService, useValue: {} },
         {
-          provide: ConversationService, useValue: {
+          provide: InboxConversationService, useValue: {
             openConversationWith$(): Observable<any> {
               return Observable.empty();
             }
@@ -67,7 +67,7 @@ describe('Component: ChatWithInboxComponent', () => {
     eventService = TestBed.get(EventService);
     adService = TestBed.get(AdService);
     activatedRoute = TestBed.get(ActivatedRoute);
-    conversationService = TestBed.get(ConversationService);
+    conversationService = TestBed.get(InboxConversationService);
     fixture.autoDetectChanges();
   });
 

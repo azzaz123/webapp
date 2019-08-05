@@ -18,8 +18,9 @@
   padding: $spacing-ms $spacing-ml;
   width: 100%;
   position: relative;
+  display: flex;
 
-  .message-panel-empty {
+  .empty-container {
     flex-grow: 1;
   }
 
@@ -27,7 +28,6 @@
     text-align: center;
     font-size: $font-size-xs;
     cursor: pointer;
-    padding-bottom: $line-height-s;
 
     .load-more {
       color: $walla-main;
@@ -46,6 +46,8 @@
   .message-container {
     display: flex;
     flex-direction: column-reverse;
+    margin-top: auto;
+    width: 100%;
 
     .message-wrapper {
       text-align: center;
@@ -64,7 +66,7 @@
   padding: $spacing-xxs $spacing-s;
   background-color: $blue-grey-4;
   border-radius: 10px;
-  margin: 0;
+  margin: $spacing-ms 0;
   color: $white;
   font-size: $font-size-xs;
 
@@ -223,4 +225,9 @@
   tsl-user-avatar, .conversation-header-user-info {
     opacity: 0.5;
   }
+}
+
+.message-owner + .not-message-owner,
+.not-message-owner + .message-owner {
+  margin-bottom: $spacing-m;
 }
