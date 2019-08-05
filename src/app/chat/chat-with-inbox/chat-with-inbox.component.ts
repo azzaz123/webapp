@@ -4,7 +4,7 @@ import { UserService } from '../../core/user/user.service';
 import { EventService } from '../../core/event/event.service';
 import { InboxConversation } from './inbox/inbox-conversation/inbox-conversation';
 import { ActivatedRoute } from '@angular/router';
-import { ConversationService } from '../../core/inbox/conversation.service';
+import { InboxConversationService } from '../../core/inbox/inbox-conversation.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -29,7 +29,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     private adService: AdService,
     private route: ActivatedRoute,
-    private conversationService: ConversationService) {
+    private conversationService: InboxConversationService) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
@@ -85,7 +85,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
 
       // Try to find the conversation within the downloaded ones
       this.conversationsLoading = true;
-      this.conversationService.openConversationWith$(itemId)
+      this.conversationService.openConversationByItemId$(itemId)
       .catch(() => {
         return Observable.of({});
       })
