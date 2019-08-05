@@ -229,5 +229,5 @@
 
 .message-owner + .not-message-owner,
 .not-message-owner + .message-owner {
-  margin-bottom: 16px;
+  margin-bottom: $spacing-m;
 }
