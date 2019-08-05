@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestr
 import { EventService } from '../../../core/event/event.service';
 import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
-import { ConversationService } from '../../../core/inbox/conversation.service';
+import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
 import { Message } from '../../../core/message/message';
 import { debug } from 'util';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
@@ -69,7 +69,7 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   constructor(private inboxService: InboxService,
               private eventService: EventService,
-              private conversationService: ConversationService,
+              private conversationService: InboxConversationService,
               private userService: UserService) {
   }
 

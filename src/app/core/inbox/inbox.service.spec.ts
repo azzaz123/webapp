@@ -16,13 +16,13 @@ import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../../chat/chat-with-
 import { UserService } from '../user/user.service';
 import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
-import { ConversationService } from './conversation.service';
+import { InboxConversationService } from './inbox-conversation.service';
 
 let service: InboxService;
 let http: HttpService;
 let persistencyService: PersistencyService;
 let messageService: MessageService;
-let conversationService: ConversationService;
+let conversationService: InboxConversationService;
 let featureflagService: FeatureflagService;
 let eventService: EventService;
 let userService: UserService;
@@ -37,7 +37,7 @@ describe('InboxService', () => {
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: MessageService, useClass: MockMessageService },
         { provide: UserService, useClass: MockedUserService },
-        { provide: ConversationService, useValue: { subscribeChatEvents() {} }},
+        { provide: InboxConversationService, useValue: { subscribeChatEvents() {} }},
         { provide: FeatureflagService, useValue: {
             getFlag() {
               return Observable.of(false);
@@ -50,7 +50,7 @@ describe('InboxService', () => {
     http = TestBed.get(HttpService);
     persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
-    conversationService = TestBed.get(ConversationService);
+    conversationService = TestBed.get(InboxConversationService);
     featureflagService = TestBed.get(FeatureflagService);
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);
@@ -85,7 +85,7 @@ describe('InboxService', () => {
 
       expect(http.get).toHaveBeenCalledWith(service['API_URL'], {
         page_size: service['pageSize'],
-        max_messages: ConversationService.MESSAGES_IN_CONVERSATION
+        max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION
       });
     });
 

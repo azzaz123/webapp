@@ -15,7 +15,7 @@ import { ReportListingComponent } from '../../modals/report-listing';
 import { ItemService } from '../../../core/item/item.service';
 import { BlockUserComponent } from '../../modals/block-user';
 import { UnblockUserComponent } from '../../modals/unblock-user';
-import { ConversationService } from '../../../core/inbox/conversation.service';
+import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
 import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conversation';
 import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-conversation';
 import { TextMessageComponent } from '../message/text-message';
@@ -48,7 +48,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
     private blockUserXmppService: BlockUserXmppService,
     private i18n: I18nService,
     private realTime: RealTimeService,
-    private conversationService: ConversationService) {
+    private conversationService: InboxConversationService) {
   }
 
   private newMessageSubscription: Subscription;
