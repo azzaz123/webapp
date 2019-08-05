@@ -6,19 +6,22 @@ $inbox-width: 340px;
 $inbox-height: 403px;
 $inbox-header-height: 66px;
 
-h2 {
-  margin: $spacing-ml;
-  font-weight: $font-weight-chunky;
-  font-size: $font-size-ll;
-  letter-spacing: $letter-spacing;
-  .badge {
-    margin-left: 10px;
-    vertical-align: middle; 
-  }
-}
+div.header {
+  border-bottom: 0 solid $blue-grey-5;
 
-.header {
-    border-bottom: 0px solid $blue-grey-5;
+  h2 {
+    margin: $spacing-ml;
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-ll;
+    letter-spacing: $letter-spacing;
+
+    span.badge {
+      margin-left: 0;
+      &.badge-pro {
+        display: inline-block;
+      }
+    }
+  }
 }
 
 .scroll-panel {
