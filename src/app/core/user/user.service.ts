@@ -24,6 +24,7 @@ import { FeatureflagService } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
 import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
 import { SplitTestService } from '../tracking/split-test.service';
+import { HttpServiceNew } from '../http/http.service.new';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -39,6 +40,7 @@ export class UserService extends ResourceService {
   private motorPlanObservable: Observable<MotorPlan>;
 
   constructor(http: HttpService,
+              private httpClient: HttpServiceNew,
               protected event: EventService,
               protected i18n: I18nService,
               protected haversineService: HaversineService,
@@ -180,19 +182,13 @@ export class UserService extends ResourceService {
     return Observable.of(this.banReasons);
   }
 
-  public reportUser(userId: string,
-                    itemId: number | string,
-                    comments: string,
-                    reason: number,
-                    thread: number | string): Observable<any> {
-
-    const data: any = {
-      itemId: itemId,
+  public reportUser(userId: string, itemHash: string, conversationHash: string, reason: number, comments: string): Observable<any> {
+    return this.httpClient.post(`${this.API_URL}/me/report/user/${userId}`, {
+      itemHashId: itemHash,
+      conversationHash: conversationHash,
       comments: comments,
-      reason: reason,
-      thread: thread,
-    };
-    return this.http.post(this.API_URL + '/me/report/user/' + userId, data);
+      reason: reason
+    });
   }
 
   public getInfo(id: string): Observable<UserInfoResponse> {

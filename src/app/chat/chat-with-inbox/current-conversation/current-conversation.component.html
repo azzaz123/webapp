@@ -56,6 +56,26 @@
       <div class="empty-container"></div>
 
       <div class="message-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}">
+        <div class="notification-container">
+          <div *ngIf="currentConversation.user.blocked" class="date-marker date-marker-error">
+            <mat-icon svgIcon="blocked-error"></mat-icon>
+            <span i18n>You have blocked this user. Unblock it to continue chatting</span>
+          </div>
+
+          <div *ngIf="!currentConversation.user.blocked && !currentConversation.user.available"
+               class="date-marker date-marker-error">
+            <mat-icon svgIcon="not-available-error"></mat-icon>
+            <span i18n>This user is not available</span>
+          </div>
+
+          <div
+            *ngIf="!currentConversation.user.blocked && currentConversation.user.available && currentConversation.item.notAvailable"
+            class="date-marker date-marker-error">
+            <mat-icon svgIcon="not-available-error"></mat-icon>
+            <span i18n>This product is not available</span>
+          </div>
+        </div>
+
         <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-wrapper"
              [ngClass]="{'message-owner': message.fromSelf, 'not-message-owner': !message.fromSelf}">
           <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
@@ -75,26 +95,6 @@
                                   i18n>Load more</span>
             <mat-icon *ngIf="isLoadingMoreMessages" svgIcon="spinner" class="spinner"></mat-icon>
           </a>
-        </div>
-      </div>
-
-      <div class="notification-container">
-        <div *ngIf="currentConversation.user.blocked" class="date-marker date-marker-error">
-          <mat-icon svgIcon="blocked-error"></mat-icon>
-          <span i18n>You have blocked this user. Unblock it to continue chatting</span>
-        </div>
-
-        <div *ngIf="!currentConversation.user.blocked && !currentConversation.user.available"
-             class="date-marker date-marker-error">
-          <mat-icon svgIcon="not-available-error"></mat-icon>
-          <span i18n>This user is not available</span>
-        </div>
-
-        <div
-          *ngIf="!currentConversation.user.blocked && currentConversation.user.available && currentConversation.item.notAvailable"
-          class="date-marker date-marker-error">
-          <mat-icon svgIcon="not-available-error"></mat-icon>
-          <span i18n>This product is not available</span>
         </div>
       </div>
     </div>
