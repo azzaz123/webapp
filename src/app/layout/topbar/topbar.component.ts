@@ -78,7 +78,7 @@ export class TopbarComponent implements OnInit {
   public submitForm() {
     const categoryId = (this.category) ? this.category : '';
     const kws = (this.kws) ? this.kws : '';
-    this.windowRef.nativeWindow.location.href = `${this.homeUrl}search?catIds=${categoryId}&kws=${kws}`;
+    this.windowRef.nativeWindow.location.href = `${this.homeUrl}search?category_ids=${categoryId}&keywords=${kws}`;
   }
 
   public onSearchSubmit(newSearchSubmit: string) {
