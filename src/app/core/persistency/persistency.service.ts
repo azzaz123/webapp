@@ -105,7 +105,7 @@ export class PersistencyService {
         this.inboxDb = new PouchDB('inbox-' + this.userId, { auto_compaction: true });
         const inboxToSave = conversations.map((conversation: InboxConversation) =>
           new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
-            conversation.phoneShared, conversation.unreadCounter, conversation.nextPageToken, conversation.lastMessage));
+            conversation.phoneShared, conversation.unreadCounter, conversation.nextPageToken, conversation.phoneNumber, conversation.lastMessage));
         return Observable.fromPromise(this.inboxDb.bulkDocs(inboxToSave));
       })
     );
@@ -117,7 +117,7 @@ export class PersistencyService {
         this.inboxDb = new PouchDB('archivedInbox-' + this.userId, { auto_compaction: true });
         const inboxToSave = conversations.map((conversation: InboxConversation) =>
           new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
-            conversation.phoneShared, conversation.unreadCounter, conversation.nextPageToken, conversation.lastMessage));
+            conversation.phoneShared, conversation.unreadCounter, conversation.nextPageToken, conversation.phoneNumber, conversation.lastMessage));
         return Observable.fromPromise(this.inboxDb.bulkDocs(inboxToSave));
       })
     );
@@ -146,7 +146,7 @@ export class PersistencyService {
         conv.lastMessage._fromSelf, conv.lastMessage._date,
         conv.lastMessage._status, conv.lastMessage._payload, conv.lastMessage._phoneRequest);
       return new InboxConversation(conv._id, conv.modifiedDate, user, item, conv.nextPageToken, conv.messages, conv.phoneShared,
-        conv.unreadCounter, lastMessage);
+        conv.unreadCounter, conv.phoneNumber, lastMessage);
     });
   }
 

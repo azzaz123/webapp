@@ -13,6 +13,7 @@ export class InboxConversation {
         private _messages: InboxMessage[],
         private _phoneShared: boolean,
         private _unreadCounter: number = 0,
+        private _phone_number: string,
         private _lastMessage?: InboxMessage) {
     }
 
@@ -76,6 +77,14 @@ export class InboxConversation {
         return this._unreadCounter;
     }
 
+    set phoneNumber(value: string) {
+      this._phone_number = value;
+    }
+
+    get phoneNumber(): string {
+      return this._phone_number;
+    }
+
     set phoneShared(value: boolean) {
         this._phoneShared = value;
     }
@@ -91,7 +100,7 @@ export class InboxConversation {
         const lastMessage = message;
         const dateModified = lastMessage.date;
         const hash = message.thread;
-        return new InboxConversation(hash, dateModified, user, item, null, messages, false, messages.length, lastMessage);
+        return new InboxConversation(hash, dateModified, user, item, null, messages, false, messages.length, null, lastMessage);
     }
 
     static fromJSON(json: any, withSelfId: string): InboxConversation {
@@ -102,7 +111,7 @@ export class InboxConversation {
         const lastMessage = messages[0];
         const dateModified = lastMessage ? lastMessage.date : null;
         return new InboxConversation(json.hash, dateModified, user, item, nextPageToken, messages, json.phone_shared,
-            json.unread_messages, lastMessage);
+            json.unread_messages, json.phone_number, lastMessage);
     }
 
     private static buildInboxUser(user: any): InboxUser {
@@ -144,5 +153,6 @@ export class StoredInboxConversation {
       private phoneShared: boolean,
       private unreadCounter: number = 0,
       private nextPageToken: string,
+      private phoneNumber: string,
       private lastMessage?: InboxMessage) {}
   }
