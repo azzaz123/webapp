@@ -110,8 +110,8 @@ export class InboxConversation {
         const nextPageToken = json.messages.next_from || null;
         const lastMessage = messages[0];
         const dateModified = lastMessage ? lastMessage.date : null;
-        return new InboxConversation(json.hash, dateModified, user, item, nextPageToken, messages, json.phone_shared,
-            json.unread_messages, json.phone_number, lastMessage);
+        return new InboxConversation(json.hash, dateModified, user, item, nextPageToken, messages, json.phone_shared, json.phone_number,
+            json.unread_messages, lastMessage);
     }
 
     private static buildInboxUser(user: any): InboxUser {
