@@ -20,7 +20,8 @@ export class InboxConversationComponent {
     sameElse: 'D MMM.'
   };
 
-  constructor() { }
+  constructor() {
+  }
 
   public dateIsThisYear(): boolean {
     if (this.conversation && this.conversation.modifiedDate) {

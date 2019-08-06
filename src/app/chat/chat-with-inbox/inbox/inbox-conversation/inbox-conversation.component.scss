@@ -134,8 +134,14 @@ $menu-width-and-spacing: 10px;
       bottom: 4px;
       margin-right: $spacing-xs;
     }
+
     .user-name {
       font-size: $font-size-xs;
+
+      .call-shared {
+        margin-right: $spacing-xs;
+      }
+
       .blocked {
         color: $negative-main;
       }
@@ -169,7 +175,7 @@ $menu-width-and-spacing: 10px;
         @include text-truncate;
         flex-grow: 1;
       }
-    } 
+    }
 
     .message-row {
       position: relative;
