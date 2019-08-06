@@ -105,7 +105,8 @@ export class PersistencyService {
         this.inboxDb = new PouchDB('inbox-' + this.userId, { auto_compaction: true });
         const inboxToSave = conversations.map((conversation: InboxConversation) =>
           new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
-            conversation.phoneShared, conversation.unreadCounter, conversation.nextPageToken, conversation.phoneNumber, conversation.lastMessage));
+            conversation.phoneShared, conversation.phoneNumber, conversation.unreadCounter, conversation.nextPageToken,
+            conversation.lastMessage));
         return Observable.fromPromise(this.inboxDb.bulkDocs(inboxToSave));
       })
     );
@@ -117,7 +118,8 @@ export class PersistencyService {
         this.inboxDb = new PouchDB('archivedInbox-' + this.userId, { auto_compaction: true });
         const inboxToSave = conversations.map((conversation: InboxConversation) =>
           new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
-            conversation.phoneShared, conversation.unreadCounter, conversation.nextPageToken, conversation.phoneNumber, conversation.lastMessage));
+            conversation.phoneShared, conversation.phoneNumber, conversation.unreadCounter, conversation.nextPageToken,
+            conversation.lastMessage));
         return Observable.fromPromise(this.inboxDb.bulkDocs(inboxToSave));
       })
     );
@@ -150,7 +152,6 @@ export class PersistencyService {
     });
   }
 
-
   private initClickstreamDb(dbName: string, version?: number) {
     const request = version ? window.indexedDB.open(dbName, version) : window.indexedDB.open(dbName);
     request.onsuccess = () => {
@@ -166,7 +167,7 @@ export class PersistencyService {
     request.onupgradeneeded = (e) => {
       request.result.createObjectStore(this.eventsStore, { keyPath: 'id' });
       if (e.newVersion === 1) {
-      request.result.createObjectStore(this.packagedEventsStore);
+        request.result.createObjectStore(this.packagedEventsStore);
       }
     };
   }
