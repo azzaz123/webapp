@@ -98,6 +98,9 @@ ul, li {
         transform: rotate(90deg) scale(.8);
       }
     }
+    .bump-type {
+      margin-right: $spacing-xxs;
+    }
   }
   .price {
     color: $blue-grey-2;
