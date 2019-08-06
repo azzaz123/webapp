@@ -57,6 +57,17 @@
   .notification-container {
     text-align: center;
     margin: 0 auto;
+
+    .date-marker-warring {
+      background-color: $blue-grey-5;
+      color: $blue-grey-3;
+      padding: $spacing-xs $spacing-ml;
+
+      .padlock {
+        height: 9px;
+        width: $spacing-ms;
+      }
+    }
   }
 }
 
