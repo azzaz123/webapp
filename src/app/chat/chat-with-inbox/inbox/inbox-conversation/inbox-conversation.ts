@@ -12,7 +12,7 @@ export class InboxConversation {
         private _nextPageToken: string,
         private _messages: InboxMessage[],
         private _phoneShared: boolean,
-        private _phone_number: string = '',
+        private _phone_number: string,
         private _unreadCounter: number = 0,
         private _lastMessage?: InboxMessage) {
     }
