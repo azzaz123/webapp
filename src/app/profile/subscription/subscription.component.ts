@@ -19,12 +19,14 @@ export class SubscriptionComponent {
                 private errorService: ErrorsService) {
     }
 
-    addSubscription(cardToken) {
-        this.newSubscription('plan_FSWGMZq6tDdiKc', cardToken.id).subscribe((response) => {
-            console.log('response ', response);
-        }, () => {
-            console.log('error on subscription');
-        });
+    addSubscription(paymentMethod) {
+          this.stripeService.addNewCard(paymentMethod.id).subscribe(() => {
+            this.newSubscription('plan_FSWGMZq6tDdiKc', paymentMethod.id).subscribe((response) => {
+                console.log('response ', response);
+            }, () => {
+                console.log('error on subscription');
+            });
+          });
     }
 
     public setCardInfo(card: any): void {
