@@ -11,6 +11,7 @@ import { ProfileInfoComponent } from './profile-info/profile-info.component';
 import { AccountComponent } from './account/account.component';
 import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
 import { ProfileProSubscriptionComponent } from './profile-pro-subscription/profile-pro-subscription.component';
+import { SubscriptionComponent } from './subscription/subscription.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,14 @@ const routes: Routes = [
       {
         path: 'account',
         component: AccountComponent,
+        data: {
+          isMyZone: true,
+          isProfile: true
+        }
+      },
+      {
+        path: 'manage-subscription',
+        component: SubscriptionComponent,
         data: {
           isMyZone: true,
           isProfile: true
@@ -93,6 +102,7 @@ export const profileRoutedComponents = [
   ProfileComponent,
   ProfileInfoComponent,
   AccountComponent,
+  SubscriptionComponent,
   ProfileSubscriptionComponent,
   ProfileProBillingComponent,
   ProfileProSubscriptionComponent

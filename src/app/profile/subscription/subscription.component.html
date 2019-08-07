@@ -1,0 +1,13 @@
+<div class="StripeCards box profile-box">
+    <div class="box-content">
+        <h3 class="section-title">Add new subscription</h3>
+        <div class="row">
+            <div class="col-10 offset-2">
+                <div class="StripeCards__group form-group row align-items-center">
+                    <tsl-stripe-card-element [type]="'new'" (onStripeCardCreate)="addSubscription($event)"
+                    (stripeCard)="setCardInfo($event)"></tsl-stripe-card-element>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
