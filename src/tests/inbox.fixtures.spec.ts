@@ -184,7 +184,8 @@ export const MOCK_NOT_FOUND_INBOX_CONVERSATION: InboxConversation = new InboxCon
   mockInboxItem,
   null,
   mockInboxMessages,
-  false);
+  false,
+  null);
 
 export function createInboxConversationsArray(total: number, conversationsId?: string) {
   const conversations: InboxConversation[] = [];
