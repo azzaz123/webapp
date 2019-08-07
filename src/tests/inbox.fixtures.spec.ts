@@ -168,13 +168,13 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
         apiConvUser.avatar_url, apiConvUser.response_rate, apiConvUser.scoring);
     const next_from = MOCK_INBOX_CONVERSATION.messages.next_from ? MOCK_INBOX_CONVERSATION.messages.next_from : null;
 
-      return new InboxConversation(id, inboxMessages[0].date, mockInboxUser, mockInboxItem,
-         next_from, inboxMessages, false, 0, inboxMessages[0]);
+    return new InboxConversation(id, inboxMessages[0].date, mockInboxUser, mockInboxItem, next_from, inboxMessages, false,
+      null, 0, inboxMessages[0]);
 };
 
 
 export const SECOND_MOCK_INBOX_CONVERSATION: InboxConversation = new InboxConversation('secondId', INBOX_CONVERSATION_DATE,
-mockInboxUser,  mockInboxItem, null, mockInboxMessages, false, 0, mockInboxMessages[0]);
+mockInboxUser,  mockInboxItem, null, mockInboxMessages, false, null, 0, mockInboxMessages[0]);
 export const MOCKED_INBOX_CONVERSATIONS: InboxConversation[] = [CREATE_MOCK_INBOX_CONVERSATION(), SECOND_MOCK_INBOX_CONVERSATION];
 export const NOT_FOUND_INBOX_CONVERSATION_ID = 'notFound';
 export const MOCK_NOT_FOUND_INBOX_CONVERSATION: InboxConversation = new InboxConversation(
@@ -184,7 +184,8 @@ export const MOCK_NOT_FOUND_INBOX_CONVERSATION: InboxConversation = new InboxCon
   mockInboxItem,
   null,
   mockInboxMessages,
-  false);
+  false,
+  null);
 
 export function createInboxConversationsArray(total: number, conversationsId?: string) {
   const conversations: InboxConversation[] = [];
