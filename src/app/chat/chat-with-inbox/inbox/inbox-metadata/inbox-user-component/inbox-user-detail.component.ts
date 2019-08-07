@@ -11,6 +11,7 @@ import { UserInfoResponse } from '../../../../../core/user/user-info.interface';
 export class InboxUserDetailComponent implements OnInit, OnChanges {
 
   @Input() user: InboxUser;
+  @Input() phoneNumber: string;
 
   constructor(private userService: UserService) { }
 
