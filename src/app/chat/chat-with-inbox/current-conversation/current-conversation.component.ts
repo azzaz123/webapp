@@ -38,6 +38,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   @Input() connectionError: boolean;
   @Input() loadingError: boolean;
 
+  public momentConfig: any;
+
   constructor(private eventService: EventService,
     private modalService: NgbModal,
     private toastr: ToastrService,
@@ -49,6 +51,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
     private i18n: I18nService,
     private realTime: RealTimeService,
     private conversationService: InboxConversationService) {
+    this.momentConfig = i18n.getTranslations('daysMomentConfig');
   }
 
   private newMessageSubscription: Subscription;
@@ -58,15 +61,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   public scrollHeight = 0;
   public scrollLocalPosition = 0;
   public noMessages = 0;
-
-  public momentConfig: any = {
-    lastDay: '[Yesterday]',
-    sameDay: '[Today]',
-    nextDay: 'dddd, D MMM',
-    lastWeek: 'dddd, D MMM',
-    nextWeek: 'dddd, D MMM',
-    sameElse: 'dddd, D MMM'
-  };
 
   get emptyInbox(): boolean {
     return this.conversationsTotal === 0;
