@@ -52,7 +52,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
     private realTime: RealTimeService,
     private conversationService: InboxConversationService) {
     this.momentConfig = {
-      lastDay: '[Yesterday]',
+      lastDay: '[Yesterday] - HH:mm',
       sameDay: '[Today]',
       nextDay: 'dddd, D MMM',
       lastWeek: 'dddd, D MMM',
