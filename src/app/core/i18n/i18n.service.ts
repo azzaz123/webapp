@@ -15,8 +15,8 @@ export class I18nService {
         mediumDate: 'MMM d, y'
       },
       defaultDaysMomentConfig: {
-        lastDay: '[Yesterday] - HH:mm',
-        sameDay: '[Today] - HH:mm',
+        lastDay: '[Yesterday]',
+        sameDay: '[Today]',
         nextDay: 'dddd, D MMM',
         lastWeek: 'dddd, D MMM',
         nextWeek: 'dddd, D MMM',
@@ -151,8 +151,8 @@ export class I18nService {
         mediumDate: 'd MMM y'
       },
       defaultDaysMomentConfig: {
-        lastDay: '[Yesterday] - HH:mm',
-        sameDay: '[Today] - HH:mm',
+        lastDay: '[Ayer]',
+        sameDay: '[Hoy]',
         nextDay: 'dddd, D MMM',
         lastWeek: 'dddd, D MMM',
         nextWeek: 'dddd, D MMM',
