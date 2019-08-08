@@ -165,7 +165,7 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
 
     mockInboxItem = new InboxItem(ITEM_ID, {amount: 100, currency: '€'}, 'Some item', null, null, INBOX_ITEM_STATUSES.published, false);
     mockInboxUser = new InboxUser(userId, apiConvUser.name, apiConvUser.blocked, apiConvUser.available, apiConvUser.slug,
-        apiConvUser.avatar_url, apiConvUser.response_rate, apiConvUser.scoring);
+        apiConvUser.avatar_url, apiConvUser.response_rate, apiConvUser.scoring, {});
     const next_from = MOCK_INBOX_CONVERSATION.messages.next_from ? MOCK_INBOX_CONVERSATION.messages.next_from : null;
 
     return new InboxConversation(id, inboxMessages[0].date, mockInboxUser, mockInboxItem, next_from, inboxMessages, false,
