@@ -4,7 +4,7 @@
     <div class="user-name-row">
       <div class="user-name-row-left">
         <p class="user-name">
-          <span *ngIf="conversation.phoneNumber" class="call-shared">
+        <span *ngIf="conversation.phoneNumber && !!conversation.item.isMine" class="call-shared">
             <mat-icon svgIcon="call-shared"></mat-icon>
           </span>
           <span *ngIf="!conversation.user.available && !conversation.user.blocked">
