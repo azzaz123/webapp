@@ -4,7 +4,7 @@
   <div class="card-block">
     <h5 class="card-title">{{user.microName}}</h5>
     <tsl-stars *ngIf="user.score > -1" [stars]="user.score" [normalized]="false"></tsl-stars>
-    <div *ngIf="phoneNumber" class="call-wrapper">
+    <div *ngIf="phoneNumber && !!item.isMine" class="call-wrapper">
       <span class="call-shared"><mat-icon svgIcon="call-shared"></mat-icon></span>
       <span class="phone-number">{{phoneNumber}}</span>
     </div>
