@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, HostListener } from '@angular/core';
 
 @Component({
   selector: 'tsl-button',
@@ -13,5 +13,13 @@ export class ButtonComponent {
   @Input() loading: boolean;
 
   constructor() { }
+
+  @HostListener('click', ['$event'])
+  clickEvent(event) {
+    event.srcElement.setAttribute('disabled', true);
+    setTimeout(function(){ 
+      event.srcElement.removeAttribute('disabled');
+    }, 1000);
+  }
 
 }
