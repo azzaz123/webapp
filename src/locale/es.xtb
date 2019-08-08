@@ -838,4 +838,13 @@
   <translation id="5949661737880412802">Este usuario no está disponible</translation>
   <translation id="3753612046513951428">Este producto no está disponible</translation>
   <translation id="2536023333703806770">Recuerda no compartir datos privados por motivos de seguridad</translation>
+  <translation id="682982254050004818">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
+  <translation id="177886998911393770">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
+  <translation id="2026332937418470742">Archivar conversación</translation>
+  <translation id="8885805858601577515">Desarchivar conversación</translation>
+  <translation id="248496475360599108">Denunciar producto</translation>
+  <translation id="3897778790186035233">Reportar usuario</translation>
+  <translation id="1733139931907505426">Bloquear usuario</translation>
+  <translation id="5337451642081129366">Desbloquear usuario</translation>
+  <translation id="7962273932004201523">Vendidos</translation>
 </translationbundle>
