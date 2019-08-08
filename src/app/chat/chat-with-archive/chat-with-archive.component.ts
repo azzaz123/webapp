@@ -122,10 +122,10 @@ export class ChatWithArchiveComponent implements OnInit, OnDestroy {
     this.modalService.open(ReportUserComponent, {windowClass: 'report'}).result.then((result: any) => {
       this.userService.reportUser(
         this.currentConversation.user.id,
-        this.currentConversation.item.legacyId,
-        result.message,
+        this.currentConversation.item.id,
+        this.currentConversation.id,
         result.reason,
-        this.currentConversation.legacyId
+        result.message
       ).subscribe(() => {
         this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
           {user_id: this.currentConversation.user.id, reason_id: result.reason});

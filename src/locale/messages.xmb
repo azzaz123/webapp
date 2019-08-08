@@ -376,7 +376,7 @@
   <msg id="4391289919356861627"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:24</source>Apply</msg>
   <msg id="6146618115870222180"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:2</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:2</source>Your Messages</msg>
   <msg id="8848709900682152607"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:5</source>Mark everything as Processed</msg>
-  <msg id="33149636091572968"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:27</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:52</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:76</source><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:53</source>Load more</msg>
+  <msg id="33149636091572968"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:27</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:52</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:76</source><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:102</source>Load more</msg>
   <msg id="6260849581441982349"><source>app/chat/modals/block-send-link/block-send-link.component.html:3</source>Oh, no!</msg>
   <msg id="3345227992092802987"><source>app/chat/modals/block-send-link/block-send-link.component.html:4</source>You can not send links (unrelated to wallapop) on this chat. That&apos;s how many scams start, so better safe than sorry!</msg>
   <msg id="5601530442010506564"><source>app/chat/modals/block-send-link/block-send-link.component.html:7</source>Got it</msg>
@@ -396,10 +396,10 @@
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.html:3</source>Reserved</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:2</source><source>app/chat/chat-with-archive/chat-with-archive.component.html:30</source>Delete conversation</msg>
   <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:3</source>This will delete the conversation.</msg>
-  <msg id="8886737317292020570"><source>app/chat/chat-with-inbox/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:32</source>Archive conversation</msg>
+  <msg id="8886737317292020570"><source>app/chat/chat-with-inbox/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source>Archive conversation</msg>
   <msg id="5298644184637702922"><source>app/chat/chat-with-inbox/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:3</source>This will archive the conversation.</msg>
   <msg id="1055686627716339120"><source>app/chat/chat-with-inbox/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:7</source>Archive</msg>
-  <msg id="7913053333994057167"><source>app/chat/chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:2</source><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:34</source>Unarchive conversation</msg>
+  <msg id="7913053333994057167"><source>app/chat/chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:2</source>Unarchive conversation</msg>
   <msg id="3205414127595653303"><source>app/chat/chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:3</source>This will unarchive the conversation.</msg>
   <msg id="1121513541518618634"><source>app/chat/chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:7</source>Unarchive</msg>
   <msg id="7008439939460403347"><source>app/chat/modals/report-listing/report-listing.component.html:2</source><source>app/chat/modals/report-listing/report-listing.component.html:23</source><source>app/chat/modals/report-user/report-user.component.html:2</source><source>app/chat/modals/report-user/report-user.component.html:27</source>Report</msg>
@@ -411,26 +411,26 @@
   <msg id="2565755719057925105"><source>app/chat/modals/unblock-user/unblock-user.component.html:3</source>You&apos;ll be able to send or receive messages from this user again. Do you wish to continue?</msg>
   <msg id="4859202148272511129"><source>app/chat/modals/unblock-user/unblock-user.component.html:7</source>Unblock</msg>
   <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/chat/user-detail/user-detail.component.html:6</source><source>app/chat/user-card/user-card.component.html:14</source><ph name="DISTANCE"><ex>{{user.itemDistance | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you</msg>
-  <msg id="9119757647796405986"><source>app/chat/user-detail/user-detail.component.html:7</source><source>app/chat/user-card/user-card.component.html:15</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:11</source>No location</msg>
+  <msg id="9119757647796405986"><source>app/chat/user-detail/user-detail.component.html:7</source><source>app/chat/user-card/user-card.component.html:15</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:15</source>No location</msg>
   <msg id="1798778629973365531"><source>app/chat/user-card/user-card.component.html:20</source>No spam/scam reports</msg>
   <msg id="5717387697033354741"><source>app/chat/user-card/user-card.component.html:21</source>One spam/scam report</msg>
   <msg id="4681042121098831040"><source>app/chat/user-card/user-card.component.html:23</source><ph name="TOTAL_NUMBER"><ex>{{user.receivedReports // i18n(ph=&quot;TOTAL_NUMBER&quot;)}}</ex></ph> spam/scam reports</msg>
   <msg id="2020278898288143668"><source>app/chat/user-card/user-card.component.html:37</source>Selling</msg>
   <msg id="4636699111573030980"><source>app/chat/user-card/user-card.component.html:38</source>+<ph name="ITEMS_COUNT"><ex>{{user.itemsCount // i18n(ph=&quot;ITEMS_COUNT&quot;)}}</ex></ph> More</msg>
-  <msg id="1166265010439249641"><source>app/chat/user-response-rate/user-response-rate.component.html:3</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:14</source>Typically responds within an hour</msg>
-  <msg id="1404539941798522798"><source>app/chat/user-response-rate/user-response-rate.component.html:4</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:15</source>Typically responds within 3 hours</msg>
-  <msg id="5927748278732131263"><source>app/chat/user-response-rate/user-response-rate.component.html:5</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:16</source>Typically responds within a day</msg>
-  <msg id="6807057680918467236"><source>app/chat/user-response-rate/user-response-rate.component.html:6</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:17</source>Responds in more than 24 hours</msg>
+  <msg id="1166265010439249641"><source>app/chat/user-response-rate/user-response-rate.component.html:3</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:18</source>Typically responds within an hour</msg>
+  <msg id="1404539941798522798"><source>app/chat/user-response-rate/user-response-rate.component.html:4</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:19</source>Typically responds within 3 hours</msg>
+  <msg id="5927748278732131263"><source>app/chat/user-response-rate/user-response-rate.component.html:5</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:20</source>Typically responds within a day</msg>
+  <msg id="6807057680918467236"><source>app/chat/user-response-rate/user-response-rate.component.html:6</source><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:21</source>Responds in more than 24 hours</msg>
   <msg id="799485662157076328"><source>app/chat/chat-with-inbox/inbox/inbox.component.html:7</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:14</source>Inbox</msg>
   <msg id="2247942788262300865"><source>app/chat/chat-with-inbox/inbox/inbox.component.html:8</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:19</source>Archived Messages</msg>
   <msg id="8032820066123493751"><source>app/chat/chat-with-inbox/inbox/inbox.component.html:32</source>New messages</msg>
   <msg id="7238711418435054042"><source>app/chat/chat-with-inbox/inbox/inbox.component.html:35</source>We found some problems updating your inbox. Try again later.</msg>
   <msg id="265020643835790616"><source>app/chat/chat-with-inbox/inbox/inbox.component.html:59</source>We found some problems updating your archived messages. Try again later.</msg>
   <msg id="8721026914522212662"><source>app/chat/chat-with-inbox/inbox/archived-inbox-conversation/archived-inbox-conversation.component.html:42</source>Archived </msg>
-  <msg id="2711435905501432474"><source>app/chat/chat-with-archive/chat-with-archive.component.html:32</source><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:36</source>Report this Listing</msg>
-  <msg id="5918739414324010673"><source>app/chat/chat-with-archive/chat-with-archive.component.html:33</source><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:38</source>Report this User</msg>
-  <msg id="3909560892838036974"><source>app/chat/chat-with-archive/chat-with-archive.component.html:35</source><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:40</source>Block this User</msg>
-  <msg id="7240635163184231751"><source>app/chat/chat-with-archive/chat-with-archive.component.html:37</source><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:42</source>Unblock this User</msg>
+  <msg id="2711435905501432474"><source>app/chat/chat-with-archive/chat-with-archive.component.html:32</source>Report this Listing</msg>
+  <msg id="5918739414324010673"><source>app/chat/chat-with-archive/chat-with-archive.component.html:33</source>Report this User</msg>
+  <msg id="3909560892838036974"><source>app/chat/chat-with-archive/chat-with-archive.component.html:35</source>Block this User</msg>
+  <msg id="7240635163184231751"><source>app/chat/chat-with-archive/chat-with-archive.component.html:37</source>Unblock this User</msg>
   <msg id="4644715650405235071"><source>app/chat/chat-with-archive/chat-with-archive.component.html:55,56</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
                 from the list on the left</msg>
   <msg id="3325766019344626759"><source>app/chat/chat-with-archive/chat-with-archive.component.html:57</source><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:11</source>There are no messages</msg>
@@ -438,15 +438,28 @@
                 Try again later.</msg>
   <msg id="7962273932004201523"><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:24,25</source>Sold
     </msg>
-  <msg id="5869818670251262610" desc="The distance between the user and the item"><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:9,10</source><ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>
+  <msg id="5869818670251262610" desc="The distance between the user and the item"><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:13,14</source><ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>
         km from you</msg>
-  <msg id="3094139520905825563"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:9,10</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
-            from the list on the left</msg>
-  <msg id="6105231501608810838"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:12,13</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
-            Try again later.</msg>
-  <msg id="3934360921102914601"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:75</source>You have blocked this user. Unblock it to continue chatting</msg>
-  <msg id="5949661737880412802"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:81</source>This user is not available</msg>
-  <msg id="3753612046513951428"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:87</source>This product is not available</msg>
+  <msg id="682982254050004818"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:9,10</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+      from the list on the left</msg>
+  <msg id="177886998911393770"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:12,13</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+      Try again later.</msg>
+  <msg id="2026332937418470742"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:32,33</source>Archive conversation
+          </msg>
+  <msg id="8885805858601577515"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:35,36</source>Unarchive conversation
+          </msg>
+  <msg id="248496475360599108"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:38,39</source>Report this Listing
+          </msg>
+  <msg id="3897778790186035233"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:41,42</source>Report this User
+          </msg>
+  <msg id="1733139931907505426"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:44,45</source>Block this User
+          </msg>
+  <msg id="5337451642081129366"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:48,49</source>Unblock this User
+          </msg>
+  <msg id="3934360921102914601"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:62</source>You have blocked this user. Unblock it to continue chatting</msg>
+  <msg id="5949661737880412802"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:68</source>This user is not available</msg>
+  <msg id="3753612046513951428"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:75</source>This product is not available</msg>
+  <msg id="2536023333703806770"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:95</source>Remember not to share private data for security reasons</msg>
   <msg id="6721544969146753310"><source>app/chat/chat-with-inbox/message/third-voice-message/third-voice-review/third-voice-review.component.html:4</source>Thanks for the valuation</msg>
   <msg id="7368172072093620772"><source>app/dashboard/dashboard.component.html:5</source>Your stats</msg>
   <msg id="44488151127771040"><source>app/dashboard/dashboard.component.html:8</source>Here you can see information related with the visualizations, chats and calls generated by your car catalog. You can also see the impact on metrics of the highlights you apply.</msg>

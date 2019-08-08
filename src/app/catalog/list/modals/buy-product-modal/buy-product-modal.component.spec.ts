@@ -169,15 +169,6 @@ describe('BuyProductModalComponent', () => {
         factor: 1
       });
     });
-
-    it('should call addNewCard when Stripe and when no saved cards', () => {
-      spyOn(component, 'addNewCard');
-
-      component.isStripe = true;
-      component.ngOnInit();
-
-      expect(component.addNewCard).toHaveBeenCalledTimes(1);
-    });
   });
 
   describe('withCredits', () => {
@@ -240,6 +231,22 @@ describe('BuyProductModalComponent', () => {
       component.hasStripeCard(true);
 
       expect(component.isStripeCard).toBe(true);
+    });
+
+    it('should not call addNewCard if stripe card exists', () => {
+      spyOn(component, 'addNewCard').and.callThrough();
+
+      component.hasStripeCard(true);
+
+      expect(component.addNewCard).not.toHaveBeenCalled();
+    });
+
+    it('should call addNewCard if stripe card does not exist', () => {
+      spyOn(component, 'addNewCard').and.callThrough();
+
+      component.hasStripeCard(false);
+
+      expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
   });
 

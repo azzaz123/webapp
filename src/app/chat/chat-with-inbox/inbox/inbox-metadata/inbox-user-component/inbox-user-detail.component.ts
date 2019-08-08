@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { InboxUser } from '../../inbox-user';
 import { UserService } from '../../../../../core/user/user.service';
 import { UserInfoResponse } from '../../../../../core/user/user-info.interface';
+import { InboxItem } from '../../inbox-item';
 
 @Component({
   selector: 'tsl-inbox-user-detail',
@@ -11,6 +12,8 @@ import { UserInfoResponse } from '../../../../../core/user/user-info.interface';
 export class InboxUserDetailComponent implements OnInit, OnChanges {
 
   @Input() user: InboxUser;
+  @Input() item: InboxItem;
+  @Input() phoneNumber: string;
 
   constructor(private userService: UserService) { }
 

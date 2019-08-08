@@ -38,17 +38,20 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   @Input() connectionError: boolean;
   @Input() loadingError: boolean;
 
+  public momentConfig: any;
+
   constructor(private eventService: EventService,
-    private modalService: NgbModal,
-    private toastr: ToastrService,
-    private trackingService: TrackingService,
-    private userService: UserService,
-    private itemService: ItemService,
-    private blockUserService: BlockUserService,
-    private blockUserXmppService: BlockUserXmppService,
-    private i18n: I18nService,
-    private realTime: RealTimeService,
-    private conversationService: InboxConversationService) {
+              private modalService: NgbModal,
+              private toastr: ToastrService,
+              private trackingService: TrackingService,
+              private userService: UserService,
+              private itemService: ItemService,
+              private blockUserService: BlockUserService,
+              private blockUserXmppService: BlockUserXmppService,
+              private i18n: I18nService,
+              private realTime: RealTimeService,
+              private conversationService: InboxConversationService) {
+    this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
   }
 
   private newMessageSubscription: Subscription;
@@ -58,15 +61,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   public scrollHeight = 0;
   public scrollLocalPosition = 0;
   public noMessages = 0;
-
-  public momentConfig: any = {
-    lastDay: '[Yesterday]',
-    sameDay: '[Today]',
-    nextDay: 'dddd, D MMM',
-    lastWeek: 'dddd, D MMM',
-    nextWeek: 'dddd, D MMM',
-    sameElse: 'dddd, D MMM'
-  };
 
   get emptyInbox(): boolean {
     return this.conversationsTotal === 0;
@@ -151,9 +145,9 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
       this.userService.reportUser(
         this.currentConversation.user.id,
         this.currentConversation.item.id,
-        result.message,
+        this.currentConversation.id,
         result.reason,
-        this.currentConversation.id
+        result.message
       ).subscribe(() => {
         this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
           { user_id: this.currentConversation.user.id, reason_id: result.reason });
