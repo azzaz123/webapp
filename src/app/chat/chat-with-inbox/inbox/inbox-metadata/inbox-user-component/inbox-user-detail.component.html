@@ -9,9 +9,7 @@
       <span class="phone-number">{{phoneNumber}}</span>
     </div>
     <div class="user-location-distance">
-      <span [hidden]="!userDistance()"
-            i18n="The distance between the user and the item">{{userDistance() | number:'1.0-1' // i18n(ph="DISTANCE")}}
-        km from you</span>
+      <span [hidden]="!userDistance()" i18n="The distance between the user and the item">{{userDistance() | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you</span>
       <span [hidden]="userDistance()" i18n>No location</span>
     </div>
     <span class="response-rate" [ngSwitch]="user.responseRate">
