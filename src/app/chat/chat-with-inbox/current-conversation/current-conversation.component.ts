@@ -38,14 +38,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   @Input() connectionError: boolean;
   @Input() loadingError: boolean;
 
-  public momentConfig: any = {
-    lastDay: '[Yesterday]',
-    sameDay: '[Today]',
-    nextDay: 'dddd, D MMM',
-    lastWeek: 'dddd, D MMM',
-    nextWeek: 'dddd, D MMM',
-    sameElse: 'dddd, D MMM'
-  };
+  public momentConfig: any;
 
   constructor(private eventService: EventService,
     private modalService: NgbModal,
@@ -58,6 +51,14 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
     private i18n: I18nService,
     private realTime: RealTimeService,
     private conversationService: InboxConversationService) {
+    this.momentConfig = {
+      lastDay: '[Yesterday]',
+      sameDay: '[Today]',
+      nextDay: 'dddd, D MMM',
+      lastWeek: 'dddd, D MMM',
+      nextWeek: 'dddd, D MMM',
+      sameElse: 'dddd, D MMM'
+    };
   }
 
   private newMessageSubscription: Subscription;
