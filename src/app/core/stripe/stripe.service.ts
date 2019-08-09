@@ -120,6 +120,10 @@ export class StripeService {
     );
   };
 
+  requiresActionPayment = async (paymentIntentSecret) => {
+    return await this.lib.handleCardPayment(paymentIntentSecret);
+  };
+
   savedPayment = async (token) => await this.lib.handleCardPayment(token);
 
   public mapResponse(res: PaymentMethodResponse): FinancialCard {

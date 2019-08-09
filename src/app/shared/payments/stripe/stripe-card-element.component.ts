@@ -7,7 +7,8 @@ import {
   AfterViewInit,
   OnDestroy,
   ChangeDetectorRef,
-  SimpleChanges
+  SimpleChanges,
+  HostListener
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
 import { CartBase } from '../../catalog/cart/cart-base';
@@ -39,6 +40,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   @Input() cart: CartBase;
   @Input() loading: boolean;
   @Input() newLoading: boolean;
+  @Input() action: string;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
@@ -63,6 +65,10 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   ngOnChanges(changes: SimpleChanges) {
     if (this.type === 'cart' && changes.cart && changes.cart.currentValue) {
       this.cart.total = changes.cart.currentValue.total;
+    }
+
+    if (this.action === 'clear') {
+      this.card.clear();
     }
   }
 
@@ -146,4 +152,5 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   public registerOnTouched(fn: Function): void {
     this.onTouched = fn;
   }
+
 }

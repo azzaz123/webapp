@@ -10,6 +10,7 @@ import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.com
 import { DeleteInfoConfirmationModalComponent } from './profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { SubscriptionIconPipe } from './profile-pro-subscription/subscription-icon.pipe';
 import { VisibilityProductsModalComponent } from './profile-pro-subscription/visibility-products-modal/visibility-products-modal.component';
+import { RequestNewPaymentModalComponent } from './subscription/modals/request-new-payment-modal.component';
 
 @NgModule({
   imports: [
@@ -27,13 +28,15 @@ import { VisibilityProductsModalComponent } from './profile-pro-subscription/vis
     UnsubscribeModalComponent,
     DeleteInfoConfirmationModalComponent,
     SubscriptionIconPipe,
-    VisibilityProductsModalComponent
+    VisibilityProductsModalComponent,
+    RequestNewPaymentModalComponent
   ],
   entryComponents: [
     UnsubscribeModalComponent,
     BecomeProModalComponent,
     DeleteInfoConfirmationModalComponent,
-    VisibilityProductsModalComponent
+    VisibilityProductsModalComponent,
+    RequestNewPaymentModalComponent
   ]
 })
 export class ProfileModule { }
