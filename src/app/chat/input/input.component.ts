@@ -73,6 +73,9 @@ export class InputComponent implements OnChanges, OnInit {
   }
 
   public isMessagingAvailable(): boolean {
+    if (this.currentConversation instanceof InboxConversation) {
+      return !this.isUserDisable && !this.currentConversation.item.notAvailable && this.currentConversation.user.available;
+    }
     return !this.isUserDisable && !this.currentConversation.item.notAvailable;
   }
 
