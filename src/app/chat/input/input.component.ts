@@ -30,17 +30,17 @@ export class InputComponent implements OnChanges, OnInit {
 
   ngOnInit() {
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
-      this.isUserDisable = userIds.indexOf(this.currentConversation.user.id) !== -1;
+      this.isUserDisable = _.includes(userIds, this.currentConversation.user.id);
     });
   }
 
-  sendMessage(messageArea: HTMLInputElement, $event: Event) {
+  sendMessage(messageArea: HTMLTextAreaElement, $event: Event) {
     $event.preventDefault();
     if (!this.isUserDisable) {
       const message = messageArea.value.trim();
       if (!_.isEmpty(message)) {
         if (this.hasLinkInMessage(message)) {
-          this.modalService.open(BlockSendLinkComponent, {windowClass: 'modal-transparent'});
+          this.modalService.open(BlockSendLinkComponent, { windowClass: 'modal-transparent' });
         } else {
           this.trackingService.track(TrackingService.SEND_BUTTON, {
             thread_id: this.currentConversation.id,
