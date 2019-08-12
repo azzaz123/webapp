@@ -33,6 +33,33 @@
         </ng-container>
       </div>
     </tsl-header>
+
+    <div class="subscriptions" [hidden]="subscriptions.length === 0">
+
+      <div class="subscription-card" 
+        *ngFor="let subscription of subscriptions"
+        (click)="selectSubscription(subscription)"
+        [ngClass]="{'subscription_selected': isSubscriptionSelected(subscription)}">
+
+          <div class="subscription-card_icon">
+            <mat-icon svgIcon="{{subscription.icon_id}}"></mat-icon>
+          </div>
+
+          <div class="subscription-card_info">
+            <div class="subscription-card_info-title">
+              <b>Manage {{subscription.label}}</b>
+            </div>
+            <div class="subscription-card_info-description">You can publish <b>{{subscription.perks.max_items}}</b> more</div>
+          </div>
+
+          <div class="subscription-card_deselect" (click)="selectSubscription(null, $event)">
+              <mat-icon [hidden]="!isSubscriptionSelected(subscription)" svgIcon="cross"></mat-icon>
+          </div>
+
+      </div>
+
+    </div>
+
     <nav class="nav filters-nav">
       <a (click)="filterByStatus('cars')" *ngIf="hasMotorPlan" [ngClass]="{active: selectedStatus === 'cars'}" class="nav-link"><span i18n>Cars</span> ({{totalCars}}/{{carsLimit}})</a>
       <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Products</a>

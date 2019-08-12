@@ -24,7 +24,7 @@ import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
-import { MotorPlan, MotorPlanType } from '../../core/user/user-response.interface';
+import { MotorPlan, MotorPlanType, UserSubscription } from '../../core/user/user-response.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
@@ -66,6 +66,8 @@ export class ListComponent implements OnInit, OnDestroy {
   public selectedItems: Item[];
   public creditInfo: CreditInfo;
   public isStripe: boolean;
+  public subscriptions: UserSubscription[] = [];
+  public selectedSubscription: UserSubscription;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -108,6 +110,10 @@ export class ListComponent implements OnInit, OnDestroy {
       this.selectedItems = this.itemService.selectedItems.map((id: string) => {
         return <Item>_.find(this.items, {id: id});
       });
+    });
+
+    this.userService.getSubscriptions().subscribe(subscriptions => {
+      this.subscriptions = subscriptions;
     });
 
     setTimeout(() => {
@@ -506,6 +512,18 @@ export class ListComponent implements OnInit, OnDestroy {
     return _.every(this.selectedItems, (item) => {
       return item.flags && !item.flags.onhold;
     });
+  }
+
+  public selectSubscription(subscription: UserSubscription, e) {
+    this.selectedSubscription = subscription;
+
+    if (!subscription) {
+      e.stopPropagation();
+    }
+  }
+
+  public isSubscriptionSelected(subscription: UserSubscription) {
+    return this.selectedSubscription ? subscription.type === this.selectedSubscription.type : false;
   }
 
 }
