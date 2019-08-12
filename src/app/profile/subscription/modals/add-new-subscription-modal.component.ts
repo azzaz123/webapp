@@ -24,7 +24,7 @@ export class AddNewSubscriptionModalComponent {
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
-  public rateLimit: number;
+  public listingLimit: number;
 
   constructor(public activeModal: NgbActiveModal,
             private http: HttpService,
@@ -121,8 +121,8 @@ export class AddNewSubscriptionModalComponent {
     this.setCardInfo(selectedCard);
   }
 
-  public selectRateLimit(event: any): void {
-    this.rateLimit = event.target.innerHTML;
+  public selectListingLimit(event: any): void {
+    this.listingLimit = event.target.innerHTML;
   }
 
   private managePaymentResponse(paymentResponse) {

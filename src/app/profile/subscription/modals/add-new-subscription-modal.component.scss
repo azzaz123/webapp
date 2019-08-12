@@ -5,12 +5,12 @@
   text-align: center;
 }
 
-.AddNewSubscription__rate-limit-container {
+.AddNewSubscription__listing-limit-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   margin-top: $spacing-m;
-  .AddNewSubscription__rate-limit-box {
+  .AddNewSubscription__listing-limit-box {
     padding: $spacing-m;
     height: 60px;
     border-right: 1px solid $blue-grey-5;

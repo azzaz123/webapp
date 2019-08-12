@@ -2,19 +2,19 @@
         <div class="box-content">
             <h3 class="section-title">Add new subscription</h3>
             <p>What limit do you want to put on your subscription?</p>
-            <div class="AddNewSubscription__rate-limit-container">
-                <div class="AddNewSubscription__rate-limit-box" (click)="selectRateLimit($event)"
-                [ngClass]="{selected: rateLimit === '40'}">40</div>
-                <div class="AddNewSubscription__rate-limit-box" (click)="selectRateLimit($event)"
-                [ngClass]="{selected: rateLimit === '80'}">80</div>
-                <div class="AddNewSubscription__rate-limit-box" (click)="selectRateLimit($event)"
-                [ngClass]="{selected: rateLimit === '150'}">150</div>
-                <div class="AddNewSubscription__rate-limit-box" (click)="selectRateLimit($event)"
-                [ngClass]="{selected: rateLimit === '250'}">250</div>
-                <div class="AddNewSubscription__rate-limit-box" (click)="selectRateLimit($event)"
-                [ngClass]="{selected: rateLimit === '400'}">400</div>
-                <div class="AddNewSubscription__rate-limit-box" (click)="selectRateLimit($event)"
-                [ngClass]="{selected: rateLimit === '500'}">500</div>
+            <div class="AddNewSubscription__listing-limit-container">
+                <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
+                [ngClass]="{selected: listingLimit === '40'}">40</div>
+                <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
+                [ngClass]="{selected: listingLimit === '80'}">80</div>
+                <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
+                [ngClass]="{selected: listingLimit === '150'}">150</div>
+                <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
+                [ngClass]="{selected: listingLimit === '250'}">250</div>
+                <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
+                [ngClass]="{selected: listingLimit === '400'}">400</div>
+                <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
+                [ngClass]="{selected: listingLimit === '500'}">500</div>
             </div>
             <p>Price: xx,xx€/mes</p>
             <div class="row">
