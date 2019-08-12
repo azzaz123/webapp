@@ -200,7 +200,7 @@ describe('CallsService', () => {
         });
 
         afterEach(() => {
-          expect(result.length).toBe(TOTAL_PHONES + TOTAL_CALLS);
+          expect(result.length).toBe(TOTAL_CALLS);
         });
 
         it('should return conversations with phone converted to calls and concat with calls changing events order 3', () => {
@@ -222,7 +222,7 @@ describe('CallsService', () => {
         });
 
         afterEach(() => {
-          expect(result.length).toBe(TOTAL_PHONES + TOTAL_CALLS);
+          expect(result.length).toBe(TOTAL_CALLS);
         });
       });
 
@@ -234,8 +234,7 @@ describe('CallsService', () => {
 
           conversationService.stream$.next(MIXED_CONVERSATIONS);
           service.stream$.next([]);
-
-          expect(result.length).toBe(TOTAL_PHONES);
+          expect(result.length).toBe(0);
         });
       });
 
@@ -333,7 +332,7 @@ describe('CallsService', () => {
           service.archivedStream$.next(createCallsArray(TOTAL_CALLS));
           conversationService.archivedStream$.next(MIXED_CONVERSATIONS);
 
-          expect(result.length).toBe(TOTAL_PHONES + TOTAL_CALLS);
+          expect(result.length).toBe(TOTAL_CALLS);
         });
       });
 
@@ -346,7 +345,7 @@ describe('CallsService', () => {
           service.archivedStream$.next([]);
           conversationService.archivedStream$.next(MIXED_CONVERSATIONS);
 
-          expect(result.length).toBe(TOTAL_PHONES);
+          expect(result.length).toBe(0);
         });
       });
 
