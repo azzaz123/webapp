@@ -1,0 +1,17 @@
+@import "~style/common";
+
+.Subscriptions__category {
+  border: 1px solid $blue-grey-5;
+  border-radius: 10px;
+  padding: $spacing-m;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  cursor: pointer;
+  p {
+    margin-bottom: 0px;
+  }
+  .Subscriptions__category-info {
+    margin-left: $spacing-l;
+  }
+}

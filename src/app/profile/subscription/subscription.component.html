@@ -1,23 +1,39 @@
-<div class="StripeCards box profile-box">
+<div class="box">
     <div class="box-content">
-        <h3 class="section-title">Add new subscription</h3>
+        <h3 class="section-title">Categories</h3>
         <div class="row">
-            <div class="col-10 offset-2">
-                <div class="StripeCards__group form-group row align-items-center">
-                    <tsl-stripe-card-selection *ngIf="savedCard" (onSelectExistingCard)="setSavedCard($event)"
-                    (hasStripeCard)="hasStripeCard($event)"></tsl-stripe-card-selection>
-                    <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
-                    <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard" i18n>Use saved card</div>
-                    <tsl-stripe-card-element *ngIf="showCard" [type]="'new'" [action]="action" (onStripeCardCreate)="addSubscription($event)"
-                    (stripeCard)="setCardInfo($event)"></tsl-stripe-card-element>
+            <div class="col-4">
+                <div class="Subscriptions__category" (click)="openSubscriptionModal()">
+                    <div class="Subscriptions__category-icon">
+                        <mat-icon svgIcon="herocat-cars" class="image"></mat-icon>
+                    </div>
+                    <div class="Subscriptions__category-info">
+                        <h4>Cars</h4>
+                        <p>Limit: xxx</p>
+                    </div>
                 </div>
-                <tsl-button [hidden]="!savedCard"
-                [disabled]="!selectedCard"
-                [loading]="loading"
-                (click)="addSubscriptionFromSavedCard()"
-                id="qa-checkout-subscription"
-                className="btn-primary btn-medium stripe"
-                i18n>Add Subscription</tsl-button>
+            </div>
+            <div class="col-4">
+                <div class="Subscriptions__category" (click)="openSubscriptionModal()">
+                    <div class="Subscriptions__category-icon">
+                            <mat-icon svgIcon="herocat-services" class="image"></mat-icon>
+                    </div>
+                    <div class="Subscriptions__category-info">
+                        <h4>Services</h4>
+                        <p>Limit: xxx</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="Subscriptions__category" (click)="openSubscriptionModal()">
+                    <div class="Subscriptions__category-icon">
+                        <mat-icon svgIcon="herocat-real-estate" class="image"></mat-icon>
+                    </div>
+                    <div class="Subscriptions__category-info">
+                        <h4>Real Estate</h4>
+                        <p>Limit: xxx</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

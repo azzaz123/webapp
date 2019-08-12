@@ -11,6 +11,7 @@ import { DeleteInfoConfirmationModalComponent } from './profile-pro-billing/dele
 import { SubscriptionIconPipe } from './profile-pro-subscription/subscription-icon.pipe';
 import { VisibilityProductsModalComponent } from './profile-pro-subscription/visibility-products-modal/visibility-products-modal.component';
 import { RequestNewPaymentModalComponent } from './subscription/modals/request-new-payment-modal.component';
+import { AddNewSubscriptionModalComponent } from './subscription/modals/add-new-subscription-modal.component';
 
 @NgModule({
   imports: [
@@ -29,14 +30,16 @@ import { RequestNewPaymentModalComponent } from './subscription/modals/request-n
     DeleteInfoConfirmationModalComponent,
     SubscriptionIconPipe,
     VisibilityProductsModalComponent,
-    RequestNewPaymentModalComponent
+    RequestNewPaymentModalComponent,
+    AddNewSubscriptionModalComponent
   ],
   entryComponents: [
     UnsubscribeModalComponent,
     BecomeProModalComponent,
     DeleteInfoConfirmationModalComponent,
     VisibilityProductsModalComponent,
-    RequestNewPaymentModalComponent
+    RequestNewPaymentModalComponent,
+    AddNewSubscriptionModalComponent
   ]
 })
 export class ProfileModule { }

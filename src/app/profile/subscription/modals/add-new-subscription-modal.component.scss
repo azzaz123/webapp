@@ -1,0 +1,31 @@
+@import "~style/common";
+
+.AddNewSubscription__box {
+  padding: $spacing-m;
+  text-align: center;
+}
+
+.AddNewSubscription__rate-limit-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: $spacing-m;
+  .AddNewSubscription__rate-limit-box {
+    padding: $spacing-m;
+    height: 60px;
+    border-right: 1px solid $blue-grey-5;
+    box-shadow: 0px 3px 5px -2px $blue-grey-5;
+    flex: 0 0 75px;
+    cursor: pointer;
+  }
+}
+
+.AddNewSubscription__payment {
+  margin-top: $spacing-m;
+}
+
+.selected {
+  font-weight: bold;
+  color: $black;
+  box-shadow: 0px 6px 7px 0px $blue-grey-5 !important;
+}
