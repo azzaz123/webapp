@@ -52,8 +52,7 @@ export class InboxService {
   }
 
   public getInboxFeatureFlag$(): Observable<boolean> {
-    // return this.featureflagService.getFlag('web_inbox_projections');
-    return Observable.of(true);
+    return this.featureflagService.getFlag('web_inbox_projections');
   }
 
   public init() {
