@@ -4,18 +4,20 @@
   <div class="card-block">
     <h5 class="card-title">{{user.microName}}</h5>
     <tsl-stars *ngIf="user.score > -1" [stars]="user.score" [normalized]="false"></tsl-stars>
+    <div *ngIf="phoneNumber && !!item.isMine" class="call-wrapper">
+      <span class="call-shared"><mat-icon svgIcon="call-shared"></mat-icon></span>
+      <span class="phone-number">{{phoneNumber}}</span>
+    </div>
     <div class="user-location-distance">
-      <span [hidden]="!userDistance()"
-            i18n="The distance between the user and the item">{{userDistance() | number:'1.0-1' // i18n(ph="DISTANCE")}}
-        km from you</span>
+      <span [hidden]="!userDistance()" i18n="The distance between the user and the item">{{userDistance() | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you</span>
       <span [hidden]="userDistance()" i18n>No location</span>
     </div>
     <span class="response-rate" [ngSwitch]="user.responseRate">
-          <ng-container *ngSwitchCase="'less_than_one_hour'" i18n>Typically responds within an hour</ng-container>
-          <ng-container *ngSwitchCase="'less_than_three_hours'" i18n>Typically responds within 3 hours</ng-container>
-          <ng-container *ngSwitchCase="'less_than_a_day'" i18n>Typically responds within a day</ng-container>
-          <ng-container *ngSwitchCase="'more_than_a_day'" i18n>Responds in more than 24 hours</ng-container>
-        </span>
+      <ng-container *ngSwitchCase="'less_than_one_hour'" i18n>Typically responds within an hour</ng-container>
+      <ng-container *ngSwitchCase="'less_than_three_hours'" i18n>Typically responds within 3 hours</ng-container>
+      <ng-container *ngSwitchCase="'less_than_a_day'" i18n>Typically responds within a day</ng-container>
+      <ng-container *ngSwitchCase="'more_than_a_day'" i18n>Responds in more than 24 hours</ng-container>
+    </span>
   </div>
 
   <div class="avatar-block">

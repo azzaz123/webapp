@@ -212,6 +212,9 @@ ul, li {
   }
   .type {
     flex: 1;
+    .bump-type {
+      margin-right: $spacing-xxs;
+    }
   }
   .close-icon {
     @include square(16px);

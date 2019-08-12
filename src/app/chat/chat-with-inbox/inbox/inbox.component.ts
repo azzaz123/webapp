@@ -177,6 +177,9 @@ export class InboxComponent implements OnInit, OnDestroy {
   }
 
   public setCurrentConversation(newCurrentConversation: InboxConversation) {
+    if (!newCurrentConversation.user.location) {
+      this.userService.get(newCurrentConversation.user.id).subscribe(user => newCurrentConversation.user.location = user.location);
+    }
     this.conversationService.openConversation(newCurrentConversation);
   }
 

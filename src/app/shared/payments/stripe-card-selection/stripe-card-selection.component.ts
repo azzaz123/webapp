@@ -29,7 +29,7 @@ export class StripeCardSelectionComponent implements OnInit {
   ngOnInit() {
     this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
       this.financialCards = stripeCards.map((financialCard: FinancialCard) => this.toSelectOptions(financialCard));
-      this.hasStripeCard.emit(!!this.financialCards);
+      this.hasStripeCard.emit(this.financialCards.length > 0);
     }, () => {
       this.hasStripeCard.emit(false);
     });

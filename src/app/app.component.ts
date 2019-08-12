@@ -143,7 +143,7 @@ export class AppComponent implements OnInit {
   }
 
   private trackAppOpen() {
-      this.trackingService.track(TrackingService.APP_OPEN, {referer_url: this.previousUrl, current_url: this.currentUrl});
+    this.trackingService.track(TrackingService.APP_OPEN, { referer_url: this.previousUrl, current_url: this.currentUrl });
   }
 
   private subscribeEventUserLogin() {
@@ -178,10 +178,21 @@ export class AppComponent implements OnInit {
           this.inboxService.getInboxFeatureFlag$()
           .catch(() => Observable.of(false))
           .subscribe((active) => {
+            if (active) {
+              this.initCalls();
+            }
             active ? this.inboxService.init() : this.initOldChat();
           });
         });
         this.realTime.connect(user.id, accessToken);
+      }
+    });
+  }
+
+  private initCalls() {
+    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+      if (isProfessional) {
+        this.callService.init().subscribe(() => this.callService.init(true).subscribe());
       }
     });
   }
@@ -200,7 +211,6 @@ export class AppComponent implements OnInit {
     });
     this.RTConnectedSubscription.unsubscribe();
   }
-
 
   private subscribeEventUserLogout() {
     this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {

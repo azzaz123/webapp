@@ -56,11 +56,6 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
         this.eventService.subscribe('paymentResponse', (response) => {
           this.managePaymentResponse(response);
         });
-        this.stripeService.getCards().subscribe(cards => {
-          if (cards.length === 0) {
-            this.addNewCard();
-          }
-        });
       }
     });
     this.cartService.createInstance(new CartProExtras());
@@ -155,6 +150,9 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   public hasStripeCard(hasCard: boolean) {
     this.isStripeCard = hasCard;
+    if (!hasCard) {
+      this.addNewCard();
+    }
   }
 
   public setCardInfo(card: any): void {

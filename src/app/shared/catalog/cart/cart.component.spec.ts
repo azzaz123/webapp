@@ -113,9 +113,6 @@ describe('CartComponent', () => {
           isPaymentMethodStripe$() {
             return Observable.of(true);
           },
-          getCards() {
-            return Observable.of([]);
-          }
         }
         },
       ],
@@ -173,14 +170,6 @@ describe('CartComponent', () => {
 
       expect(component.isStripe).toBe(expectedValue);
     });
-
-    it('should call addNewCard method when there are no Stripe cards', () => {
-      spyOn(component, 'addNewCard').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(component.addNewCard).toHaveBeenCalledTimes(1);
-    });
   });
 
   describe('hasCard', () => {
@@ -196,6 +185,22 @@ describe('CartComponent', () => {
       component.hasStripeCard(true);
 
       expect(component.isStripeCard).toEqual(true);
+    });
+
+    it('should not call addNewCard if stripe card exists', () => {
+      spyOn(component, 'addNewCard').and.callThrough();
+
+      component.hasStripeCard(true);
+
+      expect(component.addNewCard).not.toHaveBeenCalled();
+    });
+
+    it('should call addNewCard if stripe card does not exist', () => {
+      spyOn(component, 'addNewCard').and.callThrough();
+
+      component.hasStripeCard(false);
+
+      expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
   });
 
