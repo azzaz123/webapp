@@ -15,6 +15,15 @@ import { InboxConversationService } from '../../../core/inbox/inbox-conversation
 import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { UserService } from '../../../core/user/user.service';
 import { Observable } from 'rxjs';
+import { AdService } from '../../../core/ad/ad.service';
+
+class AdServiceMock {
+  startAdsRefresh() {
+  }
+
+  stopAdsRefresh() {
+  }
+}
 
 describe('Component: InboxComponent', () => {
   let component: InboxComponent;
@@ -23,6 +32,7 @@ describe('Component: InboxComponent', () => {
   let eventService: EventService;
   let userService: UserService;
   let conversationService: InboxConversationService;
+  let addService: AdService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,6 +45,7 @@ describe('Component: InboxComponent', () => {
       providers: [
         EventService,
         ...TEST_HTTP_PROVIDERS,
+        { provide: AdService, useClass: AdServiceMock },
         {
           provide: InboxService, useValue: {
             loadMorePages() {
@@ -68,6 +79,7 @@ describe('Component: InboxComponent', () => {
     inboxService = TestBed.get(InboxService);
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);
+    addService = TestBed.get(AdService);
     conversationService = TestBed.get(InboxConversationService);
   });
 
@@ -257,20 +269,24 @@ describe('Component: InboxComponent', () => {
 
     it('should should call conversationService.openConversation with the new conversation', () => {
       spyOn(conversationService, 'openConversation').and.callThrough();
+      spyOn(addService, 'startAdsRefresh');
 
       component.setCurrentConversation(newlySelectedConversation);
 
       expect(conversationService.openConversation).toHaveBeenCalledWith(newlySelectedConversation);
+      expect(addService.startAdsRefresh).toHaveBeenCalled();
     });
   });
 
   it('should set conversation.active to FALSE if a conversation exists when ngOnDestroy is called', () => {
     const previouslySelectedConversation = CREATE_MOCK_INBOX_CONVERSATION();
     component.setCurrentConversation(previouslySelectedConversation);
+    spyOn(addService, 'stopAdsRefresh');
 
     component.ngOnDestroy();
 
     expect(previouslySelectedConversation.active).toBe(false);
+    expect(addService.stopAdsRefresh).toHaveBeenCalled();
   });
 
   describe('loadMore', () => {
