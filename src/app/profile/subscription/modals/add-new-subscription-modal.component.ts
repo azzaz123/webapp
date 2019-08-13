@@ -122,7 +122,7 @@ export class AddNewSubscriptionModalComponent {
   }
 
   public selectListingLimit(event: any): void {
-    this.listingLimit = event.target.innerHTML;
+    this.listingLimit = parseInt(event.target.innerHTML, 10);
   }
 
   private managePaymentResponse(paymentResponse) {

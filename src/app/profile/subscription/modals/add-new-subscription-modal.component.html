@@ -4,17 +4,17 @@
             <p>What limit do you want to put on your subscription?</p>
             <div class="AddNewSubscription__listing-limit-container">
                 <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-                [ngClass]="{selected: listingLimit === '40'}">40</div>
+                [ngClass]="{selected: listingLimit === 40}">40</div>
                 <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-                [ngClass]="{selected: listingLimit === '80'}">80</div>
+                [ngClass]="{selected: listingLimit === 80}">80</div>
                 <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-                [ngClass]="{selected: listingLimit === '150'}">150</div>
+                [ngClass]="{selected: listingLimit === 150}">150</div>
                 <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-                [ngClass]="{selected: listingLimit === '250'}">250</div>
+                [ngClass]="{selected: listingLimit === 250}">250</div>
                 <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-                [ngClass]="{selected: listingLimit === '400'}">400</div>
+                [ngClass]="{selected: listingLimit === 400}">400</div>
                 <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-                [ngClass]="{selected: listingLimit === '500'}">500</div>
+                [ngClass]="{selected: listingLimit === 500}">500</div>
             </div>
             <p>Price: xx,xx€/mes</p>
             <div class="row">
@@ -28,7 +28,7 @@
                         (stripeCard)="setCardInfo($event)"></tsl-stripe-card-element>
                     </div>
                     <tsl-button [hidden]="!savedCard"
-                    [disabled]="!selectedCard"
+                    [disabled]="!selectedCard || !listingLimit"
                     (click)="addSubscriptionFromSavedCard()"
                     id="qa-checkout-subscription"
                     className="btn-primary btn-medium stripe"
