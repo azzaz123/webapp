@@ -16,8 +16,7 @@ export class SubscriptionComponent {
 
     openSubscriptionModal() {
         let modalRef: NgbModalRef = this.modalService.open(AddNewSubscriptionModalComponent, {windowClass: 'review'});
-        modalRef.result.then((response) => {
-            console.log('new payment modal response ', response);
+        modalRef.result.then(() => {
             this.action = 'clear';
             modalRef = null;
         }, () => {});

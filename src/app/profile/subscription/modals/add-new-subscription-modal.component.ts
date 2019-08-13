@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { RequestNewPaymentModalComponent } from './request-new-payment-modal.component';
@@ -7,6 +7,7 @@ import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
 import { HttpService } from '../../../core/http/http.service';
 import { FinancialCardOption } from '../../../core/payments/payment.interface';
+import { EventService } from '../../../core/event/event.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { FinancialCardOption } from '../../../core/payments/payment.interface';
   styleUrls: ['./add-new-subscription-modal.component.scss']
 })
 
-export class AddNewSubscriptionModalComponent {
+export class AddNewSubscriptionModalComponent implements OnInit {
 
   public card: any;
   protected API_URL = 'api/v3/payments';
@@ -25,11 +26,25 @@ export class AddNewSubscriptionModalComponent {
   public savedCard = true;
   public selectedCard = false;
   public listingLimit: number;
+  private isStripe: boolean;
 
   constructor(public activeModal: NgbActiveModal,
             private http: HttpService,
             private stripeService: StripeService,
-            private modalService: NgbModal) {
+            private modalService: NgbModal,
+            private eventService: EventService) {
+  }
+
+  ngOnInit() {
+    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
+      this.isStripe = true;//val;
+      if (this.isStripe) {
+        this.eventService.subscribe('paymentActionResponse', (response) => {
+          this.close();
+          this.managePaymentResponse(response);
+        });
+      }
+    });
   }
 
   public close() {
@@ -38,40 +53,21 @@ export class AddNewSubscriptionModalComponent {
 
   public addSubscription(paymentMethod) {
     this.stripeService.addNewCard(paymentMethod.id).subscribe(() => {
-      this.newSubscription('plan_FSWGMZq6tDdiKc', paymentMethod.id).subscribe((response) => {
-          if (response.status === 202) {
-              this.checkNewSubscriptionStatus().subscribe((response) => {
-                  if (response.status === 'incomplete') {
-                      this.requestNewPayment();
-                  }
-                  if (response.status === 'requires_action') {
-                      console.log('prompt 3D secure');
-                      this.stripeService.requiresActionPayment(response.paymentIntentSecret).then((response: any) => {
-                          this.managePaymentResponse(response);
-                      });
-                  }
-              });
-          }
-      }, () => {
-          console.warn('error on subscription');
-      });
+      this.addSubscriptionFromSavedCard(paymentMethod.id);
     });
   }
 
-  public addSubscriptionFromSavedCard() {
-    this.newSubscription('plan_FSWGMZq6tDdiKc', this.card.id).subscribe((response) => {
+  public addSubscriptionFromSavedCard(paymentMethodId = this.card.id) {
+    this.newSubscription('plan_FSWGMZq6tDdiKc', paymentMethodId).subscribe((response) => {
       if (response.status === 202) {
-          this.checkNewSubscriptionStatus().subscribe((response) => {
-              if (response.status === 'incomplete') {
-                  this.requestNewPayment();
-              }
-              if (response.status === 'requires_action') {
-                  console.log('prompt 3D secure');
-                  this.stripeService.requiresActionPayment(response.paymentIntentSecret).then((response: any) => {
-                      this.managePaymentResponse(response);
-                  });
-              }
-          });
+        this.checkNewSubscriptionStatus().subscribe((response) => {
+          if (response.payment_status === 'xxx') {
+            this.requestNewPayment();
+          }
+          if (response.payment_status === 'requires_action') {
+            this.stripeService.actionPayment(response.payment_secret_key);
+          }
+        });
       }
     }, () => {
       console.warn('error on subscription');
@@ -93,9 +89,17 @@ export class AddNewSubscriptionModalComponent {
   public checkNewSubscriptionStatus(): Observable<any> {
     return this.http.get(`${this.API_URL}/c2b/stripe/subscription/${this.uuid}`)
     .map(res => res.json())
-    .retryWhen(errors => 
+    /*.retryWhen(errors => 
         errors.delay(1000).take(5)
-        );
+        );*/
+
+
+    .retryWhen((errors) => {
+      return errors
+        .mergeMap((error) => (error.status !== 404) ? Observable.throw(error) : Observable.of(error))
+        .delay(1000)
+        .take(5);
+    });
   }
 
   public hasStripeCard(hasCard: boolean): void {
@@ -139,6 +143,7 @@ export class AddNewSubscriptionModalComponent {
   }
 
   private requestNewPayment() {
+    this.activeModal.dismiss();
     let modalRef: NgbModalRef = this.modalService.open(RequestNewPaymentModalComponent, {windowClass: 'review'});
     modalRef.result.then((response) => {
         console.log('new payment modal response ', response);
