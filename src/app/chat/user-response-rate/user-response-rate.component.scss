@@ -9,3 +9,7 @@ mat-icon {
   @include square(16px);
   margin-right: $spacing-ms;
 }
+
+.font-light span {
+  font-weight: $font-weight-skinny;
+}
