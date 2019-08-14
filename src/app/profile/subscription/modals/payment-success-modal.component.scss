@@ -1,0 +1,11 @@
+@import "~style/common";
+
+.RequestNewPayment__box {
+  padding: $spacing-m;
+  text-align: center;
+  .box-content {
+      p {
+        margin-bottom: $spacing-l;
+      }
+  }
+}

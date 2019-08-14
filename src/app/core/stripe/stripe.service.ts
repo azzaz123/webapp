@@ -89,8 +89,11 @@ export class StripeService {
     return this.http.post(`${this.API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/detach`)
   }
 
-  public addNewCard(paymentMethodId: string) {
+  public addNewCard(paymentMethodId: string): Observable<any> {
     return this.http.put(`${this.API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/attach`)
+    .catch(() => {
+      return Observable.of(null);
+    });
   }
 
   public createStripeCard(cardElement: any): Promise<any> {

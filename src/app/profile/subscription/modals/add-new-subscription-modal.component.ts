@@ -1,38 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { RequestNewPaymentModalComponent } from './request-new-payment-modal.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { UUID } from 'angular2-uuid';
-import { Observable } from 'rxjs';
-import { HttpService } from '../../../core/http/http.service';
 import { FinancialCardOption } from '../../../core/payments/payment.interface';
 import { EventService } from '../../../core/event/event.service';
-
+import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
   templateUrl: './add-new-subscription-modal.component.html',
-  styleUrls: ['./add-new-subscription-modal.component.scss']
+  styleUrls: ['./add-new-subscription-modal.component.scss'],
+  providers: [SubscriptionsService]
 })
 
 export class AddNewSubscriptionModalComponent implements OnInit {
 
   public card: any;
-  protected API_URL = 'api/v3/payments';
-  private uuid: string;
   public action: string;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
   public listingLimit: number;
   private isStripe: boolean;
+  public loading = false;
+  public paymentError = false;
 
   constructor(public activeModal: NgbActiveModal,
-            private http: HttpService,
             private stripeService: StripeService,
-            private modalService: NgbModal,
-            private eventService: EventService) {
+            private eventService: EventService,
+            private subscriptionsService: SubscriptionsService,
+            private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -40,7 +38,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
       this.isStripe = true;//val;
       if (this.isStripe) {
         this.eventService.subscribe('paymentActionResponse', (response) => {
-          this.close();
           this.managePaymentResponse(response);
         });
       }
@@ -52,20 +49,40 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   public addSubscription(paymentMethod) {
-    this.stripeService.addNewCard(paymentMethod.id).subscribe(() => {
-      this.addSubscriptionFromSavedCard(paymentMethod.id);
+    this.loading = true;
+    this.stripeService.addNewCard(paymentMethod.id).subscribe((response) => {
+      if (!response) {
+        this.requestNewPayment();
+      } else {
+        this.addSubscriptionFromSavedCard(paymentMethod.id);
+      }
     });
   }
 
   public addSubscriptionFromSavedCard(paymentMethodId = this.card.id) {
-    this.newSubscription('plan_FSWGMZq6tDdiKc', paymentMethodId).subscribe((response) => {
+    if (!this.loading) {
+      this.loading = true;
+    }
+    this.subscriptionsService.newSubscription('plan_FSWGMZq6tDdiKc', paymentMethodId).subscribe((response) => {
       if (response.status === 202) {
-        this.checkNewSubscriptionStatus().subscribe((response) => {
-          if (response.payment_status === 'xxx') {
-            this.requestNewPayment();
-          }
-          if (response.payment_status === 'requires_action') {
-            this.stripeService.actionPayment(response.payment_secret_key);
+        this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response) => {
+          switch(response.payment_status) {
+            case 'requires_payment_method': {
+              this.requestNewPayment();
+              break;
+            }
+            case 'requires_action': {
+              this.stripeService.actionPayment(response.payment_secret_key);
+              break;
+            }
+            case 'succeeded': {
+              this.paymentSucceeded();
+              break;
+            }
+            default: {
+              this.requestNewPayment();
+              break;
+            }
           }
         });
       }
@@ -76,30 +93,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
 
   public setCardInfo(card: any): void {
     this.card = card;
-  }
-
-  public newSubscription(subscriptionId: string, paymentId: string): Observable<any> {
-    this.uuid = UUID.UUID();
-    return this.http.post(`${this.API_URL}/c2b/stripe/subscription/${this.uuid}`, {
-        payment_method_id: paymentId,
-        product_subscription_id: subscriptionId
-    });
-  }
-
-  public checkNewSubscriptionStatus(): Observable<any> {
-    return this.http.get(`${this.API_URL}/c2b/stripe/subscription/${this.uuid}`)
-    .map(res => res.json())
-    /*.retryWhen(errors => 
-        errors.delay(1000).take(5)
-        );*/
-
-
-    .retryWhen((errors) => {
-      return errors
-        .mergeMap((error) => (error.status !== 404) ? Observable.throw(error) : Observable.of(error))
-        .delay(1000)
-        .take(5);
-    });
   }
 
   public hasStripeCard(hasCard: boolean): void {
@@ -130,9 +123,10 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   private managePaymentResponse(paymentResponse) {
+    this.loading = false;
     switch(paymentResponse && paymentResponse.toUpperCase()) {
       case 'SUCCEEDED': {
-        console.log('success action payment');
+        this.paymentSucceeded();
         break;
       }
       default: {
@@ -143,13 +137,24 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   private requestNewPayment() {
-    this.activeModal.dismiss();
-    let modalRef: NgbModalRef = this.modalService.open(RequestNewPaymentModalComponent, {windowClass: 'review'});
-    modalRef.result.then((response) => {
-        console.log('new payment modal response ', response);
-        this.action = 'clear';
-        modalRef = null;
+    this.loading = false;
+    this.paymentError = true;
+    this.action = 'clear';
+  }
+
+  private paymentSucceeded() {
+    this.close();
+    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, {windowClass: 'review'});
+    modalRef.result.then(() => {
+      modalRef = null;
     }, () => {});
-}
+  }
+
+  @HostListener('click') onClick() {
+    if (this.paymentError) {
+      this.paymentError = false;
+    }
+  }
+
 
 }

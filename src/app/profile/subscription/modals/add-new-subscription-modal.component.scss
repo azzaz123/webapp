@@ -24,9 +24,38 @@
   margin-top: $spacing-m;
 }
 
+.AddNewSubscription__selection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  tsl-stripe-card-selection {
+    width: 50%;
+  }
+}
+
+.AddNewSubscription__payment-response-message {
+  p {
+    color: $magenta-main;
+  }
+}
+
 .selected {
   font-weight: bold;
   color: $black;
   height: 56px !important;
   box-shadow: 0px 4px 5px 0px $blue-grey-5 !important;
+}
+
+tsl-button /deep/ .btn-text  {
+  padding: $spacing-ms $spacing-ml;
+  background-color: transparent;
+  color: $blue-grey-3;
+  font-size: $font-size-s;
+  border: 1px solid $blue-grey-3;
+  border-radius: $button-border-radius;
+  &:hover {
+    color: $black;
+    background-color: $blue-grey-5;
+    border: 1px solid $black;
+  }
 }

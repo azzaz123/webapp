@@ -10,7 +10,7 @@
         <div id="card-errors" role="alert" *ngIf="error">
             {{ error }}
         </div>
-        <tsl-button [hidden]="type === 'new'"
+        <tsl-button [hidden]="type === 'new' || type === 'subscription'"
                     id="checkout-card-button"
                     className="btn-primary btn-medium stripe"
                     [disabled]="type === 'cart' && !cart?.total"
@@ -26,5 +26,12 @@
                     [loading]="newLoading"
                     (click)="createNewCard()" i18n
         >Save</tsl-button>
+        <tsl-button *ngIf="type === 'subscription'"
+                    id="checkout-card-button-new"
+                    className="btn-primary btn-medium stripe"
+                    [disabled]="!listingLimit"
+                    [loading]="newLoading"
+                    (click)="createNewCard()" i18n
+        >Add Subscription</tsl-button>
     </form>
 </div>

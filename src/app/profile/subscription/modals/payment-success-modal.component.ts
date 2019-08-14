@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'tsl-request-new-payment-modal',
-  templateUrl: './request-new-payment-modal.component.html'
+  selector: 'tsl-payment-success-modal',
+  templateUrl: './payment-success-modal.component.html',
+  styleUrls: ['./payment-success-modal.component.scss']
 })
 
-export class RequestNewPaymentModalComponent {
+export class PaymentSuccessModalComponent {
 
   constructor(public activeModal: NgbActiveModal) {
   }

@@ -22,21 +22,26 @@
     <p>Price: xx,xx€/mes</p>
     <div class="row">
       <div class="AddNewSubscription__payment col-10 offset-1">
-        <div class="StripeCards__group form-group align-items-center">
-          <tsl-stripe-card-selection *ngIf="savedCard" (onSelectExistingCard)="setSavedCard($event)"
-          (hasStripeCard)="hasStripeCard($event)"></tsl-stripe-card-selection>
-          <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
-          <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard" i18n>Use saved card</div>
-          <tsl-stripe-card-element *ngIf="showCard" [type]="'new'" [action]="action" (onStripeCardCreate)="addSubscription($event)"
+        <div class="AddNewSubscription__group form-group align-items-center">
+          <div class="AddNewSubscription__selection">
+              <tsl-stripe-card-selection *ngIf="savedCard" (onSelectExistingCard)="setSavedCard($event)"
+              (hasStripeCard)="hasStripeCard($event)"></tsl-stripe-card-selection>
+              <tsl-button className="btn btn-text" (click)="addNewCard()" *ngIf="savedCard" [disabled]="loading" i18n>+ Add another credit card</tsl-button>
+          </div>
+          <tsl-button className="btn btn-text" (click)="removeNewCard()" *ngIf="showCard" [disabled]="loading" i18n>Use saved card</tsl-button>
+          <div class="AddNewSubscription__payment-response-message" *ngIf="paymentError">
+            <p>The payment failed. Please enter another credit card.</p>
+          </div>
+          <tsl-stripe-card-element *ngIf="showCard" [type]="'subscription'" [listingLimit]="listingLimit" [action]="action" (onStripeCardCreate)="addSubscription($event)"
           (stripeCard)="setCardInfo($event)"></tsl-stripe-card-element>
         </div>
         <tsl-button [hidden]="!savedCard"
         [disabled]="!selectedCard || !listingLimit"
+        [loading]="loading"
         (click)="addSubscriptionFromSavedCard()"
         id="qa-checkout-subscription"
         className="btn-primary btn-medium stripe"
         i18n>Add Subscription</tsl-button>
-      </div>
     </div>
   </div>
 </div>

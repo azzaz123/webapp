@@ -9,17 +9,17 @@ import { AddNewSubscriptionModalComponent } from './modals/add-new-subscription-
 })
 export class SubscriptionComponent {
 
-    public action: string;
+  public action: string;
 
-    constructor(private modalService: NgbModal) {
-    }
+  constructor(private modalService: NgbModal) {
+  }
 
-    openSubscriptionModal() {
-        let modalRef: NgbModalRef = this.modalService.open(AddNewSubscriptionModalComponent, {windowClass: 'review'});
-        modalRef.result.then(() => {
-            this.action = 'clear';
-            modalRef = null;
-        }, () => {});
-    }
+  openSubscriptionModal() {
+    let modalRef: NgbModalRef = this.modalService.open(AddNewSubscriptionModalComponent, {windowClass: 'review'});
+    modalRef.result.then(() => {
+      this.action = 'clear';
+      modalRef = null;
+    }, () => {});
+  }
   
 }

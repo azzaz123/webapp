@@ -10,7 +10,7 @@ import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.com
 import { DeleteInfoConfirmationModalComponent } from './profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { SubscriptionIconPipe } from './profile-pro-subscription/subscription-icon.pipe';
 import { VisibilityProductsModalComponent } from './profile-pro-subscription/visibility-products-modal/visibility-products-modal.component';
-import { RequestNewPaymentModalComponent } from './subscription/modals/request-new-payment-modal.component';
+import { PaymentSuccessModalComponent } from './subscription/modals/payment-success-modal.component';
 import { AddNewSubscriptionModalComponent } from './subscription/modals/add-new-subscription-modal.component';
 
 @NgModule({
@@ -30,7 +30,7 @@ import { AddNewSubscriptionModalComponent } from './subscription/modals/add-new-
     DeleteInfoConfirmationModalComponent,
     SubscriptionIconPipe,
     VisibilityProductsModalComponent,
-    RequestNewPaymentModalComponent,
+    PaymentSuccessModalComponent,
     AddNewSubscriptionModalComponent
   ],
   entryComponents: [
@@ -38,7 +38,7 @@ import { AddNewSubscriptionModalComponent } from './subscription/modals/add-new-
     BecomeProModalComponent,
     DeleteInfoConfirmationModalComponent,
     VisibilityProductsModalComponent,
-    RequestNewPaymentModalComponent,
+    PaymentSuccessModalComponent,
     AddNewSubscriptionModalComponent
   ]
 })
