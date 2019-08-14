@@ -6,6 +6,9 @@ import { InboxConversation } from './inbox/inbox-conversation/inbox-conversation
 import { ActivatedRoute } from '@angular/router';
 import { InboxConversationService } from '../../core/inbox/inbox-conversation.service';
 import { Observable } from 'rxjs';
+import { phoneMethod } from '../../core/message/message';
+import { ConversationService } from '../../core/conversation/conversation.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-chat-with-inbox',
@@ -26,10 +29,11 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
   private archivedInboxReady: boolean;
 
   constructor(public userService: UserService,
-    private eventService: EventService,
-    private adService: AdService,
-    private route: ActivatedRoute,
-    private conversationService: InboxConversationService) {
+              private eventService: EventService,
+              private adService: AdService,
+              private route: ActivatedRoute,
+              private conversationService: ConversationService,
+              private inboxConversationService: InboxConversationService) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
@@ -85,13 +89,21 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
 
       // Try to find the conversation within the downloaded ones
       this.conversationsLoading = true;
-      this.conversationService.openConversationByItemId$(itemId)
-      .catch(() => {
-        return Observable.of({});
-      })
-      .subscribe(() => {
-        this.conversationsLoading = false;
+      this.inboxConversationService.openConversationByItemId$(itemId)
+      .catch(() => Observable.of({}))
+      .subscribe((conversation: InboxConversation) => {
+        if (_.empty(conversation.messages)) {
+          this.getPhoneInfo(conversation);
+        }
       });
+    });
+  }
+
+  private getPhoneInfo(conversation: InboxConversation): void {
+    this.userService.getPhoneInfo(conversation.user.id).subscribe(phoneInfo => {
+      if (phoneInfo.phone_method === phoneMethod.popUp) {
+        this.conversationService.openPhonePopup(conversation, true);
+      }
     });
   }
 
