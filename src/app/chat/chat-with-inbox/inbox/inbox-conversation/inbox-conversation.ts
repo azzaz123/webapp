@@ -45,6 +45,10 @@ export class InboxConversation {
         return this._item;
     }
 
+    set item(inboxItem: InboxItem) {
+      this._item = inboxItem;
+    }
+
     set lastMessage(lastMessage: InboxMessage) {
         this._lastMessage = lastMessage;
     }
