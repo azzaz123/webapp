@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { phoneMethod } from '../../core/message/message';
 import { ConversationService } from '../../core/conversation/conversation.service';
 import * as _ from 'lodash';
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'tsl-chat-with-inbox',
@@ -86,6 +87,10 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
 
     this.route.queryParams.subscribe((params: any) => {
       const itemId = params.itemId; // TODO: this params will include userId
+
+      if (isNullOrUndefined(itemId)) {
+        return;
+      }
 
       // Try to find the conversation within the downloaded ones
       this.conversationsLoading = true;
