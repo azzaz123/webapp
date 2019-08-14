@@ -92,7 +92,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
       this.inboxConversationService.openConversationByItemId$(itemId)
       .catch(() => Observable.of({}))
       .subscribe((conversation: InboxConversation) => {
-        if (_.empty(conversation.messages)) {
+        if (_.isEmpty(conversation.messages)) {
           this.getPhoneInfo(conversation);
         }
       });
