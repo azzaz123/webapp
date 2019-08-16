@@ -63,15 +63,23 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
     });
     this.userService.isProUser().subscribe((isPro: boolean) => {
       this.isPro = isPro;
+      if (isPro) {
+        this.getProUserData()
+      }
     });
+    this.userService.getUserCover().subscribe((avatar: Image) => {
+      if (avatar) {
+        this.user.coverImage = avatar;
+      }
+    });
+  }
+
+  private getProUserData() {
     this.userService.getProInfo().subscribe((userInfo: UserProInfo) => {
       this.userInfo = userInfo;
       this.setUserData();
     }, () => {
       this.setUserData();
-    });
-    this.userService.getUserCover().subscribe((avatar: Image) => {
-      this.user.coverImage = avatar;
     });
   }
 
