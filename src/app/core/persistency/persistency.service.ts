@@ -275,8 +275,7 @@ export class PersistencyService {
   }
 
   private buildResponse(message: Message | InboxMessage): StoredMessage {
-    let text: string;
-    message instanceof Message ? text = message.message : text = message.text;
+    const text = message instanceof Message ? message.message : message.text;
     return {
       _id: message.id,
       date: message.date,
@@ -457,7 +456,6 @@ export class PersistencyService {
   }
 
   /* istanbul ignore next */
-
 
   private tryAndPut(db, doc, diffFun) {
     return db.put(doc).then((res) => {
