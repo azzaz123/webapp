@@ -2,13 +2,14 @@ import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from '../../../core/message/message.service';
 import { Conversation } from '../../../core/conversation/conversation';
-import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { environment } from '../../../../environments/environment';
 import { WindowRef } from '../../../core/window/window.service';
 import { HttpService } from '../../../core/http/http.service';
-import { format, AsYouType, getCountryCallingCode, isValidNumber } from 'libphonenumber-js';
+import { AsYouType, format, getCountryCallingCode, isValidNumber } from 'libphonenumber-js';
+import { InboxConversation } from '../../chat-with-inbox/inbox/inbox-conversation';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -17,7 +18,7 @@ import { format, AsYouType, getCountryCallingCode, isValidNumber } from 'libphon
 })
 export class SendPhoneComponent implements OnInit {
 
-  @Input() conversation: Conversation;
+  @Input() conversation: Conversation | InboxConversation;
   @Input() required: boolean;
   @Input() phone: string;
   @ViewChild('phoneInput') phoneField: ElementRef;
@@ -39,7 +40,7 @@ export class SendPhoneComponent implements OnInit {
   }
 
   ngOnInit() {
-    setTimeout(() => this.phoneField.nativeElement.focus(), 1000);
+    this.phoneField.nativeElement.focus();
     if (this.phone) {
       this.sendPhoneForm.setValue({
         phone: this.phone
@@ -82,14 +83,14 @@ export class SendPhoneComponent implements OnInit {
     const prefix = '+' + getCountryCallingCode('ES');
     const hasPrefix = event.target.value.indexOf(prefix) > -1;
     const numberOfDigits = hasPrefix ? event.target.value.split(prefix)[1].split(' ').join('').length
-    : event.target.value.split(' ').join('').length;
+      : event.target.value.split(' ').join('').length;
     event.target.value = new AsYouType('ES').input(event.target.value);
     event.target.onkeypress = () => !(numberOfDigits >= 9);
     if (numberOfDigits === 9) {
       if (event.target.value.indexOf(prefix) === -1) {
         event.target.value = prefix.concat(' ', event.target.value);
       } else {
-        event.target.value = format(event.target.value.toString() , 'ES', 'International');
+        event.target.value = format(event.target.value.toString(), 'ES', 'International');
       }
     }
     this.sendPhoneForm.setValue({
@@ -100,7 +101,10 @@ export class SendPhoneComponent implements OnInit {
   dismiss() {
     if (this.required) {
       this.trackingService.track(TrackingService.ITEM_SHAREPHONE_HIDEFORM, { item_id: this.conversation.item.id });
-      this.windowRef.nativeWindow.location.href = environment.siteUrl + 'item/' + this.conversation.item.webSlug;
+      this.windowRef.nativeWindow.location.href = this.conversation instanceof Conversation
+        ? `${environment.siteUrl}item/${this.conversation.item.webSlug}`
+        : this.conversation.item.itemUrl;
+
     } else {
       this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
       this.activeModal.dismiss();

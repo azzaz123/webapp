@@ -69,7 +69,7 @@ export const CONVERSATIONS_DATA: ConversationResponse[] = [{
 export const CONVERSATION_DATE: number = new Date().getTime();
 export const CONVERSATION_DATE_ISO: string = new Date().toISOString();
 
-export const MOCK_CONVERSATION: Function = (id: string = CONVERSATION_ID, userId: string = USER_ID, phone?: string, 
+export const MOCK_CONVERSATION: Function = (id: string = CONVERSATION_ID, userId: string = USER_ID, phone?: string,
   date: number = CONVERSATION_DATE): Conversation => {
   return new Conversation(id, 1, date, false, new User(userId), new Item(ITEM_ID, ITEM_LEGACY_ID, USER_ID), [], phone, SURVEY_RESPONSES);
 };
