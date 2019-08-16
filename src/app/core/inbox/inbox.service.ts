@@ -177,14 +177,8 @@ export class InboxService {
   private processInboxResponse(response: Response): InboxConversation[] {
     const reloadConversations = response.json();
     this.nextPageToken = reloadConversations.next_from || null;
-    // In order to avoid adding repeated conversations - if use see this code after 1.11.2019 remove comment lines
-    // This code do not remove duplicates because ones are not returned by backend. This line of code poses a problem when we reload page
-    // and list of local conversations is the same like in the backend and for this reason every conversation is treat like duplicate
-    // and we see empty inbox
-    // const conversationWithRemovedDuplicates = reloadConversations.conversations.filter(conversation =>
-    //   _.find(this.conversations, localConversation => localConversation.id === conversation.hash) ? null : conversation);
-    // return this.buildConversations(conversationWithRemovedDuplicates);
-    return this.buildConversations(reloadConversations.conversations);
+    // In order to avoid adding repeated conversations
+    return _.uniqBy([...this.buildConversations(reloadConversations.conversations), ...this.conversations], 'id');
   }
 
   private processArchivedInboxResponse(res: Response): InboxConversation[] {
