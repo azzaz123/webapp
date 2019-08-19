@@ -177,7 +177,6 @@ export class InboxService {
   private processInboxResponse(response: Response): InboxConversation[] {
     const reloadConversations = response.json();
     this.nextPageToken = reloadConversations.next_from || null;
-    // In order to avoid adding repeated conversations
     return _.uniqBy([...this.buildConversations(reloadConversations.conversations), ...this.conversations], 'id');
   }
 
