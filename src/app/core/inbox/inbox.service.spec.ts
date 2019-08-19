@@ -324,7 +324,7 @@ describe('InboxService', () => {
 
       service.loadMorePages();
 
-      expect(service.conversations.length).toBe(res.json().conversations.length);
+      expect(service.conversations.length).toBe(res.json().conversations.length + res2.json().conversations.length);
     });
 
     it('should add not existing conversations', () => {
@@ -336,7 +336,8 @@ describe('InboxService', () => {
 
       service.loadMorePages();
 
-      expect(service.conversations.length).toBe(res.json().conversations.length + res2.json().conversations.length);
+      expect(service.conversations.length)
+      .toBe(res.json().conversations.length + res.json().conversations.length + res2.json().conversations.length);
     });
   });
 
@@ -359,7 +360,7 @@ describe('InboxService', () => {
       delete modifiedResponse.next_from;
       spyOn(http, 'get').and.returnValues(Observable.of(
         new Response(new ResponseOptions({ body: modifiedResponse }))),
-         Observable.of(new Response(new ResponseOptions({ body: modifiedResponse }))));
+        Observable.of(new Response(new ResponseOptions({ body: modifiedResponse }))));
 
       service.init();
 
