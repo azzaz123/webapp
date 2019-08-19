@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SendPhoneComponent } from './send-phone.component';
 import { MessageService } from '../../../core/message/message.service';
@@ -16,6 +16,7 @@ import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { By } from '@angular/platform-browser';
 import { format } from 'libphonenumber-js';
 import { Observable } from 'rxjs';
+import { MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 
 describe('SendPhoneComponent', () => {
   let component: SendPhoneComponent;
@@ -35,21 +36,32 @@ describe('SendPhoneComponent', () => {
       providers: [NgbActiveModal,
         FormBuilder,
         ...TEST_HTTP_PROVIDERS,
-        { provide: MessageService, useValue: {
-          createPhoneNumberMessage() {},
-          addPhoneNumberRequestMessage() {}
-        } },
-        { provide: TrackingService, useClass: MockTrackingService },
-        { provide: ErrorsService, useValue: { i18nError() { } } },
-        { provide: WindowRef, useValue: {
-          nativeWindow: {
-            location: {
-              href: environment.siteUrl
+        {
+          provide: MessageService, useValue: {
+            createPhoneNumberMessage() {
+            },
+            addPhoneNumberRequestMessage() {
             }
           }
-        }},
+        },
+        { provide: TrackingService, useClass: MockTrackingService },
+        {
+          provide: ErrorsService, useValue: {
+            i18nError() {
+            }
+          }
+        },
+        {
+          provide: WindowRef, useValue: {
+            nativeWindow: {
+              location: {
+                href: environment.siteUrl
+              }
+            }
+          }
+        },
       ],
-      declarations: [ SendPhoneComponent ],
+      declarations: [SendPhoneComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -77,7 +89,10 @@ describe('SendPhoneComponent', () => {
 
     it('should set focus after 1 second', fakeAsync(() => {
       component.phoneField = {
-        nativeElement: { focus() {} }
+        nativeElement: {
+          focus() {
+          }
+        }
       };
       spyOn(component.phoneField.nativeElement, 'focus');
 
@@ -299,7 +314,7 @@ describe('SendPhoneComponent', () => {
       });
     });
 
-    describe('when required is true', () => {
+    describe('when required is true in archive chat', () => {
       beforeEach(() => {
         component.required = true;
         component.conversation = MOCK_CONVERSATION();
@@ -319,7 +334,31 @@ describe('SendPhoneComponent', () => {
       it('should redirect to the item detail page', () => {
         component.dismiss();
 
-        expect(windowRef.nativeWindow.location.href).toEqual(environment.siteUrl + 'item/' + component.conversation.item.webSlug);
+        expect(windowRef.nativeWindow.location.href).toEqual(`${environment.siteUrl}item/${component.conversation.item['webSlug']}`);
+      });
+    });
+
+    describe('when required is true in projection chat', () => {
+      beforeEach(() => {
+        component.required = true;
+        component.conversation = MOCK_INBOX_CONVERSATION;
+        component.conversation.item['itemUrl'] = 'URL to Item';
+        fixture.detectChanges();
+      });
+
+      it('should call trackingService.track with ITEM_SHAREPHONE_HIDEFORM', () => {
+        spyOn(trackingService, 'track');
+
+        component.dismiss();
+
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_HIDEFORM,
+          { item_id: component.conversation.item.id });
+      });
+
+      it('should redirect to the item detail page', () => {
+        component.dismiss();
+
+        expect(windowRef.nativeWindow.location.href).toEqual(component.conversation.item['itemUrl']);
       });
     });
   });

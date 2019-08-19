@@ -82,7 +82,7 @@ describe('Component: Input', () => {
     const EVENT = new Event('event');
     const conversation: Conversation = MOCK_CONVERSATION();
     const TEXT = 'text';
-    let textarea: HTMLInputElement;
+    let textarea: HTMLTextAreaElement;
 
     beforeEach(() => {
       spyOn(EVENT, 'preventDefault');

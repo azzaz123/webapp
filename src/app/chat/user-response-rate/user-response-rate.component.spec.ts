@@ -19,7 +19,7 @@ describe('UserResponseRateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UserResponseRateComponent);
     component = fixture.componentInstance;
-    component.user = MOCK_USER;
+    component.responseRate = MOCK_USER.responseRate;
     fixture.detectChanges();
   });
 

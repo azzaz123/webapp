@@ -13,11 +13,15 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 import { ActivatedRoute } from '@angular/router';
 import { InboxConversationService } from '../../core/inbox/inbox-conversation.service';
+import { ConversationService } from '../../core/conversation/conversation.service';
 
 class MockUserService {
   public isProfessional() {
     return Observable.of(true);
   }
+}
+
+class ConversationServiceMock {
 }
 
 describe('Component: ChatWithInboxComponent', () => {
@@ -34,6 +38,7 @@ describe('Component: ChatWithInboxComponent', () => {
       imports: [NgbModule.forRoot(), FormsModule, NgxPermissionsModule],
       providers: [
         ChatWithInboxComponent,
+        { provide: ConversationService, useClass: ConversationServiceMock },
         { provide: UserService, useClass: MockUserService },
         { provide: HttpService, useValue: {} },
         {
