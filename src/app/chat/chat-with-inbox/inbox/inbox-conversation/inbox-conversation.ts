@@ -12,6 +12,7 @@ export class InboxConversation {
         private _nextPageToken: string,
         private _messages: InboxMessage[],
         private _phoneShared: boolean,
+        private _phone_number: string,
         private _unreadCounter: number = 0,
         private _lastMessage?: InboxMessage) {
     }
@@ -42,6 +43,10 @@ export class InboxConversation {
 
     get item(): InboxItem {
         return this._item;
+    }
+
+    set item(inboxItem: InboxItem) {
+      this._item = inboxItem;
     }
 
     set lastMessage(lastMessage: InboxMessage) {
@@ -76,6 +81,14 @@ export class InboxConversation {
         return this._unreadCounter;
     }
 
+    set phoneNumber(value: string) {
+      this._phone_number = value;
+    }
+
+    get phoneNumber(): string {
+      return this._phone_number;
+    }
+
     set phoneShared(value: boolean) {
         this._phoneShared = value;
     }
@@ -91,7 +104,7 @@ export class InboxConversation {
         const lastMessage = message;
         const dateModified = lastMessage.date;
         const hash = message.thread;
-        return new InboxConversation(hash, dateModified, user, item, null, messages, false, messages.length, lastMessage);
+        return new InboxConversation(hash, dateModified, user, item, null, messages, false, null, messages.length, lastMessage);
     }
 
     static fromJSON(json: any, withSelfId: string): InboxConversation {
@@ -101,7 +114,7 @@ export class InboxConversation {
         const nextPageToken = json.messages.next_from || null;
         const lastMessage = messages[0];
         const dateModified = lastMessage ? lastMessage.date : null;
-        return new InboxConversation(json.hash, dateModified, user, item, nextPageToken, messages, json.phone_shared,
+        return new InboxConversation(json.hash, dateModified, user, item, nextPageToken, messages, json.phone_shared, json.phone_number,
             json.unread_messages, lastMessage);
     }
 
@@ -142,6 +155,7 @@ export class StoredInboxConversation {
       private user: InboxUser,
       private item: InboxItem,
       private phoneShared: boolean,
+      private phoneNumber: string,
       private unreadCounter: number = 0,
       private nextPageToken: string,
       private lastMessage?: InboxMessage) {}

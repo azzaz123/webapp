@@ -87,17 +87,6 @@ describe('BuyWallacoinsModalComponent', () => {
     eventService = TestBed.get(EventService);
   });
 
-  describe('ngOnInit', () => {
-    it('should call addNewCard when Stripe and when no saved cards', () => {
-      spyOn(component, 'addNewCard');
-
-      component.isStripe = true;
-      component.ngOnInit();
-
-      expect(component.addNewCard).toHaveBeenCalledTimes(1);
-    });
-  });
-
   describe('hasCard', () => {
     it('should set true if card exists', () => {
       component.hasCard(true);

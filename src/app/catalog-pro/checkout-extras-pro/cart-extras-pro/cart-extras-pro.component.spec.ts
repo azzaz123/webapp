@@ -178,6 +178,22 @@ describe('CartExtrasProComponent', () => {
 
       expect(component.isStripeCard).toEqual(true);
     });
+
+    it('should not call addNewCard if stripe card exists', () => {
+      spyOn(component, 'addNewCard').and.callThrough();
+
+      component.hasStripeCard(true);
+
+      expect(component.addNewCard).not.toHaveBeenCalled();
+    });
+
+    it('should call addNewCard if stripe card does not exist', () => {
+      spyOn(component, 'addNewCard').and.callThrough();
+
+      component.hasStripeCard(false);
+
+      expect(component.addNewCard).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('addNewCard', () => {

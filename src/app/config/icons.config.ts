@@ -277,4 +277,8 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('pro-seal', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/pro-seal.svg'));
   matIconRegistry.addSvgIcon('robot', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/robot.svg'));
   matIconRegistry.addSvgIcon('scroll-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/scroll-arrow.svg'));
+  matIconRegistry.addSvgIcon('blocked-error', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/blocked-error.svg'));
+  matIconRegistry.addSvgIcon('not-available-error', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/not-available-error.svg'));
+  matIconRegistry.addSvgIcon('glass_icon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/glass_icon.svg'));
+  matIconRegistry.addSvgIcon('padlock', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/padlock.svg'));
 }

@@ -380,8 +380,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
     }
   }
 
-  public selectBrandOrModel(value, type: string) {
-    if (value) {
+  public selectBrandOrModel(value = null, type: string) {
+    if (value !== null) {
       if (typeof value === 'string') {
         if (type === 'brand') {
           this.setBrand(value);

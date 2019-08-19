@@ -20,8 +20,6 @@ export class InboxConversationComponent {
     sameElse: 'D MMM.'
   };
 
-  constructor() { }
-
   public dateIsThisYear(): boolean {
     if (this.conversation && this.conversation.modifiedDate) {
       return this.conversation.modifiedDate.getFullYear() === new Date().getFullYear();

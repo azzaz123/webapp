@@ -221,7 +221,7 @@ describe('TopbarComponent', () => {
       component.submitForm();
 
       expect(windowRef.nativeWindow.location.href)
-        .toEqual(environment.siteUrl.replace('es', 'www') + 'search?catIds=15245' + '&kws=');
+        .toEqual(environment.siteUrl.replace('es', 'www') + 'search?category_ids=15245' + '&keywords=');
     });
 
     it('should submit the search form for cars', () => {
@@ -230,7 +230,7 @@ describe('TopbarComponent', () => {
       component.submitForm();
 
       expect(windowRef.nativeWindow.location.href)
-        .toEqual(environment.siteUrl.replace('es', 'www') + 'search?catIds=100' + '&kws=');
+        .toEqual(environment.siteUrl.replace('es', 'www') + 'search?category_ids=100' + '&keywords=');
     });
   });
 

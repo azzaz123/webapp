@@ -341,11 +341,12 @@ describe('ChatWithArchiveComponent', () => {
       component.reportUserAction();
       tick();
 
-      expect(userService.reportUser).toHaveBeenCalledWith(component.currentConversation.user.id,
-        component.currentConversation.item.legacyId,
-        'Report User Reason',
+      expect(userService.reportUser).toHaveBeenCalledWith(
+        component.currentConversation.user.id,
+        component.currentConversation.item.id,
+        component.currentConversation.id,
         1,
-        component.currentConversation.legacyId);
+        'Report User Reason');
       expect(toastr.success).toHaveBeenCalledWith('The user has been reported correctly');
     }));
 
