@@ -32,7 +32,7 @@
           <div class="AddNewSubscription__payment-response-message" *ngIf="paymentError">
             <p>The payment failed. Please enter another credit card.</p>
           </div>
-          <tsl-stripe-card-element *ngIf="showCard" [type]="'subscription'" [listingLimit]="listingLimit" [action]="action" (onStripeCardCreate)="addSubscription($event)"
+          <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [type]="'subscription'" [listingLimit]="listingLimit" [action]="action" (onStripeCardCreate)="addSubscription($event)"
           (stripeCard)="setCardInfo($event)"></tsl-stripe-card-element>
         </div>
         <tsl-button [hidden]="!savedCard"
