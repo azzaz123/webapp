@@ -851,6 +851,7 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
   brand: 'brand',
   year: 'year',
   version: 'version',
+  financed_price: 123.45,
   num_seats: 4,
   num_doors: 3,
   body_type: 'body_type',

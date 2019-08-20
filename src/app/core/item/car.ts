@@ -31,6 +31,7 @@ export class Car extends Item {
               private _numSeats?: number,
               private _condition?: string,
               private _version?: string,
+              private _financedPrice?: number,
               publishedDate?: number,
               image?: any) {
     super(
@@ -121,6 +122,10 @@ export class Car extends Item {
 
   get version(): string {
     return this._version;
+  }
+
+  get financedPrice(): number {
+    return this._financedPrice;
   }
 }
 
