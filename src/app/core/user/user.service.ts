@@ -203,7 +203,7 @@ export class UserService extends ResourceService {
 
   public getUserCover(): Observable<Image> {
     return this.http.get(this.API_URL + '/me/cover-image')
-      .map((r: Response) => r.json());
+      .map((r: Response) => r.text() ? r.json() : {});
   }
 
   public updateProInfo(data: UserProData): Observable<any> {
