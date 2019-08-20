@@ -12,6 +12,22 @@
 .wallapop-search-input {
   position: relative;
   width: 100%;
+  mat-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px;
+    z-index: 1;
+    width: 28px;
+    height: 28px;
+    /deep/ {
+      svg {
+        path {
+          fill: $blue-grey-3;
+        }
+      }
+    }
+  }
   input {
     width: 100%;
     height: 42px;
@@ -30,22 +46,28 @@
     white-space: nowrap;
     outline: none;
     &::placeholder {
-      color: $blue-grey-1;
+      color: $blue-grey-3;
     }
     &:focus {
       border: solid 1px $walla-main;
       background-color: $white;
+      + mat-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 10px;
+        z-index: 1;
+        width: 28px;
+        height: 28px;
+        /deep/ {
+          svg {
+            path {
+              fill: $walla-main;
+            }
+          }
+        }
+      }
     }
-  }
-  &:before {
-    content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNyI+PHBhdGggZmlsbD0iIzI1MzIzOCIgZD0iTTExLjcyIDEyLjQ1NmEuOTY1Ljk2NSAwIDAgMSAxLjM2IDBsMi4yMjYgMi4yMWEuOTU1Ljk1NSAwIDAgMSAwIDEuMzU2Ljk2NS45NjUgMCAwIDEtMS4zNTkgMGwtMi4yMjctMi4yMWEuOTU1Ljk1NSAwIDAgMSAwLTEuMzU2em0tLjIzLTEuMzI3YTYuNDE4IDYuNDE4IDAgMCAxLTkuMDMgMCA2LjMxIDYuMzEgMCAwIDEgMC04Ljk3IDYuNDE4IDYuNDE4IDAgMCAxIDkuMDMgMCA2LjMxIDYuMzEgMCAwIDEgMCA4Ljk3em0tMS4xNDgtMS4xNGE0LjcwNiA0LjcwNiAwIDAgMCAwLTYuNjkgNC43ODUgNC43ODUgMCAwIDAtNi43MzMgMCA0LjcwNiA0LjcwNiAwIDAgMCAwIDYuNjkgNC43ODUgNC43ODUgMCAwIDAgNi43MzMgMHoiLz48L3N2Zz4=);
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 13px;
-    width: 16px;
-    height: 16px;
-    z-index: 1;
   }
 }
 

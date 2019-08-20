@@ -36,12 +36,6 @@ export class CreditCardModalComponent implements OnInit {
         this.eventService.subscribe('paymentResponse', (response) => {
           this.managePaymentResponse(response);
         });
-
-        this.stripeService.getCards().subscribe(cards => {
-          if (cards.length === 0) {
-            this.addNewCard();
-          }
-        });
       }
     });
   }
@@ -93,6 +87,9 @@ export class CreditCardModalComponent implements OnInit {
 
   public hasStripeCard(hasCard: boolean) {
     this.isStripeCard = hasCard;
+    if (!hasCard) {
+      this.addNewCard();
+    }
   }
 
 }

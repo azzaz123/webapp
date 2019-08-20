@@ -555,10 +555,8 @@ describe('Service: Item', () => {
 
   describe('update', () => {
 
-    const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
-
     describe('consumer good', () => {
-
+      const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
       beforeEach(() => {
         const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEM_DATA_V3)});
         spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
@@ -584,7 +582,7 @@ describe('Service: Item', () => {
     });
 
     describe('car', () => {
-
+      const options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER, 'X-DeviceOS': '0', 'Accept': 'application/vnd.edit-car-v2+json'})});
       beforeEach(() => {
         const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_DATA)});
         spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
@@ -610,7 +608,7 @@ describe('Service: Item', () => {
     });
 
     describe('real estate', () => {
-
+      const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
       beforeEach(() => {
         const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(REALESTATE_DATA)});
         spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));

@@ -49,12 +49,6 @@ export class BuyProductModalComponent implements OnInit {
         this.eventService.subscribe('paymentResponse', (response) => {
           this.managePaymentResponse(response);
         });
-  
-        this.stripeService.getCards().subscribe(cards => {
-          if (cards.length === 0) {
-            this.addNewCard();
-          }
-        });
       }
     });
     this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
@@ -99,6 +93,9 @@ export class BuyProductModalComponent implements OnInit {
 
   public hasStripeCard(hasCard: boolean) {
     this.isStripeCard = hasCard;
+    if (!hasCard) {
+      this.addNewCard();
+    }
   }
 
   public checkout() {

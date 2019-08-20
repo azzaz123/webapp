@@ -328,7 +328,7 @@ export const USER_PRO_DATA: UserProData = {
   description: 'description',
   opening_hours: 'opening_hours',
   phone_number: '612345678',
-  link: 'link'
+  link: 'wallapop.com'
 };
 
 export const USER_PRO_INFO_NOTIFICATIONS: UserProDataNotifications = {

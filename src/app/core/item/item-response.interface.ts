@@ -97,6 +97,7 @@ export interface CarContent extends ItemContent {
   num_seats?: number;
   condition?: string;
   version?: string;
+  financed_price?: number;
 }
 
 export interface RealestateContent extends ItemContent {
@@ -201,6 +202,7 @@ export interface CarUploadForm extends ItemUploadForm {
   brand: string;
   year: string;
   version: string;
+  financed_price: number;
   num_seats: number;
   num_doors: number;
   body_type: string;

@@ -11,10 +11,19 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { EventService } from '../../../core/event/event.service';
-import { ConversationService } from '../../../core/inbox/conversation.service';
+import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
 import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { UserService } from '../../../core/user/user.service';
 import { Observable } from 'rxjs';
+import { AdService } from '../../../core/ad/ad.service';
+
+class AdServiceMock {
+  startAdsRefresh() {
+  }
+
+  stopAdsRefresh() {
+  }
+}
 
 describe('Component: InboxComponent', () => {
   let component: InboxComponent;
@@ -22,7 +31,8 @@ describe('Component: InboxComponent', () => {
   let http: HttpService;
   let eventService: EventService;
   let userService: UserService;
-  let conversationService: ConversationService;
+  let conversationService: InboxConversationService;
+  let addService: AdService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,6 +45,7 @@ describe('Component: InboxComponent', () => {
       providers: [
         EventService,
         ...TEST_HTTP_PROVIDERS,
+        { provide: AdService, useClass: AdServiceMock },
         {
           provide: InboxService, useValue: {
             loadMorePages() {
@@ -55,7 +66,7 @@ describe('Component: InboxComponent', () => {
           }
         },
         {
-          provide: ConversationService, useValue: {
+          provide: InboxConversationService, useValue: {
             openConversation() {
             }
           }
@@ -68,7 +79,8 @@ describe('Component: InboxComponent', () => {
     inboxService = TestBed.get(InboxService);
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);
-    conversationService = TestBed.get(ConversationService);
+    addService = TestBed.get(AdService);
+    conversationService = TestBed.get(InboxConversationService);
   });
 
   describe('ngOnInit', () => {
@@ -257,20 +269,24 @@ describe('Component: InboxComponent', () => {
 
     it('should should call conversationService.openConversation with the new conversation', () => {
       spyOn(conversationService, 'openConversation').and.callThrough();
+      spyOn(addService, 'startAdsRefresh');
 
       component.setCurrentConversation(newlySelectedConversation);
 
       expect(conversationService.openConversation).toHaveBeenCalledWith(newlySelectedConversation);
+      expect(addService.startAdsRefresh).toHaveBeenCalled();
     });
   });
 
   it('should set conversation.active to FALSE if a conversation exists when ngOnDestroy is called', () => {
     const previouslySelectedConversation = CREATE_MOCK_INBOX_CONVERSATION();
     component.setCurrentConversation(previouslySelectedConversation);
+    spyOn(addService, 'stopAdsRefresh');
 
     component.ngOnDestroy();
 
     expect(previouslySelectedConversation.active).toBe(false);
+    expect(addService.stopAdsRefresh).toHaveBeenCalled();
   });
 
   describe('loadMore', () => {

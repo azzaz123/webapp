@@ -1,10 +1,11 @@
 /* tslint:disable:no-unused-variable */
 
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { UserService } from './user.service';
-import { HttpService } from '../http/http.service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
+import { UserService } from './user.service';
+import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { Item } from '../item/item';
@@ -52,6 +53,7 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
 import { SplitTestService } from '../tracking/split-test.service';
+import { HttpModuleNew } from '../http/http.module.new';
 
 describe('Service: User', () => {
 
@@ -66,6 +68,8 @@ describe('Service: User', () => {
   let permissionService: NgxPermissionsService;
   let featureflagService: FeatureflagService;
   let splitTestService: SplitTestService;
+  let httpTestingController: HttpTestingController;
+
   const mockMotorPlan = {
     type: 'motor_plan_pro',
     subtype: 'sub_premium'
@@ -73,6 +77,10 @@ describe('Service: User', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        HttpModuleNew
+      ],
       providers: [
         ...TEST_HTTP_PROVIDERS,
         EventService,
@@ -127,6 +135,7 @@ describe('Service: User', () => {
     permissionService = TestBed.get(NgxPermissionsService);
     featureflagService = TestBed.get(FeatureflagService);
     splitTestService = TestBed.get(SplitTestService);
+    httpTestingController = TestBed.get(HttpTestingController);
   });
 
   it('should create an instance', () => {
@@ -303,7 +312,6 @@ describe('Service: User', () => {
     });
 
   });
-
 
   describe('login', () => {
     let response: LoginResponse;
@@ -803,4 +811,22 @@ describe('Service: User', () => {
     });
   });
 
+  describe('reportUser', () => {
+    it('should check parameters of request to report user', () => {
+      const CONVERSATIONS_HASH = 'vdqjwyk1kzon';
+      const ITEM_HASH = '9ke65g542jox';
+      const REASON = 5;
+      const COMMENT = 'bla bla bla';
+      service.reportUser(USER_ID, ITEM_HASH, CONVERSATIONS_HASH, REASON, COMMENT).subscribe();
+
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/report/user/${USER_ID}`);
+      expect(req.request.method).toEqual('POST');
+      expect(req.request.body).toEqual({
+        itemHashId: ITEM_HASH,
+        conversationHash: CONVERSATIONS_HASH,
+        comments: COMMENT,
+        reason: REASON
+      });
+    });
+  });
 });

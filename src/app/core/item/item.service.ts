@@ -200,6 +200,7 @@ export class ItemService extends ResourceService {
       content.num_seats,
       content.condition,
       content.version,
+      content.financed_price,
       content.publish_date,
       content.image
     );
@@ -472,16 +473,21 @@ export class ItemService extends ResourceService {
 
   public update(item: any, itemType: string): Observable<any> {
     let url: string = this.API_URL + '/';
+    let options = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
+    
     if (itemType === ITEM_TYPES.CARS) {
-      url += 'cars/'
+      url += 'cars/';
+      options.headers.append('X-PaymentProvider', PAYMENT_PROVIDER);
+      options.headers.append('Accept', 'application/vnd.edit-car-v2+json');
     } else if (itemType === ITEM_TYPES.REAL_ESTATE) {
-      url += 'real_estate/'
+      url += 'real_estate/';
     }
-    const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
+
     return this.http.put(url + item.id, item, options)
       .map((r: Response) => r.json())
       .do(() => this.eventService.emit(EventService.ITEM_UPDATED, item))
   }
+  
   public updateRealEstateLocation(itemId: string, location: ItemLocation): Observable<any> {
     return this.http.put(this.API_URL + '/real_estate/' + itemId + '/location', location);
   }

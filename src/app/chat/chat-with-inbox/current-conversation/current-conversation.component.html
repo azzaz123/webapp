@@ -1,88 +1,124 @@
 <div id="empty-state" *ngIf="!currentConversation || loadingError">
-    <div class="empty" *ngIf="emptyInbox && !loadingError">
-        <div>
-            <mat-icon svgIcon="empty-inbox-conversation"></mat-icon>
-        </div>
+  <div class="empty" *ngIf="emptyInbox && !loadingError">
+    <div>
+      <mat-icon svgIcon="empty-inbox-conversation"></mat-icon>
     </div>
-    <div class="content" *ngIf="!emptyInbox || loadingError">
-        <mat-icon svgIcon="empty-state" class="image"></mat-icon>
-        <p *ngIf="!emptyInbox && !connectionError && !loadingError" i18n>Choose a conversation<br />
-            from the list on the left</p>
-        <p *ngIf="emptyInbox && !connectionError && !loadingError" i18n>There are no messages</p>
-        <p *ngIf="connectionError || loadingError" i18n>Service not available at the moment.<br />
-            Try again later.</p>
-    </div>
+  </div>
+  <div class="content" *ngIf="!emptyInbox || loadingError">
+    <mat-icon svgIcon="empty-state" class="image"></mat-icon>
+    <p *ngIf="!emptyInbox && !connectionError && !loadingError" i18n>Choose a conversation<br/>
+      from the list on the left</p>
+    <p *ngIf="emptyInbox && !connectionError && !loadingError" i18n>There are no messages</p>
+    <p *ngIf="connectionError || loadingError" i18n>Service not available at the moment.<br/>
+      Try again later.</p>
+  </div>
 </div>
 <div *ngIf="currentConversation && !loadingError">
-    <div id="messaging">
-        <div id="top-bar">
-            <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
-                target="_blank" class="user-avatar">
-                <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
-            </a>
-            <tsl-user-avatar *ngIf="!currentConversation?.user.profileUrl" [user]="this.currentConversation.user" size="40">
-            </tsl-user-avatar>
-            <div class="conversation-header-user-info">
-                <h5>{{currentConversation?.user.microName}}</h5>
-                <!-- <div *ngxPermissionsOnly="['isNormal']">
-                  <tsl-stars *ngIf="currentConversation.user.scoringStars > -1"
-                      [stars]="currentConversation.user.scoringStars" [normalized]="false"></tsl-stars>
-              </div> -->
-            </div>
-            <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
-                <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
-                <div ngbDropdownMenu>
-                    <button class="dropdown-item" (click)="archiveConversation()" i18n
-                      [hidden]="currentConversationisArchived">Archive conversation</button>
-                      <button class="dropdown-item" (click)="unarchiveConversation()" i18n
-                      [hidden]="!currentConversationisArchived">Unarchive conversation</button>
-                    <button class="dropdown-item" (click)="reportListingAction()"
-                      *ngIf="!itemIsMine && conversationChattable" i18n>Report this Listing</button>
-                    <button *ngIf="conversationChattable" class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
-                    <button [hidden]="!currentConversation.user.id || currentConversation.user.blocked" class="dropdown-item warn"
-                      (click)="blockUserAction()" i18n>Block this User</button>
-                    <button [hidden]="!currentConversation.user.id || !currentConversation.user.blocked" class="dropdown-item warn"
-                      (click)="unblockUserAction()" i18n>Unblock this User</button>
-                </div>
-            </div>
+  <div id="messaging">
+    <div id="top-bar" [ngClass]="{'faded': !currentConversation.user.available}">
+      <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
+         target="_blank" class="user-avatar">
+        <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
+      </a>
+      <tsl-user-avatar *ngIf="!currentConversation?.user.profileUrl" [user]="this.currentConversation.user" size="40">
+      </tsl-user-avatar>
+      <div class="conversation-header-user-info">
+        <h5>{{currentConversation?.user.microName}}</h5>
+      </div>
+      <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
+        <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
+        <div ngbDropdownMenu>
+          <button class="dropdown-item" (click)="archiveConversation()" i18n
+                  [hidden]="currentConversationisArchived">Archive conversation
+          </button>
+          <button class="dropdown-item" (click)="unarchiveConversation()" i18n
+                  [hidden]="!currentConversationisArchived">Unarchive conversation
+          </button>
+          <button class="dropdown-item" (click)="reportListingAction()"
+                  *ngIf="!itemIsMine && !currentConversation.item.notAvailable" i18n>Report this Listing
+          </button>
+          <button *ngIf="currentConversation.user.available"
+                  class="dropdown-item" (click)="reportUserAction()" i18n>Report this User
+          </button>
+          <button [hidden]="!currentConversation.user.id || currentConversation.user.blocked" class="dropdown-item warn"
+                  (click)="blockUserAction()" i18n>Block this User
+          </button>
+          <button [hidden]="!currentConversation.user.id || !currentConversation.user.blocked"
+                  class="dropdown-item warn"
+                  (click)="unblockUserAction()" i18n>Unblock this User
+          </button>
         </div>
-
-        <div class="messages-panel-container" #scrollElement [scrollTop]="scrollElement.scrollHeight - scrollHeight" (scroll)="onScrollMessages($event)">
-            <div class="message-panel-empty"></div>
-
-            <div *ngIf="hasMoreMessages()" class="more-messages-loader">
-                <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
-                      i18n>Load more..</span>
-                <span *ngIf="isLoadingMoreMessages"><mat-icon svgIcon="spinner" class="spinner"></mat-icon></span>
-            </div>
-
-            <div class="messages-info-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}">
-                <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-container">
-                    <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
-                        <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
-                        <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
-                    </div>
-
-                    <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message"></tsl-text-message>
-                    <tsl-third-voice-message *ngIf="isThirdVoiceMessage(message.type)" [message]="message" [user]="currentConversation.user"
-                                             [item]="currentConversation.item"></tsl-third-voice-message>
-                </div>
-            </div>
-        </div>
-
-        <div class="scroll-message-container">
-            <tsl-scrolling-message [isVisible]="!isEndOfConversation" [noMessages]="currentConversation.unreadCounter" (clickScroll)="scrollToLastMessage()"></tsl-scrolling-message>
-        </div>
-
-        <div class="send-message-container">
-          <tsl-input [currentConversation]="currentConversation"></tsl-input>
-        </div>
+      </div>
     </div>
 
+    <div class="messages-panel-container" #scrollElement [scrollTop]="scrollElement.scrollHeight - scrollHeight"
+         (scroll)="onScrollMessages($event)">
+      <div class="empty-container"></div>
 
-    <div id="conversation-meta">
-            <tsl-inbox-user-detail [user]="currentConversation.user"></tsl-inbox-user-detail>
-            <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
-            <tsl-ad slotid="div-gpt-ad-1508490196308-0"></tsl-ad>
+      <div class="message-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}">
+        <div class="notification-container">
+          <div *ngIf="currentConversation.user.blocked" class="date-marker date-marker-error">
+            <mat-icon svgIcon="blocked-error"></mat-icon>
+            <span i18n>You have blocked this user. Unblock it to continue chatting</span>
+          </div>
+
+          <div *ngIf="!currentConversation.user.blocked && !currentConversation.user.available"
+               class="date-marker date-marker-error">
+            <mat-icon svgIcon="not-available-error"></mat-icon>
+            <span i18n>This user is not available</span>
+          </div>
+
+          <div
+            *ngIf="!currentConversation.user.blocked && currentConversation.user.available && currentConversation.item.notAvailable"
+            class="date-marker date-marker-error">
+            <mat-icon svgIcon="not-available-error"></mat-icon>
+            <span i18n>This product is not available</span>
+          </div>
+        </div>
+
+        <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-wrapper"
+             [ngClass]="{'message-owner': message.fromSelf, 'not-message-owner': !message.fromSelf}">
+          <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
+            <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
+            <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
+          </div>
+
+          <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message"></tsl-text-message>
+          <tsl-third-voice-message *ngIf="isThirdVoiceMessage(message.type)" [message]="message"
+                                   [user]="currentConversation.user"
+                                   [item]="currentConversation.item"></tsl-third-voice-message>
+        </div>
+
+        <div class="notification-container">
+          <div class="date-marker date-marker-warning">
+            <mat-icon svgIcon="padlock" class="padlock"></mat-icon>
+            <span i18n>Remember not to share private data for security reasons</span>
+          </div>
+        </div>
+
+        <div *ngIf="hasMoreMessages()" class="more-messages-loader">
+          <a class="load-more">
+                            <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
+                                  i18n>Load more</span>
+            <mat-icon *ngIf="isLoadingMoreMessages" svgIcon="spinner" class="spinner"></mat-icon>
+          </a>
+        </div>
+      </div>
     </div>
+
+    <div class="scroll-message-container">
+      <tsl-scrolling-message [isVisible]="!isEndOfConversation" [noMessages]="currentConversation.unreadCounter"
+                             (clickScroll)="scrollToLastMessage()"></tsl-scrolling-message>
+    </div>
+
+    <div class="send-message-container">
+      <tsl-input [currentConversation]="currentConversation"></tsl-input>
+    </div>
+  </div>
+
+  <div id="conversation-meta">
+    <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item" [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
+    <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
+    <tsl-ad slotid="div-gpt-ad-1508490196308-0"></tsl-ad>
+  </div>
 </div>

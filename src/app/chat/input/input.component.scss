@@ -24,10 +24,7 @@ form {
       color: $blue-grey-3;
     }
     &[disabled] {
-      opacity: .5;
-      &::-webkit-input-placeholder {
-        color: $negative-main;
-      }
+      background: white;
     }
     &.selected {
       border: 1px solid $walla-main;
