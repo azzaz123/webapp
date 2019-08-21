@@ -37,42 +37,53 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-5">
         <div class="form-group">
-          <label for="year" i18n>Year</label>
-          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Number plate" class="form-control" formControlName="year" id="year" [options]="years"
-                     (selected)="getVersions($event.value)"></ng-select>
-          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Number plate" class="form-control" formControlName="year" id="year" />
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label for="price" i18n>Price</label>
+          <label for="price" i18n>Cash price</label>
           <input i18n-placeholder placeholder="With love..." type="number" class="form-control" formControlName="sale_price" id="price" min="0"
-                 [ngbPopover]="coachmarkPrice"
-                 max="999999999"/>
+                  [ngbPopover]="coachmarkPrice"
+                  max="999999999"/>
           <ng-template #coachmarkPrice>
             <div i18n>Tell us how much you want for it: we won't tell anyone ;)</div>
           </ng-template>
         </div>
       </div>
+      <div class="col-sm-5">
+          <div class="form-group">
+            <label for="price" i18n>Financed price (optional)</label>
+            <input i18n-placeholder placeholder="Final price when financed" type="number" class="form-control" formControlName="financed_price" id="financed_price" min="0"
+                    [ngbPopover]="coachmarkFinancedPrice"
+                    max="999999999"/>
+            <ng-template #coachmarkFinancedPrice>
+              <div i18n>Optional field. This is the financed price.</div>
+            </ng-template>
+          </div>
+        </div>
       <div class="col-sm-2">
         <div class="form-group">
           <label for="currency" i18n>Currency</label>
           <ng-select class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
-                     [ngbPopover]="coachmarkPrice" #p3="ngbPopover" triggers="manual" (opened)="p3.open()" (closed)="p3.close()"
-                     noFilter="10"></ng-select>
+                      [ngbPopover]="coachmarkPrice" #p3="ngbPopover" triggers="manual" (opened)="p3.open()" (closed)="p3.close()"
+                      noFilter="10"></ng-select>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="year" i18n>Year</label>
+          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Number plate" class="form-control" formControlName="year" id="year" [options]="years"
+                      (selected)="getVersions($event.value)"></ng-select>
+          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Number plate" class="form-control" formControlName="year" id="year" />
+        </div>
+      </div>
+      <div class="col-sm-8">
         <div class="form-group last">
           <label for="headline" i18n>Title</label>
           <span class="chars-counter">{{uploadForm.value?.title?.length}}/50</span>
           <input i18n-placeholder placeholder="This is what you will see in the ad" type="text"
-                 class="form-control" formControlName="title" id="headline" maxlength="50"
-                 [ngbPopover]="coachmarkTitle" />
+                  class="form-control" formControlName="title" id="headline" maxlength="50"
+                  [ngbPopover]="coachmarkTitle" />
           <ng-template #coachmarkTitle>
             <div i18n>Go for it! The more you say the better chance they have of finding of reaching you.</div>
           </ng-template>

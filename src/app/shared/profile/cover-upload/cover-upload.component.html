@@ -3,7 +3,7 @@
     <div class="col-4 title" i18n>Cover image:</div>
       <div class="col-1"></div>
       <div class="col-6">
-        <tsl-user-cover (click)="clickNotPro.emit()" [user]="user" [imageCoverUrl]="user?.coverImage?.urls_by_size.medium" size="80"></tsl-user-cover>
+        <tsl-user-cover (click)="clickNotPro.emit()" [user]="user" [imageCoverUrl]="user?.coverImage?.urls_by_size?.medium" size="80"></tsl-user-cover>
           <div class="upload-button" *ngIf="isPro">
             <label class="btn btn-upload" [ngClass]="{disabled: file?.progress?.status === 0 || file?.progress?.status === 1}">
               <input type="file" imageType="cover" tslFileSelect (uploadOutput)="onUploadOutput($event)" [uploadCoverInput]="uploadCoverInput" [options]="options" [disabled]="file?.progress?.status === 0 || file?.progress?.status === 1"

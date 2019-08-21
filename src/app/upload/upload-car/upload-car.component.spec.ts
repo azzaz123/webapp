@@ -145,6 +145,7 @@ describe('UploadCarComponent', () => {
           id: MOCK_CAR.id,
           title: MOCK_CAR.title,
           sale_price: MOCK_CAR.salePrice,
+          financed_price: MOCK_CAR.salePrice,
           currency_code: MOCK_CAR.currencyCode,
           storytelling: MOCK_CAR.description,
           sale_conditions: MOCK_CAR.saleConditions,
