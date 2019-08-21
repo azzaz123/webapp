@@ -36,6 +36,12 @@ tsl-spinner {
 .nav {
   margin-bottom: $spacing-ms;
   margin-top: -$spacing-s;
+
+  display: flex;
+
+  div {
+    margin-right: $spacing-ms;
+  }
 }
 
 .info {
@@ -77,9 +83,8 @@ tsl-spinner {
   }
   &.show {
     animation: fadeInFromNone 0.5s ease-in-out;
-  }
-  &:hover {
-    background: rgba($white, .7);
+    border: 1px solid $walla-main;
+    background: rgba($walla-main, .2);
   }
 }
 

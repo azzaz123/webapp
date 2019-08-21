@@ -1,11 +1,10 @@
-<div [ngClass]="{resized: isPro || itemService.selectedItems.length, pro: isPro}">
+<div class="resized">
   <div class="checkbox">
-    <button class="select" (click)="select(item)" [ngClass]="{selected: item.selected}" *ngIf="showCheckbox">
+    <button class="select" (click)="select(item)" [ngClass]="{selected: item.selected}">
       <mat-icon svgIcon="check"></mat-icon>
     </button>
   </div>
   <div class="item" [ngClass]="{expired: item.flags.expired, selected: item.selected, pending: item.flags.pending, sold: item.sold}">
-    <div class="selected-veil" (click)="select(item)"></div>
     <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="image"
        [ngClass]="{onHold: item.flags.onhold}">
         <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
@@ -17,8 +16,13 @@
     </a>
     <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="published"
        [ngClass]="{onHold: item.flags.onhold}" [hidden]="item.flags.onhold">
-      <div i18n>Publish Date</div>
+      <div i18n>Published</div>
       <div class="subtitle"> {{ item.publishedDate | amDateFormat: 'DD/MM/YYYY'}}</div>
+    </a>
+    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="published"
+       [ngClass]="{onHold: item.flags.onhold}" [hidden]="item.flags.onhold">
+      <div i18n>Modified</div>
+      <div class="subtitle"> {{ item.modifiedDate | amDateFormat: 'DD/MM/YYYY'}}</div>
     </a>
     <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="listing-fee"
        [ngClass]="{onHold: item.flags.onhold}">
@@ -31,21 +35,12 @@
     </span>
     <span class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">
-        <span [hidden]="item.sold || item.flags.onhold || item.flags.urgent">
-          <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate">
-            <mat-icon svgIcon="feature"></mat-icon>
-            <span i18n>Feature Product</span>
-          </tsl-button>
-        </span>
-        <button class="btn-featured" *ngIf="item.bumpExpiringDate">
-          {{item.bumpExpiringDate | amCountdown}}
-        </button>
         <span *ngIf="item.flags.onhold">
           <tsl-button className="btn-primary btn-publish" (click)="publishItem()">
             <span i18n>Publish</span>
           </tsl-button>
         </span>
-        <div class="main-actions">
+        <div class="main-actions" [hidden]="selectMode">
           <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)" [item]="item" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
             <mat-icon svgIcon="btn-sold"></mat-icon>
           </button>
@@ -54,9 +49,6 @@
           </button>
           <button class="btn-edit" [hidden]="item.flags.onhold" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold" ngbTooltip="Edit" i18n-ngbTooltip placement="top">
             <mat-icon svgIcon="btn-edit"></mat-icon>
-          </button>
-          <button class="btn-delete" (click)="deleteItem(item)" [hidden]="isPro" ngbTooltip="Delete" i18n-ngbTooltip placement="top">
-            <mat-icon svgIcon="btn-delete"></mat-icon>
           </button>
         </div>
       </span>

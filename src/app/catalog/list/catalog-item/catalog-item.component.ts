@@ -21,6 +21,7 @@ export class CatalogItemComponent implements OnInit {
   @Input() item: Item;
   @Input() isPro: boolean;
   @Input() paymentMethod: string;
+  @Input() selectMode = false;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
   @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
   public link: string;
@@ -53,7 +54,9 @@ export class CatalogItemComponent implements OnInit {
   public reserve(item: Item) {
     if (!item.reserved) {
       this.itemService.selectedAction = 'reserve';
-      this.select(item);
+      this.itemService.reserveItem(item.id, true).subscribe(() => {
+        item.reserved = true;
+      });
     } else {
       this.itemService.reserveItem(item.id, false).subscribe(() => {
         item.reserved = false;

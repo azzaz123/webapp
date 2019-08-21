@@ -61,19 +61,30 @@
     </div>
 
     <nav class="nav filters-nav">
-      <a (click)="filterByStatus('cars')" *ngIf="hasMotorPlan" [ngClass]="{active: selectedStatus === 'cars'}" class="nav-link"><span i18n>Cars</span> ({{totalCars}}/{{carsLimit}})</a>
-      <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Selling</a>
-      <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
+      <div>
+        <tsl-search-input (term)="search($event)"></tsl-search-input>
+      </div>
+      <div>
+        <a (click)="filterByStatus('cars')" *ngIf="hasMotorPlan" [ngClass]="{active: selectedStatus === 'cars'}" class="nav-link"><span i18n>Cars</span> ({{totalCars}}/{{carsLimit}})</a>
+      </div>
+      <div>
+        <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Selling</a>
+      </div>
+      <div>
+        <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
+      </div>
     </nav>
 
     <div>
+
       <a id="total-selected" class="filtered" [hidden]="itemService.selectedItems.length === 0" [ngClass]="{'show': itemService.selectedItems.length}" (click)="deselect()">
         <ng-container [ngPlural]="itemService.selectedItems.length">
           <ng-template ngPluralCase="=1"><ng-container i18n>1 item selected</ng-container></ng-template>
           <ng-template ngPluralCase="other"><ng-container i18n>{{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected</ng-container></ng-template>
         </ng-container>
       </a>
-      <span class="bulk-actions" [ngClass]="{disabled: !itemService.selectedItems.length}"  *ngIf="selectedStatus === 'cars'">
+
+      <span class="bulk-actions" [ngClass]="{disabled: !itemService.selectedItems.length}">
         <button class="btn-delete dark" (click)="delete()" [disabled]="!itemService.selectedItems.length">
           <mat-icon svgIcon="delete"></mat-icon>
           <span i18n>Delete</span>
@@ -83,30 +94,31 @@
         <button class="btn-deactivate dark" (click)="deactivate()" *ngIf="userCanDeactivate"
                 [disabled]="!itemService.selectedItems.length || !canDeactivate" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button>
       </span>
+
+      <tsl-button (click)="onClickFeature()">Feature</tsl-button>
     </div>
+
     <div class="row items">
       <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
         <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
       </div>
+
       <tsl-catalog-item 
         *ngFor="let item of items"
         class="col-md-12" 
         [item]="item"
         [isPro]="selectedStatus === 'cars'"
+        [selectMode]="selectMode"
         [paymentMethod]="isStripe ? 'STRIPE' : 'SABADELL'"
         (itemChange)="itemChanged($event)"
         (purchaseListingFee)="purchaseListingFee($event)"
       >
       </tsl-catalog-item>
+
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
   </div>
 </div>
-<tsl-selected-items *ngIf="items.length && itemService.selectedItems.length"
-                    [items]="items"
-                    [isStripe]="isStripe"
-                    (onAction)="onAction($event)"
-></tsl-selected-items>
 <tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>
 <tsl-bump-tutorial></tsl-bump-tutorial>
 <button [hidden]="true" tslItemSold></button>

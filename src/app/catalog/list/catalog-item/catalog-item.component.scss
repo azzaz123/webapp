@@ -196,9 +196,6 @@ $feature-button-width: 170px;
   .actions {
     margin-right: $spacing-l;
     min-width: 400px;
-    .resized:not(.pro) & {
-      display: none;
-    }
     .pro & {
       min-width: 338px;
     }

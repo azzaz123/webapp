@@ -68,6 +68,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public isStripe: boolean;
   public subscriptions: UserSubscription[] = [];
   public selectedSubscription: UserSubscription;
+  public selectMode = false;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -107,6 +108,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.itemService.selectedItems$.takeWhile(() => {
       return this.active;
     }).subscribe((action: SelectedItemsAction) => {
+      this.selectMode = this.itemService.selectedItems.length !== 0;
       this.selectedItems = this.itemService.selectedItems.map((id: string) => {
         return <Item>_.find(this.items, {id: id});
       });
@@ -335,6 +337,7 @@ export class ListComponent implements OnInit, OnDestroy {
       item.selected = false;
     });
     this.itemService.selectedAction = null;
+    this.selectMode = false;
   }
 
   public onAction($event?: any) {
@@ -524,6 +527,10 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public isSubscriptionSelected(subscription: UserSubscription) {
     return this.selectedSubscription ? subscription.type === this.selectedSubscription.type : false;
+  }
+
+  public onClickFeature() {
+    console.log(this.itemService.selectedItems);
   }
 
 }
