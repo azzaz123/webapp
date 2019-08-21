@@ -1,10 +1,14 @@
 <div class="AddNewSubscription__box">
-  <div class="modal-close" (click)="activeModal.dismiss()">
-      <mat-icon svgIcon="cross"></mat-icon>
+  <div class="AddNewSubscription__box-header">
+    <div class="modal-close" (click)="activeModal.dismiss()">
+        <mat-icon svgIcon="cross"></mat-icon>
+    </div>
+    <h4 class="section-title">Add new subscription</h4>
+    <p>What limit do you want to put on your subscription?</p>
   </div>
   <div class="box-content">
-    <h3 class="section-title">Add new subscription</h3>
-    <p>What limit do you want to put on your subscription?</p>
+    <p class="AddNewSubscription__listing-limit-steps">Paso 1 de 2</p>
+    <div class="AddNewSubscription__listing-limit-title">¿Cuantos productos vas a tener en tu perfil?</div>
     <div class="AddNewSubscription__listing-limit-container">
       <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
       [ngClass]="{selected: listingLimit === 40}">40</div>
@@ -19,7 +23,19 @@
       <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
       [ngClass]="{selected: listingLimit === 500}">500</div>
     </div>
-    <p>Price: xx,xx€/mes</p>
+    <hr />
+    <div class="row">
+      <div class="col-6">
+        <div class="AddNewSubscription__listing-limit-selection">
+          <span>Motor y accesorios</span>
+          <br />
+          <span *ngIf="listingLimit">{{listingLimit}} productos</span>
+        </div>
+      </div>
+      <div class="col-6">
+          <span class="AddNewSubscription__listing-limit-price">xx,xx€/mes</span>
+      </div>
+    </div>
     <div class="row">
       <div class="AddNewSubscription__payment col-10 offset-1">
         <div class="AddNewSubscription__group form-group align-items-center">

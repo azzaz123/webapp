@@ -1,8 +1,42 @@
 @import "~style/common";
 
 .AddNewSubscription__box {
-  padding: $spacing-m;
   text-align: center;
+  padding: 0 0 $spacing-m;
+  .AddNewSubscription__box-header {
+    background: $walla-main;
+    height: 100px;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    color: $white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    h4 {
+      margin: $spacing-m 0 $spacing-s;
+    }
+    p {
+      color: $white;
+      margin: 0;
+    }
+  }
+}
+
+.AddNewSubscription__listing-limit-title {
+  color: $black;
+  font-size: $font-size-s;
+  font-weight: bold;
+}
+
+.AddNewSubscription__listing-limit-price {
+  color: $black;
+  font-size: $font-size-l;
+}
+
+.AddNewSubscription__listing-limit-steps {
+  color: $blue-grey-2;
+  font-size: $font-size-s;
 }
 
 .AddNewSubscription__listing-limit-container {
@@ -18,6 +52,12 @@
     flex: 0 0 75px;
     cursor: pointer;
   }
+}
+
+.AddNewSubscription__listing-limit-selection {
+  text-align: left;
+  width: 250px;
+  margin-left: 70px;
 }
 
 .AddNewSubscription__payment {
@@ -41,7 +81,7 @@
 
 .selected {
   font-weight: bold;
-  color: $black;
+  color: $walla-main;
   height: 56px !important;
   box-shadow: 0px 4px 5px 0px $blue-grey-5 !important;
 }
@@ -58,4 +98,13 @@ tsl-button /deep/ .btn-text  {
     background-color: $blue-grey-5;
     border: 1px solid $black;
   }
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid $blue-grey-5;
+  margin: 24px auto;
+  width: 80%;
 }

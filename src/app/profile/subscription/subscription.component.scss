@@ -1,17 +1,59 @@
 @import "~style/common";
 
+.box-content {
+  text-align: center;
+  color: $blue-grey-2;
+  h4 {
+    color: $black;
+  }
+}
+
+.Subscriptions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
 .Subscriptions__category {
   border: 1px solid $blue-grey-5;
   border-radius: 10px;
   padding: $spacing-m;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
+  align-items: center;
+  color: $blue-grey-2;
+  min-width: 200px;
   cursor: pointer;
   p {
     margin-bottom: 0px;
   }
   .Subscriptions__category-info {
-    margin-left: $spacing-l;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: $font-size-s;
+    margin: 0 0 $spacing-s;
+  }
+  .Subscriptions__category-title {
+    font-size: $font-size-m;
+    font-weight: bold;
+    color: $blue-grey-2;
+    margin: $spacing-s 0 0;
+  }
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 2px solid $blue-grey-5;
+    margin: $spacing-xs 0;
+    padding: 0;
+    width: 50%;
+  }
+  .Subscriptions__category-icon {
+    padding: 21px;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    background-color: $blue-grey-5;
   }
 }
