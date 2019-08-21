@@ -1,11 +1,12 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { NgbActiveModal, NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCardOption } from '../../../core/payments/payment.interface';
 import { EventService } from '../../../core/event/event.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
+import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -16,6 +17,8 @@ import { PaymentSuccessModalComponent } from './payment-success-modal.component'
 
 export class AddNewSubscriptionModalComponent implements OnInit {
 
+  @ViewChild(NgbCarousel) public carousel: NgbCarousel;
+  public isLast: boolean;
   public card: any;
   public action: string;
   public showCard = false;
@@ -27,10 +30,10 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   public paymentError = false;
 
   constructor(public activeModal: NgbActiveModal,
-            private stripeService: StripeService,
-            private eventService: EventService,
-            private subscriptionsService: SubscriptionsService,
-            private modalService: NgbModal) {
+              private stripeService: StripeService,
+              private eventService: EventService,
+              private subscriptionsService: SubscriptionsService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -148,6 +151,10 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     modalRef.result.then(() => {
       modalRef = null;
     }, () => {});
+  }
+
+  public onSlide($event: NgbSlideEvent) {
+    this.isLast = $event.current === 'ngb-slide-2';
   }
 
   @HostListener('click') onClick() {

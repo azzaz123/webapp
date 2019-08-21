@@ -6,58 +6,74 @@
     <h4 class="section-title">Add new subscription</h4>
     <p>What limit do you want to put on your subscription?</p>
   </div>
-  <div class="box-content">
-    <p class="AddNewSubscription__listing-limit-steps">Paso 1 de 2</p>
-    <div class="AddNewSubscription__listing-limit-title">¿Cuantos productos vas a tener en tu perfil?</div>
-    <div class="AddNewSubscription__listing-limit-container">
-      <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-      [ngClass]="{selected: listingLimit === 40}">40</div>
-      <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-      [ngClass]="{selected: listingLimit === 80}">80</div>
-      <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-      [ngClass]="{selected: listingLimit === 150}">150</div>
-      <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-      [ngClass]="{selected: listingLimit === 250}">250</div>
-      <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-      [ngClass]="{selected: listingLimit === 400}">400</div>
-      <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-      [ngClass]="{selected: listingLimit === 500}">500</div>
-    </div>
-    <hr />
-    <div class="row">
-      <div class="col-6">
-        <div class="AddNewSubscription__listing-limit-selection">
-          <span>Motor y accesorios</span>
-          <br />
-          <span *ngIf="listingLimit">{{listingLimit}} productos</span>
+  <ngb-carousel interval="0" (slide)="onSlide($event)">
+    <ng-template ngbSlide>
+      <div class="step step-1">
+        <div class="box-content">
+          <p class="AddNewSubscription__listing-limit-steps">Paso 1 de 2</p>
+          <div class="AddNewSubscription__listing-limit-title">¿Cuantos productos vas a tener en tu perfil?</div>
+          <div class="AddNewSubscription__listing-limit-container">
+            <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
+            [ngClass]="{selected: listingLimit === 40}">40</div>
+            <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
+            [ngClass]="{selected: listingLimit === 80}">80</div>
+            <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
+            [ngClass]="{selected: listingLimit === 150}">150</div>
+            <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
+            [ngClass]="{selected: listingLimit === 250}">250</div>
+            <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
+            [ngClass]="{selected: listingLimit === 400}">400</div>
+            <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
+            [ngClass]="{selected: listingLimit === 500}">500</div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-6">
+              <div class="AddNewSubscription__listing-limit-selection">
+                <span>Motor y accesorios</span>
+                <br />
+                <span>{{listingLimit || 0}} productos</span>
+              </div>
+            </div>
+            <div class="col-6">
+                <span class="AddNewSubscription__listing-limit-price">xx,xx€/mes</span>
+            </div>
+          </div>
+        </div>
+        <tsl-button *ngIf="!isLast" (click)="carousel.next()" i18n>Pay xx,xx€</tsl-button>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <div class="step step-2">
+        <div class="box-content">
+          <p class="AddNewSubscription__listing-limit-steps">Paso 2 de 2</p>
+          <div class="AddNewSubscription__listing-limit-title">Define la forma de pago</div>
+          <div class="row">
+            <div class="AddNewSubscription__payment col-10 offset-1">
+              <div class="AddNewSubscription__group form-group align-items-center">
+                <div class="AddNewSubscription__selection">
+                  <tsl-stripe-card-selection *ngIf="savedCard" (onSelectExistingCard)="setSavedCard($event)"
+                  (hasStripeCard)="hasStripeCard($event)"></tsl-stripe-card-selection>
+                  <tsl-button className="btn btn-text" (click)="addNewCard()" *ngIf="savedCard" [disabled]="loading" i18n>+ Add another credit card</tsl-button>
+                </div>
+                <tsl-button className="btn btn-text" (click)="removeNewCard()" *ngIf="showCard" [disabled]="loading" i18n>Use saved card</tsl-button>
+                <div class="AddNewSubscription__payment-response-message" *ngIf="paymentError">
+                  <p>The payment failed. Please enter another credit card.</p>
+                </div>
+                <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [type]="'subscription'" [listingLimit]="listingLimit" [action]="action" (onStripeCardCreate)="addSubscription($event)"
+                (stripeCard)="setCardInfo($event)"></tsl-stripe-card-element>
+              </div>
+              <tsl-button [hidden]="!savedCard"
+              [disabled]="!selectedCard || !listingLimit"
+              [loading]="loading"
+              (click)="addSubscriptionFromSavedCard()"
+              id="qa-checkout-subscription"
+              className="btn-primary btn-medium stripe"
+              i18n>Add Subscription</tsl-button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-6">
-          <span class="AddNewSubscription__listing-limit-price">xx,xx€/mes</span>
-      </div>
-    </div>
-    <div class="row">
-      <div class="AddNewSubscription__payment col-10 offset-1">
-        <div class="AddNewSubscription__group form-group align-items-center">
-          <div class="AddNewSubscription__selection">
-              <tsl-stripe-card-selection *ngIf="savedCard" (onSelectExistingCard)="setSavedCard($event)"
-              (hasStripeCard)="hasStripeCard($event)"></tsl-stripe-card-selection>
-              <tsl-button className="btn btn-text" (click)="addNewCard()" *ngIf="savedCard" [disabled]="loading" i18n>+ Add another credit card</tsl-button>
-          </div>
-          <tsl-button className="btn btn-text" (click)="removeNewCard()" *ngIf="showCard" [disabled]="loading" i18n>Use saved card</tsl-button>
-          <div class="AddNewSubscription__payment-response-message" *ngIf="paymentError">
-            <p>The payment failed. Please enter another credit card.</p>
-          </div>
-          <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [type]="'subscription'" [listingLimit]="listingLimit" [action]="action" (onStripeCardCreate)="addSubscription($event)"
-          (stripeCard)="setCardInfo($event)"></tsl-stripe-card-element>
-        </div>
-        <tsl-button [hidden]="!savedCard"
-        [disabled]="!selectedCard || !listingLimit"
-        [loading]="loading"
-        (click)="addSubscriptionFromSavedCard()"
-        id="qa-checkout-subscription"
-        className="btn-primary btn-medium stripe"
-        i18n>Add Subscription</tsl-button>
-    </div>
-  </div>
+    </ng-template>
+  </ngb-carousel>
 </div>

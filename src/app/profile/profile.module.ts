@@ -12,6 +12,7 @@ import { SubscriptionIconPipe } from './profile-pro-subscription/subscription-ic
 import { VisibilityProductsModalComponent } from './profile-pro-subscription/visibility-products-modal/visibility-products-modal.component';
 import { PaymentSuccessModalComponent } from './subscription/modals/payment-success-modal.component';
 import { AddNewSubscriptionModalComponent } from './subscription/modals/add-new-subscription-modal.component';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { AddNewSubscriptionModalComponent } from './subscription/modals/add-new-
     FormsModule,
     MatIconModule,
     NgbButtonsModule,
-    GeolocationModule
+    GeolocationModule,
+    NgbCarouselModule
   ],
   declarations: [
     profileRoutedComponents,
@@ -31,7 +33,7 @@ import { AddNewSubscriptionModalComponent } from './subscription/modals/add-new-
     SubscriptionIconPipe,
     VisibilityProductsModalComponent,
     PaymentSuccessModalComponent,
-    AddNewSubscriptionModalComponent
+    AddNewSubscriptionModalComponent,
   ],
   entryComponents: [
     UnsubscribeModalComponent,

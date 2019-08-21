@@ -108,3 +108,26 @@ hr {
   margin: 24px auto;
   width: 80%;
 }
+
+ngb-carousel {
+  /deep/ {
+    .carousel-control-prev, .carousel-control-next {
+      display: none;
+    }
+    .carousel-indicators {
+      width: 68px;
+      margin: 0;
+      li {
+        background-color: $blue-grey-4;
+        @include square(10px);
+        max-width: 10px;
+        &:hover, &.active {
+          background-color: $walla-main;
+        }
+      }
+    }
+    .carousel-item {
+      height: 330px;
+    }
+  }
+}
