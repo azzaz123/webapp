@@ -280,4 +280,10 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('blocked-error', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/blocked-error.svg'));
   matIconRegistry.addSvgIcon('not-available-error', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/not-available-error.svg'));
   matIconRegistry.addSvgIcon('glass_icon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/glass_icon.svg'));
+  matIconRegistry.addSvgIcon('magnet', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/magnet.svg'));
+  matIconRegistry.addSvgIcon('megaphone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/megaphone.svg'));
+  matIconRegistry.addSvgIcon('paintbrush', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/paintbrush.svg'));
+  matIconRegistry.addSvgIcon('rocket', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/rocket.svg'));
+  matIconRegistry.addSvgIcon('unlocked', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/unlocked.svg'));
+  matIconRegistry.addSvgIcon('watch', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/watch.svg'));
 }

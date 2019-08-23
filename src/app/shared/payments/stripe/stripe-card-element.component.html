@@ -13,7 +13,7 @@
         <tsl-button [hidden]="type === 'new' || type === 'subscription'"
                     id="checkout-card-button"
                     className="btn-primary btn-medium stripe"
-                    [disabled]="type === 'cart' && !cart?.total"
+                    [disabled]="type === 'cart' && !cart?.total || loading"
                     [loading]="loading"
                     (click)="onSubmit()"
                     [tslTrackEvent]="'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
@@ -24,12 +24,13 @@
                     id="checkout-card-button-new"
                     className="btn-primary btn-medium stripe"
                     [loading]="newLoading"
+                    [disabled]="disabled || newLoading"
                     (click)="createNewCard()" i18n
         >Save</tsl-button>
         <tsl-button *ngIf="type === 'subscription'"
                     id="checkout-card-button-new"
                     className="btn-primary btn-medium stripe"
-                    [disabled]="!listingLimit"
+                    [disabled]="!listingLimit || disabled || newLoading"
                     [loading]="newLoading"
                     (click)="createNewCard()" i18n
         >Add Subscription</tsl-button>

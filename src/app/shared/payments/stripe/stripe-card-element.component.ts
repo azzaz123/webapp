@@ -42,6 +42,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   @Input() newLoading: boolean;
   @Input() action: string;
   @Input() listingLimit: number;
+  @Input() disabled: number;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
@@ -74,6 +75,14 @@ export class StripeCardElementComponent implements ControlValueAccessor {
 
     if (changes.listingLimit && changes.listingLimit.currentValue) {
       this.listingLimit = changes.listingLimit.currentValue;
+    }
+
+    if (changes.disabled && changes.disabled.currentValue) {
+      this.disabled = changes.disabled.currentValue;
+    }
+
+    if (changes.newLoading && changes.newLoading.currentValue) {
+      this.newLoading = changes.newLoading.currentValue;
     }
   }
 

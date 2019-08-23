@@ -7,6 +7,7 @@ import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -27,16 +28,26 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   public listingLimit: number;
   private isStripe: boolean;
   public loading = false;
-  public paymentError = false;
+  public isPaymentError = false;
+  private isRetryInvoice = false;
+  private invoiceId: string;
+  private REQUIRES_PAYMENT_METHOD = 'REQUIRES_PAYMENT_METHOD';
+  private REQUIRES_ACTION = 'REQUIRES_ACTION';
+  private SUCCEEDED = 'SUCCEEDED';
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
               private eventService: EventService,
               private subscriptionsService: SubscriptionsService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private errorService: ErrorsService) {
   }
 
   ngOnInit() {
+    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, {windowClass: 'review'});
+    modalRef.result.then(() => {
+      modalRef = null;
+    }, () => {});
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = true;//val;
       if (this.isStripe) {
@@ -57,7 +68,11 @@ export class AddNewSubscriptionModalComponent implements OnInit {
       if (!response) {
         this.requestNewPayment();
       } else {
-        this.addSubscriptionFromSavedCard(paymentMethod.id);
+        if (this.isRetryInvoice) {
+          this.retrySubscription(paymentMethod.id);
+        } else {
+          this.addSubscriptionFromSavedCard(paymentMethod.id);
+        }
       }
     });
   }
@@ -66,19 +81,60 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     if (!this.loading) {
       this.loading = true;
     }
-    this.subscriptionsService.newSubscription('plan_FSWGMZq6tDdiKc', paymentMethodId).subscribe((response) => {
+    if (this.isRetryInvoice) {
+      this.retrySubscription();
+    } else {
+      this.subscriptionsService.newSubscription('plan_FSWGMZq6tDdiKc', paymentMethodId).subscribe((response) => {
+        if (response.status === 202) {
+          this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response) => {
+            switch(response.payment_status.toUpperCase() ) {
+              case this.REQUIRES_PAYMENT_METHOD: {
+                this.isRetryInvoice = true;
+                this.invoiceId = response.latest_invoice_id;
+                this.requestNewPayment();
+                break;
+              }
+              case this.REQUIRES_ACTION: {
+                this.stripeService.actionPayment(response.payment_secret_key);
+                break;
+              }
+              case this.SUCCEEDED: {
+                this.paymentSucceeded();
+                break;
+              }
+              default: {
+                this.requestNewPayment();
+                break;
+              }
+            }
+          }, () => {
+            this.requestNewPayment();
+          });
+        }
+      }, () => {
+        this.requestNewPayment();
+      });
+    }
+  }
+
+  private retrySubscription(paymentMethodId = this.card.id) {
+    if (!this.loading) {
+      this.loading = true;
+    }
+    this.subscriptionsService.retrySubscription(this.invoiceId, paymentMethodId).subscribe((response) => {
       if (response.status === 202) {
-        this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response) => {
-          switch(response.payment_status) {
-            case 'requires_payment_method': {
+        this.subscriptionsService.checkRetrySubscriptionStatus().subscribe((response) => {
+          switch(response.status.toUpperCase() ) {
+            case this.REQUIRES_PAYMENT_METHOD: {
+              this.isRetryInvoice = true;
               this.requestNewPayment();
               break;
             }
-            case 'requires_action': {
+            case this.REQUIRES_ACTION: {
               this.stripeService.actionPayment(response.payment_secret_key);
               break;
             }
-            case 'succeeded': {
+            case this.SUCCEEDED: {
               this.paymentSucceeded();
               break;
             }
@@ -87,10 +143,12 @@ export class AddNewSubscriptionModalComponent implements OnInit {
               break;
             }
           }
+        }, () => {
+          this.requestNewPayment();
         });
       }
     }, () => {
-      console.warn('error on subscription');
+      this.requestNewPayment();
     });
   }
 
@@ -140,14 +198,16 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   private requestNewPayment() {
+    this.errorService.i18nError('paymentFailed');
     this.loading = false;
-    this.paymentError = true;
+    this.isPaymentError = true;
     this.action = 'clear';
   }
 
   private paymentSucceeded() {
+    this.isRetryInvoice = false;
     this.close();
-    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, {windowClass: 'review'});
+    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, {windowClass: 'success'});
     modalRef.result.then(() => {
       modalRef = null;
     }, () => {});
@@ -158,8 +218,8 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   @HostListener('click') onClick() {
-    if (this.paymentError) {
-      this.paymentError = false;
+    if (this.isPaymentError) {
+      this.isPaymentError = false;
     }
   }
 

@@ -1,17 +1,22 @@
 @import "~style/common";
 
 .box-content {
-  text-align: center;
-  color: $blue-grey-2;
+  color: $blue-grey-3;
   h4 {
-    color: $black;
+    color: $blue-grey-1;
+    text-align: center;
+    font-size: $font-size-l;
+    font-weight: bold;
+  }
+  .section-subtitle {
+    text-align: center;
   }
 }
 
 .Subscriptions {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 .Subscriptions__category {
   border: 1px solid $blue-grey-5;
@@ -23,6 +28,7 @@
   align-items: center;
   color: $blue-grey-2;
   min-width: 200px;
+  margin: 0 $spacing-xs;
   cursor: pointer;
   p {
     margin-bottom: 0px;
@@ -32,10 +38,10 @@
     flex-direction: column;
     align-items: center;
     font-size: $font-size-s;
-    margin: 0 0 $spacing-s;
+    margin: 0 0 $spacing-l;
   }
   .Subscriptions__category-title {
-    font-size: $font-size-m;
+    font-size: $font-size-l;
     font-weight: bold;
     color: $blue-grey-2;
     margin: $spacing-s 0 0;
@@ -45,15 +51,56 @@
     height: 1px;
     border: 0;
     border-top: 2px solid $blue-grey-5;
-    margin: $spacing-xs 0;
+    margin: $spacing-s 0;
     padding: 0;
     width: 50%;
   }
   .Subscriptions__category-icon {
-    padding: 21px;
+    padding: 22px;
     border-radius: 50%;
-    width: 64px;
-    height: 64px;
+    width: 68px;
+    height: 68px;
     background-color: $blue-grey-5;
+    mat-icon {
+      /deep/ svg path {
+        fill: $blue-grey-3;
+      }
+    }
   }
+}
+
+.Subscriptions__benefits-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.Subscriptions__benefits-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.Subscriptions__benefits-icon {
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  background-color: $blue-grey-3;
+  mat-icon {
+    width: 56px;
+    height: 56px;
+    /deep/ svg path {
+      fill: $white;
+    }
+  }
+}
+
+.Subscriptions__benefits-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.Subscriptions__benefits--title {
+  font-weight: bold;
+  color: $walla-main;
+  margin: $spacing-s 0 $spacing-xs;
 }

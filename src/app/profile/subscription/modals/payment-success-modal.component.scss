@@ -1,11 +1,16 @@
 @import "~style/common";
 
-.RequestNewPayment__box {
-  padding: $spacing-m;
+.SubscribedSuccessfully__box {
+  padding: $spacing-xxxl $spacing-xxl;
   text-align: center;
   .box-content {
       p {
         margin-bottom: $spacing-l;
       }
   }
+}
+
+.SubscribedSuccessfully__box-image {
+  background-image: url(/assets/images/subscription-success.svg);
+  background-repeat: no-repeat;
 }
