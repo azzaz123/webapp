@@ -33,6 +33,7 @@ import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.comp
 import { RealTimeService } from '../message/real-time.service';
 import { BlockUserXmppService } from './block-user';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -176,7 +177,7 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public openPhonePopup(conversation: Conversation, required = false) {
+  public openPhonePopup(conversation: Conversation | InboxConversation, required = false) {
     const modalOptions: NgbModalOptions = {windowClass: 'phone-request', backdrop: 'static', keyboard: false};
     const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, modalOptions);
     modalRef.componentInstance.conversation = conversation;

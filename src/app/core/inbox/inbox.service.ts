@@ -10,8 +10,10 @@ import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { InboxConversationService } from './inbox-conversation.service';
 import { Response } from '@angular/http';
+import * as _ from 'lodash';
 
-const USER_BASE_PATH = environment.siteUrl +  'user/';
+const USER_BASE_PATH = environment.siteUrl + 'user/';
+
 @Injectable()
 
 export class InboxService {
@@ -27,13 +29,13 @@ export class InboxService {
   public errorRetrievingArchived = false;
 
   constructor(private http: HttpService,
-    private persistencyService: PersistencyService,
-    private messageService: MessageService,
-    private conversationService: InboxConversationService,
-    private featureflagService: FeatureflagService,
-    private eventService: EventService,
-    private userService: UserService) {
-    }
+              private persistencyService: PersistencyService,
+              private messageService: MessageService,
+              private conversationService: InboxConversationService,
+              private featureflagService: FeatureflagService,
+              private eventService: EventService,
+              private userService: UserService) {
+  }
 
   set conversations(value: InboxConversation[]) {
     this._conversations = value;
@@ -101,14 +103,14 @@ export class InboxService {
   public loadMorePages() {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getNextPage$()
-      .catch(() => {
-        this.errorRetrievingInbox = true;
-        return Observable.of([]);
-      })
-      .subscribe((conversations: InboxConversation[]) => {
-        this.eventService.emit(EventService.INBOX_LOADED, conversations);
-        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-      });
+    .catch(() => {
+      this.errorRetrievingInbox = true;
+      return Observable.of([]);
+    })
+    .subscribe((conversations: InboxConversation[]) => {
+      this.eventService.emit(EventService.INBOX_LOADED, conversations);
+      this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+    });
   }
 
   public shouldLoadMorePages(): boolean {
@@ -118,14 +120,14 @@ export class InboxService {
   public loadMoreArchivedPages() {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getNextArchivedPage$()
-      .catch(() => {
-        this.errorRetrievingArchived = true;
-        return Observable.of([]);
-      })
-      .subscribe((conversations: InboxConversation[]) => {
-        this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
-        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-      });
+    .catch(() => {
+      this.errorRetrievingArchived = true;
+      return Observable.of([]);
+    })
+    .subscribe((conversations: InboxConversation[]) => {
+      this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
+      this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
+    });
   }
 
   public shouldLoadMoreArchivedPages(): boolean {
@@ -153,13 +155,13 @@ export class InboxService {
   }
 
   private getNextPage$(): Observable<any> {
-      return this.http.get(this.API_URL, {
-        page_size: this.pageSize,
-        from: this.nextPageToken
-      })
-      .map(res => {
-        return this.conversations = this.conversations.concat(this.processInboxResponse(res));
-      });
+    return this.http.get(this.API_URL, {
+      page_size: this.pageSize,
+      from: this.nextPageToken
+    })
+    .map(res => {
+      return this.conversations = this.conversations.concat(this.processInboxResponse(res));
+    });
   }
 
   private getNextArchivedPage$(): Observable<any> {
@@ -172,15 +174,10 @@ export class InboxService {
     });
   }
 
-  private processInboxResponse(res: Response): InboxConversation[] {
-    const r = res.json();
-    this.nextPageToken = r.next_from || null;
-    // In order to avoid adding repeated conversations
-    const newConvs = r.conversations.filter(newConv => {
-      return (this.conversations
-        && this.conversations.find(existingConv => existingConv.id === newConv.hash)) ? null : newConv;
-    });
-    return this.buildConversations(newConvs);
+  private processInboxResponse(response: Response): InboxConversation[] {
+    const reloadConversations = response.json();
+    this.nextPageToken = reloadConversations.next_from || null;
+    return _.uniqBy([...this.buildConversations(reloadConversations.conversations), ...this.conversations], 'id');
   }
 
   private processArchivedInboxResponse(res: Response): InboxConversation[] {

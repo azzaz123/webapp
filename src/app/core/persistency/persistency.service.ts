@@ -105,7 +105,8 @@ export class PersistencyService {
         this.inboxDb = new PouchDB('inbox-' + this.userId, { auto_compaction: true });
         const inboxToSave = conversations.map((conversation: InboxConversation) =>
           new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
-            conversation.phoneShared, conversation.unreadCounter, conversation.nextPageToken, conversation.lastMessage));
+            conversation.phoneShared, conversation.phoneNumber, conversation.unreadCounter, conversation.nextPageToken,
+            conversation.lastMessage));
         return Observable.fromPromise(this.inboxDb.bulkDocs(inboxToSave));
       })
     );
@@ -117,7 +118,8 @@ export class PersistencyService {
         this.inboxDb = new PouchDB('archivedInbox-' + this.userId, { auto_compaction: true });
         const inboxToSave = conversations.map((conversation: InboxConversation) =>
           new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
-            conversation.phoneShared, conversation.unreadCounter, conversation.nextPageToken, conversation.lastMessage));
+            conversation.phoneShared, conversation.phoneNumber, conversation.unreadCounter, conversation.nextPageToken,
+            conversation.lastMessage));
         return Observable.fromPromise(this.inboxDb.bulkDocs(inboxToSave));
       })
     );
@@ -146,10 +148,9 @@ export class PersistencyService {
         conv.lastMessage._fromSelf, conv.lastMessage._date,
         conv.lastMessage._status, conv.lastMessage._payload, conv.lastMessage._phoneRequest);
       return new InboxConversation(conv._id, conv.modifiedDate, user, item, conv.nextPageToken, conv.messages, conv.phoneShared,
-        conv.unreadCounter, lastMessage);
+        conv.unreadCounter, conv.phoneNumber, lastMessage);
     });
   }
-
 
   private initClickstreamDb(dbName: string, version?: number) {
     const request = version ? window.indexedDB.open(dbName, version) : window.indexedDB.open(dbName);
@@ -166,7 +167,7 @@ export class PersistencyService {
     request.onupgradeneeded = (e) => {
       request.result.createObjectStore(this.eventsStore, { keyPath: 'id' });
       if (e.newVersion === 1) {
-      request.result.createObjectStore(this.packagedEventsStore);
+        request.result.createObjectStore(this.packagedEventsStore);
       }
     };
   }
@@ -274,8 +275,7 @@ export class PersistencyService {
   }
 
   private buildResponse(message: Message | InboxMessage): StoredMessage {
-    let text: string;
-    message instanceof Message ? text = message.message : text = message.text;
+    const text = message instanceof Message ? message.message : message.text;
     return {
       _id: message.id,
       date: message.date,
@@ -456,7 +456,6 @@ export class PersistencyService {
   }
 
   /* istanbul ignore next */
-
 
   private tryAndPut(db, doc, diffFun) {
     return db.put(doc).then((res) => {

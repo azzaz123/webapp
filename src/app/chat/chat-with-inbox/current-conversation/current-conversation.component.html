@@ -89,6 +89,13 @@
                                    [item]="currentConversation.item"></tsl-third-voice-message>
         </div>
 
+        <div class="notification-container">
+          <div class="date-marker date-marker-warning">
+            <mat-icon svgIcon="padlock" class="padlock"></mat-icon>
+            <span i18n>Remember not to share private data for security reasons</span>
+          </div>
+        </div>
+
         <div *ngIf="hasMoreMessages()" class="more-messages-loader">
           <a class="load-more">
                             <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
@@ -110,7 +117,7 @@
   </div>
 
   <div id="conversation-meta">
-    <tsl-inbox-user-detail [user]="currentConversation.user"></tsl-inbox-user-detail>
+    <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item" [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
     <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
     <tsl-ad slotid="div-gpt-ad-1508490196308-0"></tsl-ad>
   </div>

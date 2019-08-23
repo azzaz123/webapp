@@ -8,6 +8,7 @@ import { Message } from '../../../core/message/message';
 import { debug } from 'util';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { UserService } from '../../../core/user/user.service';
+import { AdService } from '../../../core/ad/ad.service';
 
 export enum InboxState { Inbox, Archived }
 
@@ -70,7 +71,8 @@ export class InboxComponent implements OnInit, OnDestroy {
   constructor(private inboxService: InboxService,
               private eventService: EventService,
               private conversationService: InboxConversationService,
-              private userService: UserService) {
+              private userService: UserService,
+              private adService: AdService) {
   }
 
   set loading(value: boolean) {
@@ -137,6 +139,7 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.unselectCurrentConversation();
+    this.adService.stopAdsRefresh();
   }
 
   private onInboxReady(conversations) {
@@ -177,7 +180,11 @@ export class InboxComponent implements OnInit, OnDestroy {
   }
 
   public setCurrentConversation(newCurrentConversation: InboxConversation) {
+    if (!newCurrentConversation.user.location) {
+      this.userService.get(newCurrentConversation.user.id).subscribe(user => newCurrentConversation.user.location = user.location);
+    }
     this.conversationService.openConversation(newCurrentConversation);
+    this.adService.startAdsRefresh();
   }
 
   public loadMore() {

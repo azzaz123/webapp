@@ -36,6 +36,24 @@
       line-height: $line-height-m;
       margin-top: -$spacing-s;
     }
+
+    .call-wrapper {
+      margin-top: $spacing-xs;
+
+      .call-shared {
+        position: absolute;
+      }
+
+      .phone-number {
+        margin-left: $spacing-l;
+        font-weight: $font-weight-skinny;
+      }
+    }
+
+    .user-location-distance {
+      text-align: left;
+      font-weight: $font-weight-skinny;
+    }
   }
 
   .avatar-block {
@@ -48,11 +66,6 @@
 }
 
 .response-rate {
-  text-align: left;
-  font-weight: $font-weight-skinny;
-}
-
-.user-location-distance {
   text-align: left;
   font-weight: $font-weight-skinny;
 }

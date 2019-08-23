@@ -111,7 +111,8 @@ export const CAR_CONTENT_DATA = {
   'num_seats': 9,
   'condition': 'brand_new',
   'web_slug': 'seat-ibiza-9-seats-514',
-  'version': 'version'
+  'version': 'version',
+  'financed_price': 10000.0,
 };
 
 export const CAR_DATA_FORM = {
@@ -152,7 +153,8 @@ export const MOCK_CAR: Car = new Car(
   CAR_DATA.content.warranty,
   CAR_DATA.content.num_seats,
   CAR_DATA.content.condition,
-  CAR_DATA.content.version
+  CAR_DATA.content.version,
+  CAR_DATA.content.sale_price
 );
 
 export const CAR_INFO: CarInfo = {

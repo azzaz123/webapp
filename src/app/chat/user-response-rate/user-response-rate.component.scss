@@ -5,7 +5,11 @@
   align-items: center;
 }
 
-mat-icon {
+mat-icon.user-response-rate {
   @include square(16px);
   margin-right: $spacing-ms;
+}
+
+.font-light span {
+  font-weight: $font-weight-skinny;
 }

@@ -121,6 +121,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('automatic', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/automatic.svg'));
   matIconRegistry.addSvgIcon('gasoil', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/gasoil.svg'));
   matIconRegistry.addSvgIcon('gasoline', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/gasoline.svg'));
+  matIconRegistry.addSvgIcon('shipping-2', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/shipping-2.svg'));
   matIconRegistry.addSvgIcon('shipping-5', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/shipping-5.svg'));
   matIconRegistry.addSvgIcon('shipping-10', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/shipping-10.svg'));
   matIconRegistry.addSvgIcon('shipping-20', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/shipping-20.svg'));
@@ -286,4 +287,5 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('rocket', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/rocket.svg'));
   matIconRegistry.addSvgIcon('unlocked', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/unlocked.svg'));
   matIconRegistry.addSvgIcon('watch', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/watch.svg'));
+  matIconRegistry.addSvgIcon('padlock', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/padlock.svg'));
 }

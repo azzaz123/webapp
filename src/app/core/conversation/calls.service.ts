@@ -60,13 +60,7 @@ export class CallsService extends LeadService {
   public getPage(page: number, archive?: boolean, status?: string, pageSize: number = this.PAGE_SIZE): Observable<Lead[]> {
     const init: number = (page - 1) * pageSize;
     const end: number = init + pageSize;
-    return this.getConversationsWithPhone(archive)
-    .flatMap((conversations: Lead[]) => {
-      return (archive ? this.archivedStream$ : this.stream$).asObservable()
-      .map((calls: Lead[]) => {
-        return conversations.concat(calls);
-      });
-    })
+    return (archive ? this.archivedStream$ : this.stream$).asObservable()
     .map((calls: Lead[]) => {
       if (status) {
         const statuses: string[] = status.split(',');
@@ -102,15 +96,6 @@ export class CallsService extends LeadService {
           calls: calls.length,
           archived: archivedCalls.length
         };
-      });
-    });
-  }
-
-  private getConversationsWithPhone(archive?: boolean): Observable<Conversation[]> {
-    return (archive ? this.conversationService.archivedStream$ : this.conversationService.stream$)
-    .map((conversations: Conversation[]) => {
-      return conversations.filter((conversation: Conversation) => {
-        return conversation.phone !== undefined;
       });
     });
   }

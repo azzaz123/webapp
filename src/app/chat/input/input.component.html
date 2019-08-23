@@ -1,5 +1,5 @@
 <form>
-  <textarea i18n-placeholder placeholder="{{getPlaceholder()}}"
+  <textarea placeholder="{{getPlaceholder()}}"
             #messageArea
             (keyup)="messageArea.value"
             (keydown.enter)="sendMessage(messageArea, $event)"
