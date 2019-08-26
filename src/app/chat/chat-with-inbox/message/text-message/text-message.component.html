@@ -1,6 +1,8 @@
-<div class="message-body" *ngIf="!message.payload" [ngClass]="{'from-self': message.fromSelf, 'phone-request': message.phoneRequest}">
+<div class="message-body" *ngIf="!message.payload"
+     [ngClass]="{'from-self': message.fromSelf, 'phone-request': message.phoneRequest}">
   <p class="message-cloud">
-    <span *ngIf="!message.payload" [innerHTML]="message.text | linkTransform"></span>
+    <span *ngIf="!message.payload && !messageContainsHTMLTag()" [innerHTML]="message.text | linkTransform"></span>
+    <span *ngIf="!message.payload  && messageContainsHTMLTag()">{{message.text | linkTransform}}</span>
     <!-- <button *ngIf="message.phoneRequest === phoneRequestState.pending" class="btn" (click)="openDialog()" i18n>Leave your number</button> -->
     <!-- <span *ngIf="message.phoneRequest === phoneRequestState.answered" class="new-line" i18n>Phone sent ;)</span> -->
     <small class="message-date">{{message.date | date:'shortTime'}}</small>
