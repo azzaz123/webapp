@@ -37,8 +37,14 @@ describe('InboxService', () => {
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: MessageService, useClass: MockMessageService },
         { provide: UserService, useClass: MockedUserService },
-        { provide: InboxConversationService, useValue: { subscribeChatEvents() {} }},
-        { provide: FeatureflagService, useValue: {
+        {
+          provide: InboxConversationService, useValue: {
+            subscribeChatEvents() {
+            }
+          }
+        },
+        {
+          provide: FeatureflagService, useValue: {
             getFlag() {
               return Observable.of(false);
             }
@@ -324,7 +330,7 @@ describe('InboxService', () => {
 
       service.loadMorePages();
 
-      expect(service.conversations.length).toBe(res.json().conversations.length + res2.json().conversations.length);
+      expect(service.conversations.length).toBe(res.json().conversations.length);
     });
 
     it('should add not existing conversations', () => {
@@ -336,8 +342,7 @@ describe('InboxService', () => {
 
       service.loadMorePages();
 
-      expect(service.conversations.length)
-      .toBe(res.json().conversations.length + res.json().conversations.length + res2.json().conversations.length);
+      expect(service.conversations.length).toBe(res.json().conversations.length + res2.json().conversations.length);
     });
   });
 
