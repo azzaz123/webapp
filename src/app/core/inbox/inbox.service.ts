@@ -140,18 +140,15 @@ export class InboxService {
       page_size: this.pageSize,
       max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION
     })
-    .map(res => {
-      return this.conversations = this.processInboxResponse(res);
-    });
+    .map(response => this.conversations = this.processInboxResponse(response));
   }
 
   private getArchivedInbox$(): Observable<any> {
     return this.http.get(this.ARCHIVED_API_URL, {
-      page_size: this.pageSize
+      page_size: this.pageSize,
+      max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION
     })
-    .map(res => {
-      return this.archivedConversations = this.processArchivedInboxResponse(res);
-    });
+    .map(response => this.archivedConversations = this.processArchivedInboxResponse(response));
   }
 
   private getNextPage$(): Observable<any> {
@@ -159,41 +156,37 @@ export class InboxService {
       page_size: this.pageSize,
       from: this.nextPageToken
     })
-    .map(res => {
-      return this.conversations = this.conversations.concat(this.processInboxResponse(res));
-    });
+    .map(response => this.conversations = this.processInboxResponse(response));
   }
 
   private getNextArchivedPage$(): Observable<any> {
-    return this.http.get(this.API_URL, {
+    return this.http.get(this.ARCHIVED_API_URL, {
       page_size: this.pageSize,
       from: this.nextArchivedPageToken
     })
-    .map(res => {
-      return this.conversations = this.conversations.concat(this.processArchivedInboxResponse(res));
-    });
+    .map(resoponse => this.archivedConversations = this.processArchivedInboxResponse(resoponse));
   }
 
   private processInboxResponse(response: Response): InboxConversation[] {
     const reloadConversations = response.json();
     this.nextPageToken = reloadConversations.next_from || null;
-    return _.uniqBy([...this.buildConversations(reloadConversations.conversations), ...this.conversations], 'id');
+    return _.uniqBy([...this.conversations, ...this.buildConversations(reloadConversations.conversations)], 'id');
   }
 
-  private processArchivedInboxResponse(res: Response): InboxConversation[] {
-    const r = res.json();
-    this.nextArchivedPageToken = r.next_from || null;
-    // In order to avoid adding repeated conversations
-    const newConvs = r.conversations.filter(newConv => {
-      return (this.archivedConversations
-        && this.archivedConversations.find(existingConv => existingConv.id === newConv.hash)) ? null : newConv;
-    });
-    return newConvs.map((conv) => InboxConversation.fromJSON(conv, this.selfId));
+  private processArchivedInboxResponse(response: Response): InboxConversation[] {
+    const reloadArchivedConversations = response.json();
+    this.nextArchivedPageToken = reloadArchivedConversations.next_from || null;
+    return _.uniqBy([...this.archivedConversations, ...this.buildArchivedConversations(reloadArchivedConversations.conversations)], 'id');
+  }
+
+  private buildArchivedConversations(conversations) {
+    return conversations
+    .map((conversationResponse) => InboxConversation.fromJSON(conversationResponse, this.selfId));
   }
 
   private buildConversations(conversations): InboxConversation[] {
-    return conversations.map((conv) => {
-      const conversation = InboxConversation.fromJSON(conv, this.selfId);
+    return conversations.map((conversationResponse) => {
+      const conversation = InboxConversation.fromJSON(conversationResponse, this.selfId);
       this.messageService.totalUnreadMessages += conversation.unreadCounter;
       return conversation;
     });
