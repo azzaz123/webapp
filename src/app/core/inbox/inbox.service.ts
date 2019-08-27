@@ -209,5 +209,4 @@ export class InboxService {
       this.conversations.sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
     });
   }
-
 }
