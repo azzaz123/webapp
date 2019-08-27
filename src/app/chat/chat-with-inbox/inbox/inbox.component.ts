@@ -119,6 +119,7 @@ export class InboxComponent implements OnInit, OnDestroy {
 
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.archivedConversations = conversations;
+      this.setStatusesAfterLoadConversations();
     });
 
     this.userService.isProfessional().subscribe((value: boolean) => {
@@ -137,6 +138,13 @@ export class InboxComponent implements OnInit, OnDestroy {
     }));
   }
 
+  private setStatusesAfterLoadConversations() {
+    this.loading = false;
+    this.loadingMore = false;
+    this.errorRetrievingInbox = this.inboxService.errorRetrievingInbox;
+    this.errorRetrievingArchived = this.inboxService.errorRetrievingArchived;
+  }
+
   ngOnDestroy() {
     this.unselectCurrentConversation();
     this.adService.stopAdsRefresh();
@@ -144,10 +152,7 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   private onInboxReady(conversations) {
     this.conversations = conversations;
-    this.loading = false;
-    this.loadingMore = false;
-    this.errorRetrievingInbox = this.inboxService.errorRetrievingInbox;
-    this.errorRetrievingArchived = this.inboxService.errorRetrievingArchived;
+    this.setStatusesAfterLoadConversations();
     this.showInbox();
   }
 
