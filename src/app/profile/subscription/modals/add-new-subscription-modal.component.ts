@@ -45,6 +45,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.currentSlide = 'ngb-slide-0';
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = true;//val;
       if (this.isStripe) {
@@ -211,7 +212,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   public onSlide($event: NgbSlideEvent) {
-    this.isLast = $event.current === 'ngb-slide-2';
+    this.isLast = $event.current === 'ngb-slide-1';
     this.currentSlide = $event.current;
   }
 
