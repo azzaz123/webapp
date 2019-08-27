@@ -29,6 +29,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   private isStripe: boolean;
   public loading = false;
   public isPaymentError = false;
+  public currentSlide: string;
   private isRetryInvoice = false;
   private invoiceId: string;
   private REQUIRES_PAYMENT_METHOD = 'REQUIRES_PAYMENT_METHOD';
@@ -44,10 +45,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, {windowClass: 'review'});
-    modalRef.result.then(() => {
-      modalRef = null;
-    }, () => {});
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = true;//val;
       if (this.isStripe) {
@@ -215,6 +212,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
 
   public onSlide($event: NgbSlideEvent) {
     this.isLast = $event.current === 'ngb-slide-2';
+    this.currentSlide = $event.current;
   }
 
   @HostListener('click') onClick() {

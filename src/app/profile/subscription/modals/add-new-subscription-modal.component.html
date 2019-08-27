@@ -38,7 +38,8 @@
             </div>
           </div>
         </div>
-        <tsl-button *ngIf="!isLast" [disabled]="!listingLimit" (click)="carousel.next()" i18n>Continue to payment</tsl-button>
+        /{{currentSlide}}/
+        <tsl-button *ngIf="currentSlide === '1'" [disabled]="!listingLimit" (click)="carousel.next()" i18n>Continue to payment</tsl-button>
       </div>
     </ng-template>
     <ng-template ngbSlide>

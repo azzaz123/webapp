@@ -10,6 +10,21 @@
   }
 }
 
+.SubscribedSuccessfully__box-content {
+  text-align: left;
+  padding-left: $spacing-xxl;
+  h3 {
+    font-size: $font-size-l;
+    font-weight: bold;
+  }
+  p {
+    font-size: $font-size-m;
+    color: $blue-grey-2;
+    line-height: $spacing-l;
+    margin-bottom: $spacing-m;
+  }
+}
+
 .SubscribedSuccessfully__box-image {
   background-image: url(/assets/images/subscription-success.svg);
   background-repeat: no-repeat;
