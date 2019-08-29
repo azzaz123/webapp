@@ -8,6 +8,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { Subscription } from '../../../core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -26,11 +27,11 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   public savedCard = true;
   public selectedCard = false;
   public listingLimit: number;
-  private isStripe: boolean;
+  public isStripe: boolean;
   public loading = false;
   public isPaymentError = false;
   public currentSlide: string;
-  private isRetryInvoice = false;
+  public isRetryInvoice = false;
   private invoiceId: string;
   private REQUIRES_PAYMENT_METHOD = 'REQUIRES_PAYMENT_METHOD';
   private REQUIRES_ACTION = 'REQUIRES_ACTION';
@@ -84,7 +85,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     } else {
       this.subscriptionsService.newSubscription('plan_FSWGMZq6tDdiKc', paymentMethodId).subscribe((response) => {
         if (response.status === 202) {
-          this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response) => {
+          this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: Subscription) => {
             switch(response.payment_status.toUpperCase() ) {
               case this.REQUIRES_PAYMENT_METHOD: {
                 this.isRetryInvoice = true;
