@@ -7,11 +7,15 @@ import { MOCK_USER, MOTORPLAN_DATA, USER_WEB_SLUG, USERS_STATS_RESPONSE } from '
 import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
+import { StripeService } from '../core/stripe/stripe.service';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let userService: UserService;
+  let subscriptionsService: SubscriptionsService;
+  let stripeService: StripeService;
   const mockMotorPlan = {
     type: 'motor_plan_pro',
     subtype: 'sub_premium'
@@ -42,6 +46,20 @@ describe('ProfileComponent', () => {
           },
           logout() {}
         }
+        },
+        {
+          provide: StripeService, useValue: {
+            isPaymentMethodStripe$() {
+              return Observable.of(true);
+            }
+          }
+        },
+        {
+          provide: SubscriptionsService, useValue: {
+            isSubscriptionsActive$() {
+              return Observable.of(true);
+            }
+          }
         },
         {
           provide: 'SUBDOMAIN', useValue: 'www'

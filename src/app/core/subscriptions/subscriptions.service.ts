@@ -4,6 +4,7 @@ import { HttpService } from '../http/http.service';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
+import { FeatureflagService } from '../user/featureflag.service';
 
 @Injectable()
 export class SubscriptionsService {
@@ -16,7 +17,8 @@ export class SubscriptionsService {
   private API_URL = 'api/v3/payments';
 
   constructor(private userService: UserService,
-              private http: HttpService) {
+              private http: HttpService,
+              private featureflagService: FeatureflagService) {
     this.userService.me().subscribe((user: User) => {
       this.fullName = user ?  `${user.firstName} ${user.lastName}` : '';
     });
@@ -52,6 +54,10 @@ export class SubscriptionsService {
   public checkRetrySubscriptionStatus(): Observable<any> {
     return this.http.get(`${this.API_URL}/c2b/stripe/payment_attempt/${this.uuid}`)
     .map(res => res.json());
+  }
+
+  public isSubscriptionsActive$(): Observable<boolean> {
+    return this.featureflagService.getFlag('web_subscriptions');
   }
 
 }

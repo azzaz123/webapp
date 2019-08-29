@@ -47,7 +47,11 @@ const routes: Routes = [
         component: SubscriptionComponent,
         data: {
           isMyZone: true,
-          isProfile: true
+          isProfile: true,
+          permissions: {
+            only: [PERMISSIONS.normal],
+            redirectTo: '/profile'
+          }
         }
       },
       {

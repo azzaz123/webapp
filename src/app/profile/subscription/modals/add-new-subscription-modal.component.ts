@@ -171,7 +171,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     this.savedCard = true;
   }
 
-  public setSavedCard(selectedCard: FinancialCardOption) {
+  public setSavedCard(selectedCard: FinancialCardOption): void {
     this.showCard = false;
     this.savedCard = true;
     this.selectedCard = true;
@@ -180,6 +180,11 @@ export class AddNewSubscriptionModalComponent implements OnInit {
 
   public selectListingLimit(event: any): void {
     this.listingLimit = parseInt(event.target.innerHTML, 10);
+  }
+
+  public onSlide($event: NgbSlideEvent) {
+    this.isLast = $event.current === 'ngb-slide-1';
+    this.currentSlide = $event.current;
   }
 
   private managePaymentResponse(paymentResponse) {
@@ -210,11 +215,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     modalRef.result.then(() => {
       modalRef = null;
     }, () => {});
-  }
-
-  public onSlide($event: NgbSlideEvent) {
-    this.isLast = $event.current === 'ngb-slide-1';
-    this.currentSlide = $event.current;
   }
 
   @HostListener('click') onClick() {

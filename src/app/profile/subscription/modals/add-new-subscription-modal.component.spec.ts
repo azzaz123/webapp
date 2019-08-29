@@ -5,16 +5,16 @@ import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
-import { AccessTokenService } from '../../../core/http/access-token.service';
-import { PaymentService } from '../../../core/payments/payment.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { SUBSCRIPTION_REQUIRES_ACTION, SUBSCRIPTION_REQUIRES_PAYMENT, SUBSCRIPTION_SUCCESS } from '../../../../tests/subscription.fixtures.spec';
+import { STRIPE_CARD, FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
+import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 
-fdescribe('AddNewSubscriptionModalComponent', () => {
+describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
   let fixture: ComponentFixture<AddNewSubscriptionModalComponent>;
   let activeModal: NgbActiveModal;
@@ -223,14 +223,93 @@ fdescribe('AddNewSubscriptionModalComponent', () => {
       expect(stripeService.actionPayment).toHaveBeenCalledWith(SUBSCRIPTION_REQUIRES_ACTION.payment_secret_key);
     });
 
-    it('should call requestNewPayment if response status is requires_action', () => {
+    it('should call requestNewPayment if response status is requires_payment_method', () => {
       component.isRetryInvoice = false;
       spyOn(subscriptionsService, 'newSubscription').and.callThrough();
       spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_REQUIRES_PAYMENT));
+      spyOn(errorsService, 'i18nError');
 
       component.addSubscriptionFromSavedCard(paymentMethodId);
 
-      expect(component.isRetryInvoice).toBe(false);
+      expect(component.isRetryInvoice).toBe(true);
+      expect(component.loading).toBe(false);
+      expect(component.isPaymentError).toBe(true);
+      expect(component.action).toBe('clear');
+      expect(errorsService.i18nError).toHaveBeenCalledWith('paymentFailed');
+
+    });
+  });
+
+  describe('setCardInfo', () => {
+    it('should set the card info', ()=> {
+      component.setCardInfo(STRIPE_CARD);
+
+      expect(component.card).toEqual(STRIPE_CARD);
+    });
+  });
+
+  describe('hasStripeCard', () => {
+    it('should not call addNewCard if hasCard is true', () => {
+      component.hasStripeCard(true);
+
+      expect(component.addNewCard).not.toHaveBeenCalled();
+    });
+
+    it('should call addNewCard if hasCard is false', () => {
+      component.hasStripeCard(false);
+
+      expect(component.addNewCard).toHaveBeenCalled();
+    });
+  });
+
+  describe('addNewCard', () => {
+    it('should show the new card element', ()=> {
+      component.addNewCard();
+
+      expect(component.showCard).toBe(true);
+      expect(component.savedCard).toBe(false);
+    });
+  });
+
+  describe('removeNewCard', () => {
+    it('should show the saved card element', ()=> {
+      component.removeNewCard();
+
+      expect(component.showCard).toBe(false);
+      expect(component.savedCard).toBe(true);
+    });
+  });
+
+  describe('setSavedCard', () => {
+    it('should set the card info', () => {
+      component.setSavedCard(FINANCIAL_CARD_OPTION[0]);
+
+      expect(component.showCard).toBe(false);
+      expect(component.savedCard).toBe(true);
+      expect(component.selectedCard).toBe(true);
+      expect(component.setCardInfo).toHaveBeenCalledWith(FINANCIAL_CARD_OPTION[0]);
+    });
+  });
+
+  describe('selectListingLimit', () => {
+    let event = { preventDefault: jasmine.createSpy(), srcElement: jasmine.createSpy() };
+    (<any>event).srcElement.innerText = '40';
+    
+    it('should set the listing limit', () => {
+      component.selectListingLimit(event);
+
+      expect(component.listingLimit).toBe(40);
+    });
+  });
+
+  describe('onSlide', () => {
+    it('should set isLast when is last slide', () => {
+      component.onSlide({
+        current: 'ngb-slide-1'
+      } as NgbSlideEvent);
+
+      expect(component.isLast).toBe(true);
+      expect(component.currentSlide).toEqual('ngb-slide-1');
     });
   });
 
