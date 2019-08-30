@@ -72,6 +72,7 @@ import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.co
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { SelectModule } from 'ng-select';
 import { LinkTransformPipe } from './pipes';
+import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
 
 @NgModule({
   imports: [
@@ -146,7 +147,8 @@ import { LinkTransformPipe } from './pipes';
     NewCardModalComponent,
     StripeCardSelectionComponent,
     SelectModule,
-    LinkTransformPipe
+    LinkTransformPipe,
+    PreventDoubleClickDirective
   ],
   declarations: [
     AdComponent,
@@ -206,7 +208,8 @@ import { LinkTransformPipe } from './pipes';
     CreditCardsComponent,
     NewCardModalComponent,
     StripeCardSelectionComponent,
-    LinkTransformPipe
+    LinkTransformPipe,
+    PreventDoubleClickDirective
   ],
   providers: [
     DecimalPipe,
