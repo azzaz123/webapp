@@ -2,11 +2,12 @@ import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Response, ResponseOptions } from '@angular/http';
 import { SubscriptionsService } from './subscriptions.service';
 import { Observable } from 'rxjs';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { HttpService } from '../http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { UserService } from '../user/user.service';
 import { FeatureflagService } from '../user/featureflag.service';
 import { UUID } from 'angular2-uuid';
+import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 
 describe('SubscriptionsService', () => {
 
@@ -25,6 +26,9 @@ describe('SubscriptionsService', () => {
           provide: UserService, useValue: {
             hasPerm() {
               return Observable.of(true);
+            },
+            me() {
+              return Observable.of(MOCK_USER);
             }
           }
         },
@@ -72,7 +76,7 @@ describe('SubscriptionsService', () => {
 
   describe('checkRetrySubscriptionStatus', () => {    
     it('should call endpoint', () => {
-      spyOn(UUID, 'UUID').and.returnValue('1-2-3');s
+      spyOn(UUID, 'UUID').and.returnValue('1-2-3');
       spyOn(http, 'get').and.callThrough();
   
       service.checkRetrySubscriptionStatus().subscribe();

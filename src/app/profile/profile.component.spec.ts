@@ -9,6 +9,8 @@ import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { StripeService } from '../core/stripe/stripe.service';
+import { HttpService } from '../core/http/http.service';
+import { FeatureflagService } from '../core/user/featureflag.service';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -16,6 +18,7 @@ describe('ProfileComponent', () => {
   let userService: UserService;
   let subscriptionsService: SubscriptionsService;
   let stripeService: StripeService;
+  let featureflagService: FeatureflagService;
   const mockMotorPlan = {
     type: 'motor_plan_pro',
     subtype: 'sub_premium'
@@ -28,24 +31,25 @@ describe('ProfileComponent', () => {
       declarations: [ ProfileComponent ],
       providers: [
         I18nService,
+        {provide: HttpService, useValue: {}},
         {
           provide: UserService, useValue: {
-          me() {
-            return Observable.of(MOCK_USER);
-          },
-          getMotorPlan() {
-            return Observable.of({
-              motorPlan: mockMotorPlan
-            });
-          },
-          isProUser() {
-            return Observable.of({});
-          },
-          getStats() {
-            return Observable.of(USERS_STATS_RESPONSE);
-          },
-          logout() {}
-        }
+            me() {
+              return Observable.of(MOCK_USER);
+            },
+            getMotorPlan() {
+              return Observable.of({
+                motorPlan: mockMotorPlan
+              });
+            },
+            isProUser() {
+              return Observable.of({});
+            },
+            getStats() {
+              return Observable.of(USERS_STATS_RESPONSE);
+            },
+            logout() {}
+          }
         },
         {
           provide: StripeService, useValue: {
@@ -61,6 +65,14 @@ describe('ProfileComponent', () => {
             }
           }
         },
+        {
+          provide: FeatureflagService, useValue: {
+            getFlag() {
+              return Observable.of(true);
+            }
+          }
+        },
+
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         }
@@ -83,10 +95,14 @@ describe('ProfileComponent', () => {
   describe('ngOnInit', () => {
 
     it('should call userService.me', () => {
+      component.ngOnInit();
+
       expect(userService.me).toHaveBeenCalled();
     });
 
     it('should set userUrl', () => {
+      component.ngOnInit();
+
       expect(component.userUrl).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + USER_WEB_SLUG);
     });
 

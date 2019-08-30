@@ -1,13 +1,12 @@
-import { FinancialCard } from '../app/shared/profile/credit-card-info/financial-card';
-import { FinancialCardOption, StripeCard, BillingDetails, PaymentMethodResponse, Address } from '../app/core/payments/payment.interface';
+import { BillingDetails, PaymentMethodResponse, Address } from '../app/core/payments/payment.interface';
 import { STRIPE_CARD } from './stripe.fixtures.spec';
 import { Subscription } from '../app/core/subscriptions/subscriptions.interface';
 
-export const ADDRESS: Address = {
+/*export const ADDRESS: Address = {
   city: 'Olesa de M.',
   country: 'ES',
   line1: 'Carrer Major, 2',
-  line2: 'Apartamento 3B',
+  line2: null,
   postal_code: 08640,
   state: 'Barcelona',
 };
@@ -29,7 +28,7 @@ export const PAYMENT_METHOD: PaymentMethodResponse = {
   metadata: {},
   object: "payment_method",
   type: "card"
-};
+};*/
 
 export const SUBSCRIPTION_SUCCESS: Subscription = {
   id: "c040cfbe-0c2e-1a28-1224-4df193f0082c",

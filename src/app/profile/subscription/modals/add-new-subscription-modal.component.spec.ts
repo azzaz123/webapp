@@ -9,10 +9,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { SUBSCRIPTION_REQUIRES_ACTION, SUBSCRIPTION_REQUIRES_PAYMENT, SUBSCRIPTION_SUCCESS } from '../../../../tests/subscription.fixtures.spec';
+import { SUBSCRIPTION_REQUIRES_ACTION, SUBSCRIPTION_REQUIRES_PAYMENT, SUBSCRIPTION_SUCCESS } from '../../../../tests/subscriptions.fixtures.spec';
 import { STRIPE_CARD, FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
+import { UserService } from '../../../core/user/user.service';
+import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
 
 describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
@@ -23,6 +25,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   let errorsService: ErrorsService;
   let stripeService: StripeService;
   let subscriptionsService: SubscriptionsService;
+  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -63,6 +66,16 @@ describe('AddNewSubscriptionModalComponent', () => {
           }
         },
         {
+          provide: UserService, useValue: {
+            hasPerm() {
+              return Observable.of(true);
+            },
+            me() {
+              return Observable.of(MOCK_USER);
+            }
+          }
+        },
+        {
           provide: NgbModal, useValue: {
           open() {}
         }
@@ -82,6 +95,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     stripeService = TestBed.get(StripeService);
     subscriptionsService = TestBed.get(SubscriptionsService);
     errorsService = TestBed.get(ErrorsService);
+    userService = TestBed.get(UserService);
     event = TestBed.get(EventService);
   });
 
