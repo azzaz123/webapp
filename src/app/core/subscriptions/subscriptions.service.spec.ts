@@ -50,7 +50,7 @@ describe('SubscriptionsService', () => {
   describe('newSubscription', () => {
     it('should call endpoint', () => {
       spyOn(UUID, 'UUID').and.returnValue('1-2-3');
-      spyOn(http, 'post').and.callThrough();
+      spyOn(http, 'post').and.returnValue(Observable.of({}));
       const paymentId = 'a1-b2-c3-d4';
       const subscriptionId = '1a-2b-3c-4d';
   

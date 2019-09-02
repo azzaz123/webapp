@@ -15,6 +15,10 @@ import { PaymentSuccessModalComponent } from './payment-success-modal.component'
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 import { UserService } from '../../../core/user/user.service';
 import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
+import { HttpService } from '../../../core/http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
+import { FeatureflagService } from '../../../core/user/featureflag.service';
+import { PAYMENT_METHOD_DATA } from '../../../../tests/payments.fixtures.spec';
 
 describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
@@ -26,11 +30,13 @@ describe('AddNewSubscriptionModalComponent', () => {
   let stripeService: StripeService;
   let subscriptionsService: SubscriptionsService;
   let userService: UserService;
+  let featureflagService: FeatureflagService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AddNewSubscriptionModalComponent],
       providers: [
+        ...TEST_HTTP_PROVIDERS,
         {
           provide: NgbActiveModal, useValue: {
             close() {
@@ -46,7 +52,11 @@ describe('AddNewSubscriptionModalComponent', () => {
           provide: StripeService, useValue: {
             isPaymentMethodStripe$() {
               return Observable.of(true);
-            }
+            },
+            addNewCard() {
+              return Observable.of(200);
+            },
+            actionPayment() {}
           }
         },
         {
@@ -72,6 +82,12 @@ describe('AddNewSubscriptionModalComponent', () => {
             },
             me() {
               return Observable.of(MOCK_USER);
+            }
+          }
+        },
+          { provide: FeatureflagService, useValue: {
+            getFlag() {
+              return Observable.of(false);
             }
           }
         },
@@ -126,10 +142,9 @@ describe('AddNewSubscriptionModalComponent', () => {
   });
 
   describe('addSubscription', () => {
-    const paymentMethodId = 'pm_a1b2c3d4';
 
     it('should set loading to true', () => {
-      component.addSubscription(paymentMethodId);
+      component.addSubscription(PAYMENT_METHOD_DATA);
 
       expect(component.currentSlide).toEqual('ngb-slide-0');
     })
@@ -138,7 +153,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(stripeService, 'addNewCard').and.returnValue(Observable.of(null));
       spyOn(errorsService, 'i18nError');
 
-      component.addSubscription(paymentMethodId);
+      component.addSubscription(PAYMENT_METHOD_DATA);
       tick();
 
       expect(component.loading).toBe(false);
@@ -147,37 +162,30 @@ describe('AddNewSubscriptionModalComponent', () => {
       expect(errorsService.i18nError).toHaveBeenCalledWith('paymentFailed');
     }));
 
-    it('should retrySubscription if it is isRetryInvoice', fakeAsync(() => {
-      spyOn(subscriptionsService, 'retrySubscription').and.returnValue(Observable.of(null));
-      spyOn(errorsService, 'i18nError');
-
-      component.isRetryInvoice = true;
-      component.addSubscription(paymentMethodId);
-      tick();
-
-      expect(subscriptionsService.retrySubscription).toHaveBeenCalled();
-    }));
-
-    it('should addSubscriptionFromSavedCard card is attached and it is no retry', fakeAsync(() => {
-      spyOn(stripeService, 'addNewCard').and.returnValue(Observable.of(null));
-      spyOn(errorsService, 'i18nError');
-
+    it('should call addSubscriptionFromSavedCard if card is attached and it is no retry', fakeAsync(() => {
       component.isRetryInvoice = false;
-      component.addSubscription(paymentMethodId);
+      component.card = STRIPE_CARD;
+
+      spyOn(stripeService, 'addNewCard').and.returnValue(Observable.of(200));
+      spyOn(component, 'addSubscriptionFromSavedCard').and.callThrough();
+
+      component.addSubscription(PAYMENT_METHOD_DATA);
       tick();
 
       expect(component.addSubscriptionFromSavedCard).toHaveBeenCalled();
-
     }));
   });
 
   describe('addSubscriptionFromSavedCard', () => {
-    const paymentMethodId = 'pm_a1b2c3d4';
-
+    beforeEach(() => {
+      component.card = STRIPE_CARD;
+      component.loading = false;
+    });
+    
     it('should set loading to true if it is false', () => {
       component.loading = false;
 
-      component.addSubscriptionFromSavedCard(paymentMethodId);
+      component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
 
       expect(component.loading).toBe(true);
     })
@@ -185,68 +193,64 @@ describe('AddNewSubscriptionModalComponent', () => {
     it('should not update loading if it is true', () => {
       component.loading = true;
 
-      component.addSubscriptionFromSavedCard(paymentMethodId);
+      component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
 
       expect(component.loading).toBe(true);
-    })
-
-    it('should call retrySubscription if isRetryInvoice', () => {
-      component.isRetryInvoice = true;
-
-      component.addSubscriptionFromSavedCard(paymentMethodId);
-
-      expect(subscriptionsService.retrySubscription).toHaveBeenCalled();
     })
 
     it('should call newSubscription if is not retryInvoice', () => {
       component.isRetryInvoice = false;
 
-      component.addSubscriptionFromSavedCard(paymentMethodId);
+      spyOn(subscriptionsService, 'newSubscription').and.callThrough();
+
+      component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
 
       expect(subscriptionsService.newSubscription).toHaveBeenCalled();
     });
 
     it('should call checkNewSubscriptionStatus if response is 202', () => {
       component.isRetryInvoice = false;
-      spyOn(subscriptionsService, 'newSubscription').and.callThrough();
+      spyOn(subscriptionsService, 'newSubscription').and.returnValue(Observable.of({response: { status: 202}}));
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.callThrough();
 
-      component.addSubscriptionFromSavedCard(paymentMethodId);
+      component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
 
       expect(subscriptionsService.checkNewSubscriptionStatus).toHaveBeenCalled();
     });
 
     it('should show success modal if response status is succeeded', () => {
       component.isRetryInvoice = false;
-      spyOn(subscriptionsService, 'newSubscription').and.callThrough();
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.callThrough();
       spyOn(modalService, 'open');
+      spyOn(subscriptionsService, 'newSubscription').and.returnValue(Observable.of({response: { status: 202}}));
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_SUCCESS));
 
-      component.addSubscriptionFromSavedCard(paymentMethodId);
+      component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       
       expect(component.isRetryInvoice).toBe(false);
       expect(modalService.open).toHaveBeenCalledWith(PaymentSuccessModalComponent, {windowClass: 'success'});
     });
 
     it('should call actionPayment if response status is requires_action', () => {
-      component.isRetryInvoice = false;
       spyOn(subscriptionsService, 'newSubscription').and.callThrough();
       spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_REQUIRES_ACTION));
+      spyOn(stripeService, 'actionPayment').and.callThrough();
 
-      component.addSubscriptionFromSavedCard(paymentMethodId);
+      component.isRetryInvoice = false;
+
+      component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       
       expect(stripeService.actionPayment).toHaveBeenCalledWith(SUBSCRIPTION_REQUIRES_ACTION.payment_secret_key);
     });
 
     it('should call requestNewPayment if response status is requires_payment_method', () => {
       component.isRetryInvoice = false;
-      spyOn(subscriptionsService, 'newSubscription').and.callThrough();
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_REQUIRES_PAYMENT));
       spyOn(errorsService, 'i18nError');
+      spyOn(subscriptionsService, 'newSubscription').and.returnValue(Observable.of({response: { status: 202}}));
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_REQUIRES_PAYMENT));
 
-      component.addSubscriptionFromSavedCard(paymentMethodId);
+      component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
 
-      expect(component.isRetryInvoice).toBe(true);
-      expect(component.loading).toBe(false);
+      expect(component.loading).toBe(true);
       expect(component.isPaymentError).toBe(true);
       expect(component.action).toBe('clear');
       expect(errorsService.i18nError).toHaveBeenCalledWith('paymentFailed');

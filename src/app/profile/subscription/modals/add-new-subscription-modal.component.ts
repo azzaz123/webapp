@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { NgbActiveModal, NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { FinancialCardOption } from '../../../core/payments/payment.interface';
+import { FinancialCardOption, PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { EventService } from '../../../core/event/event.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -9,6 +9,7 @@ import { PaymentSuccessModalComponent } from './payment-success-modal.component'
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Subscription } from '../../../core/subscriptions/subscriptions.interface';
+
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -61,7 +62,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
       this.activeModal.close();
   }
 
-  public addSubscription(paymentMethod) {
+  public addSubscription(paymentMethod: PaymentMethodResponse) {
     this.loading = true;
     this.stripeService.addNewCard(paymentMethod.id).subscribe((response) => {
       if (!response) {
@@ -83,9 +84,12 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     if (this.isRetryInvoice) {
       this.retrySubscription();
     } else {
+      console.log('AddSubscriptionFromSavedCard ', paymentMethodId)
       this.subscriptionsService.newSubscription('plan_FSWGMZq6tDdiKc', paymentMethodId).subscribe((response) => {
+        console.log('ADD SUBS FROM SAVED newSubscription ', response);
         if (response.status === 202) {
           this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: Subscription) => {
+            console.log('CHECK NEW SUBS STATUS ', response);
             switch(response.payment_status.toUpperCase() ) {
               case this.REQUIRES_PAYMENT_METHOD: {
                 this.isRetryInvoice = true;
@@ -120,9 +124,12 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     if (!this.loading) {
       this.loading = true;
     }
+    console.log('retry');
     this.subscriptionsService.retrySubscription(this.invoiceId, paymentMethodId).subscribe((response) => {
+      console.log('retry subscription private ', response);
       if (response.status === 202) {
         this.subscriptionsService.checkRetrySubscriptionStatus().subscribe((response) => {
+          console.log('checkRetrySubscriptionStatus ', response);
           switch(response.status.toUpperCase() ) {
             case this.REQUIRES_PAYMENT_METHOD: {
               this.isRetryInvoice = true;
