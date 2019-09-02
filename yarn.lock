@@ -4669,6 +4669,11 @@ loggly@^1.1.0:
     request "2.75.x"
     timespan "2.3.x"
 
+loglevel-plugin-remote@^0.6.8:
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/loglevel-plugin-remote/-/loglevel-plugin-remote-0.6.8.tgz#9234b75520491dc5b1a34abbbba0101f02dd2b39"
+  integrity sha512-EMhWUOAx4/Wtge1bNzYDvvXzv6PLt07emqTjA+Sc8WfViNSYXxe6kWYFyjcqGS6mqNeOqQ3+AG0xuasynHK0XA==
+
 loglevel@^1.4.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
