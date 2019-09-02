@@ -831,6 +831,9 @@
     <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>
     km de ti
   </translation>
+  <translation id="6184998176074927571" desc="La distancia entre el usuario y el item">
+      <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km de ti
+  </translation>
   <translation id="7238711418435054042">Hemos encontrado algún problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
   <translation id="265020643835790616">Hemos encontrado algún problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
   <translation id="6721544969146753310">Gracias por la valoración</translation>
