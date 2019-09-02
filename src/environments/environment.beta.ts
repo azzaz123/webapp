@@ -10,6 +10,7 @@ export const environment: any = {
   taplytics: '27dc733a355d44a7b8be1ce740f686a0',
   cookieSuffix: 'Beta',
   clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents',
+  remoteConsoleUrl: 'https://client-metrics.beta.wallapop.com/metrics/chat',
   stripeKey: 'pk_test_YMrctQusG3vLNQkCSRYKdqwF'
 };
 
