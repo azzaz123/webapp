@@ -5,13 +5,16 @@ import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
 import { FeatureflagService } from '../user/featureflag.service';
+import { Response } from '@angular/http';
+import { Subscription, Subscriptions } from './subscriptions.interface';
+import { SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
 
 @Injectable()
 export class SubscriptionsService {
 
   public lib: any;
   public elements: any;
-  private uuid: string;
+  public uuid: string;
   public fullName: string;
   public PAYMENT_PROVIDER_STRIPE = false;
   private API_URL = 'api/v3/payments';
@@ -29,10 +32,11 @@ export class SubscriptionsService {
     return this.http.post(`${this.API_URL}/c2b/stripe/subscription/${this.uuid}`, {
         payment_method_id: paymentId,
         product_subscription_id: subscriptionId
-    });
+    })
+    .map((r: Response) => r.json());
   }
 
-  public checkNewSubscriptionStatus(): Observable<any> {
+  public checkNewSubscriptionStatus(): Observable<Subscription> {
     return this.http.get(`${this.API_URL}/c2b/stripe/subscription/${this.uuid}`)
     .map(res => res.json())
     .retryWhen((errors) => {
@@ -48,16 +52,21 @@ export class SubscriptionsService {
     return this.http.put(`${this.API_URL}/c2b/stripe/payment_attempt/${this.uuid}`, {
       invoice_id: invoiceId,
       payment_method_id: paymentId,
-    });
+    })
+    .map((r: Response) => r.json());
   }
 
   public checkRetrySubscriptionStatus(): Observable<any> {
     return this.http.get(`${this.API_URL}/c2b/stripe/payment_attempt/${this.uuid}`)
-    .map(res => res.json());
+    .map((res: Response) => res.json());
   }
 
   public isSubscriptionsActive$(): Observable<boolean> {
-    return this.featureflagService.getFlag('web_subscriptions');
+    return this.featureflagService.getFlag('web_subscriptions')
+  }
+
+  public getSubscriptions(): Observable<Subscriptions[]> {
+    return Observable.of(SUBSCRIPTIONS);
   }
 
 }

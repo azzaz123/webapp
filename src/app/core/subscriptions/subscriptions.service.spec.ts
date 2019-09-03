@@ -45,6 +45,7 @@ describe('SubscriptionsService', () => {
     http = TestBed.get(HttpService);
     userService = TestBed.get(UserService);
     featureflagService = TestBed.get(FeatureflagService);
+    service.uuid = '1-2-3';
   });
   
   describe('newSubscription', () => {
@@ -56,7 +57,7 @@ describe('SubscriptionsService', () => {
   
       service.newSubscription(subscriptionId, paymentId).subscribe();
   
-      expect(http.post).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/subscription/${UUID}`, {
+      expect(http.post).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/subscription/1-2-3`, {
         payment_method_id: paymentId,
         product_subscription_id: subscriptionId
       });
@@ -70,7 +71,7 @@ describe('SubscriptionsService', () => {
   
       service.checkNewSubscriptionStatus().subscribe();
   
-      expect(http.get).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/subscription/${UUID}`);
+      expect(http.get).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/subscription/1-2-3`);
     });
   });
 
@@ -81,7 +82,7 @@ describe('SubscriptionsService', () => {
   
       service.checkRetrySubscriptionStatus().subscribe();
   
-      expect(http.get).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/payment_attempt/${UUID}`);
+      expect(http.get).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/payment_attempt/1-2-3`);
     });
   });
 
@@ -92,11 +93,11 @@ describe('SubscriptionsService', () => {
       const invoiceId = 'a1-b2-c3-d4';
       const paymentMethodId = '1a-2b-3c-4d';
   
-      service.newSubscription(invoiceId, paymentMethodId).subscribe();
+      service.retrySubscription(invoiceId, paymentMethodId).subscribe();
   
-      expect(http.put).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/subscription/${UUID}`, {
-        payment_method_id: paymentMethodId,
-        invoice_id: invoiceId
+      expect(http.put).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/payment_attempt/1-2-3`, {
+        invoice_id: invoiceId,
+        payment_method_id: paymentMethodId
       });
     });
   });

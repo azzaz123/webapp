@@ -1,34 +1,100 @@
-import { BillingDetails, PaymentMethodResponse, Address } from '../app/core/payments/payment.interface';
-import { STRIPE_CARD } from './stripe.fixtures.spec';
-import { Subscription } from '../app/core/subscriptions/subscriptions.interface';
+import { Subscription, Subscriptions } from '../app/core/subscriptions/subscriptions.interface';
 
-/*export const ADDRESS: Address = {
-  city: 'Olesa de M.',
-  country: 'ES',
-  line1: 'Carrer Major, 2',
-  line2: null,
-  postal_code: 08640,
-  state: 'Barcelona',
-};
-
-export const BILLING_DETAILS: BillingDetails = {
-  address: ADDRESS,
-  email: 'test@wallapop.com',
-  name: 'Test User',
-  phone: 666666666
-};
-
-export const PAYMENT_METHOD: PaymentMethodResponse = {
-  billing_details: BILLING_DETAILS,
-  card: STRIPE_CARD,
-  created: 1566916623,
-  customer: null,
-  id: "pm_1FC5n8KhcEtiGcVWsAmwPgH2",
-  livemode: false,
-  metadata: {},
-  object: "payment_method",
-  type: "card"
-};*/
+export const SUBSCRIPTIONS: Subscriptions[] = 
+[
+  {
+    category_id: 100, 
+    current_limit: 2,
+    subscribed_from: 1567159141,
+    selected_tier_id: 3,
+    default_tier_id: 1,
+    tiers:
+    [
+      {
+        id: 1,
+        limit: 5,
+        price: 20.85,
+        currency: '€'
+      }, 
+      {
+        id: 2,
+        limit: 10,
+        price: 25.85,
+        currency: '€'
+      },
+      {
+        id: 3,
+        limit: 15,
+        price: 35.85,
+        currency: '€'
+      },
+      {
+        id: 4,
+        limit: 20,
+        price: 44.85,
+        currency: '€'
+      },
+      {
+        id: 5,
+        limit: 25,
+        price: 55.85,
+        currency: '€'
+      },
+      {
+        id: 6,
+        limit: -1,
+        price: 105.85,
+        currency: '€'
+      }
+    ]
+  },
+  {
+    category_id: 500, 
+    current_limit: 1,
+    subscribed_from: null,
+    selected_tier_id: null,
+    default_tier_id: 1,
+    tiers:
+    [
+      {
+        id: 1,
+        limit: 5,
+        price: 20.85,
+        currency: '€'
+      }, 
+      {
+        id: 2,
+        limit: 10,
+        price: 25.85,
+        currency: '€'
+      },
+      {
+        id: 3,
+        limit: 15,
+        price: 35.85,
+        currency: '€'
+      },
+      {
+        id: 4,
+        limit: 20,
+        price: 44.85,
+        currency: '€'
+      },
+      {
+        id: 5,
+        limit: 25,
+        price: 55.85,
+        currency: '€'
+      },
+      {
+        id: 6,
+        limit: -1,
+        price: 105.85,
+        currency: '€'
+      }
+    ]
+  }
+];
 
 export const SUBSCRIPTION_SUCCESS: Subscription = {
   id: "c040cfbe-0c2e-1a28-1224-4df193f0082c",

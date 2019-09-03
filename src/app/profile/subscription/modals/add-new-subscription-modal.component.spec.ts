@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-
 import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
 import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,15 +8,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { SUBSCRIPTION_REQUIRES_ACTION, SUBSCRIPTION_REQUIRES_PAYMENT, SUBSCRIPTION_SUCCESS } from '../../../../tests/subscriptions.fixtures.spec';
+import {
+  SUBSCRIPTION_REQUIRES_ACTION,
+  SUBSCRIPTION_REQUIRES_PAYMENT,
+  SUBSCRIPTION_SUCCESS
+} from '../../../../tests/subscriptions.fixtures.spec';
 import { STRIPE_CARD, FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
-import { UserService } from '../../../core/user/user.service';
-import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
-import { HttpService } from '../../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
-import { FeatureflagService } from '../../../core/user/featureflag.service';
 import { PAYMENT_METHOD_DATA } from '../../../../tests/payments.fixtures.spec';
 
 describe('AddNewSubscriptionModalComponent', () => {
@@ -25,12 +24,11 @@ describe('AddNewSubscriptionModalComponent', () => {
   let fixture: ComponentFixture<AddNewSubscriptionModalComponent>;
   let activeModal: NgbActiveModal;
   let modalService: NgbModal;
-  let event: EventService;
   let errorsService: ErrorsService;
   let stripeService: StripeService;
   let subscriptionsService: SubscriptionsService;
-  let userService: UserService;
-  let featureflagService: FeatureflagService;
+  const componentInstance = {
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -62,7 +60,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         {
           provide: SubscriptionsService, useValue: {
             newSubscription() {
-              return Observable.of(202);
+              return Observable.of({});
             },
             checkNewSubscriptionStatus() {
               return Observable.of(SUBSCRIPTION_SUCCESS);
@@ -76,25 +74,14 @@ describe('AddNewSubscriptionModalComponent', () => {
           }
         },
         {
-          provide: UserService, useValue: {
-            hasPerm() {
-              return Observable.of(true);
-            },
-            me() {
-              return Observable.of(MOCK_USER);
-            }
-          }
-        },
-          { provide: FeatureflagService, useValue: {
-            getFlag() {
-              return Observable.of(false);
-            }
-          }
-        },
-        {
           provide: NgbModal, useValue: {
-          open() {}
-        }
+            open() {
+              return {
+                result: Promise.resolve(),
+                componentInstance: componentInstance
+              };
+            }
+          }
         },
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -111,8 +98,8 @@ describe('AddNewSubscriptionModalComponent', () => {
     stripeService = TestBed.get(StripeService);
     subscriptionsService = TestBed.get(SubscriptionsService);
     errorsService = TestBed.get(ErrorsService);
-    userService = TestBed.get(UserService);
     event = TestBed.get(EventService);
+    component.card = STRIPE_CARD;
   });
 
   describe('ngOnInit', () => {
@@ -139,6 +126,16 @@ describe('AddNewSubscriptionModalComponent', () => {
       expect(component.currentSlide).toEqual('ngb-slide-0');
     })
 
+  });
+
+  describe('close', () => {
+    it('shoud close the active modal', () => {
+      spyOn(activeModal, 'close');
+
+      component.close();
+
+      expect(activeModal.close).toHaveBeenCalled();
+    });
   });
 
   describe('addSubscription', () => {
@@ -177,10 +174,11 @@ describe('AddNewSubscriptionModalComponent', () => {
   });
 
   describe('addSubscriptionFromSavedCard', () => {
-    beforeEach(() => {
-      component.card = STRIPE_CARD;
-      component.loading = false;
-    });
+    beforeEach(fakeAsync(() => {
+      spyOn(subscriptionsService, 'newSubscription').and.returnValue(Observable.of({status: 202}));
+      
+      component.isRetryInvoice = false;
+    }));
     
     it('should set loading to true if it is false', () => {
       component.loading = false;
@@ -198,64 +196,67 @@ describe('AddNewSubscriptionModalComponent', () => {
       expect(component.loading).toBe(true);
     })
 
-    it('should call newSubscription if is not retryInvoice', () => {
-      component.isRetryInvoice = false;
-
-      spyOn(subscriptionsService, 'newSubscription').and.callThrough();
-
+    it('should call newSubscription if is not retryInvoice', fakeAsync(() => {
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
+      tick();
 
       expect(subscriptionsService.newSubscription).toHaveBeenCalled();
-    });
+    }));
 
-    it('should call checkNewSubscriptionStatus if response is 202', () => {
-      component.isRetryInvoice = false;
-      spyOn(subscriptionsService, 'newSubscription').and.returnValue(Observable.of({response: { status: 202}}));
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.callThrough();
-
-      component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
-
-      expect(subscriptionsService.checkNewSubscriptionStatus).toHaveBeenCalled();
-    });
-
-    it('should show success modal if response status is succeeded', () => {
-      component.isRetryInvoice = false;
-      spyOn(modalService, 'open');
-      spyOn(subscriptionsService, 'newSubscription').and.returnValue(Observable.of({response: { status: 202}}));
+    it('should call checkNewSubscriptionStatus if response is 202', fakeAsync(() => {
       spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
+      tick();
       
+      expect(subscriptionsService.checkNewSubscriptionStatus).toHaveBeenCalled();
+    }));
+
+    it('should close the actual modal if response status is succeeded', fakeAsync(() => {
+      spyOn(component, 'close');
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_SUCCESS));
+
+      component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
+      tick();
+
+      expect(component.isRetryInvoice).toBe(false);
+      expect(component.close).toHaveBeenCalled();
+    }));
+
+    it('should show success modal if response status is succeeded', fakeAsync(() => {
+      spyOn(modalService, 'open').and.callThrough();
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_SUCCESS));
+
+      component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
+      tick();
+
       expect(component.isRetryInvoice).toBe(false);
       expect(modalService.open).toHaveBeenCalledWith(PaymentSuccessModalComponent, {windowClass: 'success'});
-    });
+    }));
 
-    it('should call actionPayment if response status is requires_action', () => {
-      spyOn(subscriptionsService, 'newSubscription').and.callThrough();
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_REQUIRES_ACTION));
+    it('should call actionPayment if response status is requires_action', fakeAsync(() => {
       spyOn(stripeService, 'actionPayment').and.callThrough();
-
-      component.isRetryInvoice = false;
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_REQUIRES_ACTION));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
+      tick();
       
       expect(stripeService.actionPayment).toHaveBeenCalledWith(SUBSCRIPTION_REQUIRES_ACTION.payment_secret_key);
-    });
+    }));
 
-    it('should call requestNewPayment if response status is requires_payment_method', () => {
-      component.isRetryInvoice = false;
+    it('should call requestNewPayment if response status is requires_payment_method', fakeAsync(() => {
       spyOn(errorsService, 'i18nError');
-      spyOn(subscriptionsService, 'newSubscription').and.returnValue(Observable.of({response: { status: 202}}));
       spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_REQUIRES_PAYMENT));
-
+      
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
+      tick();
 
-      expect(component.loading).toBe(true);
+      expect(component.loading).toBe(false);
       expect(component.isPaymentError).toBe(true);
       expect(component.action).toBe('clear');
       expect(errorsService.i18nError).toHaveBeenCalledWith('paymentFailed');
 
-    });
+    }));
   });
 
   describe('setCardInfo', () => {
@@ -268,12 +269,14 @@ describe('AddNewSubscriptionModalComponent', () => {
 
   describe('hasStripeCard', () => {
     it('should not call addNewCard if hasCard is true', () => {
+      spyOn(component, 'addNewCard').and.callThrough();
       component.hasStripeCard(true);
 
       expect(component.addNewCard).not.toHaveBeenCalled();
     });
 
     it('should call addNewCard if hasCard is false', () => {
+      spyOn(component, 'addNewCard').and.callThrough();
       component.hasStripeCard(false);
 
       expect(component.addNewCard).toHaveBeenCalled();
@@ -300,6 +303,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
   describe('setSavedCard', () => {
     it('should set the card info', () => {
+      spyOn(component, 'setCardInfo').and.callThrough();
       component.setSavedCard(FINANCIAL_CARD_OPTION[0]);
 
       expect(component.showCard).toBe(false);
@@ -310,8 +314,8 @@ describe('AddNewSubscriptionModalComponent', () => {
   });
 
   describe('selectListingLimit', () => {
-    let event = { preventDefault: jasmine.createSpy(), srcElement: jasmine.createSpy() };
-    (<any>event).srcElement.innerText = '40';
+    let event = { preventDefault: jasmine.createSpy(), target: jasmine.createSpy() };
+    (<any>event).target.innerHTML = '40';
     
     it('should set the listing limit', () => {
       component.selectListingLimit(event);

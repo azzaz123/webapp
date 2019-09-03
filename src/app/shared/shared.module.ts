@@ -72,6 +72,7 @@ import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.co
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { SelectModule } from 'ng-select';
 import { LinkTransformPipe } from './pipes';
+import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 
 @NgModule({
   imports: [
@@ -214,7 +215,8 @@ import { LinkTransformPipe } from './pipes';
     TutorialGuard,
     CartService,
     ThousandSuffixesPipe,
-    LinkTransformPipe
+    LinkTransformPipe,
+    SubscriptionsService
   ],
   entryComponents: [
     ConfirmationModalComponent,

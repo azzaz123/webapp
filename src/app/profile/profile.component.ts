@@ -10,8 +10,7 @@ import { SubscriptionsService } from '../core/subscriptions/subscriptions.servic
 @Component({
   selector: 'tsl-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
-  providers: [SubscriptionsService]
+  styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
 

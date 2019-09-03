@@ -14,8 +14,7 @@ import { Subscription } from '../../../core/subscriptions/subscriptions.interfac
 @Component({
   selector: 'tsl-add-new-subscription-modal',
   templateUrl: './add-new-subscription-modal.component.html',
-  styleUrls: ['./add-new-subscription-modal.component.scss'],
-  providers: [SubscriptionsService]
+  styleUrls: ['./add-new-subscription-modal.component.scss']
 })
 
 export class AddNewSubscriptionModalComponent implements OnInit {
@@ -84,12 +83,9 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     if (this.isRetryInvoice) {
       this.retrySubscription();
     } else {
-      console.log('AddSubscriptionFromSavedCard ', paymentMethodId)
       this.subscriptionsService.newSubscription('plan_FSWGMZq6tDdiKc', paymentMethodId).subscribe((response) => {
-        console.log('ADD SUBS FROM SAVED newSubscription ', response);
         if (response.status === 202) {
           this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: Subscription) => {
-            console.log('CHECK NEW SUBS STATUS ', response);
             switch(response.payment_status.toUpperCase() ) {
               case this.REQUIRES_PAYMENT_METHOD: {
                 this.isRetryInvoice = true;
@@ -124,12 +120,9 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     if (!this.loading) {
       this.loading = true;
     }
-    console.log('retry');
     this.subscriptionsService.retrySubscription(this.invoiceId, paymentMethodId).subscribe((response) => {
-      console.log('retry subscription private ', response);
       if (response.status === 202) {
         this.subscriptionsService.checkRetrySubscriptionStatus().subscribe((response) => {
-          console.log('checkRetrySubscriptionStatus ', response);
           switch(response.status.toUpperCase() ) {
             case this.REQUIRES_PAYMENT_METHOD: {
               this.isRetryInvoice = true;
@@ -202,7 +195,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
         break;
       }
       default: {
-        console.log('error on action payment');
+        console.warn('error on action payment');
         break;
       }
     }
