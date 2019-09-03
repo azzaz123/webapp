@@ -38,7 +38,9 @@ export class UploaderService {
         },
         lastModifiedDate: file.lastModifiedDate
       };
-      if (this.checkExtension(uploadFile) && this.checkMaxUploads(uploadFile) && this.checkMaxSize(uploadFile)) {
+      if (this.checkExtension(uploadFile, imageType) &&
+          this.checkMaxUploads(uploadFile, imageType) &&
+          this.checkMaxSize(uploadFile, imageType)) {
         let reader: FileReader = new FileReader();
         reader.readAsDataURL(<Blob>file);
         reader.addEventListener('load', (event: any) => {
@@ -51,7 +53,7 @@ export class UploaderService {
     this.serviceEvents.emit({ type: 'allAddedToQueue' });
   }
 
-  private checkExtension(file: UploadFile): boolean {
+  private checkExtension(file: UploadFile, imageType: string): boolean {
     let allowedExtensions = this.options.allowedExtensions || [];
     if (allowedExtensions.indexOf(file.type.toLowerCase()) !== -1) {
       return true;
@@ -62,24 +64,24 @@ export class UploaderService {
       return true;
     }
 
-    this.serviceEvents.emit({type: 'rejected', file: file, reason: 'ExtensionNotAllowed'});
+    this.serviceEvents.emit({type: 'rejected', file: file, reason: 'ExtensionNotAllowed', imageType });
 
     return false;
   }
 
-  private checkMaxUploads(file: UploadFile): boolean {
+  private checkMaxUploads(file: UploadFile, imageType: string): boolean {
     if (this.files.length < this.options.maxUploads) {
       return true;
     }
-    this.serviceEvents.emit({type: 'rejected', file: file, reason: 'MaxUploadsExceeded'});
+    this.serviceEvents.emit({type: 'rejected', file: file, reason: 'MaxUploadsExceeded', imageType});
     return false;
   }
 
-  private checkMaxSize(file: UploadFile): boolean {
+  private checkMaxSize(file: UploadFile, imageType: string): boolean {
     if (!this.options.maxSize || file.size < this.options.maxSize) {
       return true;
     }
-    this.serviceEvents.emit({type: 'rejected', file: file, reason: 'MaxSizeExceeded'});
+    this.serviceEvents.emit({type: 'rejected', file: file, reason: 'MaxSizeExceeded', imageType});
     return false;
   }
 
