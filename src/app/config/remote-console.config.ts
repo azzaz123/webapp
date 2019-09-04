@@ -7,15 +7,18 @@ const options = {
   method: 'POST',
   timestamp: () => new Date().getTime(),
   format: plain,
+  interval: 1,
+  capacity: 1,
 };
 
 function plain(log) {
   const message = JSON.parse(log.message);
-  return { timestamp: log.timestamp, client: 'web', ...message };
+  return { timestamp: log.timestamp, client: 'WEB', ...message };
 }
 
 export function configRemoteConsole() {
   if (remote) {
+    logger.enableAll();
     remote.apply(logger, options);
   }
 }
