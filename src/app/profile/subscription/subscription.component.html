@@ -3,66 +3,6 @@
     <h4 class="section-title">Subscriptions</h4>
     <p class="section-subtitle">Aquí puedes gestionar tus suscripciones y añadir más</p>
     <div class="Subscriptions">
-      <div class="Subscriptions__category" (click)="openSubscriptionModal()" *ngFor="let subscription of subscriptions">
-        <div class="Subscriptions__category-icon">
-          <mat-icon svgIcon={{subscription.category_id}} class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__category-title">{{subscription.category_id}}</div>
-        <hr />
-        <div class="Subscriptions__category-info">
-          <p>Limit: {{subscription.current_limit}}</p>
-          <p>From: {{subscription.tiers[0].price}}{{subscription.tiers[0].currency}}</p>
-        </div>
-        <tsl-button className="btn-primary">Subscribe</tsl-button>
-      </div>
-      <!--<div class="Subscriptions__category" (click)="openSubscriptionModal()">
-        <div class="Subscriptions__category-icon">
-          <mat-icon svgIcon="herocat-cars" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__category-title">Cars</div>
-        <hr />
-        <div class="Subscriptions__category-info">
-          <p>Limit: xxx</p>
-          <p>Desde 9,9€/mes</p>
-        </div>
-        <tsl-button className="btn-primary">Subscribe</tsl-button>
-      </div>
-      <div class="Subscriptions__category" (click)="openSubscriptionModal()">
-        <div class="Subscriptions__category-icon">
-          <mat-icon svgIcon="herocat-services" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__category-title">Services</div>
-        <hr />
-        <div class="Subscriptions__category-info">
-          <p>Limit: xxx</p>
-          <p>Desde 9,9€/mes</p>
-        </div>
-        <tsl-button className="btn-primary">Subscribe</tsl-button>
-      </div>
-      <div class="Subscriptions__category" (click)="openSubscriptionModal()">
-        <div class="Subscriptions__category-icon">
-          <mat-icon svgIcon="herocat-real-estate" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__category-title">Real estate</div>
-        <hr />
-        <div class="Subscriptions__category-info">
-          <p>Limit: xxx</p>
-          <p>Desde 9,9€/mes</p>
-        </div>
-        <tsl-button className="btn-primary">Subscribe</tsl-button>
-      </div>
-      <div class="Subscriptions__category" (click)="openSubscriptionModal()">
-        <div class="Subscriptions__category-icon">
-          <mat-icon svgIcon="herocat-real-estate" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__category-title">Motor parts</div>
-        <hr />
-        <div class="Subscriptions__category-info">
-          <p>Limit: xxx</p>
-          <p>Desde 9,9€/mes</p>
-        </div>
-        <tsl-button className="btn-primary">Subscribe</tsl-button>
-      </div>-->
     </div>
   </div>
 </div>

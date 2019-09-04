@@ -6,6 +6,7 @@ import { I18nService } from '../core/i18n/i18n.service';
 import { UserStatsResponse } from '../core/user/user-stats.interface';
 import { StripeService } from '../core/stripe/stripe.service';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
+import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-profile',
@@ -48,14 +49,14 @@ export class ProfileComponent implements OnInit {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
       this.userStats = userStats;
     });
-    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
-      this.isStripe = true;//val;
-      if (this.isStripe) {
-        this.subscriptionsService.isSubscriptionsActive$().subscribe(val => {
-          this.isSubscriptionsActive = true;//val;
-        });
-      }
-    });
+    this.stripeService.isPaymentMethodStripe$()
+    .pipe(
+      flatMap(val => this.subscriptionsService.isSubscriptionsActive$()),
+    )
+    .do(response => this.isStripe = response)
+    .filter(val => val === true)
+    .subscribe(val => this.isSubscriptionsActive = val); 
+
   }
 
   public logout($event: any) {

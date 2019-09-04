@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from './modals/add-new-subscription-modal.component';
 import { Subscriptions } from '../../core/subscriptions/subscriptions.interface';
-import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 
 
 @Component({
@@ -14,12 +13,10 @@ export class SubscriptionComponent implements OnInit {
   public action: string;
   public subscriptions: Subscriptions[];
 
-  constructor(private modalService: NgbModal,
-              private subscriptionsService: SubscriptionsService) {
+  constructor(private modalService: NgbModal) {
   }
 
   ngOnInit() {
-    this.getSubscriptions();
   }
 
   public openSubscriptionModal(): void {
@@ -28,12 +25,6 @@ export class SubscriptionComponent implements OnInit {
       this.action = 'clear';
       modalRef = null;
     }, () => {});
-  }
-
-  public getSubscriptions(): void {
-    this.subscriptionsService.getSubscriptions().subscribe((response) => {
-      this.subscriptions = response;
-    });
   }
   
 }

@@ -7,7 +7,6 @@ import { UUID } from 'angular2-uuid';
 import { FeatureflagService } from '../user/featureflag.service';
 import { Response } from '@angular/http';
 import { Subscription, Subscriptions } from './subscriptions.interface';
-import { SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
 
 @Injectable()
 export class SubscriptionsService {
@@ -32,8 +31,7 @@ export class SubscriptionsService {
     return this.http.post(`${this.API_URL}/c2b/stripe/subscription/${this.uuid}`, {
         payment_method_id: paymentId,
         product_subscription_id: subscriptionId
-    })
-    .map((r: Response) => r.json());
+    });
   }
 
   public checkNewSubscriptionStatus(): Observable<Subscription> {
@@ -62,11 +60,7 @@ export class SubscriptionsService {
   }
 
   public isSubscriptionsActive$(): Observable<boolean> {
-    return this.featureflagService.getFlag('web_subscriptions')
-  }
-
-  public getSubscriptions(): Observable<Subscriptions[]> {
-    return Observable.of(SUBSCRIPTIONS);
+    return this.featureflagService.getFlag('web_subscriptions');
   }
 
 }

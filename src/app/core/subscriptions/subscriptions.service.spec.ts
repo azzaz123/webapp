@@ -1,5 +1,4 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
-import { Response, ResponseOptions } from '@angular/http';
+import { TestBed } from '@angular/core/testing';
 import { SubscriptionsService } from './subscriptions.service';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
@@ -46,11 +45,16 @@ describe('SubscriptionsService', () => {
     userService = TestBed.get(UserService);
     featureflagService = TestBed.get(FeatureflagService);
     service.uuid = '1-2-3';
+    spyOn(UUID, 'UUID').and.returnValue('1-2-3');
+  });
+
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
   
   describe('newSubscription', () => {
     it('should call endpoint', () => {
-      spyOn(UUID, 'UUID').and.returnValue('1-2-3');
       spyOn(http, 'post').and.returnValue(Observable.of({}));
       const paymentId = 'a1-b2-c3-d4';
       const subscriptionId = '1a-2b-3c-4d';
@@ -62,33 +66,42 @@ describe('SubscriptionsService', () => {
         product_subscription_id: subscriptionId
       });
     });
+
+    afterEach(() => {
+      TestBed.resetTestingModule();
+    });
   });
 
   describe('checkNewSubscriptionStatus', () => {    
     it('should call endpoint', () => {
-      spyOn(UUID, 'UUID').and.returnValue('1-2-3');
       spyOn(http, 'get').and.callThrough();
   
       service.checkNewSubscriptionStatus().subscribe();
   
       expect(http.get).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/subscription/1-2-3`);
     });
+
+    afterEach(() => {
+      TestBed.resetTestingModule();
+    });
   });
 
   describe('checkRetrySubscriptionStatus', () => {    
     it('should call endpoint', () => {
-      spyOn(UUID, 'UUID').and.returnValue('1-2-3');
       spyOn(http, 'get').and.callThrough();
   
       service.checkRetrySubscriptionStatus().subscribe();
   
       expect(http.get).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/payment_attempt/1-2-3`);
     });
+
+    afterEach(() => {
+      TestBed.resetTestingModule();
+    });
   });
 
   describe('retrySubscription', () => {
     it('should call endpoint', () => {
-      spyOn(UUID, 'UUID').and.returnValue('1-2-3');
       spyOn(http, 'put').and.callThrough();
       const invoiceId = 'a1-b2-c3-d4';
       const paymentMethodId = '1a-2b-3c-4d';
@@ -100,16 +113,28 @@ describe('SubscriptionsService', () => {
         payment_method_id: paymentMethodId
       });
     });
+
+    afterEach(() => {
+      TestBed.resetTestingModule();
+    });
   });
 
   describe('isSubscriptionsActive', () => {
     it('should call featureflagService.getFlag when called', () => {
       spyOn(featureflagService, 'getFlag');
-
+  
       service.isSubscriptionsActive$();
-
+  
       expect(featureflagService.getFlag).toHaveBeenCalledWith('web_subscriptions');
+    });
+  
+    afterEach(() => {
+      TestBed.resetTestingModule();
     });
   });
 
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+  
 });
