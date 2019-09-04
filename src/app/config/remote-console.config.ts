@@ -15,5 +15,7 @@ function plain(log) {
 }
 
 export function configRemoteConsole() {
-  remote.apply(logger, options);
+  if (remote) {
+    remote.apply(logger, options);
+  }
 }

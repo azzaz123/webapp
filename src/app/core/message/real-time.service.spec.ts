@@ -27,7 +27,7 @@ let xmppService: XmppService;
 let trackingService: TrackingService;
 let remoteConsoleService: RemoteConsoleService;
 
-fdescribe('RealTimeService', () => {
+describe('RealTimeService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
