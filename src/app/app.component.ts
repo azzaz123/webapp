@@ -38,6 +38,7 @@ import { InboxService } from './core/inbox/inbox.service';
 import { Subscription, Observable } from 'rxjs';
 import { SplitTestService } from './core/tracking/split-test.service';
 import { StripeService } from './core/stripe/stripe.service';
+import { configRemoteConsole } from './config/remote-console.config';
 
 @Component({
   selector: 'tsl-root',
@@ -125,6 +126,7 @@ export class AppComponent implements OnInit {
   private config() {
     configMoment(this.i18n.locale);
     configIcons(this.matIconRegistry, this.sanitizer);
+    configRemoteConsole();
   }
 
   private updateSessionCookie() {
