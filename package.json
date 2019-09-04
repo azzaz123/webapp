@@ -36,6 +36,7 @@
     "@angular/platform-server": "6.0.9",
     "@angular/router": "^6.0.9",
     "@beyerleinf/ngx-dnd": "^6.0.0-preview3",
+    "@mparticle/web-sdk": "^2.9.9-rc.1",
     "@ng-bootstrap/ng-bootstrap": "1.0.0",
     "@ngu/carousel": "^1.4.8",
     "@types/hammerjs": "^2.0.35",

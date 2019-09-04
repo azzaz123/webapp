@@ -222,6 +222,10 @@
   dependencies:
     tslib "^1.9.0"
 
+"@mparticle/web-sdk@^2.9.9-rc.1":
+  version "2.9.9-rc.1"
+  resolved "https://registry.yarnpkg.com/@mparticle/web-sdk/-/web-sdk-2.9.9-rc.1.tgz#23424ce279945ac79b285e624e769db43ffe4528"
+
 "@ng-bootstrap/ng-bootstrap@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-1.0.0.tgz#8f2ae70db2fe1dcbf5e0acb49dc2b1bbba2be8d2"
