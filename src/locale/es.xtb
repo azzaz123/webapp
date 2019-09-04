@@ -855,4 +855,5 @@
   <translation id="5337451642081129366">Desbloquear usuario</translation>
   <translation id="7962273932004201523">Vendido</translation>
   <translation id="4467323362722952678">Desconocido</translation>
+  <translation id="3893097575013115653">+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex></ph> Más</translation>
 </translationbundle>
