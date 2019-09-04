@@ -36,6 +36,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   private REQUIRES_PAYMENT_METHOD = 'REQUIRES_PAYMENT_METHOD';
   private REQUIRES_ACTION = 'REQUIRES_ACTION';
   private SUCCEEDED = 'SUCCEEDED';
+  public selectedPlanId: string;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -48,7 +49,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   ngOnInit() {
     this.currentSlide = 'ngb-slide-0';
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
-      this.isStripe = true;//val;
+      this.isStripe = val;
       if (this.isStripe) {
         this.eventService.subscribe('paymentActionResponse', (response) => {
           this.managePaymentResponse(response);
@@ -63,6 +64,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
 
   public addSubscription(paymentMethod: PaymentMethodResponse) {
     this.loading = true;
+    this.selectedPlanId = 'x';//Until feature is further developed
     this.stripeService.addNewCard(paymentMethod.id).subscribe((response) => {
       if (!response) {
         this.requestNewPayment();
@@ -70,20 +72,20 @@ export class AddNewSubscriptionModalComponent implements OnInit {
         if (this.isRetryInvoice) {
           this.retrySubscription(paymentMethod.id);
         } else {
-          this.addSubscriptionFromSavedCard(paymentMethod.id);
+          this.addSubscriptionFromSavedCard(this.selectedPlanId, paymentMethod.id);
         }
       }
     });
   }
 
-  public addSubscriptionFromSavedCard(paymentMethodId = this.card.id) {
+  public addSubscriptionFromSavedCard(selectedPlanId: string, paymentMethodId = this.card.id) {
     if (!this.loading) {
       this.loading = true;
     }
     if (this.isRetryInvoice) {
       this.retrySubscription();
     } else {
-      this.subscriptionsService.newSubscription('plan_FSWGMZq6tDdiKc', paymentMethodId).subscribe((response) => {
+      this.subscriptionsService.newSubscription(selectedPlanId, paymentMethodId).subscribe((response) => {
         if (response.status === 202) {
           this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: Subscription) => {
             switch(response.payment_status.toUpperCase() ) {
