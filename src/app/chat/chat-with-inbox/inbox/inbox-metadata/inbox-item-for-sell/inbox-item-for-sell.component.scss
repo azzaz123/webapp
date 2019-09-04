@@ -1,0 +1,45 @@
+@import "~style/common";
+
+:host {
+  display: block;
+}
+
+.card {
+  color: $blue-grey-1;
+
+  .item-details-wrap {
+    display: flex;
+    flex-direction: row;
+    height: $item-avatar-size;
+    text-align: left;
+    overflow: hidden;
+
+    .item-details {
+      color: $blue-grey-2;
+      line-height: $line-height-ml;
+      margin-bottom: 0;
+      align-self: center;
+
+      h2 {
+        font-size: $font-size-s;
+        line-height: $font-size-ll;
+        max-height: 40px;
+        overflow: hidden;
+      }
+
+      .selling-label {
+        color: $blue-grey-2;
+        font-weight: $font-weight-chunky;
+        font-size: $font-size-xs;
+        text-transform: uppercase;
+        margin-right: $spacing-xs;
+      }
+
+      .items-count {
+        font-size: $font-size-xs;
+        color: $walla-main;
+        font-weight: $font-weight-chunky;
+      }
+    }
+  }
+}
