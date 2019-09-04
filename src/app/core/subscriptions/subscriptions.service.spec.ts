@@ -92,7 +92,7 @@ describe('SubscriptionsService', () => {
   
       service.checkRetrySubscriptionStatus().subscribe();
   
-      expect(http.get).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/payment_attempt/1-2-3`);
+      expect(http.get).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/subscription/payment_attempt/1-2-3`);
     });
 
     afterEach(() => {
@@ -108,7 +108,7 @@ describe('SubscriptionsService', () => {
   
       service.retrySubscription(invoiceId, paymentMethodId).subscribe();
   
-      expect(http.put).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/payment_attempt/1-2-3`, {
+      expect(http.put).toHaveBeenCalledWith(`${API_URL}/c2b/stripe/subscription/payment_attempt/1-2-3`, {
         invoice_id: invoiceId,
         payment_method_id: paymentMethodId
       });

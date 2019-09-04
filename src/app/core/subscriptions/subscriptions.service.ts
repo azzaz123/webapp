@@ -47,7 +47,7 @@ export class SubscriptionsService {
 
   public retrySubscription(invoiceId: string, paymentId: string): Observable<any> {
     this.uuid = UUID.UUID();
-    return this.http.put(`${this.API_URL}/c2b/stripe/payment_attempt/${this.uuid}`, {
+    return this.http.put(`${this.API_URL}/c2b/stripe/subscription/payment_attempt/${this.uuid}`, {
       invoice_id: invoiceId,
       payment_method_id: paymentId,
     })
@@ -55,7 +55,7 @@ export class SubscriptionsService {
   }
 
   public checkRetrySubscriptionStatus(): Observable<any> {
-    return this.http.get(`${this.API_URL}/c2b/stripe/payment_attempt/${this.uuid}`)
+    return this.http.get(`${this.API_URL}/c2b/stripe/subscription/payment_attempt/${this.uuid}`)
     .map((res: Response) => res.json());
   }
 
