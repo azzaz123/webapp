@@ -40,8 +40,7 @@
       <div class="unread-counter-column">
         <div class="badge badge-primary badge-pill" [hidden]="conversation.unreadCounter === 0">
           <span *ngIf="conversation.unreadCounter <= unreadCounterDisplayLimit">{{ conversation.unreadCounter }}</span>
-          <span *ngIf="conversation.unreadCounter > unreadCounterDisplayLimit" i18n>{{ unreadCounterDisplayLimit }}
-            +</span>
+          <span *ngIf="conversation.unreadCounter > unreadCounterDisplayLimit">{{ unreadCounterDisplayLimit }}+</span>
         </div>
       </div>
     </div>

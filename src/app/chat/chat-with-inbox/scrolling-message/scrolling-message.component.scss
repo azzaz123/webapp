@@ -23,13 +23,15 @@
     transition: opacity 0.25s;
 
     &.badge-pill-sm {
-      top: -6px;
-      left: -6px;
+      top: -2px;
+      left: -2px;
       height: $font-size-s;
       width: $font-size-s;
     }
 
     &.badge-pill-lg {
+      top: -9px;
+      left: -9px;
       height: $font-size-lll;
       width: $font-size-lll;
     }
@@ -42,7 +44,7 @@
   }
 
   mat-icon {
-    margin: 10px 4px;
+    margin: 10px 3px;
   }
 }
 
