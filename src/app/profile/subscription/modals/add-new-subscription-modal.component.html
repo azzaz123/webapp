@@ -13,32 +13,30 @@
           <p class="AddNewSubscription__listing-limit-steps">Paso <span class="bold">1</span> de <span class="bold">2</span></p>
           <div class="AddNewSubscription__listing-limit-title">¿Cuantos productos vas a tener en tu perfil?</div>
           <div class="AddNewSubscription__listing-limit-container">
-            <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-            [ngClass]="{selected: listingLimit === 40}">40</div>
-            <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-            [ngClass]="{selected: listingLimit === 80}">80</div>
-            <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-            [ngClass]="{selected: listingLimit === 150}">150</div>
-            <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-            [ngClass]="{selected: listingLimit === 250}">250</div>
-            <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-            [ngClass]="{selected: listingLimit === 400}">400</div>
-            <div class="AddNewSubscription__listing-limit-box" (click)="selectListingLimit($event)"
-            [ngClass]="{selected: listingLimit === 500}">500</div>
+            <div *ngFor="let tier of subscription.tiers; let i = index" class="AddNewSubscription__listing-limit-box"
+            (click)="selectListingLimit(subscription.tiers[i])" [ngClass]="{selected: selectedTier.limit === subscription.tiers[i].limit}">
+            <span *ngIf="subscription.tiers[i].limit >= 0">{{subscription.tiers[i].limit}}</span>
+            <span *ngIf="subscription.tiers[i].limit < 0">Unlimited</span>
+          </div>
           </div>
           <hr />
           <div class="row AddNewSubscription__listing-limit-payment">
             <div class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--left">
-                <span>Motor y accesorios</span>
+                <span>{{subscription.category_name}}</span>
                 <br />
-                <span>{{listingLimit || 0}} productos</span>
+                <span *ngIf="selectedTier">
+                  <span *ngIf="selectedTier.limit < 0">Unlimited products</span>
+                  <span *ngIf="selectedTier.limit >= 0">{{selectedTier.limit}} products</span>
+                </span>
+                <span *ngIf="!selectedTier">0 productos</span>
             </div>
             <div class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--right">
-                <span class="AddNewSubscription__listing-limit-price">xx,xx€/mes</span>
+                <span class="AddNewSubscription__listing-limit-price" *ngIf="selectedTier">{{selectedTier.price}}{{selectedTier.currency}}/mes</span>
+                <span class="AddNewSubscription__listing-limit-price" *ngIf="!selectedTier">- /mes</span>
             </div>
           </div>
         </div>
-        <tsl-button *ngIf="currentSlide === 'ngb-slide-0'" [disabled]="!listingLimit" (click)="carousel.next()" i18n>Continue to payment</tsl-button>
+        <tsl-button *ngIf="currentSlide === 'ngb-slide-0'" [disabled]="!selectedTier" (click)="carousel.next()" i18n>Continue to payment</tsl-button>
       </div>
     </ng-template>
     <ng-template ngbSlide>
@@ -48,12 +46,17 @@
           <div class="AddNewSubscription__listing-limit-title">Define la forma de pago</div>
           <div class="row AddNewSubscription__listing-limit-payment">
             <div class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--left">
-                <span>Motor y accesorios</span>
+                <span>{{subscription.category_name}}</span>
                 <br />
-                <span>{{listingLimit || 0}} productos</span>
+                <span *ngIf="selectedTier">
+                  <span *ngIf="selectedTier.limit < 0">Unlimited products</span>
+                  <span *ngIf="selectedTier.limit >= 0">{{selectedTier.limit}} products</span>
+                </span>
+                <span *ngIf="!selectedTier">0 productos</span>
             </div>
             <div class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--right">
-                <span class="AddNewSubscription__listing-limit-payment-price">xx,xx€/mes</span>
+              <span class="AddNewSubscription__listing-limit-price" *ngIf="selectedTier">{{selectedTier.price}}{{selectedTier.currency}}/mes</span>
+              <span class="AddNewSubscription__listing-limit-price" *ngIf="!selectedTier">- /mes</span>
                 <br />
                 <span class="AddNewSubscription__listing-limit-payment-edit" (click)="carousel.prev()">Change</span>
             </div>

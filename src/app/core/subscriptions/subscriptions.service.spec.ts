@@ -133,6 +133,20 @@ describe('SubscriptionsService', () => {
     });
   });
 
+  describe('isSubscriptionsActive', () => {
+    it('should call featureflagService.getFlag when called', () => {
+      spyOn(featureflagService, 'getFlag');
+  
+      service.isSubscriptionsActive$();
+  
+      expect(featureflagService.getFlag).toHaveBeenCalledWith('web_subscriptions');
+    });
+  
+    afterEach(() => {
+      TestBed.resetTestingModule();
+    });
+  });
+
   afterAll(() => {
     TestBed.resetTestingModule();
   });

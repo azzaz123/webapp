@@ -8,8 +8,9 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { Subscription } from '../../../core/subscriptions/subscriptions.interface';
-
+import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
+import { SubscriptionsModel } from '../../../core/subscriptions/subscriptions.model';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -26,7 +27,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
-  public listingLimit: number;
+  public selectedTier: Tier;
   public isStripe: boolean;
   public loading = false;
   public isPaymentError = false;
@@ -37,6 +38,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   private REQUIRES_ACTION = 'REQUIRES_ACTION';
   private SUCCEEDED = 'SUCCEEDED';
   public selectedPlanId: string;
+  public subscription: SubscriptionsResponse;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -47,6 +49,13 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.subscription.subscribed_from) {
+      this.selectedTier = this.subscription.tiers[this.subscription.selected_tier_id - 1];
+    } else if (this.subscription.default_tier_id) {
+      this.selectedTier = this.subscription.tiers[this.subscription.default_tier_id - 1]
+    }
+    //const selectedTier  = this.isSelectedTier() >= 0 ? this.isSelectedTier() : this.isDefaultTier();
+    //this.selectedTier = selectedTier >= 0 ? this.subscription.tiers[selectedTier] : this.subscription.tiers[0];
     this.currentSlide = 'ngb-slide-0';
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = val;
@@ -87,7 +96,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     } else {
       this.subscriptionsService.newSubscription(selectedPlanId, paymentMethodId).subscribe((response) => {
         if (response.status === 202) {
-          this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: Subscription) => {
+          this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: SubscriptionResponse) => {
             switch(response.payment_status.toUpperCase() ) {
               case this.REQUIRES_PAYMENT_METHOD: {
                 this.isRetryInvoice = true;
@@ -180,8 +189,8 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     this.setCardInfo(selectedCard);
   }
 
-  public selectListingLimit(event: any): void {
-    this.listingLimit = parseInt(event.target.innerHTML, 10);
+  public selectListingLimit(tier: Tier): void {
+    this.selectedTier = tier;
   }
 
   public onSlide($event: NgbSlideEvent) {
@@ -217,6 +226,14 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     modalRef.result.then(() => {
       modalRef = null;
     }, () => {});
+  }
+
+  private isDefaultTier(): number {
+    return this.subscription.tiers.findIndex(tier => tier.id === this.subscription.default_tier_id);
+  }
+
+  private isSelectedTier(): number {
+    return this.subscription.tiers.findIndex(tier => tier.id === this.subscription.selected_tier_id);
   }
 
   @HostListener('click') onClick() {

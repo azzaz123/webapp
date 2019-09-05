@@ -39,6 +39,13 @@
     align-items: center;
     font-size: $font-size-s;
     margin: 0 0 $spacing-l;
+    &--edit {
+      color: $walla-main;
+      text-align: center;
+    }
+    &--price {
+      font-weight: bold;
+    }
   }
   .Subscriptions__category-title {
     font-size: $font-size-l;
@@ -56,15 +63,14 @@
     width: 50%;
   }
   .Subscriptions__category-icon {
-    padding: 22px;
+    padding: 15px;
     border-radius: 50%;
     width: 68px;
     height: 68px;
     background-color: $blue-grey-5;
     mat-icon {
-      /deep/ svg path {
-        fill: $blue-grey-3;
-      }
+      height: 38px;
+      width: 38px;
     }
   }
 }
@@ -103,4 +109,9 @@
   font-weight: bold;
   color: $walla-main;
   margin: $spacing-s 0 $spacing-xs;
+}
+
+.Subscriptions__subscribed-from {
+  color: $walla-main;
+  font-size: $font-size-s;
 }
