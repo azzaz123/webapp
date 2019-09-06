@@ -275,7 +275,7 @@ export class UploadCarComponent implements OnInit {
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackEditItem(this.item);
+      this.trackEditItem();
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
@@ -387,7 +387,7 @@ export class UploadCarComponent implements OnInit {
     }
   }
 
-  private trackEditItem(item: Car) {
+  private trackEditItem() {
     const formData = this.uploadForm.value;
 
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
@@ -400,19 +400,17 @@ export class UploadCarComponent implements OnInit {
         screenId: SCREENS_IDS.UploadForm,
         car_brand: formData.brand,
         car_model: formData.model,
-        car_bodytype: formData.bodyType,
-        car_km: formData.km,
-        car_year: formData.year,
-        car_engine: formData.engine
+        car_bodytype: formData.body_type || null,
+        car_km: formData.km || null,
+        car_year: parseInt(formData.year),
+        car_engine: formData.engine || null
       };
 
-      console.log()
-
-      // this.analyticsService.trackEvent({
-      //   name: EVENT_NAMES.Edit,
-      //   eventType: EVENT_TYPES.Other,
-      //   attributes: eventAttrs
-      // });
+      this.analyticsService.trackEvent({
+        name: EVENT_NAMES.Edit,
+        eventType: EVENT_TYPES.Other,
+        attributes: eventAttrs
+      });
     });
   }
 

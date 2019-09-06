@@ -1,3 +1,6 @@
+import { EVENT_TYPES, EVENT_NAMES } from './../../core/analytics/analytics-constants';
+import { EditItem } from './../../core/tracking/events-interfaces/edit-item.interface';
+import { MockAnalyticsService } from './../../../tests/analytics.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { UploadCarComponent } from './upload-car.component';
@@ -23,6 +26,9 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Car } from '../../core/item/car';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { UserService } from '../../core/user/user.service';
+import { SCREENS_IDS } from '../../core/analytics/analytics-constants';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -35,6 +41,7 @@ describe('UploadCarComponent', () => {
   let router: Router;
   let modalService: NgbModal;
   let trackingService: TrackingService;
+  let analyticsService: AnalyticsService;
   let itemService: ItemService;
   const componentInstance: any = {
     getBodyType: jasmine.createSpy('getBodyType')
@@ -47,7 +54,15 @@ describe('UploadCarComponent', () => {
         FormBuilder,
         TEST_HTTP_PROVIDERS,
         NgbPopoverConfig,
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        {
+          provide: UserService, useValue: {
+            isProfessional() {
+              return Observable.of(false);
+            }
+          }
+        },
         {
           provide: CarSuggestionsService, useValue: {
           getBrands() {
@@ -119,6 +134,7 @@ describe('UploadCarComponent', () => {
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
+    analyticsService = TestBed.get(AnalyticsService);
     itemService = TestBed.get(ItemService);
   });
 
@@ -453,7 +469,42 @@ describe('UploadCarComponent', () => {
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {urgent: true, itemId: uploadedEvent.response.id}]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { urgent: true, itemId: uploadedEvent.response.id }]);
+    });
+
+    it('should send the Edit Item tracking event', () => {
+      component.item = MOCK_CAR;
+      const editTrackingAttrs: EditItem = {
+        itemId: MOCK_CAR.id,
+        categoryId: MOCK_CAR.categoryId,
+        salePrice: MOCK_CAR.salePrice,
+        title: MOCK_CAR.title,
+        isPro: false,
+        screenId: SCREENS_IDS.UploadForm,
+        car_brand: 'Tesla',
+        car_model: MOCK_CAR.model,
+        car_bodytype: MOCK_CAR.bodyType,
+        car_km: MOCK_CAR.km,
+        car_year: MOCK_CAR.year,
+        car_engine: MOCK_CAR.engine
+      };
+      const uploadedEvent = {
+        action: 'updated',
+        response: {
+          id: '1'
+        }
+      };
+      spyOn(analyticsService, 'trackEvent');      
+
+      component.ngOnInit();
+      component.uploadForm.value.brand = 'Tesla';
+      component.onUploaded(uploadedEvent);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+        name: EVENT_NAMES.Edit,
+        eventType: EVENT_TYPES.Other,
+        attributes: editTrackingAttrs
+      });
     });
   });
 
