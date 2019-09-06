@@ -31,6 +31,7 @@ import { ProfileService } from './profile/profile.service';
 import { InboxService } from './inbox/inbox.service';
 import { StripeService } from './stripe/stripe.service';
 import { BlockUserService } from './conversation/block-user';
+import { SubscriptionsService } from './subscriptions/subscriptions.service';
 
 @NgModule({
   imports: [
@@ -80,7 +81,8 @@ export class CoreModule {
         AdService,
         ConnectionService,
         ProfileService,
-        StripeService
+        StripeService,
+        SubscriptionsService
       ]
     };
   }

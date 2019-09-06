@@ -1,0 +1,17 @@
+[
+    {
+        "category_id": 100,
+        "available": 3,
+        "limit": 10
+    },
+    {
+        "category_id": 14000,
+        "available": 0,
+        "limit": 10
+    },
+    {
+        "category_id": 12800,
+        "available": 2,
+        "limit": 10
+    }
+]

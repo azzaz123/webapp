@@ -33,6 +33,8 @@ import { DeactivateItemsModalComponent } from '../../shared/catalog/catalog-item
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { StripeService } from '../../core/stripe/stripe.service';
+import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { SubscriptionSlot } from '../../core/subscriptions/subscriptions.interface';
 
 const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reactivateWithCredits', 'purchaseListingFeeWithCredits'];
 
@@ -66,8 +68,8 @@ export class ListComponent implements OnInit, OnDestroy {
   public selectedItems: Item[];
   public creditInfo: CreditInfo;
   public isStripe: boolean;
-  public subscriptions: UserSubscription[] = [];
-  public selectedSubscription: UserSubscription;
+  public subscriptionSlots: SubscriptionSlot[] = [];
+  public selectedSubscriptionSlot: SubscriptionSlot;
   public selectMode = false;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
@@ -83,10 +85,15 @@ export class ListComponent implements OnInit, OnDestroy {
     public userService: UserService,
     private eventService: EventService,
     protected i18n: I18nService,
-    private stripeService: StripeService) {
+    private stripeService: StripeService,
+    private subscriptionsService: SubscriptionsService) {
   }
 
   ngOnInit() {
+    this.subscriptionsService.getSlots().subscribe(subscriptionSlots => {
+      this.subscriptionSlots = subscriptionSlots;
+      console.log(this.subscriptionSlots);
+    });
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = val;
     });
@@ -112,10 +119,6 @@ export class ListComponent implements OnInit, OnDestroy {
       this.selectedItems = this.itemService.selectedItems.map((id: string) => {
         return <Item>_.find(this.items, {id: id});
       });
-    });
-
-    this.userService.getSubscriptions().subscribe(subscriptions => {
-      this.subscriptions = subscriptions;
     });
 
     setTimeout(() => {
@@ -517,16 +520,16 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public selectSubscription(subscription: UserSubscription, e) {
-    this.selectedSubscription = subscription;
+  public selectSubscriptionSlot(subscription: SubscriptionSlot, e) {
+    this.selectedSubscriptionSlot = subscription;
 
     if (!subscription) {
       e.stopPropagation();
     }
   }
 
-  public isSubscriptionSelected(subscription: UserSubscription) {
-    return this.selectedSubscription ? subscription.type === this.selectedSubscription.type : false;
+  public isSubscriptionSlotSelected(subscription: SubscriptionSlot) {
+    return this.selectedSubscriptionSlot ? subscription.category_id === this.selectedSubscriptionSlot.category_id : false;
   }
 
   public onClickFeature() {

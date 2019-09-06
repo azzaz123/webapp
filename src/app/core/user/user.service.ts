@@ -412,8 +412,4 @@ export class UserService extends ResourceService {
     return this.http.get(this.API_URL + '/me/items/slots-available')
       .map((r: Response) => r.json());
   }
-
-  public getSubscriptions(): Observable<UserSubscription[]> {
-    return this.httpClient.getNoBase('/assets/json/mocked-user-subscriptions.json');
-  }
 }
