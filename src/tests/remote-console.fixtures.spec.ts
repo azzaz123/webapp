@@ -3,6 +3,9 @@ import { DeviceInfo } from 'ngx-device-detector';
 export class MockRemoteConsoleService {
   sendConnectionTimeout(userId: string, timeout: number): void {
   }
+
+  sendDuplicateConversations(userId: string, conversationsGroupById: Map<string, number>): void {
+  }
 }
 
 export class DeviceDetectorServiceMock {
