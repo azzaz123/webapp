@@ -35,6 +35,6 @@ export class AnalyticsService {
   }
 
   public trackPageView(page: PageViewInterface) {
-    mParticle.logPageView(page);
+    mParticle.logPageView(page.name, page.attributes, page.flags);
   }
 }

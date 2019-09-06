@@ -251,7 +251,7 @@ describe('UploadRealestateComponent', () => {
 
   });
 
-  fdescribe('onUploaded', () => {
+  describe('onUploaded', () => {
     it('should redirect', () => {
       component.item = MOCK_REALESTATE;
       component.item.flags.onhold = null;
