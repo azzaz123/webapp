@@ -1,3 +1,4 @@
+import { EVENT_TYPES, SCREENS_IDS, EVENT_NAMES } from './../../core/analytics/analytics-constants';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IOption } from 'ng-select';
 import { RealestateKeysService } from './realestate-keys.service';
@@ -15,6 +16,9 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { ItemService } from '../../core/item/item.service';
 import { Realestate } from '../../core/item/realestate';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { UserService } from '../../core/user/user.service';
+import { EditItem } from '../../core/tracking/events-interfaces/edit-item.interface';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -41,18 +45,20 @@ export class UploadRealestateComponent implements OnInit {
   public extras: Key[];
   public conditions: IOption[];
   public currencies: IOption[] = [
-    {value: 'EUR', label: '€'},
-    {value: 'GBP', label: '£'}
+    { value: 'EUR', label: '€' },
+    { value: 'GBP', label: '£' }
   ];
 
   constructor(private fb: FormBuilder,
-              private realestateKeysService: RealestateKeysService,
-              private router: Router,
-              private errorsService: ErrorsService,
-              private modalService: NgbModal,
-              private itemService: ItemService,
-              private trackingService: TrackingService,
-              config: NgbPopoverConfig) {
+    private realestateKeysService: RealestateKeysService,
+    private router: Router,
+    private errorsService: ErrorsService,
+    private modalService: NgbModal,
+    private itemService: ItemService,
+    private trackingService: TrackingService,
+    private analyticsService: AnalyticsService,
+    private userService: UserService,
+    config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
       category_id: REALESTATE_CATEGORY,
@@ -206,12 +212,13 @@ export class UploadRealestateComponent implements OnInit {
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
+      this.trackEditItem();
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
     if (this.isUrgent) {
-      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {category: this.uploadForm.value.category_id});
+      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, { category: this.uploadForm.value.category_id });
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
@@ -228,7 +235,7 @@ export class UploadRealestateComponent implements OnInit {
   onError(response: any) {
     this.loading = false;
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {category: this.uploadForm.value.category_id});
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
     }
@@ -246,6 +253,32 @@ export class UploadRealestateComponent implements OnInit {
     modalRef.result.then(() => {
       this.onSubmit();
     }, () => {
+    });
+  }
+
+  private trackEditItem() {
+    const formData = this.uploadForm.value;
+
+    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+      const eventAttrs: EditItem = {
+        itemId: formData.id,
+        categoryId: parseInt(formData.category_id),
+        salePrice: formData.sale_price,
+        title: formData.title,
+        isPro: isProfessional,
+        screenId: SCREENS_IDS.UploadForm,
+        re_operation: formData.operation,
+        re_type: formData.type,
+        re_m2: formData.surface || null
+      };
+
+      console.log(eventAttrs);
+
+      this.analyticsService.trackEvent({
+        name: EVENT_NAMES.Edit,
+        eventType: EVENT_TYPES.Other,
+        attributes: eventAttrs
+      });
     });
   }
 

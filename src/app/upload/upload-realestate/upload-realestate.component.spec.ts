@@ -17,6 +17,11 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { MOCK_REALESTATE, UPLOAD_FORM_REALESTATE_VALUES } from '../../../tests/realestate.fixtures.spec';
 import { ItemService } from '../../core/item/item.service';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
+import { EditItem } from '../../core/tracking/events-interfaces/edit-item.interface';
+import { SCREENS_IDS, EVENT_NAMES, EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import { UserService } from '../../core/user/user.service';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -26,6 +31,7 @@ describe('UploadRealestateComponent', () => {
   let trackingService: TrackingService;
   let realestateKeysService: RealestateKeysService;
   let modalService: NgbModal;
+  let analyticsService: AnalyticsService;
   let itemService: ItemService;
   const RESPONSE: Key[] = [{id: 'test', icon_id: 'test', text: 'test'}];
   const RESPONSE_OPTION: IOption[] = [{value: 'test', label: 'test'}];
@@ -39,6 +45,14 @@ describe('UploadRealestateComponent', () => {
         FormBuilder,
         NgbPopoverConfig,
         {provide: TrackingService, useClass: MockTrackingService},
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        {
+          provide: UserService, useValue: {
+            isProfessional() {
+              return Observable.of(false);
+            }
+          }
+        },
         {
           provide: RealestateKeysService, useValue: {
           getOperations() {
@@ -101,6 +115,7 @@ describe('UploadRealestateComponent', () => {
     realestateKeysService = TestBed.get(RealestateKeysService);
     modalService = TestBed.get(NgbModal);
     itemService = TestBed.get(ItemService);
+    analyticsService = TestBed.get(AnalyticsService);
     fixture.detectChanges();
   });
 
@@ -236,7 +251,7 @@ describe('UploadRealestateComponent', () => {
 
   });
 
-  describe('onUploaded', () => {
+  fdescribe('onUploaded', () => {
     it('should redirect', () => {
       component.item = MOCK_REALESTATE;
       component.item.flags.onhold = null;
@@ -268,6 +283,38 @@ describe('UploadRealestateComponent', () => {
 
       expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true}]);
     });
+
+    it('should send the Edit Item tracking event', () => {
+      component.item = MOCK_REALESTATE;
+      const editTrackingAttrs: EditItem = {
+        itemId: MOCK_REALESTATE.id,
+        categoryId: MOCK_REALESTATE.categoryId,
+        salePrice: MOCK_REALESTATE.salePrice,
+        title: MOCK_REALESTATE.title,
+        isPro: false,
+        screenId: SCREENS_IDS.UploadForm,
+        re_operation: MOCK_REALESTATE.operation,
+        re_type: MOCK_REALESTATE.type,
+        re_m2: MOCK_REALESTATE.surface
+      };
+      const uploadedEvent = {
+        action: 'updated',
+        response: {
+          id: '1'
+        }
+      };
+      spyOn(analyticsService, 'trackEvent');      
+
+      component.ngOnInit();
+      component.onUploaded(uploadedEvent);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+        name: EVENT_NAMES.Edit,
+        eventType: EVENT_TYPES.Other,
+        attributes: editTrackingAttrs
+      });
+    });
+
   });
 
   describe('onError', () => {
