@@ -1,0 +1,14 @@
+<a class="card" href="{{user?.sellingItem.webLink}}" tslTrackEvent="CONVERSATION_SELLING_CAR_VIEWED"
+   [params]="{item_id: user?.sellingItem.id}"
+   target="_blank" *ngIf="user?.sellingItem">
+  <div class="card-block">
+    <tsl-item-avatar class="pull-left" [item]="user?.sellingItem" fallbackLight="true"></tsl-item-avatar>
+    <div class="item-details-wrap">
+      <div class="item-details">
+        <span class="selling-label" i18n>Selling</span>
+        <span *ngIf="user?.sellingItemCount > 0" class="items-count" i18n>+{{user?.sellingItemCount}} More</span>
+        <h2>{{user?.sellingItem.title}}</h2>
+      </div>
+    </div>
+  </div>
+</a>

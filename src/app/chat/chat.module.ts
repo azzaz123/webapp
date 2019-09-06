@@ -38,6 +38,7 @@ import { TextMessageComponent } from './chat-with-inbox/message/text-message';
 import { ThirdVoiceReviewComponent } from './chat-with-inbox/message/third-voice-message/third-voice-review';
 import { ScrollingMessageComponent } from './chat-with-inbox/scrolling-message';
 import { StatusIconComponent } from './chat-with-inbox/inbox/inbox-metadata/status-icon';
+import { InboxItemForSellComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component';
 
 @NgModule({
   imports: [
@@ -79,6 +80,7 @@ import { StatusIconComponent } from './chat-with-inbox/inbox/inbox-metadata/stat
     CurrentConversationComponent,
     InboxUserDetailComponent,
     InboxItemDetailComponent,
+    InboxItemForSellComponent,
     BlockSendLinkComponent,
     TextMessageComponent,
     ThirdVoiceMessageComponent,

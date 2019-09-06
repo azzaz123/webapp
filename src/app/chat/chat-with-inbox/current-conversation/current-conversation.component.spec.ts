@@ -23,6 +23,7 @@ import { BlockUserXmppService } from '../../../core/conversation/block-user';
 import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
 import { User } from '../../../core/user/user';
 import { BlockUserService } from '../../../core/conversation/block-user';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 class MockUserService {
 
@@ -90,11 +91,21 @@ describe('CurrentConversationComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ NgbModule.forRoot(), MomentModule ],
-      declarations: [ CurrentConversationComponent ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-      providers: [ EventService,
-        { provide: RealTimeService, useValue: { sendRead() {} }},
+      imports: [
+        NgbModule.forRoot(),
+        MomentModule,
+        NgxPermissionsModule,
+        NgxPermissionsModule.forRoot()
+      ],
+      declarations: [CurrentConversationComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [EventService,
+        {
+          provide: RealTimeService, useValue: {
+            sendRead() {
+            }
+          }
+        },
         { provide: ToastrService, useClass: MockedToastr },
         { provide: ItemService, useClass: MockItemService },
         { provide: UserService, useClass: MockUserService },
