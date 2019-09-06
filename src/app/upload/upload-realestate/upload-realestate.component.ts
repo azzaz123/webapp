@@ -272,8 +272,6 @@ export class UploadRealestateComponent implements OnInit {
         re_m2: formData.surface || null
       };
 
-      console.log(eventAttrs);
-
       this.analyticsService.trackEvent({
         name: EVENT_NAMES.Edit,
         eventType: EVENT_TYPES.Other,
