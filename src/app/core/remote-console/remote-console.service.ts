@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { MetricTypeEnum } from './metric-type.enum';
-import logger from 'loglevel';
+import * as logger from 'loglevel';
 import * as _ from 'lodash';
 
 @Injectable({
