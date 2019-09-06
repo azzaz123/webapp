@@ -31,7 +31,7 @@ export class AnalyticsService {
   }
 
   public trackEvent(event: EventInterface) {
-    mParticle.logEvent(event);
+    mParticle.logEvent(event.name, event.eventType, event.attributes);
   }
 
   public trackPageView(page: PageViewInterface) {
