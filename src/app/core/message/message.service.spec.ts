@@ -31,6 +31,12 @@ import { MsgArchiveService } from './archive.service';
 import { HttpService } from '../http/http.service';
 import { I18nService } from '../i18n/i18n.service';
 import { RealTimeService } from './real-time.service';
+import { RemoteConsoleService } from '../remote-console';
+
+export class MockRemoteConsoleService {
+  sendConnectionTimeout(userId: string, timeout: number): void {
+  }
+}
 
 describe('Service: Message', () => {
 
@@ -58,7 +64,8 @@ describe('Service: Message', () => {
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: ConnectionService, useValue: {} },
         { provide: PersistencyService, useClass: MockedPersistencyService },
-        { provide: UserService, useValue: { user: new User(USER_ID) } }
+        { provide: UserService, useValue: { user: new User(USER_ID) } },
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
       ]
     });
     realTime = TestBed.get(RealTimeService);

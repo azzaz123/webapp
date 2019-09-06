@@ -8,22 +8,29 @@ import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { ChatSignal, chatSignalType } from './chat-signal.interface';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { RemoteConsoleService } from '../remote-console';
 
 @Injectable()
 export class RealTimeService {
 
   constructor(private xmpp: XmppService,
-    private eventService: EventService,
-    private persistencyService: PersistencyService,
-    private trackingService: TrackingService) {
+              private eventService: EventService,
+              private persistencyService: PersistencyService,
+              private trackingService: TrackingService,
+              private remoteConsoleService: RemoteConsoleService) {
     this.subscribeEventNewMessage();
     this.subscribeEventMessageSent();
     this.subscribeConnectionRestored();
   }
 
   private ongoingRetry: boolean;
+
   public connect(userId: string, accessToken: string) {
-    this.xmpp.connect(userId, accessToken).subscribe();
+    const startTimestamp = new Date().getTime();
+    this.xmpp.connect(userId, accessToken).subscribe(() => {
+      const endTimestamp = new Date().getTime();
+      this.remoteConsoleService.sendConnectionTimeout(userId, endTimestamp - startTimestamp);
+    });
   }
 
   public disconnect() {
