@@ -23,6 +23,11 @@ import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { SplitTestService } from '../../core/tracking/split-test.service';
 import { CategoryOption } from '../../core/category/category-response.interface';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import { UserService } from '../../core/user/user.service';
+import { EVENT_NAMES, EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/analytics-constants';
+import { EditItem } from '../../core/tracking/events-interfaces/edit-item.interface';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -49,6 +54,7 @@ describe('UploadProductComponent', () => {
   let modalService: NgbModal;
   let trackingService: TrackingService;
   let splitTestService: SplitTestService;
+  let analyticsService: AnalyticsService;
   const componentInstance: any = {};
 
   beforeEach(async(() => {
@@ -59,6 +65,14 @@ describe('UploadProductComponent', () => {
         NgbPopoverConfig,
         TEST_HTTP_PROVIDERS,
         { provide: TrackingService, useClass: MockTrackingService },
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        {
+          provide: UserService, useValue: {
+            isProfessional() {
+              return Observable.of(false);
+            }
+          }
+        },
         {
           provide: Router, useValue: {
             navigate() {
@@ -142,6 +156,7 @@ describe('UploadProductComponent', () => {
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
     splitTestService = TestBed.get(SplitTestService);
+    analyticsService = TestBed.get(AnalyticsService);
     fixture.detectChanges();
     appboy.initialize(environment.appboy);
   });
@@ -636,6 +651,29 @@ describe('UploadProductComponent', () => {
       component.onUploaded(uploadedEvent);
 
       expect(splitTestService.track).toHaveBeenCalledWith('UploadCompleted');
+    });
+
+    it('should send the Edit Item tracking event', () => {
+      component.item = MOCK_ITEM;
+      const editTrackingAttrs: EditItem = {
+        itemId: MOCK_ITEM.id,
+        categoryId: 16000,
+        salePrice: MOCK_ITEM.salePrice,
+        title: MOCK_ITEM.title,
+        isPro: false,
+        screenId: SCREENS_IDS.UploadForm
+      }
+      spyOn(analyticsService, 'trackEvent');
+
+      component.ngOnInit();
+      component.uploadForm.value.category_id = '16000';
+      component.onUploaded(uploadedEvent);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+        name: EVENT_NAMES.Edit,
+        eventType: EVENT_TYPES.Other,
+        attributes: editTrackingAttrs
+      });
     });
 
   });

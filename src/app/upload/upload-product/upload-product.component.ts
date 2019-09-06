@@ -1,3 +1,5 @@
+import { EVENT_TYPES, SCREENS_IDS, EVENT_NAMES } from './../../core/analytics/analytics-constants';
+import { AnalyticsService } from './../../core/analytics/analytics.service';
 import {
   Component,
   ElementRef,
@@ -29,6 +31,8 @@ import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-sugges
 import { Subject } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { SplitTestService } from '../../core/tracking/split-test.service';
+import { EditItem } from '../../core/tracking/events-interfaces/edit-item.interface';
+import { UserService } from '../../core/user/user.service';
 
 const CATEGORIES_WITH_EXTRA_FIELDS = ['16000', '12465'];
 
@@ -120,6 +124,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private trackingService: TrackingService,
     private generalSuggestionsService: GeneralSuggestionsService,
     private splitTestService: SplitTestService,
+    private analyticsService: AnalyticsService,
+    private userService: UserService,
     config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
@@ -197,7 +203,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   ngOnChanges(changes: SimpleChanges) {
     if (changes.categoryId) {
       this.setFixedCategory(changes.categoryId.currentValue);
-    } 
+    }
   }
 
   private detectFormChanges() {
@@ -272,6 +278,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
+      this.trackEditItem();
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
       appboy.logCustomEvent('Edit', { platform: 'web' });
     } else {
@@ -338,8 +345,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     if (categoryId === '-1') {
       this.fixedCategory = null;
     } else {
-        const fixedCategory = _.find(this.allCategories, { value: categoryId });
-        this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+      const fixedCategory = _.find(this.allCategories, { value: categoryId });
+      this.fixedCategory = fixedCategory ? fixedCategory.label : null;
     }
   }
 
@@ -504,6 +511,39 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     } else {
       this.oldDeliveryValue = newDeliveryValue;
     }
+  }
+
+  private trackEditItem() {
+    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+      const formData = this.uploadForm.value;
+
+      let eventAttrs: EditItem = {
+        itemId: formData.id,
+        categoryId: parseInt(formData.category_id),
+        salePrice: formData.sale_price,
+        title: formData.title,
+        isPro: isProfessional,
+        screenId: SCREENS_IDS.UploadForm,
+      };
+
+      if (formData.extra_info) {
+        if (formData.extra_info.object_type.id) {
+          eventAttrs.cg_to = formData.extra_info.object_type.id;
+        }
+        if (formData.extra_info.brand) {
+          eventAttrs.cg_brand = formData.extra_info.brand;
+        }
+        if (formData.extra_info.model) {
+          eventAttrs.cg_model = formData.extra_info.model;
+        }
+      }
+
+      this.analyticsService.trackEvent({
+        name: EVENT_NAMES.Edit,
+        eventType: EVENT_TYPES.Other,
+        attributes: eventAttrs
+      });
+    });
   }
 
 }
