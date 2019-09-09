@@ -70,6 +70,13 @@ Beware that some request are done to the wallapopBackend API and other are done 
 ### Cookies
 If you are encountering problems switching branches or dockers, it is recommended that you clean first your cookies
 
+### Generate interfaces for tracking events (mParticle)
+The analytics team provide us with a series of JSON's files with which we must validate each tracking event that is implemented (check this [repo](https://github.com/Wallapop/mparticle_json_validation) for more info). The following procedure will generate TS interfaces from these JSON files: 
+
+- Run `yarn install` for downloading the latest version of the validation JSONs. 
+- Run `yarn mparticle` for generating TS interfaces from the JSON files. New interfaces will be placed in `core/analytics/event-interfaces` directory.
+- Use the generated interfaces when sending tracking events.
+
 ### When opening a PR
 - Make sure your branch name has a JIRA associated ticket. E.g.: `feature/PQP-XYZ`
 - Make sure your commits have the JIRA associated ticket. E.g.: `[PQP-XYZ]: Commit message`
