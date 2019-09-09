@@ -1,5 +1,5 @@
 import { EVENT_TYPES, EVENT_NAMES } from './../../core/analytics/analytics-constants';
-import { EditItem } from './../../core/tracking/events-interfaces/edit-item.interface';
+import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 import { MockAnalyticsService } from './../../../tests/analytics.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 

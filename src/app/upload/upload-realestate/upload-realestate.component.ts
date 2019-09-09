@@ -18,7 +18,7 @@ import { Realestate } from '../../core/item/realestate';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
-import { EditItem } from '../../core/tracking/events-interfaces/edit-item.interface';
+import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 
 @Component({
   selector: 'tsl-upload-realestate',

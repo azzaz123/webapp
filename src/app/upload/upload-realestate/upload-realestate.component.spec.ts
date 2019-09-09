@@ -17,7 +17,7 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { MOCK_REALESTATE, UPLOAD_FORM_REALESTATE_VALUES } from '../../../tests/realestate.fixtures.spec';
 import { ItemService } from '../../core/item/item.service';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
-import { EditItem } from '../../core/tracking/events-interfaces/edit-item.interface';
+import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 import { SCREENS_IDS, EVENT_NAMES, EVENT_TYPES } from '../../core/analytics/analytics-constants';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';

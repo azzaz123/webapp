@@ -27,7 +27,7 @@ import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { EVENT_NAMES, EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/analytics-constants';
-import { EditItem } from '../../core/tracking/events-interfaces/edit-item.interface';
+import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 

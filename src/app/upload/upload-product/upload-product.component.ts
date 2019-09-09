@@ -31,7 +31,7 @@ import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-sugges
 import { Subject } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { SplitTestService } from '../../core/tracking/split-test.service';
-import { EditItem } from '../../core/tracking/events-interfaces/edit-item.interface';
+import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 import { UserService } from '../../core/user/user.service';
 
 const CATEGORIES_WITH_EXTRA_FIELDS = ['16000', '12465'];

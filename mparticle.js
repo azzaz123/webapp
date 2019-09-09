@@ -6,6 +6,6 @@ glob('node_modules/mparticle_json_validation/**/*.json', {}, (err, schemas) => {
     schemas.forEach((schema) => {
         const interfaceName = schema.replace(/^.*[\\\/]/, '').replace('.json', '.interface.ts').replace(/_/g, '-');
 
-        compileFromFile(schema).then(ts => fs.writeFileSync(`src/app/core/tracking/events-interfaces/${interfaceName}`, ts));
+        compileFromFile(schema).then(ts => fs.writeFileSync(`src/app/core/analytics/events-interfaces/${interfaceName}`, ts));
     });
 });

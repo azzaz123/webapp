@@ -17,7 +17,7 @@ import { ItemService } from '../../core/item/item.service';
 import { CarInfo } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
-import { EditItem } from '../../core/tracking/events-interfaces/edit-item.interface';
+import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 
 @Component({
   selector: 'tsl-upload-car',
