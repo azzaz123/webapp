@@ -13,29 +13,37 @@ export class RemoteConsoleService {
   constructor(private deviceService: DeviceDetectorService) {
   }
 
-  sendConnectionTimeout(userId: string, connectionTime: number): void {
+  sendConnectionTimeout(userId: string, connectionTime: number, featureFlag: boolean): void {
     const device = this.deviceService.getDeviceInfo();
     logger.info(JSON.stringify({
-      browser: _.toUpper(device.browser),
-      browser_version: device.browser_version,
-      user_id: userId,
-      metric_type: MetricTypeEnum.XMPP_CONNECTION_TIME,
-      message: 'xmpp connection time',
-      connection_time: connectionTime,
-      connection_type: _.toUpper(navigator['connection']['type']),
-      ping_time_ms: navigator['connection']['rtt']
+      ...this.getCommonLog(userId, featureFlag), ...{
+        metric_type: MetricTypeEnum.XMPP_CONNECTION_TIME,
+        message: 'xmpp connection time',
+        connection_time: connectionTime,
+        connection_type: _.toUpper(navigator['connection']['type']),
+        ping_time_ms: navigator['connection']['rtt']
+      }
     }));
   }
 
-  sendDuplicateConversations(userId: string, conversationsGroupById: Map<string, number>): void {
+  sendDuplicateConversations(userId: string, conversationsGroupById: Map<string, number>, featureFlag: boolean): void {
     const device = this.deviceService.getDeviceInfo();
     logger.info(JSON.stringify({
+      ...this.getCommonLog(userId, featureFlag), ...{
+        metric_type: MetricTypeEnum.DUPLICATE_CONVERSATION,
+        message: 'send log when user see duplicate conversation in inbox',
+        conversations_group_by_id: conversationsGroupById
+      }
+    }));
+  }
+
+  private getCommonLog(userId: string, featureFlag: boolean): {} {
+    const device = this.deviceService.getDeviceInfo();
+    return {
       browser: _.toUpper(device.browser),
       browser_version: device.browser_version,
       user_id: userId,
-      metric_type: MetricTypeEnum.DUPLICATE_CONVERSATION,
-      message: 'send log when user see duplicate conversation in inbox',
-      conversations_group_by_id: conversationsGroupById
-    }));
+      feature_flag: featureFlag,
+    };
   }
 }
