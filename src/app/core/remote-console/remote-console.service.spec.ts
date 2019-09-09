@@ -3,8 +3,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { RemoteConsoleService } from './remote-console.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { DeviceDetectorServiceMock } from '../../../tests';
+import { DeviceDetectorServiceMock, FeatureFlagServiceMock } from '../../../tests';
 import * as logger from 'loglevel';
+import { FeatureflagService } from '../user/featureflag.service';
 
 describe('RemoteConsoleService', () => {
 
@@ -19,6 +20,7 @@ describe('RemoteConsoleService', () => {
       providers: [
         RemoteConsoleService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
+        { provide: FeatureflagService, useClass: FeatureFlagServiceMock }
       ]
     });
 
@@ -45,6 +47,7 @@ describe('RemoteConsoleService', () => {
       'browser': 'CHROME',
       'browser_version': '76.0.3809.132',
       'user_id': USER_ID,
+      'feature_flag': true,
       'metric_type': 'XMPP_CONNECTION_TIME',
       'message': 'xmpp connection time',
       'connection_time': CONNECTION_TIME,
@@ -65,6 +68,7 @@ describe('RemoteConsoleService', () => {
       'browser': 'CHROME',
       'browser_version': '76.0.3809.132',
       'user_id': 'USER_ID',
+      'feature_flag': true,
       'metric_type': 'DUPLICATE_CONVERSATION',
       'message': 'send log when user see duplicate conversation in inbox',
       'conversations_group_by_id': { 'xa4ld642': 2 }
