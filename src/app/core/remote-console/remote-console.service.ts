@@ -51,7 +51,7 @@ export class RemoteConsoleService {
       const device = this.deviceService.getDeviceInfo();
       return {
         device_id: this.deviceId,
-        browser: _.toUpper(device.browser),
+        browser: device.browser.toUpperCase(),
         browser_version: device.browser_version,
         user_id: userId,
         feature_flag: fetureFlag,
