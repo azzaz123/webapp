@@ -10,5 +10,6 @@ export const environment: any = {
   taplytics: 'fc538b9af5eb4ce8b714ae26f3ae15cf',
   clickStreamURL: 'https://collector.wallapop.com/clickstream.json/sendEvents',
   stripeKey: 'pk_live_qTxprCtXsKPFKRnDs2OvVIeR',
-  mParticleKey: 'us1-04eb03d316b54f4f99265340abe886e6'
+  mParticleKey: 'us1-04eb03d316b54f4f99265340abe886e6',
+  remoteConsoleUrl: ' https://client-metrics.wallapop.com/metrics/chat'
 };

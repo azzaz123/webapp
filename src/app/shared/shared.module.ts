@@ -73,6 +73,7 @@ import { StripeCardSelectionComponent } from './payments/stripe-card-selection/s
 import { SelectModule } from 'ng-select';
 import { LinkTransformPipe } from './pipes';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 @NgModule({
   imports: [
@@ -89,7 +90,8 @@ import { PreventDoubleClickDirective } from './prevent-double-click/prevent-doub
     TrackingModule,
     RouterModule,
     UploaderModule,
-    SelectModule
+    SelectModule,
+    DeviceDetectorModule.forRoot()
   ],
   exports: [
     CardModule,
