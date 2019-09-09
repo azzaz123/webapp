@@ -71,7 +71,7 @@ describe('RemoteConsoleService', () => {
       'feature_flag': true,
       'metric_type': 'DUPLICATE_CONVERSATION',
       'message': 'send log when user see duplicate conversation in inbox',
-      'conversations_group_by_id': { 'xa4ld642': 2 }
+      'conversations_group_by_id': JSON.stringify({ 'xa4ld642': 2 })
     }));
   });
 });
