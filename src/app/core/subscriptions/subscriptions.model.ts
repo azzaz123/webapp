@@ -4,11 +4,12 @@ export class SubscriptionsModel implements SubscriptionsResponse {
   category_id: number;
   current_limit: number;
   subscribed_from: number;
-  selected_tier_id: number;
-  default_tier_id: number;
+  selected_tier_id: string;
+  default_tier_id: string;
   tiers: Tier[];
   category_icon?: string;
   category_name?: string;
+  selected_tier?: Tier
 
   setCategoryId(value: number) {
     this.category_id = value;
@@ -34,19 +35,19 @@ export class SubscriptionsModel implements SubscriptionsResponse {
     return this.subscribed_from;
   }
 
-  setSelectedTierId(value: number) {
+  setSelectedTierId(value: string) {
     this.selected_tier_id = value;
   }
 
-  getSelectedTierId(): number {
+  getSelectedTierId(): string {
     return this.selected_tier_id;
   }
 
-  setDefaultTierId(value: number) {
+  setDefaultTierId(value: string) {
     this.default_tier_id = value;
   }
 
-  getDefaultTierId(): number {
+  getDefaultTierId(): string {
     return this.default_tier_id;
   }
 
@@ -64,6 +65,14 @@ export class SubscriptionsModel implements SubscriptionsResponse {
 
   getCategoryName(): string {
     return this.category_name;
+  }
+
+  setSelectedTier(value: Tier) {
+    this.selected_tier = value;
+  }
+
+  getSlectedTier(): Tier {
+    return this.selected_tier;
   }
 
 }

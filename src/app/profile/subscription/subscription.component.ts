@@ -37,5 +37,6 @@ export class SubscriptionComponent implements OnInit {
       this.subscriptions = response;
     });
   }
+
   
 }

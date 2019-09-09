@@ -14,9 +14,9 @@
             <p>From: {{subscription.tiers[0].price}}{{subscription.tiers[0].currency}}</p>
         </div>
         <div *ngIf="subscription.subscribed_from" class="Subscriptions__category-info">
-            <p>{{subscription.tiers[subscription.selected_tier_id - 1].limit}} products</p>
+            <p>{{subscription.selected_tier.limit}} products</p>
             <p class="Subscriptions__category-info--price">
-              {{subscription.tiers[subscription.selected_tier_id - 1].price}}{{subscription.tiers[subscription.selected_tier_id - 1].currency}}/month
+              {{subscription.selected_tier.price}}/month
             </p>
             <p class="Subscriptions__category-info--edit">Edit</p>
         </div>

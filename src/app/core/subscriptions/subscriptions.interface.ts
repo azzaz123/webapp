@@ -8,7 +8,7 @@ export interface SubscriptionResponse {
 }
 
 export interface Tier {
-    id: number,
+    id: string,
     limit: number,
     price: number,
     currency: string
@@ -18,9 +18,10 @@ export interface SubscriptionsResponse {
   category_id: number,
   current_limit: number,
   subscribed_from: number,
-  selected_tier_id: number,
-  default_tier_id: number,
+  selected_tier_id: string,
+  default_tier_id: string,
   tiers: Tier[],
   category_name?: string,
-  category_icon?: string
+  category_icon?: string,
+  selected_tier?: Tier
 }

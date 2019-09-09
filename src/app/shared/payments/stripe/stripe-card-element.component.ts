@@ -17,6 +17,7 @@ import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { ToastrService } from 'ngx-toastr';
+import { Tier } from '../../../core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -41,7 +42,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   @Input() loading: boolean;
   @Input() newLoading: boolean;
   @Input() action: string;
-  @Input() listingLimit: number;
+  @Input() listingLimit: Tier;
   @Input() disabled: number;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();

@@ -6,12 +6,11 @@ import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
 import { FeatureflagService } from '../user/featureflag.service';
 import { Response } from '@angular/http';
-import { SubscriptionResponse, SubscriptionsResponse } from './subscriptions.interface';
+import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
-import { SubscriptionsModel } from './subscriptions.model';
 import { CategoryService } from '../category/category.service';
-import { flatMap } from 'rxjs/operators';
 import { CategoryResponse } from '../category/category-response.interface';
+import * as _ from 'lodash';
 
 @Injectable()
 export class SubscriptionsService {
@@ -78,8 +77,8 @@ export class SubscriptionsService {
         )
       }
     })
-    .catch(() => {
-      console.log('error get subscriptions');
+    .catch((e) => {
+      console.warn('error get subscriptions ', e);
       return Observable.of(null);
     });
   }
@@ -89,8 +88,14 @@ export class SubscriptionsService {
       .map((category: CategoryResponse) => {
         subscription.category_name = category.title;
         subscription.category_icon = category.iconName;
+        subscription.selected_tier = this.getSubscribedTier(subscription);
         return subscription;
       });
+  }
+
+  private getSubscribedTier(subscription: SubscriptionsResponse): Tier {
+    const selectedTier = subscription.tiers.filter(tier => tier.id === subscription.selected_tier_id);
+    return selectedTier[0];
   }
 
 }
