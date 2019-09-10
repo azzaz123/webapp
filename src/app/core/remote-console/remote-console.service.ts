@@ -40,7 +40,7 @@ export class RemoteConsoleService {
       ...commonLog, ...{
         metric_type: MetricTypeEnum.DUPLICATE_CONVERSATION,
         message: 'send log when user see duplicate conversation in inbox',
-        conversations_group_by_id: JSON.stringify(conversationsGroupById)
+        conversations_count_by_id: JSON.stringify(conversationsGroupById)
       }
     })));
   }
