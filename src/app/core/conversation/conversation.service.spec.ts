@@ -49,6 +49,7 @@ import { RealTimeService } from '../message/real-time.service';
 import { BlockUserXmppService } from './block-user';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { RemoteConsoleService } from '../remote-console';
+import { MockRemoteConsoleService } from '../../../tests';
 import { InboxService } from '../inbox/inbox.service';
 
 let service: ConversationService;
@@ -72,11 +73,6 @@ const CONVERSATION_RESPONSE: Response = new Response(new ResponseOptions(
   {body: JSON.stringify(MOCKED_CONVERSATION_DATA)})
 );
 const componentInstance: any = { SendPhoneComponent: jasmine.createSpy('SendPhoneComponent') };
-
-export class MockRemoteConsoleService {
-  sendConnectionTimeout(userId: string, timeout: number): void {
-  }
-}
 
 class MockedInboxService {
   public getInboxFeatureFlag$(): Observable<boolean> {

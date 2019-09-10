@@ -9,6 +9,7 @@ import { debug } from 'util';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { UserService } from '../../../core/user/user.service';
 import { AdService } from '../../../core/ad/ad.service';
+import { RemoteConsoleService } from '../../../core/remote-console';
 
 export enum InboxState { Inbox, Archived }
 
@@ -72,7 +73,8 @@ export class InboxComponent implements OnInit, OnDestroy {
               private eventService: EventService,
               private conversationService: InboxConversationService,
               private userService: UserService,
-              private adService: AdService) {
+              private adService: AdService,
+              private remoteConsoleService: RemoteConsoleService) {
   }
 
   set loading(value: boolean) {
@@ -154,6 +156,7 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.conversations = conversations;
     this.setStatusesAfterLoadConversations();
     this.showInbox();
+    this.sendLogWithNumberOfConversationsByConversationId(this.conversations);
   }
 
   private bindNewMessageToast() {
@@ -225,6 +228,15 @@ export class InboxComponent implements OnInit, OnDestroy {
   private unselectCurrentConversation() {
     if (this.conversation) {
       this.conversation.active = false;
+    }
+  }
+
+  private sendLogWithNumberOfConversationsByConversationId(conversations: InboxConversation[]) {
+    const conversationsIds = _.countBy(_.map(conversations, conversation => conversation.id));
+    const hasDuplicated = _.find(conversationsIds, numberOfConversation => numberOfConversation > 1);
+
+    if (hasDuplicated) {
+      this.userService.me().subscribe(user => this.remoteConsoleService.sendDuplicateConversations(user.id, conversationsIds));
     }
   }
 }

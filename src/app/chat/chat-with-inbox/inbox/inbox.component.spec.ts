@@ -16,6 +16,10 @@ import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { UserService } from '../../../core/user/user.service';
 import { Observable } from 'rxjs';
 import { AdService } from '../../../core/ad/ad.service';
+import { RemoteConsoleService } from '../../../core/remote-console';
+import { MockRemoteConsoleService } from '../../../../tests';
+import { User } from '../../../core/user/user';
+import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
 
 class AdServiceMock {
   startAdsRefresh() {
@@ -33,6 +37,7 @@ describe('Component: InboxComponent', () => {
   let userService: UserService;
   let conversationService: InboxConversationService;
   let addService: AdService;
+  let remoteConsoleService: RemoteConsoleService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -46,6 +51,7 @@ describe('Component: InboxComponent', () => {
         EventService,
         ...TEST_HTTP_PROVIDERS,
         { provide: AdService, useClass: AdServiceMock },
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         {
           provide: InboxService, useValue: {
             loadMorePages() {
@@ -62,6 +68,9 @@ describe('Component: InboxComponent', () => {
           provide: UserService, useValue: {
             isProfessional(): Observable<boolean> {
               return Observable.of(false);
+            },
+            me(): Observable<User> {
+              return Observable.of(MOCK_USER);
             }
           }
         },
@@ -80,6 +89,7 @@ describe('Component: InboxComponent', () => {
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);
     addService = TestBed.get(AdService);
+    remoteConsoleService = TestBed.get(RemoteConsoleService);
     conversationService = TestBed.get(InboxConversationService);
   });
 
@@ -338,6 +348,41 @@ describe('Component: InboxComponent', () => {
       component.showArchive();
       expect(component.loadingError.emit).toHaveBeenCalled();
       expect(component.componentState).toEqual(InboxState.Archived);
+    });
+  });
+
+  describe('sendLogWithNumberOfConversationsByConversationId', () => {
+    const mockedInboxConversations = createInboxConversationsArray(3);
+    const duplicateMockedInboxConversations = [...mockedInboxConversations, ...mockedInboxConversations];
+    const duplicateIncorrectMockedInboxConversations = [
+      { id: null }, { id: null }, { id: '' }, { id: '' }, { id: undefined }, { id: undefined }, {}
+    ];
+
+    it('should NOT send log with duplicate conversations', () => {
+      spyOn(remoteConsoleService, 'sendDuplicateConversations');
+
+      component.ngOnInit();
+      eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
+
+      expect(remoteConsoleService.sendDuplicateConversations).not.toHaveBeenCalled();
+    });
+
+    it('should send log with duplicate conversations', () => {
+      spyOn(remoteConsoleService, 'sendDuplicateConversations');
+
+      component.ngOnInit();
+      eventService.emit(EventService.INBOX_LOADED, duplicateMockedInboxConversations);
+
+      expect(remoteConsoleService.sendDuplicateConversations).toHaveBeenCalledWith(MOCK_USER.id, { 1: 2, 2: 2, 3: 2 });
+    });
+
+    it('should send log with duplicate conversations if id of conversation is undefined, empty or null', () => {
+      spyOn(remoteConsoleService, 'sendDuplicateConversations');
+
+      component.ngOnInit();
+      eventService.emit(EventService.INBOX_LOADED, duplicateIncorrectMockedInboxConversations);
+
+      expect(remoteConsoleService.sendDuplicateConversations).toHaveBeenCalledWith(MOCK_USER.id, { null: 2, '': 2, undefined: 3 });
     });
   });
 });

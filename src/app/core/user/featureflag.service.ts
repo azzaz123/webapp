@@ -13,15 +13,19 @@ export class FeatureflagService {
 
   protected API_URL = 'api/v3/featureflag';
 
-
-  constructor(private http: HttpService) { }
+  constructor(private http: HttpService) {
+  }
 
   getFlag(name: string): Observable<boolean> {
-    return this.http.get(this.API_URL, {featureFlags: name, timestamp: new Date().getTime()})
-      .map((r: Response) => r.json())
-      .map((response: FeatureFlagResponse[]) => {
-        return response.length ? response[0].active : false;
-      });
+    return this.http.get(this.API_URL, { featureFlags: name, timestamp: new Date().getTime() })
+    .map((r: Response) => r.json())
+    .map((response: FeatureFlagResponse[]) => {
+      return response.length ? response[0].active : false;
+    });
+  }
+
+  getWebInboxProjections(): Observable<boolean> {
+    return this.getFlag('web_inbox_projections');
   }
 
 }
