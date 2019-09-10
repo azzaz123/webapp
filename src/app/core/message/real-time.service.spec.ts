@@ -14,11 +14,7 @@ import { CONVERSATION_ID, MOCK_CONVERSATION, MOCKED_CONVERSATIONS } from '../../
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment.docker';
 import { RemoteConsoleService } from '../remote-console';
-
-export class MockRemoteConsoleService {
-  sendConnectionTimeout(userId: string, timeout: number): void {
-  }
-}
+import { MockRemoteConsoleService } from '../../../tests';
 
 let service: RealTimeService;
 let persistencyService: PersistencyService;

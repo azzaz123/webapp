@@ -32,11 +32,7 @@ import { HttpService } from '../http/http.service';
 import { I18nService } from '../i18n/i18n.service';
 import { RealTimeService } from './real-time.service';
 import { RemoteConsoleService } from '../remote-console';
-
-export class MockRemoteConsoleService {
-  sendConnectionTimeout(userId: string, timeout: number): void {
-  }
-}
+import { MockRemoteConsoleService } from '../../../tests';
 
 describe('Service: Message', () => {
 
