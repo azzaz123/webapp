@@ -26,8 +26,9 @@ import { CategoryOption } from '../../core/category/category-response.interface'
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
-import { EVENT_NAMES, EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/analytics-constants';
+import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/analytics-constants';
 import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
+import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -670,7 +671,7 @@ describe('UploadProductComponent', () => {
       component.onUploaded(uploadedEvent);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-        name: EVENT_NAMES.Edit,
+        name: ANALYTICS_EVENT_NAMES.EditItem,
         eventType: EVENT_TYPES.Other,
         attributes: editTrackingAttrs
       });

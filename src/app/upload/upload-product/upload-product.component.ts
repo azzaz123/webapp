@@ -1,4 +1,4 @@
-import { EVENT_TYPES, SCREENS_IDS, EVENT_NAMES } from './../../core/analytics/analytics-constants';
+import { EVENT_TYPES, SCREENS_IDS } from './../../core/analytics/analytics-constants';
 import { AnalyticsService } from './../../core/analytics/analytics.service';
 import {
   Component,
@@ -33,6 +33,7 @@ import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { SplitTestService } from '../../core/tracking/split-test.service';
 import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 import { UserService } from '../../core/user/user.service';
+import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 
 const CATEGORIES_WITH_EXTRA_FIELDS = ['16000', '12465'];
 
@@ -539,7 +540,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }
 
       this.analyticsService.trackEvent({
-        name: EVENT_NAMES.Edit,
+        name: ANALYTICS_EVENT_NAMES.EditItem,
         eventType: EVENT_TYPES.Other,
         attributes: eventAttrs
       });

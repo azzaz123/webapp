@@ -4,8 +4,9 @@ import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { EVENT_NAMES, EVENT_TYPES } from './analytics-constants';
+import { EVENT_TYPES } from './analytics-constants';
 import { PageViewInterface } from './interfaces/pageview.interface';
+import { ANALYTICS_EVENT_NAMES } from './resources/analytics-event-names';
 
 
 describe('AnalyticsService', () => {
@@ -40,7 +41,7 @@ describe('AnalyticsService', () => {
   describe('trackEvent', () => {
     it('should send the tracking event', () => {
       const MOCK_EVENT: EventInterface = {
-        name: EVENT_NAMES.Edit,
+        name: ANALYTICS_EVENT_NAMES.EditItem,
         eventType: EVENT_TYPES.Other,
         attributes: { name: 'Test event' }
       }

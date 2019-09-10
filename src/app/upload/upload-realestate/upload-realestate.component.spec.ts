@@ -18,10 +18,11 @@ import { MOCK_REALESTATE, UPLOAD_FORM_REALESTATE_VALUES } from '../../../tests/r
 import { ItemService } from '../../core/item/item.service';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
-import { SCREENS_IDS, EVENT_NAMES, EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { SCREENS_IDS, EVENT_TYPES } from '../../core/analytics/analytics-constants';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
+import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -309,7 +310,7 @@ describe('UploadRealestateComponent', () => {
       component.onUploaded(uploadedEvent);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-        name: EVENT_NAMES.Edit,
+        name: ANALYTICS_EVENT_NAMES.EditItem,
         eventType: EVENT_TYPES.Other,
         attributes: editTrackingAttrs
       });

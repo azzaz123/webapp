@@ -1,4 +1,4 @@
-import { EVENT_TYPES, SCREENS_IDS, EVENT_NAMES } from './../../core/analytics/analytics-constants';
+import { EVENT_TYPES, SCREENS_IDS } from './../../core/analytics/analytics-constants';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
@@ -18,6 +18,7 @@ import { CarInfo } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
 import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
+import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -407,7 +408,7 @@ export class UploadCarComponent implements OnInit {
       };
 
       this.analyticsService.trackEvent({
-        name: EVENT_NAMES.Edit,
+        name: ANALYTICS_EVENT_NAMES.EditItem,
         eventType: EVENT_TYPES.Other,
         attributes: eventAttrs
       });

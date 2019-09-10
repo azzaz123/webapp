@@ -1,4 +1,4 @@
-import { EVENT_TYPES, EVENT_NAMES } from './../../core/analytics/analytics-constants';
+import { EVENT_TYPES } from './../../core/analytics/analytics-constants';
 import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 import { MockAnalyticsService } from './../../../tests/analytics.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -29,6 +29,7 @@ import { ItemService } from '../../core/item/item.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
 import { SCREENS_IDS } from '../../core/analytics/analytics-constants';
+import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -501,7 +502,7 @@ describe('UploadCarComponent', () => {
       component.onUploaded(uploadedEvent);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-        name: EVENT_NAMES.Edit,
+        name: ANALYTICS_EVENT_NAMES.EditItem,
         eventType: EVENT_TYPES.Other,
         attributes: editTrackingAttrs
       });
