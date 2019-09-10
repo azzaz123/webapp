@@ -47,7 +47,7 @@
 
           <div class="subscription-card_info">
             <div class="subscription-card_info-title">
-              <b>Manage {{subscriptionSlot.label}}</b>
+              <b>Manage <span i18n>{{subscriptionSlot.category.defaultTitle}}</span></b>
             </div>
             <div class="subscription-card_info-description">You can publish <b>{{subscriptionSlot.available}}</b> more</div>
           </div>
@@ -61,7 +61,7 @@
     </div>
 
     <nav class="nav filters-nav">
-      <div>
+      <div *ngIf="selectedSubscriptionSlot">
         <tsl-search-input (term)="search($event)"></tsl-search-input>
       </div>
       <div>
@@ -89,10 +89,10 @@
           <mat-icon svgIcon="delete"></mat-icon>
           <span i18n>Delete</span>
         </button>
-        <button class="btn-activate" (click)="activate()"
+        <!-- <button class="btn-activate" (click)="activate()"
                 [disabled]="!itemService.selectedItems.length || !canActivate" i18n>Activate</button>
         <button class="btn-deactivate dark" (click)="deactivate()" *ngIf="userCanDeactivate"
-                [disabled]="!itemService.selectedItems.length || !canDeactivate" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button>
+                [disabled]="!itemService.selectedItems.length || !canDeactivate" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button> -->
       </span>
 
       <tsl-button (click)="onClickFeature()">Feature</tsl-button>
@@ -107,7 +107,6 @@
         *ngFor="let item of items"
         class="col-md-12" 
         [item]="item"
-        [isPro]="selectedStatus === 'cars'"
         [selectMode]="selectMode"
         [paymentMethod]="isStripe ? 'STRIPE' : 'SABADELL'"
         (itemChange)="itemChanged($event)"
