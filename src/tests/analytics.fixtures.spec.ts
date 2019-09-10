@@ -1,5 +1,5 @@
-import { PageViewInterface } from './../app/core/analytics/interfaces/pageview.interface';
-import { EventInterface } from './../app/core/analytics/interfaces/event.interface';
+import { PageViewInterface } from '../app/core/analytics/events-interfaces/pageview.interface';
+import { EventInterface } from '../app/core/analytics/events-interfaces/event.interface';
 export class MockAnalyticsService {
 
     initialize() { }

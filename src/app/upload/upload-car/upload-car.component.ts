@@ -1,4 +1,4 @@
-import { EVENT_TYPES, SCREENS_IDS } from './../../core/analytics/analytics-constants';
+import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';

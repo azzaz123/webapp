@@ -1,10 +1,10 @@
 import mParticle from '@mparticle/web-sdk';
-import { PageViewInterface } from './interfaces/pageview.interface';
+import { PageViewInterface } from './events-interfaces/pageview.interface';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
-import { EventInterface } from './interfaces/event.interface';
+import { EventInterface } from './events-interfaces/event.interface';
 
 
 @Injectable({

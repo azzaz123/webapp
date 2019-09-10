@@ -1,4 +1,4 @@
-import { EVENT_TYPES, SCREENS_IDS } from './../../core/analytics/analytics-constants';
+import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IOption } from 'ng-select';
 import { RealestateKeysService } from './realestate-keys.service';

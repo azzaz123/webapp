@@ -1,4 +1,4 @@
-import { EVENT_TYPES, SCREENS_IDS } from './../../core/analytics/analytics-constants';
+import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
 import { AnalyticsService } from './../../core/analytics/analytics.service';
 import {
   Component,

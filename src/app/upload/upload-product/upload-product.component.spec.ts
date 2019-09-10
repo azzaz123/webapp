@@ -26,7 +26,7 @@ import { CategoryOption } from '../../core/category/category-response.interface'
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
-import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/analytics-constants';
+import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
 import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 

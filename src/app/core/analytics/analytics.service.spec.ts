@@ -1,11 +1,11 @@
-import { EventInterface } from './interfaces/event.interface';
+import { EventInterface } from './events-interfaces/event.interface';
 import { Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { EVENT_TYPES } from './analytics-constants';
-import { PageViewInterface } from './interfaces/pageview.interface';
+import { EVENT_TYPES } from './resources/analytics-constants';
+import { PageViewInterface } from './events-interfaces/pageview.interface';
 import { ANALYTICS_EVENT_NAMES } from './resources/analytics-event-names';
 
 
