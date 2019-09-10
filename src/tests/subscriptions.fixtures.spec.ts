@@ -1,4 +1,4 @@
-import { SubscriptionResponse, SubscriptionsResponse } from '../app/core/subscriptions/subscriptions.interface';
+import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../app/core/subscriptions/subscriptions.interface';
 
 export const SUBSCRIPTIONS: SubscriptionsResponse[] = 
 [
@@ -7,43 +7,31 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
     current_limit: 2,
     subscribed_from: null,
     selected_tier_id: null,
-    default_tier_id: 'plan_x2r23x23xf2',
+    default_tier_id: 'plan_FWuGNucr7WgWUc',
     tiers:
     [
       {
-        id: 'plan_34r34g3fsdsd',
-        limit: 5,
+        id: 'plan_FWuFVeTHEDyECa',
+        limit: 9,
         price: 9.99,
         currency: '€'
       }, 
       {
-        id: 'plan_x2r23x23xf2',
-        limit: 10,
-        price: 25.85,
+        id: 'plan_FWuGNucr7WgWUc',
+        limit: 30,
+        price: 19.99,
         currency: '€'
       },
       {
-        id: 'plan_k7k7k78k8k',
-        limit: 15,
-        price: 35.85,
+        id: 'plan_FWuGwiERYLvlC6',
+        limit: 50,
+        price: 39.99,
         currency: '€'
       },
       {
-        id: 'plan_x34f4f33ff2',
-        limit: 20,
-        price: 44.85,
-        currency: '€'
-      },
-      {
-        id: 'plan_fkmvkomsio3',
-        limit: 25,
-        price: 55.85,
-        currency: '€'
-      },
-      {
-        id: 'plan_9009dai0sdf',
+        id: 'plan_FWuHrLv9WislLd',
         limit: -1,
-        price: 105.85,
+        price: 69.99,
         currency: '€'
       }
     ]
@@ -53,43 +41,25 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
     current_limit: 1,
     subscribed_from: null,
     selected_tier_id: null,
-    default_tier_id: 'plan_9fdidsfisd',
+    default_tier_id: 'plan_FSWD733ykyJjwC',
     tiers:
     [
       {
-        id: 'plan_xaxasxasc2',
-        limit: 5,
-        price: 29.99,
+        id: 'plan_FSWD733ykyJjwC',
+        limit: 9,
+        price: 9.99,
         currency: '€'
       }, 
       {
-        id: 'plan_c89vi0jbbu92',
-        limit: 10,
-        price: 25.85,
-        currency: '€'
-      },
-      {
-        id: 'plan_89d0a0ad09ads',
-        limit: 15,
-        price: 35.85,
-        currency: '€'
-      },
-      {
-        id: 'plan_09dji0238u',
-        limit: 20,
-        price: 44.85,
-        currency: '€'
-      },
-      {
-        id: 'plan_9fdidsfisd',
+        id: 'plan_FSWD7I80aaEBNF',
         limit: 25,
-        price: 55.85,
+        price: 19.99,
         currency: '€'
       },
       {
-        id: 'plan_90qdkmp12hu9d',
-        limit: -1,
-        price: 105.85,
+        id: 'plan_FSWD7IYALDI6iB',
+        limit: 100,
+        price: 29.99,
         currency: '€'
       }
     ]
@@ -98,37 +68,146 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
     category_id: 14000, 
     current_limit: 3,
     subscribed_from: 1567675697,
-      'selected_tier_id': 'plan_FSWD7IYALDI6iB',
-			'default_tier_id': 'plan_FWuHrLv9WislLd',
+    selected_tier_id: 'plan_FHeLJTn9g16fsq',
+		default_tier_id: 'plan_FmLhWAmQMXPaK9',
     tiers:
     [
       {
-        id: 'plan_FWuHrLv9WislLd',
+        id: 'plan_FmLhWAmQMXPaK9',
         limit: 5,
-        price: 20.85,
+        price: 9.99,
         currency: '€'
       }, 
       {
-        id: 'plan_FSWD7IYALDI6iB',
-        limit: 10,
-        price: 25.85,
-        currency: '€'
-      },
-      {
-        id: 'plan_FWuGwiERYLvlC6',
+        id: 'plan_FHeLYC4HcSRbse',
         limit: 15,
-        price: 35.85,
+        price: 39.00,
         currency: '€'
       },
       {
-        id: 'plan_FSWD7I80aaEBNF',
-        limit: 20,
-        price: 44.85,
+        id: 'plan_FHeLJTn9g16fsq',
+        limit: 50,
+        price: 69.00,
         currency: '€'
       }
     ]
   }
 ];
+
+export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = 
+[
+  {
+    category_id: 100, 
+    current_limit: 2,
+    subscribed_from: null,
+    selected_tier_id: null,
+    default_tier_id: 'plan_FWuGNucr7WgWUc',
+    tiers:
+    [
+      {
+        id: 'plan_FWuFVeTHEDyECa',
+        limit: 9,
+        price: 9.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_FWuGNucr7WgWUc',
+        limit: 30,
+        price: 19.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FWuGwiERYLvlC6',
+        limit: 50,
+        price: 39.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FWuHrLv9WislLd',
+        limit: -1,
+        price: 69.99,
+        currency: '€'
+      }
+    ],
+    category_name: 'Cars',
+    category_icon: 'category_Cars',
+    selected_tier: null
+  },
+  {
+    category_id: 200, 
+    current_limit: 1,
+    subscribed_from: null,
+    selected_tier_id: null,
+    default_tier_id: 'plan_FSWD733ykyJjwC',
+    tiers:
+    [
+      {
+        id: 'plan_FSWD733ykyJjwC',
+        limit: 9,
+        price: 9.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_FSWD7I80aaEBNF',
+        limit: 25,
+        price: 19.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FSWD7IYALDI6iB',
+        limit: 100,
+        price: 29.99,
+        currency: '€'
+      }
+    ],
+    category_name: 'Housing',
+    category_icon: 'category_RealEstate',
+    selected_tier: null
+  },
+  {
+    category_id: 14000, 
+    current_limit: 3,
+    subscribed_from: 1567675697,
+    selected_tier_id: 'plan_FHeLJTn9g16fsq',
+		default_tier_id: 'plan_FmLhWAmQMXPaK9',
+    tiers:
+    [
+      {
+        id: 'plan_FmLhWAmQMXPaK9',
+        limit: 5,
+        price: 9.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_FHeLYC4HcSRbse',
+        limit: 15,
+        price: 39.00,
+        currency: '€'
+      },
+      {
+        id: 'plan_FHeLJTn9g16fsq',
+        limit: 50,
+        price: 69.00,
+        currency: '€'
+      }
+    ],
+    category_name: 'Motorbikes',
+    category_icon: 'category_Motorbike',
+    selected_tier: {
+      id: 'plan_FHeLJTn9g16fsq',
+      limit: 50,
+      price: 69.00,
+      currency: '€'
+    }
+  }
+];
+
+export const TIER: Tier = {
+  id: 'plan_FWuFVeTHEDyECa',
+  limit: 9,
+  price: 9.99,
+  currency: '€'
+}
 
 export const SUBSCRIPTION_SUCCESS: SubscriptionResponse = {
   id: "c040cfbe-0c2e-1a28-1224-4df193f0082c",

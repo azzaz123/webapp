@@ -14,7 +14,7 @@
           <div class="AddNewSubscription__listing-limit-title">¿Cuantos productos vas a tener en tu perfil?</div>
           <div class="AddNewSubscription__listing-limit-container">
             <div *ngFor="let tier of subscription.tiers; let i = index" class="AddNewSubscription__listing-limit-box"
-            (click)="selectListingLimit(subscription.tiers[i])" [ngClass]="{selected: subscription.selected_tier.limit === subscription.tiers[i].limit}">
+            (click)="selectListingLimit(subscription.tiers[i])" [ngClass]="{selected: selectedTier.id === subscription.tiers[i].id}">
             <span *ngIf="subscription.tiers[i].limit >= 0">{{subscription.tiers[i].limit}}</span>
             <span *ngIf="subscription.tiers[i].limit < 0">Unlimited</span>
           </div>
@@ -24,19 +24,15 @@
             <div class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--left">
                 <span>{{subscription.category_name}}</span>
                 <br />
-                <span *ngIf="subscription.selected_tier">
-                  <span *ngIf="subscription.selected_tier.limit < 0">Unlimited products</span>
-                  <span *ngIf="subscription.selected_tier.limit >= 0">{{subscription.selected_tier.limit}} products</span>
-                </span>
-                <span *ngIf="!subscription.selected_tier">0 productos</span>
+                <span *ngIf="selectedTier.limit < 0">Unlimited products</span>
+                <span *ngIf="selectedTier.limit >= 0">{{selectedTier.limit}} products</span>
             </div>
             <div class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--right">
-                <span class="AddNewSubscription__listing-limit-price" *ngIf="subscription.selected_tier">{{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/mes</span>
-                <span class="AddNewSubscription__listing-limit-price" *ngIf="!subscription.selected_tier">- /mes</span>
+                <span class="AddNewSubscription__listing-limit-price">{{selectedTier.price}}{{selectedTier.currency}}/mes</span>
             </div>
           </div>
         </div>
-        <tsl-button *ngIf="currentSlide === 'ngb-slide-0'" [disabled]="!subscription.selected_tier" (click)="carousel.next()" i18n>Continue to payment</tsl-button>
+        <tsl-button *ngIf="currentSlide === 'ngb-slide-0'" [disabled]="!selectedTier" (click)="carousel.next()" i18n>Continue to payment</tsl-button>
       </div>
     </ng-template>
     <ng-template ngbSlide>
@@ -48,17 +44,13 @@
             <div class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--left">
                 <span>{{subscription.category_name}}</span>
                 <br />
-                <span *ngIf="subscription.selected_tier">
-                  <span *ngIf="subscription.selected_tier.limit < 0">Unlimited products</span>
-                  <span *ngIf="subscription.selected_tier.limit >= 0">{{subscription.selected_tier.limit}} products</span>
-                </span>
-                <span *ngIf="!subscription.selected_tier">0 productos</span>
+                <span *ngIf="selectedTier.limit < 0">Unlimited products</span>
+                <span *ngIf="selectedTier.limit >= 0">{{selectedTier.limit}} products</span>
             </div>
             <div class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--right">
-              <span class="AddNewSubscription__listing-limit-price" *ngIf="subscription.selected_tier">{{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/mes</span>
-              <span class="AddNewSubscription__listing-limit-price" *ngIf="!subscription.selected_tier">- /mes</span>
-                <br />
-                <span class="AddNewSubscription__listing-limit-payment-edit" (click)="carousel.prev()">Change</span>
+              <span class="AddNewSubscription__listing-limit-price">{{selectedTier.price}}{{selectedTier.currency}}/mes</span>
+              <br />
+              <span class="AddNewSubscription__listing-limit-payment-edit" (click)="carousel.prev()">Change</span>
             </div>
           </div>
           <div class="row AddNewSubscription__payment">
@@ -72,11 +64,11 @@
                   <p>The payment failed. Please enter another credit card.</p>
                 </div>
                 <div class="AddNewSubscription__payment-add-card" (click)="removeNewCard()" *ngIf="showCard" i18n>Use saved card</div>
-                <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [disabled]="isPaymentError" [type]="'subscription'" [listingLimit]="subscription.selected_tier" [action]="action" (onStripeCardCreate)="addSubscription($event)"
+                <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [disabled]="isPaymentError" [type]="'subscription'" [listingLimit]="selectedTier" [action]="action" (onStripeCardCreate)="addSubscription($event)"
                 (stripeCard)="setCardInfo($event)"></tsl-stripe-card-element>
               </div>
               <tsl-button [hidden]="!savedCard"
-              [disabled]="!selectedCard || !subscription.selected_tier || loading"
+              [disabled]="!selectedCard || loading"
               [loading]="loading"
               (click)="addSubscriptionFromSavedCard()"
               id="qa-checkout-subscription"

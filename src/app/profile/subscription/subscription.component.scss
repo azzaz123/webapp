@@ -73,6 +73,16 @@
       width: 38px;
     }
   }
+  &--subscribed {
+    border: 2px solid $walla-main;
+    color: $black;
+    hr {
+      border-top: 2px solid $walla-main;
+    }
+    .Subscriptions__category-title {
+      color: $black;
+    }
+  }
 }
 
 .Subscriptions__benefits-content {
@@ -114,4 +124,5 @@
 .Subscriptions__subscribed-from {
   color: $walla-main;
   font-size: $font-size-s;
+  font-weight: bold;
 }

@@ -71,7 +71,7 @@ export class SubscriptionsModel implements SubscriptionsResponse {
     this.selected_tier = value;
   }
 
-  getSlectedTier(): Tier {
+  getSelectedTier(): Tier {
     return this.selected_tier;
   }
 

@@ -11,6 +11,7 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsModel } from '../../../core/subscriptions/subscriptions.model';
 import * as _ from 'lodash';
+import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -33,12 +34,12 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   public isPaymentError = false;
   public currentSlide: string;
   public isRetryInvoice = false;
+  public subscription: SubscriptionsResponse;
   private invoiceId: string;
   private REQUIRES_PAYMENT_METHOD = 'REQUIRES_PAYMENT_METHOD';
   private REQUIRES_ACTION = 'REQUIRES_ACTION';
   private SUCCEEDED = 'SUCCEEDED';
-  public selectedPlanId: string;
-  public subscription: SubscriptionsResponse;
+  private selectedPlanId: string;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -50,6 +51,9 @@ export class AddNewSubscriptionModalComponent implements OnInit {
 
   ngOnInit() {
     this.currentSlide = 'ngb-slide-0';
+    this.selectedTier = this.subscription.selected_tier;
+    this.selectedPlanId = this.subscription.selected_tier.id;
+    
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = val;
       if (this.isStripe) {
@@ -66,7 +70,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
 
   public addSubscription(paymentMethod: PaymentMethodResponse) {
     this.loading = true;
-    this.selectedPlanId = 'x';//Until feature is further developed
     this.stripeService.addNewCard(paymentMethod.id).subscribe((response) => {
       if (!response) {
         this.requestNewPayment();
@@ -80,7 +83,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     });
   }
 
-  public addSubscriptionFromSavedCard(selectedPlanId: string, paymentMethodId = this.card.id) {
+  public addSubscriptionFromSavedCard(selectedPlanId: string = this.selectedPlanId, paymentMethodId = this.card.id) {
     if (!this.loading) {
       this.loading = true;
     }
@@ -94,7 +97,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
               case this.REQUIRES_PAYMENT_METHOD: {
                 this.isRetryInvoice = true;
                 this.invoiceId = response.latest_invoice_id;
-                this.requestNewPayment();
+                this.requestNewPayment({error: { message: this.REQUIRES_PAYMENT_METHOD }});
                 break;
               }
               case this.REQUIRES_ACTION: {
@@ -110,12 +113,12 @@ export class AddNewSubscriptionModalComponent implements OnInit {
                 break;
               }
             }
-          }, () => {
-            this.requestNewPayment();
+          }, (error) => {
+            this.requestNewPayment(error);
           });
         }
-      }, () => {
-        this.requestNewPayment();
+      }, (error) => {
+        this.requestNewPayment(error);
       });
     }
   }
@@ -130,7 +133,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
           switch(response.status.toUpperCase() ) {
             case this.REQUIRES_PAYMENT_METHOD: {
               this.isRetryInvoice = true;
-              this.requestNewPayment();
+              this.requestNewPayment({error: { message: this.REQUIRES_PAYMENT_METHOD }});
               break;
             }
             case this.REQUIRES_ACTION: {
@@ -146,12 +149,12 @@ export class AddNewSubscriptionModalComponent implements OnInit {
               break;
             }
           }
-        }, () => {
-          this.requestNewPayment();
+        }, (error) => {
+          this.requestNewPayment(error);
         });
       }
-    }, () => {
-      this.requestNewPayment();
+    }, (error) => {
+      this.requestNewPayment(error);
     });
   }
 
@@ -205,7 +208,8 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     }
   }
 
-  private requestNewPayment() {
+  private requestNewPayment(error?: any) {
+    console.log(error.message);
     this.errorService.i18nError('paymentFailed');
     this.loading = false;
     this.isPaymentError = true;

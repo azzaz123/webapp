@@ -11,7 +11,8 @@ import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.
 import {
   SUBSCRIPTION_REQUIRES_ACTION,
   SUBSCRIPTION_REQUIRES_PAYMENT,
-  SUBSCRIPTION_SUCCESS
+  SUBSCRIPTION_SUCCESS,
+  TIER
 } from '../../../../tests/subscriptions.fixtures.spec';
 import { STRIPE_CARD, FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
@@ -318,9 +319,9 @@ describe('AddNewSubscriptionModalComponent', () => {
     (<any>event).target.innerHTML = '40';
     
     it('should set the listing limit', () => {
-      component.selectListingLimit(event);
+      component.selectListingLimit(TIER);
 
-      expect(component.listingLimit).toBe(40);
+      expect(component.selectedTier).toBe(TIER);
     });
   });
 
