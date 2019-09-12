@@ -11,7 +11,13 @@
     <tsl-header>
       <div class="col-7">
         <div class="header-row">
-          <h1 class="header-title"><span i18n>Your products</span> <span class="badge badge-pro" *ngIf="hasMotorPlan || userService?.user?.featured"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span></h1>
+          <h1 class="header-title">
+            <span i18n>Your products</span>
+            <span class="badge badge-pro" *ngIf="hasMotorPlan || userService?.user?.featured || subscriptionSlots.length !== 0">
+              <mat-icon svgIcon="pro-seal"></mat-icon>
+              Pro
+            </span>
+          </h1>
         </div>
         <div class="header-row header-row--margin">
           <h4 class="header-subtitle" i18n>Here you can list items, manage the ones you already have and featured to sell them faster</h4>
