@@ -95,10 +95,21 @@
           <mat-icon svgIcon="delete"></mat-icon>
           <span i18n>Delete</span>
         </button>
-        <!-- <button class="btn-activate" (click)="activate()"
-                [disabled]="!itemService.selectedItems.length || !canActivate" i18n>Activate</button>
-        <button class="btn-deactivate dark" (click)="deactivate()" *ngIf="userCanDeactivate"
-                [disabled]="!itemService.selectedItems.length || !canDeactivate" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button> -->
+        <button
+          class="btn-activate"
+          *ngIf="selectedSubscriptionSlot"
+          (click)="activate()"
+          [disabled]="!itemService.selectedItems.length || !canActivate" i18n>
+            Activate
+        </button>
+        <button 
+          class="btn-deactivate dark"
+          *ngIf="selectedSubscriptionSlot"
+          (click)="deactivate()"
+          [disabled]="!itemService.selectedItems.length || !canDeactivate"
+          tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>
+            Deactivate
+        </button>
       </span>
 
       <tsl-button 

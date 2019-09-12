@@ -35,7 +35,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { EventService } from '../event/event.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -48,6 +48,7 @@ import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
 import { HttpHeaders } from '@angular/common/http';
+import { HttpServiceNew } from '../http/http.service.new';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -81,10 +82,12 @@ export class ItemService extends ResourceService {
   public selectedItems: string[] = [];
   private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
 
-  constructor(http: HttpService,
-              private i18n: I18nService,
-              private trackingService: TrackingService,
-              private eventService: EventService) {
+  constructor(
+    http: HttpService,
+    private httpNew: HttpServiceNew,
+    private i18n: I18nService,
+    private trackingService: TrackingService,
+    private eventService: EventService) {
     super(http);
   }
 
@@ -328,6 +331,65 @@ export class ItemService extends ResourceService {
       init: init,
       expired: status
     })
+    .map((r: Response) => {
+        const res: ItemResponse[] = r.json();
+        const nextPage: string = r.headers.get('x-nextpage');
+        const params = _.chain(nextPage).split('&')
+          .map(_.partial(_.split, _, '=', 2))
+          .fromPairs()
+          .value();
+        const nextInit: number = nextPage ? +params.init : null;
+        let data: Item[] = [];
+        if (res.length > 0) {
+          data = res.map((i: ItemResponse) => {
+            const item: Item = this.mapRecordData(i);
+            item.views = i.content.views;
+            item.favorites = i.content.favorites;
+            return item;
+          });
+        }
+        return {
+          data: data,
+          init: nextInit
+        };
+      }
+    )
+    .flatMap((itemsData: ItemsData) => {
+      return this.getPurchases()
+      .map((purchases: Purchase[]) => {
+        purchases.forEach((purchase: Purchase) => {
+          const index: number = _.findIndex(itemsData.data, {id: purchase.item_id});
+          if (index !== -1) {
+            if (purchase.purchase_name === 'listingfee') {
+              itemsData.data[index].listingFeeExpiringDate = purchase.expiration_date;
+            }
+            if (this.bumpTypes.includes(purchase.purchase_name)) {
+              itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
+            }
+            if ( purchase.visibility_flags ) {
+              itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
+              itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
+              itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
+            }
+          }
+        });
+        return itemsData;
+      });
+    })
+    .map((itemsData: ItemsData) => {
+      this.selectedItems.forEach((selectedItemId: string) => {
+        const index: number = _.findIndex(itemsData.data, {id: selectedItemId});
+        if (index !== -1) {
+          itemsData.data[index].selected = true;
+        }
+      });
+      return itemsData;
+    });
+  }
+
+  // TODO: Delete this once backend is done
+  public getPaginationItemsNoBase(url: string, init): Observable<ItemsData> {
+    return this.http.getNoBase(url)
     .map((r: Response) => {
         const res: ItemResponse[] = r.json();
         const nextPage: string = r.headers.get('x-nextpage');
@@ -657,6 +719,35 @@ export class ItemService extends ResourceService {
           return Observable.of([]);
         }
       });
+  }
+
+  public mineByCategory(init: number, offset: number, categoryId: number, status: string): Observable<Item[]> {
+    let categoryName: string;
+    if (categoryId === 100) {
+      categoryName = 'cars';
+    }
+    if (categoryId === 14000) {
+      categoryName = 'motorbikes';
+    }
+    if (categoryId === 12800) {
+      categoryName = 'motors-accesories';
+    }
+
+    const url = `assets/json/mock-items/${categoryName}/${status}${init}.json`;
+    return this.getPaginationItemsNoBase(url, init).map(paginatedItems => paginatedItems.data);
+  }
+
+  public recursiveMineByCategory(init: number, offset: number, categoryId: number, status: string): Observable<Item[]> {
+    return this.mineByCategory(init, offset, categoryId, status).flatMap(res => {
+      if (res.length > 0) {
+        return this.recursiveMineByCategory(init + offset, offset, categoryId, status)
+          .map(recursiveResult => {
+            return res.concat(recursiveResult);
+          });
+      } else {
+        return Observable.of([]);
+      }
+    });
   }
 
   public getItemAndSetPurchaseInfo(id: string, purchase: Purchase): Item {

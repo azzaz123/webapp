@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpService } from '../http/http.service';
-import { UserService } from '../user/user.service';
-import { FeatureflagService } from '../user/featureflag.service';
 import { SubscriptionSlot } from './subscriptions.interface';
 import { CategoryService } from '../category/category.service';
-import { CategoryResponse } from '../category/category-response.interface';
 import { HttpServiceNew } from '../http/http.service.new';
 
 export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'assets/json/mock-subscriptions-slots.json';
@@ -29,7 +25,7 @@ export class SubscriptionsService {
 
   private getSlotCategory(slot: SubscriptionSlot) {
     return this.categoryService.getCategoryById(slot.category_id)
-      .map((category: CategoryResponse) => {
+      .map(category => {
         slot.category = category;
         return slot;
       });

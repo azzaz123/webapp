@@ -15,7 +15,7 @@ import { UploadConfirmationModalComponent } from './modals/upload-confirmation-m
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { AvailableSlots, Counters, UserStatsResponse } from '../../core/user/user-stats.interface';
+import { Counters, UserStatsResponse } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -24,7 +24,6 @@ import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
-import { MotorPlan, MotorPlanType, UserSubscription } from '../../core/user/user-response.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
@@ -59,12 +58,8 @@ export class ListComponent implements OnInit, OnDestroy {
   public numberOfProducts: number;
   public isRedirect = false;
   private counters: Counters;
-  public motorPlan: MotorPlanType;
   private upgradePlanModalRef: NgbModalRef;
-  public hasMotorPlan: boolean;
-  public carsLimit: number = 0;
   public userCanDeactivate: boolean;
-  public availableSlots: number = 0;
   public selectedItems: Item[];
   public creditInfo: CreditInfo;
   public isStripe: boolean;
@@ -90,26 +85,15 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.getItems();
+    this.getCreditInfo();
+
     this.subscriptionsService.getSlots().subscribe(subscriptionSlots => {
       this.subscriptionSlots = subscriptionSlots;
-      console.log(this.subscriptionSlots);
     });
+
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = val;
-    });
-    this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
-      if (motorPlan) {
-        const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
-        this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
-        this.hasMotorPlan = motorPlan.type === 'motor_plan_pro';
-        if (this.hasMotorPlan) {
-          this.selectedStatus = 'cars';
-          this.carsLimit = motorPlan.limit;
-        }
-      }
-      this.getItems();
-      this.getNumberOfProducts();
-      this.getCreditInfo();
     });
 
     this.itemService.selectedItems$.takeWhile(() => {
@@ -293,37 +277,38 @@ export class ListComponent implements OnInit, OnDestroy {
       this.items = [];
     }
     let status = this.selectedStatus;
-    if (this.hasMotorPlan) {
-      if (this.selectedStatus === 'cars') {
-        status = 'published/cars';
-      } else if (this.selectedStatus === 'published') {
-        status = 'published/notCars';
-      }
+
+    if (this.selectedSubscriptionSlot) {
+      this.itemService.recursiveMineByCategory(0, 20, this.selectedSubscriptionSlot.category_id, status).subscribe(res => {
+        this.items = res;
+        this.loading = false;
+      });
+    } else {
+      this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
+        const items = itemsData.data;
+        if (this.selectedStatus === 'sold') {
+          this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, { total_products: items.length });
+        } else if (this.selectedStatus === 'published') {
+          this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, { total_products: items.length });
+        }
+        this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, { init: this.init });
+        this.init = itemsData.init;
+        this.items = append ? this.items.concat(items) : items;
+        this.loading = false;
+        this.end = !this.init;
+        if (this.uploadModalRef) {
+          this.uploadModalRef.componentInstance.item = this.items[0];
+          this.uploadModalRef.componentInstance.trackUploaded();
+          this.uploadModalRef.componentInstance.urgentPrice();
+        }
+        if (this.firstItemLoad) {
+          setTimeout(() => {
+            this.restoreSelectedItems();
+          });
+        }
+        this.firstItemLoad = false;
+      });
     }
-    this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
-      const items = itemsData.data;
-      if (this.selectedStatus === 'sold') {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, { total_products: items.length });
-      } else if (this.selectedStatus === 'published') {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, { total_products: items.length });
-      }
-      this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, { init: this.init });
-      this.init = itemsData.init;
-      this.items = append ? this.items.concat(items) : items;
-      this.loading = false;
-      this.end = !this.init;
-      if (this.uploadModalRef) {
-        this.uploadModalRef.componentInstance.item = this.items[0];
-        this.uploadModalRef.componentInstance.trackUploaded();
-        this.uploadModalRef.componentInstance.urgentPrice();
-      }
-      if (this.firstItemLoad) {
-        setTimeout(() => {
-          this.restoreSelectedItems();
-        });
-      }
-      this.firstItemLoad = false;
-    });
   }
 
   public itemChanged($event: ItemChangeEvent) {
@@ -420,16 +405,6 @@ export class ListComponent implements OnInit, OnDestroy {
       this.counters = userStats.counters;
       this.setNumberOfProducts();
     });
-    if (this.hasMotorPlan) {
-      this.userService.getAvailableSlots().subscribe((slots: AvailableSlots) => {
-        this.availableSlots = slots.num_slots_cars;
-        this.userCanDeactivate = slots.user_can_manage;
-      });
-    }
-  }
-
-  public get totalCars(): number {
-    return this.carsLimit - this.availableSlots;
   }
 
   public purchaseListingFee(orderEvent: OrderEvent) {
@@ -527,19 +502,27 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public selectSubscriptionSlot(subscription: SubscriptionSlot, e) {
+    if (this.selectedSubscriptionSlot && subscription) {
+      if (this.selectedSubscriptionSlot.category_id === subscription.category_id) {
+        return;
+      }
+    }
+
     this.selectedSubscriptionSlot = subscription;
 
     if (!subscription) {
       e.stopPropagation();
+      this.init = 0;
+      this.selectedStatus = 'published';
+    } else {
+      this.selectedStatus = 'active';
     }
+
+    this.getItems();
   }
 
   public isSubscriptionSlotSelected(subscription: SubscriptionSlot) {
     return this.selectedSubscriptionSlot ? subscription.category_id === this.selectedSubscriptionSlot.category_id : false;
-  }
-
-  public onClickFeature() {
-    console.log(this.itemService.selectedItems);
   }
 
 }
