@@ -12,7 +12,8 @@ import {
   SUBSCRIPTION_REQUIRES_ACTION,
   SUBSCRIPTION_REQUIRES_PAYMENT,
   SUBSCRIPTION_SUCCESS,
-  TIER
+  TIER,
+  MAPPED_SUBSCRIPTIONS
 } from '../../../../tests/subscriptions.fixtures.spec';
 import { STRIPE_CARD, FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
@@ -29,6 +30,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   let stripeService: StripeService;
   let subscriptionsService: SubscriptionsService;
   const componentInstance = {
+    subscription: MAPPED_SUBSCRIPTIONS[2]
   };
 
   beforeEach(async(() => {
@@ -93,7 +95,6 @@ describe('AddNewSubscriptionModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddNewSubscriptionModalComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     activeModal = TestBed.get(NgbActiveModal);
     modalService = TestBed.get(NgbModal);
     stripeService = TestBed.get(StripeService);
@@ -101,6 +102,8 @@ describe('AddNewSubscriptionModalComponent', () => {
     errorsService = TestBed.get(ErrorsService);
     event = TestBed.get(EventService);
     component.card = STRIPE_CARD;
+    component.subscription = MAPPED_SUBSCRIPTIONS[2];
+    fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
@@ -114,7 +117,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
       const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
 
       component.ngOnInit();
 

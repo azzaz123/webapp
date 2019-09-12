@@ -16,7 +16,6 @@ import { flatMap } from 'rxjs/operators';
 export class SubscriptionComponent implements OnInit {
   public action: string;
   public subscriptions: SubscriptionsResponse[];
-  private AddNewSubscriptionModalRef: NgbModalRef;
 
   constructor(private modalService: NgbModal,
               private subscriptionsService: SubscriptionsService,
@@ -28,11 +27,11 @@ export class SubscriptionComponent implements OnInit {
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
-    this.AddNewSubscriptionModalRef = this.modalService.open(AddNewSubscriptionModalComponent, {windowClass: 'review'});
-    this.AddNewSubscriptionModalRef.componentInstance.subscription = subscription;
-    this.AddNewSubscriptionModalRef.result.then(() => {
+    let modalRef: NgbModalRef = this.modalService.open(AddNewSubscriptionModalComponent, {windowClass: 'review'});
+    modalRef.componentInstance.subscription = subscription;
+    modalRef.result.then(() => {
       this.action = 'clear';
-      this.AddNewSubscriptionModalRef = null;
+      modalRef = null;
     }, () => {});
   }
 

@@ -150,7 +150,7 @@ describe('SubscriptionsService', () => {
     });
   });
 
-  describe('getSubscriptions', () => {
+  xdescribe('getSubscriptions', () => {
     it('should return the json from the categories and convert it into options', () => {
       let response: SubscriptionsResponse[];
       const expectedUrl = `${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}`;

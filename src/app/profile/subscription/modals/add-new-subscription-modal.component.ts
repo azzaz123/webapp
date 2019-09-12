@@ -35,11 +35,11 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   public currentSlide: string;
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
+  public selectedPlanId: string;
   private invoiceId: string;
   private REQUIRES_PAYMENT_METHOD = 'REQUIRES_PAYMENT_METHOD';
   private REQUIRES_ACTION = 'REQUIRES_ACTION';
   private SUCCEEDED = 'SUCCEEDED';
-  private selectedPlanId: string;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -209,7 +209,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   private requestNewPayment(error?: any) {
-    console.log(error.message);
     this.errorService.i18nError('paymentFailed');
     this.loading = false;
     this.isPaymentError = true;

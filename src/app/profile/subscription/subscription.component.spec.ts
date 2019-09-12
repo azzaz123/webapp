@@ -5,7 +5,7 @@ import { SubscriptionsService } from "../../core/subscriptions/subscriptions.ser
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { Observable } from "rxjs";
 import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures.spec";
-import { SUBSCRIPTIONS } from "../../../tests/subscriptions.fixtures.spec";
+import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS } from "../../../tests/subscriptions.fixtures.spec";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from "./modals/add-new-subscription-modal.component";
 
@@ -24,7 +24,7 @@ describe('SubscriptionComponent', () => {
         {
           provide: SubscriptionsService, useValue: {
             getSubscriptions() {
-              return Observable.of(SUBSCRIPTIONS);
+              return Observable.of(MAPPED_SUBSCRIPTIONS);
             }
           }
         },
@@ -62,12 +62,16 @@ describe('SubscriptionComponent', () => {
 
   describe('OnInit', () => {
     it('should get the mapped subscriptions', () => {
-      spyOn(subscriptionsService, 'getSubscriptions').and.callThrough();
       spyOn(categoryService, 'getCategories').and.callThrough();
+      spyOn(subscriptionsService, 'getSubscriptions').and.callThrough();
       
       component.ngOnInit();
       
-      expect(component.subscriptions).toEqual(SUBSCRIPTIONS);
+      expect(component.subscriptions).toEqual(MAPPED_SUBSCRIPTIONS);
+    });
+
+    afterEach(() => {
+      TestBed.resetTestingModule();
     });
   });
 
@@ -75,12 +79,20 @@ describe('SubscriptionComponent', () => {
     it('should open the addNewSubscription modal', () => {
       spyOn(modalService, 'open').and.callThrough();
 
-      component.openSubscriptionModal(SUBSCRIPTIONS[0]);
+      component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[3]);
 
       expect(modalService.open).toHaveBeenCalledWith(AddNewSubscriptionModalComponent, {
         windowClass: 'review'
       });
     });
+
+    afterEach(() => {
+      TestBed.resetTestingModule();
+    });
   });
 
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+  
 });
