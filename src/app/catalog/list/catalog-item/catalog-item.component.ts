@@ -54,6 +54,11 @@ export class CatalogItemComponent implements OnInit {
     }
   }
 
+  public featureItem(item: Item): void {
+    this.itemService.selectedAction = 'feature';
+    this.select(item);
+  }
+
   public reactivate(item: Item) {
     this.itemService.getAvailableReactivationProducts(item.id).subscribe((product: Product) => {
       if (product.durations) {
@@ -107,6 +112,7 @@ export class CatalogItemComponent implements OnInit {
 
   public select(item: Item) {
     item.selected = !item.selected;
+    this.itemService.selectedAction = this.itemService.selectedAction === 'feature' ? 'feature' : '';
     if (item.selected) {
       this.itemService.selectItem(item.id);
       this.trackingService.track(TrackingService.PRODUCT_SELECTED, { product_id: item.id });

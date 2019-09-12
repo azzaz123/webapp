@@ -115,7 +115,13 @@ export class ListComponent implements OnInit, OnDestroy {
     this.itemService.selectedItems$.takeWhile(() => {
       return this.active;
     }).subscribe((action: SelectedItemsAction) => {
-      this.selectMode = this.itemService.selectedItems.length !== 0;
+      if (this.itemService.selectedItems.length === 0) {
+        this.itemService.selectedAction = '';
+        this.selectMode = false;
+      } else {
+        this.selectMode = true;
+      }
+
       this.selectedItems = this.itemService.selectedItems.map((id: string) => {
         return <Item>_.find(this.items, {id: id});
       });

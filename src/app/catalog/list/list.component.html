@@ -95,7 +95,16 @@
                 [disabled]="!itemService.selectedItems.length || !canDeactivate" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button> -->
       </span>
 
-      <tsl-button (click)="onClickFeature()">Feature</tsl-button>
+      <tsl-button 
+        className="btn-primary btn-big"
+        [disabled]="itemService.selectedItems.length === 0"
+        [routerLink]="['/catalog/checkout']"
+        tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE"
+        [params]="{ payment_method: isStripe ? 'STRIPE' : 'SABADELL' }"
+        i18n
+      >
+        Feature
+      </tsl-button>
     </div>
 
     <div class="row items">
@@ -118,6 +127,11 @@
     </div>
   </div>
 </div>
+<tsl-selected-items *ngIf="items.length && itemService.selectedItems.length && itemService.selectedAction === 'feature'"
+  [items]="items"
+  [isStripe]="isStripe"
+  (onAction)="onAction($event)"
+></tsl-selected-items>
 <tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>
 <tsl-bump-tutorial></tsl-bump-tutorial>
 <button [hidden]="true" tslItemSold></button>

@@ -35,8 +35,17 @@
     </span>
     <span class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">
+        <span [hidden]="item.sold || item.flags.onhold || item.flags.urgent">
+          <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate" [hidden]="selectMode">
+            <mat-icon svgIcon="feature"></mat-icon>
+            <span i18n>Feature</span>
+          </tsl-button>
+        </span>
+        <button class="btn-featured" *ngIf="item.bumpExpiringDate" [hidden]="selectMode">
+          {{item.bumpExpiringDate | amCountdown}}
+        </button>
         <span *ngIf="item.flags.onhold">
-          <tsl-button className="btn-primary btn-publish" (click)="publishItem()">
+          <tsl-button className="btn-primary btn-publish" (click)="publishItem()" [hidden]="selectMode">
             <span i18n>Publish</span>
           </tsl-button>
         </span>
@@ -52,7 +61,7 @@
           </button>
         </div>
       </span>
-      <button class="btn-reactivate" (click)="reactivate(item)" *ngIf="item.flags.expired" tslTrackEvent="MYCATALOG_REACTIVATE_FROMCATALOG" [params]="{category: item.categoryId}">
+      <button class="btn-reactivate" (click)="reactivate(item)" *ngIf="item.flags.expired" tslTrackEvent="MYCATALOG_REACTIVATE_FROMCATALOG" [params]="{category: item.categoryId}" [hidden]="selectMode">
         <mat-icon svgIcon="clock"></mat-icon>
         <span i18n>Reactivate</span>
       </button>

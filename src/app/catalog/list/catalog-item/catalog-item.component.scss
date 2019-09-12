@@ -75,7 +75,6 @@ $feature-button-width: 170px;
     }
   }
   .onHold {
-    background-color: $white;
     opacity: .4;
   }
   .selected-veil {
@@ -98,11 +97,6 @@ $feature-button-width: 170px;
       .selected-veil {
         border: solid 1px $walla-main;
       }
-    }
-  }
-  .pro & {
-    .selected-veil {
-      display: none;
     }
   }
   &.selected {
@@ -196,9 +190,6 @@ $feature-button-width: 170px;
   .actions {
     margin-right: $spacing-l;
     min-width: 400px;
-    .pro & {
-      min-width: 338px;
-    }
     button, tsl-button {
       margin-left: $spacing-ms;
       float: left;
