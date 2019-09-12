@@ -268,7 +268,9 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public loadMore() {
-    this.getItems(true);
+    if (!this.selectedSubscriptionSlot) {
+      this.getItems(true);
+    }
   }
 
   private getItems(append?: boolean) {
@@ -508,6 +510,7 @@ export class ListComponent implements OnInit, OnDestroy {
       }
     }
 
+    this.itemService.deselectItems();
     this.selectedSubscriptionSlot = subscription;
 
     if (!subscription) {

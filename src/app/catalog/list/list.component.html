@@ -8,12 +8,13 @@
      [scrollTop]="scrollTop">
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent && isRedirect"></tsl-spinner>
   <div class="container" *ngIf="!isUrgent || !isRedirect">
+
     <tsl-header>
       <div class="col-7">
         <div class="header-row">
           <h1 class="header-title">
             <span i18n>Your products</span>
-            <span class="badge badge-pro" *ngIf="hasMotorPlan || userService?.user?.featured || subscriptionSlots.length !== 0">
+            <span class="badge badge-pro" *ngIf="userService?.user?.featured || subscriptionSlots.length !== 0">
               <mat-icon svgIcon="pro-seal"></mat-icon>
               Pro
             </span>
@@ -28,7 +29,7 @@
         <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
       </div>
       <div class="col-1 header-numbers">
-        <ng-container *ngIf="!hasMotorPlan || selectedStatus === 'sold'">
+        <ng-container *ngIf="selectedStatus === 'sold'">
           <p class="header-numbers-top">
             <span>{{numberOfProducts}}</span>
           </p>
@@ -48,14 +49,17 @@
     </tsl-subscriptions-slots-list>
 
     <nav class="nav filters-nav">
-      <div *ngIf="selectedSubscriptionSlot">
+      <div [hidden]="!selectedSubscriptionSlot">
         <tsl-search-input (term)="search($event)"></tsl-search-input>
       </div>
-      <div>
-        <a (click)="filterByStatus('cars')" *ngIf="hasMotorPlan" [ngClass]="{active: selectedStatus === 'cars'}" class="nav-link"><span i18n>Cars</span> ({{totalCars}}/{{carsLimit}})</a>
-      </div>
-      <div>
+      <div [hidden]="selectedSubscriptionSlot">
         <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Selling</a>
+      </div>
+      <div [hidden]="!selectedSubscriptionSlot">
+        <a (click)="filterByStatus('active')" [ngClass]="{active: selectedStatus === 'active'}" class="nav-link" i18n>Active</a>
+      </div>
+      <div [hidden]="!selectedSubscriptionSlot">
+        <a (click)="filterByStatus('inactive')" [ngClass]="{active: selectedStatus === 'inactive'}" class="nav-link" i18n>Inactive</a>
       </div>
       <div>
         <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
