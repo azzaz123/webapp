@@ -1,0 +1,73 @@
+@import "~style/common";
+
+.SubscriptionsSlotItem {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    position: relative;
+
+    width: 380px;
+    height: 80px;
+    margin-right: $spacing-m;
+    padding: $spacing-m;
+    background-color: transparentize($white, 0.5);
+    border: solid 1px $blue-grey-5;
+    border-radius: $spacing-ms;
+    cursor: pointer;
+
+    .SubscriptionsSlotItem__icon {
+      @include square(48px);
+
+      mat-icon {
+        @include square(48px);
+        opacity: 0.3;
+      }
+    }
+
+    .SubscriptionsSlotItem__info {
+      .SubscriptionsSlotItem__info-title, .SubscriptionsSlotItem__info-description {
+        color: $blue-grey-3;
+      }
+    }
+
+    .SubscriptionsSlotItem__deselect {
+      @include square($spacing-ms);
+      margin: $spacing-m;
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      mat-icon {
+        @include square($spacing-ms);
+        /deep/ svg path {
+          fill: $blue-grey-3;
+        }
+      }
+    }
+
+    div {
+      margin-right: $spacing-m;
+    }
+  }
+
+  .SubscriptionsSlotItem__selected {
+    transition: 0.2s;
+    border: solid 1px $walla-main;
+
+    .SubscriptionsSlotItem__icon {
+      mat-icon {
+        opacity: 1;
+      }
+    }
+
+    .SubscriptionsSlotItem__info {
+      .SubscriptionsSlotItem__info-title {
+        color: $walla-main;
+      }
+
+      .SubscriptionsSlotItem__info-description {
+        color: $blue-grey-1;
+      }
+    }
+
+  }

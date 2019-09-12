@@ -40,31 +40,12 @@
       </div>
     </tsl-header>
 
-    <div class="subscriptions" [hidden]="subscriptionSlots.length === 0">
-
-      <div class="subscription-card" 
-        *ngFor="let subscriptionSlot of subscriptionSlots"
-        (click)="selectSubscriptionSlot(subscriptionSlot)"
-        [ngClass]="{'subscription_selected': isSubscriptionSlotSelected(subscriptionSlot)}">
-
-          <div class="subscription-card_icon">
-            <mat-icon svgIcon="{{subscriptionSlot.category.iconName}}"></mat-icon>
-          </div>
-
-          <div class="subscription-card_info">
-            <div class="subscription-card_info-title">
-              <b>Manage <span i18n>{{subscriptionSlot.category.defaultTitle}}</span></b>
-            </div>
-            <div class="subscription-card_info-description">You can publish <b>{{subscriptionSlot.available}}</b> more</div>
-          </div>
-
-          <div class="subscription-card_deselect" (click)="selectSubscriptionSlot(null, $event)">
-              <mat-icon [hidden]="!isSubscriptionSlotSelected(subscriptionSlot)" svgIcon="cross"></mat-icon>
-          </div>
-
-      </div>
-
-    </div>
+    <tsl-subscriptions-slots-list 
+      [subscriptionsSlots]="subscriptionSlots"
+      [selectedSubscriptionSlot]="selectedSubscriptionSlot"
+      (subscriptionSlotSelected)="selectSubscriptionSlot($event)"
+    >
+    </tsl-subscriptions-slots-list>
 
     <nav class="nav filters-nav">
       <div *ngIf="selectedSubscriptionSlot">

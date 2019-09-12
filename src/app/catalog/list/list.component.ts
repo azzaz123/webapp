@@ -501,7 +501,7 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public selectSubscriptionSlot(subscription: SubscriptionSlot, e) {
+  public selectSubscriptionSlot(subscription: SubscriptionSlot) {
     if (this.selectedSubscriptionSlot && subscription) {
       if (this.selectedSubscriptionSlot.category_id === subscription.category_id) {
         return;
@@ -511,7 +511,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.selectedSubscriptionSlot = subscription;
 
     if (!subscription) {
-      e.stopPropagation();
       this.init = 0;
       this.selectedStatus = 'published';
     } else {
@@ -519,10 +518,6 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     this.getItems();
-  }
-
-  public isSubscriptionSlotSelected(subscription: SubscriptionSlot) {
-    return this.selectedSubscriptionSlot ? subscription.category_id === this.selectedSubscriptionSlot.category_id : false;
   }
 
 }
