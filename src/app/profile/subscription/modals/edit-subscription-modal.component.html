@@ -1,0 +1,25 @@
+<div class="EditSubscription__box">
+  <div class="EditSubscription__box-header">
+    <div class="modal-close" (click)="activeModal.dismiss()">
+      <mat-icon svgIcon="cross"></mat-icon>
+    </div>
+    <h4 class="EditSubscription__box--title">Change listing limit</h4>
+    <p class="EditSubscription__box--subtitle">What limit do you want to put on your subscription?</p>
+  </div>
+    <div class="box-content">
+      <div class="EditSubscription__listing-limit-container">
+        <div *ngFor="let tier of subscription.tiers; let i = index" class="EditSubscription__listing-limit-box"
+        (click)="selectListingLimit(subscription.tiers[i])" [ngClass]="{selected: selectedTier.id === subscription.tiers[i].id}">
+        <span *ngIf="subscription.tiers[i].limit >= 0">{{subscription.tiers[i].limit}}</span>
+        <span *ngIf="subscription.tiers[i].limit < 0">Unlimited</span>
+      </div>
+      </div>
+      <div class="row EditSubscription__listing-limit-payment">
+        <div class="col-12 EditSubscription__listing-limit-selection">
+            New price: <span class="EditSubscription__listing-limit-price">{{selectedTier.price}}{{selectedTier.currency}}/mes</span>
+        </div>
+      </div>
+    </div>
+    <tsl-button i18n>Confirm change</tsl-button>
+    <div class="EditSubscription__cancel-link" (click)="updateSubscription()">I want to cancel my subscription</div>
+</div>

@@ -13,6 +13,7 @@ import { VisibilityProductsModalComponent } from './profile-pro-subscription/vis
 import { PaymentSuccessModalComponent } from './subscription/modals/payment-success-modal.component';
 import { AddNewSubscriptionModalComponent } from './subscription/modals/add-new-subscription-modal.component';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { EditSubscriptionModalComponent } from './subscription/modals/edit-subscription-modal.component';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
     VisibilityProductsModalComponent,
     PaymentSuccessModalComponent,
     AddNewSubscriptionModalComponent,
+    EditSubscriptionModalComponent
   ],
   entryComponents: [
     UnsubscribeModalComponent,
@@ -41,7 +43,8 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
     DeleteInfoConfirmationModalComponent,
     VisibilityProductsModalComponent,
     PaymentSuccessModalComponent,
-    AddNewSubscriptionModalComponent
+    AddNewSubscriptionModalComponent,
+    EditSubscriptionModalComponent
   ]
 })
 export class ProfileModule { }

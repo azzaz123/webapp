@@ -1,0 +1,197 @@
+@import "~style/common";
+
+.EditSubscription__box {
+  text-align: center;
+  padding: 0 0 $spacing-m;
+  .EditSubscription__box-header {
+    background: $walla-main;
+    height: 100px;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    color: $white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  &--title {
+    font-size: $font-size-l;
+    font-weight: bold;
+    margin: $spacing-m 0 $spacing-s;
+  }
+  &--subtitle {
+    font-size: $font-size-m;
+    color: $white;
+      margin: 0;
+  }
+}
+
+.EditSubscription__listing-limit-title {
+  color: $black;
+  font-size: $font-size-m;
+  font-weight: bold;
+}
+
+.EditSubscription__listing-limit-price {
+  color: $black;
+  font-size: $font-size-lll;
+}
+
+.EditSubscription__listing-limit-steps {
+  color: $blue-grey-2;
+  font-size: $font-size-s;
+}
+
+.EditSubscription__listing-limit-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: $spacing-m;
+  .EditSubscription__listing-limit-box {
+    padding: $spacing-m;
+    height: 60px;
+    border-right: 1px solid $blue-grey-5;
+    box-shadow: 0px 3px 5px -2px $blue-grey-5;
+    flex: 0 0 75px;
+    cursor: pointer;
+  }
+}
+
+.EditSubscription__listing-limit-selection {
+  width: 250px;
+  &--left {
+    text-align: left;
+  }
+  &--right {
+    text-align: right;
+  }
+}
+
+.EditSubscription__payment {
+  width: 80%;
+  margin: $spacing-m auto 0;
+  tsl-button {
+    margin: 0 auto;
+  }
+}
+
+.EditSubscription__selection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  tsl-stripe-card-selection {
+    width: 100%;
+  }
+}
+
+.EditSubscription__payment-response-message {
+  p {
+    color: $magenta-main;
+  }
+}
+
+.EditSubscription__listing-limit-payment {
+  width: 80%;
+  margin: $spacing-m auto $spacing-m;
+}
+
+.EditSubscription__listing-limit-payment-price {
+  color: $walla-main;
+  font-size: $font-size-m;
+}
+
+.EditSubscription__listing-limit-payment-edit {
+  color: $blue-grey-2;
+  cursor:  pointer;
+}
+
+.EditSubscription__group {
+  width: 100%;
+}
+
+.EditSubscription__payment-add-card {
+  color: $walla-main;
+  font-size: $font-size-s;
+  text-align: left;
+  cursor: pointer;
+}
+
+.EditSubscription__cancel-link {
+    color: $blue-grey-2;
+    margin: $spacing-m 0 0;
+    cursor: pointer;
+}
+
+.selected {
+  font-weight: bold;
+  color: $walla-main;
+  height: 56px !important;
+  box-shadow: 0px 4px 5px 0px $blue-grey-5 !important;
+}
+
+tsl-button /deep/ .btn-text  {
+  padding: $spacing-ms $spacing-ml;
+  background-color: transparent;
+  color: $blue-grey-3;
+  font-size: $font-size-s;
+  border: 1px solid $blue-grey-3;
+  border-radius: $button-border-radius;
+  &:hover {
+    color: $black;
+    background-color: $blue-grey-5;
+    border: 1px solid $black;
+  }
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid $blue-grey-5;
+  margin: 24px auto;
+  width: 80%;
+}
+
+ngb-carousel {
+  /deep/ {
+    .carousel-control-prev, .carousel-control-next {
+      display: none;
+    }
+    .carousel-indicators {
+      margin: 0;
+      padding: 0;
+      z-index: 0;
+      li {
+        background-color: $blue-grey-4;
+        @include square(6px);
+        max-width: 6px;
+        margin: 0 $spacing-xs;
+        &:hover, &.active {
+          @include square(6px);
+          max-width: 6px;
+          background-color: $blue-grey-2;
+        }
+      }
+    }
+    .carousel-item {
+      height: 370px;
+    }
+  }
+}
+
+.modal-close {
+  width: 12px;
+  height: 12px;
+  mat-icon {
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    /deep/ svg path {
+      fill: $white;
+    }
+  }
+}
+
+.bold {
+  font-weight: bold;
+}

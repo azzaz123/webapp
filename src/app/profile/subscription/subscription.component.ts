@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from './modals/add-new-subscription-modal.component';
+import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component';
 import { SubscriptionsResponse, Tier } from '../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
-import { CategoryResponse } from '../../core/category/category-response.interface';
 import { CategoryService } from '../../core/category/category.service';
 import { flatMap } from 'rxjs/operators';
 
@@ -27,7 +27,8 @@ export class SubscriptionComponent implements OnInit {
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
-    let modalRef: NgbModalRef = this.modalService.open(AddNewSubscriptionModalComponent, {windowClass: 'review'});
+    const modal = subscription.subscribed_from ? EditSubscriptionModalComponent : AddNewSubscriptionModalComponent;
+    let modalRef: NgbModalRef = this.modalService.open(modal, {windowClass: 'review'});
     modalRef.componentInstance.subscription = subscription;
     modalRef.result.then(() => {
       this.action = 'clear';
