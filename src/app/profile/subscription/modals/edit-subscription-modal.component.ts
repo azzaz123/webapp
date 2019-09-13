@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
 
@@ -46,7 +45,7 @@ export class EditSubscriptionModalComponent implements OnInit {
       this.activeModal.close();
   }
 
-  public updateSubscription(paymentMethod: PaymentMethodResponse) {
+  public updateSubscription() {
     this.loading = true;
    // update subs endpoint
   }
