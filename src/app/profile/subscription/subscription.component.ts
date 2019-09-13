@@ -6,6 +6,7 @@ import { SubscriptionsResponse, Tier } from '../../core/subscriptions/subscripti
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { CategoryService } from '../../core/category/category.service';
 import { flatMap } from 'rxjs/operators';
+import { EventService } from '../../core/event/event.service';
 
 
 @Component({
@@ -19,11 +20,15 @@ export class SubscriptionComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
               private subscriptionsService: SubscriptionsService,
-              private categoryService: CategoryService) {
+              private categoryService: CategoryService,
+              private eventService: EventService) {
   }
 
   ngOnInit() {
     this.getSubscriptions();
+    this.eventService.subscribe('subscriptionChange', () => {
+      this.getSubscriptions();
+    });
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {

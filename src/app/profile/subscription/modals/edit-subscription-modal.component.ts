@@ -3,6 +3,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
+import { ToastrService } from 'ngx-toastr';
+import { I18nService } from '../../../core/i18n/i18n.service';
+import { EventService } from '../../../core/event/event.service';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
@@ -29,7 +32,10 @@ export class EditSubscriptionModalComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
-              private subscriptionsService: SubscriptionsService) {
+              private subscriptionsService: SubscriptionsService,
+              private toastr: ToastrService,
+              private i18n: I18nService,
+              private eventService: EventService) {
   }
 
   ngOnInit() {
@@ -48,6 +54,9 @@ export class EditSubscriptionModalComponent implements OnInit {
   public updateSubscription() {
     this.loading = true;
    // update subs endpoint
+   this.close();
+   this.toastr.success(this.i18n.getTranslations('editSubscriptionSuccess'));
+   this.eventService.emit('subscriptionChange');
   }
 
   public selectListingLimit(tier: Tier): void {

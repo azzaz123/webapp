@@ -221,6 +221,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, {windowClass: 'success'});
     modalRef.result.then(() => {
       modalRef = null;
+      this.eventService.emit('subscriptionChange');
     }, () => {});
   }
 
