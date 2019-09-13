@@ -5,9 +5,10 @@ import { SubscriptionsService } from "../../core/subscriptions/subscriptions.ser
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { Observable } from "rxjs";
 import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures.spec";
-import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS } from "../../../tests/subscriptions.fixtures.spec";
+import { MAPPED_SUBSCRIPTIONS } from "../../../tests/subscriptions.fixtures.spec";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from "./modals/add-new-subscription-modal.component";
+import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component'
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionComponent;
@@ -79,9 +80,19 @@ describe('SubscriptionComponent', () => {
     it('should open the addNewSubscription modal', () => {
       spyOn(modalService, 'open').and.callThrough();
 
-      component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[3]);
+      component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
 
       expect(modalService.open).toHaveBeenCalledWith(AddNewSubscriptionModalComponent, {
+        windowClass: 'review'
+      });
+    });
+
+    it('should open the EditSubscription modal', () => {
+      spyOn(modalService, 'open').and.callThrough();
+
+      component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[2]);
+
+      expect(modalService.open).toHaveBeenCalledWith(EditSubscriptionModalComponent, {
         windowClass: 'review'
       });
     });
