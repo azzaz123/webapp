@@ -7,9 +7,15 @@
   <div class="NavLinks__item" *ngFor="let navLink of navLinks">
     <a
       [ngClass]="{ active: selectedLinkId === navLink.id }"
-      (click)="onClickNavLink(navLink)" i18n="tab|plural"
+      (click)="onClickNavLink(navLink)"
     >
-      {{navLink.display}}
+      <span i18n>{{navLink.display}}</span>
+      <span *ngIf="navLink.counter && navLink.counter.maxVal">
+        ({{navLink.counter.currentVal}}/{{navLink.counter.maxVal}})
+      </span>
+      <span *ngIf="navLink.counter && navLink.counter.currentVal && !navLink.counter.maxVal">
+        ({{navLink.counter.currentVal}})
+      </span>
     </a>
   </div>
 

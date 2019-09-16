@@ -298,6 +298,7 @@ export class ListComponent implements OnInit, OnDestroy {
     if (this.selectedSubscriptionSlot) {
       this.itemService.recursiveMineByCategory(0, 20, this.selectedSubscriptionSlot.category_id, status).subscribe(res => {
         this.items = res;
+        this.updateNavLinksCounters();
         this.loading = false;
       });
     } else {
@@ -544,6 +545,18 @@ export class ListComponent implements OnInit, OnDestroy {
     } else {
       this.navLinks = NORMAL_NAV_LINKS;
     }
+  }
+
+  public updateNavLinksCounters() {
+    this.navLinks.forEach(navLink => {
+      if (navLink.id === this.selectedStatus) {
+        if (this.selectedStatus === 'active') {
+          navLink.counter = { currentVal: this.items.length, maxVal: this.selectedSubscriptionSlot.limit };
+        } else {
+          navLink.counter = { currentVal: this.items.length };
+        }
+      }
+    });
   }
 
   public onSearchInputChange(value: string) {
