@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NavLinksComponent } from './nav-links.component';
+import { SearchInputComponent } from '../search-input/search-input.component';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('NavLinksComponent', () => {
   let component: NavLinksComponent;
@@ -8,7 +10,8 @@ describe('NavLinksComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavLinksComponent ]
+      imports: [ MatIconModule ],
+      declarations: [ NavLinksComponent, SearchInputComponent ]
     })
     .compileComponents();
   }));
