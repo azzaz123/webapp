@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SubscriptionsSlotsListComponent } from './subscriptions-slots-list.component';
+import { MatIconModule } from '@angular/material/icon';
+import { SubscriptionsSlotItemComponent } from '../subscriptions-slot-item/subscriptions-slot-item.component';
 
 describe('SubscriptionsSlotsListComponent', () => {
   let component: SubscriptionsSlotsListComponent;
@@ -8,7 +10,8 @@ describe('SubscriptionsSlotsListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SubscriptionsSlotsListComponent ]
+      imports: [MatIconModule],
+      declarations: [ SubscriptionsSlotsListComponent, SubscriptionsSlotItemComponent ]
     })
     .compileComponents();
   }));

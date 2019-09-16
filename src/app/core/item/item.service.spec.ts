@@ -60,6 +60,7 @@ import {
   UPLOAD_FORM_REALESTATE_VALUES
 } from '../../../tests/realestate.fixtures.spec';
 import { Realestate } from './realestate';
+import { HttpModuleNew } from '../http/http.module.new';
 
 describe('Service: Item', () => {
 
@@ -72,6 +73,7 @@ describe('Service: Item', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [ HttpModuleNew ],
       providers: [
         EventService,
         {provide: TrackingService, useClass: MockTrackingService},

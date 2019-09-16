@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
@@ -125,25 +125,6 @@ describe('CatalogItemComponent', () => {
     });
   });
 
-  describe('deleteItem', () => {
-
-    let item: Item;
-
-    beforeEach(fakeAsync(() => {
-      item = MOCK_ITEM;
-      spyOn(component, 'select');
-      component.deleteItem(item);
-    }));
-
-    it('should set selectedAction', () => {
-      expect(itemService.selectedAction).toBe('delete');
-    });
-    it('should call select', () => {
-      expect(component.select).toHaveBeenCalledWith(MOCK_ITEM);
-    });
-
-  });
-
   describe('featureItem', () => {
 
     let item: Item;
@@ -165,20 +146,22 @@ describe('CatalogItemComponent', () => {
 
   describe('reserve', () => {
 
-    let item: Item;
+    let item: Item = MOCK_ITEM;
 
     describe('not reserved', () => {
-      beforeEach(fakeAsync(() => {
-        item = MOCK_ITEM;
-        spyOn(component, 'select');
+      beforeEach(() => {
+        spyOn(itemService, 'reserveItem').and.returnValue(of({}));
+        item.reserved = false;
         component.reserve(item);
-      }));
+      });
 
       it('should set selectedAction', () => {
         expect(itemService.selectedAction).toBe('reserve');
       });
-      it('should call select', () => {
-        expect(component.select).toHaveBeenCalledWith(MOCK_ITEM);
+
+      it('should call reserveItem from itemService', () => {
+        expect(itemService.reserveItem).toHaveBeenCalledWith(MOCK_ITEM.id, true);
+        expect(item.reserved).toBeTruthy();
       });
     });
 
@@ -199,8 +182,6 @@ describe('CatalogItemComponent', () => {
       });
 
       it('should track the ProductUnReserved event', () => {
-        component.reserve(item);
-
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, { product_id: item.id });
       });
 

@@ -23,7 +23,7 @@ export class SubscriptionsService {
       });
   }
 
-  private getSlotCategory(slot: SubscriptionSlot) {
+  private getSlotCategory(slot: SubscriptionSlot): Observable<SubscriptionSlot> {
     return this.categoryService.getCategoryById(slot.category_id)
       .map(category => {
         slot.category = category;

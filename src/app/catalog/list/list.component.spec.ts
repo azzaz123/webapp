@@ -31,15 +31,19 @@ import { Item } from '../../core/item/item';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
-import { MOTORPLAN_DATA } from '../../../tests/user.fixtures.spec';
 import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { AvailableSlots } from '../../core/user/user-stats.interface';
 import { ItemFlags } from '../../core/item/item-response.interface';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 import { StripeService } from '../../core/stripe/stripe.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
+import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { HttpModuleNew } from '../../core/http/http.module.new';
+import { CategoryService } from '../../core/category/category.service';
+import { HttpService } from '../../core/http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -67,18 +71,19 @@ describe('ListComponent', () => {
     sold: 7,
     publish: 12
   };
-  const mockMotorPlan = {
-    type: 'motor_plan_pro',
-    subtype: 'sub_premium'
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ HttpModuleNew ],
       declarations: [ListComponent, ItemSoldDirective],
       providers: [
         I18nService,
         EventService,
         StripeService,
+        { provide: SubscriptionsService, useClass: MockSubscriptionService },
+        CategoryService,
+        HttpService,
+        ...TEST_HTTP_PROVIDERS,
         { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: ItemService, useValue: {
@@ -170,11 +175,6 @@ describe('ListComponent', () => {
             getStats() {
               return Observable.of({
                 counters: mockCounters
-              });
-            },
-            getMotorPlan() {
-              return Observable.of({
-                motorPlan: mockMotorPlan
               });
             },
             getAvailableSlots() {
@@ -453,25 +453,6 @@ describe('ListComponent', () => {
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionSpent');
     }));
 
-    it('should subscribe to getMotorPlan', () => {
-      spyOn(userService, 'getMotorPlan').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(userService.getMotorPlan).toHaveBeenCalled();
-    });
-
-    it('should set the translated user motor plan, selectedStatus and carsLimit', () => {
-      spyOn(userService, 'getMotorPlan').and.returnValue(Observable.of(MOTORPLAN_DATA));
-
-      component.ngOnInit();
-
-      expect(component.motorPlan).toEqual({subtype: 'sub_premium', label: 'Super Motor Plan', shortLabel: 'Super'});
-      expect(component.hasMotorPlan).toBe(true);
-      expect(component.selectedStatus).toBe('cars');
-      expect(component.carsLimit).toBe(MOTORPLAN_DATA.limit);
-    });
-
     it('should set selectedItems with items', () => {
       const anId = '1';
       const anotherId = '2';
@@ -494,24 +475,6 @@ describe('ListComponent', () => {
     it('should call mine with default values and set items', () => {
       expect(itemService.mine).toHaveBeenCalledWith(0, 'published');
       expect(component.items.length).toBe(2);
-    });
-
-    it('should call mine with cars status', () => {
-      component.hasMotorPlan = true;
-      component.selectedStatus = 'cars';
-
-      component['getItems']();
-
-      expect(itemService.mine).toHaveBeenCalledWith(20, 'published/cars');
-    });
-
-    it('should call mine with not cars status', () => {
-      component.hasMotorPlan = true;
-      component.selectedStatus = 'published';
-
-      component['getItems']();
-
-      expect(itemService.mine).toHaveBeenCalledWith(20, 'published/notCars');
     });
 
     it('should track the ProductListLoaded event', () => {
@@ -811,19 +774,6 @@ describe('ListComponent', () => {
 
       expect(component.getNumberOfProducts).toHaveBeenCalled();
     });
-    it('should call getAvailableSlots and set it', () => {
-      component.hasMotorPlan = true;
-      const SLOTS: AvailableSlots = {
-        num_slots_cars: 3,
-        user_can_manage: true
-      };
-      spyOn(userService, 'getAvailableSlots').and.returnValue(Observable.of(SLOTS));
-
-      component.getNumberOfProducts();
-
-      expect(component.availableSlots).toBe(SLOTS.num_slots_cars);
-      expect(component.userCanDeactivate).toBe(SLOTS.user_can_manage);
-    });
   });
 
   describe('setNumberOfProducts', () => {
@@ -844,14 +794,6 @@ describe('ListComponent', () => {
       component.filterByStatus('sold');
 
       expect(component.numberOfProducts).toEqual(mockCounters.sold);
-    });
-  });
-
-  describe('totalCars', () => {
-    it('should return totalCars', () => {
-      component.carsLimit = 5;
-      component.availableSlots = 3;
-      expect(component.totalCars).toBe(2);
     });
   });
 
