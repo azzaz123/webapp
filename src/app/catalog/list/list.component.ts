@@ -546,4 +546,8 @@ export class ListComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onSearchInputChange(value: string) {
+    // TODO: Filter items
+  }
+
 }

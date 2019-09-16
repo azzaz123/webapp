@@ -53,6 +53,7 @@
       [selectedLinkId]="selectedStatus"
       [navLinks]="navLinks"
       (clickedLink)="filterByStatus($event)"
+      (searchChanged)="onSearchInputChange($event)"
     >
     </tsl-nav-links>
 
