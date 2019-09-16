@@ -72,6 +72,7 @@ import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.co
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { SelectModule } from 'ng-select';
 import { LinkTransformPipe } from './pipes';
+import { NavLinksComponent } from './nav-links/nav-links.component';
 
 @NgModule({
   imports: [
@@ -146,6 +147,7 @@ import { LinkTransformPipe } from './pipes';
     NewCardModalComponent,
     StripeCardSelectionComponent,
     SelectModule,
+    NavLinksComponent,
     LinkTransformPipe
   ],
   declarations: [
@@ -206,6 +208,7 @@ import { LinkTransformPipe } from './pipes';
     CreditCardsComponent,
     NewCardModalComponent,
     StripeCardSelectionComponent,
+    NavLinksComponent,
     LinkTransformPipe
   ],
   providers: [

@@ -1,0 +1,30 @@
+@import "~style/common";
+
+.NavLinks {
+	display: flex;
+	height: 38px;
+	margin: $spacing-l 0;
+	line-height: $line-height-xl;
+	text-transform: uppercase;
+  
+	div {
+		margin-right: $spacing-xl;
+		
+		a {
+			height: 100%;
+			cursor: pointer;
+			font-size: $font-size-xs;
+			font-weight: $font-weight-chunky;
+
+      padding-bottom: $spacing-ms;
+			color: $blue-grey-2;
+			&:hover {
+				color: darken($blue-grey-2, 10%);
+			}
+			&.active {
+				color: $walla-main;
+				border-bottom: 2px solid $walla-main;
+			}
+		}
+	}
+}

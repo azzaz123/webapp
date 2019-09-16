@@ -48,23 +48,13 @@
     >
     </tsl-subscriptions-slots-list>
 
-    <nav class="nav filters-nav">
-      <div [hidden]="!selectedSubscriptionSlot">
-        <tsl-search-input (term)="search($event)"></tsl-search-input>
-      </div>
-      <div [hidden]="selectedSubscriptionSlot">
-        <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Selling</a>
-      </div>
-      <div [hidden]="!selectedSubscriptionSlot">
-        <a (click)="filterByStatus('active')" [ngClass]="{active: selectedStatus === 'active'}" class="nav-link" i18n>Active</a>
-      </div>
-      <div [hidden]="!selectedSubscriptionSlot">
-        <a (click)="filterByStatus('inactive')" [ngClass]="{active: selectedStatus === 'inactive'}" class="nav-link" i18n>Inactive</a>
-      </div>
-      <div>
-        <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
-      </div>
-    </nav>
+    <tsl-nav-links class="List__NavLinks"
+      [showSearchInput]="selectedSubscriptionSlot"
+      [selectedLinkId]="selectedStatus"
+      [navLinks]="navLinks"
+      (clickedLink)="filterByStatus($event)"
+    >
+    </tsl-nav-links>
 
     <div>
 

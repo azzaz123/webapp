@@ -34,6 +34,18 @@ import { CreditInfo } from '../../core/payments/payment.interface';
 import { StripeService } from '../../core/stripe/stripe.service';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { SubscriptionSlot } from '../../core/subscriptions/subscriptions.interface';
+import { NavLink } from '../../shared/nav-links/nav-link.interface';
+
+export const NORMAL_NAV_LINKS: NavLink[] = [
+  { id: 'published', display: 'Selling' },
+  { id: 'sold', display: 'Sold' }
+];
+
+export const SUBSCRIPTION_SELECTED_NAV_LINKS: NavLink[] = [
+  { id: 'active', display: 'Active' },
+  { id: 'inactive', display: 'Inactive' },
+  { id: 'sold', display: 'Sold' }
+];
 
 const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reactivateWithCredits', 'purchaseListingFeeWithCredits'];
 
@@ -66,6 +78,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public subscriptionSlots: SubscriptionSlot[] = [];
   public selectedSubscriptionSlot: SubscriptionSlot;
   public selectMode = false;
+  public navLinks: NavLink[] = [];
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -275,6 +288,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private getItems(append?: boolean) {
     this.loading = true;
+
+    this.updateNavLinks();
     if (!append) {
       this.items = [];
     }
@@ -521,6 +536,14 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     this.getItems();
+  }
+
+  public updateNavLinks() {
+    if (this.selectedSubscriptionSlot) {
+      this.navLinks = SUBSCRIPTION_SELECTED_NAV_LINKS;
+    } else {
+      this.navLinks = NORMAL_NAV_LINKS;
+    }
   }
 
 }
