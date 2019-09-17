@@ -589,17 +589,28 @@ describe('ListComponent', () => {
   });
 
   describe('onAction', () => {
-    it('should call delete', () => {
-      itemService.selectedAction = 'delete';
-      spyOn(component, 'delete');
-      component.onAction();
-      expect(component.delete).toHaveBeenCalled();
+    it('should call activate', () => {
+      spyOn(component, 'activate');
+
+      component.onAction('activate');
+
+      expect(component.activate).toHaveBeenCalledTimes(1);
     });
-    it('should call reserve', () => {
-      itemService.selectedAction = 'reserve';
-      spyOn(component, 'reserve');
-      component.onAction();
-      expect(component.reserve).toHaveBeenCalled();
+
+    it('should call deactivate', () => {
+      spyOn(component, 'deactivate');
+
+      component.onAction('deactivate');
+
+      expect(component.deactivate).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call delete', () => {
+      spyOn(component, 'delete');
+
+      component.onAction('delete');
+
+      expect(component.delete).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -859,54 +870,6 @@ describe('ListComponent', () => {
 
     });
 
-  });
-
-  describe('canActivate', () => {
-    it('should return true if all items are onHold', () => {
-      const flags = ITEM_FLAGS;
-      flags.onhold = true;
-      const item1 = new Item('1', 1, '1', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags);
-      const item2 = new Item('2', 2, '2', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags);
-      component.selectedItems = [item1, item2];
-
-      expect(component.canActivate).toBe(true);
-    });
-
-    it('should return false if not all items are onHold', () => {
-      const flags = <ItemFlags>{...ITEM_FLAGS};
-      flags.onhold = true;
-      const item1 = new Item('1', 1, '1', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags);
-      const flags2 = <ItemFlags>{...ITEM_FLAGS};
-      flags2.onhold = false;
-      const item2 = new Item('2', 2, '2', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags2);
-      component.selectedItems = [item1, item2];
-
-      expect(component.canActivate).toBe(false);
-    });
-  });
-
-  describe('canDeactivate', () => {
-    it('should return true if all items are not onHold', () => {
-      const flags = ITEM_FLAGS;
-      flags.onhold = false;
-      const item1 = new Item('1', 1, '1', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags);
-      const item2 = new Item('2', 2, '2', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags);
-      component.selectedItems = [item1, item2];
-
-      expect(component.canDeactivate).toBe(true);
-    });
-
-    it('should return false if all items onHold', () => {
-      const flags = <ItemFlags>{...ITEM_FLAGS};
-      flags.onhold = true;
-      const item1 = new Item('1', 1, '1', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags);
-      const flags2 = <ItemFlags>{...ITEM_FLAGS};
-      flags2.onhold = true;
-      const item2 = new Item('2', 2, '2', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags2);
-      component.selectedItems = [item1, item2];
-
-      expect(component.canDeactivate).toBe(false);
-    });
   });
 
   describe('purchaseListingFee', () => {

@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
-import { Observable, of } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
@@ -25,6 +25,7 @@ import { EventService } from '../../../core/event/event.service';
 import { environment } from '../../../../environments/environment';
 import * as moment from 'moment';
 import { ThousandSuffixesPipe } from '../../../shared/number-conversion/thousand-suffixes.pipe';
+import { SelectedItemsAction } from '../../../core/item/item-response.interface';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -50,6 +51,7 @@ describe('CatalogItemComponent', () => {
         {
           provide: ItemService, useValue: {
             selectedItems: [],
+            selectedItems$: new ReplaySubject<SelectedItemsAction>(1),
             selectItem() {
             },
             deselectItem() {
