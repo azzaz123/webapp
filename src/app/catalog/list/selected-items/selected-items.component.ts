@@ -40,7 +40,7 @@ export class SelectedItemsComponent implements OnInit {
     this.selectedItems = [];
   }
 
-  public onClick(action: string) {
+  public onClickAction(action: string) {
     this.selectedAction.emit(action);
   }
 

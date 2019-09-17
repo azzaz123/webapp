@@ -10,21 +10,20 @@
   padding: $spacing-ml $spacing-xl;
   color: $blue-grey-1;
 
-  // &.SelectedItems__no-items {
-  //   opacity: 0.75;
-  // }
+  &.SelectedItems__no-items {
+    opacity: 0.95;
+  }
 }
 
 .SelectedItems__total-selected {
   cursor: pointer;
   display: inline-block;
-  height: 40px;
   line-height: $line-height-xxl;
-  margin-bottom: $spacing-xxs;
   padding: 0 $spacing-ml;
-  border: solid 1px $blue-grey-4;
+  border: solid 1px $walla-main;
   border-radius: $border-radius;
-  background: $white;
+  background: $walla-main;
+  background-color: rgba($walla-main, 0.2);
   color: $blue-grey-1;
   font-size: $font-size-s;
 
@@ -72,7 +71,6 @@
   display: flex;
   align-items: center;
 
-
   &.disabled {
     button {
       cursor: auto;
@@ -87,15 +85,21 @@
     }
   }
   button {
-    height: 42px;
+    cursor: pointer;
+    width: 120px;
     line-height: $line-height-xxl;
     padding: 0 $spacing-ml;
-    cursor: pointer;
+    margin-right: 12px;
+    border: solid 1px rgba($blue-grey-4, 0.5);
     border-radius: $border-radius;
     background: $white;
     color: $blue-grey-2;
-    border: solid 1px rgba($blue-grey-4, 0.5);
     font-size: $font-size-s;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+    
     &.btn-delete, &.btn-deactivate {
       padding: 0 $spacing-ms;
       mat-icon {
@@ -122,22 +126,6 @@
         }
       }
     }
-    &.btn-reserve {
-      padding: 0 $spacing-ms;
-      mat-icon {
-        vertical-align: text-bottom;
-      }
-      &:hover:not(:disabled) {
-        background: $skyblue-dark;
-        border-color: transparent;
-        color: $white;
-        mat-icon /deep/ {
-          svg g g, svg path {
-            fill: $white;
-          }
-        }
-      }
-    }
     &.btn-activate {
       &:hover {
         background: $walla-main;
@@ -159,23 +147,18 @@
     }
   }
 
-  tsl-button /deep/ .btn-feat  {
-    &:disabled {
-      cursor: default;
+  tsl-button:disabled {
+    cursor: not-allowed;
+  }
+
+  .SelectedItems__feature {
+    .address {
+      position: absolute;
+      bottom: 5px;
+      right: 20px;
+      font-size: $font-size-xxxs;
+      color: $blue-grey-3;
     }
   }
 
-  &.show {
-    button {
-      animation: fadeInFromNone 0.5s ease-in-out;
-    }
-  }
-
-  .address {
-    position: absolute;
-    bottom: 5px;
-    right: 20px;
-    font-size: $font-size-xxxs;
-    color: $blue-grey-3;
-  }
 }

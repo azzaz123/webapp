@@ -58,7 +58,7 @@
     </tsl-nav-links>
 
     <div class="row items">
-      <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
+      <div id="catalog-empty-state" *ngIf="!items.length && !loading">
         <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
       </div>
 
@@ -83,7 +83,7 @@
   [selectedSubscriptionSlot]="selectedSubscriptionSlot"
   [selectedStatus]="selectedStatus"
   [isStripe]="isStripe"
-  (onAction)="onAction($event)"
+  (selectedAction)="onAction($event)"
 >
 </tsl-selected-items>
 

@@ -3,27 +3,6 @@
 .items {
   margin-top: $spacing-ml;
   margin-bottom: $spacing-xxxl * 2;
-  .add-item {
-    width: 100%;
-    svg {
-      width: 100%;
-      .dashed-border, .pic, .button, text {
-        transition: all .2s ease;
-      }
-    }
-    &:hover {
-      $hover-color: $walla-dark;
-      text-decoration: none;
-      svg {
-        .dashed-border {
-          stroke: $hover-color;
-        }
-        .pic, .button, text {
-          fill: $hover-color;
-        }
-      }
-    }
-  }
 }
 
 tsl-spinner {
@@ -68,11 +47,4 @@ tsl-selected-items {
     width: 100%;
     height: auto;
   }
-}
-
-.banner {
-  width: 100%;
-  height: auto;
-  margin-bottom: $spacing-ml;
-  margin-top: -$spacing-xl;
 }

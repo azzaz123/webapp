@@ -1,7 +1,7 @@
 <div class="SelectedItems" [ngClass]="{ 'SelectedItems__no-items': itemService.selectedItems.length === 0 }">
 
   <div class="SelectedItems__total-selected" [hidden]="itemService.selectedItems.length === 0" (click)="deselect()">
-    <a class="filtered">
+    <a>
       <ng-container [ngPlural]="itemService.selectedItems.length">
         <ng-template ngPluralCase="=1">
           <ng-container i18n>1 item selected</ng-container>
@@ -28,7 +28,7 @@
   <div class="SelectedItems__actions">
 
     <!-- Delete -->
-    <button class="btn-delete dark" (click)="delete()" [hidden]="itemService.selectAction === 'feature'"
+    <button class="btn-delete dark" (click)="onClickAction('delete')" [hidden]="itemService.selectAction === 'feature'"
       [disabled]="!itemService.selectedItems.length">
       <mat-icon svgIcon="delete"></mat-icon>
       <span i18n>Delete</span>
@@ -36,7 +36,7 @@
 
     <!-- Deactivate -->
     <button class="btn-deactivate dark" *ngIf="selectedSubscriptionSlot && selectedStatus === 'active'"
-      (click)="deactivate()" [hidden]="itemService.selectAction === 'feature'"
+      (click)="onClickAction('deactivate')" [hidden]="itemService.selectAction === 'feature'"
       [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>
       Deactivate
     </button>
@@ -44,12 +44,12 @@
     <!-- Activate -->
     <button class="btn-activate" *ngIf="selectedSubscriptionSlot && selectedStatus === 'inactive'"
       [hidden]="itemService.selectAction === 'feature'" [disabled]="!itemService.selectedItems.length"
-      (click)="activate()" i18n>
+      (click)="onClickAction('activate')" i18n>
       Activate
     </button>
 
     <!-- Feature -->
-    <div>
+    <div class="SelectedItems__feature">
       <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
         [routerLink]="['/catalog/checkout']" [params]="{ payment_method: isStripe ? 'STRIPE' : 'SABADELL' }"
         tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE" i18n>

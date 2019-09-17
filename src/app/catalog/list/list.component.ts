@@ -352,11 +352,17 @@ export class ListComponent implements OnInit, OnDestroy {
     this.selectMode = false;
   }
 
-  public onAction($event?: any) {
-    if (this.itemService.selectedAction === 'delete') {
+  public onAction(actionType: string) {
+    if (actionType === 'activate') {
+      this.activate();
+    }
+
+    if (actionType === 'deactivate') {
+      this.deactivate();
+    }
+
+    if (actionType === 'delete') {
       this.delete();
-    } else if (this.itemService.selectedAction === 'reserve') {
-      this.reserve();
     }
   }
 
