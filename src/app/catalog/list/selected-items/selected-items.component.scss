@@ -9,10 +9,6 @@
   box-shadow: 0 -2px 6px 0 rgba(37, 50, 56, 0.1);
   padding: $spacing-ml $spacing-xl;
   color: $blue-grey-1;
-
-  &.SelectedItems__no-items {
-    opacity: 0.95;
-  }
 }
 
 .SelectedItems__total-selected {

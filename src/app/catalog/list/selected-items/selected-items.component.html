@@ -1,4 +1,4 @@
-<div class="SelectedItems" [ngClass]="{ 'SelectedItems__no-items': itemService.selectedItems.length === 0 }">
+<div class="SelectedItems">
 
   <div class="SelectedItems__total-selected" [hidden]="itemService.selectedItems.length === 0" (click)="deselect()">
     <a>
