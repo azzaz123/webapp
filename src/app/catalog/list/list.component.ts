@@ -113,7 +113,7 @@ export class ListComponent implements OnInit, OnDestroy {
       return this.active;
     }).subscribe((action: SelectedItemsAction) => {
       if (this.itemService.selectedItems.length === 0) {
-        this.itemService.selectedAction = '';
+        this.itemService.selectedAction = null;
         this.selectMode = false;
       } else {
         this.selectMode = true;
@@ -504,18 +504,6 @@ export class ListComponent implements OnInit, OnDestroy {
         this.modalService.open(TooManyItemsModalComponent, {windowClass: 'bump'})
           .result.then(() => {}, () => {});
       });
-    });
-  }
-
-  public get canActivate(): boolean {
-    return _.every(this.selectedItems, (item) => {
-      return item.flags && item.flags.onhold;
-    });
-  }
-
-  public get canDeactivate(): boolean {
-    return _.every(this.selectedItems, (item) => {
-      return item.flags && !item.flags.onhold;
     });
   }
 

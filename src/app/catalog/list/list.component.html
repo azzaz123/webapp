@@ -48,7 +48,7 @@
     >
     </tsl-subscriptions-slots-list>
 
-    <tsl-nav-links class="List__NavLinks"
+    <tsl-nav-links
       [showSearchInput]="selectedSubscriptionSlot"
       [selectedLinkId]="selectedStatus"
       [navLinks]="navLinks"
@@ -56,49 +56,6 @@
       (searchChanged)="onSearchInputChange($event)"
     >
     </tsl-nav-links>
-
-    <div>
-
-      <a id="total-selected" class="filtered" [hidden]="itemService.selectedItems.length === 0" [ngClass]="{'show': itemService.selectedItems.length}" (click)="deselect()">
-        <ng-container [ngPlural]="itemService.selectedItems.length">
-          <ng-template ngPluralCase="=1"><ng-container i18n>1 item selected</ng-container></ng-template>
-          <ng-template ngPluralCase="other"><ng-container i18n>{{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected</ng-container></ng-template>
-        </ng-container>
-      </a>
-
-      <span class="bulk-actions" [ngClass]="{disabled: !itemService.selectedItems.length}">
-        <button class="btn-delete dark" (click)="delete()" [disabled]="!itemService.selectedItems.length">
-          <mat-icon svgIcon="delete"></mat-icon>
-          <span i18n>Delete</span>
-        </button>
-        <button
-          class="btn-activate"
-          *ngIf="selectedSubscriptionSlot"
-          (click)="activate()"
-          [disabled]="!itemService.selectedItems.length || !canActivate" i18n>
-            Activate
-        </button>
-        <button 
-          class="btn-deactivate dark"
-          *ngIf="selectedSubscriptionSlot"
-          (click)="deactivate()"
-          [disabled]="!itemService.selectedItems.length || !canDeactivate"
-          tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>
-            Deactivate
-        </button>
-      </span>
-
-      <tsl-button 
-        className="btn-primary btn-big"
-        [disabled]="itemService.selectedItems.length === 0"
-        [routerLink]="['/catalog/checkout']"
-        tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE"
-        [params]="{ payment_method: isStripe ? 'STRIPE' : 'SABADELL' }"
-        i18n
-      >
-        Feature
-      </tsl-button>
-    </div>
 
     <div class="row items">
       <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
@@ -120,11 +77,16 @@
     </div>
   </div>
 </div>
-<tsl-selected-items *ngIf="items.length && itemService.selectedItems.length && itemService.selectedAction === 'feature'"
+
+<tsl-selected-items *ngIf="items.length"
   [items]="items"
+  [selectedSubscriptionSlot]="selectedSubscriptionSlot"
+  [selectedStatus]="selectedStatus"
   [isStripe]="isStripe"
   (onAction)="onAction($event)"
-></tsl-selected-items>
+>
+</tsl-selected-items>
+
 <tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>
 <tsl-bump-tutorial></tsl-bump-tutorial>
 <button [hidden]="true" tslItemSold></button>
