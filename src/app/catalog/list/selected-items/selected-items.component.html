@@ -28,7 +28,7 @@
   <div class="SelectedItems__actions">
 
     <!-- Delete -->
-    <button class="btn-delete dark" (click)="onClickAction('delete')" [hidden]="itemService.selectAction === 'feature'"
+    <button class="btn-delete dark" (click)="onClickAction('delete')" [hidden]="itemService.selectedAction === 'feature'"
       [disabled]="!itemService.selectedItems.length">
       <mat-icon svgIcon="delete"></mat-icon>
       <span i18n>Delete</span>
@@ -36,14 +36,14 @@
 
     <!-- Deactivate -->
     <button class="btn-deactivate dark" *ngIf="selectedSubscriptionSlot && selectedStatus === 'active'"
-      (click)="onClickAction('deactivate')" [hidden]="itemService.selectAction === 'feature'"
+      (click)="onClickAction('deactivate')" [hidden]="itemService.selectedAction === 'feature'"
       [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>
       Deactivate
     </button>
 
     <!-- Activate -->
     <button class="btn-activate" *ngIf="selectedSubscriptionSlot && selectedStatus === 'inactive'"
-      [hidden]="itemService.selectAction === 'feature'" [disabled]="!itemService.selectedItems.length"
+      [hidden]="itemService.selectedAction === 'feature'" [disabled]="!itemService.selectedItems.length"
       (click)="onClickAction('activate')" i18n>
       Activate
     </button>
