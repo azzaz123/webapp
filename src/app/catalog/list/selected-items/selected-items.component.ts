@@ -26,16 +26,14 @@ export class SelectedItemsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.itemService.selectedItems$.subscribe((action: SelectedItemsAction) => {
+    this.itemService.selectedItems$.subscribe(() => {
       this.selectedItems = this.itemService.selectedItems.map(id => this.items.find(item => item.id === id));
     });
   }
 
   public deselect() {
     this.itemService.deselectItems();
-    this.items.map((item: Item) => {
-      item.selected = false;
-    });
+    this.items.map(item => item.selected = false);
     this.itemService.selectedAction = null;
     this.selectedItems = [];
   }

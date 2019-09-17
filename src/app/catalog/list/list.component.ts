@@ -77,7 +77,6 @@ export class ListComponent implements OnInit, OnDestroy {
   public isStripe: boolean;
   public subscriptionSlots: SubscriptionSlot[] = [];
   public selectedSubscriptionSlot: SubscriptionSlot;
-  public selectMode = false;
   public navLinks: NavLink[] = [];
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
@@ -112,13 +111,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.itemService.selectedItems$.takeWhile(() => {
       return this.active;
     }).subscribe((action: SelectedItemsAction) => {
-      if (this.itemService.selectedItems.length === 0) {
-        this.itemService.selectedAction = null;
-        this.selectMode = false;
-      } else {
-        this.selectMode = true;
-      }
-
       this.selectedItems = this.itemService.selectedItems.map((id: string) => {
         return <Item>_.find(this.items, {id: id});
       });
@@ -349,7 +341,6 @@ export class ListComponent implements OnInit, OnDestroy {
       item.selected = false;
     });
     this.itemService.selectedAction = null;
-    this.selectMode = false;
   }
 
   public onAction(actionType: string) {

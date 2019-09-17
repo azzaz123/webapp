@@ -120,6 +120,7 @@ export class ItemService extends ResourceService {
   public deselectItems() {
     this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_UNSELECTED, {product_ids: this.selectedItems.join(', ')});
     this.selectedItems = [];
+    this.selectedItems$.next();
     this.items.active.map((item: Item) => {
       item.selected = false;
     });

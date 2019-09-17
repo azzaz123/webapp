@@ -21,10 +21,10 @@ export class CatalogItemComponent implements OnInit {
 
   @Input() item: Item;
   @Input() paymentMethod: string;
-  @Input() selectMode = false;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
   @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
   public link: string;
+  public selectMode = false;
 
   constructor(
     private modalService: NgbModal,
@@ -37,6 +37,9 @@ export class CatalogItemComponent implements OnInit {
 
   ngOnInit() {
     this.link = this.item.getUrl(this.subdomain);
+    this.itemService.selectedItems$.subscribe(() => {
+      this.selectMode = this.itemService.selectedItems.length !== 0;
+    });
   }
 
   public reserve(item: Item) {
