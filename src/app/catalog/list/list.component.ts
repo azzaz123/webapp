@@ -4,7 +4,8 @@ import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
 import {
   ItemBulkResponse, ItemsData, Order, Product,
-  SelectedItemsAction
+  SelectedItemsAction,
+  ItemDataResponse
 } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
@@ -78,6 +79,8 @@ export class ListComponent implements OnInit, OnDestroy {
   public subscriptionSlots: SubscriptionSlot[] = [];
   public selectedSubscriptionSlot: SubscriptionSlot;
   public navLinks: NavLink[] = [];
+  private term: string;
+  public searchPlaceholder: string;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -102,6 +105,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     this.subscriptionsService.getSlots().subscribe(subscriptionSlots => {
       this.subscriptionSlots = subscriptionSlots;
+      this.searchPlaceholder = this.i18n.getTranslations('searchByTitle');
     });
 
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
@@ -288,7 +292,7 @@ export class ListComponent implements OnInit, OnDestroy {
     let status = this.selectedStatus;
 
     if (this.selectedSubscriptionSlot) {
-      this.itemService.recursiveMineByCategory(0, 20, this.selectedSubscriptionSlot.category_id, status).subscribe(res => {
+      this.itemService.recursiveMinesByCategory(0, 20, this.selectedSubscriptionSlot.category_id, status, this.term).subscribe(res => {
         this.items = res;
         this.updateNavLinksCounters();
         this.loading = false;
@@ -517,6 +521,7 @@ export class ListComponent implements OnInit, OnDestroy {
     if (!subscription) {
       this.init = 0;
       this.selectedStatus = 'published';
+      this.updateNavLinksCounters();
     } else {
       this.selectedStatus = 'active';
     }
@@ -536,7 +541,10 @@ export class ListComponent implements OnInit, OnDestroy {
     this.navLinks.forEach(navLink => {
       if (navLink.id === this.selectedStatus) {
         if (this.selectedStatus === 'active') {
-          navLink.counter = { currentVal: this.items.length, maxVal: this.selectedSubscriptionSlot.limit };
+          navLink.counter = {
+            currentVal: this.selectedSubscriptionSlot.limit - this.selectedSubscriptionSlot.available,
+            maxVal: this.selectedSubscriptionSlot.limit
+          };
         } else {
           navLink.counter = { currentVal: this.items.length };
         }
@@ -545,7 +553,8 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public onSearchInputChange(value: string) {
-    // TODO: Filter items
+    this.term = value;
+    this.getItems();
   }
 
 }

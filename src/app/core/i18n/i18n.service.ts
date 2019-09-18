@@ -138,7 +138,8 @@ export class I18nService {
       fashion_brand_example: 'E.g: Zara',
       model_example: 'E.g: iPhone',
       noResultsFound: 'No results found',
-      writeMessage: 'Write a message...'
+      writeMessage: 'Write a message...',
+      searchByTitle: 'Search by title'
     },
     es: {
       daysMomentConfig: {
@@ -276,7 +277,8 @@ export class I18nService {
       fashion_brand_example: 'P. ej: Zara',
       model_example: 'P. ej: iPhone',
       noResultsFound: 'No hay resultados',
-      writeMessage: 'Escribe un mensaje...'
+      writeMessage: 'Escribe un mensaje...',
+      searchByTitle: 'Buscar por título'
     }
   };
 

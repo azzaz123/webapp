@@ -11,6 +11,7 @@ export class NavLinksComponent implements OnInit {
   @Input() navLinks: NavLink[];
   @Input() selectedLinkId: string;
   @Input() showSearchInput = false;
+  @Input() searchPlaceholder = 'Search';
   @Output() clickedLink = new EventEmitter<string>();
   @Output() searchChanged = new EventEmitter<string>();
 

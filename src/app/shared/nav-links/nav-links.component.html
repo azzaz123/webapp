@@ -1,7 +1,7 @@
 <nav class="NavLinks">
 
   <div class="NavLinks__SearchInput" *ngIf="showSearchInput">
-    <tsl-search-input (term)="onSearchChange($event)"></tsl-search-input>
+    <tsl-search-input [placeholder]="searchPlaceholder" (term)="onSearchChange($event)"></tsl-search-input>
   </div>
 
   <div class="NavLinks__item" *ngFor="let navLink of navLinks">

@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild, OnInit, Input } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -8,6 +8,7 @@ import { Subject } from 'rxjs/Subject';
 })
 export class SearchInputComponent {
 
+  @Input() placeholder = 'Search Items';
   @Output('term') public term$: EventEmitter<string> = new EventEmitter<string>();
   private term: Subject<string> = new Subject<string>();
 

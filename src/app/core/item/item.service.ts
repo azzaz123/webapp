@@ -722,7 +722,7 @@ export class ItemService extends ResourceService {
       });
   }
 
-  public mineByCategory(init: number, offset: number, categoryId: number, status: string): Observable<Item[]> {
+  public minesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<Item[]> {
     let categoryName: string;
     if (categoryId === 100) {
       categoryName = 'cars';
@@ -738,13 +738,14 @@ export class ItemService extends ResourceService {
     return this.getPaginationItemsNoBase(url, init).map(paginatedItems => paginatedItems.data);
   }
 
-  public recursiveMineByCategory(init: number, offset: number, categoryId: number, status: string): Observable<Item[]> {
-    return this.mineByCategory(init, offset, categoryId, status).flatMap(res => {
+  public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string, term?: string): Observable<Item[]> {
+    return this.minesByCategory(init, offset, categoryId, status).flatMap(res => {
       if (res.length > 0) {
-        return this.recursiveMineByCategory(init + offset, offset, categoryId, status)
-          .map(recursiveResult => {
-            return res.concat(recursiveResult);
-          });
+        if (term && term !== '') {
+          res = res.filter(item => item.title.toLowerCase().includes(term.toLowerCase()));
+        }
+        return this.recursiveMinesByCategory(init + offset, offset, categoryId, status)
+          .map(recursiveResult => res.concat(recursiveResult));
       } else {
         return Observable.of([]);
       }
