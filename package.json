@@ -94,7 +94,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-spec-reporter": "^0.0.32",
-    "mparticle_json_validation": "https://github.com/Wallapop/mparticle_json_validation#master",
+    "mparticle_json_validation": "https://github.com/Wallapop/mparticle_json_validation#e3daaa319928ed34e85818ebb071a0ded3cc927d",
     "protractor": "~5.4.0",
     "puppeteer": "^1.8.0",
     "retry": "^0.12.0",
