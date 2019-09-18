@@ -4,6 +4,7 @@ phases:
   pre_build:
     commands:
       - $(aws ecr get-login --no-include-email --region eu-west-1)
+      - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
 
   build:
     commands:
