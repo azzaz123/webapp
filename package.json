@@ -66,7 +66,7 @@
     "stanza.io": "https://github.com/Wallapop/stanza.io#v8.0.4",
     "visibilityjs": "^2.0.1",
     "web-animations-js": "^2.3.1",
-    "web-styleguide": "https://github.com/Wallapop/web-styleguide#master",
+    "web-styleguide": "git+https://ca0aaa5a7d669b235306fda91ac71248a61c088a:x-oauth-basic@github.com/Wallapop/web-styleguide.git",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
