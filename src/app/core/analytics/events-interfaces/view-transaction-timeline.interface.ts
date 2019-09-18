@@ -33,5 +33,4 @@ export interface ViewTransactionTimelineScreen {
    * Identifier of the transaction timeline screen
    */
   screenId: number;
-  [k: string]: any;
 }

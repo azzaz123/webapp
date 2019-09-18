@@ -21,5 +21,4 @@ export interface ViewChatScreen {
    * Identifier of the screen from which the message was sent from
    */
   screenId: number;
-  [k: string]: any;
 }

@@ -29,5 +29,4 @@ export interface ViewTransactionPayScreen {
    * Identifier of the transaction payment screen
    */
   screenId: number;
-  [k: string]: any;
 }

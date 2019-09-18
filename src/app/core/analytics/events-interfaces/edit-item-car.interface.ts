@@ -6,9 +6,9 @@
  */
 
 /**
- * User edits an uploaded product
+ * User edits an uploaded product (in consumer goods)
  */
-export interface EditItem {
+export interface EditItemCar {
   /**
    * The unique identifier for an item
    */
@@ -28,58 +28,53 @@ export interface EditItem {
   /**
    * Car Brand
    */
-  car_brand?: string;
+  brand?: string;
   /**
    * Car Model
    */
-  car_model?: string;
-  /**
-   * Car Bodytype
-   */
-  car_bodytype?: string;
-  /**
-   * Car km
-   */
-  car_km?: number;
+  model?: string;
   /**
    * Car Year
    */
-  car_year?: number;
+  year?: number;
+  /**
+   * Car km
+   */
+  km?: number;
+  /**
+   * Car gearbox
+   */
+  gearbox?: string;
   /**
    * Car Engine
    */
-  car_engine?: string;
+  engine?: string;
   /**
-   * Consumer Goods Type of Object
+   * Car Colour
    */
-  cg_to?: string;
+  colour?: string;
   /**
-   * Consumer Goods Brand
+   * Car horse power
    */
-  cg_brand?: string;
+  hp?: number;
   /**
-   * Consumer Goods Model
+   * Car number of doors
    */
-  cg_model?: string;
+  numDoors?: number;
   /**
-   * Real State Operation
+   * Car Bodytype
    */
-  re_operation?: string;
+  bodyType?: string;
   /**
-   * Real State Property Type
+   * If the item edited is from a cardealer
    */
-  re_type?: string;
+  isCarDealer: boolean;
   /**
-   * Real State surface area
-   */
-  re_m2?: number;
-  /**
-   * If the item clicked is from a professional user
+   * If the item edited is from a professional user
    */
   isPro: boolean;
   /**
    * Identifier of the screen that the item was edited from
    */
-  screenId: number;
-  [k: string]: any;
+  screenId: 162;
 }

@@ -62,6 +62,10 @@ export interface ViewOthersItemCarDetail {
    */
   bodyType?: string;
   /**
+   * If the seller of the item viewed is from a cardealer
+   */
+  isCarDealer: boolean;
+  /**
    * If the seller of the item viewed is a professional user
    */
   isPro: boolean;
@@ -69,5 +73,4 @@ export interface ViewOthersItemCarDetail {
    * Identifier of the screen that the item was viewed from
    */
   screenId: number;
-  [k: string]: any;
 }

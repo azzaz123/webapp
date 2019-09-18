@@ -13,5 +13,4 @@ export interface DisplayRegisterPresentationPage {
    * Identifier of the screen that the user arrives to the register presentation
    */
   screenId: number;
-  [k: string]: any;
 }

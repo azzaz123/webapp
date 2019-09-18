@@ -6,9 +6,9 @@
  */
 
 /**
- * Users views item detail screen for a Real Estate property
+ * User edits an uploaded product (in real estate)
  */
-export interface ViewOthersItemREDetail {
+export interface EditItemRE {
   /**
    * The unique identifier for an item
    */
@@ -20,11 +20,11 @@ export interface ViewOthersItemREDetail {
   /**
    * Item price
    */
-  salePrice?: number;
+  salePrice: number;
   /**
    * Item title
    */
-  title: string;
+  title?: string;
   /**
    * Real State Operation
    */
@@ -46,11 +46,11 @@ export interface ViewOthersItemREDetail {
    */
   rooms?: number;
   /**
-   * If the seller of the item viewed is a professional user
+   * If the item edited is from a professional user
    */
   isPro: boolean;
   /**
-   * Identifier of the screen that the item was viewed from
+   * Identifier of the screen that the item was edited from
    */
-  screenId: number;
+  screenId: 162;
 }

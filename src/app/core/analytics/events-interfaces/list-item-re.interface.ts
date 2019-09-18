@@ -22,6 +22,10 @@ export interface ListItemRE {
    */
   salePrice?: number;
   /**
+   * Item title
+   */
+  title: string;
+  /**
    * Real State Operation
    */
   operation?: string;
@@ -49,5 +53,4 @@ export interface ListItemRE {
    * Identifier of the screen that the item was uploaded from
    */
   screenId: number;
-  [k: string]: any;
 }

@@ -22,8 +22,11 @@ export interface SendFirstMessage {
    */
   conversationId: string;
   /**
+   * The unique identifier of the search that the chat is under
+   */
+  searchId?: string;
+  /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: number;
-  [k: string]: any;
+  screenId: 110 | 111 | 115 | 188 | 29;
 }

@@ -33,5 +33,4 @@ export interface FavoriteItem {
    * Item title
    */
   title: string;
-  [k: string]: any;
 }

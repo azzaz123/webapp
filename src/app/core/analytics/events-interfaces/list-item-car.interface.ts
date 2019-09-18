@@ -22,6 +22,10 @@ export interface ListItemCar {
    */
   salePrice: number;
   /**
+   * Item title
+   */
+  title?: string;
+  /**
    * Car Brand
    */
   brand?: string;
@@ -62,12 +66,15 @@ export interface ListItemCar {
    */
   bodyType?: string;
   /**
-   * If the item clicked is from a professional user
+   * If the item uploaded is from a cardealer
+   */
+  isCarDealer: boolean;
+  /**
+   * If the item uploaded is from a professional user
    */
   isPro: boolean;
   /**
    * Identifier of the screen that the item was uploaded from
    */
   screenId: number;
-  [k: string]: any;
 }

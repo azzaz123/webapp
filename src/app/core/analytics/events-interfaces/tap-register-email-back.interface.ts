@@ -13,5 +13,4 @@ export interface TapRegisterEmailBack {
    * Identifier of the screen that the user arrives to the register page
    */
   screenId: number;
-  [k: string]: any;
 }

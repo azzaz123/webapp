@@ -13,5 +13,4 @@ export interface TapRegisterPresentationFacebook {
    * Identifier of the screen that the user tap to the register with facebook
    */
   screenId: number;
-  [k: string]: any;
 }

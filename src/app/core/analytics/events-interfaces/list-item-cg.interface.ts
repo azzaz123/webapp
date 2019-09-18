@@ -45,5 +45,4 @@ export interface ListItemCG {
    * Identifier of the screen that the item was uploaded from
    */
   screenId: number;
-  [k: string]: any;
 }

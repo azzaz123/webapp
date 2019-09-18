@@ -16,7 +16,7 @@ export interface ClickItemCard {
   /**
    * Identifier of the category that the item belongs to
    */
-  categoryId?: number;
+  categoryId: number;
   /**
    * Index of the item displayed in the screen
    */
@@ -28,7 +28,7 @@ export interface ClickItemCard {
   /**
    * Identifier of the screen that the item was clicked from
    */
-  screenId: number;
+  screenId: 110 | 111 | 29 | 187 | 140 | 27;
   /**
    * If the item clicked is from a professional user
    */
@@ -41,5 +41,4 @@ export interface ClickItemCard {
    * Item title
    */
   title: string;
-  [k: string]: any;
 }

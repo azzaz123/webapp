@@ -13,5 +13,4 @@ export interface TapRegisterPresentationClose {
    * Identifier of the screen that the user tap to close the register
    */
   screenId: number;
-  [k: string]: any;
 }

@@ -13,5 +13,4 @@ export interface TapRegisterPresentationEmail {
    * Identifier of the screen that the user tap to the register
    */
   screenId: number;
-  [k: string]: any;
 }

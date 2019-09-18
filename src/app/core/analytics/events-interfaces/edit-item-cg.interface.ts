@@ -6,9 +6,9 @@
  */
 
 /**
- * Users views item detail screen for a consumer goods item
+ * User edits an uploaded product (in consumer goods)
  */
-export interface ViewOthersItemCGDetail {
+export interface EditItemCG {
   /**
    * The unique identifier for an item
    */
@@ -26,11 +26,23 @@ export interface ViewOthersItemCGDetail {
    */
   title: string;
   /**
-   * If the seller of the item viewed is a professional user
+   * CG Brand
+   */
+  brand?: string;
+  /**
+   * CG Model
+   */
+  model?: string;
+  /**
+   * CG Object type name
+   */
+  objectType?: string;
+  /**
+   * If the item edited is from a professional user
    */
   isPro: boolean;
   /**
-   * Identifier of the screen that the item was viewed from
+   * Identifier of the screen that the item was edited from
    */
-  screenId: number;
+  screenId: 162;
 }

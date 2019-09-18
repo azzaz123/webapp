@@ -13,5 +13,4 @@ export interface TapRegisterPresentationLogin {
    * Identifier of the screen that the user tap to the login
    */
   screenId: number;
-  [k: string]: any;
 }

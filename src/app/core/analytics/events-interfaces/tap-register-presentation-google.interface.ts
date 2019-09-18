@@ -13,5 +13,4 @@ export interface TapRegisterPresentationGoogle {
    * Identifier of the screen that the user tap to the register with google
    */
   screenId: number;
-  [k: string]: any;
 }
