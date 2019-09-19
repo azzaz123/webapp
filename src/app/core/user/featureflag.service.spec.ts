@@ -30,8 +30,8 @@ describe('FeatureflagService', () => {
         name: PERM,
         active: true
       }];
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESP)});
-      const TIMESTAMP: number = 1234567890;
+      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(RESP) });
+      const TIMESTAMP = 1234567890;
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       spyOn<any>(window, 'Date').and.returnValue({
         getTime: () => {
@@ -43,8 +43,18 @@ describe('FeatureflagService', () => {
         resp = r;
       });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/featureflag', {featureFlags: PERM, timestamp: TIMESTAMP});
+      expect(http.get).toHaveBeenCalledWith('api/v3/featureflag', { featureFlags: PERM, timestamp: TIMESTAMP });
       expect(resp).toBe(true);
+    });
+  });
+
+  describe('getInboxFeatureFlag', () => {
+    it('should call featureflagService.getFlag when called', () => {
+      spyOn(service, 'getFlag');
+
+      service.getWebInboxProjections();
+
+      expect(service.getFlag).toHaveBeenCalledWith('web_inbox_projections');
     });
   });
 });

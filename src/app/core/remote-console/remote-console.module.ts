@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { RemoteConsoleService } from './remote-console.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { FeatureflagService } from '../user/featureflag.service';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   declarations: [],
   providers: [
     RemoteConsoleService,
-    DeviceDetectorService
+    DeviceDetectorService,
+    FeatureflagService
   ]
 })
 export class RemoteConsoleModule {
