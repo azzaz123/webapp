@@ -7,6 +7,11 @@ phases:
 
   build:
     commands:
+      - echo $PWD
+      - ls -lha
+      - ls -lha /root/.git
+
+
       # OBTAIN WORKING BRANCH
       - BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
       - echo $BRANCH
@@ -19,7 +24,7 @@ phases:
       - echo $ENV
 
       # LOAD YARN DEPENDENCIES
-      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable yarn
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v /root/.git:/root/.git --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable yarn
 
       # LAUNCH TEST
       - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable yarn run test --watch=false --no-progress
