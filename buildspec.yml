@@ -3,6 +3,10 @@ env:
   parameter-store:
     build_ssh_key: "BuildSSHKey"
 
+env:
+  parameter-store:
+    build_ssh_key: "BuildSSHKey"
+
 phases:
   install:
     commands:
