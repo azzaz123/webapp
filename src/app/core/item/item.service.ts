@@ -388,65 +388,6 @@ export class ItemService extends ResourceService {
     });
   }
 
-  // TODO: Delete this once backend is done
-  public getPaginationItemsNoBase(url: string, init): Observable<ItemsData> {
-    return this.http.getNoBase(url)
-    .map((r: Response) => {
-        const res: ItemResponse[] = r.json();
-        const nextPage: string = r.headers.get('x-nextpage');
-        const params = _.chain(nextPage).split('&')
-          .map(_.partial(_.split, _, '=', 2))
-          .fromPairs()
-          .value();
-        const nextInit: number = nextPage ? +params.init : null;
-        let data: Item[] = [];
-        if (res.length > 0) {
-          data = res.map((i: ItemResponse) => {
-            const item: Item = this.mapRecordData(i);
-            item.views = i.content.views;
-            item.favorites = i.content.favorites;
-            return item;
-          });
-        }
-        return {
-          data: data,
-          init: nextInit
-        };
-      }
-    )
-    .flatMap((itemsData: ItemsData) => {
-      return this.getPurchases()
-      .map((purchases: Purchase[]) => {
-        purchases.forEach((purchase: Purchase) => {
-          const index: number = _.findIndex(itemsData.data, {id: purchase.item_id});
-          if (index !== -1) {
-            if (purchase.purchase_name === 'listingfee') {
-              itemsData.data[index].listingFeeExpiringDate = purchase.expiration_date;
-            }
-            if (this.bumpTypes.includes(purchase.purchase_name)) {
-              itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
-            }
-            if ( purchase.visibility_flags ) {
-              itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
-              itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
-              itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
-            }
-          }
-        });
-        return itemsData;
-      });
-    })
-    .map((itemsData: ItemsData) => {
-      this.selectedItems.forEach((selectedItemId: string) => {
-        const index: number = _.findIndex(itemsData.data, {id: selectedItemId});
-        if (index !== -1) {
-          itemsData.data[index].selected = true;
-        }
-      });
-      return itemsData;
-    });
-  }
-
   public mine(init: number, status?: string): Observable<ItemsData> {
     return this.getPaginationItems(this.API_URL_WEB + '/mine/' + status, init, true);
   }
@@ -722,46 +663,69 @@ export class ItemService extends ResourceService {
       });
   }
 
-  public minesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<Item[]> {
-    let categoryName: string;
-    if (categoryId === 100) {
-      categoryName = 'cars';
-    }
-    if (categoryId === 14000) {
-      categoryName = 'motorbikes';
-    }
-    if (categoryId === 12800) {
-      categoryName = 'motors-accesories';
-    }
+  public minesByCategory(
+    pageNumber: number, pageSize: number, categoryId: number, sortBy: string,
+    status: string = 'active', term?: string, cache: boolean = false
+  ): Observable<Item[]> {
 
-    const url = `assets/json/mock-items/${categoryName}/${status}${init}.json`;
-    return this.getPaginationItemsNoBase(url, init).map(paginatedItems => paginatedItems.data);
+    const init: number = (pageNumber - 1) * pageSize;
+    const end: number = init + pageSize;
+
+    // TODO: Propper condition with last category id searched and so
+    if (cache) {
+      return of(this.items[status]);
+    } else {
+      return this.recursiveMinesByCategory(0, 20, categoryId, status)
+        .map(responseArray => {
+          if (responseArray.length > 0) {
+            const items = responseArray
+              .filter(res => (res.content.purchases && status === 'featured') || status !== 'featured')
+              .map(i => {
+                const item = this.mapRecordDataPro(i);
+                item.views = i.content.views;
+                item.favorites = i.content.favorites;
+                item.conversations = i.content.conversations;
+                item.purchases = i.content.purchases ? i.content.purchases : null;
+                return item;
+              });
+            this.items[status] = items;
+            return items;
+          }
+          return [];
+        })
+        .map(res => {
+          term = term ? term.trim().toLowerCase() : '';
+          if (term !== '') {
+            return _.filter(res, (item: Item) => {
+              return item.title.toLowerCase().indexOf(term) !== -1 || item.description.toLowerCase().indexOf(term) !== -1;
+            });
+          }
+          return res;
+        })
+        .map((res: Item[]) => {
+          const sort = sortBy.split('_');
+          const field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
+          const sorted: Item[] = _.sortBy(res, [field]);
+          if (sort[1] === 'desc') {
+            return _.reverse(sorted);
+          }
+          return sorted;
+        })
+        .map((res: Item[]) => {
+          return res.slice(init, end);
+        });
+    }
   }
 
-  public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string, term?: string, sortBy?: string)
-    : Observable<Item[]> {
-    return this.minesByCategory(init, offset, categoryId, status).flatMap(res => {
+  public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemProResponse[]> {
+    const mockResponse: ItemProResponse[] = [];
+    return of(mockResponse).flatMap(res => {
       if (res.length > 0) {
-        if (term && term !== '') {
-          res = res.filter(item => item.title.toLowerCase().includes(term.toLowerCase()));
-        }
         return this.recursiveMinesByCategory(init + offset, offset, categoryId, status)
           .map(recursiveResult => res.concat(recursiveResult));
       } else {
         return Observable.of([]);
       }
-    })
-    .map((res: Item[]) => {
-      if (!sortBy) {
-        return res;
-      }
-      const sort = sortBy.split('_');
-      const field = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
-      const sorted = _.sortBy(res, [field]);
-      if (sort[1] === 'desc') {
-        return _.reverse(sorted);
-      }
-      return sorted;
     });
   }
 

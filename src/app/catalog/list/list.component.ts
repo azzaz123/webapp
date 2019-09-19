@@ -294,11 +294,12 @@ export class ListComponent implements OnInit, OnDestroy {
     let status = this.selectedStatus;
 
     if (this.selectedSubscriptionSlot) {
-      this.itemService.recursiveMinesByCategory(0, 20, this.selectedSubscriptionSlot.category_id, status, this.searchTerm, this.sortBy).subscribe(res => {
-        this.items = res;
-        this.updateNavLinksCounters();
-        this.loading = false;
-      });
+      this.itemService.minesByCategory(0, 20, this.selectedSubscriptionSlot.category_id, this.sortBy, this.selectedStatus, this.searchTerm)
+        .subscribe(res => {
+          this.items = res;
+          this.updateNavLinksCounters();
+          this.loading = false;
+        });
     } else {
       this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
         const items = itemsData.data;
