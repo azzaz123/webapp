@@ -1,3 +1,5 @@
+import { ListItemRE } from './../../core/analytics/events-interfaces/list-item-re.interface';
+import { EditItemRE } from './../../core/analytics/events-interfaces/edit-item-re.interface';
 import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IOption } from 'ng-select';
@@ -18,8 +20,8 @@ import { Realestate } from '../../core/item/realestate';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
-import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { RealestateContent } from '../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -213,7 +215,6 @@ export class UploadRealestateComponent implements OnInit {
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackEditItem();
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
@@ -230,6 +231,9 @@ export class UploadRealestateComponent implements OnInit {
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
+    
+    this.item ? this.trackEditOrUpload(true, uploadEvent.response.content) : this.trackEditOrUpload(false, uploadEvent.response.content);
+
     this.router.navigate(['/catalog/list', params]);
   }
 
@@ -257,27 +261,44 @@ export class UploadRealestateComponent implements OnInit {
     });
   }
 
-  private trackEditItem() {
-    const formData = this.uploadForm.value;
-
-    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-      const eventAttrs: EditItem = {
-        itemId: formData.id,
-        categoryId: parseInt(formData.category_id),
-        salePrice: formData.sale_price,
-        title: formData.title,
-        isPro: isProfessional,
-        screenId: SCREENS_IDS.UploadForm,
-        re_operation: formData.operation,
-        re_type: formData.type,
-        re_m2: formData.surface || null
+  private trackEditOrUpload(isEdit: boolean, item: RealestateContent) {
+    this.userService.isProUser().subscribe((isProfessional: boolean) => {
+      const baseEventAttrs: any = {
+        itemId: item.id,
+        categoryId: item.category_id,
+        salePrice: item.sale_price,
+        title: item.title,
+        operation: item.operation,
+        type: item.type,
+        condition: item.condition,
+        surface: item.surface || null,
+        rooms: item.rooms || null,
+        isPro: isProfessional
       };
 
-      this.analyticsService.trackEvent({
-        name: ANALYTICS_EVENT_NAMES.EditItem,
-        eventType: EVENT_TYPES.Other,
-        attributes: eventAttrs
-      });
+      if (isEdit) {
+        const eventAttrs: EditItemRE = {
+          ...baseEventAttrs,
+          screenId: SCREENS_IDS.EditItem
+        }
+
+        this.analyticsService.trackEvent({
+          name: ANALYTICS_EVENT_NAMES.EditItemRE,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      } else {
+        const eventAttrs: ListItemRE = {
+          ...baseEventAttrs,
+          screenId: SCREENS_IDS.Upload
+        }
+
+        this.analyticsService.trackEvent({
+          name: ANALYTICS_EVENT_NAMES.ListItemRE,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      }
     });
   }
 

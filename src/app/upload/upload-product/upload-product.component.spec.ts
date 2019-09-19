@@ -27,8 +27,10 @@ import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
-import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { EditItemCG } from '../../core/analytics/events-interfaces/edit-item-cg.interface';
+import { ListItemCG } from '../../core/analytics/events-interfaces/list-item-cg.interface';
+import { ItemContent } from '../../core/item/item-response.interface';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -69,7 +71,7 @@ describe('UploadProductComponent', () => {
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         {
           provide: UserService, useValue: {
-            isProfessional() {
+            isProUser() {
               return Observable.of(false);
             }
           }
@@ -602,10 +604,22 @@ describe('UploadProductComponent', () => {
   });
 
   describe('onUploaded', () => {
+    const MOCK_RESPONSE_CONTENT: ItemContent = {
+      id: MOCK_ITEM.id,
+      category_id: MOCK_ITEM.categoryId,
+      sale_price: MOCK_ITEM.salePrice,
+      title: MOCK_ITEM.title,
+      description: MOCK_ITEM.description,
+      modified_date: MOCK_ITEM.modifiedDate,
+      flags: MOCK_ITEM.flags,
+      seller_id: 'ukd73df',
+      web_slug: MOCK_ITEM.webSlug
+    }
     const uploadedEvent = {
       action: 'updated',
       response: {
-        id: '1'
+        id: '1',
+        content: MOCK_RESPONSE_CONTENT
       }
     };
 
@@ -654,26 +668,68 @@ describe('UploadProductComponent', () => {
       expect(splitTestService.track).toHaveBeenCalledWith('UploadCompleted');
     });
 
-    it('should send the Edit Item tracking event', () => {
-      component.item = MOCK_ITEM;
-      const editTrackingAttrs: EditItem = {
-        itemId: MOCK_ITEM.id,
-        categoryId: 16000,
-        salePrice: MOCK_ITEM.salePrice,
-        title: MOCK_ITEM.title,
-        isPro: false,
-        screenId: SCREENS_IDS.UploadForm
-      }
-      spyOn(analyticsService, 'trackEvent');
+    describe('if it`s a item modification', () => {
+      it('should send the Edit Item CG tracking event', () => {
+        component.item = MOCK_ITEM;
+        const editEvent: any = {
+          action: 'update',
+          response: {
+            id: MOCK_ITEM.id,
+            type: 'edit'
+          }
+        }
+        const editResponse: ItemContent = MOCK_RESPONSE_CONTENT;
+        const trackingAttrs: EditItemCG = {
+          itemId: editResponse.id,
+          categoryId: editResponse.category_id,
+          salePrice: editResponse.sale_price,
+          title: editResponse.title,
+          isPro: false,
+          screenId: SCREENS_IDS.EditItem
+        }
+        editEvent.response.content = editResponse;
+        spyOn(analyticsService, 'trackEvent');
 
-      component.ngOnInit();
-      component.uploadForm.value.category_id = '16000';
-      component.onUploaded(uploadedEvent);
+        component.ngOnInit();
+        component.onUploaded(editEvent);
 
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-        name: ANALYTICS_EVENT_NAMES.EditItem,
-        eventType: EVENT_TYPES.Other,
-        attributes: editTrackingAttrs
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+          name: ANALYTICS_EVENT_NAMES.EditItemCG,
+          eventType: EVENT_TYPES.Other,
+          attributes: trackingAttrs
+        });
+      });
+    });
+
+    describe('if it`s a item upload', () => {
+      it('should send the List Item CG tracking event', () => {
+        const uploadEvent: any = {
+          action: 'create',
+          response: {
+            id: MOCK_ITEM.id,
+            type: 'upload'
+          }
+        }
+        const uploadResponse: ItemContent = MOCK_RESPONSE_CONTENT;
+        const trackingAttrs: ListItemCG = {
+          itemId: uploadResponse.id,
+          categoryId: uploadResponse.category_id,
+          salePrice: uploadResponse.sale_price,
+          title: uploadResponse.title,
+          isPro: false,
+          screenId: SCREENS_IDS.Upload
+        }
+        uploadEvent.response.content = uploadResponse;
+        spyOn(analyticsService, 'trackEvent');
+
+        component.ngOnInit();
+        component.onUploaded(uploadEvent);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+          name: ANALYTICS_EVENT_NAMES.ListItemCG,
+          eventType: EVENT_TYPES.Other,
+          attributes: trackingAttrs
+        });
       });
     });
 

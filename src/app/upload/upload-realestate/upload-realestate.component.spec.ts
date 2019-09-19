@@ -17,12 +17,14 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { MOCK_REALESTATE, UPLOAD_FORM_REALESTATE_VALUES } from '../../../tests/realestate.fixtures.spec';
 import { ItemService } from '../../core/item/item.service';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
-import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 import { SCREENS_IDS, EVENT_TYPES } from '../../core/analytics/resources/analytics-constants';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { EditItemRE } from '../../core/analytics/events-interfaces/edit-item-re.interface';
+import { ListItemRE } from '../../core/analytics/events-interfaces/list-item-re.interface';
+import { RealestateContent } from '../../core/item/item-response.interface';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -34,77 +36,77 @@ describe('UploadRealestateComponent', () => {
   let modalService: NgbModal;
   let analyticsService: AnalyticsService;
   let itemService: ItemService;
-  const RESPONSE: Key[] = [{id: 'test', icon_id: 'test', text: 'test'}];
-  const RESPONSE_OPTION: IOption[] = [{value: 'test', label: 'test'}];
+  const RESPONSE: Key[] = [{ id: 'test', icon_id: 'test', text: 'test' }];
+  const RESPONSE_OPTION: IOption[] = [{ value: 'test', label: 'test' }];
   const componentInstance: any = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NgbPopoverModule],
-      declarations: [ UploadRealestateComponent ],
+      declarations: [UploadRealestateComponent],
       providers: [
         FormBuilder,
         NgbPopoverConfig,
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         {
           provide: UserService, useValue: {
-            isProfessional() {
+            isProUser() {
               return Observable.of(false);
             }
           }
         },
         {
           provide: RealestateKeysService, useValue: {
-          getOperations() {
-            return Observable.of(RESPONSE);
-          },
-          getConditions() {
-            return Observable.of(RESPONSE_OPTION);
-          },
-          getExtras() {
-            return Observable.of(RESPONSE);
-          },
-          getTypes() {
-            return Observable.of(RESPONSE);
+            getOperations() {
+              return Observable.of(RESPONSE);
+            },
+            getConditions() {
+              return Observable.of(RESPONSE_OPTION);
+            },
+            getExtras() {
+              return Observable.of(RESPONSE);
+            },
+            getTypes() {
+              return Observable.of(RESPONSE);
+            }
           }
-        }
         },
         {
           provide: Router, useValue: {
-          navigate() {
+            navigate() {
+            }
           }
-        }
         },
         {
           provide: ErrorsService, useValue: {
-          i18nSuccess() {
-          },
-          i18nError() {
+            i18nSuccess() {
+            },
+            i18nError() {
+            }
           }
-        }
         },
         {
           provide: NgbModal, useValue: {
-          open() {
-            return {
-              result: Promise.resolve(),
-              componentInstance: componentInstance
-            };
+            open() {
+              return {
+                result: Promise.resolve(),
+                componentInstance: componentInstance
+              };
+            }
           }
-        }
         },
         {
           provide: ItemService, useValue: {
-          updateRealEstateLocation() {
-            return Observable.of({});
+            updateRealEstateLocation() {
+              return Observable.of({});
+            }
           }
-        }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -253,66 +255,122 @@ describe('UploadRealestateComponent', () => {
   });
 
   describe('onUploaded', () => {
+    const MOCK_RESPONSE_CONTENT: RealestateContent = {
+      id: MOCK_REALESTATE.id,
+      category_id: MOCK_REALESTATE.categoryId,
+      sale_price: MOCK_REALESTATE.salePrice,
+      title: MOCK_REALESTATE.title,
+      description: MOCK_REALESTATE.description,
+      modified_date: MOCK_REALESTATE.modifiedDate,
+      flags: MOCK_REALESTATE.flags,
+      seller_id: 'ukd73df',
+      web_slug: MOCK_REALESTATE.webSlug,
+      operation: MOCK_REALESTATE.operation,
+      type: MOCK_REALESTATE.type,
+      surface: MOCK_REALESTATE.surface,
+      rooms: MOCK_REALESTATE.rooms,
+      condition: MOCK_REALESTATE.condition
+    }
+    const uploadedEvent = {
+      action: 'updated',
+      response: {
+        id: '1',
+        content: MOCK_RESPONSE_CONTENT
+      }
+    };
+
     it('should redirect', () => {
       component.item = MOCK_REALESTATE;
       component.item.flags.onhold = null;
-      const uploadedEvent = {
-        action: 'updated',
-        response: {
-          id: '1'
-        }
-      };
       spyOn(router, 'navigate');
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id}]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id }]);
     });
 
     it('should redirect with onHold true', () => {
       component.item = MOCK_REALESTATE;
       component.item.flags.onhold = true;
-      const uploadedEvent = {
-        action: 'updated',
-        response: {
-          id: '1'
-        }
-      };
       spyOn(router, 'navigate');
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true}]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true }]);
     });
 
-    it('should send the Edit Item tracking event', () => {
-      component.item = MOCK_REALESTATE;
-      const editTrackingAttrs: EditItem = {
-        itemId: MOCK_REALESTATE.id,
-        categoryId: MOCK_REALESTATE.categoryId,
-        salePrice: MOCK_REALESTATE.salePrice,
-        title: MOCK_REALESTATE.title,
-        isPro: false,
-        screenId: SCREENS_IDS.UploadForm,
-        re_operation: MOCK_REALESTATE.operation,
-        re_type: MOCK_REALESTATE.type,
-        re_m2: MOCK_REALESTATE.surface
-      };
-      const uploadedEvent = {
-        action: 'updated',
-        response: {
-          id: '1'
+    describe('if it`s a item modification', () => {
+      it('should send the Edit Item RE tracking event', () => {
+        component.item = MOCK_REALESTATE;
+        const editEvent: any = {
+          action: 'update',
+          response: {
+            id: MOCK_REALESTATE.id,
+            type: 'edit'
+          }
         }
-      };
-      spyOn(analyticsService, 'trackEvent');      
+        const editResponse: RealestateContent = MOCK_RESPONSE_CONTENT;
+        const trackingAttrs: EditItemRE = {
+          itemId: MOCK_REALESTATE.id,
+          categoryId: MOCK_REALESTATE.categoryId,
+          salePrice: MOCK_REALESTATE.salePrice,
+          title: MOCK_REALESTATE.title,
+          isPro: false,
+          screenId: SCREENS_IDS.EditItem,
+          operation: MOCK_REALESTATE.operation,
+          type: MOCK_REALESTATE.type,
+          surface: MOCK_REALESTATE.surface,
+          rooms: MOCK_REALESTATE.rooms,
+          condition: MOCK_REALESTATE.condition
+        }
+        editEvent.response.content = editResponse;
+        spyOn(analyticsService, 'trackEvent');
 
-      component.ngOnInit();
-      component.onUploaded(uploadedEvent);
+        component.ngOnInit();
+        component.onUploaded(editEvent);
 
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-        name: ANALYTICS_EVENT_NAMES.EditItem,
-        eventType: EVENT_TYPES.Other,
-        attributes: editTrackingAttrs
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+          name: ANALYTICS_EVENT_NAMES.EditItemRE,
+          eventType: EVENT_TYPES.Other,
+          attributes: trackingAttrs
+        });
+      });
+    });
+
+    describe('if it`s a item upload', () => {
+      it('should send the List Item RE tracking event', () => {
+        const uploadEvent: any = {
+          action: 'create',
+          response: {
+            id: MOCK_REALESTATE.id,
+            type: 'upload'
+          }
+        }
+        const uploadResponse: RealestateContent = MOCK_RESPONSE_CONTENT;
+        const trackingAttrs: ListItemRE = {
+          itemId: MOCK_REALESTATE.id,
+          categoryId: MOCK_REALESTATE.categoryId,
+          salePrice: MOCK_REALESTATE.salePrice,
+          title: MOCK_REALESTATE.title,
+          isPro: false,
+          screenId: SCREENS_IDS.Upload,
+          operation: MOCK_REALESTATE.operation,
+          type: MOCK_REALESTATE.type,
+          surface: MOCK_REALESTATE.surface,
+          rooms: MOCK_REALESTATE.rooms,
+          condition: MOCK_REALESTATE.condition
+        }
+        uploadEvent.response.content = uploadResponse;
+        spyOn(analyticsService, 'trackEvent');
+
+        component.ngOnInit();
+        component.onUploaded(uploadEvent);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+          name: ANALYTICS_EVENT_NAMES.ListItemRE,
+          eventType: EVENT_TYPES.Other,
+          attributes: trackingAttrs
+        });
       });
     });
 

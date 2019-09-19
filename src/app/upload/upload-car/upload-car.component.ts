@@ -1,3 +1,6 @@
+import { Observable } from 'rxjs';
+import { EditItemCar } from './../../core/analytics/events-interfaces/edit-item-car.interface';
+import { ListItemCar } from './../../core/analytics/events-interfaces/list-item-car.interface';
 import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
@@ -14,10 +17,9 @@ import * as _ from 'lodash';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';
-import { CarInfo } from '../../core/item/item-response.interface';
+import { CarInfo, CarContent } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
-import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 
 @Component({
@@ -276,7 +278,6 @@ export class UploadCarComponent implements OnInit {
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackEditItem();
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
@@ -293,6 +294,9 @@ export class UploadCarComponent implements OnInit {
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
+
+    this.item ? this.trackEditOrUpload(true, uploadEvent.response) : this.trackEditOrUpload(false, uploadEvent.response);
+
     this.router.navigate(['/catalog/list', params]);
   }
 
@@ -388,30 +392,52 @@ export class UploadCarComponent implements OnInit {
     }
   }
 
-  private trackEditItem() {
-    const formData = this.uploadForm.value;
-
-    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-      const eventAttrs: EditItem = {
-        itemId: formData.id,
-        categoryId: parseInt(formData.category_id),
-        salePrice: formData.sale_price,
-        title: formData.title,
-        isPro: isProfessional,
-        screenId: SCREENS_IDS.UploadForm,
-        car_brand: formData.brand,
-        car_model: formData.model,
-        car_bodytype: formData.body_type || null,
-        car_km: formData.km || null,
-        car_year: parseInt(formData.year),
-        car_engine: formData.engine || null
+  private trackEditOrUpload(isEdit: boolean, item: CarContent) {
+    Observable.forkJoin([
+      this.userService.isProfessional(),
+      this.userService.isProUser(),
+    ]).subscribe((values: any[]) => {
+      const baseEventAttrs: any = {
+        itemId: item.id,
+        categoryId: item.category_id,
+        salePrice: item.sale_price,
+        title: item.title,
+        brand: item.brand,
+        model: item.model,
+        year: item.year,
+        km: item.km || null,
+        gearbox: item.gearbox || null,
+        engine: item.engine || null,
+        hp: item.horsepower || null,
+        numDoors: item.num_doors || null,
+        bodyType: item.body_type || null,
+        isCarDealer: values[0],
+        isPro: values[1]
       };
 
-      this.analyticsService.trackEvent({
-        name: ANALYTICS_EVENT_NAMES.EditItem,
-        eventType: EVENT_TYPES.Other,
-        attributes: eventAttrs
-      });
+      if (isEdit) {
+        const eventAttrs: EditItemCar = {
+          ...baseEventAttrs,
+          screenId: SCREENS_IDS.EditItem
+        };
+
+        this.analyticsService.trackEvent({
+          name: ANALYTICS_EVENT_NAMES.EditItemCar,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      } else {
+        const eventAttrs: ListItemCar = {
+          ...baseEventAttrs,
+          screenId: SCREENS_IDS.Upload
+        };
+
+        this.analyticsService.trackEvent({
+          name: ANALYTICS_EVENT_NAMES.ListItemCar,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      }
     });
   }
 

@@ -41,7 +41,7 @@ describe('AnalyticsService', () => {
   describe('trackEvent', () => {
     it('should send the tracking event', () => {
       const MOCK_EVENT: EventInterface = {
-        name: ANALYTICS_EVENT_NAMES.EditItem,
+        name: ANALYTICS_EVENT_NAMES.EditItemCG,
         eventType: EVENT_TYPES.Other,
         attributes: { name: 'Test event' }
       }

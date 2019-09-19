@@ -1,3 +1,5 @@
+import { ListItemCG } from './../../core/analytics/events-interfaces/list-item-cg.interface';
+import { EditItemCG } from './../../core/analytics/events-interfaces/edit-item-cg.interface';
 import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
 import { AnalyticsService } from './../../core/analytics/analytics.service';
 import {
@@ -25,13 +27,12 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Item, ITEM_TYPES } from '../../core/item/item';
-import { DeliveryInfo } from '../../core/item/item-response.interface';
+import { DeliveryInfo, ItemContent } from '../../core/item/item-response.interface';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
 import { Subject } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { SplitTestService } from '../../core/tracking/split-test.service';
-import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 import { UserService } from '../../core/user/user.service';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 
@@ -279,7 +280,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackEditItem();
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
       appboy.logCustomEvent('Edit', { platform: 'web' });
     } else {
@@ -295,6 +295,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
+
+    this.item ? this.trackEditOrUpload(true, uploadEvent.response.content) : this.trackEditOrUpload(false, uploadEvent.response.content);
+
     this.router.navigate(['/catalog/list', { [uploadEvent.action]: true, itemId: uploadEvent.response.id }]);
   }
 
@@ -514,36 +517,51 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
   }
 
-  private trackEditItem() {
-    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-      const formData = this.uploadForm.value;
-
-      let eventAttrs: EditItem = {
-        itemId: formData.id,
-        categoryId: parseInt(formData.category_id),
-        salePrice: formData.sale_price,
-        title: formData.title,
-        isPro: isProfessional,
-        screenId: SCREENS_IDS.UploadForm,
+  private trackEditOrUpload(isEdit: boolean, item: ItemContent) {
+    this.userService.isProUser().subscribe((isProfessional: boolean) => {
+      let baseEventAttrs: any = {
+        itemId: item.id,
+        categoryId: item.category_id,
+        salePrice: item.sale_price,
+        title: item.title,
+        isPro: isProfessional
       };
 
-      if (formData.extra_info) {
-        if (formData.extra_info.object_type.id) {
-          eventAttrs.cg_to = formData.extra_info.object_type.id;
+      if (item.extra_info) {
+        if (item.extra_info.object_type.id) {
+          baseEventAttrs.objectType = item.extra_info.object_type.name;
         }
-        if (formData.extra_info.brand) {
-          eventAttrs.cg_brand = formData.extra_info.brand;
+        if (item.extra_info.brand) {
+          baseEventAttrs.brand = item.extra_info.brand;
         }
-        if (formData.extra_info.model) {
-          eventAttrs.cg_model = formData.extra_info.model;
+        if (item.extra_info.model) {
+          baseEventAttrs.model = item.extra_info.model;
         }
       }
 
-      this.analyticsService.trackEvent({
-        name: ANALYTICS_EVENT_NAMES.EditItem,
-        eventType: EVENT_TYPES.Other,
-        attributes: eventAttrs
-      });
+      if (isEdit) {
+        const eventAttrs: EditItemCG = {
+          ...baseEventAttrs,
+          screenId: SCREENS_IDS.EditItem
+        };
+
+        this.analyticsService.trackEvent({
+          name: ANALYTICS_EVENT_NAMES.EditItemCG,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      } else {
+        const eventAttrs: ListItemCG = {
+          ...baseEventAttrs,
+          screenId: SCREENS_IDS.Upload
+        };
+
+        this.analyticsService.trackEvent({
+          name: ANALYTICS_EVENT_NAMES.ListItemCG,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      }
     });
   }
 

@@ -1,5 +1,4 @@
 import { EVENT_TYPES } from '../../core/analytics/resources/analytics-constants';
-import { EditItem } from '../../core/analytics/events-interfaces/edit-item.interface';
 import { MockAnalyticsService } from './../../../tests/analytics.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
@@ -30,6 +29,9 @@ import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
 import { SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { EditItemCar } from '../../core/analytics/events-interfaces/edit-item-car.interface';
+import { ListItemCar } from '../../core/analytics/events-interfaces/list-item-car.interface';
+import { CarContent } from '../../core/item/item-response.interface';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -60,6 +62,9 @@ describe('UploadCarComponent', () => {
         {
           provide: UserService, useValue: {
             isProfessional() {
+              return Observable.of(false);
+            },
+            isProUser() {
               return Observable.of(false);
             }
           }
@@ -426,46 +431,52 @@ describe('UploadCarComponent', () => {
   });
 
   describe('onUploaded', () => {
+    const MOCK_RESPONSE_CONTENT: CarContent = {
+      id: MOCK_CAR.id,
+      category_id: MOCK_CAR.categoryId,
+      sale_price: MOCK_CAR.salePrice,
+      title: MOCK_CAR.title,
+      description: MOCK_CAR.description,
+      modified_date: MOCK_CAR.modifiedDate,
+      flags: MOCK_CAR.flags,
+      seller_id: 'ukd73df',
+      web_slug: MOCK_CAR.webSlug,
+      brand: MOCK_CAR.brand,
+      model: MOCK_CAR.model,
+      body_type: MOCK_CAR.bodyType,
+      km: MOCK_CAR.km,
+      year: MOCK_CAR.year,
+      engine: MOCK_CAR.engine,
+      gearbox: MOCK_CAR.gearbox,
+      horsepower: MOCK_CAR.horsepower,
+      num_doors: MOCK_CAR.numDoors
+    }
+    const uploadedEvent = {
+      action: 'updated',
+      response: MOCK_RESPONSE_CONTENT
+    };
     it('should redirect', () => {
       component.item = <Car>MOCK_ITEM_V3;
       component.item.flags.onhold = null;
-      const uploadedEvent = {
-        action: 'updated',
-        response: {
-          id: '1'
-        }
-      };
       spyOn(router, 'navigate');
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id}]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id }]);
     });
 
     it('should redirect with onHold true', () => {
       component.item = <Car>MOCK_ITEM_V3;
       component.item.flags.onhold = true;
-      const uploadedEvent = {
-        action: 'updated',
-        response: {
-          id: '1'
-        }
-      };
       spyOn(router, 'navigate');
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true}]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true }]);
     });
 
     it('should set action as urgent if item is urgent and product not on hold', () => {
       component.isUrgent = true;
-      const uploadedEvent = {
-        action: 'updated',
-        response: {
-          id: '1'
-        }
-      };
       spyOn(router, 'navigate');
 
       component.onUploaded(uploadedEvent);
@@ -473,38 +484,88 @@ describe('UploadCarComponent', () => {
       expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { urgent: true, itemId: uploadedEvent.response.id }]);
     });
 
-    it('should send the Edit Item tracking event', () => {
+    describe('if it`s a item modification', () => {
+      it('should send the Edit Item Car tracking event', () => {
       component.item = MOCK_CAR;
-      const editTrackingAttrs: EditItem = {
+        const editEvent: any = {
+          action: 'update',
+          response: {
+            id: MOCK_CAR.id,
+            type: 'edit'
+          }
+        }
+        const editResponse: CarContent = MOCK_RESPONSE_CONTENT;
+        const trackingAttrs: EditItemCar = {
         itemId: MOCK_CAR.id,
         categoryId: MOCK_CAR.categoryId,
         salePrice: MOCK_CAR.salePrice,
         title: MOCK_CAR.title,
-        isPro: false,
-        screenId: SCREENS_IDS.UploadForm,
-        car_brand: 'Tesla',
-        car_model: MOCK_CAR.model,
-        car_bodytype: MOCK_CAR.bodyType,
-        car_km: MOCK_CAR.km,
-        car_year: MOCK_CAR.year,
-        car_engine: MOCK_CAR.engine
-      };
-      const uploadedEvent = {
-        action: 'updated',
-        response: {
-          id: '1'
+          screenId: SCREENS_IDS.EditItem,
+          brand: MOCK_CAR.brand,
+          model: MOCK_CAR.model,
+          bodyType: MOCK_CAR.bodyType,
+          km: MOCK_CAR.km,
+          year: MOCK_CAR.year,
+          engine: MOCK_CAR.engine,
+          gearbox: MOCK_CAR.gearbox,
+          hp: MOCK_CAR.horsepower,
+          numDoors: MOCK_CAR.numDoors,
+          isCarDealer: false,
+          isPro: false
         }
-      };
+        editEvent.response = editResponse;
+        spyOn(analyticsService, 'trackEvent');
+
+        component.ngOnInit();
+        component.onUploaded(editEvent);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+          name: ANALYTICS_EVENT_NAMES.EditItemCar,
+          eventType: EVENT_TYPES.Other,
+          attributes: trackingAttrs
+        });
+      });
+    });
+
+    describe('if it`s a item upload', () => {
+      it('should send the List Item Car tracking event', () => {
+        const uploadEvent: any = {
+          action: 'create',
+        response: {
+            id: MOCK_CAR.id,
+            type: 'upload'
+          }
+        }
+        const uploadResponse: CarContent = MOCK_RESPONSE_CONTENT;
+        const trackingAttrs: ListItemCar = {
+          itemId: MOCK_CAR.id,
+          categoryId: MOCK_CAR.categoryId,
+          salePrice: MOCK_CAR.salePrice,
+          title: MOCK_CAR.title,
+          screenId: SCREENS_IDS.Upload,
+          brand: MOCK_CAR.brand,
+          model: MOCK_CAR.model,
+          bodyType: MOCK_CAR.bodyType,
+          km: MOCK_CAR.km,
+          year: MOCK_CAR.year,
+          engine: MOCK_CAR.engine,
+          gearbox: MOCK_CAR.gearbox,
+          hp: MOCK_CAR.horsepower,
+          numDoors: MOCK_CAR.numDoors,
+          isCarDealer: false,
+          isPro: false
+        }
+        uploadEvent.response = uploadResponse;
       spyOn(analyticsService, 'trackEvent');      
 
       component.ngOnInit();
-      component.uploadForm.value.brand = 'Tesla';
-      component.onUploaded(uploadedEvent);
+        component.onUploaded(uploadEvent);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-        name: ANALYTICS_EVENT_NAMES.EditItem,
+          name: ANALYTICS_EVENT_NAMES.ListItemCar,
         eventType: EVENT_TYPES.Other,
-        attributes: editTrackingAttrs
+          attributes: trackingAttrs
+        });
       });
     });
   });
