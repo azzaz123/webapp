@@ -1,6 +1,18 @@
 version: 0.2
 
+env:
+  parameter-store:
+    build_ssh_key: "BuildSSHKey"
+
 phases:
+  install:
+    commands:
+      - mkdir -p .ssh
+      - echo "$build_ssh_key" > .ssh/id_rsa
+      - chmod 600 .ssh/id_rsa
+      - ssh-keygen -F github.com || ssh-keyscan github.com >> .ssh/known_hosts
+      - git config --global url."git@github.com:".insteadOf "https://github.com/"
+
   pre_build:
     commands:
       - $(aws ecr get-login --no-include-email --region eu-west-1)
