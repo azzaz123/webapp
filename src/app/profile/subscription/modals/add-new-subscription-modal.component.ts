@@ -84,9 +84,8 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   public addSubscriptionFromSavedCard(selectedPlanId: string = this.selectedPlanId, paymentMethodId = this.card.id) {
-    if (!this.loading) {
-      this.loading = true;
-    }
+    this.loading = true;
+
     if (this.isRetryInvoice) {
       this.retrySubscription();
     } else {
@@ -197,7 +196,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   private managePaymentResponse(paymentResponse) {
     this.loading = false;
     switch(paymentResponse && paymentResponse.toUpperCase()) {
-      case 'SUCCEEDED': {
+      case this.SUCCEEDED: {
         this.paymentSucceeded();
         break;
       }

@@ -10,8 +10,8 @@
     <ng-template ngbSlide>
       <div class="step step-1">
         <div class="box-content">
-          <p class="AddNewSubscription__listing-limit-steps">Paso <span class="bold">1</span> de <span class="bold">2</span></p>
-          <div class="AddNewSubscription__listing-limit-title">¿Cuantos productos vas a tener en tu perfil?</div>
+          <p class="AddNewSubscription__listing-limit-steps">Step <span class="bold">1</span> of <span class="bold">2</span></p>
+          <div class="AddNewSubscription__listing-limit-title">¿How many products will you have on your profile?</div>
           <div class="AddNewSubscription__listing-limit-container">
             <div *ngFor="let tier of subscription.tiers; let i = index" class="AddNewSubscription__listing-limit-box"
             (click)="selectListingLimit(subscription.tiers[i])" [ngClass]="{selected: selectedTier.id === subscription.tiers[i].id}">
@@ -38,8 +38,8 @@
     <ng-template ngbSlide>
       <div class="step step-2">
         <div class="box-content">
-          <p class="AddNewSubscription__listing-limit-steps">Paso <span class="bold">2</span> de <span class="bold">2</span></p>
-          <div class="AddNewSubscription__listing-limit-title">Define la forma de pago</div>
+          <p class="AddNewSubscription__listing-limit-steps">Step <span class="bold">2</span> of <span class="bold">2</span></p>
+          <div class="AddNewSubscription__listing-limit-title">Define yoru payment method</div>
           <div class="row AddNewSubscription__listing-limit-payment">
             <div class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--left">
                 <span>{{subscription.category_name}}</span>

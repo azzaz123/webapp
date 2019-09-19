@@ -58,7 +58,7 @@
 
 .EditSubscription__listing-limit-payment {
   width: 80%;
-  margin: $spacing-m auto $spacing-m;
+  margin: $spacing-m auto;
 }
 
 .EditSubscription__cancel-link {
@@ -75,12 +75,12 @@
 }
 
 .modal-close {
-  width: 12px;
-  height: 12px;
+  width: $spacing-ms;
+  height: $spacing-ms;
   mat-icon {
-    width: 12px;
-    height: 12px;
-    line-height: 12px;
+    width: $spacing-ms;
+    height: $spacing-ms;
+    line-height: $spacing-ms;
     /deep/ svg path {
       fill: $white;
     }

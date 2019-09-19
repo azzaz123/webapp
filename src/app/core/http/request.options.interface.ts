@@ -5,7 +5,7 @@ export interface IRequestOptions {
     observe?: 'body';
     params?: HttpParams;
     reportProgress?: boolean;
-    responseType?:  'json';
+    responseType?: 'json';
     withCredentials?: boolean;
     body?: any;
 }

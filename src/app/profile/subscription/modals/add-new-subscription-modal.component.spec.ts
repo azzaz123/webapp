@@ -143,11 +143,10 @@ describe('AddNewSubscriptionModalComponent', () => {
   });
 
   describe('addSubscription', () => {
-
     it('should set loading to true', () => {
       component.addSubscription(PAYMENT_METHOD_DATA);
 
-      expect(component.currentSlide).toEqual('ngb-slide-0');
+      expect(component.loading).toBe(true);
     })
 
     it('should requestNewPayment if card is not attached', fakeAsync(() => {

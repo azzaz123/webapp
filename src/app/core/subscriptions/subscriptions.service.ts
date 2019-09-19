@@ -12,8 +12,6 @@ import { HttpServiceNew } from '../http/http.service.new';
 @Injectable()
 export class SubscriptionsService {
 
-  public lib: any;
-  public elements: any;
   public uuid: string;
   public fullName: string;
   public PAYMENT_PROVIDER_STRIPE = false;
