@@ -294,7 +294,8 @@ export class ListComponent implements OnInit, OnDestroy {
     let status = this.selectedStatus;
 
     if (this.selectedSubscriptionSlot) {
-      this.itemService.minesByCategory(0, 20, this.selectedSubscriptionSlot.category_id, this.sortBy, this.selectedStatus, this.searchTerm)
+      this.itemService
+        .minesByCategory(0, 20, this.selectedSubscriptionSlot.category.categoryId, this.sortBy, this.selectedStatus, this.searchTerm)
         .subscribe(res => {
           this.items = res;
           this.updateNavLinksCounters();
@@ -513,7 +514,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public selectSubscriptionSlot(subscription: SubscriptionSlot) {
     if (this.selectedSubscriptionSlot && subscription) {
-      if (this.selectedSubscriptionSlot.category_id === subscription.category_id) {
+      if (this.selectedSubscriptionSlot.category.categoryId === subscription.category.categoryId) {
         return;
       }
     }

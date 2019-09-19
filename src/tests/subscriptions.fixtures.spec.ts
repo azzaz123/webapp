@@ -1,6 +1,5 @@
 import { of } from 'rxjs';
-import { SubscriptionSlot } from '../app/core/subscriptions/subscriptions.interface';
-import { CATEGORY_DATA_WEB } from './category.fixtures.spec';
+import { SubscriptionSlotResponse } from '../app/core/subscriptions/subscriptions.interface';
 
 export class MockSubscriptionService {
     public getSlots() {
@@ -12,9 +11,26 @@ export class MockSubscriptionService {
     }
 }
 
-export const MOCK_SUBSCRIPTION_SLOT: SubscriptionSlot = {
-    category_id: CATEGORY_DATA_WEB[0].categoryId,
-    category: CATEGORY_DATA_WEB[0],
+export const MOCK_SUBSCRIPTION_SLOT_CARS: SubscriptionSlotResponse = {
+    category_id: 100,
     available: 3,
     limit: 10
 };
+
+export const MOCK_SUBSCRIPTION_SLOT_MOTORBIKES: SubscriptionSlotResponse = {
+    category_id: 14000,
+    available: 2,
+    limit: 10
+};
+
+export const MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES: SubscriptionSlotResponse = {
+    category_id: 12800,
+    available: 0,
+    limit: 10
+};
+
+export const MOCK_SUBSCRIPTION_SLOTS: SubscriptionSlotResponse[] = [
+    MOCK_SUBSCRIPTION_SLOT_CARS,
+    MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES,
+    MOCK_SUBSCRIPTION_SLOT_MOTORBIKES
+];

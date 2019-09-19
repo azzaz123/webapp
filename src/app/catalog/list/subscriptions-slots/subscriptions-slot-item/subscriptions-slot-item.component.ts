@@ -21,7 +21,7 @@ export class SubscriptionsSlotItemComponent implements OnInit {
     if (!this.selectedSubscriptionSlot) {
       return false;
     }
-    return this.subscriptionSlot.category_id === this.selectedSubscriptionSlot.category_id;
+    return this.subscriptionSlot.category.categoryId === this.selectedSubscriptionSlot.category.categoryId;
   }
 
   onClick(subscriptionSlot: SubscriptionSlot, e: any) {

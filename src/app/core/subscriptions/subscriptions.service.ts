@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { SubscriptionSlot } from './subscriptions.interface';
+import { SubscriptionSlot, SubscriptionSlotResponse } from './subscriptions.interface';
 import { CategoryService } from '../category/category.service';
 import { HttpServiceNew } from '../http/http.service.new';
+import { MOCK_SUBSCRIPTION_SLOTS } from '../../../tests/subscriptions.fixtures.spec';
 
-export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'assets/json/mock-subscriptions-slots.json';
+export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'TODOBACKEND:D';
 
 @Injectable()
 export class SubscriptionsService {
@@ -15,19 +16,24 @@ export class SubscriptionsService {
   }
 
   public getSlots(): Observable<SubscriptionSlot[]> {
-    return this.http.getNoBase<SubscriptionSlot[]>(SUBSCRIPTIONS_SLOTS_ENDPOINT)
+    return of(MOCK_SUBSCRIPTION_SLOTS)
       .flatMap(slots => {
         return Observable.forkJoin(
-          slots.map(s => this.getSlotCategory(s))
+          slots.map(s => this.mapSlotResponseToSlot(s))
         );
       });
   }
 
-  private getSlotCategory(slot: SubscriptionSlot): Observable<SubscriptionSlot> {
+  private mapSlotResponseToSlot(slot: SubscriptionSlotResponse): Observable<SubscriptionSlot> {
     return this.categoryService.getCategoryById(slot.category_id)
       .map(category => {
-        slot.category = category;
-        return slot;
+        const mappedSlot: SubscriptionSlot = {
+          category,
+          available: slot.available,
+          limit: slot.limit
+        };
+
+        return mappedSlot;
       });
   }
 }
