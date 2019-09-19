@@ -13,6 +13,9 @@ mat-icon {
   }
   .dropdown-menu {
     margin: 0;
+    .dropdown-item:focus {
+      color: $white;
+    }
   }
   .dropdown-toggle {
     @include default-transition(color);

@@ -1,10 +1,10 @@
 <nav class="NavLinks">
 
-  <div class="NavLinks__SearchInput" *ngIf="showSearchInput">
+  <div class="NavLinks__search-input" *ngIf="showSearchInput">
     <tsl-search-input [placeholder]="searchPlaceholder" (term)="onSearchChange($event)"></tsl-search-input>
   </div>
 
-  <div class="NavLinks__item" *ngFor="let navLink of navLinks">
+  <div class="NavLinks__link" *ngFor="let navLink of navLinks">
     <a
       [ngClass]="{ active: selectedLinkId === navLink.id }"
       (click)="onClickNavLink(navLink)"
@@ -17,6 +17,10 @@
         ({{navLink.counter.currentVal}})
       </span>
     </a>
+  </div>
+
+  <div class="NavLinks__sort-select" *ngIf="showSortItems && sortItems">
+    <tsl-select [items]="sortItems" (valueChanges)="onSortChange($event)"></tsl-select>
   </div>
 
 </nav>

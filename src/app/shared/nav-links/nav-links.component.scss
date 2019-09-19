@@ -11,7 +11,7 @@
 		a {
 			cursor: pointer;
 			color: $blue-grey-2;
-      padding-bottom: $spacing-ms;
+      		padding-bottom: 10px;
 			font-size: $font-size-xs;
 			font-weight: $font-weight-chunky;
 			text-transform: uppercase;
@@ -24,6 +24,26 @@
 				color: $walla-main;
 				border-bottom: 2px solid $walla-main;
 			}
+		}
+	}
+
+	.NavLinks__link {
+		margin-top: 2px;
+	}
+
+	.NavLinks__sort-select {
+		position: absolute;
+		right: 0px;
+		margin-top: 1px;
+		
+		tsl-select {
+			font-size: $font-size-xs;
+			font-weight: $font-weight-chunky;
+			color: $blue-grey-2;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			height: 38px;
+			line-height: $line-height-xl;
 		}
 	}
 }

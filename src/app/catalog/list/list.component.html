@@ -53,7 +53,10 @@
       [showSearchInput]="selectedSubscriptionSlot"
       [selectedLinkId]="selectedStatus"
       [navLinks]="navLinks"
+      [showSortItems]="selectedSubscriptionSlot"
+      [sortItems]="sortItems"
       (clickedLink)="filterByStatus($event)"
+      (sortChanged)="onSortChange($event)"
       (searchChanged)="onSearchInputChange($event)"
     >
     </tsl-nav-links>

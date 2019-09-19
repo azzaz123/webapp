@@ -4,8 +4,7 @@ import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
 import {
   ItemBulkResponse, ItemsData, Order, Product,
-  SelectedItemsAction,
-  ItemDataResponse
+  SelectedItemsAction
 } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
@@ -79,8 +78,10 @@ export class ListComponent implements OnInit, OnDestroy {
   public subscriptionSlots: SubscriptionSlot[] = [];
   public selectedSubscriptionSlot: SubscriptionSlot;
   public navLinks: NavLink[] = [];
-  private term: string;
+  private searchTerm: string;
   public searchPlaceholder: string;
+  public sortItems: any[];
+  public sortBy: string;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -106,6 +107,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.subscriptionsService.getSlots().subscribe(subscriptionSlots => {
       this.subscriptionSlots = subscriptionSlots;
       this.searchPlaceholder = this.i18n.getTranslations('searchByTitle');
+      this.setSortItems();
     });
 
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
@@ -292,7 +294,7 @@ export class ListComponent implements OnInit, OnDestroy {
     let status = this.selectedStatus;
 
     if (this.selectedSubscriptionSlot) {
-      this.itemService.recursiveMinesByCategory(0, 20, this.selectedSubscriptionSlot.category_id, status, this.term).subscribe(res => {
+      this.itemService.recursiveMinesByCategory(0, 20, this.selectedSubscriptionSlot.category_id, status, this.searchTerm, this.sortBy).subscribe(res => {
         this.items = res;
         this.updateNavLinksCounters();
         this.loading = false;
@@ -553,7 +555,19 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public onSearchInputChange(value: string) {
-    this.term = value;
+    this.searchTerm = value;
+    this.getItems();
+  }
+
+  public setSortItems() {
+    this.sortItems = [];
+    const sorts = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
+    sorts.forEach(value => this.sortItems.push({ value, label: this.i18n.getTranslations(value) }));
+    this.sortBy = sorts[0];
+  }
+
+  public onSortChange(value: any) {
+    this.sortBy = value;
     this.getItems();
   }
 

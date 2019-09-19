@@ -738,7 +738,8 @@ export class ItemService extends ResourceService {
     return this.getPaginationItemsNoBase(url, init).map(paginatedItems => paginatedItems.data);
   }
 
-  public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string, term?: string): Observable<Item[]> {
+  public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string, term?: string, sortBy?: string)
+    : Observable<Item[]> {
     return this.minesByCategory(init, offset, categoryId, status).flatMap(res => {
       if (res.length > 0) {
         if (term && term !== '') {
@@ -749,6 +750,18 @@ export class ItemService extends ResourceService {
       } else {
         return Observable.of([]);
       }
+    })
+    .map((res: Item[]) => {
+      if (!sortBy) {
+        return res;
+      }
+      const sort = sortBy.split('_');
+      const field = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
+      const sorted = _.sortBy(res, [field]);
+      if (sort[1] === 'desc') {
+        return _.reverse(sorted);
+      }
+      return sorted;
     });
   }
 

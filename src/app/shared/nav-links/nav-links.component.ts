@@ -12,8 +12,11 @@ export class NavLinksComponent implements OnInit {
   @Input() selectedLinkId: string;
   @Input() showSearchInput = false;
   @Input() searchPlaceholder = 'Search';
+  @Input() sortItems: any[];
+  @Input() showSortItems = false;
   @Output() clickedLink = new EventEmitter<string>();
   @Output() searchChanged = new EventEmitter<string>();
+  @Output() sortChanged = new EventEmitter<string>();
 
   constructor() { }
 
@@ -29,6 +32,10 @@ export class NavLinksComponent implements OnInit {
 
   onSearchChange(search: string) {
     this.searchChanged.emit(search);
+  }
+
+  onSortChange(sort: string) {
+    this.sortChanged.emit(sort);
   }
 
 }
