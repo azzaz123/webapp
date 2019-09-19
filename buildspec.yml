@@ -7,7 +7,7 @@ phases:
 
   build:
     commands:
-      - git clone https://github.com/Wallapop/mparticle_json_validation test_mparticle
+      - git clone https://github.com/Wallapop/mparticle_json_validation.git test_mparticle
 
       # OBTAIN WORKING BRANCH
       - BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
