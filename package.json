@@ -71,7 +71,7 @@
     "stanza.io": "https://github.com/Wallapop/stanza.io#v8.0.4",
     "visibilityjs": "^2.0.1",
     "web-animations-js": "^2.3.1",
-    "web-styleguide": "https://github.com/Wallapop/web-styleguide#^0.5.0",
+    "web-styleguide": "https://github.com/Wallapop/web-styleguide#0.5.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
@@ -94,7 +94,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-spec-reporter": "^0.0.32",
-    "mparticle_json_validation": "git+ssh://git@github.com:Wallapop/mparticle_json_validation#18bf9df43d761a4f9c32d712f9bd53482bfad9a7",
+    "mparticle_json_validation": "git+ssh://git@github.com:Wallapop/mparticle_json_validation#master",
     "protractor": "~5.4.0",
     "puppeteer": "^1.8.0",
     "retry": "^0.12.0",
