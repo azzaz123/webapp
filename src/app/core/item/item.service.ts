@@ -48,8 +48,7 @@ import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
 import { HttpServiceNew } from '../http/http.service.new';
-import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from '../../../tests/subscriptions.fixtures.spec';
-import { generateMockItemProResponses } from '../../../tests/item.fixtures.spec';
+import { getMockedItemProResponses } from '../../../tests/item.fixtures.spec';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -82,6 +81,7 @@ export class ItemService extends ResourceService {
   };
   public selectedItems: string[] = [];
   private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
+  private lastCategoryIdSearched: number;
 
   constructor(
     http: HttpService,
@@ -390,6 +390,7 @@ export class ItemService extends ResourceService {
   }
 
   public mine(init: number, status?: string): Observable<ItemsData> {
+    this.lastCategoryIdSearched = null;
     return this.getPaginationItems(this.API_URL_WEB + '/mine/' + status, init, true);
   }
 
@@ -615,6 +616,7 @@ export class ItemService extends ResourceService {
                 return item;
             });
             this.items[status] = items;
+            this.lastCategoryIdSearched = null;
             return items;
           }
           return [];
@@ -666,14 +668,18 @@ export class ItemService extends ResourceService {
 
   public minesByCategory(
     pageNumber: number, pageSize: number, categoryId: number, sortBy: string,
-    status: string = 'active', term?: string, cache: boolean = false
+    status: string = 'active', term?: string, cache: boolean = true
   ): Observable<Item[]> {
 
     const init: number = (pageNumber - 1) * pageSize;
     const end: number = init + pageSize;
 
     // TODO: Propper condition with last category id searched and so
-    if (cache) {
+    if (
+      this.lastCategoryIdSearched &&
+      this.lastCategoryIdSearched === categoryId &&
+      this.items[status] &&
+      cache) {
       return of(this.items[status]);
     } else {
       return this.recursiveMinesByCategory(0, 20, categoryId, status)
@@ -690,6 +696,7 @@ export class ItemService extends ResourceService {
                 return item;
               });
             this.items[status] = items;
+            this.lastCategoryIdSearched = categoryId;
             return items;
           }
           return [];
@@ -703,7 +710,7 @@ export class ItemService extends ResourceService {
           }
           return res;
         })
-        .map((res: Item[]) => {
+        .map(res => {
           const sort = sortBy.split('_');
           const field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
           const sorted: Item[] = _.sortBy(res, [field]);
@@ -711,55 +718,13 @@ export class ItemService extends ResourceService {
             return _.reverse(sorted);
           }
           return sorted;
-        });
+        })
+        .map(res => res.slice(init, end));
     }
   }
 
   public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemProResponse[]> {
-    let mockResponse: ItemProResponse[] = [];
-
-    MOCK_SUBSCRIPTION_SLOTS_RESPONSE.forEach(subscriptionSlot => {
-      if (subscriptionSlot.category_id === categoryId) {
-
-        let type = '';
-        let image = '';
-
-        switch (categoryId) {
-          case 100:
-            type = 'cars';
-            image = 'http://cdn-dock146.wallapop.com/images/10420/22/__/c10420p96001/i112001.jpg';
-            break;
-          case 14000:
-            type = 'motorbikes';
-            image = 'http://cdn-dock146.wallapop.com/images/10420/2b/__/c10420p108001/i134001.jpg';
-            break;
-          case 12800:
-            type = 'motor&parts';
-            image = 'http://cdn-dock146.wallapop.com/images/10420/06/__/c10420p8017/i8022.jpg';
-            break;
-        }
-
-        let numMockItems = 0;
-
-        if (init !== 0) {
-          mockResponse = [];
-        } else {
-          switch (status) {
-            case 'active':
-              numMockItems = subscriptionSlot.limit - subscriptionSlot.available;
-              break;
-            case 'inactive':
-              numMockItems = 20;
-              break;
-            case 'sold':
-              numMockItems = 50;
-              break;
-          }
-          mockResponse = generateMockItemProResponses(numMockItems, type, image, categoryId, status);
-        }
-      }
-    });
-
+    const mockResponse = getMockedItemProResponses(init, categoryId, status);
     return of(mockResponse).flatMap(res => {
       if (res.length > 0) {
         return this.recursiveMinesByCategory(init + offset, offset, categoryId, status)

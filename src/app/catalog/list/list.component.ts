@@ -82,6 +82,8 @@ export class ListComponent implements OnInit, OnDestroy {
   public searchPlaceholder: string;
   public sortItems: any[];
   public sortBy: string;
+  private page = 1;
+  private pageSize = 20;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -279,9 +281,8 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public loadMore() {
-    if (!this.selectedSubscriptionSlot) {
-      this.getItems(true);
-    }
+    this.page++;
+    this.getItems(true);
   }
 
   private getItems(append?: boolean) {
@@ -295,9 +296,11 @@ export class ListComponent implements OnInit, OnDestroy {
 
     if (this.selectedSubscriptionSlot) {
       this.itemService
-        .minesByCategory(0, 20, this.selectedSubscriptionSlot.category.categoryId, this.sortBy, this.selectedStatus, this.searchTerm)
-        .subscribe(res => {
-          this.items = res;
+        .minesByCategory(
+          this.page, this.pageSize, this.selectedSubscriptionSlot.category.categoryId, this.sortBy, this.selectedStatus, this.searchTerm
+        )
+        .subscribe(itemsByCategory => {
+          this.items = append ? this.items.concat(itemsByCategory) : itemsByCategory;
           this.updateNavLinksCounters();
           this.loading = false;
         });
