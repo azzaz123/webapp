@@ -11,26 +11,26 @@ export class MockSubscriptionService {
     }
 }
 
-export const MOCK_SUBSCRIPTION_SLOT_CARS: SubscriptionSlotResponse = {
+export const MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE: SubscriptionSlotResponse = {
     category_id: 100,
     available: 3,
     limit: 10
 };
 
-export const MOCK_SUBSCRIPTION_SLOT_MOTORBIKES: SubscriptionSlotResponse = {
+export const MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE: SubscriptionSlotResponse = {
     category_id: 14000,
     available: 2,
     limit: 10
 };
 
-export const MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES: SubscriptionSlotResponse = {
+export const MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE: SubscriptionSlotResponse = {
     category_id: 12800,
     available: 0,
     limit: 10
 };
 
-export const MOCK_SUBSCRIPTION_SLOTS: SubscriptionSlotResponse[] = [
-    MOCK_SUBSCRIPTION_SLOT_CARS,
-    MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES,
-    MOCK_SUBSCRIPTION_SLOT_MOTORBIKES
+export const MOCK_SUBSCRIPTION_SLOTS_RESPONSE: SubscriptionSlotResponse[] = [
+    MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE,
+    MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE,
+    MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE
 ];

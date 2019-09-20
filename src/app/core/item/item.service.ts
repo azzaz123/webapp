@@ -47,8 +47,9 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
-import { HttpHeaders } from '@angular/common/http';
 import { HttpServiceNew } from '../http/http.service.new';
+import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from '../../../tests/subscriptions.fixtures.spec';
+import { generateMockItemProResponses } from '../../../tests/item.fixtures.spec';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -710,15 +711,55 @@ export class ItemService extends ResourceService {
             return _.reverse(sorted);
           }
           return sorted;
-        })
-        .map((res: Item[]) => {
-          return res.slice(init, end);
         });
     }
   }
 
   public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemProResponse[]> {
-    const mockResponse: ItemProResponse[] = [];
+    let mockResponse: ItemProResponse[] = [];
+
+    MOCK_SUBSCRIPTION_SLOTS_RESPONSE.forEach(subscriptionSlot => {
+      if (subscriptionSlot.category_id === categoryId) {
+
+        let type = '';
+        let image = '';
+
+        switch (categoryId) {
+          case 100:
+            type = 'cars';
+            image = 'http://cdn-dock146.wallapop.com/images/10420/22/__/c10420p96001/i112001.jpg';
+            break;
+          case 14000:
+            type = 'motorbikes';
+            image = 'http://cdn-dock146.wallapop.com/images/10420/2b/__/c10420p108001/i134001.jpg';
+            break;
+          case 12800:
+            type = 'motor&parts';
+            image = 'http://cdn-dock146.wallapop.com/images/10420/06/__/c10420p8017/i8022.jpg';
+            break;
+        }
+
+        let numMockItems = 0;
+
+        if (init !== 0) {
+          mockResponse = [];
+        } else {
+          switch (status) {
+            case 'active':
+              numMockItems = subscriptionSlot.limit - subscriptionSlot.available;
+              break;
+            case 'inactive':
+              numMockItems = 20;
+              break;
+            case 'sold':
+              numMockItems = 50;
+              break;
+          }
+          mockResponse = generateMockItemProResponses(numMockItems, type, image, categoryId, status);
+        }
+      }
+    });
+
     return of(mockResponse).flatMap(res => {
       if (res.length > 0) {
         return this.recursiveMinesByCategory(init + offset, offset, categoryId, status)

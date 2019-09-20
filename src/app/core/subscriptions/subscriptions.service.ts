@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { SubscriptionSlot, SubscriptionSlotResponse } from './subscriptions.interface';
 import { CategoryService } from '../category/category.service';
 import { HttpServiceNew } from '../http/http.service.new';
-import { MOCK_SUBSCRIPTION_SLOTS } from '../../../tests/subscriptions.fixtures.spec';
+import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from '../../../tests/subscriptions.fixtures.spec';
 
 export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'TODOBACKEND:D';
 
@@ -16,7 +16,7 @@ export class SubscriptionsService {
   }
 
   public getSlots(): Observable<SubscriptionSlot[]> {
-    return of(MOCK_SUBSCRIPTION_SLOTS)
+    return of(MOCK_SUBSCRIPTION_SLOTS_RESPONSE)
       .flatMap(slots => {
         return Observable.forkJoin(
           slots.map(s => this.mapSlotResponseToSlot(s))
