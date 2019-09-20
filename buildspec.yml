@@ -1,7 +1,4 @@
 version: 0.2
-env:
-  parameter-store:
-    build_ssh_key: "BuildSSHKey"
 
 env:
   parameter-store:
