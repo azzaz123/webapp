@@ -11,6 +11,8 @@ import { HttpModuleNew } from '../http.module.new';
 import { AccessTokenService } from '../access-token.service';
 import { TOKEN_AUTHORIZATION_HEADER_NAME } from './index';
 import { TOKEN_TIMESTAMP_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TokenInterceptor } from './token.interceptor';
+import { FeatureflagService } from '../../user/featureflag.service';
+import { FeatureFlagServiceMock } from '../../../../tests';
 
 const MOCK_TOKEN = 'token';
 const MOCK_V3_ENDPOINT = 'api/v3/endpoint';
@@ -24,7 +26,8 @@ describe(`TokenInterceptor`, () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      imports: [ HttpClientTestingModule, HttpModuleNew ]
+      imports: [ HttpClientTestingModule, HttpModuleNew ],
+      providers: [ { provide: FeatureflagService, useClass: FeatureFlagServiceMock } ]
     });
 
     httpService = injector.get(HttpServiceNew);

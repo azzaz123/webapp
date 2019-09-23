@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SubscriptionSlot, SubscriptionSlotResponse } from './subscriptions.interface';
 import { CategoryService } from '../category/category.service';
 import { HttpServiceNew } from '../http/http.service.new';
-import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from '../../../tests/subscriptions.fixtures.spec';
 
-export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'TODOBACKEND:D';
+export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'subscriptions/slots/';
 
 @Injectable()
 export class SubscriptionsService {
@@ -16,7 +15,7 @@ export class SubscriptionsService {
   }
 
   public getSlots(): Observable<SubscriptionSlot[]> {
-    return of(MOCK_SUBSCRIPTION_SLOTS_RESPONSE)
+    return this.http.get(SUBSCRIPTIONS_SLOTS_ENDPOINT)
       .flatMap(slots => {
         return Observable.forkJoin(
           slots.map(s => this.mapSlotResponseToSlot(s))
