@@ -73,6 +73,8 @@ import { StripeCardSelectionComponent } from './payments/stripe-card-selection/s
 import { SelectModule } from 'ng-select';
 import { LinkTransformPipe } from './pipes';
 import { NavLinksComponent } from './nav-links/nav-links.component';
+import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 @NgModule({
   imports: [
@@ -89,7 +91,8 @@ import { NavLinksComponent } from './nav-links/nav-links.component';
     TrackingModule,
     RouterModule,
     UploaderModule,
-    SelectModule
+    SelectModule,
+    DeviceDetectorModule.forRoot()
   ],
   exports: [
     CardModule,
@@ -148,7 +151,8 @@ import { NavLinksComponent } from './nav-links/nav-links.component';
     StripeCardSelectionComponent,
     SelectModule,
     NavLinksComponent,
-    LinkTransformPipe
+    LinkTransformPipe,
+    PreventDoubleClickDirective
   ],
   declarations: [
     AdComponent,
@@ -209,7 +213,8 @@ import { NavLinksComponent } from './nav-links/nav-links.component';
     NewCardModalComponent,
     StripeCardSelectionComponent,
     NavLinksComponent,
-    LinkTransformPipe
+    LinkTransformPipe,
+    PreventDoubleClickDirective
   ],
   providers: [
     DecimalPipe,

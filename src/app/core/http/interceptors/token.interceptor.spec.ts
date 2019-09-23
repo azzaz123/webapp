@@ -24,8 +24,7 @@ describe(`TokenInterceptor`, () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      imports: [ HttpClientTestingModule, HttpModuleNew ],
-      providers: [ TokenInterceptor ]
+      imports: [ HttpClientTestingModule, HttpModuleNew ]
     });
 
     httpService = injector.get(HttpServiceNew);

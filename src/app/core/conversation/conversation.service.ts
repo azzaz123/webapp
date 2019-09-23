@@ -11,7 +11,7 @@ import { Message, messageStatus, statusOrder } from '../message/message';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { MessagesData } from '../message/messages.interface';
-import { RequestOptions, Response, Headers } from '@angular/http';
+import { Headers, RequestOptions, Response } from '@angular/http';
 import { NotificationService } from '../notification/notification.service';
 import { LeadService } from './lead.service';
 import { ConversationResponse, NewConversationResponse } from './conversation-response.interface';
@@ -28,11 +28,13 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
-import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 import { RealTimeService } from '../message/real-time.service';
 import { BlockUserXmppService } from './block-user';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation';
+import { InboxService } from '../inbox/inbox.service';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -65,16 +67,19 @@ export class ConversationService extends LeadService {
               protected messageService: MessageService,
               protected trackingService: TrackingService,
               protected notificationService: NotificationService,
+              private inboxService: InboxService,
               private modalService: NgbModal,
               private zone: NgZone) {
     super(http, userService, itemService, event, realTime, blockService, connectionService);
   }
 
   public getLeads(since?: number, archived?: boolean): Observable<Conversation[]> {
-    return this.query(since, archived)
-    .flatMap((conversations: Conversation[]) => {
-      if (conversations && conversations.length > 0) {
-        return this.loadMessagesIntoConversations(conversations, archived)
+    return this.inboxService.getInboxFeatureFlag$()
+    .flatMap((featureFlag) => {
+      return featureFlag ? Observable.of([]) : this.query(since, archived)
+      .flatMap((conversations: Conversation[]) => {
+        if (conversations && conversations.length > 0) {
+          return this.loadMessagesIntoConversations(conversations, archived)
           .map((convWithMessages: Conversation[]) => {
             if (!archived) {
               if (!convWithMessages.length) {
@@ -90,11 +95,12 @@ export class ConversationService extends LeadService {
             this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
             return convWithMessages;
           });
-      } else {
-        this.firstLoad = false;
-        archived ? this.ended.processed = true : this.ended.pending = true;
-        return Observable.of([]);
-      }
+        } else {
+          this.firstLoad = false;
+          archived ? this.ended.processed = true : this.ended.pending = true;
+          return Observable.of([]);
+        }
+      });
     });
   }
 
@@ -109,7 +115,7 @@ export class ConversationService extends LeadService {
     return this.getLeads(this.getLastDate(this.archivedLeads), true)
     .map(() => {
       this.archivedStream$.next(this.archivedLeads);
-      });
+    });
   }
 
   public getPage(page: number, archive?: boolean, filters?: Filter[], pageSize: number = this.PAGE_SIZE): Observable<Conversation[]> {
@@ -176,12 +182,12 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public openPhonePopup(conversation: Conversation, required = false) {
-    const modalOptions: NgbModalOptions = {windowClass: 'phone-request', backdrop: 'static', keyboard: false};
+  public openPhonePopup(conversation: Conversation | InboxConversation, required = false) {
+    const modalOptions: NgbModalOptions = { windowClass: 'phone-request', backdrop: 'static', keyboard: false };
     const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, modalOptions);
     modalRef.componentInstance.conversation = conversation;
     modalRef.componentInstance.required = required;
-      modalRef.componentInstance.phone = this.storedPhoneNumber;
+    modalRef.componentInstance.phone = this.storedPhoneNumber;
     if (required) {
       this.trackingService.addTrackingEvent({
         eventData: TrackingService.ITEM_SHAREPHONE_SHOWFORM,
@@ -193,7 +199,7 @@ export class ConversationService extends LeadService {
   public checkIfLastPage(archive: boolean = false): Observable<any> {
     const lastDate: number = archive ? this.getLastDate(this.archivedLeads) : this.getLastDate(this.leads);
     if (lastDate) {
-      return this.http.get(this.API_URL, {until: lastDate, hidden: archive})
+      return this.http.get(this.API_URL, { until: lastDate, hidden: archive })
       .map((res: Response) => res.json())
       .map((res: ConversationResponse[]) => {
         if (res.length === 0) {
@@ -300,7 +306,6 @@ export class ConversationService extends LeadService {
     }
   }
 
-
   private markAllAsRead(thread: string, timestamp?: number, markMessagesFromSelf: boolean = false) {
     const conversation = this.leads.find(c => c.id === thread) || this.archivedLeads.find(c => c.id === thread);
     if (conversation) {
@@ -374,7 +379,7 @@ export class ConversationService extends LeadService {
         return conversation;
       });
     })
-    .map((data: ConversationResponse ) => this.mapRecordData(data));
+    .map((data: ConversationResponse) => this.mapRecordData(data));
   }
 
   public sendRead(conversation: Conversation) {
@@ -462,7 +467,7 @@ export class ConversationService extends LeadService {
   }
 
   public getItemFromThread(thread: string): Item {
-    return _.find(this.leads, {id: thread}).item;
+    return _.find(this.leads, { id: thread }).item;
   }
 
   public getByItemId(itemId): Observable<NewConversationResponse> {
@@ -475,7 +480,7 @@ export class ConversationService extends LeadService {
     const options = new RequestOptions();
     options.headers = new Headers();
     options.headers.append('Content-Type', 'application/json');
-    return this.http.post(`api/v3/conversations`, JSON.stringify({item_id: itemId}), options).flatMap((r: Response) => {
+    return this.http.post(`api/v3/conversations`, JSON.stringify({ item_id: itemId }), options).flatMap((r: Response) => {
       const response: ConversationResponse = r.json();
       return Observable.forkJoin(
         this.userService.get(response.other_user_id),
@@ -537,7 +542,7 @@ export class ConversationService extends LeadService {
           }
         });
       } else {
-        const archivedConversationIndex: number = _.findIndex(this.archivedLeads, {'id': message.thread});
+        const archivedConversationIndex: number = _.findIndex(this.archivedLeads, { 'id': message.thread });
         if (archivedConversationIndex > -1) {
           const unarchivedConversation: Conversation = (<Conversation[]>this.archivedLeads).splice(archivedConversationIndex, 1)[0];
           unarchivedConversation.archived = false;

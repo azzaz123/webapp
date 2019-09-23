@@ -45,6 +45,10 @@ export class InboxConversation {
         return this._item;
     }
 
+    set item(inboxItem: InboxItem) {
+      this._item = inboxItem;
+    }
+
     set lastMessage(lastMessage: InboxMessage) {
         this._lastMessage = lastMessage;
     }
@@ -120,7 +124,7 @@ export class InboxConversation {
         }
         const userBlocked = Boolean(user.available && user.blocked);
         const profileUrl = `${environment.siteUrl}user/${user.slug}`;
-        return new InboxUser(user.hash, user.name, userBlocked, user.available, profileUrl, user.image_url, user.response_rate,
+        return new InboxUser(user.hash, user.name, userBlocked, user.available, profileUrl, user.image_url, user.response_rate, null, 0,
             user.score, user.location);
     }
 

@@ -29,8 +29,8 @@ export abstract class LeadService {
   protected PAGE_SIZE = 30;
   public leads: Lead[] = [];
   public archivedLeads: Lead[] = [];
-  public stream$: ReplaySubject<Lead[]> = new ReplaySubject(1);
-  public archivedStream$: ReplaySubject<Lead[]> = new ReplaySubject(1);
+  public stream$: ReplaySubject<Lead[]>;
+  public archivedStream$: ReplaySubject<Lead[]>;
   public firstLoad: boolean;
 
   constructor(protected http: HttpService,
@@ -40,6 +40,8 @@ export abstract class LeadService {
               protected realTime: RealTimeService,
               protected blockService: BlockUserXmppService,
               protected connectionService: ConnectionService) {
+    this.stream$ = new ReplaySubject(1);
+    this.archivedStream$ = new ReplaySubject(1);
   }
 
   public init(archived?: boolean): Observable<Lead[]> {

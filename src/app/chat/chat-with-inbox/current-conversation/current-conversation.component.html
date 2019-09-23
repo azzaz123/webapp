@@ -118,6 +118,7 @@
 
   <div id="conversation-meta">
     <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item" [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
+    <tsl-inbox-item-for-sell *ngxPermissionsOnly="['isProfessional']" [user]="currentConversation.user"></tsl-inbox-item-for-sell>
     <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
     <tsl-ad slotid="div-gpt-ad-1508490196308-0"></tsl-ad>
   </div>

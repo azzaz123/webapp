@@ -17,6 +17,7 @@ import { UserService } from '../user/user.service';
 import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
 import { InboxConversationService } from './inbox-conversation.service';
+import { FeatureFlagServiceMock } from '../../../tests';
 
 let service: InboxService;
 let http: HttpService;
@@ -37,10 +38,10 @@ describe('InboxService', () => {
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: MessageService, useClass: MockMessageService },
         { provide: UserService, useClass: MockedUserService },
-        { provide: InboxConversationService, useValue: { subscribeChatEvents() {} }},
-        { provide: FeatureflagService, useValue: {
-            getFlag() {
-              return Observable.of(false);
+        { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        {
+          provide: InboxConversationService, useValue: {
+            subscribeChatEvents() {
             }
           }
         }
@@ -58,12 +59,12 @@ describe('InboxService', () => {
   });
 
   describe('getInboxFeatureFlag', () => {
-    it('should call featureflagService.getFlag when called', () => {
-      spyOn(featureflagService, 'getFlag');
+    it('should call featureflagService.getWebInboxProjections when called', () => {
+      spyOn(featureflagService, 'getWebInboxProjections');
 
       service.getInboxFeatureFlag$();
 
-      expect(featureflagService.getFlag).toHaveBeenCalledWith('web_inbox_projections');
+      expect(featureflagService.getWebInboxProjections).toHaveBeenCalled();
     });
   });
 
@@ -359,7 +360,7 @@ describe('InboxService', () => {
       delete modifiedResponse.next_from;
       spyOn(http, 'get').and.returnValues(Observable.of(
         new Response(new ResponseOptions({ body: modifiedResponse }))),
-         Observable.of(new Response(new ResponseOptions({ body: modifiedResponse }))));
+        Observable.of(new Response(new ResponseOptions({ body: modifiedResponse }))));
 
       service.init();
 

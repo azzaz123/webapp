@@ -203,6 +203,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
     this.modalService.open(ArchiveInboxConversationComponent).result.then(() => {
       this.conversationService.archive(this.currentConversation).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
+        this.currentConversation = null;
       });
     });
   }
@@ -211,6 +212,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
     this.modalService.open(UnarchiveInboxConversationComponent).result.then(() => {
       this.conversationService.unarchive(this.currentConversation).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('unarchiveConversationSuccess'));
+        this.currentConversation = null;
       });
     });
   }

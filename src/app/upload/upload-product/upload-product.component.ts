@@ -6,7 +6,10 @@ import {
   OnInit,
   Output,
   ViewChild,
-  AfterContentInit
+  AfterContentInit,
+  OnChanges,
+  SimpleChanges,
+  SimpleChange
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
@@ -34,7 +37,7 @@ const CATEGORIES_WITH_EXTRA_FIELDS = ['16000', '12465'];
   templateUrl: './upload-product.component.html',
   styleUrls: ['./upload-product.component.scss']
 })
-export class UploadProductComponent implements OnInit, AfterContentInit {
+export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
 
   @Input() categoryId: string;
   @Input() item: Item;
@@ -66,9 +69,16 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
     size: '20x38x40cm',
     value: {
       min_weight_kg: 0,
-      max_weight_kg: 5
+      max_weight_kg: 2
     }
   }, {
+    size: '20x38x40cm',
+    value: {
+      min_weight_kg: 2,
+      max_weight_kg: 5
+    }
+  },
+  {
     size: '30x40x50cm',
     value: {
       min_weight_kg: 5,
@@ -100,6 +110,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
   public customModel = false;
   public isFashionCategory = false;
   public showExtraFields = false;
+  private allCategories: CategoryOption[];
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -147,6 +158,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
 
   ngOnInit() {
     this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
+      this.allCategories = categories;
       this.categories = categories.filter((category: CategoryOption) => {
         return !this.categoryService.isHeroCategory(+category.value);
       });
@@ -180,6 +192,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
       }
       this.detectFormChanges();
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.categoryId) {
+      this.setFixedCategory(changes.categoryId.currentValue);
+    } 
   }
 
   private detectFormChanges() {
@@ -314,6 +332,15 @@ export class UploadProductComponent implements OnInit, AfterContentInit {
 
   public selectUrgent(isUrgent: boolean): void {
     this.isUrgent = isUrgent;
+  }
+
+  private setFixedCategory(categoryId: string) {
+    if (categoryId === '-1') {
+      this.fixedCategory = null;
+    } else {
+        const fixedCategory = _.find(this.allCategories, { value: categoryId });
+        this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+    }
   }
 
   public setCategory(value: number): void {

@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RealTimeService } from './real-time.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
@@ -9,16 +9,19 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { Observable } from 'rxjs';
 import { Message, phoneRequestState } from './message';
-import { USER_ID, OTHER_USER_ID, MOCK_USER, ACCESS_TOKEN } from '../../../tests/user.fixtures.spec';
+import { ACCESS_TOKEN, MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID, MOCK_CONVERSATION, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment.docker';
+import { RemoteConsoleService } from '../remote-console';
+import { MockRemoteConsoleService } from '../../../tests';
 
 let service: RealTimeService;
 let persistencyService: PersistencyService;
 let eventService: EventService;
 let xmppService: XmppService;
 let trackingService: TrackingService;
+let remoteConsoleService: RemoteConsoleService;
 
 describe('RealTimeService', () => {
   beforeEach(() => {
@@ -28,7 +31,8 @@ describe('RealTimeService', () => {
         XmppService,
         EventService,
         { provide: PersistencyService, useClass: MockedPersistencyService },
-        { provide: TrackingService, useClass: MockTrackingService }
+        { provide: TrackingService, useClass: MockTrackingService },
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
       ]
     });
 
@@ -37,16 +41,19 @@ describe('RealTimeService', () => {
     persistencyService = TestBed.get(PersistencyService);
     xmppService = TestBed.get(XmppService);
     trackingService = TestBed.get(TrackingService);
+    remoteConsoleService = TestBed.get(RemoteConsoleService);
     appboy.initialize(environment.appboy);
   });
 
   describe('connect', () => {
     it('should call xmpp.connect', () => {
-      spyOn(xmppService, 'connect').and.callThrough();
+      spyOn(xmppService, 'connect').and.returnValue(Observable.of({}));
+      spyOn(remoteConsoleService, 'sendConnectionTimeout').and.callThrough();
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
 
       expect(xmppService.connect).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
+      expect(remoteConsoleService.sendConnectionTimeout).toHaveBeenCalled();
     });
   });
 
@@ -76,7 +83,6 @@ describe('RealTimeService', () => {
 
       expect(xmppService.reconnectClient).toHaveBeenCalled();
     });
-
 
     describe('recursivly', () => {
       it('should call xmpp.reconnectClient if ongoingRetry is FALSE, and set ongoingRetry to TRUE', () => {
@@ -164,17 +170,17 @@ describe('RealTimeService', () => {
   describe('subscribeEventNewMessage', () => {
     it(`should call sendDeliveryReceipt when a NEW_MESSAGE event is emitted for a message that requests the delivery
     and is NOT fromSelf`, () => {
-        spyOn(service, 'sendDeliveryReceipt');
-        spyOn(persistencyService, 'findMessage').and.returnValue(Observable.throw({
-          reason: 'missing'
-        }));
-        const msg = new Message('someId', CONVERSATION_ID, 'from other', OTHER_USER_ID);
-        msg.fromSelf = false;
+      spyOn(service, 'sendDeliveryReceipt');
+      spyOn(persistencyService, 'findMessage').and.returnValue(Observable.throw({
+        reason: 'missing'
+      }));
+      const msg = new Message('someId', CONVERSATION_ID, 'from other', OTHER_USER_ID);
+      msg.fromSelf = false;
 
-        eventService.emit(EventService.NEW_MESSAGE, msg, false, true);
+      eventService.emit(EventService.NEW_MESSAGE, msg, false, true);
 
-        expect(service.sendDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.thread);
-      });
+      expect(service.sendDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.thread);
+    });
 
     it('should NOT call sendDeliveryReceipt if the new message is fromSelf', () => {
       spyOn(service, 'sendDeliveryReceipt');
@@ -191,21 +197,21 @@ describe('RealTimeService', () => {
 
     it(`should NOT call sendDeliveryReceipt if a NEW_MESSAGE event is emitted without the deliveryReceipt parameter,
       or with the deliveryRecipt parameter set to FALSE`, () => {
-        spyOn(service, 'sendDeliveryReceipt');
-        spyOn(persistencyService, 'findMessage').and.returnValue(Observable.throw({
-          reason: 'missing'
-        }));
-        const msg = new Message('someId', CONVERSATION_ID, 'from myself!', USER_ID);
-        msg.fromSelf = false;
+      spyOn(service, 'sendDeliveryReceipt');
+      spyOn(persistencyService, 'findMessage').and.returnValue(Observable.throw({
+        reason: 'missing'
+      }));
+      const msg = new Message('someId', CONVERSATION_ID, 'from myself!', USER_ID);
+      msg.fromSelf = false;
 
-        eventService.emit(EventService.NEW_MESSAGE, msg, false, false);
+      eventService.emit(EventService.NEW_MESSAGE, msg, false, false);
 
-        expect(service.sendDeliveryReceipt).not.toHaveBeenCalled();
+      expect(service.sendDeliveryReceipt).not.toHaveBeenCalled();
 
-        eventService.emit(EventService.NEW_MESSAGE, msg);
+      eventService.emit(EventService.NEW_MESSAGE, msg);
 
-        expect(service.sendDeliveryReceipt).not.toHaveBeenCalled();
-      });
+      expect(service.sendDeliveryReceipt).not.toHaveBeenCalled();
+    });
 
     it('should NOT call sendDeliveryReceipt if the message already exists (persistencyService.findMessage returns a value)', () => {
       spyOn(service, 'sendDeliveryReceipt');

@@ -97,22 +97,23 @@ export interface CarContent extends ItemContent {
   num_seats?: number;
   condition?: string;
   version?: string;
+  financed_price?: number;
 }
 
 export interface RealestateContent extends ItemContent {
-   operation?: string;
-   type?: string;
-   condition?: string;
-   surface?: number;
-   bathrooms?: number;
-   rooms?: number;
-   garage?: boolean;
-   terrace?: boolean;
-   elevator?: boolean;
-   pool?: boolean;
-   garden?: boolean;
-   storytelling?: string;
-   location?: any;
+  operation?: string;
+  type?: string;
+  condition?: string;
+  surface?: number;
+  bathrooms?: number;
+  rooms?: number;
+  garage?: boolean;
+  terrace?: boolean;
+  elevator?: boolean;
+  pool?: boolean;
+  garden?: boolean;
+  storytelling?: string;
+  location?: any;
 }
 
 export interface ItemsData {
@@ -201,6 +202,7 @@ export interface CarUploadForm extends ItemUploadForm {
   brand: string;
   year: string;
   version: string;
+  financed_price: number;
   num_seats: number;
   num_doors: number;
   body_type: string;
@@ -260,7 +262,6 @@ export interface AllowedActionResponse {
   allowed: boolean;
   cause?: string;
 }
-
 
 export interface ItemFlags {
   pending: boolean;

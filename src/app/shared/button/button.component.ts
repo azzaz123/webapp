@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'tsl-button',
@@ -11,23 +11,7 @@ export class ButtonComponent {
   @Input() type = 'button';
   @Input() disabled: boolean;
   @Input() loading: boolean;
-  @Input() debounceTime = 500;
-  @Output() debounceClick = new EventEmitter();
-
-  private alreadyClicked = false;
 
   constructor() { }
-
-  @HostListener('click', ['$event'])
-  clickEvent(event) {
-    if (this.alreadyClicked) {
-      event.preventDefault();
-      event.stopPropagation();
-    } else {
-      this.alreadyClicked = true;
-      setTimeout( () => this.alreadyClicked = false, 500);
-    }
-
-  }
 
 }
