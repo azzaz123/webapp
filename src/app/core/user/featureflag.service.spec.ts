@@ -1,50 +1,77 @@
-import { TestBed } from '@angular/core/testing';
-
-import { FeatureFlagResponse, FeatureflagService } from './featureflag.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { HttpService } from '../http/http.service';
-import { ResponseOptions, Response } from '@angular/http';
+import { TestBed, getTestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { Observable } from 'rxjs';
 
-describe('FeatureflagService', () => {
+import { HttpModuleNew } from '../http/http.module.new';
+import { FeatureFlagResponse, FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
+import { environment } from '../../../environments/environment';
+import { mockFeatureFlags } from '../../../tests';
 
+describe('FeatureflagService', () => {
+  let injector: TestBed;
   let service: FeatureflagService;
-  let http: HttpService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        FeatureflagService,
-        ...TEST_HTTP_PROVIDERS
-      ]
+    injector = getTestBed();
+    injector.configureTestingModule({
+      imports: [ HttpClientTestingModule, HttpModuleNew ],
+      providers: [ FeatureflagService ]
     });
-    service = TestBed.get(FeatureflagService);
-    http = TestBed.get(HttpService);
+    httpMock = injector.get(HttpTestingController);
+    service = injector.get(FeatureflagService);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
+  });
+
+  it('should create the instance', () => {
+    expect(service).toBeTruthy();
   });
 
   describe('getFlag', () => {
-    it('should call endpoint and return boolean', () => {
-      const PERM = 'perm';
-      let resp: boolean;
-      const RESP: FeatureFlagResponse[] = [{
-        name: PERM,
-        active: true
-      }];
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(RESP) });
-      const TIMESTAMP = 1234567890;
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      spyOn<any>(window, 'Date').and.returnValue({
-        getTime: () => {
-          return TIMESTAMP;
-        }
-      });
+    it('should call valid endpoint', () => {
+      const featureFlagName = 'flag';
+      const expectedUrlParams = `featureFlags=${featureFlagName}`;
+      const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+      const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-      service.getFlag(PERM).subscribe((r: boolean) => {
-        resp = r;
-      });
+      service.getFlag(featureFlagName).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+      req.flush([]);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/featureflag', { featureFlags: PERM, timestamp: TIMESTAMP });
-      expect(resp).toBe(true);
+      expect(req.request.url).toBe(expectedUrlWithEndpoint);
+      expect(req.request.urlWithParams.toString()).toBe(expectedUrlWithEndpointAndParams);
+      expect(req.request.method).toBe('GET');
+    });
+
+    it('should not do extra HTTP request when feature flag was already fetched', () => {
+      const featureFlagName = 'flag';
+      const expectedUrlParams = `featureFlags=${featureFlagName}`;
+      const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+      const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
+
+      service.getFlag(featureFlagName).flatMap(() => {
+        return service.getFlag(featureFlagName);
+      }).subscribe();
+
+      const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+      req.flush([]);
+    });
+
+    it('should return boolean observable with valid value', () => {
+      const featureFlagName = mockFeatureFlags[0].name;
+      const expectedUrlParams = `featureFlags=${featureFlagName}`;
+      const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+      const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
+      let dataResponse: boolean;
+
+      service.getFlag(featureFlagName).subscribe(active => dataResponse = active);
+      const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+      req.flush([mockFeatureFlags[0]]);
+
+      expect(dataResponse).toBe(mockFeatureFlags[0].active);
     });
   });
 
