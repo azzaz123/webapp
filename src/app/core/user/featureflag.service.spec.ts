@@ -1,9 +1,8 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { Observable } from 'rxjs';
 
 import { HttpModuleNew } from '../http/http.module.new';
-import { FeatureFlagResponse, FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
+import { FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
 import { environment } from '../../../environments/environment';
 import { mockFeatureFlags } from '../../../tests';
 
@@ -11,6 +10,7 @@ describe('FeatureflagService', () => {
   let injector: TestBed;
   let service: FeatureflagService;
   let httpMock: HttpTestingController;
+  const TIMESTAMP = 123456789;
 
   beforeEach(() => {
     injector = getTestBed();
@@ -20,6 +20,8 @@ describe('FeatureflagService', () => {
     });
     httpMock = injector.get(HttpTestingController);
     service = injector.get(FeatureflagService);
+
+    spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
   });
 
   afterEach(() => {
@@ -33,7 +35,7 @@ describe('FeatureflagService', () => {
   describe('getFlag', () => {
     it('should call valid endpoint', () => {
       const featureFlagName = 'flag';
-      const expectedUrlParams = `featureFlags=${featureFlagName}`;
+      const expectedUrlParams = `featureFlags=${featureFlagName}&timestamp=${TIMESTAMP}`;
       const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
       const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
@@ -48,7 +50,7 @@ describe('FeatureflagService', () => {
 
     it('should not do extra HTTP request when feature flag was already fetched', () => {
       const featureFlagName = 'flag';
-      const expectedUrlParams = `featureFlags=${featureFlagName}`;
+      const expectedUrlParams = `featureFlags=${featureFlagName}&timestamp=${TIMESTAMP}`;
       const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
       const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
@@ -62,7 +64,7 @@ describe('FeatureflagService', () => {
 
     it('should return boolean observable with valid value', () => {
       const featureFlagName = mockFeatureFlags[0].name;
-      const expectedUrlParams = `featureFlags=${featureFlagName}`;
+      const expectedUrlParams = `featureFlags=${featureFlagName}&timestamp=${TIMESTAMP}`;
       const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
       const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
       let dataResponse: boolean;

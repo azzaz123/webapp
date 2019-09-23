@@ -30,6 +30,11 @@ export class FeatureflagService {
         {
           key: 'featureFlags',
           value: name
+        },
+        // Prevent browser cache with timestamp parameter
+        {
+          key: 'timestamp',
+          value: new Date().getTime()
         }
       ];
 
