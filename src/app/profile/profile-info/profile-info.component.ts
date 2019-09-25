@@ -16,7 +16,7 @@ import { isValidNumber } from 'libphonenumber-js';
 export const competitorLinks = [
   'coches.net',
   'autoscout24.es',
-  'autocasión.com',
+  'autocasion.com',
   'vibbo.com',
   'milanuncios.com',
   'motor.es'
@@ -114,7 +114,19 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
     const linkControl = this.profileForm.get('link');
     if (linkControl.value ) {
       competitorLinks.forEach(competitor  => {
-        if (linkControl.value.toUpperCase().includes(competitor.toUpperCase())) {
+        /*let linkSubstring = linkControl.value.substring(
+          linkControl.value.lastIndexOf(".") + 1, 
+          linkControl.value.lastIndexOf(".")
+        );
+        let competitorSubstring = competitor.substring(
+          competitor.lastIndexOf(".") + 1, 
+          competitor.lastIndexOf(".")
+        );*/
+        let competitorSubstring = competitor;
+        let linkSubstring = linkControl.value;
+        linkSubstring.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+        competitorSubstring.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+        if (linkSubstring === competitorSubstring) {
           linkControl.setErrors({incorrect: true});
         }
       });
