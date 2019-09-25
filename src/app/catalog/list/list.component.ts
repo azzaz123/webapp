@@ -281,7 +281,6 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public loadMore() {
-    this.page++;
     this.getItems(true);
   }
 
@@ -289,10 +288,15 @@ export class ListComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.updateNavLinks();
+
     if (!append) {
+      this.init = 0;
+      this.page = 0;
       this.items = [];
+    } else {
+      this.page++;
     }
-    let status = this.selectedStatus;
+    const status = this.selectedStatus;
 
     if (this.selectedSubscriptionSlot) {
       this.itemService
@@ -526,7 +530,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.selectedSubscriptionSlot = subscription;
 
     if (!subscription) {
-      this.init = 0;
       this.selectedStatus = 'published';
       this.updateNavLinksCounters();
     } else {

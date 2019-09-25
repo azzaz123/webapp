@@ -61,6 +61,7 @@ export const ITEM_STATUSES: any = {
 };
 
 export const PAYMENT_PROVIDER = 'STRIPE';
+export const MINES_BY_CATEGORY_ENDPOINT = 'mines/category';
 
 @Injectable()
 export class ItemService extends ResourceService {
@@ -682,6 +683,7 @@ export class ItemService extends ResourceService {
 
     // TODO: Propper condition with last category id searched and so
     if (
+      false &&
       this.lastCategoryIdSearched &&
       this.lastCategoryIdSearched === categoryId &&
       this.items[status] &&
@@ -730,8 +732,14 @@ export class ItemService extends ResourceService {
   }
 
   public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemProResponse[]> {
-    const mockResponse = getMockedItemProResponses(init, categoryId, status);
-    return of(mockResponse).flatMap(res => {
+    return this.httpNew.get(MINES_BY_CATEGORY_ENDPOINT, [
+      { key: 'status', value: status },
+      { key: 'init', value: init },
+      { key: 'end', value: init + offset },
+      { key: 'categoryId', value: categoryId },
+      { key: 'newVersion', value: true },
+    ])
+    .flatMap(res => {
       if (res.length > 0) {
         return this.recursiveMinesByCategory(init + offset, offset, categoryId, status)
           .map(recursiveResult => res.concat(recursiveResult));
