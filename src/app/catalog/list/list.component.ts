@@ -291,7 +291,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     if (!append) {
       this.init = 0;
-      this.page = 0;
+      this.page = 1;
       this.items = [];
     } else {
       this.page++;
