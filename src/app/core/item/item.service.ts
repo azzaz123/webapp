@@ -683,7 +683,7 @@ export class ItemService extends ResourceService {
 
     // TODO: Propper condition with last category id searched and so
     if (
-      false &&
+      status === 'TODO' &&
       this.lastCategoryIdSearched &&
       this.lastCategoryIdSearched === categoryId &&
       this.items[status] &&
