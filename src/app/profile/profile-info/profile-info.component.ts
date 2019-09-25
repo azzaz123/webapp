@@ -114,14 +114,6 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
     const linkControl = this.profileForm.get('link');
     if (linkControl.value ) {
       competitorLinks.forEach(competitor  => {
-        /*let linkSubstring = linkControl.value.substring(
-          linkControl.value.lastIndexOf(".") + 1, 
-          linkControl.value.lastIndexOf(".")
-        );
-        let competitorSubstring = competitor.substring(
-          competitor.lastIndexOf(".") + 1, 
-          competitor.lastIndexOf(".")
-        );*/
         let competitorSubstring = competitor;
         let linkSubstring = linkControl.value;
         linkSubstring.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
