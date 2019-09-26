@@ -189,6 +189,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   public onSlide($event: NgbSlideEvent) {
+    console.log('onslide ', $event.current);
     this.isLast = $event.current === 'ngb-slide-1';
     this.currentSlide = $event.current;
   }
