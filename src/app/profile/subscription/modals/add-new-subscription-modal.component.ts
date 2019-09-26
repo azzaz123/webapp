@@ -31,7 +31,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   public isStripe: boolean;
   public loading = false;
   public isPaymentError = false;
-  public currentSlide: string;
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
   public selectedPlanId: string;
@@ -51,7 +50,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
 
   ngOnInit() {
     this.loaded = true;
-    this.currentSlide = 'ngb-slide-0';
     this.selectedTier = this.subscription.selected_tier;
     this.selectedPlanId = this.subscription.selected_tier.id;
     

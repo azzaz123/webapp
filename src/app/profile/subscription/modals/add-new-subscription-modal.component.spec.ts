@@ -124,12 +124,6 @@ describe('AddNewSubscriptionModalComponent', () => {
       expect(component.isStripe).toBe(expectedValue);
     });
 
-    it('should set current slide to ngb-slide-0', () => {
-      component.ngOnInit();
-
-      expect(component.currentSlide).toEqual('ngb-slide-0');
-    })
-
   });
 
   describe('close', () => {
@@ -324,17 +318,6 @@ describe('AddNewSubscriptionModalComponent', () => {
       component.selectListingLimit(TIER);
 
       expect(component.selectedTier).toBe(TIER);
-    });
-  });
-
-  describe('onSlide', () => {
-    it('should set isLast when is last slide', () => {
-      component.onSlide({
-        current: 'ngb-slide-1'
-      } as NgbSlideEvent);
-
-      expect(component.isLast).toBe(true);
-      expect(component.currentSlide).toEqual('ngb-slide-1');
     });
   });
 
