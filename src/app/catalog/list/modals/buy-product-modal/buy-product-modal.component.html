@@ -59,22 +59,24 @@
         <span class="amount">{{totalToPay | customCurrency}}</span>
       </div>
     </div>
-    <tsl-stripe-card-selection *ngIf="isStripe && isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
-                               (hasStripeCard)="hasStripeCard($event)"
-    ></tsl-stripe-card-selection>
-    <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="isStripe && savedCard" i18n>+ Add another credit card</div>
-    <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="isStripe && showCard && isStripeCard" i18n>Use saved card</div>
-    <tsl-stripe-card-element *ngIf="isStripe && showCard" [type]="'bump'" [cart]="cart" (stripeCardToken)="checkout($event)"
-                             (stripeCard)="setCardInfo($event)" [loading]="loading"
-    ></tsl-stripe-card-element>
+    <div *ngIf="isStripe && totalToPay > 0">
+      <tsl-stripe-card-selection *ngIf="isStripe && isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+                                (hasStripeCard)="hasStripeCard($event)"
+      ></tsl-stripe-card-selection>
+      <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="isStripe && savedCard" i18n>+ Add another credit card</div>
+      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="isStripe && showCard && isStripeCard" i18n>Use saved card</div>
+      <tsl-stripe-card-element *ngIf="isStripe && showCard" [type]="'bump'" [cart]="cart" (stripeCardToken)="checkout($event)"
+                              (stripeCard)="setCardInfo($event)" [loading]="loading"
+      ></tsl-stripe-card-element>
+    </div>
     <div class="credit-card" [hidden]="creditInfo?.credit >= orderEvent.total || isStripe">
       <tsl-card-selection [(ngModel)]="cardType" (hasCard)="hasCard($event)"></tsl-card-selection>
     </div>
-    <tsl-button [hidden]="isStripe && !savedCard"
+    <tsl-button [hidden]="isStripe && !savedCard || isStripe && totalToPay > 0 && !savedCard"
                 className="btn-block btn-primary"
                 (click)="checkout()"
                 [loading]="loading"
-                [disabled]="isStripe && !selectedCard"
+                [disabled]="isStripe && !selectedCard && totalToPay > 0"
                 i18n>Continue</tsl-button>
     <p class="note" *ngIf="!hasFinancialCard && creditInfo?.credit < orderEvent.total && !isStripe" i18n>
       We don't save details of this transaction. The purchase is made via Banco Sabadell.
