@@ -28,7 +28,6 @@ export class RealTimeService {
     this.subscribeConnectionRestored();
   }
 
-  static readonly FIRST_MESSAGE = 1;
   private ongoingRetry: boolean;
 
   public connect(userId: string, accessToken: string) {
