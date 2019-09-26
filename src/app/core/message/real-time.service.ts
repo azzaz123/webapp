@@ -9,20 +9,26 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ChatSignal, chatSignalType } from './chat-signal.interface';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { RemoteConsoleService } from '../remote-console';
+import { SendFirstMessage } from '../analytics/events-interfaces/send-first-message.interface';
+import { SCREENS_IDS, EVENT_TYPES } from '../analytics/resources/analytics-constants';
+import { AnalyticsService } from '../analytics/analytics.service';
+import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
 
 @Injectable()
 export class RealTimeService {
-
+  
   constructor(private xmpp: XmppService,
-              private eventService: EventService,
-              private persistencyService: PersistencyService,
-              private trackingService: TrackingService,
-              private remoteConsoleService: RemoteConsoleService) {
+    private eventService: EventService,
+    private persistencyService: PersistencyService,
+    private trackingService: TrackingService,
+    private remoteConsoleService: RemoteConsoleService,
+    private analyticsService: AnalyticsService) {
     this.subscribeEventNewMessage();
     this.subscribeEventMessageSent();
     this.subscribeConnectionRestored();
   }
 
+  static readonly FIRST_MESSAGE = 1;
   private ongoingRetry: boolean;
 
   public connect(userId: string, accessToken: string) {
@@ -66,6 +72,9 @@ export class RealTimeService {
 
   public sendMessage(conversation: Conversation | InboxConversation, body: string) {
     this.xmpp.sendMessage(conversation, body);
+    if (conversation.messages.length === RealTimeService.FIRST_MESSAGE) {
+      this.trackSendFirstMessage(conversation);
+    }
   }
 
   public resendMessage(conversation: Conversation, message: Message) {
@@ -145,6 +154,21 @@ export class RealTimeService {
     fbq('track', 'InitiateCheckout', {
       value: conversation.item.salePrice,
       currency: conversation.item.currencyCode,
+    });
+  }
+
+  private trackSendFirstMessage(conversation: Conversation | InboxConversation) {
+    const eventAttrs: SendFirstMessage = {
+      itemId: conversation.item.id,
+      sellerUserId: conversation.user.id,
+      conversationId: conversation.id,
+      screenId: SCREENS_IDS.ItemDetail
+    }
+
+    this.analyticsService.trackEvent({
+      name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
+      eventType: EVENT_TYPES.Other,
+      attributes: eventAttrs
     });
   }
 
