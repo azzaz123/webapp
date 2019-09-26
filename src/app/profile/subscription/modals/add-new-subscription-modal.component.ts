@@ -22,7 +22,6 @@ import { flatMap } from 'rxjs/operators';
 export class AddNewSubscriptionModalComponent implements OnInit {
 
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
-  public isLast: boolean;
   public card: any;
   public action: string;
   public showCard = false;
@@ -40,6 +39,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   private REQUIRES_PAYMENT_METHOD = 'REQUIRES_PAYMENT_METHOD';
   private REQUIRES_ACTION = 'REQUIRES_ACTION';
   private SUCCEEDED = 'SUCCEEDED';
+  public loaded: boolean;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -50,6 +50,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loaded = true;
     this.currentSlide = 'ngb-slide-0';
     this.selectedTier = this.subscription.selected_tier;
     this.selectedPlanId = this.subscription.selected_tier.id;
@@ -186,12 +187,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
 
   public selectListingLimit(tier: Tier): void {
     this.selectedTier = tier;
-  }
-
-  public onSlide($event: NgbSlideEvent) {
-    console.log('onslide ', $event.current);
-    this.isLast = $event.current === 'ngb-slide-1';
-    this.currentSlide = $event.current;
   }
 
   private managePaymentResponse(paymentResponse) {

@@ -1,12 +1,12 @@
 <div class="AddNewSubscription__box">
   <div class="AddNewSubscription__box-header">
-    <div class="modal-close" (click)="activeModal.dismiss()">
+    <div class="modal-close" (click)="activeModal.close()">
         <mat-icon svgIcon="cross"></mat-icon>
     </div>
     <h4 class="AddNewSubscription__box--title">Add new subscription</h4>
     <p class="AddNewSubscription__box--subtitle">What limit do you want to put on your subscription?</p>
   </div>
-  <ngb-carousel interval="0" (slide)="onSlide($event)">
+  <ngb-carousel interval="0" *ngIf="loaded">
     <ng-template ngbSlide>
       <div class="step step-1">
         <div class="box-content">
@@ -32,8 +32,7 @@
             </div>
           </div>
         </div>
-        [{{currentSlide}}]
-        <tsl-button *ngIf="currentSlide === 'ngb-slide-0'" [disabled]="!selectedTier" (click)="carousel.next()" i18n>Continue to payment</tsl-button>
+        <tsl-button [disabled]="!selectedTier" (click)="carousel.next()" i18n>Continue to payment</tsl-button>
       </div>
     </ng-template>
     <ng-template ngbSlide>
