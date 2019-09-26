@@ -116,8 +116,9 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
       competitorLinks.forEach(competitor  => {
         let competitorSubstring = competitor;
         let linkSubstring = linkControl.value;
-        linkSubstring.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
-        competitorSubstring.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+        linkSubstring = linkSubstring.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+        competitorSubstring = competitorSubstring.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+        console.log('Link - Competitor ', linkSubstring, competitorSubstring);
         if (linkSubstring === competitorSubstring) {
           linkControl.setErrors({incorrect: true});
         }
