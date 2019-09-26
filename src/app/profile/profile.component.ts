@@ -21,7 +21,6 @@ export class ProfileComponent implements OnInit {
   public isPro: boolean;
   public userStats: UserStatsResponse;
   public isSubscriptionsActive: boolean;
-  private isStripe: boolean;
 
   constructor(private userService: UserService,
               protected i18n: I18nService,
@@ -51,9 +50,8 @@ export class ProfileComponent implements OnInit {
     });
     this.stripeService.isPaymentMethodStripe$()
     .pipe(
-      flatMap(val => this.subscriptionsService.isSubscriptionsActive$()),
+      flatMap(() => this.subscriptionsService.isSubscriptionsActive$()),
     )
-    .do(response => this.isStripe = response)
     .filter(val => val === true)
     .subscribe(val => this.isSubscriptionsActive = val); 
 
