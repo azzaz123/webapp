@@ -3,11 +3,79 @@ import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../app/core/s
 export const SUBSCRIPTIONS: SubscriptionsResponse[] = 
 [
   {
-    category_id: 100, 
+    category_id: 12800, 
     current_limit: 2,
     subscribed_from: null,
     selected_tier_id: null,
-    default_tier_id: 'plan_FWuGNucr7WgWUc',
+    default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+    tiers:
+    [
+      {
+        id: 'plan_Fsf0Htv8L6Ox91',
+        limit: 9,
+        price: 9.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_Fsf0cCjrcaSCLx',
+        limit: 50,
+        price: 39.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_Fsf1jU8y7A9gh4',
+        limit: 200,
+        price: 69.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_Fsf2JK1vCkSx6g',
+        limit: -1,
+        price: 129.99,
+        currency: '€'
+      }
+    ]
+  },
+  {
+    category_id: 100, 
+    current_limit: 1,
+    subscribed_from: null,
+    selected_tier_id: null,
+    default_tier_id: 'plan_FsewICdAYXBUY0',
+    tiers:
+    [
+      {
+        id: 'plan_FsevTLryG1uX1w',
+        limit: 9,
+        price: 39.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_FsewICdAYXBUY0',
+        limit: 30,
+        price: 69.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FsewaztmR8E0pC',
+        limit: 50,
+        price: 149.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_Fsew7d8gFnVD9V',
+        limit: -1,
+        price: 199.99,
+        currency: '€'
+      }
+    ]
+  },
+  {
+    category_id: 14000, 
+    current_limit: 3,
+    subscribed_from: 1567675697,
+    selected_tier_id: 'plan_FWuGNucr7WgWUc',
+		default_tier_id: 'plan_FWuFVeTHEDyECa',
     tiers:
     [
       {
@@ -32,62 +100,6 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
         id: 'plan_FWuHrLv9WislLd',
         limit: -1,
         price: 69.99,
-        currency: '€'
-      }
-    ]
-  },
-  {
-    category_id: 200, 
-    current_limit: 1,
-    subscribed_from: null,
-    selected_tier_id: null,
-    default_tier_id: 'plan_FSWD733ykyJjwC',
-    tiers:
-    [
-      {
-        id: 'plan_FSWD733ykyJjwC',
-        limit: 9,
-        price: 9.99,
-        currency: '€'
-      }, 
-      {
-        id: 'plan_FSWD7I80aaEBNF',
-        limit: 25,
-        price: 19.99,
-        currency: '€'
-      },
-      {
-        id: 'plan_FSWD7IYALDI6iB',
-        limit: 100,
-        price: 29.99,
-        currency: '€'
-      }
-    ]
-  },
-  {
-    category_id: 14000, 
-    current_limit: 3,
-    subscribed_from: 1567675697,
-    selected_tier_id: 'plan_FHeLJTn9g16fsq',
-		default_tier_id: 'plan_FmLhWAmQMXPaK9',
-    tiers:
-    [
-      {
-        id: 'plan_FmLhWAmQMXPaK9',
-        limit: 5,
-        price: 9.99,
-        currency: '€'
-      }, 
-      {
-        id: 'plan_FHeLYC4HcSRbse',
-        limit: 15,
-        price: 39.00,
-        currency: '€'
-      },
-      {
-        id: 'plan_FHeLJTn9g16fsq',
-        limit: 50,
-        price: 69.00,
         currency: '€'
       }
     ]
@@ -97,11 +109,85 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
 export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = 
 [
   {
-    category_id: 100, 
+    category_id: 12800, 
     current_limit: 2,
     subscribed_from: null,
     selected_tier_id: null,
-    default_tier_id: 'plan_FWuGNucr7WgWUc',
+    default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+    tiers:
+    [
+      {
+        id: 'plan_Fsf0Htv8L6Ox91',
+        limit: 9,
+        price: 9.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_Fsf0cCjrcaSCLx',
+        limit: 50,
+        price: 39.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_Fsf1jU8y7A9gh4',
+        limit: 200,
+        price: 69.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_Fsf2JK1vCkSx6g',
+        limit: -1,
+        price: 129.99,
+        currency: '€'
+      }
+    ],
+    category_name: 'Motor & Accessories',
+    category_icon: 'category_MotorAccessories',
+    selected_tier: null
+  },
+  {
+    category_id: 100, 
+    current_limit: 1,
+    subscribed_from: null,
+    selected_tier_id: null,
+    default_tier_id: 'plan_FsewICdAYXBUY0',
+    tiers:
+    [
+      {
+        id: 'plan_FsevTLryG1uX1w',
+        limit: 9,
+        price: 39.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_FsewICdAYXBUY0',
+        limit: 30,
+        price: 69.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FsewaztmR8E0pC',
+        limit: 50,
+        price: 149.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_Fsew7d8gFnVD9V',
+        limit: -1,
+        price: 199.99,
+        currency: '€'
+      }
+    ],
+    category_name: 'Cars',
+    category_icon: 'category_Cars',
+    selected_tier: null
+  },
+  {
+    category_id: 14000, 
+    current_limit: 3,
+    subscribed_from: 1567675697,
+    selected_tier_id: 'plan_FWuGNucr7WgWUc',
+		default_tier_id: 'plan_FWuFVeTHEDyECa',
     tiers:
     [
       {
@@ -129,74 +215,12 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
         currency: '€'
       }
     ],
-    category_name: 'Cars',
-    category_icon: 'category_Cars',
-    selected_tier: null
-  },
-  {
-    category_id: 200, 
-    current_limit: 1,
-    subscribed_from: null,
-    selected_tier_id: null,
-    default_tier_id: 'plan_FSWD733ykyJjwC',
-    tiers:
-    [
-      {
-        id: 'plan_FSWD733ykyJjwC',
-        limit: 9,
-        price: 9.99,
-        currency: '€'
-      }, 
-      {
-        id: 'plan_FSWD7I80aaEBNF',
-        limit: 25,
-        price: 19.99,
-        currency: '€'
-      },
-      {
-        id: 'plan_FSWD7IYALDI6iB',
-        limit: 100,
-        price: 29.99,
-        currency: '€'
-      }
-    ],
-    category_name: 'Housing',
-    category_icon: 'category_RealEstate',
-    selected_tier: null
-  },
-  {
-    category_id: 14000, 
-    current_limit: 3,
-    subscribed_from: 1567675697,
-    selected_tier_id: 'plan_FHeLJTn9g16fsq',
-		default_tier_id: 'plan_FmLhWAmQMXPaK9',
-    tiers:
-    [
-      {
-        id: 'plan_FmLhWAmQMXPaK9',
-        limit: 5,
-        price: 9.99,
-        currency: '€'
-      }, 
-      {
-        id: 'plan_FHeLYC4HcSRbse',
-        limit: 15,
-        price: 39.00,
-        currency: '€'
-      },
-      {
-        id: 'plan_FHeLJTn9g16fsq',
-        limit: 50,
-        price: 69.00,
-        currency: '€'
-      }
-    ],
     category_name: 'Motorbikes',
     category_icon: 'category_Motorbike',
     selected_tier: {
-      id: 'plan_FHeLJTn9g16fsq',
-      limit: 50,
-      price: 69.00,
+      id: 'plan_FWuGNucr7WgWUc',
+      limit: 30,
+      price: 19.99,
       currency: '€'
     }
   }
