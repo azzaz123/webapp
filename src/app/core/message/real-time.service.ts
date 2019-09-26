@@ -72,9 +72,6 @@ export class RealTimeService {
 
   public sendMessage(conversation: Conversation | InboxConversation, body: string) {
     this.xmpp.sendMessage(conversation, body);
-    if (conversation.messages.length === RealTimeService.FIRST_MESSAGE) {
-      this.trackSendFirstMessage(conversation);
-    }
   }
 
   public resendMessage(conversation: Conversation, message: Message) {
@@ -107,6 +104,7 @@ export class RealTimeService {
     this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: Conversation, messageId: string) => {
       if (this.isFirstMessage(conversation)) {
         this.trackConversationCreated(conversation, messageId);
+        this.trackSendFirstMessage(conversation);
         appboy.logCustomEvent('FirstMessage', { platform: 'web' });
         const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
         if (phoneRequestMsg) {
