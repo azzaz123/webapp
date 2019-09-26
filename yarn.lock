@@ -2817,7 +2817,6 @@ find-up@^3.0.0:
 fingerprintjs2@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/fingerprintjs2/-/fingerprintjs2-2.1.0.tgz#21dc3fee27d3b199056ef8eb873debccd8e06323"
-  integrity sha512-H1k/ESTD2rJ3liupyqWBPjZC+LKfCGixQzz/NDN4dkgbmG1bVFyMOh7luKSkVDoyfhgvRm62pviNMPI+eJTZcQ==
 
 flush-write-stream@^1.0.0:
   version "1.0.3"
@@ -5156,9 +5155,9 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
-"mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation.git":
+"mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#master":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation.git#18bf9df43d761a4f9c32d712f9bd53482bfad9a7"
+  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#925744c3c7f0e85b926a0f96ca0da187359e561c"
 
 ms@0.7.1:
   version "0.7.1"
@@ -8169,9 +8168,9 @@ web-animations-js@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/web-animations-js/-/web-animations-js-2.3.1.tgz#3a6d9bc15196377a90f8e2803fa5262165b04510"
 
-"web-styleguide@https://github.com/Wallapop/web-styleguide#^0.5.0":
-  version "0.4.3"
-  resolved "https://github.com/Wallapop/web-styleguide#42f91ca238cbc99c6e09e1f62889347e0b566145"
+"web-styleguide@git+ssh://git@github.com:Wallapop/web-styleguide#master":
+  version "0.6.0"
+  resolved "git+ssh://git@github.com:Wallapop/web-styleguide#698bebfeeea6f6e188ea80c24d717b4ca5380f9c"
 
 webassemblyjs@1.4.3:
   version "1.4.3"

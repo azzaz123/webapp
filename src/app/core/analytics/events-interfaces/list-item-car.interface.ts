@@ -68,7 +68,7 @@ export interface ListItemCar {
   /**
    * If the item uploaded is from a cardealer
    */
-  isCarDealer: boolean;
+  isCarDealer?: boolean;
   /**
    * If the item uploaded is from a professional user
    */

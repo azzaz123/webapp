@@ -16,6 +16,7 @@ export enum ANALYTICS_EVENT_NAMES {
 	ListItemCG = 'List Item CG',
 	ListItemRE = 'List Item RE',
 	ViewChatScreen = 'View Chat Screen',
+	ViewItemDetailRecommendationSlider = 'View Item Detail Recommendation Slider',
 	ViewOthersItemCarDetail = 'View Others Item Car Detail',
 	ViewOthersItemCGDetail = 'View Others Item CG Detail',
 	ViewOthersItemREDetail = 'View Others Item RE Detail',
