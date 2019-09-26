@@ -71,63 +71,63 @@ describe('UploadCarComponent', () => {
         },
         {
           provide: CarSuggestionsService, useValue: {
-          getBrands() {
-            return Observable.of({});
-          },
-          getYears() {
-            return Observable.of({});
-          },
-          getModels() {
-            return Observable.of({});
-          },
-          getVersions() {
-            return Observable.of({});
+            getBrands() {
+              return Observable.of({});
+            },
+            getYears() {
+              return Observable.of({});
+            },
+            getModels() {
+              return Observable.of({});
+            },
+            getVersions() {
+              return Observable.of({});
+            }
           }
-        }
         },
         {
           provide: CarKeysService, useValue: {
-          getTypes() {
-            return Observable.of({});
+            getTypes() {
+              return Observable.of({});
+            }
           }
-        }
         },
         {
           provide: Router, useValue: {
-          navigate() {
+            navigate() {
+            }
           }
-        }
         },
         {
           provide: ErrorsService, useValue: {
-          i18nSuccess() {
-          },
-          i18nError() {
+            i18nSuccess() {
+            },
+            i18nError() {
+            }
           }
-        }
         },
         {
           provide: NgbModal, useValue: {
-          open() {
-            return {
-              result: Promise.resolve(),
-              componentInstance: componentInstance
-            };
+            open() {
+              return {
+                result: Promise.resolve(),
+                componentInstance: componentInstance
+              };
+            }
           }
-        }
         },
         {
           provide: ItemService, useValue: {
-          getCarInfo() {
-            return Observable.of(CAR_INFO);
+            getCarInfo() {
+              return Observable.of(CAR_INFO);
+            }
           }
-        }
         }
       ],
       declarations: [UploadCarComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -486,7 +486,7 @@ describe('UploadCarComponent', () => {
 
     describe('if it`s a item modification', () => {
       it('should send the Edit Item Car tracking event', () => {
-      component.item = MOCK_CAR;
+        component.item = MOCK_CAR;
         const editEvent: any = {
           action: 'update',
           response: {
@@ -496,10 +496,10 @@ describe('UploadCarComponent', () => {
         }
         const editResponse: CarContent = MOCK_RESPONSE_CONTENT;
         const trackingAttrs: EditItemCar = {
-        itemId: MOCK_CAR.id,
-        categoryId: MOCK_CAR.categoryId,
-        salePrice: MOCK_CAR.salePrice,
-        title: MOCK_CAR.title,
+          itemId: MOCK_CAR.id,
+          categoryId: MOCK_CAR.categoryId,
+          salePrice: MOCK_CAR.salePrice,
+          title: MOCK_CAR.title,
           screenId: SCREENS_IDS.EditItem,
           brand: MOCK_CAR.brand,
           model: MOCK_CAR.model,
@@ -531,7 +531,7 @@ describe('UploadCarComponent', () => {
       it('should send the List Item Car tracking event', () => {
         const uploadEvent: any = {
           action: 'create',
-        response: {
+          response: {
             id: MOCK_CAR.id,
             type: 'upload'
           }
@@ -556,14 +556,14 @@ describe('UploadCarComponent', () => {
           isPro: false
         }
         uploadEvent.response = uploadResponse;
-      spyOn(analyticsService, 'trackEvent');      
+        spyOn(analyticsService, 'trackEvent');
 
-      component.ngOnInit();
+        component.ngOnInit();
         component.onUploaded(uploadEvent);
 
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
           name: ANALYTICS_EVENT_NAMES.ListItemCar,
-        eventType: EVENT_TYPES.Other,
+          eventType: EVENT_TYPES.Other,
           attributes: trackingAttrs
         });
       });
@@ -694,7 +694,7 @@ describe('UploadCarComponent', () => {
   });
 
   describe('toggleCustomVersionSelection', () => {
-    it ('should not toggle the version value if its true and disable the field', () => {
+    it('should not toggle the version value if its true and disable the field', () => {
       component.customVersion = true;
       component.uploadForm.get('version').enable();
 
@@ -704,7 +704,7 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('version').disabled).toBeFalsy();
     });
 
-    it ('should toggle the version value and enable the field', () => {
+    it('should toggle the version value and enable the field', () => {
       component.customVersion = false;
       component.uploadForm.get('version').disable();
 
