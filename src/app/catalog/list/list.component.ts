@@ -47,6 +47,8 @@ export const SUBSCRIPTION_SELECTED_NAV_LINKS: NavLink[] = [
   { id: 'sold', display: 'Sold' }
 ];
 
+export const SORTS = [ 'date_desc', 'date_asc', 'price_desc', 'price_asc' ];
+
 const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reactivateWithCredits', 'purchaseListingFeeWithCredits'];
 
 @Component({
@@ -531,6 +533,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
     if (!subscription) {
       this.selectedStatus = 'published';
+      this.searchTerm = null;
+      this.sortBy = SORTS[0];
       this.updateNavLinksCounters();
     } else {
       this.selectedStatus = 'active';
@@ -569,9 +573,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public setSortItems() {
     this.sortItems = [];
-    const sorts = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
-    sorts.forEach(value => this.sortItems.push({ value, label: this.i18n.getTranslations(value) }));
-    this.sortBy = sorts[0];
+    SORTS.forEach(value => this.sortItems.push({ value, label: this.i18n.getTranslations(value) }));
+    this.sortBy = SORTS[0];
   }
 
   public onSortChange(value: any) {
