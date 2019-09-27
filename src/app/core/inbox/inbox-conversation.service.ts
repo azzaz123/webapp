@@ -178,7 +178,9 @@ export class InboxConversationService {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getConversation(message.thread)
     .subscribe((conversation) => {
-        this.conversations.unshift(conversation);
+        if (!_.find(this.conversations, { id: conversation.id })) {
+          this.conversations.unshift(conversation);
+        }
         this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       },
