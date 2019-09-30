@@ -7,7 +7,6 @@ import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../../tests/inbox.fixtures.spec';
 import { INBOX_ITEM_STATUSES } from '../../../../chat/chat-with-inbox/inbox/inbox-item';
 
-
 describe('Component: Conversation', () => {
   let component: InboxConversationComponent;
   let fixture: ComponentFixture<InboxConversationComponent>;
@@ -18,7 +17,7 @@ describe('Component: Conversation', () => {
       declarations: [InboxConversationComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
@@ -27,7 +26,6 @@ describe('Component: Conversation', () => {
     component.conversation = CREATE_MOCK_INBOX_CONVERSATION();
     fixture.detectChanges();
   });
-
 
   describe('describe dateIsThisYear', () => {
     it('should return TRUE when conversaiton.modifiedDate is in the current calendar year', () => {
@@ -68,10 +66,10 @@ describe('Component: Conversation', () => {
       expect(component.conversation.cannotChat).toBe(true);
     });
 
-    it('should set conversation.cannotChat to TRUE when the conversation item is not available', () => {
+    it('should set conversation.cannotChat to FALSE when the conversation item is not available', () => {
       component.conversation.item.status = INBOX_ITEM_STATUSES.notAvailable;
 
-      expect(component.conversation.cannotChat).toBe(true);
+      expect(component.conversation.cannotChat).toBe(false);
     });
 
     it('should set conversation.cannotChat to FALSE when none of the above conditions are met', () => {
