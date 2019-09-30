@@ -38,7 +38,7 @@ export class InboxService {
   }
 
   set conversations(value: InboxConversation[]) {
-    this._conversations = _.uniqBy(value, 'id');
+    this._conversations = value;
   }
 
   get conversations(): InboxConversation[] {
@@ -170,13 +170,13 @@ export class InboxService {
   private processInboxResponse(response: Response): InboxConversation[] {
     const reloadConversations = response.json();
     this.nextPageToken = reloadConversations.next_from || null;
-    return [...this.conversations, ...this.buildConversations(reloadConversations.conversations)];
+    return _.uniqBy([...this.conversations, ...this.buildConversations(reloadConversations.conversations)], 'id');
   }
 
   private processArchivedInboxResponse(response: Response): InboxConversation[] {
     const reloadArchivedConversations = response.json();
     this.nextArchivedPageToken = reloadArchivedConversations.next_from || null;
-    return [...this.archivedConversations, ...this.buildArchivedConversations(reloadArchivedConversations.conversations)];
+    return _.uniqBy([...this.archivedConversations, ...this.buildArchivedConversations(reloadArchivedConversations.conversations)], 'id');
   }
 
   private buildArchivedConversations(conversations) {
