@@ -15,6 +15,11 @@ import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment.docker';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
+import { AnalyticsService } from '../analytics/analytics.service';
+import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import { SCREENS_IDS, EVENT_TYPES } from '../analytics/resources/analytics-constants';
+import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
+import { SendFirstMessage } from './../analytics/events-interfaces/send-first-message.interface';
 
 let service: RealTimeService;
 let persistencyService: PersistencyService;
@@ -22,6 +27,7 @@ let eventService: EventService;
 let xmppService: XmppService;
 let trackingService: TrackingService;
 let remoteConsoleService: RemoteConsoleService;
+let analyticsService: AnalyticsService;
 
 describe('RealTimeService', () => {
   beforeEach(() => {
@@ -33,6 +39,7 @@ describe('RealTimeService', () => {
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
       ]
     });
 
@@ -42,6 +49,7 @@ describe('RealTimeService', () => {
     xmppService = TestBed.get(XmppService);
     trackingService = TestBed.get(TrackingService);
     remoteConsoleService = TestBed.get(RemoteConsoleService);
+    analyticsService = TestBed.get(AnalyticsService);
     appboy.initialize(environment.appboy);
   });
 
@@ -303,6 +311,38 @@ describe('RealTimeService', () => {
       eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
 
       expect(appboy.logCustomEvent).not.toHaveBeenCalled();
+    });
+
+    describe('if it`s the first message', () => {
+      it('should send the Send First Message event', () => {
+        const eventAttrs: SendFirstMessage = {
+          itemId: MOCKED_CONVERSATIONS[0].item.id,
+          sellerUserId: MOCKED_CONVERSATIONS[0].user.id,
+          conversationId: MOCKED_CONVERSATIONS[0].id,
+          screenId: SCREENS_IDS.ItemDetail
+        }
+        MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
+        spyOn(analyticsService, 'trackEvent');
+
+        eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+          name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      });
+    });
+
+    describe('if it`s not the first message', () => {
+      it('should not send the Send First Message event', () => {
+        MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE, MOCK_MESSAGE];
+        spyOn(analyticsService, 'trackEvent');
+
+        eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
+
+        expect(analyticsService.trackEvent).not.toHaveBeenCalled();
+      });
     });
   });
 });
