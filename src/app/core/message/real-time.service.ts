@@ -9,6 +9,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ChatSignal, chatSignalType } from './chat-signal.interface';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { RemoteConsoleService } from '../remote-console';
+import * as _ from 'lodash';
 
 @Injectable()
 export class RealTimeService {
@@ -26,11 +27,10 @@ export class RealTimeService {
   private ongoingRetry: boolean;
 
   public connect(userId: string, accessToken: string) {
-    const startTimestamp = new Date().getTime();
+    const startTimestamp = _.now();
     this.xmpp.connect(userId, accessToken).subscribe(() => {
-      const endTimestamp = new Date().getTime();
-      this.remoteConsoleService.sendConnectionTimeout(userId, endTimestamp - startTimestamp);
-    });
+        this.remoteConsoleService.sendConnectionTimeout(userId, _.now() - startTimestamp);
+      });
   }
 
   public disconnect() {

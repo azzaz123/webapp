@@ -56,7 +56,7 @@ describe('RemoteConsoleService', () => {
     }));
   });
 
-  it('should call xmpp conection with parameters', () => {
+  xit('should call xmpp conection with parameters', () => {
     const USER_ID = 'USER_ID';
     const CONVERSATIONS_BY_ID = new Map();
     CONVERSATIONS_BY_ID['xa4ld642'] = 2;
