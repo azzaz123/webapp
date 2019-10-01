@@ -11,7 +11,7 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { SubscriptionsResponse } from './subscriptions.interface';
-import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
+import { MAPPED_SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
 
 describe('SubscriptionsService', () => {
 
@@ -150,10 +150,11 @@ describe('SubscriptionsService', () => {
     });
   });
 
-  xdescribe('getSubscriptions', () => {
+  describe('getSubscriptions', () => {
     it('should return the json from the categories and convert it into options', () => {
       let response: SubscriptionsResponse[];
-      const expectedUrl = `${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}`;
+      const expectedUrl = `${environment.baseUrl}bff/subscriptions`;
+      service.subscriptions = null;
 
       service.getSubscriptions(CATEGORY_DATA_WEB).subscribe((data: SubscriptionsResponse[]) => {
         response = data;
@@ -161,9 +162,7 @@ describe('SubscriptionsService', () => {
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
       
-
-      expect(http.get).toHaveBeenCalledWith(expectedUrl);
-      expect(response).toEqual(MAPPED_SUBSCRIPTIONS);
+      expect(req.request.url).toBe(expectedUrl);
     });
 
   });
@@ -173,4 +172,3 @@ describe('SubscriptionsService', () => {
   });
   
 });
-

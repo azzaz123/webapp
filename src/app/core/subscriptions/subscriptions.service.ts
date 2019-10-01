@@ -17,6 +17,7 @@ export class SubscriptionsService {
   public PAYMENT_PROVIDER_STRIPE = false;
   private API_URL = 'api/v3/payments';
   private STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
+  public subscriptions: SubscriptionsResponse[];
 
   constructor(private userService: UserService,
               private featureflagService: FeatureflagService,
@@ -61,12 +62,16 @@ export class SubscriptionsService {
   }
 
   public getSubscriptions(categories: CategoryResponse[]): Observable<SubscriptionsResponse[]> {
-    return Observable.of(SUBSCRIPTIONS)
+    if (this.subscriptions) {
+      return Observable.of(this.subscriptions);
+    }
+    return this.http.get(`bff/subscriptions`)
     .map((subscriptions: SubscriptionsResponse[]) => {
       if (subscriptions.length > 0) {
         return subscriptions.map((subscription: SubscriptionsResponse) => this.mapSubscriptions(subscription, categories))
       }
     })
+    .do((subscriptions: SubscriptionsResponse[]) => this.subscriptions = subscriptions)
     .catch((error) => {
       console.warn('ERROR getSubscriptions ', error);
       return Observable.of(null);
