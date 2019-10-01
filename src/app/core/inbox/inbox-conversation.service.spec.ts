@@ -24,6 +24,7 @@ import { ItemService } from '../item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { HttpModuleNew } from '../http/http.module.new';
 import { environment } from '../../../environments/environment';
+import * as _ from 'lodash';
 
 let service: InboxConversationService;
 let http: HttpService;
@@ -142,7 +143,8 @@ describe('InboxConversationService', () => {
 
     describe('when called with a message that does not already exist', () => {
       beforeEach(() => {
-        newInboxMessage = new InboxMessage('newMessageId', conversations[0].id, 'hole', 'mockUserId', true, new Date(), messageStatus.SENT, MessageType.TEXT);
+        newInboxMessage = new InboxMessage('newMessageId', conversations[0].id, 'hole', 'mockUserId', true, new Date(),
+          messageStatus.SENT, MessageType.TEXT);
       });
 
       it('should prepend the new message to the conversation messages array', () => {
@@ -204,7 +206,8 @@ describe('InboxConversationService', () => {
 
       it('should only increment the unread counters for new messages NOT fromSelf AND with unique IDs', () => {
         const unreadCounterBefore = service.conversations[0].unreadCounter;
-        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', false, new Date(), messageStatus.SENT, MessageType.TEXT);
+        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', false, new Date(),
+          messageStatus.SENT, MessageType.TEXT);
 
         service.processNewMessage(message);
         service.processNewMessage(message);
@@ -215,7 +218,8 @@ describe('InboxConversationService', () => {
       });
 
       it('should not increment the conversation.unreadCount nor the messageService.totalUnreadMessages for new messages fromSelf', () => {
-        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', true, new Date(), messageStatus.SENT, MessageType.TEXT);
+        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', true, new Date(),
+          messageStatus.SENT, MessageType.TEXT);
         const unreadCounterBefore = service.conversations[0].unreadCounter;
 
         service.processNewMessage(message);

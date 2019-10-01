@@ -152,8 +152,8 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.adService.stopAdsRefresh();
   }
 
-  private onInboxReady(conversations) {
-    this.conversations = conversations;
+  private onInboxReady(conversations: InboxConversation[]) {
+    this.conversations = _.uniqBy(conversations, 'id');
     this.setStatusesAfterLoadConversations();
     this.showInbox();
     this.sendLogWithNumberOfConversationsByConversationId(this.conversations);
