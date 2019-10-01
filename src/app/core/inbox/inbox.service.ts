@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { MessageService } from '../message/message.service';
-import { FeatureflagService } from '../user/featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
@@ -54,7 +54,7 @@ export class InboxService {
   }
 
   public getInboxFeatureFlag$(): Observable<boolean> {
-    return this.featureflagService.getWebInboxProjections();
+    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.INBOX_PROJECTIONS);
   }
 
   public init() {

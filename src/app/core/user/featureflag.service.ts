@@ -11,6 +11,12 @@ export interface FeatureFlagResponse {
 
 export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
 
+export enum FEATURE_FLAGS_ENUM {
+  STRIPE = 'web_stripe',
+  SUBSCRIPTIONS = 'web_subscriptions',
+  INBOX_PROJECTIONS = 'web_inbox_projections'
+}
+
 @Injectable()
 export class FeatureflagService {
 
@@ -19,11 +25,12 @@ export class FeatureflagService {
   constructor(private http: HttpServiceNew) {
   }
 
-  public getFlag(name: string): Observable<boolean> {
+  public getFlag(flag: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
+    const name = flag.toString();
 
     const storedFeatureFlag = this.storedFeatureFlags.find(sff => sff.name === name);
 
-    if (storedFeatureFlag) {
+    if (storedFeatureFlag && cache) {
       return of(storedFeatureFlag).map(sff => sff.active);
     } else {
       const params: IDictionary[] = [
@@ -50,9 +57,4 @@ export class FeatureflagService {
     }
 
   }
-
-  getWebInboxProjections(): Observable<boolean> {
-    return this.getFlag('web_inbox_projections');
-  }
-
 }
