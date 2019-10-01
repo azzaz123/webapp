@@ -1,15 +1,14 @@
-import * as _ from 'lodash';
 import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
 import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
 import { Message } from '../../../core/message/message';
-import { debug } from 'util';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { UserService } from '../../../core/user/user.service';
 import { AdService } from '../../../core/ad/ad.service';
 import { RemoteConsoleService } from '../../../core/remote-console';
+import * as _ from 'lodash';
 
 export enum InboxState { Inbox, Archived }
 

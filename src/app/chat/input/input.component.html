@@ -1,13 +1,14 @@
 <form>
-  <textarea placeholder="{{getPlaceholder()}}"
-            #messageArea
-            (keyup)="messageArea.value"
-            (keydown.enter)="sendMessage(messageArea, $event)"
+  <textarea #messageTextarea
+            name="message"
+            [(ngModel)]="message"
+            placeholder="{{getPlaceholder()}}"
+            (keydown.enter)="sendMessage($event)"
             [disabled]="!isMessagingAvailable()"
-            [ngClass]="{selected: messageArea.value.trim() && isMessagingAvailable()}"
-            [attr.value]="messageArea.value"
-            maxlength="300"></textarea>
-  <a id="send" (click)="sendMessage(messageArea, $event)" [ngClass]="{selected: messageArea.value.trim() && isMessagingAvailable()}">
+            [ngClass]="{selected: !isEmpty() && isMessagingAvailable()}"
+            class="textarea" maxlength="300">
+  </textarea>
+  <a id="send" (click)="sendMessage($event)" [ngClass]="{selected: !isEmpty() && isMessagingAvailable()}">
     <mat-icon svgIcon="send"></mat-icon>
   </a>
 </form>
