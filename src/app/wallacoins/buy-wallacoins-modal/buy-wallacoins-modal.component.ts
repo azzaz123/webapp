@@ -97,8 +97,8 @@ export class BuyWallacoinsModalComponent implements OnInit {
       localStorage.setItem('pack', JSON.stringify(this.pack));
       this.sabadellSubmit.emit(orderId);
     } else {
-      this.paymentService.pay(orderId).subscribe(() => {
-        this.activeModal.close();
+      this.paymentService.pay(orderId).subscribe((response: any) => {
+        this.activeModal.close(response);
       }, () => {
         this.errorService.i18nError('packError');
         this.loading = false;
