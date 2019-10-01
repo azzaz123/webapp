@@ -5100,6 +5100,13 @@ ng2-haversine@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ng2-haversine/-/ng2-haversine-0.1.1.tgz#17b1a41102bd33012717a40cc00020c2ee4e5292"
 
+ngx-autosize@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/ngx-autosize/-/ngx-autosize-1.6.4.tgz#2542c2e92927364972d3d63f11d74a559e3be26c"
+  integrity sha512-J7Pk9bFmjypf4NbSIVygncdmDHJp3dogwFwyobqHBlMLNhpUmnMZDaEn2xn5zgnbL/SRIAHfTsdAY4OM2iQvJQ==
+  dependencies:
+    tslib "^1.9.0"
+
 ngx-cookie@4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/ngx-cookie/-/ngx-cookie-4.0.2.tgz#dc0044826cc3482b723fa70ecc6cd12af057d862"
