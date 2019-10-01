@@ -59,7 +59,7 @@
         <span class="amount">{{totalToPay | customCurrency}}</span>
       </div>
     </div>
-    <div *ngIf="isStripe && totalToPay > 0">
+    <div class="BuyProduct__card-container" *ngIf="isStripe && totalToPay > 0">
       <tsl-stripe-card-selection *ngIf="isStripe && isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
                                 (hasStripeCard)="hasStripeCard($event)"
       ></tsl-stripe-card-selection>
