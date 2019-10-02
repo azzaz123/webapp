@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RealTimeService } from '../message/real-time.service';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation';
 import { EventService } from '../event/event.service';
-import { InboxMessage, messageStatus, MessageType, statusOrder } from '../../chat/chat-with-inbox/message';
+import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/chat-with-inbox/message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
@@ -46,7 +46,7 @@ export class InboxConversationService {
       this.conversations = conversations;
       conversations.map(conversation => {
         (conversation.messages || [])
-        .filter(message => message.status === messageStatus.SENT && !message.fromSelf)
+        .filter(message => message.type === MessageType.TEXT && message.status === MessageStatus.SENT && !message.fromSelf)
         .map(message => this.realTime.sendDeliveryReceipt(conversation.user.id, message.id, conversation.id));
       });
     });
@@ -125,10 +125,10 @@ export class InboxConversationService {
   public processNewChatSignal(signal: ChatSignal) {
     switch (signal.type) {
       case chatSignalType.SENT:
-        this.markAs(messageStatus.SENT, signal.messageId, signal.thread);
+        this.markAs(MessageStatus.SENT, signal.messageId, signal.thread);
         break;
       case chatSignalType.RECEIVED:
-        this.markAs(messageStatus.RECEIVED, signal.messageId, signal.thread);
+        this.markAs(MessageStatus.RECEIVED, signal.messageId, signal.thread);
         break;
       case chatSignalType.READ:
         /* the last argument passed to markAllAsRead is the reverse of fromSelf, as markAllAsRead method uses it to filter which messages
@@ -143,12 +143,12 @@ export class InboxConversationService {
   private markAllAsRead(thread: string, timestamp?: number, markMessagesFromSelf: boolean = false) {
     const conversation = this.conversations.find(c => c.id === thread);
     if (conversation) {
-      const unreadMessages = conversation.messages.filter(message => (message.status === messageStatus.RECEIVED ||
-        message.status === messageStatus.SENT) && (markMessagesFromSelf ? message.fromSelf &&
+      const unreadMessages = conversation.messages.filter(message => (message.status === MessageStatus.RECEIVED ||
+        message.status === MessageStatus.SENT) && (markMessagesFromSelf ? message.fromSelf &&
         new Date(message.date).getTime() <= timestamp : !message.fromSelf));
       unreadMessages.map((message) => {
-        message.status = messageStatus.READ;
-        this.persistencyService.updateInboxMessageStatus(message, messageStatus.READ);
+        message.status = MessageStatus.READ;
+        this.persistencyService.updateInboxMessageStatus(message, MessageStatus.READ);
       });
       if (!markMessagesFromSelf) {
         this.messageService.totalUnreadMessages -= conversation.unreadCounter;

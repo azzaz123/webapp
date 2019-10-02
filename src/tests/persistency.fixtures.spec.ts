@@ -1,6 +1,6 @@
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { Message, phoneRequestState } from '../app/core/message/message';
-import { InboxMessage, messageStatus } from '../app/chat/chat-with-inbox/message/inbox-message';
+import { InboxMessage, MessageStatus } from '../app/chat/chat-with-inbox/message/inbox-message';
 import { Observable } from 'rxjs';
 import { createInboxConversationsArray } from './inbox.fixtures.spec';
 
@@ -14,7 +14,7 @@ export const MOCK_DB_FILTERED_RESPONSE: any = [
       'message': MESSAGE_MAIN.body,
       'from': MESSAGE_MAIN.from,
       'date': MESSAGE_MAIN.date,
-      'status': messageStatus.READ
+      'status': MessageStatus.READ
     }
   },
   {
@@ -24,7 +24,7 @@ export const MOCK_DB_FILTERED_RESPONSE: any = [
       'message': 'Message 2',
       'from': MESSAGE_MAIN.from,
       'date': MESSAGE_MAIN.date + 1,
-      'status': messageStatus.READ
+      'status': MessageStatus.READ
     }
   }
 ];
@@ -37,7 +37,7 @@ export const MOCK_DB_MSG_WITH_PHONEREQUEST: any = [
       'message': MESSAGE_MAIN.body,
       'from': MESSAGE_MAIN.from,
       'date': MESSAGE_MAIN.date,
-      'status': messageStatus.READ,
+      'status': MessageStatus.READ,
       'phoneRequest': phoneRequestState.pending
     }
   }
@@ -51,7 +51,7 @@ export const MOCK_DB_RESPONSE_WITH_PENDING: any = [
       'message': MESSAGE_MAIN.body,
       'from': MESSAGE_MAIN.from,
       'date': new Date(currentDate.setDate(currentDate.getDate() - 3)),
-      'status': messageStatus.PENDING
+      'status': MessageStatus.PENDING
     }
   },
   {
@@ -61,7 +61,7 @@ export const MOCK_DB_RESPONSE_WITH_PENDING: any = [
       'message': 'Message 2',
       'from': MESSAGE_MAIN.from,
       'date': MESSAGE_MAIN.date + 1,
-      'status': messageStatus.READ
+      'status': MessageStatus.READ
     }
   }
 ];
@@ -74,7 +74,7 @@ export const MOCK_DB_RESPONSE_WITH_OLD_PENDING: any = [
       'message': MESSAGE_MAIN.body,
       'from': MESSAGE_MAIN.from,
       'date': new Date(currentDate.setDate(currentDate.getDate() - 8)),
-      'status': messageStatus.PENDING
+      'status': MessageStatus.PENDING
     }
   },
   {
@@ -84,7 +84,7 @@ export const MOCK_DB_RESPONSE_WITH_OLD_PENDING: any = [
       'message': 'Message 2',
       'from': MESSAGE_MAIN.from,
       'date': MESSAGE_MAIN.date + 1,
-      'status': messageStatus.READ
+      'status': MessageStatus.READ
     }
   }
 ];
@@ -100,7 +100,7 @@ export const MOCK_DB_RESPONSE: any = {
         'message': MESSAGE_MAIN.body,
         'from': MESSAGE_MAIN.from,
         'date': MESSAGE_MAIN.date,
-        'status': messageStatus.READ
+        'status': MessageStatus.READ
       }
     },
     {
@@ -110,7 +110,7 @@ export const MOCK_DB_RESPONSE: any = {
         'message': 'Message 2',
         'from': MESSAGE_MAIN.from,
         'date': MESSAGE_MAIN.date + 1,
-        'status': messageStatus.READ
+        'status': MessageStatus.READ
       }
     },
     {
@@ -120,7 +120,7 @@ export const MOCK_DB_RESPONSE: any = {
         'message': 'Hola',
         'from': 'pj9ylwknvv6e@dock9.wallapop.com/1.15.0-d1610071212_ONE-E1001_22_XZAmN_RT_DEBUG',
         'date': '2016-10-10T15:30:27.000Z',
-        'status': messageStatus.READ
+        'status': MessageStatus.READ
       }
     }
   ]
