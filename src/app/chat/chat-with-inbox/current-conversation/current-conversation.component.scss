@@ -66,6 +66,13 @@
       .padlock {
         height: 9px;
         width: $spacing-ms;
+        margin: 0 $spacing-xxs;
+      }
+
+      .not-available {
+        height: $spacing-m;
+        width: $spacing-ms;
+        margin: 1px $spacing-xs;
       }
     }
   }

@@ -19,7 +19,8 @@ export class InputComponent implements OnChanges, OnInit {
 
   @Input() currentConversation: Conversation | InboxConversation;
   @ViewChild('messageArea') messageArea: ElementRef;
-  public isUserDisable: boolean;
+
+  public isUserBlocked: boolean;
 
   constructor(private messageService: MessageService,
               private eventService: EventService,
@@ -29,14 +30,15 @@ export class InputComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
+    this.isUserBlocked = false;
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
-      this.isUserDisable = _.includes(userIds, this.currentConversation.user.id);
+      this.isUserBlocked = _.includes(userIds, this.currentConversation.user.id);
     });
   }
 
   sendMessage(messageArea: HTMLTextAreaElement, $event: Event) {
     $event.preventDefault();
-    if (!this.isUserDisable) {
+    if (!this.isUserBlocked) {
       const message = messageArea.value.trim();
       if (!_.isEmpty(message)) {
         if (this.hasLinkInMessage(message)) {
@@ -64,19 +66,19 @@ export class InputComponent implements OnChanges, OnInit {
         this.messageArea.nativeElement.value = '';
       }
     }
-    this.isUserDisable = this.currentConversation instanceof Conversation ? this.currentConversation.user.blocked
+    this.isUserBlocked = this.currentConversation instanceof Conversation ? this.currentConversation.user.blocked
       : this.currentConversation.cannotChat;
   }
 
   getPlaceholder(): string {
-    return this.isUserDisable || !this.isMessagingAvailable() ? '' : this.i18n.getTranslations('writeMessage');
+    return this.isUserBlocked || !this.isMessagingAvailable() ? '' : this.i18n.getTranslations('writeMessage');
   }
 
   public isMessagingAvailable(): boolean {
     if (this.currentConversation instanceof InboxConversation) {
-      return !this.isUserDisable && !this.currentConversation.item.notAvailable && this.currentConversation.user.available;
+      return !this.isUserBlocked && !this.currentConversation.cannotChat;
     }
-    return !this.isUserDisable && !this.currentConversation.item.notAvailable;
+    return !this.isUserBlocked;
   }
 
   private hasLinkInMessage(message: string): boolean {
