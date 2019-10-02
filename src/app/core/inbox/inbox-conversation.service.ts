@@ -44,11 +44,10 @@ export class InboxConversationService {
   public subscribeChatEvents() {
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.conversations = conversations;
-      conversations.map(conv => {
-        conv.messages.filter((message) => {
-          return (message.status === messageStatus.SENT && !message.fromSelf);
-        })
-        .map(message => this.realTime.sendDeliveryReceipt(conv.user.id, message.id, conv.id));
+      conversations.map(conversation => {
+        (conversation.messages || [])
+        .filter(message => message.status === messageStatus.SENT && !message.fromSelf)
+        .map(message => this.realTime.sendDeliveryReceipt(conversation.user.id, message.id, conversation.id));
       });
     });
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {

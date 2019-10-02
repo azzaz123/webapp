@@ -71,7 +71,7 @@ describe('Component: Input', () => {
       component.ngOnInit();
       eventService.emit(EventService.PRIVACY_LIST_UPDATED, [USER_ID]);
 
-      expect(component.isUserDisable).toBe(true);
+      expect(component.isUserBlocked).toBe(true);
     });
     it('should disable input when the user has been unblocked', () => {
       component.currentConversation = MOCK_CONVERSATION();
@@ -79,7 +79,7 @@ describe('Component: Input', () => {
       component.ngOnInit();
       eventService.emit(EventService.PRIVACY_LIST_UPDATED, []);
 
-      expect(component.isUserDisable).toBe(false);
+      expect(component.isUserBlocked).toBe(false);
     });
   });
 
@@ -154,7 +154,7 @@ describe('Component: Input', () => {
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if disabled', () => {
       component.message = TEXT;
-      component.isUserDisable = true;
+      component.isUserBlocked = true;
 
       component.sendMessage(EVENT);
 
@@ -165,7 +165,7 @@ describe('Component: Input', () => {
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains link', () => {
-      component.isUserDisable = false;
+      component.isUserBlocked = false;
       component.message = 'Hi, here is a link: www.link-to-something.com ;*';
 
       component.sendMessage(EVENT);
@@ -177,7 +177,7 @@ describe('Component: Input', () => {
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time',
       () => {
-        component.isUserDisable = false;
+        component.isUserBlocked = false;
         component.message = 'Can U access to my webpage outside https://wallapop.com that is www.notAllowedURL.com';
 
         component.sendMessage(EVENT);
@@ -231,17 +231,17 @@ describe('Component: Input', () => {
 
       component.ngOnChanges();
 
-      expect(component.isUserDisable).toBe(true);
+      expect(component.isUserBlocked).toBe(true);
     });
 
     it('should enable input if user is blocked', () => {
-      component.isUserDisable = true;
+      component.isUserBlocked = true;
       component.currentConversation = MOCK_CONVERSATION();
       component.currentConversation.user.blocked = false;
 
       component.ngOnChanges();
 
-      expect(component.isUserDisable).toBe(false);
+      expect(component.isUserBlocked).toBe(false);
     });
 
   });
