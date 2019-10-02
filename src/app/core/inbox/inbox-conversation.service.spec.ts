@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { InboxConversationService } from './inbox-conversation.service';
@@ -242,6 +242,20 @@ describe('InboxConversationService', () => {
 
         expect(messagesFound.length).toBe(1);
       });
+
+      it('should prevent before push duplicate message', fakeAsync(() => {
+        const message = new InboxMessage('10', 'thread_123456', 'hola!', 'mockUserId', false, new Date(),
+          messageStatus.SENT, MessageType.TEXT);
+        spyOn(eventService, 'emit').and.callThrough();
+        spyOn<any>(service, 'getConversation').and.returnValue(Observable.of(message));
+
+        service.processNewMessage(message);
+        service.processNewMessage(message);
+
+        tick();
+
+        expect(service.conversations).toEqual(_.uniq(service.conversations, 'id'));
+      }));
 
       it('should not update the lastMessage of the conversation', () => {
         expect(conversations[0].lastMessage).toEqual(currentLastMessage);
