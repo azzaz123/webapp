@@ -5,7 +5,7 @@ import { PersistencyService } from './persistency.service';
 import { createMessagesArray, createInboxMessagesArray, MESSAGE_MAIN,
   MOCK_MESSAGE, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
 import { Message, phoneRequestState } from '../message/message';
-import { InboxMessage, messageStatus } from '../../chat/chat-with-inbox/message/inbox-message';
+import { InboxMessage, MessageStatus } from '../../chat/chat-with-inbox/message/inbox-message';
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_RESPONSE,
@@ -303,7 +303,7 @@ describe('Service: Persistency', () => {
         MESSAGE_MAIN.body,
         MESSAGE_MAIN.from,
         MESSAGE_MAIN.date,
-        messageStatus.READ,
+        MessageStatus.READ,
         MOCK_PAYLOAD_OK
       );
 
@@ -476,7 +476,7 @@ describe('Service: Persistency', () => {
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
       tick();
 
-      service.updateMessageStatus(MOCK_MESSAGE, messageStatus.READ).subscribe();
+      service.updateMessageStatus(MOCK_MESSAGE, MessageStatus.READ).subscribe();
       tick();
 
       expect((service as any).upsert).toHaveBeenCalled();
@@ -491,7 +491,7 @@ describe('Service: Persistency', () => {
       const mockMsg = MOCK_INBOX_CONVERSATION.messages.messages[0];
       tick();
 
-      service.updateInboxMessageStatus(mockMsg, messageStatus.READ).subscribe();
+      service.updateInboxMessageStatus(mockMsg, MessageStatus.READ).subscribe();
       tick();
 
       expect((service as any).upsert).toHaveBeenCalled();
