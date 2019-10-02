@@ -7,14 +7,14 @@ export enum MessageType {
   REVIEW = 'review',
 }
 
-export const messageStatus = {
+export const MessageStatus = {
     PENDING: 'pending',
     SENT: 'sent',
     RECEIVED: 'received',
     READ: 'read'
 };
 
-export const statusOrder = [messageStatus.PENDING, messageStatus.SENT, messageStatus.RECEIVED, messageStatus.READ];
+export const statusOrder = [MessageStatus.PENDING, MessageStatus.SENT, MessageStatus.RECEIVED, MessageStatus.READ];
 
 export const phoneRequestState = {
     pending: 'pending',

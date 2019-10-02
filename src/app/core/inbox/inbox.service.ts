@@ -38,7 +38,7 @@ export class InboxService {
   }
 
   set conversations(value: InboxConversation[]) {
-    this._conversations = value;
+    this._conversations = _.uniqBy(value, 'id');
   }
 
   get conversations(): InboxConversation[] {
