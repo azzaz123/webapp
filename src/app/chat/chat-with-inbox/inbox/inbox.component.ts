@@ -10,6 +10,10 @@ import { trigger, transition, style, animate, keyframes } from '@angular/animati
 import { UserService } from '../../../core/user/user.service';
 import { AdService } from '../../../core/ad/ad.service';
 import { RemoteConsoleService } from '../../../core/remote-console';
+import { SCREENS_IDS } from '../../../core/analytics/resources/analytics-constants';
+import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
 
 export enum InboxState { Inbox, Archived }
 
@@ -70,11 +74,12 @@ export class InboxComponent implements OnInit, OnDestroy {
   public isProfessional: boolean;
 
   constructor(private inboxService: InboxService,
-              private eventService: EventService,
-              private conversationService: InboxConversationService,
-              private userService: UserService,
-              private adService: AdService,
-              private remoteConsoleService: RemoteConsoleService) {
+    private eventService: EventService,
+    private conversationService: InboxConversationService,
+    private userService: UserService,
+    private adService: AdService,
+    private remoteConsoleService: RemoteConsoleService,
+    private analyticsService: AnalyticsService) {
   }
 
   set loading(value: boolean) {
@@ -133,6 +138,7 @@ export class InboxComponent implements OnInit, OnDestroy {
         this.unselectCurrentConversation();
         this.conversation = conversation;
         conversation.active = true;
+        this.trackViewConversation(conversation);
       }
       if (this.archivedConversations.find((c) => c === conversation) && this.componentState === InboxState.Inbox) {
         this.componentState = InboxState.Archived;
@@ -238,5 +244,18 @@ export class InboxComponent implements OnInit, OnDestroy {
     if (hasDuplicated) {
       this.userService.me().subscribe(user => this.remoteConsoleService.sendDuplicateConversations(user.id, conversationsIds));
     }
+  }
+
+  private trackViewConversation(conversation: InboxConversation) {
+    const eventAttrs: ViewChatScreen = {
+      itemId: conversation.item.id,
+      conversationId: conversation.id,
+      screenId: SCREENS_IDS.Chat
+    }
+
+    this.analyticsService.trackPageView({
+      name: ANALYTICS_EVENT_NAMES.ViewChatScreen,
+      attributes: eventAttrs
+    });
   }
 }
