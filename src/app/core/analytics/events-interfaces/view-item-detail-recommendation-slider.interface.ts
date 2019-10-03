@@ -22,7 +22,7 @@ export interface ViewItemDetailRecommendationSlider {
    */
   engine: "collaborative_filter" | "more_like_this_solr";
   /**
-   * List of recommended itemids
+   * recommended itemids separated by comma
    */
   recommendedItemIds: string;
   /**

@@ -319,7 +319,7 @@ describe('RealTimeService', () => {
           itemId: MOCKED_CONVERSATIONS[0].item.id,
           sellerUserId: MOCKED_CONVERSATIONS[0].user.id,
           conversationId: MOCKED_CONVERSATIONS[0].id,
-          screenId: SCREENS_IDS.ItemDetail
+          screenId: SCREENS_IDS.Chat
         }
         MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
         spyOn(analyticsService, 'trackEvent');

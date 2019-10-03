@@ -28,5 +28,5 @@ export interface SendFirstMessage {
   /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: 110 | 111 | 115 | 188 | 29;
+  screenId: 27;
 }

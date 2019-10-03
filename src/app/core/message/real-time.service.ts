@@ -159,7 +159,7 @@ export class RealTimeService {
       itemId: conversation.item.id,
       sellerUserId: conversation.user.id,
       conversationId: conversation.id,
-      screenId: SCREENS_IDS.ItemDetail
+      screenId: SCREENS_IDS.Chat
     }
 
     this.analyticsService.trackEvent({

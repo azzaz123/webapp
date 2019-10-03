@@ -28,7 +28,7 @@ export interface ClickItemCard {
   /**
    * Identifier of the screen that the item was clicked from
    */
-  screenId: 110 | 111 | 29 | 187 | 140 | 27;
+  screenId: 110 | 111 | 29 | 187 | 188 | 140;
   /**
    * If the item clicked is from a professional user
    */
