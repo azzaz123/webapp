@@ -66,6 +66,39 @@ export interface ItemProResponse {
   type: string;
 }
 
+export interface ItemByCategoryResponse {
+  id: string;
+  title: string;
+  main_image: {
+      id: string;
+      original_width: number;
+      original_height: number
+      average_hex_color: string;
+      urls_by_size: {
+          small: string;
+          xmall: string;
+          original: string;
+          large: string;
+          xlarge: string;
+          medium: string;
+      }
+  };
+  sale_price: number;
+  currency_code: string;
+  active_item_purchase: any;
+  flags: ItemFlags;
+  visibility_flags: ItemVisibilityFlags;
+  web_slug: string;
+}
+
+export interface ItemVisibilityFlags {
+  bumped: boolean;
+  highlighted: boolean;
+  urgent: boolean;
+  country_bumped: boolean;
+  boosted: boolean;
+}
+
 export interface ItemProContent extends ItemContent {
   conversations: number;
   publish_date: number;

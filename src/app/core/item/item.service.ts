@@ -27,7 +27,8 @@ import {
   Purchase, PurchaseProductsWithCreditsResponse,
   RealestateContent,
   SelectedItemsAction,
-  ListingFeeProductInfo
+  ListingFeeProductInfo,
+  ItemByCategoryResponse
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import * as _ from 'lodash';
@@ -61,7 +62,7 @@ export const ITEM_STATUSES: any = {
 };
 
 export const PAYMENT_PROVIDER = 'STRIPE';
-export const MINES_BY_CATEGORY_ENDPOINT = 'mines/category';
+export const MINES_BY_CATEGORY_ENDPOINT = 'api/v3/items/manageable-items/';
 
 @Injectable()
 export class ItemService extends ResourceService {
@@ -318,6 +319,31 @@ export class ItemService extends ResourceService {
       content.publish_date,
       null
     );
+  }
+
+  private mapItemByCategory(response: ItemByCategoryResponse, categoryId: number) {
+    const item = new Item(
+     response.id,
+     null,
+     null,
+     response.title,
+     null,
+     categoryId,
+     null,
+     response.sale_price,
+     response.currency_code,
+     null,
+     null,
+     response.flags,
+      null,
+      null,
+      response.main_image,
+      null,
+      response.web_slug
+    );
+
+    // TODO: Map purchases here
+    return item;
   }
 
   public reportListing(itemId: number | string,
@@ -693,16 +719,7 @@ export class ItemService extends ResourceService {
       return this.recursiveMinesByCategory(0, 20, categoryId, status)
         .map(responseArray => {
           if (responseArray.length > 0) {
-            const items = responseArray
-              .filter(res => (res.content.purchases && status === 'featured') || status !== 'featured')
-              .map(i => {
-                const item = this.mapRecordDataPro(i);
-                item.views = i.content.views;
-                item.favorites = i.content.favorites;
-                item.conversations = i.content.conversations;
-                item.purchases = i.content.purchases ? i.content.purchases : null;
-                return item;
-              });
+            const items = responseArray.map(i => this.mapItemByCategory(i, categoryId));
             this.items[status] = items;
             this.lastCategoryIdSearched = categoryId;
             return items;
@@ -731,13 +748,12 @@ export class ItemService extends ResourceService {
     }
   }
 
-  public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemProResponse[]> {
+  public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemByCategoryResponse[]> {
     return this.httpNew.get(MINES_BY_CATEGORY_ENDPOINT, [
       { key: 'status', value: status },
       { key: 'init', value: init },
       { key: 'end', value: init + offset },
-      { key: 'categoryId', value: categoryId },
-      { key: 'newVersion', value: true },
+      { key: 'category_id', value: categoryId }
     ])
     .flatMap(res => {
       if (res.length > 0) {
