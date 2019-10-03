@@ -3,7 +3,7 @@
       <div class="modal-close" (click)="activeModal.dismiss()">
         <mat-icon svgIcon="cross"></mat-icon>
       </div>
-      <h4 class="EditSubscription__box--title">¿Are you sure you want to canel your PRO subscription to {{category}}?</h4>
+      <h4 class="EditSubscription__box--title">¿Are you sure you want to canel your PRO subscription to {{subscription.category_name}}?</h4>
       <p class="EditSubscription__box--subtitle">It's never too late to change your mind, you know? We'll be sad to see you go :(</p>
     </div>
     <tsl-button i18n (click)="cancelSubscription()">Yes, I want to unsubscribe</tsl-button>
