@@ -153,7 +153,7 @@ export class InboxComponent implements OnInit, OnDestroy {
   }
 
   private onInboxReady(conversations: InboxConversation[]) {
-    this.conversations = _.uniqBy(conversations, 'id');
+    this.conversations = conversations;
     this.setStatusesAfterLoadConversations();
     this.showInbox();
     this.sendLogWithNumberOfConversationsByConversationId(this.conversations);
