@@ -4,7 +4,7 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { HttpModuleNew } from '../http/http.module.new';
 import { FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
 import { environment } from '../../../environments/environment';
-import { mockFeatureFlags, mockFeatureFlagsEnum } from '../../../tests';
+import { mockFeatureFlagsResponses, mockFeatureFlagsEnum } from '../../../tests';
 
 describe('FeatureflagService', () => {
   let injector: TestBed;
@@ -63,7 +63,8 @@ describe('FeatureflagService', () => {
     });
 
     it('should return boolean observable with valid value', () => {
-      const featureFlagName = mockFeatureFlags[0].name;
+      const featureFlagName = mockFeatureFlagsEnum.FLAG1;
+      const mockResponse = mockFeatureFlagsResponses.find(mff => mff.name === featureFlagName);
       const expectedUrlParams = `featureFlags=${featureFlagName}&timestamp=${TIMESTAMP}`;
       const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
       const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
@@ -71,9 +72,9 @@ describe('FeatureflagService', () => {
 
       service.getFlag(featureFlagName as any).subscribe(isActive => dataResponse = isActive);
       const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
-      req.flush([mockFeatureFlags[0]]);
+      req.flush([mockResponse]);
 
-      expect(dataResponse).toBe(mockFeatureFlags[0].isActive);
+      expect(dataResponse).toBe(mockResponse.active);
     });
   });
 });
