@@ -373,7 +373,7 @@ describe('Component: InboxComponent', () => {
       component.ngOnInit();
       eventService.emit(EventService.INBOX_LOADED, duplicateMockedInboxConversations);
 
-      expect(remoteConsoleService.sendDuplicateConversations).not.toHaveBeenCalledWith(MOCK_USER.id, { 1: 2, 2: 2, 3: 2 });
+      expect(remoteConsoleService.sendDuplicateConversations).toHaveBeenCalledWith(MOCK_USER.id, { 1: 2, 2: 2, 3: 2 });
     });
 
     it('should send log with duplicate conversations if id of conversation is undefined, empty or null', () => {
@@ -382,7 +382,7 @@ describe('Component: InboxComponent', () => {
       component.ngOnInit();
       eventService.emit(EventService.INBOX_LOADED, duplicateIncorrectMockedInboxConversations);
 
-      expect(remoteConsoleService.sendDuplicateConversations).not.toHaveBeenCalledWith(MOCK_USER.id, { null: 2, '': 2, undefined: 3 });
+      expect(remoteConsoleService.sendDuplicateConversations).toHaveBeenCalledWith(MOCK_USER.id, { null: 2, '': 2, undefined: 3 });
     });
   });
 });
