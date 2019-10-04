@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { HttpServiceNew } from '../http/http.service.new';
 import { IDictionary } from '../../shared/models/dictionary.interface';
 
-export interface FeatureFlagResponse {
+export interface FeatureFlag {
   name: string;
   isActive: boolean;
 }
@@ -20,14 +20,12 @@ export enum FEATURE_FLAGS_ENUM {
 @Injectable()
 export class FeatureflagService {
 
-  private storedFeatureFlags: FeatureFlagResponse[] = [];
+  private storedFeatureFlags: FeatureFlag[] = [];
 
   constructor(private http: HttpServiceNew) {
   }
 
-  public getFlag(flag: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
-    const name = flag.toString();
-
+  public getFlag(name: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
     const storedFeatureFlag = this.storedFeatureFlags.find(sff => sff.name === name);
 
     if (storedFeatureFlag && cache) {
@@ -45,14 +43,14 @@ export class FeatureflagService {
         }
       ];
 
-      return this.http.get<FeatureFlagResponse[]>(FEATURE_FLAG_ENDPOINT, params)
+      return this.http.get(FEATURE_FLAG_ENDPOINT, params)
         .map(response => {
-          const featureFlagResponse = response[0] ? response[0] : { name, isActive: false };
+          const featureFlag = response[0] ? { name, isActive: response[0].active } : { name, isActive: false };
           const alreadyStored = this.storedFeatureFlags.find(sff => sff.name === name);
           if (!alreadyStored) {
-            this.storedFeatureFlags.push(featureFlagResponse);
+            this.storedFeatureFlags.push(featureFlag);
           }
-          return featureFlagResponse.isActive;
+          return featureFlag.isActive;
         });
     }
 

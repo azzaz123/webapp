@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
-import { FeatureFlagResponse, FEATURE_FLAGS_ENUM } from '../app/core/user/featureflag.service';
+import { FeatureFlag, FEATURE_FLAGS_ENUM } from '../app/core/user/featureflag.service';
 
-export const mockFeatureFlags: FeatureFlagResponse[] = [
+export const mockFeatureFlags: FeatureFlag[] = [
   { name: 'flag1', isActive: false },
   { name: 'flag2', isActive: true },
   { name: 'flag3', isActive: false }
