@@ -6,7 +6,7 @@ import { IDictionary } from '../../shared/models/dictionary.interface';
 
 export interface FeatureFlagResponse {
   name: string;
-  active: boolean;
+  isActive: boolean;
 }
 
 export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
@@ -31,7 +31,7 @@ export class FeatureflagService {
     const storedFeatureFlag = this.storedFeatureFlags.find(sff => sff.name === name);
 
     if (storedFeatureFlag && cache) {
-      return of(storedFeatureFlag).map(sff => sff.active);
+      return of(storedFeatureFlag).map(sff => sff.isActive);
     } else {
       const params: IDictionary[] = [
         {
@@ -47,12 +47,12 @@ export class FeatureflagService {
 
       return this.http.get<FeatureFlagResponse[]>(FEATURE_FLAG_ENDPOINT, params)
         .map(response => {
-          const featureFlagResponse = response[0] ? response[0] : { name, active: false };
+          const featureFlagResponse = response[0] ? response[0] : { name, isActive: false };
           const alreadyStored = this.storedFeatureFlags.find(sff => sff.name === name);
           if (!alreadyStored) {
             this.storedFeatureFlags.push(featureFlagResponse);
           }
-          return featureFlagResponse.active;
+          return featureFlagResponse.isActive;
         });
     }
 

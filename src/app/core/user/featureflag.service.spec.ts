@@ -69,11 +69,11 @@ describe('FeatureflagService', () => {
       const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
       let dataResponse: boolean;
 
-      service.getFlag(featureFlagName as any).subscribe(active => dataResponse = active);
+      service.getFlag(featureFlagName as any).subscribe(isActive => dataResponse = isActive);
       const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
       req.flush([mockFeatureFlags[0]]);
 
-      expect(dataResponse).toBe(mockFeatureFlags[0].active);
+      expect(dataResponse).toBe(mockFeatureFlags[0].isActive);
     });
   });
 });
