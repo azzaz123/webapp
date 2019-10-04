@@ -27,7 +27,7 @@ export class SubscriptionComponent implements OnInit {
   ngOnInit() {
     this.getSubscriptions();
     this.eventService.subscribe('subscriptionChange', () => {
-      this.getSubscriptions();
+      this.getSubscriptions(false);
     });
   }
 
@@ -41,10 +41,10 @@ export class SubscriptionComponent implements OnInit {
     }, () => {});
   }
 
-  private getSubscriptions(): void {
+  private getSubscriptions(cache: boolean = true): void {
     this.categoryService.getCategories()
     .pipe(
-      flatMap(categories => this.subscriptionsService.getSubscriptions(categories)),
+      flatMap(categories => this.subscriptionsService.getSubscriptions(categories, cache)),
     )
     .subscribe(response => this.subscriptions = response); 
   }

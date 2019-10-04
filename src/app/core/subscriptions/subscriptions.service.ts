@@ -5,7 +5,6 @@ import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
 import { FeatureflagService } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
-import { SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryResponse } from '../category/category-response.interface';
 import { HttpServiceNew } from '../http/http.service.new';
 
@@ -61,8 +60,8 @@ export class SubscriptionsService {
     return this.featureflagService.getFlag('web_subscriptions');
   }
 
-  public getSubscriptions(categories: CategoryResponse[]): Observable<SubscriptionsResponse[]> {
-    if (this.subscriptions) {
+  public getSubscriptions(categories: CategoryResponse[], cache: boolean = true): Observable<SubscriptionsResponse[]> {
+    if (this.subscriptions && cache) {
       return Observable.of(this.subscriptions);
     }
     return this.http.get(`bff/subscriptions`)

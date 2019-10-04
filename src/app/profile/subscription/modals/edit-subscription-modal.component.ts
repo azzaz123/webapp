@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
@@ -52,7 +53,8 @@ export class EditSubscriptionModalComponent implements OnInit {
   }
 
   public cancelSubscription() {
-    const modal = EditSubscriptionModalComponent
+    this.close();
+    const modal = CancelSubscriptionModalComponent
     let modalRef: NgbModalRef = this.modalService.open(modal, {windowClass: 'review'});
     modalRef.componentInstance.subscription = this.subscription;
     modalRef.result.then(() => {

@@ -156,7 +156,7 @@ describe('SubscriptionsService', () => {
       const expectedUrl = `${environment.baseUrl}bff/subscriptions`;
       service.subscriptions = null;
 
-      service.getSubscriptions(CATEGORY_DATA_WEB).subscribe((data: SubscriptionsResponse[]) => {
+      service.getSubscriptions(CATEGORY_DATA_WEB, false).subscribe((data: SubscriptionsResponse[]) => {
         response = data;
       });
       const req: TestRequest = httpMock.expectOne(expectedUrl);
