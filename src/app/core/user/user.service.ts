@@ -348,16 +348,6 @@ export class UserService extends ResourceService {
     }
   }
 
-  public setCoinsFeatureFlag(): Observable<boolean> {
-    return this.featureflagService.getFlag('coinsTypeUser')
-      .map((isActive: boolean) => {
-        if (isActive) {
-          this.permissionService.addPermission(PERMISSIONS.coins);
-          return isActive;
-        }
-      });
-  }
-
   public hasPerm(permission: string): Observable<boolean> {
     return this.me()
       .flatMap(() => {

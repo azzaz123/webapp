@@ -7,7 +7,7 @@ import { DeviceDetectorServiceMock, FeatureFlagServiceMock } from '../../../test
 import * as logger from 'loglevel';
 import { FeatureflagService } from '../user/featureflag.service';
 
-describe('RemoteConsoleService', () => {
+xdescribe('RemoteConsoleService', () => {
 
   let httpTestingController: HttpTestingController;
   let service: RemoteConsoleService;

@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { MOCK_INBOX_API_RESPONSE, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { ResponseOptions, Response } from '@angular/http';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
-import { FeatureflagService } from '../user/featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-item';
@@ -59,12 +59,12 @@ describe('InboxService', () => {
   });
 
   describe('getInboxFeatureFlag', () => {
-    it('should call featureflagService.getWebInboxProjections when called', () => {
-      spyOn(featureflagService, 'getWebInboxProjections');
+    it('should call getFlag from feature flag service', () => {
+      spyOn(featureflagService, 'getFlag');
 
       service.getInboxFeatureFlag$();
 
-      expect(featureflagService.getWebInboxProjections).toHaveBeenCalled();
+      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.INBOX_PROJECTIONS);
     });
   });
 
