@@ -68,7 +68,7 @@ export class InboxConversationService {
   }
 
   set selfId(value: string) {
-    this._selfId = this._selfId;
+    this._selfId = value;
   }
 
   public openConversation(conversation: InboxConversation) {
@@ -97,11 +97,12 @@ export class InboxConversationService {
       conversation.lastMessage = message;
       conversation.modifiedDate = message.date;
       this.bumpConversation(conversation);
-      this.persistencyService.saveInboxMessages(message);
-      this.eventService.emit(EventService.MESSAGE_ADDED, message);
-      if (!message.fromSelf) {
-        this.incrementUnreadCounter(conversation);
-      }
+      this.persistencyService.saveInboxMessages(message).subscribe(result => {
+        this.eventService.emit(EventService.MESSAGE_ADDED, message);
+        if (!message.fromSelf) {
+          this.incrementUnreadCounter(conversation);
+        }
+      });
     }
   }
 
