@@ -5,7 +5,6 @@
   padding: 0 0 $spacing-m;
   .AddNewSubscription__box-header {
     background: $walla-main;
-    height: 100px;
     border-top-left-radius: 0.3rem;
     border-top-right-radius: 0.3rem;
     color: $white;
@@ -17,12 +16,12 @@
   &--title {
     font-size: $font-size-l;
     font-weight: bold;
-    margin: $spacing-m 0 $spacing-s;
+    margin: $spacing-xxl 0 $spacing-ms;
   }
   &--subtitle {
     font-size: $font-size-m;
     color: $white;
-      margin: 0;
+    margin: 0 0 $spacing-l;
   }
 }
 
@@ -30,16 +29,22 @@
   color: $black;
   font-size: $font-size-m;
   font-weight: bold;
+  margin: 0 0 $spacing-l;
 }
 
 .AddNewSubscription__listing-limit-price {
   color: $black;
   font-size: $font-size-lll;
+  &--selected {
+    color: $walla-main;
+    font-size: $font-size-m;
+  }
 }
 
 .AddNewSubscription__listing-limit-steps {
   color: $blue-grey-2;
   font-size: $font-size-s;
+  margin: $spacing-ml 0 $spacing-s;
 }
 
 .AddNewSubscription__listing-limit-container {
@@ -107,6 +112,7 @@
 
 .AddNewSubscription__group {
   width: 100%;
+  margin: $spacing-xxs 0 $spacing-l;
 }
 
 .AddNewSubscription__payment-add-card {
@@ -168,7 +174,7 @@ ngb-carousel {
       }
     }
     .carousel-item {
-      height: 370px;
+      height: 350px;
     }
   }
 }

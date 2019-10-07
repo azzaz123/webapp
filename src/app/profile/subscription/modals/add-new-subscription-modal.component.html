@@ -48,7 +48,7 @@
                 <span *ngIf="selectedTier.limit >= 0">{{selectedTier.limit}} products</span>
             </div>
             <div class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--right">
-              <span class="AddNewSubscription__listing-limit-price">{{selectedTier.price}}{{selectedTier.currency}}/mes</span>
+              <span class="AddNewSubscription__listing-limit-price--selected">{{selectedTier.price}}{{selectedTier.currency}}/mes</span>
               <br />
               <span class="AddNewSubscription__listing-limit-payment-edit" (click)="carousel.prev()">Change</span>
             </div>
@@ -73,7 +73,7 @@
               (click)="addSubscriptionFromSavedCard()"
               id="qa-checkout-subscription"
               className="btn-primary btn-medium stripe"
-              i18n>Add Subscription</tsl-button>
+              i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}</tsl-button>
             </div>
         </div>
       </div>
