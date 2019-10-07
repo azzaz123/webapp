@@ -72,6 +72,7 @@
     height: 68px;
     background-color: $blue-grey-5;
     mat-icon {
+      opacity: 0.5;
       height: 40px;
       width: 40px;
     }
@@ -87,6 +88,11 @@
     }
     .Subscriptions__category-info {
       margin: 0 0 $spacing-ms;
+    }
+    .Subscriptions__category-icon {
+      mat-icon {
+        opacity: 1;
+      }
     }
   }
 }
