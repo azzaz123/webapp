@@ -112,6 +112,13 @@ export class PersistencyService {
     );
   }
 
+  public saveInboxConversation(inboxConversation: InboxConversation): Observable<any> {
+    const conversation = new StoredInboxConversation(inboxConversation.id, inboxConversation.modifiedDate || new Date(),
+      inboxConversation.user, inboxConversation.item, inboxConversation.phoneShared, inboxConversation.phoneNumber,
+      inboxConversation.unreadCounter, inboxConversation.nextPageToken, inboxConversation.lastMessage);
+    return Observable.fromPromise(this.inboxDb.put(conversation));
+  }
+
   private updateStoredArchivedInbox(conversations: InboxConversation[]): Observable<any> {
     return Observable.fromPromise(
       this.inboxDb.destroy().then(() => {
