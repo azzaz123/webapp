@@ -290,7 +290,7 @@ export class InboxConversationService {
 
       // Then try to fetch the conversation by item
       return this.fetchConversationByItem$(itemId)
-      .map((inboxConversation) => {
+      .map((inboxConversation: InboxConversation) => {
         this.conversations.unshift(inboxConversation);
         this.openConversation(inboxConversation);
         return inboxConversation;
