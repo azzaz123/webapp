@@ -181,14 +181,12 @@ export class InboxConversationService {
         if (!_.find(this.conversations, { id: conversation.id })) {
           this.conversations.unshift(conversation);
         }
-        this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       },
       (err) => {
         // This is to display incoming messages if for some reason fetching the conversation fails.
         const conversation = InboxConversation.errorConversationFromMessage(message);
         this.conversations.unshift(conversation);
-        this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       });
   }
