@@ -1,31 +1,58 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '../http/http.service';
-import { Observable } from 'rxjs';
-import { Response } from '@angular/http';
+import { Observable, of } from 'rxjs';
 
-export interface FeatureFlagResponse {
+import { HttpServiceNew } from '../http/http.service.new';
+import { IDictionary } from '../../shared/models/dictionary.interface';
+
+export interface FeatureFlag {
   name: string;
-  active: boolean;
+  isActive: boolean;
+}
+
+export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
+
+export enum FEATURE_FLAGS_ENUM {
+  STRIPE = 'web_stripe',
+  SUBSCRIPTIONS = 'web_subscriptions',
+  INBOX_PROJECTIONS = 'web_inbox_projections'
 }
 
 @Injectable()
 export class FeatureflagService {
 
-  protected API_URL = 'api/v3/featureflag';
+  private storedFeatureFlags: FeatureFlag[] = [];
 
-  constructor(private http: HttpService) {
+  constructor(private http: HttpServiceNew) {
   }
 
-  getFlag(name: string): Observable<boolean> {
-    return this.http.get(this.API_URL, { featureFlags: name, timestamp: new Date().getTime() })
-    .map((r: Response) => r.json())
-    .map((response: FeatureFlagResponse[]) => {
-      return response.length ? response[0].active : false;
-    });
-  }
+  public getFlag(name: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
+    const storedFeatureFlag = this.storedFeatureFlags.find(sff => sff.name === name);
 
-  getWebInboxProjections(): Observable<boolean> {
-    return this.getFlag('web_inbox_projections');
-  }
+    if (storedFeatureFlag && cache) {
+      return of(storedFeatureFlag).map(sff => sff.isActive);
+    } else {
+      const params: IDictionary[] = [
+        {
+          key: 'featureFlags',
+          value: name
+        },
+        // Prevent browser cache with timestamp parameter
+        {
+          key: 'timestamp',
+          value: new Date().getTime()
+        }
+      ];
 
+      return this.http.get(FEATURE_FLAG_ENDPOINT, params)
+        .map(response => {
+          const featureFlag = response[0] ? { name, isActive: response[0].active } : { name, isActive: false };
+          const alreadyStored = this.storedFeatureFlags.find(sff => sff.name === name);
+          if (!alreadyStored) {
+            this.storedFeatureFlags.push(featureFlag);
+          }
+          return featureFlag.isActive;
+        });
+    }
+
+  }
 }

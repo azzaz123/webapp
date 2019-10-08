@@ -5,7 +5,7 @@ import { MetricTypeEnum } from './metric-type.enum';
 import * as Fingerprint2 from 'fingerprintjs2';
 import * as logger from 'loglevel';
 import * as _ from 'lodash';
-import { FeatureflagService } from '../user/featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -46,7 +46,7 @@ export class RemoteConsoleService {
   }
 
   private getCommonLog(userId: string): Observable<{}> {
-    return this.featureflagService.getWebInboxProjections()
+    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.INBOX_PROJECTIONS)
     .map(fetureFlag => {
       const device = this.deviceService.getDeviceInfo();
       return {
