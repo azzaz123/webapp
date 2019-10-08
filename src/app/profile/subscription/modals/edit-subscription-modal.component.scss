@@ -27,7 +27,7 @@
 }
 
 .EditSubscription__listing-limit-price {
-  color: $black;
+  color: $blue-grey-1;
   font-size: $font-size-lll;
 }
 
@@ -42,6 +42,7 @@
     border-right: 1px solid $blue-grey-5;
     box-shadow: 0px 3px 5px -2px $blue-grey-5;
     flex: 0 0 75px;
+    color: $blue-grey-1;
     cursor: pointer;
   }
 }
