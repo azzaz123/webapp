@@ -25,6 +25,7 @@ import { PhoneMethodResponse } from './phone-method.interface';
 import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
 import { SplitTestService } from '../tracking/split-test.service';
 import { HttpServiceNew } from '../http/http.service.new';
+import { InboxItem } from '../../chat/chat-with-inbox/inbox';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -84,7 +85,7 @@ export class UserService extends ResourceService {
     // this.httpNew.postNoBase<string>(URL + 'rest/logout', null, null, { responseType: 'text' as 'json'} ).subscribe(response => {
     this.http.postNoBase(URL + 'rest/logout', undefined, undefined, true).subscribe((response) => {
       const redirectUrl: any = response['_body'];
-      const cookieOptions = environment.name === 'local' ? {domain: 'localhost'} : {domain: '.wallapop.com'};
+      const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
       this.cookieService.remove('publisherId', cookieOptions);
       this.cookieService.remove('creditName', cookieOptions);
       this.cookieService.remove('creditQuantity', cookieOptions);
@@ -154,7 +155,7 @@ export class UserService extends ResourceService {
     }
   }
 
-  public calculateDistanceFromItem(user: User | InboxUser, item: Item): number {
+  public calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
     if (!user.location || !this.user.location) {
       return null;
     }
@@ -163,8 +164,8 @@ export class UserService extends ResourceService {
       longitude: this.user.location.approximated_longitude,
     };
     const userCoord: GeoCoord = {
-      latitude: user.location.approximated_latitude,
-      longitude: user.location.approximated_longitude,
+      latitude: user.location.approximated_latitude || user.location.latitude,
+      longitude: user.location.approximated_longitude || user.location.longitude,
     };
     return this.haversineService.getDistanceInKilometers(currentUserCoord, userCoord);
   }
@@ -225,7 +226,7 @@ export class UserService extends ResourceService {
   public updateSearchLocationCookies(location: Coordinate) {
     const expirationDate = new Date();
     expirationDate.setTime(expirationDate.getTime() + (15 * 60 * 1000));
-    const cookieOptions = {expires: expirationDate, domain: '.wallapop.com'};
+    const cookieOptions = { expires: expirationDate, domain: '.wallapop.com' };
 
     this.cookieService.put('searchLat', location.latitude.toString(), cookieOptions);
     this.cookieService.put('searchLng', location.longitude.toString(), cookieOptions);
@@ -269,7 +270,7 @@ export class UserService extends ResourceService {
 
   public toRatingsStats(ratings): Ratings {
     return ratings.reduce(({}, rating) => {
-      return {reviews: rating.value};
+      return { reviews: rating.value };
     }, {});
   }
 
