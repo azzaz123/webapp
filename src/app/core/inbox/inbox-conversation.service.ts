@@ -68,7 +68,7 @@ export class InboxConversationService {
   }
 
   set selfId(value: string) {
-    this._selfId = this._selfId;
+    this._selfId = value;
   }
 
   public openConversation(conversation: InboxConversation) {
@@ -97,11 +97,12 @@ export class InboxConversationService {
       conversation.lastMessage = message;
       conversation.modifiedDate = message.date;
       this.bumpConversation(conversation);
-      this.persistencyService.saveInboxMessages(message);
-      this.eventService.emit(EventService.MESSAGE_ADDED, message);
-      if (!message.fromSelf) {
-        this.incrementUnreadCounter(conversation);
-      }
+      this.persistencyService.saveInboxMessages(message).subscribe(result => {
+        this.eventService.emit(EventService.MESSAGE_ADDED, message);
+        if (!message.fromSelf) {
+          this.incrementUnreadCounter(conversation);
+        }
+      });
     }
   }
 
@@ -180,14 +181,12 @@ export class InboxConversationService {
         if (!_.find(this.conversations, { id: conversation.id })) {
           this.conversations.unshift(conversation);
         }
-        this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       },
       (err) => {
         // This is to display incoming messages if for some reason fetching the conversation fails.
         const conversation = InboxConversation.errorConversationFromMessage(message);
         this.conversations.unshift(conversation);
-        this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       });
   }
@@ -289,7 +288,7 @@ export class InboxConversationService {
 
       // Then try to fetch the conversation by item
       return this.fetchConversationByItem$(itemId)
-      .map((inboxConversation) => {
+      .map((inboxConversation: InboxConversation) => {
         this.conversations.unshift(inboxConversation);
         this.openConversation(inboxConversation);
         return inboxConversation;

@@ -1,3 +1,7 @@
+import { ListItemCG } from './../../core/analytics/events-interfaces/list-item-cg.interface';
+import { EditItemCG } from './../../core/analytics/events-interfaces/edit-item-cg.interface';
+import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
+import { AnalyticsService } from './../../core/analytics/analytics.service';
 import {
   Component,
   ElementRef,
@@ -23,12 +27,14 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Item, ITEM_TYPES } from '../../core/item/item';
-import { DeliveryInfo } from '../../core/item/item-response.interface';
+import { DeliveryInfo, ItemContent } from '../../core/item/item-response.interface';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
 import { Subject } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { SplitTestService } from '../../core/tracking/split-test.service';
+import { UserService } from '../../core/user/user.service';
+import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 
 const CATEGORIES_WITH_EXTRA_FIELDS = ['16000', '12465'];
 
@@ -120,6 +126,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private trackingService: TrackingService,
     private generalSuggestionsService: GeneralSuggestionsService,
     private splitTestService: SplitTestService,
+    private analyticsService: AnalyticsService,
+    private userService: UserService,
     config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
@@ -197,7 +205,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   ngOnChanges(changes: SimpleChanges) {
     if (changes.categoryId) {
       this.setFixedCategory(changes.categoryId.currentValue);
-    } 
+    }
   }
 
   private detectFormChanges() {
@@ -287,6 +295,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
+
+    this.item ? this.trackEditOrUpload(true, uploadEvent.response.content) : this.trackEditOrUpload(false, uploadEvent.response.content);
+
     this.router.navigate(['/catalog/list', { [uploadEvent.action]: true, itemId: uploadEvent.response.id }]);
   }
 
@@ -338,8 +349,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     if (categoryId === '-1') {
       this.fixedCategory = null;
     } else {
-        const fixedCategory = _.find(this.allCategories, { value: categoryId });
-        this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+      const fixedCategory = _.find(this.allCategories, { value: categoryId });
+      this.fixedCategory = fixedCategory ? fixedCategory.label : null;
     }
   }
 
@@ -504,6 +515,54 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     } else {
       this.oldDeliveryValue = newDeliveryValue;
     }
+  }
+
+  private trackEditOrUpload(isEdit: boolean, item: ItemContent) {
+    this.userService.isProUser().subscribe((isProfessional: boolean) => {
+      let baseEventAttrs: any = {
+        itemId: item.id,
+        categoryId: item.category_id,
+        salePrice: item.sale_price,
+        title: item.title,
+        isPro: isProfessional
+      };
+
+      if (item.extra_info) {
+        if (item.extra_info.object_type.id) {
+          baseEventAttrs.objectType = item.extra_info.object_type.name;
+        }
+        if (item.extra_info.brand) {
+          baseEventAttrs.brand = item.extra_info.brand;
+        }
+        if (item.extra_info.model) {
+          baseEventAttrs.model = item.extra_info.model;
+        }
+      }
+
+      if (isEdit) {
+        const eventAttrs: EditItemCG = {
+          ...baseEventAttrs,
+          screenId: SCREENS_IDS.EditItem
+        };
+
+        this.analyticsService.trackEvent({
+          name: ANALYTICS_EVENT_NAMES.EditItemCG,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      } else {
+        const eventAttrs: ListItemCG = {
+          ...baseEventAttrs,
+          screenId: SCREENS_IDS.Upload
+        };
+
+        this.analyticsService.trackEvent({
+          name: ANALYTICS_EVENT_NAMES.ListItemCG,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      }
+    });
   }
 
 }

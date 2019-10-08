@@ -143,29 +143,36 @@ describe('InboxConversationService', () => {
 
     describe('when called with a message that does not already exist', () => {
       beforeEach(() => {
-        newInboxMessage = new InboxMessage('newMessageId', conversations[0].id, 'hole', 'mockUserId', true, new Date(),
+          newInboxMessage = new InboxMessage('newMessageId', conversations[0].id, 'hole', 'mockUserId', true, new Date(),
           MessageStatus.SENT, MessageType.TEXT);
       });
 
       it('should prepend the new message to the conversation messages array', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
+
         service.processNewMessage(newInboxMessage);
 
         expect(service.conversations[0].messages[0]).toEqual(newInboxMessage);
       });
 
       it('should set conversation lastMessage to the new message', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
+
         service.processNewMessage(newInboxMessage);
 
         expect(service.conversations[0].lastMessage).toEqual(newInboxMessage);
       });
 
       it('should update the conversaiton modifiedDate with the new message date', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
+
         service.processNewMessage(newInboxMessage);
 
         expect(service.conversations[0].modifiedDate).toEqual(newInboxMessage.date);
       });
 
       it('should bump the conversation to 1st position', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         const conversationToBump = service.conversations[1];
         const message = new InboxMessage('mockId', conversationToBump.id, 'hola!', 'mockUserId', true,
           new Date(), MessageStatus.SENT, MessageType.TEXT);
@@ -176,7 +183,7 @@ describe('InboxConversationService', () => {
       });
 
       it('should call persistencyService.saveInboxMessages with the new message', () => {
-        spyOn(persistencyService, 'saveInboxMessages');
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
 
         service.processNewMessage(newInboxMessage);
 
@@ -184,6 +191,7 @@ describe('InboxConversationService', () => {
       });
 
       it('should emit a MESSAGE_ADDED event, passing the new InboxMessage', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         spyOn(eventService, 'emit').and.callThrough();
 
         service.processNewMessage(newInboxMessage);
@@ -192,6 +200,7 @@ describe('InboxConversationService', () => {
       });
 
       it('should increment the unread counters by one for each new message not fromSelf', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         const unreadCounterBefore = service.conversations[0].unreadCounter;
         const count = 3;
         for (let i = 0; i < count; i++) {
@@ -205,6 +214,7 @@ describe('InboxConversationService', () => {
       });
 
       it('should only increment the unread counters for new messages NOT fromSelf AND with unique IDs', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         const unreadCounterBefore = service.conversations[0].unreadCounter;
         const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', false, new Date(),
           MessageStatus.SENT, MessageType.TEXT);
@@ -218,6 +228,7 @@ describe('InboxConversationService', () => {
       });
 
       it('should not increment the conversation.unreadCount nor the messageService.totalUnreadMessages for new messages fromSelf', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', true, new Date(),
           MessageStatus.SENT, MessageType.TEXT);
         const unreadCounterBefore = service.conversations[0].unreadCounter;
