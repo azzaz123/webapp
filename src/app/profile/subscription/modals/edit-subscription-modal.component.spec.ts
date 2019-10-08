@@ -1,0 +1,93 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EditSubscriptionModalComponent } from './edit-subscription-modal.component';
+import { MAPPED_SUBSCRIPTIONS, TIER } from '../../../../tests/subscriptions.fixtures.spec';
+import { ToastrService } from 'ngx-toastr';
+import { I18nService } from '../../../core/i18n/i18n.service';
+import { EventService } from '../../../core/event/event.service';
+import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
+
+describe('EditSubscriptionModalComponent', () => {
+  let component: EditSubscriptionModalComponent;
+  let fixture: ComponentFixture<EditSubscriptionModalComponent>;
+  let activeModal: NgbActiveModal;
+  let toastrService: ToastrService;
+  let eventService: EventService;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ EditSubscriptionModalComponent ],
+      providers: [
+        ...TEST_HTTP_PROVIDERS,
+        {
+          provide: NgbActiveModal, useValue: {
+            close() {
+            }
+          }
+        },
+        {
+          provide: ToastrService, useValue: {
+            error() {
+            },
+            show() {
+            },
+            i18nError() {
+            },
+            i18nSuccess() {
+            }
+          }
+        },
+        I18nService,
+        EventService,
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(EditSubscriptionModalComponent);
+    component = fixture.componentInstance;
+    toastrService = TestBed.get(ToastrService);
+    activeModal = TestBed.get(NgbActiveModal);
+    eventService = TestBed.get(EventService);
+    component.subscription = MAPPED_SUBSCRIPTIONS[2];
+    fixture.detectChanges();
+  });
+
+  describe('OnInit', () => {
+    it('should set the selected tier and plan', () => {
+      component.ngOnInit();
+
+      expect(component.selectedTier).toEqual(MAPPED_SUBSCRIPTIONS[2].selected_tier);
+      expect(component.selectedPlanId).toEqual(MAPPED_SUBSCRIPTIONS[2].selected_tier.id);
+    });
+
+    afterEach(() => {
+      TestBed.resetTestingModule();
+    });
+  });
+
+  describe('close', () => {
+    it('should close the modal and redirect to the profile', () => {
+      spyOn(activeModal, 'close');
+
+      component.close();
+
+      expect(activeModal.close).toHaveBeenCalled();
+    })
+  })
+
+  describe('selectListingLimit', () => {
+    it('should set the selected tier', () => {
+      const tier = TIER;
+
+      component.selectListingLimit(tier);
+
+      expect(component.selectedTier).toEqual(tier);
+    });
+  });
+
+});

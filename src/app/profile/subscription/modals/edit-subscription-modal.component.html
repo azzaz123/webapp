@@ -9,8 +9,8 @@
     <div class="box-content">
       <div class="EditSubscription__listing-limit-container">
         <div *ngFor="let tier of subscription.tiers; let i = index" class="EditSubscription__listing-limit-box"
-        (click)="selectListingLimit(subscription.tiers[i])" [ngClass]="{selected: selectedTier.id === subscription.tiers[i].id}">
-        <span *ngIf="subscription.tiers[i].limit >= 0">{{subscription.tiers[i].limit}}</span>
+        (click)="selectListingLimit(subscription.tiers[i])" [ngClass]="{selected: selectedTier.id === subscription?.tiers[i]?.id}">
+        <span *ngIf="subscription.tiers[i].limit >= 0">{{subscription?.tiers[i]?.limit}}</span>
         <span *ngIf="subscription.tiers[i].limit < 0">Unlimited</span>
       </div>
       </div>
