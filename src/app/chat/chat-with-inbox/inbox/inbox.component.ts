@@ -160,8 +160,6 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   private onInboxReady(conversations: InboxConversation[]) {
     this.conversations = conversations;
-    this.conversations.forEach(conversation => conversation.user.distanceInKm =
-      this.userService.calculateDistanceFromItem(conversation.user, null));
     this.setStatusesAfterLoadConversations();
     this.showInbox();
     this.sendLogWithNumberOfConversationsByConversationId(this.conversations);
