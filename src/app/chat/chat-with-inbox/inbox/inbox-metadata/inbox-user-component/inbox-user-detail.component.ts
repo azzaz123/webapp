@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { InboxUser } from '../../inbox-user';
 import { UserService } from '../../../../../core/user/user.service';
 import { UserInfoResponse } from '../../../../../core/user/user-info.interface';
@@ -9,29 +9,24 @@ import { InboxItem } from '../../inbox-item';
   templateUrl: './inbox-user-detail.component.html',
   styleUrls: ['./inbox-user-detail.component.scss']
 })
-export class InboxUserDetailComponent implements OnInit, OnChanges {
+export class InboxUserDetailComponent implements OnChanges {
 
   @Input() user: InboxUser;
   @Input() item: InboxItem;
   @Input() phoneNumber: string;
 
-  constructor(private userService: UserService) { }
-
-  ngOnInit() {
+  constructor(private userService: UserService) {
   }
 
   ngOnChanges(changes?: SimpleChanges) {
     if (changes.user) {
-      if (this.user.score === undefined || this.user.responseRate === undefined) {
+      if (this.user.score === undefined || this.user.responseRate === undefined || this.user.distanceInKm === undefined) {
         this.userService.getInfo(this.user.id).subscribe((info: UserInfoResponse) => {
           this.user.score = info.scoring_stars;
           this.user.responseRate = info.response_rate;
+          this.user.distanceInKm = this.userService.calculateDistanceFromItem(this.user, null);
         });
       }
     }
-  }
-
-  public userDistance(): number {
-    return this.userService.calculateDistanceFromItem(this.user, null);
   }
 }
