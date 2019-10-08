@@ -160,6 +160,8 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   private onInboxReady(conversations: InboxConversation[]) {
     this.conversations = conversations;
+    this.conversations.forEach(conversation => conversation.user.distanceInKm =
+      this.userService.calculateDistanceFromItem(conversation.user, null));
     this.setStatusesAfterLoadConversations();
     this.showInbox();
     this.sendLogWithNumberOfConversationsByConversationId(this.conversations);
@@ -251,7 +253,7 @@ export class InboxComponent implements OnInit, OnDestroy {
       itemId: conversation.item.id,
       conversationId: conversation.id,
       screenId: SCREENS_IDS.Chat
-    }
+    };
 
     this.analyticsService.trackPageView({
       name: ANALYTICS_EVENT_NAMES.ViewChatScreen,

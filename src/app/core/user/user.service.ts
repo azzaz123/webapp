@@ -304,8 +304,8 @@ export class UserService extends ResourceService {
   }
 
   public getUnsubscribeReasons(): Observable<UnsubscribeReason[]> {
-    return this.http.get(this.API_URL + '/me/unsubscribe/reason', {language: this.i18n.locale})
-      .map((r: Response) => r.json());
+    return this.http.get(this.API_URL + '/me/unsubscribe/reason', { language: this.i18n.locale })
+    .map((r: Response) => r.json());
   }
 
   public unsubscribe(reasonId: number, otherReason: string): Observable<any> {
