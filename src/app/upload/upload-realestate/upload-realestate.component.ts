@@ -1,3 +1,6 @@
+import { ListItemRE } from './../../core/analytics/events-interfaces/list-item-re.interface';
+import { EditItemRE } from './../../core/analytics/events-interfaces/edit-item-re.interface';
+import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IOption } from 'ng-select';
 import { RealestateKeysService } from './realestate-keys.service';
@@ -15,6 +18,10 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { ItemService } from '../../core/item/item.service';
 import { Realestate } from '../../core/item/realestate';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { UserService } from '../../core/user/user.service';
+import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { RealestateContent } from '../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -41,18 +48,20 @@ export class UploadRealestateComponent implements OnInit {
   public extras: Key[];
   public conditions: IOption[];
   public currencies: IOption[] = [
-    {value: 'EUR', label: '€'},
-    {value: 'GBP', label: '£'}
+    { value: 'EUR', label: '€' },
+    { value: 'GBP', label: '£' }
   ];
 
   constructor(private fb: FormBuilder,
-              private realestateKeysService: RealestateKeysService,
-              private router: Router,
-              private errorsService: ErrorsService,
-              private modalService: NgbModal,
-              private itemService: ItemService,
-              private trackingService: TrackingService,
-              config: NgbPopoverConfig) {
+    private realestateKeysService: RealestateKeysService,
+    private router: Router,
+    private errorsService: ErrorsService,
+    private modalService: NgbModal,
+    private itemService: ItemService,
+    private trackingService: TrackingService,
+    private analyticsService: AnalyticsService,
+    private userService: UserService,
+    config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
       category_id: REALESTATE_CATEGORY,
@@ -206,12 +215,12 @@ export class UploadRealestateComponent implements OnInit {
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
     if (this.isUrgent) {
-      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {category: this.uploadForm.value.category_id});
+      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, { category: this.uploadForm.value.category_id });
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
@@ -222,13 +231,16 @@ export class UploadRealestateComponent implements OnInit {
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
+    
+    this.item ? this.trackEditOrUpload(true, uploadEvent.response.content) : this.trackEditOrUpload(false, uploadEvent.response.content);
+
     this.router.navigate(['/catalog/list', params]);
   }
 
   onError(response: any) {
     this.loading = false;
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {category: this.uploadForm.value.category_id});
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
     }
@@ -246,6 +258,47 @@ export class UploadRealestateComponent implements OnInit {
     modalRef.result.then(() => {
       this.onSubmit();
     }, () => {
+    });
+  }
+
+  private trackEditOrUpload(isEdit: boolean, item: RealestateContent) {
+    this.userService.isProUser().subscribe((isProfessional: boolean) => {
+      const baseEventAttrs: any = {
+        itemId: item.id,
+        categoryId: item.category_id,
+        salePrice: item.sale_price,
+        title: item.title,
+        operation: item.operation,
+        type: item.type,
+        condition: item.condition,
+        surface: item.surface || null,
+        rooms: item.rooms || null,
+        isPro: isProfessional
+      };
+
+      if (isEdit) {
+        const eventAttrs: EditItemRE = {
+          ...baseEventAttrs,
+          screenId: SCREENS_IDS.EditItem
+        }
+
+        this.analyticsService.trackEvent({
+          name: ANALYTICS_EVENT_NAMES.EditItemRE,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      } else {
+        const eventAttrs: ListItemRE = {
+          ...baseEventAttrs,
+          screenId: SCREENS_IDS.Upload
+        }
+
+        this.analyticsService.trackEvent({
+          name: ANALYTICS_EVENT_NAMES.ListItemRE,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      }
     });
   }
 
