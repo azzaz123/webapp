@@ -113,7 +113,13 @@ export class InboxComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.componentState = InboxState.Inbox;
     this.bindNewMessageToast();
-    this.loading = isNullOrUndefined(this.inboxService.conversations);
+    if (this.inboxService.conversations) {
+      this.onInboxReady(this.inboxService.conversations, false);
+      this.archivedConversations = this.inboxService.archivedConversations;
+      this.loading = false;
+    } else {
+      this.loading = true;
+    }
 
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
       this.onInboxReady(conversations, loadMoreConversations);
