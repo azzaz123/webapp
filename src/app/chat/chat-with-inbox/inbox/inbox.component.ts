@@ -247,7 +247,7 @@ export class InboxComponent implements OnInit, OnDestroy {
       itemId: conversation.item.id,
       conversationId: conversation.id,
       screenId: SCREENS_IDS.Chat
-    }
+    };
 
     this.analyticsService.trackPageView({
       name: ANALYTICS_EVENT_NAMES.ViewChatScreen,

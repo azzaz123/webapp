@@ -16,7 +16,8 @@ export class InboxUser {
               private _sellingItem: Item,
               private _sellingItemCount: number,
               private _score: number,
-              private _location: any) {
+              private _location: any,
+              private _distanceInKm: number) {
   }
 
   get id(): string {
@@ -102,6 +103,14 @@ export class InboxUser {
   set sellingItemCount(value: number) {
     this._sellingItemCount = value;
   }
+
+  get distanceInKm(): number {
+    return this._distanceInKm;
+  }
+
+  set distanceInKm(value: number) {
+    this._distanceInKm = value;
+  }
 }
 
-export const InboxUserPlaceholder = new InboxUser(null, 'unknown', false, false, null, null, null, null, 0, 0, null);
+export const InboxUserPlaceholder = new InboxUser(null, 'unknown', false, false, null, null, null, null, 0, 0, null, null);
