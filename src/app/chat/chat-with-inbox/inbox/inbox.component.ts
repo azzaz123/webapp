@@ -5,7 +5,7 @@ import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
 import { Message } from '../../../core/message/message';
-import { debug } from 'util';
+import { debug, isNullOrUndefined } from 'util';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { UserService } from '../../../core/user/user.service';
 import { AdService } from '../../../core/ad/ad.service';
@@ -74,12 +74,12 @@ export class InboxComponent implements OnInit, OnDestroy {
   public isProfessional: boolean;
 
   constructor(private inboxService: InboxService,
-    private eventService: EventService,
-    private conversationService: InboxConversationService,
-    private userService: UserService,
-    private adService: AdService,
-    private remoteConsoleService: RemoteConsoleService,
-    private analyticsService: AnalyticsService) {
+              private eventService: EventService,
+              private conversationService: InboxConversationService,
+              private userService: UserService,
+              private adService: AdService,
+              private remoteConsoleService: RemoteConsoleService,
+              private analyticsService: AnalyticsService) {
   }
 
   set loading(value: boolean) {
@@ -114,14 +114,15 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.componentState = InboxState.Inbox;
     this.bindNewMessageToast();
     if (this.inboxService.conversations) {
-      this.onInboxReady(this.inboxService.conversations);
+      this.onInboxReady(this.inboxService.conversations, false);
       this.archivedConversations = this.inboxService.archivedConversations;
       this.loading = false;
     } else {
       this.loading = true;
     }
-    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
-      this.onInboxReady(conversations);
+
+    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
+      this.onInboxReady(conversations, loadMoreConversations);
     });
 
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
@@ -158,11 +159,11 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.adService.stopAdsRefresh();
   }
 
-  private onInboxReady(conversations: InboxConversation[]) {
+  private onInboxReady(conversations: InboxConversation[], loadMoreConversations: boolean) {
     this.conversations = conversations;
     this.setStatusesAfterLoadConversations();
     this.showInbox();
-    this.sendLogWithNumberOfConversationsByConversationId(this.conversations);
+    this.sendLogWithNumberOfConversationsByConversationId(this.conversations, loadMoreConversations);
   }
 
   private bindNewMessageToast() {
@@ -237,12 +238,13 @@ export class InboxComponent implements OnInit, OnDestroy {
     }
   }
 
-  private sendLogWithNumberOfConversationsByConversationId(conversations: InboxConversation[]) {
+  private sendLogWithNumberOfConversationsByConversationId(conversations: InboxConversation[], loadMoreConversations: boolean) {
     const conversationsIds = _.countBy(_.map(conversations, conversation => conversation.id));
     const hasDuplicated = _.find(conversationsIds, numberOfConversation => numberOfConversation > 1);
 
     if (hasDuplicated) {
-      this.userService.me().subscribe(user => this.remoteConsoleService.sendDuplicateConversations(user.id, conversationsIds));
+      this.userService.me().subscribe(
+        user => this.remoteConsoleService.sendDuplicateConversations(user.id, loadMoreConversations, conversationsIds));
     }
   }
 

@@ -35,11 +35,12 @@ export class RemoteConsoleService {
 
   }
 
-  sendDuplicateConversations(userId: string, conversationsGroupById: Map<string, number>): void {
+  sendDuplicateConversations(userId: string, loadMoreConversations: boolean, conversationsGroupById: Map<string, number>): void {
     this.getCommonLog(userId).subscribe(commonLog => logger.info(JSON.stringify({
       ...commonLog, ...{
         metric_type: MetricTypeEnum.DUPLICATE_CONVERSATION,
         message: 'send log when user see duplicate conversation in inbox',
+        load_more_conversations: loadMoreConversations,
         conversations_count_by_id: JSON.stringify(conversationsGroupById)
       }
     })));

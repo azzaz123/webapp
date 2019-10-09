@@ -42,13 +42,14 @@ export class InboxConversationService {
   public archivedConversations: InboxConversation[];
 
   public subscribeChatEvents() {
-    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
+    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
       this.conversations = conversations;
-      conversations.map(conversation => {
-        (conversation.messages || [])
-        .filter(message => message.type === MessageType.TEXT && message.status === MessageStatus.SENT && !message.fromSelf)
-        .map(message => this.realTime.sendDeliveryReceipt(conversation.user.id, message.id, conversation.id));
-      });
+      this.conversations.forEach(conversation => conversation.messages
+      .filter(message => message.type === MessageType.TEXT && message.status === MessageStatus.SENT && !message.fromSelf)
+      .forEach(message => {
+        this.realTime.sendDeliveryReceipt(conversation.user.id, message.id, conversation.id);
+        message.status = MessageStatus.RECEIVED;
+      }));
     });
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.archivedConversations = conversations;
