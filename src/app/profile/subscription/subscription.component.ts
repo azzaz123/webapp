@@ -32,6 +32,10 @@ export class SubscriptionComponent implements OnInit {
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
+    //The edit of the subscription is disabled until the backend does not implement it.
+    if (subscription.subscribed_from) {
+      return;
+    }
     const modal = subscription.subscribed_from ? EditSubscriptionModalComponent : AddNewSubscriptionModalComponent;
     let modalRef: NgbModalRef = this.modalService.open(modal, {windowClass: 'review'});
     modalRef.componentInstance.subscription = subscription;

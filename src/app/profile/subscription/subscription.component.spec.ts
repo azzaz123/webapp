@@ -91,12 +91,12 @@ describe('SubscriptionComponent', () => {
       });
     });
 
-    it('should open the EditSubscription modal', () => {
+    it('should not open the EditSubscription modal', () => {
       spyOn(modalService, 'open').and.callThrough();
 
       component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[2]);
 
-      expect(modalService.open).toHaveBeenCalledWith(EditSubscriptionModalComponent, {
+      expect(modalService.open).not.toHaveBeenCalledWith(EditSubscriptionModalComponent, {
         windowClass: 'review'
       });
     });
