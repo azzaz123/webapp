@@ -25,6 +25,9 @@ import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { SCREENS_IDS } from '../../../core/analytics/resources/analytics-constants';
 import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
 import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
+import { InboxUser } from './inbox-user';
+import { Item } from '../../../core/item/item';
+import { InboxItem } from './inbox-item';
 
 class AdServiceMock {
   startAdsRefresh() {
@@ -78,6 +81,9 @@ describe('Component: InboxComponent', () => {
             },
             me(): Observable<User> {
               return Observable.of(MOCK_USER);
+            },
+            calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
+              return 5.5;
             }
           }
         },
@@ -200,7 +206,7 @@ describe('Component: InboxComponent', () => {
         itemId: conversation.item.id,
         conversationId: conversation.id,
         screenId: SCREENS_IDS.Chat
-      }
+      };
 
       describe('if the selected conversation is not the current conversation', () => {
         it('should send the View Chat Screen event', () => {
