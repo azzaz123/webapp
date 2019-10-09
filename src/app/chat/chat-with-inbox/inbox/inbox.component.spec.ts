@@ -134,17 +134,18 @@ describe('Component: InboxComponent', () => {
     });
 
     describe('when inboxService.conversations exists', () => {
+      beforeEach(() => {
+        inboxService.conversations = mockedInboxConversations;
+      });
 
       it('should set conversations to the value of inboxService.conversations', () => {
         component.ngOnInit();
-        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations, true);
 
         expect(component.conversations).toEqual(mockedInboxConversations);
       });
 
       it('should set loading to false', () => {
         component.ngOnInit();
-        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations, true);
 
         expect(component.loading).toBe(false);
       });
@@ -153,7 +154,6 @@ describe('Component: InboxComponent', () => {
         inboxService.errorRetrievingInbox = false;
 
         component.ngOnInit();
-        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations, true);
 
         expect(component.errorRetrievingInbox).toBe(false);
 
