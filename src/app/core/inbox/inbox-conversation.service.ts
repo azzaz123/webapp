@@ -42,7 +42,7 @@ export class InboxConversationService {
   public archivedConversations: InboxConversation[];
 
   public subscribeChatEvents() {
-    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
+    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
       this.conversations = conversations;
       conversations.map(conversation => {
         (conversation.messages || [])

@@ -70,7 +70,7 @@ export class InboxService {
       return this.persistencyService.getStoredInbox();
     })
     .subscribe((conversations) => {
-      this.eventService.emit(EventService.INBOX_LOADED, conversations);
+      this.eventService.emit(EventService.INBOX_LOADED, conversations, false);
       this.eventService.emit(EventService.INBOX_READY, true);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
@@ -108,7 +108,7 @@ export class InboxService {
       return Observable.of([]);
     })
     .subscribe((conversations: InboxConversation[]) => {
-      this.eventService.emit(EventService.INBOX_LOADED, conversations);
+      this.eventService.emit(EventService.INBOX_LOADED, conversations, true);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
   }

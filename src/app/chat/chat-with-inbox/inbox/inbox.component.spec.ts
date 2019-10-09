@@ -128,17 +128,17 @@ describe('Component: InboxComponent', () => {
     });
 
     describe('when inboxService.conversations exists', () => {
-      beforeEach(() => {
-        inboxService.conversations = mockedInboxConversations;
-      });
+
       it('should set conversations to the value of inboxService.conversations', () => {
         component.ngOnInit();
+        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations, true);
 
         expect(component.conversations).toEqual(mockedInboxConversations);
       });
 
       it('should set loading to false', () => {
         component.ngOnInit();
+        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations, true);
 
         expect(component.loading).toBe(false);
       });
@@ -147,12 +147,14 @@ describe('Component: InboxComponent', () => {
         inboxService.errorRetrievingInbox = false;
 
         component.ngOnInit();
+        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations, true);
 
         expect(component.errorRetrievingInbox).toBe(false);
 
         inboxService.errorRetrievingInbox = true;
 
         component.ngOnInit();
+        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations, true);
 
         expect(component.errorRetrievingInbox).toBe(true);
       });
@@ -411,21 +413,25 @@ describe('Component: InboxComponent', () => {
     });
 
     it('should send log with duplicate conversations', () => {
+      const LOAD_MORE_CONVERSATIONS = true;
       spyOn(remoteConsoleService, 'sendDuplicateConversations');
 
       component.ngOnInit();
-      eventService.emit(EventService.INBOX_LOADED, duplicateMockedInboxConversations);
+      eventService.emit(EventService.INBOX_LOADED, duplicateMockedInboxConversations, LOAD_MORE_CONVERSATIONS);
 
-      expect(remoteConsoleService.sendDuplicateConversations).toHaveBeenCalledWith(MOCK_USER.id, { 1: 2, 2: 2, 3: 2 });
+      expect(remoteConsoleService.sendDuplicateConversations)
+      .toHaveBeenCalledWith(MOCK_USER.id, LOAD_MORE_CONVERSATIONS, { 1: 2, 2: 2, 3: 2 });
     });
 
     it('should send log with duplicate conversations if id of conversation is undefined, empty or null', () => {
+      const LOAD_MORE_CONVERSATIONS = true;
       spyOn(remoteConsoleService, 'sendDuplicateConversations');
 
       component.ngOnInit();
-      eventService.emit(EventService.INBOX_LOADED, duplicateIncorrectMockedInboxConversations);
+      eventService.emit(EventService.INBOX_LOADED, duplicateIncorrectMockedInboxConversations, LOAD_MORE_CONVERSATIONS);
 
-      expect(remoteConsoleService.sendDuplicateConversations).toHaveBeenCalledWith(MOCK_USER.id, { null: 2, '': 2, undefined: 3 });
+      expect(remoteConsoleService.sendDuplicateConversations)
+      .toHaveBeenCalledWith(MOCK_USER.id, LOAD_MORE_CONVERSATIONS, { null: 2, '': 2, undefined: 3 });
     });
   });
 });

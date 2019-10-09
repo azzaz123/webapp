@@ -66,7 +66,7 @@ export class PersistencyService {
   }
 
   private subscribeEventInboxLoaded() {
-    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
+    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
       this.updateStoredInbox(conversations);
       conversations.map(conv => this.saveInboxMessages(conv.messages));
     });

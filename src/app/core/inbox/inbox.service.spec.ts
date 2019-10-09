@@ -108,7 +108,7 @@ describe('InboxService', () => {
 
       service.init();
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, parsedConversationsResponse);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, parsedConversationsResponse, false);
     });
 
     it('should emit a EventService.CHAT_CAN_PROCESS_RT with TRUE after getInbox returns', () => {
