@@ -19,14 +19,12 @@ export class InboxUserDetailComponent implements OnChanges {
   }
 
   ngOnChanges(changes?: SimpleChanges) {
-    if (changes.user) {
-      if (this.user.score === undefined || this.user.responseRate === undefined || this.user.distanceInKm === undefined) {
-        this.userService.getInfo(this.user.id).subscribe((info: UserInfoResponse) => {
-          this.user.score = info.scoring_stars;
-          this.user.responseRate = info.response_rate;
-          this.user.distanceInKm = this.userService.calculateDistanceFromItem(this.user, null);
-        });
-      }
+    if (changes.user && (this.user.score === undefined || this.user.responseRate === undefined || this.user.distanceInKm === undefined)) {
+      this.userService.getInfo(this.user.id).subscribe((info: UserInfoResponse) => {
+        this.user.score = info.scoring_stars;
+        this.user.responseRate = info.response_rate;
+        this.user.distanceInKm = this.userService.calculateDistanceFromItem(this.user, null);
+      });
     }
   }
 }
