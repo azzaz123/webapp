@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
-import { FeatureflagService } from '../user/featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
 import { HttpServiceNew } from '../http/http.service.new';
@@ -57,7 +57,7 @@ export class SubscriptionsService {
   }
 
   public isSubscriptionsActive$(): Observable<boolean> {
-    return this.featureflagService.getFlag('web_subscriptions');
+    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);
   }
 
   public getSubscriptions(categories: CategoryResponse[], cache: boolean = true): Observable<SubscriptionsResponse[]> {

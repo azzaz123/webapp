@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { SubscriptionsService } from './subscriptions.service';
 import { Observable } from 'rxjs';
 import { UserService } from '../user/user.service';
-import { FeatureflagService } from '../user/featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { UUID } from 'angular2-uuid';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { HttpServiceNew } from '../http/http.service.new';
@@ -132,7 +132,7 @@ describe('SubscriptionsService', () => {
 
       service.isSubscriptionsActive$();
 
-      expect(featureflagService.getFlag).toHaveBeenCalledWith('web_subscriptions');
+      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);
     });
   });
 
@@ -142,7 +142,7 @@ describe('SubscriptionsService', () => {
   
       service.isSubscriptionsActive$();
   
-      expect(featureflagService.getFlag).toHaveBeenCalledWith('web_subscriptions');
+      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);
     });
   
     afterEach(() => {
