@@ -101,19 +101,19 @@ export interface CarContent extends ItemContent {
 }
 
 export interface RealestateContent extends ItemContent {
-   operation?: string;
-   type?: string;
-   condition?: string;
-   surface?: number;
-   bathrooms?: number;
-   rooms?: number;
-   garage?: boolean;
-   terrace?: boolean;
-   elevator?: boolean;
-   pool?: boolean;
-   garden?: boolean;
-   storytelling?: string;
-   location?: any;
+  operation?: string;
+  type?: string;
+  condition?: string;
+  surface?: number;
+  bathrooms?: number;
+  rooms?: number;
+  garage?: boolean;
+  terrace?: boolean;
+  elevator?: boolean;
+  pool?: boolean;
+  garden?: boolean;
+  storytelling?: string;
+  location?: any;
 }
 
 export interface ItemsData {
@@ -263,7 +263,6 @@ export interface AllowedActionResponse {
   cause?: string;
 }
 
-
 export interface ItemFlags {
   pending: boolean;
   sold: boolean;
@@ -326,6 +325,7 @@ export interface DeliveryInfo {
 export interface ItemExtraInfo {
   object_type: {
     id: string;
+    name: string;
   };
   brand: string;
   model?: string;

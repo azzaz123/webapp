@@ -1,50 +1,80 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
-import { FeatureFlagResponse, FeatureflagService } from './featureflag.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { HttpService } from '../http/http.service';
-import { ResponseOptions, Response } from '@angular/http';
-import { Observable } from 'rxjs';
+import { HttpModuleNew } from '../http/http.module.new';
+import { FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
+import { environment } from '../../../environments/environment';
+import { mockFeatureFlagsResponses, mockFeatureFlagsEnum } from '../../../tests';
 
 describe('FeatureflagService', () => {
-
+  let injector: TestBed;
   let service: FeatureflagService;
-  let http: HttpService;
+  let httpMock: HttpTestingController;
+  const TIMESTAMP = 123456789;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        FeatureflagService,
-        ...TEST_HTTP_PROVIDERS
-      ]
+    injector = getTestBed();
+    injector.configureTestingModule({
+      imports: [ HttpClientTestingModule, HttpModuleNew ],
+      providers: [ FeatureflagService ]
     });
-    service = TestBed.get(FeatureflagService);
-    http = TestBed.get(HttpService);
+    httpMock = injector.get(HttpTestingController);
+    service = injector.get(FeatureflagService);
+
+    spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
+  });
+
+  afterEach(() => {
+    httpMock.verify();
+  });
+
+  it('should create the instance', () => {
+    expect(service).toBeTruthy();
   });
 
   describe('getFlag', () => {
-    it('should call endpoint and return boolean', () => {
-      const PERM = 'perm';
-      let resp: boolean;
-      const RESP: FeatureFlagResponse[] = [{
-        name: PERM,
-        active: true
-      }];
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESP)});
-      const TIMESTAMP: number = 1234567890;
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      spyOn<any>(window, 'Date').and.returnValue({
-        getTime: () => {
-          return TIMESTAMP;
-        }
-      });
+    it('should call valid endpoint', () => {
+      const featureFlagName = mockFeatureFlagsEnum.FLAG1;
+      const expectedUrlParams = `featureFlags=${featureFlagName}&timestamp=${TIMESTAMP}`;
+      const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+      const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-      service.getFlag(PERM).subscribe((r: boolean) => {
-        resp = r;
-      });
+      service.getFlag(featureFlagName as any).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+      req.flush([]);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/featureflag', {featureFlags: PERM, timestamp: TIMESTAMP});
-      expect(resp).toBe(true);
+      expect(req.request.url).toBe(expectedUrlWithEndpoint);
+      expect(req.request.urlWithParams.toString()).toBe(expectedUrlWithEndpointAndParams);
+      expect(req.request.method).toBe('GET');
+    });
+
+    it('should not do extra HTTP request when feature flag was already fetched', () => {
+      const featureFlagName = mockFeatureFlagsEnum.FLAG1;
+      const expectedUrlParams = `featureFlags=${featureFlagName}&timestamp=${TIMESTAMP}`;
+      const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+      const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
+
+      service.getFlag(featureFlagName as any).flatMap(() => {
+        return service.getFlag(featureFlagName as any);
+      }).subscribe();
+
+      const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+      req.flush([]);
+    });
+
+    it('should return boolean observable with valid value', () => {
+      const featureFlagName = mockFeatureFlagsEnum.FLAG1;
+      const mockResponse = mockFeatureFlagsResponses.find(mff => mff.name === featureFlagName);
+      const expectedUrlParams = `featureFlags=${featureFlagName}&timestamp=${TIMESTAMP}`;
+      const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+      const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
+      let dataResponse: boolean;
+
+      service.getFlag(featureFlagName as any).subscribe(isActive => dataResponse = isActive);
+      const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+      req.flush([mockResponse]);
+
+      expect(dataResponse).toBe(mockResponse.active);
     });
   });
 });

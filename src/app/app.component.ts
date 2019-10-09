@@ -38,6 +38,8 @@ import { InboxService } from './core/inbox/inbox.service';
 import { Subscription, Observable } from 'rxjs';
 import { SplitTestService } from './core/tracking/split-test.service';
 import { StripeService } from './core/stripe/stripe.service';
+import { AnalyticsService } from './core/analytics/analytics.service';
+import { configRemoteConsole } from './config/remote-console.config';
 
 @Component({
   selector: 'tsl-root',
@@ -82,13 +84,15 @@ export class AppComponent implements OnInit {
               private paymentService: PaymentService,
               private callService: CallsService,
               private splitTestService: SplitTestService,
-              private stripeService: StripeService ) {
+              private stripeService: StripeService,
+              private analyticsService: AnalyticsService) {
     this.config();
   }
 
   ngOnInit() {
     this.stripeService.init();
-    appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
+    this.analyticsService.initialize();
+    appboy.initialize(environment.appboy, { enableHtmlInAppMessages: true });
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
     this.splitTestService.init();
@@ -125,6 +129,7 @@ export class AppComponent implements OnInit {
   private config() {
     configMoment(this.i18n.locale);
     configIcons(this.matIconRegistry, this.sanitizer);
+    configRemoteConsole();
   }
 
   private updateSessionCookie() {
@@ -180,6 +185,7 @@ export class AppComponent implements OnInit {
           .subscribe((active) => {
             if (active) {
               this.initCalls();
+              this.initConversations();
             }
             active ? this.inboxService.init() : this.initOldChat();
           });
@@ -193,6 +199,14 @@ export class AppComponent implements OnInit {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
       if (isProfessional) {
         this.callService.init().subscribe(() => this.callService.init(true).subscribe());
+      }
+    });
+  }
+
+  private initConversations() {
+    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+      if (isProfessional) {
+        this.conversationService.init().subscribe(() => this.conversationService.init(true).subscribe());
       }
     });
   }
@@ -218,7 +232,8 @@ export class AppComponent implements OnInit {
       this.paymentService.deleteCache();
       try {
         this.realTime.disconnect();
-      } catch (err) {}
+      } catch (err) {
+      }
       this.loggingOut = true;
       if (redirectUrl) {
         this.winRef.nativeWindow.location.href = redirectUrl;

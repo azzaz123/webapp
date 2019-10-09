@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { MOCK_INBOX_API_RESPONSE, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { ResponseOptions, Response } from '@angular/http';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
-import { FeatureflagService } from '../user/featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-item';
@@ -17,6 +17,7 @@ import { UserService } from '../user/user.service';
 import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
 import { InboxConversationService } from './inbox-conversation.service';
+import { FeatureFlagServiceMock } from '../../../tests';
 
 let service: InboxService;
 let http: HttpService;
@@ -37,16 +38,10 @@ describe('InboxService', () => {
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: MessageService, useClass: MockMessageService },
         { provide: UserService, useClass: MockedUserService },
+        { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         {
           provide: InboxConversationService, useValue: {
             subscribeChatEvents() {
-            }
-          }
-        },
-        {
-          provide: FeatureflagService, useValue: {
-            getFlag() {
-              return Observable.of(false);
             }
           }
         }
@@ -64,12 +59,12 @@ describe('InboxService', () => {
   });
 
   describe('getInboxFeatureFlag', () => {
-    it('should call featureflagService.getFlag when called', () => {
+    it('should call getFlag from feature flag service', () => {
       spyOn(featureflagService, 'getFlag');
 
       service.getInboxFeatureFlag$();
 
-      expect(featureflagService.getFlag).toHaveBeenCalledWith('web_inbox_projections');
+      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.INBOX_PROJECTIONS);
     });
   });
 
@@ -113,7 +108,7 @@ describe('InboxService', () => {
 
       service.init();
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, parsedConversationsResponse);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, parsedConversationsResponse, false);
     });
 
     it('should emit a EventService.CHAT_CAN_PROCESS_RT with TRUE after getInbox returns', () => {

@@ -86,7 +86,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
     }
 
     this.route.queryParams.subscribe((params: any) => {
-      const itemId = params.itemId; // TODO: this params will include userId
+      const itemId = params.itemId;
 
       if (isNullOrUndefined(itemId)) {
         return;
@@ -106,7 +106,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
 
   private getPhoneInfo(conversation: InboxConversation): void {
     this.userService.getPhoneInfo(conversation.user.id).subscribe(phoneInfo => {
-      if (phoneInfo.phone_method === phoneMethod.popUp) {
+      if (!isNullOrUndefined(phoneInfo) && phoneInfo.phone_method === phoneMethod.popUp) {
         this.conversationService.openPhonePopup(conversation, true);
       }
     });

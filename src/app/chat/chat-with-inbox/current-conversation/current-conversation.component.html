@@ -70,8 +70,8 @@
 
           <div
             *ngIf="!currentConversation.user.blocked && currentConversation.user.available && currentConversation.item.notAvailable"
-            class="date-marker date-marker-error">
-            <mat-icon svgIcon="not-available-error"></mat-icon>
+            class="date-marker date-marker-warning">
+            <mat-icon svgIcon="not-available" class="not-available"></mat-icon>
             <span i18n>This product is not available</span>
           </div>
         </div>
@@ -118,6 +118,7 @@
 
   <div id="conversation-meta">
     <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item" [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
+    <tsl-inbox-item-for-sell *ngxPermissionsOnly="['isProfessional']" [user]="currentConversation.user"></tsl-inbox-item-for-sell>
     <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
     <tsl-ad slotid="div-gpt-ad-1508490196308-0"></tsl-ad>
   </div>

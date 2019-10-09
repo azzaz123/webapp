@@ -5,10 +5,15 @@ import { InboxConversation } from './inbox-conversation/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
 import { Message } from '../../../core/message/message';
-import { debug } from 'util';
+import { debug, isNullOrUndefined } from 'util';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { UserService } from '../../../core/user/user.service';
 import { AdService } from '../../../core/ad/ad.service';
+import { RemoteConsoleService } from '../../../core/remote-console';
+import { SCREENS_IDS } from '../../../core/analytics/resources/analytics-constants';
+import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
 
 export enum InboxState { Inbox, Archived }
 
@@ -72,7 +77,9 @@ export class InboxComponent implements OnInit, OnDestroy {
               private eventService: EventService,
               private conversationService: InboxConversationService,
               private userService: UserService,
-              private adService: AdService) {
+              private adService: AdService,
+              private remoteConsoleService: RemoteConsoleService,
+              private analyticsService: AnalyticsService) {
   }
 
   set loading(value: boolean) {
@@ -107,14 +114,15 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.componentState = InboxState.Inbox;
     this.bindNewMessageToast();
     if (this.inboxService.conversations) {
-      this.onInboxReady(this.inboxService.conversations);
+      this.onInboxReady(this.inboxService.conversations, false);
       this.archivedConversations = this.inboxService.archivedConversations;
       this.loading = false;
     } else {
       this.loading = true;
     }
-    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
-      this.onInboxReady(conversations);
+
+    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
+      this.onInboxReady(conversations, loadMoreConversations);
     });
 
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
@@ -131,6 +139,7 @@ export class InboxComponent implements OnInit, OnDestroy {
         this.unselectCurrentConversation();
         this.conversation = conversation;
         conversation.active = true;
+        this.trackViewConversation(conversation);
       }
       if (this.archivedConversations.find((c) => c === conversation) && this.componentState === InboxState.Inbox) {
         this.componentState = InboxState.Archived;
@@ -150,10 +159,11 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.adService.stopAdsRefresh();
   }
 
-  private onInboxReady(conversations) {
+  private onInboxReady(conversations: InboxConversation[], loadMoreConversations: boolean) {
     this.conversations = conversations;
     this.setStatusesAfterLoadConversations();
     this.showInbox();
+    this.sendLogWithNumberOfConversationsByConversationId(this.conversations, loadMoreConversations);
   }
 
   private bindNewMessageToast() {
@@ -226,5 +236,28 @@ export class InboxComponent implements OnInit, OnDestroy {
     if (this.conversation) {
       this.conversation.active = false;
     }
+  }
+
+  private sendLogWithNumberOfConversationsByConversationId(conversations: InboxConversation[], loadMoreConversations: boolean) {
+    const conversationsIds = _.countBy(_.map(conversations, conversation => conversation.id));
+    const hasDuplicated = _.find(conversationsIds, numberOfConversation => numberOfConversation > 1);
+
+    if (hasDuplicated) {
+      this.userService.me().subscribe(
+        user => this.remoteConsoleService.sendDuplicateConversations(user.id, loadMoreConversations, conversationsIds));
+    }
+  }
+
+  private trackViewConversation(conversation: InboxConversation) {
+    const eventAttrs: ViewChatScreen = {
+      itemId: conversation.item.id,
+      conversationId: conversation.id,
+      screenId: SCREENS_IDS.Chat
+    };
+
+    this.analyticsService.trackPageView({
+      name: ANALYTICS_EVENT_NAMES.ViewChatScreen,
+      attributes: eventAttrs
+    });
   }
 }

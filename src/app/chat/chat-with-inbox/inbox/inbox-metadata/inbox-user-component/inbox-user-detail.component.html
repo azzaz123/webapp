@@ -9,14 +9,15 @@
       <span class="phone-number">{{phoneNumber}}</span>
     </div>
     <div class="user-location-distance">
-      <span [hidden]="!userDistance()" i18n="The distance between the user and the item">
-        {{userDistance() | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you
+      <span [hidden]="!user.distanceInKm" i18n="The distance between the user and the item">
+        {{user.distanceInKm | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you
       </span>
-      <span [hidden]="userDistance()" i18n>No location</span>
+      <span [hidden]="user.distanceInKm" i18n>No location</span>
     </div>
 
     <div class="user-response-rate">
-      <tsl-user-response-rate [responseRate]="user.responseRate" [showIcon]="false" class="font-light"></tsl-user-response-rate>
+      <tsl-user-response-rate [responseRate]="user.responseRate" [showIcon]="false"
+                              class="font-light"></tsl-user-response-rate>
     </div>
   </div>
 

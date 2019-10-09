@@ -11,7 +11,7 @@ import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
-import { FeatureflagService } from '../user/featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { environment } from '../../../environments/environment';
 
 @Injectable()
@@ -72,7 +72,7 @@ export class StripeService {
   }
 
   public isPaymentMethodStripe$(): Observable<boolean> {
-    return this.featureflagService.getFlag('web_stripe');
+    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.STRIPE);
   }
 
   public getCards(): Observable<FinancialCard[]> {

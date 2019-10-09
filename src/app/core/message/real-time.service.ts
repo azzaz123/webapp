@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as retry from 'retry';
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
@@ -8,22 +9,33 @@ import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { ChatSignal, chatSignalType } from './chat-signal.interface';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { RemoteConsoleService } from '../remote-console';
+import { SendFirstMessage } from '../analytics/events-interfaces/send-first-message.interface';
+import { SCREENS_IDS, EVENT_TYPES } from '../analytics/resources/analytics-constants';
+import { AnalyticsService } from '../analytics/analytics.service';
+import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
 
 @Injectable()
 export class RealTimeService {
-
+  
   constructor(private xmpp: XmppService,
     private eventService: EventService,
     private persistencyService: PersistencyService,
-    private trackingService: TrackingService) {
+    private trackingService: TrackingService,
+    private remoteConsoleService: RemoteConsoleService,
+    private analyticsService: AnalyticsService) {
     this.subscribeEventNewMessage();
     this.subscribeEventMessageSent();
     this.subscribeConnectionRestored();
   }
 
   private ongoingRetry: boolean;
+
   public connect(userId: string, accessToken: string) {
-    this.xmpp.connect(userId, accessToken).subscribe();
+    const startTimestamp = _.now();
+    this.xmpp.connect(userId, accessToken).subscribe(() => {
+        this.remoteConsoleService.sendConnectionTimeout(userId, _.now() - startTimestamp);
+      });
   }
 
   public disconnect() {
@@ -91,6 +103,7 @@ export class RealTimeService {
     this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: Conversation, messageId: string) => {
       if (this.isFirstMessage(conversation)) {
         this.trackConversationCreated(conversation, messageId);
+        this.trackSendFirstMessage(conversation);
         appboy.logCustomEvent('FirstMessage', { platform: 'web' });
         const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
         if (phoneRequestMsg) {
@@ -138,6 +151,21 @@ export class RealTimeService {
     fbq('track', 'InitiateCheckout', {
       value: conversation.item.salePrice,
       currency: conversation.item.currencyCode,
+    });
+  }
+
+  private trackSendFirstMessage(conversation: Conversation | InboxConversation) {
+    const eventAttrs: SendFirstMessage = {
+      itemId: conversation.item.id,
+      sellerUserId: conversation.user.id,
+      conversationId: conversation.id,
+      screenId: SCREENS_IDS.Chat
+    }
+
+    this.analyticsService.trackEvent({
+      name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
+      eventType: EVENT_TYPES.Other,
+      attributes: eventAttrs
     });
   }
 

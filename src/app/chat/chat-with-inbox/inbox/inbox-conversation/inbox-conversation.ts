@@ -21,8 +21,7 @@ export class InboxConversation {
 
     get cannotChat(): boolean {
         return  this.user.blocked
-                || !this.user.available
-                || this.item.status === INBOX_ITEM_STATUSES.notAvailable;
+                || !this.user.available;
     }
 
     get id(): string {
@@ -124,8 +123,8 @@ export class InboxConversation {
         }
         const userBlocked = Boolean(user.available && user.blocked);
         const profileUrl = `${environment.siteUrl}user/${user.slug}`;
-        return new InboxUser(user.hash, user.name, userBlocked, user.available, profileUrl, user.image_url, user.response_rate,
-            user.score, user.location);
+        return new InboxUser(user.hash, user.name, userBlocked, user.available, profileUrl, user.image_url, user.response_rate, null, 0,
+            user.score, user.location, undefined);
     }
 
     private static buildInboxItem(item: any): InboxItem {

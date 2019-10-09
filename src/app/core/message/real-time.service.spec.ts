@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RealTimeService } from './real-time.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
@@ -9,16 +9,25 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { Observable } from 'rxjs';
 import { Message, phoneRequestState } from './message';
-import { USER_ID, OTHER_USER_ID, MOCK_USER, ACCESS_TOKEN } from '../../../tests/user.fixtures.spec';
+import { ACCESS_TOKEN, MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID, MOCK_CONVERSATION, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment.docker';
+import { RemoteConsoleService } from '../remote-console';
+import { MockRemoteConsoleService } from '../../../tests';
+import { AnalyticsService } from '../analytics/analytics.service';
+import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import { SCREENS_IDS, EVENT_TYPES } from '../analytics/resources/analytics-constants';
+import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
+import { SendFirstMessage } from './../analytics/events-interfaces/send-first-message.interface';
 
 let service: RealTimeService;
 let persistencyService: PersistencyService;
 let eventService: EventService;
 let xmppService: XmppService;
 let trackingService: TrackingService;
+let remoteConsoleService: RemoteConsoleService;
+let analyticsService: AnalyticsService;
 
 describe('RealTimeService', () => {
   beforeEach(() => {
@@ -28,7 +37,9 @@ describe('RealTimeService', () => {
         XmppService,
         EventService,
         { provide: PersistencyService, useClass: MockedPersistencyService },
-        { provide: TrackingService, useClass: MockTrackingService }
+        { provide: TrackingService, useClass: MockTrackingService },
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
       ]
     });
 
@@ -37,16 +48,20 @@ describe('RealTimeService', () => {
     persistencyService = TestBed.get(PersistencyService);
     xmppService = TestBed.get(XmppService);
     trackingService = TestBed.get(TrackingService);
+    remoteConsoleService = TestBed.get(RemoteConsoleService);
+    analyticsService = TestBed.get(AnalyticsService);
     appboy.initialize(environment.appboy);
   });
 
   describe('connect', () => {
     it('should call xmpp.connect', () => {
-      spyOn(xmppService, 'connect').and.callThrough();
+      spyOn(xmppService, 'connect').and.returnValue(Observable.of({}));
+      spyOn(remoteConsoleService, 'sendConnectionTimeout').and.callThrough();
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
 
       expect(xmppService.connect).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
+      expect(remoteConsoleService.sendConnectionTimeout).toHaveBeenCalled();
     });
   });
 
@@ -76,7 +91,6 @@ describe('RealTimeService', () => {
 
       expect(xmppService.reconnectClient).toHaveBeenCalled();
     });
-
 
     describe('recursivly', () => {
       it('should call xmpp.reconnectClient if ongoingRetry is FALSE, and set ongoingRetry to TRUE', () => {
@@ -164,17 +178,17 @@ describe('RealTimeService', () => {
   describe('subscribeEventNewMessage', () => {
     it(`should call sendDeliveryReceipt when a NEW_MESSAGE event is emitted for a message that requests the delivery
     and is NOT fromSelf`, () => {
-        spyOn(service, 'sendDeliveryReceipt');
-        spyOn(persistencyService, 'findMessage').and.returnValue(Observable.throw({
-          reason: 'missing'
-        }));
-        const msg = new Message('someId', CONVERSATION_ID, 'from other', OTHER_USER_ID);
-        msg.fromSelf = false;
+      spyOn(service, 'sendDeliveryReceipt');
+      spyOn(persistencyService, 'findMessage').and.returnValue(Observable.throw({
+        reason: 'missing'
+      }));
+      const msg = new Message('someId', CONVERSATION_ID, 'from other', OTHER_USER_ID);
+      msg.fromSelf = false;
 
-        eventService.emit(EventService.NEW_MESSAGE, msg, false, true);
+      eventService.emit(EventService.NEW_MESSAGE, msg, false, true);
 
-        expect(service.sendDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.thread);
-      });
+      expect(service.sendDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.thread);
+    });
 
     it('should NOT call sendDeliveryReceipt if the new message is fromSelf', () => {
       spyOn(service, 'sendDeliveryReceipt');
@@ -191,21 +205,21 @@ describe('RealTimeService', () => {
 
     it(`should NOT call sendDeliveryReceipt if a NEW_MESSAGE event is emitted without the deliveryReceipt parameter,
       or with the deliveryRecipt parameter set to FALSE`, () => {
-        spyOn(service, 'sendDeliveryReceipt');
-        spyOn(persistencyService, 'findMessage').and.returnValue(Observable.throw({
-          reason: 'missing'
-        }));
-        const msg = new Message('someId', CONVERSATION_ID, 'from myself!', USER_ID);
-        msg.fromSelf = false;
+      spyOn(service, 'sendDeliveryReceipt');
+      spyOn(persistencyService, 'findMessage').and.returnValue(Observable.throw({
+        reason: 'missing'
+      }));
+      const msg = new Message('someId', CONVERSATION_ID, 'from myself!', USER_ID);
+      msg.fromSelf = false;
 
-        eventService.emit(EventService.NEW_MESSAGE, msg, false, false);
+      eventService.emit(EventService.NEW_MESSAGE, msg, false, false);
 
-        expect(service.sendDeliveryReceipt).not.toHaveBeenCalled();
+      expect(service.sendDeliveryReceipt).not.toHaveBeenCalled();
 
-        eventService.emit(EventService.NEW_MESSAGE, msg);
+      eventService.emit(EventService.NEW_MESSAGE, msg);
 
-        expect(service.sendDeliveryReceipt).not.toHaveBeenCalled();
-      });
+      expect(service.sendDeliveryReceipt).not.toHaveBeenCalled();
+    });
 
     it('should NOT call sendDeliveryReceipt if the message already exists (persistencyService.findMessage returns a value)', () => {
       spyOn(service, 'sendDeliveryReceipt');
@@ -297,6 +311,38 @@ describe('RealTimeService', () => {
       eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
 
       expect(appboy.logCustomEvent).not.toHaveBeenCalled();
+    });
+
+    describe('if it`s the first message', () => {
+      it('should send the Send First Message event', () => {
+        const eventAttrs: SendFirstMessage = {
+          itemId: MOCKED_CONVERSATIONS[0].item.id,
+          sellerUserId: MOCKED_CONVERSATIONS[0].user.id,
+          conversationId: MOCKED_CONVERSATIONS[0].id,
+          screenId: SCREENS_IDS.Chat
+        }
+        MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
+        spyOn(analyticsService, 'trackEvent');
+
+        eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+          name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      });
+    });
+
+    describe('if it`s not the first message', () => {
+      it('should not send the Send First Message event', () => {
+        MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE, MOCK_MESSAGE];
+        spyOn(analyticsService, 'trackEvent');
+
+        eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
+
+        expect(analyticsService.trackEvent).not.toHaveBeenCalled();
+      });
     });
   });
 });

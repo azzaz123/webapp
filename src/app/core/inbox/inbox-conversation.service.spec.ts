@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { InboxConversationService } from './inbox-conversation.service';
@@ -11,7 +11,7 @@ import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '.
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { chatSignalType, ChatSignal } from '../message/chat-signal.interface';
 import { Message } from '../message/message';
-import { messageStatus, InboxMessage, MessageType } from '../../chat/chat-with-inbox/message/inbox-message';
+import { MessageStatus, InboxMessage, MessageType } from '../../chat/chat-with-inbox/message/inbox-message';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
@@ -24,6 +24,7 @@ import { ItemService } from '../item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { HttpModuleNew } from '../http/http.module.new';
 import { environment } from '../../../environments/environment';
+import * as _ from 'lodash';
 
 let service: InboxConversationService;
 let http: HttpService;
@@ -75,7 +76,7 @@ describe('InboxConversationService', () => {
   describe('subscribe chat events', () => {
     it('should parse a Message to InboxMessage and call processNewMessages when a NEW_MESSAGE event is emitted', () => {
       spyOn(service, 'processNewMessage');
-      const message = new Message('mockId', 'thread-id', 'hola!', 'mockUserId', new Date(), messageStatus.SENT);
+      const message = new Message('mockId', 'thread-id', 'hola!', 'mockUserId', new Date(), MessageStatus.SENT);
       const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf,
         message.date, message.status, MessageType.TEXT, message.payload, message.phoneRequest);
 
@@ -142,31 +143,39 @@ describe('InboxConversationService', () => {
 
     describe('when called with a message that does not already exist', () => {
       beforeEach(() => {
-        newInboxMessage = new InboxMessage('newMessageId', conversations[0].id, 'hole', 'mockUserId', true, new Date(), messageStatus.SENT, MessageType.TEXT);
+          newInboxMessage = new InboxMessage('newMessageId', conversations[0].id, 'hole', 'mockUserId', true, new Date(),
+          MessageStatus.SENT, MessageType.TEXT);
       });
 
       it('should prepend the new message to the conversation messages array', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
+
         service.processNewMessage(newInboxMessage);
 
         expect(service.conversations[0].messages[0]).toEqual(newInboxMessage);
       });
 
       it('should set conversation lastMessage to the new message', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
+
         service.processNewMessage(newInboxMessage);
 
         expect(service.conversations[0].lastMessage).toEqual(newInboxMessage);
       });
 
       it('should update the conversaiton modifiedDate with the new message date', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
+
         service.processNewMessage(newInboxMessage);
 
         expect(service.conversations[0].modifiedDate).toEqual(newInboxMessage.date);
       });
 
       it('should bump the conversation to 1st position', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         const conversationToBump = service.conversations[1];
         const message = new InboxMessage('mockId', conversationToBump.id, 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.SENT, MessageType.TEXT);
+          new Date(), MessageStatus.SENT, MessageType.TEXT);
 
         service.processNewMessage(message);
 
@@ -174,7 +183,7 @@ describe('InboxConversationService', () => {
       });
 
       it('should call persistencyService.saveInboxMessages with the new message', () => {
-        spyOn(persistencyService, 'saveInboxMessages');
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
 
         service.processNewMessage(newInboxMessage);
 
@@ -182,6 +191,7 @@ describe('InboxConversationService', () => {
       });
 
       it('should emit a MESSAGE_ADDED event, passing the new InboxMessage', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         spyOn(eventService, 'emit').and.callThrough();
 
         service.processNewMessage(newInboxMessage);
@@ -190,11 +200,12 @@ describe('InboxConversationService', () => {
       });
 
       it('should increment the unread counters by one for each new message not fromSelf', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         const unreadCounterBefore = service.conversations[0].unreadCounter;
         const count = 3;
         for (let i = 0; i < count; i++) {
           const msg = new InboxMessage('mockId' + i, conversations[0].id, 'hola!', 'mockUserId', false, new Date(),
-            messageStatus.SENT, MessageType.TEXT);
+            MessageStatus.SENT, MessageType.TEXT);
           service.processNewMessage(msg);
         }
 
@@ -203,8 +214,10 @@ describe('InboxConversationService', () => {
       });
 
       it('should only increment the unread counters for new messages NOT fromSelf AND with unique IDs', () => {
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         const unreadCounterBefore = service.conversations[0].unreadCounter;
-        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', false, new Date(), messageStatus.SENT, MessageType.TEXT);
+        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', false, new Date(),
+          MessageStatus.SENT, MessageType.TEXT);
 
         service.processNewMessage(message);
         service.processNewMessage(message);
@@ -215,7 +228,9 @@ describe('InboxConversationService', () => {
       });
 
       it('should not increment the conversation.unreadCount nor the messageService.totalUnreadMessages for new messages fromSelf', () => {
-        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', true, new Date(), messageStatus.SENT, MessageType.TEXT);
+        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
+        const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', true, new Date(),
+          MessageStatus.SENT, MessageType.TEXT);
         const unreadCounterBefore = service.conversations[0].unreadCounter;
 
         service.processNewMessage(message);
@@ -229,7 +244,7 @@ describe('InboxConversationService', () => {
       beforeEach(() => {
         currentLastMessage = conversations[0].lastMessage;
         newInboxMessage = new InboxMessage(conversations[0].messages[0].id, conversations[0].id, 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.RECEIVED, MessageType.TEXT);
+          new Date(), MessageStatus.RECEIVED, MessageType.TEXT);
         service.processNewMessage(newInboxMessage);
       });
 
@@ -238,6 +253,20 @@ describe('InboxConversationService', () => {
 
         expect(messagesFound.length).toBe(1);
       });
+
+      it('should prevent before push duplicate message', fakeAsync(() => {
+        const message = new InboxMessage('10', 'thread_123456', 'hola!', 'mockUserId', false, new Date(),
+          MessageStatus.SENT, MessageType.TEXT);
+        spyOn(eventService, 'emit').and.callThrough();
+        spyOn<any>(service, 'getConversation').and.returnValue(Observable.of(message));
+
+        service.processNewMessage(message);
+        service.processNewMessage(message);
+
+        tick();
+
+        expect(service.conversations).toEqual(_.uniq(service.conversations, 'id'));
+      }));
 
       it('should not update the lastMessage of the conversation', () => {
         expect(conversations[0].lastMessage).toEqual(currentLastMessage);
@@ -250,7 +279,7 @@ describe('InboxConversationService', () => {
       it('should not bump the conversation to 1st position', () => {
         const conversationToBump = service.conversations[1];
         const message = new InboxMessage(conversationToBump.lastMessage.id, conversationToBump.id, 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.SENT, MessageType.TEXT);
+          new Date(), MessageStatus.SENT, MessageType.TEXT);
 
         service.processNewMessage(message);
 
@@ -260,7 +289,7 @@ describe('InboxConversationService', () => {
       it('should NOT increase the unread counts if the new message has the same ID as the current lastMessage', () => {
         const unreadCounterBefore = service.conversations[0].unreadCounter;
         const message = new InboxMessage(currentLastMessage.id, conversations[0].id, 'hola!', 'mockUserId', false, new Date(),
-          messageStatus.READ, MessageType.TEXT);
+          MessageStatus.READ, MessageType.TEXT);
 
         service.processNewMessage(message);
 
@@ -273,7 +302,7 @@ describe('InboxConversationService', () => {
       beforeEach(() => {
         currentLastMessage = conversations[0].lastMessage;
         newInboxMessage = new InboxMessage('newMessageId', 'newConversationId', 'hola!', 'mockUserId', true,
-          new Date(), messageStatus.RECEIVED, MessageType.TEXT);
+          new Date(), MessageStatus.RECEIVED, MessageType.TEXT);
       });
 
       it('should call fetch new conversation', () => {
@@ -336,10 +365,10 @@ describe('InboxConversationService', () => {
         it(`should update status to READ for messages fromSelf and status RECEIVED`, () => {
           mockedConversation.messages.map((m, index) => {
             m.fromSelf = index < unreadCount ? true : false;
-            m.status = messageStatus.RECEIVED;
+            m.status = MessageStatus.RECEIVED;
           });
-          expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === messageStatus.SENT ||
-            m.status === messageStatus.RECEIVED));
+          expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === MessageStatus.SENT ||
+            m.status === MessageStatus.RECEIVED));
           expectedNotMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
 
           const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
@@ -347,21 +376,21 @@ describe('InboxConversationService', () => {
 
           expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(unreadCount);
           expectedMarkedAsRead.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
+            expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, MessageStatus.READ);
           });
 
           expectedNotMarkedAsRead.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
+            expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, MessageStatus.READ);
           });
         });
 
         it(`should update status to READ for messages fromSelf and status SENT`, () => {
           mockedConversation.messages.map((m, index) => {
             m.fromSelf = index < unreadCount ? true : false;
-            m.status = messageStatus.SENT;
+            m.status = MessageStatus.SENT;
           });
-          expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === messageStatus.SENT ||
-            m.status === messageStatus.RECEIVED));
+          expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === MessageStatus.SENT ||
+            m.status === MessageStatus.RECEIVED));
           expectedNotMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
 
           const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
@@ -369,18 +398,18 @@ describe('InboxConversationService', () => {
 
           expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(unreadCount);
           expectedMarkedAsRead.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
+            expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, MessageStatus.READ);
           });
 
           expectedNotMarkedAsRead.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
+            expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, MessageStatus.READ);
           });
         });
 
         it(`should NOT update status to READ for messages fromSelf and status PENDING`, () => {
           mockedConversation.messages.map((m, index) => {
             m.fromSelf = index < unreadCount ? true : false;
-            m.status = messageStatus.PENDING;
+            m.status = MessageStatus.PENDING;
           });
 
           const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
@@ -408,7 +437,7 @@ describe('InboxConversationService', () => {
         beforeEach(() => {
           mockedConversation.messages.map((m, index) => {
             m.fromSelf = index < unreadCount ? false : true;
-            m.status = messageStatus.RECEIVED;
+            m.status = MessageStatus.RECEIVED;
           });
           expectedMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
           expectedNotMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf);
@@ -421,11 +450,11 @@ describe('InboxConversationService', () => {
 
           expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(unreadCount);
           expectedMarkedAsRead.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
+            expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, MessageStatus.READ);
           });
 
           expectedNotMarkedAsRead.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
+            expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, MessageStatus.READ);
           });
         });
 
@@ -496,9 +525,9 @@ describe('InboxConversationService', () => {
 
       it(`should update message status ONLY for messages that meet the criteria:
         message status is missing OR message status is NULL OR the new status order is greater than the current status order`, () => {
-        mockedConversation.messages[0].status = messageStatus.SENT;
+        mockedConversation.messages[0].status = MessageStatus.SENT;
         mockedConversation.messages[1].status = null;
-        mockedConversation.messages[2].status = messageStatus.RECEIVED;
+        mockedConversation.messages[2].status = MessageStatus.RECEIVED;
 
         const signal1 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[0].id);
         const signal2 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[1].id);
@@ -513,11 +542,11 @@ describe('InboxConversationService', () => {
 
         expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(2);
         expectedChangedMessages.forEach(m => {
-          expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, messageStatus.RECEIVED);
+          expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, MessageStatus.RECEIVED);
         });
 
         expectedNotChangedMessages.forEach(m => {
-          expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.SENT);
+          expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, MessageStatus.SENT);
         });
       });
     });

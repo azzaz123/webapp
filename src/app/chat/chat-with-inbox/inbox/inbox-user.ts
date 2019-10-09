@@ -1,83 +1,116 @@
-export interface InboxUserLocation {
-    approximated_latitude: number;
-    approximated_longitude: number;
-}
+import { Item } from '../../../core/item/item';
 
+export interface InboxUserLocation {
+  approximated_latitude: number;
+  approximated_longitude: number;
+}
 
 export class InboxUser {
-    constructor(private _id: string,
-        private _microName: string,
-        private _blocked: boolean,
-        private _available: boolean,
-        private _profileUrl: string,
-        private _avatarUrl: string,
-        private _responseRate: string,
-        private _score?: number,
-        private _location?: any) {
-    }
-    get id(): string {
-        return this._id;
-    }
+  constructor(private _id: string,
+              private _microName: string,
+              private _blocked: boolean,
+              private _available: boolean,
+              private _profileUrl: string,
+              private _avatarUrl: string,
+              private _responseRate: string,
+              private _sellingItem: Item,
+              private _sellingItemCount: number,
+              private _score: number,
+              private _location: any,
+              private _distanceInKm: number) {
+  }
 
-    get microName(): string {
-        return this._microName;
-    }
+  get id(): string {
+    return this._id;
+  }
 
-    get blocked(): boolean {
-        return this._blocked;
-    }
+  set id(value: string) {
+    this._id = value;
+  }
 
-    set blocked(value: boolean) {
-        this._blocked = value;
-    }
+  get microName(): string {
+    return this._microName;
+  }
 
-    get available(): boolean {
-        return this._available;
-    }
+  get blocked(): boolean {
+    return this._blocked;
+  }
 
-    set available(value: boolean) {
-        this._available = value;
-    }
+  set blocked(value: boolean) {
+    this._blocked = value;
+  }
 
-    get profileUrl(): string {
-        return this._profileUrl;
-    }
+  get available(): boolean {
+    return this._available;
+  }
 
-    set profileUrl(value: string) {
-        this._profileUrl = value;
-    }
+  set available(value: boolean) {
+    this._available = value;
+  }
 
-    get avatarUrl(): string {
-        return this._avatarUrl;
-    }
+  get profileUrl(): string {
+    return this._profileUrl;
+  }
 
-    set avatarUrl(value: string) {
-        this._avatarUrl = value;
-    }
+  set profileUrl(value: string) {
+    this._profileUrl = value;
+  }
 
-    get responseRate(): string {
-        return this._responseRate;
-    }
+  get avatarUrl(): string {
+    return this._avatarUrl;
+  }
 
-    set responseRate(value: string) {
-        this._responseRate = value;
-    }
+  set avatarUrl(value: string) {
+    this._avatarUrl = value;
+  }
 
-    get score(): number {
-        return this._score;
-    }
+  get responseRate(): string {
+    return this._responseRate;
+  }
 
-    set score(value: number) {
-        this._score = value;
-    }
+  set responseRate(value: string) {
+    this._responseRate = value;
+  }
 
-    get location(): any {
-        return this._location;
-    }
+  get score(): number {
+    return this._score;
+  }
 
-    set location(value: any) {
-        this._location = value;
-    }
+  set score(value: number) {
+    this._score = value;
+  }
+
+  get location(): any {
+    return this._location;
+  }
+
+  set location(value: any) {
+    this._location = value;
+  }
+
+  get sellingItem(): Item {
+    return this._sellingItem;
+  }
+
+  set sellingItem(value: Item) {
+    this._sellingItem = value;
+  }
+
+  get sellingItemCount(): number {
+    return this._sellingItemCount;
+  }
+
+  set sellingItemCount(value: number) {
+    this._sellingItemCount = value;
+  }
+
+  get distanceInKm(): number {
+    return this._distanceInKm;
+  }
+
+  set distanceInKm(value: number) {
+    this._distanceInKm = value;
+  }
 }
 
-export const InboxUserPlaceholder = new InboxUser(null, 'unknown', false, false, null, null, null);
+export const InboxUserPlaceholder = new InboxUser(null, 'unknown', false, false, null, null, null, null, 0, 0, null, null);

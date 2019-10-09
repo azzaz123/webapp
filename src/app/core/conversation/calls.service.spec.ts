@@ -23,6 +23,8 @@ import { CallTotals } from './totals.interface';
 import { ConnectionService } from '../connection/connection.service';
 import { BlockUserXmppService } from './block-user';
 import { RealTimeService } from '../message/real-time.service';
+import { RemoteConsoleService } from '../remote-console';
+import { MockRemoteConsoleService } from '../../../tests';
 
 let service: CallsService;
 let userService: UserService;
@@ -43,6 +45,7 @@ describe('CallsService', () => {
         {provide: UserService, useClass: MockedUserService},
         {provide: ItemService, useClass: MockedItemService},
         {provide: PersistencyService, useClass: MockedPersistencyService},
+        {provide: RemoteConsoleService, useClass: MockRemoteConsoleService},
         {provide: TrackingService, useValue: {}},
         {
           provide: ConversationService, useValue: {
