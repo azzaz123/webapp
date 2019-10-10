@@ -115,6 +115,10 @@
         }
       }
       &:disabled {
+        &:hover {
+          background: $white;
+          color: $blue-grey-2;
+        }
         mat-icon /deep/ {
           svg g g, svg path {
             fill: $blue-grey-2;
