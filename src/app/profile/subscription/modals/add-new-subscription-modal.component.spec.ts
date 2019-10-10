@@ -311,9 +311,6 @@ describe('AddNewSubscriptionModalComponent', () => {
   });
 
   describe('selectListingLimit', () => {
-    let event = { preventDefault: jasmine.createSpy(), target: jasmine.createSpy() };
-    (<any>event).target.innerHTML = '40';
-    
     it('should set the listing limit', () => {
       component.selectListingLimit(TIER);
 

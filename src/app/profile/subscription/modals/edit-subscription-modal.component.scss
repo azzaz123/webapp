@@ -45,6 +45,12 @@
     color: $blue-grey-1;
     cursor: pointer;
   }
+  &--selected {
+    font-weight: bold;
+    color: $walla-main;
+    height: 56px !important;
+    box-shadow: 0px 4px 5px 0px $blue-grey-5 !important;
+  }
 }
 
 .EditSubscription__listing-limit-selection {
@@ -66,13 +72,6 @@
     color: $blue-grey-2;
     margin: $spacing-m 0 0;
     cursor: pointer;
-}
-
-.selected {
-  font-weight: bold;
-  color: $walla-main;
-  height: 56px !important;
-  box-shadow: 0px 4px 5px 0px $blue-grey-5 !important;
 }
 
 .modal-close {

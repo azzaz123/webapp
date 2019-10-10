@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { SubscriptionsService } from './subscriptions.service';
+import { SubscriptionsService, SUBSCRIPTIONS_URL } from './subscriptions.service';
 import { Observable } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
@@ -11,9 +11,9 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { SubscriptionsResponse } from './subscriptions.interface';
-import { MAPPED_SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
+import { MAPPED_SUBSCRIPTIONS, SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
 
-describe('SubscriptionsService', () => {
+fdescribe('SubscriptionsService', () => {
 
   let service: SubscriptionsService;
   let http: HttpServiceNew;
@@ -136,33 +136,18 @@ describe('SubscriptionsService', () => {
     });
   });
 
-  describe('isSubscriptionsActive', () => {
-    it('should call featureflagService.getFlag when called', () => {
-      spyOn(featureflagService, 'getFlag');
-  
-      service.isSubscriptionsActive$();
-  
-      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);
-    });
-  
-    afterEach(() => {
-      TestBed.resetTestingModule();
-    });
-  });
-
   describe('getSubscriptions', () => {
     it('should return the json from the categories and convert it into options', () => {
-      let response: SubscriptionsResponse[];
-      const expectedUrl = `${environment.baseUrl}bff/subscriptions`;
+      const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_URL}`;
       service.subscriptions = null;
+      let response: SubscriptionsResponse[];
 
-      service.getSubscriptions(CATEGORY_DATA_WEB, false).subscribe((data: SubscriptionsResponse[]) => {
-        response = data;
-      });
+      service.getSubscriptions(CATEGORY_DATA_WEB, false).subscribe((res) => response = res);
       const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush({});
-      
+      req.flush(SUBSCRIPTIONS);
+
       expect(req.request.url).toBe(expectedUrl);
+      expect(response).toEqual(SUBSCRIPTIONS);
     });
 
   });

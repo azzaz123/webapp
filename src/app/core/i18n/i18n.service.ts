@@ -139,7 +139,7 @@ export class I18nService {
       model_example: 'E.g: iPhone',
       noResultsFound: 'No results found',
       writeMessage: 'Write a message...',
-      editSubscriptionSuccessTitle: '¡Great!',
+      editSubscriptionSuccessTitle: 'Great!',
       editSubscriptionSuccessBody: 'Your subscription has been edited correctly.',
       cancelSubscriptionSuccessTitle: 'Subscription cancelled.',
       cancelSubscriptionSuccessBody: 'We are sad to see you go.'

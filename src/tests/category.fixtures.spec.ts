@@ -30,6 +30,32 @@ export const CATEGORY_DATA_WEB: Array<CategoryResponse> = [
     'title': 'Electrónica',
     'url': '/list/electronica',
     'visible': true
+  },
+  {
+    'categoryId': 14000,
+    'countryCode': 'ES',
+    'defaultTitle': 'Motorbikes',
+    'highlighted': false,
+    'iconColor': 'hsl(200,90%,76%)',
+    'iconName': 'category_Motorbike',
+    'numPublishedItems': 0,
+    'order': '40',
+    'title': 'Motos',
+    'url': '/list/motorbikes',
+    'visible': true
+  },
+  {
+    'categoryId': 12800,
+    'countryCode': 'ES',
+    'defaultTitle': 'Motor & Accessories',
+    'highlighted': false,
+    'iconColor': 'hsl(200,90%,76%)',
+    'iconName': 'category_MotorAccessories',
+    'numPublishedItems': 0,
+    'order': '40',
+    'title': 'Motor y Accesorios',
+    'url': '/list/motor-accesorios',
+    'visible': true
   }
 ];
 

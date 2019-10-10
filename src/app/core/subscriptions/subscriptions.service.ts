@@ -8,6 +8,10 @@ import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptio
 import { CategoryResponse } from '../category/category-response.interface';
 import { HttpServiceNew } from '../http/http.service.new';
 
+export const API_URL = 'api/v3/payments';
+export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
+export const SUBSCRIPTIONS_URL = 'bff/subscriptions';
+
 @Injectable()
 export class SubscriptionsService {
 
@@ -16,6 +20,7 @@ export class SubscriptionsService {
   public PAYMENT_PROVIDER_STRIPE = false;
   private API_URL = 'api/v3/payments';
   private STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
+  private SUBSCRIPTIONS_URL = 'bff/subscriptions';
   public subscriptions: SubscriptionsResponse[];
 
   constructor(private userService: UserService,
@@ -64,7 +69,7 @@ export class SubscriptionsService {
     if (this.subscriptions && cache) {
       return Observable.of(this.subscriptions);
     }
-    return this.http.get(`bff/subscriptions`)
+    return this.http.get(this.SUBSCRIPTIONS_URL)
     .map((subscriptions: SubscriptionsResponse[]) => {
       if (subscriptions.length > 0) {
         return subscriptions.map((subscription: SubscriptionsResponse) => this.mapSubscriptions(subscription, categories))
@@ -79,7 +84,6 @@ export class SubscriptionsService {
 
   private mapSubscriptions(subscription: SubscriptionsResponse, categories: CategoryResponse[]): SubscriptionsResponse {
     let category = categories.find((category: CategoryResponse) => subscription.category_id === category.categoryId);
-    
     if (category) {
       subscription.category_name = category.defaultTitle;
       subscription.category_icon = category.iconName;
