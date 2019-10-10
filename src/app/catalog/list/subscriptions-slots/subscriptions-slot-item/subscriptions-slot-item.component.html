@@ -2,6 +2,7 @@
   (click)="onClick(subscriptionSlot, $event)"
   [ngClass]="{
     'SubscriptionsSlotItem--selected': isSelected(),
+    'SubscriptionsSlotItem--not-selected': selectedSubscriptionSlot && !isSelected(),
     'SubscriptionsSlotItem--single': subscriptionSlotsLength === 1
   }">
 

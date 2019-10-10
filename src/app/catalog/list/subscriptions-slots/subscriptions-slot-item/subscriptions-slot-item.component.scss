@@ -28,10 +28,6 @@
       }
 
     }
-
-    .SubscriptionsSlotItem__info-title {
-      color: $walla-main;
-    }
   }
 }
 
@@ -44,7 +40,10 @@
   }
 }
 
-.SubscriptionsSlotItem__info-title,
+.SubscriptionsSlotItem__info-title {
+  color: $walla-main;
+}
+
 .SubscriptionsSlotItem__info-description {
   color: $blue-grey-2;
 }
@@ -85,4 +84,10 @@
     }
   }
 
+}
+
+.SubscriptionsSlotItem--not-selected {
+  .SubscriptionsSlotItem__info-title {
+    color: $blue-grey-2;
+  }
 }
