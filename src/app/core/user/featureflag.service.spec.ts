@@ -1,7 +1,7 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
-
+import { HttpModuleNew } from '../http/http.module.new';
 import { FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
 import { environment } from '../../../environments/environment';
 import { mockFeatureFlagsResponses, mockFeatureFlagsEnum } from '../../../tests';
@@ -15,7 +15,7 @@ describe('FeatureflagService', () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      imports: [ HttpClientTestingModule ],
+      imports: [ HttpClientTestingModule, HttpModuleNew ],
       providers: [ FeatureflagService ]
     });
     httpMock = injector.get(HttpTestingController);

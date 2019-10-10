@@ -44,6 +44,8 @@ import { CategoryService } from '../../core/category/category.service';
 import { HttpService } from '../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
+import { FeatureflagService } from '../../core/user/featureflag.service';
+import { FeatureFlagServiceMock } from '../../../tests';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -81,6 +83,7 @@ describe('ListComponent', () => {
         EventService,
         StripeService,
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
+        { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         CategoryService,
         HttpService,
         ...TEST_HTTP_PROVIDERS,
