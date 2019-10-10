@@ -643,22 +643,6 @@ describe('Service: User', () => {
     });
   });
 
-  describe('setCoinsFeatureFlag', () => {
-    it('should call getFlag and add permission if active', () => {
-      spyOn(featureflagService, 'getFlag').and.callThrough();
-      spyOn(permissionService, 'addPermission');
-      let resp: boolean;
-
-      service.setCoinsFeatureFlag().subscribe((r: boolean) => {
-        resp = r;
-      });
-
-      expect(featureflagService.getFlag).toHaveBeenCalledWith('coinsTypeUser');
-      expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS.coins);
-      expect(resp).toBe(true);
-    });
-  });
-
   describe('isProfessional', () => {
     let val: boolean;
 

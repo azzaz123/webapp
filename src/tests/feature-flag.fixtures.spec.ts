@@ -1,18 +1,20 @@
 import { Observable } from 'rxjs';
-import { FeatureFlagResponse } from '../app/core/user/featureflag.service';
+import { FEATURE_FLAGS_ENUM } from '../app/core/user/featureflag.service';
 
-export const mockFeatureFlags: FeatureFlagResponse[] = [
+export const mockFeatureFlagsResponses = [
   { name: 'flag1', active: false },
   { name: 'flag2', active: true },
   { name: 'flag3', active: false }
 ];
 
-export class FeatureFlagServiceMock {
-  getFlag(): Observable<boolean> {
-    return Observable.of(true);
-  }
+export enum mockFeatureFlagsEnum {
+  FLAG1 = 'flag1',
+  FLAG2 = 'flag2',
+  FLAG3 = 'flag3'
+}
 
-  getWebInboxProjections(): Observable<boolean> {
+export class FeatureFlagServiceMock {
+  getFlag(_flag: FEATURE_FLAGS_ENUM): Observable<boolean> {
     return Observable.of(true);
   }
 }

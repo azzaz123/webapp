@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RealTimeService } from '../message/real-time.service';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation';
 import { EventService } from '../event/event.service';
-import { InboxMessage, messageStatus, MessageType, statusOrder } from '../../chat/chat-with-inbox/message';
+import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/chat-with-inbox/message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
@@ -42,14 +42,14 @@ export class InboxConversationService {
   public archivedConversations: InboxConversation[];
 
   public subscribeChatEvents() {
-    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
+    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
       this.conversations = conversations;
-      conversations.map(conv => {
-        conv.messages.filter((message) => {
-          return (message.status === messageStatus.SENT && !message.fromSelf);
-        })
-        .map(message => this.realTime.sendDeliveryReceipt(conv.user.id, message.id, conv.id));
-      });
+      this.conversations.forEach(conversation => conversation.messages
+      .filter(message => message.type === MessageType.TEXT && message.status === MessageStatus.SENT && !message.fromSelf)
+      .forEach(message => {
+        this.realTime.sendDeliveryReceipt(conversation.user.id, message.id, conversation.id);
+        message.status = MessageStatus.RECEIVED;
+      }));
     });
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.archivedConversations = conversations;
@@ -69,7 +69,7 @@ export class InboxConversationService {
   }
 
   set selfId(value: string) {
-    this._selfId = this._selfId;
+    this._selfId = value;
   }
 
   public openConversation(conversation: InboxConversation) {
@@ -98,11 +98,12 @@ export class InboxConversationService {
       conversation.lastMessage = message;
       conversation.modifiedDate = message.date;
       this.bumpConversation(conversation);
-      this.persistencyService.saveInboxMessages(message);
-      this.eventService.emit(EventService.MESSAGE_ADDED, message);
-      if (!message.fromSelf) {
-        this.incrementUnreadCounter(conversation);
-      }
+      this.persistencyService.saveInboxMessages(message).subscribe(result => {
+        this.eventService.emit(EventService.MESSAGE_ADDED, message);
+        if (!message.fromSelf) {
+          this.incrementUnreadCounter(conversation);
+        }
+      });
     }
   }
 
@@ -126,10 +127,10 @@ export class InboxConversationService {
   public processNewChatSignal(signal: ChatSignal) {
     switch (signal.type) {
       case chatSignalType.SENT:
-        this.markAs(messageStatus.SENT, signal.messageId, signal.thread);
+        this.markAs(MessageStatus.SENT, signal.messageId, signal.thread);
         break;
       case chatSignalType.RECEIVED:
-        this.markAs(messageStatus.RECEIVED, signal.messageId, signal.thread);
+        this.markAs(MessageStatus.RECEIVED, signal.messageId, signal.thread);
         break;
       case chatSignalType.READ:
         /* the last argument passed to markAllAsRead is the reverse of fromSelf, as markAllAsRead method uses it to filter which messages
@@ -144,12 +145,12 @@ export class InboxConversationService {
   private markAllAsRead(thread: string, timestamp?: number, markMessagesFromSelf: boolean = false) {
     const conversation = this.conversations.find(c => c.id === thread);
     if (conversation) {
-      const unreadMessages = conversation.messages.filter(message => (message.status === messageStatus.RECEIVED ||
-        message.status === messageStatus.SENT) && (markMessagesFromSelf ? message.fromSelf &&
+      const unreadMessages = conversation.messages.filter(message => (message.status === MessageStatus.RECEIVED ||
+        message.status === MessageStatus.SENT) && (markMessagesFromSelf ? message.fromSelf &&
         new Date(message.date).getTime() <= timestamp : !message.fromSelf));
       unreadMessages.map((message) => {
-        message.status = messageStatus.READ;
-        this.persistencyService.updateInboxMessageStatus(message, messageStatus.READ);
+        message.status = MessageStatus.READ;
+        this.persistencyService.updateInboxMessageStatus(message, MessageStatus.READ);
       });
       if (!markMessagesFromSelf) {
         this.messageService.totalUnreadMessages -= conversation.unreadCounter;
@@ -178,15 +179,15 @@ export class InboxConversationService {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getConversation(message.thread)
     .subscribe((conversation) => {
-        this.conversations.unshift(conversation);
-        this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
+        if (!_.find(this.conversations, { id: conversation.id })) {
+          this.conversations.unshift(conversation);
+        }
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       },
       (err) => {
         // This is to display incoming messages if for some reason fetching the conversation fails.
         const conversation = InboxConversation.errorConversationFromMessage(message);
         this.conversations.unshift(conversation);
-        this.eventService.emit(EventService.INBOX_LOADED, this.conversations);
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       });
   }
@@ -288,7 +289,7 @@ export class InboxConversationService {
 
       // Then try to fetch the conversation by item
       return this.fetchConversationByItem$(itemId)
-      .map((inboxConversation) => {
+      .map((inboxConversation: InboxConversation) => {
         this.conversations.unshift(inboxConversation);
         this.openConversation(inboxConversation);
         return inboxConversation;

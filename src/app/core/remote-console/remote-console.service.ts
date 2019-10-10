@@ -5,7 +5,7 @@ import { MetricTypeEnum } from './metric-type.enum';
 import * as Fingerprint2 from 'fingerprintjs2';
 import * as logger from 'loglevel';
 import * as _ from 'lodash';
-import { FeatureflagService } from '../user/featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -35,18 +35,19 @@ export class RemoteConsoleService {
 
   }
 
-  sendDuplicateConversations(userId: string, conversationsGroupById: Map<string, number>): void {
+  sendDuplicateConversations(userId: string, loadMoreConversations: boolean, conversationsGroupById: Map<string, number>): void {
     this.getCommonLog(userId).subscribe(commonLog => logger.info(JSON.stringify({
       ...commonLog, ...{
         metric_type: MetricTypeEnum.DUPLICATE_CONVERSATION,
         message: 'send log when user see duplicate conversation in inbox',
+        load_more_conversations: loadMoreConversations,
         conversations_count_by_id: JSON.stringify(conversationsGroupById)
       }
     })));
   }
 
   private getCommonLog(userId: string): Observable<{}> {
-    return this.featureflagService.getWebInboxProjections()
+    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.INBOX_PROJECTIONS)
     .map(fetureFlag => {
       const device = this.deviceService.getDeviceInfo();
       return {

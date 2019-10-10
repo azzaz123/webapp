@@ -36,7 +36,7 @@ xdescribe('RemoteConsoleService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should call xmpp conection with parameters', () => {
+  xit('should call xmpp conection with parameters', () => {
     const USER_ID = 'USER_ID';
     const CONNECTION_TIME = 1000;
     spyOn(logger, 'info');
@@ -56,13 +56,14 @@ xdescribe('RemoteConsoleService', () => {
     }));
   });
 
-  it('should call xmpp conection with parameters', () => {
+  xit('should call xmpp conection with parameters', () => {
     const USER_ID = 'USER_ID';
     const CONVERSATIONS_BY_ID = new Map();
+    const LOAD_MORE_CONVERSATIONS = true;
     CONVERSATIONS_BY_ID['xa4ld642'] = 2;
     spyOn(logger, 'info');
 
-    service.sendDuplicateConversations(USER_ID, CONVERSATIONS_BY_ID);
+    service.sendDuplicateConversations(USER_ID, LOAD_MORE_CONVERSATIONS, CONVERSATIONS_BY_ID);
 
     expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
       'browser': 'CHROME',
@@ -71,6 +72,7 @@ xdescribe('RemoteConsoleService', () => {
       'feature_flag': true,
       'metric_type': 'DUPLICATE_CONVERSATION',
       'message': 'send log when user see duplicate conversation in inbox',
+      'load_more_conversations': true,
       'conversations_count_by_id': JSON.stringify({ 'xa4ld642': 2 })
     }));
   });

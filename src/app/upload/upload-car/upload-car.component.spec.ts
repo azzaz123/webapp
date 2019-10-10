@@ -1,3 +1,5 @@
+import { EVENT_TYPES } from '../../core/analytics/resources/analytics-constants';
+import { MockAnalyticsService } from './../../../tests/analytics.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { UploadCarComponent } from './upload-car.component';
@@ -23,6 +25,13 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Car } from '../../core/item/car';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { UserService } from '../../core/user/user.service';
+import { SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
+import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { EditItemCar } from '../../core/analytics/events-interfaces/edit-item-car.interface';
+import { ListItemCar } from '../../core/analytics/events-interfaces/list-item-car.interface';
+import { CarContent } from '../../core/item/item-response.interface';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -35,6 +44,7 @@ describe('UploadCarComponent', () => {
   let router: Router;
   let modalService: NgbModal;
   let trackingService: TrackingService;
+  let analyticsService: AnalyticsService;
   let itemService: ItemService;
   const componentInstance: any = {
     getBodyType: jasmine.createSpy('getBodyType')
@@ -47,66 +57,77 @@ describe('UploadCarComponent', () => {
         FormBuilder,
         TEST_HTTP_PROVIDERS,
         NgbPopoverConfig,
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        {
+          provide: UserService, useValue: {
+            isProfessional() {
+              return Observable.of(false);
+            },
+            isProUser() {
+              return Observable.of(false);
+            }
+          }
+        },
         {
           provide: CarSuggestionsService, useValue: {
-          getBrands() {
-            return Observable.of({});
-          },
-          getYears() {
-            return Observable.of({});
-          },
-          getModels() {
-            return Observable.of({});
-          },
-          getVersions() {
-            return Observable.of({});
+            getBrands() {
+              return Observable.of({});
+            },
+            getYears() {
+              return Observable.of({});
+            },
+            getModels() {
+              return Observable.of({});
+            },
+            getVersions() {
+              return Observable.of({});
+            }
           }
-        }
         },
         {
           provide: CarKeysService, useValue: {
-          getTypes() {
-            return Observable.of({});
+            getTypes() {
+              return Observable.of({});
+            }
           }
-        }
         },
         {
           provide: Router, useValue: {
-          navigate() {
+            navigate() {
+            }
           }
-        }
         },
         {
           provide: ErrorsService, useValue: {
-          i18nSuccess() {
-          },
-          i18nError() {
+            i18nSuccess() {
+            },
+            i18nError() {
+            }
           }
-        }
         },
         {
           provide: NgbModal, useValue: {
-          open() {
-            return {
-              result: Promise.resolve(),
-              componentInstance: componentInstance
-            };
+            open() {
+              return {
+                result: Promise.resolve(),
+                componentInstance: componentInstance
+              };
+            }
           }
-        }
         },
         {
           provide: ItemService, useValue: {
-          getCarInfo() {
-            return Observable.of(CAR_INFO);
+            getCarInfo() {
+              return Observable.of(CAR_INFO);
+            }
           }
-        }
         }
       ],
       declarations: [UploadCarComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -119,6 +140,7 @@ describe('UploadCarComponent', () => {
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
+    analyticsService = TestBed.get(AnalyticsService);
     itemService = TestBed.get(ItemService);
   });
 
@@ -409,51 +431,142 @@ describe('UploadCarComponent', () => {
   });
 
   describe('onUploaded', () => {
+    const MOCK_RESPONSE_CONTENT: CarContent = {
+      id: MOCK_CAR.id,
+      category_id: MOCK_CAR.categoryId,
+      sale_price: MOCK_CAR.salePrice,
+      title: MOCK_CAR.title,
+      description: MOCK_CAR.description,
+      modified_date: MOCK_CAR.modifiedDate,
+      flags: MOCK_CAR.flags,
+      seller_id: 'ukd73df',
+      web_slug: MOCK_CAR.webSlug,
+      brand: MOCK_CAR.brand,
+      model: MOCK_CAR.model,
+      body_type: MOCK_CAR.bodyType,
+      km: MOCK_CAR.km,
+      year: MOCK_CAR.year,
+      engine: MOCK_CAR.engine,
+      gearbox: MOCK_CAR.gearbox,
+      horsepower: MOCK_CAR.horsepower,
+      num_doors: MOCK_CAR.numDoors
+    }
+    const uploadedEvent = {
+      action: 'updated',
+      response: MOCK_RESPONSE_CONTENT
+    };
     it('should redirect', () => {
       component.item = <Car>MOCK_ITEM_V3;
       component.item.flags.onhold = null;
-      const uploadedEvent = {
-        action: 'updated',
-        response: {
-          id: '1'
-        }
-      };
       spyOn(router, 'navigate');
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id}]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id }]);
     });
 
     it('should redirect with onHold true', () => {
       component.item = <Car>MOCK_ITEM_V3;
       component.item.flags.onhold = true;
-      const uploadedEvent = {
-        action: 'updated',
-        response: {
-          id: '1'
-        }
-      };
       spyOn(router, 'navigate');
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true}]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true }]);
     });
 
     it('should set action as urgent if item is urgent and product not on hold', () => {
       component.isUrgent = true;
-      const uploadedEvent = {
-        action: 'updated',
-        response: {
-          id: '1'
-        }
-      };
       spyOn(router, 'navigate');
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {urgent: true, itemId: uploadedEvent.response.id}]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { urgent: true, itemId: uploadedEvent.response.id }]);
+    });
+
+    describe('if it`s a item modification', () => {
+      it('should send the Edit Item Car tracking event', () => {
+        component.item = MOCK_CAR;
+        const editEvent: any = {
+          action: 'update',
+          response: {
+            id: MOCK_CAR.id,
+            type: 'edit'
+          }
+        }
+        const editResponse: CarContent = MOCK_RESPONSE_CONTENT;
+        const trackingAttrs: EditItemCar = {
+          itemId: MOCK_CAR.id,
+          categoryId: MOCK_CAR.categoryId,
+          salePrice: MOCK_CAR.salePrice,
+          title: MOCK_CAR.title,
+          screenId: SCREENS_IDS.EditItem,
+          brand: MOCK_CAR.brand,
+          model: MOCK_CAR.model,
+          bodyType: MOCK_CAR.bodyType,
+          km: MOCK_CAR.km,
+          year: MOCK_CAR.year,
+          engine: MOCK_CAR.engine,
+          gearbox: MOCK_CAR.gearbox,
+          hp: MOCK_CAR.horsepower,
+          numDoors: MOCK_CAR.numDoors,
+          isCarDealer: false,
+          isPro: false
+        }
+        editEvent.response = editResponse;
+        spyOn(analyticsService, 'trackEvent');
+
+        component.ngOnInit();
+        component.onUploaded(editEvent);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+          name: ANALYTICS_EVENT_NAMES.EditItemCar,
+          eventType: EVENT_TYPES.Other,
+          attributes: trackingAttrs
+        });
+      });
+    });
+
+    describe('if it`s a item upload', () => {
+      it('should send the List Item Car tracking event', () => {
+        const uploadEvent: any = {
+          action: 'create',
+          response: {
+            id: MOCK_CAR.id,
+            type: 'upload'
+          }
+        }
+        const uploadResponse: CarContent = MOCK_RESPONSE_CONTENT;
+        const trackingAttrs: ListItemCar = {
+          itemId: MOCK_CAR.id,
+          categoryId: MOCK_CAR.categoryId,
+          salePrice: MOCK_CAR.salePrice,
+          title: MOCK_CAR.title,
+          screenId: SCREENS_IDS.Upload,
+          brand: MOCK_CAR.brand,
+          model: MOCK_CAR.model,
+          bodyType: MOCK_CAR.bodyType,
+          km: MOCK_CAR.km,
+          year: MOCK_CAR.year,
+          engine: MOCK_CAR.engine,
+          gearbox: MOCK_CAR.gearbox,
+          hp: MOCK_CAR.horsepower,
+          numDoors: MOCK_CAR.numDoors,
+          isCarDealer: false,
+          isPro: false
+        }
+        uploadEvent.response = uploadResponse;
+        spyOn(analyticsService, 'trackEvent');
+
+        component.ngOnInit();
+        component.onUploaded(uploadEvent);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+          name: ANALYTICS_EVENT_NAMES.ListItemCar,
+          eventType: EVENT_TYPES.Other,
+          attributes: trackingAttrs
+        });
+      });
     });
   });
 
@@ -581,7 +694,7 @@ describe('UploadCarComponent', () => {
   });
 
   describe('toggleCustomVersionSelection', () => {
-    it ('should not toggle the version value if its true and disable the field', () => {
+    it('should not toggle the version value if its true and disable the field', () => {
       component.customVersion = true;
       component.uploadForm.get('version').enable();
 
@@ -591,7 +704,7 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('version').disabled).toBeFalsy();
     });
 
-    it ('should toggle the version value and enable the field', () => {
+    it('should toggle the version value and enable the field', () => {
       component.customVersion = false;
       component.uploadForm.get('version').disable();
 

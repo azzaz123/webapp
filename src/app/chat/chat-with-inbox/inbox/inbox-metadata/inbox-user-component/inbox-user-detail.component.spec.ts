@@ -5,11 +5,19 @@ import { UserService } from '../../../../../core/user/user.service';
 import { MOCKED_INBOX_CONVERSATIONS } from '../../../../../../tests/inbox.fixtures.spec';
 import { InboxUserDetailComponent } from './inbox-user-detail.component';
 import { USER_INFO_RESPONSE, SCORING_STARS, RESPONSE_RATE } from '../../../../../../tests/user.fixtures.spec';
+import { User } from '../../../../../core/user/user';
+import { InboxUser } from '../../inbox-user';
+import { Item } from '../../../../../core/item/item';
+import { InboxItem } from '../../inbox-item';
 
 class MockUserService {
 
   getInfo() {
     return Observable.of(USER_INFO_RESPONSE);
+  }
+
+  calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
+    return 5.5;
   }
 }
 
@@ -22,7 +30,7 @@ describe('InboxUserDetailComponent', () => {
     TestBed.configureTestingModule({
       declarations: [InboxUserDetailComponent],
       providers: [
-        {provide: UserService, useClass: MockUserService},
+        { provide: UserService, useClass: MockUserService },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
@@ -53,6 +61,7 @@ describe('InboxUserDetailComponent', () => {
     it('should not call getInfo when user scoringStars and responseRate property', () => {
       component.user.score = 10;
       component.user.responseRate = 'test';
+      component.user.distanceInKm = 5.5;
 
       component.ngOnChanges({
         user: new SimpleChange(null, MOCKED_INBOX_CONVERSATIONS[0].user.id, false)
@@ -61,6 +70,7 @@ describe('InboxUserDetailComponent', () => {
       expect(userService.getInfo).not.toHaveBeenCalled();
       expect(component.user.score).toBe(10);
       expect(component.user.responseRate).toBe('test');
+      expect(component.user.distanceInKm).toBe(5.5);
     });
   });
 });

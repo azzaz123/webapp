@@ -41,6 +41,8 @@ import { InboxService } from './core/inbox/inbox.service';
 import { createInboxConversationsArray } from '../tests/inbox.fixtures.spec';
 import { SplitTestService } from './core/tracking/split-test.service';
 import { StripeService } from './core/stripe/stripe.service';
+import { AnalyticsService } from './core/analytics/analytics.service';
+import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -62,6 +64,7 @@ let connectionService: ConnectionService;
 let paymentService: PaymentService;
 let splitTestService: SplitTestService;
 let stripeService: StripeService;
+let analyticsService: AnalyticsService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -220,6 +223,7 @@ describe('App', () => {
             init() {}
           }
         },
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
         ...
           TEST_HTTP_PROVIDERS
       ],
@@ -245,6 +249,7 @@ describe('App', () => {
     paymentService = TestBed.get(PaymentService);
     splitTestService = TestBed.get(SplitTestService);
     stripeService = TestBed.get(StripeService);
+    analyticsService = TestBed.get(AnalyticsService);
     spyOn(notificationService, 'init');
   });
 
@@ -688,6 +693,16 @@ describe('App', () => {
       spyOn(stripeService, 'init');
       component.ngOnInit();
       expect(stripeService.init).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Analytics', () => {
+    it('should initialize the analytics library', () => {
+      spyOn(analyticsService, 'initialize');
+
+      component.ngOnInit();
+
+      expect(analyticsService.initialize).toHaveBeenCalledTimes(1);
     });
   });
 

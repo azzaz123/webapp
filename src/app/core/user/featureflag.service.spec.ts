@@ -4,8 +4,7 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 
 import { FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
 import { environment } from '../../../environments/environment';
-import { mockFeatureFlags, FeatureFlagServiceMock } from '../../../tests';
-import { HttpServiceNew } from '../http/http.service.new';
+import { mockFeatureFlagsResponses, mockFeatureFlagsEnum } from '../../../tests';
 
 describe('FeatureflagService', () => {
   let injector: TestBed;
@@ -17,7 +16,7 @@ describe('FeatureflagService', () => {
     injector = getTestBed();
     injector.configureTestingModule({
       imports: [ HttpClientTestingModule ],
-      providers: [ HttpServiceNew, FeatureflagService ]
+      providers: [ FeatureflagService ]
     });
     httpMock = injector.get(HttpTestingController);
     service = injector.get(FeatureflagService);
@@ -35,12 +34,12 @@ describe('FeatureflagService', () => {
 
   describe('getFlag', () => {
     it('should call valid endpoint', () => {
-      const featureFlagName = 'flag';
+      const featureFlagName = mockFeatureFlagsEnum.FLAG1;
       const expectedUrlParams = `featureFlags=${featureFlagName}&timestamp=${TIMESTAMP}`;
       const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
       const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-      service.getFlag(featureFlagName).subscribe();
+      service.getFlag(featureFlagName as any).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
       req.flush([]);
 
@@ -50,13 +49,13 @@ describe('FeatureflagService', () => {
     });
 
     it('should not do extra HTTP request when feature flag was already fetched', () => {
-      const featureFlagName = 'flag';
+      const featureFlagName = mockFeatureFlagsEnum.FLAG1;
       const expectedUrlParams = `featureFlags=${featureFlagName}&timestamp=${TIMESTAMP}`;
       const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
       const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-      service.getFlag(featureFlagName).flatMap(() => {
-        return service.getFlag(featureFlagName);
+      service.getFlag(featureFlagName as any).flatMap(() => {
+        return service.getFlag(featureFlagName as any);
       }).subscribe();
 
       const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
@@ -64,27 +63,18 @@ describe('FeatureflagService', () => {
     });
 
     it('should return boolean observable with valid value', () => {
-      const featureFlagName = mockFeatureFlags[0].name;
+      const featureFlagName = mockFeatureFlagsEnum.FLAG1;
+      const mockResponse = mockFeatureFlagsResponses.find(mff => mff.name === featureFlagName);
       const expectedUrlParams = `featureFlags=${featureFlagName}&timestamp=${TIMESTAMP}`;
       const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
       const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
       let dataResponse: boolean;
 
-      service.getFlag(featureFlagName).subscribe(active => dataResponse = active);
+      service.getFlag(featureFlagName as any).subscribe(isActive => dataResponse = isActive);
       const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
-      req.flush([mockFeatureFlags[0]]);
+      req.flush([mockResponse]);
 
-      expect(dataResponse).toBe(mockFeatureFlags[0].active);
-    });
-  });
-
-  describe('getInboxFeatureFlag', () => {
-    it('should call featureflagService.getFlag when called', () => {
-      spyOn(service, 'getFlag');
-
-      service.getWebInboxProjections();
-
-      expect(service.getFlag).toHaveBeenCalledWith('web_inbox_projections');
+      expect(dataResponse).toBe(mockResponse.active);
     });
   });
 });

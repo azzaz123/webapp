@@ -273,7 +273,8 @@ export class ItemService extends ResourceService {
       ITEM_TYPES.CONSUMER_GOODS,
       content.extra_info ? {
         object_type: {
-          id: content.extra_info.object_type && content.extra_info.object_type.id ? content.extra_info.object_type.id.toString() : null
+          id: content.extra_info.object_type && content.extra_info.object_type.id ? content.extra_info.object_type.id.toString() : null,
+          name: content.extra_info.object_type && content.extra_info.object_type.name ? content.extra_info.object_type.name : null
         },
         brand: content.extra_info.brand,
         model: content.extra_info.model,

@@ -70,8 +70,8 @@
 
           <div
             *ngIf="!currentConversation.user.blocked && currentConversation.user.available && currentConversation.item.notAvailable"
-            class="date-marker date-marker-error">
-            <mat-icon svgIcon="not-available-error"></mat-icon>
+            class="date-marker date-marker-warning">
+            <mat-icon svgIcon="not-available" class="not-available"></mat-icon>
             <span i18n>This product is not available</span>
           </div>
         </div>

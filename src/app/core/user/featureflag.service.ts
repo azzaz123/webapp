@@ -4,27 +4,32 @@ import { Observable, of } from 'rxjs';
 import { HttpServiceNew } from '../http/http.service.new';
 import { IDictionary } from '../../shared/models/dictionary.interface';
 
-export interface FeatureFlagResponse {
+export interface FeatureFlag {
   name: string;
-  active: boolean;
+  isActive: boolean;
 }
 
 export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
 
+export enum FEATURE_FLAGS_ENUM {
+  STRIPE = 'web_stripe',
+  SUBSCRIPTIONS = 'web_subscriptions',
+  INBOX_PROJECTIONS = 'web_inbox_projections'
+}
+
 @Injectable()
 export class FeatureflagService {
 
-  private storedFeatureFlags: FeatureFlagResponse[] = [];
+  private storedFeatureFlags: FeatureFlag[] = [];
 
   constructor(private http: HttpServiceNew) {
   }
 
-  public getFlag(name: string): Observable<boolean> {
-
+  public getFlag(name: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
     const storedFeatureFlag = this.storedFeatureFlags.find(sff => sff.name === name);
 
-    if (storedFeatureFlag) {
-      return of(storedFeatureFlag).map(sff => sff.active);
+    if (storedFeatureFlag && cache) {
+      return of(storedFeatureFlag).map(sff => sff.isActive);
     } else {
       const params: IDictionary[] = [
         {
@@ -38,21 +43,16 @@ export class FeatureflagService {
         }
       ];
 
-      return this.http.get<FeatureFlagResponse[]>(FEATURE_FLAG_ENDPOINT, params)
+      return this.http.get(FEATURE_FLAG_ENDPOINT, params)
         .map(response => {
-          const featureFlagResponse = response[0] ? response[0] : { name, active: false };
+          const featureFlag = response[0] ? { name, isActive: response[0].active } : { name, isActive: false };
           const alreadyStored = this.storedFeatureFlags.find(sff => sff.name === name);
           if (!alreadyStored) {
-            this.storedFeatureFlags.push(featureFlagResponse);
+            this.storedFeatureFlags.push(featureFlag);
           }
-          return featureFlagResponse.active;
+          return featureFlag.isActive;
         });
     }
 
   }
-
-  getWebInboxProjections(): Observable<boolean> {
-    return this.getFlag('web_inbox_projections');
-  }
-
 }

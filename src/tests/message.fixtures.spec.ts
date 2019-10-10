@@ -1,6 +1,6 @@
 import { OTHER_USER_ID, USER_ID } from './user.fixtures.spec';
 import { Message } from '../app/core/message/message';
-import { InboxMessage, messageStatus, MessageType } from '../app/chat/chat-with-inbox/message';
+import { InboxMessage, MessageStatus, MessageType } from '../app/chat/chat-with-inbox/message';
 import { MessagePayload } from '../app/core/message/messages.interface';
 import { Subject } from 'rxjs';
 
@@ -45,7 +45,7 @@ export function createInboxMessagesArray(total: number) {
       MESSAGE_MAIN.from,
       true,
       new Date(),
-      messageStatus.SENT,
+      MessageStatus.SENT,
       MessageType.TEXT));
   }
   return messages;
