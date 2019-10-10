@@ -1,9 +1,12 @@
 <div class="SubscriptionsSlotsList" [hidden]="subscriptionsSlots.length === 0">
+
   <tsl-subscriptions-slot-item 
     *ngFor="let subscriptionSlot of subscriptionsSlots"
     [subscriptionSlot]="subscriptionSlot"
+    [subscriptionSlotsLength]="subscriptionsSlots.length"
     [selectedSubscriptionSlot]="selectedSubscriptionSlot"
     (selected)="onSelectSubscriptionSlot($event)"
   >
   </tsl-subscriptions-slot-item>
+
 </div>

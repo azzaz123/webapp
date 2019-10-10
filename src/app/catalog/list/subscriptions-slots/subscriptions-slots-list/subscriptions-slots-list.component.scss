@@ -1,10 +1,6 @@
 @import '~web-styleguide/scss/spacing';
 
 .SubscriptionsSlotsList {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-
+    display: block;
     margin: $spacing-l 0;
 }

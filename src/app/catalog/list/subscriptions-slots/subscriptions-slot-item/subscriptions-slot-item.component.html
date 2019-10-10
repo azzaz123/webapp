@@ -1,6 +1,9 @@
 <div class="SubscriptionsSlotItem" 
   (click)="onClick(subscriptionSlot, $event)"
-  [ngClass]="{'SubscriptionsSlotItem__selected': isSelected()}">
+  [ngClass]="{
+    'SubscriptionsSlotItem--selected': isSelected(),
+    'SubscriptionsSlotItem--single': subscriptionSlotsLength === 1
+  }">
 
   <div class="SubscriptionsSlotItem__icon">
     <mat-icon svgIcon="{{subscriptionSlot.category.iconName}}"></mat-icon>
