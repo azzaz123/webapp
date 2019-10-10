@@ -1,4 +1,6 @@
-<div class="SubscriptionsSlotsList" [hidden]="subscriptionsSlots.length === 0">
+<div class="SubscriptionsSlotsList" [hidden]="subscriptionsSlots.length === 0"
+  [ngClass]="{ 'SubscriptionsSlotsList--many':  subscriptionsSlots.length > 1 }"
+>
 
   <tsl-subscriptions-slot-item 
     *ngFor="let subscriptionSlot of subscriptionsSlots"
