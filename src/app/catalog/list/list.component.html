@@ -41,7 +41,8 @@
       </div>
     </tsl-header>
 
-    <tsl-subscriptions-slots-list 
+    <tsl-subscriptions-slots-list
+      *ngIf="isSubscriptions" 
       [subscriptionsSlots]="subscriptionSlots"
       [selectedSubscriptionSlot]="selectedSubscriptionSlot"
       (subscriptionSlotSelected)="selectSubscriptionSlot($event)"

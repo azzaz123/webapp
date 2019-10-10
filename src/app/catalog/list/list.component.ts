@@ -35,6 +35,7 @@ import { StripeService } from '../../core/stripe/stripe.service';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { SubscriptionSlot } from '../../core/subscriptions/subscriptions.interface';
 import { NavLink } from '../../shared/nav-links/nav-link.interface';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../../core/user/featureflag.service';
 
 export const NORMAL_NAV_LINKS: NavLink[] = [
   { id: 'published', display: 'Selling' },
@@ -86,6 +87,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public sortBy: string;
   private page = 1;
   private pageSize = 20;
+  public isSubscriptions = false;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -101,7 +103,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     protected i18n: I18nService,
     private stripeService: StripeService,
-    private subscriptionsService: SubscriptionsService) {
+    private subscriptionsService: SubscriptionsService,
+    private featureFlagService: FeatureflagService) {
   }
 
   ngOnInit() {
@@ -117,6 +120,8 @@ export class ListComponent implements OnInit, OnDestroy {
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = val;
     });
+
+    this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS).subscribe(active => this.isSubscriptions = active);
 
     this.itemService.selectedItems$.takeWhile(() => {
       return this.active;
