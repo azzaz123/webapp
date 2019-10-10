@@ -25,6 +25,9 @@ import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { SCREENS_IDS } from '../../../core/analytics/resources/analytics-constants';
 import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
 import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
+import { InboxUser } from './inbox-user';
+import { Item } from '../../../core/item/item';
+import { InboxItem } from './inbox-item';
 
 class AdServiceMock {
   startAdsRefresh() {
@@ -78,6 +81,9 @@ describe('Component: InboxComponent', () => {
             },
             me(): Observable<User> {
               return Observable.of(MOCK_USER);
+            },
+            calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
+              return 5.5;
             }
           }
         },
@@ -131,6 +137,7 @@ describe('Component: InboxComponent', () => {
       beforeEach(() => {
         inboxService.conversations = mockedInboxConversations;
       });
+
       it('should set conversations to the value of inboxService.conversations', () => {
         component.ngOnInit();
 
@@ -153,6 +160,7 @@ describe('Component: InboxComponent', () => {
         inboxService.errorRetrievingInbox = true;
 
         component.ngOnInit();
+        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations, true);
 
         expect(component.errorRetrievingInbox).toBe(true);
       });
@@ -200,7 +208,7 @@ describe('Component: InboxComponent', () => {
         itemId: conversation.item.id,
         conversationId: conversation.id,
         screenId: SCREENS_IDS.Chat
-      }
+      };
 
       describe('if the selected conversation is not the current conversation', () => {
         it('should send the View Chat Screen event', () => {
@@ -411,21 +419,25 @@ describe('Component: InboxComponent', () => {
     });
 
     it('should send log with duplicate conversations', () => {
+      const LOAD_MORE_CONVERSATIONS = true;
       spyOn(remoteConsoleService, 'sendDuplicateConversations');
 
       component.ngOnInit();
-      eventService.emit(EventService.INBOX_LOADED, duplicateMockedInboxConversations);
+      eventService.emit(EventService.INBOX_LOADED, duplicateMockedInboxConversations, LOAD_MORE_CONVERSATIONS);
 
-      expect(remoteConsoleService.sendDuplicateConversations).toHaveBeenCalledWith(MOCK_USER.id, { 1: 2, 2: 2, 3: 2 });
+      expect(remoteConsoleService.sendDuplicateConversations)
+      .toHaveBeenCalledWith(MOCK_USER.id, LOAD_MORE_CONVERSATIONS, { 1: 2, 2: 2, 3: 2 });
     });
 
     it('should send log with duplicate conversations if id of conversation is undefined, empty or null', () => {
+      const LOAD_MORE_CONVERSATIONS = true;
       spyOn(remoteConsoleService, 'sendDuplicateConversations');
 
       component.ngOnInit();
-      eventService.emit(EventService.INBOX_LOADED, duplicateIncorrectMockedInboxConversations);
+      eventService.emit(EventService.INBOX_LOADED, duplicateIncorrectMockedInboxConversations, LOAD_MORE_CONVERSATIONS);
 
-      expect(remoteConsoleService.sendDuplicateConversations).toHaveBeenCalledWith(MOCK_USER.id, { null: 2, '': 2, undefined: 3 });
+      expect(remoteConsoleService.sendDuplicateConversations)
+      .toHaveBeenCalledWith(MOCK_USER.id, LOAD_MORE_CONVERSATIONS, { null: 2, '': 2, undefined: 3 });
     });
   });
 });
