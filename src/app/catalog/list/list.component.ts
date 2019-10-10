@@ -155,13 +155,15 @@ export class ListComponent implements OnInit, OnDestroy {
           const transactionType = localStorage.getItem('transactionType');
           let modalType;
           let modal;
-
           switch (transactionType) {
             case 'urgentWithCredits':
               modalType = 'urgent';
               break;
             case 'reactivateWithCredits':
               modalType = 'reactivate';
+              break;
+            case 'bumpWithCredits':
+              modalType = 'bump';
               break;
             case 'wallapack':
               this.router.navigate(['wallacoins', { code: params.code }]);
@@ -177,9 +179,11 @@ export class ListComponent implements OnInit, OnDestroy {
           if (params.code === '-1') {
             modal = modals.bump;
           } else {
-            modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
+            modal = modalType && modals[modalType] ? modals[modalType] : null;
           }
-
+          if (!modal) {
+            return;
+          }
           let modalRef: NgbModalRef = this.modalService.open(modal, {
             windowClass: 'modal-standard',
             backdrop: 'static'
