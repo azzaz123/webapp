@@ -197,8 +197,12 @@ export class InboxConversationService {
     .map((res: Response) => InboxConversation.fromJSON(res.json(), this._selfId));
   }
 
-  public isConversationArchived(conversation: InboxConversation): boolean {
-    return _.includes(this.archivedConversations, conversation);
+  public containsConversation(conversation: InboxConversation): boolean {
+    return isNullOrUndefined(conversation) ? false : _.some(this.conversations, { id: conversation.id });
+  }
+
+  public containsArchivedConversation(conversation: InboxConversation): boolean {
+    return isNullOrUndefined(conversation) ? false : _.some(this.archivedConversations, { id: conversation.id });
   }
 
   public archive(conversation: InboxConversation): Observable<InboxConversation> {

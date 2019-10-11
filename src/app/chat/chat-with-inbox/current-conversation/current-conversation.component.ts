@@ -226,7 +226,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   }
 
   get currentConversationisArchived(): boolean {
-    return this.conversationService.isConversationArchived(this.currentConversation);
+    return this.conversationService.containsArchivedConversation(this.currentConversation);
   }
 
   public hasMoreMessages(): boolean {
