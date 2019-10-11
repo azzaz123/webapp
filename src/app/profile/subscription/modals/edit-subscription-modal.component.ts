@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
+import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
@@ -29,7 +30,8 @@ export class EditSubscriptionModalComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal,
               private toastr: ToastrService,
               private i18n: I18nService,
-              private eventService: EventService) {
+              private eventService: EventService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -51,6 +53,18 @@ export class EditSubscriptionModalComponent implements OnInit {
 
   public selectListingLimit(tier: Tier): void {
     this.selectedTier = tier;
+  }
+
+  public cancelSubscription() {
+    this.close();
+    const modal = CancelSubscriptionModalComponent
+    let modalRef: NgbModalRef = this.modalService.open(modal, {windowClass: 'review'});
+    modalRef.componentInstance.subscription = this.subscription;
+    modalRef.result.then(() => {
+      modalRef = null;
+      this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
+      this.eventService.emit('subscriptionChange');
+    }, () => {});
   }
 
 }
