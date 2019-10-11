@@ -44,12 +44,12 @@
     flex: 0 0 75px;
     color: $blue-grey-1;
     cursor: pointer;
-  }
-  &--selected {
-    font-weight: bold;
-    color: $walla-main;
-    height: 56px !important;
-    box-shadow: 0px 4px 5px 0px $blue-grey-5 !important;
+    &--selected {
+      font-weight: bold;
+      color: $walla-main;
+      height: 56px !important;
+      box-shadow: 0px 4px 5px 0px $blue-grey-5 !important;
+    }
   }
 }
 
