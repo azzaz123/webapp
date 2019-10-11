@@ -1,8 +1,6 @@
 import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InboxMessage, MessageType } from '../message';
-import { InboxConversation } from '../inbox/inbox-conversation';
 import { EventService } from '../../../core/event/event.service';
 import { RealTimeService } from '../../../core/message/real-time.service';
 import { Subscription } from 'rxjs';
@@ -22,6 +20,7 @@ import { TextMessageComponent } from '../message/text-message';
 import { ThirdVoiceMessageComponent } from '../message/third-voice-message';
 import { BlockUserService, BlockUserXmppService } from '../../../core/conversation/block-user';
 import * as _ from 'lodash';
+import { InboxConversation, InboxMessage, MessageType } from '../../model';
 
 @Component({
   selector: 'tsl-current-conversation',

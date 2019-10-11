@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RealTimeService } from '../message/real-time.service';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation';
 import { EventService } from '../event/event.service';
-import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/chat-with-inbox/message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
@@ -14,7 +12,10 @@ import { ConversationResponse } from '../conversation/conversation-response.inte
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { HttpServiceNew } from '../http/http.service.new';
+import { InboxConversation } from '../../chat/model/inbox-conversation';
 import * as _ from 'lodash';
+import { isNullOrUndefined } from 'util';
+import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
 
 @Injectable({
   providedIn: 'root'

@@ -11,11 +11,11 @@ import { ResponseOptions, Response } from '@angular/http';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
-import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-item';
+import { InboxConversation } from '../../chat/model/inbox-conversation';
+import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../../chat/model/inbox-item';
 import { UserService } from '../user/user.service';
 import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { InboxUserPlaceholder } from '../../chat/chat-with-inbox/inbox/inbox-user';
+import { InboxUserPlaceholder } from '../../chat/model/inbox-user';
 import { InboxConversationService } from './inbox-conversation.service';
 import { FeatureFlagServiceMock } from '../../../tests';
 

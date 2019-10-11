@@ -5,8 +5,7 @@ import { ReviewService } from '../../../../../core/review/review.service';
 import { ReviewModalComponent } from '../../../../../shared/modals/review-modal/review-modal.component';
 import { SoldModalComponent } from '../../../../../shared/modals/sold-modal/sold-modal.component';
 import { ConversationUser } from '../../../../../core/item/item-response.interface';
-import { InboxItem, InboxUser } from '../../../inbox';
-import { InboxMessage } from '../../inbox-message';
+import { InboxItem, InboxMessage, InboxUser } from '../../../../model';
 
 @Component({
   selector: 'tsl-third-voice-button',

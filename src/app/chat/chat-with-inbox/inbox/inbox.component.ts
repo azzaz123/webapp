@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
-import { InboxConversation } from './inbox-conversation/inbox-conversation';
+import { InboxConversation } from '../../model/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
 import { Message } from '../../../core/message/message';

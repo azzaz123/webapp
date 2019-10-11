@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { MessageComponent } from '../message.component';
-import { MessageType } from '../inbox-message';
+import { MessageType } from '../../../model/inbox-message';
 
 @Component({
   selector: 'tsl-text-message',

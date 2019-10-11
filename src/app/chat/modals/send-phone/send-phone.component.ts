@@ -9,7 +9,7 @@ import { environment } from '../../../../environments/environment';
 import { WindowRef } from '../../../core/window/window.service';
 import { HttpService } from '../../../core/http/http.service';
 import { AsYouType, format, getCountryCallingCode, isValidNumber } from 'libphonenumber-js';
-import { InboxConversation } from '../../chat-with-inbox/inbox/inbox-conversation';
+import { InboxConversation } from '../../model';
 
 @Component({
   selector: 'tsl-send-phone',

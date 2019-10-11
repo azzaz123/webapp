@@ -5,7 +5,7 @@ import { PersistencyService } from './persistency.service';
 import { createMessagesArray, createInboxMessagesArray, MESSAGE_MAIN,
   MOCK_MESSAGE, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
 import { Message, phoneRequestState } from '../message/message';
-import { InboxMessage, MessageStatus } from '../../chat/chat-with-inbox/message/inbox-message';
+import { InboxMessage, MessageStatus } from '../../chat/model/inbox-message';
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_RESPONSE,
@@ -22,7 +22,7 @@ import { EventService } from '../event/event.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 

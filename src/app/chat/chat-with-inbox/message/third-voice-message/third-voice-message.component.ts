@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { MessageComponent } from '../message.component';
-import { MessageType } from '../inbox-message';
-import { InboxItem, InboxUser } from '../../inbox';
 import * as _ from 'lodash';
+import { InboxItem, InboxUser, MessageType } from '../../../model';
 
 @Component({
   selector: 'tsl-third-voice-message',

@@ -12,7 +12,7 @@ import { InboxService } from '../../../core/inbox/inbox.service';
 import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { EventService } from '../../../core/event/event.service';
 import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
-import { InboxConversation } from './inbox-conversation/inbox-conversation';
+import { InboxConversation } from '../../model/inbox-conversation';
 import { UserService } from '../../../core/user/user.service';
 import { Observable } from 'rxjs';
 import { AdService } from '../../../core/ad/ad.service';
@@ -25,9 +25,9 @@ import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { SCREENS_IDS } from '../../../core/analytics/resources/analytics-constants';
 import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
 import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
-import { InboxUser } from './inbox-user';
+import { InboxUser } from '../../model/inbox-user';
 import { Item } from '../../../core/item/item';
-import { InboxItem } from './inbox-item';
+import { InboxItem } from '../../model/inbox-item';
 
 class AdServiceMock {
   startAdsRefresh() {
