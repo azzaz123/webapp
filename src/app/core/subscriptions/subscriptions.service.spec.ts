@@ -11,9 +11,9 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { SubscriptionsResponse } from './subscriptions.interface';
-import { MAPPED_SUBSCRIPTIONS, SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
+import { SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
 
-fdescribe('SubscriptionsService', () => {
+describe('SubscriptionsService', () => {
 
   let service: SubscriptionsService;
   let http: HttpServiceNew;
