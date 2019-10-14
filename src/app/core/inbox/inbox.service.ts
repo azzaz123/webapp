@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
+import { HttpServiceNew } from '../http/http.service.new';
 import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
@@ -11,6 +12,7 @@ import { environment } from '../../../environments/environment';
 import { InboxConversationService } from './inbox-conversation.service';
 import { Response } from '@angular/http';
 import * as _ from 'lodash';
+import { RealTimeService } from '../message/real-time.service';
 
 const USER_BASE_PATH = environment.siteUrl + 'user/';
 
@@ -22,13 +24,15 @@ export class InboxService {
   private _conversations: InboxConversation[] = [];
   private _archivedConversations: InboxConversation[] = [];
   private selfId: string;
-  private nextPageToken: number = null;
-  private nextArchivedPageToken: number = null;
-  private pageSize = 30;
+  private nextPageToken: string = null;
+  private nextArchivedPageToken: string = null;
+  private pageSize = 1;
   public errorRetrievingInbox = false;
   public errorRetrievingArchived = false;
 
   constructor(private http: HttpService,
+              private httpClient: HttpServiceNew,
+              private realTime: RealTimeService,
               private persistencyService: PersistencyService,
               private messageService: MessageService,
               private conversationService: InboxConversationService,
@@ -69,7 +73,8 @@ export class InboxService {
       this.errorRetrievingInbox = true;
       return this.persistencyService.getStoredInbox();
     })
-    .subscribe((conversations) => {
+    .subscribe((conversations: InboxConversation[]) => {
+      this.conversations = conversations;
       this.eventService.emit(EventService.INBOX_LOADED, conversations, false);
       this.eventService.emit(EventService.INBOX_READY, true);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);

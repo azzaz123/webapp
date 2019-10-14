@@ -36,7 +36,9 @@ export class InboxConversationService {
     private persistencyService: PersistencyService,
     private eventService: EventService,
     private userService: UserService, // To be removed
-    private itemService: ItemService) { // To be removed
+    private itemService: ItemService) {
+    this.conversations = [];
+    this.archivedConversations = [];
   }
 
   public conversations: InboxConversation[];
@@ -116,8 +118,8 @@ export class InboxConversationService {
   }
 
   private bumpConversation(conversation: InboxConversation) {
-    const index: number = this.conversations.indexOf(conversation);
-    if (index > 0) {
+    if (this.containsConversation(conversation)) {
+      const index: number = this.conversations.indexOf(conversation);
       this.conversations.splice(index, 1);
       this.conversations.unshift(conversation);
     }
@@ -183,7 +185,7 @@ export class InboxConversationService {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getConversation(message.thread)
     .subscribe((conversation) => {
-        if (!_.find(this.conversations, { id: conversation.id })) {
+        if (!this.containsConversation(conversation)) {
           this.conversations.unshift(conversation);
         }
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
@@ -191,7 +193,9 @@ export class InboxConversationService {
       (err) => {
         // This is to display incoming messages if for some reason fetching the conversation fails.
         const conversation = InboxConversation.errorConversationFromMessage(message);
-        this.conversations.unshift(conversation);
+        if (!this.containsConversation(conversation)) {
+          this.conversations.unshift(conversation);
+        }
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       });
   }
@@ -295,10 +299,11 @@ export class InboxConversationService {
         return Observable.of(localConversation);
       }
 
-      // Then try to fetch the conversation by item
       return this.fetchConversationByItem$(itemId)
       .map((inboxConversation: InboxConversation) => {
-        this.conversations.unshift(inboxConversation);
+        if (!this.containsConversation(inboxConversation)) {
+          this.conversations.unshift(inboxConversation);
+        }
         this.openConversation(inboxConversation);
         return inboxConversation;
       });

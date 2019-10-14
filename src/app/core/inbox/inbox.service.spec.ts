@@ -18,9 +18,15 @@ import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec'
 import { InboxUserPlaceholder } from '../../chat/model/inbox-user';
 import { InboxConversationService } from './inbox-conversation.service';
 import { FeatureFlagServiceMock } from '../../../tests';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpModuleNew } from '../http/http.module.new';
+import { HttpServiceNew } from '../http/http.service.new';
+import { RealTimeService } from '../message/real-time.service';
 
 let service: InboxService;
 let http: HttpService;
+let httpService: HttpServiceNew;
+let realTime: RealTimeService;
 let persistencyService: PersistencyService;
 let messageService: MessageService;
 let conversationService: InboxConversationService;
@@ -31,6 +37,10 @@ let userService: UserService;
 describe('InboxService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        HttpModuleNew
+      ],
       providers: [
         InboxService,
         ...TEST_HTTP_PROVIDERS,
@@ -46,11 +56,19 @@ describe('InboxService', () => {
             sendReceiveSignalByConversations(): void {
             }
           }
+        },
+        {
+          provide: RealTimeService, useValue: {
+            sendDeliveryReceipt(to: string, id: string, thread: string) {
+            }
+          }
         }
       ]
     });
     service = TestBed.get(InboxService);
     http = TestBed.get(HttpService);
+    httpService = TestBed.get(HttpServiceNew);
+    realTime = TestBed.get(RealTimeService);
     persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
     conversationService = TestBed.get(InboxConversationService);

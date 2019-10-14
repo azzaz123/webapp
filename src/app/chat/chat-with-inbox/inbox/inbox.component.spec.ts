@@ -128,6 +128,7 @@ describe('Component: InboxComponent', () => {
 
     it('should set conversations to the conversations from EventService.INBOX_LOADED event when it is triggered', () => {
       component.ngOnInit();
+      inboxService.conversations = mockedInboxConversations;
       eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
 
       expect(component.conversations).toEqual(mockedInboxConversations);
@@ -139,7 +140,9 @@ describe('Component: InboxComponent', () => {
       });
 
       it('should set conversations to the value of inboxService.conversations', () => {
+        inboxService.conversations = mockedInboxConversations;
         component.ngOnInit();
+        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
 
         expect(component.conversations).toEqual(mockedInboxConversations);
       });
