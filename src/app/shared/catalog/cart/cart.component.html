@@ -109,7 +109,7 @@
                             (stripeCard)="setCardInfo($event)" [loading]="loading"
     ></tsl-stripe-card-element>
   </div>
-  <tsl-button [hidden]="isStripe && !savedCard || isStripe && totalToPay > 0 && !savedCard"
+  <tsl-button [hidden]="isStripe && !savedCard && totalToPay > 0"
               [disabled]="(!cart?.total || loading)"
               [loading]="loading"
               (click)="checkout()"

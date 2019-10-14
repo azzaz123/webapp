@@ -20,6 +20,14 @@ import { RemoteConsoleService } from '../../../core/remote-console';
 import { MockRemoteConsoleService } from '../../../../tests';
 import { User } from '../../../core/user/user';
 import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
+import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import { SCREENS_IDS } from '../../../core/analytics/resources/analytics-constants';
+import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
+import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
+import { InboxUser } from './inbox-user';
+import { Item } from '../../../core/item/item';
+import { InboxItem } from './inbox-item';
 
 class AdServiceMock {
   startAdsRefresh() {
@@ -38,6 +46,7 @@ describe('Component: InboxComponent', () => {
   let conversationService: InboxConversationService;
   let addService: AdService;
   let remoteConsoleService: RemoteConsoleService;
+  let analyticsService: AnalyticsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -52,6 +61,7 @@ describe('Component: InboxComponent', () => {
         ...TEST_HTTP_PROVIDERS,
         { provide: AdService, useClass: AdServiceMock },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
         {
           provide: InboxService, useValue: {
             loadMorePages() {
@@ -71,6 +81,9 @@ describe('Component: InboxComponent', () => {
             },
             me(): Observable<User> {
               return Observable.of(MOCK_USER);
+            },
+            calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
+              return 5.5;
             }
           }
         },
@@ -91,6 +104,7 @@ describe('Component: InboxComponent', () => {
     addService = TestBed.get(AdService);
     remoteConsoleService = TestBed.get(RemoteConsoleService);
     conversationService = TestBed.get(InboxConversationService);
+    analyticsService = TestBed.get(AnalyticsService);
   });
 
   describe('ngOnInit', () => {
@@ -123,6 +137,7 @@ describe('Component: InboxComponent', () => {
       beforeEach(() => {
         inboxService.conversations = mockedInboxConversations;
       });
+
       it('should set conversations to the value of inboxService.conversations', () => {
         component.ngOnInit();
 
@@ -145,6 +160,7 @@ describe('Component: InboxComponent', () => {
         inboxService.errorRetrievingInbox = true;
 
         component.ngOnInit();
+        eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations, true);
 
         expect(component.errorRetrievingInbox).toBe(true);
       });
@@ -183,6 +199,41 @@ describe('Component: InboxComponent', () => {
         eventService.emit(EventService.INBOX_LOADED, mockedInboxConversations);
 
         expect(component.errorRetrievingInbox).toBe(true);
+      });
+    });
+
+    describe('when a conversation is selected', () => {
+      const conversation = mockedInboxConversations[0];
+      const eventAttrs: ViewChatScreen = {
+        itemId: conversation.item.id,
+        conversationId: conversation.id,
+        screenId: SCREENS_IDS.Chat
+      };
+
+      describe('if the selected conversation is not the current conversation', () => {
+        it('should send the View Chat Screen event', () => {
+          spyOn(analyticsService, 'trackPageView');
+
+          component.ngOnInit();
+          eventService.emit(EventService.CURRENT_CONVERSATION_SET, conversation);
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith({
+            name: ANALYTICS_EVENT_NAMES.ViewChatScreen,
+            attributes: eventAttrs
+          });
+        });
+      });
+
+      describe('if the selected conversation is the current conversation', () => {
+        it('should not send the View Chat Screen event', () => {
+          component['conversation'] = conversation;
+          spyOn(analyticsService, 'trackPageView');
+
+          component.ngOnInit();
+          eventService.emit(EventService.CURRENT_CONVERSATION_SET, conversation);
+
+          expect(analyticsService.trackPageView).not.toHaveBeenCalled();
+        });
       });
     });
   });
@@ -368,21 +419,25 @@ describe('Component: InboxComponent', () => {
     });
 
     it('should send log with duplicate conversations', () => {
+      const LOAD_MORE_CONVERSATIONS = true;
       spyOn(remoteConsoleService, 'sendDuplicateConversations');
 
       component.ngOnInit();
-      eventService.emit(EventService.INBOX_LOADED, duplicateMockedInboxConversations);
+      eventService.emit(EventService.INBOX_LOADED, duplicateMockedInboxConversations, LOAD_MORE_CONVERSATIONS);
 
-      expect(remoteConsoleService.sendDuplicateConversations).not.toHaveBeenCalledWith(MOCK_USER.id, { 1: 2, 2: 2, 3: 2 });
+      expect(remoteConsoleService.sendDuplicateConversations)
+      .toHaveBeenCalledWith(MOCK_USER.id, LOAD_MORE_CONVERSATIONS, { 1: 2, 2: 2, 3: 2 });
     });
 
     it('should send log with duplicate conversations if id of conversation is undefined, empty or null', () => {
+      const LOAD_MORE_CONVERSATIONS = true;
       spyOn(remoteConsoleService, 'sendDuplicateConversations');
 
       component.ngOnInit();
-      eventService.emit(EventService.INBOX_LOADED, duplicateIncorrectMockedInboxConversations);
+      eventService.emit(EventService.INBOX_LOADED, duplicateIncorrectMockedInboxConversations, LOAD_MORE_CONVERSATIONS);
 
-      expect(remoteConsoleService.sendDuplicateConversations).not.toHaveBeenCalledWith(MOCK_USER.id, { null: 2, '': 2, undefined: 3 });
+      expect(remoteConsoleService.sendDuplicateConversations)
+      .toHaveBeenCalledWith(MOCK_USER.id, LOAD_MORE_CONVERSATIONS, { null: 2, '': 2, undefined: 3 });
     });
   });
 });

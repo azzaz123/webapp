@@ -66,7 +66,7 @@ export class PersistencyService {
   }
 
   private subscribeEventInboxLoaded() {
-    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
+    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
       this.updateStoredInbox(conversations);
       conversations.map(conv => this.saveInboxMessages(conv.messages));
     });
@@ -112,6 +112,13 @@ export class PersistencyService {
     );
   }
 
+  public saveInboxConversation(inboxConversation: InboxConversation): Observable<any> {
+    const conversation = new StoredInboxConversation(inboxConversation.id, inboxConversation.modifiedDate || new Date(),
+      inboxConversation.user, inboxConversation.item, inboxConversation.phoneShared, inboxConversation.phoneNumber,
+      inboxConversation.unreadCounter, inboxConversation.nextPageToken, inboxConversation.lastMessage);
+    return Observable.fromPromise(this.inboxDb.put(conversation));
+  }
+
   private updateStoredArchivedInbox(conversations: InboxConversation[]): Observable<any> {
     return Observable.fromPromise(
       this.inboxDb.destroy().then(() => {
@@ -132,7 +139,7 @@ export class PersistencyService {
   }
 
   public getArchivedStoredInbox(): Observable<InboxConversation[]> {
-    return this.archivedInboxDb ? Observable.fromPromise((this.archivedInboxDb.allDocs( { include_docs: true })).then((data) => {
+    return this.archivedInboxDb ? Observable.fromPromise((this.archivedInboxDb.allDocs({ include_docs: true })).then((data) => {
       return this.mapToInboxConversation(data);
     })) : Observable.of([]);
   }
@@ -141,7 +148,8 @@ export class PersistencyService {
     return data.rows.map(row => {
       const conv = row.doc;
       const user = new InboxUser(conv.user._id, conv.user._microName, conv.user._blocked, conv.user._available,
-        conv.user_profileUrl, conv.user.avatarUrl, conv.user._responseRate, null, 0, conv.user._score, conv.user._location);
+        conv.user_profileUrl, conv.user.avatarUrl, conv.user._responseRate, null, 0, conv.user._score,
+        conv.user._location, conv.user._distanceInKm);
       const item = new InboxItem(conv.item._id, conv.item._price, conv.item._title, conv.item._mainImage, conv.item._itemUrl,
         conv.item._status, conv.item._isMine);
       const lastMessage = new InboxMessage(conv.lastMessage._id, conv.lastMessage._thread, conv.lastMessage._message,
@@ -268,7 +276,7 @@ export class PersistencyService {
     if (this.storedMessages && this.storedMessages.total_rows > 0) {
       return Promise.resolve(this.storedMessages);
     }
-    return (this.messagesDb.allDocs({include_docs: true}).then((data: AllDocsResponse<StoredMessage>) => {
+    return (this.messagesDb.allDocs({ include_docs: true }).then((data: AllDocsResponse<StoredMessage>) => {
       this.storedMessages = data;
       return data;
     }));
@@ -446,7 +454,7 @@ export class PersistencyService {
       const docRev = doc._rev;
       const newDoc = diffFun(doc);
       if (!newDoc) {
-        return {updated: false, rev: docRev};
+        return { updated: false, rev: docRev };
       }
 
       newDoc._id = docId;

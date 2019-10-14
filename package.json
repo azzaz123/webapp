@@ -17,7 +17,8 @@
     "test": "ng test --watch=false --no-progress --browsers HeadlessChrome",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "svgo": "svgo -f ./src/assets/icons --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}; svgo -f ./src/assets/images --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}"
+    "svgo": "svgo -f ./src/assets/icons --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}; svgo -f ./src/assets/images --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}",
+    "mparticle": "node mparticle.js"
   },
   "private": true,
   "dependencies": {
@@ -35,6 +36,7 @@
     "@angular/platform-server": "6.0.9",
     "@angular/router": "^6.0.9",
     "@beyerleinf/ngx-dnd": "^6.0.0-preview3",
+    "@mparticle/web-sdk": "^2.9.9-rc.1",
     "@ng-bootstrap/ng-bootstrap": "1.0.0",
     "@ngu/carousel": "^1.4.8",
     "@types/hammerjs": "^2.0.35",
@@ -49,6 +51,7 @@
     "fingerprintjs2": "2.1.0",
     "google-libphonenumber": "^3.1.15",
     "indexeddb-getall-shim": "^1.3.5",
+    "json-schema-to-typescript": "^7.0.0",
     "libphonenumber-js": "^1.6.8",
     "lodash": "^4.17.10",
     "loglevel-plugin-remote": "0.6.8",
@@ -82,6 +85,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~10.5.3",
     "codelyzer": "^4.4.2",
+    "glob": "^7.1.4",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",
@@ -92,6 +96,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-spec-reporter": "^0.0.32",
+    "mparticle_json_validation": "git+ssh://git@github.com:Wallapop/mparticle_json_validation#master",
     "protractor": "~5.4.0",
     "puppeteer": "^1.8.0",
     "retry": "^0.12.0",

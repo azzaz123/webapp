@@ -49,13 +49,6 @@ export function permissionFactory(userService: UserService) {
         }
         return user;
       })
-      .flatMap((user: User) => {
-        if (user) {
-          return userService.setCoinsFeatureFlag();
-        } else {
-          return Observable.of({});
-        }
-      })
       .toPromise();
   };
 }

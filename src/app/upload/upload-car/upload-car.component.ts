@@ -1,3 +1,7 @@
+import { Observable } from 'rxjs';
+import { EditItemCar } from './../../core/analytics/events-interfaces/edit-item-car.interface';
+import { ListItemCar } from './../../core/analytics/events-interfaces/list-item-car.interface';
+import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
@@ -13,7 +17,10 @@ import * as _ from 'lodash';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';
-import { CarInfo } from '../../core/item/item-response.interface';
+import { CarInfo, CarContent } from '../../core/item/item-response.interface';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { UserService } from '../../core/user/user.service';
+import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -34,8 +41,8 @@ export class UploadCarComponent implements OnInit {
   public versions: IOption[];
   public carTypes: IOption[];
   public currencies: IOption[] = [
-    {value: 'EUR', label: '€'},
-    {value: 'GBP', label: '£'}
+    { value: 'EUR', label: '€' },
+    { value: 'GBP', label: '£' }
   ];
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
@@ -46,26 +53,28 @@ export class UploadCarComponent implements OnInit {
   private settingItem: boolean;
 
   constructor(private fb: FormBuilder,
-              private carSuggestionsService: CarSuggestionsService,
-              private carKeysService: CarKeysService,
-              private router: Router,
-              private errorsService: ErrorsService,
-              private modalService: NgbModal,
-              private itemService: ItemService,
-              private trackingService: TrackingService,
-              config: NgbPopoverConfig) {
+    private carSuggestionsService: CarSuggestionsService,
+    private carKeysService: CarKeysService,
+    private router: Router,
+    private errorsService: ErrorsService,
+    private modalService: NgbModal,
+    private itemService: ItemService,
+    private trackingService: TrackingService,
+    private analyticsService: AnalyticsService,
+    private userService: UserService,
+    config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
       category_id: CARS_CATEGORY,
       images: [[], [Validators.required]],
-      model: [{value: '', disabled: true}, [Validators.required]],
+      model: [{ value: '', disabled: true }, [Validators.required]],
       brand: ['', [Validators.required]],
       title: ['', [Validators.required]],
-      year: [{value: '', disabled: true}, [Validators.required]],
+      year: [{ value: '', disabled: true }, [Validators.required]],
       sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       financed_price: ['', [this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
-      version: [{value: '', disabled: true}, [Validators.required]],
+      version: [{ value: '', disabled: true }, [Validators.required]],
       num_seats: ['', [this.min(0), this.max(99)]],
       num_doors: ['', [this.min(0), this.max(99)]],
       body_type: null,
@@ -99,7 +108,7 @@ export class UploadCarComponent implements OnInit {
   private setItemData() {
     if (this.item) {
       this.settingItem = true;
-      const carYear: string =  this.item.year ? this.item.year.toString() : '';
+      const carYear: string = this.item.year ? this.item.year.toString() : '';
       const carCategory: string = this.item.categoryId ? this.item.categoryId.toString() : '';
       this.uploadForm.patchValue({
         id: this.item.id,
@@ -154,7 +163,7 @@ export class UploadCarComponent implements OnInit {
       this.brands = brands;
       this.markFieldAsPristine('brand');
       if (this.item) {
-        this.customMake = !_.find(this.brands, {value: this.item.brand});
+        this.customMake = !_.find(this.brands, { value: this.item.brand });
       }
     });
   }
@@ -208,7 +217,7 @@ export class UploadCarComponent implements OnInit {
       this.versions = versions;
       this.toggleField('version', 'enable', !editMode);
       if (this.item) {
-        this.customVersion = !_.find(this.versions, {value: this.item.version});
+        this.customVersion = !_.find(this.versions, { value: this.item.version });
       }
       if (!this.settingItem) {
         this.setTitle();
@@ -269,12 +278,12 @@ export class UploadCarComponent implements OnInit {
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
     if (this.isUrgent && uploadEvent.action !== 'createdOnHold') {
-      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {category: this.uploadForm.value.category_id});
+      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, { category: this.uploadForm.value.category_id });
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
@@ -285,13 +294,16 @@ export class UploadCarComponent implements OnInit {
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
+
+    this.item ? this.trackEditOrUpload(true, uploadEvent.response) : this.trackEditOrUpload(false, uploadEvent.response);
+
     this.router.navigate(['/catalog/list', params]);
   }
 
   onError(response: any) {
     this.loading = false;
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {category: this.uploadForm.value.category_id});
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
     }
@@ -329,7 +341,7 @@ export class UploadCarComponent implements OnInit {
         return null;
       }
       const v: number = Number(control.value);
-      return v < min ? {'min': {'requiredMin': min, 'actualMin': v}} : null;
+      return v < min ? { 'min': { 'requiredMin': min, 'actualMin': v } } : null;
     };
   }
 
@@ -339,7 +351,7 @@ export class UploadCarComponent implements OnInit {
         return null;
       }
       const v: number = Number(control.value);
-      return v > max ? {'max': {'requiredMax': max, 'actualMax': v}} : null;
+      return v > max ? { 'max': { 'requiredMax': max, 'actualMax': v } } : null;
     };
   }
 
@@ -378,6 +390,55 @@ export class UploadCarComponent implements OnInit {
     } else if (!this.customMake && !this.years && !this.brands && !this.models || this.customMake) {
       this.toggleField('version', 'disable');
     }
+  }
+
+  private trackEditOrUpload(isEdit: boolean, item: CarContent) {
+    Observable.forkJoin([
+      this.userService.isProfessional(),
+      this.userService.isProUser(),
+    ]).subscribe((values: any[]) => {
+      const baseEventAttrs: any = {
+        itemId: item.id,
+        categoryId: item.category_id,
+        salePrice: item.sale_price,
+        title: item.title,
+        brand: item.brand,
+        model: item.model,
+        year: item.year,
+        km: item.km || null,
+        gearbox: item.gearbox || null,
+        engine: item.engine || null,
+        hp: item.horsepower || null,
+        numDoors: item.num_doors || null,
+        bodyType: item.body_type || null,
+        isCarDealer: values[0],
+        isPro: values[1]
+      };
+
+      if (isEdit) {
+        const eventAttrs: EditItemCar = {
+          ...baseEventAttrs,
+          screenId: SCREENS_IDS.EditItem
+        };
+
+        this.analyticsService.trackEvent({
+          name: ANALYTICS_EVENT_NAMES.EditItemCar,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      } else {
+        const eventAttrs: ListItemCar = {
+          ...baseEventAttrs,
+          screenId: SCREENS_IDS.Upload
+        };
+
+        this.analyticsService.trackEvent({
+          name: ANALYTICS_EVENT_NAMES.ListItemCar,
+          eventType: EVENT_TYPES.Other,
+          attributes: eventAttrs
+        });
+      }
+    });
   }
 
 }

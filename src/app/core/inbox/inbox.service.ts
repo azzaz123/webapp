@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
 import { MessageService } from '../message/message.service';
-import { FeatureflagService } from '../user/featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
@@ -38,7 +38,7 @@ export class InboxService {
   }
 
   set conversations(value: InboxConversation[]) {
-    this._conversations = _.uniqBy(value, 'id');
+    this._conversations = value;
   }
 
   get conversations(): InboxConversation[] {
@@ -46,7 +46,7 @@ export class InboxService {
   }
 
   set archivedConversations(value: InboxConversation[]) {
-    this._archivedConversations = _.uniqBy(value, 'id');
+    this._archivedConversations = value;
   }
 
   get archivedConversations(): InboxConversation[] {
@@ -54,7 +54,7 @@ export class InboxService {
   }
 
   public getInboxFeatureFlag$(): Observable<boolean> {
-    return this.featureflagService.getWebInboxProjections();
+    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.INBOX_PROJECTIONS);
   }
 
   public init() {
@@ -70,7 +70,7 @@ export class InboxService {
       return this.persistencyService.getStoredInbox();
     })
     .subscribe((conversations) => {
-      this.eventService.emit(EventService.INBOX_LOADED, conversations);
+      this.eventService.emit(EventService.INBOX_LOADED, conversations, false);
       this.eventService.emit(EventService.INBOX_READY, true);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
@@ -108,7 +108,7 @@ export class InboxService {
       return Observable.of([]);
     })
     .subscribe((conversations: InboxConversation[]) => {
-      this.eventService.emit(EventService.INBOX_LOADED, conversations);
+      this.eventService.emit(EventService.INBOX_LOADED, conversations, true);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
   }

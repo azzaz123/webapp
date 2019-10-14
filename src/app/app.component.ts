@@ -38,6 +38,7 @@ import { InboxService } from './core/inbox/inbox.service';
 import { Subscription, Observable } from 'rxjs';
 import { SplitTestService } from './core/tracking/split-test.service';
 import { StripeService } from './core/stripe/stripe.service';
+import { AnalyticsService } from './core/analytics/analytics.service';
 import { configRemoteConsole } from './config/remote-console.config';
 
 @Component({
@@ -83,12 +84,14 @@ export class AppComponent implements OnInit {
               private paymentService: PaymentService,
               private callService: CallsService,
               private splitTestService: SplitTestService,
-              private stripeService: StripeService) {
+              private stripeService: StripeService,
+              private analyticsService: AnalyticsService) {
     this.config();
   }
 
   ngOnInit() {
     this.stripeService.init();
+    this.analyticsService.initialize();
     appboy.initialize(environment.appboy, { enableHtmlInAppMessages: true });
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
