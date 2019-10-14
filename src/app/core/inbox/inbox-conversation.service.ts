@@ -45,12 +45,6 @@ export class InboxConversationService {
   public subscribeChatEvents() {
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
       this.conversations = conversations;
-      this.conversations.forEach(conversation => conversation.messages
-      .filter(message => message.type === MessageType.TEXT && message.status === MessageStatus.SENT && !message.fromSelf)
-      .forEach(message => {
-        this.realTime.sendDeliveryReceipt(conversation.user.id, message.id, conversation.id);
-        message.status = MessageStatus.RECEIVED;
-      }));
     });
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.archivedConversations = conversations;
@@ -106,6 +100,15 @@ export class InboxConversationService {
         }
       });
     }
+  }
+
+  public sendReceiveSignalByConversations(conversations: InboxConversation[]): void {
+    conversations.forEach(conversation => conversation.messages
+    .filter(message => message.type === MessageType.TEXT && message.status === MessageStatus.SENT && !message.fromSelf)
+    .forEach(message => {
+      this.realTime.sendDeliveryReceipt(conversation.user.id, message.id, conversation.id);
+      message.status = MessageStatus.RECEIVED;
+    }));
   }
 
   private findMessage(conversation: InboxConversation, message: InboxMessage) {

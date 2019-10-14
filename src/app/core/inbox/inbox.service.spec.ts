@@ -42,6 +42,8 @@ describe('InboxService', () => {
         {
           provide: InboxConversationService, useValue: {
             subscribeChatEvents() {
+            },
+            sendReceiveSignalByConversations(): void {
             }
           }
         }

@@ -134,7 +134,7 @@ export class InboxService {
     return this.nextArchivedPageToken !== null;
   }
 
-  private getInbox$(): Observable<any> {
+  public getInbox$(): Observable<InboxConversation[]> {
     this.messageService.totalUnreadMessages = 0;
     return this.http.get(this.API_URL, {
       page_size: this.pageSize,
@@ -170,7 +170,9 @@ export class InboxService {
   private processInboxResponse(response: Response): InboxConversation[] {
     const reloadConversations = response.json();
     this.nextPageToken = reloadConversations.next_from || null;
-    return _.uniqBy([...this.conversations, ...this.buildConversations(reloadConversations.conversations)], 'id');
+    const conversations: InboxConversation[] = this.buildConversations(reloadConversations.conversations);
+    this.conversationService.sendReceiveSignalByConversations(conversations);
+    return _.uniqBy([...this.conversations, ...conversations], 'id');
   }
 
   private processArchivedInboxResponse(response: Response): InboxConversation[] {
