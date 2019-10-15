@@ -12,7 +12,6 @@ import { environment } from '../../../environments/environment';
 import { InboxConversationService } from './inbox-conversation.service';
 import { Response } from '@angular/http';
 import * as _ from 'lodash';
-import { RealTimeService } from '../message/real-time.service';
 
 const USER_BASE_PATH = environment.siteUrl + 'user/';
 
@@ -32,7 +31,6 @@ export class InboxService {
 
   constructor(private http: HttpService,
               private httpClient: HttpServiceNew,
-              private realTime: RealTimeService,
               private persistencyService: PersistencyService,
               private messageService: MessageService,
               private conversationService: InboxConversationService,

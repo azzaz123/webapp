@@ -34,9 +34,7 @@ export class InboxConversationService {
     private realTime: RealTimeService,
     private messageService: MessageService,
     private persistencyService: PersistencyService,
-    private eventService: EventService,
-    private userService: UserService, // To be removed
-    private itemService: ItemService) {
+    private eventService: EventService) {
     this.conversations = [];
     this.archivedConversations = [];
   }
