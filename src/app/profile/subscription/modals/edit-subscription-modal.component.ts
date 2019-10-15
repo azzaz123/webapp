@@ -25,7 +25,6 @@ export class EditSubscriptionModalComponent implements OnInit {
   public isPaymentError = false;
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
-  public selectedPlanId: string;
 
   constructor(public activeModal: NgbActiveModal,
               private toastr: ToastrService,
@@ -36,7 +35,6 @@ export class EditSubscriptionModalComponent implements OnInit {
 
   ngOnInit() {
     this.selectedTier = this.subscription.selected_tier;
-    this.selectedPlanId = this.subscription.selected_tier.id;
   }
 
   public close() {

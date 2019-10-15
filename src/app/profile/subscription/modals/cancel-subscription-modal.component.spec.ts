@@ -1,41 +1,30 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { EditSubscriptionModalComponent } from './edit-subscription-modal.component';
+import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 import { MAPPED_SUBSCRIPTIONS, TIER } from '../../../../tests/subscriptions.fixtures.spec';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
+import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
+import { Observable } from 'rxjs';
+import { NO_ERRORS_SCHEMA } from '@angular/compiler/src/core';
 
-describe('EditSubscriptionModalComponent', () => {
-  let component: EditSubscriptionModalComponent;
-  let fixture: ComponentFixture<EditSubscriptionModalComponent>;
+describe('CancelSubscriptionModalComponent', () => {
+  let component: CancelSubscriptionModalComponent;
+  let fixture: ComponentFixture<CancelSubscriptionModalComponent>;
   let activeModal: NgbActiveModal;
-  let toastrService: ToastrService;
   let eventService: EventService;
+  let subscriptionsService: SubscriptionsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditSubscriptionModalComponent ],
+      declarations: [ CancelSubscriptionModalComponent ],
       providers: [
         ...TEST_HTTP_PROVIDERS,
         {
           provide: NgbActiveModal, useValue: {
             close() {
-            }
-          }
-        },
-        {
-          provide: ToastrService, useValue: {
-            error() {
-            },
-            show() {
-            },
-            i18nError() {
-            },
-            i18nSuccess() {
             }
           }
         },
@@ -49,34 +38,29 @@ describe('EditSubscriptionModalComponent', () => {
             }
           }
         },
+        {
+          provide: SubscriptionsService, useValue: {
+            cancelSubscription() {
+              return Observable.of({});
+            }
+          }
+        },
         I18nService,
         EventService,
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditSubscriptionModalComponent);
+    fixture = TestBed.createComponent(CancelSubscriptionModalComponent);
     component = fixture.componentInstance;
-    toastrService = TestBed.get(ToastrService);
     activeModal = TestBed.get(NgbActiveModal);
     eventService = TestBed.get(EventService);
+    subscriptionsService = TestBed.get(SubscriptionsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     fixture.detectChanges();
-  });
-
-  describe('OnInit', () => {
-    it('should set the selected tier and plan', () => {
-      component.ngOnInit();
-
-      expect(component.selectedTier).toEqual(MAPPED_SUBSCRIPTIONS[2].selected_tier);
-    });
-
-    afterEach(() => {
-      TestBed.resetTestingModule();
-    });
   });
 
   describe('close', () => {
@@ -89,13 +73,13 @@ describe('EditSubscriptionModalComponent', () => {
     })
   })
 
-  describe('selectListingLimit', () => {
-    it('should set the selected tier', () => {
+  describe('cancelSubscription', () => {
+    it('should call the cancelsubscription service', () => {
       const tier = TIER;
 
-      component.selectListingLimit(tier);
+      component.cancelSubscription();
 
-      expect(component.selectedTier).toEqual(tier);
+      expect(component.subscriptionsService.cancelSubscription).toHaveBeenCalledWith(tier.id);
     });
   });
 

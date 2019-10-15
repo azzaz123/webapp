@@ -33,7 +33,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   public isPaymentError = false;
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
-  public selectedPlanId: string;
   private invoiceId: string;
   private REQUIRES_PAYMENT_METHOD = 'REQUIRES_PAYMENT_METHOD';
   private REQUIRES_ACTION = 'REQUIRES_ACTION';
@@ -51,7 +50,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   ngOnInit() {
     this.loaded = true;
     this.selectedTier = this.subscription.selected_tier;
-    this.selectedPlanId = this.subscription.selected_tier.id;
     
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = val;
@@ -76,13 +74,13 @@ export class AddNewSubscriptionModalComponent implements OnInit {
         if (this.isRetryInvoice) {
           this.retrySubscription(paymentMethod.id);
         } else {
-          this.addSubscriptionFromSavedCard(this.selectedPlanId, paymentMethod.id);
+          this.addSubscriptionFromSavedCard(this.selectedTier.id, paymentMethod.id);
         }
       }
     });
   }
 
-  public addSubscriptionFromSavedCard(selectedPlanId: string = this.selectedPlanId, paymentMethodId = this.card.id) {
+  public addSubscriptionFromSavedCard(selectedPlanId: string = this.selectedTier.id, paymentMethodId = this.card.id) {
     this.loading = true;
 
     if (this.isRetryInvoice) {

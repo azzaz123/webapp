@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionsResponse } from '../../../core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 
 @Component({
   selector: 'tsl-cancel-subscription-modal',
@@ -8,15 +9,13 @@ import { SubscriptionsResponse } from '../../../core/subscriptions/subscriptions
   styleUrls: ['./cancel-subscription-modal.component.scss']
 })
 
-export class CancelSubscriptionModalComponent implements OnInit {
+export class CancelSubscriptionModalComponent {
 
   public loading = false;
   public subscription: SubscriptionsResponse;
 
-  constructor(public activeModal: NgbActiveModal) {
-  }
-
-  ngOnInit() {
+  constructor(public activeModal: NgbActiveModal,
+              public subscriptionsService: SubscriptionsService) {
   }
 
   public close() {
@@ -25,8 +24,12 @@ export class CancelSubscriptionModalComponent implements OnInit {
 
   public cancelSubscription() {
     this.loading = true;
-    //cancel subs endpoint
-    this.close();
+    this.subscriptionsService.cancelSubscription(this.subscription.selected_tier_id).subscribe((response) => {
+      console.log('response ', response);
+      this.loading = true;
+      this.close();
+    });
+    
   }
 
 }

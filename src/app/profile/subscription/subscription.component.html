@@ -20,7 +20,7 @@
             <p class="Subscriptions__category-info--price">
               {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
             </p>
-            <p class="Subscriptions__category-info--edit">Edit</p>
+            <p class="Subscriptions__category-info--edit">Unsubscribe</p>
         </div>
         <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from">Subscribe</tsl-button>
         <span *ngIf="subscription.subscribed_from" class="Subscriptions__subscribed-from">
