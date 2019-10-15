@@ -115,6 +115,7 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.bindNewMessageToast();
     if (this.inboxService.conversations) {
       this.onInboxReady(this.inboxService.conversations, false);
+      this.conversations = this.inboxService.conversations;
       this.archivedConversations = this.inboxService.archivedConversations;
       this.loading = false;
     } else {
