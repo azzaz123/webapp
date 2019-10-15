@@ -26,7 +26,7 @@ export class InboxService {
   private selfId: string;
   private nextPageToken: string = null;
   private nextArchivedPageToken: string = null;
-  private pageSize = 1;
+  private pageSize = 30;
   public errorRetrievingInbox = false;
   public errorRetrievingArchived = false;
 
