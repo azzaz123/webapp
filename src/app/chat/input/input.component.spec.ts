@@ -13,6 +13,7 @@ import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../core/i18n/i18n.service';
+import { AutosizeModule } from 'ngx-autosize';
 
 class MessageServiceMock {
   send(c: Conversation, t: string): void {
@@ -37,7 +38,8 @@ describe('Component: Input', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        FormsModule
+        FormsModule,
+        AutosizeModule
       ],
       declarations: [InputComponent],
       providers: [
@@ -202,10 +204,19 @@ describe('Component: Input', () => {
       component.currentConversation = MOCK_CONVERSATION();
     });
 
-    it('should focus the message area', fakeAsync(() => {
+    it('should focus the message if change conversation', fakeAsync(() => {
       component.ngOnChanges();
       tick(500);
 
+      expect(component.isFocus).toEqual(true);
+      expect(component.messageArea.nativeElement.focus).toHaveBeenCalled();
+    }));
+
+    it('should focus the message area', fakeAsync(() => {
+      component.ngAfterViewInit();
+      tick(500);
+
+      expect(component.isFocus).toEqual(true);
       expect(component.messageArea.nativeElement.focus).toHaveBeenCalled();
     }));
 

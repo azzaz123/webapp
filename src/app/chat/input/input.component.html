@@ -1,14 +1,21 @@
 <form>
-  <textarea #messageTextarea
-            name="message"
-            [(ngModel)]="message"
-            placeholder="{{getPlaceholder()}}"
-            (keydown.enter)="sendMessage($event)"
-            [disabled]="!isMessagingAvailable()"
-            [ngClass]="{selected: !isEmpty() && isMessagingAvailable()}"
-            class="textarea" maxlength="300">
+  <div class="textarea-component" [ngClass]="{focus: isFocus}">
+      <textarea #messageTextarea
+                name="message"
+                [(ngModel)]="message"
+                placeholder="{{getPlaceholder()}}"
+                (keydown.enter)="sendMessage($event)"
+                [disabled]="!isMessagingAvailable()"
+                [ngClass]="{selected: !isEmpty() && isMessagingAvailable()}"
+                (focus)="onFocusElement()"
+                (focusout)="onFocusElement()"
+                rows="1"
+                autosize [maxRows]="5"
+                class="textarea" maxlength="300">
   </textarea>
-  <a id="send" (click)="sendMessage($event)" [ngClass]="{selected: !isEmpty() && isMessagingAvailable()}">
-    <mat-icon svgIcon="send"></mat-icon>
-  </a>
+    <a (click)="sendMessage($event)" class="btn-send-message"
+       [ngClass]="{selected: !isEmpty() && isMessagingAvailable()}">
+      <mat-icon svgIcon="send"></mat-icon>
+    </a>
+  </div>
 </form>
