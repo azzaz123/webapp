@@ -62,7 +62,6 @@ describe('EditSubscriptionModalComponent', () => {
       component.ngOnInit();
 
       expect(component.selectedTier).toEqual(MAPPED_SUBSCRIPTIONS[2].selected_tier);
-      expect(component.selectedPlanId).toEqual(MAPPED_SUBSCRIPTIONS[2].selected_tier.id);
     });
 
     afterEach(() => {

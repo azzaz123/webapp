@@ -34,7 +34,6 @@ export class EditSubscriptionModalComponent implements OnInit {
 
   ngOnInit() {
     this.selectedTier = this.subscription.selected_tier;
-    this.selectedPlanId = this.subscription.selected_tier.id;
   }
 
   public close() {
