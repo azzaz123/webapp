@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { XmppService } from '../../xmpp/xmpp.service';
 import { User } from '../../user/user';
 import { Observable } from 'rxjs';
-import { InboxUser } from '../../../chat/chat-with-inbox/inbox/inbox-user';
+import { InboxUser } from '../../../chat/model/inbox-user';
 
 @Injectable()
 export class BlockUserXmppService {

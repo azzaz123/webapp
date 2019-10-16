@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
 })
 export class RemoteConsoleService {
 
+  private static readonly APP_VERSION = '5.78.0';
+
   deviceId: string;
 
   constructor(private deviceService: DeviceDetectorService, private featureflagService: FeatureflagService) {
@@ -35,12 +37,12 @@ export class RemoteConsoleService {
 
   }
 
-  sendDuplicateConversations(userId: string, loadMoreConversations: boolean, conversationsGroupById: Map<string, number>): void {
+  sendDuplicateConversations(userId: string, callMethodClient: string, conversationsGroupById: Map<string, number>): void {
     this.getCommonLog(userId).subscribe(commonLog => logger.info(JSON.stringify({
       ...commonLog, ...{
         metric_type: MetricTypeEnum.DUPLICATE_CONVERSATION,
         message: 'send log when user see duplicate conversation in inbox',
-        load_more_conversations: loadMoreConversations,
+        call_method_client: callMethodClient,
         conversations_count_by_id: JSON.stringify(conversationsGroupById)
       }
     })));
@@ -56,6 +58,7 @@ export class RemoteConsoleService {
         browser_version: device.browser_version,
         user_id: userId,
         feature_flag: fetureFlag,
+        version: RemoteConsoleService.APP_VERSION
       };
     });
   }

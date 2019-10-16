@@ -1,7 +1,7 @@
-import { InboxConversation } from '../app/chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
-import { InboxUser } from '../app/chat/chat-with-inbox/inbox/inbox-user';
-import { InboxItem, INBOX_ITEM_STATUSES } from '../app/chat/chat-with-inbox/inbox/inbox-item';
-import { InboxMessage } from '../app/chat/chat-with-inbox/message/inbox-message';
+import { InboxConversation } from '../app/chat/model/inbox-conversation';
+import { InboxUser } from '../app/chat/model/inbox-user';
+import { InboxItem, INBOX_ITEM_STATUSES } from '../app/chat/model/inbox-item';
+import { InboxMessage } from '../app/chat/model/inbox-message';
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { OTHER_USER_ID, USER_ID } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';

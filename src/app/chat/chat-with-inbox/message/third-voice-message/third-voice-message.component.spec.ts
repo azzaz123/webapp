@@ -5,7 +5,7 @@ import { ThirdVoiceMessageComponent } from './third-voice-message.component';
 import { LinkTransformPipe } from '../../../../shared/pipes/link-transform';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../../tests/inbox.fixtures.spec';
 import { ThirdVoiceReviewComponent } from './third-voice-review';
-import { MessageType } from '../inbox-message';
+import { MessageType } from '../../../model/inbox-message';
 
 describe('ThirdVoiceMessageComponent', () => {
   let component: ThirdVoiceMessageComponent;

@@ -3,7 +3,7 @@ import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { InboxConversation } from '../chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxConversation } from '../model/inbox-conversation';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
