@@ -7,7 +7,7 @@ import { DeviceDetectorServiceMock, FeatureFlagServiceMock } from '../../../test
 import * as logger from 'loglevel';
 import { FeatureflagService } from '../user/featureflag.service';
 
-xdescribe('RemoteConsoleService', () => {
+describe('RemoteConsoleService', () => {
 
   let httpTestingController: HttpTestingController;
   let service: RemoteConsoleService;
@@ -48,6 +48,7 @@ xdescribe('RemoteConsoleService', () => {
       'browser_version': '76.0.3809.132',
       'user_id': USER_ID,
       'feature_flag': true,
+      'version': '5.78.0',
       'metric_type': 'XMPP_CONNECTION_TIME',
       'message': 'xmpp connection time',
       'connection_time': CONNECTION_TIME,
@@ -56,10 +57,10 @@ xdescribe('RemoteConsoleService', () => {
     }));
   });
 
-  xit('should call xmpp conection with parameters', () => {
+  xit('should call duplicated conversation conection with parameters', () => {
     const USER_ID = 'USER_ID';
     const CONVERSATIONS_BY_ID = new Map();
-    const LOAD_MORE_CONVERSATIONS = true;
+    const LOAD_MORE_CONVERSATIONS = 'LOAD_INBOX';
     CONVERSATIONS_BY_ID['xa4ld642'] = 2;
     spyOn(logger, 'info');
 
@@ -70,9 +71,10 @@ xdescribe('RemoteConsoleService', () => {
       'browser_version': '76.0.3809.132',
       'user_id': 'USER_ID',
       'feature_flag': true,
+      'version': '5.78.0',
       'metric_type': 'DUPLICATE_CONVERSATION',
       'message': 'send log when user see duplicate conversation in inbox',
-      'load_more_conversations': true,
+      'call_method_client': 'LOAD_INBOX',
       'conversations_count_by_id': JSON.stringify({ 'xa4ld642': 2 })
     }));
   });
