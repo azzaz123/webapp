@@ -1,27 +1,25 @@
+import { HttpServiceNew } from './../http/http.service.new';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { CategoryConsumerGoodsResponse, CategoryOption, CategoryResponse } from './category-response.interface';
-import { IOption } from 'ng-select';
-import { HttpService } from '../http/http.service';
+import { CategoryOption, CategoryResponse } from './category-response.interface';
 import { I18nService } from '../i18n/i18n.service';
+
+export const CATEGORIES_ENDPOINT = 'api/v3/categories';
 
 @Injectable()
 export class CategoryService {
-
-  private API_URL = 'api/v3/categories';
   private uploadCategories: CategoryOption[];
   private categories: CategoryResponse[];
   private heroCategoriesIds = [100, 13200, 13000, 21000];
   private fashionCategoryId = 12465;
 
-  constructor(private http: HttpService,
-              private i18n: I18nService) {
+  constructor(private http: HttpServiceNew,
+    private i18n: I18nService) {
   }
 
   public getCategoryById(id: number): Observable<CategoryResponse> {
     return this.getCategories().map((categories: CategoryResponse[]) => {
-      return categories.find((category: CategoryResponse) => category.categoryId === id);
+      return categories.find((category: CategoryResponse) => category.category_id === id);
     });
   }
 
@@ -29,9 +27,7 @@ export class CategoryService {
     if (this.categories) {
       return Observable.of(this.categories);
     }
-    return this.http.getNoBase(environment.siteUrl + 'rest/categories')
-      .map(res => res.json())
-      .do((categories: CategoryResponse[]) => this.categories = categories);
+    return this.http.get(`${CATEGORIES_ENDPOINT}/keys/`);
   }
 
   public getUploadCategories(): Observable<CategoryOption[]> {
@@ -39,9 +35,8 @@ export class CategoryService {
       return Observable.of(this.uploadCategories);
     }
     const lang = this.i18n.locale === 'es' ? this.i18n.locale + '_ES' : this.i18n.locale;
-    return this.http.get(this.API_URL + '/keys/consumer_goods', {language: lang})
-      .map(res => res.json())
-      .map((categories: CategoryConsumerGoodsResponse[]) => this.toSelectOptions(categories))
+    return this.http.get(`${CATEGORIES_ENDPOINT}/keys/consumer_goods`, [{ key: 'language', value: lang }])
+      .map((categories: CategoryResponse[]) => this.toSelectOptions(categories))
       .do((categories: CategoryOption[]) => this.uploadCategories = categories);
   }
 
@@ -49,12 +44,12 @@ export class CategoryService {
     return this.heroCategoriesIds.indexOf(categoryId) !== -1;
   }
 
-  public isFashionCategory(categoryId: number) {
+  public isFashionCategory(categoryId: number) {
     return categoryId === this.fashionCategoryId;
   }
 
-  private toSelectOptions(categories: CategoryConsumerGoodsResponse[]): CategoryOption[] {
-    return categories.map((category: CategoryConsumerGoodsResponse) => ({
+  private toSelectOptions(categories: CategoryResponse[]): CategoryOption[] {
+    return categories.map((category: CategoryResponse) => ({
       value: category.category_id.toString(),
       label: category.name,
       icon_id: category.icon_id,

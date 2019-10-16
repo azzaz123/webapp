@@ -216,16 +216,16 @@ describe('TopbarComponent', () => {
     });
 
     it('should redirect to the web when category is set', () => {
-      component.category = CATEGORY_DATA_WEB[1].categoryId;
+      component.category = CATEGORY_DATA_WEB[1].category_id;
 
       component.submitForm();
 
       expect(windowRef.nativeWindow.location.href)
-        .toEqual(environment.siteUrl.replace('es', 'www') + 'search?category_ids=15245' + '&keywords=');
+        .toEqual(environment.siteUrl.replace('es', 'www') + 'search?category_ids=15000' + '&keywords=');
     });
 
     it('should submit the search form for cars', () => {
-      component.category = CATEGORY_DATA_WEB[0].categoryId;
+      component.category = CATEGORY_DATA_WEB[0].category_id;
 
       component.submitForm();
 
