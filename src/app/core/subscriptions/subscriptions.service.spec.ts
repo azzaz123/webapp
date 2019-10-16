@@ -154,7 +154,7 @@ describe('SubscriptionsService', () => {
   describe('cancelSubscription', () => {
     it('should call the endpoint', () => {
       const planId = '1-2-3';
-      const expectedUrl = `${API_URL}/${STRIPE_SUBSCRIPTION_URL}/cancel/${planId}`;
+      const expectedUrl = `${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/cancel/${planId}`;
 
       service.cancelSubscription(planId).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
