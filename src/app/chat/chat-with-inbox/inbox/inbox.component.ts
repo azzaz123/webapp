@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
-import { InboxConversation } from './inbox-conversation/inbox-conversation';
+import { InboxConversation } from '../../model/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
 import { Message } from '../../../core/message/message';
@@ -115,6 +115,7 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.bindNewMessageToast();
     if (this.inboxService.conversations) {
       this.onInboxReady(this.inboxService.conversations, false);
+      this.conversations = this.inboxService.conversations;
       this.archivedConversations = this.inboxService.archivedConversations;
       this.loading = false;
     } else {
@@ -122,11 +123,12 @@ export class InboxComponent implements OnInit, OnDestroy {
     }
 
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
+      this.conversations = this.inboxService.conversations;
       this.onInboxReady(conversations, loadMoreConversations);
     });
 
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
-      this.archivedConversations = conversations;
+      this.archivedConversations = this.inboxService.archivedConversations;
       this.setStatusesAfterLoadConversations();
     });
 
@@ -160,10 +162,9 @@ export class InboxComponent implements OnInit, OnDestroy {
   }
 
   private onInboxReady(conversations: InboxConversation[], loadMoreConversations: boolean) {
-    this.conversations = conversations;
     this.setStatusesAfterLoadConversations();
     this.showInbox();
-    this.sendLogWithNumberOfConversationsByConversationId(this.conversations, loadMoreConversations);
+    this.sendLogWithNumberOfConversationsByConversationId(conversations, loadMoreConversations);
   }
 
   private bindNewMessageToast() {

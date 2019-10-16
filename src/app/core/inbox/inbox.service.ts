@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
+import { HttpServiceNew } from '../http/http.service.new';
 import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { MessageService } from '../message/message.service';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
@@ -22,13 +23,14 @@ export class InboxService {
   private _conversations: InboxConversation[] = [];
   private _archivedConversations: InboxConversation[] = [];
   private selfId: string;
-  private nextPageToken: number = null;
-  private nextArchivedPageToken: number = null;
+  private nextPageToken: string = null;
+  private nextArchivedPageToken: string = null;
   private pageSize = 30;
   public errorRetrievingInbox = false;
   public errorRetrievingArchived = false;
 
   constructor(private http: HttpService,
+              private httpClient: HttpServiceNew,
               private persistencyService: PersistencyService,
               private messageService: MessageService,
               private conversationService: InboxConversationService,
@@ -69,7 +71,8 @@ export class InboxService {
       this.errorRetrievingInbox = true;
       return this.persistencyService.getStoredInbox();
     })
-    .subscribe((conversations) => {
+    .subscribe((conversations: InboxConversation[]) => {
+      this.conversations = conversations;
       this.eventService.emit(EventService.INBOX_LOADED, conversations, false);
       this.eventService.emit(EventService.INBOX_READY, true);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
@@ -134,7 +137,7 @@ export class InboxService {
     return this.nextArchivedPageToken !== null;
   }
 
-  private getInbox$(): Observable<any> {
+  public getInbox$(): Observable<InboxConversation[]> {
     this.messageService.totalUnreadMessages = 0;
     return this.http.get(this.API_URL, {
       page_size: this.pageSize,
@@ -170,7 +173,9 @@ export class InboxService {
   private processInboxResponse(response: Response): InboxConversation[] {
     const reloadConversations = response.json();
     this.nextPageToken = reloadConversations.next_from || null;
-    return _.uniqBy([...this.conversations, ...this.buildConversations(reloadConversations.conversations)], 'id');
+    const conversations: InboxConversation[] = this.buildConversations(reloadConversations.conversations);
+    this.conversationService.sendReceiveSignalByConversations(conversations);
+    return _.uniqBy([...this.conversations, ...conversations], 'id');
   }
 
   private processArchivedInboxResponse(response: Response): InboxConversation[] {

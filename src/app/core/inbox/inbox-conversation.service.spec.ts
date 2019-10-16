@@ -8,10 +8,10 @@ import { PersistencyService } from '../persistency/persistency.service';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { EventService } from '../event/event.service';
 import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { chatSignalType, ChatSignal } from '../message/chat-signal.interface';
 import { Message } from '../message/message';
-import { MessageStatus, InboxMessage, MessageType } from '../../chat/chat-with-inbox/message/inbox-message';
+import { MessageStatus, InboxMessage, MessageType } from '../../chat/model/inbox-message';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
@@ -143,7 +143,7 @@ describe('InboxConversationService', () => {
 
     describe('when called with a message that does not already exist', () => {
       beforeEach(() => {
-          newInboxMessage = new InboxMessage('newMessageId', conversations[0].id, 'hole', 'mockUserId', true, new Date(),
+        newInboxMessage = new InboxMessage('newMessageId', conversations[0].id, 'hole', 'mockUserId', true, new Date(),
           MessageStatus.SENT, MessageType.TEXT);
       });
 
@@ -237,6 +237,46 @@ describe('InboxConversationService', () => {
 
         expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore);
         expect(messageService.totalUnreadMessages).toEqual(unreadCounterBefore);
+      });
+    });
+
+    describe('when add conversation to set', () => {
+      beforeEach(() => {
+        service.conversations = createInboxConversationsArray(12);
+      });
+
+      it('should return true if conversation exist', () => {
+
+        expect(service.containsConversation(service.conversations[1])).toEqual(true);
+        expect(service.containsConversation({ 'id': '1' } as InboxConversation)).toEqual(true);
+      });
+
+      it('should return false if conversation exist', () => {
+
+        expect(service.containsConversation(null)).toEqual(false);
+        expect(service.containsConversation(undefined)).toEqual(false);
+        expect(service.containsConversation({} as InboxConversation)).toEqual(false);
+        expect(service.containsConversation({ 'id': 'notExistedConversationID' } as InboxConversation)).toEqual(false);
+      });
+    });
+
+    describe('when add archived conversation to set', () => {
+      beforeEach(() => {
+        service.archivedConversations = createInboxConversationsArray(12);
+      });
+
+      it('should return true if conversation exist', () => {
+
+        expect(service.containsArchivedConversation(service.conversations[1])).toEqual(true);
+        expect(service.containsArchivedConversation({ 'id': '1' } as InboxConversation)).toEqual(true);
+      });
+
+      it('should return false if conversation exist', () => {
+
+        expect(service.containsArchivedConversation(null)).toEqual(false);
+        expect(service.containsArchivedConversation(undefined)).toEqual(false);
+        expect(service.containsArchivedConversation({} as InboxConversation)).toEqual(false);
+        expect(service.containsArchivedConversation({ 'id': 'notExistedConversationID' } as InboxConversation)).toEqual(false);
       });
     });
 
@@ -603,22 +643,22 @@ describe('InboxConversationService', () => {
       const mockConversation = CREATE_MOCK_INBOX_CONVERSATION();
 
       service.archivedConversations = null;
-      expect(service.isConversationArchived(null)).toBeFalsy();
+      expect(service.containsArchivedConversation(null)).toBeFalsy();
 
       service.archivedConversations = [];
-      expect(service.isConversationArchived(null)).toBeFalsy();
+      expect(service.containsArchivedConversation(null)).toBeFalsy();
 
       service.archivedConversations = [mockConversation];
-      expect(service.isConversationArchived(null)).toBeFalsy();
+      expect(service.containsArchivedConversation(null)).toBeFalsy();
 
       service.archivedConversations = null;
-      expect(service.isConversationArchived(mockConversation)).toBeFalsy();
+      expect(service.containsArchivedConversation(mockConversation)).toBeFalsy();
 
       service.archivedConversations = [];
-      expect(service.isConversationArchived(mockConversation)).toBeFalsy();
+      expect(service.containsArchivedConversation(mockConversation)).toBeFalsy();
 
       service.archivedConversations = [mockConversation];
-      expect(service.isConversationArchived(mockConversation)).toBeTruthy();
+      expect(service.containsArchivedConversation(mockConversation)).toBeTruthy();
     });
   });
 

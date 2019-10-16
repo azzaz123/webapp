@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RealTimeService } from '../message/real-time.service';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation';
 import { EventService } from '../event/event.service';
-import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/chat-with-inbox/message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
@@ -14,7 +12,10 @@ import { ConversationResponse } from '../conversation/conversation-response.inte
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { HttpServiceNew } from '../http/http.service.new';
+import { InboxConversation } from '../../chat/model/inbox-conversation';
 import * as _ from 'lodash';
+import { isNullOrUndefined } from 'util';
+import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,9 +34,9 @@ export class InboxConversationService {
     private realTime: RealTimeService,
     private messageService: MessageService,
     private persistencyService: PersistencyService,
-    private eventService: EventService,
-    private userService: UserService, // To be removed
-    private itemService: ItemService) { // To be removed
+    private eventService: EventService) {
+    this.conversations = [];
+    this.archivedConversations = [];
   }
 
   public conversations: InboxConversation[];
@@ -44,12 +45,6 @@ export class InboxConversationService {
   public subscribeChatEvents() {
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
       this.conversations = conversations;
-      this.conversations.forEach(conversation => conversation.messages
-      .filter(message => message.type === MessageType.TEXT && message.status === MessageStatus.SENT && !message.fromSelf)
-      .forEach(message => {
-        this.realTime.sendDeliveryReceipt(conversation.user.id, message.id, conversation.id);
-        message.status = MessageStatus.RECEIVED;
-      }));
     });
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
       this.archivedConversations = conversations;
@@ -107,13 +102,22 @@ export class InboxConversationService {
     }
   }
 
+  public sendReceiveSignalByConversations(conversations: InboxConversation[]): void {
+    conversations.forEach(conversation => conversation.messages
+    .filter(message => message.type === MessageType.TEXT && message.status === MessageStatus.SENT && !message.fromSelf)
+    .forEach(message => {
+      this.realTime.sendDeliveryReceipt(conversation.user.id, message.id, conversation.id);
+      message.status = MessageStatus.RECEIVED;
+    }));
+  }
+
   private findMessage(conversation: InboxConversation, message: InboxMessage) {
     return conversation.messages.find(m => m.id === message.id);
   }
 
   private bumpConversation(conversation: InboxConversation) {
-    const index: number = this.conversations.indexOf(conversation);
-    if (index > 0) {
+    if (this.containsConversation(conversation)) {
+      const index: number = this.conversations.indexOf(conversation);
       this.conversations.splice(index, 1);
       this.conversations.unshift(conversation);
     }
@@ -179,7 +183,7 @@ export class InboxConversationService {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getConversation(message.thread)
     .subscribe((conversation) => {
-        if (!_.find(this.conversations, { id: conversation.id })) {
+        if (!this.containsConversation(conversation)) {
           this.conversations.unshift(conversation);
         }
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
@@ -187,7 +191,9 @@ export class InboxConversationService {
       (err) => {
         // This is to display incoming messages if for some reason fetching the conversation fails.
         const conversation = InboxConversation.errorConversationFromMessage(message);
-        this.conversations.unshift(conversation);
+        if (!this.containsConversation(conversation)) {
+          this.conversations.unshift(conversation);
+        }
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       });
   }
@@ -197,8 +203,12 @@ export class InboxConversationService {
     .map((res: Response) => InboxConversation.fromJSON(res.json(), this._selfId));
   }
 
-  public isConversationArchived(conversation: InboxConversation): boolean {
-    return _.includes(this.archivedConversations, conversation);
+  public containsConversation(conversation: InboxConversation): boolean {
+    return isNullOrUndefined(conversation) ? false : _.some(this.conversations, { id: conversation.id });
+  }
+
+  public containsArchivedConversation(conversation: InboxConversation): boolean {
+    return isNullOrUndefined(conversation) ? false : _.some(this.archivedConversations, { id: conversation.id });
   }
 
   public archive(conversation: InboxConversation): Observable<InboxConversation> {
@@ -287,10 +297,11 @@ export class InboxConversationService {
         return Observable.of(localConversation);
       }
 
-      // Then try to fetch the conversation by item
       return this.fetchConversationByItem$(itemId)
       .map((inboxConversation: InboxConversation) => {
-        this.conversations.unshift(inboxConversation);
+        if (!this.containsConversation(inboxConversation)) {
+          this.conversations.unshift(inboxConversation);
+        }
         this.openConversation(inboxConversation);
         return inboxConversation;
       });
