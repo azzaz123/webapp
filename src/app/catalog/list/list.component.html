@@ -72,6 +72,7 @@
         class="col-md-12" 
         [item]="item"
         [paymentMethod]="isStripe ? 'STRIPE' : 'SABADELL'"
+        [showPublishCTA]="showPublishCTA"
         (itemChange)="itemChanged($event)"
         (purchaseListingFee)="purchaseListingFee($event)"
       >

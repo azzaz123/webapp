@@ -21,6 +21,7 @@ export class CatalogItemComponent implements OnInit {
 
   @Input() item: Item;
   @Input() paymentMethod: string;
+  @Input() showPublishCTA = false;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
   @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
   public link: string;

@@ -45,7 +45,7 @@
           {{item.bumpExpiringDate | amCountdown}}
         </button>
         <span *ngIf="item.flags.onhold">
-          <tsl-button className="btn-primary btn-publish" (click)="publishItem()" [hidden]="selectMode">
+          <tsl-button className="btn-primary btn-publish" (click)="publishItem()" [hidden]="!showPublishCTA || selectMode">
             <span i18n>Publish</span>
           </tsl-button>
         </span>

@@ -88,6 +88,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private page = 1;
   private pageSize = 20;
   public isSubscriptions = false;
+  public showPublishCTA = true;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -115,7 +116,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.isStripe = val;
     });
 
-    this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS).subscribe(async (active: boolean) => {
+    this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS).subscribe(active => {
       this.isSubscriptions = active;
 
       if (active) {
@@ -125,7 +126,7 @@ export class ListComponent implements OnInit, OnDestroy {
         // this.subscriptionsService.getSlots().subscribe(subscriptionSlots => {
         //   this.subscriptionSlots = subscriptionSlots;
         // });
-        this.userService.getAvailableSlots().subscribe(async (slots: AvailableSlots) => {
+        this.userService.getAvailableSlots().subscribe(slots => {
           if (!slots.user_can_manage) {
             return;
           }
@@ -146,6 +147,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
           const mappedSubscriptionSlot: SubscriptionSlot = { category, available: slots.num_slots_cars, limit: slots.num_max_cars };
           this.subscriptionSlots = [mappedSubscriptionSlot];
+          this.showPublishCTA = slots.num_slots_cars === 0;
         });
       }
     });
