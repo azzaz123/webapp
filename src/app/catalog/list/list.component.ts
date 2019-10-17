@@ -36,7 +36,6 @@ import { SubscriptionsService } from '../../core/subscriptions/subscriptions.ser
 import { SubscriptionSlot } from '../../core/subscriptions/subscriptions.interface';
 import { NavLink } from '../../shared/nav-links/nav-link.interface';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../../core/user/featureflag.service';
-import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 
 export const NORMAL_NAV_LINKS: NavLink[] = [
   { id: 'published', display: 'Selling' },
@@ -88,8 +87,6 @@ export class ListComponent implements OnInit, OnDestroy {
   public sortBy: string;
   private page = 1;
   private pageSize = 20;
-  public isSubscriptions = false;
-  public showPublishCTA = true;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -117,27 +114,35 @@ export class ListComponent implements OnInit, OnDestroy {
       this.isStripe = val;
     });
 
-    this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS).subscribe(active => {
-      this.isSubscriptions = active;
+    // TODO: New subscriptions will come from this endpoint and eventually drop support for Motor Plan
+    // this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS).subscribe(active => {
+    //   if (!active) {
+    //     return;
+    //   }
+    //   this.subscriptionsService.getSlots().subscribe(subscriptionSlots => {
+    //     this.setSubscriptionSlots(subscriptionSlots);
+    //   });
+    // });
 
-      if (active) {
-        this.searchPlaceholder = this.i18n.getTranslations('searchByTitle');
-        this.setSortItems();
-        // TODO: Replace for this when backend is ready for all kind of subscriptions
-        // this.subscriptionsService.getSlots().subscribe(subscriptionSlots => {
-        //   this.subscriptionSlots = subscriptionSlots;
-        // });
-        this.userService.getAvailableSlots().subscribe(slots => {
-          if (!slots.user_can_manage) {
-            return;
-          }
+    this.userService.getAvailableSlots().subscribe(slots => {
+      if (slots.user_can_manage && slots.num_max_cars) {
+        const carsCategory =   {
+          category_id: 100,
+          has_brand: false,
+          has_model: false,
+          has_object_type: false,
+          icon_id: 'cat_car',
+          name: 'Cars',
+          vertical_id: 'cars'
+        };
 
-          const category = CATEGORY_DATA_WEB[0];
+        const mappedSubscriptionSlot: SubscriptionSlot = {
+          category: carsCategory,
+          available: slots.num_slots_cars,
+          limit: slots.num_max_cars
+        };
 
-          const mappedSubscriptionSlot: SubscriptionSlot = { category, available: slots.num_slots_cars, limit: slots.num_max_cars };
-          this.subscriptionSlots = [mappedSubscriptionSlot];
-          this.showPublishCTA = slots.num_slots_cars === 0;
-        });
+        this.setSubscriptionSlots([mappedSubscriptionSlot]);
       }
     });
 
@@ -559,6 +564,12 @@ export class ListComponent implements OnInit, OnDestroy {
           .result.then(() => {}, () => {});
       });
     });
+  }
+
+  private setSubscriptionSlots(slots: SubscriptionSlot[]) {
+    this.subscriptionSlots = slots;
+    this.searchPlaceholder = this.i18n.getTranslations('searchByTitle');
+    this.setSortItems();
   }
 
   public selectSubscriptionSlot(subscription: SubscriptionSlot) {

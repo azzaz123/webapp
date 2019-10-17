@@ -14,7 +14,7 @@
         <div class="header-row">
           <h1 class="header-title">
             <span i18n>Your products</span>
-            <span class="badge badge-pro" *ngIf="userService?.user?.featured || (subscriptionSlots.length !== 0 && isSubscriptions)">
+            <span class="badge badge-pro" *ngIf="userService?.user?.featured || subscriptionSlots.length !== 0">
               <mat-icon svgIcon="pro-seal"></mat-icon>
               Pro
             </span>
@@ -42,7 +42,6 @@
     </tsl-header>
 
     <tsl-subscriptions-slots-list
-      *ngIf="isSubscriptions" 
       [subscriptionsSlots]="subscriptionSlots"
       [selectedSubscriptionSlot]="selectedSubscriptionSlot"
       (subscriptionSlotSelected)="selectSubscriptionSlot($event)"
@@ -72,7 +71,6 @@
         class="col-md-12" 
         [item]="item"
         [paymentMethod]="isStripe ? 'STRIPE' : 'SABADELL'"
-        [showPublishCTA]="showPublishCTA"
         (itemChange)="itemChanged($event)"
         (purchaseListingFee)="purchaseListingFee($event)"
       >

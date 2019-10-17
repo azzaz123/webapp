@@ -25,5 +25,5 @@ export interface Counters {
 export interface AvailableSlots {
   user_can_manage: boolean;
   num_slots_cars: number;
-  num_max_cars: number;
+  num_max_cars?: number;
 }

@@ -49,7 +49,6 @@ import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
 import { HttpServiceNew } from '../http/http.service.new';
-import { getMockedItemProResponses } from '../../../tests/item.fixtures.spec';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
