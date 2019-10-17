@@ -34,7 +34,6 @@ export class CancelSubscriptionModalComponent {
       this.loading = false;
       if (response.status === 202) {
         this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
-        
         this.eventService.emit('subscriptionChange');
       } else {
         this.toastr.error(this.i18n.getTranslations('cancelSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionErrorBody'));
