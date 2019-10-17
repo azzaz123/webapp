@@ -6,8 +6,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { BROWSER, BROWSER_VERSION, DeviceDetectorServiceMock, FeatureFlagServiceMock } from '../../../tests';
 import * as logger from 'loglevel';
 import { FeatureflagService } from '../user/featureflag.service';
-import { application } from '../../../environments/application';
 import { MetricTypeEnum } from './metric-type.enum';
+import { APP_VERSION } from '../../../environments/version';
 
 describe('RemoteConsoleService', () => {
 
@@ -50,7 +50,7 @@ describe('RemoteConsoleService', () => {
       'browser_version': BROWSER_VERSION,
       'user_id': USER_ID,
       'feature_flag': true,
-      'version': application.version,
+      'version': APP_VERSION,
       'metric_type': MetricTypeEnum.XMPP_CONNECTION_TIME,
       'message': 'xmpp connection time',
       'connection_time': CONNECTION_TIME,
@@ -73,7 +73,7 @@ describe('RemoteConsoleService', () => {
       'browser_version': BROWSER_VERSION,
       'user_id': USER_ID,
       'feature_flag': true,
-      'version': application.version,
+      'version': APP_VERSION,
       'metric_type': MetricTypeEnum.DUPLICATE_CONVERSATION,
       'message': 'send log when user see duplicate conversation in inbox',
       'call_method_client': LOAD_MORE_CONVERSATIONS,
