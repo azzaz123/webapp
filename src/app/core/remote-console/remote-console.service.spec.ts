@@ -3,11 +3,13 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { RemoteConsoleService } from './remote-console.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { DeviceDetectorServiceMock, FeatureFlagServiceMock } from '../../../tests';
+import { BROWSER, BROWSER_VERSION, DeviceDetectorServiceMock, FeatureFlagServiceMock } from '../../../tests';
 import * as logger from 'loglevel';
 import { FeatureflagService } from '../user/featureflag.service';
+import { application } from '../../../environments/application';
+import { MetricTypeEnum } from './metric-type.enum';
 
-describe('RemoteConsoleService', () => {
+fdescribe('RemoteConsoleService', () => {
 
   let httpTestingController: HttpTestingController;
   let service: RemoteConsoleService;
@@ -44,12 +46,12 @@ describe('RemoteConsoleService', () => {
     service.sendConnectionTimeout(USER_ID, CONNECTION_TIME);
 
     expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-      'browser': 'CHROME',
-      'browser_version': '76.0.3809.132',
+      'browser': BROWSER,
+      'browser_version': BROWSER_VERSION,
       'user_id': USER_ID,
       'feature_flag': true,
-      'version': '5.78.0',
-      'metric_type': 'XMPP_CONNECTION_TIME',
+      'version': application.version,
+      'metric_type': MetricTypeEnum.XMPP_CONNECTION_TIME,
       'message': 'xmpp connection time',
       'connection_time': CONNECTION_TIME,
       'connection_type': '',
@@ -67,14 +69,14 @@ describe('RemoteConsoleService', () => {
     service.sendDuplicateConversations(USER_ID, LOAD_MORE_CONVERSATIONS, CONVERSATIONS_BY_ID);
 
     expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-      'browser': 'CHROME',
-      'browser_version': '76.0.3809.132',
-      'user_id': 'USER_ID',
+      'browser': BROWSER,
+      'browser_version': BROWSER_VERSION,
+      'user_id': USER_ID,
       'feature_flag': true,
-      'version': '5.78.0',
-      'metric_type': 'DUPLICATE_CONVERSATION',
+      'version': application.version,
+      'metric_type': MetricTypeEnum.DUPLICATE_CONVERSATION,
       'message': 'send log when user see duplicate conversation in inbox',
-      'call_method_client': 'LOAD_INBOX',
+      'call_method_client': LOAD_MORE_CONVERSATIONS,
       'conversations_count_by_id': JSON.stringify({ 'xa4ld642': 2 })
     }));
   });
