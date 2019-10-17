@@ -7,7 +7,7 @@ import * as logger from 'loglevel';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
-import { application } from '../../../environments/application';
+import { APP_VERSION } from '../../../environments/version';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +33,6 @@ export class RemoteConsoleService {
         ping_time_ms: navigator['connection']['rtt']
       }
     })));
-
   }
 
   sendDuplicateConversations(userId: string, callMethodClient: string, conversationsGroupById: Map<string, number>): void {
@@ -57,7 +56,7 @@ export class RemoteConsoleService {
         browser_version: device.browser_version,
         user_id: userId,
         feature_flag: fetureFlag,
-        version: application.version
+        version: APP_VERSION
       };
     });
   }
