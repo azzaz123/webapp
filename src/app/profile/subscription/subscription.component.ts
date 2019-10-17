@@ -32,7 +32,7 @@ export class SubscriptionComponent implements OnInit {
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
-    //The edit of the subscription is disabled until the backend does not implement it.
+    //The edit of the subscription is disabled until the backend implements it.
     if (subscription.subscribed_from) {
       return;
     }

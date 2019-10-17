@@ -18,9 +18,6 @@ export class SubscriptionsService {
   public uuid: string;
   public fullName: string;
   public PAYMENT_PROVIDER_STRIPE = false;
-  private API_URL = 'api/v3/payments';
-  private STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
-  private SUBSCRIPTIONS_URL = 'bff/subscriptions';
   public subscriptions: SubscriptionsResponse[];
 
   constructor(private userService: UserService,
@@ -33,14 +30,14 @@ export class SubscriptionsService {
 
   public newSubscription(subscriptionId: string, paymentId: string): Observable<any> {
     this.uuid = UUID.UUID();
-    return this.http.post(`${this.API_URL}/${this.STRIPE_SUBSCRIPTION_URL}/${this.uuid}`, {
+    return this.http.post(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`, {
         payment_method_id: paymentId,
         product_subscription_id: subscriptionId
     }, null, { observe: 'response' as 'body' });
   }
 
   public checkNewSubscriptionStatus(): Observable<SubscriptionResponse> {
-    return this.http.get(`${this.API_URL}/${this.STRIPE_SUBSCRIPTION_URL}/${this.uuid}`)
+    return this.http.get(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`)
     .retryWhen((errors) => {
       return errors
         .mergeMap((error) => (error.status !== 404) ? Observable.throw(error) : Observable.of(error))
@@ -51,14 +48,14 @@ export class SubscriptionsService {
 
   public retrySubscription(invoiceId: string, paymentId: string): Observable<any> {
     this.uuid = UUID.UUID();
-    return this.http.put(`${this.API_URL}/${this.STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`, {
+    return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`, {
       invoice_id: invoiceId,
       payment_method_id: paymentId,
     });
   }
 
   public checkRetrySubscriptionStatus(): Observable<any> {
-    return this.http.get(`${this.API_URL}/${this.STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`);
+    return this.http.get(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`);
   }
 
   public isSubscriptionsActive$(): Observable<boolean> {
@@ -69,7 +66,7 @@ export class SubscriptionsService {
     if (this.subscriptions && cache) {
       return Observable.of(this.subscriptions);
     }
-    return this.http.get(this.SUBSCRIPTIONS_URL)
+    return this.http.get(SUBSCRIPTIONS_URL)
     .map((subscriptions: SubscriptionsResponse[]) => {
       if (subscriptions.length > 0) {
         return subscriptions.map((subscription: SubscriptionsResponse) => this.mapSubscriptions(subscription, categories))
