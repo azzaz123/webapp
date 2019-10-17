@@ -9,7 +9,7 @@ import { FeatureflagService } from '../user/featureflag.service';
 import { application } from '../../../environments/application';
 import { MetricTypeEnum } from './metric-type.enum';
 
-fdescribe('RemoteConsoleService', () => {
+describe('RemoteConsoleService', () => {
 
   let httpTestingController: HttpTestingController;
   let service: RemoteConsoleService;
