@@ -12,6 +12,7 @@ export class CategoryService {
   private categories: CategoryResponse[];
   private heroCategoriesIds = [100, 13200, 13000, 21000];
   private fashionCategoryId = 12465;
+  private lang = this.i18n.locale === 'es' ? this.i18n.locale + '_ES' : this.i18n.locale;
 
   constructor(private http: HttpServiceNew,
     private i18n: I18nService) {
@@ -27,15 +28,14 @@ export class CategoryService {
     if (this.categories) {
       return Observable.of(this.categories);
     }
-    return this.http.get(`${CATEGORIES_ENDPOINT}/keys/`);
+    return this.http.get(`${CATEGORIES_ENDPOINT}/keys/`, [{ key: 'language', value: this.lang }]);
   }
 
   public getUploadCategories(): Observable<CategoryOption[]> {
     if (this.uploadCategories) {
       return Observable.of(this.uploadCategories);
     }
-    const lang = this.i18n.locale === 'es' ? this.i18n.locale + '_ES' : this.i18n.locale;
-    return this.http.get(`${CATEGORIES_ENDPOINT}/keys/consumer_goods`, [{ key: 'language', value: lang }])
+    return this.http.get(`${CATEGORIES_ENDPOINT}/keys/consumer_goods`, [{ key: 'language', value: this.lang }])
       .map((categories: CategoryResponse[]) => this.toSelectOptions(categories))
       .do((categories: CategoryOption[]) => this.uploadCategories = categories);
   }
