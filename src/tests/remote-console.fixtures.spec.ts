@@ -8,11 +8,14 @@ export class MockRemoteConsoleService {
   }
 }
 
+export const BROWSER = 'CHROME';
+export const BROWSER_VERSION = '76.0.3809.132';
+
 export class DeviceDetectorServiceMock {
   getDeviceInfo(): DeviceInfo {
     return {
-      browser: 'Chrome',
-      browser_version: '76.0.3809.132'
+      browser: BROWSER,
+      browser_version: BROWSER_VERSION
     } as DeviceInfo;
   }
 }
