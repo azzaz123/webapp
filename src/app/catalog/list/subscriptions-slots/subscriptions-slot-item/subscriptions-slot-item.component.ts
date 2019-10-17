@@ -22,7 +22,7 @@ export class SubscriptionsSlotItemComponent implements OnInit {
     if (!this.selectedSubscriptionSlot) {
       return false;
     }
-    return this.subscriptionSlot.category.categoryId === this.selectedSubscriptionSlot.category.categoryId;
+    return this.subscriptionSlot.category.category_id === this.selectedSubscriptionSlot.category.category_id;
   }
 
   onClick(subscriptionSlot: SubscriptionSlot, e: any) {

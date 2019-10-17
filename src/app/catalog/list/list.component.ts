@@ -36,6 +36,7 @@ import { SubscriptionsService } from '../../core/subscriptions/subscriptions.ser
 import { SubscriptionSlot } from '../../core/subscriptions/subscriptions.interface';
 import { NavLink } from '../../shared/nav-links/nav-link.interface';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../../core/user/featureflag.service';
+import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 
 export const NORMAL_NAV_LINKS: NavLink[] = [
   { id: 'published', display: 'Selling' },
@@ -131,19 +132,7 @@ export class ListComponent implements OnInit, OnDestroy {
             return;
           }
 
-          const category = {
-            categoryId: 100,
-            countryCode: 'ES',
-            defaultTitle: 'Cars',
-            highlighted: false,
-            iconName: 'category_Cars',
-            numPublishedItems: 160,
-            order: '50',
-            title: 'Coches',
-            url: '/coches-segunda-mano',
-            visible: true,
-            iconColor: 'black'
-          };
+          const category = CATEGORY_DATA_WEB[0];
 
           const mappedSubscriptionSlot: SubscriptionSlot = { category, available: slots.num_slots_cars, limit: slots.num_max_cars };
           this.subscriptionSlots = [mappedSubscriptionSlot];
@@ -341,7 +330,7 @@ export class ListComponent implements OnInit, OnDestroy {
     if (this.selectedSubscriptionSlot) {
       this.itemService
         .minesByCategory(
-          this.page, this.pageSize, this.selectedSubscriptionSlot.category.categoryId, this.sortBy, this.selectedStatus, this.searchTerm
+          this.page, this.pageSize, this.selectedSubscriptionSlot.category.category_id, this.sortBy, this.selectedStatus, this.searchTerm
         )
         .subscribe(itemsByCategory => {
           this.items = append ? this.items.concat(itemsByCategory) : itemsByCategory;
@@ -536,6 +525,10 @@ export class ListComponent implements OnInit, OnDestroy {
           item.selected = false;
         });
         this.getNumberOfProducts();
+        this.resetNavLinksCounters();
+        if (this.selectedSubscriptionSlot) {
+          this.selectedSubscriptionSlot.available += items.length;
+        }
         this.eventService.emit('itemChanged');
       });
     });
@@ -550,7 +543,16 @@ export class ListComponent implements OnInit, OnDestroy {
           item.flags['onhold'] = false;
           item.selected = false;
         });
+
+        this.items = this.items.filter(i => {
+          return !this.items.find(item => item.id === i.id);
+        });
+
         this.getNumberOfProducts();
+        this.updateNavLinksCounters();
+        if (this.selectedSubscriptionSlot) {
+          this.selectedSubscriptionSlot.available -= items.length;
+        }
         this.eventService.emit('itemChanged');
       }, () => {
         this.modalService.open(TooManyItemsModalComponent, {windowClass: 'bump'})
@@ -561,7 +563,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public selectSubscriptionSlot(subscription: SubscriptionSlot) {
     if (this.selectedSubscriptionSlot && subscription) {
-      if (this.selectedSubscriptionSlot.category.categoryId === subscription.category.categoryId) {
+      if (this.selectedSubscriptionSlot.category.category_id === subscription.category.category_id) {
         return;
       }
     }
@@ -574,6 +576,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.searchTerm = null;
       this.sortBy = SORTS[0];
       this.updateNavLinksCounters();
+      this.resetNavLinksCounters();
     } else {
       this.selectedStatus = 'active';
     }
@@ -586,6 +589,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.navLinks = SUBSCRIPTION_SELECTED_NAV_LINKS;
     } else {
       this.navLinks = NORMAL_NAV_LINKS;
+      this.resetNavLinksCounters();
     }
   }
 
@@ -602,6 +606,10 @@ export class ListComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  public resetNavLinksCounters() {
+    this.navLinks.forEach(navLink => navLink.counter = null);
   }
 
   public onSearchInputChange(value: string) {

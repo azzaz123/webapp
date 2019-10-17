@@ -6,6 +6,12 @@ import { HttpServiceNew } from '../http/http.service.new';
 
 export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'subscriptions/slots/';
 
+export const SUBSCRIPTIONS_CATEGORY_ICON_MAP = {
+  'car': 'cat_car',
+  'helmet': 'cat_motoraccessories',
+  'motorbike': 'cat_motorbike'
+};
+
 @Injectable()
 export class SubscriptionsService {
 
@@ -26,6 +32,7 @@ export class SubscriptionsService {
   private mapSlotResponseToSlot(slot: SubscriptionSlotResponse): Observable<SubscriptionSlot> {
     return this.categoryService.getCategoryById(slot.category_id)
       .map(category => {
+        category.icon_id = SUBSCRIPTIONS_CATEGORY_ICON_MAP[category.icon_id];
         const mappedSlot: SubscriptionSlot = {
           category,
           available: slot.available,

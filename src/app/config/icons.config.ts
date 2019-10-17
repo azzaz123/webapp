@@ -81,6 +81,8 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('cat_toolbox', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Services.svg'));
   matIconRegistry.addSvgIcon('cat_ball', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Sports.svg'));
   matIconRegistry.addSvgIcon('cat_gamepad', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Videogames.svg'));
+  matIconRegistry.addSvgIcon('cat_car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/cars.svg'));
+  matIconRegistry.addSvgIcon('cat_motoraccessories', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/motoraccesories.svg'));
   matIconRegistry.addSvgIcon('cat_motorbike', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/motos.svg'));
   matIconRegistry.addSvgIcon('cat_tv', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/tv.svg'));
   matIconRegistry.addSvgIcon('cat_pc', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/computing.svg'));
