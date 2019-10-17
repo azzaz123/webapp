@@ -11,6 +11,9 @@ import { SubscriptionsService } from '../core/subscriptions/subscriptions.servic
 import { StripeService } from '../core/stripe/stripe.service';
 import { HttpService } from '../core/http/http.service';
 import { FeatureflagService } from '../core/user/featureflag.service';
+import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS } from '../../tests/subscriptions.fixtures.spec';
+import { CategoryService } from '../core/category/category.service';
+import { CATEGORY_DATA_WEB } from '../../tests/category.fixtures.spec';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -62,6 +65,9 @@ describe('ProfileComponent', () => {
           provide: SubscriptionsService, useValue: {
             isSubscriptionsActive$() {
               return Observable.of(true);
+            },
+            getSubscriptions() {
+              return Observable.of(MAPPED_SUBSCRIPTIONS)
             }
           }
         },
@@ -72,7 +78,13 @@ describe('ProfileComponent', () => {
             }
           }
         },
-
+        {
+          provide: CategoryService, useValue: {
+            getCategories() {
+                return Observable.of(CATEGORY_DATA_WEB);
+              }
+            }
+        },
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         }

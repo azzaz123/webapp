@@ -7,6 +7,7 @@ import { UserStatsResponse } from '../core/user/user-stats.interface';
 import { StripeService } from '../core/stripe/stripe.service';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { flatMap } from 'rxjs/operators';
+import { CategoryService } from '../core/category/category.service';
 
 @Component({
   selector: 'tsl-profile',
@@ -21,11 +22,13 @@ export class ProfileComponent implements OnInit {
   public isPro: boolean;
   public userStats: UserStatsResponse;
   public isSubscriptionsActive: boolean;
+  public isNewSubscription = false;
 
   constructor(private userService: UserService,
               protected i18n: I18nService,
               private stripeService: StripeService,
               private subscriptionsService: SubscriptionsService,
+              private categoryService: CategoryService,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -43,6 +46,7 @@ export class ProfileComponent implements OnInit {
       }
     });
     this.userService.isProUser().subscribe((isPro: boolean) => {
+      console.log('IS PRO? ', isPro);
       this.isPro = isPro;
     });
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
@@ -54,12 +58,28 @@ export class ProfileComponent implements OnInit {
     )
     .filter(val => val === true)
     .subscribe(val => this.isSubscriptionsActive = val); 
-
+    this.getSubscriptions();
   }
 
   public logout($event: any) {
     $event.preventDefault();
     this.userService.logout();
+  }
+
+  private getSubscriptions(cache: boolean = true): void {
+    this.categoryService.getCategories()
+    .pipe(
+      flatMap(categories => this.subscriptionsService.getSubscriptions(categories, cache)),
+    )
+    .subscribe(response => {
+      if (response) {
+        response.map(subscription => {
+          if (subscription.selected_tier_id) {
+            this.isNewSubscription === true;
+          }
+        })        
+      }
+    }); 
   }
 
 }
