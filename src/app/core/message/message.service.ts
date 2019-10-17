@@ -17,7 +17,7 @@ import { EventService } from '../event/event.service';
 import { I18nService } from '../i18n/i18n.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { RealTimeService } from './real-time.service';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
+import { InboxConversation } from '../../chat/model/inbox-conversation';
 
 @Injectable()
 export class MessageService {

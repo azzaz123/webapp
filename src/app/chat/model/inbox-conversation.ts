@@ -1,7 +1,7 @@
-import { InboxMessage } from '../../message/inbox-message';
-import { InboxUser, InboxUserPlaceholder } from '../inbox-user';
-import { InboxItem, InboxImage, InboxItemPlaceholder, INBOX_ITEM_STATUSES } from '../inbox-item';
-import { environment } from '../../../../../environments/environment';
+import { InboxMessage } from './inbox-message';
+import { InboxUser, InboxUserPlaceholder } from './inbox-user';
+import { InboxItem, InboxImage, InboxItemPlaceholder, INBOX_ITEM_STATUSES } from './inbox-item';
+import { environment } from '../../../environments/environment';
 
 export class InboxConversation {
 

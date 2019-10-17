@@ -16,13 +16,13 @@ import AllDocsResponse = PouchDB.Core.AllDocsResponse;
 import Document = PouchDB.Core.Document;
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
-import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
-import { InboxItem } from '../../chat/chat-with-inbox/inbox/inbox-item';
+import { InboxUser } from '../../chat/model/inbox-user';
+import { InboxItem } from '../../chat/model/inbox-item';
 import { EventService } from '../event/event.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TrackingEvent } from '../tracking/tracking-event';
-import { InboxConversation, StoredInboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
-import { InboxMessage, statusOrder } from '../../chat/chat-with-inbox/message/inbox-message';
+import { InboxConversation, StoredInboxConversation } from '../../chat/model/inbox-conversation';
+import { InboxMessage, statusOrder } from '../../chat/model/inbox-message';
 
 @Injectable()
 export class PersistencyService {

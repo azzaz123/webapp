@@ -1,8 +1,7 @@
 import { Input, OnInit } from '@angular/core';
 
-import { InboxMessage } from './inbox-message';
-import { InboxConversation } from '../inbox/inbox-conversation';
-import { InboxItem, InboxUser } from '../inbox';
+import { InboxMessage } from '../../model/inbox-message';
+import { InboxConversation } from '../../model/inbox-conversation';
 
 export abstract class MessageComponent implements OnInit {
 

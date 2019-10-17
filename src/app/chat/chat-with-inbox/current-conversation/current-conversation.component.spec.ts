@@ -4,7 +4,7 @@ import { CurrentConversationComponent } from './current-conversation.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
-import { InboxMessage, MessageType } from '../message/inbox-message';
+import { InboxMessage, MessageType } from '../../model/inbox-message';
 import { USER_ID } from '../../../../tests/user.fixtures.spec';
 import { messageStatus } from '../../../core/message/message';
 import { RealTimeService } from '../../../core/message/real-time.service';

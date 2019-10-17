@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { InboxConversation } from './inbox-conversation';
+import { Component, Input } from '@angular/core';
+import { InboxConversation } from '../../../model';
 
 @Component({
   selector: 'tsl-inbox-conversation',

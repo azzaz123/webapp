@@ -1,8 +1,8 @@
 import { OTHER_USER_ID, USER_ID } from './user.fixtures.spec';
 import { Message } from '../app/core/message/message';
-import { InboxMessage, MessageStatus, MessageType } from '../app/chat/chat-with-inbox/message';
 import { MessagePayload } from '../app/core/message/messages.interface';
 import { Subject } from 'rxjs';
+import { InboxMessage, MessageStatus, MessageType } from '../app/chat/model';
 
 export const MESSAGE_MAIN: any = {
   'body': 'Message body',

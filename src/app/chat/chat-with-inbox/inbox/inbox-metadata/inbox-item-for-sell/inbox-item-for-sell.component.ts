@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { InboxUser } from '../../inbox-user';
+import { InboxUser } from '../../../../model/inbox-user';
 import { ItemDataResponse } from '../../../../../core/item/item-response.interface';
 import { ItemService } from '../../../../../core/item/item.service';
 
