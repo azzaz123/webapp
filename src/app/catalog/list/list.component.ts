@@ -15,7 +15,7 @@ import { UploadConfirmationModalComponent } from './modals/upload-confirmation-m
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { Counters, UserStatsResponse } from '../../core/user/user-stats.interface';
+import { Counters, UserStatsResponse, AvailableSlots } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -111,17 +111,44 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getItems();
     this.getCreditInfo();
 
-    this.subscriptionsService.getSlots().subscribe(subscriptionSlots => {
-      this.subscriptionSlots = subscriptionSlots;
-      this.searchPlaceholder = this.i18n.getTranslations('searchByTitle');
-      this.setSortItems();
-    });
-
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = val;
     });
 
-    this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS).subscribe(active => this.isSubscriptions = active);
+    this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS).subscribe(async (active: boolean) => {
+      this.isSubscriptions = active;
+
+      if (active) {
+        this.searchPlaceholder = this.i18n.getTranslations('searchByTitle');
+        this.setSortItems();
+        // TODO: Replace for this when backend is ready for all kind of subscriptions
+        // this.subscriptionsService.getSlots().subscribe(subscriptionSlots => {
+        //   this.subscriptionSlots = subscriptionSlots;
+        // });
+        this.userService.getAvailableSlots().subscribe(async (slots: AvailableSlots) => {
+          if (!slots.user_can_manage) {
+            return;
+          }
+
+          const category = {
+            categoryId: 100,
+            countryCode: 'ES',
+            defaultTitle: 'Cars',
+            highlighted: false,
+            iconName: 'category_Cars',
+            numPublishedItems: 160,
+            order: '50',
+            title: 'Coches',
+            url: '/coches-segunda-mano',
+            visible: true,
+            iconColor: 'black'
+          };
+
+          const mappedSubscriptionSlot: SubscriptionSlot = { category, available: slots.num_slots_cars, limit: slots.num_max_cars };
+          this.subscriptionSlots = [mappedSubscriptionSlot];
+        });
+      }
+    });
 
     this.itemService.selectedItems$.takeWhile(() => {
       return this.active;
@@ -502,7 +529,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.modalService.open(DeactivateItemsModalComponent).result.then(() => {
       this.itemService.deactivate().subscribe(() => {
         items.forEach((id: string) => {
-          let item: Item = _.find(this.items, {'id': id});
+          const item: Item = _.find(this.items, {'id': id});
           item.flags['onhold'] = true;
           item.selected = false;
         });
@@ -517,7 +544,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.modalService.open(ActivateItemsModalComponent).result.then(() => {
       this.itemService.activate().subscribe((resp: any) => {
         items.forEach((id: string) => {
-          let item: Item = _.find(this.items, {'id': id});
+          const item: Item = _.find(this.items, {'id': id});
           item.flags['onhold'] = false;
           item.selected = false;
         });
