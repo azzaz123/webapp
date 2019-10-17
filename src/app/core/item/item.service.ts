@@ -135,6 +135,7 @@ export class ItemService extends ResourceService {
     this.items.featured.map((item: Item) => {
       item.selected = false;
     });
+    this.selectedAction = null;
   }
 
   public getBanReasons(): Observable<BanReason[]> {
@@ -154,6 +155,10 @@ export class ItemService extends ResourceService {
 
   public deselectItem(id: string) {
     this.selectedItems = _.without(this.selectedItems, id);
+    if (this.selectedItems.length === 0) {
+      this.selectedAction = null;
+    }
+
     this.selectedItems$.next({
       id: id,
       action: 'deselected'
