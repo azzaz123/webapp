@@ -11,6 +11,9 @@ import { SubscriptionsService } from '../core/subscriptions/subscriptions.servic
 import { StripeService } from '../core/stripe/stripe.service';
 import { HttpService } from '../core/http/http.service';
 import { FeatureflagService } from '../core/user/featureflag.service';
+import { CATEGORY_DATA_WEB } from '../../tests/category.fixtures.spec';
+import { CategoryService } from '../core/category/category.service';
+import { SUBSCRIPTIONS } from '../../tests/subscriptions.fixtures.spec';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -19,6 +22,7 @@ describe('ProfileComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let stripeService: StripeService;
   let featureflagService: FeatureflagService;
+  let categoryService: CategoryService;
   const mockMotorPlan = {
     type: 'motor_plan_pro',
     subtype: 'sub_premium'
@@ -62,6 +66,9 @@ describe('ProfileComponent', () => {
           provide: SubscriptionsService, useValue: {
             isSubscriptionsActive$() {
               return Observable.of(true);
+            },
+            getSubscriptions() {
+              return Observable.of(SUBSCRIPTIONS);
             }
           }
         },
@@ -72,7 +79,13 @@ describe('ProfileComponent', () => {
             }
           }
         },
-
+        {
+          provide: CategoryService, useValue: {
+            getCategories() {
+                return Observable.of(CATEGORY_DATA_WEB);
+              }
+            }
+        },
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         }
@@ -86,6 +99,7 @@ describe('ProfileComponent', () => {
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
+    categoryService = TestBed.get(CategoryService);
     spyOn(userService, 'me').and.callThrough();
     spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
     spyOn(userService, 'getStats').and.callThrough();
