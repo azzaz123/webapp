@@ -33,7 +33,6 @@ export class RemoteConsoleService {
         ping_time_ms: navigator['connection']['rtt']
       }
     })));
-
   }
 
   sendDuplicateConversations(userId: string, callMethodClient: string, conversationsGroupById: Map<string, number>): void {
