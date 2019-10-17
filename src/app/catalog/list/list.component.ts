@@ -107,6 +107,8 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.navLinks = NORMAL_NAV_LINKS;
+
     this.getItems();
     this.getCreditInfo();
 
@@ -321,8 +323,6 @@ export class ListComponent implements OnInit, OnDestroy {
   private getItems(append?: boolean) {
     this.loading = true;
 
-    this.updateNavLinks();
-
     if (!append) {
       this.init = 0;
       this.page = 1;
@@ -528,12 +528,12 @@ export class ListComponent implements OnInit, OnDestroy {
           const item: Item = _.find(this.items, {'id': id});
           item.flags['onhold'] = true;
           item.selected = false;
+
+          const itemIndex = this.items.indexOf(item);
+          this.items.splice(itemIndex, 1);
         });
         this.getNumberOfProducts();
-        this.resetNavLinksCounters();
-        if (this.selectedSubscriptionSlot) {
-          this.selectedSubscriptionSlot.available += items.length;
-        }
+        this.updateCountersWhenDeactivate(items.length);
         this.eventService.emit('itemChanged');
       });
     });
@@ -547,17 +547,14 @@ export class ListComponent implements OnInit, OnDestroy {
           const item: Item = _.find(this.items, {'id': id});
           item.flags['onhold'] = false;
           item.selected = false;
-        });
 
-        this.items = this.items.filter(i => {
-          return !this.items.find(item => item.id === i.id);
+          const itemIndex = this.items.indexOf(item);
+          this.items.splice(itemIndex, 1);
         });
 
         this.getNumberOfProducts();
-        this.updateNavLinksCounters();
-        if (this.selectedSubscriptionSlot) {
-          this.selectedSubscriptionSlot.available -= items.length;
-        }
+        this.updateCountersWhenActivate(items.length);
+
         this.eventService.emit('itemChanged');
       }, () => {
         this.modalService.open(TooManyItemsModalComponent, {windowClass: 'bump'})
@@ -566,13 +563,43 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
+  private updateCountersWhenActivate(numActivatedItems: number) {
+    if (!this.selectedSubscriptionSlot) {
+      return;
+    }
+
+    this.selectedSubscriptionSlot.available -= numActivatedItems;
+
+    const inactiveNavLink = this.getNavLinkById('inactive');
+    inactiveNavLink.counter.currentVal -= numActivatedItems;
+
+    const activeNavLink = this.getNavLinkById('active');
+    activeNavLink.counter.currentVal += numActivatedItems;
+  }
+
+  private updateCountersWhenDeactivate(numDeactivatedItems: number) {
+    if (!this.selectedSubscriptionSlot) {
+      return;
+    }
+
+    this.selectedSubscriptionSlot.available += numDeactivatedItems;
+
+    const inactiveNavLink = this.getNavLinkById('inactive');
+    if (inactiveNavLink.counter) {
+      inactiveNavLink.counter.currentVal += numDeactivatedItems;
+    }
+
+    const activeNavLink = this.getNavLinkById('active');
+    activeNavLink.counter.currentVal -= numDeactivatedItems;
+  }
+
   private setSubscriptionSlots(slots: SubscriptionSlot[]) {
     this.subscriptionSlots = slots;
     this.searchPlaceholder = this.i18n.getTranslations('searchByTitle');
     this.setSortItems();
   }
 
-  public selectSubscriptionSlot(subscription: SubscriptionSlot) {
+  public onSelectSubscriptionSlot(subscription: SubscriptionSlot) {
     if (this.selectedSubscriptionSlot && subscription) {
       if (this.selectedSubscriptionSlot.category.category_id === subscription.category.category_id) {
         return;
@@ -586,12 +613,11 @@ export class ListComponent implements OnInit, OnDestroy {
       this.selectedStatus = 'published';
       this.searchTerm = null;
       this.sortBy = SORTS[0];
-      this.updateNavLinksCounters();
-      this.resetNavLinksCounters();
     } else {
       this.selectedStatus = 'active';
     }
 
+    this.updateNavLinks();
     this.getItems();
   }
 
@@ -617,6 +643,10 @@ export class ListComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  public getNavLinkById(id: string): NavLink {
+    return this.navLinks.filter(navLink => navLink.id === id)[0];
   }
 
   public resetNavLinksCounters() {
