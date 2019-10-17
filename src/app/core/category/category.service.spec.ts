@@ -1,25 +1,26 @@
 import { TestBed } from '@angular/core/testing';
-import { CategoryService } from './category.service';
+import { CategoryService, CATEGORIES_ENDPOINT } from './category.service';
 import {
   CATEGORIES_DATA_CONSUMER_GOODS, CATEGORIES_OPTIONS,
   CATEGORY_DATA_WEB
 } from '../../../tests/category.fixtures.spec';
 import { CategoryResponse } from './category-response.interface';
-import { ResponseOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
-import { HttpService } from '../http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { I18nService } from '../i18n/i18n.service';
+import { HttpModuleNew } from '../http/http.module.new';
+import { HttpServiceNew } from '../http/http.service.new';
+
 let service: CategoryService;
-let http: HttpService;
+let http: HttpServiceNew;
 
 describe('CategoryService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpModuleNew],
       providers: [
         CategoryService,
-        ...TEST_HTTP_PROVIDERS,
+        HttpServiceNew,
         {
           provide: I18nService, useValue: {
             locale: 'es'
@@ -28,14 +29,13 @@ describe('CategoryService', () => {
       ]
     });
     service = TestBed.get(CategoryService);
-    http = TestBed.get(HttpService);
+    http = TestBed.get(HttpServiceNew);
   });
 
   describe('getCategories', () => {
     it('should return the json from the categories', () => {
       let response: CategoryResponse[];
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(CATEGORY_DATA_WEB) });
-      spyOn(http, 'getNoBase').and.returnValue(Observable.of(new Response(res)));
+      spyOn(http, 'get').and.returnValue(Observable.of(CATEGORY_DATA_WEB));
 
       service.getCategories().subscribe((data: CategoryResponse[]) => {
         response = data;
@@ -47,10 +47,9 @@ describe('CategoryService', () => {
 
   describe('getUploadCategories', () => {
     let response: IOption[];
-    const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(CATEGORIES_DATA_CONSUMER_GOODS) });
     beforeEach(() => {
       response = null;
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      spyOn(http, 'get').and.returnValue(Observable.of(CATEGORIES_DATA_CONSUMER_GOODS));
     });
 
     it('should return the json from the categories and convert it into options', () => {
@@ -58,7 +57,7 @@ describe('CategoryService', () => {
         response = data;
       });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/categories/keys/consumer_goods', { language: 'es_ES' });
+      expect(http.get).toHaveBeenCalledWith(`${CATEGORIES_ENDPOINT}/keys/consumer_goods`, [{ key: 'language', value: 'es_ES' }]);
       expect(response).toEqual(CATEGORIES_OPTIONS);
     });
 
