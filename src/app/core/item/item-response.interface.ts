@@ -83,6 +83,8 @@ export interface ItemByCategoryResponse {
           medium: string;
       }
   };
+  modified_date: number;
+  publish_date: number;
   sale_price: number;
   currency_code: string;
   active_item_purchase: any;

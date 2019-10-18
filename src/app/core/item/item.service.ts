@@ -337,14 +337,15 @@ export class ItemService extends ResourceService {
      null,
      response.sale_price,
      response.currency_code,
-     null,
+     response.modified_date,
      null,
      response.flags,
       null,
       null,
       response.main_image,
       null,
-      response.web_slug
+      response.web_slug,
+      response.publish_date
     );
 
     // TODO: Map purchases here
