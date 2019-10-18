@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { User } from '../core/user/user';
-import { MotorPlan, MotorPlanType } from '../core/user/user-response.interface';
+import { MotorPlan, MotorPlanType, ProfileSubscriptionInfo } from '../core/user/user-response.interface';
 import { I18nService } from '../core/i18n/i18n.service';
 import { UserStatsResponse } from '../core/user/user-stats.interface';
 import { StripeService } from '../core/stripe/stripe.service';
@@ -77,7 +77,14 @@ export class ProfileComponent implements OnInit {
           if (subscription.selected_tier_id) {
             this.isNewSubscription === true;
           }
-        })        
+        })
+        if (!this.isNewSubscription) {
+          this.userService.getMotorPlans().subscribe((subscriptionInfo: ProfileSubscriptionInfo) => {
+            if (subscriptionInfo.status === "NOT_ELIGIBLE") {
+              this.isNewSubscription = true;
+            }
+          });
+        }
       }
     }); 
   }
