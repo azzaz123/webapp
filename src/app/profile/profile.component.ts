@@ -46,7 +46,6 @@ export class ProfileComponent implements OnInit {
       }
     });
     this.userService.isProUser().subscribe((isPro: boolean) => {
-      console.log('IS PRO? ', isPro);
       this.isPro = isPro;
     });
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
@@ -58,7 +57,11 @@ export class ProfileComponent implements OnInit {
     )
     .filter(val => val === true)
     .subscribe(val => this.isSubscriptionsActive = val); 
-    this.getSubscriptions();
+    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+      if (!isProfessional) {
+        this.getSubscriptions();
+      }
+    });
   }
 
   public logout($event: any) {
@@ -75,7 +78,7 @@ export class ProfileComponent implements OnInit {
       if (response) {
         response.map(subscription => {
           if (subscription.selected_tier_id) {
-            this.isNewSubscription === true;
+            this.isNewSubscription = true;
           }
         })
         if (!this.isNewSubscription) {
