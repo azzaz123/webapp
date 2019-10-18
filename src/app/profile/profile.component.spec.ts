@@ -3,7 +3,7 @@ import { ProfileComponent } from './profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs';
-import { MOCK_USER, MOTORPLAN_DATA, USER_WEB_SLUG, USERS_STATS_RESPONSE } from '../../tests/user.fixtures.spec';
+import { MOCK_USER, MOTORPLAN_DATA, USER_WEB_SLUG, USERS_STATS_RESPONSE, PROFILE_SUB_INFO } from '../../tests/user.fixtures.spec';
 import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -52,7 +52,10 @@ describe('ProfileComponent', () => {
             getStats() {
               return Observable.of(USERS_STATS_RESPONSE);
             },
-            logout() {}
+            logout() {},
+            getMotorPlans() {
+              return Observable.of(PROFILE_SUB_INFO);
+            }
           }
         },
         {
