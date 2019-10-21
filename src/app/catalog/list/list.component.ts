@@ -636,7 +636,7 @@ export class ListComponent implements OnInit, OnDestroy {
       if (navLink.id === this.selectedStatus) {
         if (this.selectedStatus === 'active') {
           navLink.counter = {
-            currentVal: this.selectedSubscriptionSlot.limit - this.selectedSubscriptionSlot.available,
+            currentVal: this.items.length,
             maxVal: this.selectedSubscriptionSlot.limit
           };
         } else {
