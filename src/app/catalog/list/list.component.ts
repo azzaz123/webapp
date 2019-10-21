@@ -569,7 +569,8 @@ export class ListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.selectedSubscriptionSlot.available -= numActivatedItems;
+    const updatedAvailableSlotVal = this.selectedSubscriptionSlot.available -= numActivatedItems;
+    this.selectedSubscriptionSlot.available = updatedAvailableSlotVal < 0 ? 0 : updatedAvailableSlotVal;
 
     const inactiveNavLink = this.getNavLinkById('inactive');
     inactiveNavLink.counter.currentVal -= numActivatedItems;
