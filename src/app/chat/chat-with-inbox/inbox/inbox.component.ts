@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
-import { InboxConversation } from './inbox-conversation/inbox-conversation';
+import { InboxConversation } from '../../model/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
 import { Message } from '../../../core/message/message';
@@ -114,19 +114,21 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.componentState = InboxState.Inbox;
     this.bindNewMessageToast();
     if (this.inboxService.conversations) {
-      this.onInboxReady(this.inboxService.conversations, false);
+      this.onInboxReady(this.inboxService.conversations, 'INIT_INBOX');
+      this.conversations = this.inboxService.conversations;
       this.archivedConversations = this.inboxService.archivedConversations;
       this.loading = false;
     } else {
       this.loading = true;
     }
 
-    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
-      this.onInboxReady(conversations, loadMoreConversations);
+    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], callMethodClient: string) => {
+      this.conversations = this.inboxService.conversations;
+      this.onInboxReady(conversations, callMethodClient);
     });
 
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
-      this.archivedConversations = conversations;
+      this.archivedConversations = this.inboxService.archivedConversations;
       this.setStatusesAfterLoadConversations();
     });
 
@@ -159,11 +161,10 @@ export class InboxComponent implements OnInit, OnDestroy {
     this.adService.stopAdsRefresh();
   }
 
-  private onInboxReady(conversations: InboxConversation[], loadMoreConversations: boolean) {
-    this.conversations = conversations;
+  private onInboxReady(conversations: InboxConversation[], callMethodClient: string) {
     this.setStatusesAfterLoadConversations();
     this.showInbox();
-    this.sendLogWithNumberOfConversationsByConversationId(this.conversations, loadMoreConversations);
+    this.sendLogWithNumberOfConversationsByConversationId(conversations, callMethodClient);
   }
 
   private bindNewMessageToast() {
@@ -238,13 +239,13 @@ export class InboxComponent implements OnInit, OnDestroy {
     }
   }
 
-  private sendLogWithNumberOfConversationsByConversationId(conversations: InboxConversation[], loadMoreConversations: boolean) {
+  private sendLogWithNumberOfConversationsByConversationId(conversations: InboxConversation[], callMethodClient: string) {
     const conversationsIds = _.countBy(_.map(conversations, conversation => conversation.id));
     const hasDuplicated = _.find(conversationsIds, numberOfConversation => numberOfConversation > 1);
 
     if (hasDuplicated) {
       this.userService.me().subscribe(
-        user => this.remoteConsoleService.sendDuplicateConversations(user.id, loadMoreConversations, conversationsIds));
+        user => this.remoteConsoleService.sendDuplicateConversations(user.id, callMethodClient, conversationsIds));
     }
   }
 

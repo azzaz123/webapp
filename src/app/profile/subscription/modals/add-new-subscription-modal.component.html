@@ -57,14 +57,14 @@
           <div class="row AddNewSubscription__payment">
               <div class="AddNewSubscription__group form-group align-items-center">
                 <div class="AddNewSubscription__selection">
-                  <tsl-stripe-card-selection *ngIf="savedCard" (onSelectExistingCard)="setSavedCard($event)"
+                  <tsl-stripe-card-selection *ngIf="isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
                   (hasStripeCard)="hasStripeCard($event)"></tsl-stripe-card-selection>
                 </div>
                 <div class="AddNewSubscription__payment-add-card" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
                 <div class="AddNewSubscription__payment-response-message" *ngIf="isPaymentError">
                   <p i18n>The payment failed. Please enter another credit card.</p>
                 </div>
-                <div class="AddNewSubscription__payment-add-card" (click)="removeNewCard()" *ngIf="showCard" i18n>Use saved card</div>
+                <div class="AddNewSubscription__payment-add-card" (click)="removeNewCard()" *ngIf="showCard && isStripeCard" i18n>Use saved card</div>
                 <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [disabled]="isPaymentError" [type]="'subscription'"
                 [listingLimit]="selectedTier" [action]="action" (onStripeCardCreate)="addSubscription($event)" (stripeCard)="setCardInfo($event)">
                 </tsl-stripe-card-element>

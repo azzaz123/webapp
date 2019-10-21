@@ -1,5 +1,5 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { InboxItem } from '../../inbox-item';
+import { InboxItem } from '../../../../model/inbox-item';
 import { ItemService } from '../../../../../core/item/item.service';
 import { TrackingService } from '../../../../../core/tracking/tracking.service';
 import { ItemCounters } from '../../../../../core/item/item-response.interface';

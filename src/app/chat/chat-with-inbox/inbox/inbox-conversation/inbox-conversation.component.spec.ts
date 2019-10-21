@@ -5,7 +5,7 @@ import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../../tests/inbox.fixtures.spec';
-import { INBOX_ITEM_STATUSES } from '../../../../chat/chat-with-inbox/inbox/inbox-item';
+import { INBOX_ITEM_STATUSES } from '../../../model/inbox-item';
 
 describe('Component: Conversation', () => {
   let component: InboxConversationComponent;
