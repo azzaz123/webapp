@@ -5,7 +5,7 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Item } from '../../../core/item/item';
 import { SoldModalComponent } from './sold-modal.component';
-import { InboxItem } from '../../../chat/chat-with-inbox/inbox/inbox-item';
+import { InboxItem } from '../../../chat/model/inbox-item';
 
 @Directive({
   selector: '[tslItemSold]'

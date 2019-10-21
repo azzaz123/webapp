@@ -22,10 +22,10 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
-import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
+import { InboxUser } from '../../chat/model/inbox-user';
 import { SplitTestService } from '../tracking/split-test.service';
 import { HttpServiceNew } from '../http/http.service.new';
-import { InboxItem } from '../../chat/chat-with-inbox/inbox';
+import { InboxItem } from '../../chat/model';
 
 @Injectable()
 export class UserService extends ResourceService {

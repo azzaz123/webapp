@@ -7,7 +7,7 @@ import { LATEST_ITEM_COUNT, MOCK_ITEM } from '../../../../../../tests/item.fixtu
 import { ItemService } from '../../../../../core/item/item.service';
 import { UserService } from '../../../../../core/user/user.service';
 import { Observable } from 'rxjs';
-import { InboxUser } from '../../inbox-user';
+import { InboxUser } from '../../../../model/inbox-user';
 
 describe('InboxItemForSellComponent', () => {
   let component: InboxItemForSellComponent;

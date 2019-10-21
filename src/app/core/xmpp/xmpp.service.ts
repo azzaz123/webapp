@@ -10,8 +10,8 @@ import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation/inbox-conversation';
-import { InboxUser } from '../../chat/chat-with-inbox/inbox/inbox-user';
+import { InboxConversation } from '../../chat/model/inbox-conversation';
+import { InboxUser } from '../../chat/model/inbox-user';
 
 @Injectable()
 export class XmppService {

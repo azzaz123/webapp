@@ -33,8 +33,8 @@ import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.comp
 import { RealTimeService } from '../message/real-time.service';
 import { BlockUserXmppService } from './block-user';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
-import { InboxConversation } from '../../chat/chat-with-inbox/inbox/inbox-conversation';
 import { InboxService } from '../inbox/inbox.service';
+import { InboxConversation } from '../../chat/model';
 
 @Injectable()
 export class ConversationService extends LeadService {

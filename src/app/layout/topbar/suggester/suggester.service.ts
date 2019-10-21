@@ -1,20 +1,23 @@
+import { IDictionary } from './../../../shared/models/dictionary.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { SuggesterResponse } from './suggester-response.interface';
-import { HttpService } from '../../../core/http/http.service';
+import { HttpServiceNew } from '../../../core/http/http.service.new';
 
+export const SUGGESTER_ENDPOINT = 'api/v3/suggesters/search';
 @Injectable()
 export class SuggesterService {
 
-  constructor(private http: HttpService) { }
+
+  constructor(private http: HttpServiceNew) { }
 
   public getSuggestions(query: string): Observable<SuggesterResponse[]> {
-    const params: any =  {
-      keyword: query
-    };
-    return this.http.getNoBase(environment.siteUrl + 'rest/suggesters/search', params)
-      .map(res => res.json());
+    const params: IDictionary[] = [{
+      key: 'keyword',
+      value: query
+    }];
+    
+    return this.http.get(SUGGESTER_ENDPOINT, params);
   }
 
 }
