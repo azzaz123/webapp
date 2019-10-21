@@ -98,8 +98,8 @@
 
         <div *ngIf="hasMoreMessages()" class="more-messages-loader">
           <a class="load-more">
-                            <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
-                                  i18n>Load more</span>
+            <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
+                  i18n>Load more</span>
             <mat-icon *ngIf="isLoadingMoreMessages" svgIcon="spinner" class="spinner"></mat-icon>
           </a>
         </div>
@@ -112,13 +112,16 @@
     </div>
 
     <div class="send-message-container">
-      <tsl-input [currentConversation]="currentConversation"></tsl-input>
+      <tsl-input [currentConversation]="currentConversation"
+                 (onChangeTextareaHeight)="changeTextareaHeight($event)"></tsl-input>
     </div>
   </div>
 
   <div id="conversation-meta">
-    <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item" [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
-    <tsl-inbox-item-for-sell *ngxPermissionsOnly="['isProfessional']" [user]="currentConversation.user"></tsl-inbox-item-for-sell>
+    <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item"
+                           [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
+    <tsl-inbox-item-for-sell *ngxPermissionsOnly="['isProfessional']"
+                             [user]="currentConversation.user"></tsl-inbox-item-for-sell>
     <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
     <tsl-ad slotid="div-gpt-ad-1508490196308-0"></tsl-ad>
   </div>
