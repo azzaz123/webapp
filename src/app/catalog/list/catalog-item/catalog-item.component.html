@@ -1,6 +1,6 @@
 <div class="resized">
   <div class="checkbox">
-    <button class="select" (click)="select(item)" [ngClass]="{selected: item.selected}">
+    <button class="select" (click)="select(item)" [ngClass]="{selected: item.selected}" [disabled]="item.listingFeeExpiringDate">
       <mat-icon svgIcon="check"></mat-icon>
     </button>
   </div>

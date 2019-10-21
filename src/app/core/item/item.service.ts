@@ -348,7 +348,21 @@ export class ItemService extends ResourceService {
       response.publish_date
     );
 
-    // TODO: Map purchases here
+    if (response.active_item_purchase) {
+      if (response.active_item_purchase.listing_fee) {
+        item.listingFeeExpiringDate = new Date().getTime() + response.active_item_purchase.listing_fee.remaining_time_ms;
+      }
+
+      if (response.active_item_purchase.bump) {
+        item.purchases = {
+          bump_type: response.active_item_purchase.bump.type,
+          expiration_date: response.active_item_purchase.bump.remaining_time_ms
+        };
+
+        item.bumpExpiringDate = new Date().getTime() + response.active_item_purchase.bump.remaining_time_ms;
+      }
+    }
+
     return item;
   }
 
