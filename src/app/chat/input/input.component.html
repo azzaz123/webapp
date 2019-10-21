@@ -5,6 +5,7 @@
                 [(ngModel)]="message"
                 placeholder="{{getPlaceholder()}}"
                 (keydown.enter)="sendMessage($event)"
+                (keyup)="emitChangeTextareaHeight(messageTextarea.clientHeight)"
                 [disabled]="!isMessagingAvailable()"
                 [ngClass]="{selected: !isEmpty() && isMessagingAvailable()}"
                 (focus)="onFocusElement()"

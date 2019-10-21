@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
@@ -18,11 +18,13 @@ import * as _ from 'lodash';
 export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   @Input() currentConversation: Conversation | InboxConversation;
+  @Output() onChangeTextareaHeight = new EventEmitter<number>();
   @ViewChild('messageTextarea') messageArea: ElementRef;
 
   public message: string;
   public isUserBlocked: boolean;
   public isFocus: boolean;
+  public textareaHeight: number;
 
   constructor(private messageService: MessageService,
               private eventService: EventService,
@@ -50,6 +52,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
             thread_id: this.currentConversation.id,
           });
           this.messageService.send(this.currentConversation, this.message);
+          this.emitChangeTextareaHeight(0);
           this.message = '';
         }
       } else {
@@ -76,10 +79,18 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.messageArea.nativeElement.focus();
     this.isFocus = true;
+    this.emitChangeTextareaHeight(this.messageArea.nativeElement.offsetHeight);
   }
 
   public getPlaceholder(): string {
     return this.isUserBlocked || !this.isMessagingAvailable() ? '' : this.i18n.getTranslations('writeMessage');
+  }
+
+  public emitChangeTextareaHeight(textareaHeight: number) {
+    if (this.textareaHeight !== textareaHeight) {
+      this.onChangeTextareaHeight.emit(textareaHeight);
+      this.textareaHeight = textareaHeight;
+    }
   }
 
   public isMessagingAvailable(): boolean {
