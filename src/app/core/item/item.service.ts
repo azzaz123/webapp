@@ -736,7 +736,7 @@ export class ItemService extends ResourceService {
           term = term ? term.trim().toLowerCase() : '';
           if (term !== '') {
             return _.filter(res, (item: Item) => {
-              return item.title.toLowerCase().indexOf(term) !== -1 || item.description.toLowerCase().indexOf(term) !== -1;
+              return item.title.toLowerCase().indexOf(term) !== -1;
             });
           }
           return res;
