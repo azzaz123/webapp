@@ -51,7 +51,8 @@
       </div>
     </div>
 
-    <div class="messages-panel-container" #scrollElement [scrollTop]="scrollElement.scrollHeight - scrollHeight"
+    <div class="messages-panel-container textarea-row-{{textareaHeight}}" #scrollElement
+         [scrollTop]="scrollElement.scrollHeight - scrollHeight"
          (scroll)="onScrollMessages($event)">
       <div class="empty-container"></div>
 

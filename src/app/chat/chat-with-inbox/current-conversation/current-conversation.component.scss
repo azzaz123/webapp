@@ -14,6 +14,23 @@
 
 .messages-panel-container {
   height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height});
+
+  &.textarea-row-46 {
+    height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height + 0px});
+  }
+
+  &.textarea-row-70 {
+    height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height + 24px});
+  }
+
+  &.textarea-row-94 {
+    height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height + 48px});
+  }
+
+  &.textarea-row-118, &.textarea-row-120 {
+    height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height + 72px});
+  }
+
   overflow-y: scroll;
   padding: $spacing-ms $spacing-ml;
   width: 100%;

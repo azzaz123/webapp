@@ -52,7 +52,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
             thread_id: this.currentConversation.id,
           });
           this.messageService.send(this.currentConversation, this.message);
-          this.emitChangeTextareaHeight(0);
+          this.emitChangeTextareaHeight(this.messageArea.nativeElement.offsetHeight);
           this.message = '';
         }
       } else {

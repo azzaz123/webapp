@@ -132,6 +132,9 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
 
   public changeTextareaHeight(textareaHeight: number): void {
     this.textareaHeight = textareaHeight;
+    if (this.isEndOfConversation) {
+      this.scrollToLastMessage();
+    }
   }
 
   private sendRead(message: InboxMessage) {
