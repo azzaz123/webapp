@@ -1,5 +1,9 @@
 @import "~style/common";
 
+@function calculateInputPanelContainer($lines) {
+  @return calc(#{$chat-input-container + ($lines - 1) * 24px});
+}
+
 form {
   position: relative;
 
@@ -8,7 +12,9 @@ form {
     border-radius: 24px;
     border: 1px solid $blue-grey-5;
     transition: border-color ease .2s;
+    min-height: calculateInputPanelContainer(1);
     padding: 14px 48px 8px 24px;
+    position: relative;
 
     &.focus {
       border-color: $walla-main;
@@ -18,12 +24,35 @@ form {
       }
     }
 
+    &.textarea-row-1 {
+      height: calculateInputPanelContainer(1);
+    }
+
+    &.textarea-row-2 {
+      height: calculateInputPanelContainer(2);
+    }
+
+    &.textarea-row-3 {
+      height: calculateInputPanelContainer(3);
+    }
+
+    &.textarea-row-4 {
+      height: calculateInputPanelContainer(4);
+    }
+
+    &.textarea-row-5 {
+      height: calculateInputPanelContainer(5);
+    }
+
     textarea {
-      width: 100%;
+      transition: height ease-out .1s;
       background-color: transparent;
       border: 0 solid transparent;
       resize: none;
       padding: 0;
+      width: calc(100% - 75px);
+      position: absolute;
+      bottom: 14px;
 
       &::-webkit-input-placeholder {
         color: $blue-grey-3;
@@ -34,7 +63,7 @@ form {
       cursor: pointer;
       position: absolute;
       right: 5px;
-      bottom: 8px;
+      bottom: 6px;
       border-radius: 50%;
       background: $blue-grey-4;
       @include square(40px);

@@ -24,8 +24,9 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   public message: string;
   public isUserBlocked: boolean;
   public isFocus: boolean;
-  public textareaHeight: number;
 
+  public textareaHeight: number;
+  public textareaLines: number;
   private lineHeight: number;
 
   constructor(private messageService: MessageService,
@@ -37,6 +38,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   ngOnInit() {
     this.isUserBlocked = false;
+    this.textareaLines = 1;
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
       this.isUserBlocked = _.includes(userIds, this.currentConversation.user.id);
     });
@@ -54,8 +56,8 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
             thread_id: this.currentConversation.id,
           });
           this.messageService.send(this.currentConversation, this.message);
-          this.emitChangeTextareaHeight(this.messageArea.nativeElement.offsetHeight);
           this.message = '';
+          this.emitChangeTextareaHeight(this.messageArea.nativeElement.offsetHeight);
         }
       } else {
         this.message = '';
@@ -91,9 +93,14 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   public emitChangeTextareaHeight(textareaHeight: number) {
     if (this.textareaHeight !== textareaHeight) {
-      this.onChangeTextareaHeight.emit(_.ceil(textareaHeight / this.lineHeight));
       this.textareaHeight = textareaHeight;
+      this.textareaLines = this.getTextareaLines();
+      this.onChangeTextareaHeight.emit(this.textareaLines);
     }
+  }
+
+  private getTextareaLines(): number {
+    return _.ceil(this.textareaHeight / this.lineHeight);
   }
 
   public isMessagingAvailable(): boolean {

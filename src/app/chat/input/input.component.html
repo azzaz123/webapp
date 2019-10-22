@@ -1,5 +1,5 @@
 <form>
-  <div class="textarea-component" [ngClass]="{focus: isFocus}">
+  <div class="textarea-component textarea-row-{{textareaLines}}" [ngClass]="{focus: isFocus}">
       <textarea #messageTextarea
                 name="message"
                 [(ngModel)]="message"
@@ -13,7 +13,7 @@
                 rows="1"
                 autosize [maxRows]="5"
                 class="textarea" maxlength="300">
-  </textarea>
+      </textarea>
     <a (click)="sendMessage($event)" class="btn-send-message"
        [ngClass]="{selected: !isEmpty() && isMessagingAvailable()}">
       <mat-icon svgIcon="send"></mat-icon>
