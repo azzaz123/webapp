@@ -303,7 +303,7 @@ describe('CatalogItemComponent', () => {
     });
   });
 
-  fdescribe('select', () => {
+  describe('select', () => {
     it('should set selected true and call selectItem', () => {
       const item: Item = MOCK_ITEM;
       item.selected = false;
@@ -443,6 +443,16 @@ describe('CatalogItemComponent', () => {
           item_id: item.id,
           payment_method: 'STRIPE'
         });
+    });
+  });
+
+  describe('onClickInfoElement', () => {
+    it ('should send PRODUCT_VIEWED to tracking service', () => {
+      spyOn(trackingService, 'track');
+
+      component.onClickInfoElement();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_VIEWED, { product_id: component.item.id });
     });
   });
 });
