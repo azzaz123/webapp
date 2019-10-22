@@ -11,24 +11,31 @@
   float: left;
 }
 
+@function calculateMessagesPanelContainer($lines) {
+  @return calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height + ($lines - 1) * 24px});
+}
 
 .messages-panel-container {
-  height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height});
+  height: calculateMessagesPanelContainer(1);
 
-  &.textarea-row-46 {
-    height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height + 0px});
+  &.textarea-row-1 {
+    height: calculateMessagesPanelContainer(1);
   }
 
-  &.textarea-row-70 {
-    height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height + 24px});
+  &.textarea-row-2 {
+    height: calculateMessagesPanelContainer(2);
   }
 
-  &.textarea-row-94 {
-    height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height + 48px});
+  &.textarea-row-3 {
+    height: calculateMessagesPanelContainer(3);
   }
 
-  &.textarea-row-118, &.textarea-row-120 {
-    height: calc(100vh - #{$chat-topbar-height + $chat-input-container + $topbar-height + 72px});
+  &.textarea-row-4 {
+    height: calculateMessagesPanelContainer(4);
+  }
+
+  &.textarea-row-5 {
+    height: calculateMessagesPanelContainer(5);
   }
 
   overflow-y: scroll;

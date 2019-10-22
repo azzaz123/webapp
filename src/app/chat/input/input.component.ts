@@ -26,6 +26,8 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   public isFocus: boolean;
   public textareaHeight: number;
 
+  private lineHeight: number;
+
   constructor(private messageService: MessageService,
               private eventService: EventService,
               private trackingService: TrackingService,
@@ -79,6 +81,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.messageArea.nativeElement.focus();
     this.isFocus = true;
+    this.lineHeight = this.messageArea.nativeElement.offsetHeight;
     this.emitChangeTextareaHeight(this.messageArea.nativeElement.offsetHeight);
   }
 
@@ -88,7 +91,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   public emitChangeTextareaHeight(textareaHeight: number) {
     if (this.textareaHeight !== textareaHeight) {
-      this.onChangeTextareaHeight.emit(textareaHeight);
+      this.onChangeTextareaHeight.emit(_.ceil(textareaHeight / this.lineHeight));
       this.textareaHeight = textareaHeight;
     }
   }
