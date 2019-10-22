@@ -5,7 +5,6 @@
 @import '~web-styleguide/scss/fonts';
 
 html, body {
-  overflow: hidden;
   font-size: $font-size-base;
 }
 
@@ -48,18 +47,20 @@ body {
 }
 
 .page-content {
-  position: absolute;
-  left: $sidebar-width;
-  top: $topbar-height;
-  height: calc(100vh - #{$topbar-height});
-  width: calc(100% - #{$sidebar-width});
-  overflow: auto;
+  padding-left: $sidebar-width;
+  padding-top: $topbar-height;
+  overflow-y: scroll;
   background: rgba(236, 239, 241, 0.6);
-  padding: 0 $spacing-xl;
+  @include media-breakpoint-down(sm) {
+    padding-left: 0;
+    padding-bottom: $topbar-height;
+  }
   > .container {
-    padding: $spacing-xl $spacing-ms;
+    padding-top: $spacing-xl;
+    padding-bottom: $spacing-xl;
     @-moz-document url-prefix() { // Firefox hack
-      padding: $spacing-xl $spacing-ms;
+      padding-top: $spacing-xl;
+      padding-bottom: $spacing-xl;
     }
   }
 }
@@ -83,12 +84,6 @@ button, input, optgroup, select, textarea {
 
 .page-profile .popover {
   display: none;
-}
-
-@media (min-width: 1200px) {
-  .container {
-    width: 1200px;
-  }
 }
 
 .modal-transparent .modal-dialog .modal-content {

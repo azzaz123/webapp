@@ -2,7 +2,9 @@
 
 .unsubscribe-section {
   padding-top: $spacing-xl;
+  padding-bottom: $spacing-l;
   text-align: center;
+  border-top: solid 1px $blue-grey-5;
   a {
     text-decoration: underline;
     color: $blue-grey-4;
@@ -11,6 +13,10 @@
     &:hover {
       text-decoration: none;
     }
+  }
+  @include media-breakpoint-down(sm) {
+    padding-top: $spacing-m;
+    padding-bottom: $spacing-s;
   }
 }
 

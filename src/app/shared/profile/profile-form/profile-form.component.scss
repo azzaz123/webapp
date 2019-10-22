@@ -4,6 +4,8 @@ $right-gutter: 35px;
 
 /deep/ {
   .profile-box {
+    padding-top: $spacing-m;
+    padding-bottom: $spacing-m;
     h3 {
       font-size: $font-size-s;
       font-weight: $font-weight-chunky;
@@ -24,16 +26,13 @@ $right-gutter: 35px;
       }
     }
     .form-group {
-      &:last-of-type {
-        margin-bottom: 0;
-      }
       label {
-        text-align: right;
         line-height: $line-height-l;
         color: $blue-grey-1;
         font-size: $font-size-m;
-        padding-right: $right-gutter;
-        margin: 0;
+        @include media-breakpoint-down(sm) {
+          font-size: $font-size-s;
+        }
       }
       .btn-group {
         width: 100%;
