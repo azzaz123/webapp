@@ -558,8 +558,9 @@ export class ListComponent implements OnInit, OnDestroy {
 
         this.eventService.emit('itemChanged');
       }, () => {
-        this.modalService.open(TooManyItemsModalComponent, {windowClass: 'bump'})
-          .result.then(() => {}, () => {});
+        const modalRef = this.modalService.open(TooManyItemsModalComponent, {windowClass: 'bump'});
+          modalRef.componentInstance.isPro = this.subscriptionSlots.length;
+          modalRef.componentInstance.isInApp = false;
       });
     });
   }

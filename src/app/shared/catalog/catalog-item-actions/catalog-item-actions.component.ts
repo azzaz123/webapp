@@ -61,6 +61,7 @@ export class CatalogItemActionsComponent implements OnInit {
           const modalRef: NgbModalRef = this.modalService.open(TooManyItemsModalComponent, {
             windowClass: 'bump'
           });
+          modalRef.componentInstance.isCarDealer = true;
           modalRef.result.then(() => {}, () => {
           });
         }
