@@ -303,7 +303,7 @@ describe('CatalogItemComponent', () => {
     });
   });
 
-  describe('select', () => {
+  fdescribe('select', () => {
     it('should set selected true and call selectItem', () => {
       const item: Item = MOCK_ITEM;
       item.selected = false;
@@ -319,6 +319,21 @@ describe('CatalogItemComponent', () => {
       component.select(item);
       expect(item.selected).toBeFalsy();
       expect(itemService.deselectItem).toHaveBeenCalledWith(ITEM_ID);
+    });
+    it('should not modify selectedAction if is feature', () => {
+      itemService.selectedAction = 'feature';
+
+      component.select(MOCK_ITEM);
+
+      expect(itemService.selectedAction).toBe('feature');
+    });
+
+    it('should set selectedAction to none if previous action was featured', () => {
+      itemService.selectedAction = 'somethingelse';
+
+      component.select(MOCK_ITEM);
+
+      expect(itemService.selectedAction).toBe('');
     });
   });
 
