@@ -7,16 +7,16 @@
   (scrolled)="loadMore()">
   <div class="container">
     <tsl-header>
-      <div class="col-11">
+      <div class="col-9 col-md-11">
         <div class="header-row">
           <h1 class="header-title" i18n>Your favorites</h1>
         </div>
-        <div class="header-row header-row--margin">
+        <div class="header-row">
           <h4 class="header-subtitle" *ngIf="selectedStatus === 'products'" i18n>These are the wallapop products that you like the most</h4>
           <h4 class="header-subtitle" *ngIf="selectedStatus === 'profiles'" i18n>These are the wallapop profiles that you like the most</h4>
         </div>
       </div>
-      <div class="col-1 header-numbers">
+      <div class="col-3 col-md-1 header-numbers">
         <p class="header-numbers-top">{{numberOfFavorites}}</p>
         <p class="header-numbers-bottom">
           <span *ngIf="numberOfFavorites > 1 || numberOfFavorites === 0" i18n>favorites</span>
@@ -24,11 +24,15 @@
         </p>
       </div>
     </tsl-header>
-    <nav class="nav filters-nav">
-      <a (click)="filterByStatus('products')" [ngClass]="{active: selectedStatus === 'products'}" class="nav-link" i18n>Products</a>
-      <a (click)="filterByStatus('profiles')" [ngClass]="{active: selectedStatus === 'profiles'}" class="nav-link" i18n="tab|plural">Profiles</a>
-    </nav>
-    <div class="row items">
+    <div class="row">
+      <div class="col-12">
+        <nav class="nav filters-nav">
+          <a (click)="filterByStatus('products')" [ngClass]="{active: selectedStatus === 'products'}" class="nav-link" i18n>Products</a>
+          <a (click)="filterByStatus('profiles')" [ngClass]="{active: selectedStatus === 'profiles'}" class="nav-link" i18n="tab|plural">Profiles</a>
+        </nav>
+      </div>
+    </div>
+    <div class="mt-3">
       <div class="favorites-empty-state" *ngIf="!items.length && !loading && selectedStatus === 'products'">
         <mat-icon svgIcon="favorites-empty-state" class="image"></mat-icon>
         <div class="message" *ngIf="selectedStatus === 'products'" i18n>In this list you can see all the products you saved as favourite</div>
@@ -37,12 +41,16 @@
         <mat-icon svgIcon="favorites-empty-state" class="image"></mat-icon>
         <div class="message" *ngIf="selectedStatus === 'profiles'" i18n>In this list you can see all the profiles you saved as favourite</div>
       </div>
-      <ng-container *ngIf="selectedStatus === 'products'">
-        <tsl-item-cart-favorite *ngFor="let item of items" [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-item-cart-favorite>
-      </ng-container>
-      <ng-container *ngIf="selectedStatus === 'profiles'">
-        <tsl-profile-card-favorite *ngFor="let profile of profiles" [profile]="profile" (onFavoriteProfileChange)="onFavoriteProfileChange($event)"> </tsl-profile-card-favorite>
-      </ng-container>
+      <div class="cards-container" *ngIf="selectedStatus === 'products'">
+        <div class="card-wrapper" *ngFor="let item of items">
+          <tsl-item-cart-favorite [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-item-cart-favorite>
+        </div>
+      <div>
+      <div class="cards-container" *ngIf="selectedStatus === 'profiles'">
+        <div class="card-wrapper" *ngFor="let profile of profiles">
+          <tsl-profile-card-favorite [profile]="profile" (onFavoriteProfileChange)="onFavoriteProfileChange($event)"> </tsl-profile-card-favorite>
+        </div>
+      </div>
     </div>
   </div>
 </div>
