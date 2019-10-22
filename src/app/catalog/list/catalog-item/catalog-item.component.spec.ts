@@ -125,6 +125,22 @@ describe('CatalogItemComponent', () => {
     it('should set link', () => {
       expect(component.link).toBe(environment.siteUrl + 'item/' + ITEM_WEB_SLUG);
     });
+
+    describe('selectMode', () => {
+      it('should be false when no selected items', () => {
+        itemService.selectedItems = [];
+
+        expect(component.selectMode).toBeFalsy();
+      });
+
+      it('should be true when selected items', () => {
+        itemService.selectedItems.push('id');
+        itemService.selectedItems$.next();
+
+        expect(component.selectMode).toBeTruthy();
+      });
+
+    });
   });
 
   describe('featureItem', () => {
