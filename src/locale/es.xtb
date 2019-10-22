@@ -862,7 +862,7 @@
   <translation id="656874927403996411"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.limit}}</ex></ph> productos</translation>
   <translation id="6319315156225724559"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscription.selected_tier.currency}}</ex></ph>/mes</translation>
   <translation id="8902497894170945928">Suscrito desde <ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
-  <translation id="6452676450877417110">Haz creceer tus ventas</translation>
+  <translation id="6452676450877417110">Haz crecer tus ventas</translation>
   <translation id="2627902757155321044">Con las ventajas de la suscripción PRO llevarás tus ventas al siguiente nivel.</translation>
   <translation id="408121070237651935">Sube todo tu catálogo</translation>
   <translation id="6249532373191228684">Publica hasta 15 coches al momento y conviértete en un vendedor PRO.</translation>
