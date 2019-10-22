@@ -8,7 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 import { I18nService } from '../../core/i18n/i18n.service';
-import * as _ from 'lodash';
+import { isEmpty, includes, find, ceil } from 'lodash';
 
 @Component({
   selector: 'tsl-input',
@@ -18,7 +18,7 @@ import * as _ from 'lodash';
 export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   @Input() currentConversation: Conversation | InboxConversation;
-  @Output() onChangeTextareaHeight = new EventEmitter<number>();
+  @Output() changeTextareaHeight = new EventEmitter<number>();
   @ViewChild('messageTextarea') messageArea: ElementRef;
 
   public message: string;
@@ -40,7 +40,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
     this.isUserBlocked = false;
     this.textareaLines = 1;
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
-      this.isUserBlocked = _.includes(userIds, this.currentConversation.user.id);
+      this.isUserBlocked = includes(userIds, this.currentConversation.user.id);
     });
   }
 
@@ -95,12 +95,12 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
     if (this.textareaHeight !== textareaHeight) {
       this.textareaHeight = textareaHeight;
       this.textareaLines = this.getTextareaLines();
-      this.onChangeTextareaHeight.emit(this.textareaLines);
+      this.changeTextareaHeight.emit(this.textareaLines);
     }
   }
 
   private getTextareaLines(): number {
-    return _.ceil(this.textareaHeight / this.lineHeight);
+    return ceil(this.textareaHeight / this.lineHeight);
   }
 
   public isMessagingAvailable(): boolean {
@@ -111,7 +111,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   public isEmpty(): boolean {
-    return this.message === null || this.message === undefined || _.isEmpty(this.message.trim());
+    return this.message === null || this.message === undefined || isEmpty(this.message.trim());
   }
 
   public onFocusElement() {
@@ -119,10 +119,10 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   private hasLinkInMessage(message: string): boolean {
-    return !_.isEmpty(this.findLinksWhereLinkIsNotWallapop(message));
+    return !isEmpty(this.findLinksWhereLinkIsNotWallapop(message));
   }
 
   private findLinksWhereLinkIsNotWallapop(message: string): string[] {
-    return _.find(message.match(LinkTransformPipe.LINK_REG_EXP), link => _.isEmpty(link.match(LinkTransformPipe.WALLAPOP_REG_EXP)));
+    return find(message.match(LinkTransformPipe.LINK_REG_EXP), link => isEmpty(link.match(LinkTransformPipe.WALLAPOP_REG_EXP)));
   }
 }

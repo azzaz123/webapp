@@ -551,4 +551,32 @@ describe('CurrentConversationComponent', () => {
       expect(realTime.sendRead).toHaveBeenCalledWith(inboxMessage.from, inboxMessage.thread);
     }));
   });
+
+  describe('changeTextareaHeight', () => {
+    beforeEach(() => {
+      const messageHTMLMock = new MessageHTMLElementMock();
+      spyOn(document, 'querySelector').and.returnValues(messageHTMLMock);
+      spyOn(component, 'sendReadForLastInboxMessage');
+    });
+
+    it('should change number of rows in textarea', () => {
+      const numberRowInTextarea = 2;
+      component['isEndOfConversation'] = true;
+
+      component.changeTextareaHeight(numberRowInTextarea);
+
+      expect(component.textareaRows).toEqual(numberRowInTextarea);
+      expect(component.sendReadForLastInboxMessage).toHaveBeenCalled();
+    });
+
+    it('should NOT change number of rows in textarea', () => {
+      const numberRowInTextarea = 3;
+      component['isEndOfConversation'] = false;
+
+      component.changeTextareaHeight(numberRowInTextarea);
+
+      expect(component.textareaRows).toEqual(numberRowInTextarea);
+      expect(component.sendReadForLastInboxMessage).not.toHaveBeenCalled();
+    });
+  });
 });

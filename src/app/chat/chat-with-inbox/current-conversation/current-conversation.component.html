@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <div class="messages-panel-container textarea-row-{{textareaHeight}}" #scrollElement
+    <div class="messages-panel-container textarea-row-{{textareaRows}}" #scrollElement
          [scrollTop]="scrollElement.scrollHeight - scrollHeight"
          (scroll)="onScrollMessages($event)">
       <div class="empty-container"></div>
@@ -114,7 +114,7 @@
 
     <div class="send-message-container">
       <tsl-input [currentConversation]="currentConversation"
-                 (onChangeTextareaHeight)="changeTextareaHeight($event)"></tsl-input>
+                 (changeTextareaHeight)="changeTextareaHeight($event)"></tsl-input>
     </div>
   </div>
 

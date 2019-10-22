@@ -262,21 +262,21 @@ describe('Component: Input', () => {
 
     it('should emit change text area', () => {
       component.textareaHeight = ORIGINAL_HEIGHT;
-      spyOn(component.onChangeTextareaHeight, 'emit');
+      spyOn(component.changeTextareaHeight, 'emit');
 
       component.emitChangeTextareaHeight(ORIGINAL_HEIGHT);
 
-      expect(component.onChangeTextareaHeight.emit).not.toHaveBeenCalled();
+      expect(component.changeTextareaHeight.emit).not.toHaveBeenCalled();
       expect(component.textareaHeight).toEqual(ORIGINAL_HEIGHT);
     });
 
     it('should NOT emit change text area', () => {
       component.textareaHeight = ORIGINAL_HEIGHT;
-      spyOn(component.onChangeTextareaHeight, 'emit');
+      spyOn(component.changeTextareaHeight, 'emit');
 
       component.emitChangeTextareaHeight(UPDATED_HEIGHT);
 
-      expect(component.onChangeTextareaHeight.emit).toHaveBeenCalled();
+      expect(component.changeTextareaHeight.emit).toHaveBeenCalled();
       expect(component.textareaHeight).toEqual(UPDATED_HEIGHT);
     });
   });
