@@ -8,7 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { isEmpty, includes, find, ceil } from 'lodash';
+import { isEmpty, includes, find, floor } from 'lodash';
 
 @Component({
   selector: 'tsl-input',
@@ -16,6 +16,8 @@ import { isEmpty, includes, find, ceil } from 'lodash';
   styleUrls: ['./input.component.scss']
 })
 export class InputComponent implements OnChanges, OnInit, AfterViewInit {
+
+  private readonly LINE_HEIGHT = 24;
 
   @Input() currentConversation: Conversation | InboxConversation;
   @Output() changeTextareaHeight = new EventEmitter<number>();
@@ -27,7 +29,6 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   public textareaHeight: number;
   public textareaLines: number;
-  private lineHeight: number;
 
   constructor(private messageService: MessageService,
               private eventService: EventService,
@@ -83,7 +84,6 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.messageArea.nativeElement.focus();
     this.isFocus = true;
-    this.lineHeight = this.messageArea.nativeElement.offsetHeight;
     this.emitChangeTextareaHeight(this.messageArea.nativeElement.offsetHeight);
   }
 
@@ -100,7 +100,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   private getTextareaLines(): number {
-    return ceil(this.textareaHeight / this.lineHeight);
+    return floor(this.textareaHeight / this.LINE_HEIGHT);
   }
 
   public isMessagingAvailable(): boolean {

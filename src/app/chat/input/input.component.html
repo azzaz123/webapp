@@ -12,7 +12,7 @@
                 (focusout)="onFocusElement()"
                 rows="1"
                 autosize [maxRows]="5"
-                class="textarea" maxlength="300">
+                class="textarea-element" maxlength="300">
       </textarea>
     <a (click)="sendMessage($event)" class="btn-send-message"
        [ngClass]="{selected: !isEmpty() && isMessagingAvailable()}">

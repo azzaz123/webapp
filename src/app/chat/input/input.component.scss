@@ -12,7 +12,6 @@ form {
     border-radius: 24px;
     border: 1px solid $blue-grey-5;
     transition: border-color ease .15s;
-    min-height: calculateInputPanelContainer(1);
     padding: 14px 48px 8px 24px;
     position: relative;
 
@@ -44,14 +43,14 @@ form {
       height: calculateInputPanelContainer(5);
     }
 
-    textarea {
+    .textarea-element {
       background-color: transparent;
       border: 0 solid transparent;
       resize: none;
       padding: 0;
       width: calc(100% - 75px);
+      line-height: 1.5;
       position: absolute;
-      bottom: 14px;
 
       &::-webkit-input-placeholder {
         color: $blue-grey-3;
