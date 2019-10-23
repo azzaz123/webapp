@@ -139,7 +139,11 @@ export class I18nService {
       model_example: 'E.g: iPhone',
       noResultsFound: 'No results found',
       writeMessage: 'Write a message...',
-      searchByTitle: 'Search by title'
+      searchByTitle: 'Search by title',
+      editSubscriptionSuccessTitle: 'Great!',
+      editSubscriptionSuccessBody: 'Your subscription has been edited correctly.',
+      cancelSubscriptionSuccessTitle: 'Subscription cancelled.',
+      cancelSubscriptionSuccessBody: 'We are sad to see you go.'
     },
     es: {
       daysMomentConfig: {
@@ -278,7 +282,11 @@ export class I18nService {
       model_example: 'P. ej: iPhone',
       noResultsFound: 'No hay resultados',
       writeMessage: 'Escribe un mensaje...',
-      searchByTitle: 'Buscar por título'
+      searchByTitle: 'Buscar por título',
+      editSubscriptionSuccessTitle: '¡Bien!',
+      editSubscriptionSuccessBody: 'Tu suscripción se ha editado correctamente.',
+      cancelSubscriptionSuccessTitle: 'Suscripción cancelada.',
+      cancelSubscriptionSuccessBody: 'Lamentamos que te vayas :('
     }
   };
 

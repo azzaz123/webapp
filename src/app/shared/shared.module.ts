@@ -73,6 +73,7 @@ import { StripeCardSelectionComponent } from './payments/stripe-card-selection/s
 import { SelectModule } from 'ng-select';
 import { LinkTransformPipe } from './pipes';
 import { NavLinksComponent } from './nav-links/nav-links.component';
+import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 
@@ -222,7 +223,8 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     TutorialGuard,
     CartService,
     ThousandSuffixesPipe,
-    LinkTransformPipe
+    LinkTransformPipe,
+    SubscriptionsService
   ],
   entryComponents: [
     ConfirmationModalComponent,
