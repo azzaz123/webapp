@@ -103,6 +103,41 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
         currency: '€'
       }
     ]
+  },
+  {
+    category_id: 14000, 
+    current_limit: 3,
+    subscribed_from: 1567675697,
+    subscribed_until: 1574516986,
+    selected_tier_id: 'plan_FWuGNucr7WgWUc',
+		default_tier_id: 'plan_FWuFVeTHEDyECa',
+    tiers:
+    [
+      {
+        id: 'plan_FWuFVeTHEDyECa',
+        limit: 9,
+        price: 9.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_FWuGNucr7WgWUc',
+        limit: 30,
+        price: 19.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FWuGwiERYLvlC6',
+        limit: 50,
+        price: 39.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FWuHrLv9WislLd',
+        limit: -1,
+        price: 69.99,
+        currency: '€'
+      }
+    ]
   }
 ];
 

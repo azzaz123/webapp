@@ -23,5 +23,6 @@ export interface SubscriptionsResponse {
   tiers: Tier[],
   category_name?: string,
   category_icon?: string,
-  selected_tier?: Tier
+  selected_tier?: Tier,
+  subscribed_until?: number
 }
