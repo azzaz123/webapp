@@ -38,7 +38,7 @@ describe('RemoteConsoleService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should call xmpp conection with parameters', () => {
+  xit('should call xmpp conection with parameters', () => {
     const USER_ID = 'USER_ID';
     const CONNECTION_TIME = 1000;
     spyOn(logger, 'info');

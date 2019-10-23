@@ -4,7 +4,14 @@
              (selected)="setFinancialCard($event)" name="financialCard" ngDefaultControl>
     <ng-template #optionTemplate let-option="option" let-index="index">
         <div class="card-body">
-          <mat-icon svgIcon="card" class="card-icon"></mat-icon>
+            <mat-icon svgIcon="{{option?.stripeCard?.brand}}"
+            *ngIf="option?.stripeCard?.brand === 'visa' || option?.stripeCard?.brand === 'mastercard'"
+            class="card-icon">
+            </mat-icon>
+            <mat-icon svgIcon="card"
+            *ngIf="option?.stripeCard?.brand !== 'visa' && option?.stripeCard?.brand !== 'mastercard'"
+            class="card-icon">
+            </mat-icon>
           <span class="card-number">**** **** **** {{option.value}}</span>
           <span class="card-date">{{option.expire_date}}</span>
         </div>
