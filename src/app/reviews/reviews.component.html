@@ -16,11 +16,11 @@
           <h4 class="header-subtitle" i18n>This is what people think about you. </h4>
         </div>
       </div>
-      <div class="user-average col-2">
+      <div class="user-average col-2 d-none d-md-block">
         <p i18n>Your average</p>
         <tsl-stars class="header-rating" [stars]="this.userScore" [normalized]="false"></tsl-stars>
       </div>
-      <div class="user-number-reviews text-center col-1">
+      <div class="user-number-reviews text-center col-3 col-md-1">
         <p>{{ numberOfReviews }}</p>
         <p *ngIf="numberOfReviews > 1 || numberOfReviews === 0" i18n>reviews</p>
         <p *ngIf="numberOfReviews === 1" i18n>review</p>

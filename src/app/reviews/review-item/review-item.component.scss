@@ -5,9 +5,10 @@
   border-radius: $border-radius;
   margin-bottom: $spacing-s;
   padding: $spacing-ml;
+  min-height: 164px;
   .info {
     padding: 0;
-    margin: 0 0 0 $spacing-l;
+    width: calc(100% - 80px - #{$spacing-ml});
   }
   .review-type {
     font-size: $font-size-s;
@@ -31,7 +32,7 @@
     }
   }
   .review-comment {
-    margin: $spacing-s 0 0;
+    margin: $spacing-s 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -52,6 +53,8 @@
   .images-container {
     padding: 0;
     position: relative;
+    width: 80px;
+    margin-right: $spacing-ml;
     .avatar {
       tsl-user-avatar {
         position: absolute;
@@ -66,7 +69,7 @@
       &:hover {
         tsl-user-avatar {
           /deep/ .avatar-rounded {
-            opacity: .5;
+            opacity: 0.5;
           }
         }
       }
@@ -87,12 +90,34 @@
       }
       a.image {
         &:hover {
-          opacity: .5;
+          opacity: 0.5;
         }
       }
       mat-icon {
         @include square(50px);
       }
+    }
+  }
+  @include media-breakpoint-down(sm) {
+    padding: $spacing-ms;
+    .images-container {
+      width: 60px;
+      .review-image {
+        width: 60px;
+        height: 60px;
+      }
+      .avatar {
+        tsl-user-avatar {
+          top: 42px;
+        }
+      }
+    }
+    .info {
+      padding: 0;
+      width: calc(100% - 60px - #{$spacing-ml});
+    }
+    .review-title, .review-comment {
+      font-size: $font-size-s;
     }
   }
 }
