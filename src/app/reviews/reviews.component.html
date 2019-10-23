@@ -26,7 +26,7 @@
         <p *ngIf="numberOfReviews === 1" i18n>review</p>
       </div>
     </tsl-header>
-    <div class="row items">
+    <div class="row">
       <div class="reviews-empty-state" *ngIf="!reviews.length && !loading">
         <mat-icon svgIcon="reviews-empty-state" class="image"></mat-icon>
         <div class="message" i18n>Nobody has written a review about you because you didn't buy or sell anything yet. Wake up!</div>
