@@ -12,6 +12,7 @@ import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { SubscriptionsResponse } from './subscriptions.interface';
 import { SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
+import { CategoryService } from '../category/category.service';
 
 describe('SubscriptionsService', () => {
 
@@ -44,6 +45,9 @@ describe('SubscriptionsService', () => {
               return Observable.of(false);
             }
           }
+        },
+        {
+          provide: CategoryService, useValue: {}
         }
       ]
     });
