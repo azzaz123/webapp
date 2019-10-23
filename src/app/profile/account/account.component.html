@@ -1,41 +1,39 @@
 <form [formGroup]="profileForm" (submit)="onSubmit()">
   <tsl-profile-form [profileForm]="profileForm">
-    <div class="container box profile-box">
-      <div class="row">
-        <div class="col-12 col-md-11 offset-md-1">
-          <div class="row">
-            <div class="col-12">
-              <h3 i18n>Personal info</h3>
+    <div class="row box profile-box">
+      <div class="col-12 col-md-11 offset-md-1">
+        <div class="row">
+          <div class="col-12">
+            <h3 i18n>Personal info</h3>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="birth_date" class="col-12 col-md-3 text-md-right" i18n>Date of birth:</label>
+          <div class="col-12 col-md-6 offset-md-1">
+            <input type="date" class="form-control" id="birth_date" formControlName="birth_date" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-12 col-md-3 text-md-right" i18n>Gender:</label>
+          <div class="col-12 col-md-4 offset-md-1">
+            <div ngbRadioGroup name="radioBasic" formControlName="gender">
+              <label ngbButtonLabel class="btn select">
+                <input ngbButton type="radio" value="M">
+                <mat-icon svgIcon="male"></mat-icon>
+                <div i18n>Male</div>
+              </label>
+              <label ngbButtonLabel class="btn select">
+                <input ngbButton type="radio" value="F">
+                <mat-icon svgIcon="female"></mat-icon>
+                <div i18n>Female</div>
+              </label>
             </div>
           </div>
-          <div class="form-group row">
-            <label for="birth_date" class="col-12 col-md-3 text-md-right" i18n>Date of birth:</label>
-            <div class="col-12 col-md-6 offset-md-1">
-              <input type="date" class="form-control" id="birth_date" formControlName="birth_date" />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-12 col-md-3 text-md-right" i18n>Gender:</label>
-            <div class="col-12 col-md-4 offset-md-1">
-              <div ngbRadioGroup name="radioBasic" formControlName="gender">
-                <label ngbButtonLabel class="btn select">
-                  <input ngbButton type="radio" value="M">
-                  <mat-icon svgIcon="male"></mat-icon>
-                  <div i18n>Male</div>
-                </label>
-                <label ngbButtonLabel class="btn select">
-                  <input ngbButton type="radio" value="F">
-                  <mat-icon svgIcon="female"></mat-icon>
-                  <div i18n>Female</div>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-9 offset-3 col-md-6 offset-md-4">
-              <tsl-button [type]="'submit'" className="btn-primary btn-big" tslTrackEvent="MYPROFILE_SAVEBUTTON"
-                [disabled]="!formComponent.hasNotSavedChanges" i18n>Save</tsl-button>
-            </div>
+        </div>
+        <div class="row">
+          <div class="col-9 offset-3 col-md-6 offset-md-4">
+            <tsl-button [type]="'submit'" className="btn-primary btn-big" tslTrackEvent="MYPROFILE_SAVEBUTTON"
+              [disabled]="!formComponent.hasNotSavedChanges" i18n>Save</tsl-button>
           </div>
         </div>
       </div>
@@ -44,30 +42,28 @@
     <tsl-credit-cards [hidden]="isStripe"></tsl-credit-cards>
     <tsl-stripe-cards *ngIf="isStripe"></tsl-stripe-cards>
 
-    <div class="container box profile-box">
-      <div class="row">
-        <div class="col-12 col-md-11 offset-md-1">
-          <div class="row">
-            <div class="col-12">
-              <h3 i18n>Account info</h3>
-            </div>
+    <div class="row box profile-box">
+      <div class="col-12 col-md-11 offset-md-1">
+        <div class="row">
+          <div class="col-12">
+            <h3 i18n>Account info</h3>
           </div>
-          <div class="form-group row">
-            <label class="col-12 col-md-3 text-md-right" i18n>Email:</label>
-            <div class="col-12 col-md-6 offset-md-1">
-              <tsl-edit-email [email]="user?.email"></tsl-edit-email>
-            </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-12 col-md-3 text-md-right" i18n>Email:</label>
+          <div class="col-12 col-md-6 offset-md-1">
+            <tsl-edit-email [email]="user?.email"></tsl-edit-email>
           </div>
-          <div class="form-group row">
-            <label class="col-12 col-md-3 text-md-right" i18n>Password:</label>
-            <div class="col-12 col-md-6 offset-md-1">
-              <tsl-edit-password></tsl-edit-password>
-            </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-12 col-md-3 text-md-right" i18n>Password:</label>
+          <div class="col-12 col-md-6 offset-md-1">
+            <tsl-edit-password></tsl-edit-password>
           </div>
-          <div class="row">
-            <div class="col-12 col-md-11 unsubscribe-section">
-              <a (click)="openUnsubscribeModal()" tslTrackEvent="MYPROFILE_UNSUBSCRIBE" i18n>Close account</a>
-            </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-11 unsubscribe-section">
+            <a (click)="openUnsubscribeModal()" tslTrackEvent="MYPROFILE_UNSUBSCRIBE" i18n>Close account</a>
           </div>
         </div>
       </div>

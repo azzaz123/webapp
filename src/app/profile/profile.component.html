@@ -18,14 +18,20 @@
         </div>
       </div>
     </tsl-header>
-    <nav class="nav filters-nav">
-      <a class="nav-link" [routerLink]="['info']" routerLinkActive="active" i18n>Profile</a>
-      <a class="nav-link" [routerLink]="['account']" routerLinkActive="active" i18n>Account</a>
-      <a class="nav-link" [routerLink]="['subscription']" routerLinkActive="active" *ngIf="showSubscriptionTab" i18n>Subscription</a>
-      <a class="nav-link" [routerLink]="['billing']" routerLinkActive="active" *ngxPermissionsOnly="['isProfessional']" i18n>Billing information</a>
-      <a class="nav-link" [routerLink]="['subscription-pro']" routerLinkActive="active" *ngxPermissionsOnly="['isProfessional']" i18n>Subscription</a>
-    </nav>
-    <div class="rating d-none d-md-block" *ngIf="userStats"><tsl-stars class="review-rating" [stars]="userStats?.ratings?.reviews" [normalized]="false"></tsl-stars> ({{userStats?.counters?.reviews}} <span i18n>reviews</span>)</div>
+    <div class="row mb-3">
+      <div class="col-9">
+        <nav class="nav filters-nav">
+          <a class="nav-link" [routerLink]="['info']" routerLinkActive="active" i18n>Profile</a>
+          <a class="nav-link" [routerLink]="['account']" routerLinkActive="active" i18n>Account</a>
+          <a class="nav-link" [routerLink]="['subscription']" routerLinkActive="active" *ngIf="showSubscriptionTab" i18n>Subscription</a>
+          <a class="nav-link" [routerLink]="['billing']" routerLinkActive="active" *ngxPermissionsOnly="['isProfessional']" i18n>Billing information</a>
+          <a class="nav-link" [routerLink]="['subscription-pro']" routerLinkActive="active" *ngxPermissionsOnly="['isProfessional']" i18n>Subscription</a>
+        </nav>
+      </div>
+      <div class="col-3 d-none d-md-block">
+        <div class="rating" *ngIf="userStats"><tsl-stars class="review-rating" [stars]="userStats?.ratings?.reviews" [normalized]="false"></tsl-stars> ({{userStats?.counters?.reviews}} <span i18n>reviews</span>)</div>
+      </div>
+    </div>
     <router-outlet></router-outlet>
   </div>
 </div>

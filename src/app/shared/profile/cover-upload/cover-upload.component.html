@@ -1,28 +1,24 @@
-<div class="row" [class.not-pro]="!isPro">
-  <div class="col-12 col-md-11 offset-md-1">
-    <div class="row form-group mb-0">
-      <div class="col-12 col-md-3 text-md-right title" i18n>
-        <label>Cover image:</label>
-      </div>
-      <div class="col-12 col-md-6 offset-md-1">
-        <tsl-user-cover (click)="clickNotPro.emit()" [user]="user"
-          [imageCoverUrl]="user?.coverImage?.urls_by_size?.medium" size="80"></tsl-user-cover>
-        <div class="upload-button" *ngIf="isPro">
-          <label class="btn btn-upload"
-            [ngClass]="{disabled: file?.progress?.status === 0 || file?.progress?.status === 1}">
-            <input type="file" imageType="cover" tslFileSelect (uploadOutput)="onUploadOutput($event)"
-              [uploadCoverInput]="uploadCoverInput" [options]="options"
-              [disabled]="file?.progress?.status === 0 || file?.progress?.status === 1" />
-            <span class="loader" *ngIf="file?.progress?.status === 0 || file?.progress?.status === 1">
-              <mat-icon svgIcon="spinner" class="spinner"></mat-icon>
-            </span>
-            <span i18n *ngIf="user?.coverImage">Update picture</span>
-            <span i18n *ngIf="!user?.coverImage">Upload picture</span>
-          </label>
-          <div>
-            <p i18n>JPG format and a minimum size of 400 x 400px are accepted.</p>
-          </div>
-        </div>
+<div class="row form-group mb-0" [class.not-pro]="!isPro">
+  <div class="col-12 col-md-3 text-md-right title" i18>
+    <label i18n>Cover image</label>
+  </div>
+  <div class="col-12 col-md-6 offset-md-1">
+    <tsl-user-cover (click)="clickNotPro.emit()" [user]="user" [imageCoverUrl]="user?.coverImage?.urls_by_size?.medium"
+      size="80"></tsl-user-cover>
+    <div class="upload-button" *ngIf="isPro">
+      <label class="btn btn-upload"
+        [ngClass]="{disabled: file?.progress?.status === 0 || file?.progress?.status === 1}">
+        <input type="file" imageType="cover" tslFileSelect (uploadOutput)="onUploadOutput($event)"
+          [uploadCoverInput]="uploadCoverInput" [options]="options"
+          [disabled]="file?.progress?.status === 0 || file?.progress?.status === 1" />
+        <span class="loader" *ngIf="file?.progress?.status === 0 || file?.progress?.status === 1">
+          <mat-icon svgIcon="spinner" class="spinner"></mat-icon>
+        </span>
+        <span i18n *ngIf="user?.coverImage">Update picture</span>
+        <span i18n *ngIf="!user?.coverImage">Upload picture</span>
+      </label>
+      <div>
+        <p i18n>JPG format and a minimum size of 400 x 400px are accepted.</p>
       </div>
     </div>
   </div>
