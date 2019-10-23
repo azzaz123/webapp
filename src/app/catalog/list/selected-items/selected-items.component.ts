@@ -1,10 +1,7 @@
-import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import * as _ from 'lodash';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
-import { SelectedItemsAction } from '../../../core/item/item-response.interface';
-
 import { SubscriptionSlot } from '../../../core/subscriptions/subscriptions.interface';
 
 @Component({
