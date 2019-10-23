@@ -3,7 +3,7 @@ import { ProfileComponent } from './profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs';
-import { MOCK_USER, MOTORPLAN_DATA, USER_WEB_SLUG, USERS_STATS_RESPONSE, PROFILE_SUB_INFO } from '../../tests/user.fixtures.spec';
+import { MOCK_USER, MOTORPLAN_DATA, USER_WEB_SLUG, USERS_STATS_RESPONSE, PROFILE_SUB_INFO, PROFILE_NOT_SUB_INFO } from '../../tests/user.fixtures.spec';
 import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -19,10 +19,10 @@ describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let userService: UserService;
+  let categoryService: CategoryService;
   let subscriptionsService: SubscriptionsService;
   let stripeService: StripeService;
   let featureflagService: FeatureflagService;
-  let categoryService: CategoryService;
   const mockMotorPlan = {
     type: 'motor_plan_pro',
     subtype: 'sub_premium'
@@ -151,6 +151,17 @@ describe('ProfileComponent', () => {
       expect(userService.getStats).toHaveBeenCalled();
       expect(component.userStats).toBe(USERS_STATS_RESPONSE);
     });
+
+    it('should set isNewSubscription to true if the user is subscribed with stripe and not a Cardealer', () => {
+      component.isNewSubscription = false;
+      spyOn(categoryService, 'getCategories').and.callThrough();
+      spyOn(userService, 'getMotorPlans').and.returnValue(Observable.of(PROFILE_NOT_SUB_INFO));
+
+      component.ngOnInit();
+
+      expect(component.isNewSubscription).toBe(true);
+    });
+
   });
 
   describe('logout', () => {

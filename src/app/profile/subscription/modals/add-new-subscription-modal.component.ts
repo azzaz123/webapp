@@ -38,6 +38,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   private REQUIRES_ACTION = 'REQUIRES_ACTION';
   private SUCCEEDED = 'SUCCEEDED';
   public loaded: boolean;
+  public isStripeCard = true;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -159,6 +160,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   public hasStripeCard(hasCard: boolean): void {
+    this.isStripeCard = hasCard;
     if (!hasCard) {
         this.addNewCard();
     }

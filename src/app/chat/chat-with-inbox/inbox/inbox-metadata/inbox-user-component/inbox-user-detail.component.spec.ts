@@ -6,9 +6,9 @@ import { MOCKED_INBOX_CONVERSATIONS } from '../../../../../../tests/inbox.fixtur
 import { InboxUserDetailComponent } from './inbox-user-detail.component';
 import { USER_INFO_RESPONSE, SCORING_STARS, RESPONSE_RATE } from '../../../../../../tests/user.fixtures.spec';
 import { User } from '../../../../../core/user/user';
-import { InboxUser } from '../../inbox-user';
+import { InboxUser } from '../../../../model/inbox-user';
 import { Item } from '../../../../../core/item/item';
-import { InboxItem } from '../../inbox-item';
+import { InboxItem } from '../../../../model/inbox-item';
 
 class MockUserService {
 

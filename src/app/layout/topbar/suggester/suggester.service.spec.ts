@@ -1,32 +1,33 @@
+import { Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { SuggesterService } from './suggester.service';
 import { SuggesterResponse } from './suggester-response.interface';
 import { SUGGESTER_DATA_WEB } from '../../../../tests/suggester.fixtures.spec';
-import { ResponseOptions, Response } from '@angular/http';
-import { Observable } from 'rxjs';
-import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
-import { HttpService } from '../../../core/http/http.service';
+import { HttpServiceNew } from '../../../core/http/http.service.new';
+import { HttpModuleNew } from '../../../core/http/http.module.new';
 
 let service: SuggesterService;
-let http: HttpService;
+let http: HttpServiceNew;
 
 describe('SuggesterService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SuggesterService, ...TEST_HTTP_PROVIDERS]
+      imports: [HttpModuleNew],
+      providers: [SuggesterService, HttpServiceNew]
     });
     service = TestBed.get(SuggesterService);
-    http = TestBed.get(HttpService);
+    http = TestBed.get(HttpServiceNew);
   });
 
   describe('getSuggestions', () => {
     it('should return the json from the suggester', () => {
       let response: SuggesterResponse[];
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(SUGGESTER_DATA_WEB)});
-      spyOn(http, 'getNoBase').and.returnValue(Observable.of(new Response(res)));
+      spyOn(http, 'get').and.returnValue(Observable.of(SUGGESTER_DATA_WEB));
+
       service.getSuggestions('Seat').subscribe((data: SuggesterResponse[]) => {
         response = data;
       });
+
       expect(response).toEqual(SUGGESTER_DATA_WEB);
     });
   });

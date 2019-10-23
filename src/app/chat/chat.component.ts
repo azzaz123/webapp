@@ -17,5 +17,4 @@ export class ChatComponent implements OnInit {
       this.inboxFeatureflagValue = val;
     });
   }
-  
 }

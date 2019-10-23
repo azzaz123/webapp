@@ -1,29 +1,29 @@
 <div class="box">
   <div class="box-content">
-    <h4 class="section-title">Subscriptions</h4>
-    <p class="section-subtitle">Aquí puedes gestionar tus suscripciones y añadir más</p>
+    <h4 class="section-title" i18n>PRO subscriptions</h4>
+    <p class="section-subtitle" i18n>Manage your subscriptions for wallapop PRO and take your sales to the next level.</p>
     <div class="Subscriptions">
       <div class="Subscriptions__category" [ngClass]="{'Subscriptions__category--subscribed': subscription.subscribed_from }"
       (click)="openSubscriptionModal(subscription)" *ngFor="let subscription of subscriptions">
         <div class="Subscriptions__category-icon">
-          <mat-icon *ngIf="subscription.subscribed_from" svgIcon={{subscription.category_icon}} class="image"></mat-icon>
-          <mat-icon [hidden]="subscription.subscribed_from" svgIcon="{{subscription.category_icon}}-disabled" class="image"></mat-icon>
+          <mat-icon *ngIf="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}"class="image"></mat-icon>
+          <mat-icon [hidden]="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}-disabled" class="image"></mat-icon>
         </div>
         <div class="Subscriptions__category-title">{{subscription.category_name}}</div>
         <hr />
         <div [hidden]="subscription.subscribed_from" class="Subscriptions__category-info">
-            <p>Limit: {{subscription.current_limit}}</p>
-            <p>From: {{subscription.tiers[0].price}}{{subscription.tiers[0].currency}}</p>
+            <p i18n>Limit: {{subscription.current_limit}}</p>
+            <p i18n>From: {{subscription.tiers[0].price}}{{subscription.tiers[0].currency}}</p>
         </div>
         <div *ngIf="subscription.subscribed_from" class="Subscriptions__category-info">
-            <p>{{subscription.selected_tier.limit}} products</p>
-            <p class="Subscriptions__category-info--price">
+            <p i18n>{{subscription.selected_tier.limit}} products</p>
+            <p class="Subscriptions__category-info--price" i18n>
               {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
             </p>
             <p class="Subscriptions__category-info--edit">Unsubscribe</p>
         </div>
         <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from">Subscribe</tsl-button>
-        <span *ngIf="subscription.subscribed_from" class="Subscriptions__subscribed-from">
+        <span *ngIf="subscription.subscribed_from" class="Subscriptions__subscribed-from" i18n>
           Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}</span>
       </div>
     </div>
@@ -31,16 +31,16 @@
 </div>
 <div class="box">
     <div class="box-content">
-      <h4 class="section-title">Benefits of being a PRO</h4>
-      <p class="section-subtitle">Vendas lo que vendas, consigue las funcionalidades que te faltan para llevar tus ventas al siguiente nivel.</p>
+      <h4 class="section-title" i18n>Make your sales grow</h4>
+      <p class="section-subtitle" i18n>Thanks to the benefits of the PRO subscription you will sell more.</p>
       <div class="row">
         <div class="Subscriptions__benefits col-4">
           <div class="Subscriptions__benefits-icon">
             <mat-icon svgIcon="magnet" class="image"></mat-icon>
           </div>
           <div class="Subscriptions__benefits-info">
-            <p class="Subscriptions__benefits--title">Destaca sobre el resto</p>
-            <p>Aparece en las primeras posiciones de búsqueda y destaca sobre otros</p>
+            <p class="Subscriptions__benefits--title" i18n>Upload all your catalog</p>
+            <p i18n>Publish up to 15 cars and become a PRO seller.</p>
           </div>
         </div>
         <div class="Subscriptions__benefits col-4">
@@ -48,8 +48,8 @@
             <mat-icon svgIcon="megaphone" class="image"></mat-icon>
           </div>
           <div class="Subscriptions__benefits-info">
-            <p class="Subscriptions__benefits--title">Capta más clientes</p>
-            <p>Muestra a millones de compradores el teléfono y la web de tu negocio</p>
+            <p class="Subscriptions__benefits--title" i18n>Professionalize your profile</p>
+            <p i18n>Add a picture and fill in the extra fields. Stand out over the rest!</p>
           </div>
         </div>
         <div class="Subscriptions__benefits col-4">
@@ -57,8 +57,8 @@
             <mat-icon svgIcon="paintbrush" class="image"></mat-icon>
           </div>
           <div class="Subscriptions__benefits-info">
-            <p class="Subscriptions__benefits--title">Presenta tu negocio</p>
-            <p>Añade la descripción de tu tienda o servicio y su ubicación</p>
+            <p class="Subscriptions__benefits--title" i18n>Present your business</p>
+            <p i18n>Include a description of what you are offering and share the location.</p>
           </div>
         </div>
       </div>
@@ -68,8 +68,8 @@
             <mat-icon svgIcon="rocket" class="image"></mat-icon>
           </div>
           <div class="Subscriptions__benefits-info">
-            <p class="Subscriptions__benefits--title">Destaca sobre el resto</p>
-            <p>Aparece en las primeras posiciones de búsqueda y destaca sobre otros</p>
+            <p class="Subscriptions__benefits--title"i18n>Attract more clients</p>
+            <p i18n>Millions of buyers can call you or visit your website from your profile.</p>
           </div>
         </div>
         <div class="col-4">
@@ -77,8 +77,8 @@
             <mat-icon svgIcon="unlocked" class="image"></mat-icon>
           </div>
           <div class="Subscriptions__benefits-info">
-            <p class="Subscriptions__benefits--title">Destaca sobre el resto</p>
-            <p>Aparece en las primeras posiciones de búsqueda y destaca sobre otros</p>
+            <p class="Subscriptions__benefits--title" i18n>No time limit</p>
+            <p i18n>Your products won't expire, ever. They are always available.</p>
           </div>
         </div>
         <div class="col-4">
@@ -86,8 +86,8 @@
             <mat-icon svgIcon="watch" class="image"></mat-icon>
           </div>
           <div class="Subscriptions__benefits-info">
-            <p class="Subscriptions__benefits--title">Destaca sobre el resto</p>
-            <p>Aparece en las primeras posiciones de búsqueda y destaca sobre otros</p>
+            <p class="Subscriptions__benefits--title" i18n>Cancel whenever you want </p>
+            <p i18n>Cancel your subscription whenever you want. No penalties.</p>
           </div>
         </div>
       </div>

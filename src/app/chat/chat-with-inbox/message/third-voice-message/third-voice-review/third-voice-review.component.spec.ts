@@ -7,10 +7,10 @@ import { ButtonComponent } from '../../../../../shared/button/button.component';
 import { ReviewService } from '../../../../../core/review/review.service';
 import { Observable } from 'rxjs';
 import { USER_ID } from '../../../../../../tests/user.fixtures.spec';
-import { InboxConversation } from '../../../inbox';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../../../tests/inbox.fixtures.spec';
 import { ReviewModalComponent } from '../../../../../shared/modals/review-modal/review-modal.component';
 import { SoldModalComponent } from '../../../../../shared/modals/sold-modal/sold-modal.component';
+import { InboxConversation } from '../../../../model';
 
 const modalRef: any = {
   result: Promise.resolve({

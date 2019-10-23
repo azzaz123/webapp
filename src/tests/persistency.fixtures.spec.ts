@@ -1,6 +1,6 @@
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { Message, phoneRequestState } from '../app/core/message/message';
-import { InboxMessage, MessageStatus } from '../app/chat/chat-with-inbox/message/inbox-message';
+import { InboxMessage, MessageStatus } from '../app/chat/model/inbox-message';
 import { Observable } from 'rxjs';
 import { createInboxConversationsArray } from './inbox.fixtures.spec';
 

@@ -5,8 +5,9 @@ import { MetricTypeEnum } from './metric-type.enum';
 import * as Fingerprint2 from 'fingerprintjs2';
 import * as logger from 'loglevel';
 import * as _ from 'lodash';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { Observable } from 'rxjs';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
+import { APP_VERSION } from '../../../environments/version';
 
 @Injectable({
   providedIn: 'root'
@@ -32,15 +33,14 @@ export class RemoteConsoleService {
         ping_time_ms: navigator['connection']['rtt']
       }
     })));
-
   }
 
-  sendDuplicateConversations(userId: string, loadMoreConversations: boolean, conversationsGroupById: Map<string, number>): void {
+  sendDuplicateConversations(userId: string, callMethodClient: string, conversationsGroupById: Map<string, number>): void {
     this.getCommonLog(userId).subscribe(commonLog => logger.info(JSON.stringify({
       ...commonLog, ...{
         metric_type: MetricTypeEnum.DUPLICATE_CONVERSATION,
         message: 'send log when user see duplicate conversation in inbox',
-        load_more_conversations: loadMoreConversations,
+        call_method_client: callMethodClient,
         conversations_count_by_id: JSON.stringify(conversationsGroupById)
       }
     })));
@@ -56,6 +56,7 @@ export class RemoteConsoleService {
         browser_version: device.browser_version,
         user_id: userId,
         feature_flag: fetureFlag,
+        version: APP_VERSION
       };
     });
   }

@@ -84,10 +84,10 @@ export class SubscriptionsService {
   }
 
   private mapSubscriptions(subscription: SubscriptionsResponse, categories: CategoryResponse[]): SubscriptionsResponse {
-    let category = categories.find((category: CategoryResponse) => subscription.category_id === category.categoryId);
+    let category = categories.find((category: CategoryResponse) => subscription.category_id === category.category_id);
     if (category) {
-      subscription.category_name = category.defaultTitle;
-      subscription.category_icon = category.iconName;
+      subscription.category_name = category.name;
+      subscription.category_icon = category.icon_id;
       subscription.selected_tier = this.getSelectedTier(subscription);
       return subscription;
     }
