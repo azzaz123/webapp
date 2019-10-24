@@ -11,9 +11,9 @@ import { SubscriptionsService } from '../core/subscriptions/subscriptions.servic
 import { StripeService } from '../core/stripe/stripe.service';
 import { HttpService } from '../core/http/http.service';
 import { FeatureflagService } from '../core/user/featureflag.service';
-import { MAPPED_SUBSCRIPTIONS } from '../../tests/subscriptions.fixtures.spec';
-import { CategoryService } from '../core/category/category.service';
 import { CATEGORY_DATA_WEB } from '../../tests/category.fixtures.spec';
+import { CategoryService } from '../core/category/category.service';
+import { SUBSCRIPTIONS } from '../../tests/subscriptions.fixtures.spec';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -54,7 +54,7 @@ describe('ProfileComponent', () => {
             },
             logout() {},
             getMotorPlans() {
-              return Observable.of({});
+              return Observable.of(PROFILE_SUB_INFO);
             },
             isProfessional() {
               return Observable.of(false);
@@ -74,7 +74,7 @@ describe('ProfileComponent', () => {
               return Observable.of(true);
             },
             getSubscriptions() {
-              return Observable.of(MAPPED_SUBSCRIPTIONS)
+              return Observable.of(SUBSCRIPTIONS);
             }
           }
         },

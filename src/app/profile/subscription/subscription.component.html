@@ -4,7 +4,7 @@
     <p class="section-subtitle" i18n>Manage your subscriptions for wallapop PRO and take your sales to the next level.</p>
     <div class="Subscriptions">
       <div class="Subscriptions__category" [ngClass]="{'Subscriptions__category--subscribed': subscription.subscribed_from }"
-      (click)="openSubscriptionModal(subscription)" *ngFor="let subscription of subscriptions">
+      (click)="!subscription.subscribed_until && openSubscriptionModal(subscription)" *ngFor="let subscription of subscriptions">
         <div class="Subscriptions__category-icon">
           <mat-icon *ngIf="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}"class="image"></mat-icon>
           <mat-icon [hidden]="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}-disabled" class="image"></mat-icon>
@@ -20,11 +20,15 @@
             <p class="Subscriptions__category-info--price" i18n>
               {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
             </p>
-            <!--<p class="Subscriptions__category-info--edit">Edit</p>-->
+            <p class="Subscriptions__category-info--edit" *ngIf="!subscription.subscribed_until">Unsubscribe</p>
         </div>
         <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from">Subscribe</tsl-button>
-        <span *ngIf="subscription.subscribed_from" class="Subscriptions__subscribed-from" i18n>
-          Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}</span>
+        <span *ngIf="subscription.subscribed_from" [hidden]="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n>
+          Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}
+        </span>
+        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n>
+          Subscribed until {{subscription.subscribed_until | date:'dd/MM/yy' }}
+        </span>
       </div>
     </div>
   </div>

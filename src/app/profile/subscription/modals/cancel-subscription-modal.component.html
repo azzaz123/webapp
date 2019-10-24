@@ -1,0 +1,11 @@
+<div class="CancelSubscription__box">
+  <div class="CancelSubscription__box-header">
+    <div class="modal-close" (click)="activeModal.dismiss()">
+      <mat-icon svgIcon="cross"></mat-icon>
+    </div>
+  </div>
+  <h4 class="CancelSubscription__box--title" i18n>Are you sure you want to canel your PRO subscription to {{subscription.category_name}}?</h4>
+  <p class="CancelSubscription__box--subtitle" i18n>It's never too late to change your mind, you know? We'll be sad to see you go :(</p>
+  <tsl-button (click)="cancelSubscription()" [loading]="loading" [disabled]="loading" i18n>Yes, I want to unsubscribe</tsl-button>
+  <tsl-button className="btn-gray" (click)="activeModal.close()" [loading]="loading" [disabled]="loading" i18n>No, I want to enjoy the benefits.</tsl-button>
+</div>

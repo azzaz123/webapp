@@ -26,6 +26,7 @@ export interface SubscriptionsResponse {
   category_name?: string;
   category_icon?: string;
   selected_tier?: Tier;
+  subscribed_until?: number;
 }
 
 export interface SubscriptionSlotResponse {
