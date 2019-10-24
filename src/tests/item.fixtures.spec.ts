@@ -24,7 +24,7 @@ import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.
 import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
 import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
-import * as _ from 'lodash';
+import { clone } from 'lodash';
 import { Observable } from 'rxjs';
 import { Item } from '../app/core/item/item';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../app/core/item/item-categories';
@@ -261,14 +261,14 @@ export const MOCK_ITEM_CAR: Item = new Item(
 );
 
 export function getMockItem(id: string, legacyId: number) {
-  const item: Item = _.clone(MOCK_ITEM);
+  const item: Item = clone(MOCK_ITEM);
   item.id = id;
   item.legacyId = legacyId;
   return item;
 }
 
 export function getMockItemWithPurchases() {
-  const item: Item = _.clone(MOCK_ITEM);
+  const item: Item = clone(MOCK_ITEM);
   item.purchases = {
     bump_type: 'citybump',
     expiration_date: 1526375664070,

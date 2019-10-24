@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener, EventEmitter, Input } from '@angular/core';
-import * as _ from 'lodash';
+import { range } from 'lodash';
 import { BumpTutorialService } from './bump-tutorial.service';
 
 export enum KEY_CODE {
@@ -21,7 +21,7 @@ export class BumpTutorialComponent implements OnDestroy {
   public hidden = true;
 
   constructor(public tutorialService: BumpTutorialService) {
-    this.dots = _.range(SLIDES_NUMBER);
+    this.dots = range(SLIDES_NUMBER);
   }
 
   ngOnDestroy() {

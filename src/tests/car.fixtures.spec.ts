@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { map } from 'lodash';
 import { IOption } from 'ng-select';
 import { Car } from '../app/core/item/car';
 import { CAR_ID } from './upload.fixtures.spec';
@@ -78,7 +78,7 @@ export const CAR_VERSIONS_RESPONSE: string[] = ['1.4 MultiAir 170 2p', '1.4 Mult
 export const CAR_VERSIONS: IOption[] = toSelectOptions(CAR_VERSIONS_RESPONSE);
 
 function toSelectOptions(values: any[]): IOption[] {
-  return _.map(values, (label: any) => ({
+  return map(values, (label: any) => ({
     value: label.toString(),
     label: label.toString()
   }));

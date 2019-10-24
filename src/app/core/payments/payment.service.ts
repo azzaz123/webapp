@@ -14,7 +14,7 @@ import {
   ScheduledStatus, PaymentIntents
 } from './payment.interface';
 import { HttpService } from '../http/http.service';
-import * as _ from 'lodash';
+import { reduce, mapValues, values, keyBy, groupBy, min } from 'lodash';
 import { COINS_FACTOR, COINS_PACK_ID, CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
 import { PerksModel } from './payment.model';
 import { UserService } from '../user/user.service';
@@ -144,7 +144,7 @@ export class PaymentService {
   }
 
   private chunkArray(array, chunkSize): Pack[][] {
-    return _.reduce(array, function (result, value) {
+    return reduce(array, function (result, value) {
       const lastChunk = result[result.length - 1];
       if (lastChunk.length < chunkSize) lastChunk.push(value);
       else result.push([value]);
@@ -233,12 +233,12 @@ export class PaymentService {
     };
     return (product ? Observable.of(product) : this.getProducts())
       .map((products: Products) => {
-        const values = _.groupBy(sortedPacks, (pack) => {
+        const values = groupBy(sortedPacks, (pack) => {
           return Object.keys(pack.benefits)[0];
         });
-        const mins = _.mapValues(values, (packsArray) => {
-          return _.min(packsArray.map((pack) => {
-            return _.values(pack.benefits)[0];
+        const mins = mapValues(values, (packsArray) => {
+          return min(packsArray.map((pack) => {
+            return values(pack.benefits)[0];
           }));
         });
         sortedPacks.forEach((pack: PackResponse) => {
@@ -278,8 +278,8 @@ export class PaymentService {
 
   private sortPacksByQuantity(packs: PackResponse[]): PackResponse[] {
     const sortedPacks = packs.sort(function (a, b) {
-      const quantityA: any = _.values(a.benefits)[0];
-      const quantityB: any = _.values(b.benefits)[0];
+      const quantityA: any = values(a.benefits)[0];
+      const quantityB: any = values(b.benefits)[0];
       return quantityA - quantityB;
     });
     return sortedPacks;
@@ -292,7 +292,7 @@ export class PaymentService {
     return this.http.get(this.API_URL + '/products')
       .map((r: Response) => r.json())
       .map((products: ProductResponse[]) => {
-        this.products = _.keyBy(products, 'id');
+        this.products = keyBy(products, 'id');
         return this.products;
       });
   }

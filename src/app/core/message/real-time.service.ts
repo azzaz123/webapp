@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { now } from 'lodash';
 import * as retry from 'retry';
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
@@ -32,9 +32,9 @@ export class RealTimeService {
   private ongoingRetry: boolean;
 
   public connect(userId: string, accessToken: string) {
-    const startTimestamp = _.now();
+    const startTimestamp = now();
     this.xmpp.connect(userId, accessToken).subscribe(() => {
-        this.remoteConsoleService.sendConnectionTimeout(userId, _.now() - startTimestamp);
+        this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp);
       });
   }
 

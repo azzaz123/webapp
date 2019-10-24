@@ -8,7 +8,7 @@ import { InboxConversationService } from '../../core/inbox/inbox-conversation.se
 import { Observable } from 'rxjs';
 import { phoneMethod } from '../../core/message/message';
 import { ConversationService } from '../../core/conversation/conversation.service';
-import * as _ from 'lodash';
+import { isEmpty } from 'lodash';
 import { isNullOrUndefined } from 'util';
 
 @Component({
@@ -97,7 +97,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
       this.inboxConversationService.openConversationByItemId$(itemId)
       .catch(() => Observable.of({}))
       .subscribe((conversation: InboxConversation) => {
-        if (_.isEmpty(conversation.messages)) {
+        if (isEmpty(conversation.messages)) {
           this.getPhoneInfo(conversation);
         }
       });

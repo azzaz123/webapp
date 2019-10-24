@@ -1,7 +1,7 @@
 import { UUID } from 'angular2-uuid';
 import { TrackingEventBase } from './tracking-event-base.interface';
 import { getTimestamp } from './getTimestamp.func';
-import * as _ from 'lodash';
+import { replace } from 'lodash';
 
 export class TrackingEvent {
   sessions: any[] = [{
@@ -49,7 +49,7 @@ export class TrackingEvent {
       os: operativeSystemVersion,
       screenwidth: this.sessions[0].window.screen.width.toString(),
       screenheight: this.sessions[0].window.screen.height.toString(),
-      locale: _.replace(navigator.language, '-', '_'),
+      locale: replace(navigator.language, '-', '_'),
       deviceAccessTokenId: deviceAccessTokenId
     };
   }

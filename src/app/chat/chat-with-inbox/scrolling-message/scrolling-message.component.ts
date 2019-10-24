@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import * as _ from 'lodash';
+import { eq, gt } from 'lodash';
 
 @Component({
   selector: 'tsl-scrolling-message',
@@ -13,15 +13,15 @@ export class ScrollingMessageComponent {
   @Output() clickScroll = new EventEmitter();
 
   isNullOrUndefinedOrEmpty(): boolean {
-    return this.noMessages === null || this.noMessages === undefined || _.eq(this.noMessages, 0);
+    return this.noMessages === null || this.noMessages === undefined || eq(this.noMessages, 0);
   }
 
   hasEqOneMessage(): boolean {
-    return _.eq(this.noMessages, 1);
+    return eq(this.noMessages, 1);
   }
 
   hasGtThanOneMessage(): boolean {
-    return _.gt(this.noMessages, 1);
+    return gt(this.noMessages, 1);
   }
 
   onClickScrollDown(): void {

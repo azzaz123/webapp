@@ -1,6 +1,6 @@
 import { CartBase, BUMP_TYPES } from './cart-base';
 import { CartProExtrasPack } from './cart-item.interface';
-import * as _ from 'lodash';
+import { sumBy } from 'lodash';
 import { OrderProExtras } from '../../../core/payments/payment.interface';
 
 export class CartProExtras extends CartBase {
@@ -41,7 +41,7 @@ export class CartProExtras extends CartBase {
   private calculateTotals() {
     this.total = 0;
     BUMP_TYPES.forEach((type: string) => {
-      this[type].total = _.sumBy(this[type].cartItems, (c: CartProExtrasPack) => +c.pack.price);
+      this[type].total = sumBy(this[type].cartItems, (c: CartProExtrasPack) => +c.pack.price);
       this.total += this[type].total;
     });
   }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
 import { Response } from '@angular/http';
-import * as _ from 'lodash';
+import { map, filter } from 'lodash';
 import { HttpService } from '../../core/http/http.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 
@@ -25,7 +25,7 @@ export class CarKeysService {
   getTypeName(id: string): Observable<string> {
     return this.getTypesData()
     .map((values: any[]) => {
-      return _.filter(values, {id: id})[0].text;
+      return filter(values, {id: id})[0].text;
     });
   }
 
@@ -38,7 +38,7 @@ export class CarKeysService {
   }
 
   private toSelectOptions(values: any[]): IOption[] {
-    return _.map(values, (item: any) => ({
+    return map(values, (item: any) => ({
       value: item.id,
       label: item.text
     }));

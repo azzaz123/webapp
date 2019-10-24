@@ -9,7 +9,7 @@ import { Item } from '../item/item';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { Lead } from './lead';
-import * as _ from 'lodash';
+import { findIndex } from 'lodash';
 import { EventService } from '../event/event.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
@@ -151,7 +151,7 @@ export abstract class LeadService {
   public archive(id: string): Observable<Lead> {
     return this.http.put(`${this.ARCHIVE_URL}/${id}/hide`, {})
     .map(() => {
-      const index: number = _.findIndex(this.leads, {'id': id});
+      const index: number = findIndex(this.leads, {'id': id});
       if (index > -1) {
         const deletedLead: Lead = this.leads.splice(index, 1)[0];
         deletedLead.archived = true;
@@ -168,7 +168,7 @@ export abstract class LeadService {
   public unarchive(id: string): Observable<Lead> {
     return this.http.put(`${this.ARCHIVE_URL}/${id}/unhide`, {})
     .map(() => {
-      const index: number = _.findIndex(this.archivedLeads, {'id': id});
+      const index: number = findIndex(this.archivedLeads, {'id': id});
       if (index > -1) {
         const lead: Lead = this.archivedLeads.splice(index, 1)[0];
         lead.archived = false;

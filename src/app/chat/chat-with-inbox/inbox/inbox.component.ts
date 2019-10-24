@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { countBy, find, map } from 'lodash';
 import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
 import { InboxConversation } from '../../model/inbox-conversation';
@@ -240,8 +240,8 @@ export class InboxComponent implements OnInit, OnDestroy {
   }
 
   private sendLogWithNumberOfConversationsByConversationId(conversations: InboxConversation[], callMethodClient: string) {
-    const conversationsIds = _.countBy(_.map(conversations, conversation => conversation.id));
-    const hasDuplicated = _.find(conversationsIds, numberOfConversation => numberOfConversation > 1);
+    const conversationsIds = countBy(map(conversations, conversation => conversation.id));
+    const hasDuplicated = find(conversationsIds, numberOfConversation => numberOfConversation > 1);
 
     if (hasDuplicated) {
       this.userService.me().subscribe(

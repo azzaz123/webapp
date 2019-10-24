@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { last, uniqBy, sortBy, groupBy, findLast } from 'lodash';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MsgArchiveResponse, ReceivedReceipt, ReadReceipt, ArchiveMetrics } from './archive.interface';
@@ -66,7 +66,7 @@ export class MsgArchiveService {
         messages: messages,
         receivedReceipts: receivedReceipts,
         readReceipts: readReceipts,
-        metaDate: events.length ? _.last(events).ts : '0'
+        metaDate: events.length ? last(events).ts : '0'
       };
       return response;
     });
@@ -132,7 +132,7 @@ export class MsgArchiveService {
         messages: messages,
         receivedReceipts: receivedReceipts,
         readReceipts: readReceipts,
-        metaDate: events.length ? _.last(events).ts : '0'
+        metaDate: events.length ? last(events).ts : '0'
       };
 
       return response;
@@ -214,8 +214,8 @@ export class MsgArchiveService {
       return msg;
     });
 
-    messages = _.uniqBy(messages, 'id');
-    messages = _.sortBy(messages, 'date');
+    messages = uniqBy(messages, 'id');
+    messages = sortBy(messages, 'date');
     return messages;
   }
 
@@ -239,9 +239,9 @@ export class MsgArchiveService {
 
   private returnLatestBy(dataSet: any, uniqueBy: string) {
     const result = [];
-    const obj = _.groupBy(dataSet, uniqueBy);
+    const obj = groupBy(dataSet, uniqueBy);
     Object.keys(obj).map((thread) => {
-      result.push(_.last(obj[thread]));
+      result.push(last(obj[thread]));
     });
 
     return result;
@@ -249,8 +249,8 @@ export class MsgArchiveService {
 
   private processReadReceipts(archiveData: any): Array<ReadReceipt> {
     const receipts = [];
-    const sentByMe = _.findLast(archiveData, (r) => r.type === this.eventTypes.read && r.event.to_user_hash !== this.selfId);
-    const sentToMe = _.findLast(archiveData, (r) => r.type === this.eventTypes.read && r.event.to_user_hash === this.selfId);
+    const sentByMe = findLast(archiveData, (r) => r.type === this.eventTypes.read && r.event.to_user_hash !== this.selfId);
+    const sentToMe = findLast(archiveData, (r) => r.type === this.eventTypes.read && r.event.to_user_hash === this.selfId);
 
     sentByMe ? receipts.push(sentByMe) : receipts.push();
     sentToMe ? receipts.push(sentToMe) : receipts.push();

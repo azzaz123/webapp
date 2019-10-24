@@ -1,6 +1,6 @@
 import { CartBase, BUMP_TYPES } from './cart-base';
 import { CartProItem } from './cart-item.interface';
-import * as _ from 'lodash';
+import { findIndex, sumBy } from 'lodash';
 import { OrderPro } from '../../../core/item/item-response.interface';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
@@ -13,7 +13,7 @@ export class CartPro extends CartBase {
   }
 
   removeCartItem(itemId: string, type: string) {
-    const index = _.findIndex(this[type].cartItems, (c: CartProItem) => c.item.id === itemId);
+    const index = findIndex(this[type].cartItems, (c: CartProItem) => c.item.id === itemId);
     if (index !== -1) {
       this[type].cartItems.splice(index, 1);
       this.calculateTotals();
@@ -30,7 +30,7 @@ export class CartPro extends CartBase {
   calculateTotals() {
     this.total = 0;
     BUMP_TYPES.forEach((type: string) => {
-      this[type].total = _.sumBy(this[type].cartItems, (c: CartProItem) => +c.selectedDates.numberOfDays);
+      this[type].total = sumBy(this[type].cartItems, (c: CartProItem) => +c.selectedDates.numberOfDays);
       this.total += this[type].total;
     });
   }

@@ -7,7 +7,7 @@ import { InboxConversation } from '../model/inbox-conversation';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
-import * as _ from 'lodash';
+import { includes, isEmpty, find } from 'lodash';
 import { I18nService } from '../../core/i18n/i18n.service';
 
 @Component({
@@ -32,7 +32,7 @@ export class InputComponent implements OnChanges, OnInit {
   ngOnInit() {
     this.isUserBlocked = false;
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
-      this.isUserBlocked = _.includes(userIds, this.currentConversation.user.id);
+      this.isUserBlocked = includes(userIds, this.currentConversation.user.id);
     });
   }
 
@@ -40,7 +40,7 @@ export class InputComponent implements OnChanges, OnInit {
     $event.preventDefault();
     if (!this.isUserBlocked) {
       const message = messageArea.value.trim();
-      if (!_.isEmpty(message)) {
+      if (!isEmpty(message)) {
         if (this.hasLinkInMessage(message)) {
           this.modalService.open(BlockSendLinkComponent, { windowClass: 'modal-transparent' });
         } else {
@@ -82,10 +82,10 @@ export class InputComponent implements OnChanges, OnInit {
   }
 
   private hasLinkInMessage(message: string): boolean {
-    return !_.isEmpty(this.findLinksWhereLinkIsNotWallapop(message));
+    return !isEmpty(this.findLinksWhereLinkIsNotWallapop(message));
   }
 
   private findLinksWhereLinkIsNotWallapop(message: string): string[] {
-    return _.find(message.match(LinkTransformPipe.LINK_REG_EXP), link => _.isEmpty(link.match(LinkTransformPipe.WALLAPOP_REG_EXP)));
+    return find(message.match(LinkTransformPipe.LINK_REG_EXP), link => isEmpty(link.match(LinkTransformPipe.WALLAPOP_REG_EXP)));
   }
 }

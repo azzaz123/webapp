@@ -11,7 +11,7 @@ import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { InboxConversationService } from './inbox-conversation.service';
 import { Response } from '@angular/http';
-import * as _ from 'lodash';
+import { uniqBy } from 'lodash';
 
 const USER_BASE_PATH = environment.siteUrl + 'user/';
 
@@ -175,13 +175,13 @@ export class InboxService {
     this.nextPageToken = reloadConversations.next_from || null;
     const conversations: InboxConversation[] = this.buildConversations(reloadConversations.conversations);
     this.conversationService.sendReceiveSignalByConversations(conversations);
-    return _.uniqBy([...this.conversations, ...conversations], 'id');
+    return uniqBy([...this.conversations, ...conversations], 'id');
   }
 
   private processArchivedInboxResponse(response: Response): InboxConversation[] {
     const reloadArchivedConversations = response.json();
     this.nextArchivedPageToken = reloadArchivedConversations.next_from || null;
-    return _.uniqBy([...this.archivedConversations, ...this.buildArchivedConversations(reloadArchivedConversations.conversations)], 'id');
+    return uniqBy([...this.archivedConversations, ...this.buildArchivedConversations(reloadArchivedConversations.conversations)], 'id');
   }
 
   private buildArchivedConversations(conversations) {

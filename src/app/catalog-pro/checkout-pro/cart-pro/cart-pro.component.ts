@@ -11,7 +11,7 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { CartChange, CartProItem } from '../../../shared/catalog/cart/cart-item.interface';
 import { OrderPro } from '../../../core/item/item-response.interface';
-import * as _ from 'lodash';
+import { some } from 'lodash';
 
 export interface Balance {
   citybump: number;
@@ -96,7 +96,7 @@ export class CartProComponent implements OnInit {
 
   applyBumps() {
     const order: OrderPro[] = this.cart.prepareOrder();
-    const startsToday: boolean = _.some(order, (item: OrderPro) => {
+    const startsToday: boolean = some(order, (item: OrderPro) => {
        return (new Date(item.start_date)).toDateString() === (new Date).toDateString();
     });
     this.itemService.bumpProItems(order).subscribe((failedProducts: string[]) => {

@@ -9,7 +9,7 @@ import {
 } from '../../../../tests/item.fixtures.spec';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
+import { find } from 'lodash';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
@@ -137,9 +137,9 @@ describe('CatalogItemActionsComponent', () => {
 
       it('should remove deleted items', () => {
         expect(component.items.length).toBe(TOTAL - 3);
-        expect(_.find(component.items, {'id': '1'})).toBeFalsy();
-        expect(_.find(component.items, {'id': '3'})).toBeFalsy();
-        expect(_.find(component.items, {'id': '5'})).toBeFalsy();
+        expect(find(component.items, {'id': '1'})).toBeFalsy();
+        expect(find(component.items, {'id': '3'})).toBeFalsy();
+        expect(find(component.items, {'id': '5'})).toBeFalsy();
       });
     });
 

@@ -15,7 +15,7 @@ import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { Message, messageStatus, phoneMethod } from '../message/message';
 import { EventService } from '../event/event.service';
-import * as _ from 'lodash';
+import { clone } from 'lodash';
 import { NotificationService } from '../notification/notification.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { ConversationTotals } from './totals.interface';
@@ -149,7 +149,7 @@ describe('Service: Conversation', () => {
     let response: Conversation[];
     describe('with results', () => {
       beforeEach(() => {
-        spyOn(service, 'query').and.returnValue(Observable.of(_.clone(QUERY_RESULT)));
+        spyOn(service, 'query').and.returnValue(Observable.of(clone(QUERY_RESULT)));
         spyOn(service, 'loadMessagesIntoConversations').and.callFake((conversations: Conversation[]) => {
           return Observable.of(conversations.map((conversation: Conversation) => {
             conversation.unreadMessages = UNREAD_MESSAGES;

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
-import * as _ from 'lodash';
+import { find } from 'lodash';
 import { SelectedItemsAction } from '../../../core/item/item-response.interface';
 import { OrderEvent } from './selected-product.interface';
 import { Item } from '../../../core/item/item';
@@ -40,7 +40,7 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
       return this.active;
     }).subscribe((action: SelectedItemsAction) => {
       this.selectedItems = this.itemService.selectedItems.map((id: string) => {
-        return <Item>_.find(this.items, {id: id});
+        return <Item>find(this.items, {id: id});
       });
     });
   }

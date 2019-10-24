@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import * as _ from 'lodash';
+import { find } from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { EventService } from '../../../core/event/event.service';
@@ -179,7 +179,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     if (page === -1) {
       this.createConversationAndSetItCurrent();
     } else {
-      const currentConversation: Conversation = _.find(this.conversations, {id: thread});
+      const currentConversation: Conversation = find(this.conversations, {id: thread});
       if (currentConversation) {
         this.setCurrentConversation(currentConversation);
         setTimeout(() => {

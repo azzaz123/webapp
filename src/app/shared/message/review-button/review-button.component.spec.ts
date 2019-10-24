@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { last } from 'lodash';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReviewButtonComponent } from './review-button.component';
 import { Observable } from 'rxjs';
@@ -21,7 +21,7 @@ const mockItem = new Item(ITEM_ID, ITEM_LEGACY_ID, USER_ID);
 const mockConversationsUser: ConversationUser = {
   id: mockConversation.user.id,
   micro_name: mockConversation.user.microName,
-  last_message: _.last(mockConversation.messages.filter(msg => msg.from === mockConversation.user.id)),
+  last_message: last(mockConversation.messages.filter(msg => msg.from === mockConversation.user.id)),
   image: mockConversation.user.image
 };
 

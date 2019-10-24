@@ -7,7 +7,7 @@ import { EventService } from '../event/event.service';
 import { ConversationService } from './conversation.service';
 import { LeadService } from './lead.service';
 import { Observable } from 'rxjs';
-import * as _ from 'lodash';
+import { difference, map, reverse, sortBy } from 'lodash';
 import { Lead } from './lead';
 import { Conversation } from './conversation';
 import { CallTotals } from './totals.interface';
@@ -43,7 +43,7 @@ export class CallsService extends LeadService {
     .map((calls: Call[]) => {
       if (calls && calls.length > 0) {
         if (!archived) {
-          const diff: any[] = _.difference(_.map(calls, 'id'), _.map(this.leads, 'id'));
+          const diff: any[] = difference(map(calls, 'id'), map(this.leads, 'id'));
           const result: Call[] = calls.filter((call: Call) => {
             return diff.indexOf(call.id) >= 0;
           });
@@ -80,7 +80,7 @@ export class CallsService extends LeadService {
       return calls;
     })
     .map((calls: Lead[]) => {
-      return _.reverse(_.sortBy(calls, 'modifiedDate'));
+      return reverse(sortBy(calls, 'modifiedDate'));
     })
     .map((calls: Lead[]) => {
       return calls.slice(0, end);

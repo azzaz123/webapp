@@ -1,7 +1,7 @@
 import PouchDB from 'pouchdb';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, throwError } from 'rxjs';
-import * as _ from 'lodash';
+import { sortBy, filter } from 'lodash';
 import * as moment from 'moment';
 import { Message, phoneRequestState } from '../message/message';
 import {
@@ -256,7 +256,7 @@ export class PersistencyService {
   public getMessages(thread: string): Observable<StoredMessageRow[]> {
     return Observable.create((observer: Observer<StoredMessageRow[]>) => {
       this.getMessageFromLocal().then((data: AllDocsResponse<StoredMessage>) => {
-        const rows: StoredMessageRow[] = _.sortBy(_.filter(data.rows, (row: StoredMessageRow) => {
+        const rows: StoredMessageRow[] = sortBy(filter(data.rows, (row: StoredMessageRow) => {
           return row.doc.conversationId === thread;
         }), (row: StoredMessageRow) => {
           return row.doc.date;

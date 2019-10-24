@@ -8,10 +8,10 @@ import { TutorialGuard } from '../shared/guards/tutorial.guard';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
-import * as _ from 'lodash';
+import { isEmpty } from 'lodash';
 
 export function isNormalCatalogPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
-  if (_.isEmpty(route.params)) {
+  if (isEmpty(route.params)) {
     return '/pro/catalog/list';
   } else {
     return {

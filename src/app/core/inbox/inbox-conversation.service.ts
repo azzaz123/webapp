@@ -13,7 +13,7 @@ import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { HttpServiceNew } from '../http/http.service.new';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import * as _ from 'lodash';
+import { find, some } from 'lodash';
 import { isNullOrUndefined } from 'util';
 import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
 
@@ -203,11 +203,11 @@ export class InboxConversationService {
   }
 
   public containsConversation(conversation: InboxConversation): boolean {
-    return isNullOrUndefined(conversation) ? false : _.some(this.conversations, { id: conversation.id });
+    return isNullOrUndefined(conversation) ? false : some(this.conversations, { id: conversation.id });
   }
 
   public containsArchivedConversation(conversation: InboxConversation): boolean {
-    return isNullOrUndefined(conversation) ? false : _.some(this.archivedConversations, { id: conversation.id });
+    return isNullOrUndefined(conversation) ? false : some(this.archivedConversations, { id: conversation.id });
   }
 
   public archive(conversation: InboxConversation): Observable<InboxConversation> {
@@ -288,8 +288,8 @@ export class InboxConversationService {
 
   public openConversationByItemId$(itemId: string): Observable<InboxConversation> {
     if (this.conversations && this.archivedConversations) {
-      const localConversation = _.find(this.conversations, (conver) => conver.item.id === itemId && !conver.item.isMine)
-        || _.find(this.archivedConversations, (conver) => conver.item.id === itemId && !conver.item.isMine);
+      const localConversation = find(this.conversations, (conver) => conver.item.id === itemId && !conver.item.isMine)
+        || find(this.archivedConversations, (conver) => conver.item.id === itemId && !conver.item.isMine);
 
       if (localConversation) {
         this.openConversation(localConversation);

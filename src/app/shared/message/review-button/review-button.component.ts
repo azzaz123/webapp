@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { last } from 'lodash';
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewModalComponent } from '../../../shared/modals/review-modal/review-modal.component';
@@ -37,7 +37,7 @@ export class ReviewButtonComponent implements OnInit {
       this.conversationUser = {
         id: conv.user.id,
         micro_name: conv.user.microName,
-        last_message: _.last(conv.messages.filter(msg => msg.from === conv.user.id)),
+        last_message: last(conv.messages.filter(msg => msg.from === conv.user.id)),
         image: conv.user.image
       };
       this.isSeller = this.item.owner !== this.conversationUser.id;
