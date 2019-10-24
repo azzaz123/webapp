@@ -13,8 +13,7 @@ import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { HttpServiceNew } from '../http/http.service.new';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { find, some } from 'lodash-es';
-import { isNullOrUndefined } from 'util';
+import { find, some, isNil } from 'lodash-es';
 import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
 
 @Injectable({
@@ -203,11 +202,11 @@ export class InboxConversationService {
   }
 
   public containsConversation(conversation: InboxConversation): boolean {
-    return isNullOrUndefined(conversation) ? false : some(this.conversations, { id: conversation.id });
+    return isNil(conversation) ? false : some(this.conversations, { id: conversation.id });
   }
 
   public containsArchivedConversation(conversation: InboxConversation): boolean {
-    return isNullOrUndefined(conversation) ? false : some(this.archivedConversations, { id: conversation.id });
+    return isNil(conversation) ? false : some(this.archivedConversations, { id: conversation.id });
   }
 
   public archive(conversation: InboxConversation): Observable<InboxConversation> {
