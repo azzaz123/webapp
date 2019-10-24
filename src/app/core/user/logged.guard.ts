@@ -6,7 +6,7 @@ import { WindowRef } from '../window/window.service';
 import { UserService } from './user.service';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { User } from './user';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 @Injectable()
 export class LoggedGuard implements CanActivate {

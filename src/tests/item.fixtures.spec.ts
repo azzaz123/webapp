@@ -24,7 +24,7 @@ import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.
 import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
 import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
-import { clone } from 'lodash';
+import { clone } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { Item } from '../app/core/item/item';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../app/core/item/item-categories';

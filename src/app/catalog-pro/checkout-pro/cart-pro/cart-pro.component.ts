@@ -11,7 +11,7 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { CartChange, CartProItem } from '../../../shared/catalog/cart/cart-item.interface';
 import { OrderPro } from '../../../core/item/item-response.interface';
-import { some } from 'lodash';
+import { some } from 'lodash-es';
 
 export interface Balance {
   citybump: number;

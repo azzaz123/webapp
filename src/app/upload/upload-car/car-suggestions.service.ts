@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
-import { map } from 'lodash';
+import { map } from 'lodash-es';
 import { IOption } from 'ng-select';
 import { HttpService } from '../../core/http/http.service';
 

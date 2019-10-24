@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { MessageComponent } from '../message.component';
-import { eq } from 'lodash';
+import { eq } from 'lodash-es';
 import { InboxItem, InboxUser, MessageType } from '../../../model';
 
 @Component({

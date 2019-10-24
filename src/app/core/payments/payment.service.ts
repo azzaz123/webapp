@@ -14,7 +14,7 @@ import {
   ScheduledStatus, PaymentIntents
 } from './payment.interface';
 import { HttpService } from '../http/http.service';
-import { reduce, mapValues, values, keyBy, groupBy, min } from 'lodash';
+import { reduce, mapValues, values, keyBy, groupBy, min } from 'lodash-es';
 import { COINS_FACTOR, COINS_PACK_ID, CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
 import { PerksModel } from './payment.model';
 import { UserService } from '../user/user.service';
@@ -144,10 +144,10 @@ export class PaymentService {
   }
 
   private chunkArray(array, chunkSize): Pack[][] {
-    return reduce(array, function (result, value) {
+    return reduce(array, function (result, val) {
       const lastChunk = result[result.length - 1];
-      if (lastChunk.length < chunkSize) lastChunk.push(value);
-      else result.push([value]);
+      if (lastChunk.length < chunkSize) lastChunk.push(val);
+      else result.push([val]);
       return result;
     }, [[]]);
   }
@@ -233,10 +233,10 @@ export class PaymentService {
     };
     return (product ? Observable.of(product) : this.getProducts())
       .map((products: Products) => {
-        const values = groupBy(sortedPacks, (pack) => {
+        const valuesVar = groupBy(sortedPacks, (pack) => {
           return Object.keys(pack.benefits)[0];
         });
-        const mins = mapValues(values, (packsArray) => {
+        const mins = mapValues(valuesVar, (packsArray) => {
           return min(packsArray.map((pack) => {
             return values(pack.benefits)[0];
           }));

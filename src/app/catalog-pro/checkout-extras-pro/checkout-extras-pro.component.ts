@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map, orderBy } from 'lodash';
+import { map, orderBy } from 'lodash-es';
 import { isArray } from 'util';
 import { FormGroup } from '@angular/forms';
 import { PaymentService } from '../../core/payments/payment.service';

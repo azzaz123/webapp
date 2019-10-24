@@ -19,7 +19,7 @@ import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-c
 import { TextMessageComponent } from '../message/text-message';
 import { ThirdVoiceMessageComponent } from '../message/third-voice-message';
 import { BlockUserService, BlockUserXmppService } from '../../../core/conversation/block-user';
-import { eq, includes } from 'lodash';
+import { eq, includes } from 'lodash-es';
 import { InboxConversation, InboxMessage, MessageType } from '../../model';
 
 @Component({

@@ -8,7 +8,7 @@ import { InboxConversationService } from '../../core/inbox/inbox-conversation.se
 import { Observable } from 'rxjs';
 import { phoneMethod } from '../../core/message/message';
 import { ConversationService } from '../../core/conversation/conversation.service';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { isNullOrUndefined } from 'util';
 
 @Component({

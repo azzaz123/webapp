@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { TutorialService } from '../core/tutorial/tutorial.service';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 import { Router } from '@angular/router';
 import { UserService } from '../core/user/user.service';
 

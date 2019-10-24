@@ -1,4 +1,4 @@
-import { clone, remove } from 'lodash';
+import { clone, remove } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';

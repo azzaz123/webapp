@@ -1,5 +1,5 @@
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
-import { throttle, range, every } from 'lodash';
+import { throttle, range, every } from 'lodash-es';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UploadEvent, UploadedEvent } from '../upload-event.interface';
 import { UploadService } from './upload.service';

@@ -5,7 +5,7 @@ import { ItemStatisticFullResponse } from './item-stats-graph/item-stats-respons
 import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemCounters } from '../../../core/item/item-response.interface';
-import { every, isEmpty } from 'lodash';
+import { every, isEmpty } from 'lodash-es';
 
 @Component({
   selector: 'tsl-item-stats-row',

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
-import { find } from 'lodash';
+import { find } from 'lodash-es';
 import PouchDB from 'pouchdb';
 import { MessageService } from '../message/message.service';
 import { XmppService } from '../xmpp/xmpp.service';

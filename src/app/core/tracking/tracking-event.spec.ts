@@ -1,6 +1,6 @@
 import { TrackingEvent } from './tracking-event';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
-import { replace } from 'lodash';
+import { replace } from 'lodash-es';
 
 describe('TrackingEvent', () => {
   const platform = 'MacOS';

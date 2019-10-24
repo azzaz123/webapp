@@ -9,7 +9,7 @@ import { Item } from '../item/item';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { Lead } from './lead';
-import { findIndex } from 'lodash';
+import { findIndex } from 'lodash-es';
 import { EventService } from '../event/event.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';

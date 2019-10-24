@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { eq, gt } from 'lodash';
+import { eq, gt } from 'lodash-es';
 
 @Component({
   selector: 'tsl-scrolling-message',

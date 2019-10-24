@@ -1,4 +1,4 @@
-import { countBy, find, map } from 'lodash';
+import { countBy, find, map } from 'lodash-es';
 import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
 import { InboxConversation } from '../../model/inbox-conversation';

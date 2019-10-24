@@ -1,4 +1,4 @@
-import { now } from 'lodash';
+import { now } from 'lodash-es';
 import * as retry from 'retry';
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';

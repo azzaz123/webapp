@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
-import { every, find, findIndex } from 'lodash';
+import { every, find, findIndex } from 'lodash-es';
 import {
   ItemBulkResponse, ItemsData, Order, Product,
   SelectedItemsAction

@@ -5,7 +5,7 @@ import { PERMISSIONS } from '../core/user/user';
 import { CheckoutExtrasProComponent } from './checkout-extras-pro/checkout-extras-pro.component';
 import { CheckoutProComponent } from './checkout-pro/checkout-pro.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 export function isProfessionalCatalogPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
   if (isEmpty(route.params)) {

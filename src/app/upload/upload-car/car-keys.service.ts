@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
 import { Response } from '@angular/http';
-import { map, filter } from 'lodash';
+import { map, filter } from 'lodash-es';
 import { HttpService } from '../../core/http/http.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 

@@ -30,7 +30,7 @@ import {
   ListingFeeProductInfo
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
-import { find, findIndex, reverse, without, map, filter, sortBy } from 'lodash';
+import { find, findIndex, reverse, without, map, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
@@ -334,7 +334,7 @@ export class ItemService extends ResourceService {
         const res: ItemResponse[] = r.json();
         const nextPage: string = r.headers.get('x-nextpage');
 
-        let params;
+        let params = {};
         if (nextPage) {
           nextPage.split('&').forEach(paramSplit => {
             const paramValues = paramSplit.split('=');
@@ -342,7 +342,7 @@ export class ItemService extends ResourceService {
           });
         }
 
-        const nextInit = params.init ? +params.init : null;
+        const nextInit = params && params['init'] ? +params['init'] : null;
         let data: Item[] = [];
         if (res.length > 0) {
           data = res.map((i: ItemResponse) => {

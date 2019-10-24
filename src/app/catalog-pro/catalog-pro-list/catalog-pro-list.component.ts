@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { findIndex } from 'lodash';
+import { findIndex } from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';

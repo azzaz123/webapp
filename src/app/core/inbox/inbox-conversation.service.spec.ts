@@ -24,7 +24,7 @@ import { ItemService } from '../item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { HttpModuleNew } from '../http/http.module.new';
 import { environment } from '../../../environments/environment';
-import { uniq } from 'lodash';
+import { uniq } from 'lodash-es';
 
 let service: InboxConversationService;
 let http: HttpService;

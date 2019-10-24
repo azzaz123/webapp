@@ -7,7 +7,7 @@ import { EventService } from '../event/event.service';
 import { ConversationService } from './conversation.service';
 import { LeadService } from './lead.service';
 import { Observable } from 'rxjs';
-import { difference, map, reverse, sortBy } from 'lodash';
+import { difference, map, reverse, sortBy } from 'lodash-es';
 import { Lead } from './lead';
 import { Conversation } from './conversation';
 import { CallTotals } from './totals.interface';

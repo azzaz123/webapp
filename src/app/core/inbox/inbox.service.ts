@@ -11,7 +11,7 @@ import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { InboxConversationService } from './inbox-conversation.service';
 import { Response } from '@angular/http';
-import { uniqBy } from 'lodash';
+import { uniqBy } from 'lodash-es';
 
 const USER_BASE_PATH = environment.siteUrl + 'user/';
 

@@ -1,5 +1,5 @@
 import { CartItem } from './cart-item.interface';
-import { findIndex, sumBy } from 'lodash';
+import { findIndex, sumBy } from 'lodash-es';
 import { Order } from '../../../core/item/item-response.interface';
 import { UUID } from 'angular2-uuid';
 import { CartBase, BUMP_TYPES } from './cart-base';

@@ -54,7 +54,7 @@ import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
 import { CAR_DATA, CAR_DATA_FORM, CAR_INFO, MOCK_CAR } from '../../../tests/car.fixtures.spec';
 import { Car } from './car';
 import { CART_ORDER_PRO } from '../../../tests/pro-item.fixtures.spec';
-import { find } from 'lodash';
+import { find } from 'lodash-es';
 import {
   MOCK_REALESTATE, REALESTATE_CONTENT_DATA, REALESTATE_DATA,
   UPLOAD_FORM_REALESTATE_VALUES

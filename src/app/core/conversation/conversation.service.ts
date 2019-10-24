@@ -1,4 +1,4 @@
-import { reverse, sortBy, remove, find, findIndex } from 'lodash';
+import { reverse, sortBy, remove, find, findIndex } from 'lodash-es';
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';

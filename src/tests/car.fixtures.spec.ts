@@ -1,4 +1,4 @@
-import { map } from 'lodash';
+import { map } from 'lodash-es';
 import { IOption } from 'ng-select';
 import { Car } from '../app/core/item/car';
 import { CAR_ID } from './upload.fixtures.spec';

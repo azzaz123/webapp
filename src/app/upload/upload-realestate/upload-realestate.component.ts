@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Coordinate, ItemLocation } from '../../core/geolocation/address-response.interface';
 import { Item } from '../../core/item/item';
-import { omit, isEqual } from 'lodash';
+import { omit, isEqual } from 'lodash-es';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { ItemService } from '../../core/item/item.service';

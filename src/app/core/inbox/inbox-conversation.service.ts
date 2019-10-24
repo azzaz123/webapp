@@ -13,7 +13,7 @@ import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { HttpServiceNew } from '../http/http.service.new';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { find, some } from 'lodash';
+import { find, some } from 'lodash-es';
 import { isNullOrUndefined } from 'util';
 import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
 

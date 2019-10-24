@@ -18,7 +18,7 @@ import {
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
-import { find, omit, isEqual } from 'lodash';
+import { find, omit, isEqual } from 'lodash-es';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryOption } from '../../core/category/category-response.interface';
 import { UploadEvent } from '../upload-event.interface';

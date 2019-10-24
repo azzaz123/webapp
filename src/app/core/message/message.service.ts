@@ -1,4 +1,4 @@
-import { groupBy } from 'lodash';
+import { groupBy } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';

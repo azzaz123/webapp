@@ -1,7 +1,7 @@
 import { UUID } from 'angular2-uuid';
 import { TrackingEventBase } from './tracking-event-base.interface';
 import { getTimestamp } from './getTimestamp.func';
-import { replace } from 'lodash';
+import { replace } from 'lodash-es';
 
 export class TrackingEvent {
   sessions: any[] = [{

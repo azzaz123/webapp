@@ -1,6 +1,6 @@
 import { CartBase, BUMP_TYPES } from './cart-base';
 import { CartProExtrasPack } from './cart-item.interface';
-import { sumBy } from 'lodash';
+import { sumBy } from 'lodash-es';
 import { OrderProExtras } from '../../../core/payments/payment.interface';
 
 export class CartProExtras extends CartBase {

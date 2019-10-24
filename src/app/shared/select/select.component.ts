@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { SelectOption } from './select.interface';
-import { find } from 'lodash';
+import { find } from 'lodash-es';
 
 @Component({
   selector: 'tsl-select',

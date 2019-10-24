@@ -13,7 +13,7 @@ import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootst
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { Car } from '../../core/item/car';
-import { find, omit, isEqual } from 'lodash';
+import { find, omit, isEqual } from 'lodash-es';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';

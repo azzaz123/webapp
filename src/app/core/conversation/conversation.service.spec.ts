@@ -15,7 +15,7 @@ import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { Message, messageStatus, phoneMethod } from '../message/message';
 import { EventService } from '../event/event.service';
-import { clone } from 'lodash';
+import { clone } from 'lodash-es';
 import { NotificationService } from '../notification/notification.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { ConversationTotals } from './totals.interface';

@@ -1,4 +1,4 @@
-import { last, uniqBy, sortBy, groupBy, findLast } from 'lodash';
+import { last, uniqBy, sortBy, groupBy, findLast } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MsgArchiveResponse, ReceivedReceipt, ReadReceipt, ArchiveMetrics } from './archive.interface';

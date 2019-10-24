@@ -4,7 +4,7 @@ import { StatisticsService } from './statistics.service';
 import { StatisticEntriesResponse, StatisticFullResponse } from './statistic-response.interface';
 import { IOption } from 'ng-select';
 import * as moment from 'moment';
-import { find } from 'lodash';
+import { find } from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 import { I18nService } from '../../core/i18n/i18n.service';
 

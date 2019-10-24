@@ -7,7 +7,7 @@ import { Response } from '@angular/http';
 import { ProfilesData, ProfileResponse } from './profile-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
-import { chain, partial, split } from 'lodash';
+import { chain, partial, split } from 'lodash-es';
 import { ResourceService } from '../resource/resource.service';
 
 @Injectable()

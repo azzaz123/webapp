@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
-import { find } from 'lodash';
+import { find } from 'lodash-es';
 import { SelectedItemsAction } from '../../../core/item/item-response.interface';
 import { OrderEvent } from './selected-product.interface';
 import { Item } from '../../../core/item/item';

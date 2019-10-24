@@ -1,7 +1,7 @@
 import PouchDB from 'pouchdb';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, throwError } from 'rxjs';
-import { sortBy, filter } from 'lodash';
+import { sortBy, filter } from 'lodash-es';
 import * as moment from 'moment';
 import { Message, phoneRequestState } from '../message/message';
 import {
