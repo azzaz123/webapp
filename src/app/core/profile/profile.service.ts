@@ -7,7 +7,7 @@ import { Response } from '@angular/http';
 import { ProfilesData, ProfileResponse } from './profile-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
-import * as _ from 'lodash';
+import { chain, partial, split } from 'lodash';
 import { ResourceService } from '../resource/resource.service';
 
 @Injectable()
@@ -34,11 +34,16 @@ export class ProfileService extends ResourceService {
       .map((r: Response) => {
           const res: any[] = r.json();
           const nextPage: string = r.headers.get('x-nextpage');
-          const params = _.chain(nextPage).split('&')
-            .map(_.partial(_.split, _, '=', 2))
-            .fromPairs()
-            .value();
-          const nextInit: number = nextPage ? +params.init : null;
+
+          let params;
+          if (nextPage) {
+            nextPage.split('&').forEach(paramSplit => {
+              const paramValues = paramSplit.split('=');
+              params[paramValues[0]] = paramValues[1];
+            });
+          }
+
+          const nextInit = params.init ? +params.init : null;
           let data: Profile[] = [];
           if (res.length > 0) {
             data = res.map((i: any) => {

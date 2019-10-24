@@ -30,7 +30,7 @@ import {
   ListingFeeProductInfo
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
-import * as _ from 'lodash';
+import { find, findIndex, reverse, without, map, filter, sortBy } from 'lodash';
 import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
@@ -107,7 +107,7 @@ export class ItemService extends ResourceService {
     .map((r: Response) => r.json())
     .do((response: ItemBulkResponse) => {
       response.updatedIds.forEach((id: string) => {
-        const index: number = _.findIndex(this.items[type], {'id': id});
+        const index: number = findIndex(this.items[type], {'id': id});
         this.items[type].splice(index, 1);
       });
       this.deselectItems();
@@ -147,7 +147,7 @@ export class ItemService extends ResourceService {
   }
 
   public deselectItem(id: string) {
-    this.selectedItems = _.without(this.selectedItems, id);
+    this.selectedItems = without(this.selectedItems, id);
     this.selectedItems$.next({
       id: id,
       action: 'deselected'
@@ -333,11 +333,16 @@ export class ItemService extends ResourceService {
     .map((r: Response) => {
         const res: ItemResponse[] = r.json();
         const nextPage: string = r.headers.get('x-nextpage');
-        const params = _.chain(nextPage).split('&')
-          .map(_.partial(_.split, _, '=', 2))
-          .fromPairs()
-          .value();
-        const nextInit: number = nextPage ? +params.init : null;
+
+        let params;
+        if (nextPage) {
+          nextPage.split('&').forEach(paramSplit => {
+            const paramValues = paramSplit.split('=');
+            params[paramValues[0]] = paramValues[1];
+          });
+        }
+
+        const nextInit = params.init ? +params.init : null;
         let data: Item[] = [];
         if (res.length > 0) {
           data = res.map((i: ItemResponse) => {
@@ -357,7 +362,7 @@ export class ItemService extends ResourceService {
       return this.getPurchases()
       .map((purchases: Purchase[]) => {
         purchases.forEach((purchase: Purchase) => {
-          const index: number = _.findIndex(itemsData.data, {id: purchase.item_id});
+          const index: number = findIndex(itemsData.data, {id: purchase.item_id});
           if (index !== -1) {
             if (purchase.purchase_name === 'listingfee') {
               itemsData.data[index].listingFeeExpiringDate = purchase.expiration_date;
@@ -377,7 +382,7 @@ export class ItemService extends ResourceService {
     })
     .map((itemsData: ItemsData) => {
       this.selectedItems.forEach((selectedItemId: string) => {
-        const index: number = _.findIndex(itemsData.data, {id: selectedItemId});
+        const index: number = findIndex(itemsData.data, {id: selectedItemId});
         if (index !== -1) {
           itemsData.data[index].selected = true;
         }
@@ -550,7 +555,7 @@ export class ItemService extends ResourceService {
   public canDoAction(action: string, id: string): Observable<boolean> {
     return this.getActionsAllowed(id)
     .map((actions: AllowedActionResponse[]) => {
-      const canDo: AllowedActionResponse = _.find(actions, {type: action});
+      const canDo: AllowedActionResponse = find(actions, {type: action});
       if (canDo) {
         return canDo.allowed;
       }
@@ -559,8 +564,8 @@ export class ItemService extends ResourceService {
   }
 
   private getProductDurations(productList: Product[]): ProductDurations {
-    const durations: number[] = _.map(productList[0].durations, 'duration');
-    const types: string[] = _.map(productList, 'name');
+    const durations: number[] = map(productList[0].durations, 'duration');
+    const types: string[] = map(productList, 'name');
     const productDurations = {};
     durations.forEach((duration: number) => {
       productDurations[duration] = {};
@@ -572,8 +577,8 @@ export class ItemService extends ResourceService {
   }
 
   private findDuration(productList: Product[], duration: number, type: string): Duration {
-    const product: Product = _.find(productList, {name: type});
-    return _.find(product.durations, {duration: duration});
+    const product: Product = find(productList, {name: type});
+    return find(product.durations, {duration: duration});
   }
 
   public getUrgentProducts(itemId: string): Observable<Product> {
@@ -594,7 +599,7 @@ export class ItemService extends ResourceService {
     return this.http.put(this.API_URL + '/purchases/cancelItemPurchase', { itemIds: item.id });
   }
 
-  public mines(pageNumber: number, pageSize: number, sortBy: string, status: string = 'active', term?: string, cache: boolean = true): Observable<Item[]> {
+  public mines(pageNumber: number, pageSize: number, sortByParam: string, status: string = 'active', term?: string, cache: boolean = true): Observable<Item[]> {
     let init: number = (pageNumber - 1) * pageSize;
     let end: number = init + pageSize;
     let endStatus: string = status === 'featured' ? 'active' : status;
@@ -626,18 +631,18 @@ export class ItemService extends ResourceService {
       .map((res: Item[]) => {
         term = term ? term.trim().toLowerCase() : '';
         if (term !== '') {
-          return _.filter(res, (item: Item) => {
+          return filter(res, (item: Item) => {
             return item.title.toLowerCase().indexOf(term) !== -1 || item.description.toLowerCase().indexOf(term) !== -1;
           });
         }
         return res;
       })
       .map((res: Item[]) => {
-        let sort: string[] = sortBy.split('_');
+        let sort: string[] = sortByParam.split('_');
         let field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
-        let sorted: Item[] = _.sortBy(res, [field]);
+        let sorted: Item[] = sortBy(res, [field]);
         if (sort[1] === 'desc') {
-          return _.reverse(sorted);
+          return reverse(sorted);
         }
         return sorted;
       })
@@ -667,7 +672,7 @@ export class ItemService extends ResourceService {
   }
 
   public getItemAndSetPurchaseInfo(id: string, purchase: Purchase): Item {
-    const index: number = _.findIndex(this.items.active, {id: id});
+    const index: number = findIndex(this.items.active, {id: id});
     if (index !== -1) {
       this.items.active[index].bumpExpiringDate = purchase.expiration_date;
       return this.items.active[index];
@@ -690,7 +695,7 @@ export class ItemService extends ResourceService {
       })
       .do(() => {
         this.selectedItems.forEach((id: string) => {
-          let index: number = _.findIndex(this.items.pending, {'id': id});
+          let index: number = findIndex(this.items.pending, {'id': id});
           let deletedItem: Item = this.items.pending.splice(index, 1)[0];
           deletedItem.flags['onhold'] = false;
           deletedItem.selected = false;
@@ -719,7 +724,7 @@ export class ItemService extends ResourceService {
       })
       .do(() => {
         this.selectedItems.forEach((id: string) => {
-          let index: number = _.findIndex(this.items.active, {'id': id});
+          let index: number = findIndex(this.items.active, {'id': id});
           let deletedItem: Item = this.items.active.splice(index, 1)[0];
           deletedItem.flags['onhold'] = true;
           deletedItem.selected = false;
@@ -742,7 +747,7 @@ export class ItemService extends ResourceService {
   public setSold(id: number): Observable<any> {
     return this.http.post(this.API_URL_V1 + '/item.json/' + id + '/sold')
       .do(() => {
-        let index: number = _.findIndex(this.items.active, {'legacyId': id});
+        let index: number = findIndex(this.items.active, {'legacyId': id});
         let deletedItem: Item = this.items.active.splice(index, 1)[0];
         if (this.items.sold.length) {
           this.items.sold.push(deletedItem);
