@@ -117,6 +117,7 @@
       &:disabled {
         &:hover {
           background: $white;
+          border-color: rgba($blue-grey-4, 0.5);
           color: $blue-grey-2;
         }
         mat-icon /deep/ {
