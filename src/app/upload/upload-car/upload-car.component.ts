@@ -83,11 +83,6 @@ export class UploadCarComponent implements OnInit {
       engine: null,
       gearbox: null,
       horsepower: ['', [this.min(0), this.max(999)]],
-      sale_conditions: fb.group({
-        fix_price: false,
-        exchange_allowed: false,
-        shipping_allowed: false
-      }),
       location: this.fb.group({
         address: ['', [Validators.required]],
         latitude: ['', [Validators.required]],
@@ -117,7 +112,6 @@ export class UploadCarComponent implements OnInit {
         financed_price: this.item.financedPrice,
         currency_code: this.item.currencyCode,
         storytelling: this.item.description,
-        sale_conditions: this.item.saleConditions,
         category_id: carCategory,
         num_seats: this.item.numSeats,
         num_doors: this.item.numDoors,
