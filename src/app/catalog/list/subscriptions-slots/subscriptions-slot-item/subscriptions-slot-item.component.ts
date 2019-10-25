@@ -26,7 +26,11 @@ export class SubscriptionsSlotItemComponent implements OnInit {
   }
 
   onClick(subscriptionSlot: SubscriptionSlot, e: any) {
-    this.selected.emit(subscriptionSlot);
+    if (subscriptionSlot === this.selectedSubscriptionSlot) {
+      this.selected.emit(null);
+    } else {
+      this.selected.emit(subscriptionSlot);
+    }
 
     if (!subscriptionSlot) {
       e.stopPropagation();
