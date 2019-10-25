@@ -26,17 +26,18 @@ import { HttpModuleNew } from '../http/http.module.new';
 import { environment } from '../../../environments/environment';
 import * as _ from 'lodash';
 
-let service: InboxConversationService;
-let http: HttpService;
-let eventService: EventService;
-let realTime: RealTimeService;
-let persistencyService: PersistencyService;
-let messageService: MessageService;
-let userService: UserService;
-let itemService: ItemService;
-let httpTestingController: HttpTestingController;
-
 describe('InboxConversationService', () => {
+
+  let service: InboxConversationService;
+  let http: HttpService;
+  let eventService: EventService;
+  let realTime: RealTimeService;
+  let persistencyService: PersistencyService;
+  let messageService: MessageService;
+  let userService: UserService;
+  let itemService: ItemService;
+  let httpTestingController: HttpTestingController;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
