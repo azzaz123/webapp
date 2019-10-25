@@ -1,7 +1,11 @@
 <div class="CatalogItem">
+
   <button class="CatalogItem__checkbox"
     (click)="select(item)"
-    [ngClass]="{ 'CatalogItem__checkbox--selected': item.selected }"
+    [ngClass]="{ 
+      'CatalogItem__checkbox--selected': item.selected,
+      'CatalogItem__checkbox--disabled': item.flags.pending || (!item.flags.onhold && item.listingFeeExpiringDate)
+    }"
     [disabled]="item.flags.pending || (!item.flags.onhold && item.listingFeeExpiringDate)"
   >
     <mat-icon svgIcon="check"></mat-icon>

@@ -6,7 +6,6 @@ $feature-button-width: 170px;
 
 .CatalogItem__checkbox {
   width: $checkbox-width;
-  opacity: 1;
   transition: $transition;
   float: left;
 
@@ -27,6 +26,10 @@ $feature-button-width: 170px;
     width: 12px;
   }
 
+  &:hover {
+    border-color: $walla-main;
+  }
+
   &--selected {
     background: $walla-main;
     border-color: transparent;
@@ -37,9 +40,14 @@ $feature-button-width: 170px;
       }
     }
   }
-  &:hover {
-    border-color: $walla-main;
+
+  &--disabled {
+    &:hover {
+      border-color: $blue-grey-4;
+      cursor: not-allowed;
+    }
   }
+
 }
 
 .CatalogItem__content {
