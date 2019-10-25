@@ -11,7 +11,14 @@
     <mat-icon svgIcon="check"></mat-icon>
   </button>
 
-  <div class="CatalogItem__content" [ngClass]="{expired: item.flags.expired, selected: item.selected, pending: item.flags.pending, sold: item.sold}">
+  <div class="CatalogItem__content" 
+    [ngClass]="{
+      'CatalogItem__content--expired': item.flags.expired,
+      'CatalogItem__content--selected': item.selected,
+      'CatalogItem__content--pending': item.flags.pending,
+      'CatalogItem__content--sold': item.sold
+    }"
+  >
     <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="image"
        [ngClass]="{onHold: item.flags.onhold}">
         <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>

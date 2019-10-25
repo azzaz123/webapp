@@ -67,7 +67,7 @@ $feature-button-width: 170px;
     box-shadow: 0 2px 10px 0 rgba(37,50,56,.1);
   }
 
-  &.expired, &.pending {
+  &--expired, &--pending {
     &::after {
       content: '';
       position: absolute;
@@ -99,13 +99,13 @@ $feature-button-width: 170px;
     z-index: 1;
     border-radius: $border-radius;
   }
-  &:not(.selected):hover {
+  &:not(.CatalogItem__content--selected):hover {
     .selected-veil {
       border: solid 1px $walla-main;
     }
   }
   
-  &.selected {
+  &--selected {
     background-color: rgba($walla-main, 0.2);
     border: solid 1px $walla-main;
     .subscribe {
@@ -301,7 +301,7 @@ $feature-button-width: 170px;
       }
     }
   }
-  &.sold {
+  &--sold {
     .actions {
       min-width: auto;
     }
