@@ -49,11 +49,23 @@ describe('SubscriptionsSlotItemComponent', () => {
       spyOn(event, 'stopPropagation').and.callThrough();
     });
 
-    it('should emit value', () => {
+    it('should emit value when selected subscription is different', () => {
+      component.selectedSubscriptionSlot = null;
+
       component.onClick(MOCK_SUBSCRIPTION_SLOT_CARS, event);
 
       expect(component.selected.emit).toHaveBeenCalledTimes(1);
       expect(component.selected.emit).toHaveBeenCalledWith(MOCK_SUBSCRIPTION_SLOT_CARS);
+      expect(event.stopPropagation).toHaveBeenCalledTimes(0);
+    });
+
+    it('should emit null when selecting same subscription slot', () => {
+      component.selectedSubscriptionSlot = MOCK_SUBSCRIPTION_SLOT_CARS;
+
+      component.onClick(MOCK_SUBSCRIPTION_SLOT_CARS, event);
+
+      expect(component.selected.emit).toHaveBeenCalledTimes(1);
+      expect(component.selected.emit).toHaveBeenCalledWith(null);
       expect(event.stopPropagation).toHaveBeenCalledTimes(0);
     });
 
