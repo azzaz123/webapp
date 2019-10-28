@@ -9,7 +9,7 @@
       [ngClass]="{ active: selectedLinkId === navLink.id }"
       (click)="onClickNavLink(navLink)"
     >
-      <span i18n>{{navLink.display}}</span>
+      <span>{{navLink.display}}</span>
       <span *ngIf="navLink.counter && navLink.counter.maxVal">
         ({{navLink.counter.currentVal}}/{{navLink.counter.maxVal}})
       </span>

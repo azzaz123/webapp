@@ -38,17 +38,6 @@ import { NavLink } from '../../shared/nav-links/nav-link.interface';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../../core/user/featureflag.service';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 
-export const NORMAL_NAV_LINKS: NavLink[] = [
-  { id: 'published', display: 'Selling' },
-  { id: 'sold', display: 'Sold' }
-];
-
-export const SUBSCRIPTION_SELECTED_NAV_LINKS: NavLink[] = [
-  { id: 'active', display: 'Active' },
-  { id: 'inactive', display: 'Inactive' },
-  { id: 'sold', display: 'Sold' }
-];
-
 export const SORTS = [ 'date_desc', 'date_asc', 'price_desc', 'price_asc' ];
 
 const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reactivateWithCredits', 'purchaseListingFeeWithCredits'];
@@ -88,6 +77,8 @@ export class ListComponent implements OnInit, OnDestroy {
   public sortBy: string;
   private page = 1;
   private pageSize = 20;
+  public normalNavLinks: NavLink[] = [];
+  public subscriptionSelectedNavLinks: NavLink[] = [];
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -108,7 +99,18 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.navLinks = NORMAL_NAV_LINKS;
+    this.normalNavLinks = [
+      { id: 'published', display: this.i18n.getTranslations('selling') },
+      { id: 'sold', display: this.i18n.getTranslations('sold') }
+    ];
+
+    this.subscriptionSelectedNavLinks = [
+      { id: 'active', display: this.i18n.getTranslations('active') },
+      { id: 'inactive', display: this.i18n.getTranslations('inactive') },
+      { id: 'sold', display: this.i18n.getTranslations('sold') }
+    ];
+
+    this.navLinks = this.normalNavLinks;
 
     this.getItems();
     this.getCreditInfo();
@@ -626,9 +628,9 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public updateNavLinks() {
     if (this.selectedSubscriptionSlot) {
-      this.navLinks = SUBSCRIPTION_SELECTED_NAV_LINKS;
+      this.navLinks = this.subscriptionSelectedNavLinks;
     } else {
-      this.navLinks = NORMAL_NAV_LINKS;
+      this.navLinks = this.normalNavLinks;
       this.resetNavLinksCounters();
     }
   }
