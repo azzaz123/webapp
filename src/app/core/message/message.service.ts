@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { groupBy } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
@@ -122,7 +122,7 @@ export class MessageService {
         return this.archiveService.getEventsSince(resp.data.start).map(r => {
           this.persistencyService.saveMetaInformation({ start: r.metaDate, last: null });
           if (r.messages.length) {
-            const messagesByThread = _.groupBy(r.messages, 'thread');
+            const messagesByThread = groupBy(r.messages, 'thread');
             Object.keys(messagesByThread).map((thread) => {
               const msgAndSingalsForThread = {
                 messages: messagesByThread[thread],
@@ -153,7 +153,7 @@ export class MessageService {
               this.totalUnreadMessages = 0;
             }
 
-            const updateMessagesByThread = _.groupBy(updatedMesages, 'thread');
+            const updateMessagesByThread = groupBy(updatedMesages, 'thread');
             Object.keys(updateMessagesByThread).map((thread) => {
               const unreadCount = updateMessagesByThread[thread].filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
               const conv = conversations.find(c => c.id === thread);

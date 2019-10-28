@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { clone, remove } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
@@ -49,7 +49,7 @@ export class XmppService {
 
   public sendMessage(conversation: Conversation| InboxConversation, body: string) {
     const message = this.createXmppMessage(conversation, this.client.nextId(), body);
-    this.onNewMessage(_.clone(message), true);
+    this.onNewMessage(clone(message), true);
     this.client.sendMessage(message);
     this.eventService.emit(EventService.MESSAGE_SENT, conversation, message.id);
   }
@@ -306,7 +306,7 @@ export class XmppService {
   }
 
   public unblockUser(user: User | InboxUser): Observable<any> {
-    _.remove(this.blockedUsers, (userId) => userId === user.id);
+    remove(this.blockedUsers, (userId) => userId === user.id);
     return this.setPrivacyList(this.blockedUsers)
     .do(() => { user.blocked = false;
                 this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);

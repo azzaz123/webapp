@@ -1,11 +1,10 @@
-import * as _ from 'lodash';
+import { countBy, find, map } from 'lodash-es';
 import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
 import { InboxConversation } from '../../model/inbox-conversation';
 import { InboxService } from '../../../core/inbox/inbox.service';
 import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
 import { Message } from '../../../core/message/message';
-import { debug, isNullOrUndefined } from 'util';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { UserService } from '../../../core/user/user.service';
 import { AdService } from '../../../core/ad/ad.service';
@@ -240,8 +239,8 @@ export class InboxComponent implements OnInit, OnDestroy {
   }
 
   private sendLogWithNumberOfConversationsByConversationId(conversations: InboxConversation[], callMethodClient: string) {
-    const conversationsIds = _.countBy(_.map(conversations, conversation => conversation.id));
-    const hasDuplicated = _.find(conversationsIds, numberOfConversation => numberOfConversation > 1);
+    const conversationsIds = countBy(map(conversations, conversation => conversation.id));
+    const hasDuplicated = find(conversationsIds, numberOfConversation => numberOfConversation > 1);
 
     if (hasDuplicated) {
       this.userService.me().subscribe(
