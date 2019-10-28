@@ -65,7 +65,6 @@
   <msg id="1214570422954613349"><source>app/shared/message/message.component.html:11</source>Phone sent ;)</msg>
   <msg id="7992914064106893139"><source>app/shared/message/review-button/review-button.component.html:1</source><source>app/chat/chat-with-inbox/message/third-voice-message/third-voice-review/third-voice-review.component.html:1</source>Review now</msg>
   <msg id="2506703378559967461"><source>app/shared/message/review-button/review-button.component.html:4</source>Thanks for rating</msg>
-  <msg id="567607061061247754"><source>app/shared/search-input/search-input.component.html:3</source><ph name="INTERPOLATION"><ex>{{placeholder}}</ex></ph></msg>
   <msg id="6581598798517073714"><source>app/shared/payments/card-selection/card-selection.component.html:14</source><source>app/shared/catalog/cart/cart.component.html:106</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:66</source><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:25</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:53</source><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:63</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.html:30</source>+ Add another credit card</msg>
   <msg id="4284869171317534738"><source>app/shared/profile/edit-email/email-modal/email-modal.component.html:5</source>New email?</msg>
   <msg id="4200745758819613954"><source>app/shared/profile/edit-email/email-modal/email-modal.component.html:6</source>You can update it now</msg>
@@ -143,10 +142,10 @@
   <msg id="445243100567221931"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.html:13</source>Ok, got it</msg>
   <msg id="2299499307204911989"><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:2</source>Activate items</msg>
   <msg id="3437651521808081039"><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:3</source>The selected items will be set all active.</msg>
-  <msg id="4759723562137600498"><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:7</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:19</source>Activate</msg>
+  <msg id="4759723562137600498"><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:7</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:19</source><source>app/catalog/list/selected-items/selected-items.component.html:47</source>Activate</msg>
   <msg id="5943346117221479516"><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:2</source>Deactivate items</msg>
   <msg id="1888437309536533541"><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:3</source>The selected items will be set all pending.</msg>
-  <msg id="5322473252816589112"><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:7</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:17</source>Deactivate</msg>
+  <msg id="5322473252816589112"><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:7</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:17</source><source>app/catalog/list/selected-items/selected-items.component.html:42</source>Deactivate</msg>
   <msg id="5262427597279775777"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:5</source><source>app/catalog/list/selected-items/selected-items.component.html:7</source>1 item selected</msg>
   <msg id="708449889891136724"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:6,7</source>
         <ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
@@ -184,7 +183,6 @@
   <msg id="5722353260643724736"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:3</source><source>app/shared/profile/credit-cards/credit-cards.component.html:3</source>Payment method</msg>
   <msg id="4940843552280014819"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:13</source>+ Add new card</msg>
   <msg id="8429052002955936753"><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source>Select your card</msg>
-  <msg id="1264722037404620248"><source>app/shared/nav-links/nav-links.component.html:12</source><ph name="INTERPOLATION"><ex>{{navLink.display}}</ex></ph></msg>
   <msg id="8720977247725652816"><source>app/shared/geolocation/location-select/location-modal/location-modal.component.html:4</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:61</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:67</source><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:7</source>Ok</msg>
   <msg id="4359291232904891489"><source>app/shared/geolocation/location-select/location-select.component.html:3</source>Set a location</msg>
   <msg id="5371960677736303052"><source>app/shared/geolocation/geolocation.component.html:9</source>Where?</msg>
@@ -295,19 +293,10 @@
   <msg id="2368996742348144344"><source>app/catalog/list/catalog-item/catalog-item.component.html:49,51</source>
         Inactive
     </msg>
-  <msg id="1384194580053922814"><source>app/catalog/list/catalog-item/catalog-item.component.html:57</source>Feature</msg>
+  <msg id="1384194580053922814"><source>app/catalog/list/catalog-item/catalog-item.component.html:57</source><source>app/catalog/list/selected-items/selected-items.component.html:53</source>Feature</msg>
   <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.html:82</source>Reactivate</msg>
   <msg id="6810605730456820181"><source>app/catalog/list/selected-items/selected-items.component.html:10,11</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected
           </msg>
-  <msg id="2427839840810715616"><source>app/catalog/list/selected-items/selected-items.component.html:42,44</source>
-      Deactivate
-    </msg>
-  <msg id="9077641314165637311"><source>app/catalog/list/selected-items/selected-items.component.html:49,51</source>
-      Activate
-    </msg>
-  <msg id="3315781742734355127"><source>app/catalog/list/selected-items/selected-items.component.html:57,59</source>
-        Feature
-      </msg>
   <msg id="3897348120591552265"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:15</source>Manage</msg>
   <msg id="7059679226960264382"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:15</source><ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex></ph></msg>
   <msg id="5035242975964860075"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:17</source>You can publish <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> more</msg>

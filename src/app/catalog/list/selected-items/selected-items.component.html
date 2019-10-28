@@ -39,24 +39,18 @@
     <button class="btn-deactivate dark" *ngIf="selectedSubscriptionSlot && selectedStatus === 'active'"
       (click)="onClickAction('deactivate')" 
       [hidden]="itemService.selectedAction === 'feature' || (selectedStatus !== 'published' && selectedStatus !== 'active')"
-      [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>
-      Deactivate
-    </button>
+      [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button>
 
     <!-- Activate -->
     <button class="btn-activate" *ngIf="selectedSubscriptionSlot && selectedStatus === 'inactive'"
       [hidden]="itemService.selectedAction === 'feature' || selectedStatus !== 'inactive'" [disabled]="!itemService.selectedItems.length"
-      (click)="onClickAction('activate')" i18n>
-      Activate
-    </button>
+      (click)="onClickAction('activate')" i18n>Activate</button>
 
     <!-- Feature -->
     <div class="SelectedItems__feature" [hidden]="selectedStatus === 'inactive' || selectedStatus === 'sold'">
       <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
         [routerLink]="['/catalog/checkout']" [params]="{ payment_method: isStripe ? 'STRIPE' : 'SABADELL' }"
-        tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE" i18n>
-        Feature
-      </tsl-button>
+        tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE" i18n>Feature</tsl-button>
       <span class="address">
         Avenida Meridiana 89, 08026 Barcelona, España
       </span>
