@@ -209,13 +209,17 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   private paymentSucceeded() {
-    this.isRetryInvoice = false;
-    this.close();
-    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, {windowClass: 'success'});
-    modalRef.result.then(() => {
-      modalRef = null;
-      this.eventService.emit('subscriptionChange');
-    }, () => {});
+    this.loading = true;
+    setTimeout(() => {
+      this.isRetryInvoice = false;
+      this.close();
+      let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, {windowClass: 'success'});
+      modalRef.result.then(() => {
+        modalRef = null;
+        this.eventService.emit('subscriptionChange');
+      }, () => {});
+      this.loading = false;
+    }, 3000);
   }
 
   @HostListener('click') onClick() {

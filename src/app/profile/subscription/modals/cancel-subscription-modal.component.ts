@@ -31,14 +31,18 @@ export class CancelSubscriptionModalComponent {
   public cancelSubscription() {
     this.loading = true;
     this.subscriptionsService.cancelSubscription(this.subscription.selected_tier_id).subscribe((response) => {
-      this.loading = false;
       if (response.status === 202) {
-        this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
-        this.eventService.emit('subscriptionChange');
+        setTimeout(() => {
+          this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
+          this.eventService.emit('subscriptionChange');
+          this.loading = false;
+          this.close();
+        }, 3000);
       } else {
+        this.loading = false;
         this.toastr.error(this.i18n.getTranslations('cancelSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionErrorBody'));
+        this.close();
       }
-      this.close();
     });
     
   }

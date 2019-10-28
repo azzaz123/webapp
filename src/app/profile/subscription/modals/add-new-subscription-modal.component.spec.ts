@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync, flush } from '@angular/core/testing';
 import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
 import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -107,13 +107,14 @@ describe('AddNewSubscriptionModalComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should call stripeService.isPaymentMethodStripe$', () => {
+    it('should call stripeService.isPaymentMethodStripe$', fakeAsync(() => {
       spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
+      
       component.ngOnInit();
+      tick(3000);
 
       expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
+    }));
 
     it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
       const expectedValue = true;
@@ -148,7 +149,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(errorsService, 'i18nError');
 
       component.addSubscription(PAYMENT_METHOD_DATA);
-      tick();
+      tick(3000);
 
       expect(component.loading).toBe(false);
       expect(component.isPaymentError).toBe(true);
@@ -164,8 +165,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(component, 'addSubscriptionFromSavedCard').and.callThrough();
 
       component.addSubscription(PAYMENT_METHOD_DATA);
-      tick();
-
+      tick(3000);
       expect(component.addSubscriptionFromSavedCard).toHaveBeenCalled();
     }));
   });
@@ -195,7 +195,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     it('should call newSubscription if is not retryInvoice', fakeAsync(() => {
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
-      tick();
+      tick(3000);
 
       expect(subscriptionsService.newSubscription).toHaveBeenCalled();
     }));
@@ -204,7 +204,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
-      tick();
+      tick(3000);
       
       expect(subscriptionsService.checkNewSubscriptionStatus).toHaveBeenCalled();
     }));
@@ -214,7 +214,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
-      tick();
+      tick(3000);
 
       expect(component.isRetryInvoice).toBe(false);
       expect(component.close).toHaveBeenCalled();
@@ -225,7 +225,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
-      tick();
+      tick(3000);
 
       expect(component.isRetryInvoice).toBe(false);
       expect(modalService.open).toHaveBeenCalledWith(PaymentSuccessModalComponent, {windowClass: 'success'});
@@ -236,7 +236,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_REQUIRES_ACTION));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
-      tick();
+      tick(3000);
       
       expect(stripeService.actionPayment).toHaveBeenCalledWith(SUBSCRIPTION_REQUIRES_ACTION.payment_secret_key);
     }));
@@ -246,7 +246,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_REQUIRES_PAYMENT));
       
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
-      tick();
+      tick(3000);
 
       expect(component.loading).toBe(false);
       expect(component.isPaymentError).toBe(true);

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -91,24 +91,25 @@ describe('CancelSubscriptionModalComponent', () => {
   describe('cancelSubscription', () => {
     const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
 
-    it('should call the cancelsubscription service', () => {
+    it('should call the cancelsubscription service', fakeAsync(() => {
       spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(Observable.of({status: 202}));
 
       component.cancelSubscription();
+      tick(3000);
       
       expect(component.subscriptionsService.cancelSubscription).toHaveBeenCalledWith(tier.id);
       expect(component.loading).toBe(false);
-    });
+    }));
 
-    it('should emit the subscription changed event', () => {
+    it('should emit the subscription changed event', fakeAsync(() => {
       spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(Observable.of({status: 202}));
       spyOn(eventService, 'emit');
       spyOn(toastrService, 'success').and.callThrough();
 
       component.cancelSubscription();
-
+      tick(3000);
       expect(eventService.emit).toHaveBeenCalledWith('subscriptionChange');
-    });
+    }));
   });
 
 });
