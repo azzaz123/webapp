@@ -1,5 +1,7 @@
-import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild, OnInit, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+
+import { I18nService } from '../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-search-input',
@@ -8,11 +10,14 @@ import { Subject } from 'rxjs/Subject';
 })
 export class SearchInputComponent {
 
-  @Input() placeholder = 'Search Items';
+  @Input() placeholder;
   @Output('term') public term$: EventEmitter<string> = new EventEmitter<string>();
   private term: Subject<string> = new Subject<string>();
 
-  constructor(private elementRef: ElementRef) {
+  constructor(private i18nService: I18nService) {
+    if (!this.placeholder) {
+      this.placeholder = i18nService.getTranslations('searchDefault');
+    }
     this.term$ = <any>this.term.asObservable()
       .debounceTime(400)
       .distinctUntilChanged();
