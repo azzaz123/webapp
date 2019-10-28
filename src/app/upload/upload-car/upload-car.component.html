@@ -164,47 +164,79 @@
       </div>
     </div>
     <div class="row" [ngbPopover]="coachmarkMotor" triggers="mouseenter:mouseleave">
-      <div class="col-12 col-md-6 selector-container">
-        <h3 i18n>Motor</h3>
-        <div ngbRadioGroup name="radioBasic" formControlName="engine" tabindex="11">
-          <label ngbButtonLabel class="btn selector">
-            <input ngbButton type="radio" name="engine" value="gasoline">
-            <mat-icon svgIcon="gasoline"></mat-icon>
-            <span i18n>Petrol</span>
-          </label>
-          <label ngbButtonLabel class="btn selector">
-            <input ngbButton type="radio" name="engine" value="gasoil">
-            <mat-icon svgIcon="gasoil"></mat-icon>
-            <span i18n>Diesel</span>
-          </label>
-          <label ngbButtonLabel class="btn selector">
-            <input ngbButton type="radio" name="engine" value="electric-hybrid">
-            <mat-icon svgIcon="electric-hybrid"></mat-icon>
-            <span i18n>Electric</span>
-          </label>
-          <label ngbButtonLabel class="btn selector">
-            <input ngbButton type="radio" name="engine" value="others">
-            <mat-icon svgIcon="others"></mat-icon>
-            <span i18n>Other...</span>
-          </label>
+      <div class="col-12 col-md-6">
+        <div class="row">
+          <div class="col">
+            <h3 class="selector-title" i18n>Motor</h3>
+          </div>
+        </div>
+        <div ngbRadioGroup class="row" name="radioBasic" formControlName="engine" tabindex="11">
+          <div class="col">
+            <div class="form-group">
+              <div class="selector-container">
+                <label ngbButtonLabel class="selector selector--cars">
+                  <div class="selector-icon btn">
+                    <input ngbButton type="radio" name="engine" value="gasoline">
+                    <mat-icon svgIcon="gasoline"></mat-icon>
+                  </div>
+                  <span class="selector-text selector-text--uppercase" i18n>Petrol</span>
+                </label>
+                <label ngbButtonLabel class="selector selector--cars">
+                  <div class="selector-icon btn">
+                    <input ngbButton type="radio" name="engine" value="gasoil">
+                    <mat-icon svgIcon="gasoil"></mat-icon>
+                  </div>
+                  <span class="selector-text selector-text--uppercase" i18n>Diesel</span>
+                </label>
+                <label ngbButtonLabel class="selector selector--cars">
+                  <div class="selector-icon btn">
+                    <input ngbButton type="radio" name="engine" value="electric-hybrid">
+                    <mat-icon svgIcon="electric-hybrid"></mat-icon>
+                  </div>
+                  <span class="selector-text selector-text--uppercase" i18n>Electric</span>
+                </label>
+                <label ngbButtonLabel class="selector selector--cars">
+                  <div class="selector-icon btn">
+                    <input ngbButton type="radio" name="engine" value="others">
+                    <mat-icon svgIcon="others"></mat-icon>
+                  </div>
+                  <span class="selector-text selector-text--uppercase" i18n>Other...</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
         <ng-template #coachmarkMotor>
           <div i18n>It's important, trust us!</div>
         </ng-template>
       </div>
-      <div class="col-12 col-md-6 selector-container">
-        <h3 i18n>Transmission</h3>
-        <div ngbRadioGroup name="radioBasic" formControlName="gearbox" tabindex="12">
-          <label ngbButtonLabel class="btn selector">
-            <input ngbButton type="radio" name="gearbox" value="manual">
-            <mat-icon svgIcon="manual"></mat-icon>
-            <span i18n>Manual</span>
-          </label>
-          <label ngbButtonLabel class="btn selector">
-            <input ngbButton type="radio" name="gearbox" value="automatic">
-            <mat-icon svgIcon="automatic"></mat-icon>
-            <span i18n>Automatic</span>
-          </label>
+      <div class="col-12 col-md-6">
+        <div class="row">
+          <div class="col">
+            <h3 class="selector-title" i18n>Transmission</h3>
+          </div>
+        </div>
+        <div ngbRadioGroup class="row" name="radioBasic" formControlName="gearbox" tabindex="12">
+          <div class="col">
+            <div class="form-group">
+              <div class="selector-container">
+                <label ngbButtonLabel class="selector selector--cars">
+                  <div class="selector-icon btn">
+                    <input ngbButton type="radio" name="gearbox" value="manual">
+                    <mat-icon svgIcon="manual"></mat-icon>
+                  </div>
+                  <span class="selector-text selector-text--uppercase" i18n>Manual</span>
+                </label>
+                <label ngbButtonLabel class="selector selector--cars">
+                  <div class="selector-icon btn">
+                    <input ngbButton type="radio" name="gearbox" value="automatic">
+                    <mat-icon svgIcon="automatic"></mat-icon>
+                  </div>
+                  <span class="selector-text selector-text--uppercase" i18n>Automatic</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -7,14 +7,26 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 selector-container" [ngbPopover]="coachmarkOperation" triggers="mouseenter:mouseleave">
-        <h3 i18n>Rent or sale?</h3>
-        <div ngbRadioGroup name="radioBasic" formControlName="operation">
-          <label ngbButtonLabel class="btn selector" *ngFor="let operation of operations">
-            <input ngbButton type="radio" name="operation" [value]="operation.id" />
-            <mat-icon [svgIcon]="operation.icon_id"></mat-icon>
-            <span>{{ operation.text }}</span>
-          </label>
+      <div class="col" [ngbPopover]="coachmarkOperation" triggers="mouseenter:mouseleave">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="selector-title" i18n>Rent or sale?</h3>
+          </div>
+        </div>
+        <div ngbRadioGroup class="row" name="radioBasic" formControlName="operation">
+          <div class="col">
+            <div class="form-group">
+              <div class="selector-container">
+                <label ngbButtonLabel class="btn selector" *ngFor="let operation of operations">
+                  <div class="selector-icon">
+                    <input ngbButton type="radio" name="operation" [value]="operation.id" />
+                    <mat-icon [svgIcon]="operation.icon_id"></mat-icon>
+                  </div>
+                  <span class="selector-text">{{ operation.text }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
         <ng-template #coachmarkOperation>
           <div i18n>Is your property for sale or for rent?</div>
@@ -22,14 +34,26 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 selector-container" [ngbPopover]="coachmarkType" triggers="mouseenter:mouseleave">
-        <h3 i18n>Type of space</h3>
-        <div ngbRadioGroup name="radioBasic" formControlName="type">
-          <label ngbButtonLabel class="btn selector" *ngFor="let type of types">
-            <input ngbButton type="radio" name="type" [value]="type.id" />
-            <mat-icon [svgIcon]="type.icon_id"></mat-icon>
-            <span>{{ type.text }}</span>
-          </label>
+      <div class="col" [ngbPopover]="coachmarkType" triggers="mouseenter:mouseleave">
+        <div class="row">
+          <div class="col">
+            <h3 class="selector-title" i18n>Type of space</h3>
+          </div>
+        </div>
+        <div ngbRadioGroup class="row" name="radioBasic" formControlName="type">
+          <div class="col">
+            <div class="form-group">
+              <div class="selector-container">
+                <label ngbButtonLabel class="selector" *ngFor="let type of types">
+                  <div class="selector-icon">
+                    <input ngbButton type="radio" name="type" [value]="type.id" />
+                    <mat-icon [svgIcon]="type.icon_id"></mat-icon>
+                  </div>
+                  <span class="selector-text">{{ type.text }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
         <ng-template #coachmarkType>
           <div i18n>What kind of space is it?</div>
@@ -96,18 +120,28 @@
         </div>
       </div>
     </div>
-    <div class="row" *ngIf="
-        uploadForm.value?.type === 'house' ||
-        uploadForm.value?.type === 'apartment'
-      " [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave">
-      <div class="col-12">
-        <div class="selector-container features-options form-group" data-toggle="buttons">
-          <label i18n>Features of the house</label>
-          <label class="btn selector" [class.active]="uploadForm.value[extra.id]" *ngFor="let extra of extras">
-            <input type="checkbox" [formControlName]="extra.id" />
-            <mat-icon [svgIcon]="extra.icon_id"></mat-icon>
-            <span>{{ extra.text }}</span>
-          </label>
+    <div class="row" *ngIf="uploadForm.value?.type === 'house' || uploadForm.value?.type === 'apartment'"
+      [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave">
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <h3 class="selector-title" i18n>Features of the house</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <div class="selector-container">
+                <label class="selector" [class.active]="uploadForm.value[extra.id]" *ngFor="let extra of extras">
+                  <div class="selector-icon">
+                    <input type="checkbox" [formControlName]="extra.id" />
+                    <mat-icon [svgIcon]="extra.icon_id"></mat-icon>
+                  </div>
+                  <span class="selector-text">{{ extra.text }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <ng-template #coachmarkExtras>
