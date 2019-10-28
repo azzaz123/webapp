@@ -10,7 +10,6 @@ export class SubscriptionsModel implements SubscriptionsResponse {
   category_icon?: string;
   category_name?: string;
   selected_tier?: Tier
-  subscribed_until?: number;
 
   setCategoryId(value: number) {
     this.category_id = value;
@@ -75,14 +74,5 @@ export class SubscriptionsModel implements SubscriptionsResponse {
   getSelectedTier(): Tier {
     return this.selected_tier;
   }
-
-  setSubscribedUntil(value: number) {
-    this.subscribed_until = value;
-  }
-
-  getSubscribedUntil(): number {
-    return this.subscribed_until;
-  }
-
 
 }

@@ -12,6 +12,7 @@
   }
   .section-subtitle {
     text-align: center;
+    margin-bottom: $spacing-xl;
   }
 }
 
@@ -42,7 +43,7 @@
     flex-direction: column;
     align-items: center;
     font-size: $font-size-s;
-    margin: 0 0 $spacing-m;
+    margin: 0 0 $spacing-l;
     &--edit {
       color: $walla-main;
       text-align: center;
@@ -80,6 +81,7 @@
   &--subscribed {
     border: 2px solid $walla-main;
     color: $blue-grey-1;
+    cursor: auto;
     hr {
       border-top: 2px solid $walla-main;
     }
@@ -87,7 +89,7 @@
       color: $blue-grey-1;
     }
     .Subscriptions__category-info {
-      margin: 0 0 $spacing-xs;
+      margin: 0 0 $spacing-xl;
     }
   }
 }

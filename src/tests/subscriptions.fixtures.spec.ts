@@ -19,6 +19,36 @@ export class MockSubscriptionService {
   }
 }
 
+export const MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE: SubscriptionSlotResponse = {
+  category_id: 100,
+  available: 3,
+  limit: 10
+};
+
+export const MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE: SubscriptionSlotResponse = {
+  category_id: 14000,
+  available: 2,
+  limit: 10
+};
+
+export const MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE: SubscriptionSlotResponse = {
+  category_id: 12800,
+  available: 0,
+  limit: 10
+};
+
+export const MOCK_SUBSCRIPTION_SLOTS_RESPONSE: SubscriptionSlotResponse[] = [
+  MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE,
+  MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE,
+  MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE
+];
+
+export const MOCK_SUBSCRIPTION_SLOT_CARS: SubscriptionSlot = {
+  category: CATEGORY_DATA_WEB[0],
+  available: 0,
+  limit: 10
+};
+
 export const SUBSCRIPTIONS: SubscriptionsResponse[] =
   [
     {
@@ -122,73 +152,8 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
             currency: '€'
           }
         ]
-    },
-    {
-      category_id: 14000,
-      current_limit: 3,
-      subscribed_from: 1567675697,
-      subscribed_until: 1574516986,
-      selected_tier_id: 'plan_FWuGNucr7WgWUc',
-      default_tier_id: 'plan_FWuFVeTHEDyECa',
-      tiers:
-        [
-          {
-            id: 'plan_FWuFVeTHEDyECa',
-            limit: 9,
-            price: 9.99,
-            currency: '€'
-          },
-          {
-            id: 'plan_FWuGNucr7WgWUc',
-            limit: 30,
-            price: 19.99,
-            currency: '€'
-          },
-          {
-            id: 'plan_FWuGwiERYLvlC6',
-            limit: 50,
-            price: 39.99,
-            currency: '€'
-          },
-          {
-            id: 'plan_FWuHrLv9WislLd',
-            limit: -1,
-            price: 69.99,
-            currency: '€'
-          }
-        ]
     }
   ];
-
-export const MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE: SubscriptionSlotResponse = {
-  category_id: 100,
-  available: 3,
-  limit: 10
-};
-
-export const MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE: SubscriptionSlotResponse = {
-  category_id: 14000,
-  available: 2,
-  limit: 10
-};
-
-export const MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE: SubscriptionSlotResponse = {
-  category_id: 12800,
-  available: 0,
-  limit: 10
-};
-
-export const MOCK_SUBSCRIPTION_SLOTS_RESPONSE: SubscriptionSlotResponse[] = [
-  MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE,
-  MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE,
-  MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE
-];
-
-export const MOCK_SUBSCRIPTION_SLOT_CARS: SubscriptionSlot = {
-  category: CATEGORY_DATA_WEB[0],
-  available: 0,
-  limit: 10
-};
 
 export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
   [

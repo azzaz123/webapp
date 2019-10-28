@@ -899,8 +899,4 @@
   <translation id="6998541290982927512">Confirmar cambio de suscripción</translation>
   <translation id="4497647585483091099">Añadir suscripción</translation>
   <translation id="6969584346860248976" desc="La distancia entre el usuario y el producto a"><ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km de ti</translation>
-  <translation id="7094607008831817119">¿Estás seguro que quieres cancelar tu suscripción PRO a <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
-  <translation id="5103258377137086802">Nunca es tarde para cambiar de opinión. Estaremos tristes de verte marchar.</translation>
-  <translation id="3792546543639675149">Sí, quiero cancelar mi suscripción</translation>
-  <translation id="4432734248934394147">Quiero seguir disfrutando de los beneficios</translation>
 </translationbundle>

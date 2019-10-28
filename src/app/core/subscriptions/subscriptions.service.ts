@@ -85,7 +85,7 @@ export class SubscriptionsService {
     return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`, {
       invoice_id: invoiceId,
       payment_method_id: paymentId,
-    }, null, { observe: 'response' as 'body' });
+    });
   }
 
   public checkRetrySubscriptionStatus(): Observable<any> {
@@ -111,10 +111,6 @@ export class SubscriptionsService {
         console.warn('ERROR getSubscriptions ', error);
         return Observable.of(null);
       });
-  }
-
-  public cancelSubscription(planId: string): Observable<any> {
-    return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/cancel/${planId}`, null, null, { observe: 'response' as 'body' });
   }
 
   private mapSubscriptions(subscription: SubscriptionsResponse, categories: CategoryResponse[]): SubscriptionsResponse {

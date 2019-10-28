@@ -56,14 +56,12 @@ export class ProfileComponent implements OnInit {
       flatMap(() => this.subscriptionsService.isSubscriptionsActive$()),
     )
     .filter(val => val === true)
-    .subscribe(val => {
-      this.isSubscriptionsActive = val;
-      this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-        if (!isProfessional) {
-          this.getSubscriptions();
-        }
-      });
-    }); 
+    .subscribe(val => this.isSubscriptionsActive = val); 
+    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+      if (!isProfessional) {
+        this.getSubscriptions();
+      }
+    });
   }
 
   public logout($event: any) {
