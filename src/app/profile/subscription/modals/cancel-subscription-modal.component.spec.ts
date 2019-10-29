@@ -1,15 +1,15 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 import { MAPPED_SUBSCRIPTIONS, TIER } from '../../../../tests/subscriptions.fixtures.spec';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
-import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 describe('CancelSubscriptionModalComponent', () => {
   let component: CancelSubscriptionModalComponent;
@@ -18,12 +18,12 @@ describe('CancelSubscriptionModalComponent', () => {
   let eventService: EventService;
   let subscriptionsService: SubscriptionsService;
   let toastrService: ToastrService;
+  let router: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CancelSubscriptionModalComponent ],
       providers: [
-
         {
           provide: NgbActiveModal, useValue: {
             close() {
@@ -59,6 +59,12 @@ describe('CancelSubscriptionModalComponent', () => {
             }
           }
         },
+        {
+          provide: Router, useValue: {
+            navigate() {
+            }
+          }
+        },
         I18nService,
         EventService,
       ],
@@ -75,41 +81,43 @@ describe('CancelSubscriptionModalComponent', () => {
     eventService = TestBed.get(EventService);
     subscriptionsService = TestBed.get(SubscriptionsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
+    router = TestBed.get(Router);
     fixture.detectChanges();
   });
 
   describe('close', () => {
     it('should close the modal and redirect to the profile', () => {
       spyOn(activeModal, 'close');
+      spyOn(router, 'navigate');
 
       component.close();
 
       expect(activeModal.close).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledWith(['profile/info']);
     })
   })
 
   describe('cancelSubscription', () => {
     const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
 
-    it('should call the cancelsubscription service', fakeAsync(() => {
+    it('should call the cancelsubscription service', () => {
       spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(Observable.of({status: 202}));
 
       component.cancelSubscription();
-      tick(3000);
       
       expect(component.subscriptionsService.cancelSubscription).toHaveBeenCalledWith(tier.id);
       expect(component.loading).toBe(false);
-    }));
+    });
 
-    it('should emit the subscription changed event', fakeAsync(() => {
+    it('should emit the subscription changed event', () => {
       spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(Observable.of({status: 202}));
       spyOn(eventService, 'emit');
       spyOn(toastrService, 'success').and.callThrough();
 
       component.cancelSubscription();
-      tick(3000);
+
       expect(eventService.emit).toHaveBeenCalledWith('subscriptionChange');
-    }));
+    });
   });
 
 });

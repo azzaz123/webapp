@@ -25,7 +25,7 @@ export class SubscriptionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getSubscriptions();
+    this.getSubscriptions(false);
     this.eventService.subscribe('subscriptionChange', () => {
       this.getSubscriptions(false);
     });
