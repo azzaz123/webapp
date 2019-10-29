@@ -107,9 +107,8 @@
   <translation id="4699023020194351074">Destacar por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</translation>
   <translation id="868815663264397508">Ya tienes tu producto subido a wallapop.</translation>
   <translation id="8199257104398637162">Promociónalo y véndelo más rápido</translation>
-  <translation id="1384194580053922814">Destacar</translation>
   <translation id="2091018015289565203">O compártelo con tus amigos:</translation>
-  <translation id="4058575476871566236">Publicados</translation>
+  <translation id="4058575476871566236">Publicado</translation>
   <translation id="5529951643694823242" desc="plural" meaning="tab">Vendidos</translation>
   <translation id="464749780222721589">Caducados</translation>
   <translation id="5262427597279775777">1 producto seleccionado</translation>
@@ -225,7 +224,7 @@
   <translation id="4416413576346763682">Pendiente</translation>
   <translation id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart">Continuar</translation>
   <translation id="8423596927659875793">No disponible</translation>
-  <translation id="578471405917460767">Destácalo</translation>
+  <translation id="1384194580053922814">Destácalo</translation>
   <translation id="6261406176927621365">Borrar foto</translation>
   <translation id="4267028037176582017">Se borrará permanentemente la foto. ¿Estás seguro que quieres proceder?</translation>
   <translation id="5112037422043971210">Deja tus fotos aquí para subirlas</translation>
@@ -904,5 +903,6 @@
   <translation id="2513950439336286072">De acuerdo</translation>
   <translation id="3553216189604488439">Modificado</translation>
   <translation id="3897348120591552265">Gestionar</translation>
+  <translation id="5035242975964860075">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> más</translation>
   <translation id="6810605730456820181"><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> productos seleccionados</translation>
 </translationbundle>
