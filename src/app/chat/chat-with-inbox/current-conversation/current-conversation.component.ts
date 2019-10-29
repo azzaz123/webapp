@@ -60,7 +60,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   public scrollHeight = 0;
   public scrollLocalPosition = 0;
   public noMessages = 0;
-  public textareaRows = 0;
 
   get emptyInbox(): boolean {
     return this.conversationsTotal === 0;
@@ -127,13 +126,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
     if (this.lastInboxMessage) {
       this.sendRead(this.lastInboxMessage);
       this.lastInboxMessage = null;
-    }
-  }
-
-  public changeTextareaHeight(textareaRows: number): void {
-    this.textareaRows = textareaRows;
-    if (this.isEndOfConversation) {
-      this.scrollToLastMessage();
     }
   }
 
