@@ -264,22 +264,22 @@
   <translation id="7022993325750262876">Ver mi perfil público</translation>
   <translation id="438622500917182822">Cambia tu imagen de perfil</translation>
   <translation id="1897498190172236951">Subir foto</translation>
-  <translation id="529882100731018983">Nombre:</translation>
-  <translation id="6335971540734973333">Apellidos:</translation>
-  <translation id="7338814826142544882">Fecha de nacimiento:</translation>
-  <translation id="6283914624769804238">Sexo:</translation>
+  <translation id="529882100731018983">Nombre</translation>
+  <translation id="6335971540734973333">Apellidos</translation>
+  <translation id="3179148736830644140">Fecha de nacimiento</translation>
+  <translation id="3948439187870398089">Sexo</translation>
   <translation id="8012344910054029733">Hombre</translation>
   <translation id="5667840900782067941">Mujer</translation>
-  <translation id="8134597337896146328">Ubicación de tus productos:</translation>
-  <translation id="6631334172623029500">Email:</translation>
-  <translation id="6865009229971482891">Contraseña:</translation>
+  <translation id="8443942333850081361">Ubicación de tus productos</translation>
+  <translation id="4768749765465246664">Email</translation>
+  <translation id="1431416938026210429">Contraseña</translation>
   <translation id="2322688793988378029">Quiero darme de baja</translation>
   <translation id="4284869171317534738">¿Nuevo email?</translation>
   <translation id="4200745758819613954">Aquí puedes actualizarlo</translation>
   <translation id="6357315990612654699">Email actual</translation>
   <translation id="264068562357780835">Email nuevo</translation>
-  <translation id="3000005804987112527">Cambiar email</translation>
-  <translation id="663479896495999030">Para cambiar correctamente tu email necesitaremos que lo confirmes. ¡Ve a tu bandeja de entrada y valida el cambio!</translation>
+  <translation id="9216804565932710088">Cambiar email</translation>
+  <translation id="385940743851642574">Para cambiar correctamente tu email necesitaremos que lo confirmes. ¡Ve a tu bandeja de entrada y valida el cambio!</translation>
   <translation id="9071783025483844562">Actualiza tu contraseña</translation>
   <translation id="3978297542992522451">Tu seguridad es muy importante ;)</translation>
   <translation id="5340498030552368470">Contraseña actual</translation>
@@ -381,9 +381,9 @@
   <translation id="690637757793763587">Facturación</translation>
   <translation id="7830707034534607415">Suscripción</translation>
   <translation id="7658402240953727096">Nombre:</translation>
-  <translation id="2595624684026123810">Teléfono:</translation>
+  <translation id="2458848059908306406">Teléfono</translation>
   <translation id="6996799422725544865">Descripción:</translation>
-  <translation id="138907429214820806">Horario apertura:</translation>
+  <translation id="857364676078926106">Horario apertura</translation>
   <translation id="5359061492766571193">Nombre de la empresa:</translation>
   <translation id="6744115081020952615">Email de facturación:</translation>
   <translation id="6075176027649032651">Teléfono de facturación:</translation>
@@ -771,16 +771,16 @@
   <translation id="2828231996579923086">Aceptamos formatos .jpg y mínimo 400 x 400px</translation>
   <translation id="2099215062285114503">Cambiar foto</translation>
   <translation id="3395733106362662025">Imágenes de perfil</translation>
-  <translation id="3861342383500161019">Foto principal:</translation>
-  <translation id="420613684636248465">Foto de portada:</translation>
+  <translation id="5064069563768684657">Foto principal</translation>
+  <translation id="8493154674675875451">Foto de portada</translation>
   <translation id="8871965642938314035">(<ph name="INTERPOLATION"><ex>{{(status?.autorenew_scheduled?.citybump || 0) + (status?.autorenew_scheduled?.zonebump || 0)}}</ex></ph> planeado)</translation>
   <translation id="8132836034776935972">Te encontrarán antes si concretas</translation>
   <translation id="3892318280760368021">Selecciona un tipo</translation>
   <translation id="2559885490456050359">Marca</translation>
   <translation id="3351130716079059086">Conviértete en Pro</translation>
   <translation id="6632978177693812295">Vea las opciones Pro</translation>
-  <translation id="2836854179267941399">Nombre:</translation>
-  <translation id="5759985852212057755">Apellidos:</translation>
+  <translation id="5342432350421167093">Nombre</translation>
+  <translation id="3586674587150281199">Apellidos</translation>
   <translation id="4644971093370005279">Web:</translation>
   <translation id="2959266806536471647">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="792930787826735850">Tu perfil</translation>
@@ -898,5 +898,6 @@
   <translation id="3744004942164134121"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
   <translation id="6998541290982927512">Confirmar cambio de suscripción</translation>
   <translation id="4497647585483091099">Añadir suscripción</translation>
+  <translation id="5691966639616932851">Tarjeta de crédito</translation>
   <translation id="6969584346860248976" desc="La distancia entre el usuario y el producto a"><ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km de ti</translation>
 </translationbundle>
