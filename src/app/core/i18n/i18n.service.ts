@@ -138,7 +138,11 @@ export class I18nService {
       fashion_brand_example: 'E.g: Zara',
       model_example: 'E.g: iPhone',
       noResultsFound: 'No results found',
-      writeMessage: 'Write a message...'
+      writeMessage: 'Write a message...',
+      editSubscriptionSuccessTitle: 'Great!',
+      editSubscriptionSuccessBody: 'Your subscription has been edited correctly.',
+      cancelSubscriptionSuccessTitle: 'Subscription cancelled.',
+      cancelSubscriptionSuccessBody: 'We are sad to see you go.'
     },
     es: {
       daysMomentConfig: {
@@ -276,7 +280,11 @@ export class I18nService {
       fashion_brand_example: 'P. ej: Zara',
       model_example: 'P. ej: iPhone',
       noResultsFound: 'No hay resultados',
-      writeMessage: 'Escribe un mensaje...'
+      writeMessage: 'Escribe un mensaje...',
+      editSubscriptionSuccessTitle: '¡Bien!',
+      editSubscriptionSuccessBody: 'Tu suscripción se ha editado correctamente.',
+      cancelSubscriptionSuccessTitle: 'Suscripción cancelada.',
+      cancelSubscriptionSuccessBody: 'Lamentamos que te vayas :('
     }
   };
 

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Coordinate, ItemLocation } from '../../core/geolocation/address-response.interface';
 import { Item } from '../../core/item/item';
-import * as _ from 'lodash';
+import { omit, isEqual } from 'lodash-es';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { ItemService } from '../../core/item/item.service';
@@ -173,12 +173,12 @@ export class UploadRealestateComponent implements OnInit {
   private detectFormChanges() {
     this.uploadForm.valueChanges.subscribe((value) => {
       if (this.operations && this.conditions && this.extras) {
-        const oldItemData = _.omit(this.oldFormValue, ['images']);
-        const newItemData = _.omit(value, ['images']);
+        const oldItemData = omit(this.oldFormValue, ['images']);
+        const newItemData = omit(value, ['images']);
         if (!this.oldFormValue) {
           this.oldFormValue = value;
         } else {
-          if (!_.isEqual(oldItemData, newItemData)) {
+          if (!isEqual(oldItemData, newItemData)) {
             this.onFormChanged.emit(true);
           }
         }

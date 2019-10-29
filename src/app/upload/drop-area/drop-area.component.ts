@@ -1,5 +1,5 @@
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
-import * as _ from 'lodash';
+import { throttle, range, every } from 'lodash-es';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UploadEvent, UploadedEvent } from '../upload-event.interface';
 import { UploadService } from './upload.service';
@@ -38,7 +38,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   options: NgUploaderOptions;
   item: Item;
 
-  private setDragOver = _.throttle((dragOver: boolean) => {
+  private setDragOver = throttle((dragOver: boolean) => {
     this.dragOver = dragOver;
   }, 100);
 
@@ -57,7 +57,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
       maxUploads: this.maxUploads,
       maxSize: 10485760 // 10 MB
     };
-    this.placeholders = _.range(this.maxUploads);
+    this.placeholders = range(this.maxUploads);
     this.uploadEvent.subscribe((event: UploadEvent) => {
       delete event.values.images;
       if (event.type === 'create') {
@@ -186,7 +186,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
             }
           }
         } else {
-          if (!this.images && _.every(this.files, (file: UploadFile) => {
+          if (!this.images && every(this.files, (file: UploadFile) => {
               return file.progress.status === UploadStatus.Done;
             })) {
             if (this.item.hasOwnProperty('flags') && this.item.flags['onhold']) {

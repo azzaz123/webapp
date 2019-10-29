@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import * as _ from 'lodash';
+import { isEqual } from 'lodash-es';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../core/user/user.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
@@ -31,7 +31,7 @@ export class ProfileFormComponent implements OnInit {
       if (!this.oldFormValue && value.first_name !== '') {
         this.oldFormValue = value;
       } else {
-        if (!_.isEqual(this.oldFormValue, value)) {
+        if (!isEqual(this.oldFormValue, value)) {
           this.hasNotSavedChanges = true;
         }
       }

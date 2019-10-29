@@ -4,7 +4,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { MetricTypeEnum } from './metric-type.enum';
 import * as Fingerprint2 from 'fingerprintjs2';
 import * as logger from 'loglevel';
-import * as _ from 'lodash';
+import { toUpper } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { APP_VERSION } from '../../../environments/version';
@@ -29,7 +29,7 @@ export class RemoteConsoleService {
         metric_type: MetricTypeEnum.XMPP_CONNECTION_TIME,
         message: 'xmpp connection time',
         connection_time: connectionTime,
-        connection_type: _.toUpper(navigator['connection']['type']),
+        connection_type: toUpper(navigator['connection']['type']),
         ping_time_ms: navigator['connection']['rtt']
       }
     })));
