@@ -3,7 +3,7 @@ import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import * as _ from 'lodash';
+import { find } from 'lodash-es';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -556,7 +556,7 @@ describe('ListComponent', () => {
       });
 
       expect(component.items.length).toBe(TOTAL - 1);
-      expect(_.find(component.items, { 'id': item.id })).toBeFalsy();
+      expect(find(component.items, { 'id': item.id })).toBeFalsy();
     });
 
     it('should call feature if event is reactivatedWithBump', () => {
@@ -636,9 +636,9 @@ describe('ListComponent', () => {
       });
       it('should remove deleted items', () => {
         expect(component.items.length).toBe(TOTAL - 3);
-        expect(_.find(component.items, { 'id': '1' })).toBeFalsy();
-        expect(_.find(component.items, { 'id': '3' })).toBeFalsy();
-        expect(_.find(component.items, { 'id': '5' })).toBeFalsy();
+        expect(find(component.items, { 'id': '1' })).toBeFalsy();
+        expect(find(component.items, { 'id': '3' })).toBeFalsy();
+        expect(find(component.items, { 'id': '5' })).toBeFalsy();
       });
       it('should track the ProductListbulkDeleted event', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_DELETED, { product_ids: '1, 3, 5' });

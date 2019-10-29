@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Item } from '../../../core/item/item';
 
-import * as _ from 'lodash';
+import { find, findIndex } from 'lodash-es';
 import { TooManyItemsModalComponent } from '../modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from '../modals/already-featured-modal/already-featured-modal.component';
 import { Router } from '@angular/router';
@@ -77,7 +77,7 @@ export class CatalogItemActionsComponent implements OnInit {
         this.getCounters.emit();
         this.eventService.emit('itemChanged');
         response.updatedIds.forEach((id: string) => {
-          let index: number = _.findIndex(this.items, {'id': id});
+          let index: number = findIndex(this.items, {'id': id});
           this.items.splice(index, 1);
           this.getCounters.emit();
         });
@@ -110,7 +110,7 @@ export class CatalogItemActionsComponent implements OnInit {
   private itemIsBumped(): boolean {
     let isBumped = false;
     this.itemService.selectedItems.forEach((id: string) => {
-      let selectedItem: Item = _.find(this.items, {'id': id});
+      let selectedItem: Item = find(this.items, {'id': id});
       if (selectedItem && selectedItem.purchases) {
         isBumped = true;
       }

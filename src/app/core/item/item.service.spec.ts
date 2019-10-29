@@ -54,7 +54,7 @@ import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
 import { CAR_DATA, CAR_DATA_FORM, CAR_INFO, MOCK_CAR } from '../../../tests/car.fixtures.spec';
 import { Car } from './car';
 import { CART_ORDER_PRO } from '../../../tests/pro-item.fixtures.spec';
-import * as _ from 'lodash';
+import { find } from 'lodash-es';
 import {
   MOCK_REALESTATE, REALESTATE_CONTENT_DATA, REALESTATE_DATA,
   UPLOAD_FORM_REALESTATE_VALUES
@@ -990,12 +990,12 @@ describe('Service: Item', () => {
       }));
       it('should remove item from active array', () => {
         expect(service['items']['active'].length).toBe(TOTAL - 1);
-        expect(_.find(service['items']['active'], {'legacyId': ID})).toBeFalsy();
+        expect(find(service['items']['active'], {'legacyId': ID})).toBeFalsy();
       });
 
       it('should add item to sold array', () => {
         expect(service['items']['sold'].length).toBe(TOTAL + 1);
-        expect(_.find(service['items']['sold'], {'legacyId': ID})).toBeTruthy();
+        expect(find(service['items']['sold'], {'legacyId': ID})).toBeTruthy();
       });
 
       it('should emit event', () => {
@@ -1107,16 +1107,16 @@ describe('Service: Item', () => {
 
         it('should remove item from pending array', () => {
           expect(service['items']['pending'].length).toBe(TOTAL - 3);
-          expect(_.find(service['items']['pending'], {'id': ITEMS_BULK_UPDATED_IDS[0]})).toBeFalsy();
-          expect(_.find(service['items']['pending'], {'id': ITEMS_BULK_UPDATED_IDS[1]})).toBeFalsy();
-          expect(_.find(service['items']['pending'], {'id': ITEMS_BULK_UPDATED_IDS[2]})).toBeFalsy();
+          expect(find(service['items']['pending'], {'id': ITEMS_BULK_UPDATED_IDS[0]})).toBeFalsy();
+          expect(find(service['items']['pending'], {'id': ITEMS_BULK_UPDATED_IDS[1]})).toBeFalsy();
+          expect(find(service['items']['pending'], {'id': ITEMS_BULK_UPDATED_IDS[2]})).toBeFalsy();
         });
 
         it('should add item to active array', () => {
           expect(service['items']['active'].length).toBe(TOTAL + 3);
-          expect(_.find(service['items']['active'], {'id': ITEMS_BULK_UPDATED_IDS[0]})).toBeTruthy();
-          expect(_.find(service['items']['active'], {'id': ITEMS_BULK_UPDATED_IDS[1]})).toBeTruthy();
-          expect(_.find(service['items']['active'], {'id': ITEMS_BULK_UPDATED_IDS[2]})).toBeTruthy();
+          expect(find(service['items']['active'], {'id': ITEMS_BULK_UPDATED_IDS[0]})).toBeTruthy();
+          expect(find(service['items']['active'], {'id': ITEMS_BULK_UPDATED_IDS[1]})).toBeTruthy();
+          expect(find(service['items']['active'], {'id': ITEMS_BULK_UPDATED_IDS[2]})).toBeTruthy();
         });
 
         it('should call deselectItems', () => {
@@ -1179,16 +1179,16 @@ describe('Service: Item', () => {
 
       it('should remove item from active array', () => {
         expect(service['items']['active'].length).toBe(TOTAL - 3);
-        expect(_.find(service['items']['active'], {'id': ITEMS_BULK_UPDATED_IDS[0]})).toBeFalsy();
-        expect(_.find(service['items']['active'], {'id': ITEMS_BULK_UPDATED_IDS[1]})).toBeFalsy();
-        expect(_.find(service['items']['active'], {'id': ITEMS_BULK_UPDATED_IDS[2]})).toBeFalsy();
+        expect(find(service['items']['active'], {'id': ITEMS_BULK_UPDATED_IDS[0]})).toBeFalsy();
+        expect(find(service['items']['active'], {'id': ITEMS_BULK_UPDATED_IDS[1]})).toBeFalsy();
+        expect(find(service['items']['active'], {'id': ITEMS_BULK_UPDATED_IDS[2]})).toBeFalsy();
       });
 
       it('should add item to pending array', () => {
         expect(service['items']['pending'].length).toBe(TOTAL + 3);
-        expect(_.find(service['items']['pending'], {'id': ITEMS_BULK_UPDATED_IDS[0]})).toBeTruthy();
-        expect(_.find(service['items']['pending'], {'id': ITEMS_BULK_UPDATED_IDS[1]})).toBeTruthy();
-        expect(_.find(service['items']['pending'], {'id': ITEMS_BULK_UPDATED_IDS[2]})).toBeTruthy();
+        expect(find(service['items']['pending'], {'id': ITEMS_BULK_UPDATED_IDS[0]})).toBeTruthy();
+        expect(find(service['items']['pending'], {'id': ITEMS_BULK_UPDATED_IDS[1]})).toBeTruthy();
+        expect(find(service['items']['pending'], {'id': ITEMS_BULK_UPDATED_IDS[2]})).toBeTruthy();
       });
 
       it('should call deselectItems', () => {

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
-import * as _ from 'lodash';
+import { every, find, findIndex } from 'lodash-es';
 import {
   ItemBulkResponse, ItemsData, Order, Product,
   SelectedItemsAction
@@ -155,7 +155,7 @@ export class ListComponent implements OnInit, OnDestroy {
       return this.active;
     }).subscribe((action: SelectedItemsAction) => {
       this.selectedItems = this.itemService.selectedItems.map((id: string) => {
-        return <Item>_.find(this.items, {id: id});
+        return <Item>find(this.items, {id: id});
       });
     });
 
@@ -378,10 +378,10 @@ export class ListComponent implements OnInit, OnDestroy {
       localStorage.setItem('transactionType', 'reactivate');
       this.feature($event.orderEvent, 'reactivate');
     } else if ($event.action === 'reactivated') {
-      const index: number = _.findIndex(this.items, { '_id': $event.item.id });
+      const index: number = findIndex(this.items, { '_id': $event.item.id });
       this.items[index].flags.expired = false;
     } else {
-      const index: number = _.findIndex(this.items, { '_id': $event.item.id });
+      const index: number = findIndex(this.items, { '_id': $event.item.id });
       this.items.splice(index, 1);
       this.getNumberOfProducts();
     }
@@ -418,7 +418,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.itemService.bulkDelete('active').subscribe((response: ItemBulkResponse) => {
         this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_DELETED, { product_ids: response.updatedIds.join(', ') });
         response.updatedIds.forEach((id: string) => {
-          const index: number = _.findIndex(this.items, { 'id': id });
+          const index: number = findIndex(this.items, { 'id': id });
           this.items.splice(index, 1);
         });
         if (response.failedIds.length) {
@@ -436,7 +436,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.deselect();
       this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_RESERVED, { product_ids: response.updatedIds.join(', ') });
       response.updatedIds.forEach((id: string) => {
-        const index: number = _.findIndex(this.items, { 'id': id });
+        const index: number = findIndex(this.items, { 'id': id });
         if (this.items[index]) {
           this.items[index].reserved = true;
           this.eventService.emit(EventService.ITEM_RESERVED, this.items[index]);
@@ -528,7 +528,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.modalService.open(DeactivateItemsModalComponent).result.then(() => {
       this.itemService.deactivate().subscribe(() => {
         items.forEach((id: string) => {
-          const item: Item = _.find(this.items, {'id': id});
+          let item: Item = find(this.items, {'id': id});
           item.flags['onhold'] = true;
           item.selected = false;
 
@@ -547,7 +547,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.modalService.open(ActivateItemsModalComponent).result.then(() => {
       this.itemService.activate().subscribe((resp: any) => {
         items.forEach((id: string) => {
-          const item: Item = _.find(this.items, {'id': id});
+          let item: Item = find(this.items, {'id': id});
           item.flags['onhold'] = false;
           item.selected = false;
 

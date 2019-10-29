@@ -19,6 +19,7 @@ const routes: Routes = [
     component: ProfileComponent,
     canActivate: [LoggedGuard, NgxPermissionsGuard],
     canDeactivate: [ExitConfirmGuard],
+    canActivateChild: [NgxPermissionsGuard],
     data: {
       isMyZone: true,
       isProfile: true
