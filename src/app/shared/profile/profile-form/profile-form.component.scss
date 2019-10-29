@@ -10,6 +10,9 @@ $right-gutter: 35px;
       font-size: $font-size-s;
       font-weight: $font-weight-chunky;
     }
+    #birth_date {
+      display: flex;;
+    }
     .box-header {
       h1 {
         font-weight: $font-weight-chunky;

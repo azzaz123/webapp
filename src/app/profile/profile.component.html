@@ -1,7 +1,7 @@
 <div class="page-content">
   <div class="container">
     <tsl-header>
-      <div class="col-12 col-md-9">
+      <div class="col-9">
         <div class="header-row">
           <h1 class="header-title"><span i18n>Your profile</span> <span *ngIf="isPro" class="badge badge-pro"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span>
           </h1>
@@ -12,7 +12,7 @@
           <a class="header-link d-none d-md-flex" [href]="userUrl" target="_blank" i18n>View my public profile</a>
         </div>
       </div>
-      <div class="col-3 d-none d-md-block">
+      <div class="col-3">
         <div class="btn-wrapper">
           <button class="btn btn-logout" (click)="logout($event)" tslTrackEvent="MYZONE_MENU_LOGOUT" i18n>Logout</button>
         </div>
