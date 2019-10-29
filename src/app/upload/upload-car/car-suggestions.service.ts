@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
-import * as _ from 'lodash';
+import { map } from 'lodash-es';
 import { IOption } from 'ng-select';
 import { HttpService } from '../../core/http/http.service';
 
@@ -38,7 +38,7 @@ export class CarSuggestionsService {
   }
 
   private toSelectOptions(values: string[]): IOption[] {
-    return _.map(values, (label: string) => ({
+    return map(values, (label: string) => ({
       value: label.toString(),
       label: label.toString()
     }));

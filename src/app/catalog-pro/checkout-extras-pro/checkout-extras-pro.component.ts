@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
-import { isArray } from 'util';
+import { map, orderBy } from 'lodash-es';
 import { FormGroup } from '@angular/forms';
 import { PaymentService } from '../../core/payments/payment.service';
 import { Packs } from '../../core/payments/payment.interface';
@@ -34,7 +33,7 @@ export class CheckoutExtrasProComponent implements OnInit {
 
   private preparePacks(packs: Packs): void {
     let packObj = null;
-    _.map(packs, (PacksList: Pack[]) => {
+    map(packs, (PacksList: Pack[]) => {
       PacksList.map((pack: Pack) => {
         const quantityExists = this.packs.find((packFinder: Pack) => pack.quantity === packFinder.quantity);
         if (quantityExists) {
@@ -47,6 +46,6 @@ export class CheckoutExtrasProComponent implements OnInit {
       });
     });
 
-    this.packs = _.orderBy(this.packs, 'quantity');
+    this.packs = orderBy(this.packs, 'quantity');
   }
 }

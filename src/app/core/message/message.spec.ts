@@ -3,7 +3,7 @@
 import { Message } from './message';
 import { MESSAGE_MAIN, MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import * as _ from 'lodash';
+import { clone } from 'lodash-es';
 
 describe('Message', () => {
   it('should create an instance', () => {
@@ -26,7 +26,7 @@ describe('Message', () => {
   });
   describe('get user', () => {
     it('should retrieve the message user', () => {
-      const message: Message = _.clone(MOCK_MESSAGE);
+      const message: Message = clone(MOCK_MESSAGE);
       message.user = MOCK_USER;
       expect(message.user).toEqual(MOCK_USER);
     });
