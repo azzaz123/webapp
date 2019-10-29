@@ -17,18 +17,12 @@ import { isEmpty, includes, find, floor } from 'lodash';
 })
 export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
-  private readonly LINE_HEIGHT = 24;
-
   @Input() currentConversation: Conversation | InboxConversation;
-  @Output() changeTextareaHeight = new EventEmitter<number>();
   @ViewChild('messageTextarea') messageArea: ElementRef;
 
   public message: string;
   public isUserBlocked: boolean;
   public isFocus: boolean;
-
-  public textareaHeight: number;
-  public textareaLines: number;
 
   constructor(private messageService: MessageService,
               private eventService: EventService,
@@ -39,7 +33,6 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   ngOnInit() {
     this.isUserBlocked = false;
-    this.textareaLines = 1;
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
       this.isUserBlocked = includes(userIds, this.currentConversation.user.id);
     });
@@ -58,7 +51,6 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
           });
           this.messageService.send(this.currentConversation, this.message);
           this.message = '';
-          this.emitChangeTextareaHeight(this.messageArea.nativeElement.offsetHeight);
         }
       } else {
         this.message = '';
@@ -84,23 +76,10 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.messageArea.nativeElement.focus();
     this.isFocus = true;
-    this.emitChangeTextareaHeight(this.messageArea.nativeElement.offsetHeight);
   }
 
   public getPlaceholder(): string {
     return this.isUserBlocked || !this.isMessagingAvailable() ? '' : this.i18n.getTranslations('writeMessage');
-  }
-
-  public emitChangeTextareaHeight(textareaHeight: number) {
-    if (this.textareaHeight !== textareaHeight) {
-      this.textareaHeight = textareaHeight;
-      this.textareaLines = this.getTextareaLines();
-      this.changeTextareaHeight.emit(this.textareaLines);
-    }
-  }
-
-  private getTextareaLines(): number {
-    return floor(this.textareaHeight / this.LINE_HEIGHT);
   }
 
   public isMessagingAvailable(): boolean {

@@ -1,11 +1,10 @@
 <form>
-  <div class="textarea-component textarea-row-{{textareaLines}}" [ngClass]="{focus: isFocus}">
+  <div class="textarea-component" [ngClass]="{focus: isFocus}">
       <textarea #messageTextarea
                 name="message"
                 [(ngModel)]="message"
                 placeholder="{{getPlaceholder()}}"
                 (keydown.enter)="sendMessage($event)"
-                (keyup)="emitChangeTextareaHeight(messageTextarea.clientHeight)"
                 [disabled]="!isMessagingAvailable()"
                 [ngClass]="{selected: !isEmpty() && isMessagingAvailable()}"
                 (focus)="onFocusElement()"

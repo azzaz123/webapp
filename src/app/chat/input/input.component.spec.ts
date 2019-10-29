@@ -255,29 +255,4 @@ describe('Component: Input', () => {
       expect(component.isUserBlocked).toBe(false);
     });
   });
-
-  describe('changeTextaraHeight', () => {
-    const ORIGINAL_HEIGHT = 50;
-    const UPDATED_HEIGHT = 70;
-
-    it('should emit change text area', () => {
-      component.textareaHeight = ORIGINAL_HEIGHT;
-      spyOn(component.changeTextareaHeight, 'emit');
-
-      component.emitChangeTextareaHeight(ORIGINAL_HEIGHT);
-
-      expect(component.changeTextareaHeight.emit).not.toHaveBeenCalled();
-      expect(component.textareaHeight).toEqual(ORIGINAL_HEIGHT);
-    });
-
-    it('should NOT emit change text area', () => {
-      component.textareaHeight = ORIGINAL_HEIGHT;
-      spyOn(component.changeTextareaHeight, 'emit');
-
-      component.emitChangeTextareaHeight(UPDATED_HEIGHT);
-
-      expect(component.changeTextareaHeight.emit).toHaveBeenCalled();
-      expect(component.textareaHeight).toEqual(UPDATED_HEIGHT);
-    });
-  });
 });
