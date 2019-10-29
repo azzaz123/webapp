@@ -31,13 +31,13 @@ describe('SubscriptionsSlotItemComponent', () => {
 
   describe('isSelected', () => {
     it('should return true when selected slot and own subscription are the same', () => {
-      expect(component.isSelected()).toBeTruthy();
+      expect(component.isSelected()).toBe(true);
     });
 
     it('should return false when selected slot and own subscription are different', () => {
       component.selectedSubscriptionSlot = { category: CATEGORY_DATA_WEB[1], available: 2, limit: 2 };
 
-      expect(component.isSelected()).toBeFalsy();
+      expect(component.isSelected()).toBe(false);
     });
   });
 

@@ -12,12 +12,12 @@
 }
 
 .TooManyItemsModal__close {
-  @include square(12px);
+  @include square($spacing-ms);
   position: fixed;
   top: 20px;
   right: 20px;
   mat-icon {
-    @include square(12px);
+    @include square($spacing-ms);
     line-height: initial; 
 
     svg {
@@ -40,7 +40,7 @@
 }
 
 .TooManyItemsModal__content-info-title {
-  margin-bottom: 16px;
+  margin-bottom: $spacing-m;
 }
 
 tsl-button {
