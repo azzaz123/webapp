@@ -1,5 +1,5 @@
 <form>
-  <div class="textarea-component" [ngClass]="{focus: isFocus}">
+  <div class="textarea-component" [ngClass]="{focus: isFocus, selected: isMessagingAvailable()}">
     <div class="textarea-wrapper">
       <textarea #messageTextarea
                 name="message"
@@ -7,7 +7,6 @@
                 placeholder="{{getPlaceholder()}}"
                 (keydown.enter)="sendMessage($event)"
                 [disabled]="!isMessagingAvailable()"
-                [ngClass]="{selected: !isEmpty() && isMessagingAvailable()}"
                 (focus)="onFocusElement()"
                 (focusout)="onFocusElement()"
                 rows="1"

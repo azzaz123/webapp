@@ -11,7 +11,7 @@ form {
     padding: $spacing-xs $spacing-xs $spacing-xs $spacing-ml;
     position: relative;
 
-    &.focus {
+    &.focus.selected {
       border-color: $walla-main;
 
       .btn-send-message {
