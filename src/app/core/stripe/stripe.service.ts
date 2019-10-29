@@ -65,6 +65,12 @@ export class StripeService {
     }
   }
 
+  public actionPayment(paymentSecretKey): void {
+    this.requiresActionPayment(paymentSecretKey).then((response: any) => {
+      this.handlePayment(response, 'paymentActionResponse');
+    })
+  }
+
   public isPaymentMethodStripe$(): Observable<boolean> {
     return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.STRIPE);
   }
@@ -83,8 +89,11 @@ export class StripeService {
     return this.http.post(`${this.API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/detach`)
   }
 
-  public addNewCard(paymentMethodId: string) {
+  public addNewCard(paymentMethodId: string): Observable<any> {
     return this.http.put(`${this.API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/attach`)
+    .catch(() => {
+      return Observable.of(null);
+    });
   }
 
   public createStripeCard(cardElement: any): Promise<any> {
@@ -95,15 +104,14 @@ export class StripeService {
 
   createStripePaymentMethod = async (cardElement: any) => await this.lib.createPaymentMethod('card', cardElement);
 
-  handlePayment = (paymentResponse)  => {
+  handlePayment = (paymentResponse, type = 'paymentResponse')  => {
     const { paymentIntent, error } = paymentResponse;
     const response = paymentIntent ? paymentIntent.status : paymentResponse.status;
     const responseError = error ? error.code : paymentResponse.error;
-
     if (responseError) {
-      this.eventService.emit('paymentResponse', responseError);
+      this.eventService.emit(type, responseError);
     } else {
-      this.eventService.emit('paymentResponse', response);
+      this.eventService.emit(type, response);
     }
   };
 
@@ -118,6 +126,10 @@ export class StripeService {
         }
       }
     );
+  };
+
+  requiresActionPayment = async (paymentIntentSecret) => {
+    return await this.lib.handleCardPayment(paymentIntentSecret);
   };
 
   savedPayment = async (token) => await this.lib.handleCardPayment(token);
