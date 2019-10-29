@@ -826,7 +826,7 @@
   <translation id="3063302288001428906">Puedes enviar (casi) todo por wallapop. ¡Y es gratis!</translation>
   <translation id="3784792223212622760">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
   <translation id="8203812558021121397">No guardamos información de la transacción. La compra es hecha mediante Banco Sabadell</translation>
-  <translation id="5171793882050317851" desc="La distancia entre el usuario y el item">
+  <translation id="6969584346860248976" desc="La distancia entre el usuario y el item">
     A
     <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>
     km de ti

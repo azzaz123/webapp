@@ -51,7 +51,7 @@
   <msg id="1337808500533761318"><source>app/shared/modals/sold-modal/sold-modal.component.html:25</source>I didn&apos;t sell this on wallapop</msg>
   <msg id="2286494898080570401"><source>app/shared/modals/sold-modal/sold-modal.component.html:37</source>Thanks</msg>
   <msg id="2928844379959000123"><source>app/shared/modals/sold-modal/sold-modal.component.html:38</source>Your feedback is important for the<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Wallapop community.</msg>
-  <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.html:39</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:78</source>Continue</msg>
+  <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.html:39</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:80</source>Continue</msg>
   <msg id="8753092784115704500"><source>app/shared/process-all-button/process-all-button.component.html:7</source><source>app/shared/process-all-button/process-all-button.component.html:12</source><source>app/calls/calls.component.html:28</source>Process all</msg>
   <msg id="4965764680155209445"><source>app/shared/process-all-button/process-all-button.component.html:8</source>This will process all the elements in this page.</msg>
   <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.html:11</source><source>app/shared/confirmation-modal/confirmation-modal.component.html:32</source><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:6</source><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:6</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:31</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:6</source><source>app/chat/chat-with-inbox/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:6</source><source>app/chat/chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:6</source><source>app/chat/modals/block-user/block-user.component.html:6</source><source>app/chat/modals/unblock-user/unblock-user.component.html:6</source><source>app/profile/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:5</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:6</source>Cancel</msg>
@@ -66,7 +66,7 @@
   <msg id="7992914064106893139"><source>app/shared/message/review-button/review-button.component.html:1</source><source>app/chat/chat-with-inbox/message/third-voice-message/third-voice-review/third-voice-review.component.html:1</source>Review now</msg>
   <msg id="2506703378559967461"><source>app/shared/message/review-button/review-button.component.html:4</source>Thanks for rating</msg>
   <msg id="7251596190905542711"><source>app/shared/search-input/search-input.component.html:3</source>Search Items</msg>
-  <msg id="6581598798517073714"><source>app/shared/payments/card-selection/card-selection.component.html:14</source><source>app/shared/catalog/cart/cart.component.html:106</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:65</source><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:25</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:53</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.html:30</source>+ Add another credit card</msg>
+  <msg id="6581598798517073714"><source>app/shared/payments/card-selection/card-selection.component.html:14</source><source>app/shared/catalog/cart/cart.component.html:106</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:66</source><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:25</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:53</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.html:30</source>+ Add another credit card</msg>
   <msg id="4284869171317534738"><source>app/shared/profile/edit-email/email-modal/email-modal.component.html:5</source>New email?</msg>
   <msg id="4200745758819613954"><source>app/shared/profile/edit-email/email-modal/email-modal.component.html:6</source>You can update it now</msg>
   <msg id="6357315990612654699"><source>app/shared/profile/edit-email/email-modal/email-modal.component.html:10</source>Current email</msg>
@@ -174,7 +174,7 @@
   <msg id="5269877616047992907"><source>app/shared/catalog/cart/cart.component.html:75</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:39</source>spending</msg>
   <msg id="7484614059925376312"><source>app/shared/catalog/cart/cart.component.html:86</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:50</source>missing</msg>
   <msg id="6315786827665033981"><source>app/shared/catalog/cart/cart.component.html:97</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:58</source>Total to pay</msg>
-  <msg id="3650030434919639531"><source>app/shared/catalog/cart/cart.component.html:107</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:66</source><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:26</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:54</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.html:31</source>Use saved card</msg>
+  <msg id="3650030434919639531"><source>app/shared/catalog/cart/cart.component.html:107</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:67</source><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:26</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:54</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.html:31</source>Use saved card</msg>
   <msg id="7274286978511770772"><source>app/shared/catalog/cart/cart.component.html:118</source><source>app/shared/payments/stripe/stripe-card-element.component.html:22</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:64</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:71</source>Continue to Checkout</msg>
   <msg id="3708302938863076299"><source>app/shared/catalog/cart/cart.component.html:121</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:19</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:74</source>Secure payment through Sabadell</msg>
   <msg id="420613684636248465"><source>app/shared/profile/cover-upload/cover-upload.component.html:3</source>Cover image:</msg>
@@ -261,7 +261,7 @@
   <msg id="708817521397622777"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:21</source>Pay with your credit and credit card:</msg>
   <msg id="3743194622120127205"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:22</source>Pay with your wallacoins and credit card:</msg>
   <msg id="8894377483833272091"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:25</source><source>app/upload/upload-product/upload-product.component.html:33</source><source>app/upload/upload-realestate/upload-realestate.component.html:54</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.html:24</source>Price</msg>
-  <msg id="8203812558021121397"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:79,81</source>
+  <msg id="8203812558021121397"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:81,83</source>
       We don&apos;t save details of this transaction. The purchase is made via Banco Sabadell.
     </msg>
   <msg id="349473182974314723"><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:12</source>Your item is now reactivated and in the first positions!</msg>
@@ -434,11 +434,6 @@
   <msg id="3325766019344626759"><source>app/chat/chat-with-archive/chat-with-archive.component.html:57</source><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:11</source>There are no messages</msg>
   <msg id="7443033219479243959"><source>app/chat/chat-with-archive/chat-with-archive.component.html:58,59</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
                 Try again later.</msg>
-  <msg id="7962273932004201523"><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:24,25</source>Sold
-    </msg>
-  <msg id="6184998176074927571" desc="The distance between the user and the item"><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:12,14</source>
-        <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you
-      </msg>
   <msg id="682982254050004818"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:9,10</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
       from the list on the left</msg>
   <msg id="177886998911393770"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:12,13</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
@@ -459,6 +454,11 @@
   <msg id="5949661737880412802"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:68</source>This user is not available</msg>
   <msg id="3753612046513951428"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:75</source>This product is not available</msg>
   <msg id="2536023333703806770"><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:95</source>Remember not to share private data for security reasons</msg>
+  <msg id="6969584346860248976" desc="The distance between the user and the item"><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:12,14</source>
+        <ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you
+      </msg>
+  <msg id="7962273932004201523"><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:24,25</source>Sold
+    </msg>
   <msg id="3893097575013115653"><source>app/chat/chat-with-inbox/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component.html:9</source>+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex></ph> More</msg>
   <msg id="6721544969146753310"><source>app/chat/chat-with-inbox/message/third-voice-message/third-voice-review/third-voice-review.component.html:4</source>Thanks for the valuation</msg>
   <msg id="7368172072093620772"><source>app/dashboard/dashboard.component.html:5</source>Your stats</msg>
