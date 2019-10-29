@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash';
+import { findIndex } from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
@@ -81,7 +81,7 @@ export class CatalogProListComponent implements OnInit {
 
     this.eventService.subscribe('itemChangeStatus', (items) => {
       items.forEach((id: string) => {
-        const index: number = _.findIndex(this.items, {'id': id});
+        const index: number = findIndex(this.items, {'id': id});
         this.items.splice(index, 1);
       });
     });
@@ -247,7 +247,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public itemChanged($event: ItemChangeEvent) {
-    const index: number = _.findIndex(this.items, {'_id': $event.item.id});
+    const index: number = findIndex(this.items, {'_id': $event.item.id});
     this.items.splice(index, 1);
     this.cache = false;
     this.page = 1;
@@ -256,7 +256,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public bumpCancelled($event: ItemChangeEvent) {
-    const index: number = _.findIndex(this.items, {'_id': $event.item.id});
+    const index: number = findIndex(this.items, {'_id': $event.item.id});
     this.items[index].purchases = null;
     this.cache = false;
     this.page = 1;

@@ -4,7 +4,7 @@ import { StatisticsService } from './statistics.service';
 import { StatisticEntriesResponse, StatisticFullResponse } from './statistic-response.interface';
 import { IOption } from 'ng-select';
 import * as moment from 'moment';
-import * as _ from 'lodash';
+import { find } from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 import { I18nService } from '../../core/i18n/i18n.service';
 
@@ -283,7 +283,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       this.chartOptions.dataProvider = [];
       response.entries.forEach((entry: StatisticEntriesResponse) => {
         const date = this.yearly ? moment(+entry.date).format('YYYY-MM-01') : +entry.date;
-        const monthlyOption = _.find(this.chartOptions.dataProvider, {date: date});
+        const monthlyOption = find(this.chartOptions.dataProvider, {date: date});
         if (monthlyOption && this.yearly) {
           monthlyOption.phone_numbers += entry.values.phone_numbers || 0;
           monthlyOption.views += entry.values.views || 0;

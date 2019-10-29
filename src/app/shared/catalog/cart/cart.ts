@@ -1,5 +1,5 @@
 import { CartItem } from './cart-item.interface';
-import * as _ from 'lodash';
+import { findIndex, sumBy } from 'lodash-es';
 import { Order } from '../../../core/item/item-response.interface';
 import { UUID } from 'angular2-uuid';
 import { CartBase, BUMP_TYPES } from './cart-base';
@@ -13,7 +13,7 @@ export class Cart extends CartBase {
   }
 
   removeCartItem(itemId: string, type: string) {
-    const index = _.findIndex(this[type].cartItems, (c: CartItem) => c.item.id === itemId);
+    const index = findIndex(this[type].cartItems, (c: CartItem) => c.item.id === itemId);
     if (index !== -1) {
       this[type].cartItems.splice(index, 1);
       this.calculateTotals();
@@ -49,9 +49,9 @@ export class Cart extends CartBase {
     this.total = 0;
     this.discountedTotal = 0;
     BUMP_TYPES.forEach((type: string) => {
-      this[type].total = _.sumBy(this[type].cartItems, (c: CartItem) => +c.duration.market_code);
+      this[type].total = sumBy(this[type].cartItems, (c: CartItem) => +c.duration.market_code);
       this.total += this[type].total;
-      this[type].discountedTotal = _.sumBy(this[type].cartItems, (c: CartItem) => +c.duration.original_market_code || 0);
+      this[type].discountedTotal = sumBy(this[type].cartItems, (c: CartItem) => +c.duration.original_market_code || 0);
       this.discountedTotal += this[type].discountedTotal;
     });
   }

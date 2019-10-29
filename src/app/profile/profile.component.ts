@@ -1,9 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { User } from '../core/user/user';
-import { MotorPlan, MotorPlanType } from '../core/user/user-response.interface';
+import { MotorPlan, MotorPlanType, ProfileSubscriptionInfo } from '../core/user/user-response.interface';
 import { I18nService } from '../core/i18n/i18n.service';
 import { UserStatsResponse } from '../core/user/user-stats.interface';
+import { StripeService } from '../core/stripe/stripe.service';
+import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
+import { flatMap } from 'rxjs/operators';
+import { CategoryService } from '../core/category/category.service';
 
 @Component({
   selector: 'tsl-profile',
@@ -17,9 +21,14 @@ export class ProfileComponent implements OnInit {
   public showSubscriptionTab: boolean;
   public isPro: boolean;
   public userStats: UserStatsResponse;
+  public isSubscriptionsActive: boolean;
+  public isNewSubscription = false;
 
   constructor(private userService: UserService,
               protected i18n: I18nService,
+              private stripeService: StripeService,
+              private subscriptionsService: SubscriptionsService,
+              private categoryService: CategoryService,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -42,11 +51,45 @@ export class ProfileComponent implements OnInit {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
       this.userStats = userStats;
     });
+    this.stripeService.isPaymentMethodStripe$()
+    .pipe(
+      flatMap(() => this.subscriptionsService.isSubscriptionsActive$()),
+    )
+    .filter(val => val === true)
+    .subscribe(val => this.isSubscriptionsActive = val); 
+    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+      if (!isProfessional) {
+        this.getSubscriptions();
+      }
+    });
   }
 
   public logout($event: any) {
     $event.preventDefault();
     this.userService.logout();
+  }
+
+  private getSubscriptions(cache: boolean = true): void {
+    this.categoryService.getCategories()
+    .pipe(
+      flatMap(categories => this.subscriptionsService.getSubscriptions(categories, cache)),
+    )
+    .subscribe(response => {
+      if (response) {
+        response.map(subscription => {
+          if (subscription.selected_tier_id) {
+            this.isNewSubscription = true;
+          }
+        })
+        if (!this.isNewSubscription) {
+          this.userService.getMotorPlans().subscribe((subscriptionInfo: ProfileSubscriptionInfo) => {
+            if (subscriptionInfo.status === "NOT_ELIGIBLE") {
+              this.isNewSubscription = true;
+            }
+          });
+        }
+      }
+    }); 
   }
 
 }

@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MsgArchiveService } from './archive.service';
 import { HttpService } from '../http/http.service';

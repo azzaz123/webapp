@@ -21,6 +21,33 @@ export const CATEGORY_DATA_WEB: Array<CategoryResponse> = [
     icon_id: 'pc',
     name: 'Computers & Electronic',
     vertical_id: 'consumer_goods'
+  },
+  {
+    category_id: 15245,
+    has_brand: false,
+    has_model: false,
+    has_object_type: false,
+    icon_id: 'pc',
+    name: 'Computers & Electronic',
+    vertical_id: 'consumer_goods'
+  },
+  {
+    category_id: 14000,
+    has_brand: false,
+    has_model: false,
+    has_object_type: false,
+    icon_id: 'pc',
+    name: 'Computers & Electronic',
+    vertical_id: 'consumer_goods'
+  },
+  {
+    category_id: 12800,
+    has_brand: false,
+    has_model: false,
+    has_object_type: false,
+    icon_id: 'pc',
+    name: 'Computers & Electronic',
+    vertical_id: 'consumer_goods'
   }
 ];
 
