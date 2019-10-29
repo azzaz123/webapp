@@ -26,8 +26,8 @@ $modal-border-radius: 0.3rem;
     @include square(30px);
     cursor: pointer;
     position: absolute;
-    right: 20px;
-    top: 20px;
+    right: 10px;
+    top: 10px;
     z-index: 99;
     text-align: left;
     mat-icon {
@@ -384,5 +384,18 @@ $modal-border-radius: 0.3rem;
         }
       }
     }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .modal-dialog {
+    max-height: calc(100% - #{$spacing-xxl});
+  }
+  .modal-content {
+    height: 100%;
+    overflow: scroll !important;
+  }
+  .modal-body {
+    width: 100% !important;
   }
 }

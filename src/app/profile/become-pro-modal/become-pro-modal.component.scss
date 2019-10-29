@@ -24,9 +24,8 @@
 .modal-body {
   width: 600px;
   text-align: center;
-  padding: $spacing-ml $spacing-xl $spacing-l;
+  padding: $spacing-ml $spacing-xl 0;
   ul {
-    margin-bottom: $spacing-l;
     padding: 0;
     li {
       color: $blue-grey-1;
@@ -45,4 +44,15 @@
     color: $white;
     width: 296px;
   }
+}
+
+.modal-footer {
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+  padding: $spacing-m 0;
+  background-color: rgba($white, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
