@@ -25,12 +25,13 @@ form {
       width: calc(100% - 40px);
 
       .textarea-element {
+        display: inline-block;
+        vertical-align: baseline;
         background-color: transparent;
         border: 0 solid transparent;
         resize: none;
         padding: $spacing-xxs;
         width: 100%;
-        vertical-align: baseline;
         line-height: 1.5;
 
         &::-webkit-input-placeholder {
