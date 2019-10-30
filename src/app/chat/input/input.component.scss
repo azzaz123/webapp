@@ -1,54 +1,70 @@
 @import "~style/common";
 
 form {
-  $input-height: $chat-input - $spacing-ml;
-  $send-icon-size: 40px;
-  height: $input-height;
   position: relative;
-  textarea {
-    border-radius: 100px;
-    max-height: $input-height;
-    width: 100%;
-    height: $input-height;
-    line-height: $input-height;
-    padding: 0 #{$send-icon-size + $spacing-m} 0 $spacing-m;
-    outline: none;
-    resize: none;
-    overflow: hidden;
-    border: 1px solid $blue-grey-5;
-    transition: .15s ease all;
-    &:focus {
-      border-color: $walla-main;
-    }
-    &::-webkit-input-placeholder {
-      color: $blue-grey-3;
-    }
-    &[disabled] {
-      background: white;
-    }
-    &.selected {
-      border: 1px solid $walla-main;
-    }
-  }
-  #send {
-    cursor: pointer;
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    border-radius: 50%;
-    background: $blue-grey-4;
-    @include square($send-icon-size);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: .15s ease all;
-    mat-icon {
-      width: 22px;
-      height: 23px;
-    }
-    &.selected {
-      background: $walla-main;
-    }
-  }
 
+  .textarea-component {
+    width: 100%;
+    border-radius: 24px;
+    border: 1px solid $blue-grey-5;
+    transition: border-color ease .15s;
+    padding: $spacing-xs $spacing-xs $spacing-xs $spacing-ml;
+    position: relative;
+
+    &.focus.selected {
+      border-color: $walla-main;
+
+      .btn-send-message {
+        background: $walla-main;
+      }
+    }
+
+    .textarea-wrapper {
+      display: inline-block;
+      vertical-align: center;
+      width: calc(100% - 40px);
+
+      .textarea-element {
+        display: inline-block;
+        vertical-align: baseline;
+        background-color: transparent;
+        border: 0 solid transparent;
+        resize: none;
+        padding: $spacing-xxs;
+        width: 100%;
+        line-height: 1.5;
+
+        &::-webkit-input-placeholder {
+          color: $blue-grey-3;
+        }
+      }
+    }
+
+    .send-btn-wrapper {
+      display: inline-block;
+      vertical-align: bottom;
+
+      .btn-send-message {
+        cursor: pointer;
+        right: 5px;
+        bottom: 6px;
+        border-radius: 50%;
+        background: $blue-grey-4;
+        @include square(40px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: .15s ease all;
+
+        mat-icon {
+          width: 22px;
+          height: 23px;
+        }
+
+        &.selected {
+          background-color: $walla-main;
+        }
+      }
+    }
+  }
 }
