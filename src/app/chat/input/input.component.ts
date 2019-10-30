@@ -8,7 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { isEmpty, includes, find, floor } from 'lodash';
+import { isEmpty, includes, find } from 'lodash-es';
 
 @Component({
   selector: 'tsl-input',

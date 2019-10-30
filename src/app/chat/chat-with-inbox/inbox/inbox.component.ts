@@ -12,7 +12,7 @@ import { SCREENS_IDS } from '../../../core/analytics/resources/analytics-constan
 import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
-import { countBy, map, find } from 'lodash';
+import { countBy, map, find } from 'lodash-es';
 
 export enum InboxState { Inbox, Archived }
 
