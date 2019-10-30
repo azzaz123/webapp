@@ -26,6 +26,10 @@ import { InboxUser } from '../../chat/model/inbox-user';
 import { SplitTestService } from '../tracking/split-test.service';
 import { HttpServiceNew } from '../http/http.service.new';
 import { InboxItem } from '../../chat/model';
+import { APP_VERSION } from '../../../environments/version';
+import { UserReportApi } from './user-report.interface';
+import { HttpHeaders } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -183,28 +187,33 @@ export class UserService extends ResourceService {
     return Observable.of(this.banReasons);
   }
 
-  public reportUser(userId: string, itemHash: string, conversationHash: string, reason: number, comments: string): Observable<any> {
+  public reportUser(userId: string, itemHash: string, conversationHash: string, reason: number, comments: string)
+    : Observable<UserReportApi> {
     return this.httpClient.post(`${this.API_URL}/me/report/user/${userId}`, {
-      itemHashId: itemHash,
-      conversationHash: conversationHash,
-      comments: comments,
-      reason: reason
-    });
+        itemHashId: itemHash,
+        conversationHash: conversationHash,
+        comments: comments,
+        reason: reason
+      },
+      [],
+      {
+        headers: new HttpHeaders(
+          { 'AppBuild': APP_VERSION }
+        )
+      });
   }
 
   public getInfo(id: string): Observable<UserInfoResponse> {
-    return this.http.get(this.API_URL + '/' + id + '/extra-info')
-      .map((r: Response) => r.json());
+    return this.httpClient.get<UserInfoResponse>(`${this.API_URL}/${id}/extra-info`);
   }
 
   public getProInfo(): Observable<UserProInfo> {
-    return this.http.get(this.API_URL_PROTOOL + '/extraInfo')
-      .map((r: Response) => r.json());
+    return this.httpClient.get<UserProInfo>(`${this.API_URL_PROTOOL}/extraInfo`);
   }
 
   public getUserCover(): Observable<Image> {
-    return this.http.get(this.API_URL + '/me/cover-image')
-      .map((r: Response) => r.text() ? r.json() : {});
+    return this.httpClient.get<Image>(`${this.API_URL}/me/cover-image`)
+    .pipe(catchError(error => of({} as Image)));
   }
 
   public updateProInfo(data: UserProData): Observable<any> {
@@ -395,12 +404,10 @@ export class UserService extends ResourceService {
   }
 
   public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
-    return this.http.get(this.API_URL + '/me/profile-subscription-info')
-      .map((r: Response) => r.json());
+    return this.httpClient.get<ProfileSubscriptionInfo>(`${this.API_URL}/me/profile-subscription-info`);
   }
 
   public getAvailableSlots(): Observable<AvailableSlots> {
-    return this.http.get(this.API_URL + '/me/items/slots-available')
-      .map((r: Response) => r.json());
+    return this.httpClient.get<AvailableSlots>(`${this.API_URL}/me/items/slots-available`);
   }
 }

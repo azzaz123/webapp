@@ -54,6 +54,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
 import { SplitTestService } from '../tracking/split-test.service';
 import { HttpModuleNew } from '../http/http.module.new';
+import { APP_VERSION } from '../../../environments/version';
 
 describe('Service: User', () => {
 
@@ -420,44 +421,34 @@ describe('Service: User', () => {
 
   describe('getInfo', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_INFO_RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: UserInfoResponse;
-      service.getInfo(USER_ID).subscribe((response: UserInfoResponse) => {
-        resp = response;
-      });
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/extra-info');
-      expect(resp).toEqual(USER_INFO_RESPONSE);
+      service.getInfo(USER_ID).subscribe(response => expect(response).toEqual(USER_INFO_RESPONSE));
+
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/extra-info`);
+
+      expect(req.request.method).toEqual('GET');
+      req.flush(USER_INFO_RESPONSE);
     });
   });
 
   describe('getProInfo', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_PRO_INFO_RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: UserProInfo;
+      service.getProInfo().subscribe(response => expect(response).toEqual(USER_PRO_INFO_RESPONSE));
 
-      service.getProInfo().subscribe((response: UserProInfo) => {
-        resp = response;
-      });
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/protool/extraInfo`);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/protool/extraInfo');
-      expect(resp).toEqual(USER_PRO_INFO_RESPONSE);
+      expect(req.request.method).toEqual('GET');
+      req.flush(USER_PRO_INFO_RESPONSE);
     });
   });
 
   describe('getUserCover', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(IMAGE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: Image;
+      service.getUserCover().subscribe(response => expect(response).toEqual(IMAGE));
 
-      service.getUserCover().subscribe((response: Image) => {
-        resp = response;
-      });
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/cover-image`);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/cover-image');
-      expect(resp).toEqual(IMAGE);
+      expect(req.request.method).toEqual('GET');
+      req.flush(IMAGE);
     });
   });
 
@@ -763,16 +754,12 @@ describe('Service: User', () => {
 
   describe('getMotorPlans', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PROFILE_SUB_INFO)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: ProfileSubscriptionInfo;
+      service.getMotorPlans().subscribe(response => expect(response).toEqual(PROFILE_SUB_INFO));
 
-      service.getMotorPlans().subscribe((response: ProfileSubscriptionInfo) => {
-        resp = response;
-      });
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/profile-subscription-info`);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/profile-subscription-info');
-      expect(resp).toEqual(PROFILE_SUB_INFO);
+      expect(req.request.method).toEqual('GET');
+      req.flush(PROFILE_SUB_INFO);
     });
   });
 
@@ -782,16 +769,12 @@ describe('Service: User', () => {
         num_slots_cars: 3,
         user_can_manage: true
       };
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(SLOTS)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: AvailableSlots;
+      service.getAvailableSlots().subscribe(response => expect(response).toEqual(SLOTS));
 
-      service.getAvailableSlots().subscribe((response: AvailableSlots) => {
-        resp = response;
-      });
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/items/slots-available`);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/items/slots-available');
-      expect(resp).toEqual(SLOTS);
+      expect(req.request.method).toEqual('GET');
+      req.flush(SLOTS);
     });
   });
 
@@ -811,6 +794,7 @@ describe('Service: User', () => {
         comments: COMMENT,
         reason: REASON
       });
+      expect(req.request.headers.get('AppBuild')).toEqual(APP_VERSION);
     });
   });
 });
