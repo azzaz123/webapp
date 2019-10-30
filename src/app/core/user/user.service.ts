@@ -197,9 +197,7 @@ export class UserService extends ResourceService {
       },
       [],
       {
-        headers: new HttpHeaders(
-          { 'AppBuild': APP_VERSION }
-        )
+        headers: new HttpHeaders().append('AppBuild', APP_VERSION)
       });
   }
 
