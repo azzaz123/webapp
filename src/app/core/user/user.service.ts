@@ -272,9 +272,8 @@ export class UserService extends ResourceService {
   }
 
   public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
-    return this.http.get(this.API_URL + '/' + userId + '/phone-method')
-      .map((r: any) => r.json())
-      .catch(e => Observable.of(null));
+    return this.httpClient.get<PhoneMethodResponse>(`${this.API_URL}/${userId}/phone-method`)
+    .pipe(catchError(() => of(null)));
   }
 
   public toRatingsStats(ratings): Ratings {

@@ -450,6 +450,14 @@ describe('Service: User', () => {
       expect(req.request.method).toEqual('GET');
       req.flush(IMAGE);
     });
+
+    it('should return empty object if endpoint return error', () => {
+      service.getUserCover().subscribe(response => expect(response).toEqual({} as Image));
+
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/cover-image`);
+      expect(req.request.method).toEqual('GET');
+      req.error(new ErrorEvent('network error'));
+    });
   });
 
   describe('updateProInfo', () => {
@@ -537,16 +545,20 @@ describe('Service: User', () => {
   describe('getPhoneInfo', () => {
     it('should call endpoint and return response', () => {
       const PHONE_METHOD_RESPONSE = { phone_method: 'bubble' };
-      const res: Response = new Response(new ResponseOptions({body: JSON.stringify(PHONE_METHOD_RESPONSE)}));
-      spyOn(http, 'get').and.returnValue(Observable.of(res));
 
-      let resp: any;
-      service.getPhoneInfo(USER_ID).subscribe((response: any) => {
-        resp = response;
-      });
+      service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(PHONE_METHOD_RESPONSE));
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/phone-method');
-      expect(resp).toEqual(PHONE_METHOD_RESPONSE);
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/phone-method`);
+      expect(req.request.method).toEqual('GET');
+      req.flush(PHONE_METHOD_RESPONSE);
+    });
+
+    it('should return null if endpoint return error', () => {
+      service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(null));
+
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/phone-method`);
+      expect(req.request.method).toEqual('GET');
+      req.error(new ErrorEvent('network error'));
     });
   });
 
