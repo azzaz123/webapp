@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { reverse, sortBy, remove, find, findIndex } from 'lodash-es';
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
@@ -130,7 +130,7 @@ export class ConversationService extends LeadService {
         return conversations;
       })
       .map((filteredConversations: Conversation[]) => {
-        return _.reverse(_.sortBy(filteredConversations, 'modifiedDate'));
+        return reverse(sortBy(filteredConversations, 'modifiedDate'));
       })
       .map((sortedConversations: Conversation[]) => {
         return sortedConversations.slice(0, end);
@@ -211,7 +211,7 @@ export class ConversationService extends LeadService {
   }
 
   public archiveWithPhones() {
-    const archivedConversations: Conversation[] = _.remove(<Conversation[]>this.leads, (conversation: Conversation) => {
+    const archivedConversations: Conversation[] = remove(<Conversation[]>this.leads, (conversation: Conversation) => {
       return conversation.phone !== undefined;
     });
     archivedConversations.forEach((conversation: Conversation) => {
@@ -467,7 +467,7 @@ export class ConversationService extends LeadService {
   }
 
   public getItemFromThread(thread: string): Item {
-    return _.find(this.leads, { id: thread }).item;
+    return find(this.leads, { id: thread }).item;
   }
 
   public getByItemId(itemId): Observable<NewConversationResponse> {
@@ -542,7 +542,7 @@ export class ConversationService extends LeadService {
           }
         });
       } else {
-        const archivedConversationIndex: number = _.findIndex(this.archivedLeads, { 'id': message.thread });
+        const archivedConversationIndex: number = findIndex(this.archivedLeads, { 'id': message.thread });
         if (archivedConversationIndex > -1) {
           const unarchivedConversation: Conversation = (<Conversation[]>this.archivedLeads).splice(archivedConversationIndex, 1)[0];
           unarchivedConversation.archived = false;

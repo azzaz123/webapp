@@ -8,8 +8,7 @@ import { InboxConversationService } from '../../core/inbox/inbox-conversation.se
 import { Observable } from 'rxjs';
 import { phoneMethod } from '../../core/message/message';
 import { ConversationService } from '../../core/conversation/conversation.service';
-import * as _ from 'lodash';
-import { isNullOrUndefined } from 'util';
+import { isEmpty, isNil } from 'lodash-es';
 
 @Component({
   selector: 'tsl-chat-with-inbox',
@@ -88,7 +87,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe((params: any) => {
       const itemId = params.itemId;
 
-      if (isNullOrUndefined(itemId)) {
+      if (isNil(itemId)) {
         return;
       }
 
@@ -97,7 +96,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
       this.inboxConversationService.openConversationByItemId$(itemId)
       .catch(() => Observable.of({}))
       .subscribe((conversation: InboxConversation) => {
-        if (_.isEmpty(conversation.messages)) {
+        if (isEmpty(conversation.messages)) {
           this.getPhoneInfo(conversation);
         }
       });
@@ -106,7 +105,7 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
 
   private getPhoneInfo(conversation: InboxConversation): void {
     this.userService.getPhoneInfo(conversation.user.id).subscribe(phoneInfo => {
-      if (!isNullOrUndefined(phoneInfo) && phoneInfo.phone_method === phoneMethod.popUp) {
+      if (!isNil(phoneInfo) && phoneInfo.phone_method === phoneMethod.popUp) {
         this.conversationService.openPhonePopup(conversation, true);
       }
     });

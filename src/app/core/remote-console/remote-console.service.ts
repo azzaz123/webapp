@@ -4,16 +4,15 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { MetricTypeEnum } from './metric-type.enum';
 import * as Fingerprint2 from 'fingerprintjs2';
 import * as logger from 'loglevel';
-import * as _ from 'lodash';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
+import { toUpper } from 'lodash-es';
 import { Observable } from 'rxjs';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
+import { APP_VERSION } from '../../../environments/version';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RemoteConsoleService {
-
-  private static readonly APP_VERSION = '5.78.0';
 
   deviceId: string;
 
@@ -30,11 +29,10 @@ export class RemoteConsoleService {
         metric_type: MetricTypeEnum.XMPP_CONNECTION_TIME,
         message: 'xmpp connection time',
         connection_time: connectionTime,
-        connection_type: _.toUpper(navigator['connection']['type']),
+        connection_type: toUpper(navigator['connection']['type']),
         ping_time_ms: navigator['connection']['rtt']
       }
     })));
-
   }
 
   sendDuplicateConversations(userId: string, callMethodClient: string, conversationsGroupById: Map<string, number>): void {
@@ -58,7 +56,7 @@ export class RemoteConsoleService {
         browser_version: device.browser_version,
         user_id: userId,
         feature_flag: fetureFlag,
-        version: RemoteConsoleService.APP_VERSION
+        version: APP_VERSION
       };
     });
   }

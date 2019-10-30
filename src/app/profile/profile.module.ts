@@ -10,6 +10,10 @@ import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.com
 import { DeleteInfoConfirmationModalComponent } from './profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { SubscriptionIconPipe } from './profile-pro-subscription/subscription-icon.pipe';
 import { VisibilityProductsModalComponent } from './profile-pro-subscription/visibility-products-modal/visibility-products-modal.component';
+import { PaymentSuccessModalComponent } from './subscription/modals/payment-success-modal.component';
+import { AddNewSubscriptionModalComponent } from './subscription/modals/add-new-subscription-modal.component';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { EditSubscriptionModalComponent } from './subscription/modals/edit-subscription-modal.component';
 
 @NgModule({
   imports: [
@@ -19,7 +23,8 @@ import { VisibilityProductsModalComponent } from './profile-pro-subscription/vis
     FormsModule,
     MatIconModule,
     NgbButtonsModule,
-    GeolocationModule
+    GeolocationModule,
+    NgbCarouselModule
   ],
   declarations: [
     profileRoutedComponents,
@@ -27,13 +32,19 @@ import { VisibilityProductsModalComponent } from './profile-pro-subscription/vis
     UnsubscribeModalComponent,
     DeleteInfoConfirmationModalComponent,
     SubscriptionIconPipe,
-    VisibilityProductsModalComponent
+    VisibilityProductsModalComponent,
+    PaymentSuccessModalComponent,
+    AddNewSubscriptionModalComponent,
+    EditSubscriptionModalComponent
   ],
   entryComponents: [
     UnsubscribeModalComponent,
     BecomeProModalComponent,
     DeleteInfoConfirmationModalComponent,
-    VisibilityProductsModalComponent
+    VisibilityProductsModalComponent,
+    PaymentSuccessModalComponent,
+    AddNewSubscriptionModalComponent,
+    EditSubscriptionModalComponent
   ]
 })
 export class ProfileModule { }

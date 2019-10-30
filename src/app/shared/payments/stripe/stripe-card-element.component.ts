@@ -7,7 +7,8 @@ import {
   AfterViewInit,
   OnDestroy,
   ChangeDetectorRef,
-  SimpleChanges
+  SimpleChanges,
+  HostListener
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
 import { CartBase } from '../../catalog/cart/cart-base';
@@ -16,6 +17,7 @@ import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { ToastrService } from 'ngx-toastr';
+import { Tier } from '../../../core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -39,6 +41,9 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   @Input() cart: CartBase;
   @Input() loading: boolean;
   @Input() newLoading: boolean;
+  @Input() action: string;
+  @Input() listingLimit: Tier;
+  @Input() disabled: number;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
@@ -63,6 +68,22 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   ngOnChanges(changes: SimpleChanges) {
     if (this.type === 'cart' && changes.cart && changes.cart.currentValue) {
       this.cart.total = changes.cart.currentValue.total;
+    }
+
+    if (this.card && this.action === 'clear') {
+      this.card.clear();
+    }
+
+    if (changes.listingLimit && changes.listingLimit.currentValue) {
+      this.listingLimit = changes.listingLimit.currentValue;
+    }
+
+    if (changes.disabled && changes.disabled.currentValue) {
+      this.disabled = changes.disabled.currentValue;
+    }
+
+    if (changes.newLoading && changes.newLoading.currentValue) {
+      this.newLoading = changes.newLoading.currentValue;
     }
   }
 
@@ -121,7 +142,9 @@ export class StripeCardElementComponent implements ControlValueAccessor {
 
   public createNewCard() {
     this.stripeService.createStripeCard(this.card).then((paymentMethod: PaymentMethodResponse) => {
-      this.onStripeCardCreate.emit(paymentMethod);
+      if (paymentMethod) {
+        this.onStripeCardCreate.emit(paymentMethod);
+      }
     });
   }
 
@@ -146,4 +169,5 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   public registerOnTouched(fn: Function): void {
     this.onTouched = fn;
   }
+
 }
