@@ -294,20 +294,20 @@ export class UploadCarComponent implements OnInit {
 
     if (uploadEvent.action === 'createdOnHold') {
       this.getOnHoldFlagsObservable().subscribe(() => {
-        this.redirectToList(uploadEvent);
+        this.redirectToList(uploadEvent, true);
       });
     } else {
       this.redirectToList(uploadEvent);
     }
   }
 
-  public redirectToList(uploadEvent) {
-    const params = this.getRedirectParams(uploadEvent);
+  public redirectToList(uploadEvent, isOnHold = false) {
+    const params = this.getRedirectParams(uploadEvent, isOnHold);
     this.item ? this.trackEditOrUpload(true, uploadEvent.response) : this.trackEditOrUpload(false, uploadEvent.response);
     this.router.navigate(['/catalog/list', params]);
   }
 
-  public getRedirectParams(uploadEvent) {
+  public getRedirectParams(uploadEvent, isOnHold: boolean) {
     const params: any = {
       [uploadEvent.action]: true,
       itemId: uploadEvent.response.id || uploadEvent.response
@@ -315,9 +315,22 @@ export class UploadCarComponent implements OnInit {
 
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
-      params.isNormal = this.isNormal;
-      params.isCardealer = this.isCardealer;
-      params.isMotorPlan = this.isMotorPlan;
+    }
+
+    if (isOnHold) {
+      let type: number;
+
+      if (this.isNormal) {
+        type = 1;
+      }
+      if (this.isMotorPlan) {
+        type = 2;
+      }
+      if (this.isCardealer) {
+        type = 3;
+      }
+
+      params.type = type;
     }
 
     return params;
