@@ -18,7 +18,7 @@ import {
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
-import * as _ from 'lodash';
+import { find, omit, isEqual } from 'lodash-es';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryOption } from '../../core/category/category-response.interface';
 import { UploadEvent } from '../upload-event.interface';
@@ -173,14 +173,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       if (!this.item) {
         if (this.categoryId && this.categoryId !== '-1') {
           this.uploadForm.get('category_id').patchValue(this.categoryId);
-          const fixedCategory = _.find(categories, { value: this.categoryId });
+          const fixedCategory = find(categories, { value: this.categoryId });
           this.fixedCategory = fixedCategory ? fixedCategory.label : null;
           this.uploadForm.get('delivery_info').patchValue(null);
         } else {
           this.fixedCategory = null;
         }
       } else {
-        const selectedCategory = _.find(categories, { value: this.item.categoryId.toString() });
+        const selectedCategory = find(categories, { value: this.item.categoryId.toString() });
         if (this.categoryService.isHeroCategory(this.item.categoryId)) {
           this.fixedCategory = selectedCategory ? selectedCategory.label : null;
         }
@@ -210,12 +210,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private detectFormChanges() {
     this.uploadForm.valueChanges.subscribe((value) => {
-      const oldItemData = _.omit(this.oldFormValue, ['images', 'location']);
-      const newItemData = _.omit(value, ['images', 'location']);
+      const oldItemData = omit(this.oldFormValue, ['images', 'location']);
+      const newItemData = omit(value, ['images', 'location']);
       if (!this.oldFormValue) {
         this.oldFormValue = value;
       } else {
-        if (!_.isEqual(oldItemData, newItemData)) {
+        if (!isEqual(oldItemData, newItemData)) {
           this.onFormChanged.emit(true);
         }
         this.oldFormValue = value;
@@ -349,7 +349,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     if (categoryId === '-1') {
       this.fixedCategory = null;
     } else {
-      const fixedCategory = _.find(this.allCategories, { value: categoryId });
+      const fixedCategory = find(this.allCategories, { value: categoryId });
       this.fixedCategory = fixedCategory ? fixedCategory.label : null;
     }
   }

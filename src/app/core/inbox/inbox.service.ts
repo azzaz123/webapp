@@ -10,7 +10,7 @@ import { UserService } from '../user/user.service';
 import { InboxConversationService } from './inbox-conversation.service';
 import { InboxApi, InboxConversationApi } from '../../chat/model/api';
 import { map, tap } from 'rxjs/operators';
-import { uniqBy } from 'lodash';
+import { uniqBy } from 'lodash-es';
 
 @Injectable()
 export class InboxService {

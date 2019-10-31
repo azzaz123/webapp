@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ItemWithProducts } from '../../../core/item/item-response.interface';
-import * as _ from 'lodash';
+import { keys } from 'lodash-es';
 import { CartService } from '../../../shared/catalog/cart/cart.service';
 import { CartChange, CartItem } from '../../../shared/catalog/cart/cart-item.interface';
 import { BUMP_PROVINCIAL_TYPES, BUMP_TYPES } from '../../../shared/catalog/cart/cart-base';
@@ -31,7 +31,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
-    this.durations = _.keys(this.itemWithProducts.products);
+    this.durations = keys(this.itemWithProducts.products);
     this.duration = this.durations[1];
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
       this.onRemoveOrClean(cartChange);

@@ -10,7 +10,6 @@ import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsModel } from '../../../core/subscriptions/subscriptions.model';
-import * as _ from 'lodash';
 import { flatMap } from 'rxjs/operators';
 
 @Component({

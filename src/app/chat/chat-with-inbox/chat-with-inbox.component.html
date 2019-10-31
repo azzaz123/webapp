@@ -3,7 +3,7 @@
     <tsl-inbox (loadingEvent)="onLoad($event)" (loadingError)="onChangeInboxOrArchivedDropdown($event)"></tsl-inbox>
 </div>
 <div id="center-panel" *ngIf="!conversationsLoading">
-    <tsl-current-conversation [currentConversation]="currentConversation" 
+    <tsl-current-conversation [currentConversation]="currentConversation"
     [conversationsTotal]="conversationsTotal"
     [connectionError]="connectionError"
     [loadingError]="loadingError"></tsl-current-conversation>

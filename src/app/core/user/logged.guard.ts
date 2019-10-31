@@ -6,7 +6,7 @@ import { WindowRef } from '../window/window.service';
 import { UserService } from './user.service';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { User } from './user';
-import * as _ from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 @Injectable()
 export class LoggedGuard implements CanActivate {
@@ -22,7 +22,7 @@ export class LoggedGuard implements CanActivate {
       this.window.nativeWindow.location.href = environment.siteUrl + 'login';
       return false;
     }
-    if (_.isEmpty(this.permissionService.getPermissions())) {
+    if (isEmpty(this.permissionService.getPermissions())) {
       return this.userService.me().map((user: User) => {
         this.userService.setPermission(user.type);
         return true;

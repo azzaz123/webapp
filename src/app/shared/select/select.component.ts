@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { SelectOption } from './select.interface';
-import * as _ from 'lodash';
+import { find } from 'lodash-es';
 
 @Component({
   selector: 'tsl-select',
@@ -18,7 +18,7 @@ export class SelectComponent implements OnChanges {
   }
 
   ngOnChanges(changes?: any) {
-    this.selected = _.find(this.items, {value: this.value}) || this.items[0];
+    this.selected = find(this.items, {value: this.value}) || this.items[0];
   }
 
   public selectItem(item: SelectOption) {

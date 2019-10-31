@@ -24,7 +24,7 @@ import { ItemService } from '../item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { HttpModuleNew } from '../http/http.module.new';
 import { environment } from '../../../environments/environment';
-import * as _ from 'lodash';
+import { uniq } from 'lodash-es';
 
 describe('InboxConversationService', () => {
 
@@ -306,7 +306,7 @@ describe('InboxConversationService', () => {
 
         tick();
 
-        expect(service.conversations).toEqual(_.uniq(service.conversations, 'id'));
+        expect(service.conversations).toEqual(uniq(service.conversations, 'id'));
       }));
 
       it('should not update the lastMessage of the conversation', () => {
