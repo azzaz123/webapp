@@ -21,6 +21,7 @@ import { HttpModuleNew } from '../http/http.module.new';
 import { HttpServiceNew } from '../http/http.service.new';
 import { RealTimeService } from '../message/real-time.service';
 import { environment } from '../../../environments/environment';
+import { InboxApi } from '../../chat/model/api';
 
 describe('InboxService', () => {
 
@@ -373,26 +374,26 @@ describe('InboxService', () => {
     });
   });
 
-  describe('shouldCallEndpoint', () => {
+  fdescribe('shouldCallEndpoint', () => {
     const messageNo = InboxConversationService.MESSAGES_IN_CONVERSATION;
+    const inbox = JSON.parse(MOCK_INBOX_API_RESPONSE) as InboxApi;
 
     it('should GET inbox', () => {
-
-      service.getInbox$().subscribe();
+      service.getInbox$().subscribe(response => expect(response).toEqual(service['buildConversations'](inbox.conversations)));
 
       const req = httpTestingController.expectOne(
         `${environment.baseUrl}bff/messaging/inbox?page_size=${InboxService.PAGE_SIZE}&max_messages=${messageNo}`);
-
       expect(req.request.method).toEqual('GET');
+      req.flush(inbox.conversations);
     });
 
     it('should GET archived inbox', () => {
-      service.getArchivedInbox$().subscribe();
+      service.getArchivedInbox$().subscribe(response => expect(response).toEqual(service['buildConversations'](inbox.conversations)));
 
       const req = httpTestingController.expectOne(
         `${environment.baseUrl}/bff/messaging/archived?page_size=${InboxService.PAGE_SIZE}&max_messages=${messageNo}`);
-
       expect(req.request.method).toEqual('GET');
+      req.flush(inbox.conversations);
     });
   });
 
