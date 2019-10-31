@@ -10,18 +10,27 @@
     </div>
 
     <div class="TooManyItemsModal__content-info">
+
       <div class="TooManyItemsModal__content-info-title">
-        <span i18n *ngIf="isPro || isCarDealer"><b>You are trying to activate more items than what your plan supports</b></span>
-        <span i18n *ngIf="!isPro"><b>You’ve reached the maximum limit of cars you can publish with a free account!</b></span>
+        <span i18n *ngIf="isNormal"><b>You’ve reached the maximum limit of items you can publish with a free account!</b></span>
+        <span i18n *ngIf="isMotorPlan || isWebSubscription"><b>You've reached the maximum number of items allowed with your current subscription!</b></span>
+        <span i18n *ngIf="isCarDealer"><b>You are trying to activate more items than what your plan supports</b></span>
       </div>
+
       <div class="TooManyItemsModal__content-info-description">
-        <span i18n>Please unselect some items or</span>&nbsp;
-        <a [attr.href]="isCarDealer ? 'mailto:contacto.motor@wallapop.com' : 'mailto:support.es@wallapop.com'" i18n>contact us</a>
+        <span i18n *ngIf="isNormal">Subscribe to a PRO account to publish more</span>
+        <span i18n *ngIf="isMotorPlan">You must upgrade your subscription <b>through the wallapop app</b> if you want to publish more</span>
+        <span i18n *ngIf="isWebSubscription">You must upgrade your subscription if you want to publish more</span>
+        <span i18n *ngIf="isCarDealer"><span i18n>Please unselect some items or</span>&nbsp;<a href="mailto:contacto.motor@wallapop.com" i18n>contact us</a></span>
       </div>
     </div>
 
   </div>
 
-  <tsl-button (click)="activeModal.close()" i18n>Understood</tsl-button>
+  <div class="TooManyItemsModal__actions">
+    <tsl-button *ngIf="isMotorPlan || isCarDealer" (click)="activeModal.close()" i18n>Understood</tsl-button>
+    <tsl-button *ngIf="isNormal || isWebSubscription" (click)="activeModal.close()" [routerLink]="'/profile/manage-subscription'" i18n>Go to subscriptions</tsl-button>
+    <div *ngIf="isNormal || isWebSubscription" (click)="activeModal.close()" i18n>No thanks (the item will remain inactive)</div>
+  </div>
 
 </div>

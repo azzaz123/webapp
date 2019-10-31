@@ -62,7 +62,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public numberOfProducts: number;
   public isRedirect = false;
   private counters: Counters;
-  private upgradePlanModalRef: NgbModalRef;
+  private tooManyItemsModalRef: NgbModalRef;
   public userCanDeactivate: boolean;
   public selectedItems: Item[];
   public creditInfo: CreditInfo;
@@ -254,15 +254,17 @@ export class ListComponent implements OnInit, OnDestroy {
         } else if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
-          this.upgradePlanModalRef = this.modalService.open(TooManyItemsModalComponent, {
+          this.tooManyItemsModalRef = this.modalService.open(TooManyItemsModalComponent, {
             windowClass: 'modal-standard',
           });
-          this.upgradePlanModalRef.componentInstance.itemId = params.itemId;
-          this.upgradePlanModalRef.result.then((orderEvent: OrderEvent) => {
+          this.tooManyItemsModalRef.componentInstance.setType(params.onHoldType);
+          // this.tooManyItemsModalRef.componentInstance.categoryName = params.
+          this.tooManyItemsModalRef.componentInstance.itemId = params.itemId;
+          this.tooManyItemsModalRef.result.then((orderEvent: OrderEvent) => {
             if (orderEvent) {
               this.purchaseListingFee(orderEvent);
             } else {
-              this.upgradePlanModalRef = null;
+              this.tooManyItemsModalRef = null;
             }
           }, () => {
           });
@@ -559,9 +561,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
         this.eventService.emit('itemChanged');
       }, () => {
-        const modalRef = this.modalService.open(TooManyItemsModalComponent, {windowClass: 'bump'});
-          modalRef.componentInstance.isPro = this.subscriptionSlots.length;
-          modalRef.componentInstance.isInApp = false;
+        const modalRef = this.modalService.open(TooManyItemsModalComponent, {windowClass: 'modal-standard'});
+        modalRef.componentInstance.setType('4');
       });
     });
   }
