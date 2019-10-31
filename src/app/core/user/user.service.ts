@@ -142,8 +142,11 @@ export class UserService extends ResourceService {
       .do(() => {
         this.meObservable = null;
       })
-      .catch(() => {
+      .catch(error => {
         this.meObservable = null;
+        if (!error.ok) {
+          this.logout();
+        }
         return Observable.of(null);
       });
     return this.meObservable;
