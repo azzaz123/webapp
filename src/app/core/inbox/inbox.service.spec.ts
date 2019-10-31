@@ -374,7 +374,7 @@ describe('InboxService', () => {
     });
   });
 
-  fdescribe('shouldCallEndpoint', () => {
+  describe('shouldCallEndpoint', () => {
     const messageNo = InboxConversationService.MESSAGES_IN_CONVERSATION;
     const inbox = JSON.parse(MOCK_INBOX_API_RESPONSE) as InboxApi;
 
