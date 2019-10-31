@@ -96,6 +96,18 @@ export class UserService extends ResourceService {
     });
   }
 
+  public logoutLocal() {
+    const redirectUrl = environment.siteUrl.replace('es', this.subdomain);
+    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+    this.cookieService.remove('publisherId', cookieOptions);
+    this.cookieService.remove('creditName', cookieOptions);
+    this.cookieService.remove('creditQuantity', cookieOptions);
+    this.accessTokenService.deleteAccessToken();
+    this.permissionService.flushPermissions();
+    this.event.emit(EventService.USER_LOGOUT, redirectUrl);
+    this.splitTestService.reset();
+  }
+
   public get isLogged(): boolean {
     return this.accessTokenService.accessToken ? true : false;
   }
@@ -145,7 +157,7 @@ export class UserService extends ResourceService {
       .catch(error => {
         this.meObservable = null;
         if (!error.ok) {
-          this.logout();
+          this.logoutLocal();
         }
         return Observable.of(null);
       });
