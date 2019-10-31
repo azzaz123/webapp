@@ -18,12 +18,14 @@ import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-na
 @Injectable()
 export class RealTimeService {
 
+  private isConnecting: boolean;
+
   constructor(private xmpp: XmppService,
-    private eventService: EventService,
-    private persistencyService: PersistencyService,
-    private trackingService: TrackingService,
-    private remoteConsoleService: RemoteConsoleService,
-    private analyticsService: AnalyticsService) {
+              private eventService: EventService,
+              private persistencyService: PersistencyService,
+              private trackingService: TrackingService,
+              private remoteConsoleService: RemoteConsoleService,
+              private analyticsService: AnalyticsService) {
     this.subscribeEventNewMessage();
     this.subscribeEventMessageSent();
     this.subscribeConnectionRestored();
@@ -32,10 +34,14 @@ export class RealTimeService {
   private ongoingRetry: boolean;
 
   public connect(userId: string, accessToken: string) {
-    const startTimestamp = now();
-    this.xmpp.connect(userId, accessToken).subscribe(() => {
+    if (!this.isConnecting) {
+      this.isConnecting = true;
+      const startTimestamp = now();
+      this.xmpp.connect(userId, accessToken).subscribe(() => {
+        this.isConnecting = false;
         this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp);
-      });
+      }, () => this.isConnecting = false);
+    }
   }
 
   public disconnect() {
@@ -160,7 +166,7 @@ export class RealTimeService {
       sellerUserId: conversation.user.id,
       conversationId: conversation.id,
       screenId: SCREENS_IDS.Chat
-    }
+    };
 
     this.analyticsService.trackEvent({
       name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
