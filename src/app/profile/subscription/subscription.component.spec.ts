@@ -9,7 +9,6 @@ import { MAPPED_SUBSCRIPTIONS } from "../../../tests/subscriptions.fixtures.spec
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from "./modals/add-new-subscription-modal.component";
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component'
-import { EventService } from "../../core/event/event.service";
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionComponent;
@@ -17,7 +16,6 @@ describe('SubscriptionComponent', () => {
   let categoryService: CategoryService;
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
-  let eventService: EventService;
   const componentInstance: any = {};
   
   beforeEach(async(() => {
@@ -61,7 +59,6 @@ describe('SubscriptionComponent', () => {
     component = fixture.componentInstance;
     subscriptionsService = TestBed.get(SubscriptionsService);
     categoryService = TestBed.get(CategoryService);
-    eventService = TestBed.get(EventService);
     fixture.detectChanges();
   });
 

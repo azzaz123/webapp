@@ -14,6 +14,7 @@ import { FeatureflagService } from '../core/user/featureflag.service';
 import { CATEGORY_DATA_WEB } from '../../tests/category.fixtures.spec';
 import { CategoryService } from '../core/category/category.service';
 import { SUBSCRIPTIONS } from '../../tests/subscriptions.fixtures.spec';
+import { EventService } from '../core/event/event.service';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -23,6 +24,7 @@ describe('ProfileComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let stripeService: StripeService;
   let featureflagService: FeatureflagService;
+  let eventService: EventService;
   const mockMotorPlan = {
     type: 'motor_plan_pro',
     subtype: 'sub_premium'
@@ -35,6 +37,7 @@ describe('ProfileComponent', () => {
       declarations: [ ProfileComponent ],
       providers: [
         I18nService,
+        EventService,
         {provide: HttpService, useValue: {}},
         {
           provide: UserService, useValue: {
@@ -106,6 +109,7 @@ describe('ProfileComponent', () => {
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
     categoryService = TestBed.get(CategoryService);
+    eventService = TestBed.get(EventService);
     spyOn(userService, 'me').and.callThrough();
     spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
     spyOn(userService, 'getStats').and.callThrough();

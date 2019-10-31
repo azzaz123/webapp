@@ -4,9 +4,10 @@ import { AddNewSubscriptionModalComponent } from './modals/add-new-subscription-
 import { SubscriptionsResponse, Tier } from '../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { CategoryService } from '../../core/category/category.service';
-import { flatMap } from 'rxjs/operators';
-import { EventService } from '../../core/event/event.service';
+import { flatMap, map, mergeMap } from 'rxjs/operators';
 import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-modal.component';
+import { EventService } from '../../core/event/event.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -17,17 +18,21 @@ import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-m
 export class SubscriptionComponent implements OnInit {
   public action: string;
   public subscriptions: SubscriptionsResponse[];
+  public loading = false;
 
   constructor(private modalService: NgbModal,
               private subscriptionsService: SubscriptionsService,
-              private categoryService: CategoryService,
               private eventService: EventService) {
   }
 
   ngOnInit() {
-    this.getSubscriptions(false);
+    this.loading = true;
+    this.subscriptionsService.getSubscriptions(false).subscribe((subscriptions) => {
+      this.subscriptions = subscriptions;
+      this.loading = false;
+    });
     this.eventService.subscribe('subscriptionChange', () => {
-      this.getSubscriptions(false);
+      this.isSubscriptionUpdated();
     });
   }
 
@@ -41,13 +46,11 @@ export class SubscriptionComponent implements OnInit {
     }, () => {});
   }
 
-  private getSubscriptions(cache: boolean = true): void {
-    this.categoryService.getCategories()
-    .pipe(
-      flatMap(categories => this.subscriptionsService.getSubscriptions(categories, cache)),
-    )
-    .subscribe(response => this.subscriptions = response); 
+  private isSubscriptionUpdated() {
+    this.subscriptionsService.getSubscriptions(false).subscribe((updatedSubscriptions) => {
+      console.log('updatedSubscriptions: ', updatedSubscriptions);
+      console.log('this.subscriptions: ', this.subscriptions);
+    });
   }
-
   
 }

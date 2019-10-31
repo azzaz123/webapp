@@ -9,14 +9,12 @@ import { Router } from '@angular/router';
 })
 
 export class PaymentSuccessModalComponent {
-
   constructor(public activeModal: NgbActiveModal,
               private router: Router) {
   }
 
   public close() {
       this.activeModal.close();
-      this.router.navigate(['profile/info']);
   }
 
 }

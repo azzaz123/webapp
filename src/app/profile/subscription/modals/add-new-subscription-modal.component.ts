@@ -6,12 +6,10 @@ import { EventService } from '../../../core/event/event.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
-import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
-import { SubscriptionsModel } from '../../../core/subscriptions/subscriptions.model';
 import * as _ from 'lodash';
-import { flatMap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -45,7 +43,8 @@ export class AddNewSubscriptionModalComponent implements OnInit {
               private eventService: EventService,
               private subscriptionsService: SubscriptionsService,
               private modalService: NgbModal,
-              private errorService: ErrorsService) {
+              private errorService: ErrorsService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -215,7 +214,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
     modalRef.result.then(() => {
       modalRef = null;
-      this.eventService.emit('subscriptionChange');
     }, () => {});
   }
 
