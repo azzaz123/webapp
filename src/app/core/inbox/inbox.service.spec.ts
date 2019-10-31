@@ -376,24 +376,21 @@ describe('InboxService', () => {
 
   describe('shouldCallEndpoint', () => {
     const messageNo = InboxConversationService.MESSAGES_IN_CONVERSATION;
-    const inbox = JSON.parse(MOCK_INBOX_API_RESPONSE) as InboxApi;
 
     it('should GET inbox', () => {
-      service.getInbox$().subscribe(response => expect(response).toEqual(service['buildConversations'](inbox.conversations)));
+      service.getInbox$().subscribe();
 
       const req = httpTestingController.expectOne(
         `${environment.baseUrl}bff/messaging/inbox?page_size=${InboxService.PAGE_SIZE}&max_messages=${messageNo}`);
       expect(req.request.method).toEqual('GET');
-      req.flush(inbox.conversations);
     });
 
     it('should GET archived inbox', () => {
-      service.getArchivedInbox$().subscribe(response => expect(response).toEqual(service['buildConversations'](inbox.conversations)));
+      service.getArchivedInbox$().subscribe();
 
       const req = httpTestingController.expectOne(
         `${environment.baseUrl}/bff/messaging/archived?page_size=${InboxService.PAGE_SIZE}&max_messages=${messageNo}`);
       expect(req.request.method).toEqual('GET');
-      req.flush(inbox.conversations);
     });
   });
 
