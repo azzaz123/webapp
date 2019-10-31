@@ -52,6 +52,10 @@ export class UploadCarComponent implements OnInit {
   public customVersion = false;
   private settingItem: boolean;
 
+  private isMotorPlan = false;
+  private isCardealer = false;
+  private isNormal = true;
+
   constructor(private fb: FormBuilder,
     private carSuggestionsService: CarSuggestionsService,
     private carKeysService: CarKeysService,
@@ -287,17 +291,56 @@ export class UploadCarComponent implements OnInit {
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
+
+    if (uploadEvent.action === 'createdOnHold') {
+      this.getOnHoldFlagsObservable().subscribe(() => {
+        this.redirectToList(uploadEvent);
+      });
+    } else {
+      this.redirectToList(uploadEvent);
+    }
+  }
+
+  public redirectToList(uploadEvent) {
+    const params = this.getRedirectParams(uploadEvent);
+    this.item ? this.trackEditOrUpload(true, uploadEvent.response) : this.trackEditOrUpload(false, uploadEvent.response);
+    this.router.navigate(['/catalog/list', params]);
+  }
+
+  public getRedirectParams(uploadEvent) {
     const params: any = {
       [uploadEvent.action]: true,
       itemId: uploadEvent.response.id || uploadEvent.response
     };
+
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
+      params.isNormal = this.isNormal;
+      params.isCardealer = this.isCardealer;
+      params.isMotorPlan = this.isMotorPlan;
     }
 
-    this.item ? this.trackEditOrUpload(true, uploadEvent.response) : this.trackEditOrUpload(false, uploadEvent.response);
+    return params;
+  }
 
-    this.router.navigate(['/catalog/list', params]);
+  public getOnHoldFlagsObservable() {
+    return Observable.forkJoin([
+      this.userService.isProfessional(),
+      this.userService.getMotorPlan(),
+    ])
+    .map(values => {
+      if (values[0]) {
+        this.isCardealer = true;
+        this.isMotorPlan = false;
+        this.isNormal = false;
+      }
+
+      if (!!(values[1] && values[1].type)) {
+        this.isCardealer = false;
+        this.isMotorPlan = true;
+        this.isNormal = false;
+      }
+    });
   }
 
   onError(response: any) {
