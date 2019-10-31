@@ -330,7 +330,7 @@ export class UploadCarComponent implements OnInit {
         type = 3;
       }
 
-      params.type = type;
+      params.onHoldType = type;
     }
 
     return params;

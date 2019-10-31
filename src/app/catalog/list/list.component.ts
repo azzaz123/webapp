@@ -25,7 +25,6 @@ import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.dire
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ActivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
@@ -255,7 +254,7 @@ export class ListComponent implements OnInit, OnDestroy {
         } else if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
-          this.upgradePlanModalRef = this.modalService.open(UpgradePlanModalComponent, {
+          this.upgradePlanModalRef = this.modalService.open(TooManyItemsModalComponent, {
             windowClass: 'modal-standard',
           });
           this.upgradePlanModalRef.componentInstance.itemId = params.itemId;

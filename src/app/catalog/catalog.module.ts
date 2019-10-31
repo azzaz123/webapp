@@ -18,7 +18,6 @@ import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.serv
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { BuyProductModalComponent } from './list/modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
-import { UpgradePlanModalComponent } from './list/modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { ListingfeeConfirmationModalComponent } from './list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { SelectModule } from 'ng-select';
 import { SubscriptionsSlotsListComponent } from './list/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
@@ -55,7 +54,6 @@ import { SubscriptionsSlotItemComponent } from './list/subscriptions-slots/subsc
     UrgentConfirmationModalComponent,
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
-    UpgradePlanModalComponent,
     ListingfeeConfirmationModalComponent
   ],
   entryComponents: [
@@ -65,7 +63,6 @@ import { SubscriptionsSlotItemComponent } from './list/subscriptions-slots/subsc
     UrgentConfirmationModalComponent,
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
-    UpgradePlanModalComponent,
     ListingfeeConfirmationModalComponent
   ]
 })
