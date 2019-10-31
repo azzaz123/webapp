@@ -141,7 +141,7 @@ export class InboxService {
   }
 
   public getArchivedInbox$(): Observable<InboxConversation[]> {
-    return this.httpClient.get<InboxApi>('/bff/messaging/archived', [
+    return this.httpClient.get<InboxApi>('bff/messaging/archived', [
       { key: 'page_size', value: InboxService.PAGE_SIZE },
       { key: 'max_messages', value: InboxConversationService.MESSAGES_IN_CONVERSATION }
     ])
@@ -152,7 +152,7 @@ export class InboxService {
   }
 
   public getNextArchivedPage$(): Observable<InboxConversation[]> {
-    return this.httpClient.get<InboxApi>('/bff/messaging/archived', [
+    return this.httpClient.get<InboxApi>('bff/messaging/archived', [
       { key: 'page_size', value: InboxService.PAGE_SIZE },
       { key: 'from', value: this.nextArchivedPageToken }
     ])

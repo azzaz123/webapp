@@ -389,7 +389,7 @@ describe('InboxService', () => {
       service.getArchivedInbox$().subscribe();
 
       const req = httpTestingController.expectOne(
-        `${environment.baseUrl}/bff/messaging/archived?page_size=${InboxService.PAGE_SIZE}&max_messages=${messageNo}`);
+        `${environment.baseUrl}bff/messaging/archived?page_size=${InboxService.PAGE_SIZE}&max_messages=${messageNo}`);
       expect(req.request.method).toEqual('GET');
     });
   });
