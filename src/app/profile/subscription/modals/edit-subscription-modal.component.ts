@@ -38,7 +38,7 @@ export class EditSubscriptionModalComponent implements OnInit {
   }
 
   public close() {
-    this.activeModal.close();
+    this.activeModal.close('update');
   }
 
   public updateSubscription() {
@@ -46,7 +46,6 @@ export class EditSubscriptionModalComponent implements OnInit {
     //update subs endpoint
     this.close();
     this.toastr.success(this.i18n.getTranslations('editSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('editSubscriptionSuccessBody'));
-    this.eventService.emit('subscriptionChange');
   }
 
   public selectListingLimit(tier: Tier): void {
@@ -61,7 +60,6 @@ export class EditSubscriptionModalComponent implements OnInit {
     modalRef.result.then(() => {
       modalRef = null;
       this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
-      this.eventService.emit('subscriptionChange');
     }, () => {});
   }
 

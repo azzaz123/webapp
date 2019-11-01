@@ -12,6 +12,7 @@ import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { SubscriptionsResponse } from './subscriptions.interface';
 import { SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
+import { CategoryService } from '../category/category.service';
 
 describe('SubscriptionsService', () => {
 
@@ -20,6 +21,7 @@ describe('SubscriptionsService', () => {
   let httpMock: HttpTestingController;
   let userService: UserService;
   let featureflagService: FeatureflagService;
+  let categoryService: CategoryService;
   const API_URL = 'api/v3/payments';
   const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
 
@@ -44,7 +46,14 @@ describe('SubscriptionsService', () => {
               return Observable.of(false);
             }
           }
-        }
+        },
+        {
+          provide: CategoryService, useValue: {
+            getCategories() {
+                return Observable.of(CATEGORY_DATA_WEB);
+              }
+            }
+        },
       ]
     });
     service = TestBed.get(SubscriptionsService);
@@ -52,6 +61,7 @@ describe('SubscriptionsService', () => {
     httpMock = TestBed.get(HttpTestingController);
     userService = TestBed.get(UserService);
     featureflagService = TestBed.get(FeatureflagService);
+    categoryService = TestBed.get(CategoryService);
     service.uuid = '1-2-3';
     spyOn(UUID, 'UUID').and.returnValue('1-2-3');
   });
@@ -142,7 +152,7 @@ describe('SubscriptionsService', () => {
       service.subscriptions = null;
       let response: SubscriptionsResponse[];
 
-      service.getSubscriptions(CATEGORY_DATA_WEB, false).subscribe((res) => response = res);
+      service.getSubscriptions(false).subscribe((res) => response = res);
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(SUBSCRIPTIONS);
 

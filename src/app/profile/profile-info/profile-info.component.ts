@@ -81,6 +81,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
       this.loading = false;
     }, () => {
       this.setUserData();
+      this.loading = false;
     });
   }
 

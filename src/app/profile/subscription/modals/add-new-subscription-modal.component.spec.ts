@@ -132,7 +132,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
       component.close();
 
-      expect(activeModal.close).toHaveBeenCalled();
+      expect(activeModal.close).toHaveBeenCalledWith('add');
     });
   });
 

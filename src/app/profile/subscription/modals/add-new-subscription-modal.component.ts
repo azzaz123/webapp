@@ -9,7 +9,6 @@ import { PaymentSuccessModalComponent } from './payment-success-modal.component'
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
 import * as _ from 'lodash';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -43,8 +42,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
               private eventService: EventService,
               private subscriptionsService: SubscriptionsService,
               private modalService: NgbModal,
-              private errorService: ErrorsService,
-              private router: Router) {
+              private errorService: ErrorsService) {
   }
 
   ngOnInit() {
@@ -62,7 +60,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   public close() {
-      this.activeModal.close();
+      this.activeModal.close('add');
   }
 
   public addSubscription(paymentMethod: PaymentMethodResponse) {

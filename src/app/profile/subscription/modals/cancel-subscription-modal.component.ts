@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionsResponse } from '../../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
-import { EventService } from '../../../core/event/event.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'tsl-cancel-subscription-modal',
@@ -21,14 +19,11 @@ export class CancelSubscriptionModalComponent {
   constructor(public activeModal: NgbActiveModal,
               public subscriptionsService: SubscriptionsService,
               private toastr: ToastrService,
-              private i18n: I18nService,
-              private eventService: EventService,
-              private router: Router) {
+              private i18n: I18nService) {
   }
 
   public close() {
-    this.activeModal.close();
-    this.router.navigate(['profile/info']);
+    this.activeModal.close('cancel');
   }
 
   public cancelSubscription() {
@@ -36,7 +31,6 @@ export class CancelSubscriptionModalComponent {
     this.subscriptionsService.cancelSubscription(this.subscription.selected_tier_id).subscribe((response) => {
       if (response.status === 202) {
           this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
-          this.eventService.emit('subscriptionChange');
           this.loading = false;
       } else {
         this.loading = false;
