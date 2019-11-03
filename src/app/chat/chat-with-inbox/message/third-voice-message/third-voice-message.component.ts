@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { MessageComponent } from '../message.component';
-import * as _ from 'lodash';
+import { eq } from 'lodash-es';
 import { InboxItem, InboxUser, MessageType } from '../../../model';
 
 @Component({
@@ -21,6 +21,6 @@ export class ThirdVoiceMessageComponent extends MessageComponent implements OnIn
   }
 
   public isReview(): boolean {
-    return _.eq(this.message.type, MessageType.REVIEW);
+    return eq(this.message.type, MessageType.REVIEW);
   }
 }

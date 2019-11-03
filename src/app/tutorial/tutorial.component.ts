@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { TutorialService } from '../core/tutorial/tutorial.service';
 import { animate, style, transition, trigger } from '@angular/animations';
-import * as _ from 'lodash';
+import { range } from 'lodash-es';
 import { Router } from '@angular/router';
 import { UserService } from '../core/user/user.service';
 
@@ -39,7 +39,7 @@ export class TutorialComponent implements OnInit, OnDestroy {
   constructor(public tutorialService: TutorialService,
               private userService: UserService,
               private router: Router) {
-    this.dots = _.range(this.tutorialService.maxSteps);
+    this.dots = range(this.tutorialService.maxSteps);
   }
 
   ngOnInit() {

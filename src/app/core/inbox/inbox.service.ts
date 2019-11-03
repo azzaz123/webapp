@@ -1,58 +1,38 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '../http/http.service';
 import { HttpServiceNew } from '../http/http.service.new';
 import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
-import { InboxConversation } from '../../chat/model/inbox-conversation';
+import { InboxConversation } from '../../chat/model';
 import { MessageService } from '../message/message.service';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
+import { FEATURE_FLAGS_ENUM, FeatureflagService } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
 import { UserService } from '../user/user.service';
-import { environment } from '../../../environments/environment';
 import { InboxConversationService } from './inbox-conversation.service';
-import { Response } from '@angular/http';
-import * as _ from 'lodash';
-
-const USER_BASE_PATH = environment.siteUrl + 'user/';
+import { InboxApi, InboxConversationApi } from '../../chat/model/api';
+import { map, tap } from 'rxjs/operators';
+import { uniqBy } from 'lodash-es';
 
 @Injectable()
-
 export class InboxService {
-  private API_URL = 'bff/messaging/inbox';
-  private ARCHIVED_API_URL = '/bff/messaging/archived';
-  private _conversations: InboxConversation[] = [];
-  private _archivedConversations: InboxConversation[] = [];
+  public static readonly PAGE_SIZE = 30;
+
+  public conversations: InboxConversation[] = [];
+  public archivedConversations: InboxConversation[] = [];
+
   private selfId: string;
   private nextPageToken: string = null;
   private nextArchivedPageToken: string = null;
-  private pageSize = 30;
+
   public errorRetrievingInbox = false;
   public errorRetrievingArchived = false;
 
-  constructor(private http: HttpService,
-              private httpClient: HttpServiceNew,
+  constructor(private httpClient: HttpServiceNew,
               private persistencyService: PersistencyService,
               private messageService: MessageService,
               private conversationService: InboxConversationService,
               private featureflagService: FeatureflagService,
               private eventService: EventService,
               private userService: UserService) {
-  }
-
-  set conversations(value: InboxConversation[]) {
-    this._conversations = value;
-  }
-
-  get conversations(): InboxConversation[] {
-    return this._conversations;
-  }
-
-  set archivedConversations(value: InboxConversation[]) {
-    this._archivedConversations = value;
-  }
-
-  get archivedConversations(): InboxConversation[] {
-    return this._archivedConversations;
   }
 
   public getInboxFeatureFlag$(): Observable<boolean> {
@@ -139,58 +119,66 @@ export class InboxService {
 
   public getInbox$(): Observable<InboxConversation[]> {
     this.messageService.totalUnreadMessages = 0;
-    return this.http.get(this.API_URL, {
-      page_size: this.pageSize,
-      max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION
-    })
-    .map(response => this.conversations = this.processInboxResponse(response));
+    return this.httpClient.get<InboxApi>('bff/messaging/inbox', [
+      { key: 'page_size', value: InboxService.PAGE_SIZE },
+      { key: 'max_messages', value: InboxConversationService.MESSAGES_IN_CONVERSATION }
+    ])
+    .pipe(
+      tap((inbox: InboxApi) => this.nextPageToken = inbox.next_from || null),
+      map((inbox: InboxApi) => this.conversations = this.processInboxResponse(inbox))
+    );
   }
 
-  private getArchivedInbox$(): Observable<any> {
-    return this.http.get(this.ARCHIVED_API_URL, {
-      page_size: this.pageSize,
-      max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION
-    })
-    .map(response => this.archivedConversations = this.processArchivedInboxResponse(response));
+  public getNextPage$(): Observable<InboxConversation[]> {
+    return this.httpClient.get<InboxApi>('bff/messaging/inbox', [
+      { key: 'page_size', value: InboxService.PAGE_SIZE },
+      { key: 'from', value: this.nextPageToken }
+    ])
+    .pipe(
+      tap((inbox: InboxApi) => this.nextPageToken = inbox.next_from || null),
+      map((inbox: InboxApi) => this.conversations = this.processInboxResponse(inbox))
+    );
   }
 
-  private getNextPage$(): Observable<any> {
-    return this.http.get(this.API_URL, {
-      page_size: this.pageSize,
-      from: this.nextPageToken
-    })
-    .map(response => this.conversations = this.processInboxResponse(response));
+  public getArchivedInbox$(): Observable<InboxConversation[]> {
+    return this.httpClient.get<InboxApi>('bff/messaging/archived', [
+      { key: 'page_size', value: InboxService.PAGE_SIZE },
+      { key: 'max_messages', value: InboxConversationService.MESSAGES_IN_CONVERSATION }
+    ])
+    .pipe(
+      tap((inbox: InboxApi) => this.nextArchivedPageToken = inbox.next_from || null),
+      map((inbox: InboxApi) => this.archivedConversations = this.processArchivedInboxResponse(inbox))
+    );
   }
 
-  private getNextArchivedPage$(): Observable<any> {
-    return this.http.get(this.ARCHIVED_API_URL, {
-      page_size: this.pageSize,
-      from: this.nextArchivedPageToken
-    })
-    .map(resoponse => this.archivedConversations = this.processArchivedInboxResponse(resoponse));
+  public getNextArchivedPage$(): Observable<InboxConversation[]> {
+    return this.httpClient.get<InboxApi>('bff/messaging/archived', [
+      { key: 'page_size', value: InboxService.PAGE_SIZE },
+      { key: 'from', value: this.nextArchivedPageToken }
+    ])
+    .pipe(
+      tap((inbox: InboxApi) => this.nextArchivedPageToken = inbox.next_from || null),
+      map((inbox: InboxApi) => this.archivedConversations = this.archivedConversations = this.processArchivedInboxResponse(inbox))
+    );
   }
 
-  private processInboxResponse(response: Response): InboxConversation[] {
-    const reloadConversations = response.json();
-    this.nextPageToken = reloadConversations.next_from || null;
-    const conversations: InboxConversation[] = this.buildConversations(reloadConversations.conversations);
+  private processInboxResponse(inbox: InboxApi): InboxConversation[] {
+    const conversations: InboxConversation[] = this.buildConversations(inbox.conversations);
     this.conversationService.sendReceiveSignalByConversations(conversations);
-    return _.uniqBy([...this.conversations, ...conversations], 'id');
+    return uniqBy([...this.conversations, ...conversations], 'id');
   }
 
-  private processArchivedInboxResponse(response: Response): InboxConversation[] {
-    const reloadArchivedConversations = response.json();
-    this.nextArchivedPageToken = reloadArchivedConversations.next_from || null;
-    return _.uniqBy([...this.archivedConversations, ...this.buildArchivedConversations(reloadArchivedConversations.conversations)], 'id');
+  private processArchivedInboxResponse(response: InboxApi): InboxConversation[] {
+    return uniqBy([...this.archivedConversations, ...this.buildArchivedConversations(response.conversations)], 'id');
   }
 
-  private buildArchivedConversations(conversations) {
+  private buildArchivedConversations(conversations: InboxConversationApi[]) {
     return conversations
-    .map((conversationResponse) => InboxConversation.fromJSON(conversationResponse, this.selfId));
+    .map((conversationResponse: InboxConversationApi) => InboxConversation.fromJSON(conversationResponse, this.selfId));
   }
 
-  private buildConversations(conversations): InboxConversation[] {
-    return conversations.map((conversationResponse) => {
+  private buildConversations(conversations: InboxConversationApi[]): InboxConversation[] {
+    return conversations.map((conversationResponse: InboxConversationApi) => {
       const conversation = InboxConversation.fromJSON(conversationResponse, this.selfId);
       this.messageService.totalUnreadMessages += conversation.unreadCounter;
       return conversation;

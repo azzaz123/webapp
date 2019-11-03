@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import * as CryptoJS from 'crypto-js';

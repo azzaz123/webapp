@@ -13,7 +13,7 @@ import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootst
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { Car } from '../../core/item/car';
-import * as _ from 'lodash';
+import { find, omit, isEqual } from 'lodash-es';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';
@@ -140,12 +140,12 @@ export class UploadCarComponent implements OnInit {
   private detectFormChanges() {
     this.uploadForm.valueChanges.subscribe((value) => {
       if (this.brands && this.carTypes && this.models && this.years && this.versions) {
-        const oldItemData = _.omit(this.oldFormValue, ['images', 'location']);
-        const newItemData = _.omit(value, ['images', 'location']);
+        const oldItemData = omit(this.oldFormValue, ['images', 'location']);
+        const newItemData = omit(value, ['images', 'location']);
         if (!this.oldFormValue) {
           this.oldFormValue = value;
         } else {
-          if (!_.isEqual(oldItemData, newItemData)) {
+          if (!isEqual(oldItemData, newItemData)) {
             this.onFormChanged.emit(true);
           }
         }
@@ -162,7 +162,7 @@ export class UploadCarComponent implements OnInit {
       this.brands = brands;
       this.markFieldAsPristine('brand');
       if (this.item) {
-        this.customMake = !_.find(this.brands, { value: this.item.brand });
+        this.customMake = !find(this.brands, { value: this.item.brand });
       }
     });
   }
@@ -216,7 +216,7 @@ export class UploadCarComponent implements OnInit {
       this.versions = versions;
       this.toggleField('version', 'enable', !editMode);
       if (this.item) {
-        this.customVersion = !_.find(this.versions, { value: this.item.version });
+        this.customVersion = !find(this.versions, { value: this.item.version });
       }
       if (!this.settingItem) {
         this.setTitle();

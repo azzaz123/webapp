@@ -1,5 +1,4 @@
 /* tslint:disable:no-unused-variable */
-import * as _ from 'lodash';
 import { TestBed } from '@angular/core/testing';
 import { MessageService } from './message.service';
 import { XmppService } from '../xmpp/xmpp.service';
