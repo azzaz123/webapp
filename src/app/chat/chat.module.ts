@@ -39,6 +39,7 @@ import { ThirdVoiceReviewComponent } from './chat-with-inbox/message/third-voice
 import { ScrollingMessageComponent } from './chat-with-inbox/scrolling-message';
 import { StatusIconComponent } from './chat-with-inbox/inbox/inbox-metadata/status-icon';
 import { InboxItemForSellComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component';
+import { AutosizeModule } from 'ngx-autosize';
 
 @NgModule({
   imports: [
@@ -51,7 +52,8 @@ import { InboxItemForSellComponent } from './chat-with-inbox/inbox/inbox-metadat
     NgbModalModule,
     SharedModule,
     ChatRoutingModule,
-    TrackingModule
+    TrackingModule,
+    AutosizeModule
   ],
   declarations: [
     chatRoutedComponents,
