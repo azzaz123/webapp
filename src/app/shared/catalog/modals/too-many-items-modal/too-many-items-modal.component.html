@@ -21,7 +21,7 @@
         <span i18n *ngIf="isNormal">Subscribe to a PRO account to publish more</span>
         <span i18n *ngIf="isMotorPlan">You must upgrade your subscription <b>through the wallapop app</b> if you want to publish more</span>
         <span i18n *ngIf="isWebSubscription">You must upgrade your subscription if you want to publish more</span>
-        <span i18n *ngIf="isCarDealer"><span i18n>Please unselect some items or</span>&nbsp;<a href="mailto:contacto.motor@wallapop.com" i18n>contact us</a></span>
+        <span *ngIf="isCarDealer"><span i18n>Please unselect some items or</span>&nbsp;<a href="mailto:contacto.motor@wallapop.com" i18n>contact us</a></span>
       </div>
     </div>
 

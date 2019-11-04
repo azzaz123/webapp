@@ -128,11 +128,17 @@
   <msg id="5272763997595694217"><source>app/shared/catalog/catalog-card/catalog-card.component.html:83</source>Cancel Autorenew</msg>
   <msg id="291347435854981703"><source>app/shared/catalog/catalog-card/catalog-card.component.html:84</source>Do you really want to cancel the autorenew for this item?</msg>
   <msg id="2807800733729323332"><source>app/shared/catalog/catalog-card/catalog-card.component.html:88</source>Yes</msg>
-  <msg id="7490117399669169777"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:14</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>You are trying to activate more items than what your plan supports<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></msg>
-  <msg id="8210978350459895677"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:15</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>You’ve reached the maximum limit of cars you can publish with a free account!<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></msg>
-  <msg id="6991105239065793562"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:18</source>Please unselect some items or</msg>
-  <msg id="1531212547408073567"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:19</source>contact us</msg>
-  <msg id="2513950439336286072"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:25</source>Understood</msg>
+  <msg id="957195517515723291"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:15</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>You’ve reached the maximum limit of items you can publish with a free account!<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></msg>
+  <msg id="1168925957252341106"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:16</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>You&apos;ve reached the maximum number of items allowed with your current subscription!<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></msg>
+  <msg id="7490117399669169777"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:17</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>You are trying to activate more items than what your plan supports<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></msg>
+  <msg id="8677966578884278103"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:21</source>Subscribe to a PRO account to publish more</msg>
+  <msg id="3413192670828382562"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:22</source>You must upgrade your subscription <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>through the wallapop app<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> if you want to publish more</msg>
+  <msg id="3579719947907220872"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:23</source>You must upgrade your subscription if you want to publish more</msg>
+  <msg id="6991105239065793562"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:24</source>Please unselect some items or</msg>
+  <msg id="1531212547408073567"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:24</source>contact us</msg>
+  <msg id="2513950439336286072"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:31</source>Understood</msg>
+  <msg id="6654183600047871533"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:32</source>Go to subscriptions</msg>
+  <msg id="9101913686114523660"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:33</source>No thanks (the item will remain inactive)</msg>
   <msg id="7122356013178226936"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.html:4</source> You are trying to feature items that are already planned</msg>
   <msg id="6474953774520959911"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.html:6,7</source>Items that are already planned can&apos;t be featured again. You can cancel the bumps for these items o continue featuring
     the other items.</msg>
@@ -257,7 +263,7 @@
   <msg id="3938280541945338173"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.html:12</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:18</source>and you have <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> credit</msg>
   <msg id="8329528856479718352"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:16</source>Mark as urgent</msg>
   <msg id="2538912110902686738"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:17</source><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.html:15</source>Reactivate + visibility</msg>
-  <msg id="2652477817167335614"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:18</source><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:10</source>Publish your car</msg>
+  <msg id="2652477817167335614"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:18</source>Publish your car</msg>
   <msg id="708817521397622777"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:21</source>Pay with your credit and credit card:</msg>
   <msg id="3743194622120127205"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:22</source>Pay with your wallacoins and credit card:</msg>
   <msg id="8894377483833272091"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:25</source><source>app/upload/upload-product/upload-product.component.html:33</source><source>app/upload/upload-realestate/upload-realestate.component.html:54</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.html:24</source>Price</msg>
@@ -265,13 +271,6 @@
       We don&apos;t save details of this transaction. The purchase is made via Banco Sabadell.
     </msg>
   <msg id="349473182974314723"><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:12</source>Your item is now reactivated and in the first positions!</msg>
-  <msg id="4091832869609459263"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:5</source>You&apos;ve reached your limit of cars that you can upload!</msg>
-  <msg id="6806942206216024293"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:6</source>Pay for a car or buy the Motor Plan</msg>
-  <msg id="2897665268516763020"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:11</source>Pay once for your additional car and your car will be listed for 2 months.</msg>
-  <msg id="374197079522695707"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:14</source>Or save money with the Motor Plan</msg>
-  <msg id="7757467827697449768"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:15</source>Sign up to our Motor plan and advertise more cars</msg>
-  <msg id="2297887953957049730"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:19</source>Upload it now for <ph name="INTERPOLATION"><ex>{{listingFeePrice | customCurrency}}</ex></ph></msg>
-  <msg id="140684299515781998"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:20</source>No thanks (keep this car inactive)</msg>
   <msg id="7588966777090643410"><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:6</source>Your car is published for 60 days. You can find it in your catalog.</msg>
   <msg id="5433688037539750263"><source>app/catalog/list/list.component.html:16</source>Your products</msg>
   <msg id="1953428607881051577"><source>app/catalog/list/list.component.html:24</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
