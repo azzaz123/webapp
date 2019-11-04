@@ -43,6 +43,12 @@
   margin-bottom: $spacing-m;
 }
 
+.TooManyItemsModal__content-info-description {
+  b {
+    color: $blue-grey-2;
+  }
+}
+
 tsl-button {
   width: 371px;
   text-align: center;
