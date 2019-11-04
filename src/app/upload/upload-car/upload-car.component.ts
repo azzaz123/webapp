@@ -320,7 +320,10 @@ export class UploadCarComponent implements OnInit {
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
-    params.onHoldType = userType;
+
+    if (uploadEvent.action === 'createdOnHold') {
+      params.onHoldType = userType;
+    }
 
     return params;
   }
