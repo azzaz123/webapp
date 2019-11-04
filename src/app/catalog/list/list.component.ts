@@ -560,7 +560,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.eventService.emit('itemChanged');
       }, () => {
         const modalRef = this.modalService.open(TooManyItemsModalComponent, {windowClass: 'modal-standard'});
-        modalRef.componentInstance.setType('2'); // TODO: Show if web subscription or motor plan
+        modalRef.componentInstance.type = '2'; // TODO: Show if web subscription or motor plan
       });
     });
   }
