@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { SubscriptionSlot, SubscriptionSlotResponse } from './subscriptions.interface';
 import { CategoryService } from '../category/category.service';
 import { HttpServiceNew } from '../http/http.service.new';
+import { isEmpty } from 'lodash-es';
 
 export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'subscriptions/slots/';
 
@@ -73,24 +74,23 @@ export class SubscriptionsService {
   public getSubscriptionType(): Observable<number> {
     return Observable.forkJoin([
       this.userService.isProfessional(),
+      this.userService.getMotorPlan(),
       this.getSubscriptions([CATEGORY_DATA_WEB[0]])
     ])
     .map(values => {
-      let type: number;
-
       if (values[0]) {
-        type = SUBSCRIPTION_TYPES.carDealer;
+        return SUBSCRIPTION_TYPES.carDealer;
       }
 
-      if (values[1] && values[1][0]) {
-        if (!values[1][0].selected_tier_id) {
-          type = SUBSCRIPTION_TYPES.motorPlan;
+      if (!isEmpty(values[1]) && values[2]) {
+        if (values[2][0] && !values[2][0].selected_tier_id) {
+          return SUBSCRIPTION_TYPES.motorPlan;
         } else {
-          type = SUBSCRIPTION_TYPES.web;
+          return SUBSCRIPTION_TYPES.web;
         }
+      } else {
+        return SUBSCRIPTION_TYPES.normal;
       }
-
-      return type;
     });
   }
 
