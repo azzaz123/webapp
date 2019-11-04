@@ -30,7 +30,10 @@
   <div class="TooManyItemsModal__actions">
     <tsl-button *ngIf="isMotorPlan || isCarDealer" (click)="activeModal.close()" i18n>Understood</tsl-button>
     <tsl-button *ngIf="isNormal || isWebSubscription" (click)="activeModal.close()" [routerLink]="'/profile/manage-subscription'" i18n>Go to subscriptions</tsl-button>
-    <div *ngIf="isNormal || isWebSubscription" (click)="activeModal.close()" i18n>No thanks (the item will remain inactive)</div>
+    <div class="TooManyItemsModal__actions-optional"
+      *ngIf="isNormal || isWebSubscription"
+      (click)="activeModal.close()" i18n
+    >No thanks (the item will remain inactive)</div>
   </div>
 
 </div>
