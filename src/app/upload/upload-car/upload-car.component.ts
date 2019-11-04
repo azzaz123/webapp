@@ -21,6 +21,8 @@ import { CarInfo, CarContent } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -52,9 +54,10 @@ export class UploadCarComponent implements OnInit {
   public customVersion = false;
   private settingItem: boolean;
 
+  private isNormal = true;
   private isMotorPlan = false;
   private isCardealer = false;
-  private isNormal = true;
+  private isWebSubscription = false;
 
   constructor(private fb: FormBuilder,
     private carSuggestionsService: CarSuggestionsService,
@@ -66,6 +69,7 @@ export class UploadCarComponent implements OnInit {
     private trackingService: TrackingService,
     private analyticsService: AnalyticsService,
     private userService: UserService,
+    private subscriptionService: SubscriptionsService,
     config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
@@ -329,6 +333,9 @@ export class UploadCarComponent implements OnInit {
       if (this.isCardealer) {
         type = 3;
       }
+      if (this.isWebSubscription) {
+        type = 4;
+      }
 
       params.onHoldType = type;
     }
@@ -339,19 +346,19 @@ export class UploadCarComponent implements OnInit {
   public getOnHoldFlagsObservable() {
     return Observable.forkJoin([
       this.userService.isProfessional(),
-      this.userService.getMotorPlan(),
+      this.subscriptionService.getSubscriptions([CATEGORY_DATA_WEB[0]])
     ])
     .map(values => {
       if (values[0]) {
         this.isCardealer = true;
-        this.isMotorPlan = false;
-        this.isNormal = false;
       }
 
-      if (!!(values[1] && values[1].type)) {
-        this.isCardealer = false;
-        this.isMotorPlan = true;
-        this.isNormal = false;
+      if (values[1] && values[1][0]) {
+        if (values[1][0].selected_tier_id) {
+          this.isWebSubscription = true;
+        } else {
+          this.isMotorPlan = true;
+        }
       }
     });
   }
