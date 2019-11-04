@@ -17,10 +17,18 @@ import { UUID } from 'angular2-uuid';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
+import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
 export const SUBSCRIPTIONS_URL = 'bff/subscriptions';
+
+export enum SUBSCRIPTION_TYPES {
+  normal = 1,
+  carDealer = 2,
+  motorPlan = 3,
+  web = 4
+}
 
 @Injectable()
 export class SubscriptionsService {
@@ -60,6 +68,30 @@ export class SubscriptionsService {
 
         return mappedSlot;
       });
+  }
+
+  public getSubscriptionType(): Observable<number> {
+    return Observable.forkJoin([
+      this.userService.isProfessional(),
+      this.getSubscriptions([CATEGORY_DATA_WEB[0]])
+    ])
+    .map(values => {
+      let type: number;
+
+      if (values[0]) {
+        type = SUBSCRIPTION_TYPES.carDealer;
+      }
+
+      if (values[1] && values[1][0]) {
+        if (!values[1][0].selected_tier_id) {
+          type = SUBSCRIPTION_TYPES.motorPlan;
+        } else {
+          type = SUBSCRIPTION_TYPES.web;
+        }
+      }
+
+      return type;
+    });
   }
 
   public newSubscription(subscriptionId: string, paymentId: string): Observable<any> {

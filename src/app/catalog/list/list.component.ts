@@ -31,7 +31,7 @@ import { DeactivateItemsModalComponent } from '../../shared/catalog/catalog-item
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { StripeService } from '../../core/stripe/stripe.service';
-import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { SubscriptionsService, SUBSCRIPTION_TYPES } from '../../core/subscriptions/subscriptions.service';
 import { SubscriptionSlot } from '../../core/subscriptions/subscriptions.interface';
 import { NavLink } from '../../shared/nav-links/nav-link.interface';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../../core/user/featureflag.service';
@@ -396,7 +396,9 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public onAction(actionType: string) {
     if (actionType === 'activate') {
-      this.activate();
+      this.subscriptionsService.getSubscriptionType().subscribe(type => {
+        this.activate(type);
+      });
     }
 
     if (actionType === 'deactivate') {
@@ -541,7 +543,7 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public activate() {
+  public activate(subscriptionType = SUBSCRIPTION_TYPES.web) {
     const items = this.itemService.selectedItems;
     this.modalService.open(ActivateItemsModalComponent).result.then(() => {
       this.itemService.activate().subscribe((resp: any) => {
@@ -560,7 +562,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.eventService.emit('itemChanged');
       }, () => {
         const modalRef = this.modalService.open(TooManyItemsModalComponent, {windowClass: 'modal-standard'});
-        modalRef.componentInstance.type = '2'; // TODO: Show if web subscription or motor plan
+        modalRef.componentInstance.type = subscriptionType;
       });
     });
   }

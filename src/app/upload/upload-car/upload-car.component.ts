@@ -297,21 +297,21 @@ export class UploadCarComponent implements OnInit {
     }
 
     if (uploadEvent.action === 'createdOnHold') {
-      this.getOnHoldFlagsObservable().subscribe(() => {
-        this.redirectToList(uploadEvent, true);
+      this.subscriptionService.getSubscriptionType().subscribe(type => {
+        this.redirectToList(uploadEvent, type);
       });
     } else {
       this.redirectToList(uploadEvent);
     }
   }
 
-  public redirectToList(uploadEvent, isOnHold = false) {
-    const params = this.getRedirectParams(uploadEvent, isOnHold);
+  public redirectToList(uploadEvent, type = 1) {
+    const params = this.getRedirectParams(uploadEvent, type);
     this.item ? this.trackEditOrUpload(true, uploadEvent.response) : this.trackEditOrUpload(false, uploadEvent.response);
     this.router.navigate(['/catalog/list', params]);
   }
 
-  public getRedirectParams(uploadEvent, isOnHold: boolean) {
+  public getRedirectParams(uploadEvent, userType: number) {
     const params: any = {
       [uploadEvent.action]: true,
       itemId: uploadEvent.response.id || uploadEvent.response
@@ -320,47 +320,9 @@ export class UploadCarComponent implements OnInit {
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
-
-    if (isOnHold) {
-      let type: number;
-
-      if (this.isNormal) {
-        type = 1;
-      }
-      if (this.isMotorPlan) {
-        type = 2;
-      }
-      if (this.isCardealer) {
-        type = 3;
-      }
-      if (this.isWebSubscription) {
-        type = 4;
-      }
-
-      params.onHoldType = type;
-    }
+    params.onHoldType = userType;
 
     return params;
-  }
-
-  public getOnHoldFlagsObservable() {
-    return Observable.forkJoin([
-      this.userService.isProfessional(),
-      this.subscriptionService.getSubscriptions([CATEGORY_DATA_WEB[0]])
-    ])
-    .map(values => {
-      if (values[0]) {
-        this.isCardealer = true;
-      }
-
-      if (values[1] && values[1][0]) {
-        if (values[1][0].selected_tier_id) {
-          this.isWebSubscription = true;
-        } else {
-          this.isMotorPlan = true;
-        }
-      }
-    });
   }
 
   onError(response: any) {
