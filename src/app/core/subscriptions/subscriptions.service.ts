@@ -84,26 +84,6 @@ export class SubscriptionsService {
       })
     )
   }
-        
-
-  /*public getSubscriptions(cache: boolean = true): Observable<SubscriptionsResponse[]> {
-    if (this.subscriptions && cache) {
-      return Observable.of(this.subscriptions);
-    }
-    this.categoryService.getCategories().subscribe((categories) => {
-      return this.http.get(SUBSCRIPTIONS_URL)
-      .map((subscriptions: SubscriptionsResponse[]) => {
-        if (subscriptions.length > 0) {
-          return subscriptions.map((subscription: SubscriptionsResponse) => this.mapSubscriptions(subscription, categories))
-        }
-      })
-      .catch((error) => {
-        console.warn('ERROR getSubscriptions ', error);
-        return Observable.of(null);
-      });
-    })
-    
-  }*/
 
   public cancelSubscription(planId: string): Observable<any> {
     return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/cancel/${planId}`, null, null, { observe: 'response' as 'body' });
