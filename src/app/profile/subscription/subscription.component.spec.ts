@@ -121,7 +121,7 @@ describe('SubscriptionComponent', () => {
       expect(component.loading).toBe(false);
     });
 
-    xit('should redirect to profile if action is present and subscription changed', () => {
+    it('should redirect to profile if action is present and subscription changed', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve('add'),
         componentInstance: componentInstance
@@ -132,9 +132,10 @@ describe('SubscriptionComponent', () => {
       component.subscriptions = MAPPED_SUBSCRIPTIONS;
 
       component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+      tick(1000);
 
       expect(router.navigate).toHaveBeenCalledWith(['profile/info']);
-    });
+    }));
 
     afterEach(() => {
       TestBed.resetTestingModule();
