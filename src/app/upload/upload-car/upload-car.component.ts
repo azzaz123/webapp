@@ -297,7 +297,7 @@ export class UploadCarComponent implements OnInit {
     }
 
     if (uploadEvent.action === 'createdOnHold') {
-      this.subscriptionService.getSubscriptionType().subscribe(type => {
+      this.subscriptionService.getUserSubscriptionType().subscribe(type => {
         this.redirectToList(uploadEvent, type);
       });
     } else {

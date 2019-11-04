@@ -396,7 +396,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public onAction(actionType: string) {
     if (actionType === 'activate') {
-      this.subscriptionsService.getSubscriptionType().subscribe(type => {
+      this.subscriptionsService.getUserSubscriptionType().subscribe(type => {
         this.activate(type);
       });
     }

@@ -19,7 +19,7 @@ export class MockSubscriptionService {
     return of([]);
   }
 
-  public getSubscriptionType() {
+  public getUserSubscriptionType() {
     return of(SUBSCRIPTION_TYPES.web);
   }
 }

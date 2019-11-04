@@ -10,8 +10,8 @@ import { SUBSCRIPTION_TYPES } from '../../../../core/subscriptions/subscriptions
 })
 export class TooManyItemsModalComponent implements OnInit {
 
-  public type = SUBSCRIPTION_TYPES.normal;
-  public normalType = SUBSCRIPTION_TYPES.normal;
+  public type = SUBSCRIPTION_TYPES.notSubscribed;
+  public notSubscribedType = SUBSCRIPTION_TYPES.notSubscribed;
   public motorPlanType = SUBSCRIPTION_TYPES.motorPlan;
   public carDealerType = SUBSCRIPTION_TYPES.carDealer;
   public webSubscriptionType = SUBSCRIPTION_TYPES.web;

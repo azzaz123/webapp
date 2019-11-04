@@ -25,7 +25,7 @@ export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
 export const SUBSCRIPTIONS_URL = 'bff/subscriptions';
 
 export enum SUBSCRIPTION_TYPES {
-  normal = 1,
+  notSubscribed = 1,
   carDealer = 2,
   motorPlan = 3,
   web = 4
@@ -71,7 +71,7 @@ export class SubscriptionsService {
       });
   }
 
-  public getSubscriptionType(): Observable<number> {
+  public getUserSubscriptionType(): Observable<number> {
     return Observable.forkJoin([
       this.userService.isProfessional(),
       this.userService.getMotorPlan(),
@@ -89,7 +89,7 @@ export class SubscriptionsService {
           return SUBSCRIPTION_TYPES.web;
         }
       } else {
-        return SUBSCRIPTION_TYPES.normal;
+        return SUBSCRIPTION_TYPES.notSubscribed;
       }
     });
   }
