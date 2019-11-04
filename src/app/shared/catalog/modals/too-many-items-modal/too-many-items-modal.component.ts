@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-too-many-items-modal',
@@ -8,6 +8,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class TooManyItemsModalComponent implements OnInit {
 
+  public type = '1';
   public isNormal = true;
   public isMotorPlan = false;
   public isCarDealer = false;
@@ -19,6 +20,7 @@ export class TooManyItemsModalComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal) { }
 
   ngOnInit() {
+    this.setType(this.type);
   }
 
   public setType(type: string) {

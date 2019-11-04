@@ -257,9 +257,7 @@ export class ListComponent implements OnInit, OnDestroy {
           this.tooManyItemsModalRef = this.modalService.open(TooManyItemsModalComponent, {
             windowClass: 'modal-standard',
           });
-          this.tooManyItemsModalRef.componentInstance.setType(params.onHoldType);
-          // this.tooManyItemsModalRef.componentInstance.categoryName = params.
-          this.tooManyItemsModalRef.componentInstance.itemId = params.itemId;
+          this.tooManyItemsModalRef.componentInstance.type = params.onHoldType;
           this.tooManyItemsModalRef.result.then((orderEvent: OrderEvent) => {
             if (orderEvent) {
               this.purchaseListingFee(orderEvent);
