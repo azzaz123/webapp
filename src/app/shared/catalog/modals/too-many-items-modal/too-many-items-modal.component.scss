@@ -13,6 +13,7 @@
 
 .TooManyItemsModal__close {
   @include square($spacing-ms);
+  cursor: pointer;
   position: fixed;
   top: 20px;
   right: 20px;

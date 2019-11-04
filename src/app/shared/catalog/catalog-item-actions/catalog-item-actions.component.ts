@@ -59,7 +59,7 @@ export class CatalogItemActionsComponent implements OnInit {
         this.eventService.emit('itemChanged');
         if (resp.status === 406) {
           const modalRef: NgbModalRef = this.modalService.open(TooManyItemsModalComponent, {
-            windowClass: 'bump'
+            windowClass: 'modal-standard'
           });
           modalRef.componentInstance.type = '3';
           modalRef.result.then(() => {}, () => {
