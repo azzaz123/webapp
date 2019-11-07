@@ -55,7 +55,7 @@ describe('ProfileComponent', () => {
             },
             logout() {},
             getMotorPlans() {
-              return Observable.of({});
+              return Observable.of(PROFILE_SUB_INFO);
             },
             isProfessional() {
               return Observable.of(false);
@@ -75,7 +75,7 @@ describe('ProfileComponent', () => {
               return Observable.of(true);
             },
             getSubscriptions() {
-              return Observable.of(MAPPED_SUBSCRIPTIONS)
+              return Observable.of(SUBSCRIPTIONS);
             }
           }
         },

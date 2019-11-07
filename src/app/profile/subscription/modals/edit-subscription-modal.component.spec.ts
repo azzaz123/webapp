@@ -39,6 +39,16 @@ describe('EditSubscriptionModalComponent', () => {
             }
           }
         },
+        {
+          provide: NgbModal, useValue: {
+            open() {
+              return {
+                result: Promise.resolve(true),
+                componentInstance: {}
+              };
+            }
+          }
+        },
         I18nService,
         EventService,
       ],
