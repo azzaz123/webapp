@@ -65,7 +65,6 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
       expect(remoteConsoleService.sendConnectionTimeout).toHaveBeenCalled();
-      expect(service['isConnecting']).toEqual(false);
     });
 
     it('should call xmpp.connect and return throw', () => {
@@ -75,7 +74,6 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
-      expect(service['isConnecting']).toEqual(false);
     });
 
     it('should NOT call xmpp.connect if try connect in another thread', () => {
@@ -86,7 +84,6 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect).not.toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
-      expect(service['isConnecting']).toEqual(true);
     });
   });
 
