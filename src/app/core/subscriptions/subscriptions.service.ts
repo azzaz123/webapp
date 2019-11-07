@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { SubscriptionSlot, SubscriptionSlotResponse } from './subscriptions.interface';
 import { CategoryService } from '../category/category.service';
 import { HttpServiceNew } from '../http/http.service.new';
-import { isEmpty } from 'lodash-es';
 
 export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'subscriptions/slots/';
 
@@ -19,6 +18,7 @@ import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.serv
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
 import { mergeMap, map } from 'rxjs/operators';
+import { CARS_CATEGORY } from '../item/item-categories';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -74,23 +74,27 @@ export class SubscriptionsService {
   public getUserSubscriptionType(): Observable<number> {
     return Observable.forkJoin([
       this.userService.isProfessional(),
-      this.userService.getMotorPlan(),
-      this.getSubscriptions(false)
+      this.getSubscriptions(false),
+      this.userService.getMotorPlan()
     ])
     .map(values => {
       if (values[0]) {
         return SUBSCRIPTION_TYPES.carDealer;
       }
 
-      if (!isEmpty(values[1]) && values[2]) {
-        if (values[2][0] && !values[2][0].selected_tier_id) {
+      const carsSubscription = values[1].find(subscription => subscription.category_id === parseInt(CARS_CATEGORY, 10));
+
+      if (carsSubscription) {
+        if (values[2].type === 'motor_plan_pro' && !carsSubscription.selected_tier_id) {
           return SUBSCRIPTION_TYPES.motorPlan;
-        } else {
+        }
+
+        if (carsSubscription.selected_tier_id) {
           return SUBSCRIPTION_TYPES.web;
         }
-      } else {
-        return SUBSCRIPTION_TYPES.notSubscribed;
       }
+
+      return SUBSCRIPTION_TYPES.notSubscribed;
     });
   }
 
