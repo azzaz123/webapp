@@ -4,10 +4,9 @@ import { AddNewSubscriptionModalComponent } from './modals/add-new-subscription-
 import { SubscriptionsResponse, Tier } from '../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-modal.component';
-import * as _ from 'lodash';
+import { isEqual } from 'lodash-es';
 import { Router } from '@angular/router';
-import { take, delay, takeWhile, finalize, catchError } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-subscription',
@@ -55,7 +54,7 @@ export class SubscriptionComponent implements OnInit {
     )
     .subscribe(
       (updatedSubscriptions) => {
-      if (!_.isEqual(this.subscriptions, updatedSubscriptions)) {
+      if (!isEqual(this.subscriptions, updatedSubscriptions)) {
         this.loading = false;
       }
     });
