@@ -8,7 +8,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',

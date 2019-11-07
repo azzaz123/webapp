@@ -3,6 +3,7 @@ version: 0.2
 env:
   parameter-store:
     build_ssh_key: "BuildSSHKey"
+    code_build_token: "/corp/releasebot/codebuild/token"
 
 phases:
   install:
@@ -19,6 +20,9 @@ phases:
 
   build:
     commands:
+      - ecr="745640521341.dkr.ecr.eu-west-1.amazonaws.com"
+      - docker run -v "$PWD":/code -w /code $ecr/cfn-lint:stable -t infrastructure/cloudformation/templates/*.yaml
+
       # OBTAIN WORKING BRANCH
       - BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
       - echo $BRANCH
@@ -39,7 +43,6 @@ phases:
       # INSTALL ENV
       - >
         if [ "`echo $ENV | grep prod`" != "" ]; then
-          echo export const APP_VERSION = \"${BRANCH}\"\; > ./src/environments/version.ts
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable npm run buildprod
           aws s3 sync dist s3://web-es.wallapop.com --delete
           aws s3 cp dist/index.html s3://web-es.wallapop.com/index.html --cache-control max-age=0
@@ -74,7 +77,11 @@ phases:
           docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$TAG_BRANCH"
         fi
 
-      - if [ "`echo $BRANCH | grep release/`" != "" ]; then VERSION=$(echo $BRANCH | cut -d '/' -f 2) ; curl -X POST "http://jenkins.wallapop.com:8080/job/PARAMETRIZED_TAG_AND_SEND_RELEASE_EMAIL/buildWithParameters?token=37a71f5b15ea00dcaf853153ec24ab0d&RELEASE_VERSION=$VERSION&JIRA_TAG_PREFIX=MOD&REPO=webapp&PLATFORM=jarvis"; fi
+      - >
+        if [ "`echo $BRANCH | grep release/`" != "" ]; then
+          RELEASE_BOT_COMMAND='email_release repo=webapp jira_tag_prefix=MOD email_destination=frontend@wallapop.com,qa@wallapop.com'
+          curl -X POST https://releasebot.wallapop.com/event-handler -d "{\"headers\":{},\"body\":{\"token\":\"$code_build_token\",\"event\":{\"type\":\"message\",\"text\":\"$RELEASE_BOT_COMMAND\",\"channel\":\"\",\"channel_type\":\"im\"}}}"
+        fi
 
 cache:
   paths:

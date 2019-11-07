@@ -1,6 +1,6 @@
 import { TrackingEvent } from './tracking-event';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
-import * as _ from 'lodash';
+import { replace } from 'lodash-es';
 
 describe('TrackingEvent', () => {
   const platform = 'MacOS';
@@ -27,7 +27,7 @@ describe('TrackingEvent', () => {
         os: os,
         screenwidth: screenWidth,
         screenheight: screenHeight,
-        locale: _.replace(navigator.language, '-', '_'),
+        locale: replace(navigator.language, '-', '_'),
         deviceAccessTokenId: deviceAccessTokenId
       });
     });

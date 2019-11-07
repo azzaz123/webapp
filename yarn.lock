@@ -4565,6 +4565,11 @@ locate-path@^3.0.0:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
 
+lodash-es@^4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
+  integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
+
 lodash._arrayeach@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._arrayeach/-/lodash._arrayeach-3.0.0.tgz#bab156b2a90d3f1bbd5c653403349e5e5933ef9e"
@@ -5261,6 +5266,13 @@ ng2-dnd@^5.0.2:
 ng2-haversine@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ng2-haversine/-/ng2-haversine-0.1.1.tgz#17b1a41102bd33012717a40cc00020c2ee4e5292"
+
+ngx-autosize@1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/ngx-autosize/-/ngx-autosize-1.6.4.tgz#2542c2e92927364972d3d63f11d74a559e3be26c"
+  integrity sha512-J7Pk9bFmjypf4NbSIVygncdmDHJp3dogwFwyobqHBlMLNhpUmnMZDaEn2xn5zgnbL/SRIAHfTsdAY4OM2iQvJQ==
+  dependencies:
+    tslib "^1.9.0"
 
 ngx-cookie@4.0.2:
   version "4.0.2"

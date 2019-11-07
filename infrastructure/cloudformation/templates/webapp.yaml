@@ -43,15 +43,15 @@ Resources:
           ResponseCode: 404
           ResponsePagePath: '/'
         DefaultCacheBehavior:
-          Compress: 'true'
+          Compress: true
           ForwardedValues:
-            QueryString: 'false'
+            QueryString: false
             Cookies:
               Forward: none
           TargetOriginId: myS3Origin
           ViewerProtocolPolicy: redirect-to-https
         DefaultRootObject: index.html
-        Enabled: 'true'
+        Enabled: true
         HttpVersion: http2
         Origins:
         - DomainName: !Join [ ".", [ !Ref BucketES, "s3.amazonaws.com" ] ]
@@ -73,6 +73,8 @@ Resources:
         Value: !Ref Commit
       - Key: Env
         Value: !Ref EnvName
+      - Key: Project
+        Value: Frontend
 
   WebEnDistribution:
     Type: AWS::CloudFront::Distribution
@@ -87,13 +89,13 @@ Resources:
           ResponsePagePath: '/'
         DefaultCacheBehavior:
           ForwardedValues:
-            QueryString: 'false'
+            QueryString: false
             Cookies:
               Forward: none
           TargetOriginId: myS3Origin
           ViewerProtocolPolicy: redirect-to-https
         DefaultRootObject: index.html
-        Enabled: 'true'
+        Enabled: true
         HttpVersion: http2
         Origins:
         - DomainName: !Join [ ".", [ !Ref BucketEN, "s3.amazonaws.com" ] ]
@@ -115,6 +117,8 @@ Resources:
         Value: !Ref Commit
       - Key: Env
         Value: !Ref EnvName
+      - Key: Project
+        Value: Frontend
 
   WebEsRecordSetGroup:
     Type: AWS::Route53::RecordSetGroup

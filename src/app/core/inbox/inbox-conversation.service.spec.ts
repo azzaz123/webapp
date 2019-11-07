@@ -24,19 +24,20 @@ import { ItemService } from '../item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { HttpModuleNew } from '../http/http.module.new';
 import { environment } from '../../../environments/environment';
-import * as _ from 'lodash';
-
-let service: InboxConversationService;
-let http: HttpService;
-let eventService: EventService;
-let realTime: RealTimeService;
-let persistencyService: PersistencyService;
-let messageService: MessageService;
-let userService: UserService;
-let itemService: ItemService;
-let httpTestingController: HttpTestingController;
+import { uniq } from 'lodash-es';
 
 describe('InboxConversationService', () => {
+
+  let service: InboxConversationService;
+  let http: HttpService;
+  let eventService: EventService;
+  let realTime: RealTimeService;
+  let persistencyService: PersistencyService;
+  let messageService: MessageService;
+  let userService: UserService;
+  let itemService: ItemService;
+  let httpTestingController: HttpTestingController;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -305,7 +306,7 @@ describe('InboxConversationService', () => {
 
         tick();
 
-        expect(service.conversations).toEqual(_.uniq(service.conversations, 'id'));
+        expect(service.conversations).toEqual(uniq(service.conversations, 'id'));
       }));
 
       it('should not update the lastMessage of the conversation', () => {

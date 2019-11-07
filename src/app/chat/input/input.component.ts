@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
@@ -7,20 +7,22 @@ import { InboxConversation } from '../model/inbox-conversation';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
-import * as _ from 'lodash';
 import { I18nService } from '../../core/i18n/i18n.service';
+import { isEmpty, includes, find } from 'lodash-es';
 
 @Component({
   selector: 'tsl-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss']
 })
-export class InputComponent implements OnChanges, OnInit {
+export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   @Input() currentConversation: Conversation | InboxConversation;
-  @ViewChild('messageArea') messageArea: ElementRef;
+  @ViewChild('messageTextarea') messageArea: ElementRef;
 
+  public message: string;
   public isUserBlocked: boolean;
+  public isFocus: boolean;
 
   constructor(private messageService: MessageService,
               private eventService: EventService,
@@ -32,26 +34,26 @@ export class InputComponent implements OnChanges, OnInit {
   ngOnInit() {
     this.isUserBlocked = false;
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
-      this.isUserBlocked = _.includes(userIds, this.currentConversation.user.id);
+      this.isUserBlocked = includes(userIds, this.currentConversation.user.id);
     });
   }
 
-  sendMessage(messageArea: HTMLTextAreaElement, $event: Event) {
+  sendMessage($event: Event) {
     $event.preventDefault();
+    this.message = this.message.trim();
     if (!this.isUserBlocked) {
-      const message = messageArea.value.trim();
-      if (!_.isEmpty(message)) {
-        if (this.hasLinkInMessage(message)) {
+      if (!this.isEmpty()) {
+        if (this.hasLinkInMessage(this.message)) {
           this.modalService.open(BlockSendLinkComponent, { windowClass: 'modal-transparent' });
         } else {
           this.trackingService.track(TrackingService.SEND_BUTTON, {
             thread_id: this.currentConversation.id,
           });
-          this.messageService.send(this.currentConversation, message);
-          messageArea.value = '';
+          this.messageService.send(this.currentConversation, this.message);
+          this.message = '';
         }
       } else {
-        messageArea.value = '';
+        this.message = '';
       }
     }
   }
@@ -60,17 +62,23 @@ export class InputComponent implements OnChanges, OnInit {
     if (this.messageArea) {
       setTimeout(() => {
         this.messageArea.nativeElement.focus();
+        this.isFocus = true;
       }, 500);
 
       if (changes && changes.currentConversation && this.messageArea.nativeElement.value.length) {
-        this.messageArea.nativeElement.value = '';
+        this.message = '';
       }
     }
     this.isUserBlocked = this.currentConversation instanceof Conversation ? this.currentConversation.user.blocked
       : this.currentConversation.cannotChat;
   }
 
-  getPlaceholder(): string {
+  ngAfterViewInit(): void {
+    this.messageArea.nativeElement.focus();
+    this.isFocus = true;
+  }
+
+  public getPlaceholder(): string {
     return this.isUserBlocked || !this.isMessagingAvailable() ? '' : this.i18n.getTranslations('writeMessage');
   }
 
@@ -81,11 +89,19 @@ export class InputComponent implements OnChanges, OnInit {
     return !this.isUserBlocked;
   }
 
+  public isEmpty(): boolean {
+    return this.message === null || this.message === undefined || isEmpty(this.message.trim());
+  }
+
+  public onFocusElement() {
+    this.isFocus = !this.isFocus;
+  }
+
   private hasLinkInMessage(message: string): boolean {
-    return !_.isEmpty(this.findLinksWhereLinkIsNotWallapop(message));
+    return !isEmpty(this.findLinksWhereLinkIsNotWallapop(message));
   }
 
   private findLinksWhereLinkIsNotWallapop(message: string): string[] {
-    return _.find(message.match(LinkTransformPipe.LINK_REG_EXP), link => _.isEmpty(link.match(LinkTransformPipe.WALLAPOP_REG_EXP)));
+    return find(message.match(LinkTransformPipe.LINK_REG_EXP), link => isEmpty(link.match(LinkTransformPipe.WALLAPOP_REG_EXP)));
   }
 }

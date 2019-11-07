@@ -73,8 +73,8 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('cat_laundry', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_laundry.svg'));
   matIconRegistry.addSvgIcon('cat_baby_car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Babies.svg'));
   matIconRegistry.addSvgIcon('cat_smartphone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Electronics.svg'));
-  matIconRegistry.addSvgIcon('cat_bookshelf', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_bookshelf.svg'));
-  matIconRegistry.addSvgIcon('cat_furniture', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_furniture.svg'));
+  matIconRegistry.addSvgIcon('cat_bookshelf', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_GamesBooks.svg'));
+  matIconRegistry.addSvgIcon('cat_furniture', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_HomeGarden.svg'));
   matIconRegistry.addSvgIcon('cat_house', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Housing.svg'));
   matIconRegistry.addSvgIcon('cat_t-shirt', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Moda.svg'));
   matIconRegistry.addSvgIcon('cat_helmet', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Motor.svg'));
@@ -86,9 +86,9 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('cat_tv', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/tv.svg'));
   matIconRegistry.addSvgIcon('cat_pc', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/computing.svg'));
   matIconRegistry.addSvgIcon('cat_phone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/electronics.svg'));
-  matIconRegistry.addSvgIcon('cat_bike', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/bike.svg'));
+  matIconRegistry.addSvgIcon('cat_bike', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/bikes.svg'));
   matIconRegistry.addSvgIcon('cat_collecting', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/collecting.svg'));
-  matIconRegistry.addSvgIcon('cat_building', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/building.svg'));
+  matIconRegistry.addSvgIcon('cat_building', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/construction.svg'));
   matIconRegistry.addSvgIcon('cat_farming', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/agriculture.svg'));
   matIconRegistry.addSvgIcon('cat_jobs', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/job.svg'));
   matIconRegistry.addSvgIcon('send', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/send.svg'));

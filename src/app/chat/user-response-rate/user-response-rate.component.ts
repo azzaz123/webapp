@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { isNullOrUndefined } from 'util';
+import { isNil } from 'lodash-es';
 
 @Component({
   selector: 'tsl-user-response-rate',
@@ -13,7 +13,7 @@ export class UserResponseRateComponent {
   @Input() showIcon = true;
 
   public isNullOrUndefined(): boolean {
-    return isNullOrUndefined(this.responseRate);
+    return isNil(this.responseRate);
   }
 
 }
