@@ -7,8 +7,6 @@ import { UserStatsResponse } from '../core/user/user-stats.interface';
 import { StripeService } from '../core/stripe/stripe.service';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { flatMap } from 'rxjs/operators';
-import { CategoryService } from '../core/category/category.service';
-import { EventService } from '../core/event/event.service';
 
 @Component({
   selector: 'tsl-profile',
@@ -30,8 +28,6 @@ export class ProfileComponent implements OnInit {
               protected i18n: I18nService,
               private stripeService: StripeService,
               private subscriptionsService: SubscriptionsService,
-              private categoryService: CategoryService,
-              private eventService: EventService,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -87,7 +83,7 @@ export class ProfileComponent implements OnInit {
         })
         if (!this.isNewSubscription) {
           this.userService.getMotorPlans().subscribe((subscriptionInfo: ProfileSubscriptionInfo) => {
-            if (subscriptionInfo.status === "NOT_ELIGIBLE") {
+            if (subscriptionInfo.status !== "PURCHASE_ACTIVE") {
               this.isNewSubscription = true;
             }
           });
