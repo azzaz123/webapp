@@ -9,8 +9,13 @@
 }
 
 #center-panel {
+  height: 100%;
   margin-left: $left-panel-width;
   background-color: $white;
   position: relative;
+
+  tsl-current-conversation {
+    height: 100%;
+  }
 }
 

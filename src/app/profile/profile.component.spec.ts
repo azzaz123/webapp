@@ -3,7 +3,7 @@ import { ProfileComponent } from './profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs';
-import { MOCK_USER, MOTORPLAN_DATA, USER_WEB_SLUG, USERS_STATS_RESPONSE, PROFILE_SUB_INFO, PROFILE_NOT_SUB_INFO } from '../../tests/user.fixtures.spec';
+import { MOCK_USER, MOTORPLAN_DATA, USER_WEB_SLUG, USERS_STATS_RESPONSE, PROFILE_NOT_SUB_INFO } from '../../tests/user.fixtures.spec';
 import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -14,6 +14,7 @@ import { FeatureflagService } from '../core/user/featureflag.service';
 import { MAPPED_SUBSCRIPTIONS } from '../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../core/category/category.service';
 import { CATEGORY_DATA_WEB } from '../../tests/category.fixtures.spec';
+import { EventService } from '../core/event/event.service';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -23,6 +24,7 @@ describe('ProfileComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let stripeService: StripeService;
   let featureflagService: FeatureflagService;
+  let eventService: EventService;
   const mockMotorPlan = {
     type: 'motor_plan_pro',
     subtype: 'sub_premium'
@@ -35,6 +37,7 @@ describe('ProfileComponent', () => {
       declarations: [ ProfileComponent ],
       providers: [
         I18nService,
+        EventService,
         {provide: HttpService, useValue: {}},
         {
           provide: UserService, useValue: {
@@ -106,6 +109,7 @@ describe('ProfileComponent', () => {
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
     categoryService = TestBed.get(CategoryService);
+    eventService = TestBed.get(EventService);
     spyOn(userService, 'me').and.callThrough();
     spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
     spyOn(userService, 'getStats').and.callThrough();
