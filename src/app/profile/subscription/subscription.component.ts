@@ -11,8 +11,7 @@ import { EventService } from '../../core/event/event.service';
 import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-modal.component';
 import { isEqual } from 'lodash-es';
 import { Router } from '@angular/router';
-import { take, delay, takeWhile, finalize, catchError } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-subscription',

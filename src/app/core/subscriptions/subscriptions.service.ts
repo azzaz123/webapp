@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SubscriptionSlot, SubscriptionSlotResponse } from './subscriptions.interface';
-import { CategoryService } from '../category/category.service';
-import { HttpServiceNew } from '../http/http.service.new';
 
 export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'subscriptions/slots/';
 
