@@ -1,3 +1,5 @@
+import { CategoryResponse } from '../category/category-response.interface';
+
 export interface SubscriptionResponse {
   id: string;
   latest_invoice_id: string;
@@ -25,4 +27,16 @@ export interface SubscriptionsResponse {
   category_icon?: string,
   selected_tier?: Tier,
   subscribed_until?: number
+}
+
+export interface SubscriptionSlotResponse {
+  category_id: number;
+  available: number;
+  limit: number;
+}
+
+export interface SubscriptionSlot {
+  category: CategoryResponse;
+  available: number;
+  limit: number;
 }

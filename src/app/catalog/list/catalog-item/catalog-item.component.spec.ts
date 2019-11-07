@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
-import { Observable } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
@@ -25,6 +25,7 @@ import { EventService } from '../../../core/event/event.service';
 import { environment } from '../../../../environments/environment';
 import * as moment from 'moment';
 import { ThousandSuffixesPipe } from '../../../shared/number-conversion/thousand-suffixes.pipe';
+import { SelectedItemsAction } from '../../../core/item/item-response.interface';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -50,6 +51,7 @@ describe('CatalogItemComponent', () => {
         {
           provide: ItemService, useValue: {
             selectedItems: [],
+            selectedItems$: new ReplaySubject<SelectedItemsAction>(1),
             selectItem() {
             },
             deselectItem() {
@@ -123,25 +125,22 @@ describe('CatalogItemComponent', () => {
     it('should set link', () => {
       expect(component.link).toBe(environment.siteUrl + 'item/' + ITEM_WEB_SLUG);
     });
-  });
 
-  describe('deleteItem', () => {
+    describe('selectMode', () => {
+      it('should be false when no selected items', () => {
+        itemService.selectedItems = [];
 
-    let item: Item;
+        expect(component.selectMode).toBeFalsy();
+      });
 
-    beforeEach(fakeAsync(() => {
-      item = MOCK_ITEM;
-      spyOn(component, 'select');
-      component.deleteItem(item);
-    }));
+      it('should be true when selected items', () => {
+        itemService.selectedItems.push('id');
+        itemService.selectedItems$.next();
 
-    it('should set selectedAction', () => {
-      expect(itemService.selectedAction).toBe('delete');
+        expect(component.selectMode).toBeTruthy();
+      });
+
     });
-    it('should call select', () => {
-      expect(component.select).toHaveBeenCalledWith(MOCK_ITEM);
-    });
-
   });
 
   describe('featureItem', () => {
@@ -165,20 +164,22 @@ describe('CatalogItemComponent', () => {
 
   describe('reserve', () => {
 
-    let item: Item;
+    let item: Item = MOCK_ITEM;
 
     describe('not reserved', () => {
-      beforeEach(fakeAsync(() => {
-        item = MOCK_ITEM;
-        spyOn(component, 'select');
+      beforeEach(() => {
+        spyOn(itemService, 'reserveItem').and.returnValue(of({}));
+        item.reserved = false;
         component.reserve(item);
-      }));
+      });
 
       it('should set selectedAction', () => {
         expect(itemService.selectedAction).toBe('reserve');
       });
-      it('should call select', () => {
-        expect(component.select).toHaveBeenCalledWith(MOCK_ITEM);
+
+      it('should call reserveItem from itemService', () => {
+        expect(itemService.reserveItem).toHaveBeenCalledWith(MOCK_ITEM.id, true);
+        expect(item.reserved).toBeTruthy();
       });
     });
 
@@ -199,8 +200,6 @@ describe('CatalogItemComponent', () => {
       });
 
       it('should track the ProductUnReserved event', () => {
-        component.reserve(item);
-
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, { product_id: item.id });
       });
 
@@ -321,6 +320,21 @@ describe('CatalogItemComponent', () => {
       expect(item.selected).toBeFalsy();
       expect(itemService.deselectItem).toHaveBeenCalledWith(ITEM_ID);
     });
+    it('should not modify selectedAction if is feature', () => {
+      itemService.selectedAction = 'feature';
+
+      component.select(MOCK_ITEM);
+
+      expect(itemService.selectedAction).toBe('feature');
+    });
+
+    it('should set selectedAction to none if previous action was featured', () => {
+      itemService.selectedAction = 'somethingelse';
+
+      component.select(MOCK_ITEM);
+
+      expect(itemService.selectedAction).toBe('');
+    });
   });
 
   describe('setSold', () => {
@@ -429,6 +443,16 @@ describe('CatalogItemComponent', () => {
           item_id: item.id,
           payment_method: 'STRIPE'
         });
+    });
+  });
+
+  describe('onClickInfoElement', () => {
+    it ('should send PRODUCT_VIEWED to tracking service', () => {
+      spyOn(trackingService, 'track');
+
+      component.onClickInfoElement();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_VIEWED, { product_id: component.item.id });
     });
   });
 });
