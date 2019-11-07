@@ -4,6 +4,10 @@ import { AddNewSubscriptionModalComponent } from './modals/add-new-subscription-
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component';
 import { SubscriptionsResponse, Tier } from '../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { CategoryService } from '../../core/category/category.service';
+import { flatMap } from 'rxjs/operators';
+import { EventService } from '../../core/event/event.service';
+
 import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-modal.component';
 import { isEqual } from 'lodash-es';
 import { Router } from '@angular/router';
