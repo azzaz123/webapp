@@ -88,17 +88,6 @@ export interface MotorPlanType {
   shortLabel?: string;
 }
 
-export interface UserSubscription {
-  type: string;
-  status: string;
-  label: string;
-  icon_id: string;
-  category_id: string;
-  perks: {
-    max_items: number;
-  };
-}
-
 export interface ProfileSubscriptionInfo {
   status: string;
   product_group: {

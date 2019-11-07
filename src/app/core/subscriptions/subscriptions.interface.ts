@@ -1,5 +1,21 @@
 import { CategoryResponse } from '../category/category-response.interface';
 
+export interface SubscriptionResponse {
+  id: string;
+  latest_invoice_id: string;
+  payment_secret_key: string;
+  payment_status: string;
+  status: string;
+  subscription_plan_id: string;
+}
+
+export interface Tier {
+    id: string,
+    limit: number,
+    price: number,
+    currency: string
+}
+
 export interface SubscriptionsResponse {
   category_id: number,
   current_limit: number,
@@ -11,22 +27,6 @@ export interface SubscriptionsResponse {
   category_icon?: string,
   selected_tier?: Tier,
   subscribed_until?: number
-}
-
-export interface Tier {
-  id: string,
-  limit: number,
-  price: number,
-  currency: string
-}
-
-export interface SubscriptionResponse {
-  id: string;
-  latest_invoice_id: string;
-  payment_secret_key: string;
-  payment_status: string;
-  status: string;
-  subscription_plan_id: string;
 }
 
 export interface SubscriptionSlotResponse {

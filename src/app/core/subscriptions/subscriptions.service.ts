@@ -1,14 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SubscriptionSlot, SubscriptionSlotResponse } from './subscriptions.interface';
-
-export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'subscriptions/slots/';
-
-export const SUBSCRIPTIONS_CATEGORY_ICON_MAP = {
-  'car': 'cat_car',
-  'helmet': 'cat_motoraccessories',
-  'motorbike': 'cat_motorbike'
-};
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
@@ -23,6 +15,14 @@ import { CategoryService } from '../category/category.service';
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
 export const SUBSCRIPTIONS_URL = 'bff/subscriptions';
+
+export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'subscriptions/slots/';
+
+export const SUBSCRIPTIONS_CATEGORY_ICON_MAP = {
+  'car': 'cat_car',
+  'helmet': 'cat_motoraccessories',
+  'motorbike': 'cat_motorbike'
+};
 
 export enum SUBSCRIPTION_TYPES {
   notSubscribed = 1,
@@ -121,7 +121,7 @@ export class SubscriptionsService {
     return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`, {
       invoice_id: invoiceId,
       payment_method_id: paymentId,
-    });
+    }, null, { observe: 'response' as 'body' });
   }
 
   public checkRetrySubscriptionStatus(): Observable<any> {

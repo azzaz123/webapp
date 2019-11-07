@@ -5,7 +5,6 @@ import { CookieModule } from 'ngx-cookie';
 import { HttpServiceNew } from './http.service.new';
 import { TokenInterceptor, MockInterceptor } from './interceptors';
 import { AccessTokenService } from './access-token.service';
-import { FeatureflagService } from '../user/featureflag.service';
 
 @NgModule({
     imports: [
@@ -15,7 +14,6 @@ import { FeatureflagService } from '../user/featureflag.service';
     providers: [
         HttpServiceNew,
         AccessTokenService,
-        FeatureflagService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,

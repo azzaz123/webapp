@@ -7,24 +7,16 @@ import {
   HttpResponse
 } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from '../../../../tests/subscriptions.fixtures.spec';
-import { SUBSCRIPTIONS_SLOTS_ENDPOINT } from '../../subscriptions/subscriptions.service';
-import { environment } from '../../../../environments/environment';
 
 export interface MockUrl {
   url: string;
   data: any;
 }
 
-export const MOCK_SUBSCRIPTION_SLOTS_URL_RESPONSE: MockUrl = {
-  url: environment.baseUrl + SUBSCRIPTIONS_SLOTS_ENDPOINT,
-  data: MOCK_SUBSCRIPTION_SLOTS_RESPONSE
-};
-
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
 
-  public mockUrls: MockUrl[] = [MOCK_SUBSCRIPTION_SLOTS_URL_RESPONSE];
+  public mockUrls: MockUrl[] = [];
 
   constructor() { }
 
