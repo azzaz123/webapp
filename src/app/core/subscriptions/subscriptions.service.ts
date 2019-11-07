@@ -17,6 +17,8 @@ import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptio
 import { CategoryResponse } from '../category/category-response.interface';
 import { mergeMap, map } from 'rxjs/operators';
 import { CARS_CATEGORY } from '../item/item-categories';
+import { HttpServiceNew } from '../http/http.service.new';
+import { CategoryService } from '../category/category.service';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
