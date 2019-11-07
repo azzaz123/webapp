@@ -31,7 +31,6 @@ import { Item } from '../../core/item/item';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
-import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { ItemFlags } from '../../core/item/item-response.interface';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
@@ -46,6 +45,7 @@ import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
 import { FeatureflagService } from '../../core/user/featureflag.service';
 import { FeatureFlagServiceMock } from '../../../tests';
+import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -392,7 +392,7 @@ describe('ListComponent', () => {
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
-    it('should open the upgrade-plan modal if create is on hold', fakeAsync(() => {
+    it('should open the too many items modal if create is on hold', fakeAsync(() => {
       route.params = Observable.of({
         createdOnHold: true
       });
@@ -400,7 +400,7 @@ describe('ListComponent', () => {
       component.ngOnInit();
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(UpgradePlanModalComponent, {
+      expect(modalService.open).toHaveBeenCalledWith(TooManyItemsModalComponent, {
         windowClass: 'modal-standard'
       });
     }));

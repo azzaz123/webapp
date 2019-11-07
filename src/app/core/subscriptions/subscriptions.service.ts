@@ -15,13 +15,21 @@ import { UUID } from 'angular2-uuid';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
+import { mergeMap, map } from 'rxjs/operators';
+import { CARS_CATEGORY } from '../item/item-categories';
 import { HttpServiceNew } from '../http/http.service.new';
 import { CategoryService } from '../category/category.service';
-import { mergeMap, map } from 'rxjs/operators';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
 export const SUBSCRIPTIONS_URL = 'bff/subscriptions';
+
+export enum SUBSCRIPTION_TYPES {
+  notSubscribed = 1,
+  carDealer = 2,
+  motorPlan = 3,
+  web = 4
+}
 
 @Injectable()
 export class SubscriptionsService {
@@ -61,6 +69,33 @@ export class SubscriptionsService {
 
         return mappedSlot;
       });
+  }
+
+  public getUserSubscriptionType(): Observable<number> {
+    return Observable.forkJoin([
+      this.userService.isProfessional(),
+      this.getSubscriptions(false),
+      this.userService.getMotorPlan()
+    ])
+    .map(values => {
+      if (values[0]) {
+        return SUBSCRIPTION_TYPES.carDealer;
+      }
+
+      const carsSubscription = values[1].find(subscription => subscription.category_id === parseInt(CARS_CATEGORY, 10));
+
+      if (carsSubscription) {
+        if (values[2].type === 'motor_plan_pro' && !carsSubscription.selected_tier_id) {
+          return SUBSCRIPTION_TYPES.motorPlan;
+        }
+
+        if (carsSubscription.selected_tier_id) {
+          return SUBSCRIPTION_TYPES.web;
+        }
+      }
+
+      return SUBSCRIPTION_TYPES.notSubscribed;
+    });
   }
 
   public newSubscription(subscriptionId: string, paymentId: string): Observable<any> {

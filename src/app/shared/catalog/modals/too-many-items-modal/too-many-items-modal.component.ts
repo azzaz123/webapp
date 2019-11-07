@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { SUBSCRIPTION_TYPES } from '../../../../core/subscriptions/subscriptions.service';
+
 @Component({
   selector: 'tsl-too-many-items-modal',
   templateUrl: './too-many-items-modal.component.html',
@@ -8,13 +10,17 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class TooManyItemsModalComponent implements OnInit {
 
-  public isInApp = false;
-  public isPro = true;
-  public isCarDealer = false;
+  public type = SUBSCRIPTION_TYPES.notSubscribed;
+  public notSubscribedType = SUBSCRIPTION_TYPES.notSubscribed;
+  public motorPlanType = SUBSCRIPTION_TYPES.motorPlan;
+  public carDealerType = SUBSCRIPTION_TYPES.carDealer;
+  public webSubscriptionType = SUBSCRIPTION_TYPES.web;
+
+  public categoryName: string;
+  public categoryIconName: string;
 
   constructor(public activeModal: NgbActiveModal) { }
 
   ngOnInit() {
   }
-
 }

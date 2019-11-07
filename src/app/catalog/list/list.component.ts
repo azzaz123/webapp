@@ -25,14 +25,13 @@ import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.dire
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ActivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { StripeService } from '../../core/stripe/stripe.service';
-import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { SubscriptionsService, SUBSCRIPTION_TYPES } from '../../core/subscriptions/subscriptions.service';
 import { SubscriptionSlot } from '../../core/subscriptions/subscriptions.interface';
 import { NavLink } from '../../shared/nav-links/nav-link.interface';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../../core/user/featureflag.service';
@@ -63,7 +62,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public numberOfProducts: number;
   public isRedirect = false;
   private counters: Counters;
-  private upgradePlanModalRef: NgbModalRef;
+  private tooManyItemsModalRef: NgbModalRef;
   public userCanDeactivate: boolean;
   public selectedItems: Item[];
   public creditInfo: CreditInfo;
@@ -255,16 +254,15 @@ export class ListComponent implements OnInit, OnDestroy {
         } else if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
-          this.upgradePlanModalRef = this.modalService.open(UpgradePlanModalComponent, {
+          this.tooManyItemsModalRef = this.modalService.open(TooManyItemsModalComponent, {
             windowClass: 'modal-standard',
           });
-          this.upgradePlanModalRef.componentInstance.itemId = params.itemId;
-          this.upgradePlanModalRef.result.then((orderEvent: OrderEvent) => {
+          this.tooManyItemsModalRef.componentInstance.type = params.onHoldType ? parseInt(params.onHoldType, 10) : SUBSCRIPTION_TYPES.web;
+          this.tooManyItemsModalRef.result.then((orderEvent: OrderEvent) => {
             if (orderEvent) {
               this.purchaseListingFee(orderEvent);
-            } else {
-              this.upgradePlanModalRef = null;
             }
+            this.tooManyItemsModalRef = null;
           }, () => {
           });
         } else if (params && params.sold && params.itemId) {
@@ -397,7 +395,9 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public onAction(actionType: string) {
     if (actionType === 'activate') {
-      this.activate();
+      this.subscriptionsService.getUserSubscriptionType().subscribe(type => {
+        this.activate(type);
+      });
     }
 
     if (actionType === 'deactivate') {
@@ -542,7 +542,7 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public activate() {
+  public activate(subscriptionType = SUBSCRIPTION_TYPES.web) {
     const items = this.itemService.selectedItems;
     this.modalService.open(ActivateItemsModalComponent).result.then(() => {
       this.itemService.activate().subscribe((resp: any) => {
@@ -560,9 +560,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
         this.eventService.emit('itemChanged');
       }, () => {
-        const modalRef = this.modalService.open(TooManyItemsModalComponent, {windowClass: 'bump'});
-          modalRef.componentInstance.isPro = this.subscriptionSlots.length;
-          modalRef.componentInstance.isInApp = false;
+        const modalRef = this.modalService.open(TooManyItemsModalComponent, {windowClass: 'modal-standard'});
+        modalRef.componentInstance.type = subscriptionType;
       });
     });
   }

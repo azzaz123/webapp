@@ -13,6 +13,7 @@
 
 .TooManyItemsModal__close {
   @include square($spacing-ms);
+  cursor: pointer;
   position: fixed;
   top: 20px;
   right: 20px;
@@ -41,6 +42,22 @@
 
 .TooManyItemsModal__content-info-title {
   margin-bottom: $spacing-m;
+}
+
+.TooManyItemsModal__content-info-description {
+  b {
+    color: $blue-grey-2;
+  }
+}
+
+.TooManyItemsModal__actions-optional {
+  margin-top: $spacing-m;
+  color: $blue-grey-3;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 tsl-button {

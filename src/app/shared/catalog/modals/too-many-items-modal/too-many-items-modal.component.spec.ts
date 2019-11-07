@@ -4,15 +4,17 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { TooManyItemsModalComponent } from './too-many-items-modal.component';
 import { ButtonComponent } from '../../../button/button.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
-describe('ItemAvatarComponent', () => {
+describe('TooManyItemsModalComponent', () => {
   let component: TooManyItemsModalComponent;
   let fixture: ComponentFixture<TooManyItemsModalComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MatIconModule
+        MatIconModule,
+        RouterTestingModule
       ],
       declarations: [
         TooManyItemsModalComponent,
@@ -33,4 +35,5 @@ describe('ItemAvatarComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
 });

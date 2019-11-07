@@ -8,6 +8,7 @@ import {
   SubscriptionSlot
 } from '../app/core/subscriptions/subscriptions.interface';
 import { CATEGORY_DATA_WEB } from './category.fixtures.spec';
+import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
 
 export class MockSubscriptionService {
   public getSlots() {
@@ -16,6 +17,10 @@ export class MockSubscriptionService {
 
   public getSlotCategory(_id) {
     return of([]);
+  }
+
+  public getUserSubscriptionType() {
+    return of(SUBSCRIPTION_TYPES.web);
   }
 }
 
