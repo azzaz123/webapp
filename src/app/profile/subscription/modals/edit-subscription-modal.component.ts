@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
-import { CancelSubscriptionModalComponent } from './../modals/cancel-subscription-modal.component';
+import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
@@ -25,12 +25,12 @@ export class EditSubscriptionModalComponent implements OnInit {
   public isPaymentError = false;
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
-  public selectedPlanId: string;
 
   constructor(public activeModal: NgbActiveModal,
               private toastr: ToastrService,
               private i18n: I18nService,
-              private eventService: EventService) {
+              private eventService: EventService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
