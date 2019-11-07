@@ -1,66 +1,73 @@
 @import "~style/common";
 
 $checkbox-width: 24px;
-$transition: all .5s ease;
+$transition: all .25s ease;
 $feature-button-width: 170px;
 
-.checkbox {
+.CatalogItem__checkbox {
+  width: $checkbox-width;
   transition: $transition;
-  width: 0;
-  opacity: 0;
   float: left;
-  .resized & {
-    width: $checkbox-width;
-    opacity: 1;
+
+  @include square($checkbox-width);
+  border: 2px solid $blue-grey-4;
+  border-radius: 6px;
+  padding: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: $spacing-ml;
+  margin-top: $spacing-xl;
+  cursor: pointer;
+  mat-icon {
+    display: none;
+    height: 9px;
+    width: 12px;
   }
-  .select {
-    @include square($checkbox-width);
-    border: 2px solid $blue-grey-4;
-    border-radius: 6px;
-    padding: 0;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: $spacing-ml;
-    margin-top: $spacing-xl;
-    cursor: pointer;
+
+  &:hover {
+    border-color: $walla-main;
+  }
+
+  &--selected {
+    background: $walla-main;
+    border-color: transparent;
     mat-icon {
-      display: none;
-      height: 9px;
-      width: 12px;
-    }
-    &.selected {
-      background: $walla-main;
-      border-color: transparent;
-      mat-icon {
-        display: flex;
-        /deep/ svg g g {
-          fill: $white;
-        }
+      display: flex;
+      /deep/ svg g g {
+        fill: $white;
       }
     }
+  }
+
+  &--disabled {
     &:hover {
-      border-color: $walla-main;
+      border-color: $blue-grey-4;
+      cursor: not-allowed;
     }
   }
+
 }
 
-.item {
+.CatalogItem__content {
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
+  margin-left: $checkbox-width + $spacing-ml;
   margin-bottom: $spacing-s;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
   transition: $transition;
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 2px 10px 0 rgba(37,50,56,.1);
   }
-  &.expired, &.pending {
+
+  &--expired, &--pending {
     &::after {
       content: '';
       position: absolute;
@@ -75,37 +82,28 @@ $feature-button-width: 170px;
     }
   }
   .onHold {
-    background-color: $white;
     opacity: .4;
   }
-  .selected-veil {
-    display: none;
+
+  .CatalogItem__content-veil {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    cursor: pointer;
+    z-index: 1;
+    border-radius: $border-radius;
   }
-  .resized & {
-    margin-left: $checkbox-width + $spacing-ml;
-    .selected-veil {
-      display: block;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      cursor: pointer;
-      z-index: 1;
-      border-radius: $border-radius;
-    }
-    &:not(.selected):hover {
-      .selected-veil {
-        border: solid 1px $walla-main;
-      }
+
+  &:not(.CatalogItem__content--selected):hover {
+    .CatalogItem__content-veil {
+      border: solid 1px $walla-main;
     }
   }
-  .pro & {
-    .selected-veil {
-      display: none;
-    }
-  }
-  &.selected {
+  
+  &--selected {
     background-color: rgba($walla-main, 0.2);
     border: solid 1px $walla-main;
     .subscribe {
@@ -183,7 +181,7 @@ $feature-button-width: 170px;
   }
   .subscribe {
     font-size: $font-size-s;
-    color: $magenta-main;
+    color: $negative-main;
     min-width: 250px;
     font-weight: $font-weight-chunky;
     &.onHold {
@@ -196,12 +194,6 @@ $feature-button-width: 170px;
   .actions {
     margin-right: $spacing-l;
     min-width: 400px;
-    .resized:not(.pro) & {
-      display: none;
-    }
-    .pro & {
-      min-width: 338px;
-    }
     button, tsl-button {
       margin-left: $spacing-ms;
       float: left;
@@ -307,7 +299,7 @@ $feature-button-width: 170px;
       }
     }
   }
-  &.sold {
+  &--sold {
     .actions {
       min-width: auto;
     }
