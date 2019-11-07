@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync, flush } from '@angular/core/testing';
 import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
 import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -107,13 +107,13 @@ describe('AddNewSubscriptionModalComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should call stripeService.isPaymentMethodStripe$', () => {
+    it('should call stripeService.isPaymentMethodStripe$', fakeAsync(() => {
       spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
+      
       component.ngOnInit();
 
       expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
+    }));
 
     it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
       const expectedValue = true;
@@ -132,7 +132,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
       component.close();
 
-      expect(activeModal.close).toHaveBeenCalled();
+      expect(activeModal.close).toHaveBeenCalledWith('add');
     });
   });
 
@@ -148,7 +148,6 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(errorsService, 'i18nError');
 
       component.addSubscription(PAYMENT_METHOD_DATA);
-      tick();
 
       expect(component.loading).toBe(false);
       expect(component.isPaymentError).toBe(true);
@@ -164,8 +163,6 @@ describe('AddNewSubscriptionModalComponent', () => {
       spyOn(component, 'addSubscriptionFromSavedCard').and.callThrough();
 
       component.addSubscription(PAYMENT_METHOD_DATA);
-      tick();
-
       expect(component.addSubscriptionFromSavedCard).toHaveBeenCalled();
     }));
   });
@@ -176,22 +173,15 @@ describe('AddNewSubscriptionModalComponent', () => {
       
       component.isRetryInvoice = false;
     }));
-    
-    it('should set loading to true if it is false', () => {
-      component.loading = false;
+
+    it('should update loading to false', fakeAsync(() => {
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
+      tick();
 
-      expect(component.loading).toBe(true);
-    })
-
-    it('should not update loading if it is true', () => {
-      component.loading = true;
-
-      component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
-
-      expect(component.loading).toBe(true);
-    })
+      expect(component.loading).toBe(false);
+    }));
 
     it('should call newSubscription if is not retryInvoice', fakeAsync(() => {
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);

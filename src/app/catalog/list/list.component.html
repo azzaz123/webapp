@@ -8,10 +8,17 @@
      [scrollTop]="scrollTop">
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent && isRedirect"></tsl-spinner>
   <div class="container" *ngIf="!isUrgent || !isRedirect">
+
     <tsl-header>
       <div class="col-7">
         <div class="header-row">
-          <h1 class="header-title"><span i18n>Your products</span> <span class="badge badge-pro" *ngIf="hasMotorPlan || userService?.user?.featured"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span></h1>
+          <h1 class="header-title">
+            <span i18n>Your products</span>
+            <span class="badge badge-pro" *ngIf="userService?.user?.featured || subscriptionSlots.length !== 0">
+              <mat-icon svgIcon="pro-seal"></mat-icon>
+              Pro
+            </span>
+          </h1>
         </div>
         <div class="header-row header-row--margin">
           <h4 class="header-subtitle" i18n>Here you can list items, manage the ones you already have and featured to sell them faster</h4>
@@ -22,7 +29,7 @@
         <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
       </div>
       <div class="col-1 header-numbers">
-        <ng-container *ngIf="!hasMotorPlan || selectedStatus === 'sold'">
+        <ng-container *ngIf="selectedStatus === 'sold'">
           <p class="header-numbers-top">
             <span>{{numberOfProducts}}</span>
           </p>
@@ -33,79 +40,56 @@
         </ng-container>
       </div>
     </tsl-header>
-    <nav class="nav filters-nav">
-      <a (click)="filterByStatus('cars')" *ngIf="hasMotorPlan" [ngClass]="{active: selectedStatus === 'cars'}" class="nav-link"><span i18n>Cars</span> ({{totalCars}}/{{carsLimit}})</a>
-      <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Products</a>
-      <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
-    </nav>
-    <div>
-      <a id="total-selected" class="filtered" [hidden]="itemService.selectedItems.length === 0" [ngClass]="{'show': itemService.selectedItems.length}" (click)="deselect()">
-        <ng-container [ngPlural]="itemService.selectedItems.length">
-          <ng-template ngPluralCase="=1"><ng-container i18n>1 item selected</ng-container></ng-template>
-          <ng-template ngPluralCase="other"><ng-container i18n>{{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected</ng-container></ng-template>
-        </ng-container>
-      </a>
-      <span class="bulk-actions" [ngClass]="{disabled: !itemService.selectedItems.length}"  *ngIf="selectedStatus === 'cars'">
-        <button class="btn-delete dark" (click)="delete()" [disabled]="!itemService.selectedItems.length">
-          <mat-icon svgIcon="delete"></mat-icon>
-          <span i18n>Delete</span>
-        </button>
-        <button class="btn-activate" (click)="activate()"
-                [disabled]="!itemService.selectedItems.length || !canActivate" i18n>Activate</button>
-        <button class="btn-deactivate dark" (click)="deactivate()" *ngIf="userCanDeactivate"
-                [disabled]="!itemService.selectedItems.length || !canDeactivate" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button>
-      </span>
-    </div>
+
+    <tsl-subscriptions-slots-list
+      [subscriptionsSlots]="subscriptionSlots"
+      [selectedSubscriptionSlot]="selectedSubscriptionSlot"
+      (subscriptionSlotSelected)="onSelectSubscriptionSlot($event)"
+    >
+    </tsl-subscriptions-slots-list>
+
+    <tsl-nav-links
+      [searchPlaceholder]="searchPlaceholder"
+      [showSearchInput]="selectedSubscriptionSlot"
+      [selectedLinkId]="selectedStatus"
+      [navLinks]="navLinks"
+      [showSortItems]="selectedSubscriptionSlot"
+      [sortItems]="sortItems"
+      (clickedLink)="filterByStatus($event)"
+      (sortChanged)="onSortChange($event)"
+      (searchChanged)="onSearchInputChange($event)"
+    >
+    </tsl-nav-links>
+
     <div class="row items">
-      <a class="add-item col-md-12"
-         [routerLink]="['/catalog/upload']"
-         *ngIf="(!loading || (loading && items.length)) && selectedStatus === 'published' || selectedStatus === 'cars'"
-         tslTrackEvent="MYCATALOG_UPLOADPRODUCT">
-        <svg xmlns="http://www.w3.org/2000/svg" width="1181" height="88" viewBox="0 0 1181 88">
-          <g fill="none" fill-rule="evenodd" transform="translate(.668 .023)">
-            <path fill="#FFF" d="M11.484 1.589h1157.001c5.523 0 10 4.477 10 10v64.885c0 5.523-4.477 10-10 10h-1157c-5.524 0-10-4.477-10-10V11.59c0-5.523 4.476-10 10-10z"/>
-            <text fill="#13C1AC" font-family="Wallie-Fit, Wallie" font-size="24">
-              <tspan x="377" y="55" *ngIf="!items.length && (availableSlots === 0 || selectedStatus === 'published')" i18n>Upload an item to my catalog</tspan>
-              <tspan x="377" y="55" *ngIf="items.length && (availableSlots === 0 || selectedStatus === 'published')" i18n>Upload another item to my catalog</tspan>
-              <tspan x="377" y="55" *ngIf="selectedStatus === 'cars' && availableSlots === 1" i18n>You can upload one more car</tspan>
-              <tspan x="377" y="55" *ngIf="selectedStatus === 'cars' && availableSlots > 1" i18n>You can upload {{availableSlots}} cars more</tspan>
-            </text>
-            <rect class="pic" width="72" height="72" x="8" y="8" fill="#13C1AC" rx="10"/>
-            <path fill="#FFF" fill-rule="nonzero" d="M44 23.695c-11.214 0-20.305 9.09-20.305 20.305 0 11.214 9.09 20.305 20.305 20.305 11.214 0 20.305-9.09 20.305-20.305 0-11.214-9.09-20.305-20.305-20.305zm0-3.095c12.923 0 23.4 10.477 23.4 23.4 0 12.923-10.477 23.4-23.4 23.4-12.923 0-23.4-10.477-23.4-23.4 0-12.923 10.477-23.4 23.4-23.4z" opacity=".5"/>
-            <path fill="#FFF" d="M45.8 42.2H53a1.8 1.8 0 0 1 0 3.6h-7.2V53a1.8 1.8 0 0 1-3.6 0v-7.2H35a1.8 1.8 0 0 1 0-3.6h7.2V35a1.8 1.8 0 1 1 3.6 0v7.2z"/>
-            <path class="dashed-border" stroke="#13C1AC" stroke-dasharray="7" stroke-linecap="round" stroke-width="3" d="M11.484 1.589h1157.001c5.523 0 10 4.477 10 10v64.885c0 5.523-4.477 10-10 10h-1157c-5.524 0-10-4.477-10-10V11.59c0-5.523 4.476-10 10-10z" opacity=".5"/>
-            <rect class="button" width="40" height="40" x="1111" y="24" fill="#13C1AC" opacity=".05" rx="8"/>
-            <rect class="button" width="40" height="40" x="1011" y="24" fill="#13C1AC" opacity=".05" rx="8"/>
-            <rect class="button" width="40" height="40" x="959" y="24" fill="#13C1AC" opacity=".05" rx="8"/>
-            <path class="button" fill="#13C1AC" d="M832.037 24H937a8 8 0 0 1 8 8v24a8 8 0 0 1-8 8H832.037a8 8 0 0 1-8-8V32a8 8 0 0 1 8-8z" opacity=".05"/>
-            <rect class="button" width="40" height="40" x="1061" y="24" fill="#13C1AC" opacity=".05" rx="8"/>
-            <rect class="button" width="74" height="16" x="106" y="36" fill="#13C1AC" opacity=".05" rx="4"/>
-            <path class="button" fill="#13C1AC" d="M199 36h138.143a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4H199a4 4 0 0 1-4-4v-8a4 4 0 0 1 4-4z" opacity=".05"/>
-          </g>
-        </svg>
-      </a>
-      <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
+      <div id="catalog-empty-state" *ngIf="!items.length && !loading">
         <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
       </div>
+
       <tsl-catalog-item 
         *ngFor="let item of items"
         class="col-md-12" 
         [item]="item"
-        [isPro]="selectedStatus === 'cars'"
         [paymentMethod]="isStripe ? 'STRIPE' : 'SABADELL'"
         (itemChange)="itemChanged($event)"
         (purchaseListingFee)="purchaseListingFee($event)"
       >
       </tsl-catalog-item>
+
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
   </div>
 </div>
-<tsl-selected-items *ngIf="items.length && itemService.selectedItems.length"
-                    [items]="items"
-                    [isStripe]="isStripe"
-                    (onAction)="onAction($event)"
-></tsl-selected-items>
+
+<tsl-selected-items *ngIf="items.length"
+  [items]="items"
+  [selectedSubscriptionSlot]="selectedSubscriptionSlot"
+  [selectedStatus]="selectedStatus"
+  [isStripe]="isStripe"
+  (selectedAction)="onAction($event)"
+>
+</tsl-selected-items>
+
 <tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>
 <tsl-bump-tutorial></tsl-bump-tutorial>
 <button [hidden]="true" tslItemSold></button>

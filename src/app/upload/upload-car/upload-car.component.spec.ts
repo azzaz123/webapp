@@ -32,6 +32,8 @@ import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-
 import { EditItemCar } from '../../core/analytics/events-interfaces/edit-item-car.interface';
 import { ListItemCar } from '../../core/analytics/events-interfaces/list-item-car.interface';
 import { CarContent } from '../../core/item/item-response.interface';
+import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -122,6 +124,9 @@ describe('UploadCarComponent', () => {
               return Observable.of(CAR_INFO);
             }
           }
+        },
+        {
+          provide: SubscriptionsService, useClass: MockSubscriptionService
         }
       ],
       declarations: [UploadCarComponent],

@@ -38,7 +38,7 @@ describe('RemoteConsoleService', () => {
     expect(service).toBeTruthy();
   });
 
-  xit('should call xmpp conection with parameters', () => {
+  it('should call xmpp conection with parameters', () => {
     const USER_ID = 'USER_ID';
     const CONNECTION_TIME = 1000;
     spyOn(logger, 'info');
@@ -54,8 +54,33 @@ describe('RemoteConsoleService', () => {
       'metric_type': MetricTypeEnum.XMPP_CONNECTION_TIME,
       'message': 'xmpp connection time',
       'connection_time': CONNECTION_TIME,
+      'call_no': 1,
       'connection_type': '',
-      'ping_time_ms': 0
+      'ping_time_ms': navigator['connection']['rtt']
+    }));
+  });
+
+  it('should call xmpp conection with parameters and increase number of call if service call method multiple times', () => {
+    const USER_ID = 'USER_ID';
+    const CONNECTION_TIME = 1000;
+    spyOn(logger, 'info');
+
+    service.sendConnectionTimeout(USER_ID, CONNECTION_TIME);
+    service.sendConnectionTimeout(USER_ID, CONNECTION_TIME);
+    service.sendConnectionTimeout(USER_ID, CONNECTION_TIME);
+
+    expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
+      'browser': BROWSER,
+      'browser_version': BROWSER_VERSION,
+      'user_id': USER_ID,
+      'feature_flag': true,
+      'version': APP_VERSION,
+      'metric_type': MetricTypeEnum.XMPP_CONNECTION_TIME,
+      'message': 'xmpp connection time',
+      'connection_time': CONNECTION_TIME,
+      'call_no': 3,
+      'connection_type': '',
+      'ping_time_ms': navigator['connection']['rtt']
     }));
   });
 

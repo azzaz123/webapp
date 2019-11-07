@@ -27,7 +27,8 @@ import {
   Purchase, PurchaseProductsWithCreditsResponse,
   RealestateContent,
   SelectedItemsAction,
-  ListingFeeProductInfo
+  ListingFeeProductInfo,
+  ItemByCategoryResponse
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import { find, findIndex, reverse, without, map, filter, sortBy } from 'lodash-es';
@@ -35,7 +36,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { EventService } from '../event/event.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -47,7 +48,7 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpServiceNew } from '../http/http.service.new';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -60,6 +61,7 @@ export const ITEM_STATUSES: any = {
 };
 
 export const PAYMENT_PROVIDER = 'STRIPE';
+export const MINES_BY_CATEGORY_ENDPOINT = 'api/v3/items/manageable-items/';
 
 @Injectable()
 export class ItemService extends ResourceService {
@@ -80,11 +82,14 @@ export class ItemService extends ResourceService {
   };
   public selectedItems: string[] = [];
   private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
+  private lastCategoryIdSearched: number;
 
-  constructor(http: HttpService,
-              private i18n: I18nService,
-              private trackingService: TrackingService,
-              private eventService: EventService) {
+  constructor(
+    http: HttpService,
+    private httpNew: HttpServiceNew,
+    private i18n: I18nService,
+    private trackingService: TrackingService,
+    private eventService: EventService) {
     super(http);
   }
 
@@ -117,6 +122,7 @@ export class ItemService extends ResourceService {
   public deselectItems() {
     this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_UNSELECTED, {product_ids: this.selectedItems.join(', ')});
     this.selectedItems = [];
+    this.selectedItems$.next();
     this.items.active.map((item: Item) => {
       item.selected = false;
     });
@@ -129,6 +135,7 @@ export class ItemService extends ResourceService {
     this.items.featured.map((item: Item) => {
       item.selected = false;
     });
+    this.selectedAction = null;
   }
 
   public getBanReasons(): Observable<BanReason[]> {
@@ -315,6 +322,46 @@ export class ItemService extends ResourceService {
     );
   }
 
+  private mapItemByCategory(response: ItemByCategoryResponse, categoryId: number) {
+    const item = new Item(
+     response.id,
+     null,
+     null,
+     response.title,
+     null,
+     categoryId,
+     null,
+     response.sale_price,
+     response.currency_code,
+     response.modified_date,
+     null,
+     response.flags,
+      null,
+      null,
+      response.main_image,
+      null,
+      response.web_slug,
+      response.publish_date
+    );
+
+    if (response.active_item_purchase) {
+      if (response.active_item_purchase.listing_fee) {
+        item.listingFeeExpiringDate = new Date().getTime() + response.active_item_purchase.listing_fee.remaining_time_ms;
+      }
+
+      if (response.active_item_purchase.bump) {
+        item.purchases = {
+          bump_type: response.active_item_purchase.bump.type,
+          expiration_date: response.active_item_purchase.bump.remaining_time_ms
+        };
+
+        item.bumpExpiringDate = new Date().getTime() + response.active_item_purchase.bump.remaining_time_ms;
+      }
+    }
+
+    return item;
+  }
+
   public reportListing(itemId: number | string,
                        comments: string,
                        reason: number,
@@ -392,6 +439,7 @@ export class ItemService extends ResourceService {
   }
 
   public mine(init: number, status?: string): Observable<ItemsData> {
+    this.lastCategoryIdSearched = null;
     return this.getPaginationItems(this.API_URL_WEB + '/mine/' + status, init, true);
   }
 
@@ -622,6 +670,7 @@ export class ItemService extends ResourceService {
                 return item;
             });
             this.items[status] = items;
+            this.lastCategoryIdSearched = null;
             return items;
           }
           return [];
@@ -669,6 +718,72 @@ export class ItemService extends ResourceService {
           return Observable.of([]);
         }
       });
+  }
+
+  public minesByCategory(
+    pageNumber: number, pageSize: number, categoryId: number, sortByParam: string,
+    status: string = 'active', term?: string, cache: boolean = true
+  ): Observable<Item[]> {
+
+    const init: number = (pageNumber - 1) * pageSize;
+    const end: number = init + pageSize;
+
+    // TODO: Propper condition with last category id searched and so
+    if (
+      status === 'TODO' &&
+      this.lastCategoryIdSearched &&
+      this.lastCategoryIdSearched === categoryId &&
+      this.items[status] &&
+      cache) {
+      return of(this.items[status]);
+    } else {
+      return this.recursiveMinesByCategory(0, 20, categoryId, status)
+        .map(responseArray => {
+          if (responseArray.length > 0) {
+            const items = responseArray.map(i => this.mapItemByCategory(i, categoryId));
+            this.items[status] = items;
+            this.lastCategoryIdSearched = categoryId;
+            return items;
+          }
+          return [];
+        })
+        .map(res => {
+          term = term ? term.trim().toLowerCase() : '';
+          if (term !== '') {
+            return filter(res, (item: Item) => {
+              return item.title.toLowerCase().indexOf(term) !== -1;
+            });
+          }
+          return res;
+        })
+        .map(res => {
+          const sort = sortByParam.split('_');
+          const field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
+          const sorted: Item[] = sortBy(res, [field]);
+          if (sort[1] === 'desc') {
+            return reverse(sorted);
+          }
+          return sorted;
+        })
+        .map(res => res.slice(init, end));
+    }
+  }
+
+  public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemByCategoryResponse[]> {
+    return this.httpNew.get(MINES_BY_CATEGORY_ENDPOINT, [
+      { key: 'status', value: status },
+      { key: 'init', value: init },
+      { key: 'end', value: init + offset },
+      { key: 'category_id', value: categoryId }
+    ])
+    .flatMap(res => {
+      if (res.length > 0) {
+        return this.recursiveMinesByCategory(init + offset, offset, categoryId, status)
+          .map(recursiveResult => res.concat(recursiveResult));
+      } else {
+        return Observable.of([]);
+      }
+    });
   }
 
   public getItemAndSetPurchaseInfo(id: string, purchase: Purchase): Item {
