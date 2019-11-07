@@ -43,7 +43,6 @@ phases:
       # INSTALL ENV
       - >
         if [ "`echo $ENV | grep prod`" != "" ]; then
-          echo export const APP_VERSION = \"${BRANCH}\"\; > ./src/environments/version.ts
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable npm run buildprod
           aws s3 sync dist s3://web-es.wallapop.com --delete
           aws s3 cp dist/index.html s3://web-es.wallapop.com/index.html --cache-control max-age=0

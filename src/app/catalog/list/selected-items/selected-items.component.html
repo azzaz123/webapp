@@ -1,9 +1,22 @@
-<div class="container">
-  <div class="items">
-    <div *ngFor="let item of selectedItems | slice:0:4; let last = last" class="item">
-      <tsl-item-avatar
-        [item]="item"
-        size="small">
+<div class="SelectedItems">
+
+  <div class="SelectedItems__total-selected" [hidden]="itemService.selectedItems.length === 0" (click)="deselect()">
+    <a>
+      <ng-container [ngPlural]="itemService.selectedItems.length">
+        <ng-template ngPluralCase="=1">
+          <ng-container i18n>1 item selected</ng-container>
+        </ng-template>
+        <ng-template ngPluralCase="other">
+          <ng-container i18n>{{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected
+          </ng-container>
+        </ng-template>
+      </ng-container>
+    </a>
+  </div>
+
+  <div class="SelectedItems__items">
+    <div *ngFor="let item of selectedItems | slice:0:4; let last = last" class="SelectedItems__item">
+      <tsl-item-avatar [item]="item" size="small">
       </tsl-item-avatar>
       <span *ngIf="selectedItems.length === 1">{{item.title}}</span>
       <div *ngIf="selectedItems.length - 3 > 1 && last" class="last">
@@ -11,22 +24,38 @@
       </div>
     </div>
   </div>
-  <div class="actions" [ngClass]="itemService.selectedAction">
-    <span class="address" *ngIf="itemService.selectedAction === 'feature'">Avenida Meridiana 89, 08026 Barcelona, España</span>
-    <tsl-button *ngIf="itemService.selectedAction === 'reserve'"
-            className="btn-reserve"
-            (click)="onAction.emit()"
-            i18n>Reserve</tsl-button>
-    <tsl-button *ngIf="itemService.selectedAction === 'delete'"
-                className="btn-delete"
-            (click)="onAction.emit()"
-            i18n>Delete</tsl-button>
-    <tsl-button *ngIf="itemService.selectedAction === 'feature'"
-            className="btn-primary btn-big"
-                id="qa-feature-continue"
-            [routerLink]="['/catalog/checkout']"
-            tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE"
-            [params]="{ payment_method: isStripe ? 'STRIPE' : 'SABADELL' }"
-            i18n="Continue to cart|selected-items-button">Continue</tsl-button>
+
+  <div class="SelectedItems__actions">
+
+    <!-- Delete -->
+    <button class="btn-delete dark" (click)="onClickAction('delete')"
+      [hidden]="itemService.selectedAction === 'feature'"
+      [disabled]="!itemService.selectedItems.length">
+      <mat-icon svgIcon="delete"></mat-icon>
+      <span i18n>Delete</span>
+    </button>
+
+    <!-- Deactivate -->
+    <button class="btn-deactivate dark" *ngIf="selectedSubscriptionSlot && selectedStatus === 'active'"
+      (click)="onClickAction('deactivate')" 
+      [hidden]="itemService.selectedAction === 'feature' || (selectedStatus !== 'published' && selectedStatus !== 'active')"
+      [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button>
+
+    <!-- Activate -->
+    <button class="btn-activate" *ngIf="selectedSubscriptionSlot && selectedStatus === 'inactive'"
+      [hidden]="itemService.selectedAction === 'feature' || selectedStatus !== 'inactive'" [disabled]="!itemService.selectedItems.length"
+      (click)="onClickAction('activate')" i18n>Activate</button>
+
+    <!-- Feature -->
+    <div class="SelectedItems__feature" [hidden]="selectedStatus === 'inactive' || selectedStatus === 'sold'">
+      <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
+        [routerLink]="['/catalog/checkout']" [params]="{ payment_method: isStripe ? 'STRIPE' : 'SABADELL' }"
+        tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE" i18n>Feature</tsl-button>
+      <span class="address">
+        Avenida Meridiana 89, 08026 Barcelona, España
+      </span>
+    </div>
+
   </div>
+
 </div>
