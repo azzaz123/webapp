@@ -1,12 +1,12 @@
 <form [formGroup]="profileForm" (submit)="onSubmit()">
-  <div class="row box profile-box">
+  <div class="row box profile-box" [hidden]="loading">
     <div class="col-12 col-md-11 offset-md-1">
       <tsl-picture-upload [user]="user"></tsl-picture-upload>
       <tsl-cover-upload (clickNotPro)="openBecomeProModal()" [user]="user" [isPro]="isPro"></tsl-cover-upload>
     </div>
   </div>
   <tsl-profile-form [profileForm]="profileForm">
-    <div class="row box profile-box">
+    <div class="row box profile-box" [hidden]="loading">
       <div class="col-12 col-md-11 offset-md-1">
         <div class="row mb-2 mb-md-4">
           <div class="col-12">
@@ -76,6 +76,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="row loading-center">
+      <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
   </tsl-profile-form>
 </form>

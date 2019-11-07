@@ -1,0 +1,30 @@
+@import '~web-styleguide/scss/spacing';
+
+.SubscriptionsSlotsList {
+    display: block;
+    margin: $spacing-l 0;
+
+    &--single {
+        display: block;
+    }
+
+    &--many {
+        display: flex;
+
+        tsl-subscriptions-slot-item {
+            width: 100%;
+
+            &:not(:first-child):not(:last-child) {
+                margin: 0 $spacing-s;
+            }
+
+            &:first-child {
+                margin-right: $spacing-s;
+            }
+
+            &:last-child {
+                margin-left: $spacing-s;
+            }
+        }
+    }
+}

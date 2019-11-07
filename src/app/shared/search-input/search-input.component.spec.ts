@@ -2,6 +2,7 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SearchInputComponent } from './search-input.component';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 describe('SearchInputComponent', () => {
   let component: SearchInputComponent;
@@ -10,6 +11,7 @@ describe('SearchInputComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
         declarations: [SearchInputComponent],
+        providers: [I18nService],
         schemas: [CUSTOM_ELEMENTS_SCHEMA]
       })
       .compileComponents();

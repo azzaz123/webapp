@@ -79,9 +79,7 @@ export class HttpServiceNew {
 
     let newParams: HttpParams = new HttpParams();
     params.forEach(param => {
-      if (param.value) {
-        newParams = newParams.set(param.key, param.value.toString());
-      }
+      newParams = newParams.set(param.key, param.value);
     });
     options.params = newParams;
   }
