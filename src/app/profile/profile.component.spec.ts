@@ -11,9 +11,10 @@ import { SubscriptionsService } from '../core/subscriptions/subscriptions.servic
 import { StripeService } from '../core/stripe/stripe.service';
 import { HttpService } from '../core/http/http.service';
 import { FeatureflagService } from '../core/user/featureflag.service';
-import { MAPPED_SUBSCRIPTIONS } from '../../tests/subscriptions.fixtures.spec';
-import { CategoryService } from '../core/category/category.service';
 import { CATEGORY_DATA_WEB } from '../../tests/category.fixtures.spec';
+import { CategoryService } from '../core/category/category.service';
+import { SUBSCRIPTIONS } from '../../tests/subscriptions.fixtures.spec';
+import { EventService } from '../core/event/event.service';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -23,6 +24,7 @@ describe('ProfileComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let stripeService: StripeService;
   let featureflagService: FeatureflagService;
+  let eventService: EventService;
   const mockMotorPlan = {
     type: 'motor_plan_pro',
     subtype: 'sub_premium'
@@ -35,6 +37,7 @@ describe('ProfileComponent', () => {
       declarations: [ ProfileComponent ],
       providers: [
         I18nService,
+        EventService,
         {provide: HttpService, useValue: {}},
         {
           provide: UserService, useValue: {
@@ -54,7 +57,7 @@ describe('ProfileComponent', () => {
             },
             logout() {},
             getMotorPlans() {
-              return Observable.of({});
+              return Observable.of(PROFILE_SUB_INFO);
             },
             isProfessional() {
               return Observable.of(false);
@@ -74,7 +77,7 @@ describe('ProfileComponent', () => {
               return Observable.of(true);
             },
             getSubscriptions() {
-              return Observable.of(MAPPED_SUBSCRIPTIONS)
+              return Observable.of(SUBSCRIPTIONS);
             }
           }
         },
@@ -106,6 +109,7 @@ describe('ProfileComponent', () => {
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
     categoryService = TestBed.get(CategoryService);
+    eventService = TestBed.get(EventService);
     spyOn(userService, 'me').and.callThrough();
     spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
     spyOn(userService, 'getStats').and.callThrough();

@@ -7,6 +7,8 @@ import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.serv
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
 import { HttpServiceNew } from '../http/http.service.new';
+import { CategoryService } from '../category/category.service';
+import { mergeMap, map } from 'rxjs/operators';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -22,7 +24,8 @@ export class SubscriptionsService {
 
   constructor(private userService: UserService,
               private featureflagService: FeatureflagService,
-              private http: HttpServiceNew) {
+              private http: HttpServiceNew,
+              private categoryService: CategoryService) {
     this.userService.me().subscribe((user: User) => {
       this.fullName = user ?  `${user.firstName} ${user.lastName}` : '';
     });
@@ -51,7 +54,7 @@ export class SubscriptionsService {
     return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`, {
       invoice_id: invoiceId,
       payment_method_id: paymentId,
-    });
+    }, null, { observe: 'response' as 'body' });
   }
 
   public checkRetrySubscriptionStatus(): Observable<any> {
@@ -62,21 +65,28 @@ export class SubscriptionsService {
     return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);
   }
 
-  public getSubscriptions(categories: CategoryResponse[], cache: boolean = true): Observable<SubscriptionsResponse[]> {
+  public getSubscriptions(cache: boolean = true): Observable<SubscriptionsResponse[]> {
     if (this.subscriptions && cache) {
       return Observable.of(this.subscriptions);
     }
-    return this.http.get(SUBSCRIPTIONS_URL)
-    .map((subscriptions: SubscriptionsResponse[]) => {
-      if (subscriptions.length > 0) {
-        return subscriptions.map((subscription: SubscriptionsResponse) => this.mapSubscriptions(subscription, categories))
-      }
-    })
-    .do((subscriptions: SubscriptionsResponse[]) => this.subscriptions = subscriptions)
-    .catch((error) => {
-      console.warn('ERROR getSubscriptions ', error);
-      return Observable.of(null);
-    });
+
+    return this.categoryService.getCategories()
+    .pipe(
+      mergeMap((categories) => {
+        return this.http.get(SUBSCRIPTIONS_URL)
+        .pipe(
+          map((subscriptions: SubscriptionsResponse[]) => {
+            if (subscriptions.length > 0) {
+              return subscriptions.map((subscription: SubscriptionsResponse) => this.mapSubscriptions(subscription, categories))
+            }
+          })
+        )
+      })
+    )
+  }
+
+  public cancelSubscription(planId: string): Observable<any> {
+    return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/cancel/${planId}`, null, null, { observe: 'response' as 'body' });
   }
 
   private mapSubscriptions(subscription: SubscriptionsResponse, categories: CategoryResponse[]): SubscriptionsResponse {
