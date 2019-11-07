@@ -261,9 +261,8 @@ export class ListComponent implements OnInit, OnDestroy {
           this.tooManyItemsModalRef.result.then((orderEvent: OrderEvent) => {
             if (orderEvent) {
               this.purchaseListingFee(orderEvent);
-            } else {
-              this.tooManyItemsModalRef = null;
             }
+            this.tooManyItemsModalRef = null;
           }, () => {
           });
         } else if (params && params.sold && params.itemId) {

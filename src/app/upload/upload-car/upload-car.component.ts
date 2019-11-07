@@ -311,7 +311,7 @@ export class UploadCarComponent implements OnInit {
     this.router.navigate(['/catalog/list', params]);
   }
 
-  public getRedirectParams(uploadEvent, userType: number) {
+  private getRedirectParams(uploadEvent, userType: number) {
     const params: any = {
       [uploadEvent.action]: true,
       itemId: uploadEvent.response.id || uploadEvent.response
