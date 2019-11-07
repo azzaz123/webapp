@@ -6,11 +6,8 @@ import { EventService } from '../../../core/event/event.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
-import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
-import { SubscriptionsModel } from '../../../core/subscriptions/subscriptions.model';
-import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -62,7 +59,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   public close() {
-      this.activeModal.close();
+      this.activeModal.close('add');
   }
 
   public addSubscription(paymentMethod: PaymentMethodResponse) {
@@ -208,12 +205,12 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   private paymentSucceeded() {
+    this.loading = false;
     this.isRetryInvoice = false;
     this.close();
-    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, {windowClass: 'success'});
+    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
     modalRef.result.then(() => {
       modalRef = null;
-      this.eventService.emit('subscriptionChange');
     }, () => {});
   }
 

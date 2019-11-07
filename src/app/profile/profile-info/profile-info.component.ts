@@ -35,6 +35,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   public user: User;
   public isPro: boolean;
   public updateLocationWhenSearching = false;
+  public loading = false;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
 
@@ -58,6 +59,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.userService.me().subscribe((user: User) => {
       this.user = user;
     });
@@ -76,8 +78,10 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
     this.userService.getProInfo().subscribe((userInfo: UserProInfo) => {
       this.userInfo = userInfo;
       this.setUserData();
+      this.loading = false;
     }, () => {
       this.setUserData();
+      this.loading = false;
     });
   }
 

@@ -1,15 +1,16 @@
 import { SubscriptionComponent } from "./subscription.component";
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from "@angular/core/testing";
+import { ComponentFixture, TestBed, async, fakeAsync, tick, flush } from "@angular/core/testing";
 import { CategoryService } from "../../core/category/category.service";
 import { SubscriptionsService } from "../../core/subscriptions/subscriptions.service";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { Observable } from "rxjs";
 import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures.spec";
-import { MAPPED_SUBSCRIPTIONS } from "../../../tests/subscriptions.fixtures.spec";
+import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED } from "../../../tests/subscriptions.fixtures.spec";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from "./modals/add-new-subscription-modal.component";
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component'
 import { EventService } from "../../core/event/event.service";
+import { Router } from "@angular/router";
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionComponent;
@@ -17,8 +18,8 @@ describe('SubscriptionComponent', () => {
   let categoryService: CategoryService;
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
-  let eventService: EventService;
-  const componentInstance: any = {};
+  let router: Router;
+  const componentInstance = {subscription: MAPPED_SUBSCRIPTIONS[0]};
   
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -49,6 +50,12 @@ describe('SubscriptionComponent', () => {
             }
           }
         },
+        {
+          provide: Router, useValue: {
+            navigate() {
+            }
+          }
+        }
       ],
     schemas: [NO_ERRORS_SCHEMA]
     })
@@ -61,14 +68,14 @@ describe('SubscriptionComponent', () => {
     component = fixture.componentInstance;
     subscriptionsService = TestBed.get(SubscriptionsService);
     categoryService = TestBed.get(CategoryService);
-    eventService = TestBed.get(EventService);
+    router = TestBed.get(Router);
     fixture.detectChanges();
   });
 
   describe('OnInit', () => {
     it('should get the mapped subscriptions', () => {
       spyOn(categoryService, 'getCategories').and.callThrough();
-      spyOn(subscriptionsService, 'getSubscriptions').and.callThrough();
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(MAPPED_SUBSCRIPTIONS));
       
       component.ngOnInit();
       
@@ -100,6 +107,35 @@ describe('SubscriptionComponent', () => {
         windowClass: 'review'
       });
     });
+
+    it('should not set loading to true if action is not present', () => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve(null),
+        componentInstance: componentInstance
+      });
+
+      component.subscriptions = MAPPED_SUBSCRIPTIONS;
+
+      component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+
+      expect(component.loading).toBe(false);
+    });
+
+    it('should redirect to profile if action is present and subscription changed', fakeAsync(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve('add'),
+        componentInstance: componentInstance
+      });
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(MAPPED_SUBSCRIPTIONS_ADDED));
+      spyOn(router, 'navigate');
+
+      component.subscriptions = MAPPED_SUBSCRIPTIONS;
+
+      component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+      tick(1000);
+
+      expect(router.navigate).toHaveBeenCalledWith(['profile/info']);
+    }));
 
     afterEach(() => {
       TestBed.resetTestingModule();

@@ -69,8 +69,8 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('messages', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/messages.svg'));
   matIconRegistry.addSvgIcon('arrow-waterfall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-waterfall.svg'));
   matIconRegistry.addSvgIcon('arrow-right', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-right.svg'));
-  matIconRegistry.addSvgIcon('cat_car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons//categories/normal/cars.svg'));
-  matIconRegistry.addSvgIcon('cat_laundry', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Appliances.svg'));
+  matIconRegistry.addSvgIcon('cat_car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/cars.svg'));
+  matIconRegistry.addSvgIcon('cat_laundry', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_laundry.svg'));
   matIconRegistry.addSvgIcon('cat_baby_car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Babies.svg'));
   matIconRegistry.addSvgIcon('cat_smartphone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Electronics.svg'));
   matIconRegistry.addSvgIcon('cat_bookshelf', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_GamesBooks.svg'));
