@@ -53,17 +53,20 @@ export class ProfileComponent implements OnInit {
     .pipe(
       flatMap(() => this.subscriptionsService.isSubscriptionsActive$())
     )
-    .filter(val => val === true)
     .subscribe(val => {
-      this.isSubscriptionsActive = val;
-      this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-        if (!isProfessional) {
-          this.subscriptionType();
-        }
-        else {
-          this.loading = false;
-        }
-      });
+      if (val) {
+        this.isSubscriptionsActive = val;
+        this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+          if (!isProfessional) {
+            this.subscriptionType();
+          }
+          else {
+            this.loading = false;
+          }
+        });
+      } else {
+        this.loading = false;
+      }
     });
   }
 
