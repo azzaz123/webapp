@@ -19,6 +19,7 @@
     <div class="chat">
 
       <div class="top-bar" [ngClass]="{'faded': !currentConversation.user.available}">
+        <mat-icon svgIcon="back-arrow" class="d-md-none back-arrow" (click)="navigationBack()"></mat-icon>
         <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
            target="_blank" class="user-avatar">
           <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
@@ -111,7 +112,7 @@
         </div>
       </div>
 
-      <div class="scroll-message-container">
+      <div class="scroll-message-container" class="d-none d-md-block">
         <tsl-scrolling-message [isVisible]="!isEndOfConversation" [noMessages]="currentConversation.unreadCounter"
                                (clickScroll)="scrollToLastMessage()"></tsl-scrolling-message>
       </div>
@@ -122,7 +123,7 @@
     </div>
   </div>
 
-  <div id="conversation-meta">
+  <div id="conversation-meta" class="d-none d-md-block">
     <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item"
                            [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
     <tsl-inbox-item-for-sell *ngxPermissionsOnly="['isProfessional']"

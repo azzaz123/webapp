@@ -143,9 +143,11 @@
         border-top: 1px solid $color-inbox-background;
       }
     }
+    @include media-breakpoint-down(sm) {
+      width: 100%;
+    }
   }
 }
-
 
 .date-marker {
   display: inline-flex;
@@ -168,6 +170,10 @@
   }
 }
 
+.back-arrow {
+  margin-right: $spacing-m;
+}
+
 .conversation-header-menu {
   height: 24px;
 
@@ -181,7 +187,7 @@
   }
 
   .dropdown-item {
-    padding: ($spacing-ml /2) $spacing-ml;
+    padding: ($spacing-ml / 2) $spacing-ml;
     cursor: pointer;
 
     &.warn {
@@ -250,7 +256,8 @@
 }
 
 .faded {
-  tsl-user-avatar, .conversation-header-user-info {
+  tsl-user-avatar,
+  .conversation-header-user-info {
     opacity: 0.5;
   }
 }
