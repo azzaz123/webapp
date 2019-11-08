@@ -92,7 +92,7 @@ export class ProfileComponent implements OnInit {
           });
         }
       }
-    }); 
+    }, () => { this.loading = false; }); 
   }
 
   private isProUser(): void {
