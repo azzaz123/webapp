@@ -141,13 +141,16 @@ export class SubscriptionsService {
     .pipe(
       mergeMap((categories) => {
         return this.http.get(SUBSCRIPTIONS_URL)
+        .catch((error) => {
+          return Observable.of(error);
+        })
         .pipe(
           map((subscriptions: SubscriptionsResponse[]) => {
             if (subscriptions.length > 0) {
               return subscriptions.map((subscription: SubscriptionsResponse) => this.mapSubscriptions(subscription, categories))
             }
           })
-        )
+        );
       })
     )
   }
