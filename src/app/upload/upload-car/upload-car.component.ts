@@ -21,6 +21,8 @@ import { CarInfo, CarContent } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -52,6 +54,11 @@ export class UploadCarComponent implements OnInit {
   public customVersion = false;
   private settingItem: boolean;
 
+  private isNormal = true;
+  private isMotorPlan = false;
+  private isCardealer = false;
+  private isWebSubscription = false;
+
   constructor(private fb: FormBuilder,
     private carSuggestionsService: CarSuggestionsService,
     private carKeysService: CarKeysService,
@@ -62,6 +69,7 @@ export class UploadCarComponent implements OnInit {
     private trackingService: TrackingService,
     private analyticsService: AnalyticsService,
     private userService: UserService,
+    private subscriptionService: SubscriptionsService,
     config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
@@ -287,17 +295,37 @@ export class UploadCarComponent implements OnInit {
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
+
+    if (uploadEvent.action === 'createdOnHold') {
+      this.subscriptionService.getUserSubscriptionType().subscribe(type => {
+        this.redirectToList(uploadEvent, type);
+      });
+    } else {
+      this.redirectToList(uploadEvent);
+    }
+  }
+
+  public redirectToList(uploadEvent, type = 1) {
+    const params = this.getRedirectParams(uploadEvent, type);
+    this.item ? this.trackEditOrUpload(true, uploadEvent.response) : this.trackEditOrUpload(false, uploadEvent.response);
+    this.router.navigate(['/catalog/list', params]);
+  }
+
+  private getRedirectParams(uploadEvent, userType: number) {
     const params: any = {
       [uploadEvent.action]: true,
       itemId: uploadEvent.response.id || uploadEvent.response
     };
+
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
 
-    this.item ? this.trackEditOrUpload(true, uploadEvent.response) : this.trackEditOrUpload(false, uploadEvent.response);
+    if (uploadEvent.action === 'createdOnHold') {
+      params.onHoldType = userType;
+    }
 
-    this.router.navigate(['/catalog/list', params]);
+    return params;
   }
 
   onError(response: any) {

@@ -139,10 +139,17 @@ export class I18nService {
       model_example: 'E.g: iPhone',
       noResultsFound: 'No results found',
       writeMessage: 'Write a message...',
+      selling: 'Selling',
+      active: 'Active',
+      inactive: 'Inactive',
+      searchDefault: 'Search items',
+      searchByTitle: 'Search by title',
       editSubscriptionSuccessTitle: 'Great!',
       editSubscriptionSuccessBody: 'Your subscription has been edited correctly.',
       cancelSubscriptionSuccessTitle: 'Subscription cancelled.',
-      cancelSubscriptionSuccessBody: 'We are sad to see you go.'
+      cancelSubscriptionSuccessBody: 'We are sad to see you go.',
+      cancelSubscriptionErrorTitle: 'There was an error',
+      cancelSubscriptionErrorBody: 'Your subscription could not be cancelled.'
     },
     es: {
       daysMomentConfig: {
@@ -207,7 +214,7 @@ export class I18nService {
       missed: 'Llamada perdida',
       answered: 'Llamada recibida',
       chats: 'Chats',
-      sold: 'Vendido',
+      sold: 'Vendidos',
       minute: 'minuto',
       hour: 'hora',
       day: 'día',
@@ -281,10 +288,17 @@ export class I18nService {
       model_example: 'P. ej: iPhone',
       noResultsFound: 'No hay resultados',
       writeMessage: 'Escribe un mensaje...',
+      selling: 'En venta',
+      active: 'Activos',
+      inactive: 'Inactivos',
+      searchDefault: 'Busca productos',
+      searchByTitle: 'Buscar por título',
       editSubscriptionSuccessTitle: '¡Bien!',
       editSubscriptionSuccessBody: 'Tu suscripción se ha editado correctamente.',
       cancelSubscriptionSuccessTitle: 'Suscripción cancelada.',
-      cancelSubscriptionSuccessBody: 'Lamentamos que te vayas :('
+      cancelSubscriptionSuccessBody: 'Lamentamos que te vayas :(',
+      cancelSubscriptionErrorTitle: 'Ha habido un error',
+      cancelSubscriptionErrorBody: 'Tu suscripción no ha podido ser cancelada.'
     }
   };
 

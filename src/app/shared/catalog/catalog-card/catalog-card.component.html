@@ -14,7 +14,7 @@
       <div class="title">{{item.title}}</div>
     </a>
     <div class="published" [hidden]="item.sold || item.purchases && !item.flags.onhold">
-      <div i18n>Publish Date</div>
+      <div i18n>Published</div>
       <div class="date">{{item.publishedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
     <div class="updated" [hidden]="item.sold || item.purchases && !item.flags.onhold">

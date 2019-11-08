@@ -72,6 +72,7 @@ import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.co
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { SelectModule } from 'ng-select';
 import { LinkTransformPipe } from './pipes';
+import { NavLinksComponent } from './nav-links/nav-links.component';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
 import { DeviceDetectorModule } from 'ngx-device-detector';
@@ -150,6 +151,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     NewCardModalComponent,
     StripeCardSelectionComponent,
     SelectModule,
+    NavLinksComponent,
     LinkTransformPipe,
     PreventDoubleClickDirective
   ],
@@ -211,6 +213,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     CreditCardsComponent,
     NewCardModalComponent,
     StripeCardSelectionComponent,
+    NavLinksComponent,
     LinkTransformPipe,
     PreventDoubleClickDirective
   ],
