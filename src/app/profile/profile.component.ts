@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
-import { User } from '../core/user/user';
+import { User, PERMISSIONS } from '../core/user/user';
 import { MotorPlan, MotorPlanType, ProfileSubscriptionInfo } from '../core/user/user-response.interface';
 import { I18nService } from '../core/i18n/i18n.service';
 import { UserStatsResponse } from '../core/user/user-stats.interface';
 import { StripeService } from '../core/stripe/stripe.service';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { flatMap } from 'rxjs/operators';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'tsl-profile',
@@ -28,6 +29,7 @@ export class ProfileComponent implements OnInit {
               protected i18n: I18nService,
               private stripeService: StripeService,
               private subscriptionsService: SubscriptionsService,
+              private permissionService: NgxPermissionsService,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -77,6 +79,7 @@ export class ProfileComponent implements OnInit {
 
   private subscriptionType(cache: boolean = true): void {
     this.subscriptionsService.getSubscriptions(cache).subscribe(response => {
+      this.permissionService.addPermission(PERMISSIONS.subscriptions);
       this.loading = false;
       if (response) {
         response.map(subscription => {
