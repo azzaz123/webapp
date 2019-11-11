@@ -51,7 +51,7 @@ import { LoginResponse } from './login-response.interface';
 import { UserLocation, MotorPlan, ProfileSubscriptionInfo, Image } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { FeatureflagService } from './featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from './featureflag.service';
 import { SplitTestService } from '../tracking/split-test.service';
 import { HttpModuleNew } from '../http/http.module.new';
 
@@ -812,5 +812,21 @@ describe('Service: User', () => {
         reason: REASON
       });
     });
+  });
+
+  describe('setSubscriptionsFeatureFlag', () => {	
+    it('should call getFlag and add permission if active', () => {	
+      spyOn(featureflagService, 'getFlag').and.callThrough();	
+      spyOn(permissionService, 'addPermission');	
+      let resp: boolean;	
+
+      service.setSubscriptionsFeatureFlag().subscribe((r: boolean) => {	
+        resp = r;	
+      });	
+
+      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);	
+      expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS.subscriptions);	
+      expect(resp).toBe(true);	
+    });	
   });
 });

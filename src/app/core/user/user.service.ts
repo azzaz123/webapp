@@ -20,7 +20,7 @@ import { UserData, UserProData, UserProDataNotifications } from './user-data.int
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { FeatureflagService } from './featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
 import { InboxUser } from '../../chat/model/inbox-user';
 import { SplitTestService } from '../tracking/split-test.service';
@@ -417,5 +417,15 @@ export class UserService extends ResourceService {
   public getAvailableSlots(): Observable<AvailableSlots> {
     return this.http.get(this.API_URL + '/me/items/slots-available')
       .map((r: Response) => r.json());
+  }
+
+  public setSubscriptionsFeatureFlag(): Observable<boolean> {
+    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS)
+      .map((isActive: boolean) => {
+        if (isActive) {
+          this.permissionService.addPermission(PERMISSIONS.subscriptions);
+          return isActive;
+        }
+      });
   }
 }
