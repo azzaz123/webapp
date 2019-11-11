@@ -37,6 +37,7 @@ export class InboxService {
 
   public getInboxFeatureFlag$(): Observable<boolean> {
     return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.INBOX_PROJECTIONS);
+    // return Observable.of(true);
   }
 
   public init() {
