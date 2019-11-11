@@ -45,6 +45,10 @@ export class ProfileComponent implements OnInit {
       if (motorPlan) {
         this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
         this.showSubscriptionTab = motorPlan.type === 'motor_plan_pro';
+        if (this.showSubscriptionTab) {
+          this.permissionService.addPermission(PERMISSIONS.subscriptions);
+        }
+
       }
     });
     this.isProUser();
