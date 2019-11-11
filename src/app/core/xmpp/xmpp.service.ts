@@ -31,7 +31,7 @@ export class XmppService {
   constructor(private eventService: EventService) {
   }
 
-  public connect(userId: string, accessToken: string): Observable<boolean> {
+  public connect$(userId: string, accessToken: string): Observable<boolean> {
     this.resource = 'WEB_' + Math.floor(Math.random() * 100000000000000);
     this.self = this.createJid(userId, true);
     this.createClient(accessToken);
@@ -86,7 +86,7 @@ export class XmppService {
   }
 
 
-  public isConnected(): Observable<boolean> {
+  public isConnected$(): Observable<boolean> {
     return this.clientConnected$.asObservable();
   }
 

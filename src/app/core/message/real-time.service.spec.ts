@@ -59,30 +59,32 @@ describe('RealTimeService', () => {
     });
 
     it('should call xmpp.connect and return success', () => {
-      spyOn(xmppService, 'connect').and.returnValue(of({}));
+      spyOn(xmppService, 'connect$').and.returnValue(of({}));
+      spyOn(xmppService, 'isConnected$').and.returnValue(of(false));
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
 
-      expect(xmppService.connect).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
+      expect(xmppService.connect$).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
       expect(remoteConsoleService.sendConnectionTimeout).toHaveBeenCalled();
     });
 
     it('should call xmpp.connect and return throw', () => {
-      spyOn(xmppService, 'connect').and.returnValue(throwError('Connection time'));
+      spyOn(xmppService, 'connect$').and.returnValue(throwError('Connection time'));
+      spyOn(xmppService, 'isConnected$').and.returnValue(of(false));
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
 
-      expect(xmppService.connect).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
+      expect(xmppService.connect$).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call xmpp.connect if try connect in another thread', () => {
       service['isConnecting'] = true;
-      spyOn(xmppService, 'connect').and.returnValue(of({}));
+      spyOn(xmppService, 'connect$').and.returnValue(of({}));
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
 
-      expect(xmppService.connect).not.toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
+      expect(xmppService.connect$).not.toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
     });
   });
