@@ -12,7 +12,7 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 export const mockActivatedRouteSnapshot = new ActivatedRouteSnapshot();
 export const mockRouterStateSnapshot: RouterStateSnapshot = {
-  url: 'test?foo=bar',
+  url: '/test?foo=bar',
   root: mockActivatedRouteSnapshot
 };
 
@@ -76,7 +76,7 @@ describe('LoggedGuard', (): void => {
 
   describe('canActivate', (): void => {
 
-    const redirectUrl = encodeURIComponent(`${environment.baseUrl}${mockRouterStateSnapshot.url}`);
+    const redirectUrl = encodeURIComponent(`${environment.baseUrl}${mockRouterStateSnapshot.url.substr(1)}`);
 
     beforeEach(() => {
       spyOn(permissionService, 'getPermissions').and.returnValue({});
@@ -116,17 +116,6 @@ describe('LoggedGuard', (): void => {
 
       expect(userService.me).toHaveBeenCalled();
       expect(result).toBeTruthy();
-    });
-  });
-
-  describe('generateUrlAsQueryParam', () => {
-    it('should generate valid URI query param', () => {
-      const expectedUrl = `${environment.baseUrl}${mockRouterStateSnapshot.url}`;
-
-      const result =
-        decodeURIComponent(loggedGuard.generateUrlAsQueryParam(mockRouterStateSnapshot.url));
-
-      expect(result).toBe(expectedUrl);
     });
   });
 });

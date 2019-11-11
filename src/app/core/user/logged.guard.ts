@@ -19,8 +19,8 @@ export class LoggedGuard implements CanActivate {
 
   public canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (!this.accessTokenService.accessToken) {
-      const previousUrl = this.generateUrlAsQueryParam(state.url);
-      const redirect = `${environment.siteUrl}login?redirectUrl=${previousUrl}`;
+      const currentUrl = `${environment.baseUrl}${state.url.substr(1)}`;
+      const redirect = `${environment.siteUrl}login?redirectUrl=${encodeURIComponent(currentUrl)}`;
       this.window.nativeWindow.location.href = redirect;
       return false;
     }
@@ -32,14 +32,6 @@ export class LoggedGuard implements CanActivate {
     } else {
       return true;
     }
-  }
-
-  public generateUrlAsQueryParam(endpoint: string) {
-    const split = endpoint.split('?');
-    const url = split[0].startsWith('/') ? `${environment.baseUrl}${split[0].substr(1)}` : `${environment.baseUrl}${split[0]}`;
-    const params = split[1];
-
-    return params ? encodeURIComponent(`${url}?${params}`) : encodeURIComponent(url);
   }
 }
 
