@@ -15,7 +15,8 @@
       flex-direction: column;
 
       .top-bar {
-        padding: $spacing-ml;
+        height: 80px;
+        padding: 0 $spacing-ml;
         border-bottom: 1px solid $blue-grey-5;
         z-index: 99;
         display: flex;
@@ -63,6 +64,9 @@
 
         span {
           font-size: $font-size-s;
+        }
+        @include media-breakpoint-down(sm) {
+          height: 66px;
         }
       }
 
