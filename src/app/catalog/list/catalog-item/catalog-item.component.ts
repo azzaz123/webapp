@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
 import { Order, Product } from '../../../core/item/item-response.interface';
 import { OrderEvent } from '../selected-items/selected-product.interface';
-import { DEFAULT_ERROR_MESSAGE, ErrorsService } from '../../../core/errors/errors.service';
-import { ToastrService } from 'ngx-toastr';
+import { DEFAULT_ERROR_MESSAGE } from '../../../core/errors/errors.service';
 import { Item } from '../../../core/item/item';
 import { EventService } from '../../../core/event/event.service';
 
@@ -19,45 +20,39 @@ import { EventService } from '../../../core/event/event.service';
 export class CatalogItemComponent implements OnInit {
 
   @Input() item: Item;
-  @Input() isPro: boolean;
   @Input() paymentMethod: string;
+  @Input() showPublishCTA = false;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
   @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
   public link: string;
+  public selectMode = false;
 
-  constructor(private modalService: NgbModal,
-              public itemService: ItemService,
-              private trackingService: TrackingService,
-              private toastr: ToastrService,
-              private errorsService: ErrorsService,
-              private eventService: EventService,
-              @Inject('SUBDOMAIN') private subdomain: string) {
+  constructor(
+    private modalService: NgbModal,
+    public itemService: ItemService,
+    private trackingService: TrackingService,
+    private toastr: ToastrService,
+    private eventService: EventService,
+    @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
   ngOnInit() {
     this.link = this.item.getUrl(this.subdomain);
-  }
-
-  get showCheckbox() {
-    return this.isPro || (this.itemService.selectedAction !== 'feature' && this.itemService.selectedAction !== 'reserve' && this.itemService.selectedAction !== 'delete') ||
-      (this.itemService.selectedAction === 'feature' && !this.item.featured && !this.item.flags.onhold && !this.item.flags.pending && !this.item.flags.expired) ||
-      (this.itemService.selectedAction === 'reserve' && !this.item.reserved && !this.item.flags.onhold && !this.item.flags.pending && !this.item.flags.expired) ||
-      (this.itemService.selectedAction === 'delete' && !this.item.flags.pending);
-  }
-
-  public deleteItem(item: Item): void {
-    this.itemService.selectedAction = 'delete';
-    this.select(item);
+    this.itemService.selectedItems$.subscribe(() => {
+      this.selectMode = this.itemService.selectedItems.length !== 0;
+    });
   }
 
   public reserve(item: Item) {
     if (!item.reserved) {
       this.itemService.selectedAction = 'reserve';
-      this.select(item);
+      this.itemService.reserveItem(item.id, true).subscribe(() => {
+        item.reserved = true;
+      });
     } else {
       this.itemService.reserveItem(item.id, false).subscribe(() => {
         item.reserved = false;
-        this.trackingService.track(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
+        this.trackingService.track(TrackingService.PRODUCT_UNRESERVED, { product_id: item.id });
         this.eventService.emit(EventService.ITEM_RESERVED, item);
       });
     }
@@ -76,9 +71,7 @@ export class CatalogItemComponent implements OnInit {
       } else {
         this.toastr.error(DEFAULT_ERROR_MESSAGE);
       }
-    }, () => {
-      this.toastr.error(DEFAULT_ERROR_MESSAGE);
-    });
+    }, () => this.toastr.error(DEFAULT_ERROR_MESSAGE));
   }
 
   private buildOrderEvent(item: Item, product: Product): OrderEvent {
@@ -114,28 +107,29 @@ export class CatalogItemComponent implements OnInit {
   public reactivateItem(item: Item) {
     this.itemService.reactivateItem(item.id).subscribe(() => {
       this.itemChange.emit({
-        item: item,
+        item,
         action: 'reactivated'
       });
     });
-    appboy.logCustomEvent('ReactivateItem', {platform: 'web'});
+    appboy.logCustomEvent('ReactivateItem', { platform: 'web' });
   }
 
   public select(item: Item) {
     item.selected = !item.selected;
+    this.itemService.selectedAction = this.itemService.selectedAction === 'feature' ? 'feature' : '';
     if (item.selected) {
       this.itemService.selectItem(item.id);
-      this.trackingService.track(TrackingService.PRODUCT_SELECTED, {product_id: item.id});
+      this.trackingService.track(TrackingService.PRODUCT_SELECTED, { product_id: item.id });
     } else {
       this.itemService.deselectItem(item.id);
-      this.trackingService.track(TrackingService.PRODUCT_UN_SELECTED, {product_id: item.id});
+      this.trackingService.track(TrackingService.PRODUCT_UN_SELECTED, { product_id: item.id });
     }
   }
 
   public setSold(item: Item) {
     this.trackingService.track(TrackingService.PRODUCT_SOLD, { product_id: item.id });
-    appboy.logCustomEvent('Sold', {platform: 'web'});
-    fbq('track', 'CompleteRegistration', { value: item.salePrice, currency: item.currencyCode});
+    appboy.logCustomEvent('Sold', { platform: 'web' });
+    fbq('track', 'CompleteRegistration', { value: item.salePrice, currency: item.currencyCode });
     this.itemChange.emit({
       item: item,
       action: 'sold'
@@ -159,7 +153,7 @@ export class CatalogItemComponent implements OnInit {
         product_id: response.durations[0].id
       }];
       const orderEvent: OrderEvent = {
-        order: order,
+        order,
         total: +response.durations[0].market_code
       };
       localStorage.setItem('transactionType', 'purchaseListingFee');
@@ -169,6 +163,15 @@ export class CatalogItemComponent implements OnInit {
       });
       this.purchaseListingFee.next(orderEvent);
     });
+  }
+
+  public onClickInfoElement() {
+    const event = TrackingService.PRODUCT_VIEWED;
+    const params = {
+      product_id: this.item.id
+    };
+
+    this.trackingService.track(event, params);
   }
 
 }

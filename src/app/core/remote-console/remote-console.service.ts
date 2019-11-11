@@ -15,6 +15,7 @@ import { APP_VERSION } from '../../../environments/version';
 export class RemoteConsoleService {
 
   deviceId: string;
+  connectionTimeCallNo = 0;
 
   constructor(private deviceService: DeviceDetectorService, private featureflagService: FeatureflagService) {
     this.deviceId = Fingerprint2.get({}, components => {
@@ -24,11 +25,13 @@ export class RemoteConsoleService {
   }
 
   sendConnectionTimeout(userId: string, connectionTime: number): void {
+    this.connectionTimeCallNo += 1;
     this.getCommonLog(userId).subscribe(commonLog => logger.info(JSON.stringify({
       ...commonLog, ...{
         metric_type: MetricTypeEnum.XMPP_CONNECTION_TIME,
         message: 'xmpp connection time',
         connection_time: connectionTime,
+        call_no: this.connectionTimeCallNo,
         connection_type: toUpper(navigator['connection']['type']),
         ping_time_ms: navigator['connection']['rtt']
       }

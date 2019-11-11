@@ -3,15 +3,15 @@
     <div class="modal-close" (click)="activeModal.close()">
         <mat-icon svgIcon="cross"></mat-icon>
     </div>
-    <h4 class="AddNewSubscription__box--title" i18n>Add new subscription</h4>
-    <p class="AddNewSubscription__box--subtitle" i18n>What limit do you want to put on your subscription?</p>
+    <h4 class="AddNewSubscription__box--title" i18n>Subscribe to PRO</h4>
+    <p class="AddNewSubscription__box--subtitle" i18n>Define a plan to take your sales up to the next level.</p>
   </div>
   <ngb-carousel interval="0" *ngIf="loaded">
     <ng-template ngbSlide>
       <div class="step step-1">
         <div class="box-content">
           <p class="AddNewSubscription__listing-limit-steps" i18n>Step <span class="bold">1</span> of <span class="bold">2</span></p>
-          <div class="AddNewSubscription__listing-limit-title" i18n>How many products will you have on your profile?</div>
+          <div class="AddNewSubscription__listing-limit-title" i18n>How many items are you going to upload to your profile?</div>
           <div class="AddNewSubscription__listing-limit-container">
             <div *ngFor="let tier of subscription.tiers; let i = index" (click)="selectListingLimit(subscription.tiers[i])"
             class="AddNewSubscription__listing-limit-box"
@@ -40,7 +40,7 @@
       <div class="step step-2">
         <div class="box-content">
           <p class="AddNewSubscription__listing-limit-steps" i18n>Step <span class="bold">2</span> of <span class="bold">2</span></p>
-          <div class="AddNewSubscription__listing-limit-title" i18n>Define your payment method</div>
+          <div class="AddNewSubscription__listing-limit-title" i18n>Define payment method</div>
           <div class="row AddNewSubscription__listing-limit-payment">
             <div class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--left">
                 <span>{{subscription.category_name}}</span>

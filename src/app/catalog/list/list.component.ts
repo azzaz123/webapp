@@ -15,7 +15,7 @@ import { UploadConfirmationModalComponent } from './modals/upload-confirmation-m
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { AvailableSlots, Counters, UserStatsResponse } from '../../core/user/user-stats.interface';
+import { Counters, UserStatsResponse, AvailableSlots } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -24,15 +24,20 @@ import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
-import { MotorPlan, MotorPlanType } from '../../core/user/user-response.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ActivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { StripeService } from '../../core/stripe/stripe.service';
+import { SubscriptionsService, SUBSCRIPTION_TYPES } from '../../core/subscriptions/subscriptions.service';
+import { SubscriptionSlot } from '../../core/subscriptions/subscriptions.interface';
+import { NavLink } from '../../shared/nav-links/nav-link.interface';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../../core/user/featureflag.service';
+import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
+
+export const SORTS = [ 'date_desc', 'date_asc', 'price_desc', 'price_asc' ];
 
 const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reactivateWithCredits', 'purchaseListingFeeWithCredits'];
 
@@ -57,15 +62,22 @@ export class ListComponent implements OnInit, OnDestroy {
   public numberOfProducts: number;
   public isRedirect = false;
   private counters: Counters;
-  public motorPlan: MotorPlanType;
-  private upgradePlanModalRef: NgbModalRef;
-  public hasMotorPlan: boolean;
-  public carsLimit: number = 0;
+  private tooManyItemsModalRef: NgbModalRef;
   public userCanDeactivate: boolean;
-  public availableSlots: number = 0;
   public selectedItems: Item[];
   public creditInfo: CreditInfo;
   public isStripe: boolean;
+  public subscriptionSlots: SubscriptionSlot[] = [];
+  public selectedSubscriptionSlot: SubscriptionSlot;
+  public navLinks: NavLink[] = [];
+  private searchTerm: string;
+  public searchPlaceholder: string;
+  public sortItems: any[];
+  public sortBy: string;
+  private page = 1;
+  private pageSize = 20;
+  public normalNavLinks: NavLink[] = [];
+  public subscriptionSelectedNavLinks: NavLink[] = [];
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -80,26 +92,62 @@ export class ListComponent implements OnInit, OnDestroy {
     public userService: UserService,
     private eventService: EventService,
     protected i18n: I18nService,
-    private stripeService: StripeService) {
+    private stripeService: StripeService,
+    private subscriptionsService: SubscriptionsService,
+    private featureFlagService: FeatureflagService) {
   }
 
   ngOnInit() {
+    this.normalNavLinks = [
+      { id: 'published', display: this.i18n.getTranslations('selling') },
+      { id: 'sold', display: this.i18n.getTranslations('sold') }
+    ];
+
+    this.subscriptionSelectedNavLinks = [
+      { id: 'active', display: this.i18n.getTranslations('active') },
+      { id: 'inactive', display: this.i18n.getTranslations('inactive') },
+      { id: 'sold', display: this.i18n.getTranslations('sold') }
+    ];
+
+    this.navLinks = this.normalNavLinks;
+
+    this.getItems();
+    this.getCreditInfo();
+
     this.stripeService.isPaymentMethodStripe$().subscribe(val => {
       this.isStripe = val;
     });
-    this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
-      if (motorPlan) {
-        const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
-        this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
-        this.hasMotorPlan = motorPlan.type === 'motor_plan_pro';
-        if (this.hasMotorPlan) {
-          this.selectedStatus = 'cars';
-          this.carsLimit = motorPlan.limit;
-        }
+
+    // TODO: New subscriptions will come from this endpoint and eventually drop support for Motor Plan
+    // this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS).subscribe(active => {
+    //   if (!active) {
+    //     return;
+    //   }
+    //   this.subscriptionsService.getSlots().subscribe(subscriptionSlots => {
+    //     this.setSubscriptionSlots(subscriptionSlots);
+    //   });
+    // });
+
+    this.userService.getAvailableSlots().subscribe(slots => {
+      if (slots.user_can_manage && slots.num_max_cars) {
+        const carsCategory =   {
+          category_id: 100,
+          has_brand: false,
+          has_model: false,
+          has_object_type: false,
+          icon_id: 'cat_car',
+          name: 'Cars',
+          vertical_id: 'cars'
+        };
+
+        const mappedSubscriptionSlot: SubscriptionSlot = {
+          category: carsCategory,
+          available: slots.num_slots_cars,
+          limit: slots.num_max_cars
+        };
+
+        this.setSubscriptionSlots([mappedSubscriptionSlot]);
       }
-      this.getItems();
-      this.getNumberOfProducts();
-      this.getCreditInfo();
     });
 
     this.itemService.selectedItems$.takeWhile(() => {
@@ -206,16 +254,15 @@ export class ListComponent implements OnInit, OnDestroy {
         } else if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
-          this.upgradePlanModalRef = this.modalService.open(UpgradePlanModalComponent, {
+          this.tooManyItemsModalRef = this.modalService.open(TooManyItemsModalComponent, {
             windowClass: 'modal-standard',
           });
-          this.upgradePlanModalRef.componentInstance.itemId = params.itemId;
-          this.upgradePlanModalRef.result.then((orderEvent: OrderEvent) => {
+          this.tooManyItemsModalRef.componentInstance.type = params.onHoldType ? parseInt(params.onHoldType, 10) : SUBSCRIPTION_TYPES.web;
+          this.tooManyItemsModalRef.result.then((orderEvent: OrderEvent) => {
             if (orderEvent) {
               this.purchaseListingFee(orderEvent);
-            } else {
-              this.upgradePlanModalRef = null;
             }
+            this.tooManyItemsModalRef = null;
           }, () => {
           });
         } else if (params && params.sold && params.itemId) {
@@ -276,41 +323,52 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private getItems(append?: boolean) {
     this.loading = true;
+
     if (!append) {
+      this.init = 0;
+      this.page = 1;
       this.items = [];
+    } else {
+      this.page++;
     }
-    let status = this.selectedStatus;
-    if (this.hasMotorPlan) {
-      if (this.selectedStatus === 'cars') {
-        status = 'published/cars';
-      } else if (this.selectedStatus === 'published') {
-        status = 'published/notCars';
-      }
-    }
-    this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
-      const items = itemsData.data;
-      if (this.selectedStatus === 'sold') {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, { total_products: items.length });
-      } else if (this.selectedStatus === 'published') {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, { total_products: items.length });
-      }
-      this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, { init: this.init });
-      this.init = itemsData.init;
-      this.items = append ? this.items.concat(items) : items;
-      this.loading = false;
-      this.end = !this.init;
-      if (this.uploadModalRef) {
-        this.uploadModalRef.componentInstance.item = this.items[0];
-        this.uploadModalRef.componentInstance.trackUploaded();
-        this.uploadModalRef.componentInstance.urgentPrice();
-      }
-      if (this.firstItemLoad) {
-        setTimeout(() => {
-          this.restoreSelectedItems();
+    const status = this.selectedStatus;
+
+    if (this.selectedSubscriptionSlot) {
+      this.itemService
+        .minesByCategory(
+          this.page, this.pageSize, this.selectedSubscriptionSlot.category.category_id, this.sortBy, this.selectedStatus, this.searchTerm
+        )
+        .subscribe(itemsByCategory => {
+          this.items = append ? this.items.concat(itemsByCategory) : itemsByCategory;
+          this.updateNavLinksCounters();
+          this.loading = false;
         });
-      }
-      this.firstItemLoad = false;
-    });
+    } else {
+      this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
+        const items = itemsData.data;
+        if (this.selectedStatus === 'sold') {
+          this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, { total_products: items.length });
+        } else if (this.selectedStatus === 'published') {
+          this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, { total_products: items.length });
+        }
+        this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, { init: this.init });
+        this.init = itemsData.init;
+        this.items = append ? this.items.concat(items) : items;
+        this.loading = false;
+        this.end = !this.init;
+        if (this.uploadModalRef) {
+          this.uploadModalRef.componentInstance.item = this.items[0];
+          this.uploadModalRef.componentInstance.trackUploaded();
+          this.uploadModalRef.componentInstance.urgentPrice();
+        }
+        if (this.firstItemLoad) {
+          setTimeout(() => {
+            this.restoreSelectedItems();
+          });
+        }
+        this.firstItemLoad = false;
+      });
+    }
   }
 
   public itemChanged($event: ItemChangeEvent) {
@@ -335,11 +393,19 @@ export class ListComponent implements OnInit, OnDestroy {
     this.itemService.selectedAction = null;
   }
 
-  public onAction($event?: any) {
-    if (this.itemService.selectedAction === 'delete') {
+  public onAction(actionType: string) {
+    if (actionType === 'activate') {
+      this.subscriptionsService.getUserSubscriptionType().subscribe(type => {
+        this.activate(type);
+      });
+    }
+
+    if (actionType === 'deactivate') {
+      this.deactivate();
+    }
+
+    if (actionType === 'delete') {
       this.delete();
-    } else if (this.itemService.selectedAction === 'reserve') {
-      this.reserve();
     }
   }
 
@@ -406,16 +472,6 @@ export class ListComponent implements OnInit, OnDestroy {
       this.counters = userStats.counters;
       this.setNumberOfProducts();
     });
-    if (this.hasMotorPlan) {
-      this.userService.getAvailableSlots().subscribe((slots: AvailableSlots) => {
-        this.availableSlots = slots.num_slots_cars;
-        this.userCanDeactivate = slots.user_can_manage;
-      });
-    }
-  }
-
-  public get totalCars(): number {
-    return this.carsLimit - this.availableSlots;
   }
 
   public purchaseListingFee(orderEvent: OrderEvent) {
@@ -475,14 +531,18 @@ export class ListComponent implements OnInit, OnDestroy {
           let item: Item = find(this.items, {'id': id});
           item.flags['onhold'] = true;
           item.selected = false;
+
+          const itemIndex = this.items.indexOf(item);
+          this.items.splice(itemIndex, 1);
         });
         this.getNumberOfProducts();
+        this.updateCountersWhenDeactivate(items.length);
         this.eventService.emit('itemChanged');
       });
     });
   }
 
-  public activate() {
+  public activate(subscriptionType = SUBSCRIPTION_TYPES.web) {
     const items = this.itemService.selectedItems;
     this.modalService.open(ActivateItemsModalComponent).result.then(() => {
       this.itemService.activate().subscribe((resp: any) => {
@@ -490,26 +550,127 @@ export class ListComponent implements OnInit, OnDestroy {
           let item: Item = find(this.items, {'id': id});
           item.flags['onhold'] = false;
           item.selected = false;
+
+          const itemIndex = this.items.indexOf(item);
+          this.items.splice(itemIndex, 1);
         });
+
         this.getNumberOfProducts();
+        this.updateCountersWhenActivate(items.length);
+
         this.eventService.emit('itemChanged');
       }, () => {
-        this.modalService.open(TooManyItemsModalComponent, {windowClass: 'bump'})
-          .result.then(() => {}, () => {});
+        const modalRef = this.modalService.open(TooManyItemsModalComponent, {windowClass: 'modal-standard'});
+        modalRef.componentInstance.type = subscriptionType;
       });
     });
   }
 
-  public get canActivate(): boolean {
-    return every(this.selectedItems, (item) => {
-      return item.flags && item.flags.onhold;
+  private updateCountersWhenActivate(numActivatedItems: number) {
+    if (!this.selectedSubscriptionSlot) {
+      return;
+    }
+
+    const updatedAvailableSlotVal = this.selectedSubscriptionSlot.available -= numActivatedItems;
+    this.selectedSubscriptionSlot.available = updatedAvailableSlotVal < 0 ? 0 : updatedAvailableSlotVal;
+
+    const inactiveNavLink = this.getNavLinkById('inactive');
+    inactiveNavLink.counter.currentVal -= numActivatedItems;
+
+    const activeNavLink = this.getNavLinkById('active');
+    activeNavLink.counter.currentVal += numActivatedItems;
+  }
+
+  private updateCountersWhenDeactivate(numDeactivatedItems: number) {
+    if (!this.selectedSubscriptionSlot) {
+      return;
+    }
+
+    this.selectedSubscriptionSlot.available += numDeactivatedItems;
+
+    const inactiveNavLink = this.getNavLinkById('inactive');
+    if (inactiveNavLink.counter) {
+      inactiveNavLink.counter.currentVal += numDeactivatedItems;
+    }
+
+    const activeNavLink = this.getNavLinkById('active');
+    activeNavLink.counter.currentVal -= numDeactivatedItems;
+  }
+
+  private setSubscriptionSlots(slots: SubscriptionSlot[]) {
+    this.subscriptionSlots = slots;
+    this.searchPlaceholder = this.i18n.getTranslations('searchByTitle');
+    this.setSortItems();
+  }
+
+  public onSelectSubscriptionSlot(subscription: SubscriptionSlot) {
+    if (this.selectedSubscriptionSlot && subscription) {
+      if (this.selectedSubscriptionSlot.category.category_id === subscription.category.category_id) {
+        return;
+      }
+    }
+
+    this.itemService.deselectItems();
+    this.selectedSubscriptionSlot = subscription;
+
+    if (!subscription) {
+      this.selectedStatus = 'published';
+      this.searchTerm = null;
+      this.sortBy = SORTS[0];
+    } else {
+      this.selectedStatus = 'active';
+    }
+
+    this.updateNavLinks();
+    this.getItems();
+  }
+
+  public updateNavLinks() {
+    if (this.selectedSubscriptionSlot) {
+      this.navLinks = this.subscriptionSelectedNavLinks;
+    } else {
+      this.navLinks = this.normalNavLinks;
+      this.resetNavLinksCounters();
+    }
+  }
+
+  public updateNavLinksCounters() {
+    this.navLinks.forEach(navLink => {
+      if (navLink.id === this.selectedStatus) {
+        if (this.selectedStatus === 'active') {
+          navLink.counter = {
+            currentVal: this.items.length,
+            maxVal: this.selectedSubscriptionSlot.limit
+          };
+        } else {
+          navLink.counter = { currentVal: this.items.length };
+        }
+      }
     });
   }
 
-  public get canDeactivate(): boolean {
-    return every(this.selectedItems, (item) => {
-      return item.flags && !item.flags.onhold;
-    });
+  public getNavLinkById(id: string): NavLink {
+    return this.navLinks.filter(navLink => navLink.id === id)[0];
+  }
+
+  public resetNavLinksCounters() {
+    this.navLinks.forEach(navLink => navLink.counter = null);
+  }
+
+  public onSearchInputChange(value: string) {
+    this.searchTerm = value;
+    this.getItems();
+  }
+
+  public setSortItems() {
+    this.sortItems = [];
+    SORTS.forEach(value => this.sortItems.push({ value, label: this.i18n.getTranslations(value) }));
+    this.sortBy = SORTS[0];
+  }
+
+  public onSortChange(value: any) {
+    this.sortBy = value;
+    this.getItems();
   }
 
 }

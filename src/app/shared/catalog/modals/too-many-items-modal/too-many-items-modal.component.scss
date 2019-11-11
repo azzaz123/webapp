@@ -1,37 +1,70 @@
 @import "~style/common";
 
-:host {
-  padding: $spacing-xl;
+.TooManyItemsModal {
+  width: 100%;
+  padding: 36px 44px 19px 67px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   text-align: center;
 }
-.modal-close {
-  @include square(13px);
-  top: 10px;
-  right: 10px;
+
+.TooManyItemsModal__close {
+  @include square($spacing-ms);
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  right: 20px;
   mat-icon {
-    @include square(13px);
-    line-height: initial;
+    @include square($spacing-ms);
+    line-height: initial; 
+
+    svg {
+      path {
+        fill: $blue-grey-3;
+      }
+    }
   }
 }
-img {
-  margin-bottom: $spacing-xl;
-  margin-top: $spacing-xl;
-  &.fail {
-    width: 173px;
+
+.TooManyItemsModal__content {
+  display: flex;
+  align-items: center;
+  text-align: justify;
+  margin-bottom: 20px;
+}
+
+.TooManyItemsModal__content-info {
+  margin-left: 44px;
+}
+
+.TooManyItemsModal__content-info-title {
+  margin-bottom: $spacing-m;
+}
+
+.TooManyItemsModal__content-info-description {
+  b {
+    color: $blue-grey-2;
   }
 }
-p {
+
+.TooManyItemsModal__actions-optional {
+  margin-top: $spacing-m;
   color: $blue-grey-3;
-  font-size: $font-size-m;
-  max-width: 300px;
-  margin: 0 auto $spacing-ms auto;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
-h1 {
-  font-weight: $font-weight-chunky;
-  color: $blue-grey-1;
-  font-size: $font-size-xs;
-  margin-bottom: $spacing-l;
-  &.fail {
-    color: $negative-main;
+
+tsl-button {
+  width: 371px;
+  text-align: center;
+
+  /deep/ button {
+    width: 100%;
   }
 }

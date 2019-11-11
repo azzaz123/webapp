@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { EventService } from '../../../core/event/event.service';
 import { ActivateItemsModalComponent } from './activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from './deactivate-items-modal/deactivate-items-modal.component';
+import { SUBSCRIPTION_TYPES } from '../../../core/subscriptions/subscriptions.service';
 
 @Component({
   selector:    'tsl-catalog-item-actions',
@@ -59,8 +60,9 @@ export class CatalogItemActionsComponent implements OnInit {
         this.eventService.emit('itemChanged');
         if (resp.status === 406) {
           const modalRef: NgbModalRef = this.modalService.open(TooManyItemsModalComponent, {
-            windowClass: 'bump'
+            windowClass: 'modal-standard'
           });
+          modalRef.componentInstance.type = SUBSCRIPTION_TYPES.carDealer;
           modalRef.result.then(() => {}, () => {
           });
         }
