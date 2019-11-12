@@ -29,6 +29,7 @@ export class XmppService {
   private xmppError = { message: 'XMPP disconnected' };
 
   constructor(private eventService: EventService) {
+    this.clientConnected$.next(false);
   }
 
   public connect$(userId: string, accessToken: string): Observable<boolean> {
@@ -47,7 +48,7 @@ export class XmppService {
     }
   }
 
-  public sendMessage(conversation: Conversation| InboxConversation, body: string) {
+  public sendMessage(conversation: Conversation | InboxConversation, body: string) {
     const message = this.createXmppMessage(conversation, this.client.nextId(), body);
     this.onNewMessage(clone(message), true);
     this.client.sendMessage(message);
@@ -84,7 +85,6 @@ export class XmppService {
       }
     });
   }
-
 
   public isConnected$(): Observable<boolean> {
     return this.clientConnected$.asObservable();
@@ -144,7 +144,7 @@ export class XmppService {
       interval: 30
     });
     this.client.on('message', (message: XmppBodyMessage) => {
-      this.canProcessRealtime ? this.onNewMessage(message) : this.realtimeQ.push(message) ;
+      this.canProcessRealtime ? this.onNewMessage(message) : this.realtimeQ.push(message);
     });
     this.client.on('message:sent', (message: XmppBodyMessage) => {
       if (message.received) {
@@ -207,8 +207,8 @@ export class XmppService {
     if (message.timestamp) {
       message.date = new Date(message.timestamp.body).getTime();
     } else if (!message.date) {
-        message.date = new Date().getTime();
-      }
+      message.date = new Date().getTime();
+    }
     this.eventService.emit(EventService.CHAT_LAST_RECEIVED_TS, message.date);
 
     if (message.receipt || message.sentReceipt || message.readReceipt) {
@@ -269,7 +269,8 @@ export class XmppService {
         }
       }
     })
-    .catch(() => {}));
+    .catch(() => {
+    }));
   }
 
   private getPrivacyList(): Observable<any> {
