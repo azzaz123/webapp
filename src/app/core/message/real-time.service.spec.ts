@@ -60,7 +60,6 @@ describe('RealTimeService', () => {
 
     it('should call xmpp.connect and return success', () => {
       spyOn(xmppService, 'connect$').and.returnValue(of({}));
-      spyOn(xmppService, 'isConnected$').and.returnValue(of(false));
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
 
@@ -70,7 +69,6 @@ describe('RealTimeService', () => {
 
     it('should call xmpp.connect and return throw', () => {
       spyOn(xmppService, 'connect$').and.returnValue(throwError('Connection time'));
-      spyOn(xmppService, 'isConnected$').and.returnValue(of(false));
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
 
