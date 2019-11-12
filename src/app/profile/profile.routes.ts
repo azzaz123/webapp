@@ -50,7 +50,7 @@ const routes: Routes = [
           isMyZone: true,
           isProfile: true,
           permissions: {
-            only: [PERMISSIONS.normal],
+            only: PERMISSIONS.subscriptions,
             redirectTo: '/profile'
           }
         }
