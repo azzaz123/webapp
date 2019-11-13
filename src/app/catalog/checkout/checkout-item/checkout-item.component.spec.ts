@@ -133,6 +133,24 @@ describe('CheckoutItemComponent', () => {
     });
   });
 
+  describe('ngOnChanges', () => {
+    it('should call select method when creditInfo is changed and select value is not defined', () => {
+      spyOn(component, 'select');
+      component.creditInfo = {
+        currencyName: 'yens',
+        credit: 420,
+        factor: 1337
+      };
+      component.selectedType = null;
+
+      component.ngOnChanges();
+
+      expect(component.selectedType).toBe(component.types[0]);
+      expect(component.select).toHaveBeenCalledTimes(1);
+      expect(component.select).toHaveBeenCalledWith(component.types[0]);
+    });
+  });
+
   describe('select', () => {
 
     beforeEach(() => {
@@ -166,4 +184,26 @@ describe('CheckoutItemComponent', () => {
       expect(cartService.remove).toHaveBeenCalledWith(MOCK_ITEM_V3.id, TYPE);
     });
   });
+
+  describe('duration', () => {
+    it('should call select method when changed and selectedType is defined', () => {
+      spyOn(component, 'select');
+      component.selectedType = TYPE;
+
+      component.duration = DURATION;
+
+      expect(component.select).toHaveBeenCalledTimes(1);
+      expect(component.select).toHaveBeenCalledWith(TYPE);
+    });
+
+    it('should not call select method when changed and selectedType is null', () => {
+      spyOn(component, 'select');
+      component.selectedType = null;
+
+      component.duration = DURATION;
+
+      expect(component.select).toHaveBeenCalledTimes(0);
+    });
+  });
+
 });
