@@ -2,43 +2,43 @@
 
 tsl-card {
   cursor: pointer;
-  width: 220px;
   border-radius: $border-radius;
-  box-shadow: 0 0 2px 0 rgba($black, .1);
-  transition: all .15s ease;
-  margin: 0 $spacing-s $spacing-ms $spacing-s;
-
+  box-shadow: 0 0 2px 0 rgba($black, 0.1);
+  transition: all 0.15s ease;
   & /deep/ tsl-card-image {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     padding: $spacing-xs;
     position: relative;
-
     .featured {
       position: absolute;
       right: 8px;
       top: 8px;
     }
   }
-
+  & /deep/ tsl-profile-images {
+    width: 50%;
+    padding: $spacing-xs;
+    .profile {
+      width: 100%;
+      margin: 0;
+    }
+  }
   & /deep/ tsl-card-content {
     padding-top: $spacing-ms;
     position: relative;
-
     span {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       width: 100%;
-      display:inline-block;
+      display: inline-block;
     }
-
     h5 {
       margin-bottom: 0;
     }
   }
-
 
   & /deep/ tsl-user-avatar {
     position: absolute;
@@ -48,12 +48,11 @@ tsl-card {
 
   & /deep/ tsl-card-footer {
     position: relative;
-
     .cart-footer-icon {
       position: absolute;
       &.active path {
-        fill: #FD6C67;
-        stroke: #D45B57;
+        fill: #fd6c67;
+        stroke: #d45b57;
       }
     }
 
@@ -61,9 +60,10 @@ tsl-card {
       text-align: center;
     }
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       cursor: pointer;
-      background: rgba($blue-grey-4, .2);
+      background: rgba($blue-grey-4, 0.2);
     }
   }
 }

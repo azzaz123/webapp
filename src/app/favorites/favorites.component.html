@@ -46,13 +46,11 @@
         <div class="card-wrapper" *ngFor="let item of items">
           <tsl-item-cart-favorite [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-item-cart-favorite>
         </div>
-        <div>
-          <div class="cards-container" *ngIf="selectedStatus === 'profiles'">
-            <div class="card-wrapper" *ngFor="let profile of profiles">
-              <tsl-profile-card-favorite [profile]="profile"
-                (onFavoriteProfileChange)="onFavoriteProfileChange($event)"> </tsl-profile-card-favorite>
-            </div>
-          </div>
+      </div>
+      <div class="cards-container" *ngIf="selectedStatus === 'profiles'">
+        <div class="card-wrapper" *ngFor="let profile of profiles">
+          <tsl-profile-card-favorite [profile]="profile" (onFavoriteProfileChange)="onFavoriteProfileChange($event)">
+          </tsl-profile-card-favorite>
         </div>
       </div>
     </div>
