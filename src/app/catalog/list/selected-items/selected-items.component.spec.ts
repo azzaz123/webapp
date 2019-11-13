@@ -20,15 +20,16 @@ describe('SelectedItemsComponent', () => {
       providers: [
         {
           provide: ItemService, useValue: {
-          selectedItems$: new ReplaySubject(1),
-          selectedItems: [],
-          selectedAction: null
-        }
+            selectedItems$: new ReplaySubject(1),
+            selectedItems: [],
+            selectedAction: null,
+            deselectItems: () =>  {}
+          }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -51,6 +52,55 @@ describe('SelectedItemsComponent', () => {
       });
 
       expect(component.selectedItems).toEqual([ITEMS[0], ITEMS[1]]);
+    });
+  });
+
+  describe('deselect', () => {
+    it('should call deselect method from itemService', () => {
+      spyOn(itemService, 'deselectItems');
+
+      component.deselect();
+
+      expect(itemService.deselectItems).toHaveBeenCalledTimes(1);
+    });
+
+    it('should set as not selected all items', () => {
+      const mockItems = createItemsArray(5);
+      mockItems.forEach(i => i.selected = true);
+      component.items = mockItems;
+
+      component.deselect();
+
+      mockItems.forEach(i => {
+        expect(i.selected).toBeFalsy();
+      });
+    });
+
+    it('should set selectedAction as none', () => {
+      component.deselect();
+
+      expect(itemService.selectedAction).toBeFalsy();
+    });
+
+    it('should clear selected items from component', () => {
+      const mockItems = createItemsArray(5);
+      component.selectedItems = mockItems;
+
+      component.deselect();
+
+      expect(component.selectedItems.length).toBe(0);
+    });
+  });
+
+  describe('onClickAction', () => {
+    it('should call emit value when clicked', () => {
+      const action = 'supnibba';
+      spyOn(component.selectedAction, 'emit');
+
+      component.onClickAction(action);
+
+      expect(component.selectedAction.emit).toHaveBeenCalledTimes(1);
+      expect(component.selectedAction.emit).toHaveBeenCalledWith(action);
     });
   });
 

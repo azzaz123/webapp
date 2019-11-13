@@ -28,6 +28,8 @@ import { clone } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { Item } from '../app/core/item/item';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../app/core/item/item-categories';
+import * as moment from 'moment';
+import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from './subscriptions.fixtures.spec';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
 export const ITEM_CATEGORY_ID = 12545;
@@ -458,6 +460,112 @@ export const ITEM_DATA_V5: ItemProResponse = {
       'scheduled_start_date': 1526256000000
     }
   }
+};
+
+export const generateMockItemProResponse = (id: number, type, title, imageUrl, categoryId, status): ItemProResponse => {
+  const flags = Object.assign({}, ITEM_FLAGS);
+
+  switch (status) {
+    case 'inactive':
+      flags.onhold = true;
+      break;
+    case 'sold':
+      flags.sold = true;
+      break;
+  }
+
+  const publish_date = moment().add(-id - 1, 'days').unix() * 1000;
+  const modified_date = moment().add(-id, 'days').unix() * 1000;
+
+  const mockResponse: ItemProResponse = {
+    id: id.toString(),
+    type,
+    content: {
+      category_id: categoryId,
+      conversations: 0,
+      currency: 'EUR',
+      description: 'The description for ' + title,
+      favorites: 0,
+      flags,
+      id: id.toString(),
+      image: {
+        large: `${imageUrl}?pictureSize=W800`,
+        medium: `${imageUrl}?pictureSize=W640`,
+        original: `${imageUrl}?pictureSize=W1024`,
+        original_height: 62,
+        original_width: 100,
+        small: `${imageUrl}?pictureSize=W320`,
+        xlarge: `${imageUrl}?pictureSize=W1024`
+      },
+      modified_date,
+      price: id,
+      publish_date,
+      seller_id: 'l1kmzn82zn3p',
+      title,
+      views: 0,
+      web_slug: 'the-title-180674807',
+      purchases: undefined
+    }
+  };
+  return mockResponse;
+};
+
+export const generateMockItemProResponses = (
+  ammount: number, type: string, imageUrl: string, categoryId: number, status
+): ItemProResponse[] => {
+  const result: ItemProResponse[] = [];
+  for (let i = 0; i < ammount; i++) {
+    result.push(generateMockItemProResponse(i, type, 'Taitel-' + i, imageUrl, categoryId, status));
+  }
+  return result;
+};
+
+export const getMockedItemProResponses = (init, categoryId, status): ItemProResponse[] => {
+  let mockResponse: ItemProResponse[] = [];
+
+  MOCK_SUBSCRIPTION_SLOTS_RESPONSE.forEach(subscriptionSlot => {
+    if (subscriptionSlot.category_id === categoryId) {
+
+      let type = '';
+      let image = '';
+
+      switch (categoryId) {
+        case 100:
+          type = 'cars';
+          image = 'http://cdn-dock146.wallapop.com/images/10420/22/__/c10420p96001/i112001.jpg';
+          break;
+        case 14000:
+          type = 'motorbikes';
+          image = 'http://cdn-dock146.wallapop.com/images/10420/2b/__/c10420p108001/i134001.jpg';
+          break;
+        case 12800:
+          type = 'motor&parts';
+          image = 'http://cdn-dock146.wallapop.com/images/10420/06/__/c10420p8017/i8022.jpg';
+          break;
+      }
+
+      let numMockItems = 0;
+
+      if (init !== 0) {
+        mockResponse = [];
+      } else {
+        switch (status) {
+          case 'active':
+            numMockItems = subscriptionSlot.limit - subscriptionSlot.available;
+            break;
+          case 'inactive':
+            numMockItems = 20;
+            break;
+          case 'sold':
+            numMockItems = 50;
+            break;
+        }
+        mockResponse = generateMockItemProResponses(numMockItems, type, image, categoryId, status);
+      }
+    }
+  });
+
+  return mockResponse;
 };
 
 export const ITEMS_DATA_V3 = [{

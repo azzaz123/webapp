@@ -18,7 +18,7 @@
         </div>
       </div>
     </tsl-header>
-    <nav class="nav filters-nav">
+    <nav class="nav filters-nav" [hidden]="loading">
       <a class="nav-link" [routerLink]="['info']" routerLinkActive="active" i18n>Profile</a>
       <a class="nav-link" [routerLink]="['account']" routerLinkActive="active" i18n>Account</a>
       <a class="nav-link" [routerLink]="['manage-subscription']" routerLinkActive="active" *ngIf="isSubscriptionsActive && isNewSubscription" i18n>Subscription</a>
