@@ -5,15 +5,19 @@ import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
 import { Message, messageStatus } from '../message/message';
 import { MOCK_USER, USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
-import { CONVERSATION_ID,
+import {
+  CONVERSATION_ID,
   MOCKED_CONVERSATIONS,
-  MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+  MOCK_CONVERSATION
+} from '../../../tests/conversation.fixtures.spec';
 import { XmppBodyMessage } from './xmpp.interface';
 import { Observable } from 'rxjs';
-import { MOCK_PAYLOAD_KO,
+import {
+  MOCK_PAYLOAD_KO,
   MOCK_PAYLOAD_OK,
   MOCK_MESSAGE,
-  MOCK_MESSAGE_FROM_OTHER } from '../../../tests/message.fixtures.spec';
+  MOCK_MESSAGE_FROM_OTHER
+} from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 
@@ -77,7 +81,8 @@ class MockedClient {
     });
   }
 
-  getRoster() { }
+  getRoster() {
+  }
 }
 
 const MOCKED_CLIENT: MockedClient = new MockedClient();
@@ -116,6 +121,7 @@ function getJidsFromUserIds(ids: string[]) {
   ids.map(id => jids.push(id + '@' + environment.xmppDomain));
   return jids;
 }
+
 const JIDS = getJidsFromUserIds(['1', '2', '3']);
 
 describe('Service: Xmpp', () => {
@@ -158,6 +164,12 @@ describe('Service: Xmpp', () => {
       wsURL: environment['wsUrl'],
       useStreamManagement: true,
       sendReceipts: false
+    });
+  });
+
+  describe('init', () => {
+    it('should define connection as false', () => {
+      service.isConnected$().subscribe((isConnected => expect(isConnected).toEqual(false)));
     });
   });
 
@@ -204,7 +216,6 @@ describe('Service: Xmpp', () => {
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_RT_CONNECTED);
     });
   });
-
 
   it('should connect the client and set clientConnected to true', () => {
     service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);

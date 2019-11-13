@@ -58,6 +58,16 @@ describe('RealTimeService', () => {
       spyOn(remoteConsoleService, 'sendConnectionTimeout').and.callThrough();
     });
 
+    it('should not call xmpp.connect if user is connected', () => {
+      spyOn(xmppService, 'connect$').and.returnValue(of({}));
+      spyOn(xmppService, 'isConnected$').and.returnValue(of(true));
+
+      service.connect(MOCK_USER.id, ACCESS_TOKEN);
+
+      expect(xmppService.connect$).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
+    });
+
     it('should call xmpp.connect and return success', () => {
       spyOn(xmppService, 'connect$').and.returnValue(of({}));
 
