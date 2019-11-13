@@ -8,13 +8,6 @@ import { UserService } from './user.service';
 import { User } from './user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { Observable } from 'rxjs';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-
-export const mockActivatedRouteSnapshot = new ActivatedRouteSnapshot();
-export const mockRouterStateSnapshot: RouterStateSnapshot = {
-  url: '/test?foo=bar',
-  root: mockActivatedRouteSnapshot
-};
 
 class MockWindow {
   public nativeWindow = {
@@ -76,7 +69,7 @@ describe('LoggedGuard', (): void => {
 
   describe('canActivate', (): void => {
 
-    const redirectUrl = encodeURIComponent(`${environment.baseUrl}${mockRouterStateSnapshot.url.substr(1)}`);
+    const redirectUrl = encodeURIComponent('https://web.wallapop.com');
 
     beforeEach(() => {
       spyOn(permissionService, 'getPermissions').and.returnValue({});
@@ -84,7 +77,7 @@ describe('LoggedGuard', (): void => {
     });
 
     it('should return false and redirect if no access token', (): void => {
-      const result = loggedGuard.canActivate(mockActivatedRouteSnapshot, mockRouterStateSnapshot);
+      const result = loggedGuard.canActivate();
 
       expect(result).toBeFalsy();
       expect(window.nativeWindow.location.href).toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
@@ -92,7 +85,7 @@ describe('LoggedGuard', (): void => {
 
     it('should return true and NOT redirect if access token', () => {
       accessTokenService.storeAccessToken('abc');
-      const result = loggedGuard.canActivate(mockActivatedRouteSnapshot, mockRouterStateSnapshot);
+      const result = loggedGuard.canActivate();
 
       expect(result).toBeTruthy();
       expect(window.nativeWindow.location.href).not.toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
@@ -100,7 +93,7 @@ describe('LoggedGuard', (): void => {
 
     it('should check the current user permissions', () => {
       accessTokenService.storeAccessToken('abc');
-      const result = loggedGuard.canActivate(mockActivatedRouteSnapshot, mockRouterStateSnapshot);
+      const result = loggedGuard.canActivate();
 
       expect(permissionService.getPermissions).toHaveBeenCalled();
       expect(result).toBeTruthy();
@@ -108,7 +101,7 @@ describe('LoggedGuard', (): void => {
 
     it('should call userService.me and set the permissions for the user', () => {
       accessTokenService.storeAccessToken('abc');
-      const result = loggedGuard.canActivate(mockActivatedRouteSnapshot, mockRouterStateSnapshot);
+      const result = loggedGuard.canActivate();
 
       userService.me().map((u: User) => {
         expect(userService.setPermission).toHaveBeenCalledWith(u.type);

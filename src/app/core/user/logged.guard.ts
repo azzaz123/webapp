@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../http/access-token.service';
 import { WindowRef } from '../window/window.service';
@@ -17,10 +17,9 @@ export class LoggedGuard implements CanActivate {
     private userService: UserService) {
   }
 
-  public canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  public canActivate() {
     if (!this.accessTokenService.accessToken) {
-      const currentUrl = `${environment.baseUrl}${state.url.substr(1)}`;
-      const redirect = `${environment.siteUrl}login?redirectUrl=${encodeURIComponent(currentUrl)}`;
+      const redirect = `${environment.siteUrl}login?redirectUrl=${encodeURIComponent(window.location.href)}`;
       this.window.nativeWindow.location.href = redirect;
       return false;
     }
