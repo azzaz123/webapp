@@ -68,12 +68,12 @@ describe('LoggedGuard', (): void => {
   });
 
   describe('canActivate', (): void => {
-
-    const redirectUrl = encodeURIComponent('https://web.wallapop.com');
+    let redirectUrl;
 
     beforeEach(() => {
       spyOn(permissionService, 'getPermissions').and.returnValue({});
       spyOn(userService, 'me').and.callThrough();
+      redirectUrl = encodeURIComponent(window.nativeWindow.location.href);
     });
 
     it('should return false and redirect if no access token', (): void => {
