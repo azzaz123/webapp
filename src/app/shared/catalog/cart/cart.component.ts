@@ -8,12 +8,13 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { Response } from '@angular/http';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
-import { CreditInfo, FinancialCard, FinancialCardOption } from '../../../core/payments/payment.interface';
+import { CreditInfo, FinancialCardOption } from '../../../core/payments/payment.interface';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { UUID } from 'angular2-uuid/index';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-cart',
@@ -37,6 +38,10 @@ export class CartComponent implements OnInit, OnDestroy {
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
+  public paymentMethod: WEB_PAYMENT_EXPERIMENT_TYPE;
+  public paymentTypeSabadell = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
+  public paymentTypeStripeV1 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1;
+  public paymentTypeStripeV2 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV2;
 
   constructor(private cartService: CartService,
               private itemService: ItemService,
@@ -45,7 +50,8 @@ export class CartComponent implements OnInit, OnDestroy {
               private paymentService: PaymentService,
               private eventService: EventService,
               private router: Router,
-              private stripeService: StripeService) {
+              private stripeService: StripeService,
+              private splitTestService: SplitTestService) {
       this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
         this.cart = cartChange.cart;
       });
@@ -53,14 +59,15 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
-    this.stripeService.isPaymentMethodStripe$().subscribe(isStripe => {
-      this.isStripe = isStripe;
-      if (this.isStripe) {
+    this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
+      this.paymentMethod = paymentMethod;
+      if (this.paymentMethod !== this.paymentTypeSabadell) {
         this.eventService.subscribe('paymentResponse', (response) => {
           this.managePaymentResponse(response);
         });
       }
     });
+    //this.splitTestService.track('UploadCompleted');
   }
 
   ngOnDestroy() {

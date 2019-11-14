@@ -8,7 +8,7 @@ $missing-total-height: 43px;
 $totals-margins: 0px;
 $total-height: $main-total-height + $totals-margins + $credit-total-height + $missing-total-height;
 $discounted-total-height: 30px;
-$stripe-card-element-height: 200px;
+$stripe-card-element-height: 100px;
 $button-height: 42px;
 $button-margin: $spacing-ml - $spacing-s;
 $button-space: $button-height + $spacing-ml;
@@ -271,6 +271,34 @@ tsl-button {
   span {
     font-size: $font-size-xs;
     color: $blue-grey-3;
+  }
+}
+
+.secure-payment-button {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  mat-icon {
+    height: 14px;
+    width: 11px;
+    position: absolute;
+    right: 0;
+    top: 1px;
+  }
+  span {
+    font-size: $font-size-s;
+    color: $white;
+  }
+}
+
+.stripe-payment {
+  text-align: center;
+  margin: $spacing-xs 0 0 0;
+  mat-icon {
+    width: 100px;
+    height: 25px;
   }
 }
 

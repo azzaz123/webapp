@@ -4,6 +4,14 @@ import { Observer } from 'rxjs/Observer';
 import { SplitTestUserInfo } from './split-test.interface';
 import { environment } from '../../../environments/environment';
 
+export enum WEB_PAYMENT_EXPERIMENT_TYPE {
+  sabadell = 0,
+  stripeV1 = 1,
+  stripeV2 = 2
+}
+
+export const WEB_PAYMENT_EXPERIMENT_NAME = 'WebPaymentMethod';
+
 @Injectable()
 export class SplitTestService {
 
@@ -39,6 +47,10 @@ export class SplitTestService {
 
   init() {
     Taplytics.init(environment.taplytics);
+  }
+
+  getWebPaymentExperimentType(): Observable<WEB_PAYMENT_EXPERIMENT_TYPE> {
+    return this.getVariable(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
   }
 
 }

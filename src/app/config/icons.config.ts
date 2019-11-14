@@ -292,4 +292,6 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('unlocked', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/unlocked.svg'));
   matIconRegistry.addSvgIcon('watch', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/watch.svg'));
   matIconRegistry.addSvgIcon('padlock', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/padlock.svg'));
+  matIconRegistry.addSvgIcon('poweredByStripe', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/poweredByStripe.svg'));
+  matIconRegistry.addSvgIcon('lock-new', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/lock-new.svg'));
 }

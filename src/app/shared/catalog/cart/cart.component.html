@@ -97,9 +97,9 @@
     <span class="label" i18n>Total to pay</span>
     <span class="price">{{totalToPay | customCurrency}}</span>
   </div>
-  <tsl-card-selection [hidden]="isStripe" [(ngModel)]="cardType" name="card-type" (hasCard)="hasCard($event)"
+  <tsl-card-selection [hidden]="paymentMethod !== paymentTypeSabadell" [(ngModel)]="cardType" name="card-type" (hasCard)="hasCard($event)"
   ></tsl-card-selection>
-  <div *ngIf="isStripe && totalToPay > 0">
+  <div *ngIf="paymentMethod !== paymentTypeSabadell && totalToPay > 0">
     <tsl-stripe-card-selection *ngIf="isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
                               (hasStripeCard)="hasStripeCard($event)"
     ></tsl-stripe-card-selection>
@@ -109,17 +109,26 @@
                             (stripeCard)="setCardInfo($event)" [loading]="loading"
     ></tsl-stripe-card-element>
   </div>
-  <tsl-button [hidden]="isStripe && !savedCard && totalToPay > 0"
+  <tsl-button [hidden]="paymentMethod !== paymentTypeSabadell && !savedCard && totalToPay > 0"
               [disabled]="(!cart?.total || loading)"
               [loading]="loading"
               (click)="checkout()"
               id="qa-checkout-buy"
               className="btn-primary btn-medium stripe"
-              i18n>Continue to Checkout</tsl-button>
-  <div class="secure-payment" [hidden]="isStripe">
+              i18n
+  >
+    <div class="secure-payment-button">
+      <span i18n>Continue to checkout</span>
+      <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
+    </div>
+  </tsl-button>
+  <div class="secure-payment" [hidden]="paymentMethod !== paymentTypeSabadell">
     <mat-icon svgIcon="secure-card"></mat-icon>
     <span i18n>Secure payment through Sabadell</span>
   </div>
+  <div class="stripe-payment" *ngIf="paymentMethod === paymentTypeStripeV2">
+    <a href="https://www.stripe.com/es" target="_blank"><mat-icon svgIcon="poweredByStripe"></mat-icon></a>
+  </div>
 </div>
-<tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>
+<tsl-sabadell [hidden]="paymentMethod !== paymentTypeSabadell" [submit]="sabadellSubmit"></tsl-sabadell>
 

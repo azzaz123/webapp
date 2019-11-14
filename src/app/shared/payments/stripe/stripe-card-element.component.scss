@@ -17,6 +17,10 @@
   &--webkit-autofill {
     background-color: $yellow-soft !important;
   }
+  &.variant {
+    border: 1px solid $blue-grey-5;
+    box-shadow: none;
+  }
 }
 
 .field {
@@ -43,5 +47,17 @@ tsl-button {
   /deep/ button {
     width: 100%;
     appearance: none;
+  }
+}
+
+.secure-payment {
+  position: relative;
+  font-size: $font-size-s;
+  mat-icon {
+    height: 14px;
+    width: 11px;
+    position: absolute;
+    right: 0;
+    top: 1px;
   }
 }
