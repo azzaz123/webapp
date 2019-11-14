@@ -58,9 +58,7 @@ describe('Component: ChatWithInboxComponent', () => {
         {
           provide: AdService,
           useValue: {
-            startAdsRefresh() {
-            },
-            stopAdsRefresh() {
+            adsRefresh() {
             }
           }
         }

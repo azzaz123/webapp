@@ -84,7 +84,7 @@ export class ChatWithArchiveComponent implements OnInit {
       this.userWebSlug = this.currentConversation.user ? this.currentConversation.user.getUrl(this.subdomain) : null;
     }
 
-    this.adService.startAdsRefresh();
+    this.adService.adsRefresh();
   }
 
   public onLoaded(event: any) {

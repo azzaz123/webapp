@@ -124,7 +124,7 @@ export class AdService {
     });
   }
 
-  public startAdsRefresh(): void {
+  public adsRefresh(): void {
     if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) { return ; }
     this.adsRefreshSubscription = this.userService.me().do((user: User) => {
       this.adKeyWords.gender = user.gender;

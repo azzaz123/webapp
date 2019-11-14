@@ -157,7 +157,7 @@ describe('AdService', () => {
 
   describe ('refreshAds', () => {
     it('should send keyWords', fakeAsync(() => {
-      service.startAdsRefresh();
+      service.adsRefresh();
       Object.keys(AdKeyWords).forEach(key => {
         expect(pubads.setTargeting).toHaveBeenCalledWith(key, AdKeyWords[key]);
       });
@@ -169,7 +169,7 @@ describe('AdService', () => {
       service.adKeyWords.latitude = null;
       service.adKeyWords.longitude = null;
 
-      service.startAdsRefresh();
+      service.adsRefresh();
       tick(1);
 
       expect(pubads.setTargeting).toHaveBeenCalledWith('latitude', MOCK_USER.location.approximated_latitude.toString());
@@ -183,7 +183,7 @@ describe('AdService', () => {
       });
 
       it('should send keyWords allowSegmentation with true value', fakeAsync(() => {
-        service.startAdsRefresh();
+        service.adsRefresh();
 
         expect(pubads.setTargeting).toHaveBeenCalledWith('allowSegmentation', 'true');
         discardPeriodicTasks();
@@ -192,7 +192,7 @@ describe('AdService', () => {
       it('should call DFP setRequestNonPersonalizedAds with value 0', fakeAsync(() => {
         spyOn(pubads, 'setRequestNonPersonalizedAds');
 
-        service.startAdsRefresh();
+        service.adsRefresh();
 
         expect(pubads.setRequestNonPersonalizedAds).toHaveBeenCalledWith(0);
         discardPeriodicTasks();
@@ -201,7 +201,7 @@ describe('AdService', () => {
       it('should call amazon APS fetchBids', fakeAsync(() => {
         spyOn(apstag, 'fetchBids');
 
-        service.startAdsRefresh();
+        service.adsRefresh();
 
         expect(apstag.fetchBids).toHaveBeenCalled();
         discardPeriodicTasks();
@@ -210,7 +210,7 @@ describe('AdService', () => {
       it('should call amazon APS setDisplayBids', fakeAsync(() => {
         spyOn(apstag, 'setDisplayBids');
 
-        service.startAdsRefresh();
+        service.adsRefresh();
 
         expect(apstag.setDisplayBids).toHaveBeenCalled();
         discardPeriodicTasks();
@@ -219,7 +219,7 @@ describe('AdService', () => {
       it('should call Criteo SetLineItemRanges', fakeAsync(() => {
         spyOn(Criteo, 'SetLineItemRanges');
 
-        service.startAdsRefresh();
+        service.adsRefresh();
 
         expect(Criteo.SetLineItemRanges).toHaveBeenCalled();
         discardPeriodicTasks();
@@ -228,7 +228,7 @@ describe('AdService', () => {
       it('should call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
         spyOn(Criteo, 'SetDFPKeyValueTargeting');
 
-        service.startAdsRefresh();
+        service.adsRefresh();
 
         expect(Criteo.SetDFPKeyValueTargeting).toHaveBeenCalled();
         discardPeriodicTasks();
@@ -241,7 +241,7 @@ describe('AdService', () => {
       });
 
       it('should send keyWords allowSegmentation with false value', fakeAsync(() => {
-        service.startAdsRefresh();
+        service.adsRefresh();
 
         expect(pubads.setTargeting).toHaveBeenCalledWith('allowSegmentation', 'false');
         discardPeriodicTasks();
@@ -250,7 +250,7 @@ describe('AdService', () => {
       it('should call DFP setRequestNonPersonalizedAds with value 1', fakeAsync(() => {
         spyOn(pubads, 'setRequestNonPersonalizedAds');
 
-        service.startAdsRefresh();
+        service.adsRefresh();
 
         expect(pubads.setRequestNonPersonalizedAds).toHaveBeenCalledWith(1);
         discardPeriodicTasks();

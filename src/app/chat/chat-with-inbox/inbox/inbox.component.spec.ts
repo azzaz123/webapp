@@ -30,10 +30,7 @@ import { Item } from '../../../core/item/item';
 import { InboxItem } from '../../model/inbox-item';
 
 class AdServiceMock {
-  startAdsRefresh() {
-  }
-
-  stopAdsRefresh() {
+  adsRefresh() {
   }
 }
 
@@ -333,12 +330,12 @@ describe('Component: InboxComponent', () => {
 
     it('should should call conversationService.openConversation with the new conversation', () => {
       spyOn(conversationService, 'openConversation').and.callThrough();
-      spyOn(addService, 'startAdsRefresh');
+      spyOn(addService, 'adsRefresh');
 
       component.setCurrentConversation(newlySelectedConversation);
 
       expect(conversationService.openConversation).toHaveBeenCalledWith(newlySelectedConversation);
-      expect(addService.startAdsRefresh).toHaveBeenCalled();
+      expect(addService.adsRefresh).toHaveBeenCalled();
     });
   });
 
