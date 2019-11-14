@@ -30,12 +30,13 @@ tsl-here-maps {
     }
   }
   .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     top: 20px;
     right: 20px;
     height: 38px;
-    line-height: $line-height-xxl;
-    padding: 0 $spacing-m;
     width: $btn-width;
   }
 }
