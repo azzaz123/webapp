@@ -84,7 +84,12 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   private setUserData() {
     this.profileForm.patchValue({
       first_name: this.user.firstName,
-      last_name: this.user.lastName
+      last_name: this.user.lastName,
+      location: {
+        address: this.user.location.title,
+        latitude: this.user.location.approximated_latitude,
+        longitude: this.user.location.approximated_longitude
+      }
     });
     if (this.userInfo && this.isPro) {
       this.profileForm.patchValue({
@@ -94,6 +99,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
         link: this.userInfo.link
       });
     }
+    
     this.formComponent.hasNotSavedChanges = false;
   }
 
