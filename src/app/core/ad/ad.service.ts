@@ -16,8 +16,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class AdService {
 
-  private ENDPOINT_REFRESH_RATE = 'rest/ads/refreshRate';
-
   public allowSegmentation$: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public adKeyWords: AdKeyWords = {} as AdKeyWords;
   public adsRefreshSubscription: Subscription;
@@ -140,10 +138,6 @@ export class AdService {
       if (!this.adKeyWords.longitude && user.location) {
         this.adKeyWords.longitude = user.location.approximated_longitude.toString();
       }
-    }).flatMap(() => {
-      return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json());
-    }).flatMap((refreshRate: number) => {
-      return refreshRate ? Observable.timer(0, refreshRate) : Observable.of(0);
     }).flatMap(() => {
       return this.allowSegmentation$.filter((value) =>  value !== null);
     }).subscribe((allowSegmentation: boolean) => {
