@@ -29,9 +29,10 @@
         <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
       </div>
       <div class="col-1 header-numbers">
-        <ng-container *ngIf="selectedStatus === 'sold'">
+        <ng-container>
           <p class="header-numbers-top">
-            <span>{{numberOfProducts}}</span>
+            <span *ngIf="numberOfProducts === 0 && loading">--</span>
+            <span *ngIf="!loading">{{numberOfProducts}}</span>
           </p>
           <p class="header-numbers-bottom">
             <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
