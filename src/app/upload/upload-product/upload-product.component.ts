@@ -471,6 +471,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.objectTypes = objectTypes;
         });
       }
+    } else {
+      this.showExtraFields = false;
     }
 
     if (initializeExtraInfo) {
