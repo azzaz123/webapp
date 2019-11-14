@@ -186,6 +186,7 @@ describe('CheckoutItemComponent', () => {
   });
 
   describe('duration', () => {
+
     it('should call select method when changed and selectedType is defined', () => {
       spyOn(component, 'select');
       component.selectedType = TYPE;
@@ -204,6 +205,7 @@ describe('CheckoutItemComponent', () => {
 
       expect(component.select).toHaveBeenCalledTimes(0);
     });
+
   });
 
 });
