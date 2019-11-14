@@ -149,12 +149,4 @@ describe('Component: ChatWithInboxComponent', () => {
       expect(component.currentConversation).toBeNull();
     });
   });
-
-  it('should call stopAdsRefresh when destroy component', () => {
-    spyOn(adService, 'stopAdsRefresh');
-
-    component.ngOnDestroy();
-
-    expect(adService.stopAdsRefresh).toHaveBeenCalled();
-  });
 });

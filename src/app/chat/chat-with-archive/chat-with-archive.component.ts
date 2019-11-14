@@ -23,7 +23,7 @@ import { BlockUserXmppService } from '../../core/conversation/block-user';
   styleUrls: ['./chat-with-archive.component.scss']
 })
 
-export class ChatWithArchiveComponent implements OnInit, OnDestroy {
+export class ChatWithArchiveComponent implements OnInit {
 
   public currentConversation: Conversation;
   public conversationsLoaded: boolean;
@@ -69,10 +69,6 @@ export class ChatWithArchiveComponent implements OnInit, OnDestroy {
         this.persistencyService.getPhoneNumber().subscribe(r => this.conversationService.storedPhoneNumber = r.phone);
       }
     });
-  }
-
-  ngOnDestroy () {
-    this.adService.stopAdsRefresh();
   }
 
   public onCurrentConversationChange(conversation: Conversation) {

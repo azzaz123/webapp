@@ -345,12 +345,10 @@ describe('Component: InboxComponent', () => {
   it('should set conversation.active to FALSE if a conversation exists when ngOnDestroy is called', () => {
     const previouslySelectedConversation = CREATE_MOCK_INBOX_CONVERSATION();
     component.setCurrentConversation(previouslySelectedConversation);
-    spyOn(addService, 'stopAdsRefresh');
 
     component.ngOnDestroy();
 
     expect(previouslySelectedConversation.active).toBe(false);
-    expect(addService.stopAdsRefresh).toHaveBeenCalled();
   });
 
   describe('loadMore', () => {

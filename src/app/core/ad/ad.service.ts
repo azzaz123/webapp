@@ -153,10 +153,4 @@ export class AdService {
     this.fetchHeaderBids(allowSegmentation);
   }
 
-  public stopAdsRefresh(): void {
-    if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) {
-      this.adsRefreshSubscription.unsubscribe();
-    }
-  }
-
 }

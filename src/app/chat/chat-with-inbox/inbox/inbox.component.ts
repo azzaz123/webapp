@@ -157,7 +157,6 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.unselectCurrentConversation();
-    this.adService.stopAdsRefresh();
   }
 
   private onInboxReady(conversations: InboxConversation[], callMethodClient: string) {

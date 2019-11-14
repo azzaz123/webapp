@@ -435,13 +435,4 @@ describe('ChatWithArchiveComponent', () => {
 
     expect(adService.startAdsRefresh).toHaveBeenCalled();
   });
-
-  it('should call stopAdsRefresh when destroy component', () => {
-    spyOn(adService, 'stopAdsRefresh');
-
-    component.ngOnInit();
-    component.ngOnDestroy();
-
-    expect(adService.stopAdsRefresh).toHaveBeenCalled();
-  });
 });
