@@ -1,5 +1,5 @@
 <form>
-  <div class="textarea-component" [ngClass]="{focus: isFocus, selected: isMessagingAvailable()}">
+  <div class="textarea-component" [ngClass]="{'focus': isFocus, 'selected': isMessagingAvailable()}">
     <div class="textarea-wrapper">
       <textarea #messageTextarea
                 name="message"
