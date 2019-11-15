@@ -12,6 +12,7 @@ import { Conversation } from '../conversation/conversation';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { InboxUser } from '../../chat/model/inbox-user';
+import { RemoteConsoleService } from '../remote-console';
 
 @Injectable()
 export class XmppService {
@@ -28,7 +29,7 @@ export class XmppService {
   private canProcessRealtime = false;
   private xmppError = { message: 'XMPP disconnected' };
 
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService, private remoteConsoleService: RemoteConsoleService) {
     this.clientConnected$.next(false);
   }
 
@@ -49,9 +50,10 @@ export class XmppService {
   }
 
   public sendMessage(conversation: Conversation | InboxConversation, body: string) {
-    const message = this.createXmppMessage(conversation, this.client.nextId(), body);
+    const message: XmppBodyMessage = this.createXmppMessage(conversation, this.client.nextId(), body);
     this.onNewMessage(clone(message), true);
     this.client.sendMessage(message);
+    this.remoteConsoleService.sendMessageTimeout(message.id);
     this.eventService.emit(EventService.MESSAGE_SENT, conversation, message.id);
   }
 
