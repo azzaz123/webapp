@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { merge } from 'rxjs/observable/merge';
-import { environment } from '../../../environments/environment';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/observable/zip';
 import { Subscription } from 'rxjs/Subscription';
@@ -9,7 +8,6 @@ import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { AdKeyWords } from './ad.interface';
 import * as moment from 'moment';
-import { HttpService } from '../http/http.service';
 import { User } from '../user/user';;
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -24,8 +22,7 @@ export class AdService {
   ];
   private _bidTimeout = 2000;
 
-  constructor(private http: HttpService,
-              private userService: UserService,
+  constructor(private userService: UserService,
               private cookieService: CookieService
   ) {
     this.initKeyWordsFromCookies();

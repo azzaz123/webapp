@@ -155,7 +155,7 @@ describe('AdService', () => {
     });
   });
 
-  describe ('refreshAds', () => {
+  describe ('adsRefresh', () => {
     it('should send keyWords', fakeAsync(() => {
       service.adsRefresh();
       Object.keys(AdKeyWords).forEach(key => {
