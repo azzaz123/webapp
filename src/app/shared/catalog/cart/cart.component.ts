@@ -34,7 +34,7 @@ export class CartComponent implements OnInit, OnDestroy {
   public cardType = 'old';
   public loading: boolean;
   public card: any;
-  public isStripe = false;
+  public isStripe: boolean;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
@@ -61,6 +61,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartService.createInstance(new Cart());
     this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
       this.paymentMethod = paymentMethod;
+      this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
       if (this.paymentMethod !== this.paymentTypeSabadell) {
         this.eventService.subscribe('paymentResponse', (response) => {
           this.managePaymentResponse(response);

@@ -40,8 +40,16 @@
                 [disabled]="isStripe && !selectedCard"
                 [tslTrackEvent]="hasFinancialCard || (isStripe && isStripeCard) ? 'PURCHASE_CONFIRM_PACK_CREDITS' : 'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
                 [params]="getTrackingAttributes()"
-                i18n>Buy now</tsl-button>
+    >
+      <div class="secure-payment-button">
+        <span i18n>Buy now</span>
+        <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
+      </div>
+    </tsl-button>
     <p class="note" [hidden]="hasFinancialCard || isStripe" i18n>We don't save details of this transaction. The purchase is made via Banco Sabadell.</p>
+    <div class="stripe-payment" *ngIf="paymentMethod === paymentTypeStripeV2">
+      <a href="https://www.stripe.com/es" target="_blank"><mat-icon svgIcon="poweredByStripe"></mat-icon></a>
+    </div>
   </div>
 </div>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

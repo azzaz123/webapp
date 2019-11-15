@@ -11,6 +11,7 @@ import { CreditInfo, FinancialCardOption } from '../../../../core/payments/payme
 import { Response } from '@angular/http';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-buy-product-modal',
@@ -34,18 +35,24 @@ export class BuyProductModalComponent implements OnInit {
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
+  public paymentMethod: WEB_PAYMENT_EXPERIMENT_TYPE;
+  public paymentTypeSabadell = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
+  public paymentTypeStripeV1 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1;
+  public paymentTypeStripeV2 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV2;
 
   constructor(private itemService: ItemService,
               public activeModal: NgbActiveModal,
               private paymentService: PaymentService,
               private eventService: EventService,
               private stripeService: StripeService,
-              private errorService: ErrorsService) { }
+              private errorService: ErrorsService,
+              private splitTestService: SplitTestService) { }
 
   ngOnInit() {
-    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
-      this.isStripe = val;
-      if (this.isStripe) {
+    this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
+      this.paymentMethod = paymentMethod;
+      this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
+      if (this.paymentMethod !== this.paymentTypeSabadell) {
         this.eventService.subscribe('paymentResponse', (response) => {
           this.managePaymentResponse(response);
         });

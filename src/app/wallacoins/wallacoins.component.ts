@@ -14,6 +14,7 @@ import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tu
 import { Observable } from 'rxjs';
 import { User } from '../core/user/user';
 import { StripeService } from '../core/stripe/stripe.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -29,7 +30,7 @@ export class WallacoinsComponent implements OnInit {
   public factor: number;
   public loading = true;
   private localStorageName = '-wallacoins-tutorial';
-  public isStripe: boolean;
+  public paymentMethod: WEB_PAYMENT_EXPERIMENT_TYPE;
 
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,
@@ -38,7 +39,7 @@ export class WallacoinsComponent implements OnInit {
               private trackingService: TrackingService,
               private router: Router,
               private userService: UserService,
-              private stripeService: StripeService){
+              private splitTestService: SplitTestService){
 
     this.userService.isProfessional().subscribe((value: boolean) => {
       if (value) {
@@ -48,8 +49,8 @@ export class WallacoinsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
-      this.isStripe = val;
+    this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
+      this.paymentMethod = paymentMethod;
     });
     this.openTutorialModal();
     this.carouselOptions = {
@@ -105,7 +106,7 @@ export class WallacoinsComponent implements OnInit {
     let code = '-1';
     modal.componentInstance.pack = pack;
     modal.componentInstance.packIndex = packIndex;
-    modal.componentInstance.isStripe = this.isStripe;
+    modal.componentInstance.paymentMethod = this.paymentMethod;
     modal.result.then((response) => {
       console.warn(response.status);
       if (response === 'success' || response.status === '201' || response.status === 201) {

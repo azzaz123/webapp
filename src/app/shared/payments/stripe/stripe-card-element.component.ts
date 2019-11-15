@@ -4,13 +4,10 @@ import {
   forwardRef,
   Output,
   Input,
-  AfterViewInit,
-  OnDestroy,
   ChangeDetectorRef,
-  SimpleChanges,
-  HostListener
+  SimpleChanges
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CartBase } from '../../catalog/cart/cart-base';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
@@ -18,6 +15,7 @@ import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { ToastrService } from 'ngx-toastr';
 import { Tier } from '../../../core/subscriptions/subscriptions.interface';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -37,6 +35,10 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   public financialCard: FinancialCard;
   public hasFinancialCard: boolean;
   public card: any;
+  public paymentMethod: WEB_PAYMENT_EXPERIMENT_TYPE;
+  public paymentTypeSabadell = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
+  public paymentTypeStripeV1 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1;
+  public paymentTypeStripeV2 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV2;
   @Input() type: string;
   @Input() cart: CartBase;
   @Input() loading: boolean;
@@ -58,10 +60,14 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   constructor(private cd: ChangeDetectorRef,
               private i18n: I18nService,
               private stripeService: StripeService,
-              private toastrService: ToastrService) {
+              private toastrService: ToastrService,
+              private splitTestService: SplitTestService) {
   }
 
   ngAfterViewInit() {
+    this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
+      this.paymentMethod = paymentMethod;
+    });
     this.initStripe();
   }
 
