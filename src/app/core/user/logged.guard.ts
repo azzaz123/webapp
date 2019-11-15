@@ -19,7 +19,8 @@ export class LoggedGuard implements CanActivate {
 
   public canActivate() {
     if (!this.accessTokenService.accessToken) {
-      this.window.nativeWindow.location.href = environment.siteUrl + 'login';
+      const redirect = `${environment.siteUrl}login?redirectUrl=${encodeURIComponent(this.window.nativeWindow.location.href)}`;
+      this.window.nativeWindow.location.href = redirect;
       return false;
     }
     if (isEmpty(this.permissionService.getPermissions())) {

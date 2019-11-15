@@ -30,6 +30,8 @@ export class UploadComponent implements OnInit {
     this.categoryId = categoryId;
     if (categoryId !== '-1') {
       this.getUrgentPrice(categoryId);
+    } else {
+      this.urgentPrice = null
     }
   }
 
@@ -38,9 +40,13 @@ export class UploadComponent implements OnInit {
   }
 
   public getUrgentPrice(categoryId: string): void {
-    this.itemService.getUrgentProductByCategoryId(categoryId).subscribe((product: Product) => {
-      this.urgentPrice = product.durations[0].market_code;
-    });
+    if (categoryId !== '-1') {
+      this.itemService.getUrgentProductByCategoryId(categoryId).subscribe((product: Product) => {
+        this.urgentPrice = product.durations[0].market_code;
+      });
+    } else {
+      this.urgentPrice = null
+    }
   }
 
 }

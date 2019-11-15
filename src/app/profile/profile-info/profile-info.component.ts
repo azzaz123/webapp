@@ -39,9 +39,9 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
 
 
   constructor(private userService: UserService,
-              private fb: FormBuilder,
-              private errorsService: ErrorsService,
-              private modalService: NgbModal) {
+    private fb: FormBuilder,
+    private errorsService: ErrorsService,
+    private modalService: NgbModal) {
     this.profileForm = fb.group({
       first_name: '',
       last_name: '',
@@ -82,18 +82,33 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   }
 
   private setUserData() {
-    this.profileForm.patchValue({
+    let userData: any = {
       first_name: this.user.firstName,
       last_name: this.user.lastName
-    });
+    }
+
+    if (this.user.location) {
+      userData = {
+        ...userData,
+        location: {
+          address: this.user.location.title,
+          latitude: this.user.location.approximated_latitude,
+          longitude: this.user.location.approximated_longitude
+        }
+      }
+    }
+
     if (this.userInfo && this.isPro) {
-      this.profileForm.patchValue({
+      userData = {
+        ...userData,
         phone_number: this.userInfo.phone_number,
         description: this.userInfo.description,
         opening_hours: this.userInfo.opening_hours,
         link: this.userInfo.link
-      });
+      }
     }
+
+    this.profileForm.patchValue(userData);
     this.formComponent.hasNotSavedChanges = false;
   }
 
@@ -105,20 +120,20 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
     const phoneNumberControl = this.profileForm.get('phone_number');
     if (this.isPro && phoneNumberControl.value) {
       if (!isValidNumber(phoneNumberControl.value, 'ES')) {
-        phoneNumberControl.setErrors({incorrect: true});
+        phoneNumberControl.setErrors({ incorrect: true });
         this.errorsService.i18nError('phoneNumberError');
         return;
       }
     }
 
     const linkControl = this.profileForm.get('link');
-    if (linkControl.value ) {
-      competitorLinks.forEach(competitor  => {
-        
-        let linkSubstring = linkControl.value.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
-        let competitorSubstring = competitor.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+    if (linkControl.value) {
+      competitorLinks.forEach(competitor => {
+
+        let linkSubstring = linkControl.value.replace('http://', '').replace('https://', '').replace('www.', '').split(/[/?#]/)[0];
+        let competitorSubstring = competitor.replace('http://', '').replace('https://', '').replace('www.', '').split(/[/?#]/)[0];
         if (linkSubstring === competitorSubstring) {
-          linkControl.setErrors({incorrect: true});
+          linkControl.setErrors({ incorrect: true });
         }
       });
       if (!linkControl.valid) {
@@ -143,15 +158,15 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
           if (!this.user.location ||
             this.user.location.approximated_latitude !== profileFormLocation.latitude ||
             this.user.location.approximated_longitude !== profileFormLocation.longitude) {
-              const newLocation: Coordinate = {
-                latitude: profileFormLocation.latitude,
-                longitude: profileFormLocation.longitude,
-                name: profileFormLocation.address
-              };
-              this.userService.updateLocation(newLocation).subscribe(newUserLocation => {
-                this.userService.user.location = newUserLocation;
-                this.userService.updateSearchLocationCookies(newLocation);
-              });
+            const newLocation: Coordinate = {
+              latitude: profileFormLocation.latitude,
+              longitude: profileFormLocation.longitude,
+              name: profileFormLocation.address
+            };
+            this.userService.updateLocation(newLocation).subscribe(newUserLocation => {
+              this.userService.user.location = newUserLocation;
+              this.userService.updateSearchLocationCookies(newLocation);
+            });
           }
         });
       });
@@ -165,7 +180,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
 
   public openBecomeProModal() {
     if (!this.isPro) {
-      this.modalService.open(BecomeProModalComponent, {windowClass: 'become-pro'});
+      this.modalService.open(BecomeProModalComponent, { windowClass: 'become-pro' });
     }
   }
 

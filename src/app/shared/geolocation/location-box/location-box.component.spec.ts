@@ -22,10 +22,10 @@ describe('LocationBoxComponent', () => {
       providers: [
         {
           provide: UserService, useValue: {
-          me() {
-            return Observable.of(MOCK_USER);
+            me() {
+              return Observable.of(MOCK_USER);
+            }
           }
-        }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -50,23 +50,46 @@ describe('LocationBoxComponent', () => {
 
   describe('ngOnInit', () => {
 
-    it('should call me and set user', () => {
-      spyOn(userService, 'me').and.callThrough();
+    describe('if a location is provided', () => {
+      beforeEach(() => {
+        component.location = MOCK_USER.location;
 
-      component.ngOnInit();
+        spyOn(userService, 'me').and.callThrough();
 
-      expect(userService.me).toHaveBeenCalled();
-      expect(component.user).toEqual(MOCK_USER);
+        component.ngOnInit();
+      });
+
+      it('should not call me', () => {        
+        expect(userService.me).not.toHaveBeenCalled();
+      });
+
+      it('should set coordinates from provided location', () => {
+        expect(component.coordinates.latitude).toEqual(MOCK_USER.location.approximated_latitude);
+        expect(component.coordinates.longitude).toEqual(MOCK_USER.location.approximated_longitude);
+      });
     });
 
-    it('should add user location values', fakeAsync(() => {
-      component.ngOnInit();
-      tick();
+    describe('if a location is not provided', () => {
+      it('should call me and set user', () => {
+        spyOn(userService, 'me').and.callThrough();
+  
+        component.ngOnInit();
+  
+        expect(userService.me).toHaveBeenCalled();
+        expect(component.user).toEqual(MOCK_USER);
+      });
+  
+      it('should add user location values', fakeAsync(() => {
+        component.ngOnInit();
+        
+        tick();
+  
+        expect(component.form.get('location.address').value).toBe(USER_LOCATION.title);
+        expect(component.form.get('location.latitude').value).toBe(USER_LOCATION.approximated_latitude);
+        expect(component.form.get('location.longitude').value).toBe(USER_LOCATION.approximated_longitude);
+      }));
+    });
 
-      expect(component.form.get('location.address').value).toBe(USER_LOCATION.title);
-      expect(component.form.get('location.latitude').value).toBe(USER_LOCATION.approximated_latitude);
-      expect(component.form.get('location.longitude').value).toBe(USER_LOCATION.approximated_longitude);
-    }));
   });
 
   describe('Emit Location', () => {
