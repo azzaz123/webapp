@@ -9,6 +9,9 @@ export class MockRemoteConsoleService {
 
   sendMessageTimeout(userId: string, messageId: string): void {
   }
+
+  sendAcceptTimeout(messageId: string): void {
+  }
 }
 
 export const BROWSER = 'CHROME';
