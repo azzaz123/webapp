@@ -6,6 +6,9 @@ export class MockRemoteConsoleService {
 
   sendDuplicateConversations(userId: string, conversationsGroupById: Map<string, number>): void {
   }
+
+  sendMessageTimeout(userId: string, messageId: string): void {
+  }
 }
 
 export const BROWSER = 'CHROME';

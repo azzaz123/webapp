@@ -1,27 +1,36 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { MetricTypeEnum } from './metric-type.enum';
 import * as Fingerprint2 from 'fingerprintjs2';
 import * as logger from 'loglevel';
-import { toUpper } from 'lodash-es';
+import { toUpper, now } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { APP_VERSION } from '../../../environments/version';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RemoteConsoleService {
+export class RemoteConsoleService implements OnDestroy {
 
   deviceId: string;
-  connectionTimeCallNo = 0;
+  private connectionTimeCallNo = 0;
+  private sendMessageTime = [];
+  private acceptMessageTime = [];
 
-  constructor(private deviceService: DeviceDetectorService, private featureflagService: FeatureflagService) {
+  constructor(private deviceService: DeviceDetectorService, private featureflagService: FeatureflagService,
+              private userService: UserService) {
     this.deviceId = Fingerprint2.get({}, components => {
       const values = components.map(component => component.value);
       this.deviceId = Fingerprint2.x64hash128(values.join(''), 31);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.sendMessageTime = [];
+    this.acceptMessageTime = [];
   }
 
   sendConnectionTimeout(userId: string, connectionTime: number): void {
@@ -36,6 +45,34 @@ export class RemoteConsoleService {
         ping_time_ms: navigator['connection']['rtt']
       }
     })));
+  }
+
+  sendMessageTimeout(messageId: string): void {
+    if (messageId === null) {
+      this.sendMessageTime.push(now());
+    } else {
+      this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
+        ...commonLog, ...{
+          message_id: messageId,
+          send_message_time: now() - this.sendMessageTime.shift(),
+          metric_type: MetricTypeEnum.XMPP_SEND_MESSAGE_TIME,
+        }
+      })));
+    }
+  }
+
+  sendAcceptTimeout(messageId: string): void {
+    if (messageId === null) {
+      this.acceptMessageTime.push(now());
+    } else {
+      this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
+        ...commonLog, ...{
+          message_id: messageId,
+          send_message_time: now() - this.acceptMessageTime.shift(),
+          metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
+        }
+      })));
+    }
   }
 
   sendDuplicateConversations(userId: string, callMethodClient: string, conversationsGroupById: Map<string, number>): void {
