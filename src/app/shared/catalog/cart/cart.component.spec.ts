@@ -118,7 +118,8 @@ describe('CartComponent', () => {
           provide: SplitTestService, useValue: {
             getWebPaymentExperimentType() {
               return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
-            }
+            },
+            track() {}
           }
         },
       ],
@@ -168,6 +169,15 @@ describe('CartComponent', () => {
       component.ngOnInit();
 
       expect(component.isStripe).toBe(expectedValue);
+    });
+
+    it('should track the payment method experiment', () => {
+      spyOn(splitTestService, 'track');
+      spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(splitTestService.track).toHaveBeenCalledWith('BumpPurchase');
     });
   });
 
@@ -271,6 +281,9 @@ describe('CartComponent', () => {
         spyOn(trackingService, 'track');
         spyOn(localStorage, 'setItem');
         spyOn(eventService, 'emit');
+        spyOn(splitTestService, 'track');
+        spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+
         eventId = null;
         component.sabadellSubmit.subscribe((id: string) => {
           eventId = id;
@@ -366,6 +379,14 @@ describe('CartComponent', () => {
             component.creditInfo.credit = 0;
             component.cart = CART;
             component.cart.total = 1;
+          });
+
+          describe('PaymentMethodTest', () => {
+            it('should track the payment method experiment', () => {
+              component.checkout();
+        
+              expect(splitTestService.track).toHaveBeenCalledWith('BumpPurchase');
+            });
           });
 
           describe('Sabadell', () => {

@@ -101,7 +101,8 @@ describe('CartExtrasProComponent', () => {
           provide: SplitTestService, useValue: {
             getWebPaymentExperimentType() {
               return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
-            }
+            },
+            track() {}
           }
         },
       ],
@@ -141,6 +142,8 @@ describe('CartExtrasProComponent', () => {
   describe('ngOnInit', () => {
     beforeEach(() => {
       spyOn(cartService, 'createInstance').and.callThrough();
+      spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+      spyOn(splitTestService, 'track');
 
       component.ngOnInit();
     });
@@ -151,6 +154,14 @@ describe('CartExtrasProComponent', () => {
 
     it('should set cart pro extras', () => {
       expect(component.cart).toEqual(CART_PRO_EXTRAS);
+    });
+
+    it('should set the paymentMethod to stripe', () => {
+      expect(component.paymentMethod).toBe(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
+    });
+
+    it('should track the payment method experiment', () => {
+      expect(splitTestService.track).toHaveBeenCalledWith('BumpPurchase');
     });
 
   });

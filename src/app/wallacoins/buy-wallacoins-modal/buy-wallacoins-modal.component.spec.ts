@@ -66,7 +66,8 @@ describe('BuyWallacoinsModalComponent', () => {
           provide: SplitTestService, useValue: {
             getWebPaymentExperimentType() {
               return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
-            }
+            },
+            track() {}
           }
         },
       ],
@@ -249,7 +250,6 @@ describe('BuyWallacoinsModalComponent', () => {
 
     it('should return valid object when Sabadell', () => {
       component.isStripe = false;
-      //component.paymentMethod = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
 
       expect(component.getTrackingAttributes()).toEqual({ payment_method: 'SABADELL' });
     });

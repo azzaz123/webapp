@@ -50,6 +50,7 @@ export class WallacoinsComponent implements OnInit {
 
   ngOnInit() {
     this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
+      this.splitTestService.track('BumpPurchase');
       this.paymentMethod = paymentMethod;
     });
     this.openTutorialModal();

@@ -50,6 +50,7 @@ export class BuyProductModalComponent implements OnInit {
 
   ngOnInit() {
     this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
+      this.splitTestService.track('BumpPurchase');
       this.paymentMethod = paymentMethod;
       this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
       if (this.paymentMethod !== this.paymentTypeSabadell) {
@@ -125,6 +126,7 @@ export class BuyProductModalComponent implements OnInit {
         }
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
+          this.splitTestService.track('BumpPurchase');
           if (this.isStripe) {
             this.buyStripe(orderId);
           } else {

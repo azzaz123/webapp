@@ -8,7 +8,7 @@ import { Response } from '@angular/http';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../core/stripe/stripe.service';
 import { EventService } from '../../core/event/event.service';
-import { WEB_PAYMENT_EXPERIMENT_TYPE } from '../../core/tracking/split-test.service';
+import { WEB_PAYMENT_EXPERIMENT_TYPE, SplitTestService } from '../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-buy-wallacoins-modal',
@@ -39,7 +39,8 @@ export class BuyWallacoinsModalComponent implements OnInit {
               private paymentService: PaymentService,
               public activeModal: NgbActiveModal,
               private stripeService: StripeService,
-              private eventService: EventService) {
+              private eventService: EventService,
+              private splitTestService: SplitTestService) {
   }
 
   ngOnInit() {
@@ -80,6 +81,7 @@ export class BuyWallacoinsModalComponent implements OnInit {
     }
     this.loading = true;
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
+      this.splitTestService.track('BumpPurchase');
       if (this.isStripe) {
         this.stripeService.buy(order.id, paymentId, this.isStripeCard, this.savedCard, this.card);
       } else {

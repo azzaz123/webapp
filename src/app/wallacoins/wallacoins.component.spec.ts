@@ -111,7 +111,8 @@ describe('WallacoinsComponent', () => {
           provide: SplitTestService, useValue: {
             getWebPaymentExperimentType() {
               return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
-            }
+            },
+            track() {}
           }
         },
       ],
@@ -173,6 +174,23 @@ describe('WallacoinsComponent', () => {
       component.ngOnInit();
 
       expect(component['openTutorialModal']).toHaveBeenCalled();
+    });
+
+    it('should set the paymentMethod to sabadell', () => {
+      spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(component.paymentMethod).toBe(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
+    });
+
+    it('should track the payment method experiment', () => {
+      spyOn(splitTestService, 'track');
+      spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(splitTestService.track).toHaveBeenCalledWith('BumpPurchase');
     });
 
   });

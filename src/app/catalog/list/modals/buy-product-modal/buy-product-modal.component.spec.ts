@@ -17,7 +17,7 @@ import { StripeService } from '../../../../core/stripe/stripe.service';
 import { Router } from '@angular/router';
 import { STRIPE_CARD_OPTION } from '../../../../../tests/stripe.fixtures.spec';
 import { ErrorsService } from '../../../../core/errors/errors.service';
-import { SplitTestService } from '../../../../core/tracking/split-test.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../../core/tracking/split-test.service';
 
 describe('BuyProductModalComponent', () => {
   let component: BuyProductModalComponent;
@@ -97,8 +97,9 @@ describe('BuyProductModalComponent', () => {
         {
           provide: SplitTestService, useValue: {
             getWebPaymentExperimentType() {
-              return Observable.of(0);
-            }
+              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
+            },
+            track() {}
           }
         },
       ],
@@ -123,8 +124,14 @@ describe('BuyProductModalComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should get and set item', () => {
+    beforeEach(() => {
+      spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+      spyOn(splitTestService, 'track');
       spyOn(itemService, 'get').and.callThrough();
+      
+    });
+
+    it('should get and set item', () => {
       component.type = 'urgent';
 
       component.ngOnInit();
@@ -134,8 +141,7 @@ describe('BuyProductModalComponent', () => {
     });
 
     it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(splitTestService, 'getWebPaymentExperimentType').and.returnValue(Observable.of(1));
+      const expectedValue = false;
 
       component.ngOnInit();
 
@@ -170,6 +176,12 @@ describe('BuyProductModalComponent', () => {
         credit: 0,
         factor: 1
       });
+    });
+
+    it('should track the payment method experiment', () => {
+      component.ngOnInit();
+
+      expect(splitTestService.track).toHaveBeenCalledWith('BumpPurchase');
     });
   });
 
@@ -318,6 +330,16 @@ describe('BuyProductModalComponent', () => {
       });
 
       describe('with payment_needed true', () => {
+
+        it('should track payment method experiment', () => {
+          spyOn(splitTestService, 'track');
+          spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+          component.hasFinancialCard = true;
+
+          component.checkout();
+
+          expect(splitTestService.track).toHaveBeenCalledWith('BumpPurchase');
+        });
 
         describe('without credit card', () => {
           it('should submit sabadell with orderId', () => {
