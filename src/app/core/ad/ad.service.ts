@@ -138,7 +138,6 @@ export class AdService {
     }).flatMap(() => {
       return this.allowSegmentation$.filter((value) =>  value !== null);
     }).subscribe((allowSegmentation: boolean) => {
-      console.log('refresh');
       this.refreshAdWithKeyWords(allowSegmentation);
     });
   }
