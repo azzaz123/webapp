@@ -23,7 +23,7 @@ import { BlockUserXmppService } from '../../core/conversation/block-user';
   styleUrls: ['./chat-with-archive.component.scss']
 })
 
-export class ChatWithArchiveComponent implements OnInit, OnDestroy {
+export class ChatWithArchiveComponent implements OnInit {
 
   public currentConversation: Conversation;
   public conversationsLoaded: boolean;
@@ -71,10 +71,6 @@ export class ChatWithArchiveComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy () {
-    this.adService.stopAdsRefresh();
-  }
-
   public onCurrentConversationChange(conversation: Conversation) {
     const previousCurrentConversation = this.currentConversation;
     if (previousCurrentConversation) {
@@ -88,7 +84,7 @@ export class ChatWithArchiveComponent implements OnInit, OnDestroy {
       this.userWebSlug = this.currentConversation.user ? this.currentConversation.user.getUrl(this.subdomain) : null;
     }
 
-    this.adService.startAdsRefresh();
+    this.adService.adsRefresh();
   }
 
   public onLoaded(event: any) {
