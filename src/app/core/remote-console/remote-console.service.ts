@@ -51,13 +51,16 @@ export class RemoteConsoleService implements OnDestroy {
     if (messageId === null) {
       this.sendMessageTime.push(now());
     } else {
-      this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
-        ...commonLog, ...{
-          message_id: messageId,
-          send_message_time: now() - this.sendMessageTime.shift(),
-          metric_type: MetricTypeEnum.XMPP_SEND_MESSAGE_TIME,
-        }
-      })));
+      if (this.sendMessageTime.length > 0) {
+
+        this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
+          ...commonLog, ...{
+            message_id: messageId,
+            send_message_time: now() - this.sendMessageTime.shift(),
+            metric_type: MetricTypeEnum.XMPP_SEND_MESSAGE_TIME,
+          }
+        })));
+      }
     }
   }
 

@@ -119,21 +119,12 @@ describe('RemoteConsoleService', () => {
       expect(logger.info).not.toHaveBeenCalled();
     });
 
-    it('should send call', () => {
+    it('should NOT send call if not init timestamp', () => {
       spyOn(logger, 'info');
 
       service.sendMessageTimeout('MESSAGE_ID');
 
-      expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        'browser': BROWSER,
-        'browser_version': BROWSER_VERSION,
-        'user_id': USER_ID,
-        'feature_flag': true,
-        'version': APP_VERSION,
-        'message_id': 'MESSAGE_ID',
-        'send_message_time': null,
-        'metric_type': MetricTypeEnum.XMPP_SEND_MESSAGE_TIME
-      }));
+      expect(logger.info).not.toHaveBeenCalledWith();
     });
 
     it('should send call with sending time', fakeAsync(() => {
@@ -200,7 +191,7 @@ describe('RemoteConsoleService', () => {
       expect(logger.info).not.toHaveBeenCalled();
     });
 
-    it('should NOT send call if in previous step not init calculate time', () => {
+    it('should NOT send call if not init calculate time', () => {
       spyOn(logger, 'info');
 
       service.sendAcceptTimeout('MESSAGE_ID');
