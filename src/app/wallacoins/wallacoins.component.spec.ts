@@ -25,6 +25,7 @@ import { MOCK_USER, USER_ID } from '../../tests/user.fixtures.spec';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
 import Spy = jasmine.Spy;
 import { StripeService } from '../core/stripe/stripe.service';
+import { WEB_PAYMENT_EXPERIMENT_TYPE, SplitTestService } from '../core/tracking/split-test.service';
 
 describe('WallacoinsComponent', () => {
   let component: WallacoinsComponent;
@@ -35,6 +36,7 @@ describe('WallacoinsComponent', () => {
   let eventService: EventService;
   let userService: UserService;
   let stripeService: StripeService;
+  let splitTestService: SplitTestService;
   const CREDITS_PACKS: Pack[] = createWallacoinsPacksFixture().wallacoins;
   const PERKS: PerksModel = createPerksModelFixture();
   const PACK = new Pack(
@@ -105,6 +107,13 @@ describe('WallacoinsComponent', () => {
             }
         }
         },
+        {
+          provide: SplitTestService, useValue: {
+            getWebPaymentExperimentType() {
+              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
+            }
+          }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -121,6 +130,7 @@ describe('WallacoinsComponent', () => {
     router = TestBed.get(Router);
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
+    splitTestService = TestBed.get(SplitTestService);
   });
 
   describe('ngOnInit', () => {
@@ -165,22 +175,6 @@ describe('WallacoinsComponent', () => {
       expect(component['openTutorialModal']).toHaveBeenCalled();
     });
 
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
-    });
   });
 
   describe('openBuyModal', () => {

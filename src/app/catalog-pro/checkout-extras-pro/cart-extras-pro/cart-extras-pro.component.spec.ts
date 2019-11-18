@@ -22,6 +22,7 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { EventService } from '../../../core/event/event.service';
 import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../core/tracking/split-test.service';
 
 describe('CartExtrasProComponent', () => {
   let component: CartExtrasProComponent;
@@ -33,6 +34,7 @@ describe('CartExtrasProComponent', () => {
   let trackingService: TrackingService;
   let stripeService: StripeService;
   let eventService: EventService;
+  let splitTestService: SplitTestService;
 
   const CART_PRO_EXTRAS = new CartProExtras();
   const CART_CHANGE: CartChange = {
@@ -89,14 +91,18 @@ describe('CartExtrasProComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return Observable.of(true);
-            },
             buy() {},
             getCards() {
               return Observable.of(true);
             }
-        }
+          }
+        },
+        {
+          provide: SplitTestService, useValue: {
+            getWebPaymentExperimentType() {
+              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
+            }
+          }
         },
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -127,6 +133,7 @@ describe('CartExtrasProComponent', () => {
     trackingService = TestBed.get(TrackingService);
     stripeService = TestBed.get(StripeService);
     eventService = TestBed.get(EventService);
+    splitTestService = TestBed.get(SplitTestService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     fixture.detectChanges();
   });
@@ -146,22 +153,6 @@ describe('CartExtrasProComponent', () => {
       expect(component.cart).toEqual(CART_PRO_EXTRAS);
     });
 
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
-    });
   });
 
   describe('hasCard', () => {
@@ -288,6 +279,8 @@ describe('CartExtrasProComponent', () => {
         describe('tracking', () => {
           describe('Stripe', () => {
             it('should call track with valid values', () => {
+              spyOn(splitTestService, 'getWebPaymentExperimentType').and.returnValue(Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1));
+              
               component.checkout();
 
               expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {

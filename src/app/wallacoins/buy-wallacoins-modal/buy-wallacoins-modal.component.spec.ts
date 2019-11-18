@@ -13,6 +13,7 @@ import { UUID } from 'angular2-uuid';
 import { StripeService } from '../../core/stripe/stripe.service';
 import { EventService } from '../../core/event/event.service';
 import { STRIPE_CARD_OPTION } from '../../../tests/stripe.fixtures.spec';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../core/tracking/split-test.service';
 
 describe('BuyWallacoinsModalComponent', () => {
   let component: BuyWallacoinsModalComponent;
@@ -22,6 +23,7 @@ describe('BuyWallacoinsModalComponent', () => {
   let errorService: ErrorsService;
   let stripeService: StripeService;
   let eventService: EventService;
+  let splitTestService: SplitTestService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -55,13 +57,17 @@ describe('BuyWallacoinsModalComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return true;
-            },
             getCards() {
               return Observable.of([]);
             }
-        }
+          }
+        },
+        {
+          provide: SplitTestService, useValue: {
+            getWebPaymentExperimentType() {
+              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
+            }
+          }
         },
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -85,6 +91,7 @@ describe('BuyWallacoinsModalComponent', () => {
     errorService = TestBed.get(ErrorsService);
     stripeService = TestBed.get(StripeService);
     eventService = TestBed.get(EventService);
+    splitTestService = TestBed.get(SplitTestService);
   });
 
   describe('hasCard', () => {
@@ -139,9 +146,11 @@ describe('BuyWallacoinsModalComponent', () => {
       });
 
       it('should call paymentService orderExtrasProPack method to create a pack order', () => {
-        component.checkout();
         component.isStripe = false;
+        component.paymentMethod = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
 
+        component.checkout();
+        
         expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith({
           id: 'UUID',
           packs: ['id'],
@@ -151,16 +160,11 @@ describe('BuyWallacoinsModalComponent', () => {
 
       describe('if paymentService OrderExtrasProPack is successful', () => {
         beforeEach(() => {
-          //spyOn(trackingService, 'track');
+          component.isStripe = false;
+          component.paymentMethod = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
 
           component.checkout();
         });
-
-        /*it('should call track', () => {
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {
-            selected_packs: ORDER_CART_EXTRAS_PRO.packs
-          });
-        });*/
 
         describe('buy method', () => {
           describe('should call sabadellSubmit emit', () => {
@@ -244,6 +248,9 @@ describe('BuyWallacoinsModalComponent', () => {
   describe('getTrackingAttributes', () => {
 
     it('should return valid object when Sabadell', () => {
+      component.isStripe = false;
+      //component.paymentMethod = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
+
       expect(component.getTrackingAttributes()).toEqual({ payment_method: 'SABADELL' });
     });
 

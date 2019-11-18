@@ -28,6 +28,7 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FINANCIAL_CARD_OPTION, STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../core/tracking/split-test.service';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -40,6 +41,7 @@ describe('CartComponent', () => {
   let trackingService: TrackingService;
   let eventService: EventService;
   let stripeService: StripeService;
+  let splitTestService: SplitTestService;
 
   const CART = new Cart();
   const CART_CHANGE: CartChange = {
@@ -109,11 +111,15 @@ describe('CartComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-          buy() {},
-          isPaymentMethodStripe$() {
-            return Observable.of(true);
-          },
-        }
+            buy() {}
+          }
+        },
+        {
+          provide: SplitTestService, useValue: {
+            getWebPaymentExperimentType() {
+              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
+            }
+          }
         },
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
@@ -132,6 +138,7 @@ describe('CartComponent', () => {
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
+    splitTestService = TestBed.get(SplitTestService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     component.creditInfo = {
       currencyName: 'wallacoins',
@@ -154,17 +161,9 @@ describe('CartComponent', () => {
       expect(component.cart).toEqual(CART);
     });
 
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
-
     it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
       const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+      spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
 
       component.ngOnInit();
 
