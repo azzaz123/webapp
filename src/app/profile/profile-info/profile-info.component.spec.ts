@@ -90,9 +90,15 @@ describe('ProfileInfoComponent', () => {
             };
           }
         }
+        },
+        {
+          provide: ProfileFormComponent, useValue: {
+            initFormControl() {
+            }
+          }
         }
       ],
-      declarations: [ProfileInfoComponent, ProfileFormComponent, SwitchComponent],
+      declarations: [ProfileInfoComponent, SwitchComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -108,23 +114,29 @@ describe('ProfileInfoComponent', () => {
     spyOn(userService, 'me').and.callThrough();
     spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
     spyOn(userService, 'getUserCover').and.returnValue(Observable.of(IMAGE));
-    component.formComponent = TestBed.createComponent(ProfileFormComponent).componentInstance;
+    component.formComponent = TestBed.get(ProfileFormComponent);
     fixture.detectChanges();
   });
 
-  describe('ngOnInit', () => {
+  describe('initForm', () => {
 
     it('should call userService.me and set user', () => {
+      component.initForm();
+
       expect(userService.me).toHaveBeenCalled();
       expect(component.user).toBe(MOCK_FULL_USER);
     });
 
     it('should call userService.isProUser and set isPro', () => {
+      component.initForm();
+
       expect(userService.isProUser).toHaveBeenCalled();
       expect(component.isPro).toBe(true);
     });
 
     it('should set profileForm with user data', () => {
+      component.initForm();
+
       expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
       expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
     });
@@ -132,29 +144,22 @@ describe('ProfileInfoComponent', () => {
     it('should set profileForm with basic user data if userInfo throws error', () => {
       spyOn(userService, 'getProInfo').and.returnValue(Observable.throwError(''));
 
-      component.ngOnInit();
+      component.initForm();
 
       expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
       expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
     });
 
     it('should call userService.getUserCover and set cover', () => {
+      component.initForm();
+
       expect(userService.getUserCover).toHaveBeenCalled();
       expect(component.user.coverImage).toBe(IMAGE);
     });
   });
 
-  describe('canExit', () => {
-    it('should call canExit', () => {
-      spyOn(component.formComponent, 'canExit');
+  describe('onSubmit', () => {    
 
-      component.canExit();
-
-      expect(component.formComponent.canExit).toHaveBeenCalled();
-    });
-  });
-
-  describe('onSubmit', () => {
     describe('valid form', () => {
 
       const BASIC_DATA = {
@@ -168,6 +173,7 @@ describe('ProfileInfoComponent', () => {
       };
 
       beforeEach(() => {
+        component.initForm();
         spyOn(userService, 'edit').and.callThrough();
         spyOn(userService, 'updateProInfo').and.callThrough();
         spyOn(userService, 'updateLocation').and.callThrough();
@@ -177,7 +183,6 @@ describe('ProfileInfoComponent', () => {
         component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
         component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude + 1);
         component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude + 1);
-        component.formComponent.hasNotSavedChanges = true;
 
         component.onSubmit();
       });
@@ -189,10 +194,6 @@ describe('ProfileInfoComponent', () => {
 
       it('should call i18nSuccess', () => {
         expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
-      });
-
-      it('should set hasNotSavedChanges to false', () => {
-        expect(component.formComponent.hasNotSavedChanges).toBe(false);
       });
 
       it('should call updateLocation', () => {
@@ -225,6 +226,7 @@ describe('ProfileInfoComponent', () => {
       };
 
       beforeEach(() => {
+        component.initForm();
         spyOn(userService, 'updateLocation').and.callThrough();
         spyOn(userService, 'updateSearchLocationCookies').and.callThrough();
         component.updateLocationWhenSearching = false;
@@ -232,7 +234,6 @@ describe('ProfileInfoComponent', () => {
         component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
         component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
         component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
-        component.formComponent.hasNotSavedChanges = true;
 
         component.user.location.approximated_latitude = USER_LOCATION_COORDINATES.latitude;
         component.user.location.approximated_longitude = USER_LOCATION_COORDINATES.longitude;
@@ -303,6 +304,10 @@ describe('ProfileInfoComponent', () => {
     });
 
     describe('invalid phone number', () => {
+      beforeEach(() => {
+        component.isPro = true;
+      });
+
       it('should not call updateProInfo when phone number is not valid', () => {
         spyOn(userService, 'updateProInfo').and.callThrough();
 

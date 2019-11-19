@@ -72,9 +72,15 @@ describe('AccountComponent', () => {
               return Observable.of(true);
             }
         }
+        },
+        {
+          provide: ProfileFormComponent, useValue: {
+            initFormControl() {
+            }
+          }
         }
       ],
-      declarations: [ AccountComponent, ProfileFormComponent ],
+      declarations: [AccountComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -83,7 +89,7 @@ describe('AccountComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountComponent);
     component = fixture.componentInstance;
-    component.formComponent = TestBed.createComponent(ProfileFormComponent).componentInstance;
+    component.formComponent = TestBed.get(ProfileFormComponent);
     userService = TestBed.get(UserService);
     spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
@@ -92,13 +98,16 @@ describe('AccountComponent', () => {
     stripeService = TestBed.get(StripeService);
   });
 
-  describe('ngOnInit', () => {
-
+  describe('initForm', () => {
     it('should call userService.me', () => {
+      component.initForm();
+
       expect(userService.me).toHaveBeenCalled();
     });
 
     it('should set profileForm with user data', () => {
+      component.initForm();
+
       expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
     });
@@ -106,7 +115,7 @@ describe('AccountComponent', () => {
     it('should call stripeService.isPaymentMethodStripe$', () => {
       spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
 
-      component.ngOnInit();
+      component.initForm();
 
       expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
     });
@@ -115,7 +124,7 @@ describe('AccountComponent', () => {
       const expectedValue = true;
       spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
 
-      component.ngOnInit();
+      component.initForm();
 
       expect(component.isStripe).toBe(expectedValue);
     });
@@ -123,7 +132,6 @@ describe('AccountComponent', () => {
 
   describe('onSubmit', () => {
     describe('valid form', () => {
-
       beforeEach(() => {
         spyOn(userService, 'edit').and.callThrough();
         spyOn(errorsService, 'i18nSuccess');
@@ -131,7 +139,6 @@ describe('AccountComponent', () => {
           birth_date: USER_BIRTH_DATE,
           gender: USER_GENDER
         });
-        component.formComponent.hasNotSavedChanges = true;
 
         component.onSubmit();
       });
@@ -147,12 +154,8 @@ describe('AccountComponent', () => {
         expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
       });
 
-      it('should set hasNotSavedChanges to false', () => {
-        expect(component.formComponent.hasNotSavedChanges).toBe(false);
-      });
-
       it('should set isStripe to PAYMENT_PROVIDER_STRIPE value (true)', () => {
-        component.ngOnInit();
+        component.initForm();
 
         expect(component.isStripe).toBe(true);
       });
@@ -160,14 +163,13 @@ describe('AccountComponent', () => {
       it('should set isStripe to PAYMENT_PROVIDER_STRIPE value (false)', () => {
         spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(false));
 
-        component.ngOnInit();
+        component.initForm();
 
         expect(component.isStripe).toBe(false);
       });
     });
 
     describe('invalid form', () => {
-
       beforeEach(() => {
         spyOn(errorsService, 'i18nError');
         component.profileForm.get('birth_date').patchValue('');
@@ -187,7 +189,6 @@ describe('AccountComponent', () => {
     });
 
     describe('validation', () => {
-
       it('should set birth_date valid if value is valid', () => {
         component.profileForm.get('birth_date').setValue('1987-05-25');
 

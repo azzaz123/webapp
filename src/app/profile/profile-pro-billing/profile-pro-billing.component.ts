@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -6,16 +6,21 @@ import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation
 import { PaymentService } from '../../core/payments/payment.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { BillingInfoResponse } from '../../core/payments/payment.interface';
+import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
+import { finalize } from 'rxjs/operators';
+import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 
 @Component({
   selector: 'tsl-profile-pro-billing',
   templateUrl: './profile-pro-billing.component.html',
   styleUrls: ['./profile-pro-billing.component.scss']
 })
-export class ProfileProBillingComponent implements OnInit {
+export class ProfileProBillingComponent implements CanComponentDeactivate {
 
   public billingForm: FormGroup;
   public isNewBillingInfoForm = true;
+  public loading = false;
+  @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
   constructor(private fb: FormBuilder,
               private paymentService: PaymentService,
@@ -36,7 +41,7 @@ export class ProfileProBillingComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  initForm() {
     this.paymentService.getBillingInfo().subscribe((billingInfo: BillingInfoResponse) => {
       this.isNewBillingInfoForm = false;
       this.billingForm.patchValue(billingInfo);
@@ -50,8 +55,13 @@ export class ProfileProBillingComponent implements OnInit {
 
   public onSubmit() {
     if (this.billingForm.valid) {
-      this.paymentService.updateBillingInfo(this.billingForm.value).subscribe(() => {
+      this.loading = true;
+      
+      this.paymentService.updateBillingInfo(this.billingForm.value)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(() => {
         this.errorsService.i18nSuccess('userEdited');
+        this.formComponent.initFormControl();
         this.isNewBillingInfoForm = false;
       }, (response: any) => {
         this.errorsService.show(response);
@@ -64,6 +74,10 @@ export class ProfileProBillingComponent implements OnInit {
         }
       }
     }
+  }
+
+  public canExit() {
+    return this.formComponent.canExit();
   }
 
   public deleteBillingInfo() {
