@@ -181,7 +181,7 @@ describe('BuyProductModalComponent', () => {
     it('should track the payment method experiment', () => {
       component.ngOnInit();
 
-      expect(splitTestService.track).toHaveBeenCalledWith('BumpPurchase');
+      expect(splitTestService.track).toHaveBeenCalledWith('StripeCheckoutPageView');
     });
   });
 
@@ -338,7 +338,7 @@ describe('BuyProductModalComponent', () => {
 
           component.checkout();
 
-          expect(splitTestService.track).toHaveBeenCalledWith('BumpPurchase');
+          expect(splitTestService.track).toHaveBeenCalledWith('StripeCheckoutClick');
         });
 
         describe('without credit card', () => {

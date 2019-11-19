@@ -190,7 +190,7 @@ describe('WallacoinsComponent', () => {
 
       component.ngOnInit();
 
-      expect(splitTestService.track).toHaveBeenCalledWith('BumpPurchase');
+      expect(splitTestService.track).toHaveBeenCalledWith('StripeCheckoutPageView');
     });
 
   });

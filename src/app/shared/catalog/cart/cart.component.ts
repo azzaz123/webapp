@@ -60,7 +60,7 @@ export class CartComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.cartService.createInstance(new Cart());
     this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
-      this.splitTestService.track('BumpPurchase');
+      this.splitTestService.track('StripeCheckoutPageView');
       this.paymentMethod = paymentMethod;
       this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
       if (this.paymentMethod !== this.paymentTypeSabadell) {
@@ -169,7 +169,7 @@ export class CartComponent implements OnInit, OnDestroy {
     const payment_method = this.isStripe ? 'STRIPE' : 'SABADELL';
     const attributes = this.totalToPay === 0 ? { selected_products: result } : { selected_products: result, payment_method };
     this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, attributes);
-    this.splitTestService.track('BumpPurchase');
+    this.splitTestService.track('StripeCheckoutClick');
 
     ga('send', 'event', 'Item', 'bump-cart');
     gtag('event', 'conversion', { 'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM' });

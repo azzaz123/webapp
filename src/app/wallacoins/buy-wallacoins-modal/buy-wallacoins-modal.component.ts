@@ -81,7 +81,7 @@ export class BuyWallacoinsModalComponent implements OnInit {
     }
     this.loading = true;
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
-      this.splitTestService.track('BumpPurchase');
+      this.splitTestService.track('StripeCheckoutClick');
       if (this.isStripe) {
         this.stripeService.buy(order.id, paymentId, this.isStripeCard, this.savedCard, this.card);
       } else {

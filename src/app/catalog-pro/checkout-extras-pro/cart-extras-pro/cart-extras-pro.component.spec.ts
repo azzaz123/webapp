@@ -161,7 +161,7 @@ describe('CartExtrasProComponent', () => {
     });
 
     it('should track the payment method experiment', () => {
-      expect(splitTestService.track).toHaveBeenCalledWith('BumpPurchase');
+      expect(splitTestService.track).toHaveBeenCalledWith('StripeCheckoutPageView');
     });
 
   });

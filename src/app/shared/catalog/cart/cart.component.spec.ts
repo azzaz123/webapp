@@ -177,7 +177,7 @@ describe('CartComponent', () => {
 
       component.ngOnInit();
 
-      expect(splitTestService.track).toHaveBeenCalledWith('BumpPurchase');
+      expect(splitTestService.track).toHaveBeenCalledWith('StripeCheckoutPageView');
     });
   });
 
@@ -385,7 +385,7 @@ describe('CartComponent', () => {
             it('should track the payment method experiment', () => {
               component.checkout();
         
-              expect(splitTestService.track).toHaveBeenCalledWith('BumpPurchase');
+              expect(splitTestService.track).toHaveBeenCalledWith('StripeCheckoutClick');
             });
           });
 

@@ -57,7 +57,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
-      this.splitTestService.track('BumpPurchase');
+      this.splitTestService.track('StripeCheckoutPageView');
       this.paymentMethod = paymentMethod;
       this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
       if (this.isStripe) {
@@ -151,7 +151,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
         payment_method
       });
 
-    this.splitTestService.track('BumpPurchase');
+    this.splitTestService.track('StripeCheckoutClick');
   }
 
   public hasCard(hasCard: boolean) {
