@@ -22,7 +22,7 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { EventService } from '../../../core/event/event.service';
 import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../core/tracking/split-test.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT } from '../../../core/tracking/split-test.service';
 
 describe('CartExtrasProComponent', () => {
   let component: CartExtrasProComponent;
@@ -99,7 +99,7 @@ describe('CartExtrasProComponent', () => {
         },
         {
           provide: SplitTestService, useValue: {
-            getWebPaymentExperimentType() {
+            getVariable() {
               return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
             },
             track() {}
@@ -142,7 +142,7 @@ describe('CartExtrasProComponent', () => {
   describe('ngOnInit', () => {
     beforeEach(() => {
       spyOn(cartService, 'createInstance').and.callThrough();
-      spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+      spyOn(splitTestService, 'getVariable').and.callThrough();
       spyOn(splitTestService, 'track');
 
       component.ngOnInit();
@@ -161,7 +161,7 @@ describe('CartExtrasProComponent', () => {
     });
 
     it('should track the payment method experiment', () => {
-      expect(splitTestService.track).toHaveBeenCalledWith('StripeCheckoutPageView');
+      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
     });
 
   });
@@ -290,7 +290,7 @@ describe('CartExtrasProComponent', () => {
         describe('tracking', () => {
           describe('Stripe', () => {
             it('should call track with valid values', () => {
-              spyOn(splitTestService, 'getWebPaymentExperimentType').and.returnValue(Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1));
+              spyOn(splitTestService, 'getVariable').and.callThrough();
               
               component.checkout();
 

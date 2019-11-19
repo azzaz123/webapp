@@ -15,7 +15,7 @@ import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { ToastrService } from 'ngx-toastr';
 import { Tier } from '../../../core/subscriptions/subscriptions.interface';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../core/tracking/split-test.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_NAME } from '../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -65,7 +65,8 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   }
 
   ngAfterViewInit() {
-    this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
+    this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
+    .subscribe((paymentMethod: number) => {
       this.paymentMethod = paymentMethod;
     });
     this.initStripe();

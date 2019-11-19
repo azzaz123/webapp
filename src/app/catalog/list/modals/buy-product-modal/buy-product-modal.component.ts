@@ -11,7 +11,7 @@ import { CreditInfo, FinancialCardOption } from '../../../../core/payments/payme
 import { Response } from '@angular/http';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../../core/tracking/split-test.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT } from '../../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-buy-product-modal',
@@ -49,8 +49,9 @@ export class BuyProductModalComponent implements OnInit {
               private splitTestService: SplitTestService) { }
 
   ngOnInit() {
-    this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
-      this.splitTestService.track('StripeCheckoutPageView');
+    this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
+    .subscribe((paymentMethod: number) => {
+      this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
       this.paymentMethod = paymentMethod;
       this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
       if (this.paymentMethod !== this.paymentTypeSabadell) {
@@ -126,7 +127,7 @@ export class BuyProductModalComponent implements OnInit {
         }
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
-          this.splitTestService.track('StripeCheckoutClick');
+          this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
           if (this.isStripe) {
             this.buyStripe(orderId);
           } else {

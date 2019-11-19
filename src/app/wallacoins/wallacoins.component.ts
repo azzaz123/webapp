@@ -14,7 +14,7 @@ import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tu
 import { Observable } from 'rxjs';
 import { User } from '../core/user/user';
 import { StripeService } from '../core/stripe/stripe.service';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../core/tracking/split-test.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_NAME } from '../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -49,8 +49,9 @@ export class WallacoinsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
-      this.splitTestService.track('StripeCheckoutPageView');
+    this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
+    .subscribe((paymentMethod: number) => {
+      this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
       this.paymentMethod = paymentMethod;
     });
     this.openTutorialModal();

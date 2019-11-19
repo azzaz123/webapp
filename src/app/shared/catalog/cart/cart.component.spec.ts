@@ -28,7 +28,7 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FINANCIAL_CARD_OPTION, STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../core/tracking/split-test.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT } from '../../../core/tracking/split-test.service';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -116,7 +116,7 @@ describe('CartComponent', () => {
         },
         {
           provide: SplitTestService, useValue: {
-            getWebPaymentExperimentType() {
+            getVariable() {
               return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
             },
             track() {}
@@ -164,7 +164,7 @@ describe('CartComponent', () => {
 
     it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
       const expectedValue = true;
-      spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+      spyOn(splitTestService, 'getVariable').and.callThrough();
 
       component.ngOnInit();
 
@@ -173,11 +173,11 @@ describe('CartComponent', () => {
 
     it('should track the payment method experiment', () => {
       spyOn(splitTestService, 'track');
-      spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+      spyOn(splitTestService, 'getVariable').and.callThrough();
 
       component.ngOnInit();
 
-      expect(splitTestService.track).toHaveBeenCalledWith('StripeCheckoutPageView');
+      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
     });
   });
 
@@ -282,7 +282,7 @@ describe('CartComponent', () => {
         spyOn(localStorage, 'setItem');
         spyOn(eventService, 'emit');
         spyOn(splitTestService, 'track');
-        spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+        spyOn(splitTestService, 'getVariable').and.callThrough();
 
         eventId = null;
         component.sabadellSubmit.subscribe((id: string) => {
@@ -385,7 +385,7 @@ describe('CartComponent', () => {
             it('should track the payment method experiment', () => {
               component.checkout();
         
-              expect(splitTestService.track).toHaveBeenCalledWith('StripeCheckoutClick');
+              expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
             });
           });
 

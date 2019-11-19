@@ -14,7 +14,7 @@ import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { UUID } from 'angular2-uuid/index';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../core/tracking/split-test.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT } from '../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-cart',
@@ -59,8 +59,9 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
-    this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
-      this.splitTestService.track('StripeCheckoutPageView');
+    this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
+    .subscribe((paymentMethod: number) => {
+      this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
       this.paymentMethod = paymentMethod;
       this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
       if (this.paymentMethod !== this.paymentTypeSabadell) {
@@ -95,6 +96,7 @@ export class CartComponent implements OnInit, OnDestroy {
       } else {
         localStorage.setItem('transactionType', 'bump');
       }
+      this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
       this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
       this.track(order);
       if (response.payment_needed) {
@@ -169,7 +171,6 @@ export class CartComponent implements OnInit, OnDestroy {
     const payment_method = this.isStripe ? 'STRIPE' : 'SABADELL';
     const attributes = this.totalToPay === 0 ? { selected_products: result } : { selected_products: result, payment_method };
     this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, attributes);
-    this.splitTestService.track('StripeCheckoutClick');
 
     ga('send', 'event', 'Item', 'bump-cart');
     gtag('event', 'conversion', { 'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM' });

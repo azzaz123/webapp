@@ -11,12 +11,14 @@ export enum WEB_PAYMENT_EXPERIMENT_TYPE {
 }
 
 export const WEB_PAYMENT_EXPERIMENT_NAME = 'WebPaymentMethod';
+export const WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT = 'StripeCheckoutPageView';
+export const WEB_PAYMENT_EXPERIMENT_CLICK_EVENT = 'StripeCheckoutClick';
 
 @Injectable()
 export class SplitTestService {
 
-  getVariable(name: string, defaultValue): Observable<any> {
-    return Observable.create((observer: Observer<any>) => {
+  getVariable<T = any>(name: string, defaultValue): Observable<T> {
+    return Observable.create((observer: Observer<T>) => {
       Taplytics.variable(name, defaultValue, (value) => {
         observer.next(value);
         observer.complete();
@@ -47,10 +49,6 @@ export class SplitTestService {
 
   init() {
     Taplytics.init(environment.taplytics);
-  }
-
-  getWebPaymentExperimentType(): Observable<WEB_PAYMENT_EXPERIMENT_TYPE> {
-    return this.getVariable(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
   }
 
 }

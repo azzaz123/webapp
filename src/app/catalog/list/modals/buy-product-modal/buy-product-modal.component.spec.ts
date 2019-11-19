@@ -17,7 +17,7 @@ import { StripeService } from '../../../../core/stripe/stripe.service';
 import { Router } from '@angular/router';
 import { STRIPE_CARD_OPTION } from '../../../../../tests/stripe.fixtures.spec';
 import { ErrorsService } from '../../../../core/errors/errors.service';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../../core/tracking/split-test.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT } from '../../../../core/tracking/split-test.service';
 
 describe('BuyProductModalComponent', () => {
   let component: BuyProductModalComponent;
@@ -96,7 +96,7 @@ describe('BuyProductModalComponent', () => {
         },
         {
           provide: SplitTestService, useValue: {
-            getWebPaymentExperimentType() {
+            getVariable() {
               return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
             },
             track() {}
@@ -125,7 +125,7 @@ describe('BuyProductModalComponent', () => {
 
   describe('ngOnInit', () => {
     beforeEach(() => {
-      spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+      spyOn(splitTestService, 'getVariable').and.callThrough();
       spyOn(splitTestService, 'track');
       spyOn(itemService, 'get').and.callThrough();
       
@@ -181,7 +181,7 @@ describe('BuyProductModalComponent', () => {
     it('should track the payment method experiment', () => {
       component.ngOnInit();
 
-      expect(splitTestService.track).toHaveBeenCalledWith('StripeCheckoutPageView');
+      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
     });
   });
 
@@ -333,12 +333,12 @@ describe('BuyProductModalComponent', () => {
 
         it('should track payment method experiment', () => {
           spyOn(splitTestService, 'track');
-          spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+          spyOn(splitTestService, 'getVariable').and.callThrough();
           component.hasFinancialCard = true;
 
           component.checkout();
 
-          expect(splitTestService.track).toHaveBeenCalledWith('StripeCheckoutClick');
+          expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
         });
 
         describe('without credit card', () => {

@@ -14,7 +14,7 @@ import { OrderProExtras, FinancialCardOption } from '../../../core/payments/paym
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { EventService } from '../../../core/event/event.service';
 import { UUID } from 'angular2-uuid';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../core/tracking/split-test.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT } from '../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-cart-extras-pro',
@@ -56,8 +56,9 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
               private splitTestService: SplitTestService) { }
 
   ngOnInit() {
-    this.splitTestService.getWebPaymentExperimentType().subscribe((paymentMethod: number) => {
-      this.splitTestService.track('StripeCheckoutPageView');
+    this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
+    .subscribe((paymentMethod: number) => {
+      this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
       this.paymentMethod = paymentMethod;
       this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
       if (this.isStripe) {
@@ -151,7 +152,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
         payment_method
       });
 
-    this.splitTestService.track('StripeCheckoutClick');
+    this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
   }
 
   public hasCard(hasCard: boolean) {

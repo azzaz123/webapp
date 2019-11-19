@@ -25,7 +25,7 @@ import { MOCK_USER, USER_ID } from '../../tests/user.fixtures.spec';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
 import Spy = jasmine.Spy;
 import { StripeService } from '../core/stripe/stripe.service';
-import { WEB_PAYMENT_EXPERIMENT_TYPE, SplitTestService } from '../core/tracking/split-test.service';
+import { WEB_PAYMENT_EXPERIMENT_TYPE, SplitTestService, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT } from '../core/tracking/split-test.service';
 
 describe('WallacoinsComponent', () => {
   let component: WallacoinsComponent;
@@ -109,7 +109,7 @@ describe('WallacoinsComponent', () => {
         },
         {
           provide: SplitTestService, useValue: {
-            getWebPaymentExperimentType() {
+            getVariable() {
               return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
             },
             track() {}
@@ -177,7 +177,7 @@ describe('WallacoinsComponent', () => {
     });
 
     it('should set the paymentMethod to sabadell', () => {
-      spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+      spyOn(splitTestService, 'getVariable').and.callThrough();
 
       component.ngOnInit();
 
@@ -186,11 +186,11 @@ describe('WallacoinsComponent', () => {
 
     it('should track the payment method experiment', () => {
       spyOn(splitTestService, 'track');
-      spyOn(splitTestService, 'getWebPaymentExperimentType').and.callThrough();
+      spyOn(splitTestService, 'getVariable').and.callThrough();
 
       component.ngOnInit();
 
-      expect(splitTestService.track).toHaveBeenCalledWith('StripeCheckoutPageView');
+      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
     });
 
   });
