@@ -15,11 +15,10 @@ import { SCREENS_IDS, EVENT_TYPES } from '../analytics/resources/analytics-const
 import { AnalyticsService } from '../analytics/analytics.service';
 import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
 import { ConnectionService } from '../connection/connection.service';
+import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class RealTimeService {
-
-  private isConnectingWithXMPP: boolean;
 
   constructor(private xmpp: XmppService,
               private eventService: EventService,
@@ -36,15 +35,13 @@ export class RealTimeService {
   private ongoingRetry: boolean;
 
   public connect(userId: string, accessToken: string) {
-    this.xmpp.isConnected$().subscribe((isConnectedWithXMPP: boolean) => {
-      if (this.connectionService.isConnected && !isConnectedWithXMPP && !this.isConnectingWithXMPP) {
-        this.isConnectingWithXMPP = true;
+    this.xmpp.isConnected$()
+    .pipe(filter((isConnectedWithXMPP: boolean) => !isConnectedWithXMPP))
+    .subscribe((isConnectedWithXMPP: boolean) => {
+      if (this.connectionService.isConnected && !isConnectedWithXMPP) {
         const startTimestamp = now();
-
-        this.xmpp.connect$(userId, accessToken).subscribe(() => {
-          this.isConnectingWithXMPP = false;
-          this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp);
-        }, () => this.isConnectingWithXMPP = false);
+        this.xmpp.connect$(userId, accessToken).subscribe(() =>
+          this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp));
       }
     });
   }
