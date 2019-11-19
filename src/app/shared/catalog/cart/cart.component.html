@@ -7,7 +7,8 @@
 <div [class.with-credits]="creditInfo?.currencyName === 'wallacredits'">
   <div class="cart-wrapper" [class.has-financial-card]="hasFinancialCard"
        [class.no-credit]="!creditInfo?.credit"
-       [class.no-discount]="!cart?.discountedTotal && !creditInfo?.credit">
+       [class.no-discount]="!cart?.discountedTotal && !creditInfo?.credit"
+       [class.stripe]="isStripe">
     <div class="scroll-panel">
       <ul *ngIf="cart" class="items-list">
         <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">

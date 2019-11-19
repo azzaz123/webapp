@@ -13,8 +13,8 @@ $button-height: 42px;
 $button-margin: $spacing-ml - $spacing-s;
 $button-space: $button-height + $spacing-ml;
 $secure-label-height: 25px;
-$extra-height: 15px;
-$margin-height: 205px;
+$extra-height: 100px;
+$margin-height: 175px;
 $clear-cart-height: 38px;
 $card-select-height: (50px + $spacing-s) * 2 + $spacing-xs;
 
@@ -48,6 +48,9 @@ h1 {
   border-radius: 5px;
   position: relative;
   flex: 2 0px;
+  &.stripe {
+    height: calc(100% - #{$margin-height + $extra-height});
+  }
   .with-credits & {
     &.no-discount {
       margin-bottom: $spacing-s;
