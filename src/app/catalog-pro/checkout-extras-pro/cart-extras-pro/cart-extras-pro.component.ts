@@ -120,7 +120,9 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
       if (this.isStripe) {
         this.stripeService.buy(order.id, paymentId, this.isStripeCard, this.savedCard, this.card);
       } else {
-        this.buy(order.id);
+        setTimeout(() => {
+          this.buy(order.id);
+        }, 2000);
       }
     }, (error: Response) => {
       this.loading = false;

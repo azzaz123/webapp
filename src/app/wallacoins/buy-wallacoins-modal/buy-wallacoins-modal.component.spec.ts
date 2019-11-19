@@ -64,7 +64,7 @@ describe('BuyWallacoinsModalComponent', () => {
         },
         {
           provide: SplitTestService, useValue: {
-            getWebPaymentExperimentType() {
+            getVariable() {
               return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
             },
             track() {}
