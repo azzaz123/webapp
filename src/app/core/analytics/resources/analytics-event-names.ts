@@ -22,5 +22,5 @@ export enum ANALYTICS_EVENT_NAMES {
 	ViewOthersItemREDetail = 'View Others Item RE Detail',
 	DisplayRegisterPresentationPage = 'Display Register Presentation Page',
 	ViewTransactionPayScreen = 'View Transaction Pay Screen',
-	ViewTransactionTimelineScreen = 'View Transaction Timeline Screen',
-}
+	ViewTransactionTimelineScreen = 'View Transaction Timeline Screen',}
+

@@ -1,6 +1,7 @@
 import { ListItemCG } from './../../core/analytics/events-interfaces/list-item-cg.interface';
 import { EditItemCG } from './../../core/analytics/events-interfaces/edit-item-cg.interface';
-import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
+import { EVENT_TYPES } from '../../core/analytics/resources/analytics-constants';
+import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { AnalyticsService } from './../../core/analytics/analytics.service';
 import {
   Component,
@@ -547,7 +548,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       if (isEdit) {
         const eventAttrs: EditItemCG = {
           ...baseEventAttrs,
-          screenId: SCREENS_IDS.EditItem
+          screenId: SCREEN_IDS.EditItem
         };
 
         this.analyticsService.trackEvent({
@@ -558,7 +559,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       } else {
         const eventAttrs: ListItemCG = {
           ...baseEventAttrs,
-          screenId: SCREENS_IDS.Upload
+          screenId: SCREEN_IDS.Upload
         };
 
         this.analyticsService.trackEvent({

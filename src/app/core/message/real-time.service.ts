@@ -11,7 +11,8 @@ import { ChatSignal, chatSignalType } from './chat-signal.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { RemoteConsoleService } from '../remote-console';
 import { SendFirstMessage } from '../analytics/events-interfaces/send-first-message.interface';
-import { SCREENS_IDS, EVENT_TYPES } from '../analytics/resources/analytics-constants';
+import { EVENT_TYPES } from '../analytics/resources/analytics-constants';
+import { SCREEN_IDS } from '../analytics/resources/analytics-screen-ids';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
 import { ConnectionService } from '../connection/connection.service';
@@ -171,7 +172,7 @@ export class RealTimeService {
       itemId: conversation.item.id,
       sellerUserId: conversation.user.id,
       conversationId: conversation.id,
-      screenId: SCREENS_IDS.Chat
+      screenId: SCREEN_IDS.Chat
     };
 
     this.analyticsService.trackEvent({

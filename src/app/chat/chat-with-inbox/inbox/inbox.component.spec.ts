@@ -22,7 +22,7 @@ import { User } from '../../../core/user/user';
 import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
-import { SCREENS_IDS } from '../../../core/analytics/resources/analytics-constants';
+import { SCREEN_IDS } from '../../../core/analytics/resources/analytics-screen-ids';
 import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
 import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
 import { InboxUser } from '../../model/inbox-user';
@@ -207,7 +207,7 @@ describe('Component: InboxComponent', () => {
       const eventAttrs: ViewChatScreen = {
         itemId: conversation.item.id,
         conversationId: conversation.id,
-        screenId: SCREENS_IDS.Chat
+        screenId: SCREEN_IDS.Chat
       };
 
       describe('if the selected conversation is not the current conversation', () => {

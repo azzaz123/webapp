@@ -8,7 +8,7 @@ import { trigger, transition, style, animate, keyframes } from '@angular/animati
 import { UserService } from '../../../core/user/user.service';
 import { AdService } from '../../../core/ad/ad.service';
 import { RemoteConsoleService } from '../../../core/remote-console';
-import { SCREENS_IDS } from '../../../core/analytics/resources/analytics-constants';
+import { SCREEN_IDS } from '../../../core/analytics/resources/analytics-screen-ids';
 import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
@@ -251,7 +251,7 @@ export class InboxComponent implements OnInit, OnDestroy {
     const eventAttrs: ViewChatScreen = {
       itemId: conversation.item.id,
       conversationId: conversation.id,
-      screenId: SCREENS_IDS.Chat
+      screenId: SCREEN_IDS.Chat
     };
 
     this.analyticsService.trackPageView({
