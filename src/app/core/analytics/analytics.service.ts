@@ -3,7 +3,7 @@ import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
-import { EventInterface, PageViewInterface } from './resources/analytics-constants';
+import { EventInterface, PageViewInterface } from './analytics-constants';
 
 @Injectable({
   providedIn: 'root'

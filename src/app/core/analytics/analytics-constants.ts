@@ -1,6 +1,4 @@
-// This file is NOT generated automatically by the mparticle.js script
-
-import { ANALYTICS_EVENT_NAMES } from './analytics-event-names';
+import { ANALYTICS_EVENT_NAMES } from './resources/analytics-event-names';
 
 export enum EVENT_TYPES {
     Navigation = 1,

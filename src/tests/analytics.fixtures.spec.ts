@@ -1,4 +1,4 @@
-import { EventInterface, PageViewInterface } from '../app/core/analytics/resources/analytics-constants';
+import { EventInterface, PageViewInterface } from '../app/core/analytics/analytics-constants';
 
 export class MockAnalyticsService {
     initialize() { }

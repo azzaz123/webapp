@@ -17,10 +17,10 @@ import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService, MockConnectionService } from '../../../tests';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
-import { EVENT_TYPES } from '../analytics/resources/analytics-constants';
+import { EVENT_TYPES } from '../analytics/analytics-constants';
 import { SCREEN_IDS } from '../analytics/resources/analytics-screen-ids';
 import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
-import { SendFirstMessage } from './../analytics/events-interfaces/send-first-message.interface';
+import { SendFirstMessage } from '../analytics/resources/events-interfaces/send-first-message.interface';
 import { ConnectionService } from '../connection/connection.service';
 
 let service: RealTimeService;

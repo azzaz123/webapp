@@ -1,6 +1,6 @@
-import { ListItemRE } from './../../core/analytics/events-interfaces/list-item-re.interface';
-import { EditItemRE } from './../../core/analytics/events-interfaces/edit-item-re.interface';
-import { EVENT_TYPES } from '../../core/analytics/resources/analytics-constants';
+import { ListItemRE } from '../../core/analytics/resources/events-interfaces/list-item-re.interface';
+import { EditItemRE } from '../../core/analytics/resources/events-interfaces/edit-item-re.interface';
+import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
 import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IOption } from 'ng-select';
