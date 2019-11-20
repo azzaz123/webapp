@@ -1,4 +1,5 @@
 export enum ANALYTICS_EVENT_NAMES {
+
 	ClickItemCard = 'Click Item Card',
 	TapRegisterEmailBack = 'Tap Register Email Back',
 	TapRegisterEmailRegister = 'Tap Register Email Register',

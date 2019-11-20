@@ -6,7 +6,8 @@ const jsonSchemasLocationPattern = 'node_modules/mparticle_json_validation/**/*.
 const screenIdsFileLocation = 'node_modules/mparticle_json_validation/screen_ids.txt';
 
 const eventNames = [];
-const analyticsPath = 'src/app/core/analytics';
+const analyticsFolderPath = 'src/app/core/analytics/resources/';
+const eventInterfacesFolderPath = `${analyticsFolderPath}events-interfaces/`
 
 const createInterfaceFilesFromJSONsSchemaPath = jsonPath => {
     try {
@@ -19,7 +20,7 @@ const createInterfaceFilesFromJSONsSchemaPath = jsonPath => {
         eventNames.push(interfaceObj.title);
 
         // Save interface to file
-        compileFromFile(jsonPath).then(ts => fs.writeFileSync(`${analyticsPath}/events-interfaces/${interfaceFileName}`, ts));
+        compileFromFile(jsonPath).then(ts => fs.writeFileSync(`${eventInterfacesFolderPath}${interfaceFileName}`, ts));
     } catch (error) {
         console.warn(`The file ${schema} could not be parsed to a valid interface`, error);
     }
@@ -32,7 +33,7 @@ const createEventNamesEnumFile = () => {
     });
     eventNamesEnum += '}\n\n';
 
-    fs.writeFileSync(`${analyticsPath}/resources/analytics-event-names.ts`, eventNamesEnum);
+    fs.writeFileSync(`${analyticsFolderPath}analytics-event-names.ts`, eventNamesEnum);
 };
 
 const createScreenIdsInterface = () => {
@@ -51,13 +52,26 @@ const createScreenIdsInterface = () => {
         })
         screenIdEnum += '}';
     
-        fs.writeFileSync(`${analyticsPath}/resources/analytics-screen-ids.ts`, screenIdEnum);
+        fs.writeFileSync(`${analyticsFolderPath}analytics-screen-ids.ts`, screenIdEnum);
     } catch (error) {
         console.warn('Could not parse screen ids', error);
     }
 };
 
+const checkFolders = () => {
+    if (!fs.existsSync(analyticsFolderPath)){
+        fs.mkdirSync(analyticsFolderPath);
+    }
+
+    if (!fs.existsSync(eventInterfacesFolderPath)){
+        fs.mkdirSync(eventInterfacesFolderPath);
+    }
+}
+
 const main = () => {
+    // Ensure that folders exist
+    checkFolders();
+
     // Read all JSON files from mparticle JSON schemas, create interfaces and event names enum when done
     glob(jsonSchemasLocationPattern, {}, (err, schemas) => {
         schemas.forEach(path => createInterfaceFilesFromJSONsSchemaPath(path));
