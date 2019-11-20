@@ -3,9 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { EVENT_TYPES } from './resources/analytics-constants';
 import { ANALYTICS_EVENT_NAMES } from './resources/analytics-event-names';
-import { EventInterface, PageViewInterface } from './resources/analytics-constants';
+import { EVENT_TYPES, EventInterface, PageViewInterface } from './analytics-constants';
 
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
