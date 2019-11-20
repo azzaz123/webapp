@@ -14,18 +14,20 @@ import { SendFirstMessage } from '../analytics/events-interfaces/send-first-mess
 import { SCREENS_IDS, EVENT_TYPES } from '../analytics/resources/analytics-constants';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
+import { ConnectionService } from '../connection/connection.service';
 
 @Injectable()
 export class RealTimeService {
 
-  private isConnecting: boolean;
+  private isConnectingWithXMPP: boolean;
 
   constructor(private xmpp: XmppService,
               private eventService: EventService,
               private persistencyService: PersistencyService,
               private trackingService: TrackingService,
               private remoteConsoleService: RemoteConsoleService,
-              private analyticsService: AnalyticsService) {
+              private analyticsService: AnalyticsService,
+              private connectionService: ConnectionService) {
     this.subscribeEventNewMessage();
     this.subscribeEventMessageSent();
     this.subscribeConnectionRestored();
@@ -34,14 +36,17 @@ export class RealTimeService {
   private ongoingRetry: boolean;
 
   public connect(userId: string, accessToken: string) {
-    if (!this.isConnecting) {
-      this.isConnecting = true;
-      const startTimestamp = now();
-      this.xmpp.connect(userId, accessToken).subscribe(() => {
-        this.isConnecting = false;
-        this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp);
-      }, () => this.isConnecting = false);
-    }
+    this.xmpp.isConnected$().subscribe((isConnectedWithXMPP: boolean) => {
+      if (this.connectionService.isConnected && !isConnectedWithXMPP && !this.isConnectingWithXMPP) {
+        this.isConnectingWithXMPP = true;
+        const startTimestamp = now();
+
+        this.xmpp.connect$(userId, accessToken).subscribe(() => {
+          this.isConnectingWithXMPP = false;
+          this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp);
+        }, () => this.isConnectingWithXMPP = false);
+      }
+    });
   }
 
   public disconnect() {
@@ -96,7 +101,8 @@ export class RealTimeService {
   private subscribeEventNewMessage() {
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message, replaceTimestamp: boolean, withDeliveryReceipt: boolean) => {
       if (!message.fromSelf && withDeliveryReceipt) {
-        this.persistencyService.findMessage(message.id).subscribe(() => { }, (error) => {
+        this.persistencyService.findMessage(message.id).subscribe(() => {
+        }, (error) => {
           if (error.reason === 'missing') {
             this.sendDeliveryReceipt(message.from, message.id, message.thread);
           }
