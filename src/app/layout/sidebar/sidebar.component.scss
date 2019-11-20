@@ -1,6 +1,6 @@
 @import "~style/common";
 
-:host {
+.sidebar {
   position: fixed;
   width: $sidebar-width;
   left: 0;
