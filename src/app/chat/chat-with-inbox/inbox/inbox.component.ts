@@ -157,7 +157,6 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.unselectCurrentConversation();
-    this.adService.stopAdsRefresh();
   }
 
   private onInboxReady(conversations: InboxConversation[], callMethodClient: string) {
@@ -199,7 +198,7 @@ export class InboxComponent implements OnInit, OnDestroy {
       this.userService.get(newCurrentConversation.user.id).subscribe(user => newCurrentConversation.user.location = user.location);
     }
     this.conversationService.openConversation(newCurrentConversation);
-    this.adService.startAdsRefresh();
+    this.adService.adsRefresh();
   }
 
   public loadMore() {

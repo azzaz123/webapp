@@ -35,7 +35,7 @@ export class ProfileService extends ResourceService {
           const res: any[] = r.json();
           const nextPage: string = r.headers.get('x-nextpage');
 
-          let params;
+          let params = {};
           if (nextPage) {
             nextPage.split('&').forEach(paramSplit => {
               const paramValues = paramSplit.split('=');
@@ -43,7 +43,7 @@ export class ProfileService extends ResourceService {
             });
           }
 
-          const nextInit = params.init ? +params.init : null;
+          const nextInit = params && params['init'] ? +params['init'] : null;
           let data: Profile[] = [];
           if (res.length > 0) {
             data = res.map((i: any) => {

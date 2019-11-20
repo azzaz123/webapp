@@ -1,11 +1,11 @@
 <form [formGroup]="profileForm" (submit)="onSubmit()">
-  <div class="box" [hidden]="loading">
+  <div class="box">
     <tsl-picture-upload [user]="user"></tsl-picture-upload>
     <tsl-cover-upload (clickNotPro)="openBecomeProModal()" [user]="user" [isPro]="isPro"></tsl-cover-upload>
   </div>
   <tsl-profile-form [profileForm]="profileForm">
     <div class="box profile-box">
-      <div class="box-content" [hidden]="loading">
+      <div class="box-content">
         <h3 i18n>Public information</h3>
         <div class="row">
           <div class="col-12">
@@ -37,7 +37,7 @@
               <label class="col-4 center" i18n>Product location:</label>
               <div class="col-1"></div>
               <div class="col-6">
-                <tsl-location-box [form]="profileForm" name="location" [updateLocation]="updateLocationWhenSearching"></tsl-location-box>
+                <tsl-location-box [location]="user.location" [form]="profileForm" name="location" [updateLocation]="updateLocationWhenSearching"></tsl-location-box>
               </div>
             </div>
             <div class="pro-section" [class.not-pro]="!isPro">
@@ -82,9 +82,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="row loading-center">
-      <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
   </tsl-profile-form>
 </form>

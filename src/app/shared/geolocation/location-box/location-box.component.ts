@@ -15,6 +15,7 @@ export class LocationBoxComponent implements OnInit {
   @Input() name: string;
   @Input() title: string;
   @Input() updateLocation = true;
+  @Input() location;
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   public user: User;
   public coordinates: Coordinate;
@@ -23,25 +24,35 @@ export class LocationBoxComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.me().subscribe((user: User) => {
-      this.user = user;
-      if (user.location) {
-        setTimeout(() => {
+    if (this.location) {
+      this.setLocation({
+        latitude: this.location.approximated_latitude,
+        longitude: this.location.approximated_longitude
+      });
+    } else {
+      this.userService.me().subscribe((user: User) => {
+        this.user = user;
+        if (user.location) {
           this.form.get(this.name).patchValue({
             address: user.location.title,
             latitude: user.location.approximated_latitude,
             longitude: user.location.approximated_longitude
           });
-          this.coordinates = {
+          this.setLocation({
             latitude: user.location.approximated_latitude,
             longitude: user.location.approximated_longitude
-          };
-        });
-      }
-    });
+          });
+        }
+      });
+    }
+
     this.form.get(this.name).valueChanges.subscribe((location: Coordinate) => {
-      this.coordinates = location;
+      this.setLocation(location);
     });
+  }
+
+  private setLocation(coordinates: Coordinate) {
+    this.coordinates = coordinates;
   }
 
   public emitLocation() {
