@@ -68,25 +68,29 @@ describe('LoggedGuard', (): void => {
   });
 
   describe('canActivate', (): void => {
+    let redirectUrl;
 
     beforeEach(() => {
       spyOn(permissionService, 'getPermissions').and.returnValue({});
       spyOn(userService, 'me').and.callThrough();
+      redirectUrl = encodeURIComponent(window.nativeWindow.location.href);
     });
 
     it('should return false and redirect if no access token', (): void => {
       const result = loggedGuard.canActivate();
 
       expect(result).toBeFalsy();
-      expect(window.nativeWindow.location.href).toBe(environment.siteUrl + 'login');
+      expect(window.nativeWindow.location.href).toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
     });
+
     it('should return true and NOT redirect if access token', () => {
       accessTokenService.storeAccessToken('abc');
       const result = loggedGuard.canActivate();
 
       expect(result).toBeTruthy();
-      expect(window.nativeWindow.location.href).not.toBe(environment.siteUrl + 'login');
+      expect(window.nativeWindow.location.href).not.toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
     });
+
     it('should check the current user permissions', () => {
       accessTokenService.storeAccessToken('abc');
       const result = loggedGuard.canActivate();
@@ -94,6 +98,7 @@ describe('LoggedGuard', (): void => {
       expect(permissionService.getPermissions).toHaveBeenCalled();
       expect(result).toBeTruthy();
     });
+
     it('should call userService.me and set the permissions for the user', () => {
       accessTokenService.storeAccessToken('abc');
       const result = loggedGuard.canActivate();
