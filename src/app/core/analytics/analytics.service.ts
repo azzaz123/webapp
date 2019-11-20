@@ -1,11 +1,9 @@
 import mParticle from '@mparticle/web-sdk';
-import { PageViewInterface } from './events-interfaces/pageview.interface';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
-import { EventInterface } from './events-interfaces/event.interface';
-
+import { EventInterface, PageViewInterface } from './resources/analytics-constants';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +22,7 @@ export class AnalyticsService {
             customerid: user.id
           }
         }
-      }
+      };
 
       mParticle.init(environment.mParticleKey, CONFIG);
     });

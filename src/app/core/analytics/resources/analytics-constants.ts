@@ -1,3 +1,5 @@
+import { ANALYTICS_EVENT_NAMES } from './analytics-event-names';
+
 export enum EVENT_TYPES {
     Navigation = 1,
     Location = 2,
@@ -24,4 +26,16 @@ export enum SCREENS_IDS {
     MyZone = 140,
     Upload = 41,
     Chat = 27
-};
+}
+
+export interface PageViewInterface {
+    name: string;
+    attributes: Object;
+    flags?: Object;
+}
+
+export interface EventInterface {
+    name: ANALYTICS_EVENT_NAMES;
+    eventType: EVENT_TYPES;
+    attributes: Object;
+}
