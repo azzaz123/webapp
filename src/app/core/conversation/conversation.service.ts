@@ -1,4 +1,4 @@
-import { reverse, sortBy, remove, find, findIndex } from 'lodash-es';
+import { reverse, sortBy, remove, find, findIndex, isEmpty } from 'lodash-es';
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
@@ -454,11 +454,11 @@ export class ConversationService extends LeadService {
   }
 
   public handleNewMessages(message: Message, updateDate: boolean) {
-    if (!this.firstLoad) {
+    if (!isEmpty(this.inboxService.conversations)) {
       this.onNewMessage(message, updateDate);
     } else {
       const interval: any = setInterval(() => {
-        if (!this.firstLoad) {
+        if (!isEmpty(this.inboxService.conversations)) {
           clearInterval(interval);
           this.onNewMessage(message, updateDate);
         }

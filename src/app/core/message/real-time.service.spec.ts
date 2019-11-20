@@ -14,12 +14,13 @@ import { CONVERSATION_ID, MOCK_CONVERSATION, MOCKED_CONVERSATIONS } from '../../
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment.docker';
 import { RemoteConsoleService } from '../remote-console';
-import { MockRemoteConsoleService } from '../../../tests';
+import { MockRemoteConsoleService, MockConnectionService } from '../../../tests';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { SCREENS_IDS, EVENT_TYPES } from '../analytics/resources/analytics-constants';
 import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
 import { SendFirstMessage } from './../analytics/events-interfaces/send-first-message.interface';
+import { ConnectionService } from '../connection/connection.service';
 
 let service: RealTimeService;
 let persistencyService: PersistencyService;
@@ -28,6 +29,7 @@ let xmppService: XmppService;
 let trackingService: TrackingService;
 let remoteConsoleService: RemoteConsoleService;
 let analyticsService: AnalyticsService;
+let connectionService: ConnectionService;
 
 describe('RealTimeService', () => {
   beforeEach(() => {
@@ -40,6 +42,7 @@ describe('RealTimeService', () => {
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
+        { provide: ConnectionService, useClass: MockConnectionService }
       ]
     });
 
@@ -50,6 +53,7 @@ describe('RealTimeService', () => {
     trackingService = TestBed.get(TrackingService);
     remoteConsoleService = TestBed.get(RemoteConsoleService);
     analyticsService = TestBed.get(AnalyticsService);
+    connectionService = TestBed.get(ConnectionService);
     appboy.initialize(environment.appboy);
   });
 
@@ -58,7 +62,19 @@ describe('RealTimeService', () => {
       spyOn(remoteConsoleService, 'sendConnectionTimeout').and.callThrough();
     });
 
+    it('should not call xmpp.connect if user is connected', () => {
+      connectionService.isConnected = true;
+      spyOn(xmppService, 'connect$').and.returnValue(of({}));
+      spyOn(xmppService, 'isConnected$').and.returnValue(of(true));
+
+      service.connect(MOCK_USER.id, ACCESS_TOKEN);
+
+      expect(xmppService.connect$).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
+    });
+
     it('should call xmpp.connect and return success', () => {
+      connectionService.isConnected = true;
       spyOn(xmppService, 'connect$').and.returnValue(of({}));
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
@@ -68,6 +84,7 @@ describe('RealTimeService', () => {
     });
 
     it('should call xmpp.connect and return throw', () => {
+      connectionService.isConnected = true;
       spyOn(xmppService, 'connect$').and.returnValue(throwError('Connection time'));
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
@@ -76,13 +93,25 @@ describe('RealTimeService', () => {
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
     });
 
-    it('should NOT call xmpp.connect if try connect in another thread', () => {
-      service['isConnecting'] = true;
+    it('should NOT call xmpp.connect if user do not have internet connection', () => {
+      connectionService.isConnected = false;
+      service['isConnectingWithXMPP'] = false;
       spyOn(xmppService, 'connect$').and.returnValue(of({}));
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
 
-      expect(xmppService.connect$).not.toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
+      expect(xmppService.connect$).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
+    });
+
+    it('should NOT call xmpp.connect if try connect in another thread', () => {
+      connectionService.isConnected = true;
+      service['isConnectingWithXMPP'] = true;
+      spyOn(xmppService, 'connect$').and.returnValue(of({}));
+
+      service.connect(MOCK_USER.id, ACCESS_TOKEN);
+
+      expect(xmppService.connect$).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
     });
   });

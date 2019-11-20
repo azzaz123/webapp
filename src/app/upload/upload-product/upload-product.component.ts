@@ -348,9 +348,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private setFixedCategory(categoryId: string) {
     if (categoryId === '-1') {
       this.fixedCategory = null;
+      this.uploadForm.reset();
     } else {
       const fixedCategory = find(this.allCategories, { value: categoryId });
       this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+      this.uploadForm.get('category_id').patchValue(categoryId);
+      this.handleItemExtraInfo(true, fixedCategory);
     }
   }
 
@@ -471,6 +474,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.objectTypes = objectTypes;
         });
       }
+    } else {
+      this.showExtraFields = false;
     }
 
     if (initializeExtraInfo) {
