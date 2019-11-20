@@ -16,7 +16,7 @@ import { StripeService } from '../../core/stripe/stripe.service';
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
 
-describe('AccountComponent', () => {
+fdescribe('AccountComponent', () => {
   let component: AccountComponent;
   let fixture: ComponentFixture<AccountComponent>;
   let modalService: NgbModal;
@@ -75,8 +75,8 @@ describe('AccountComponent', () => {
         },
         {
           provide: ProfileFormComponent, useValue: {
-            initFormControl() {
-            }
+            initFormControl() { },
+            canExit() { }
           }
         }
       ],
@@ -211,6 +211,16 @@ describe('AccountComponent', () => {
       component.openUnsubscribeModal();
 
       expect(modalService.open).toHaveBeenCalledWith(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
+    });
+  });
+
+  describe('canExit', () => {
+    it('should call formComponent canExit method', () => {
+      spyOn(component.formComponent, 'canExit');
+
+      component.canExit();
+
+      expect(component.formComponent.canExit).toHaveBeenCalled();
     });
   });
 });

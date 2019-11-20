@@ -66,7 +66,7 @@ describe('ProfileFormComponent', () => {
       component.ngOnInit();
       component.profileForm.get('first_name').patchValue('new first_name');
 
-      expect(component['hasNotSavedChanges']).toBe(true);
+      expect(component.hasNotSavedChanges).toBe(true);
     });
 
     it('should disable the save button if any form value changed', () => {
@@ -78,7 +78,7 @@ describe('ProfileFormComponent', () => {
       component.ngOnInit();
       component.profileForm.get('first_name').patchValue(USER_DATA.first_name);
 
-      expect(component['hasNotSavedChanges']).toBe(false);
+      expect(component.hasNotSavedChanges).toBe(false);
     });
   });
 
@@ -112,7 +112,7 @@ describe('ProfileFormComponent', () => {
 
     it('should open modal if there are unsaved changes', fakeAsync(() => {
       let notSavedChanges: boolean;
-      component['hasNotSavedChanges'] = true;
+      component.hasNotSavedChanges = true;
       spyOn(modalService, 'open').and.callThrough();
 
       (<Promise<boolean>>component.canExit()).then((value: boolean) => {

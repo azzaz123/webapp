@@ -59,8 +59,8 @@ describe('ProfileProBillingComponent', () => {
         },
         {
           provide: ProfileFormComponent, useValue: {
-            initFormControl() {
-            }
+            initFormControl() { },
+            canExit() { }
           }
         }
       ],
@@ -225,5 +225,16 @@ describe('ProfileProBillingComponent', () => {
         expect(paymentService.deleteBillingInfo).not.toHaveBeenCalled();
       }));
     });
+
+    describe('canExit', () => {
+      it('should call formComponent canExit method', () => {
+        spyOn(component.formComponent, 'canExit');
+
+        component.canExit();
+
+        expect(component.formComponent.canExit).toHaveBeenCalled();
+      });
+    });
+
   });
 });

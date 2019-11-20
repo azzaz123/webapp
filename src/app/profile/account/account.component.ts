@@ -40,17 +40,15 @@ export class AccountComponent implements CanComponentDeactivate {
     Observable.forkJoin([
       this.stripeService.isPaymentMethodStripe$(),
       this.userService.me()
-    ]).pipe(
-      finalize(() => {
-        this.profileForm.patchValue({
-          birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
-          gender: this.user.gender.toUpperCase().substr(0, 1)
-        });
-      }))
-      .subscribe(values => {
-        this.isStripe = values[0];
-        this.user = values[1];
+    ]).subscribe(values => {
+      this.isStripe = values[0];
+      this.user = values[1];
+
+      this.profileForm.patchValue({
+        birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
+        gender: this.user.gender.toUpperCase().substr(0, 1)
       });
+    });
   }
 
   public onSubmit() {

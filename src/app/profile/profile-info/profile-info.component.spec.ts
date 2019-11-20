@@ -93,8 +93,8 @@ describe('ProfileInfoComponent', () => {
         },
         {
           provide: ProfileFormComponent, useValue: {
-            initFormControl() {
-            }
+            initFormControl() { },
+            canExit() { }
           }
         }
       ],
@@ -155,6 +155,16 @@ describe('ProfileInfoComponent', () => {
 
       expect(userService.getUserCover).toHaveBeenCalled();
       expect(component.user.coverImage).toBe(IMAGE);
+    });
+  });
+
+  describe('canExit', () => {
+    it('should call formComponent canExit method', () => {
+      spyOn(component.formComponent, 'canExit');
+
+      component.canExit();
+
+      expect(component.formComponent.canExit).toHaveBeenCalled();
     });
   });
 
