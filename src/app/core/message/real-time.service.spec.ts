@@ -94,7 +94,7 @@ describe('RealTimeService', () => {
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
     });
 
-    it('should NOT call xmpp.connect if try connect in another thread', () => {
+    it('should NOT call xmpp.connect if is already connected', () => {
       connectionService.isConnected = true;
       spyOn(xmppService, 'connect$').and.returnValue(of({}));
 

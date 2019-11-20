@@ -38,12 +38,14 @@ export class RealTimeService {
     this.xmpp.isConnected$()
     .pipe(filter((isConnectedWithXMPP: boolean) => !isConnectedWithXMPP))
     .subscribe((isConnectedWithXMPP: boolean) => {
-      if (this.connectionService.isConnected && !isConnectedWithXMPP) {
-        const startTimestamp = now();
-        this.xmpp.connect$(userId, accessToken).subscribe(() =>
-          this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp));
+        if (this.connectionService.isConnected) {
+          const startTimestamp = now();
+          this.xmpp.connect$(userId, accessToken).subscribe(() => {
+            this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp);
+          });
+        }
       }
-    });
+    );
   }
 
   public disconnect() {
