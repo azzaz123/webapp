@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs';
-import { EditItemCar } from './../../core/analytics/events-interfaces/edit-item-car.interface';
-import { ListItemCar } from './../../core/analytics/events-interfaces/list-item-car.interface';
-import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
+import { EditItemCar } from '../../core/analytics/resources/events-interfaces/edit-item-car.interface';
+import { ListItemCar } from '../../core/analytics/resources/events-interfaces/list-item-car.interface';
+import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
@@ -446,7 +447,7 @@ export class UploadCarComponent implements OnInit {
       if (isEdit) {
         const eventAttrs: EditItemCar = {
           ...baseEventAttrs,
-          screenId: SCREENS_IDS.EditItem
+          screenId: SCREEN_IDS.EditItem
         };
 
         this.analyticsService.trackEvent({
@@ -457,7 +458,7 @@ export class UploadCarComponent implements OnInit {
       } else {
         const eventAttrs: ListItemCar = {
           ...baseEventAttrs,
-          screenId: SCREENS_IDS.Upload
+          screenId: SCREEN_IDS.Upload
         };
 
         this.analyticsService.trackEvent({

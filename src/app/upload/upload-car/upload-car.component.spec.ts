@@ -1,4 +1,4 @@
-import { EVENT_TYPES } from '../../core/analytics/resources/analytics-constants';
+import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
 import { MockAnalyticsService } from './../../../tests/analytics.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
@@ -27,10 +27,10 @@ import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
-import { SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
+import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
-import { EditItemCar } from '../../core/analytics/events-interfaces/edit-item-car.interface';
-import { ListItemCar } from '../../core/analytics/events-interfaces/list-item-car.interface';
+import { EditItemCar } from '../../core/analytics/resources/events-interfaces/edit-item-car.interface';
+import { ListItemCar } from '../../core/analytics/resources/events-interfaces/list-item-car.interface';
 import { CarContent } from '../../core/item/item-response.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
@@ -505,7 +505,7 @@ describe('UploadCarComponent', () => {
           categoryId: MOCK_CAR.categoryId,
           salePrice: MOCK_CAR.salePrice,
           title: MOCK_CAR.title,
-          screenId: SCREENS_IDS.EditItem,
+          screenId: SCREEN_IDS.EditItem,
           brand: MOCK_CAR.brand,
           model: MOCK_CAR.model,
           bodyType: MOCK_CAR.bodyType,
@@ -547,7 +547,7 @@ describe('UploadCarComponent', () => {
           categoryId: MOCK_CAR.categoryId,
           salePrice: MOCK_CAR.salePrice,
           title: MOCK_CAR.title,
-          screenId: SCREENS_IDS.Upload,
+          screenId: SCREEN_IDS.Upload,
           brand: MOCK_CAR.brand,
           model: MOCK_CAR.model,
           bodyType: MOCK_CAR.bodyType,

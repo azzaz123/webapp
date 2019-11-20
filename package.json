@@ -18,7 +18,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "svgo": "svgo -f ./src/assets/icons --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}; svgo -f ./src/assets/images --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}",
-    "mparticle": "node mparticle.js"
+    "mparticle": "rm -rf ./src/app/core/analytics/resources/* && node mparticle.js"
   },
   "private": true,
   "dependencies": {

@@ -17,13 +17,14 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { MOCK_REALESTATE, UPLOAD_FORM_REALESTATE_VALUES } from '../../../tests/realestate.fixtures.spec';
 import { ItemService } from '../../core/item/item.service';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
-import { SCREENS_IDS, EVENT_TYPES } from '../../core/analytics/resources/analytics-constants';
+import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
-import { EditItemRE } from '../../core/analytics/events-interfaces/edit-item-re.interface';
-import { ListItemRE } from '../../core/analytics/events-interfaces/list-item-re.interface';
+import { EditItemRE } from '../../core/analytics/resources/events-interfaces/edit-item-re.interface';
+import { ListItemRE } from '../../core/analytics/resources/events-interfaces/list-item-re.interface';
 import { RealestateContent } from '../../core/item/item-response.interface';
 
 describe('UploadRealestateComponent', () => {
@@ -316,7 +317,7 @@ describe('UploadRealestateComponent', () => {
           salePrice: MOCK_REALESTATE.salePrice,
           title: MOCK_REALESTATE.title,
           isPro: false,
-          screenId: SCREENS_IDS.EditItem,
+          screenId: SCREEN_IDS.EditItem,
           operation: MOCK_REALESTATE.operation,
           type: MOCK_REALESTATE.type,
           surface: MOCK_REALESTATE.surface,
@@ -353,7 +354,7 @@ describe('UploadRealestateComponent', () => {
           salePrice: MOCK_REALESTATE.salePrice,
           title: MOCK_REALESTATE.title,
           isPro: false,
-          screenId: SCREENS_IDS.Upload,
+          screenId: SCREEN_IDS.Upload,
           operation: MOCK_REALESTATE.operation,
           type: MOCK_REALESTATE.type,
           surface: MOCK_REALESTATE.surface,

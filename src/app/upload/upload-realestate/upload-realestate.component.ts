@@ -1,6 +1,7 @@
-import { ListItemRE } from './../../core/analytics/events-interfaces/list-item-re.interface';
-import { EditItemRE } from './../../core/analytics/events-interfaces/edit-item-re.interface';
-import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
+import { ListItemRE } from '../../core/analytics/resources/events-interfaces/list-item-re.interface';
+import { EditItemRE } from '../../core/analytics/resources/events-interfaces/edit-item-re.interface';
+import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IOption } from 'ng-select';
 import { RealestateKeysService } from './realestate-keys.service';
@@ -279,7 +280,7 @@ export class UploadRealestateComponent implements OnInit {
       if (isEdit) {
         const eventAttrs: EditItemRE = {
           ...baseEventAttrs,
-          screenId: SCREENS_IDS.EditItem
+          screenId: SCREEN_IDS.EditItem
         }
 
         this.analyticsService.trackEvent({
@@ -290,7 +291,7 @@ export class UploadRealestateComponent implements OnInit {
       } else {
         const eventAttrs: ListItemRE = {
           ...baseEventAttrs,
-          screenId: SCREENS_IDS.Upload
+          screenId: SCREEN_IDS.Upload
         }
 
         this.analyticsService.trackEvent({

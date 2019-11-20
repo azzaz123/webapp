@@ -26,10 +26,11 @@ import { CategoryOption } from '../../core/category/category-response.interface'
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
-import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
+import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
-import { EditItemCG } from '../../core/analytics/events-interfaces/edit-item-cg.interface';
-import { ListItemCG } from '../../core/analytics/events-interfaces/list-item-cg.interface';
+import { EditItemCG } from '../../core/analytics/resources/events-interfaces/edit-item-cg.interface';
+import { ListItemCG } from '../../core/analytics/resources/events-interfaces/list-item-cg.interface';
 import { ItemContent } from '../../core/item/item-response.interface';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
@@ -685,7 +686,7 @@ describe('UploadProductComponent', () => {
           salePrice: editResponse.sale_price,
           title: editResponse.title,
           isPro: false,
-          screenId: SCREENS_IDS.EditItem
+          screenId: SCREEN_IDS.EditItem
         }
         editEvent.response.content = editResponse;
         spyOn(analyticsService, 'trackEvent');
@@ -717,7 +718,7 @@ describe('UploadProductComponent', () => {
           salePrice: uploadResponse.sale_price,
           title: uploadResponse.title,
           isPro: false,
-          screenId: SCREENS_IDS.Upload
+          screenId: SCREEN_IDS.Upload
         }
         uploadEvent.response.content = uploadResponse;
         spyOn(analyticsService, 'trackEvent');
