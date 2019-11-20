@@ -30,6 +30,8 @@ $card-select-height: (50px + $spacing-s) * 2 + $spacing-xs;
   height: calc(100% - #{$margin-height});
   .with-credits {
     height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 }
 
