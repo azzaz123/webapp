@@ -50,7 +50,7 @@ const createScreenIdsInterface = () => {
                 screenIdEnum += `\t${screenName} = ${screenNumber},\n`;
             }
         })
-        screenIdEnum += '}\n\n';
+        screenIdEnum += '}\n';
     
         fs.writeFileSync(`${analyticsFolderPath}analytics-screen-ids.ts`, screenIdEnum);
     } catch (error) {
