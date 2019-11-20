@@ -130,7 +130,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   }
 
   private sendRead(message: InboxMessage) {
-    if (eq(this.currentConversation.id, message.thread) && !message.fromSelf) {
+    if (this.currentConversation !== null && eq(this.currentConversation.id, message.thread) && !message.fromSelf) {
       Visibility.onVisible(() => {
         setTimeout(() => {
           this.realTime.sendRead(message.from, message.thread);

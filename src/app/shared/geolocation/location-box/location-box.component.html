@@ -3,7 +3,7 @@
     <span *ngIf="title">{{title}}</span>
     <span *ngIf="!title" i18n>Your products are in:</span>
   </h2>
-  <div class="row" *ngIf="user">
+  <div class="row">
     <div class="col-sm-12">
       <div class="form-group">
         <tsl-location-select [form]="form" [name]="name" [updateLocation]="updateLocation" (locationSelected)="emitLocation()"></tsl-location-select>

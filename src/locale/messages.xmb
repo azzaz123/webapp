@@ -189,7 +189,7 @@
   <msg id="5722353260643724736"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:3</source><source>app/shared/profile/credit-cards/credit-cards.component.html:3</source>Payment method</msg>
   <msg id="4940843552280014819"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:13</source>+ Add new card</msg>
   <msg id="8429052002955936753"><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source>Select your card</msg>
-  <msg id="8720977247725652816"><source>app/shared/geolocation/location-select/location-modal/location-modal.component.html:4</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:61</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:67</source><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:7</source>Ok</msg>
+  <msg id="4391289919356861627"><source>app/shared/geolocation/location-select/location-modal/location-modal.component.html:4</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:24</source>Apply</msg>
   <msg id="4359291232904891489"><source>app/shared/geolocation/location-select/location-select.component.html:3</source>Set a location</msg>
   <msg id="5371960677736303052"><source>app/shared/geolocation/geolocation.component.html:9</source>Where?</msg>
   <msg id="958176169457402389"><source>app/shared/geolocation/location-box/location-box.component.html:4</source>Your products are in:</msg>
@@ -221,6 +221,7 @@
   <msg id="833526722817345312"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:55</source>C&apos;mon</msg>
   <msg id="6811335180251341277"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:59</source>There has been a mistake</msg>
   <msg id="4140116217223755546"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:60</source>Your credit card has an invalid expiration date. Please check and try again.</msg>
+  <msg id="8720977247725652816"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:61</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:67</source><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:7</source>Ok</msg>
   <msg id="2044384665651917054"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:65</source>TPV... what?</msg>
   <msg id="5578025610796640405"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:66</source>There has been an unexpected error in the paying system. Why not trying again later?</msg>
   <msg id="8766840274158243690"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:71</source><source>app/catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component.html:10</source>Oops!</msg>
@@ -367,7 +368,6 @@
   <msg id="8847634013548993288"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:17</source>country bump</msg>
   <msg id="6299971173481067869"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:18</source>city bumps</msg>
   <msg id="4849465581526004216"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:19</source>country bumps</msg>
-  <msg id="4391289919356861627"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:24</source>Apply</msg>
   <msg id="6146618115870222180"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:2</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:2</source>Your Messages</msg>
   <msg id="8848709900682152607"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:5</source>Mark everything as Processed</msg>
   <msg id="33149636091572968"><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:27</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:52</source><source>app/chat/chat-with-inbox/inbox/inbox.component.html:76</source><source>app/chat/chat-with-inbox/current-conversation/current-conversation.component.html:107</source>Load more</msg>

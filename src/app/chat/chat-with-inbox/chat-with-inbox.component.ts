@@ -15,7 +15,7 @@ import { isEmpty, isNil } from 'lodash-es';
   templateUrl: './chat-with-inbox.component.html',
   styleUrls: ['./chat-with-inbox.component.scss']
 })
-export class ChatWithInboxComponent implements OnInit, OnDestroy {
+export class ChatWithInboxComponent implements OnInit {
 
   public conversationsLoading: boolean;
   public conversationsTotal: number;
@@ -61,10 +61,6 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
       this.archivedInboxReady = ready;
       this.openConversationIfNeeded();
     });
-  }
-
-  ngOnDestroy() {
-    this.adService.stopAdsRefresh();
   }
 
   public onLoad(event: any) {

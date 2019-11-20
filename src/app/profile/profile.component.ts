@@ -53,17 +53,20 @@ export class ProfileComponent implements OnInit {
     .pipe(
       flatMap(() => this.subscriptionsService.isSubscriptionsActive$())
     )
-    .filter(val => val === true)
     .subscribe(val => {
-      this.isSubscriptionsActive = val;
-      this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-        if (!isProfessional) {
-          this.subscriptionType();
-        }
-        else {
-          this.loading = false;
-        }
-      });
+      if (val) {
+        this.isSubscriptionsActive = val;
+        this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+          if (!isProfessional) {
+            this.subscriptionType();
+          }
+          else {
+            this.loading = false;
+          }
+        });
+      } else {
+        this.loading = false;
+      }
     });
   }
 
@@ -74,22 +77,25 @@ export class ProfileComponent implements OnInit {
 
   private subscriptionType(cache: boolean = true): void {
     this.subscriptionsService.getSubscriptions(cache).subscribe(response => {
-      this.loading = false;
       if (response) {
         response.map(subscription => {
           if (subscription.selected_tier_id) {
             this.isNewSubscription = true;
+            this.loading = false;
           }
         })
         if (!this.isNewSubscription) {
           this.userService.getMotorPlans().subscribe((subscriptionInfo: ProfileSubscriptionInfo) => {
             if (subscriptionInfo.status !== "PURCHASE_ACTIVE") {
               this.isNewSubscription = true;
+              this.loading = false;
             }
           });
         }
+      } else {
+        this.loading = false;
       }
-    }); 
+    }, () => { this.loading = false; }); 
   }
 
   private isProUser(): void {

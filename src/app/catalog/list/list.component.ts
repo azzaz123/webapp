@@ -341,6 +341,7 @@ export class ListComponent implements OnInit, OnDestroy {
         .subscribe(itemsByCategory => {
           this.items = append ? this.items.concat(itemsByCategory) : itemsByCategory;
           this.updateNavLinksCounters();
+          this.setNumberOfProducts();
           this.loading = false;
         });
     } else {
@@ -354,7 +355,6 @@ export class ListComponent implements OnInit, OnDestroy {
         this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, { init: this.init });
         this.init = itemsData.init;
         this.items = append ? this.items.concat(items) : items;
-        this.loading = false;
         this.end = !this.init;
         if (this.uploadModalRef) {
           this.uploadModalRef.componentInstance.item = this.items[0];
@@ -367,6 +367,8 @@ export class ListComponent implements OnInit, OnDestroy {
           });
         }
         this.firstItemLoad = false;
+        this.getNumberOfProducts();
+        this.loading = false;
       });
     }
   }
@@ -493,6 +495,11 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private setNumberOfProducts() {
+    if (this.selectedSubscriptionSlot) {
+      this.numberOfProducts = this.items.length;
+      return;
+    }
+
     if (this.selectedStatus === 'sold') {
       this.numberOfProducts = this.counters.sold;
     } else if (this.selectedStatus === 'published') {
