@@ -37,11 +37,12 @@ export class RealTimeService {
   public connect(userId: string, accessToken: string) {
     this.xmpp.isConnected$()
     .pipe(filter((isConnectedWithXMPP: boolean) => !isConnectedWithXMPP))
-    .subscribe((isConnectedWithXMPP: boolean) => {
+    .subscribe(() => {
         if (this.connectionService.isConnected) {
-          const startTimestamp = now();
+          let startTimestamp = now();
           this.xmpp.connect$(userId, accessToken).subscribe(() => {
             this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp);
+            startTimestamp = null;
           });
         }
       }
