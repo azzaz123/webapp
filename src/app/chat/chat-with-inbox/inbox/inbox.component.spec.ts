@@ -24,7 +24,7 @@ import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec'
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { SCREEN_IDS } from '../../../core/analytics/resources/analytics-screen-ids';
 import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
-import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
+import { ViewChatScreen } from '../../../core/analytics/resources/events-interfaces/view-chat-screen.interface';
 import { InboxUser } from '../../model/inbox-user';
 import { Item } from '../../../core/item/item';
 import { InboxItem } from '../../model/inbox-item';

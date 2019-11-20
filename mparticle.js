@@ -9,7 +9,7 @@ const eventNames = [];
 const analyticsFolderPath = 'src/app/core/analytics/resources/';
 const eventInterfacesFolderPath = `${analyticsFolderPath}events-interfaces/`
 
-const createInterfaceFilesFromJSONsSchemaPath = jsonPath => {
+const createInterfaceFileFromJSONsSchemaPath = jsonPath => {
     try {
         // Generate interface file name from json path
         const interfaceFileName = jsonPath.replace(/^.*[\\\/]/, '').replace('.json', '.interface.ts').replace(/_/g, '-');
@@ -29,7 +29,7 @@ const createInterfaceFilesFromJSONsSchemaPath = jsonPath => {
 const createEventNamesEnumFile = () => {
     let eventNamesEnum = 'export enum ANALYTICS_EVENT_NAMES {\n';
     eventNames.forEach(eventName => {
-        eventNamesEnum += `\n\t${eventName.replace(/ /g, '')} = '${eventName}',`;
+        eventNamesEnum += `\t${eventName.replace(/ /g, '')} = '${eventName}',\n`;
     });
     eventNamesEnum += '}\n\n';
 
@@ -74,7 +74,7 @@ const main = () => {
 
     // Read all JSON files from mparticle JSON schemas, create interfaces and event names enum when done
     glob(jsonSchemasLocationPattern, {}, (err, schemas) => {
-        schemas.forEach(path => createInterfaceFilesFromJSONsSchemaPath(path));
+        schemas.forEach(path => createInterfaceFileFromJSONsSchemaPath(path));
         createEventNamesEnumFile();    
     });
 

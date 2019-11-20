@@ -1,5 +1,4 @@
 export enum ANALYTICS_EVENT_NAMES {
-
 	ClickItemCard = 'Click Item Card',
 	TapRegisterEmailBack = 'Tap Register Email Back',
 	TapRegisterEmailRegister = 'Tap Register Email Register',
@@ -23,5 +22,6 @@ export enum ANALYTICS_EVENT_NAMES {
 	ViewOthersItemREDetail = 'View Others Item RE Detail',
 	DisplayRegisterPresentationPage = 'Display Register Presentation Page',
 	ViewTransactionPayScreen = 'View Transaction Pay Screen',
-	ViewTransactionTimelineScreen = 'View Transaction Timeline Screen',}
+	ViewTransactionTimelineScreen = 'View Transaction Timeline Screen',
+}
 
