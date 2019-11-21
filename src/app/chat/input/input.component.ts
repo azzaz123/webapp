@@ -9,6 +9,7 @@ import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { isEmpty, includes, find } from 'lodash-es';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'tsl-input',
@@ -25,10 +26,11 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   public isFocus: boolean;
 
   constructor(private messageService: MessageService,
-              private eventService: EventService,
-              private trackingService: TrackingService,
-              private modalService: NgbModal,
-              private i18n: I18nService) {
+    private eventService: EventService,
+    private trackingService: TrackingService,
+    private modalService: NgbModal,
+    private i18n: I18nService,
+    private deviceService: DeviceDetectorService) {
   }
 
   ngOnInit() {
@@ -60,10 +62,12 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   ngOnChanges(changes?: any) {
     if (this.messageArea) {
-      setTimeout(() => {
-        this.messageArea.nativeElement.focus();
-        this.isFocus = true;
-      }, 500);
+      if (!this.deviceService.isMobile) {
+        setTimeout(() => {
+          this.messageArea.nativeElement.focus();
+          this.isFocus = true;
+        }, 500);
+      }
 
       if (changes && changes.currentConversation && this.messageArea.nativeElement.value.length) {
         this.message = '';
@@ -74,8 +78,10 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.messageArea.nativeElement.focus();
-    this.isFocus = true;
+    if (!this.deviceService.isMobile) {
+      this.messageArea.nativeElement.focus();
+      this.isFocus = true;
+    }
   }
 
   public getPlaceholder(): string {

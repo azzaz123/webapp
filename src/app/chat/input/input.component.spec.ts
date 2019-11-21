@@ -14,6 +14,8 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { AutosizeModule } from 'ngx-autosize';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { DeviceDetectorServiceMock } from '../../../tests';
 
 class MessageServiceMock {
   send(c: Conversation, t: string): void {
@@ -46,6 +48,7 @@ describe('Component: Input', () => {
         I18nService,
         { provide: MessageService, useClass: MessageServiceMock },
         { provide: NgbModal, useClass: NgbModalMock },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         EventService,
         {
           provide: TrackingService, useValue: {
