@@ -4,7 +4,7 @@ import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { ANALYTICS_EVENT_NAMES } from './resources/analytics-event-names';
-import { EVENT_TYPES, AnalyticsEvent, PageViewInterface } from './analytics-constants';
+import { ANALYTIC_EVENT_TYPES, AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
@@ -39,7 +39,7 @@ describe('AnalyticsService', () => {
     it('should send the tracking event', () => {
       const MOCK_EVENT: AnalyticsEvent = {
         name: ANALYTICS_EVENT_NAMES.EditItemCG,
-        eventType: EVENT_TYPES.Other,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: { name: 'Test event' }
       }
       spyOn(mParticle, 'logEvent');
@@ -52,7 +52,7 @@ describe('AnalyticsService', () => {
 
   describe('trackPageView', () => {
     it('should send the page view event', () => {
-      const MOCK_PAGE_VIEW: PageViewInterface = {
+      const MOCK_PAGE_VIEW: AnalyticsPageView = {
         name: 'Chat screen',
         attributes: { name: 'Test page view event' },
         flags: { trackingFlag: true }

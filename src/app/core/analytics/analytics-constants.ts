@@ -16,9 +16,9 @@ export enum EVENT_TYPES {
     Other = 8
 }
 
-export interface PageViewInterface {
+export interface AnalyticsPageView<T> {
     name: string;
-    attributes: Object;
+    attributes: T;
     flags?: Object;
 }
 
