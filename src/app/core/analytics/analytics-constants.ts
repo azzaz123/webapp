@@ -1,7 +1,9 @@
 import { ANALYTICS_EVENT_NAMES } from './resources/analytics-event-names';
 
+// Export helpers to prevent multiple imports when using analytics code
 export * from './resources/analytics-event-names';
 export * from './resources/analytics-screen-ids';
+export * from './resources/events-interfaces';
 
 export enum EVENT_TYPES {
     Navigation = 1,
