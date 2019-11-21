@@ -31,4 +31,7 @@ $coachmark-left-margin: $spacing-xl;
       width: 100%;
     }
   }
+  @include media-breakpoint-down(sm) {
+    display: none;
+  }
 }
