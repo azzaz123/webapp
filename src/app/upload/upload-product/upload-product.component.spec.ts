@@ -31,6 +31,8 @@ import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-
 import { EditItemCG } from '../../core/analytics/events-interfaces/edit-item-cg.interface';
 import { ListItemCG } from '../../core/analytics/events-interfaces/list-item-cg.interface';
 import { ItemContent } from '../../core/item/item-response.interface';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { DeviceDetectorServiceMock } from '../../../tests';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -69,6 +71,7 @@ describe('UploadProductComponent', () => {
         TEST_HTTP_PROVIDERS,
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
           provide: UserService, useValue: {
             isProUser() {

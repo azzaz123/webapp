@@ -35,6 +35,7 @@ import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { SplitTestService } from '../../core/tracking/split-test.service';
 import { UserService } from '../../core/user/user.service';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 const CATEGORIES_WITH_EXTRA_FIELDS = ['16000', '12465'];
 
@@ -128,7 +129,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private splitTestService: SplitTestService,
     private analyticsService: AnalyticsService,
     private userService: UserService,
-    config: NgbPopoverConfig) {
+    config: NgbPopoverConfig,
+    private deviceService: DeviceDetectorService) {
     this.uploadForm = fb.group({
       id: '',
       category_id: ['', [Validators.required]],
@@ -233,7 +235,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngAfterContentInit() {
-    if (!this.item && this.titleField && !this.focused) {
+    if (!this.item && this.titleField && !this.focused && !this.deviceService.isMobile) {
       this.titleField.nativeElement.focus();
       this.focused = true;
     }
