@@ -5,7 +5,7 @@ export * from './resources/analytics-event-names';
 export * from './resources/analytics-screen-ids';
 export * from './resources/events-interfaces';
 
-export enum EVENT_TYPES {
+export enum ANALYTIC_EVENT_TYPES {
     Navigation = 1,
     Location = 2,
     Search = 3,
@@ -24,6 +24,6 @@ export interface AnalyticsPageView<T> {
 
 export interface AnalyticsEvent<T> {
     name: ANALYTICS_EVENT_NAMES;
-    eventType: EVENT_TYPES;
+    eventType: ANALYTIC_EVENT_TYPES;
     attributes: T;
 }

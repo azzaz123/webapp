@@ -26,7 +26,7 @@ import { CategoryOption } from '../../core/category/category-response.interface'
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
-import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { ANALYTIC_EVENT_TYPES } from '../../core/analytics/analytics-constants';
 import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 import { EditItemCG } from '../../core/analytics/resources/events-interfaces/edit-item-cg.interface';
@@ -696,7 +696,7 @@ describe('UploadProductComponent', () => {
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith({
           name: ANALYTICS_EVENT_NAMES.EditItemCG,
-          eventType: EVENT_TYPES.Other,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: trackingAttrs
         });
       });
@@ -728,7 +728,7 @@ describe('UploadProductComponent', () => {
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith({
           name: ANALYTICS_EVENT_NAMES.ListItemCG,
-          eventType: EVENT_TYPES.Other,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: trackingAttrs
         });
       });

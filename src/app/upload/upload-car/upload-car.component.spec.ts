@@ -1,4 +1,4 @@
-import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { ANALYTIC_EVENT_TYPES } from '../../core/analytics/analytics-constants';
 import { MockAnalyticsService } from './../../../tests/analytics.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
@@ -526,7 +526,7 @@ describe('UploadCarComponent', () => {
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith({
           name: ANALYTICS_EVENT_NAMES.EditItemCar,
-          eventType: EVENT_TYPES.Other,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: trackingAttrs
         });
       });
@@ -568,7 +568,7 @@ describe('UploadCarComponent', () => {
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith({
           name: ANALYTICS_EVENT_NAMES.ListItemCar,
-          eventType: EVENT_TYPES.Other,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: trackingAttrs
         });
       });

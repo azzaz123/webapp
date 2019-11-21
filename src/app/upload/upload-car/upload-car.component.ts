@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { EditItemCar } from '../../core/analytics/resources/events-interfaces/edit-item-car.interface';
 import { ListItemCar } from '../../core/analytics/resources/events-interfaces/list-item-car.interface';
-import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { ANALYTIC_EVENT_TYPES } from '../../core/analytics/analytics-constants';
 import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
@@ -452,7 +452,7 @@ export class UploadCarComponent implements OnInit {
 
         this.analyticsService.trackEvent({
           name: ANALYTICS_EVENT_NAMES.EditItemCar,
-          eventType: EVENT_TYPES.Other,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: eventAttrs
         });
       } else {
@@ -463,7 +463,7 @@ export class UploadCarComponent implements OnInit {
 
         this.analyticsService.trackEvent({
           name: ANALYTICS_EVENT_NAMES.ListItemCar,
-          eventType: EVENT_TYPES.Other,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: eventAttrs
         });
       }

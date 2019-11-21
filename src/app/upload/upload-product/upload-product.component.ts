@@ -1,6 +1,6 @@
 import { ListItemCG } from '../../core/analytics/resources/events-interfaces/list-item-cg.interface';
 import { EditItemCG } from '../../core/analytics/resources/events-interfaces/edit-item-cg.interface';
-import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { ANALYTIC_EVENT_TYPES } from '../../core/analytics/analytics-constants';
 import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { AnalyticsService } from './../../core/analytics/analytics.service';
 import {
@@ -553,7 +553,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
         this.analyticsService.trackEvent({
           name: ANALYTICS_EVENT_NAMES.EditItemCG,
-          eventType: EVENT_TYPES.Other,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: eventAttrs
         });
       } else {
@@ -564,7 +564,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
         this.analyticsService.trackEvent({
           name: ANALYTICS_EVENT_NAMES.ListItemCG,
-          eventType: EVENT_TYPES.Other,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: eventAttrs
         });
       }

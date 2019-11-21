@@ -1,6 +1,6 @@
 import { ListItemRE } from '../../core/analytics/resources/events-interfaces/list-item-re.interface';
 import { EditItemRE } from '../../core/analytics/resources/events-interfaces/edit-item-re.interface';
-import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { ANALYTIC_EVENT_TYPES } from '../../core/analytics/analytics-constants';
 import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IOption } from 'ng-select';
@@ -285,7 +285,7 @@ export class UploadRealestateComponent implements OnInit {
 
         this.analyticsService.trackEvent({
           name: ANALYTICS_EVENT_NAMES.EditItemRE,
-          eventType: EVENT_TYPES.Other,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: eventAttrs
         });
       } else {
@@ -296,7 +296,7 @@ export class UploadRealestateComponent implements OnInit {
 
         this.analyticsService.trackEvent({
           name: ANALYTICS_EVENT_NAMES.ListItemRE,
-          eventType: EVENT_TYPES.Other,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: eventAttrs
         });
       }
