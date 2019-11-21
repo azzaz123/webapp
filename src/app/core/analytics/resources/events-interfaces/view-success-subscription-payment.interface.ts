@@ -6,19 +6,11 @@
  */
 
 /**
- * Users view chat screen
+ * View modal after payment success
  */
-export interface ViewChatScreen {
-  /**
-   * The unique identifier for an item
-   */
-  itemId: string;
-  /**
-   * Identifier of the conversation
-   */
-  conversationId: string;
+export interface ViewSuccessSubscriptionPayment {
   /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: number;
+  screenId: 205;
 }

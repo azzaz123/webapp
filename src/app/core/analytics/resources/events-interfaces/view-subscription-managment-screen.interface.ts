@@ -6,19 +6,11 @@
  */
 
 /**
- * Users view chat screen
+ * Users views Subscription Managment screen
  */
-export interface ViewChatScreen {
-  /**
-   * The unique identifier for an item
-   */
-  itemId: string;
-  /**
-   * Identifier of the conversation
-   */
-  conversationId: string;
+export interface ViewSubscriptionManagment {
   /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: number;
+  screenId: 191;
 }

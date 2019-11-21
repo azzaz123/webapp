@@ -6,7 +6,7 @@
  */
 
 /**
- * Users view the recommendation slider in the item detail
+ * Users view the recommendation slider (with recommendations) in the item detail
  */
 export interface ViewItemDetailRecommendationSlider {
   /**
@@ -33,4 +33,8 @@ export interface ViewItemDetailRecommendationSlider {
    * If the source itemid is from a professional user
    */
   isPro: boolean;
+  /**
+   * Name of the experiment or A/B testing applied to the user who has performed the search. The default value would be 'baseline'
+   */
+  experiment?: string;
 }

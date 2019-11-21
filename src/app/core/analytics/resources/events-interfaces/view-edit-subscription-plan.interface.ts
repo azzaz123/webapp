@@ -6,19 +6,11 @@
  */
 
 /**
- * Users view chat screen
+ * Screeb view of Edit Subscription Plan
  */
-export interface ViewChatScreen {
-  /**
-   * The unique identifier for an item
-   */
-  itemId: string;
-  /**
-   * Identifier of the conversation
-   */
-  conversationId: string;
+export interface ViewEditSubscriptionPlan {
   /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: number;
+  screenId: 191;
 }

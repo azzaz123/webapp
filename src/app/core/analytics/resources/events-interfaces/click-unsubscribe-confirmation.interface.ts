@@ -6,11 +6,11 @@
  */
 
 /**
- * Tap on register button on wallapop register screen after register presentation page
+ * Button to confirm the unsuscribe
  */
-export interface TapRegisterEmailRegister {
+export interface ClickUnsuscribeConfirmation {
   /**
-   * Identifier of the screen that the user arrives to the register page
+   * Identifier of the screen
    */
-  screenId: number;
+  screenId: 205;
 }

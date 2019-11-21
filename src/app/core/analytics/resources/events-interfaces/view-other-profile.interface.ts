@@ -6,19 +6,19 @@
  */
 
 /**
- * Users view chat screen
+ * View other profile screen
  */
-export interface ViewChatScreen {
-  /**
-   * The unique identifier for an item
-   */
-  itemId: string;
-  /**
-   * Identifier of the conversation
-   */
-  conversationId: string;
+export interface ViewOtherProfile {
   /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: number;
+  screenId: 29;
+  /**
+   * If the user profile is a pro user
+   */
+  isPro: boolean;
+  /**
+   * Identifier of the user profile
+   */
+  userId: string;
 }

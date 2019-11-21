@@ -6,7 +6,7 @@
  */
 
 /**
- * Users clicks on item card displayed in different screens
+ * Users click on item card displayed in different screens
  */
 export interface ClickItemCard {
   /**
@@ -28,7 +28,7 @@ export interface ClickItemCard {
   /**
    * Identifier of the screen that the item was clicked from
    */
-  screenId: 110 | 111 | 29 | 187 | 188 | 140;
+  screenId: 110 | 111 | 29 | 187 | 188 | 140 | 190 | 194;
   /**
    * If the item clicked is from a professional user
    */
@@ -41,4 +41,8 @@ export interface ClickItemCard {
    * Item title
    */
   title: string;
+  /**
+   * Identifier of the source item for which recommendations have been given
+   */
+  itemSourceRecommendationId?: string;
 }

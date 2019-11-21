@@ -6,19 +6,27 @@
  */
 
 /**
- * Users view chat screen
+ * Buyer clicks on the Chat button to start a conversation
  */
-export interface ViewChatScreen {
+export interface ClickChatButton {
   /**
    * The unique identifier for an item
    */
   itemId: string;
   /**
-   * Identifier of the conversation
+   * Identifier of the user that the item belongs to
    */
-  conversationId: string;
+  sellerUserId: string;
+  /**
+   * The unique identifier of the search that the chat is under
+   */
+  searchId?: string;
+  /**
+   * If the chat button item is from a professional user
+   */
+  isPro?: boolean;
   /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: number;
+  screenId: 110 | 111 | 115 | 188 | 29;
 }

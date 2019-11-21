@@ -6,19 +6,11 @@
  */
 
 /**
- * Users view chat screen
+ * Click on register button on wallapop register screen after register presentation page
  */
-export interface ViewChatScreen {
+export interface ClickRegisterEmailRegister {
   /**
-   * The unique identifier for an item
-   */
-  itemId: string;
-  /**
-   * Identifier of the conversation
-   */
-  conversationId: string;
-  /**
-   * Identifier of the screen from which the message was sent from
+   * Identifier of the screen that the user arrives to the register page
    */
   screenId: number;
 }
