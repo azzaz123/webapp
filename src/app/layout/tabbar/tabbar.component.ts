@@ -28,13 +28,21 @@ export class TabbarComponent implements OnInit {
     this.tabBarService.tabBarHidden$.subscribe(hidden => this.hidden = hidden);
   }
 
-  @HostListener('window:focusin', ['$event.target'])
-  onFocusIn() {
-    this.hidden = true;
+  private isFormElement(elementType: string) {
+    return elementType === 'INPUT' || elementType === 'TEXTAREA';
   }
 
-  @HostListener('window:focusout', ['$event.target'])
-  onFocusOut() {
-    this.hidden = false;
+  @HostListener('window:focusin', ['$event.target.nodeName'])
+  onFocusIn(elementType: string) {
+    if (this.isFormElement(elementType)) {
+      this.hidden = true;
+    }
+  }
+
+  @HostListener('window:focusout', ['$event.target.nodeName'])
+  onFocusOut(elementType: string) {
+    if (this.isFormElement(elementType)) {
+      this.hidden = false;
+    }
   }
 }
