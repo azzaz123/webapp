@@ -3,8 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { ANALYTICS_EVENT_NAMES } from './resources/analytics-event-names';
-import { ANALYTIC_EVENT_TYPES, AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
+import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
@@ -37,11 +36,16 @@ describe('AnalyticsService', () => {
 
   describe('trackEvent', () => {
     it('should send the tracking event', () => {
-      const MOCK_EVENT: AnalyticsEvent = {
-        name: ANALYTICS_EVENT_NAMES.EditItemCG,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: { name: 'Test event' }
+      interface AsapEvent {
+        bruh: string;
       }
+      const MOCK_EVENT: AnalyticsEvent<AsapEvent> = {
+        name: 'AsapEvent' as any,
+        eventType: 1 as any,
+        attributes: {
+          bruh: 'Thanks!'
+        }
+      };
       spyOn(mParticle, 'logEvent');
 
       service.trackEvent(MOCK_EVENT);
@@ -52,11 +56,14 @@ describe('AnalyticsService', () => {
 
   describe('trackPageView', () => {
     it('should send the page view event', () => {
-      const MOCK_PAGE_VIEW: AnalyticsPageView = {
+      interface AsapPageEvent {
+        name: string;
+      }
+      const MOCK_PAGE_VIEW: AnalyticsPageView<AsapPageEvent> = {
         name: 'Chat screen',
         attributes: { name: 'Test page view event' },
         flags: { trackingFlag: true }
-      }
+      };
       spyOn(mParticle, 'logPageView');
 
       service.trackPageView(MOCK_PAGE_VIEW);
