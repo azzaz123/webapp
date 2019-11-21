@@ -17,8 +17,8 @@ export interface PageViewInterface {
     flags?: Object;
 }
 
-export interface EventInterface {
+export interface EventInterface<T> {
     name: ANALYTICS_EVENT_NAMES;
     eventType: EVENT_TYPES;
-    attributes: Object;
+    attributes: T;
 }

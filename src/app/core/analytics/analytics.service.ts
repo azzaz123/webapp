@@ -28,7 +28,7 @@ export class AnalyticsService {
     });
   }
 
-  public trackEvent(event: EventInterface) {
+  public trackEvent<T>(event: EventInterface<T>) {
     mParticle.logEvent(event.name, event.eventType, event.attributes);
   }
 
