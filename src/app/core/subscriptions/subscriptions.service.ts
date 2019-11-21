@@ -159,6 +159,10 @@ export class SubscriptionsService {
     return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/cancel/${planId}`, null, null, { observe: 'response' as 'body' });
   }
 
+  public continueSubscription(planId: string): Observable<any> {
+    return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/unsubscription/cancel/${planId}`, null, null, { observe: 'response' as 'body' });
+  }
+
   private mapSubscriptions(subscription: SubscriptionsResponse, categories: CategoryResponse[]): SubscriptionsResponse {
     let category = categories.find((category: CategoryResponse) => subscription.category_id === category.category_id);
     if (category) {

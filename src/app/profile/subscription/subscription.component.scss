@@ -138,6 +138,17 @@
   font-weight: bold;
 }
 
+.Subscriptions__subscribed-until {
+  color: $blue-grey-2;
+  font-size: $font-size-s;
+  font-weight: bold;
+}
+
+.Subscriptions__subscribed-continue {
+  color: $walla-main;
+  font-size: $font-size-s;
+}
+
 .loading-center {
   display: block;
   margin: 0 auto;
