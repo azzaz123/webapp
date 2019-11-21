@@ -83,16 +83,6 @@ describe('RealTimeService', () => {
       expect(remoteConsoleService.sendConnectionTimeout).toHaveBeenCalled();
     });
 
-    it('should call xmpp.connect and return throw', () => {
-      connectionService.isConnected = true;
-      spyOn(xmppService, 'connect$').and.returnValue(throwError('Connection time'));
-
-      service.connect(MOCK_USER.id, ACCESS_TOKEN);
-
-      expect(xmppService.connect$).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
-      expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
-    });
-
     it('should NOT call xmpp.connect if user do not have internet connection', () => {
       connectionService.isConnected = false;
       service['isConnectingWithXMPP'] = false;
@@ -104,15 +94,14 @@ describe('RealTimeService', () => {
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
     });
 
-    it('should NOT call xmpp.connect if try connect in another thread', () => {
+    it('should NOT call xmpp.connect if is already connected', () => {
       connectionService.isConnected = true;
-      service['isConnectingWithXMPP'] = true;
       spyOn(xmppService, 'connect$').and.returnValue(of({}));
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
 
-      expect(xmppService.connect$).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
+      expect(xmppService.connect$).toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionTimeout).toHaveBeenCalled();
     });
   });
 

@@ -30,10 +30,7 @@ import { Item } from '../../../core/item/item';
 import { InboxItem } from '../../model/inbox-item';
 
 class AdServiceMock {
-  startAdsRefresh() {
-  }
-
-  stopAdsRefresh() {
+  adsRefresh() {
   }
 }
 
@@ -333,24 +330,22 @@ describe('Component: InboxComponent', () => {
 
     it('should should call conversationService.openConversation with the new conversation', () => {
       spyOn(conversationService, 'openConversation').and.callThrough();
-      spyOn(addService, 'startAdsRefresh');
+      spyOn(addService, 'adsRefresh');
 
       component.setCurrentConversation(newlySelectedConversation);
 
       expect(conversationService.openConversation).toHaveBeenCalledWith(newlySelectedConversation);
-      expect(addService.startAdsRefresh).toHaveBeenCalled();
+      expect(addService.adsRefresh).toHaveBeenCalled();
     });
   });
 
   it('should set conversation.active to FALSE if a conversation exists when ngOnDestroy is called', () => {
     const previouslySelectedConversation = CREATE_MOCK_INBOX_CONVERSATION();
     component.setCurrentConversation(previouslySelectedConversation);
-    spyOn(addService, 'stopAdsRefresh');
 
     component.ngOnDestroy();
 
     expect(previouslySelectedConversation.active).toBe(false);
-    expect(addService.stopAdsRefresh).toHaveBeenCalled();
   });
 
   describe('loadMore', () => {
