@@ -7,6 +7,11 @@ import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-m
 import { isEqual } from 'lodash-es';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { ClickSuscribeOnTheBenefitsScreen } from '../../core/analytics/resources/events-interfaces/click-benefits-subscribe.interface';
+import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 
 @Component({
   selector: 'tsl-subscription',
@@ -20,7 +25,8 @@ export class SubscriptionComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
               private subscriptionsService: SubscriptionsService,
-              private router: Router) {
+              private router: Router,
+              private analyticsService: AnalyticsService) {
   }
 
   ngOnInit() {
@@ -59,5 +65,17 @@ export class SubscriptionComponent implements OnInit {
       }
     });
   }
-  
+
+  public onClickSubscribeButton() {
+    const eventAttrs: ClickSuscribeOnTheBenefitsScreen = {
+      screenId: SCREEN_IDS.BenefitScreen
+    };
+
+    this.analyticsService.trackEvent({
+      name: ANALYTICS_EVENT_NAMES.ClickSuscribeontheBenefitsScreen,
+      eventType: EVENT_TYPES.Other,
+      attributes: eventAttrs
+    });
+  }
+
 }

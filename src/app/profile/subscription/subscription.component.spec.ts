@@ -11,6 +11,12 @@ import { AddNewSubscriptionModalComponent } from "./modals/add-new-subscription-
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component'
 import { EventService } from "../../core/event/event.service";
 import { Router } from "@angular/router";
+import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import { EventInterface, EVENT_TYPES } from '../../core/analytics/analytics-constants';
+import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { ClickSuscribeOnTheBenefitsScreen } from '../../core/analytics/resources/events-interfaces/click-benefits-subscribe.interface';
+import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionComponent;
@@ -19,6 +25,7 @@ describe('SubscriptionComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
   let router: Router;
+  let analyticsService: AnalyticsService;
   const componentInstance = {subscription: MAPPED_SUBSCRIPTIONS[0]};
   
   beforeEach(async(() => {
@@ -55,7 +62,8 @@ describe('SubscriptionComponent', () => {
             navigate() {
             }
           }
-        }
+        },
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
       ],
     schemas: [NO_ERRORS_SCHEMA]
     })
@@ -69,6 +77,7 @@ describe('SubscriptionComponent', () => {
     subscriptionsService = TestBed.get(SubscriptionsService);
     categoryService = TestBed.get(CategoryService);
     router = TestBed.get(Router);
+    analyticsService = TestBed.get(AnalyticsService);
     fixture.detectChanges();
   });
 
@@ -145,5 +154,23 @@ describe('SubscriptionComponent', () => {
   afterAll(() => {
     TestBed.resetTestingModule();
   });
-  
+
+  describe('onClickSubscribeButton', () => {
+    it('should send clicked on subscribe button event to analytics', () => {
+      spyOn(analyticsService, 'trackEvent');
+      const expectedEventAttributes: ClickSuscribeOnTheBenefitsScreen = {
+        screenId: SCREEN_IDS.BenefitScreen
+      };
+      const expectedEvent: EventInterface = {
+        name: ANALYTICS_EVENT_NAMES.ClickSuscribeontheBenefitsScreen,
+        eventType: EVENT_TYPES.Other,
+        attributes: expectedEventAttributes
+      };
+
+      component.onClickSubscribeButton();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+    });
+  });
+
 });
