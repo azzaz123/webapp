@@ -22,7 +22,7 @@ export interface PageViewInterface {
     flags?: Object;
 }
 
-export interface EventInterface<T> {
+export interface AnalyticsEvent<T> {
     name: ANALYTICS_EVENT_NAMES;
     eventType: EVENT_TYPES;
     attributes: T;

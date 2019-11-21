@@ -4,7 +4,7 @@ import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { ANALYTICS_EVENT_NAMES } from './resources/analytics-event-names';
-import { EVENT_TYPES, EventInterface, PageViewInterface } from './analytics-constants';
+import { EVENT_TYPES, AnalyticsEvent, PageViewInterface } from './analytics-constants';
 
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
@@ -37,7 +37,7 @@ describe('AnalyticsService', () => {
 
   describe('trackEvent', () => {
     it('should send the tracking event', () => {
-      const MOCK_EVENT: EventInterface = {
+      const MOCK_EVENT: AnalyticsEvent = {
         name: ANALYTICS_EVENT_NAMES.EditItemCG,
         eventType: EVENT_TYPES.Other,
         attributes: { name: 'Test event' }

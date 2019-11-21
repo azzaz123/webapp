@@ -3,7 +3,7 @@ import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
-import { EventInterface, PageViewInterface } from './analytics-constants';
+import { AnalyticsEvent, PageViewInterface } from './analytics-constants';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class AnalyticsService {
     });
   }
 
-  public trackEvent<T>(event: EventInterface<T>) {
+  public trackEvent<T>(event: AnalyticsEvent<T>) {
     mParticle.logEvent(event.name, event.eventType, event.attributes);
   }
 
