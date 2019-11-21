@@ -32,7 +32,7 @@ export class AnalyticsService {
     mParticle.logEvent(event.name, event.eventType, event.attributes);
   }
 
-  public trackPageView(page: AnalyticsPageView) {
+  public trackPageView<T>(page: AnalyticsPageView<T>) {
     mParticle.logPageView(page.name, page.attributes, page.flags);
   }
 }
