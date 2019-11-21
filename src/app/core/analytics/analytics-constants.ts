@@ -1,5 +1,8 @@
 import { ANALYTICS_EVENT_NAMES } from './resources/analytics-event-names';
 
+export * from './resources/analytics-event-names';
+export * from './resources/analytics-screen-ids';
+
 export enum EVENT_TYPES {
     Navigation = 1,
     Location = 2,
