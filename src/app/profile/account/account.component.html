@@ -16,15 +16,15 @@
         <div class="form-group row">
           <label class="col-12 col-md-3 text-md-right" i18n>Gender</label>
           <div class="col-12 col-md-4 offset-md-1">
-            <div ngbRadioGroup name="radioBasic" formControlName="gender">
+            <div class="gender-form" ngbRadioGroup name="radioBasic" formControlName="gender">
               <label ngbButtonLabel class="btn select">
                 <input ngbButton type="radio" value="M">
-                <mat-icon svgIcon="male"></mat-icon>
+                <mat-icon class="d-none d-md-flex" svgIcon="male"></mat-icon>
                 <div i18n>Male</div>
               </label>
               <label ngbButtonLabel class="btn select">
                 <input ngbButton type="radio" value="F">
-                <mat-icon svgIcon="female"></mat-icon>
+                <mat-icon class="d-none d-md-flex" svgIcon="female"></mat-icon>
                 <div i18n>Female</div>
               </label>
             </div>

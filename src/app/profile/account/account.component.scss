@@ -27,53 +27,22 @@ form {
   }
 }
 
-.select {
-  height: 100px;
-  width: calc(50% - #{$spacing-ml / 2});
-  border-radius: $border-radius;
-  border: solid 2px $blue-grey-5;
-  cursor: pointer;
-  padding: 0;
-  text-align: center;
-  line-height: $line-height-xxl;
-  [ngbButton] {
-    display: none;
-  }
-  &:first-of-type {
-    margin-right: $spacing-m;
-  }
-  mat-icon {
-    @include square(42px);
-    margin-top: $spacing-l;
-    margin-bottom: $spacing-m;
-    /deep/ path {
-      transition: fill 0.2s ease-in-out;
-    }
-  }
-  div {
-    margin-top: -$spacing-ms;
-    font-size: $font-size-s;
-  }
-  &.active {
-    background-color: $blue-grey-2;
-    border-color: transparent;
-    box-shadow: 0 2px 6px 0 rgba($blue-grey-2, 0.2);
+.gender-form {
+  .select {
     mat-icon {
+      @include square(32px);
       /deep/ path {
-        fill: $white;
+        transition: fill 0.2s ease-in-out;
       }
+      margin-bottom: $spacing-ms;
     }
     div {
-      font-weight: $font-weight-chunky;
-      color: $white;
+      font-size: 14px;
+      line-height: normal;
     }
-  }
-  &:hover:not(.active) {
-    border-color: $blue-grey-2;
-    mat-icon {
-      /deep/ path {
-        fill: $blue-grey-2;
-      }
+    @include media-breakpoint-down(sm) {
+      height: 50px;
     }
   }
 }
+
