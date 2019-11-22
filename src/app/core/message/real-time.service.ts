@@ -10,11 +10,14 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ChatSignal, chatSignalType } from './chat-signal.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { RemoteConsoleService } from '../remote-console';
-import { SendFirstMessage } from '../analytics/resources/events-interfaces/send-first-message.interface';
-import { ANALYTIC_EVENT_TYPES } from '../analytics/analytics-constants';
-import { SCREEN_IDS } from '../analytics/resources/analytics-screen-ids';
 import { AnalyticsService } from '../analytics/analytics.service';
-import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsEvent,
+  SendFirstMessage
+} from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
 
 @Injectable()
@@ -168,18 +171,18 @@ export class RealTimeService {
   }
 
   private trackSendFirstMessage(conversation: Conversation | InboxConversation) {
-    const eventAttrs: SendFirstMessage = {
-      itemId: conversation.item.id,
-      sellerUserId: conversation.user.id,
-      conversationId: conversation.id,
-      screenId: SCREEN_IDS.Chat
-    };
-
-    this.analyticsService.trackEvent({
+    const event: AnalyticsEvent<SendFirstMessage> = {
       name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
       eventType: ANALYTIC_EVENT_TYPES.Other,
-      attributes: eventAttrs
-    });
+      attributes: {
+        itemId: conversation.item.id,
+        sellerUserId: conversation.user.id,
+        conversationId: conversation.id,
+        screenId: SCREEN_IDS.Chat
+      }
+    };
+
+    this.analyticsService.trackEvent(event);
   }
 
 }
