@@ -5161,7 +5161,7 @@ move-concurrently@^1.0.1:
 
 "mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#master":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#5fe3321c46fd312f5432685faf0475549429a8e4"
+  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#bbd125a1639bd9056d06b96c4a58a0b1e7176510"
 
 ms@0.7.1:
   version "0.7.1"
@@ -8178,9 +8178,9 @@ web-animations-js@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/web-animations-js/-/web-animations-js-2.3.1.tgz#3a6d9bc15196377a90f8e2803fa5262165b04510"
 
-"web-styleguide@git+ssh://git@github.com:Wallapop/web-styleguide#master":
-  version "0.6.0"
-  resolved "git+ssh://git@github.com:Wallapop/web-styleguide#698bebfeeea6f6e188ea80c24d717b4ca5380f9c"
+"web-styleguide@git+ssh://git@github.com:Wallapop/web-styleguide#^0.7.1":
+  version "0.7.1"
+  resolved "git+ssh://git@github.com:Wallapop/web-styleguide#4bd08560323494321dc613c7095f68d8c244607c"
 
 webassemblyjs@1.4.3:
   version "1.4.3"

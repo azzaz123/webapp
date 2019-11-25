@@ -115,9 +115,7 @@ describe('ChatWithArchiveComponent', () => {
         {
           provide: AdService,
           useValue: {
-            startAdsRefresh() {
-            },
-            stopAdsRefresh() {
+            adsRefresh() {
             }
           }
         }
@@ -429,19 +427,10 @@ describe('ChatWithArchiveComponent', () => {
   });
 
   it('should call start refresh ad when init some conversation', () => {
-    spyOn(adService, 'startAdsRefresh');
+    spyOn(adService, 'adsRefresh');
 
     component.onCurrentConversationChange(conversation);
 
-    expect(adService.startAdsRefresh).toHaveBeenCalled();
-  });
-
-  it('should call stopAdsRefresh when destroy component', () => {
-    spyOn(adService, 'stopAdsRefresh');
-
-    component.ngOnInit();
-    component.ngOnDestroy();
-
-    expect(adService.stopAdsRefresh).toHaveBeenCalled();
+    expect(adService.adsRefresh).toHaveBeenCalled();
   });
 });

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { merge } from 'rxjs/observable/merge';
-import { environment } from '../../../environments/environment';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/observable/zip';
 import { Subscription } from 'rxjs/Subscription';
@@ -9,14 +8,11 @@ import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { AdKeyWords } from './ad.interface';
 import * as moment from 'moment';
-import { HttpService } from '../http/http.service';
 import { User } from '../user/user';;
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class AdService {
-
-  private ENDPOINT_REFRESH_RATE = 'rest/ads/refreshRate';
 
   public allowSegmentation$: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public adKeyWords: AdKeyWords = {} as AdKeyWords;
@@ -26,8 +22,7 @@ export class AdService {
   ];
   private _bidTimeout = 2000;
 
-  constructor(private http: HttpService,
-              private userService: UserService,
+  constructor(private userService: UserService,
               private cookieService: CookieService
   ) {
     this.initKeyWordsFromCookies();
@@ -126,7 +121,7 @@ export class AdService {
     });
   }
 
-  public startAdsRefresh(): void {
+  public adsRefresh(): void {
     if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) { return ; }
     this.adsRefreshSubscription = this.userService.me().do((user: User) => {
       this.adKeyWords.gender = user.gender;
@@ -141,10 +136,6 @@ export class AdService {
         this.adKeyWords.longitude = user.location.approximated_longitude.toString();
       }
     }).flatMap(() => {
-      return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json());
-    }).flatMap((refreshRate: number) => {
-      return refreshRate ? Observable.timer(0, refreshRate) : Observable.of(0);
-    }).flatMap(() => {
       return this.allowSegmentation$.filter((value) =>  value !== null);
     }).subscribe((allowSegmentation: boolean) => {
       this.refreshAdWithKeyWords(allowSegmentation);
@@ -157,12 +148,6 @@ export class AdService {
     });
     googletag.pubads().setTargeting('allowSegmentation', allowSegmentation ? 'true' : 'false');
     this.fetchHeaderBids(allowSegmentation);
-  }
-
-  public stopAdsRefresh(): void {
-    if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) {
-      this.adsRefreshSubscription.unsubscribe();
-    }
   }
 
 }

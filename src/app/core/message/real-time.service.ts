@@ -10,22 +10,27 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ChatSignal, chatSignalType } from './chat-signal.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { RemoteConsoleService } from '../remote-console';
-import { SendFirstMessage } from '../analytics/events-interfaces/send-first-message.interface';
-import { SCREENS_IDS, EVENT_TYPES } from '../analytics/resources/analytics-constants';
 import { AnalyticsService } from '../analytics/analytics.service';
-import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsEvent,
+  SendFirstMessage
+} from '../analytics/analytics-constants';
+import { ConnectionService } from '../connection/connection.service';
+import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class RealTimeService {
-
-  private isConnecting: boolean;
 
   constructor(private xmpp: XmppService,
               private eventService: EventService,
               private persistencyService: PersistencyService,
               private trackingService: TrackingService,
               private remoteConsoleService: RemoteConsoleService,
-              private analyticsService: AnalyticsService) {
+              private analyticsService: AnalyticsService,
+              private connectionService: ConnectionService) {
     this.subscribeEventNewMessage();
     this.subscribeEventMessageSent();
     this.subscribeConnectionRestored();
@@ -34,14 +39,18 @@ export class RealTimeService {
   private ongoingRetry: boolean;
 
   public connect(userId: string, accessToken: string) {
-    if (!this.isConnecting) {
-      this.isConnecting = true;
-      const startTimestamp = now();
-      this.xmpp.connect$(userId, accessToken).subscribe(() => {
-        this.isConnecting = false;
-        this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp);
-      }, () => this.isConnecting = false);
-    }
+    this.xmpp.isConnected$()
+    .pipe(filter((isConnectedWithXMPP: boolean) => !isConnectedWithXMPP))
+    .subscribe(() => {
+        if (this.connectionService.isConnected) {
+          let startTimestamp = now();
+          this.xmpp.connect$(userId, accessToken).subscribe(() => {
+            this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp);
+            startTimestamp = null;
+          });
+        }
+      }
+    );
   }
 
   public disconnect() {
@@ -162,18 +171,18 @@ export class RealTimeService {
   }
 
   private trackSendFirstMessage(conversation: Conversation | InboxConversation) {
-    const eventAttrs: SendFirstMessage = {
-      itemId: conversation.item.id,
-      sellerUserId: conversation.user.id,
-      conversationId: conversation.id,
-      screenId: SCREENS_IDS.Chat
+    const event: AnalyticsEvent<SendFirstMessage> = {
+      name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        itemId: conversation.item.id,
+        sellerUserId: conversation.user.id,
+        conversationId: conversation.id,
+        screenId: SCREEN_IDS.Chat
+      }
     };
 
-    this.analyticsService.trackEvent({
-      name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
-      eventType: EVENT_TYPES.Other,
-      attributes: eventAttrs
-    });
+    this.analyticsService.trackEvent(event);
   }
 
 }

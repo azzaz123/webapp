@@ -38,6 +38,7 @@ const routes: Routes = [
       {
         path: 'account',
         component: AccountComponent,
+        canDeactivate: [ExitConfirmGuard],
         data: {
           isMyZone: true,
           isProfile: true
@@ -50,7 +51,7 @@ const routes: Routes = [
           isMyZone: true,
           isProfile: true,
           permissions: {
-            only: [PERMISSIONS.normal],
+            only: PERMISSIONS.subscriptions,
             redirectTo: '/profile'
           }
         }

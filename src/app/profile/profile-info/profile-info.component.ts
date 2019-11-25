@@ -7,11 +7,12 @@ import { User } from '../../core/user/user';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserProInfo } from '../../core/user/user-info.interface';
-import { Image } from '../../core/user/user-response.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { isValidNumber } from 'libphonenumber-js';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 export const competitorLinks = [
   'coches.net',
@@ -27,7 +28,7 @@ export const competitorLinks = [
   templateUrl: './profile-info.component.html',
   styleUrls: ['./profile-info.component.scss']
 })
-export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
+export class ProfileInfoComponent implements CanComponentDeactivate {
 
   public profileForm: FormGroup;
   public allowSegmentation: boolean;
@@ -35,15 +36,16 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   public user: User;
   public isPro: boolean;
   public updateLocationWhenSearching = false;
+  public loading = false;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
 
   constructor(private userService: UserService,
-              private fb: FormBuilder,
-              private errorsService: ErrorsService,
-              private modalService: NgbModal) {
+    private fb: FormBuilder,
+    private errorsService: ErrorsService,
+    private modalService: NgbModal) {
     this.profileForm = fb.group({
-      first_name: '',
+      first_name: ['', [Validators.required]],
       last_name: '',
       phone_number: '',
       description: '',
@@ -57,17 +59,18 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
     });
   }
 
-  ngOnInit() {
-    this.userService.me().subscribe((user: User) => {
-      this.user = user;
-    });
-    this.userService.isProUser().subscribe((isPro: boolean) => {
-      this.isPro = isPro;
+  initForm() {
+    Observable.forkJoin([
+      this.userService.me(),
+      this.userService.isProUser(),
+      this.userService.getUserCover()
+    ]).pipe(finalize(() => {
       this.getProUserData();
-    });
-    this.userService.getUserCover().subscribe((avatar: Image) => {
-      if (avatar) {
-        this.user.coverImage = avatar;
+    })).subscribe(values => {
+      this.user = values[0];
+      this.isPro = values[1];
+      if (values[2]) {
+        this.user.coverImage = values[2];
       }
     });
   }
@@ -82,19 +85,33 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   }
 
   private setUserData() {
-    this.profileForm.patchValue({
+    let userData: any = {
       first_name: this.user.firstName,
       last_name: this.user.lastName
-    });
+    }
+
+    if (this.user.location) {
+      userData = {
+        ...userData,
+        location: {
+          address: this.user.location.title,
+          latitude: this.user.location.approximated_latitude,
+          longitude: this.user.location.approximated_longitude
+        }
+      }
+    }
+
     if (this.userInfo && this.isPro) {
-      this.profileForm.patchValue({
+      userData = {
+        ...userData,
         phone_number: this.userInfo.phone_number,
         description: this.userInfo.description,
         opening_hours: this.userInfo.opening_hours,
         link: this.userInfo.link
-      });
+      }
     }
-    this.formComponent.hasNotSavedChanges = false;
+
+    this.profileForm.patchValue(userData);
   }
 
   public canExit() {
@@ -105,20 +122,20 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
     const phoneNumberControl = this.profileForm.get('phone_number');
     if (this.isPro && phoneNumberControl.value) {
       if (!isValidNumber(phoneNumberControl.value, 'ES')) {
-        phoneNumberControl.setErrors({incorrect: true});
+        phoneNumberControl.setErrors({ incorrect: true });
         this.errorsService.i18nError('phoneNumberError');
         return;
       }
     }
 
     const linkControl = this.profileForm.get('link');
-    if (linkControl.value ) {
-      competitorLinks.forEach(competitor  => {
-        
-        let linkSubstring = linkControl.value.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
-        let competitorSubstring = competitor.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+    if (linkControl.value) {
+      competitorLinks.forEach(competitor => {
+
+        let linkSubstring = linkControl.value.replace('http://', '').replace('https://', '').replace('www.', '').split(/[/?#]/)[0];
+        let competitorSubstring = competitor.replace('http://', '').replace('https://', '').replace('www.', '').split(/[/?#]/)[0];
         if (linkSubstring === competitorSubstring) {
-          linkControl.setErrors({incorrect: true});
+          linkControl.setErrors({ incorrect: true });
         }
       });
       if (!linkControl.valid) {
@@ -128,30 +145,35 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
     }
 
     if (this.profileForm.valid) {
-      const profileFormLocation = this.profileForm.value.location;
-      delete this.profileForm.value.location;
-      this.userService.updateProInfo(this.profileForm.value).subscribe(() => {
+      const profileFormValue = { ...this.profileForm.value };
+      const profileFormLocation = profileFormValue.location;
+
+      delete profileFormValue.location;
+      this.loading = true;
+
+      this.userService.updateProInfo(profileFormValue).subscribe(() => {
         this.userService.edit({
-          first_name: this.profileForm.value.first_name,
-          last_name: this.profileForm.value.last_name,
-          birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
-          gender: this.user.gender
+          first_name: profileFormValue.first_name,
+          last_name: profileFormValue.last_name,
+          birth_date: this.user.birthDate ? moment(this.user.birthDate).format('YYYY-MM-DD') : null,
+          gender: this.user.gender ? this.user.gender.toUpperCase().substr(0, 1) : null
         }).finally(() => {
+          this.loading = false;
+          this.formComponent.initFormControl();
           this.errorsService.i18nSuccess('userEdited');
-          this.formComponent.hasNotSavedChanges = false;
         }).subscribe(() => {
           if (!this.user.location ||
             this.user.location.approximated_latitude !== profileFormLocation.latitude ||
             this.user.location.approximated_longitude !== profileFormLocation.longitude) {
-              const newLocation: Coordinate = {
-                latitude: profileFormLocation.latitude,
-                longitude: profileFormLocation.longitude,
-                name: profileFormLocation.address
-              };
-              this.userService.updateLocation(newLocation).subscribe(newUserLocation => {
-                this.userService.user.location = newUserLocation;
-                this.userService.updateSearchLocationCookies(newLocation);
-              });
+            const newLocation: Coordinate = {
+              latitude: profileFormLocation.latitude,
+              longitude: profileFormLocation.longitude,
+              name: profileFormLocation.address
+            };
+            this.userService.updateLocation(newLocation).subscribe(newUserLocation => {
+              this.userService.user.location = newUserLocation;
+              this.userService.updateSearchLocationCookies(newLocation);
+            });
           }
         });
       });
@@ -165,7 +187,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
 
   public openBecomeProModal() {
     if (!this.isPro) {
-      this.modalService.open(BecomeProModalComponent, {windowClass: 'become-pro'});
+      this.modalService.open(BecomeProModalComponent, { windowClass: 'become-pro' });
     }
   }
 
