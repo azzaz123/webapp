@@ -45,7 +45,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     private errorsService: ErrorsService,
     private modalService: NgbModal) {
     this.profileForm = fb.group({
-      first_name: '',
+      first_name: ['', [Validators.required]],
       last_name: '',
       phone_number: '',
       description: '',
@@ -156,7 +156,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
           first_name: profileFormValue.first_name,
           last_name: profileFormValue.last_name,
           birth_date: this.user.birthDate ? moment(this.user.birthDate).format('YYYY-MM-DD') : null,
-          gender: this.user.gender
+          gender: this.user.gender ? this.user.gender.toUpperCase().substr(0, 1) : null
         }).finally(() => {
           this.loading = false;
           this.formComponent.initFormControl();

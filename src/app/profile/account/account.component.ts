@@ -46,7 +46,7 @@ export class AccountComponent implements CanComponentDeactivate {
 
       this.profileForm.patchValue({
         birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
-        gender: this.user.gender.toUpperCase().substr(0, 1)
+        gender: this.user.gender ? this.user.gender.toUpperCase().substr(0, 1) : null
       });
     });
   }
