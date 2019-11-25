@@ -87,7 +87,7 @@ export class SubscriptionComponent implements OnInit {
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: 205, // TODO: mparticle branch update
-        subscription: subscriptionClicked.category_id as 100 | 14000 | 12800
+        subscription: subscriptionClicked.category_id as any
       }
     };
 
