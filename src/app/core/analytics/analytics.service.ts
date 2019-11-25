@@ -14,6 +14,10 @@ export class AnalyticsService {
 
   public initialize() {
     this.userService.me().subscribe((user: User) => {
+      if (!user) {
+        return;
+      }
+
       const CONFIG = {
         isDevelopmentMode: !environment.production,
         identifyRequest: {
