@@ -36,14 +36,13 @@ export class RemoteConsoleService implements OnDestroy {
   sendConnectionTimeout(userId: string, connectionTime: number): void {
     this.connectionTimeCallNo += 1;
     this.getCommonLog(userId).subscribe(commonLog => logger.info(JSON.stringify({
-      ...commonLog, ...{
-        metric_type: MetricTypeEnum.XMPP_CONNECTION_TIME,
-        message: 'xmpp connection time',
-        connection_time: connectionTime,
-        call_no: this.connectionTimeCallNo,
-        connection_type: toUpper(navigator['connection']['type']),
-        ping_time_ms: navigator['connection']['rtt']
-      }
+      ...commonLog,
+      metric_type: MetricTypeEnum.XMPP_CONNECTION_TIME,
+      message: 'xmpp connection time',
+      connection_time: connectionTime,
+      call_no: this.connectionTimeCallNo,
+      connection_type: toUpper(navigator['connection']['type']),
+      ping_time_ms: navigator['connection']['rtt']
     })));
   }
 
@@ -54,11 +53,10 @@ export class RemoteConsoleService implements OnDestroy {
       if (this.sendMessageTime.length > 0) {
 
         this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
-          ...commonLog, ...{
-            message_id: messageId,
-            send_message_time: new Date().getTime() - this.sendMessageTime.shift(),
-            metric_type: MetricTypeEnum.XMPP_SEND_MESSAGE_TIME,
-          }
+          ...commonLog,
+          message_id: messageId,
+          send_message_time: new Date().getTime() - this.sendMessageTime.shift(),
+          metric_type: MetricTypeEnum.XMPP_SEND_MESSAGE_TIME,
         })));
       }
     }
@@ -70,11 +68,10 @@ export class RemoteConsoleService implements OnDestroy {
     } else {
       if (this.acceptMessageTime.length > 0) {
         this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
-          ...commonLog, ...{
-            message_id: messageId,
-            send_message_time: new Date().getTime() - this.acceptMessageTime.shift(),
-            metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-          }
+          ...commonLog,
+          message_id: messageId,
+          send_message_time: new Date().getTime() - this.acceptMessageTime.shift(),
+          metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
         })));
       }
     }
@@ -82,12 +79,11 @@ export class RemoteConsoleService implements OnDestroy {
 
   sendDuplicateConversations(userId: string, callMethodClient: string, conversationsGroupById: Map<string, number>): void {
     this.getCommonLog(userId).subscribe(commonLog => logger.info(JSON.stringify({
-      ...commonLog, ...{
-        metric_type: MetricTypeEnum.DUPLICATE_CONVERSATION,
-        message: 'send log when user see duplicate conversation in inbox',
-        call_method_client: callMethodClient,
-        conversations_count_by_id: JSON.stringify(conversationsGroupById)
-      }
+      ...commonLog,
+      metric_type: MetricTypeEnum.DUPLICATE_CONVERSATION,
+      message: 'send log when user see duplicate conversation in inbox',
+      call_method_client: callMethodClient,
+      conversations_count_by_id: JSON.stringify(conversationsGroupById)
     })));
   }
 
