@@ -88,17 +88,23 @@ const cleanFolders = () => {
         });
     };
 
-    // If the folders don't exists, create them and if they already exists, remove all files inside
-    if (!fs.existsSync(analyticsFolderPath)) {
-        fs.mkdirSync(analyticsFolderPath);
-    } else {
-        cleanDirectory(analyticsFolderPath);
+    try {
+        // If the folders don't exists, create them and if they already exists, remove all files inside
+        if (!fs.existsSync(analyticsFolderPath)) {
+            fs.mkdirSync(analyticsFolderPath);
+        } else {
+            cleanDirectory(analyticsFolderPath);
+        }
+
+        if (!fs.existsSync(eventInterfacesFolderPath)) {
+            fs.mkdirSync(eventInterfacesFolderPath);
+        } else {
+            cleanDirectory(eventInterfacesFolderPath);
+        }
     }
 
-    if (!fs.existsSync(eventInterfacesFolderPath)) {
-        fs.mkdirSync(eventInterfacesFolderPath);
-    } else {
-        cleanDirectory(eventInterfacesFolderPath);
+    catch (error) {
+        console.warn('Could not clean directories', error);
     }
 }
 
