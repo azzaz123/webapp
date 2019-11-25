@@ -16,7 +16,7 @@ import { StripeService } from '../../core/stripe/stripe.service';
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
 
-fdescribe('AccountComponent', () => {
+describe('AccountComponent', () => {
   let component: AccountComponent;
   let fixture: ComponentFixture<AccountComponent>;
   let modalService: NgbModal;
