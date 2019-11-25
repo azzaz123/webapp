@@ -13,10 +13,13 @@ import { EventService } from "../../core/event/event.service";
 import { Router } from "@angular/router";
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
-import { EventInterface, EVENT_TYPES } from '../../core/analytics/analytics-constants';
-import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
-import { ClickSuscribeOnTheBenefitsScreen } from '../../core/analytics/resources/events-interfaces/click-benefits-subscribe.interface';
-import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
+import {
+  SCREEN_IDS,
+  ANALYTICS_EVENT_NAMES,
+  AnalyticsEvent,
+  ClickSuscribeOnTheBenefitsScreen,
+  ANALYTIC_EVENT_TYPES
+} from '../../core/analytics/analytics-constants';
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionComponent;
@@ -158,13 +161,12 @@ describe('SubscriptionComponent', () => {
   describe('onClickSubscribeButton', () => {
     it('should send clicked on subscribe button event to analytics', () => {
       spyOn(analyticsService, 'trackEvent');
-      const expectedEventAttributes: ClickSuscribeOnTheBenefitsScreen = {
-        screenId: SCREEN_IDS.BenefitScreen
-      };
-      const expectedEvent: EventInterface = {
+      const expectedEvent: AnalyticsEvent<ClickSuscribeOnTheBenefitsScreen> = {
         name: ANALYTICS_EVENT_NAMES.ClickSuscribeontheBenefitsScreen,
-        eventType: EVENT_TYPES.Other,
-        attributes: expectedEventAttributes
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          screenId: SCREEN_IDS.BenefitScreen
+        }
       };
 
       component.onClickSubscribeButton();

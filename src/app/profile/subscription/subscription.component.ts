@@ -8,10 +8,8 @@ import { isEqual } from 'lodash-es';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
-import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
-import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { SCREEN_IDS, ANALYTIC_EVENT_TYPES, ANALYTICS_EVENT_NAMES, AnalyticsEvent } from '../../core/analytics/analytics-constants';
 import { ClickSuscribeOnTheBenefitsScreen } from '../../core/analytics/resources/events-interfaces/click-benefits-subscribe.interface';
-import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 
 @Component({
   selector: 'tsl-subscription',
@@ -67,15 +65,15 @@ export class SubscriptionComponent implements OnInit {
   }
 
   public onClickSubscribeButton() {
-    const eventAttrs: ClickSuscribeOnTheBenefitsScreen = {
-      screenId: SCREEN_IDS.BenefitScreen
+    const event: AnalyticsEvent<ClickSuscribeOnTheBenefitsScreen> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSuscribeontheBenefitsScreen,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        screenId: SCREEN_IDS.BenefitScreen
+      }
     };
 
-    this.analyticsService.trackEvent({
-      name: ANALYTICS_EVENT_NAMES.ClickSuscribeontheBenefitsScreen,
-      eventType: EVENT_TYPES.Other,
-      attributes: eventAttrs
-    });
+    this.analyticsService.trackEvent(event);
   }
 
 }
