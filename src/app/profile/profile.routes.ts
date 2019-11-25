@@ -38,6 +38,7 @@ const routes: Routes = [
       {
         path: 'account',
         component: AccountComponent,
+        canDeactivate: [ExitConfirmGuard],
         data: {
           isMyZone: true,
           isProfile: true

@@ -1,11 +1,8 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { isEqual } from 'lodash-es';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from '../../../core/user/user.service';
-import { ErrorsService } from '../../../core/errors/errors.service';
 import { ExitConfirmationModalComponent } from '../../exit-confirmation-modal/exit-confirmation-modal.component';
-import { User } from '../../../core/user/user';
 
 @Component({
   selector: 'tsl-profile-form',
@@ -15,27 +12,35 @@ import { User } from '../../../core/user/user';
 export class ProfileFormComponent implements OnInit {
 
   @Input() profileForm: FormGroup;
+  @Output() onInit = new EventEmitter<boolean>();
   private oldFormValue: any;
   public hasNotSavedChanges: boolean;
 
-  constructor(private modalService: NgbModal,
-              private userService: UserService,
-              private errorsService: ErrorsService) { }
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
     this.detectFormChanges();
   }
 
+  public initFormControl() {
+    this.hasNotSavedChanges = false;
+    this.oldFormValue = this.profileForm.value;
+  }
+
   private detectFormChanges() {
-    this.profileForm.valueChanges.subscribe((value) => {
-      if (!this.oldFormValue && value.first_name !== '') {
+    this.profileForm.valueChanges.subscribe(value => {
+      if (!this.oldFormValue) {
         this.oldFormValue = value;
       } else {
         if (!isEqual(this.oldFormValue, value)) {
           this.hasNotSavedChanges = true;
+        } else {
+          this.hasNotSavedChanges = false;
         }
       }
     });
+
+    this.onInit.emit(true);
   }
 
   public canExit() {
@@ -53,28 +58,4 @@ export class ProfileFormComponent implements OnInit {
       return confirm();
     }
   }
-
-  public onSubmit(user: User) {
-    if (this.profileForm.valid) {
-      delete this.profileForm.value.location;
-      if (!user.featured) {
-        delete this.profileForm.value.extra_info;
-      }
-      this.userService.edit(this.profileForm.value).subscribe(() => {
-        this.errorsService.i18nSuccess('userEdited');
-        this.hasNotSavedChanges = false;
-      });
-    } else {
-      for (const control in this.profileForm.controls) {
-        if (this.profileForm.controls.hasOwnProperty(control) && !this.profileForm.controls[control].valid) {
-          this.profileForm.controls[control].markAsDirty();
-        }
-      }
-      if (!this.profileForm.get('location.address').valid) {
-        this.profileForm.get('location.address').markAsDirty();
-      }
-      this.errorsService.i18nError('formErrors');
-    }
-  }
-
 }
