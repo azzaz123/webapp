@@ -111,6 +111,15 @@ describe('RemoteConsoleService', () => {
 
   describe('sendMessageTimeout', () => {
 
+    const commonLog = {
+      'browser': BROWSER,
+      'browser_version': BROWSER_VERSION,
+      'user_id': USER_ID,
+      'feature_flag': true,
+      'app_version': APP_VERSION,
+      'message_id': 'MESSAGE_ID'
+    };
+
     it('should NOT send call', () => {
       spyOn(logger, 'info');
 
@@ -129,59 +138,54 @@ describe('RemoteConsoleService', () => {
 
     it('should send call with sending time', fakeAsync(() => {
       spyOn(logger, 'info');
+      spyOn(Date, 'now').and.returnValues(1000, 2000, 2000);
 
       service.sendMessageTimeout(null);
-      tick(1000);
       service.sendMessageTimeout('MESSAGE_ID');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        'browser': BROWSER,
-        'browser_version': BROWSER_VERSION,
-        'user_id': USER_ID,
-        'feature_flag': true,
-        'app_version': APP_VERSION,
-        'message_id': 'MESSAGE_ID',
-        'send_message_time': 1000,
-        'metric_type': MetricTypeEnum.XMPP_SEND_MESSAGE_TIME
+        ...commonLog, ...{
+          'send_message_time': 1000,
+          'metric_type': MetricTypeEnum.XMPP_SEND_MESSAGE_TIME
+        }
       }));
     }));
 
     it('should send call with sending time', fakeAsync(() => {
       spyOn(logger, 'info');
+      spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000);
 
       service.sendMessageTimeout(null);
-      tick(1000);
       service.sendMessageTimeout(null);
-      tick(2000);
       service.sendMessageTimeout('MESSAGE_ID');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        'browser': BROWSER,
-        'browser_version': BROWSER_VERSION,
-        'user_id': USER_ID,
-        'feature_flag': true,
-        'app_version': APP_VERSION,
-        'message_id': 'MESSAGE_ID',
-        'send_message_time': 3000,
-        'metric_type': MetricTypeEnum.XMPP_SEND_MESSAGE_TIME
+        ...commonLog, ...{
+          'send_message_time': 3000,
+          'metric_type': MetricTypeEnum.XMPP_SEND_MESSAGE_TIME
+        }
       }));
 
       service.sendMessageTimeout('MESSAGE_ID');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        'browser': BROWSER,
-        'browser_version': BROWSER_VERSION,
-        'user_id': USER_ID,
-        'feature_flag': true,
-        'app_version': APP_VERSION,
-        'message_id': 'MESSAGE_ID',
-        'send_message_time': 2000,
-        'metric_type': MetricTypeEnum.XMPP_SEND_MESSAGE_TIME
+        ...commonLog, ...{
+          'send_message_time': 2000,
+          'metric_type': MetricTypeEnum.XMPP_SEND_MESSAGE_TIME
+        }
       }));
     }));
   });
 
   describe('sendAcceptedTimeout', () => {
+    const commonLog = {
+      'browser': BROWSER,
+      'browser_version': BROWSER_VERSION,
+      'user_id': USER_ID,
+      'feature_flag': true,
+      'app_version': APP_VERSION,
+      'message_id': 'MESSAGE_ID',
+    };
 
     it('should NOT send call', () => {
       spyOn(logger, 'info');
@@ -201,54 +205,41 @@ describe('RemoteConsoleService', () => {
 
     it('should send call with sending time', fakeAsync(() => {
       spyOn(logger, 'info');
+      spyOn(Date, 'now').and.returnValues(1000, 2000);
 
       service.sendAcceptTimeout(null);
-      tick(1000);
       service.sendAcceptTimeout('MESSAGE_ID');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        'browser': BROWSER,
-        'browser_version': BROWSER_VERSION,
-        'user_id': USER_ID,
-        'feature_flag': true,
-        'app_version': APP_VERSION,
-        'message_id': 'MESSAGE_ID',
-        'send_message_time': 1000,
-        'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME
+        ...commonLog, ...{
+          'send_message_time': 1000,
+          'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME
+        }
       }));
     }));
 
     it('should send call with sending time', fakeAsync(() => {
       spyOn(logger, 'info');
+      spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000);
 
       service.sendAcceptTimeout(null);
-      tick(1000);
       service.sendAcceptTimeout(null);
-      tick(2000);
       service.sendAcceptTimeout('MESSAGE_ID');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        'browser': BROWSER,
-        'browser_version': BROWSER_VERSION,
-        'user_id': USER_ID,
-        'feature_flag': true,
-        'app_version': APP_VERSION,
-        'message_id': 'MESSAGE_ID',
-        'send_message_time': 3000,
-        'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME
+        ...commonLog, ...{
+          'send_message_time': 3000,
+          'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME
+        }
       }));
 
       service.sendAcceptTimeout('MESSAGE_ID');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        'browser': BROWSER,
-        'browser_version': BROWSER_VERSION,
-        'user_id': USER_ID,
-        'feature_flag': true,
-        'app_version': APP_VERSION,
-        'message_id': 'MESSAGE_ID',
-        'send_message_time': 2000,
-        'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME
+        ...commonLog, ...{
+          'send_message_time': 2000,
+          'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME
+        }
       }));
     }));
   });

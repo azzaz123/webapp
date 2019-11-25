@@ -4,7 +4,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { MetricTypeEnum } from './metric-type.enum';
 import * as Fingerprint2 from 'fingerprintjs2';
 import * as logger from 'loglevel';
-import { toUpper, now } from 'lodash-es';
+import { toUpper } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { APP_VERSION } from '../../../environments/version';
@@ -49,14 +49,14 @@ export class RemoteConsoleService implements OnDestroy {
 
   sendMessageTimeout(messageId: string): void {
     if (messageId === null) {
-      this.sendMessageTime.push(now());
+      this.sendMessageTime.push(new Date().getTime());
     } else {
       if (this.sendMessageTime.length > 0) {
 
         this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
           ...commonLog, ...{
             message_id: messageId,
-            send_message_time: now() - this.sendMessageTime.shift(),
+            send_message_time: new Date().getTime() - this.sendMessageTime.shift(),
             metric_type: MetricTypeEnum.XMPP_SEND_MESSAGE_TIME,
           }
         })));
@@ -66,13 +66,13 @@ export class RemoteConsoleService implements OnDestroy {
 
   sendAcceptTimeout(messageId: string): void {
     if (messageId === null) {
-      this.acceptMessageTime.push(now());
+      this.acceptMessageTime.push(new Date().getTime());
     } else {
       if (this.acceptMessageTime.length > 0) {
         this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
           ...commonLog, ...{
             message_id: messageId,
-            send_message_time: now() - this.acceptMessageTime.shift(),
+            send_message_time: new Date().getTime() - this.acceptMessageTime.shift(),
             metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
           }
         })));
