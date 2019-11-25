@@ -18,7 +18,9 @@ import {
   ANALYTICS_EVENT_NAMES,
   AnalyticsEvent,
   ClickSuscribeOnTheBenefitsScreen,
-  ANALYTIC_EVENT_TYPES
+  ANALYTIC_EVENT_TYPES,
+  AnalyticsPageView,
+  ViewProfileSubscription
 } from '../../core/analytics/analytics-constants';
 
 describe('SubscriptionComponent', () => {
@@ -92,6 +94,19 @@ describe('SubscriptionComponent', () => {
       component.ngOnInit();
       
       expect(component.subscriptions).toEqual(MAPPED_SUBSCRIPTIONS);
+    });
+
+    it('should send page view event to analytics', () => {
+      spyOn(analyticsService, 'trackPageView');
+      const expectedPageViewEvent: AnalyticsPageView<ViewProfileSubscription> = {
+        name: ANALYTICS_EVENT_NAMES.ViewProfileSubscription,
+        attributes: {
+          screenId: 205 // TODO: Wait for mparticle branch to be updated
+        }
+      };
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
     });
 
     afterEach(() => {

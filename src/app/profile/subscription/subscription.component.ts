@@ -8,7 +8,14 @@ import { isEqual } from 'lodash-es';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
-import { SCREEN_IDS, ANALYTIC_EVENT_TYPES, ANALYTICS_EVENT_NAMES, AnalyticsEvent } from '../../core/analytics/analytics-constants';
+import {
+  SCREEN_IDS,
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+  AnalyticsEvent,
+  ViewProfileSubscription,
+  AnalyticsPageView
+} from '../../core/analytics/analytics-constants';
 import { ClickSuscribeOnTheBenefitsScreen } from '../../core/analytics/resources/events-interfaces/click-benefits-subscribe.interface';
 
 @Component({
@@ -33,6 +40,15 @@ export class SubscriptionComponent implements OnInit {
       this.subscriptions = subscriptions;
       this.loading = false;
     });
+
+    const pageView: AnalyticsPageView<ViewProfileSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ViewProfileSubscription,
+      attributes: {
+        screenId: 205 // TODO: Wait mparticle branch to be updated
+      }
+    };
+
+    this.analyticsService.trackPageView(pageView);
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
