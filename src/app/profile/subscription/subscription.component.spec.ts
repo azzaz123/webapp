@@ -20,7 +20,8 @@ import {
   ClickSuscribeOnTheBenefitsScreen,
   ANALYTIC_EVENT_TYPES,
   AnalyticsPageView,
-  ViewProfileSubscription
+  ViewProfileSubscription,
+  ClickProfileSubscribeButton
 } from '../../core/analytics/analytics-constants';
 
 describe('SubscriptionComponent', () => {
@@ -176,15 +177,16 @@ describe('SubscriptionComponent', () => {
   describe('onClickSubscribeButton', () => {
     it('should send clicked on subscribe button event to analytics', () => {
       spyOn(analyticsService, 'trackEvent');
-      const expectedEvent: AnalyticsEvent<ClickSuscribeOnTheBenefitsScreen> = {
+      const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
         name: ANALYTICS_EVENT_NAMES.ClickSuscribeontheBenefitsScreen,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: SCREEN_IDS.BenefitScreen
+          screenId: 205, // TODO: mparticle branch update,
+          subscription: MAPPED_SUBSCRIPTIONS[0].category_id as 100 | 14000 | 12800
         }
       };
 
-      component.onClickSubscribeButton();
+      component.onClickSubscribeButton(MAPPED_SUBSCRIPTIONS[0]);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });

@@ -14,7 +14,8 @@ import {
   ANALYTICS_EVENT_NAMES,
   AnalyticsEvent,
   ViewProfileSubscription,
-  AnalyticsPageView
+  AnalyticsPageView,
+  ClickProfileSubscribeButton
 } from '../../core/analytics/analytics-constants';
 import { ClickSuscribeOnTheBenefitsScreen } from '../../core/analytics/resources/events-interfaces/click-benefits-subscribe.interface';
 
@@ -80,12 +81,13 @@ export class SubscriptionComponent implements OnInit {
     });
   }
 
-  public onClickSubscribeButton() {
-    const event: AnalyticsEvent<ClickSuscribeOnTheBenefitsScreen> = {
+  public onClickSubscribeButton(subscriptionClicked: SubscriptionsResponse) {
+    const event: AnalyticsEvent<ClickProfileSubscribeButton> = {
       name: ANALYTICS_EVENT_NAMES.ClickSuscribeontheBenefitsScreen,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
-        screenId: SCREEN_IDS.BenefitScreen
+        screenId: 205, // TODO: mparticle branch update
+        subscription: subscriptionClicked.category_id as 100 | 14000 | 12800
       }
     };
 
