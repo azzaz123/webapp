@@ -8,12 +8,21 @@ import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
+import {
+  ViewEditSubscriptionPlan,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsPageView
+} from '../../../core/analytics/analytics-constants';
 
 describe('EditSubscriptionModalComponent', () => {
   let component: EditSubscriptionModalComponent;
   let fixture: ComponentFixture<EditSubscriptionModalComponent>;
   let activeModal: NgbActiveModal;
   let toastrService: ToastrService;
+  let analyticsService: AnalyticsService;
   let eventService: EventService;
 
   beforeEach(async(() => {
@@ -51,6 +60,9 @@ describe('EditSubscriptionModalComponent', () => {
         },
         I18nService,
         EventService,
+        {
+          provide: AnalyticsService, useClass: MockAnalyticsService
+        }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -64,6 +76,7 @@ describe('EditSubscriptionModalComponent', () => {
     activeModal = TestBed.get(NgbActiveModal);
     eventService = TestBed.get(EventService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
+    analyticsService = TestBed.get(AnalyticsService);
     fixture.detectChanges();
   });
 
@@ -72,6 +85,20 @@ describe('EditSubscriptionModalComponent', () => {
       component.ngOnInit();
 
       expect(component.selectedTier).toEqual(MAPPED_SUBSCRIPTIONS[2].selected_tier);
+    });
+
+    it('should send the page view event to analytics', () => {
+      spyOn(analyticsService, 'trackPageView');
+      const expectedPageView: AnalyticsPageView<ViewEditSubscriptionPlan> = {
+        name: ANALYTICS_EVENT_NAMES.ViewEditSubscriptionPlan,
+        attributes: {
+          screenId: SCREEN_IDS.SubscriptionManagmnet
+        }
+      };
+      component.ngOnInit();
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageView);
     });
 
     afterEach(() => {

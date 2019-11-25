@@ -5,6 +5,13 @@ import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import {
+  AnalyticsPageView,
+  ViewEditSubscriptionPlan,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS
+} from '../../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
@@ -30,11 +37,21 @@ export class EditSubscriptionModalComponent implements OnInit {
               private toastr: ToastrService,
               private i18n: I18nService,
               private eventService: EventService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private analyticsService: AnalyticsService) {
   }
 
   ngOnInit() {
     this.selectedTier = this.subscription.selected_tier;
+
+    const pageView: AnalyticsPageView<ViewEditSubscriptionPlan> = {
+      name: ANALYTICS_EVENT_NAMES.ViewEditSubscriptionPlan,
+      attributes: {
+        screenId: SCREEN_IDS.SubscriptionManagmnet
+      }
+    };
+
+    this.analyticsService.trackPageView(pageView);
   }
 
   public close() {
