@@ -62,7 +62,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
       .subscribe((paymentMethod: any) => {
         this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
-        this.paymentMethod = paymentMethod;
+        this.paymentMethod = +paymentMethod;
         this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
         if (this.paymentMethod !== this.paymentTypeSabadell) {
           this.eventService.subscribe('paymentResponse', (response) => {

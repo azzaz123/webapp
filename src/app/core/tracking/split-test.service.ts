@@ -17,13 +17,21 @@ export const WEB_PAYMENT_EXPERIMENT_CLICK_EVENT = 'StripeCheckoutClick';
 @Injectable()
 export class SplitTestService {
 
-  getVariable<T = any>(name: string, defaultValue): Observable<T> {
-    return Observable.create((observer: Observer<T>) => {
-      Taplytics.variable(name, defaultValue, (value) => {
-        observer.next(value);
-        observer.complete();
+  getVariable<T = any>(name: string, defaultValue): Observable<any> {
+    let experimentValue = this.isExperimentSet(name);
+    
+    if (experimentValue) {
+      return Observable.of(experimentValue);
+    } else {
+      return Observable.create((observer: Observer<T>) => {
+        Taplytics.variable(name, defaultValue, (value) => {
+          console.log('taplytics ', name, value);
+          sessionStorage.setItem(name, value);
+          observer.next(value);
+          observer.complete();
+        });
       });
-    });
+    }
   }
 
   getCodeBlock(name: string): Observable<void> {
@@ -45,6 +53,10 @@ export class SplitTestService {
 
   track(eventName: string, value?: number, attributes?: any) {
     Taplytics.track(eventName, value, attributes);
+  }
+
+  private isExperimentSet(name: string): string {
+    return sessionStorage.getItem(name);
   }
 
   init() {
