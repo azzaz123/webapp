@@ -46,6 +46,7 @@ import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.s
 import { FeatureflagService } from '../../core/user/featureflag.service';
 import { FeatureFlagServiceMock } from '../../../tests';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
+import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -84,7 +85,12 @@ describe('ListComponent', () => {
         StripeService,
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
-        CategoryService,
+        { provide: CategoryService, useValue: {
+            getCategoryById() {
+              return Observable.of(CATEGORY_DATA_WEB);
+            }
+          }
+        },
         HttpService,
         ...TEST_HTTP_PROVIDERS,
         { provide: TrackingService, useClass: MockTrackingService },
