@@ -1,7 +1,3 @@
-import { ListItemCG } from '../../core/analytics/resources/events-interfaces/list-item-cg.interface';
-import { EditItemCG } from '../../core/analytics/resources/events-interfaces/edit-item-cg.interface';
-import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
-import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { AnalyticsService } from './../../core/analytics/analytics.service';
 import {
   Component,
@@ -35,7 +31,14 @@ import { Subject } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { SplitTestService } from '../../core/tracking/split-test.service';
 import { UserService } from '../../core/user/user.service';
-import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsEvent,
+  ListItemCG,
+  EditItemCG
+} from '../../core/analytics/analytics-constants';
 
 const CATEGORIES_WITH_EXTRA_FIELDS = ['16000', '12465'];
 
@@ -546,27 +549,25 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }
 
       if (isEdit) {
-        const eventAttrs: EditItemCG = {
-          ...baseEventAttrs,
-          screenId: SCREEN_IDS.EditItem
-        };
-
-        this.analyticsService.trackEvent({
+        const editItemCGEvent: AnalyticsEvent<EditItemCG> = {
           name: ANALYTICS_EVENT_NAMES.EditItemCG,
-          eventType: EVENT_TYPES.Other,
-          attributes: eventAttrs
-        });
-      } else {
-        const eventAttrs: ListItemCG = {
-          ...baseEventAttrs,
-          screenId: SCREEN_IDS.Upload
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            ...baseEventAttrs,
+            screenId: SCREEN_IDS.EditItem
+          }
         };
-
-        this.analyticsService.trackEvent({
+        this.analyticsService.trackEvent(editItemCGEvent);
+      } else {
+        const listItemCGEvent: AnalyticsEvent<ListItemCG> = {
           name: ANALYTICS_EVENT_NAMES.ListItemCG,
-          eventType: EVENT_TYPES.Other,
-          attributes: eventAttrs
-        });
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            ...baseEventAttrs,
+            screenId: SCREEN_IDS.Upload
+          }
+        };
+        this.analyticsService.trackEvent(listItemCGEvent);
       }
     });
   }

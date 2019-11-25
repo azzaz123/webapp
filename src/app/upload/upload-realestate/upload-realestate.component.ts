@@ -1,7 +1,3 @@
-import { ListItemRE } from '../../core/analytics/resources/events-interfaces/list-item-re.interface';
-import { EditItemRE } from '../../core/analytics/resources/events-interfaces/edit-item-re.interface';
-import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
-import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IOption } from 'ng-select';
 import { RealestateKeysService } from './realestate-keys.service';
@@ -21,8 +17,15 @@ import { Realestate } from '../../core/item/realestate';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
-import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 import { RealestateContent } from '../../core/item/item-response.interface';
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsEvent,
+  EditItemRE,
+  ListItemRE
+} from '../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -278,27 +281,25 @@ export class UploadRealestateComponent implements OnInit {
       };
 
       if (isEdit) {
-        const eventAttrs: EditItemRE = {
-          ...baseEventAttrs,
-          screenId: SCREEN_IDS.EditItem
-        }
-
-        this.analyticsService.trackEvent({
+        const editItemREEvent: AnalyticsEvent<EditItemRE> = {
           name: ANALYTICS_EVENT_NAMES.EditItemRE,
-          eventType: EVENT_TYPES.Other,
-          attributes: eventAttrs
-        });
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            ...baseEventAttrs,
+            screenId: SCREEN_IDS.EditItem
+          }
+        };
+        this.analyticsService.trackEvent(editItemREEvent);
       } else {
-        const eventAttrs: ListItemRE = {
-          ...baseEventAttrs,
-          screenId: SCREEN_IDS.Upload
-        }
-
-        this.analyticsService.trackEvent({
+        const listItemREEvent: AnalyticsEvent<ListItemRE> = {
           name: ANALYTICS_EVENT_NAMES.ListItemRE,
-          eventType: EVENT_TYPES.Other,
-          attributes: eventAttrs
-        });
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            ...baseEventAttrs,
+            screenId: SCREEN_IDS.Upload
+          }
+        };
+        this.analyticsService.trackEvent(listItemREEvent);
       }
     });
   }

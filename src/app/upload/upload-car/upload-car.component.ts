@@ -1,8 +1,4 @@
 import { Observable } from 'rxjs';
-import { EditItemCar } from '../../core/analytics/resources/events-interfaces/edit-item-car.interface';
-import { ListItemCar } from '../../core/analytics/resources/events-interfaces/list-item-car.interface';
-import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
-import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
@@ -21,9 +17,15 @@ import { ItemService } from '../../core/item/item.service';
 import { CarInfo, CarContent } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
-import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
-import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsEvent,
+  EditItemCar,
+  ListItemCar
+} from '../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -445,27 +447,25 @@ export class UploadCarComponent implements OnInit {
       };
 
       if (isEdit) {
-        const eventAttrs: EditItemCar = {
-          ...baseEventAttrs,
-          screenId: SCREEN_IDS.EditItem
-        };
-
-        this.analyticsService.trackEvent({
+        const editItemCarEvent: AnalyticsEvent<EditItemCar> = {
           name: ANALYTICS_EVENT_NAMES.EditItemCar,
-          eventType: EVENT_TYPES.Other,
-          attributes: eventAttrs
-        });
-      } else {
-        const eventAttrs: ListItemCar = {
-          ...baseEventAttrs,
-          screenId: SCREEN_IDS.Upload
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            ...baseEventAttrs,
+            screenId: SCREEN_IDS.EditItem
+          }
         };
-
-        this.analyticsService.trackEvent({
+        this.analyticsService.trackEvent(editItemCarEvent);
+      } else {
+        const listItemCarEvent: AnalyticsEvent<ListItemCar> = {
           name: ANALYTICS_EVENT_NAMES.ListItemCar,
-          eventType: EVENT_TYPES.Other,
-          attributes: eventAttrs
-        });
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            ...baseEventAttrs,
+            screenId: SCREEN_IDS.Upload
+          }
+        };
+        this.analyticsService.trackEvent(listItemCarEvent);
       }
     });
   }

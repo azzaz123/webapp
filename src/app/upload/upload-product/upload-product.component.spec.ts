@@ -26,13 +26,15 @@ import { CategoryOption } from '../../core/category/category-response.interface'
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
-import { EVENT_TYPES } from '../../core/analytics/analytics-constants';
-import { SCREEN_IDS } from '../../core/analytics/resources/analytics-screen-ids';
-import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
-import { EditItemCG } from '../../core/analytics/resources/events-interfaces/edit-item-cg.interface';
-import { ListItemCG } from '../../core/analytics/resources/events-interfaces/list-item-cg.interface';
 import { ItemContent } from '../../core/item/item-response.interface';
-
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsEvent,
+  EditItemCG,
+  ListItemCG
+} from '../../core/analytics/analytics-constants';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -680,25 +682,25 @@ describe('UploadProductComponent', () => {
           }
         }
         const editResponse: ItemContent = MOCK_RESPONSE_CONTENT;
-        const trackingAttrs: EditItemCG = {
-          itemId: editResponse.id,
-          categoryId: editResponse.category_id,
-          salePrice: editResponse.sale_price,
-          title: editResponse.title,
-          isPro: false,
-          screenId: SCREEN_IDS.EditItem
-        }
+        const expectedEvent: AnalyticsEvent<EditItemCG> = {
+          name: ANALYTICS_EVENT_NAMES.EditItemCG,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            itemId: editResponse.id,
+            categoryId: editResponse.category_id,
+            salePrice: editResponse.sale_price,
+            title: editResponse.title,
+            isPro: false,
+            screenId: SCREEN_IDS.EditItem
+          }
+        };
         editEvent.response.content = editResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();
         component.onUploaded(editEvent);
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-          name: ANALYTICS_EVENT_NAMES.EditItemCG,
-          eventType: EVENT_TYPES.Other,
-          attributes: trackingAttrs
-        });
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
     });
 
@@ -712,25 +714,25 @@ describe('UploadProductComponent', () => {
           }
         }
         const uploadResponse: ItemContent = MOCK_RESPONSE_CONTENT;
-        const trackingAttrs: ListItemCG = {
-          itemId: uploadResponse.id,
-          categoryId: uploadResponse.category_id,
-          salePrice: uploadResponse.sale_price,
-          title: uploadResponse.title,
-          isPro: false,
-          screenId: SCREEN_IDS.Upload
-        }
+        const expectedEvent: AnalyticsEvent<ListItemCG> = {
+          name: ANALYTICS_EVENT_NAMES.ListItemCG,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            itemId: uploadResponse.id,
+            categoryId: uploadResponse.category_id,
+            salePrice: uploadResponse.sale_price,
+            title: uploadResponse.title,
+            isPro: false,
+            screenId: SCREEN_IDS.Upload
+          }
+        };
         uploadEvent.response.content = uploadResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();
         component.onUploaded(uploadEvent);
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-          name: ANALYTICS_EVENT_NAMES.ListItemCG,
-          eventType: EVENT_TYPES.Other,
-          attributes: trackingAttrs
-        });
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
     });
 

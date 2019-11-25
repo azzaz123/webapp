@@ -1,6 +1,11 @@
 import { ANALYTICS_EVENT_NAMES } from './resources/analytics-event-names';
 
-export enum EVENT_TYPES {
+// Export helpers to prevent multiple imports when using analytics code
+export * from './resources/analytics-event-names';
+export * from './resources/analytics-screen-ids';
+export * from './resources/events-interfaces';
+
+export enum ANALYTIC_EVENT_TYPES {
     Navigation = 1,
     Location = 2,
     Search = 3,
@@ -11,14 +16,14 @@ export enum EVENT_TYPES {
     Other = 8
 }
 
-export interface PageViewInterface {
+export interface AnalyticsPageView<T> {
     name: string;
-    attributes: Object;
+    attributes: T;
     flags?: Object;
 }
 
-export interface EventInterface {
+export interface AnalyticsEvent<T> {
     name: ANALYTICS_EVENT_NAMES;
-    eventType: EVENT_TYPES;
-    attributes: Object;
+    eventType: ANALYTIC_EVENT_TYPES;
+    attributes: T;
 }

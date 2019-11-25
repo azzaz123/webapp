@@ -17,10 +17,13 @@ import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService, MockConnectionService } from '../../../tests';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
-import { EVENT_TYPES } from '../analytics/analytics-constants';
-import { SCREEN_IDS } from '../analytics/resources/analytics-screen-ids';
-import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
-import { SendFirstMessage } from '../analytics/resources/events-interfaces/send-first-message.interface';
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsEvent,
+  SendFirstMessage
+} from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
 
 let service: RealTimeService;
@@ -356,22 +359,22 @@ describe('RealTimeService', () => {
 
     describe('if it`s the first message', () => {
       it('should send the Send First Message event', () => {
-        const eventAttrs: SendFirstMessage = {
-          itemId: MOCKED_CONVERSATIONS[0].item.id,
-          sellerUserId: MOCKED_CONVERSATIONS[0].user.id,
-          conversationId: MOCKED_CONVERSATIONS[0].id,
-          screenId: SCREEN_IDS.Chat
+        const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
+          name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            itemId: MOCKED_CONVERSATIONS[0].item.id,
+            sellerUserId: MOCKED_CONVERSATIONS[0].user.id,
+            conversationId: MOCKED_CONVERSATIONS[0].id,
+            screenId: SCREEN_IDS.Chat
+          }
         };
         MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
         spyOn(analyticsService, 'trackEvent');
 
         eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-          name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
-          eventType: EVENT_TYPES.Other,
-          attributes: eventAttrs
-        });
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
     });
 
