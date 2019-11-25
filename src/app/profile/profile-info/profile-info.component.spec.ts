@@ -199,7 +199,10 @@ describe('ProfileInfoComponent', () => {
 
       it('should call updateProInfo and edit', () => {
         expect(userService.updateProInfo).toHaveBeenCalledWith(DATA);
-        expect(userService.edit).toHaveBeenCalledWith(USER_EDIT_DATA);
+        expect(userService.edit).toHaveBeenCalledWith({
+          ...USER_EDIT_DATA,
+          gender: USER_EDIT_DATA.gender.toUpperCase().substr(0, 1) 
+        });
       });
 
       it('should call i18nSuccess', () => {
