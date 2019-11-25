@@ -27,15 +27,14 @@ export class ContinueSubscriptionModalComponent {
 
   public continueSubscription() {
     this.loading = true;
-    this.subscriptionsService.continueSubscription(this.subscription.selected_tier_id).subscribe((response) => {
-      if (response.status === 202) {
-          this.toastr.success(this.i18n.getTranslations('continueSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('continueSubscriptionSuccessBody'));
-          this.loading = false;
-      } else {
-        this.loading = false;
-        this.toastr.error(this.i18n.getTranslations('continueSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('continueSubscriptionErrorBody'));
-      }
+    this.subscriptionsService.continueSubscription(this.subscription.selected_tier_id).subscribe(() => {
+      this.loading = false;
       this.close();
+      this.toastr.success(this.i18n.getTranslations('continueSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('continueSubscriptionSuccessBody'));
+    }, () => {
+      this.loading = false;
+      this.close();
+      this.toastr.error(this.i18n.getTranslations('continueSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('continueSubscriptionErrorBody'));
     });
     
   }
