@@ -17,7 +17,7 @@ export enum SCREEN_IDS {
 	Chat = 27,
 	ShareItemPopUp = 189,
 	ItemDetailRecommendationSlider = 190,
-	SubscriptionManagmnet = 191,
+	SubscriptionManagment = 191,
 	BenefitScreen = 192,
 	SeoWall = 193,
 	MyFavoriteItemsSection = 194,

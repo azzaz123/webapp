@@ -1,5 +1,6 @@
 const fs = require('fs');
 const glob = require('glob');
+const Path = require('path');
 const { compileFromFile } = require('json-schema-to-typescript');
 
 const jsonSchemasLocationPattern = 'node_modules/mparticle_json_validation/**/*.json';
@@ -70,19 +71,40 @@ const createScreenIdsInterface = () => {
     }
 };
 
-const checkFolders = () => {
-    if (!fs.existsSync(analyticsFolderPath)){
+const cleanFolders = () => {
+    // This function clears all files inside a folder path if it exists
+    const cleanDirectory = path => {
+        if (!fs.existsSync(path)) {
+            return;
+        }
+
+        fs.readdirSync(path).forEach(file => {
+            const curPath = Path.join(path, file);
+            if (fs.lstatSync(curPath).isDirectory()) {
+                cleanDirectory(curPath);
+            } else {
+                fs.unlinkSync(curPath);
+            }
+        });
+    };
+
+    // If the folders don't exists, create them and if they already exists, remove all files inside
+    if (!fs.existsSync(analyticsFolderPath)) {
         fs.mkdirSync(analyticsFolderPath);
+    } else {
+        cleanDirectory(analyticsFolderPath);
     }
 
-    if (!fs.existsSync(eventInterfacesFolderPath)){
+    if (!fs.existsSync(eventInterfacesFolderPath)) {
         fs.mkdirSync(eventInterfacesFolderPath);
+    } else {
+        cleanDirectory(eventInterfacesFolderPath);
     }
 }
 
 const main = () => {
-    // Ensure that folders exist first
-    checkFolders();
+    // Clear all previously generated files
+    cleanFolders();
 
     // Read all JSON files from mparticle JSON schemas, create interfaces, index and event names enum
     glob(jsonSchemasLocationPattern, {}, (err, schemas) => {
