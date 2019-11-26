@@ -343,34 +343,37 @@ describe('AddNewSubscriptionModalComponent', () => {
   });
 
   describe('onClickPay', () => {
-    let expectedEvent: AnalyticsEvent<ClickPaySubscription>;
+    const expectedEvent: AnalyticsEvent<ClickPaySubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        screenId: 205,
+        isNewVisa: true
+      }
+    };
 
-    beforeAll(() => {
+    beforeEach(() => {
       spyOn(analyticsService, 'trackEvent');
-      expectedEvent = {
-        name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          screenId: 205,
-          isNewVisa: true
-        }
-      };
     });
 
     describe('when isNewVisa is true', () => {
-      component.onClickPay(true);
+      it('should send valid event', () => {
+        component.onClickPay(true);
 
-      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
     });
 
     describe('when isNewVisa is false', () => {
-      expectedEvent.attributes.isNewVisa = false;
+      it('should send valid event', () => {
+        expectedEvent.attributes.isNewVisa = false;
 
-      component.onClickPay(false);
+        component.onClickPay(false);
 
-      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
     });
   });
 });
