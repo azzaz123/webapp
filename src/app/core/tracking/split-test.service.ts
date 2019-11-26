@@ -25,7 +25,6 @@ export class SplitTestService {
     } else {
       return Observable.create((observer: Observer<T>) => {
         Taplytics.variable(name, defaultValue, (value) => {
-          console.log('taplytics ', name, value);
           sessionStorage.setItem(name, value);
           observer.next(value);
           observer.complete();
