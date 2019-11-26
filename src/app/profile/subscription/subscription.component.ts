@@ -15,9 +15,9 @@ import {
   AnalyticsEvent,
   ViewProfileSubscription,
   AnalyticsPageView,
-  ClickProfileSubscribeButton
+  ClickProfileSubscribeButton,
+  ClickProfileUnsuscribe
 } from '../../core/analytics/analytics-constants';
-import { ClickSuscribeOnTheBenefitsScreen } from '../../core/analytics/resources/events-interfaces/click-benefits-subscribe.interface';
 
 @Component({
   selector: 'tsl-subscription',
@@ -63,6 +63,8 @@ export class SubscriptionComponent implements OnInit {
       }
       modalRef = null;
     }, () => {});
+
+    this.trackOpenModalEvent(subscription);
   }
 
   private isSubscriptionUpdated() {
@@ -81,17 +83,30 @@ export class SubscriptionComponent implements OnInit {
     });
   }
 
-  public onClickSubscribeButton(subscriptionClicked: SubscriptionsResponse) {
-    const event: AnalyticsEvent<ClickProfileSubscribeButton> = {
-      name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
-      attributes: {
-        screenId: 205, // TODO: mparticle branch update
-        subscription: subscriptionClicked.category_id as any
-      }
-    };
+  private trackOpenModalEvent(subscription: SubscriptionsResponse) {
+    if (subscription.subscribed_from) {
+      const event: AnalyticsEvent<ClickProfileUnsuscribe> = {
+        name: ANALYTICS_EVENT_NAMES.ClickProfileUnsuscribe,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          screenId: 205, // TODO: wait mparticle branch update
+          subscription: subscription.category_id as any
+        }
+      };
 
-    this.analyticsService.trackEvent(event);
+      this.analyticsService.trackEvent(event);
+    } else {
+      const event: AnalyticsEvent<ClickProfileSubscribeButton> = {
+        name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          screenId: 205, // TODO: wait mparticle branch update
+          subscription: subscription.category_id as any
+        }
+      };
+
+      this.analyticsService.trackEvent(event);
+    }
   }
 
 }

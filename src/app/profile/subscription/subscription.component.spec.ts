@@ -21,7 +21,8 @@ import {
   ANALYTIC_EVENT_TYPES,
   AnalyticsPageView,
   ViewProfileSubscription,
-  ClickProfileSubscribeButton
+  ClickProfileSubscribeButton,
+  ClickProfileUnsuscribe
 } from '../../core/analytics/analytics-constants';
 
 describe('SubscriptionComponent', () => {
@@ -167,6 +168,44 @@ describe('SubscriptionComponent', () => {
       expect(router.navigate).toHaveBeenCalledWith(['profile/info']);
     }));
 
+    describe('when the user is subscribed to the selected category', () => {
+      it('should send click profile unsubscribe event', () => {
+        spyOn(analyticsService, 'trackEvent');
+        const expectedEvent: AnalyticsEvent<ClickProfileUnsuscribe> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProfileUnsuscribe,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: 205, // TODO: mparticle branch update
+            subscription: MAPPED_SUBSCRIPTIONS_ADDED[0].category_id as any
+          }
+        };
+
+        component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS_ADDED[0]);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
+    describe('when the user is NOT subscribed to the selected category', () => {
+      it('should send click profile subscribe event', () => {
+        spyOn(analyticsService, 'trackEvent');
+        const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: 205, // TODO: mparticle branch update
+            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any
+          }
+        };
+
+        component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
     afterEach(() => {
       TestBed.resetTestingModule();
     });
@@ -174,24 +213,6 @@ describe('SubscriptionComponent', () => {
 
   afterAll(() => {
     TestBed.resetTestingModule();
-  });
-
-  describe('onClickSubscribeButton', () => {
-    it('should send clicked on subscribe button event to analytics', () => {
-      spyOn(analyticsService, 'trackEvent');
-      const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
-        name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          screenId: 205, // TODO: mparticle branch update,
-          subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any
-        }
-      };
-
-      component.onClickSubscribeButton(MAPPED_SUBSCRIPTIONS[0]);
-
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-    });
   });
 
 });

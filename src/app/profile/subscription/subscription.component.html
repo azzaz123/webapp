@@ -22,7 +22,7 @@
             </p>
             <p class="Subscriptions__category-info--edit" *ngIf="!subscription.subscribed_until" i18n>Unsubscribe</p>
         </div>
-        <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from" (click)="onClickSubscribeButton(subscription)">Subscribe</tsl-button>
+        <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from">Subscribe</tsl-button>
         <span *ngIf="subscription.subscribed_from" [hidden]="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n>
           Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}
         </span>
