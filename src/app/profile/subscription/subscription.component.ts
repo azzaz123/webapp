@@ -83,7 +83,7 @@ export class SubscriptionComponent implements OnInit {
 
   public onClickSubscribeButton(subscriptionClicked: SubscriptionsResponse) {
     const event: AnalyticsEvent<ClickProfileSubscribeButton> = {
-      name: ANALYTICS_EVENT_NAMES.ClickSuscribeontheBenefitsScreen,
+      name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: 205, // TODO: mparticle branch update

@@ -180,7 +180,7 @@ describe('SubscriptionComponent', () => {
     it('should send clicked on subscribe button event to analytics', () => {
       spyOn(analyticsService, 'trackEvent');
       const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
-        name: ANALYTICS_EVENT_NAMES.ClickSuscribeontheBenefitsScreen,
+        name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           screenId: 205, // TODO: mparticle branch update,
