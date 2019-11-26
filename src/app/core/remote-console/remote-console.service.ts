@@ -72,6 +72,7 @@ export class RemoteConsoleService implements OnDestroy {
           message_id: messageId,
           send_message_time: new Date().getTime() - this.acceptMessageTime.shift(),
           metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
+          ping_time_ms: navigator['connection']['rtt']
         })));
       }
     }
