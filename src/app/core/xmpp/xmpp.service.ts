@@ -54,6 +54,7 @@ export class XmppService {
     this.onNewMessage(clone(message), true);
     this.client.sendMessage(message);
     this.remoteConsoleService.sendMessageTimeout(message.id);
+    this.remoteConsoleService.sendAcceptTimeout(null);
     this.eventService.emit(EventService.MESSAGE_SENT, conversation, message.id);
   }
 

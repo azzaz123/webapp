@@ -52,7 +52,6 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
             thread_id: this.currentConversation.id,
           });
           this.remoteConsoleService.sendMessageTimeout(null);
-          this.remoteConsoleService.sendAcceptTimeout(null);
           this.messageService.send(this.currentConversation, this.message);
           this.message = '';
         }

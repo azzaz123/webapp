@@ -664,6 +664,7 @@ describe('Service: Xmpp', () => {
     it('should send a new message', () => {
       spyOn<any>(service, 'onNewMessage');
       spyOn<any>(remoteConsoleService, 'sendMessageTimeout');
+      spyOn<any>(remoteConsoleService, 'sendAcceptTimeout');
 
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
@@ -678,6 +679,7 @@ describe('Service: Xmpp', () => {
       };
 
       expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(queryId);
+      expect(remoteConsoleService.sendAcceptTimeout).toHaveBeenCalledWith(null);
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(message);
       expect(service['onNewMessage']).toHaveBeenCalledWith(message, true);
     });
@@ -698,11 +700,13 @@ describe('Service: Xmpp', () => {
     it('should emit a MESSAGE_SENT event when called', () => {
       spyOn(eventService, 'emit');
       spyOn<any>(remoteConsoleService, 'sendMessageTimeout');
+      spyOn<any>(remoteConsoleService, 'sendAcceptTimeout');
 
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
 
       expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(queryId);
+      expect(remoteConsoleService.sendAcceptTimeout).toHaveBeenCalledWith(null);
       expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], queryId);
     });
 

@@ -120,7 +120,6 @@ describe('Component: Input', () => {
         thread_id: conversation.id
       });
       expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(null);
-      expect(remoteConsoleService.sendAcceptTimeout).toHaveBeenCalledWith(null);
       expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 
@@ -137,7 +136,6 @@ describe('Component: Input', () => {
         thread_id: conversation.id
       });
       expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(null);
-      expect(remoteConsoleService.sendAcceptTimeout).toHaveBeenCalledWith(null);
       expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 
