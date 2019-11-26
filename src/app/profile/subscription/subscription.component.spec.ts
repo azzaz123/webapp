@@ -106,6 +106,8 @@ describe('SubscriptionComponent', () => {
         }
       };
 
+      component.ngOnInit();
+
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
     });
