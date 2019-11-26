@@ -5,7 +5,7 @@ import { WindowRef } from '../window/window.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { UserService } from './user.service';
-import { User } from './user';
+import { User, PERMISSIONS } from './user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { Observable } from 'rxjs';
 
@@ -41,7 +41,8 @@ describe('LoggedGuard', (): void => {
         {
           provide: NgxPermissionsService,
           useValue: {
-            getPermissions() { }
+            getPermissions() { },
+            addPermission() { }
           }
         },
         {
@@ -50,9 +51,12 @@ describe('LoggedGuard', (): void => {
             me(): Observable<User> {
               return Observable.of(MOCK_USER);
             },
-            setPermission(userType: string): void { }
+            setPermission(userType: string): void { },
+            setSubscriptionsFeatureFlag() {
+              return Observable.of(true);
+            }
           },
-        },
+        }
       ]
     });
     loggedGuard = TestBed.get(LoggedGuard);
@@ -109,6 +113,18 @@ describe('LoggedGuard', (): void => {
 
       expect(userService.me).toHaveBeenCalled();
       expect(result).toBeTruthy();
+    });
+
+    it('should call setSubscriptionsFeatureFlag and set the subscriptions permissions', () => {
+      spyOn(userService, 'setSubscriptionsFeatureFlag').and.callThrough();
+      spyOn(permissionService, 'addPermission').and.callThrough();
+      
+      accessTokenService.storeAccessToken('abc');
+
+      userService.me().map((u: User) => {
+        expect(userService.setPermission).toHaveBeenCalledWith(u.type);
+        expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS.subscriptions);
+      });
     });
   });
 });

@@ -5,7 +5,7 @@ import { HttpService } from './core/http/http.service';
 import { RequestOptions, XHRBackend } from '@angular/http';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { UserService } from './core/user/user.service';
-import { User } from './core/user/user';
+import { User, PERMISSIONS } from './core/user/user';
 import { Observable } from 'rxjs';
 import { EventService } from './core/event/event.service';
 
@@ -46,15 +46,13 @@ export function permissionFactory(userService: UserService) {
       .map((user: User) => {
         if (user) {
           userService.setPermission(user.type);
+          userService.setSubscriptionsFeatureFlag().subscribe((isActive => {
+            if (isActive) {
+              this.permissionService.addPermission(PERMISSIONS.subscriptions);
+            }
+          }));
         }
         return user;
-      })
-      .flatMap((user: User) => {	
-        if (user) {	
-          return userService.setSubscriptionsFeatureFlag();	
-        } else {	
-          return Observable.of({});	
-        }	
       })
       .toPromise();
   };
