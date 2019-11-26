@@ -6,6 +6,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../../tests/inbox.fixtures.spec';
 import { INBOX_ITEM_STATUSES } from '../../../model/inbox-item';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 describe('Component: Conversation', () => {
   let component: InboxConversationComponent;
@@ -13,7 +14,11 @@ describe('Component: Conversation', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MomentModule],
+      imports: [
+        MomentModule,
+        NgxPermissionsModule,
+        NgxPermissionsModule.forRoot()
+      ],
       declarations: [InboxConversationComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
