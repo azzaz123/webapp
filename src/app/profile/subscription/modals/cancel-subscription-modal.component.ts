@@ -22,23 +22,18 @@ export class CancelSubscriptionModalComponent {
               private i18n: I18nService) {
   }
 
-  public close() {
-    this.activeModal.close('cancel');
-  }
-
   public cancelSubscription() {
     this.loading = true;
     this.subscriptionsService.cancelSubscription(this.subscription.selected_tier_id).subscribe((response) => {
       if (response.status === 202) {
           this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
           this.loading = false;
+          this.activeModal.close('success');
       } else {
         this.loading = false;
         this.toastr.error(this.i18n.getTranslations('cancelSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionErrorBody'));
+        this.activeModal.close('fail');
       }
-      this.close();
     });
-    
   }
-
 }

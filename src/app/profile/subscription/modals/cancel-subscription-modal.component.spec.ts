@@ -72,16 +72,6 @@ describe('CancelSubscriptionModalComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('close', () => {
-    it('should close the modal and redirect to the profile', () => {
-      spyOn(activeModal, 'close');
-
-      component.close();
-
-      expect(activeModal.close).toHaveBeenCalledWith('cancel');
-    })
-  })
-
   describe('cancelSubscription', () => {
     const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
 
