@@ -27,7 +27,7 @@ import { CardSelectionComponent } from '../../payments/card-selection/card-selec
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { FINANCIAL_CARD_OPTION, STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
+import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT } from '../../../core/tracking/split-test.service';
 
 describe('CartComponent', () => {
@@ -273,6 +273,15 @@ describe('CartComponent', () => {
   describe('checkout', () => {
     let eventId: string;
 
+    it('should not proceed if cart is empty or loading', () => {
+      spyOn(itemService, 'purchaseProductsWithCredits').and.callThrough();
+
+      component.cart = CART;
+      component.cart.total = null;
+
+      expect(itemService.purchaseProductsWithCredits).not.toHaveBeenCalled()
+    });
+
     describe('success', () => {
 
       beforeEach(() => {
@@ -289,9 +298,13 @@ describe('CartComponent', () => {
           eventId = id;
         });
         component.isStripe = false;
+        component.cart = CART;
+        component.cart.total = 1;
+        component.loading = false;
       });
 
       it('should set localStorage with transaction type', fakeAsync(() => {
+        component.creditInfo.credit = 0;
         component.checkout();
         tick(2000);
 

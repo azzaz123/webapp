@@ -86,6 +86,9 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   checkout() {
+    if (!this.cart.total || this.loading) {
+      return;
+    }
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
     this.loading = true;
