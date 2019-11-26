@@ -66,13 +66,13 @@
                 </div>
                 <div class="AddNewSubscription__payment-add-card" (click)="removeNewCard()" *ngIf="showCard && isStripeCard" i18n>Use saved card</div>
                 <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [disabled]="isPaymentError" [type]="'subscription'"
-                [listingLimit]="selectedTier" [action]="action" (onStripeCardCreate)="addSubscription($event)" (stripeCard)="setCardInfo($event)">
+                [listingLimit]="selectedTier" [action]="action" (onStripeCardCreate)="addSubscription($event); onClickPay(true);" (stripeCard)="setCardInfo($event)">
                 </tsl-stripe-card-element>
               </div>
               <tsl-button [hidden]="!savedCard"
               [disabled]="!selectedCard || loading"
               [loading]="loading"
-              (click)="addSubscriptionFromSavedCard()"
+              (click)="addSubscriptionFromSavedCard(); onClickPay(false);"
               id="qa-checkout-subscription"
               className="btn-primary btn-medium stripe"
               i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}</tsl-button>

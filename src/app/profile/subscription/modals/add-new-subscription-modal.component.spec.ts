@@ -27,7 +27,8 @@ import {
   ClickContinuePaymentSubscription,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  SCREEN_IDS
+  SCREEN_IDS,
+  ClickPaySubscription
 } from '../../../core/analytics/analytics-constants';
 
 describe('AddNewSubscriptionModalComponent', () => {
@@ -341,4 +342,35 @@ describe('AddNewSubscriptionModalComponent', () => {
     });
   });
 
+  describe('onClickPay', () => {
+    let expectedEvent: AnalyticsEvent<ClickPaySubscription>;
+
+    beforeAll(() => {
+      spyOn(analyticsService, 'trackEvent');
+      expectedEvent = {
+        name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          screenId: 205,
+          isNewVisa: true
+        }
+      };
+    });
+
+    describe('when isNewVisa is true', () => {
+      component.onClickPay(true);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+    });
+
+    describe('when isNewVisa is false', () => {
+      expectedEvent.attributes.isNewVisa = false;
+
+      component.onClickPay(false);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+    });
+  });
 });

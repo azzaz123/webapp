@@ -14,7 +14,8 @@ import {
   ClickContinuePaymentSubscription,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  SCREEN_IDS
+  SCREEN_IDS,
+  ClickPaySubscription
 } from '../../../core/analytics/analytics-constants';
 
 @Component({
@@ -236,6 +237,19 @@ export class AddNewSubscriptionModalComponent implements OnInit {
       attributes: {
         screenId: 205, // TODO: Ojo cuidao
         tier: this.selectedTier.id as any // TODO: this should be a string in the schema
+      }
+    };
+
+    this.analyticsService.trackEvent(event);
+  }
+
+  public onClickPay(isNewVisa: boolean) {
+    const event: AnalyticsEvent<ClickPaySubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        screenId: 205,
+        isNewVisa
       }
     };
 
