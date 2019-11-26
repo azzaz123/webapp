@@ -33,7 +33,7 @@
             </div>
           </div>
         </div>
-        <tsl-button [disabled]="!selectedTier" (click)="carousel.next()" i18n>Continue to payment</tsl-button>
+        <tsl-button [disabled]="!selectedTier" (click)="carousel.next(); onClickContinueToPayment()" i18n>Continue to payment</tsl-button>
       </div>
     </ng-template>
     <ng-template ngbSlide>

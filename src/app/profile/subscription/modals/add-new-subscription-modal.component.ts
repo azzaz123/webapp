@@ -8,6 +8,14 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import {
+  AnalyticsEvent,
+  ClickContinuePaymentSubscription,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  SCREEN_IDS
+} from '../../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -41,7 +49,8 @@ export class AddNewSubscriptionModalComponent implements OnInit {
               private eventService: EventService,
               private subscriptionsService: SubscriptionsService,
               private modalService: NgbModal,
-              private errorService: ErrorsService) {
+              private errorService: ErrorsService,
+              private analyticsService: AnalyticsService) {
   }
 
   ngOnInit() {
@@ -220,5 +229,17 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     }
   }
 
+  public onClickContinueToPayment() {
+    const event: AnalyticsEvent<ClickContinuePaymentSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickContinuePaymentSubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        screenId: 205, // TODO: Ojo cuidao
+        tier: this.selectedTier.id as any // TODO: this should be a string in the schema
+      }
+    };
+
+    this.analyticsService.trackEvent(event);
+  }
 
 }
