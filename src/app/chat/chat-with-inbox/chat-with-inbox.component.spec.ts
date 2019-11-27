@@ -14,6 +14,8 @@ import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.sp
 import { ActivatedRoute } from '@angular/router';
 import { InboxConversationService } from '../../core/inbox/inbox-conversation.service';
 import { ConversationService } from '../../core/conversation/conversation.service';
+import { InboxService } from '../../core/inbox/inbox.service';
+import { InboxServiceMock } from '../../../tests';
 
 class MockUserService {
   public isProfessional() {
@@ -39,6 +41,7 @@ describe('Component: ChatWithInboxComponent', () => {
       providers: [
         ChatWithInboxComponent,
         { provide: ConversationService, useClass: ConversationServiceMock },
+        { provide: InboxService, useClass: InboxServiceMock },
         { provide: UserService, useClass: MockUserService },
         { provide: HttpService, useValue: {} },
         {

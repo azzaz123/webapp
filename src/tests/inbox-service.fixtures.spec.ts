@@ -8,4 +8,12 @@ export class InboxServiceMock {
   public getInboxFeatureFlag$(): Observable<boolean> {
     return Observable.of(false);
   }
+
+  public isInboxReady(): boolean {
+    return false;
+  }
+
+  public isArchivedInboxReady(): boolean {
+    return false;
+  }
 }
