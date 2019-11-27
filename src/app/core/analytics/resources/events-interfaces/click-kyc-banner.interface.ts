@@ -6,7 +6,7 @@
  */
 
 /**
- * User clicks KYC banner in chat inbox, shipping menu or shipping inbox screen
+ * User clicks KYC banner in chat inbox, shipping menu, shipping inbox or shipping timeline screen
  */
 export interface ClickKYCBanner {
   /**
@@ -20,5 +20,5 @@ export interface ClickKYCBanner {
   /**
    * Identifier of the screen where the KYC banner is clicked
    */
-  screenId: 195 | 203 | 204;
+  screenId: 195 | 203 | 204 | 205;
 }

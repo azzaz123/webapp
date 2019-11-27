@@ -6,7 +6,7 @@
  */
 
 /**
- * User views KYC banner in chat inbox, shipping menu or shipping inbox screen
+ * User views KYC banner in chat inbox, shipping menu, shipping inbox or shipping timeline screen
  */
 export interface ViewKYCBannerScreen {
   /**
@@ -20,5 +20,5 @@ export interface ViewKYCBannerScreen {
   /**
    * Identifier of the screen where the KYC banner is shown
    */
-  screenId: 195 | 203 | 204;
+  screenId: 195 | 203 | 204 | 205;
 }
