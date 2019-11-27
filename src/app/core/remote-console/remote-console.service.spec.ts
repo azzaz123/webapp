@@ -146,7 +146,7 @@ describe('RemoteConsoleService', () => {
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
         ...commonLog, ...{
           'send_message_time': 1000,
-          'metric_type': MetricTypeEnum.XMPP_SEND_MESSAGE_TIME
+          'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
         }
       }));
     }));
@@ -162,7 +162,7 @@ describe('RemoteConsoleService', () => {
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
         ...commonLog, ...{
           'send_message_time': 3000,
-          'metric_type': MetricTypeEnum.XMPP_SEND_MESSAGE_TIME
+          'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
         }
       }));
 
@@ -171,7 +171,7 @@ describe('RemoteConsoleService', () => {
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
         ...commonLog, ...{
           'send_message_time': 2000,
-          'metric_type': MetricTypeEnum.XMPP_SEND_MESSAGE_TIME
+          'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
         }
       }));
     }));

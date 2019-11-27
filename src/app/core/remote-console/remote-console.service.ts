@@ -56,7 +56,7 @@ export class RemoteConsoleService implements OnDestroy {
           ...commonLog,
           message_id: messageId,
           send_message_time: new Date().getTime() - this.sendMessageTime.shift(),
-          metric_type: MetricTypeEnum.XMPP_SEND_MESSAGE_TIME,
+          metric_type: MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
         })));
       }
     }
