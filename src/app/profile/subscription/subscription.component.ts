@@ -29,7 +29,6 @@ export class SubscriptionComponent implements OnInit {
   public action: string;
   public subscriptions: SubscriptionsResponse[];
   public loading = false;
-  public subscriptionModal: NgbModalRef;
 
   constructor(private modalService: NgbModal,
               private subscriptionsService: SubscriptionsService,
@@ -56,17 +55,17 @@ export class SubscriptionComponent implements OnInit {
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
     const modal = subscription.subscribed_from ? CancelSubscriptionModalComponent : AddNewSubscriptionModalComponent;
-    this.subscriptionModal = this.modalService.open(modal, {windowClass: 'review'});
-    this.subscriptionModal.componentInstance.subscription = subscription;
-    this.subscriptionModal.result.then((action: string) => {
+    let modalRef = this.modalService.open(modal, {windowClass: 'review'});
+    modalRef.componentInstance.subscription = subscription;
+    modalRef.result.then((action: string) => {
       if (action) {
         this.loading = true;
         this.isSubscriptionUpdated();
       }
-      this.subscriptionModal = null;
+      modalRef = null;
     }, () => {
       this.trackCloseModalEvent();
-      this.subscriptionModal = null;
+      modalRef = null;
     });
 
     this.trackOpenModalEvent(subscription);
