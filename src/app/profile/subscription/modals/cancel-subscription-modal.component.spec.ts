@@ -75,6 +75,7 @@ describe('CancelSubscriptionModalComponent', () => {
     activeModal = TestBed.get(NgbActiveModal);
     toastrService = TestBed.get(ToastrService);
     subscriptionsService = TestBed.get(SubscriptionsService);
+    analyticsService = TestBed.get(AnalyticsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     fixture.detectChanges();
   });
