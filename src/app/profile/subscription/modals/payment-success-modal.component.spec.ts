@@ -4,7 +4,12 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
-import { AnalyticsPageView, ViewSuccessSubscriptionPayment, ANALYTICS_EVENT_NAMES } from '../../../core/analytics/analytics-constants';
+import {
+  AnalyticsPageView,
+  ViewSuccessSubscriptionPayment,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS
+} from '../../../core/analytics/analytics-constants';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 
 describe('PaymentSuccessModalComponent', () => {
@@ -46,7 +51,7 @@ describe('PaymentSuccessModalComponent', () => {
       const expectedPageView: AnalyticsPageView<ViewSuccessSubscriptionPayment> = {
         name: ANALYTICS_EVENT_NAMES.ViewSuccessSubscriptionPayment,
         attributes: {
-          screenId: 205
+          screenId: SCREEN_IDS.ProfileSubscription
         }
       };
 

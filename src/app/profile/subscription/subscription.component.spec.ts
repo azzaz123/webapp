@@ -104,7 +104,7 @@ describe('SubscriptionComponent', () => {
       const expectedPageViewEvent: AnalyticsPageView<ViewProfileSubscription> = {
         name: ANALYTICS_EVENT_NAMES.ViewProfileSubscription,
         attributes: {
-          screenId: 205 // TODO: Wait for mparticle branch to be updated
+          screenId: SCREEN_IDS.ProfileSubscription
         }
       };
 
@@ -176,7 +176,7 @@ describe('SubscriptionComponent', () => {
           name: ANALYTICS_EVENT_NAMES.ClickProfileUnsuscribe,
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
-            screenId: 205, // TODO: mparticle branch update
+            screenId: SCREEN_IDS.ProfileSubscription,
             subscription: MAPPED_SUBSCRIPTIONS_ADDED[0].category_id as any
           }
         };
@@ -195,7 +195,7 @@ describe('SubscriptionComponent', () => {
           name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
-            screenId: 205, // TODO: mparticle branch update
+            screenId: SCREEN_IDS.ProfileSubscription,
             subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any
           }
         };
@@ -215,7 +215,7 @@ describe('SubscriptionComponent', () => {
           name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeCancelation,
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
-            screenId: 205
+            screenId: SCREEN_IDS.ProfileSubscription
           }
         };
 

@@ -47,7 +47,7 @@ export class SubscriptionComponent implements OnInit {
     const pageView: AnalyticsPageView<ViewProfileSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ViewProfileSubscription,
       attributes: {
-        screenId: 205 // TODO: Wait mparticle branch to be updated
+        screenId: SCREEN_IDS.ProfileSubscription
       }
     };
 
@@ -94,7 +94,7 @@ export class SubscriptionComponent implements OnInit {
         name: ANALYTICS_EVENT_NAMES.ClickProfileUnsuscribe,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: 205, // TODO: wait mparticle branch update
+          screenId: SCREEN_IDS.ProfileSubscription,
           subscription: subscription.category_id as any
         }
       };
@@ -105,7 +105,7 @@ export class SubscriptionComponent implements OnInit {
         name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: 205, // TODO: wait mparticle branch update
+          screenId: SCREEN_IDS.ProfileSubscription,
           subscription: subscription.category_id as any
         }
       };
@@ -119,7 +119,7 @@ export class SubscriptionComponent implements OnInit {
       name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeCancelation,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
-        screenId: 205
+        screenId: SCREEN_IDS.ProfileSubscription
       }
     };
     this.analyticsService.trackEvent(event);

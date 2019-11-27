@@ -5,7 +5,13 @@ import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
-import { AnalyticsEvent, ClickUnsuscribeConfirmation, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES } from '../../../core/analytics/analytics-constants';
+import {
+  AnalyticsEvent,
+  ClickUnsuscribeConfirmation,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  SCREEN_IDS
+} from '../../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-cancel-subscription-modal',
@@ -46,7 +52,7 @@ export class CancelSubscriptionModalComponent {
       name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeConfirmation,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
-        screenId: 205
+        screenId: SCREEN_IDS.ProfileSubscription
       }
     };
     

@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
-import { AnalyticsPageView, ViewSuccessSubscriptionPayment, ANALYTICS_EVENT_NAMES } from '../../../core/analytics/analytics-constants';
+import {
+  AnalyticsPageView,
+  ViewSuccessSubscriptionPayment,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS
+} from '../../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-payment-success-modal',
@@ -17,7 +22,7 @@ export class PaymentSuccessModalComponent implements OnInit {
     const pageView: AnalyticsPageView<ViewSuccessSubscriptionPayment> = {
       name: ANALYTICS_EVENT_NAMES.ViewSuccessSubscriptionPayment,
       attributes: {
-        screenId: 205
+        screenId: SCREEN_IDS.ProfileSubscription
       }
     };
     this.analyticsService.trackPageView(pageView);

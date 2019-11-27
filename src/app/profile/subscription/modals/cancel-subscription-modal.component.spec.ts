@@ -10,7 +10,13 @@ import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.
 import { Observable } from 'rxjs';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
-import { AnalyticsEvent, ClickUnsuscribeConfirmation, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES } from '../../../core/analytics/analytics-constants';
+import {
+  AnalyticsEvent,
+  ClickUnsuscribeConfirmation,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  SCREEN_IDS
+} from '../../../core/analytics/analytics-constants';
 
 describe('CancelSubscriptionModalComponent', () => {
   let component: CancelSubscriptionModalComponent;
@@ -99,7 +105,7 @@ describe('CancelSubscriptionModalComponent', () => {
         name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeConfirmation,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: 205
+          screenId: SCREEN_IDS.ProfileSubscription
         }
       };
 

@@ -330,7 +330,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         name: ANALYTICS_EVENT_NAMES.ClickContinuePaymentSubscription,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: 205,
+          screenId: SCREEN_IDS.ProfileSubscription,
           tier: component.selectedTier.id as any
         }
       };
@@ -347,7 +347,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
-        screenId: 205,
+        screenId: SCREEN_IDS.ProfileSubscription,
         isNewVisa: true
       }
     };
