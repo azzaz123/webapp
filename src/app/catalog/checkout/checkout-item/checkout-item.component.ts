@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { ItemWithProducts } from '../../../core/item/item-response.interface';
 import { keys } from 'lodash-es';
 import { CartService } from '../../../shared/catalog/cart/cart.service';
@@ -13,7 +13,7 @@ import { CreditInfo } from '../../../core/payments/payment.interface';
   templateUrl: './checkout-item.component.html',
   styleUrls: ['./checkout-item.component.scss']
 })
-export class CheckoutItemComponent implements OnInit, OnDestroy {
+export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() creditInfo: CreditInfo;
   @Input() itemWithProducts: ItemWithProducts;
@@ -21,7 +21,18 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
   private active = true;
   types: string[] = BUMP_TYPES;
   durations: string[];
-  duration: string;
+
+  _duration: string;
+  set duration(value: string) {
+    this._duration = value;
+    if (this.selectedType) {
+      this.select(this.selectedType);
+    }
+  }
+  get duration(): string {
+    return this._duration;
+  }
+
   selectedType: string;
   selectedDuration: string;
   provincialBump: boolean;
@@ -39,6 +50,13 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
     this.provincialBump = !this.itemWithProducts.products['168'].citybump;
     if (this.provincialBump) {
       this.types = BUMP_PROVINCIAL_TYPES;
+    }
+  }
+
+  ngOnChanges() {
+    if (this.creditInfo && !this.selectedType) {
+      this.selectedType = this.types[0];
+      this.select(this.selectedType);
     }
   }
 

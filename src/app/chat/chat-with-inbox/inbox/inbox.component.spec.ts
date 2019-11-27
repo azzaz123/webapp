@@ -22,18 +22,13 @@ import { User } from '../../../core/user/user';
 import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
-import { SCREENS_IDS } from '../../../core/analytics/resources/analytics-constants';
-import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
-import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
+import { ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewChatScreen, AnalyticsPageView } from '../../../core/analytics/analytics-constants';
 import { InboxUser } from '../../model/inbox-user';
 import { Item } from '../../../core/item/item';
 import { InboxItem } from '../../model/inbox-item';
 
 class AdServiceMock {
-  startAdsRefresh() {
-  }
-
-  stopAdsRefresh() {
+  adsRefresh() {
   }
 }
 
@@ -207,10 +202,14 @@ describe('Component: InboxComponent', () => {
 
     describe('when a conversation is selected', () => {
       const conversation = mockedInboxConversations[0];
-      const eventAttrs: ViewChatScreen = {
-        itemId: conversation.item.id,
-        conversationId: conversation.id,
-        screenId: SCREENS_IDS.Chat
+
+      const analyticsPageEvent: AnalyticsPageView<ViewChatScreen> = {
+        name: ANALYTICS_EVENT_NAMES.ViewChatScreen,
+        attributes: {
+          itemId: conversation.item.id,
+          conversationId: conversation.id,
+          screenId: SCREEN_IDS.Chat
+        }
       };
 
       describe('if the selected conversation is not the current conversation', () => {
@@ -220,10 +219,7 @@ describe('Component: InboxComponent', () => {
           component.ngOnInit();
           eventService.emit(EventService.CURRENT_CONVERSATION_SET, conversation);
 
-          expect(analyticsService.trackPageView).toHaveBeenCalledWith({
-            name: ANALYTICS_EVENT_NAMES.ViewChatScreen,
-            attributes: eventAttrs
-          });
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(analyticsPageEvent);
         });
       });
 
@@ -333,24 +329,22 @@ describe('Component: InboxComponent', () => {
 
     it('should should call conversationService.openConversation with the new conversation', () => {
       spyOn(conversationService, 'openConversation').and.callThrough();
-      spyOn(addService, 'startAdsRefresh');
+      spyOn(addService, 'adsRefresh');
 
       component.setCurrentConversation(newlySelectedConversation);
 
       expect(conversationService.openConversation).toHaveBeenCalledWith(newlySelectedConversation);
-      expect(addService.startAdsRefresh).toHaveBeenCalled();
+      expect(addService.adsRefresh).toHaveBeenCalled();
     });
   });
 
   it('should set conversation.active to FALSE if a conversation exists when ngOnDestroy is called', () => {
     const previouslySelectedConversation = CREATE_MOCK_INBOX_CONVERSATION();
     component.setCurrentConversation(previouslySelectedConversation);
-    spyOn(addService, 'stopAdsRefresh');
 
     component.ngOnDestroy();
 
     expect(previouslySelectedConversation.active).toBe(false);
-    expect(addService.stopAdsRefresh).toHaveBeenCalled();
   });
 
   describe('loadMore', () => {
