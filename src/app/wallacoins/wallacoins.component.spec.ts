@@ -25,6 +25,7 @@ import { MOCK_USER, USER_ID } from '../../tests/user.fixtures.spec';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
 import Spy = jasmine.Spy;
 import { StripeService } from '../core/stripe/stripe.service';
+import { WEB_PAYMENT_EXPERIMENT_TYPE, SplitTestService, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT } from '../core/tracking/split-test.service';
 
 describe('WallacoinsComponent', () => {
   let component: WallacoinsComponent;
@@ -35,6 +36,7 @@ describe('WallacoinsComponent', () => {
   let eventService: EventService;
   let userService: UserService;
   let stripeService: StripeService;
+  let splitTestService: SplitTestService;
   const CREDITS_PACKS: Pack[] = createWallacoinsPacksFixture().wallacoins;
   const PERKS: PerksModel = createPerksModelFixture();
   const PACK = new Pack(
@@ -105,6 +107,14 @@ describe('WallacoinsComponent', () => {
             }
         }
         },
+        {
+          provide: SplitTestService, useValue: {
+            getVariable() {
+              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
+            },
+            track() {}
+          }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -121,6 +131,7 @@ describe('WallacoinsComponent', () => {
     router = TestBed.get(Router);
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
+    splitTestService = TestBed.get(SplitTestService);
   });
 
   describe('ngOnInit', () => {
@@ -165,22 +176,23 @@ describe('WallacoinsComponent', () => {
       expect(component['openTutorialModal']).toHaveBeenCalled();
     });
 
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
+    it('should set the paymentMethod to sabadell', () => {
+      spyOn(splitTestService, 'getVariable').and.callThrough();
 
       component.ngOnInit();
 
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
+      expect(component.paymentMethod).toBe(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
     });
 
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+    it('should track the payment method experiment', () => {
+      spyOn(splitTestService, 'track');
+      spyOn(splitTestService, 'getVariable').and.callThrough();
 
       component.ngOnInit();
 
-      expect(component.isStripe).toBe(expectedValue);
+      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
     });
+
   });
 
   describe('openBuyModal', () => {
