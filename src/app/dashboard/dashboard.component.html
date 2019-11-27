@@ -15,18 +15,19 @@
     <div class="stats-sidebar-container">
       <h2>
         <span i18n>Pending</span>
-        <span [hidden]="!phonesTotal && !messagesTotal">({{phonesTotal + messagesTotal}})</span>
+        <span [hidden]="!phonesTotal && !messagesTotal">({{phonesTotal + countTotalMessages()}})</span>
       </h2>
     </div>
-    <div class="scroll-panel" [hidden]="completed">
+
+    <div class="scroll-panel" [hidden]="!completed && !loading">
       <div class="stats-sidebar-container" [hidden]="loading || (!conversations.length && calls.length)">
         <h3>
           <span i18n>Messages</span>
           <a [routerLink]="['/chat']" [hidden]="!messagesTotal"><span i18n>View all</span></a>
         </h3>
-        <tsl-conversation [conversation]="conversation"
-                          [routerLink]="['/chat']" [queryParams]="{c: conversation.id}"
-                          *ngFor="let conversation of conversations" [hidden]="!conversations.length"></tsl-conversation>
+        <tsl-inbox-conversation *ngFor="let conversation of conversations | slice: 0: 5;"
+                                [conversation]="conversation" [archiveConversation]="false"
+                                (click)="openConversation(conversation)"></tsl-inbox-conversation>
       </div>
       <div class="stats-sidebar-container calls-container" [hidden]="loading || (!calls.length && conversations.length)">
         <h3>
@@ -41,7 +42,7 @@
       </div>
       <mat-icon svgIcon="spinner" class="spinner" [hidden]="!loading"></mat-icon>
     </div>
-    <div [hidden]="!completed" class="stats-sidebar-completed">
+    <div [hidden]="completed && !loading" class="stats-sidebar-completed">
       <div>
         <h2 i18n>Congratulations!</h2>
         <p i18n>You have processed all the pending leads. Good job!</p>
