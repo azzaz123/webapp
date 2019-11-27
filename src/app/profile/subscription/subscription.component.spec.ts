@@ -22,7 +22,8 @@ import {
   AnalyticsPageView,
   ViewProfileSubscription,
   ClickProfileSubscribeButton,
-  ClickProfileUnsuscribe
+  ClickProfileUnsuscribe,
+  ClickUnsuscribeCancelation
 } from '../../core/analytics/analytics-constants';
 
 describe('SubscriptionComponent', () => {
@@ -200,6 +201,25 @@ describe('SubscriptionComponent', () => {
         };
 
         component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
+    describe('when the modal dismisses', () => {
+      it('should send the event', () => {
+        component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS_ADDED[0]);
+        spyOn(analyticsService, 'trackEvent');
+        const expectedEvent: AnalyticsEvent<ClickUnsuscribeCancelation> = {
+          name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeCancelation,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: 205
+          }
+        };
+
+        component.subscriptionModal.dismiss();
 
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
