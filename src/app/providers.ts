@@ -23,7 +23,7 @@ export const PROVIDERS: Provider[] = [
   {
     provide: APP_INITIALIZER,
     useFactory: permissionFactory,
-    deps: [UserService],
+    deps: [UserService, NgxPermissionsService],
     multi: true
   }
 ];
@@ -40,7 +40,7 @@ export function httpFactory(backend: XHRBackend,
   return new HttpService(backend, defaultOptions, accessTokenService, eventService);
 }
 
-export function permissionFactory(userService: UserService) {
+export function permissionFactory(userService: UserService, permissionService: NgxPermissionsService) {
   return () => {
     return userService.me()
       .map((user: User) => {
@@ -48,7 +48,7 @@ export function permissionFactory(userService: UserService) {
           userService.setPermission(user.type);
           userService.setSubscriptionsFeatureFlag().subscribe((isActive => {
             if (isActive) {
-              this.permissionService.addPermission(PERMISSIONS.subscriptions);
+              permissionService.addPermission(PERMISSIONS.subscriptions);
             }
           }));
         }
