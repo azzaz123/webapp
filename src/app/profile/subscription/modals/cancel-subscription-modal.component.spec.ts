@@ -8,12 +8,16 @@ import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { Observable } from 'rxjs';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
+import { AnalyticsEvent, ClickUnsuscribeConfirmation, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES } from '../../../core/analytics/analytics-constants';
 
 describe('CancelSubscriptionModalComponent', () => {
   let component: CancelSubscriptionModalComponent;
   let fixture: ComponentFixture<CancelSubscriptionModalComponent>;
   let activeModal: NgbActiveModal;
   let subscriptionsService: SubscriptionsService;
+  let analyticsService: AnalyticsService;
   let toastrService: ToastrService;
 
   beforeEach(async(() => {
@@ -56,6 +60,9 @@ describe('CancelSubscriptionModalComponent', () => {
           }
         },
         I18nService,
+        {
+          provide: AnalyticsService, useClass: MockAnalyticsService
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -82,6 +89,23 @@ describe('CancelSubscriptionModalComponent', () => {
       
       expect(component.subscriptionsService.cancelSubscription).toHaveBeenCalledWith(tier.id);
       expect(component.loading).toBe(false);
+    });
+
+    it('should send the event', () => {
+      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(Observable.of({status: 202}));
+      spyOn(analyticsService, 'trackEvent');
+      const expectedEvent: AnalyticsEvent<ClickUnsuscribeConfirmation> = {
+        name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeConfirmation,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          screenId: 205
+        }
+      };
+
+      component.cancelSubscription();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
 
