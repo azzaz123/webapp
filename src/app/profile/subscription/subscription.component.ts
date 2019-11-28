@@ -100,12 +100,16 @@ export class SubscriptionComponent implements OnInit {
 
       this.analyticsService.trackEvent(event);
     } else {
+      const isNewSubscriber =
+        this.subscriptions.filter(s => s.category_id !== subscription.category_id && s.subscribed_from).length > 0;
+
       const event: AnalyticsEvent<ClickProfileSubscribeButton> = {
         name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           screenId: SCREEN_IDS.ProfileSubscription,
-          subscription: subscription.category_id as any
+          subscription: subscription.category_id as any,
+          isNewSubscriber
         }
       };
 
