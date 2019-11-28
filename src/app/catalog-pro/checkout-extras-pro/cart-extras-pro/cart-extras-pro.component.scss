@@ -5,6 +5,7 @@ $title-height: 50px;
 $total-height: 50px;
 $button-height: 42px;
 $margin-height: 180px;
+$scroll-height: 230px;
 $button-margin: $spacing-ml - $spacing-s;
 $button-space: $button-height + $spacing-ml;
 
@@ -33,7 +34,7 @@ h1 {
   border-radius: 5px;
   position: relative;
   flex: 2 0px;
-  height: calc(100% - #{$margin-height});
+  height: calc(100% - #{$scroll-height});
 }
 
 .scroll-panel {
@@ -50,6 +51,12 @@ h1 {
   font-weight: $font-weight-chunky;
   padding: 0 $spacing-s;
   text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
+  overflow: hidden;
+  clear: both;
   .price {
     font-size: $font-size-xl;
   }

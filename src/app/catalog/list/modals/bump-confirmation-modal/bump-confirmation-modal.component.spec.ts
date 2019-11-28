@@ -14,6 +14,7 @@ import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-cu
 import { DecimalPipe } from '@angular/common';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { WEB_PAYMENT_EXPERIMENT_TYPE, SplitTestService, WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT } from '../../../../core/tracking/split-test.service';
 
 let component: BumpConfirmationModalComponent;
 let fixture: ComponentFixture<BumpConfirmationModalComponent>;
@@ -21,6 +22,7 @@ let trackingService: TrackingService;
 let userService: UserService;
 let paymentService: PaymentService;
 let eventService: EventService;
+let splitTestService: SplitTestService;
 const CURRENCY = 'wallacoins';
 const CREDITS = 1000;
 const CREDIT_INFO: CreditInfo = {
@@ -48,11 +50,16 @@ describe('BumpConfirmationModalComponent', () => {
           },
           {
             provide: PaymentService, useValue: {
-            getCreditInfo() {
-              return Observable.of(CREDIT_INFO);
+              getCreditInfo() {
+                return Observable.of(CREDIT_INFO);
+              }
             }
-          }
-          }
+          },
+          {
+            provide: SplitTestService, useValue: {
+              track() {}
+            }
+          },
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -62,6 +69,7 @@ describe('BumpConfirmationModalComponent', () => {
     userService = TestBed.get(UserService);
     paymentService = TestBed.get(PaymentService);
     eventService = TestBed.get(EventService);
+    splitTestService = TestBed.get(SplitTestService);
     fixture.detectChanges();
   });
 
@@ -77,12 +85,20 @@ describe('BumpConfirmationModalComponent', () => {
         connection.mockRespond(new Response(res));
       });
       spyOn(trackingService, 'track');
+      spyOn(splitTestService, 'track');
     }));
     it('should send event featured_purchase_success if code == 200', () => {
       component.code = '200';
       component.ngOnInit();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.FEATURED_PURCHASE_SUCCESS);
     });
+
+    it('should send event to taplytics if code == 200', () => {
+      component.code = '200';
+      component.ngOnInit();
+      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT);
+    });
+
     it('should send event featured_purchase_error if code != 200', () => {
       component.code = '-1';
       component.ngOnInit();
