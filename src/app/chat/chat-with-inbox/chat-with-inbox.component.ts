@@ -94,6 +94,9 @@ export class ChatWithInboxComponent implements OnInit {
       this.inboxConversationService.openConversationByItemId$(itemId)
       .catch(() => Observable.of({}))
       .subscribe((conversation: InboxConversation) => {
+        if (conversation) {
+          this.currentConversation = conversation;
+        }
         if (isEmpty(conversation.messages)) {
           this.getPhoneInfo(conversation);
         }
