@@ -162,7 +162,7 @@ describe('DashboardComponent', () => {
     });
 
     it('should set completed to false', () => {
-      expect(component.completed).toBeFalsy();
+      expect(component.hasMessagesOrCalls).toBeTruthy();
     });
   });
 
@@ -177,13 +177,40 @@ describe('DashboardComponent', () => {
   });
 
   describe('router', () => {
-    it('navigate to chat and open conversation', () => {
+    it('should navigate to chat and open conversation', () => {
       const spy = spyOn(router, 'navigateByUrl');
       const conversation = createInboxConversationsArray(1, 'conversationId')[0];
 
       component.openConversation(conversation);
 
       expect(spy.calls.first().args[0]).toEqual(`/chat?itemId=${conversation.item.id}`);
+    });
+  });
+
+  describe('countTotalMessages', () => {
+    it('should return 0 if conversations is null', () => {
+      component.conversations = null;
+
+      expect(component.countTotalMessages()).toEqual(0);
+    });
+
+    it('should return 0 if conversations is undefinied', () => {
+      component.conversations = undefined;
+
+      expect(component.countTotalMessages()).toEqual(0);
+    });
+
+    it('should calculate total messages if all messages are read', () => {
+      component.conversations = createInboxConversationsArray(2);
+
+      expect(component.countTotalMessages()).toEqual(2);
+    });
+
+    it('should calculate total messages if user has 2 conversations and 5 unread messages', () => {
+      component.conversations = createInboxConversationsArray(2);
+      component.conversations[0].unreadCounter = 5;
+
+      expect(component.countTotalMessages()).toEqual(6);
     });
   });
 });

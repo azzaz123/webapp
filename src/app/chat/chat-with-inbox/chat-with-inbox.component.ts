@@ -3,7 +3,7 @@ import { AdService } from '../../core/ad/ad.service';
 import { UserService } from '../../core/user/user.service';
 import { EventService } from '../../core/event/event.service';
 import { InboxConversation } from '../model/inbox-conversation';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { InboxConversationService } from '../../core/inbox/inbox-conversation.service';
 import { Observable } from 'rxjs';
 import { phoneMethod } from '../../core/message/message';
@@ -82,8 +82,9 @@ export class ChatWithInboxComponent implements OnInit {
       return;
     }
 
-    this.route.queryParams.subscribe((params: any) => {
+    this.route.queryParams.subscribe((params: Params) => {
       const itemId = params.itemId;
+      console.log('ItemID... ' + itemId + '  ' + JSON.stringify(params));
 
       if (isNil(itemId)) {
         return;
