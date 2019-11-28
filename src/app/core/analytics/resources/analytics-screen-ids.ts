@@ -31,5 +31,6 @@ export enum SCREEN_IDS {
 	KYCVerifyingIdentity = 202,
 	ShippingMenu = 203,
 	ShippingInbox = 204,
-	ProfileSubscription = 205, // Manually added, this value is going to probably change
+	ShippingTimeline = 205,
+	ProfileSubscription = 206,
 }
