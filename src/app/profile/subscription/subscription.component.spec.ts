@@ -188,17 +188,39 @@ describe('SubscriptionComponent', () => {
       });
     });
 
-    describe('when the user is NOT subscribed to the selected category', () => {
-      it('should send click profile subscribe event', () => {
+    describe('when the user is NOT subscribed to the selected category and has another subscription', () => {
+      it('should send click profile subscribe event with isNewSubscriber false', () => {
         spyOn(analyticsService, 'trackEvent');
         const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
           name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
             screenId: SCREEN_IDS.ProfileSubscription,
-            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any
+            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any,
+            isNewSubscriber: false
           }
         };
+
+        component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
+    describe('when the user is NOT subscribed to the selected category and no other category', () => {
+      it('should send click profile subscribe event with isNewSubscriber true', () => {
+        spyOn(analyticsService, 'trackEvent');
+        const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: SCREEN_IDS.ProfileSubscription,
+            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any,
+            isNewSubscriber: true
+          }
+        };
+        component.subscriptions.forEach(s => { s.subscribed_from = null; s.subscribed_until = null; });
 
         component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
 
@@ -219,7 +241,8 @@ describe('SubscriptionComponent', () => {
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
             screenId: SCREEN_IDS.ProfileSubscription,
-            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any
+            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any,
+            isNewSubscriber: true
           }
         };
         const expectedCloseModalEvent: AnalyticsEvent<ClickUnsuscribeCancelation> = {
