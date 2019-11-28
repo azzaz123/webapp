@@ -12,9 +12,9 @@ export interface ClickContinuePaymentSubscription {
   /**
    * Identifier of the screen
    */
-  screenId: 205;
+  screenId: 206;
   /**
-   * Tier of the subscription
+   * Stripe id of the tier of the subscription
    */
-  tier?: number;
+  tier?: string;
 }

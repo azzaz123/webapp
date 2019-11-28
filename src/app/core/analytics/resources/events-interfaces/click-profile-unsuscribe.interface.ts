@@ -12,7 +12,7 @@ export interface ClickProfileUnsuscribe {
   /**
    * Identifier of the screen
    */
-  screenId: 205;
+  screenId: 206;
   /**
    * Subscription type
    */

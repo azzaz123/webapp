@@ -17,4 +17,8 @@ export interface ClickSubscriptionManagementPlusButton {
    * Subscription type
    */
   subscription: 0 | 100 | 14000 | 12800;
+  /**
+   * If the user is a new subscriber
+   */
+  isNewSubscriber: boolean;
 }

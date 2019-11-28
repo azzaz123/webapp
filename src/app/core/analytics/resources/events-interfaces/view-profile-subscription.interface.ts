@@ -12,5 +12,5 @@ export interface ViewProfileSubscription {
   /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: 205;
+  screenId: 206;
 }

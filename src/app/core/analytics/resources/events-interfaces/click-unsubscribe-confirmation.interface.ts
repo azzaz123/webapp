@@ -12,5 +12,5 @@ export interface ClickUnsuscribeConfirmation {
   /**
    * Identifier of the screen
    */
-  screenId: 205;
+  screenId: 206;
 }

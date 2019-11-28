@@ -236,7 +236,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.ProfileSubscription,
-        tier: this.selectedTier.id as any // TODO: this should be a string in the schema
+        tier: this.selectedTier.id
       }
     };
 

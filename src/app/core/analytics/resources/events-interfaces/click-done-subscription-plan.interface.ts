@@ -14,7 +14,7 @@ export interface ClickDoneSubscriptionPlan {
    */
   screenId: 191;
   /**
-   * Tier of the subscription
+   * Stripe id of the tier of the subscription
    */
   tier?: number;
 }

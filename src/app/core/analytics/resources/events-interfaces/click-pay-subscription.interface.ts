@@ -12,7 +12,7 @@ export interface ClickPaySubscription {
   /**
    * Identifier of the screen
    */
-  screenId: 205;
+  screenId: 206;
   /**
    * The users introduce a new card
    */
