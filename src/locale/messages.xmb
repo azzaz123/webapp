@@ -300,9 +300,7 @@
   <msg id="3897348120591552265"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:15</source>Manage</msg>
   <msg id="5035242975964860075"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:17</source>You can publish <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> more</msg>
   <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.html:23</source>Not Available</msg>
-  <msg id="3286725018134496844"><source>app/
-  
-  catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:10</source>You already have your extra features and you can use them whenever you want.</msg>
+  <msg id="3286725018134496844"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:10</source>You already have your extra features and you can use them whenever you want.</msg>
   <msg id="1034935109316471792"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:16</source>You featured your products.</msg>
   <msg id="495907666381542902"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:21</source>At the moment you do not have enough credit for this action.</msg>
   <msg id="397588615020669463"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:22</source>If at the time of the scheduled bump you still do not have enough, it will not be applied.</msg>
@@ -473,11 +471,11 @@
   <msg id="1339317612974362100"><source>app/favorites/favorites.component.html:19</source>favorites</msg>
   <msg id="6799485957303243139"><source>app/favorites/favorites.component.html:20</source>favorite</msg>
   <msg id="351850805832815905" desc="plural" meaning="tab"><source>app/favorites/favorites.component.html:30</source>Profiles</msg>
-  <msg id="4692667986507067785"><source>app/favorites/favorites.component.html:37,38</source>In this list you can see all the products you
+  <msg id="4692667986507067785"><source>app/favorites/favorites.component.html:39,40</source>In this list you can see all the products you
           saved as favourite</msg>
-  <msg id="7319273592513448895"><source>app/favorites/favorites.component.html:42,43</source>In this list you can see all the profiles you
+  <msg id="7319273592513448895"><source>app/favorites/favorites.component.html:41,42</source>In this list you can see all the profiles you
           saved as favourite</msg>
-  <msg id="8212177249756365917"><source>app/favorites/item-cart-favorite/item-cart-favorite.component.html:11</source><source>app/favorites/profile-card-favorite/profile-card-favorite.component.html:15</source> Remove </msg>
+  <msg id="8212177249756365917"><source>app/favorites/item-cart-favorite/item-cart-favorite.component.html:11</source><source>app/favorites/profile-card-favorite/profile-card-favorite.component.html:19</source> Remove </msg>
   <msg id="6806883447514569994"><source>app/help/help.component.html:6</source>Your help center</msg>
   <msg id="7002268576514991178"><source>app/help/help.component.html:9</source>We hope that you can find here the answers for all your questions</msg>
   <msg id="606929755258304715"><source>app/help/help.component.html:53</source>Contact details</msg>
