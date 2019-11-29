@@ -84,7 +84,6 @@ export class ChatWithInboxComponent implements OnInit {
 
     this.route.queryParams.subscribe((params: Params) => {
       const itemId = params.itemId;
-      console.log('ItemID... ' + itemId + '  ' + JSON.stringify(params));
 
       if (isNil(itemId)) {
         return;
