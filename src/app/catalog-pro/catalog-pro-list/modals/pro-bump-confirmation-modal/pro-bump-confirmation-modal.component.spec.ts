@@ -70,7 +70,9 @@ describe('BumpConfirmationModalComponent', () => {
 
     it('should send event to taplytics if code == 200', () => {
       component.code = '200';
+
       component.ngOnInit();
+
       expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT);
     });
 
@@ -83,8 +85,10 @@ describe('BumpConfirmationModalComponent', () => {
     });
 
     it('should send event to taplytics if code == 201', () => {
-      component.code = '200';
+      component.code = '201';
+      
       component.ngOnInit();
+
       expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT);
     });
 

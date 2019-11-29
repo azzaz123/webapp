@@ -89,19 +89,25 @@ describe('BumpConfirmationModalComponent', () => {
     }));
     it('should send event featured_purchase_success if code == 200', () => {
       component.code = '200';
+
       component.ngOnInit();
+
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.FEATURED_PURCHASE_SUCCESS);
     });
 
     it('should send event to taplytics if code == 200', () => {
       component.code = '200';
+
       component.ngOnInit();
+
       expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT);
     });
 
     it('should send event featured_purchase_error if code != 200', () => {
       component.code = '-1';
+      
       component.ngOnInit();
+
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.FEATURED_PURCHASE_ERROR, { error_code: component.code });
     });
 
