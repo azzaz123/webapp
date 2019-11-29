@@ -168,6 +168,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('btn-reserved', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-reserved.svg'));
   matIconRegistry.addSvgIcon('btn-sold', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-sold.svg'));
   matIconRegistry.addSvgIcon('favorites-empty-state', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/favorites-empty-state.svg'));
+  matIconRegistry.addSvgIcon('favorites-empty-state-mobile', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/favorites-empty-state-mobile.svg'));
   matIconRegistry.addSvgIcon('radio-button', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/radio-button.svg'));
   matIconRegistry.addSvgIcon('bump-city', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-city.svg'));
   matIconRegistry.addSvgIcon('bump-country', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-country.svg'));
