@@ -111,8 +111,4 @@ export class ChatWithInboxComponent implements OnInit {
       }
     });
   }
-
-  private inboxLoaded(): boolean {
-    return this.inboxService.isInboxReady() && this.archivedInboxReady;
-  }
 }
