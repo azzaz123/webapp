@@ -107,4 +107,30 @@
       cursor: pointer;
     }
   }
+  .stripe-payment {
+    text-align: center;
+    margin: $spacing-xs 0 0 0;
+    mat-icon {
+      width: 100px;
+      height: 25px;
+    }
+  }
+  .secure-payment-button {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    mat-icon {
+      height: 14px;
+      width: 11px;
+      position: absolute;
+      right: 0;
+      top: 1px;
+    }
+    span {
+      font-size: $font-size-s;
+      color: $white;
+    }
+  }
 }

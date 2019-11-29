@@ -3,7 +3,7 @@
         <fieldset>
             <div class="form-row">
                 <div class="field">
-                    <div id="checkout-card" class="input empty"></div>
+                    <div id="checkout-card" class="input empty" [class.variant]="paymentMethod === paymentTypeStripeV2"></div>
                 </div>
             </div>
         </fieldset>
@@ -19,20 +19,35 @@
                     [tslTrackEvent]="'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
                     [params]="{ payment_method: 'STRIPE' }"
                     i18n
-        >Continue to Checkout</tsl-button>
+        >
+            <div class="secure-payment">
+                <span i18n>Continue to Checkout</span>
+                <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
+            </div>
+        </tsl-button>
         <tsl-button *ngIf="type === 'new'"
                     id="checkout-card-button-new"
                     className="btn-primary btn-medium stripe"
                     [loading]="newLoading"
                     [disabled]="disabled || newLoading"
                     (click)="createNewCard()" i18n
-        >Save</tsl-button>
+        >
+            <div class="secure-payment">
+                <span i18n>Save</span>
+                <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
+            </div>
+        </tsl-button>
         <tsl-button *ngIf="type === 'subscription'"
                     id="checkout-card-button-new"
                     className="btn-primary btn-medium stripe"
                     [disabled]="!listingLimit || disabled || newLoading"
                     [loading]="newLoading"
                     (click)="createNewCard()" i18n
-        >Add Subscription</tsl-button>
+        >
+            <div class="secure-payment">
+                <span i18n>Add Subscription</span>
+                <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
+            </div>
+        </tsl-button>
     </form>
 </div>

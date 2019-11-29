@@ -61,16 +61,30 @@
             [loading]="loading"
             (click)="checkout()"
             id="qa-checkout-pro-buy"
-            i18n>Continue to Checkout</tsl-button>
+>
+  <div class="secure-payment-button">
+    <span i18n>Continue to checkout</span>
+    <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
+  </div>
+</tsl-button>
 <tsl-button [disabled]="!cart?.total || loading || !billingInfoForm?.valid || (isStripe && !selectedCard)"
             [hidden]="isStripe && !savedCard"
             *ngIf="billingInfoFormEnabled"
             [loading]="loading"
             (click)="saveAndCheckout()"
             id="qa-checkout-pro-save-buy"
-            i18n>Continue to Checkout</tsl-button>
+            i18n
+>
+  <div class="secure-payment-button">
+    <span i18n>Continue to checkout</span>
+    <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
+  </div>
+</tsl-button>
 <div class="secure-payment" [hidden]="isStripe">
   <mat-icon svgIcon="secure-card"></mat-icon>
   <span i18n>Secure payment through Sabadell</span>
+</div>
+<div class="stripe-payment" *ngIf="paymentMethod === paymentTypeStripeV2">
+  <a href="https://www.stripe.com/es" target="_blank"><mat-icon svgIcon="poweredByStripe"></mat-icon></a>
 </div>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

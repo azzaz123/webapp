@@ -77,10 +77,19 @@
                 (click)="checkout()"
                 [loading]="loading"
                 [disabled]="isStripe && !selectedCard && totalToPay > 0"
-                i18n>Continue</tsl-button>
+                i18n
+    >
+      <div class="secure-payment-button">
+        <span i18n>Continue to checkout</span>
+        <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
+      </div>
+    </tsl-button>
     <p class="note" *ngIf="!hasFinancialCard && creditInfo?.credit < orderEvent.total && !isStripe" i18n>
       We don't save details of this transaction. The purchase is made via Banco Sabadell.
     </p>
+    <div class="stripe-payment" *ngIf="paymentMethod === paymentTypeStripeV2">
+      <a href="https://www.stripe.com/es" target="_blank"><mat-icon svgIcon="poweredByStripe"></mat-icon></a>
+    </div>
   </div>
 </div>
 <tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>

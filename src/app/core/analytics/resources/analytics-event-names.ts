@@ -24,3 +24,4 @@ export enum ANALYTICS_EVENT_NAMES {
 	ViewTransactionPayScreen = 'View Transaction Pay Screen',
 	ViewTransactionTimelineScreen = 'View Transaction Timeline Screen',
 }
+
