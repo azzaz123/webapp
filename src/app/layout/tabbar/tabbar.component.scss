@@ -17,9 +17,8 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  min-height: 60px;
+  min-height: 64px;
   @supports (padding: unquote("max(0px)")) {
-    padding-top: unquote("max(#{10px}, env(safe-area-inset-top))");
     padding-bottom: unquote("max(#{10px}, env(safe-area-inset-bottom))");
   }
   img {
@@ -35,20 +34,25 @@
 
 .tab-bar__option {
   display: flex;
-}
-
-.tab-bar__profile {
-  width: 28px;
-  height: 28px;
-  border: 1px solid $blue-grey-4;
-  border-radius: 50%;
-  overflow: hidden;
-  box-sizing: content-box;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  -webkit-tap-highlight-color: rgba($white, 0.6);
-  &:active {
-    opacity: 0.6;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-decoration: none;
+  span {
+    font-size: $font-size-xs;
+    color: $blue-grey-3;
+    text-transform: lowercase;
+    line-height: 1;
+  }
+  &.active {
+    .fill-path {
+      fill: $blue-grey-1;
+    }
+    .fill-stroke {
+      stroke: $blue-grey-1;
+    }
+    span {
+      color: $blue-grey-1;
+    }
   }
 }
