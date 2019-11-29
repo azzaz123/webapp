@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CartComponent } from './cart.component';
 import { CustomCurrencyPipe } from '../../custom-currency/custom-currency.pipe';
@@ -27,7 +27,8 @@ import { CardSelectionComponent } from '../../payments/card-selection/card-selec
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { FINANCIAL_CARD_OPTION, STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
+import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT } from '../../../core/tracking/split-test.service';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -40,6 +41,7 @@ describe('CartComponent', () => {
   let trackingService: TrackingService;
   let eventService: EventService;
   let stripeService: StripeService;
+  let splitTestService: SplitTestService;
 
   const CART = new Cart();
   const CART_CHANGE: CartChange = {
@@ -109,11 +111,16 @@ describe('CartComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-          buy() {},
-          isPaymentMethodStripe$() {
-            return Observable.of(true);
-          },
-        }
+            buy() {}
+          }
+        },
+        {
+          provide: SplitTestService, useValue: {
+            getVariable() {
+              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
+            },
+            track() {}
+          }
         },
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
@@ -132,6 +139,7 @@ describe('CartComponent', () => {
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
+    splitTestService = TestBed.get(SplitTestService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     component.creditInfo = {
       currencyName: 'wallacoins',
@@ -154,21 +162,22 @@ describe('CartComponent', () => {
       expect(component.cart).toEqual(CART);
     });
 
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
-
     it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
       const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+      spyOn(splitTestService, 'getVariable').and.callThrough();
 
       component.ngOnInit();
 
       expect(component.isStripe).toBe(expectedValue);
+    });
+
+    it('should track the payment method experiment', () => {
+      spyOn(splitTestService, 'track');
+      spyOn(splitTestService, 'getVariable').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
     });
   });
 
@@ -264,6 +273,15 @@ describe('CartComponent', () => {
   describe('checkout', () => {
     let eventId: string;
 
+    it('should not proceed if cart is empty or loading', () => {
+      spyOn(itemService, 'purchaseProductsWithCredits').and.callThrough();
+
+      component.cart = CART;
+      component.cart.total = null;
+
+      expect(itemService.purchaseProductsWithCredits).not.toHaveBeenCalled()
+    });
+
     describe('success', () => {
 
       beforeEach(() => {
@@ -272,35 +290,45 @@ describe('CartComponent', () => {
         spyOn(trackingService, 'track');
         spyOn(localStorage, 'setItem');
         spyOn(eventService, 'emit');
+        spyOn(splitTestService, 'track');
+        spyOn(splitTestService, 'getVariable').and.callThrough();
+
         eventId = null;
         component.sabadellSubmit.subscribe((id: string) => {
           eventId = id;
         });
         component.isStripe = false;
+        component.cart = CART;
+        component.cart.total = 1;
+        component.loading = false;
       });
 
-      it('should set localStorage with transaction type', () => {
+      it('should set localStorage with transaction type', fakeAsync(() => {
+        component.creditInfo.credit = 0;
         component.checkout();
+        tick(2000);
 
         expect(localStorage.setItem).toHaveBeenCalledWith('transactionType', 'bump');
-      });
+      }));
 
-      it('should emit TOTAL_CREDITS_UPDATED event', () => {
+      it('should emit TOTAL_CREDITS_UPDATED event', fakeAsync(() => {
         component.checkout();
+        tick(2000);
 
         expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED);
-      });
+      }));
 
       describe('with payment_needed true', () => {
 
         describe('without credit card', () => {
-          it('should submit sabadell with orderId', () => {
+          it('should submit sabadell with orderId', fakeAsync(() => {
             component.hasFinancialCard = false;
 
             component.checkout();
+            tick(2000);
 
             expect(eventId).toBe('UUID');
-          });
+          }));
         });
 
         describe('with credit card', () => {
@@ -311,13 +339,14 @@ describe('CartComponent', () => {
 
           describe('user wants new one', () => {
 
-            it('should submit sabadell with orderId', () => {
+            it('should submit sabadell with orderId', fakeAsync(() => {
               component.cardType = 'new';
 
               component.checkout();
+              tick(2000);
 
               expect(eventId).toBe('UUID');
-            });
+            }));
           });
 
           describe('user wants old one', () => {
@@ -330,33 +359,38 @@ describe('CartComponent', () => {
                 spyOn(paymentService, 'pay').and.callThrough();
                 spyOn(itemService, 'deselectItems');
                 itemService.selectedAction = 'feature';
-
-                component.checkout();
               });
 
-              it('should redirect to code 200', () => {
+              it('should redirect to code 200', fakeAsync(() => {
+                component.checkout();
+                tick(2000);
+
                 expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
                 expect(paymentService.pay).toHaveBeenCalledWith('UUID');
-              });
+              }));
 
-              it('should call deselectItems', () => {
+              it('should call deselectItems', fakeAsync(() => {
+                component.checkout();
+                tick(2000);
+
                 expect(itemService.deselectItems).toHaveBeenCalled();
                 expect(itemService.selectedAction).toBeNull();
                 expect(paymentService.pay).toHaveBeenCalledWith('UUID');
-              });
+              }));
             });
 
             describe('payment ko', () => {
               beforeEach(() => {
                 spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
-
-                component.checkout();
               });
 
-              it('should redirect to code -1', () => {
+              it('should redirect to code -1', fakeAsync(() => {
+                component.checkout();
+                tick(2000);
+
                 expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
                 expect(paymentService.pay).toHaveBeenCalledWith('UUID');
-              });
+              }));
             });
           });
         });
@@ -367,6 +401,14 @@ describe('CartComponent', () => {
             component.creditInfo.credit = 0;
             component.cart = CART;
             component.cart.total = 1;
+          });
+
+          describe('PaymentMethodTest', () => {
+            it('should track the payment method experiment', () => {
+              component.checkout();
+        
+              expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
+            });
           });
 
           describe('Sabadell', () => {
@@ -408,31 +450,38 @@ describe('CartComponent', () => {
           spyOn(itemService, 'deselectItems');
           spyOn(router, 'navigate');
           itemService.selectedAction = 'feature';
+        });
 
+        it('should redirect to code 200', fakeAsync(() => {
           component.checkout();
-        });
+          tick(2000);
 
-        it('should redirect to code 200', () => {
           expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
-        });
+        }));
 
-        it('should call deselectItems', () => {
+        it('should call deselectItems', fakeAsync(() => {
+          component.checkout();
+          tick(2000);
+          
           expect(itemService.deselectItems).toHaveBeenCalled();
           expect(itemService.selectedAction).toBeNull();
-        });
+        }));
 
-        it('should call track of trackingService without any payment_method attribute', () => {
+        it('should call track of trackingService without any payment_method attribute', fakeAsync(() => {
+          component.checkout();
+          tick(2000);
+
           expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
             selected_products: CART_ORDER_TRACK
           });
-        });
+        }));
 
       });
 
     });
 
     describe('error', () => {
-      it('should call toastr', () => {
+      it('should call toastr', fakeAsync(() => {
         spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(Observable.throw({
           text() {
             return '';
@@ -441,9 +490,10 @@ describe('CartComponent', () => {
         spyOn(errorService, 'i18nError');
 
         component.checkout();
+        tick(2000);
 
         expect(errorService.i18nError).toHaveBeenCalledWith('bumpError');
-      });
+      }));
     });
 
   });

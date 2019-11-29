@@ -20,10 +20,12 @@ describe('SplitTestService', () => {
   });
 
   describe('getVariable', () => {
+    const NAME = 'position';
+    const DEFAULT_VARIABLE = 'left';
+    let result: string;
+
     it('should call Taplytics.variable and return the variable', () => {
-      const NAME = 'position';
-      const DEFAULT_VARIABLE = 'left';
-      let result: string;
+      spyOn(sessionStorage, 'getItem').and.returnValue(null);
 
       service.getVariable(NAME, DEFAULT_VARIABLE).subscribe((value: string) => {
         result = value;
@@ -31,6 +33,25 @@ describe('SplitTestService', () => {
 
       expect(window['Taplytics'].variable).toHaveBeenCalledWith(NAME, DEFAULT_VARIABLE, jasmine.any(Function));
       expect(result).toBe(VARIABLE);
+      expect(sessionStorage.getItem).toHaveBeenCalledWith(NAME);
+    });
+
+    it('should set the sessionStorage with the experiment if it doesnt exist', () => {
+      spyOn(sessionStorage, 'getItem').and.returnValue(null);
+      spyOn(sessionStorage, 'setItem');
+
+      service.getVariable(NAME, DEFAULT_VARIABLE).subscribe((value: string) => {
+        result = value;
+      });
+
+      expect(sessionStorage.setItem).toHaveBeenCalledWith(NAME, VARIABLE);
+    });
+
+    it('should not set the sessionStorage with the experiment if it exists', () => {
+      spyOn(sessionStorage, 'getItem').and.returnValue('left');
+      spyOn(sessionStorage, 'setItem');
+
+      expect(sessionStorage.setItem).not.toHaveBeenCalled();
     });
   });
 

@@ -9,6 +9,7 @@ import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation
 import { PaymentService } from '../../core/payments/payment.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { BILLING_INFO_RESPONSE } from '../../../tests/payments.fixtures.spec';
+import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 
 describe('ProfileProBillingComponent', () => {
   let component: ProfileProBillingComponent;
@@ -55,6 +56,12 @@ describe('ProfileProBillingComponent', () => {
               };
             }
           }
+        },
+        {
+          provide: ProfileFormComponent, useValue: {
+            initFormControl() { },
+            canExit() { }
+          }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -68,14 +75,15 @@ describe('ProfileProBillingComponent', () => {
     component = fixture.componentInstance;
     paymentService = TestBed.get(PaymentService);
     errorsService = TestBed.get(ErrorsService);
+    component.formComponent = TestBed.get(ProfileFormComponent);
     fixture.detectChanges();
   });
 
-  describe('ngOnInit', () => {
+  describe('initForm', () => {
     beforeEach(() => {
       spyOn(paymentService, 'getBillingInfo').and.callThrough();
 
-      component.ngOnInit();
+      component.initForm();
     });
 
     it('should call getBillingInfo', () => {
@@ -217,5 +225,16 @@ describe('ProfileProBillingComponent', () => {
         expect(paymentService.deleteBillingInfo).not.toHaveBeenCalled();
       }));
     });
+
+    describe('canExit', () => {
+      it('should call formComponent canExit method', () => {
+        spyOn(component.formComponent, 'canExit');
+
+        component.canExit();
+
+        expect(component.formComponent.canExit).toHaveBeenCalled();
+      });
+    });
+
   });
 });

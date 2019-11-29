@@ -881,7 +881,7 @@
   <translation id="6969584346860248976" desc="La distancia entre el usuario y el producto a"><ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km de ti</translation>
   <translation id="7490117399669169777"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Estás intentando activar más items de los que permite tu plan<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
   <translation id="8210978350459895677"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Has llegado al límite de coches que puedes publicar con una cuenta gratuita<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
-  <translation id="6991105239065793562">Por favor, deselecciona algunos productos o</translation>  
+  <translation id="6991105239065793562">Por favor, deselecciona algunos productos o</translation>
   <translation id="2513950439336286072">De acuerdo</translation>
   <translation id="3553216189604488439">Modificado</translation>
   <translation id="3897348120591552265">Gestionar</translation>
@@ -927,4 +927,11 @@
   <translation id="6044974118925437441">Actualiza tu suscripción en función de los productos que quieras subir</translation>
   <translation id="1487803193155715207">Suscripciones PRO</translation>
   <translation id="1698114086921246480">Darse de baja</translation>
+  <translation id="3520858718490550964">Archivar conversación</translation>
+  <translation id="603154656968324663">Desarchivar conversación</translation>
+  <translation id="511133215426042486">Denunciar producto</translation>
+  <translation id="2311423194575383733">Reportar usuario</translation>
+  <translation id="8621433484657846443">Bloquear usuario</translation>
+  <translation id="7895174555296226408">Desbloquear usuario</translation>
+  <translation id="9098152328983851571">Comprar</translation>
 </translationbundle>
