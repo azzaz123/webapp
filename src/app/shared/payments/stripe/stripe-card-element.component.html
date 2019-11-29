@@ -18,7 +18,6 @@
                     (click)="onSubmit()"
                     [tslTrackEvent]="'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
                     [params]="{ payment_method: 'STRIPE' }"
-                    i18n
         >
             <div class="secure-payment">
                 <span i18n>Continue to Checkout</span>
@@ -30,7 +29,7 @@
                     className="btn-primary btn-medium stripe"
                     [loading]="newLoading"
                     [disabled]="disabled || newLoading"
-                    (click)="createNewCard()" i18n
+                    (click)="createNewCard()"
         >
             <div class="secure-payment">
                 <span i18n>Save</span>
@@ -42,7 +41,7 @@
                     className="btn-primary btn-medium stripe"
                     [disabled]="!listingLimit || disabled || newLoading"
                     [loading]="newLoading"
-                    (click)="createNewCard()" i18n
+                    (click)="createNewCard()"
         >
             <div class="secure-payment">
                 <span i18n>Add Subscription</span>
