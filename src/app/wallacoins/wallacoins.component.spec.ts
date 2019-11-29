@@ -214,7 +214,7 @@ describe('WallacoinsComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(WallacoinsConfirmModalComponent, {windowClass: 'confirm-wallacoins'});
     });
 
-    it('should send taplytics event', () => {
+    it('should send taplytics event is response is success or 201', () => {
       expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT);
     });
 
