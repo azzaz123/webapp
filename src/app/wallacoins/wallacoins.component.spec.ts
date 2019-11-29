@@ -25,7 +25,7 @@ import { MOCK_USER, USER_ID } from '../../tests/user.fixtures.spec';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
 import Spy = jasmine.Spy;
 import { StripeService } from '../core/stripe/stripe.service';
-import { WEB_PAYMENT_EXPERIMENT_TYPE, SplitTestService, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT } from '../core/tracking/split-test.service';
+import { WEB_PAYMENT_EXPERIMENT_TYPE, SplitTestService, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT } from '../core/tracking/split-test.service';
 
 describe('WallacoinsComponent', () => {
   let component: WallacoinsComponent;
@@ -201,6 +201,7 @@ describe('WallacoinsComponent', () => {
       spyOn(paymentService, 'getPerks').and.callThrough();
       spyOn(router, 'navigate');
       spyOn(eventService, 'emit');
+      spyOn(splitTestService, 'track');
 
       component.openBuyModal(CREDITS_PACKS[0], 1);
     }));
@@ -211,6 +212,10 @@ describe('WallacoinsComponent', () => {
 
     it('should open second modal', () => {
       expect(modalService.open).toHaveBeenCalledWith(WallacoinsConfirmModalComponent, {windowClass: 'confirm-wallacoins'});
+    });
+
+    it('should send taplytics event is response is success or 201', () => {
+      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT);
     });
 
     it('should redirect to catalog', () => {
