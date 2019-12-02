@@ -11,6 +11,7 @@ import { MockInterceptor } from './mock.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FeatureflagService } from '../../user/featureflag.service';
 import { FeatureFlagServiceMock } from '../../../../tests';
+import { AccessTokenService } from '../access-token.service';
 
 describe(`MockInterceptor`, () => {
   let injector: TestBed;
@@ -21,8 +22,12 @@ describe(`MockInterceptor`, () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      imports: [ HttpClientTestingModule, HttpModuleNew ],
-      providers: [ { provide: FeatureflagService, useClass: FeatureFlagServiceMock } ]
+      imports: [HttpClientTestingModule, HttpModuleNew],
+      providers: [{ provide: FeatureflagService, useClass: FeatureFlagServiceMock }, {
+        provide: AccessTokenService, useValue: {
+          accessToken: 'ACCESS_TOKEN'
+        }
+      }]
     });
 
     httpService = injector.get(HttpServiceNew);
