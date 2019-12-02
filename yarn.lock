@@ -5161,7 +5161,7 @@ move-concurrently@^1.0.1:
 
 "mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#master":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#5fe3321c46fd312f5432685faf0475549429a8e4"
+  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#bbd125a1639bd9056d06b96c4a58a0b1e7176510"
 
 ms@0.7.1:
   version "0.7.1"

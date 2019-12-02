@@ -22,7 +22,7 @@
             </p>
             <p class="Subscriptions__category-info--edit" *ngIf="!subscription.subscribed_until" i18n>Unsubscribe</p>
         </div>
-        <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from">Subscribe</tsl-button>
+        <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from" i18n>Subscribe</tsl-button>
         <span *ngIf="subscription.subscribed_from" [hidden]="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n>
           Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}
         </span>
@@ -43,7 +43,7 @@
     <div class="row">
       <div class="Subscriptions__benefits col-4">
         <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="magnet" class="image"></mat-icon>
+          <mat-icon svgIcon="rocket" class="image"></mat-icon>
         </div>
         <div class="Subscriptions__benefits-info">
           <p class="Subscriptions__benefits--title" i18n>Upload all your catalogue</p>
@@ -52,7 +52,7 @@
       </div>
       <div class="Subscriptions__benefits col-4">
         <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="megaphone" class="image"></mat-icon>
+          <mat-icon svgIcon="paintbrush" class="image"></mat-icon>
         </div>
         <div class="Subscriptions__benefits-info">
           <p class="Subscriptions__benefits--title" i18n>Professionalize your profile</p>
@@ -61,7 +61,7 @@
       </div>
       <div class="Subscriptions__benefits col-4">
         <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="paintbrush" class="image"></mat-icon>
+          <mat-icon svgIcon="megaphone" class="image"></mat-icon>
         </div>
         <div class="Subscriptions__benefits-info">
           <p class="Subscriptions__benefits--title" i18n>Introduce your business</p>
@@ -72,7 +72,7 @@
     <div class="row">
       <div class="col-4">
         <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="rocket" class="image"></mat-icon>
+          <mat-icon svgIcon="magnet" class="image"></mat-icon>
         </div>
         <div class="Subscriptions__benefits-info">
           <p class="Subscriptions__benefits--title"i18n>Win more clients</p>
@@ -81,7 +81,7 @@
       </div>
       <div class="col-4">
         <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="unlocked" class="image"></mat-icon>
+          <mat-icon svgIcon="watch" class="image"></mat-icon>
         </div>
         <div class="Subscriptions__benefits-info">
           <p class="Subscriptions__benefits--title" i18n>Without time limit</p>
@@ -90,7 +90,7 @@
       </div>
       <div class="col-4">
         <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="watch" class="image"></mat-icon>
+          <mat-icon svgIcon="unlocked" class="image"></mat-icon>
         </div>
         <div class="Subscriptions__benefits-info">
           <p class="Subscriptions__benefits--title" i18n>Without compromise</p>

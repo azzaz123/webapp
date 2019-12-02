@@ -5,6 +5,7 @@ import { UserService } from '../../../../core/user/user.service';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
 import { EventService } from '../../../../core/event/event.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT } from '../../../../core/tracking/split-test.service';
 
 @Component({
   selector:    'tsl-bump-confirmation-modal',
@@ -23,7 +24,8 @@ export class BumpConfirmationModalComponent implements OnInit {
               private trackingService: TrackingService,
               private userService: UserService,
               private paymentService: PaymentService,
-              private eventService: EventService) {
+              private eventService: EventService,
+              private splitTestService: SplitTestService) {
   }
 
   ngOnInit() {
@@ -31,6 +33,7 @@ export class BumpConfirmationModalComponent implements OnInit {
       () => {
         if (this.code === '200') {
           this.trackingService.track(TrackingService.FEATURED_PURCHASE_SUCCESS);
+          this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT);
           ga('send', 'event', 'Item', 'bump-ok');
         } else {
           this.trackingService.track(TrackingService.FEATURED_PURCHASE_ERROR, { error_code: this.code });

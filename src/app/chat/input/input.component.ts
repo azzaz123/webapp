@@ -10,6 +10,7 @@ import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { isEmpty, includes, find } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { RemoteConsoleService } from '../../core/remote-console';
 
 @Component({
   selector: 'tsl-input',
@@ -26,11 +27,12 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   public isFocus: boolean;
 
   constructor(private messageService: MessageService,
-    private eventService: EventService,
-    private trackingService: TrackingService,
-    private modalService: NgbModal,
-    private i18n: I18nService,
-    private deviceService: DeviceDetectorService) {
+              private eventService: EventService,
+              private trackingService: TrackingService,
+              private remoteConsoleService: RemoteConsoleService,
+              private modalService: NgbModal,
+              private i18n: I18nService,
+              private deviceService: DeviceDetectorService) {
   }
 
   ngOnInit() {
@@ -51,6 +53,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
           this.trackingService.track(TrackingService.SEND_BUTTON, {
             thread_id: this.currentConversation.id,
           });
+          this.remoteConsoleService.sendMessageTimeout(null);
           this.messageService.send(this.currentConversation, this.message);
           this.message = '';
         }

@@ -106,6 +106,9 @@ const routes: Routes = [
   {
     path: 'stats',
     loadChildren: 'app/stats/stats.module#StatsModule'
+  },
+  {
+    path: '**', redirectTo: 'chat'
   }
 ];
 

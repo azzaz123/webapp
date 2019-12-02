@@ -22,9 +22,7 @@ import { User } from '../../../core/user/user';
 import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
-import { SCREENS_IDS } from '../../../core/analytics/resources/analytics-constants';
-import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
-import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
+import { ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewChatScreen, AnalyticsPageView } from '../../../core/analytics/analytics-constants';
 import { InboxUser } from '../../model/inbox-user';
 import { Item } from '../../../core/item/item';
 import { InboxItem } from '../../model/inbox-item';
@@ -204,10 +202,14 @@ describe('Component: InboxComponent', () => {
 
     describe('when a conversation is selected', () => {
       const conversation = mockedInboxConversations[0];
-      const eventAttrs: ViewChatScreen = {
-        itemId: conversation.item.id,
-        conversationId: conversation.id,
-        screenId: SCREENS_IDS.Chat
+
+      const analyticsPageEvent: AnalyticsPageView<ViewChatScreen> = {
+        name: ANALYTICS_EVENT_NAMES.ViewChatScreen,
+        attributes: {
+          itemId: conversation.item.id,
+          conversationId: conversation.id,
+          screenId: SCREEN_IDS.Chat
+        }
       };
 
       describe('if the selected conversation is not the current conversation', () => {
@@ -217,10 +219,7 @@ describe('Component: InboxComponent', () => {
           component.ngOnInit();
           eventService.emit(EventService.CURRENT_CONVERSATION_SET, conversation);
 
-          expect(analyticsService.trackPageView).toHaveBeenCalledWith({
-            name: ANALYTICS_EVENT_NAMES.ViewChatScreen,
-            attributes: eventAttrs
-          });
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(analyticsPageEvent);
         });
       });
 
