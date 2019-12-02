@@ -17,13 +17,17 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { MOCK_REALESTATE, UPLOAD_FORM_REALESTATE_VALUES } from '../../../tests/realestate.fixtures.spec';
 import { ItemService } from '../../core/item/item.service';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
-import { SCREENS_IDS, EVENT_TYPES } from '../../core/analytics/resources/analytics-constants';
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsEvent,
+  EditItemRE,
+  ListItemRE
+} from '../../core/analytics/analytics-constants';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
-import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
-import { EditItemRE } from '../../core/analytics/events-interfaces/edit-item-re.interface';
-import { ListItemRE } from '../../core/analytics/events-interfaces/list-item-re.interface';
 import { RealestateContent } from '../../core/item/item-response.interface';
 
 describe('UploadRealestateComponent', () => {
@@ -310,30 +314,30 @@ describe('UploadRealestateComponent', () => {
           }
         }
         const editResponse: RealestateContent = MOCK_RESPONSE_CONTENT;
-        const trackingAttrs: EditItemRE = {
-          itemId: MOCK_REALESTATE.id,
-          categoryId: MOCK_REALESTATE.categoryId,
-          salePrice: MOCK_REALESTATE.salePrice,
-          title: MOCK_REALESTATE.title,
-          isPro: false,
-          screenId: SCREENS_IDS.EditItem,
-          operation: MOCK_REALESTATE.operation,
-          type: MOCK_REALESTATE.type,
-          surface: MOCK_REALESTATE.surface,
-          rooms: MOCK_REALESTATE.rooms,
-          condition: MOCK_REALESTATE.condition
-        }
+        const expectedEvent: AnalyticsEvent<EditItemRE> = {
+          name: ANALYTICS_EVENT_NAMES.EditItemRE,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            itemId: MOCK_REALESTATE.id,
+            categoryId: MOCK_REALESTATE.categoryId,
+            salePrice: MOCK_REALESTATE.salePrice,
+            title: MOCK_REALESTATE.title,
+            isPro: false,
+            screenId: SCREEN_IDS.EditItem,
+            operation: MOCK_REALESTATE.operation,
+            type: MOCK_REALESTATE.type,
+            surface: MOCK_REALESTATE.surface,
+            rooms: MOCK_REALESTATE.rooms,
+            condition: MOCK_REALESTATE.condition
+          }
+        };
         editEvent.response.content = editResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();
         component.onUploaded(editEvent);
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-          name: ANALYTICS_EVENT_NAMES.EditItemRE,
-          eventType: EVENT_TYPES.Other,
-          attributes: trackingAttrs
-        });
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
     });
 
@@ -347,30 +351,30 @@ describe('UploadRealestateComponent', () => {
           }
         }
         const uploadResponse: RealestateContent = MOCK_RESPONSE_CONTENT;
-        const trackingAttrs: ListItemRE = {
-          itemId: MOCK_REALESTATE.id,
-          categoryId: MOCK_REALESTATE.categoryId,
-          salePrice: MOCK_REALESTATE.salePrice,
-          title: MOCK_REALESTATE.title,
-          isPro: false,
-          screenId: SCREENS_IDS.Upload,
-          operation: MOCK_REALESTATE.operation,
-          type: MOCK_REALESTATE.type,
-          surface: MOCK_REALESTATE.surface,
-          rooms: MOCK_REALESTATE.rooms,
-          condition: MOCK_REALESTATE.condition
-        }
+        const expectedEvent: AnalyticsEvent<ListItemRE> = {
+          name: ANALYTICS_EVENT_NAMES.ListItemRE,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            itemId: MOCK_REALESTATE.id,
+            categoryId: MOCK_REALESTATE.categoryId,
+            salePrice: MOCK_REALESTATE.salePrice,
+            title: MOCK_REALESTATE.title,
+            isPro: false,
+            screenId: SCREEN_IDS.Upload,
+            operation: MOCK_REALESTATE.operation,
+            type: MOCK_REALESTATE.type,
+            surface: MOCK_REALESTATE.surface,
+            rooms: MOCK_REALESTATE.rooms,
+            condition: MOCK_REALESTATE.condition
+          }
+        };
         uploadEvent.response.content = uploadResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();
         component.onUploaded(uploadEvent);
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-          name: ANALYTICS_EVENT_NAMES.ListItemRE,
-          eventType: EVENT_TYPES.Other,
-          attributes: trackingAttrs
-        });
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
     });
 

@@ -55,9 +55,7 @@ export class CreditCardInfoComponent implements OnInit {
         this.onDeleteStripeCard.emit(this.financialCard);
         this.financialCard = null;
       });
-    }, (error: any) => {
-      this.toastr.error(this.i18n.getTranslations('bulkDeleteError'));
-    });
+    }, () => {});
   }
 
 }

@@ -1,11 +1,9 @@
 import mParticle from '@mparticle/web-sdk';
-import { PageViewInterface } from './events-interfaces/pageview.interface';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
-import { EventInterface } from './events-interfaces/event.interface';
-
+import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 
 @Injectable({
   providedIn: 'root'
@@ -24,17 +22,17 @@ export class AnalyticsService {
             customerid: user.id
           }
         }
-      }
+      };
 
       mParticle.init(environment.mParticleKey, CONFIG);
     });
   }
 
-  public trackEvent(event: EventInterface) {
+  public trackEvent<T>(event: AnalyticsEvent<T>) {
     mParticle.logEvent(event.name, event.eventType, event.attributes);
   }
 
-  public trackPageView(page: PageViewInterface) {
+  public trackPageView<T>(page: AnalyticsPageView<T>) {
     mParticle.logPageView(page.name, page.attributes, page.flags);
   }
 }
