@@ -14,6 +14,8 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { AutosizeModule } from 'ngx-autosize';
+import { RemoteConsoleService } from '../../core/remote-console';
+import { MockRemoteConsoleService } from '../../../tests';
 
 class MessageServiceMock {
   send(c: Conversation, t: string): void {
@@ -33,6 +35,7 @@ describe('Component: Input', () => {
   let fixture: ComponentFixture<InputComponent>;
   let eventService: EventService;
   let trackingService: TrackingService;
+  let remoteConsoleService: RemoteConsoleService;
   let modalService: NgbModal;
 
   beforeEach(() => {
@@ -46,6 +49,7 @@ describe('Component: Input', () => {
         I18nService,
         { provide: MessageService, useClass: MessageServiceMock },
         { provide: NgbModal, useClass: NgbModalMock },
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         EventService,
         {
           provide: TrackingService, useValue: {
@@ -63,6 +67,7 @@ describe('Component: Input', () => {
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
     modalService = TestBed.get(NgbModal);
+    remoteConsoleService = TestBed.get(RemoteConsoleService);
     spyOn(messageService, 'send');
   });
 
@@ -96,6 +101,8 @@ describe('Component: Input', () => {
       spyOn(EVENT, 'preventDefault');
       spyOn(trackingService, 'track');
       spyOn(modalService, 'open');
+      spyOn(remoteConsoleService, 'sendMessageTimeout');
+      spyOn(remoteConsoleService, 'sendAcceptTimeout');
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       component.currentConversation = conversation;
     });
@@ -112,6 +119,7 @@ describe('Component: Input', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id
       });
+      expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(null);
       expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 
@@ -127,6 +135,7 @@ describe('Component: Input', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id
       });
+      expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(null);
       expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 
@@ -140,6 +149,8 @@ describe('Component: Input', () => {
       expect(messageService.send).not.toHaveBeenCalled();
       expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if texts is just spaces', () => {
@@ -152,6 +163,8 @@ describe('Component: Input', () => {
       expect(messageService.send).not.toHaveBeenCalled();
       expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if disabled', () => {
@@ -164,6 +177,8 @@ describe('Component: Input', () => {
       expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(trackingService.track).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains link', () => {
@@ -175,6 +190,8 @@ describe('Component: Input', () => {
       expect(modalService.open).toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(trackingService.track).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time',
@@ -187,6 +204,8 @@ describe('Component: Input', () => {
         expect(modalService.open).toHaveBeenCalled();
         expect(messageService.send).not.toHaveBeenCalled();
         expect(trackingService.track).not.toHaveBeenCalled();
+        expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
+        expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
       });
   });
 

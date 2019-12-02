@@ -35,6 +35,7 @@ import { BlockUserXmppService } from './block-user';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { InboxService } from '../inbox/inbox.service';
 import { InboxConversation } from '../../chat/model';
+import { RemoteConsoleService } from '../remote-console';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -68,6 +69,7 @@ export class ConversationService extends LeadService {
               protected trackingService: TrackingService,
               protected notificationService: NotificationService,
               private inboxService: InboxService,
+              private remoteConsole: RemoteConsoleService,
               private modalService: NgbModal,
               private zone: NgZone) {
     super(http, userService, itemService, event, realTime, blockService, connectionService);
@@ -291,6 +293,7 @@ export class ConversationService extends LeadService {
   public processChatSignal(signal: ChatSignal) {
     switch (signal.type) {
       case chatSignalType.SENT:
+        this.remoteConsole.sendAcceptTimeout(signal.messageId);
         this.markAs(messageStatus.SENT, signal.messageId, signal.thread);
         break;
       case chatSignalType.RECEIVED:

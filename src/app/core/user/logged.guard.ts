@@ -5,7 +5,7 @@ import { AccessTokenService } from '../http/access-token.service';
 import { WindowRef } from '../window/window.service';
 import { UserService } from './user.service';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { User } from './user';
+import { User, PERMISSIONS } from './user';
 import { isEmpty } from 'lodash-es';
 
 @Injectable()
@@ -26,6 +26,11 @@ export class LoggedGuard implements CanActivate {
     if (isEmpty(this.permissionService.getPermissions())) {
       return this.userService.me().map((user: User) => {
         this.userService.setPermission(user.type);
+        this.userService.setSubscriptionsFeatureFlag().subscribe((isActive => {
+          if (isActive) {
+            this.permissionService.addPermission(PERMISSIONS.subscriptions);
+          }
+        }));
         return true;
       });
     } else {
