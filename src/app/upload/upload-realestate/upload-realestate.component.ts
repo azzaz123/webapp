@@ -18,6 +18,7 @@ import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
 import { RealestateContent } from '../../core/item/item-response.interface';
+import { tap } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
@@ -217,8 +218,11 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   onUploaded(uploadEvent: any) {
+    const isEdit = this.item ? true : false;
+
     this.onFormChanged.emit(false);
-    if (this.item) {
+
+    if (isEdit) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
@@ -235,10 +239,10 @@ export class UploadRealestateComponent implements OnInit {
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
-    
-    this.item ? this.trackEditOrUpload(true, uploadEvent.response.content) : this.trackEditOrUpload(false, uploadEvent.response.content);
 
-    this.router.navigate(['/catalog/list', params]);
+    this.trackEditOrUpload(isEdit, uploadEvent.response.content).subscribe(() =>
+      this.router.navigate(['/catalog/list', params])
+    );
   }
 
   onError(response: any) {
@@ -266,42 +270,43 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   private trackEditOrUpload(isEdit: boolean, item: RealestateContent) {
-    this.userService.isProUser().subscribe((isProfessional: boolean) => {
-      const baseEventAttrs: any = {
-        itemId: item.id,
-        categoryId: item.category_id,
-        salePrice: item.sale_price,
-        title: item.title,
-        operation: item.operation,
-        type: item.type,
-        condition: item.condition,
-        surface: item.surface || null,
-        rooms: item.rooms || null,
-        isPro: isProfessional
-      };
+    return this.userService.isProUser()
+      .pipe(tap((isProfessional: boolean) => {
+        const baseEventAttrs: any = {
+          itemId: item.id,
+          categoryId: item.category_id,
+          salePrice: item.sale_price,
+          title: item.title,
+          operation: item.operation,
+          type: item.type,
+          condition: item.condition,
+          surface: item.surface || null,
+          rooms: item.rooms || null,
+          isPro: isProfessional
+        };
 
-      if (isEdit) {
-        const editItemREEvent: AnalyticsEvent<EditItemRE> = {
-          name: ANALYTICS_EVENT_NAMES.EditItemRE,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            ...baseEventAttrs,
-            screenId: SCREEN_IDS.EditItem
-          }
-        };
-        this.analyticsService.trackEvent(editItemREEvent);
-      } else {
-        const listItemREEvent: AnalyticsEvent<ListItemRE> = {
-          name: ANALYTICS_EVENT_NAMES.ListItemRE,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            ...baseEventAttrs,
-            screenId: SCREEN_IDS.Upload
-          }
-        };
-        this.analyticsService.trackEvent(listItemREEvent);
-      }
-    });
+        if (isEdit) {
+          const editItemREEvent: AnalyticsEvent<EditItemRE> = {
+            name: ANALYTICS_EVENT_NAMES.EditItemRE,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              ...baseEventAttrs,
+              screenId: SCREEN_IDS.EditItem
+            }
+          };
+          this.analyticsService.trackEvent(editItemREEvent);
+        } else {
+          const listItemREEvent: AnalyticsEvent<ListItemRE> = {
+            name: ANALYTICS_EVENT_NAMES.ListItemRE,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              ...baseEventAttrs,
+              screenId: SCREEN_IDS.Upload
+            }
+          };
+          this.analyticsService.trackEvent(listItemREEvent);
+        }
+      }));
   }
 
 }
