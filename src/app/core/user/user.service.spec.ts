@@ -816,17 +816,11 @@ describe('Service: User', () => {
 
   describe('setSubscriptionsFeatureFlag', () => {	
     it('should call getFlag and add permission if active', () => {	
-      spyOn(featureflagService, 'getFlag').and.callThrough();	
-      spyOn(permissionService, 'addPermission');	
-      let resp: boolean;	
+      spyOn(featureflagService, 'getFlag').and.callThrough();		
 
-      service.setSubscriptionsFeatureFlag().subscribe((r: boolean) => {	
-        resp = r;	
-      });	
-
-      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);	
-      expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS.subscriptions);	
-      expect(resp).toBe(true);	
+      service.setSubscriptionsFeatureFlag();
+      
+      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);		
     });	
   });
 });

@@ -14,7 +14,7 @@ import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tu
 import { Observable } from 'rxjs';
 import { User } from '../core/user/user';
 import { StripeService } from '../core/stripe/stripe.service';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_NAME } from '../core/tracking/split-test.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT } from '../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -125,6 +125,9 @@ export class WallacoinsComponent implements OnInit {
     modal.componentInstance.pack = pack;
     modal.componentInstance.code = code;
     modal.componentInstance.total = this.wallacoins;
+    if (code === '200') {
+      this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT);
+    }
     modal.result.then(() => {
       this.router.navigate(['catalog/list']);
     }, () => {
