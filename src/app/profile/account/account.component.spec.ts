@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Rx';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { StripeService } from '../../core/stripe/stripe.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../core/tracking/split-test.service';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
@@ -22,7 +22,7 @@ describe('AccountComponent', () => {
   let modalService: NgbModal;
   let userService: UserService;
   let errorsService: ErrorsService;
-  let stripeService: StripeService;
+  let splitTestService: SplitTestService;
 
   const componentInstance: any = {
     init: jasmine.createSpy('init')
@@ -67,14 +67,21 @@ describe('AccountComponent', () => {
         }
         },
         {
-          provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return Observable.of(true);
-            }
-        }
-        }
+          provide: ProfileFormComponent, useValue: {
+            initFormControl() { },
+            canExit() { }
+          }
+        },
+        {
+          provide: SplitTestService, useValue: {
+            getVariable() {
+              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
+            },
+            track() {}
+          }
+        },
       ],
-      declarations: [ AccountComponent, ProfileFormComponent ],
+      declarations: [AccountComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -83,39 +90,34 @@ describe('AccountComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountComponent);
     component = fixture.componentInstance;
-    component.formComponent = TestBed.createComponent(ProfileFormComponent).componentInstance;
+    component.formComponent = TestBed.get(ProfileFormComponent);
     userService = TestBed.get(UserService);
     spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
     errorsService = TestBed.get(ErrorsService);
     modalService = TestBed.get(NgbModal);
-    stripeService = TestBed.get(StripeService);
+    splitTestService = TestBed.get(SplitTestService);
   });
 
-  describe('ngOnInit', () => {
-
+  describe('initForm', () => {
     it('should call userService.me', () => {
+      component.initForm();
+
       expect(userService.me).toHaveBeenCalled();
     });
 
     it('should set profileForm with user data', () => {
+      component.initForm();
+
       expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
     });
 
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
+    it('should set isStripe to the value returned by splitTestService getVariable', () => {
       const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+      spyOn(splitTestService, 'getVariable').and.callThrough();
 
-      component.ngOnInit();
+      component.initForm();
 
       expect(component.isStripe).toBe(expectedValue);
     });
@@ -123,7 +125,6 @@ describe('AccountComponent', () => {
 
   describe('onSubmit', () => {
     describe('valid form', () => {
-
       beforeEach(() => {
         spyOn(userService, 'edit').and.callThrough();
         spyOn(errorsService, 'i18nSuccess');
@@ -131,7 +132,6 @@ describe('AccountComponent', () => {
           birth_date: USER_BIRTH_DATE,
           gender: USER_GENDER
         });
-        component.formComponent.hasNotSavedChanges = true;
 
         component.onSubmit();
       });
@@ -147,27 +147,22 @@ describe('AccountComponent', () => {
         expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
       });
 
-      it('should set hasNotSavedChanges to false', () => {
-        expect(component.formComponent.hasNotSavedChanges).toBe(false);
-      });
-
       it('should set isStripe to PAYMENT_PROVIDER_STRIPE value (true)', () => {
-        component.ngOnInit();
+        component.initForm();
 
         expect(component.isStripe).toBe(true);
       });
 
       it('should set isStripe to PAYMENT_PROVIDER_STRIPE value (false)', () => {
-        spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(false));
+        spyOn(splitTestService, 'getVariable').and.returnValue(Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell));
 
-        component.ngOnInit();
+        component.initForm();
 
         expect(component.isStripe).toBe(false);
       });
     });
 
     describe('invalid form', () => {
-
       beforeEach(() => {
         spyOn(errorsService, 'i18nError');
         component.profileForm.get('birth_date').patchValue('');
@@ -187,7 +182,6 @@ describe('AccountComponent', () => {
     });
 
     describe('validation', () => {
-
       it('should set birth_date valid if value is valid', () => {
         component.profileForm.get('birth_date').setValue('1987-05-25');
 
@@ -210,6 +204,16 @@ describe('AccountComponent', () => {
       component.openUnsubscribeModal();
 
       expect(modalService.open).toHaveBeenCalledWith(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
+    });
+  });
+
+  describe('canExit', () => {
+    it('should call formComponent canExit method', () => {
+      spyOn(component.formComponent, 'canExit');
+
+      component.canExit();
+
+      expect(component.formComponent.canExit).toHaveBeenCalled();
     });
   });
 });

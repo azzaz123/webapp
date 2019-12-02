@@ -1,11 +1,8 @@
-import { PageViewInterface } from '../app/core/analytics/events-interfaces/pageview.interface';
-import { EventInterface } from '../app/core/analytics/events-interfaces/event.interface';
+import { AnalyticsEvent, AnalyticsPageView } from '../app/core/analytics/analytics-constants';
 
 export class MockAnalyticsService {
-
     initialize() { }
-    trackEvent(event: EventInterface) { }
-    trackPageView(page: PageViewInterface) { }
-
+    trackEvent<T>(_event: AnalyticsEvent<T>) { }
+    trackPageView<T>(_page: AnalyticsPageView<T>) { }
 }
 

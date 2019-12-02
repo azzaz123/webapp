@@ -1,5 +1,5 @@
-<form [formGroup]="billingForm" (submit)="onSubmit()">
-  <tsl-profile-form [profileForm]="billingForm">
+<tsl-profile-form [profileForm]="billingForm" (onInit)="initForm()">
+  <form [formGroup]="billingForm" (submit)="onSubmit()">
     <div class="box profile-box">
       <div class="box-content">
         <div class="row">
@@ -66,7 +66,7 @@
             </div>
             <div class="row">
               <div class="col-9" [ngClass]="{'offset-3': isNewBillingInfoForm, 'text-center': !isNewBillingInfoForm}">
-                <tsl-button [type]="'submit'" className="btn-primary btn-big" i18n [disabled]="!billingForm.valid">Save</tsl-button>
+                <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big" i18n [disabled]="!formComponent.hasNotSavedChanges">Save</tsl-button>
               </div>
               <div class="col-3 delete-link" *ngIf="!isNewBillingInfoForm">
                 <a (click)="deleteBillingInfo()" i18n>Delete information</a>
@@ -76,5 +76,5 @@
         </div>
       </div>
     </div>
-  </tsl-profile-form>
-</form>
+  </form>
+</tsl-profile-form>

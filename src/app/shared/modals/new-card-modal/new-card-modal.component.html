@@ -6,6 +6,7 @@
         <h1 i18n>Add a new credit card</h1>
     </div>
     <div class="NewCardModal__body">
-        <tsl-stripe-card-element [newLoading]="loading" (onStripeCardCreate)="onCreateCard($event)" [type]="'new'"></tsl-stripe-card-element>
+        <tsl-stripe-card-element [newLoading]="loading" (onStripeCardCreate)="onCreateCard($event)" [type]="'new'"
+        ></tsl-stripe-card-element>
     </div>
 </div>
