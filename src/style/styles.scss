@@ -5,8 +5,9 @@
 @import '~web-styleguide/scss/fonts';
 
 html, body {
-  font-size: $font-size-base-walla;
   height: 100%;
+  overflow: hidden;
+  font-size: $font-size-base-walla;
 }
 
 body {
@@ -48,20 +49,18 @@ body {
 }
 
 .page-content {
-  padding-left: $sidebar-width;
-  padding-top: $topbar-height;
+  position: absolute;
+  left: $sidebar-width;
+  top: $topbar-height;
+  height: calc(100vh - #{$topbar-height});
+  width: calc(100% - #{$sidebar-width});
+  overflow: auto;
   background: rgba(236, 239, 241, 0.6);
-  min-height: 100%;
-  @include media-breakpoint-down(sm) {
-    padding-left: 0;
-    padding-bottom: $topbar-height;
-  }
+  padding: 0 $spacing-xl;
   > .container {
-    padding-top: $spacing-xl;
-    padding-bottom: $spacing-xl;
+    padding: $spacing-xl $spacing-ms;
     @-moz-document url-prefix() { // Firefox hack
-      padding-top: $spacing-xl;
-      padding-bottom: $spacing-xl;
+      padding: $spacing-xl $spacing-ms;
     }
   }
 }
@@ -87,6 +86,12 @@ button, input, optgroup, select, textarea {
   display: none;
 }
 
+@media (min-width: 1200px) {
+  .container {
+    width: 1200px;
+  }
+}
+
 .modal-transparent .modal-dialog .modal-content {
   background-color: transparent;
   box-shadow: none;
@@ -94,4 +99,9 @@ button, input, optgroup, select, textarea {
 
 tsl-topbar {
   position: sticky;
+}
+
+tsl-chat {
+  height: calc(100% - #{$topbar-height});
+  max-height: calc(100% - #{$topbar-height});
 }
