@@ -16,7 +16,6 @@ describe('Component: Conversation', () => {
     TestBed.configureTestingModule({
       imports: [
         MomentModule,
-        NgxPermissionsModule,
         NgxPermissionsModule.forRoot()
       ],
       declarations: [InboxConversationComponent],
