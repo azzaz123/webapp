@@ -8,6 +8,8 @@ import { PersistencyService } from '../../persistency/persistency.service';
 import { TrackingService } from '../../tracking/tracking.service';
 import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
 import { Observable } from 'rxjs';
+import { RemoteConsoleService } from '../../remote-console';
+import { MockRemoteConsoleService } from '../../../../tests';
 
 let service: BlockUserXmppService;
 let xmppService: XmppService;
@@ -19,14 +21,14 @@ describe('BlockUserXmppService', () => {
         BlockUserXmppService,
         XmppService,
         EventService,
-        {provide: PersistencyService, useClass: MockedPersistencyService},
-        {provide: TrackingService, useValue: {}}
+        { provide: PersistencyService, useClass: MockedPersistencyService },
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
+        { provide: TrackingService, useValue: {} }
       ]
     });
     service = TestBed.get(BlockUserXmppService);
     xmppService = TestBed.get(XmppService);
   });
-
 
   describe('blockUser', () => {
     it('should call xmpp.blockUser when called', () => {

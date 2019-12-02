@@ -8,12 +8,13 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { Response } from '@angular/http';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
-import { CreditInfo, FinancialCard, FinancialCardOption } from '../../../core/payments/payment.interface';
+import { CreditInfo, FinancialCardOption } from '../../../core/payments/payment.interface';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { UUID } from 'angular2-uuid/index';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT } from '../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-cart',
@@ -33,10 +34,14 @@ export class CartComponent implements OnInit, OnDestroy {
   public cardType = 'old';
   public loading: boolean;
   public card: any;
-  public isStripe = false;
+  public isStripe: boolean;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
+  public paymentMethod: WEB_PAYMENT_EXPERIMENT_TYPE;
+  public paymentTypeSabadell = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
+  public paymentTypeStripeV1 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1;
+  public paymentTypeStripeV2 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV2;
 
   constructor(private cartService: CartService,
               private itemService: ItemService,
@@ -45,7 +50,8 @@ export class CartComponent implements OnInit, OnDestroy {
               private paymentService: PaymentService,
               private eventService: EventService,
               private router: Router,
-              private stripeService: StripeService) {
+              private stripeService: StripeService,
+              private splitTestService: SplitTestService) {
       this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
         this.cart = cartChange.cart;
       });
@@ -53,13 +59,16 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
-    this.stripeService.isPaymentMethodStripe$().subscribe(isStripe => {
-      this.isStripe = isStripe;
-      if (this.isStripe) {
-        this.eventService.subscribe('paymentResponse', (response) => {
-          this.managePaymentResponse(response);
-        });
-      }
+    this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
+      .subscribe((paymentMethod: any) => {
+        this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
+        this.paymentMethod = +paymentMethod;
+        this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
+        if (this.paymentMethod !== this.paymentTypeSabadell) {
+          this.eventService.subscribe('paymentResponse', (response) => {
+            this.managePaymentResponse(response);
+          });
+        }
     });
   }
 
@@ -77,35 +86,40 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   checkout() {
+    if (!this.cart.total || this.loading) {
+      return;
+    }
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
     this.loading = true;
-    this.itemService.purchaseProductsWithCredits(order, orderId, this.isStripe).subscribe((response: PurchaseProductsWithCreditsResponse) => {
-      if (-this.usedCredits > 0) {
-        localStorage.setItem('transactionType', 'bumpWithCredits');
-        localStorage.setItem('transactionSpent', (-this.usedCredits).toString());
-      } else {
-        localStorage.setItem('transactionType', 'bump');
-      }
-      this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
-      this.track(order);
-      if (response.payment_needed) {
-        if (this.isStripe) {
-          this.buyStripe(orderId);
+    this.track(order);
+    setTimeout(() => {
+      this.itemService.purchaseProductsWithCredits(order, orderId, this.isStripe).subscribe((response: PurchaseProductsWithCreditsResponse) => {
+        if (-this.usedCredits > 0) {
+          localStorage.setItem('transactionType', 'bumpWithCredits');
+          localStorage.setItem('transactionSpent', (-this.usedCredits).toString());
         } else {
-          this.buy(orderId);
+          localStorage.setItem('transactionType', 'bump');
         }
-      } else {
-        this.success();
-      }
-    }, (error: Response) => {
-      this.loading = false;
-      if (error.text()) {
-        this.errorService.show(error);
-      } else {
-        this.errorService.i18nError('bumpError');
-      }
-    });
+        this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
+        if (response.payment_needed) {
+          if (this.isStripe) {
+            this.buyStripe(orderId);
+          } else {
+            this.buy(orderId);
+          }
+        } else {
+          this.success();
+        }
+      }, (error: Response) => {
+        this.loading = false;
+        if (error.text()) {
+          this.errorService.show(error);
+        } else {
+          this.errorService.i18nError('bumpError');
+        }
+      });
+    }, 2000);
   }
 
   public setCardInfo(card: any): void {
@@ -161,6 +175,7 @@ export class CartComponent implements OnInit, OnDestroy {
     const payment_method = this.isStripe ? 'STRIPE' : 'SABADELL';
     const attributes = this.totalToPay === 0 ? { selected_products: result } : { selected_products: result, payment_method };
     this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, attributes);
+    this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
 
     ga('send', 'event', 'Item', 'bump-cart');
     gtag('event', 'conversion', { 'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM' });
