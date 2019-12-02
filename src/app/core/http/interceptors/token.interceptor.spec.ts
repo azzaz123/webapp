@@ -24,7 +24,7 @@ describe(`TokenInterceptor`, () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      imports: [ HttpClientTestingModule, HttpModuleNew ]
+      imports: [HttpClientTestingModule, HttpModuleNew]
     });
 
     httpService = injector.get(HttpServiceNew);
@@ -39,11 +39,8 @@ describe(`TokenInterceptor`, () => {
   it('should not add authorization header if no token exists', () => {
     accessTokenService.deleteAccessToken();
 
-    httpService.get('').subscribe();
-    const req: TestRequest = httpMock.expectOne(environment.baseUrl);
-    req.flush({});
-
-    expect(req.request.headers.has(TOKEN_AUTHORIZATION_HEADER_NAME)).toEqual(false);
+    httpService.get('').subscribe(response => expect(response).toEqual({}));
+    httpMock.expectNone(environment.baseUrl);
   });
 
   it('should add authorization header if token exists', () => {
@@ -61,12 +58,8 @@ describe(`TokenInterceptor`, () => {
   it('should not add authorization headers for v3 urls if no token exists', () => {
     accessTokenService.deleteAccessToken();
 
-    httpService.get(MOCK_V3_ENDPOINT).subscribe();
-    const req: TestRequest = httpMock.expectOne(environment.baseUrl + MOCK_V3_ENDPOINT);
-    req.flush({});
-
-    expect(req.request.headers.has(TOKEN_TIMESTAMP_HEADER_NAME)).toEqual(false);
-    expect(req.request.headers.has(TOKEN_SIGNATURE_HEADER_NAME)).toEqual(false);
+    httpService.get(MOCK_V3_ENDPOINT).subscribe(response => expect(response).toEqual({}));
+    httpMock.expectNone(environment.baseUrl + MOCK_V3_ENDPOINT);
   });
 
   it('should add authorization headers for v3 urls if token exists', () => {
@@ -78,5 +71,12 @@ describe(`TokenInterceptor`, () => {
 
     expect(req.request.headers.has(TOKEN_TIMESTAMP_HEADER_NAME)).toEqual(true);
     expect(req.request.headers.has(TOKEN_SIGNATURE_HEADER_NAME)).toEqual(true);
+  });
+
+  it('should return empty response if user is NOT logged in', () => {
+    accessTokenService.storeAccessToken(null);
+
+    httpService.get(MOCK_V3_ENDPOINT).subscribe(response => expect(response).toEqual({}));
+    httpMock.expectNone(environment.baseUrl + MOCK_V3_ENDPOINT);
   });
 });
