@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { InboxConversation } from '../../../model';
+import { InboxConversationService } from '../../../../core/inbox/inbox-conversation.service';
 
 @Component({
   selector: 'tsl-inbox-conversation',
@@ -21,10 +22,15 @@ export class InboxConversationComponent {
     sameElse: 'D MMM.'
   };
 
+  constructor(private inboxConversationService: InboxConversationService) {
+  }
+
   public dateIsThisYear(): boolean {
-    if (this.conversation && this.conversation.modifiedDate) {
-      return this.conversation.modifiedDate.getFullYear() === new Date().getFullYear();
-    }
-    return false;
+    return this.conversation && this.conversation.modifiedDate
+      ? this.conversation.modifiedDate.getFullYear() === new Date().getFullYear() : false;
+  }
+
+  public onClickArchiveConversation(): void {
+    this.inboxConversationService.archive(this.conversation).subscribe(() => this.conversation = null);
   }
 }

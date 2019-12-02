@@ -240,6 +240,8 @@ $menu-width-and-spacing: 10px;
 
     .unread-counter-column {
       display: flex;
+      align-items: flex-end;
+      flex-direction: row-reverse;
 
       .badge-pill {
         display: flex;
@@ -286,13 +288,15 @@ a {
     .conversation-info {
       .item-message-row {
         .unread-counter-column {
-          .badge {
+          width: 100px;
+
+          .badge.badge-primary {
             display: none;
           }
 
-          .archive-btn-container {
+          .badge.badge-archive {
             .check-corporate {
-              display: block;
+              display: flex;
             }
           }
         }
@@ -302,7 +306,7 @@ a {
 }
 
 
-.archive-btn-container {
+.badge-archive {
   .check-corporate {
     position: absolute;
     display: none;
@@ -321,7 +325,7 @@ a {
 
     mat-icon {
       height: 10px;
-      width: 19px;
+      width: 24px;
 
       /deep/ g g {
         fill: $blue-grey-3;
