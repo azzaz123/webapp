@@ -112,7 +112,7 @@ export class SubscriptionsService {
         return errors
           .mergeMap((error) => (error.status !== 404) ? Observable.throw(error) : Observable.of(error))
           .delay(1000)
-          .take(5);
+          .take(10);
       });
   }
 

@@ -7,7 +7,8 @@
 <div [class.with-credits]="creditInfo?.currencyName === 'wallacredits'">
   <div class="cart-wrapper" [class.has-financial-card]="hasFinancialCard"
        [class.no-credit]="!creditInfo?.credit"
-       [class.no-discount]="!cart?.discountedTotal && !creditInfo?.credit">
+       [class.no-discount]="!cart?.discountedTotal && !creditInfo?.credit"
+       [class.stripe]="isStripe">
     <div class="scroll-panel">
       <ul *ngIf="cart" class="items-list">
         <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
@@ -115,10 +116,18 @@
               (click)="checkout()"
               id="qa-checkout-buy"
               className="btn-primary btn-medium stripe"
-              i18n>Continue to Checkout</tsl-button>
+  >
+    <div class="secure-payment-button">
+      <span i18n>Continue to checkout</span>
+      <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
+    </div>
+  </tsl-button>
   <div class="secure-payment" [hidden]="isStripe">
     <mat-icon svgIcon="secure-card"></mat-icon>
     <span i18n>Secure payment through Sabadell</span>
+  </div>
+  <div class="stripe-payment" *ngIf="paymentMethod === paymentTypeStripeV2">
+    <a href="https://www.stripe.com/es" target="_blank"><mat-icon svgIcon="poweredByStripe"></mat-icon></a>
   </div>
 </div>
 <tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>

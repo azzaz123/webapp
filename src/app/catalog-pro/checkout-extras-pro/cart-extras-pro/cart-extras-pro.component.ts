@@ -14,6 +14,7 @@ import { OrderProExtras, FinancialCardOption } from '../../../core/payments/paym
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { EventService } from '../../../core/event/event.service';
 import { UUID } from 'angular2-uuid';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT } from '../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-cart-extras-pro',
@@ -30,11 +31,15 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   public cardType = 'old';
   private active = true;
   public card: any;
-  public isStripe = false;
   public isStripeCard = true;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
+  public isStripe: boolean;
+  public paymentMethod: WEB_PAYMENT_EXPERIMENT_TYPE;
+  public paymentTypeSabadell = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
+  public paymentTypeStripeV1 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1;
+  public paymentTypeStripeV2 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV2;
   @Output() billingInfoMissing: EventEmitter<boolean> = new EventEmitter();
   @Input() billingInfoForm: FormGroup;
   @Input() billingInfoFormEnabled: boolean;
@@ -47,11 +52,15 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
               private router: Router,
               private errorsService: ErrorsService,
               private stripeService: StripeService,
-              private eventService: EventService) { }
+              private eventService: EventService,
+              private splitTestService: SplitTestService) { }
 
   ngOnInit() {
-    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
-      this.isStripe = val;
+    this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
+    .subscribe((paymentMethod: number) => {
+      this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
+      this.paymentMethod = +paymentMethod;
+      this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
       if (this.isStripe) {
         this.eventService.subscribe('paymentResponse', (response) => {
           this.managePaymentResponse(response);
@@ -111,7 +120,9 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
       if (this.isStripe) {
         this.stripeService.buy(order.id, paymentId, this.isStripeCard, this.savedCard, this.card);
       } else {
-        this.buy(order.id);
+        setTimeout(() => {
+          this.buy(order.id);
+        }, 2000);
       }
     }, (error: Response) => {
       this.loading = false;
@@ -142,6 +153,8 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
         selected_packs: order.packs,
         payment_method
       });
+
+    this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
   }
 
   public hasCard(hasCard: boolean) {

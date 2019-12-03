@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Rx';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { StripeService } from '../../core/stripe/stripe.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../core/tracking/split-test.service';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
@@ -22,7 +22,7 @@ describe('AccountComponent', () => {
   let modalService: NgbModal;
   let userService: UserService;
   let errorsService: ErrorsService;
-  let stripeService: StripeService;
+  let splitTestService: SplitTestService;
 
   const componentInstance: any = {
     init: jasmine.createSpy('init')
@@ -67,18 +67,19 @@ describe('AccountComponent', () => {
         }
         },
         {
-          provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return Observable.of(true);
-            }
-        }
-        },
-        {
           provide: ProfileFormComponent, useValue: {
             initFormControl() { },
             canExit() { }
           }
-        }
+        },
+        {
+          provide: SplitTestService, useValue: {
+            getVariable() {
+              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
+            },
+            track() {}
+          }
+        },
       ],
       declarations: [AccountComponent],
       schemas: [NO_ERRORS_SCHEMA]
@@ -95,7 +96,7 @@ describe('AccountComponent', () => {
     fixture.detectChanges();
     errorsService = TestBed.get(ErrorsService);
     modalService = TestBed.get(NgbModal);
-    stripeService = TestBed.get(StripeService);
+    splitTestService = TestBed.get(SplitTestService);
   });
 
   describe('initForm', () => {
@@ -112,17 +113,9 @@ describe('AccountComponent', () => {
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
     });
 
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.initForm();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
+    it('should set isStripe to the value returned by splitTestService getVariable', () => {
       const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+      spyOn(splitTestService, 'getVariable').and.callThrough();
 
       component.initForm();
 
@@ -161,7 +154,7 @@ describe('AccountComponent', () => {
       });
 
       it('should set isStripe to PAYMENT_PROVIDER_STRIPE value (false)', () => {
-        spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(false));
+        spyOn(splitTestService, 'getVariable').and.returnValue(Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell));
 
         component.initForm();
 

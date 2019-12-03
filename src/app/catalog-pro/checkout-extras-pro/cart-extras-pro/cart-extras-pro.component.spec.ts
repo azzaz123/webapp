@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CartExtrasProComponent } from './cart-extras-pro.component';
 import { Observable } from 'rxjs';
@@ -22,6 +22,7 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { EventService } from '../../../core/event/event.service';
 import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT } from '../../../core/tracking/split-test.service';
 
 describe('CartExtrasProComponent', () => {
   let component: CartExtrasProComponent;
@@ -33,6 +34,7 @@ describe('CartExtrasProComponent', () => {
   let trackingService: TrackingService;
   let stripeService: StripeService;
   let eventService: EventService;
+  let splitTestService: SplitTestService;
 
   const CART_PRO_EXTRAS = new CartProExtras();
   const CART_CHANGE: CartChange = {
@@ -89,14 +91,19 @@ describe('CartExtrasProComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return Observable.of(true);
-            },
             buy() {},
             getCards() {
               return Observable.of(true);
             }
-        }
+          }
+        },
+        {
+          provide: SplitTestService, useValue: {
+            getVariable() {
+              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
+            },
+            track() {}
+          }
         },
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -127,6 +134,7 @@ describe('CartExtrasProComponent', () => {
     trackingService = TestBed.get(TrackingService);
     stripeService = TestBed.get(StripeService);
     eventService = TestBed.get(EventService);
+    splitTestService = TestBed.get(SplitTestService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     fixture.detectChanges();
   });
@@ -134,6 +142,8 @@ describe('CartExtrasProComponent', () => {
   describe('ngOnInit', () => {
     beforeEach(() => {
       spyOn(cartService, 'createInstance').and.callThrough();
+      spyOn(splitTestService, 'getVariable').and.callThrough();
+      spyOn(splitTestService, 'track');
 
       component.ngOnInit();
     });
@@ -146,22 +156,14 @@ describe('CartExtrasProComponent', () => {
       expect(component.cart).toEqual(CART_PRO_EXTRAS);
     });
 
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
+    it('should set the paymentMethod to stripe', () => {
+      expect(component.paymentMethod).toBe(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
     });
 
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
+    it('should track the payment method experiment', () => {
+      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
     });
+
   });
 
   describe('hasCard', () => {
@@ -287,14 +289,17 @@ describe('CartExtrasProComponent', () => {
 
         describe('tracking', () => {
           describe('Stripe', () => {
-            it('should call track with valid values', () => {
+            it('should call track with valid values', fakeAsync(() => {
+              spyOn(splitTestService, 'getVariable').and.callThrough();
+              
               component.checkout();
+              tick(2000);
 
               expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {
                 selected_packs: ORDER_CART_EXTRAS_PRO.packs,
                 payment_method: 'STRIPE'
               });
-            });
+            }));
           });
 
           describe('Sabadell', () => {
@@ -312,23 +317,25 @@ describe('CartExtrasProComponent', () => {
 
         describe('buy method', () => {
           describe('should call sabadellSubmit emit', () => {
-            it('if there is not financial card', () => {
+            it('if there is not financial card', fakeAsync(() => {
               component.hasFinancialCard = null;
               component.isStripe = false;
 
               component.checkout();
+              tick(2000);
 
               expect(eventId).toBe('UUID');
-            });
+            }));
 
-            it('if the cardtype is new', () => {
+            it('if the cardtype is new', fakeAsync(() => {
               component.cardType = 'new';
               component.isStripe = false;
 
               component.checkout();
+              tick(2000);
 
               expect(eventId).toBe('UUID');
-            });
+            }));
           });
 
           describe('should call paymentService pay method', () => {
@@ -337,34 +344,37 @@ describe('CartExtrasProComponent', () => {
               component.hasFinancialCard = true;
             });
 
-            it('if there is a financial card and cartype is old', () => {
+            it('if there is a financial card and cartype is old', fakeAsync(() => {
               spyOn(paymentService, 'pay').and.callThrough();
               component.isStripe = false;
 
               component.checkout();
+              tick(2000);
 
               expect(paymentService.pay).toHaveBeenCalledWith(ORDER_CART_EXTRAS_PRO.id);
-            });
+            }));
 
-            it('should navigate to catalog with code 200 if the payment was ok', () => {
+            it('should navigate to catalog with code 200 if the payment was ok', fakeAsync(() => {
               spyOn(paymentService, 'pay').and.callThrough();
               spyOn(router, 'navigate').and.callThrough();
               component.isStripe = false;
 
               component.checkout();
+              tick(2000);
 
               expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { code: 201, extras: true }]);
-            });
+            }));
 
-            it('should navigate to catalog with code -1 if the payment was ko', () => {
+            it('should navigate to catalog with code -1 if the payment was ko', fakeAsync(() => {
               spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
               spyOn(router, 'navigate').and.callThrough();
               component.isStripe = false;
 
               component.checkout();
+              tick(2000);
 
               expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { code: -1 }]);
-            });
+            }));
           });
         });
       });

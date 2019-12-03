@@ -59,6 +59,7 @@ let userService: UserService;
 let itemService: ItemService;
 let messageService: MessageService;
 let notificationService: NotificationService;
+let remoteConsoleService: RemoteConsoleService;
 let realTime: RealTimeService;
 let persistencyService: PersistencyService;
 let eventService: EventService;
@@ -137,6 +138,7 @@ describe('Service: Conversation', () => {
     realTime = TestBed.get(RealTimeService);
     persistencyService = TestBed.get(PersistencyService);
     notificationService = TestBed.get(NotificationService);
+    remoteConsoleService = TestBed.get(RemoteConsoleService);
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
     connectionService = TestBed.get(ConnectionService);
