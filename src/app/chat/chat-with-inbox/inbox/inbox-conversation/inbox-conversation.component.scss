@@ -306,7 +306,7 @@ a {
   .check-corporate {
     position: absolute;
     display: none;
-    top: 48px;
+    top: $spacing-xxl;
     right: $spacing-ms;
 
     @include square(30px);
