@@ -2,24 +2,23 @@
 
 $cart-height: calc(100vh - #{$topbar-height + $spacing-xl * 2});
 $title-height: 50px;
-$total-height: 80px;
+$total-height: 50px;
 $button-height: 42px;
+$margin-height: 180px;
+$scroll-height: 230px;
 $button-margin: $spacing-ml - $spacing-s;
 $button-space: $button-height + $spacing-ml;
-$secure-label-height: 25px;
-$scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $button-space + $secure-label-height});
-$clear-cart-height: 38px;
-$card-select-height: (50px + $spacing-s) * 2 + $spacing-xs;
 
 :host {
+  display: flex;
+  flex-direction: column;
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
-  display: block;
-  height: $cart-height;
+  height: calc(100% - #{$margin-height});
   width: 280px;
   position: fixed;
-  padding: 0 $spacing-s;
+  padding: 0 $spacing-s $spacing-s;
 }
 
 h1 {
@@ -31,22 +30,18 @@ h1 {
 }
 
 .cart-wrapper {
-  height: $scroll-panel-height;
   background-color: rgba($blue-grey-5, 0.3);
   border-radius: 5px;
   position: relative;
-  &.has-financial-card {
-    height: calc(#{$scroll-panel-height} - #{$card-select-height});
-  }
+  flex: 2 0px;
+  height: calc(100% - #{$scroll-height});
 }
 
 .scroll-panel {
   overflow: auto;
+  min-height: $margin-height;
+  height: 100%;
   padding: $spacing-s;
-  height: calc(#{$scroll-panel-height} - #{$clear-cart-height});
-  .has-financial-card & {
-    height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height});
-  }
 }
 
 .total {
@@ -56,6 +51,12 @@ h1 {
   font-weight: $font-weight-chunky;
   padding: 0 $spacing-s;
   text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
+  overflow: hidden;
+  clear: both;
   .price {
     font-size: $font-size-xl;
   }
@@ -185,6 +186,34 @@ tsl-button {
   span {
     font-size: $font-size-xs;
     color: $blue-grey-3;
+  }
+}
+
+.secure-payment-button {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  mat-icon {
+    height: 14px;
+    width: 11px;
+    position: absolute;
+    right: 0;
+    top: 1px;
+  }
+  span {
+    font-size: $font-size-s;
+    color: $white;
+  }
+}
+
+.stripe-payment {
+  text-align: center;
+  margin: $spacing-xs 0 0 0;
+  mat-icon {
+    width: 100px;
+    height: 25px;
   }
 }
 

@@ -19,6 +19,7 @@ import {
   ClickProfileUnsuscribe,
   ClickUnsuscribeCancelation
 } from '../../core/analytics/analytics-constants';
+import { ContinueSubscriptionModalComponent } from './modals/continue-subscription-modal.component';
 
 @Component({
   selector: 'tsl-subscription',
@@ -54,7 +55,7 @@ export class SubscriptionComponent implements OnInit {
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
-    const modal = subscription.subscribed_from ? CancelSubscriptionModalComponent : AddNewSubscriptionModalComponent;
+    const modal = subscription.subscribed_until ? ContinueSubscriptionModalComponent : subscription.subscribed_from ? CancelSubscriptionModalComponent : AddNewSubscriptionModalComponent;
     let modalRef = this.modalService.open(modal, {windowClass: 'review'});
     modalRef.componentInstance.subscription = subscription;
     modalRef.result.then((action: string) => {

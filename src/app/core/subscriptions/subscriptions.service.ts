@@ -112,7 +112,7 @@ export class SubscriptionsService {
         return errors
           .mergeMap((error) => (error.status !== 404) ? Observable.throw(error) : Observable.of(error))
           .delay(1000)
-          .take(5);
+          .take(10);
       });
   }
 
@@ -157,6 +157,10 @@ export class SubscriptionsService {
 
   public cancelSubscription(planId: string): Observable<any> {
     return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/cancel/${planId}`, null, null, { observe: 'response' as 'body' });
+  }
+
+  public continueSubscription(planId: string): Observable<any> {
+    return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/unsubscription/cancel/${planId}`, null, null, { observe: 'response' as 'body' });
   }
 
   private mapSubscriptions(subscription: SubscriptionsResponse, categories: CategoryResponse[]): SubscriptionsResponse {
