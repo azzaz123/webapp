@@ -37,6 +37,8 @@ import { NavLink } from '../../shared/nav-links/nav-link.interface';
 import { FeatureflagService } from '../../core/user/featureflag.service';
 import { CategoryService } from '../../core/category/category.service';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
+import { User } from '../../core/user/user';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 export const SORTS = [ 'date_desc', 'date_asc', 'price_desc', 'price_asc' ];
 
@@ -79,6 +81,8 @@ export class ListComponent implements OnInit, OnDestroy {
   private pageSize = 20;
   public normalNavLinks: NavLink[] = [];
   public subscriptionSelectedNavLinks: NavLink[] = [];
+  public user: User;
+  public userScore: number;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -95,14 +99,25 @@ export class ListComponent implements OnInit, OnDestroy {
     protected i18n: I18nService,
     private stripeService: StripeService,
     private subscriptionsService: SubscriptionsService,
-    private categoryService: CategoryService) {
+    private categoryService: CategoryService,
+    private deviceService: DeviceDetectorService) {
   }
 
   ngOnInit() {
+    this.userService.me().subscribe(u => {
+      this.user = u;
+    });
+
+    this.getUserScore();
+
     this.normalNavLinks = [
       { id: 'published', display: this.i18n.getTranslations('selling') },
       { id: 'sold', display: this.i18n.getTranslations('sold') }
     ];
+
+    if (this.deviceService.isMobile()) {
+      this.normalNavLinks.push({ id: 'reviews', display: this.i18n.getTranslations('reviews')})
+    }
 
     this.subscriptionSelectedNavLinks = [
       { id: 'active', display: this.i18n.getTranslations('active') },
@@ -670,6 +685,14 @@ export class ListComponent implements OnInit, OnDestroy {
   public onSortChange(value: any) {
     this.sortBy = value;
     this.getItems();
+  }
+
+  public getUserScore() {
+    this.userService.me().subscribe((user: User) => {
+      this.userService.getInfo(user.id).subscribe(info => {
+        this.userScore = info.scoring_stars;
+      });
+    });
   }
 
 }

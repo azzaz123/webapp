@@ -9,38 +9,45 @@
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent && isRedirect"></tsl-spinner>
   <div class="container" *ngIf="!isUrgent || !isRedirect">
 
-    <tsl-header>
-      <div class="col-7">
-        <div class="header-row">
-          <h1 class="header-title">
-            <span i18n>Your products</span>
-            <span class="badge badge-pro" *ngIf="userService?.user?.featured || subscriptionSlots.length !== 0">
-              <mat-icon svgIcon="pro-seal"></mat-icon>
-              Pro
-            </span>
-          </h1>
-        </div>
-        <div class="header-row header-row--margin">
-          <h4 class="header-subtitle" i18n>Here you can list items, manage the ones you already have and featured to sell them faster</h4>
-        </div>
+  <tsl-header>
+    <div class="col-6 col-md-7">
+      <div class="header-row">
+        <h1 class="header-title">
+          <span class="d-none d-md-block" i18n>Your products</span>
+          <div class="d-md-none flex-column">
+            <div class="mb-2" i18n>{{user.microName}}</div>
+            <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
+          </div>
+          <span class="badge badge-pro" *ngIf="userService?.user?.featured || subscriptionSlots.length !== 0">
+            <mat-icon svgIcon="pro-seal"></mat-icon>
+            Pro
+          </span>
+        </h1>
       </div>
-      <div class="col info">
-        <mat-icon svgIcon="feature"></mat-icon>
-        <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
+      <div class="header-row d-none d-md-block">
+        <h4 class="header-subtitle" i18n>Here you can list items, manage the ones you already have and featured to
+          sell them faster</h4>
       </div>
-      <div class="col-1 header-numbers">
-        <ng-container>
-          <p class="header-numbers-top">
-            <span *ngIf="numberOfProducts === 0 && loading">--</span>
-            <span *ngIf="!loading">{{numberOfProducts}}</span>
-          </p>
-          <p class="header-numbers-bottom">
-            <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
-            <span *ngIf="numberOfProducts === 1" i18n>product</span>
-          </p>
-        </ng-container>
+    </div>
+    <div class="col info d-none d-md-block">
+      <mat-icon svgIcon="feature"></mat-icon>
+      <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
+    </div>
+    <div class="col-6 col-md-2 header-numbers">
+      <p class="header-numbers-top d-none d-md-block">
+        <span *ngIf="numberOfProducts === 0 && loading">--</span>
+        <span *ngIf="!loading">{{numberOfProducts}}</span>
+      </p>
+      <p class="header-numbers-bottom d-none d-md-block">
+        <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
+        <span *ngIf="numberOfProducts === 1" i18n>product</span>
+      </p>
+      <div class="d-flex justify-content-end d-md-none">
+        <tsl-user-avatar [user]="user" size="60"></tsl-user-avatar>
+        <!-- <a [routerLink]="['/profile/info']" i18n>Editar perfil</a> -->
       </div>
-    </tsl-header>
+    </div>
+  </tsl-header>
 
     <tsl-subscriptions-slots-list
       [subscriptionsSlots]="subscriptionSlots"

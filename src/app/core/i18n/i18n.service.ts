@@ -149,7 +149,8 @@ export class I18nService {
       cancelSubscriptionSuccessTitle: 'Subscription cancelled.',
       cancelSubscriptionSuccessBody: 'We are sad to see you go.',
       cancelSubscriptionErrorTitle: 'There was an error',
-      cancelSubscriptionErrorBody: 'Your subscription could not be cancelled.'
+      cancelSubscriptionErrorBody: 'Your subscription could not be cancelled.',
+      reviews: 'Reviews'
     },
     es: {
       daysMomentConfig: {
@@ -298,7 +299,8 @@ export class I18nService {
       cancelSubscriptionSuccessTitle: 'Suscripción cancelada.',
       cancelSubscriptionSuccessBody: 'Lamentamos que te vayas :(',
       cancelSubscriptionErrorTitle: 'Ha habido un error',
-      cancelSubscriptionErrorBody: 'Tu suscripción no ha podido ser cancelada.'
+      cancelSubscriptionErrorBody: 'Tu suscripción no ha podido ser cancelada.',
+      reviews: 'Opiniones'
     }
   };
 
