@@ -92,7 +92,7 @@ describe('EditSubscriptionModalComponent', () => {
       const expectedPageView: AnalyticsPageView<ViewEditSubscriptionPlan> = {
         name: ANALYTICS_EVENT_NAMES.ViewEditSubscriptionPlan,
         attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagmnet
+          screenId: SCREEN_IDS.SubscriptionManagment
         }
       };
       component.ngOnInit();
