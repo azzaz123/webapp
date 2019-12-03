@@ -17,7 +17,7 @@ import { HttpHeaders } from '@angular/common/http';
 const MOCK_TOKEN = 'token';
 const MOCK_V3_ENDPOINT = 'api/v3/endpoint';
 
-fdescribe(`TokenInterceptor`, () => {
+describe(`TokenInterceptor`, () => {
   let injector: TestBed;
   let httpService: HttpServiceNew;
   let httpMock: HttpTestingController;
