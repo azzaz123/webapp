@@ -66,8 +66,7 @@ export class InboxService {
     .catch(() => {
       this.errorRetrievingArchived = true;
       return this.persistencyService.getArchivedStoredInbox();
-    })
-    .subscribe((conversations) => {
+    }).subscribe((conversations: InboxConversation[]) => {
       this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
       this.archivedInboxReady = true;
       this.eventService.emit(EventService.ARCHIVED_INBOX_READY, true);
