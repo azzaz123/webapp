@@ -209,7 +209,7 @@ export class InboxConversationService {
     return isNil(conversation) ? false : some(this.archivedConversations, { id: conversation.id });
   }
 
-  public archive(conversation: InboxConversation): Observable<InboxConversation> {
+  public archive$(conversation: InboxConversation): Observable<InboxConversation> {
     return this.archiveConversation(conversation.id)
     .catch((err) => {
       if (err.status === 409) {

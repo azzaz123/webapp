@@ -602,7 +602,7 @@ describe('InboxConversationService', () => {
     it('with success should emit CONVERSATION_ARCHIVED event', () => {
       spyOn(http, 'put').and.returnValue(Observable.of({}));
 
-      service.archive(service.conversations[0]).subscribe().unsubscribe();
+      service.archive$(service.conversations[0]).subscribe().unsubscribe();
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]);
     });
@@ -610,7 +610,7 @@ describe('InboxConversationService', () => {
     it('with 409 error should emit CONVERSATION_ARCHIVED event', () => {
       spyOn(http, 'put').and.returnValue(Observable.throwError({ status: 409 }));
 
-      service.archive(service.conversations[0]).subscribe().unsubscribe();
+      service.archive$(service.conversations[0]).subscribe().unsubscribe();
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]);
     });

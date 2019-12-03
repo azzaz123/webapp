@@ -31,6 +31,6 @@ export class InboxConversationComponent {
   }
 
   public onClickArchiveConversation(): void {
-    this.inboxConversationService.archive(this.conversation).subscribe(() => this.conversation = null);
+    this.inboxConversationService.archive$(this.conversation).subscribe(() => this.conversation = null);
   }
 }
