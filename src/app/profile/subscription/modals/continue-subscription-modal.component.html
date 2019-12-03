@@ -1,0 +1,13 @@
+<div class="ContinueSubscription__box">
+    <div class="ContinueSubscription__box--content">
+        <div class="ContinueSubscription__box-header">
+            <div class="modal-close" (click)="activeModal.dismiss()">
+            <mat-icon svgIcon="cross"></mat-icon>
+            </div>
+        </div>
+        <h4 class="ContinueSubscription__box--title" i18n>Would you want to keep your PRO subscription {{subscription.category_name}} after this month?</h4>
+        <p class="ContinueSubscription__box--subtitle" i18n>It's never too late! You can undo your cancellation and keep your benefits.</p>
+        <tsl-button (click)="continueSubscription()" [loading]="loading" [disabled]="loading" i18n>Yes, I want to keep my subscription.</tsl-button>
+        <tsl-button className="btn-gray" (click)="activeModal.close()" [loading]="loading" [disabled]="loading" i18n>No, I want to cancel subscription.</tsl-button>
+    </div>
+</div>

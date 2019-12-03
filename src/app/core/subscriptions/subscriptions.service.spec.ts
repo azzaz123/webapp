@@ -175,6 +175,20 @@ describe('SubscriptionsService', () => {
     });
   });
 
+  describe('continueSubscription', () => {
+    it('should call the endpoint', () => {
+      const planId = '1-2-3';
+      const expectedUrl = `${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/unsubscription/cancel/${planId}`;
+
+      service.continueSubscription(planId).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.method).toBe('PUT');
+    });
+  });
+
   afterAll(() => {
     TestBed.resetTestingModule();
   });
