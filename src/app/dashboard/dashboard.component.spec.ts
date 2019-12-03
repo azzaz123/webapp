@@ -161,7 +161,7 @@ describe('DashboardComponent', () => {
       expect(component.messagesTotal).toBe(5 - 2);
     });
 
-    it('should set completed to false', () => {
+    it('should return true if user has calls or messages', () => {
       expect(component.hasMessagesOrCalls).toBeTruthy();
     });
   });
