@@ -218,11 +218,9 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   onUploaded(uploadEvent: any) {
-    const isEdit = this.item ? true : false;
-
     this.onFormChanged.emit(false);
 
-    if (isEdit) {
+    if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
@@ -240,7 +238,7 @@ export class UploadRealestateComponent implements OnInit {
       params.onHold = true;
     }
 
-    this.trackEditOrUpload(isEdit, uploadEvent.response.content).subscribe(() =>
+    this.trackEditOrUpload(!!this.item, uploadEvent.response.content).subscribe(() =>
       this.router.navigate(['/catalog/list', params])
     );
   }

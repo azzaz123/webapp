@@ -311,9 +311,8 @@ export class UploadCarComponent implements OnInit {
 
   public redirectToList(uploadEvent, type = 1) {
     const params = this.getRedirectParams(uploadEvent, type);
-    const isEdit = this.item ? true : false;
 
-    this.trackEditOrUpload(isEdit, uploadEvent.response).subscribe(() =>
+    this.trackEditOrUpload(!!this.item, uploadEvent.response).subscribe(() =>
       this.router.navigate(['/catalog/list', params])
     );
   }

@@ -283,11 +283,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   onUploaded(uploadEvent: any) {
-    const isEdit = this.item ? true : false;
-
     this.onFormChanged.emit(false);
     
-    if (isEdit) {
+    if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
       appboy.logCustomEvent('Edit', { platform: 'web' });
     } else {
@@ -304,7 +302,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       localStorage.setItem('transactionType', 'urgent');
     }
 
-    this.trackEditOrUpload(isEdit, uploadEvent.response.content).subscribe(() =>
+    this.trackEditOrUpload(!!this.item, uploadEvent.response.content).subscribe(() =>
       this.router.navigate(['/catalog/list', { [uploadEvent.action]: true, itemId: uploadEvent.response.id }])
     );
   }
