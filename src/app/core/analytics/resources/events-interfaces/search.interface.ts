@@ -66,7 +66,7 @@ export interface Search {
   /**
    * Order criteria in which the results of the search are shown
    */
-  orderBy?: "distance" | "price_low_to_high" | "price_high_to_low" | "newest" | "most_relevant";
+  orderBy: "distance" | "price_low_to_high" | "price_high_to_low" | "newest" | "most_relevant";
   professional?: boolean;
   shipping?: boolean;
   exchange?: boolean;
