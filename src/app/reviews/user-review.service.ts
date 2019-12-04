@@ -33,6 +33,25 @@ export class UserReviewService {
       );
   }
 
+  public getAllReviews(start: number, offset: number): Observable<Review[]> {
+    return this.recursiveReviews(start, offset).map(allReviewData => this.mapResponse(allReviewData));
+  }
+
+  private recursiveReviews(init: number, offset: number): Observable<ReviewResponse[]> {
+    return this.http.get(this.API_URL_v3_USER + '/me/reviews', { init })
+    .map(r => {
+      const res: ReviewResponse[] = r.json();
+      return res;
+    })
+    .flatMap(res => {
+      if (res.length > 0) {
+        return this.recursiveReviews(init + offset, offset).map(r => r.concat(res));
+      } else {
+        return Observable.of([]);
+      }
+    });
+  }
+
   private mapResponse(res: ReviewResponse[]): Review[] {
     return res.map((reviewResponse: ReviewResponse) => {
       const item: ReviewItem = this.mapItem(reviewResponse);

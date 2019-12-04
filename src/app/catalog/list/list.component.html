@@ -70,7 +70,7 @@
     </tsl-nav-links>
 
     <div class="row items">
-      <div id="catalog-empty-state" *ngIf="!items.length && !loading">
+      <div id="catalog-empty-state" *ngIf="!items.length && !loading && !userReviews.length">
         <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
       </div>
 
@@ -83,6 +83,8 @@
         (purchaseListingFee)="purchaseListingFee($event)"
       >
       </tsl-catalog-item>
+
+      <tsl-review-item *ngFor="let review of userReviews" [review]="review" class="review-container col-md-12"></tsl-review-item>
 
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>

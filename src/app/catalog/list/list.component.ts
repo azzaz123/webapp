@@ -39,6 +39,8 @@ import { CategoryService } from '../../core/category/category.service';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
 import { User } from '../../core/user/user';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { UserReviewService } from '../../reviews/user-review.service';
+import { Review } from '../../reviews/review';
 
 export const SORTS = [ 'date_desc', 'date_asc', 'price_desc', 'price_asc' ];
 
@@ -83,6 +85,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public subscriptionSelectedNavLinks: NavLink[] = [];
   public user: User;
   public userScore: number;
+  public userReviews: Review[];
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -100,15 +103,12 @@ export class ListComponent implements OnInit, OnDestroy {
     private stripeService: StripeService,
     private subscriptionsService: SubscriptionsService,
     private categoryService: CategoryService,
-    private deviceService: DeviceDetectorService) {
+    private deviceService: DeviceDetectorService,
+    private userReviewService: UserReviewService) {
   }
 
   ngOnInit() {
-    this.userService.me().subscribe(u => {
-      this.user = u;
-    });
-
-    this.getUserScore();
+    this.getUserInfo();
 
     this.normalNavLinks = [
       { id: 'published', display: this.i18n.getTranslations('selling') },
@@ -316,6 +316,15 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public filterByStatus(status: string) {
     this.deselect();
+
+    if (status === 'reviews') {
+      this.items = [];
+      this.selectedStatus = status;
+      this.userReviewService.getAllReviews(0, 20).subscribe(reviews => this.userReviews = reviews);
+    } else {
+      this.userReviews = [];
+    }
+
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
       this.init = 0;
@@ -687,8 +696,9 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getItems();
   }
 
-  public getUserScore() {
-    this.userService.me().subscribe((user: User) => {
+  public getUserInfo() {
+    this.userService.me().subscribe(user => {
+      this.user = user;
       this.userService.getInfo(user.id).subscribe(info => {
         this.userScore = info.scoring_stars;
       });
