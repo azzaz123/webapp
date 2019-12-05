@@ -25,6 +25,7 @@ import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { HttpModuleNew } from '../http/http.module.new';
 import { environment } from '../../../environments/environment';
 import { uniq } from 'lodash-es';
+import { AccessTokenService } from '../http/access-token.service';
 
 describe('InboxConversationService', () => {
 
@@ -52,6 +53,11 @@ describe('InboxConversationService', () => {
           provide: RealTimeService, useValue: {
             sendRead() {
             }
+          }
+        },
+        {
+          provide: AccessTokenService, useValue: {
+            accessToken: 'ACCESS_TOKEN'
           }
         },
         { provide: PersistencyService, useClass: MockedPersistencyService },

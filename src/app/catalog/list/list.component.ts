@@ -34,8 +34,9 @@ import { StripeService } from '../../core/stripe/stripe.service';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '../../core/subscriptions/subscriptions.service';
 import { SubscriptionSlot } from '../../core/subscriptions/subscriptions.interface';
 import { NavLink } from '../../shared/nav-links/nav-link.interface';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../../core/user/featureflag.service';
-import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
+import { FeatureflagService } from '../../core/user/featureflag.service';
+import { CategoryService } from '../../core/category/category.service';
+import { CATEGORY_IDS } from '../../core/category/category-ids';
 
 export const SORTS = [ 'date_desc', 'date_asc', 'price_desc', 'price_asc' ];
 
@@ -94,7 +95,7 @@ export class ListComponent implements OnInit, OnDestroy {
     protected i18n: I18nService,
     private stripeService: StripeService,
     private subscriptionsService: SubscriptionsService,
-    private featureFlagService: FeatureflagService) {
+    private categoryService: CategoryService) {
   }
 
   ngOnInit() {
@@ -130,23 +131,14 @@ export class ListComponent implements OnInit, OnDestroy {
 
     this.userService.getAvailableSlots().subscribe(slots => {
       if (slots.user_can_manage && slots.num_max_cars) {
-        const carsCategory =   {
-          category_id: 100,
-          has_brand: false,
-          has_model: false,
-          has_object_type: false,
-          icon_id: 'cat_car',
-          name: 'Cars',
-          vertical_id: 'cars'
-        };
-
-        const mappedSubscriptionSlot: SubscriptionSlot = {
-          category: carsCategory,
-          available: slots.num_slots_cars,
-          limit: slots.num_max_cars
-        };
-
-        this.setSubscriptionSlots([mappedSubscriptionSlot]);
+        this.categoryService.getCategoryById(CATEGORY_IDS.CAR).subscribe(category => {
+          const mappedSubscriptionSlot: SubscriptionSlot = {
+            category,
+            available: slots.num_slots_cars,
+            limit: slots.num_max_cars
+          };
+          this.setSubscriptionSlots([mappedSubscriptionSlot]);
+        });
       }
     });
 

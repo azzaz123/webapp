@@ -422,10 +422,7 @@ export class UserService extends ResourceService {
   public setSubscriptionsFeatureFlag(): Observable<boolean> {
     return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS)
       .map((isActive: boolean) => {
-        if (isActive) {
-          this.permissionService.addPermission(PERMISSIONS.subscriptions);
           return isActive;
-        }
       });
   }
 }
