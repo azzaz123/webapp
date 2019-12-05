@@ -4,23 +4,24 @@ import { EventService } from '../event/event.service';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
-import { Message } from '../message/message';
+import { Message, messageStatus } from '../message/message';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
 import { Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
-import { UserService } from '../user/user.service';
-import { ItemService } from '../item/item.service';
 import { HttpServiceNew } from '../http/http.service.new';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { find, some, isNil } from 'lodash-es';
+import { find, isNil, some } from 'lodash-es';
 import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InboxConversationService {
+  public static readonly RESENT_BEFORE_5_DAYS = 5;
   public static readonly MESSAGES_IN_CONVERSATION = 30;
+
   private API_URL = 'bff/messaging/conversation/';
   private ARCHIVE_URL = '/api/v3/instant-messaging/conversations/archive';
   private UNARCHIVE_URL = '/api/v3/instant-messaging/conversations/unarchive';
@@ -310,5 +311,12 @@ export class InboxConversationService {
   private fetchConversationByItem$(itemId: string): Observable<InboxConversation> {
     return this.httpClient.post<ConversationResponse>('api/v3/conversations', { item_id: itemId })
     .flatMap((response: ConversationResponse) => this.getConversation(response.conversation_id));
+  }
+
+  public resentPendingMessages(conversation: InboxConversation): void {
+    conversation.messages
+    .filter((message: InboxMessage) => message.status === messageStatus.PENDING
+      && moment(message.date).isAfter(moment().subtract(InboxConversationService.RESENT_BEFORE_5_DAYS, 'days')))
+    .forEach((message: InboxMessage) => this.realTime.resendMessage(conversation, message));
   }
 }
