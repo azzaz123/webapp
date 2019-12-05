@@ -39,8 +39,6 @@ import { CategoryService } from '../../core/category/category.service';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
 import { User } from '../../core/user/user';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { UserReviewService } from '../../reviews/user-review.service';
-import { Review } from '../../reviews/review';
 
 export const SORTS = [ 'date_desc', 'date_asc', 'price_desc', 'price_asc' ];
 
@@ -85,7 +83,6 @@ export class ListComponent implements OnInit, OnDestroy {
   public subscriptionSelectedNavLinks: NavLink[] = [];
   public user: User;
   public userScore: number;
-  public userReviews: Review[];
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -103,8 +100,7 @@ export class ListComponent implements OnInit, OnDestroy {
     private stripeService: StripeService,
     private subscriptionsService: SubscriptionsService,
     private categoryService: CategoryService,
-    private deviceService: DeviceDetectorService,
-    private userReviewService: UserReviewService) {
+    private deviceService: DeviceDetectorService) {
   }
 
   ngOnInit() {
@@ -320,9 +316,6 @@ export class ListComponent implements OnInit, OnDestroy {
     if (status === 'reviews') {
       this.items = [];
       this.selectedStatus = status;
-      this.userReviewService.getAllReviews(0, 20).subscribe(reviews => this.userReviews = reviews);
-    } else {
-      this.userReviews = [];
     }
 
     if (status !== this.selectedStatus) {

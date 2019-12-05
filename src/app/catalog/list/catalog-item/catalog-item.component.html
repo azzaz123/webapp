@@ -1,90 +1,112 @@
-<div class="CatalogItem">
+<div class="row">
 
-  <button class="CatalogItem__checkbox"
-    (click)="select(item)"
-    [ngClass]="{ 
+  <div class="col-1 d-flex align-items-center justify-content-center">
+    <button class="CatalogItem__checkbox" (click)="select(item)" [ngClass]="{ 
       'CatalogItem__checkbox--selected': item.selected,
       'CatalogItem__checkbox--disabled': item.flags.pending || (!item.flags.onhold && item.listingFeeExpiringDate)
-    }"
-    [disabled]="item.flags.pending || (!item.flags.onhold && item.listingFeeExpiringDate)"
-  >
-    <mat-icon svgIcon="check"></mat-icon>
-  </button>
+    }" [disabled]="item.flags.pending || (!item.flags.onhold && item.listingFeeExpiringDate)">
+      <mat-icon svgIcon="check"></mat-icon>
+    </button>
+  </div>
 
-  <div class="CatalogItem__content" 
-    [ngClass]="{
-      'CatalogItem__content--expired': item.flags.expired,
-      'CatalogItem__content--selected': item.selected,
-      'CatalogItem__content--pending': item.flags.pending,
-      'CatalogItem__content--sold': item.sold
-    }"
-  >
-    <div class="CatalogItem__content-veil" *ngIf="selectMode" (click)="select(item)"></div>
+  <div class="col-11">
+    <div class="row CatalogItem__content mb-2" [ngClass]="{
+    'CatalogItem__content--expired': item.flags.expired,
+    'CatalogItem__content--selected': item.selected,
+    'CatalogItem__content--pending': item.flags.pending,
+    'CatalogItem__content--sold': item.sold
+  }">
 
-    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="image"
-       [ngClass]="{onHold: item.flags.onhold}">
-        <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
-    </a>
-    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="info"
-       [ngClass]="{onHold: item.flags.onhold}">
-      <div class="info-price"> {{item.salePrice | customCurrency:item.currencyCode}} </div>
-      <div class="info-title subtitle"> {{item.title}}</div>
-    </a>
-    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="published"
-       [ngClass]="{onHold: item.flags.onhold}" [hidden]="item.flags.onhold">
-      <div i18n>Published</div>
-      <div class="subtitle"> {{ item.publishedDate | amDateFormat: 'DD/MM/YYYY'}}</div>
-    </a>
-    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="published"
-       [ngClass]="{onHold: item.flags.onhold}" [hidden]="item.flags.onhold">
-      <div i18n>Modified</div>
-      <div class="subtitle"> {{ item.modifiedDate | amDateFormat: 'DD/MM/YYYY'}}</div>
-    </a>
-    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="listing-fee"
-       [ngClass]="{onHold: item.flags.onhold}">
-      <div *ngIf="showListingFee()" i18n>Active</div>
-      <tsl-countdown *ngIf="item.listingFeeExpiringDate" class="subtitle" [ngClass]="{'few-days': listingFeeFewDays()}"
-                     [value]="item.listingFeeExpiringDate" format="listingFee"></tsl-countdown>
-    </a>
-    <span class="subscribe" *ngIf="item.flags.onhold" [ngClass]="{onHold: item.flags.onhold}" i18n>
-        Inactive
-    </span>
-    <span class="actions" *ngIf="!item.flags.pending">
-      <span *ngIf="!item.flags.expired">
-        <span [hidden]="item.sold || item.flags.onhold || item.flags.urgent">
-          <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate" [hidden]="selectMode">
+      <div class="CatalogItem__content-veil" *ngIf="selectMode" (click)="select(item)"></div>
+
+      <div class="col-6 col-md-3 pl-0">
+        <a href="{{link}}" class="d-flex" target="_blank" tslTrackEvent="PRODUCT_VIEWED"
+          [params]="{product_id: item.id}" [ngClass]="{onHold: item.flags.onhold}">
+          <tsl-item-avatar class="image" [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
+          <div class="main-info d-flex flex-column align-items-center justify-content-center">
+            <span class="info-price"> {{item.salePrice | customCurrency:item.currencyCode}} </span>
+            <span class="info-title subtitle"> {{item.title}}</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-1 d-none d-md-flex align-items-center">
+        <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}"
+          class="published" [ngClass]="{onHold: item.flags.onhold}" [hidden]="item.flags.onhold">
+          <div i18n>Published</div>
+          <div class="subtitle"> {{ item.publishedDate | amDateFormat: 'DD/MM/YYYY'}}</div>
+        </a>
+      </div>
+
+      <div class="col-1 d-none d-xl-flex align-items-center">
+        <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}"
+          class="published" [ngClass]="{onHold: item.flags.onhold}" [hidden]="item.flags.onhold">
+          <div i18n>Modified</div>
+          <div class="subtitle"> {{ item.modifiedDate | amDateFormat: 'DD/MM/YYYY'}}</div>
+        </a>
+      </div>
+
+      <div class="col-1 d-none d-md-block" *ngIf="showListingFee() || item.listingFeeExpiringDate">
+        <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}"
+          class="listing-fee" [ngClass]="{onHold: item.flags.onhold}">
+          <div *ngIf="showListingFee()" i18n>Active</div>
+          <tsl-countdown *ngIf="item.listingFeeExpiringDate" class="subtitle"
+            [ngClass]="{'few-days': listingFeeFewDays()}" [value]="item.listingFeeExpiringDate" format="listingFee">
+          </tsl-countdown>
+        </a>
+      </div>
+
+      <div class="col-3 d-flex align-items-center" *ngIf="item.flags.onhold">
+        <span class="subscribe" [ngClass]="{onHold: item.flags.onhold}" i18n>
+          Inactive
+        </span>
+      </div>
+
+      <div class="col-2 ml-auto d-none d-md-flex align-items-center" *ngIf="!item.flags.pending && !item.flags.expired">
+        <div class="feature-action" [hidden]="item.sold || item.flags.onhold || item.flags.urgent">
+          <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate"
+            [hidden]="selectMode">
             <mat-icon svgIcon="feature"></mat-icon>
             <span i18n>Feature</span>
           </tsl-button>
-        </span>
-        <button class="btn-featured" *ngIf="item.bumpExpiringDate" [hidden]="selectMode">
-          {{item.bumpExpiringDate | amCountdown}}
-        </button>
-        <span *ngIf="item.flags.onhold">
-          <tsl-button className="btn-primary btn-publish" (click)="publishItem()" [hidden]="true">
-            <span i18n>Publish</span>
-          </tsl-button>
-        </span>
-        <div class="main-actions" [hidden]="selectMode">
-          <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)" [item]="item" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
-            <mat-icon svgIcon="btn-sold"></mat-icon>
-          </button>
-          <button class="btn-reserve" [hidden]="item.flags.onhold" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold" ngbTooltip="Mark as reserved" i18n-ngbTooltip placement="top">
-            <mat-icon svgIcon="btn-reserved"></mat-icon>
-          </button>
-          <button class="btn-edit" [hidden]="item.flags.onhold" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold" ngbTooltip="Edit" i18n-ngbTooltip placement="top">
-            <mat-icon svgIcon="btn-edit"></mat-icon>
+          <button class="btn-featured" *ngIf="item.bumpExpiringDate" [hidden]="selectMode">
+            {{item.bumpExpiringDate | amCountdown}}
           </button>
         </div>
-      </span>
-      <button class="btn-reactivate" (click)="reactivate(item)" *ngIf="item.flags.expired" tslTrackEvent="MYCATALOG_REACTIVATE_FROMCATALOG" [params]="{category: item.categoryId}" [hidden]="selectMode">
-        <mat-icon svgIcon="clock"></mat-icon>
-        <span i18n>Reactivate</span>
-      </button>
-    </span>
-    <button class="btn-pending" *ngIf="item.flags.pending">
-      <mat-icon svgIcon="spinner" class="spinner grey"></mat-icon>
-      <span i18n>Pending</span>
-    </button>
+      </div>
+
+      <div class="actions col-4 col-md-3 ml-auto" *ngIf="!item.flags.pending && !item.flags.expired"
+        [hidden]="selectMode">
+        <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)"
+          [item]="item" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
+          <mat-icon svgIcon="btn-sold"></mat-icon>
+        </button>
+        <button class="btn-reserve" [hidden]="item.flags.onhold" [ngClass]="{active: item.reserved}"
+          (click)="reserve(item)" *ngIf="!item.sold" ngbTooltip="Mark as reserved" i18n-ngbTooltip placement="top">
+          <mat-icon svgIcon="btn-reserved"></mat-icon>
+        </button>
+        <button class="btn-edit" [hidden]="item.flags.onhold" [routerLink]="['/catalog/edit/' + item.id]"
+          tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold" ngbTooltip="Edit"
+          i18n-ngbTooltip placement="top">
+          <mat-icon svgIcon="btn-edit"></mat-icon>
+        </button>
+      </div>
+
+      <div class="col-3 ml-auto d-flex align-items-center" *ngIf="item.flags.expired">
+        <button class="btn-reactivate" (click)="reactivate(item)" tslTrackEvent="MYCATALOG_REACTIVATE_FROMCATALOG"
+          [params]="{category: item.categoryId}" [hidden]="selectMode">
+          <mat-icon svgIcon="clock"></mat-icon>
+          <span i18n>Reactivate</span>
+        </button>
+      </div>
+
+      <div class="col-3 ml-auto d-flex align-items-center" *ngIf="item.flags.pending">
+        <button class="btn-pending">
+          <mat-icon svgIcon="spinner" class="spinner grey"></mat-icon>
+          <span i18n>Pending</span>
+        </button>
+      </div>
+
+    </div>
   </div>
 </div>

@@ -43,8 +43,9 @@
         <span *ngIf="numberOfProducts === 1" i18n>product</span>
       </p>
       <div class="d-flex justify-content-end d-md-none">
-        <tsl-user-avatar [user]="user" size="60"></tsl-user-avatar>
-        <!-- <a [routerLink]="['/profile/info']" i18n>Editar perfil</a> -->
+        <a [routerLink]="['/profile/info']" i18n>
+          <tsl-user-avatar [user]="user" size="60"></tsl-user-avatar>
+        </a>
       </div>
     </div>
   </tsl-header>
@@ -69,14 +70,13 @@
     >
     </tsl-nav-links>
 
-    <div class="row items">
-      <div id="catalog-empty-state" *ngIf="!items.length && !loading && !userReviews.length">
+    <div class="items">
+      <div id="catalog-empty-state" *ngIf="!items.length && !loading && selectedStatus !== 'reviews'">
         <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
       </div>
 
       <tsl-catalog-item 
         *ngFor="let item of items"
-        class="col-md-12" 
         [item]="item"
         [paymentMethod]="isStripe ? 'STRIPE' : 'SABADELL'"
         (itemChange)="itemChanged($event)"
@@ -84,21 +84,21 @@
       >
       </tsl-catalog-item>
 
-      <tsl-review-item *ngFor="let review of userReviews" [review]="review" class="review-container col-md-12"></tsl-review-item>
+      <tsl-reviews *ngIf="selectedStatus === 'reviews'"></tsl-reviews>
 
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
   </div>
 </div>
 
-<tsl-selected-items *ngIf="items.length"
+<!-- <tsl-selected-items *ngIf="items.length"
   [items]="items"
   [selectedSubscriptionSlot]="selectedSubscriptionSlot"
   [selectedStatus]="selectedStatus"
   [isStripe]="isStripe"
   (selectedAction)="onAction($event)"
 >
-</tsl-selected-items>
+</tsl-selected-items> -->
 
 <tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>
 <tsl-bump-tutorial></tsl-bump-tutorial>

@@ -59,3 +59,14 @@
     height: 21px;
   }
 }
+
+@include media-breakpoint-down(sm) {
+  .page-content {
+    padding: 0;
+    background: none;
+  }
+
+  tsl-header {
+    display: none;
+  }
+}

@@ -23,7 +23,7 @@ import { SharedModule } from '../shared/shared.module';
     UserReviewService
   ],
   exports: [
-    ReviewItemComponent
+    reviewsRoutedComponents
   ]
 })
 export class ReviewsModule { }
