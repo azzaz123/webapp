@@ -41,6 +41,14 @@
   }
 }
 
+.AddNewSubscription__listing-limit-quantity {
+  color: $blue-grey-1;
+  font-size: $font-size-lll;
+  &--selected {
+    font-size: $font-size-m;
+  }
+}
+
 .AddNewSubscription__listing-limit-steps {
   color: $blue-grey-2;
   font-size: $font-size-s;
@@ -114,6 +122,7 @@
 .AddNewSubscription__listing-limit-payment-edit {
   color: $blue-grey-2;
   cursor:  pointer;
+  font-size: $font-size-s;
 }
 
 .AddNewSubscription__group {
