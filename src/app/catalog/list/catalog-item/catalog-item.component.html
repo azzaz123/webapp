@@ -56,13 +56,13 @@
         </a>
       </div>
 
-      <div class="col-3 d-flex align-items-center" *ngIf="item.flags.onhold">
+      <div class="col d-flex align-items-center justify-content-center" *ngIf="item.flags.onhold">
         <span class="subscribe" [ngClass]="{onHold: item.flags.onhold}" i18n>
           Inactive
         </span>
       </div>
 
-      <div class="col-2 ml-auto d-none d-md-flex align-items-center" *ngIf="!item.flags.pending && !item.flags.expired">
+      <div class="col-3 ml-auto d-none d-md-flex align-items-center justify-content-center" *ngIf="!item.flags.pending && !item.flags.expired">
         <div class="feature-action" [hidden]="item.sold || item.flags.onhold || item.flags.urgent">
           <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate"
             [hidden]="selectMode">
@@ -75,7 +75,7 @@
         </div>
       </div>
 
-      <div class="actions col-4 col-md-3 ml-auto" *ngIf="!item.flags.pending && !item.flags.expired"
+      <div class="actions col-3 ml-auto ml-md-0 pr-4" *ngIf="!item.flags.pending && !item.flags.expired"
         [hidden]="selectMode">
         <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)"
           [item]="item" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
@@ -92,7 +92,7 @@
         </button>
       </div>
 
-      <div class="col-3 ml-auto d-flex align-items-center" *ngIf="item.flags.expired">
+      <div class="col ml-auto d-flex align-items-center justify-content-center" *ngIf="item.flags.expired">
         <button class="btn-reactivate" (click)="reactivate(item)" tslTrackEvent="MYCATALOG_REACTIVATE_FROMCATALOG"
           [params]="{category: item.categoryId}" [hidden]="selectMode">
           <mat-icon svgIcon="clock"></mat-icon>
@@ -100,7 +100,7 @@
         </button>
       </div>
 
-      <div class="col-3 ml-auto d-flex align-items-center" *ngIf="item.flags.pending">
+      <div class="col ml-auto d-flex align-items-center justify-content-center" *ngIf="item.flags.pending">
         <button class="btn-pending">
           <mat-icon svgIcon="spinner" class="spinner grey"></mat-icon>
           <span i18n>Pending</span>
