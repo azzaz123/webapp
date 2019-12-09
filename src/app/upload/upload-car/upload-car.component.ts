@@ -18,6 +18,7 @@ import { CarInfo, CarContent } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { tap } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
@@ -309,8 +310,10 @@ export class UploadCarComponent implements OnInit {
 
   public redirectToList(uploadEvent, type = 1) {
     const params = this.getRedirectParams(uploadEvent, type);
-    this.item ? this.trackEditOrUpload(true, uploadEvent.response) : this.trackEditOrUpload(false, uploadEvent.response);
-    this.router.navigate(['/catalog/list', params]);
+
+    this.trackEditOrUpload(!!this.item, uploadEvent.response).subscribe(() =>
+      this.router.navigate(['/catalog/list', params])
+    );
   }
 
   private getRedirectParams(uploadEvent, userType: number) {
@@ -423,10 +426,10 @@ export class UploadCarComponent implements OnInit {
   }
 
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {
-    Observable.forkJoin([
+    return Observable.forkJoin([
       this.userService.isProfessional(),
       this.userService.isProUser(),
-    ]).subscribe((values: any[]) => {
+    ]).pipe(tap((values: any[]) => {
       const baseEventAttrs: any = {
         itemId: item.id,
         categoryId: item.category_id,
@@ -466,7 +469,7 @@ export class UploadCarComponent implements OnInit {
         };
         this.analyticsService.trackEvent(listItemCarEvent);
       }
-    });
+    }));
   }
 
 }

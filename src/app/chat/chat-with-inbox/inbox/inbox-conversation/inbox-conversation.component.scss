@@ -5,7 +5,6 @@ $check-width-and-spacing: 50px;
 $menu-width-and-spacing: 10px;
 :host {
   display: flex;
-  padding: $spacing-ml $spacing-ms $spacing-ml $spacing-ml;
   box-sizing: border-box;
   transition: $transition-time ease background-color,
   $transition-time ease border;
@@ -13,16 +12,20 @@ $menu-width-and-spacing: 10px;
   overflow: hidden;
   cursor: pointer;
   position: relative;
+
   div:first-of-type {
     flex-grow: 1;
     overflow: hidden;
     display: flex;
   }
+
   &:first-child {
     border-top: 0;
   }
+
   &.active {
     background-color: $blue-grey-6;
+
     &:after {
       content: '';
       position: absolute;
@@ -33,28 +36,35 @@ $menu-width-and-spacing: 10px;
       background-color: $walla-main;
     }
   }
+
   tsl-archive-button, tsl-unarchive-button {
     @include hide();
     position: absolute;
     top: 43px;
     right: $spacing-ms;
   }
+
   &:hover {
     background-color: rgba($blue-grey-4, .2);
   }
+
   &.professional {
     &:hover {
       tsl-archive-button, tsl-unarchive-button {
         @include show();
       }
+
       .badge-pill, .blocked {
         display: none;
       }
+
       .message-row, .user-name-row-left {
         max-width: calc(100% - #{$check-width-and-spacing});
       }
+
       &.archive {
         overflow: visible;
+
         .message-row, .user-name-row-left {
           max-width: calc(100% - #{$menu-width-and-spacing});
         }
@@ -66,22 +76,27 @@ $menu-width-and-spacing: 10px;
   & /deep/ tsl-item-avatar div {
     float: left;
     border-radius: 10px;
+
     .overlay {
       border-radius: 10px;
       opacity: .25;
     }
+
     .sold, .reserved, .not-available {
       @include square(25px);
       position: absolute;
       top: 4px;
       left: 4px;
+
       mat-icon {
         height: 100% !important;
       }
     }
+
     .sold mat-icon {
       width: 17px !important;
     }
+
     .not-available, .reserved {
       mat-icon {
         width: 10px !important;
@@ -89,6 +104,7 @@ $menu-width-and-spacing: 10px;
     }
   }
 }
+
 .conversation-info {
   display: flex;
   flex-direction: column;
@@ -102,6 +118,7 @@ $menu-width-and-spacing: 10px;
     margin-bottom: 0;
     @include text-truncate();
   }
+
   .user-name-row {
     $phone-icon-size: 18px;
     $phone-icon-adjusted-size: 15px;
@@ -110,20 +127,25 @@ $menu-width-and-spacing: 10px;
     overflow: hidden;
     display: flex;
     flex-direction: row;
+
     .user-name-row-left {
       @include text-truncate;
       flex-grow: 1;
+
       span {
         @include text-truncate;
         flex-grow: 1;
       }
     }
+
     .user-name-row-right {
       flex: none;
     }
+
     mat-icon, span {
       vertical-align: middle;
     }
+
     mat-icon {
       @include square($phone-icon-adjusted-size);
     }
@@ -146,8 +168,10 @@ $menu-width-and-spacing: 10px;
         color: $negative-main;
       }
     }
+
     &.has-phone {
       $phone-icon-size: 10px;
+
       .user-name {
         width: calc(100% - #{$phone-icon-size});
       }
@@ -158,9 +182,11 @@ $menu-width-and-spacing: 10px;
     display: flex;
     flex-direction: row;
     flex-grow: 2;
+
     .item-title-message-column {
       flex-direction: column;
     }
+
     .item-title-row {
       line-height: $spacing-m;
       display: flex;
@@ -171,6 +197,7 @@ $menu-width-and-spacing: 10px;
       display: flex;
       @include text-truncate;
       flex-grow: 1;
+
       span {
         @include text-truncate;
         flex-grow: 1;
@@ -180,19 +207,23 @@ $menu-width-and-spacing: 10px;
     .message-row {
       position: relative;
       line-height: $font-size-s;
+
       p.message {
         font-size: $font-size-s;
         color: $blue-grey-3;
       }
+
       mat-icon {
         height: 15px;
         width: 15px;
         vertical-align: bottom;
       }
+
       &.showStatus {
         p.message {
           padding-left: $spacing-xxs;
         }
+
         .message-status {
           float: left;
           width: 20px;
@@ -206,8 +237,10 @@ $menu-width-and-spacing: 10px;
         }
       }
     }
+
     .unread-counter-column {
       display: flex;
+
       .badge-pill {
         display: flex;
         justify-content: center;
@@ -235,10 +268,75 @@ a {
 }
 
 .faded {
+  padding-top: 50px;
+
   tsl-item-avatar, .badge-pill {
     opacity: 0.6;
   }
+
   .item-title-row {
     color: $blue-grey-3;
+  }
+}
+
+.inbox-conversation-container {
+  padding: $spacing-ml $spacing-ms $spacing-ml $spacing-ml;
+
+  &.inbox-archived-container:hover {
+    .conversation-info {
+      .item-message-row {
+        .unread-counter-column {
+          .badge {
+            display: none;
+          }
+
+          .archive-btn-container {
+            .check-corporate {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.archive-btn-container {
+  .check-corporate {
+    position: absolute;
+    display: none;
+    top: $spacing-xxl;
+    right: $spacing-ms;
+
+    @include square(30px);
+    border: 3px solid $blue-grey-4;
+    border-radius: 50%;
+    padding: 0;
+    transition: none;
+    transform: none;
+    background-color: $blue-grey-4;
+    line-height: 0;
+    cursor: pointer;
+
+    mat-icon {
+      height: 10px;
+      width: 19px;
+
+      /deep/ g g {
+        fill: $blue-grey-3;
+      }
+    }
+
+    &:hover {
+      background-color: $walla-main;
+      border-color: $walla-main;
+
+      mat-icon {
+        /deep/ g g {
+          fill: $white;
+        }
+      }
+    }
   }
 }

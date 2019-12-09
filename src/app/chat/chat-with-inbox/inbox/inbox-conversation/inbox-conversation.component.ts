@@ -9,6 +9,7 @@ import { InboxConversation } from '../../../model';
 export class InboxConversationComponent {
 
   @Input() conversation: InboxConversation;
+  @Input() archiveConversation = false;
 
   public unreadCounterDisplayLimit = 99;
   public momentConfig: any = {
