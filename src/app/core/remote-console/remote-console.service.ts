@@ -106,14 +106,14 @@ export class RemoteConsoleService implements OnDestroy {
 
   private getCommonLog(userId: string): Observable<{}> {
     return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.INBOX_PROJECTIONS)
-    .map(fetureFlag => {
+    .map((featureFlag: boolean) => {
       const device = this.deviceService.getDeviceInfo();
       return {
         device_id: this.deviceId,
         browser: device.browser.toUpperCase(),
         browser_version: device.browser_version,
         user_id: userId,
-        feature_flag: fetureFlag,
+        feature_flag: featureFlag,
         app_version: APP_VERSION
       };
     });
