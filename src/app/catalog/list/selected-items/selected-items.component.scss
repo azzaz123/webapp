@@ -1,38 +1,41 @@
 @import "~style/common";
 
 .SelectedItems {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
   background-color: $white;
   box-shadow: 0 -2px 6px 0 rgba($blue-grey-1, 0.1);
-  padding: $spacing-ml $spacing-xl;
   color: $blue-grey-1;
+  height: 100px;
+  @include media-breakpoint-down(sm) {
+    height: 70px;
+  }
 }
 
 .SelectedItems__total-selected {
   cursor: pointer;
-  display: inline-block;
-  line-height: $line-height-xxl;
-  padding: 0 $spacing-ml;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: solid 1px $walla-main;
   border-radius: $border-radius;
-  background: $walla-main;
   background-color: rgba($walla-main, 0.2);
   color: $blue-grey-1;
   font-size: $font-size-s;
+  height: 45px;
+  width: 100%;
+  max-width: 200px;
+  a {
+    white-space: nowrap;
+    width: calc(100% - $spacing-ms);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   &:after {
-    display: inline-block;
     content: ' ';
     background-image: url('/assets/icons/cross.svg');
-    background-size: $spacing-ms $spacing-ms;
-    height: $spacing-ms;
-    width: $spacing-ms;
-    margin-left: $spacing-ms;
-    vertical-align: middle;
-    margin-top: -$spacing-xxs;
+    background-size: 10px 10px;
+    height: 10px;
+    width: 10px;
   }
   &.show {
     animation: fadeInFromNone 0.5s ease-in-out;
@@ -41,18 +44,24 @@
   }
 }
 
-.SelectedItems__items {
-  display: flex;
-}
 
 .SelectedItems__item {
   display: inline-flex;
   align-items: center;
   position: relative;
+  max-width: 100%;
+  .SelectedItems__item-title {
+    width: calc(100% - 52px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .last {
     position: absolute;
     top: 0;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     @include square($item-avatar-size-small);
     border-radius: 4px;
     border: solid 1px $blue-grey-4;
@@ -64,9 +73,6 @@
 }
 
 .SelectedItems__actions {
-  display: flex;
-  align-items: center;
-
   &.disabled {
     button {
       cursor: auto;
@@ -152,14 +158,9 @@
     cursor: not-allowed;
   }
 
-  .SelectedItems__feature {
-    .address {
-      position: absolute;
-      bottom: 5px;
-      right: 20px;
-      font-size: $font-size-xxxs;
-      color: $blue-grey-3;
-    }
+  .SelectedItems__feature .address {
+    font-size: $font-size-xxxs;
+    color: $blue-grey-3;
   }
 
 }

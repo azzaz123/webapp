@@ -51,6 +51,7 @@ $feature-button-width: 170px;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
   transition: $transition;
+  width: 100%;
 
   &:hover {
     transform: translateY(-2px);

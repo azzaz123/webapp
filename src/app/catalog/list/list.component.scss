@@ -45,11 +45,15 @@ tsl-spinner {
 }
 
 tsl-selected-items {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 0;
   left: $sidebar-width;
   z-index: 10;
+  @include media-breakpoint-down(sm) {
+    bottom: $topbar-height;
+    left: 0;
+  }
 }
 
 #catalog-empty-state {
