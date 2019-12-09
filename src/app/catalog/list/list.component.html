@@ -17,6 +17,7 @@
           <div class="d-md-none flex-column">
             <div class="mb-2" i18n>{{user.microName}}</div>
             <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
+            <button [routerLink]="['/profile/info']" class="edit-profile-btn">Editar perfil</button>
           </div>
           <span class="badge badge-pro" *ngIf="userService?.user?.featured || subscriptionSlots.length !== 0">
             <mat-icon svgIcon="pro-seal"></mat-icon>
@@ -44,7 +45,7 @@
       </p>
       <div class="d-flex justify-content-end d-md-none">
         <a [routerLink]="['/profile/info']" i18n>
-          <tsl-user-avatar [user]="user" size="60"></tsl-user-avatar>
+          <tsl-user-avatar [user]="user" size="80"></tsl-user-avatar>
         </a>
       </div>
     </div>
