@@ -1,5 +1,5 @@
 <div class="page-content" infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="100"
-  [scrollWindow]="false" [infiniteScrollDisabled]="end || loading" (scrolled)="loadMore()">
+  [infiniteScrollDisabled]="end || loading" (scrolled)="loadMore()">
   <div class="container">
     <tsl-header>
       <div class="col-9 col-md-11">
@@ -36,9 +36,11 @@
         *ngIf="!items.length && !loading && selectedStatus === 'products' || !profiles.length && !loading && selectedStatus === 'profiles'">
         <mat-icon svgIcon="favorites-empty-state" class="d-none d-md-block image"></mat-icon>
         <mat-icon svgIcon="favorites-empty-state-mobile" class="d-block d-md-none image"></mat-icon>
-        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'products'" i18n>In this list you can see all the products you
+        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'products'" i18n>In this list you can see all
+          the products you
           saved as favourite</div>
-        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'profiles'" i18n>In this list you can see all the profiles you
+        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'profiles'" i18n>In this list you can see all
+          the profiles you
           saved as favourite</div>
       </div>
       <div class="cards-container" *ngIf="selectedStatus === 'products'">
