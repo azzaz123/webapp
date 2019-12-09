@@ -19,6 +19,7 @@ export class RemoteConsoleService implements OnDestroy {
   private connectionTimeCallNo = 0;
   private sendMessageTime = [];
   private acceptMessageTime = [];
+  private presentationMessageTimeout = new Map();
 
   constructor(private deviceService: DeviceDetectorService, private featureflagService: FeatureflagService,
               private userService: UserService) {
@@ -75,6 +76,21 @@ export class RemoteConsoleService implements OnDestroy {
           ping_time_ms: navigator['connection']['rtt']
         })));
       }
+    }
+  }
+
+  sendPresentationMessageTimeout(messageId: string): void {
+    if (!this.presentationMessageTimeout.has(messageId)) {
+      this.presentationMessageTimeout.set(messageId, new Date().getTime());
+    } else {
+      this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
+        ...commonLog,
+        message_id: messageId,
+        send_message_time: new Date().getTime() - this.presentationMessageTimeout.get(messageId),
+        metric_type: MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+        ping_time_ms: navigator['connection']['rtt']
+      })));
+      this.presentationMessageTimeout.delete(messageId);
     }
   }
 

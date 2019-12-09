@@ -246,4 +246,76 @@ describe('RemoteConsoleService', () => {
       }));
     }));
   });
+
+  describe('sendPresentationMessageTimeout', () => {
+    const commonLog = {
+      'browser': BROWSER,
+      'browser_version': BROWSER_VERSION,
+      'user_id': USER_ID,
+      'feature_flag': true,
+      'app_version': APP_VERSION,
+      'message_id': 'MESSAGE_ID',
+    };
+
+    it('should NOT send call', () => {
+      spyOn(logger, 'info');
+
+      service.sendPresentationMessageTimeout(null);
+
+      expect(logger.info).not.toHaveBeenCalled();
+    });
+
+    it('should NOT send call if not init calculate time', () => {
+      spyOn(logger, 'info');
+
+      service.sendPresentationMessageTimeout('MESSAGE_ID');
+
+      expect(logger.info).not.toHaveBeenCalledWith();
+    });
+
+    it('should send call with presentation message time', fakeAsync(() => {
+      spyOn(logger, 'info');
+      spyOn(Date, 'now').and.returnValues(1000, 2000);
+
+      service.sendPresentationMessageTimeout('MESSAGE_ID');
+      service.sendPresentationMessageTimeout('MESSAGE_ID');
+
+      expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
+        ...commonLog, ...{
+          'send_message_time': 1000,
+          'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+          'ping_time_ms': 0
+        }
+      }));
+    }));
+
+    it('should send call with presentation message time', fakeAsync(() => {
+      spyOn(logger, 'info');
+      spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000);
+
+      service.sendPresentationMessageTimeout('MESSAGE_ID_1');
+      service.sendPresentationMessageTimeout('MESSAGE_ID_2');
+      service.sendPresentationMessageTimeout('MESSAGE_ID_1');
+
+      expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
+        ...commonLog, ...{
+          'message_id': 'MESSAGE_ID_1',
+          'send_message_time': 3000,
+          'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+          'ping_time_ms': 0
+        }
+      }));
+
+      service.sendPresentationMessageTimeout('MESSAGE_ID_2');
+
+      expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
+        ...commonLog, ...{
+          'message_id': 'MESSAGE_ID_2',
+          'send_message_time': 2000,
+          'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+          'ping_time_ms': 0
+        }
+      }));
+    }));
+  });
 });
