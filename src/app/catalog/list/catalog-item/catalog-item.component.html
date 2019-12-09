@@ -22,7 +22,7 @@
       <div class="col-6 col-md-3 pl-0">
         <a href="{{link}}" class="d-flex" target="_blank" tslTrackEvent="PRODUCT_VIEWED"
           [params]="{product_id: item.id}" [ngClass]="{onHold: item.flags.onhold}">
-          <tsl-item-avatar class="image" [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
+          <tsl-item-avatar class="p-1" [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
           <div class="main-info d-flex flex-column align-items-center justify-content-center">
             <span class="info-price"> {{item.salePrice | customCurrency:item.currencyCode}} </span>
             <span class="info-title subtitle"> {{item.title}}</span>
