@@ -679,7 +679,7 @@ describe('Service: Xmpp', () => {
       };
 
       expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(queryId);
-      expect(remoteConsoleService.sendAcceptTimeout).toHaveBeenCalledWith(null);
+      expect(remoteConsoleService.sendAcceptTimeout).toHaveBeenCalledWith(queryId);
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(message);
       expect(service['onNewMessage']).toHaveBeenCalledWith(message, true);
     });
@@ -706,7 +706,7 @@ describe('Service: Xmpp', () => {
       service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
 
       expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(queryId);
-      expect(remoteConsoleService.sendAcceptTimeout).toHaveBeenCalledWith(null);
+      expect(remoteConsoleService.sendAcceptTimeout).toHaveBeenCalledWith(queryId);
       expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], queryId);
     });
 

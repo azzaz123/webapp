@@ -18,7 +18,7 @@ export class RemoteConsoleService implements OnDestroy {
   deviceId: string;
   private connectionTimeCallNo = 0;
   private sendMessageTime = [];
-  private acceptMessageTime = [];
+  private acceptMessageTime = new Map();
   private presentationMessageTimeout = new Map();
 
   constructor(private deviceService: DeviceDetectorService, private featureflagService: FeatureflagService,
@@ -31,7 +31,8 @@ export class RemoteConsoleService implements OnDestroy {
 
   ngOnDestroy(): void {
     this.sendMessageTime = [];
-    this.acceptMessageTime = [];
+    this.acceptMessageTime = new Map();
+    this.presentationMessageTimeout = new Map();
   }
 
   sendConnectionTimeout(userId: string, connectionTime: number): void {
@@ -64,18 +65,17 @@ export class RemoteConsoleService implements OnDestroy {
   }
 
   sendAcceptTimeout(messageId: string): void {
-    if (messageId === null) {
-      this.acceptMessageTime.push(new Date().getTime());
+    if (!this.acceptMessageTime.has(messageId)) {
+      this.acceptMessageTime.set(messageId, new Date().getTime());
     } else {
-      if (this.acceptMessageTime.length > 0) {
-        this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
-          ...commonLog,
-          message_id: messageId,
-          send_message_time: new Date().getTime() - this.acceptMessageTime.shift(),
-          metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-          ping_time_ms: navigator['connection']['rtt']
-        })));
-      }
+      this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
+        ...commonLog,
+        message_id: messageId,
+        send_message_time: new Date().getTime() - this.acceptMessageTime.get(messageId),
+        metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
+        ping_time_ms: navigator['connection']['rtt']
+      })));
+      this.acceptMessageTime.delete(messageId);
     }
   }
 

@@ -207,7 +207,7 @@ describe('RemoteConsoleService', () => {
       spyOn(logger, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 2000);
 
-      service.sendAcceptTimeout(null);
+      service.sendAcceptTimeout('MESSAGE_ID');
       service.sendAcceptTimeout('MESSAGE_ID');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
@@ -223,22 +223,24 @@ describe('RemoteConsoleService', () => {
       spyOn(logger, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000);
 
-      service.sendAcceptTimeout(null);
-      service.sendAcceptTimeout(null);
-      service.sendAcceptTimeout('MESSAGE_ID');
+      service.sendAcceptTimeout('MESSAGE_ID_1');
+      service.sendAcceptTimeout('MESSAGE_ID_2');
+      service.sendAcceptTimeout('MESSAGE_ID_1');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
         ...commonLog, ...{
+          'message_id': 'MESSAGE_ID_1',
           'send_message_time': 3000,
           'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
           'ping_time_ms': 0
         }
       }));
 
-      service.sendAcceptTimeout('MESSAGE_ID');
+      service.sendAcceptTimeout('MESSAGE_ID_2');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
         ...commonLog, ...{
+          'message_id': 'MESSAGE_ID_2',
           'send_message_time': 2000,
           'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
           'ping_time_ms': 0
