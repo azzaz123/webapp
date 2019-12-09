@@ -150,7 +150,11 @@ export class I18nService {
       cancelSubscriptionSuccessBody: 'We are sad to see you go.',
       cancelSubscriptionErrorTitle: 'There was an error',
       cancelSubscriptionErrorBody: 'Your subscription could not be cancelled.',
-      reviews: 'Reviews'
+      reviews: 'Reviews',
+      continueSubscriptionSuccessTitle: 'Success:',
+      continueSubscriptionSuccessBody: 'Your subscription is active again',
+      continueSubscriptionErrorTitle: 'Error:',
+      continueSubscriptionErrorBody: 'We could not proceed with your request.'
     },
     es: {
       daysMomentConfig: {
@@ -300,7 +304,11 @@ export class I18nService {
       cancelSubscriptionSuccessBody: 'Lamentamos que te vayas :(',
       cancelSubscriptionErrorTitle: 'Ha habido un error',
       cancelSubscriptionErrorBody: 'Tu suscripción no ha podido ser cancelada.',
-      reviews: 'Opiniones'
+      reviews: 'Opiniones',
+      continueSubscriptionSuccessTitle: '¡Bien!',
+      continueSubscriptionSuccessBody: 'Tu suscripción se ha activado de nuevo.',
+      continueSubscriptionErrorTitle: 'Ha habido un error',
+      continueSubscriptionErrorBody: 'Tu suscripción no ha podido ser restablecida.'
     }
   };
 

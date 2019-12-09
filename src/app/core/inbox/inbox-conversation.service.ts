@@ -287,8 +287,8 @@ export class InboxConversationService {
 
   public openConversationByItemId$(itemId: string): Observable<InboxConversation> {
     if (this.conversations && this.archivedConversations) {
-      const localConversation = find(this.conversations, (conver) => conver.item.id === itemId && !conver.item.isMine)
-        || find(this.archivedConversations, (conver) => conver.item.id === itemId && !conver.item.isMine);
+      const localConversation = find(this.conversations, (conversation) => conversation.item.id === itemId)
+        || find(this.archivedConversations, (conversation) => conversation.item.id === itemId);
 
       if (localConversation) {
         this.openConversation(localConversation);
