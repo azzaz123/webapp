@@ -129,6 +129,7 @@ export class UploadCarComponent implements OnInit {
         financed_price: this.item.financedPrice,
         currency_code: this.item.currencyCode,
         storytelling: this.item.description,
+        sale_conditions: this.item.saleConditions,
         category_id: carCategory,
         num_seats: this.item.numSeats,
         num_doors: this.item.numDoors,

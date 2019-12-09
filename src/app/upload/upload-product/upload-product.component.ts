@@ -240,7 +240,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngAfterContentInit() {
-    if (!this.item && this.titleField && !this.focused && !this.deviceService.isMobile) {
+    if (!this.item && this.titleField && !this.focused && !this.deviceService.isMobile()) {
       this.titleField.nativeElement.focus();
       this.focused = true;
     }

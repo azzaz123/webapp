@@ -44,9 +44,10 @@ import { HttpService } from '../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
 import { FeatureflagService } from '../../core/user/featureflag.service';
-import { FeatureFlagServiceMock } from '../../../tests';
+import { FeatureFlagServiceMock, DeviceDetectorServiceMock } from '../../../tests';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -85,6 +86,7 @@ describe('ListComponent', () => {
         StripeService,
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: CategoryService, useValue: {
             getCategoryById() {
               return Observable.of(CATEGORY_DATA_WEB);
