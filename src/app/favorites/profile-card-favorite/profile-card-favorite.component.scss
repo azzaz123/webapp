@@ -70,8 +70,8 @@ tsl-card {
     .cart-footer-icon {
       position: absolute;
       &.active path {
-        fill: #fd6c67;
-        stroke: #d45b57;
+        fill: $negative-main;
+        stroke: $negative-dark;
       }
     }
 
