@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor
-} from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 
 import { AccessTokenService } from '../access-token.service';
@@ -20,7 +15,8 @@ export const SECRET =
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private accessTokenService: AccessTokenService) {}
+  constructor(private accessTokenService: AccessTokenService) {
+  }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -37,10 +33,11 @@ export class TokenInterceptor implements HttpInterceptor {
         setHeaders[TOKEN_TIMESTAMP_HEADER_NAME] = timestamp.toString();
         setHeaders[TOKEN_SIGNATURE_HEADER_NAME] = this.getSignature(endpoint, request.method, timestamp);
       }
-      request = request.clone({setHeaders});
+      request = request.clone({ setHeaders });
+      return next.handle(request);
+    } else {
+      return of(new HttpResponse({ status: 401, statusText: 'Unauthorized', body: {} }));
     }
-
-    return next.handle(request);
   }
 
   public getSignature(url: string, method: string, timestamp: number) {

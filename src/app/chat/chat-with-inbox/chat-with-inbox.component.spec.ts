@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChatWithInboxComponent } from './chat-with-inbox.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { AdService } from '../../core/ad/ad.service';
 import { HttpService } from '../../core/http/http.service';
@@ -11,17 +11,22 @@ import { EventService } from '../../core/event/event.service';
 import { UserService } from '../../core/user/user.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { InboxConversationService } from '../../core/inbox/inbox-conversation.service';
 import { ConversationService } from '../../core/conversation/conversation.service';
+import { InboxService } from '../../core/inbox/inbox.service';
+import { ConversationServiceMock, InboxConversationServiceMock, InboxServiceMock } from '../../../tests';
+import { PhoneMethodResponse } from '../../core/user/phone-method.interface';
+import { InboxConversation } from '../model';
 
 class MockUserService {
   public isProfessional() {
-    return Observable.of(true);
+    return of(true);
   }
-}
 
-class ConversationServiceMock {
+  public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
+    return Observable.empty();
+  }
 }
 
 describe('Component: ChatWithInboxComponent', () => {
@@ -29,8 +34,10 @@ describe('Component: ChatWithInboxComponent', () => {
   let fixture: ComponentFixture<ChatWithInboxComponent>;
   let eventService: EventService;
   let adService: AdService;
+  let userService: UserService;
   let activatedRoute: ActivatedRoute;
-  let conversationService: InboxConversationService;
+  let inboxService: InboxService;
+  let inboxConversationService: InboxConversationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -39,18 +46,14 @@ describe('Component: ChatWithInboxComponent', () => {
       providers: [
         ChatWithInboxComponent,
         { provide: ConversationService, useClass: ConversationServiceMock },
+        { provide: InboxService, useClass: InboxServiceMock },
         { provide: UserService, useClass: MockUserService },
         { provide: HttpService, useValue: {} },
-        {
-          provide: InboxConversationService, useValue: {
-            openConversationWith$(): Observable<any> {
-              return Observable.empty();
-            }
-          }
-        },
+        { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         {
           provide: ActivatedRoute, useValue: {
-            params: Observable.of({})
+            params: Observable.from([{}]),
+            queryParams: Observable.from([{ itemId: 'itemId' }])
           }
         },
         I18nService,
@@ -69,8 +72,11 @@ describe('Component: ChatWithInboxComponent', () => {
     component = fixture.componentInstance;
     eventService = TestBed.get(EventService);
     adService = TestBed.get(AdService);
+    userService = TestBed.get(UserService);
     activatedRoute = TestBed.get(ActivatedRoute);
-    conversationService = TestBed.get(InboxConversationService);
+    inboxService = TestBed.get(InboxService);
+    inboxConversationService = TestBed.get(InboxConversationService);
+
     fixture.autoDetectChanges();
   });
 
@@ -103,28 +109,49 @@ describe('Component: ChatWithInboxComponent', () => {
   });
 
   describe('ngOnInit', () => {
+
     it('should set connectionError and conversationLoading to FALSE when a EventService.CONNECTION_ERROR is emitted', () => {
+      spyOn(inboxConversationService, 'openConversationByItemId$');
+
       component.ngOnInit();
       eventService.emit(EventService.CONNECTION_ERROR);
 
       expect(component.connectionError).toBe(true);
       expect(component.conversationsLoading).toBe(false);
+      expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
     });
 
     it('should set connectionError to FALSE when a EventService.CONNECTION_RESTORED event is emitted', () => {
+      spyOn(inboxConversationService, 'openConversationByItemId$');
+
       component.ngOnInit();
       eventService.emit(EventService.CONNECTION_RESTORED);
 
       expect(component.connectionError).toBe(false);
+      expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
     });
 
     it('should set currentConversation when a EventService.CURRENT_CONVERSATION_SET is emitted', () => {
       const mockConversation = CREATE_MOCK_INBOX_CONVERSATION();
-      component.ngOnInit();
+      spyOn(inboxConversationService, 'openConversationByItemId$');
 
+      component.ngOnInit();
       eventService.emit(EventService.CURRENT_CONVERSATION_SET, mockConversation);
 
       expect(component.currentConversation).toEqual(mockConversation);
+      expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
+    });
+
+    it('should set current conversation if link contains itemId', () => {
+      const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
+      spyOn(inboxService, 'isInboxReady').and.returnValue(true);
+      spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversation));
+      spyOn(userService, 'getPhoneInfo').and.returnValue(of({}));
+      spyOn(activatedRoute, 'queryParams').and.returnValue(Observable.of(convertToParamMap({ itemId: inboxConversation.item.id })));
+
+      component.ngOnInit();
+
+      expect(inboxConversationService.openConversationByItemId$).toHaveBeenCalledWith('itemId');
     });
   });
 

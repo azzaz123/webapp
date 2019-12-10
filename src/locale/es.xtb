@@ -933,5 +933,10 @@
   <translation id="2311423194575383733">Reportar usuario</translation>
   <translation id="8621433484657846443">Bloquear usuario</translation>
   <translation id="7895174555296226408">Desbloquear usuario</translation>
+  <translation id="8316355708637832573">¿Quieres mantener tu suscripción PRO de <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> más allá de este mes?</translation>
+  <translation id="5795496902600772528">¡Nunca es demasiado tarde! Puedes deshacer la cancelación y seguir disfrutando de los beneficios.</translation>
+  <translation id="5189929163900690785">Sí, quiero mantener mi suscripción.</translation>
+  <translation id="1355341408067809538">No, quiero cancelarla.</translation>
+  <translation id="6307606007112781268">Mantener suscripción</translation>
   <translation id="9098152328983851571">Comprar</translation>
 </translationbundle>
