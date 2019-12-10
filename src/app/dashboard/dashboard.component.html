@@ -27,7 +27,7 @@
           <a [routerLink]="['/chat']" [hidden]="!messagesTotal"><span i18n>View all</span></a>
         </h3>
         <tsl-inbox-conversation *ngFor="let conversation of conversations | slice: 0: 5;"
-                                [conversation]="conversation" [archiveConversation]="false"
+                                [conversation]="conversation" [archiveConversation]="true"
                                 (click)="openConversation(conversation)"></tsl-inbox-conversation>
       </div>
       <div class="stats-sidebar-container calls-container" [hidden]="loading || !hasCalls()">
