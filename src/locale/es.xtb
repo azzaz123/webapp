@@ -96,7 +96,7 @@
   <translation id="833526722817345312">¡Vale!</translation>
   <translation id="6811335180251341277">Ha habido un error</translation>
   <translation id="4140116217223755546">La fecha de caducidad de tu tarjeta es incorrecta. Revísalo y vuelve a probar. </translation>
-  <translation id="8720977247725652816">Venga</translation>
+  <translation id="8720977247725652816">Aplicar</translation>
   <translation id="2044384665651917054">TPV… ¿qué?</translation>
   <translation id="5578025610796640405">Ha habido un error inesperado en el sistema pago.  ¿Por qué no pruebas de nuevo?</translation>
   <translation id="8766840274158243690">¡Ups!</translation>
@@ -107,9 +107,8 @@
   <translation id="4699023020194351074">Destacar por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</translation>
   <translation id="868815663264397508">Ya tienes tu producto subido a wallapop.</translation>
   <translation id="8199257104398637162">Promociónalo y véndelo más rápido</translation>
-  <translation id="7976214204076569605">Destacar</translation>
   <translation id="2091018015289565203">O compártelo con tus amigos:</translation>
-  <translation id="4058575476871566236">Publicados</translation>
+  <translation id="4058575476871566236">Publicado</translation>
   <translation id="5529951643694823242" desc="plural" meaning="tab">Vendidos</translation>
   <translation id="464749780222721589">Caducados</translation>
   <translation id="5262427597279775777">1 producto seleccionado</translation>
@@ -225,7 +224,7 @@
   <translation id="4416413576346763682">Pendiente</translation>
   <translation id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart">Continuar</translation>
   <translation id="8423596927659875793">No disponible</translation>
-  <translation id="578471405917460767">Destácalo</translation>
+  <translation id="1384194580053922814">Destácalo</translation>
   <translation id="6261406176927621365">Borrar foto</translation>
   <translation id="4267028037176582017">Se borrará permanentemente la foto. ¿Estás seguro que quieres proceder?</translation>
   <translation id="5112037422043971210">Deja tus fotos aquí para subirlas</translation>
@@ -396,7 +395,6 @@
   <translation id="2732498404411727211">Aún no estas suscrito a ningún plan.</translation>
   <translation id="7532148292247615475">Cada plan te permite tener publicados hasta un número máximo de coches en la app y web de wallapop.</translation>
   <translation id="4371626830398169808">Puedes publicar hasta <ph name="INTERPOLATION"><ex>{{bump.quantity}}</ex></ph> coches</translation>
-  <translation id="2374240332008805382">Suscrito desde</translation>
   <translation id="7154496186015922312">Plan personalizado</translation>
   <translation id="2016810884599586784">Contáctanos para que te hagamos un plan a medida</translation>
   <translation id="5736913742704520146">Destacado ciudad</translation>
@@ -411,7 +409,7 @@
   <translation id="7589031160907418094">El plan de país te permite destacar tus coches a nivel nacional y aparecer en las primeras posiciones del muro de la web y de la app. La ficha de tu producto tendrá una visualización diferente y aparecerás en la zona de destacados en todo el país.</translation>
   <translation id="2336946299666449576">Para suscribirte a un plan de país contacta con 674 726 372</translation>
   <translation id="4472212851057229290">Para cambiar tu plan de país contacta con 674 726 372</translation>
-  <translation id="1144407473317535723">Solicitar</translation>
+  <translation id="1144407473317535723">Suscríbete</translation>
   <translation id="5868024112393513368">Cuéntame más sobre las opciones de visibilidad</translation>
   <translation id="2303735769987845467">Productos de visibilidad</translation>
   <translation id="5130627671872052700">Destácalo en tu ciudad</translation>
@@ -433,7 +431,6 @@
   <translation id="6314007099242784066">Puntuación de usuario</translation>
   <translation id="3386449481449927569">Tiene un coche en venta</translation>
   <translation id="6901142032077238858">Ver perfil</translation>
-  <translation id="7251596190905542711">Busca productos</translation>
   <translation id="7239750919884229270">Actualizado</translation>
   <translation id="6140925356015461504"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
   <translation id="708449889891136724"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
@@ -856,39 +853,22 @@
   <translation id="7962273932004201523">Vendido</translation>
   <translation id="4467323362722952678">Desconocido</translation>
   <translation id="3893097575013115653">+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex></ph> Más</translation>
-  <translation id="6271797376703709416">Gestiona tus suscripciones a wallapop PRO para vender más.</translation>
   <translation id="8963479695802930465">Límite: <ph name="INTERPOLATION"><ex>{{subscription.current_limit}}</ex></ph></translation>
   <translation id="2264879768509848219">Desde: <ph name="INTERPOLATION"><ex>{{subscription.tiers[0].price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscription.tiers[0].currency}}</ex></ph></translation>
   <translation id="656874927403996411"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.limit}}</ex></ph> productos</translation>
   <translation id="6319315156225724559"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscription.selected_tier.currency}}</ex></ph>/mes</translation>
-  <translation id="8902497894170945928">Suscrito desde <ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
-  <translation id="6452676450877417110">Haz crecer tus ventas</translation>
-  <translation id="2627902757155321044">Con las ventajas de la suscripción PRO llevarás tus ventas al siguiente nivel.</translation>
-  <translation id="408121070237651935">Sube todo tu catálogo</translation>
-  <translation id="6249532373191228684">Publica hasta 15 coches al momento y conviértete en un vendedor PRO.</translation>
   <translation id="3570715632180917811">Profesionaliza tu perfil</translation>
   <translation id="5478679026395910607">Añade una foto y rellena los campos extra. ¡Destaca sobre el resto!</translation>
   <translation id="5767272093569717990">Presenta tu negocio</translation>
-  <translation id="8080084696796559152">Incluye una descripción de lo que ofreces y comparte la ubicación.</translation>
-  <translation id="7506422944093606747">Capta más clientes</translation>
-  <translation id="1652972630250514946">Millones de compradores pueden llamarte o visitar tu web desde tu perfil</translation>
-  <translation id="837505974371749460">Sin límite de tiempo</translation>
-  <translation id="5892988739115419461">Tus artículos no expiran nunca, siempre están disponibles</translation>
-  <translation id="2900426514403684835">Sin compromiso</translation>
-  <translation id="5501667151031664168">Cancela la suscripción cuando quieras, sin penalizaciones</translation>
-  <translation id="7858399091766597534">La suscripción se ha creado correctamente. ¡Todo preparado para disparar tus ventas!</translation>
   <translation id="8132236892525873540">Ir a Mi perfil</translation>
   <translation id="864477022313622893">Añadir nueva suscripción</translation>
-  <translation id="2477437471140226346">Define un plan para llevar tus ventas al siguiente nivel</translation>
   <translation id="8556935148519956491">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>1<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="107097033118404336">¿Cuántos productos vas a subir a tu perfil?</translation>
   <translation id="240806681889331244">Ilimitado</translation>
   <translation id="5542355947851525347">Productos ilimitados</translation>
   <translation id="4353369238495213964"><ph name="INTERPOLATION"><ex>{{selectedTier.limit}}</ex></ph> productos</translation>
   <translation id="8107784429181471644"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
   <translation id="5616560548087761910">Siguiente paso</translation>
   <translation id="4264336981703427297">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="6170564133463734500">Define la forma de pago</translation>
   <translation id="1230154438678955604">Cambiar</translation>
   <translation id="4121630926102377372">El pago ha fallado. Por favor introduce otra tarjeta de crédito.</translation>
   <translation id="5703774512613913053">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
@@ -899,4 +879,63 @@
   <translation id="6998541290982927512">Confirmar cambio de suscripción</translation>
   <translation id="4497647585483091099">Añadir suscripción</translation>
   <translation id="6969584346860248976" desc="La distancia entre el usuario y el producto a"><ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km de ti</translation>
+  <translation id="7490117399669169777"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Estás intentando activar más items de los que permite tu plan<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="8210978350459895677"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Has llegado al límite de coches que puedes publicar con una cuenta gratuita<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="6991105239065793562">Por favor, deselecciona algunos productos o</translation>
+  <translation id="2513950439336286072">De acuerdo</translation>
+  <translation id="3553216189604488439">Modificado</translation>
+  <translation id="3897348120591552265">Gestionar</translation>
+  <translation id="957195517515723291"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>¡Has llegado al límite de items que puedes publicar con tu cuenta!<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="1168925957252341106"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>¡Has llegado al límite de items con tu actual subscripción!<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="8677966578884278103">Conviértete en PRO para publicar más</translation>
+  <translation id="3413192670828382562">Debes actualizar tu suscripción <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>mediante la app de wallapop<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> si quieres publicar más</translation>
+  <translation id="3579719947907220872">Debes actualizar tu suscripción si quieres publicar más</translation>
+  <translation id="6654183600047871533">Ir a suscripciones</translation>
+  <translation id="9101913686114523660">No, gracias (el item quedará inactivo)</translation>
+  <translation id="5035242975964860075">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> más</translation>
+  <translation id="6810605730456820181"><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> productos seleccionados</translation>
+  <translation id="5103258377137086802">Nunca es tarde para cambiar de opinión. Estaremos tristes de verte marchar.</translation>
+  <translation id="191727416046037791">Gestiona tus suscripciones a wallapop PRO para vender más.</translation>
+  <translation id="457741553886180613">Suscrito desde <ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
+  <translation id="966813690886942636">Suscrito hasta <ph name="INTERPOLATION"><ex>{{subscription.subscribed_until | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
+  <translation id="4465287268938745829">Haz crecer tus ventas</translation>
+  <translation id="5847956710156734280">Con las ventajas de la suscripción PRO llevarás tus ventas al siguiente nivel.</translation>
+  <translation id="1410658821742092533">Sube todo tu catálogo</translation>
+  <translation id="6624623135379643889">Publica hasta 15 coches al momento y conviértete en un vendedor PRO.</translation>
+  <translation id="160987771447623218">Añade una foto y rellena los campos extra. ¡Destaca sobre el resto!</translation>
+  <translation id="7262661517370886089">Presenta tu negocio</translation>
+  <translation id="1578600315361670462">Incluye una descripción de lo que ofreces y comparte la ubicación.</translation>
+  <translation id="3883055026216655178">Capta más clientes</translation>
+  <translation id="7697804439276373225">Millones de compradores pueden llamarte o visitar tu web desde tu perfil.</translation>
+  <translation id="5507433950760207486">Sin límite de tiempo</translation>
+  <translation id="95589177980000841">Tus artículos no expiran nunca, siempre están disponibles.</translation>
+  <translation id="6568694236700268636">Sin compromiso</translation>
+  <translation id="4972682363493759232">Cancela la suscripción cuando quieras, sin penalizaciones.</translation>
+  <translation id="2296943727359810458">¡Perfecto!</translation>
+  <translation id="651992282801976762">La suscripción se ha creado correctamente. ¡Todo preparado para disparar tus ventas!</translation>
+  <translation id="4936564379844079816">Suscríbete to PRO</translation>
+  <translation id="802524079901899408">Define un plan para llevar tus ventas al siguiente nivel.</translation>
+  <translation id="6043607490094571574">¿Cuántos productos vas a subir a tu perfil?</translation>
+  <translation id="4095633638251105721">Define la forma de pago</translation>
+  <translation id="8882282108983733420">¿Seguro que quieres cancelar tu suscripción PRO a <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
+  <translation id="8487121195517337235">Es triste que te vayas. Puedes volver cuando quieras, ¡te estaremos esperando!</translation>
+  <translation id="4152309547836555655">Sí, quiero cancelar mi suscripción</translation>
+  <translation id="6945361151381926075">No, quiero mantener mi suscripción</translation>
+  <translation id="2374240332008805382">Suscrito desde</translation>
+  <translation id="5018811059755976867">Cambia el límite de la suscripción</translation>
+  <translation id="6044974118925437441">Actualiza tu suscripción en función de los productos que quieras subir</translation>
+  <translation id="1487803193155715207">Suscripciones PRO</translation>
+  <translation id="1698114086921246480">Darse de baja</translation>
+  <translation id="3520858718490550964">Archivar conversación</translation>
+  <translation id="603154656968324663">Desarchivar conversación</translation>
+  <translation id="511133215426042486">Denunciar producto</translation>
+  <translation id="2311423194575383733">Reportar usuario</translation>
+  <translation id="8621433484657846443">Bloquear usuario</translation>
+  <translation id="7895174555296226408">Desbloquear usuario</translation>
+  <translation id="8316355708637832573">¿Quieres mantener tu suscripción PRO de <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> más allá de este mes?</translation>
+  <translation id="5795496902600772528">¡Nunca es demasiado tarde! Puedes deshacer la cancelación y seguir disfrutando de los beneficios.</translation>
+  <translation id="5189929163900690785">Sí, quiero mantener mi suscripción.</translation>
+  <translation id="1355341408067809538">No, quiero cancelarla.</translation>
+  <translation id="6307606007112781268">Mantener suscripción</translation>
+  <translation id="9098152328983851571">Comprar</translation>
 </translationbundle>

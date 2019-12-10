@@ -5,7 +5,7 @@ import { AccessTokenService } from '../http/access-token.service';
 import { WindowRef } from '../window/window.service';
 import { UserService } from './user.service';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { User } from './user';
+import { User, PERMISSIONS } from './user';
 import { isEmpty } from 'lodash-es';
 
 @Injectable()
@@ -19,12 +19,18 @@ export class LoggedGuard implements CanActivate {
 
   public canActivate() {
     if (!this.accessTokenService.accessToken) {
-      this.window.nativeWindow.location.href = environment.siteUrl + 'login';
+      const redirect = `${environment.siteUrl}login?redirectUrl=${encodeURIComponent(this.window.nativeWindow.location.href)}`;
+      this.window.nativeWindow.location.href = redirect;
       return false;
     }
     if (isEmpty(this.permissionService.getPermissions())) {
       return this.userService.me().map((user: User) => {
         this.userService.setPermission(user.type);
+        this.userService.setSubscriptionsFeatureFlag().subscribe((isActive => {
+          if (isActive) {
+            this.permissionService.addPermission(PERMISSIONS.subscriptions);
+          }
+        }));
         return true;
       });
     } else {

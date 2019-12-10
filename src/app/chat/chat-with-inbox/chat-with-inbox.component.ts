@@ -3,19 +3,20 @@ import { AdService } from '../../core/ad/ad.service';
 import { UserService } from '../../core/user/user.service';
 import { EventService } from '../../core/event/event.service';
 import { InboxConversation } from '../model/inbox-conversation';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { InboxConversationService } from '../../core/inbox/inbox-conversation.service';
 import { Observable } from 'rxjs';
 import { phoneMethod } from '../../core/message/message';
 import { ConversationService } from '../../core/conversation/conversation.service';
 import { isEmpty, isNil } from 'lodash-es';
+import { InboxService } from '../../core/inbox/inbox.service';
 
 @Component({
   selector: 'tsl-chat-with-inbox',
   templateUrl: './chat-with-inbox.component.html',
   styleUrls: ['./chat-with-inbox.component.scss']
 })
-export class ChatWithInboxComponent implements OnInit, OnDestroy {
+export class ChatWithInboxComponent implements OnInit {
 
   public conversationsLoading: boolean;
   public conversationsTotal: number;
@@ -25,7 +26,6 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
   public isProfessional: boolean;
   public currentConversation: InboxConversation;
   public isLoading = false;
-  private inboxReady: boolean;
   private archivedInboxReady: boolean;
 
   constructor(public userService: UserService,
@@ -33,15 +33,18 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
               private adService: AdService,
               private route: ActivatedRoute,
               private conversationService: ConversationService,
+              private inboxService: InboxService,
               private inboxConversationService: InboxConversationService) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
-    this.inboxReady = false;
     this.archivedInboxReady = false;
   }
 
   ngOnInit() {
+    if (this.inboxService.isInboxReady()) {
+      this.openConversationIfNeeded();
+    }
     this.eventService.subscribe(EventService.CONNECTION_ERROR, () => {
       this.connectionError = true;
       this.conversationsLoading = false;
@@ -54,17 +57,12 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
       this.conversationsLoading = false;
     });
     this.eventService.subscribe(EventService.INBOX_READY, (ready) => {
-      this.inboxReady = ready;
       this.openConversationIfNeeded();
     });
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_READY, (ready) => {
       this.archivedInboxReady = ready;
       this.openConversationIfNeeded();
     });
-  }
-
-  ngOnDestroy() {
-    this.adService.stopAdsRefresh();
   }
 
   public onLoad(event: any) {
@@ -80,11 +78,11 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
   }
 
   private openConversationIfNeeded() {
-    if (this.currentConversation || !this.inboxLoaded()) {
+    if (this.currentConversation || !this.inboxService.isInboxReady()) {
       return;
     }
 
-    this.route.queryParams.subscribe((params: any) => {
+    this.route.queryParams.subscribe((params: Params) => {
       const itemId = params.itemId;
 
       if (isNil(itemId)) {
@@ -96,6 +94,9 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
       this.inboxConversationService.openConversationByItemId$(itemId)
       .catch(() => Observable.of({}))
       .subscribe((conversation: InboxConversation) => {
+        if (conversation) {
+          this.currentConversation = conversation;
+        }
         if (isEmpty(conversation.messages)) {
           this.getPhoneInfo(conversation);
         }
@@ -109,9 +110,5 @@ export class ChatWithInboxComponent implements OnInit, OnDestroy {
         this.conversationService.openPhonePopup(conversation, true);
       }
     });
-  }
-
-  private inboxLoaded(): boolean {
-    return this.inboxReady && this.archivedInboxReady;
   }
 }

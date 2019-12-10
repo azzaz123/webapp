@@ -5,7 +5,7 @@ import { HttpService } from './core/http/http.service';
 import { RequestOptions, XHRBackend } from '@angular/http';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { UserService } from './core/user/user.service';
-import { User } from './core/user/user';
+import { User, PERMISSIONS } from './core/user/user';
 import { Observable } from 'rxjs';
 import { EventService } from './core/event/event.service';
 
@@ -23,7 +23,7 @@ export const PROVIDERS: Provider[] = [
   {
     provide: APP_INITIALIZER,
     useFactory: permissionFactory,
-    deps: [UserService],
+    deps: [UserService, NgxPermissionsService],
     multi: true
   }
 ];
@@ -40,12 +40,17 @@ export function httpFactory(backend: XHRBackend,
   return new HttpService(backend, defaultOptions, accessTokenService, eventService);
 }
 
-export function permissionFactory(userService: UserService) {
+export function permissionFactory(userService: UserService, permissionService: NgxPermissionsService) {
   return () => {
     return userService.me()
       .map((user: User) => {
         if (user) {
           userService.setPermission(user.type);
+          userService.setSubscriptionsFeatureFlag().subscribe((isActive => {
+            if (isActive) {
+              permissionService.addPermission(PERMISSIONS.subscriptions);
+            }
+          }));
         }
         return user;
       })

@@ -3,7 +3,7 @@ import { ProfileComponent } from './profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs';
-import { MOCK_USER, MOTORPLAN_DATA, USER_WEB_SLUG, USERS_STATS_RESPONSE, PROFILE_SUB_INFO, PROFILE_NOT_SUB_INFO } from '../../tests/user.fixtures.spec';
+import { MOCK_USER, MOTORPLAN_DATA, USER_WEB_SLUG, USERS_STATS_RESPONSE, PROFILE_SUB_INFO, PROFILE_NOT_SUB_INFO, PROFILE_ELIGIBLE_INFO, PROFILE_ACTIVE_INFO } from '../../tests/user.fixtures.spec';
 import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -11,18 +11,18 @@ import { SubscriptionsService } from '../core/subscriptions/subscriptions.servic
 import { StripeService } from '../core/stripe/stripe.service';
 import { HttpService } from '../core/http/http.service';
 import { FeatureflagService } from '../core/user/featureflag.service';
-import { MAPPED_SUBSCRIPTIONS } from '../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../core/category/category.service';
-import { CATEGORY_DATA_WEB } from '../../tests/category.fixtures.spec';
+import { SUBSCRIPTIONS, SUBSCRIPTIONS_NOT_SUB } from '../../tests/subscriptions.fixtures.spec';
+import { EventService } from '../core/event/event.service';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let userService: UserService;
-  let categoryService: CategoryService;
   let subscriptionsService: SubscriptionsService;
   let stripeService: StripeService;
   let featureflagService: FeatureflagService;
+  let eventService: EventService;
   const mockMotorPlan = {
     type: 'motor_plan_pro',
     subtype: 'sub_premium'
@@ -35,6 +35,7 @@ describe('ProfileComponent', () => {
       declarations: [ ProfileComponent ],
       providers: [
         I18nService,
+        EventService,
         {provide: HttpService, useValue: {}},
         {
           provide: UserService, useValue: {
@@ -54,7 +55,7 @@ describe('ProfileComponent', () => {
             },
             logout() {},
             getMotorPlans() {
-              return Observable.of({});
+              return Observable.of(PROFILE_SUB_INFO);
             },
             isProfessional() {
               return Observable.of(false);
@@ -74,7 +75,7 @@ describe('ProfileComponent', () => {
               return Observable.of(true);
             },
             getSubscriptions() {
-              return Observable.of(MAPPED_SUBSCRIPTIONS)
+              return Observable.of(SUBSCRIPTIONS);
             }
           }
         },
@@ -84,13 +85,6 @@ describe('ProfileComponent', () => {
               return Observable.of(true);
             }
           }
-        },
-        {
-          provide: CategoryService, useValue: {
-            getCategories() {
-                return Observable.of(CATEGORY_DATA_WEB);
-              }
-            }
         },
         {
           provide: 'SUBDOMAIN', useValue: 'www'
@@ -105,7 +99,8 @@ describe('ProfileComponent', () => {
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
-    categoryService = TestBed.get(CategoryService);
+    subscriptionsService = TestBed.get(SubscriptionsService);
+    eventService = TestBed.get(EventService);
     spyOn(userService, 'me').and.callThrough();
     spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
     spyOn(userService, 'getStats').and.callThrough();
@@ -152,14 +147,34 @@ describe('ProfileComponent', () => {
       expect(component.userStats).toBe(USERS_STATS_RESPONSE);
     });
 
-    it('should set isNewSubscription to true if the user is subscribed with stripe and not a Cardealer', () => {
+    it('should set isNewSubscription to true if the user is subscribed with stripe and not a Cardealer and inapp purchase is not_eligible', () => {
       component.isNewSubscription = false;
-      spyOn(categoryService, 'getCategories').and.callThrough();
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(SUBSCRIPTIONS));
       spyOn(userService, 'getMotorPlans').and.returnValue(Observable.of(PROFILE_NOT_SUB_INFO));
 
       component.ngOnInit();
 
       expect(component.isNewSubscription).toBe(true);
+    });
+
+    it('should set isNewSubscription to true if the user is subscribed with stripe and not a Cardealer and inapp purchase is eligible', () => {
+      component.isNewSubscription = false;
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(SUBSCRIPTIONS));
+      spyOn(userService, 'getMotorPlans').and.returnValue(Observable.of(PROFILE_ELIGIBLE_INFO));
+
+      component.ngOnInit();
+
+      expect(component.isNewSubscription).toBe(true);
+    });
+
+    it('should not set isNewSubscription to true if the user is subscribed with stripe and not a Cardealer and inapp purchase is purchase_active', () => {
+      component.isNewSubscription = false;
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(SUBSCRIPTIONS_NOT_SUB));
+      spyOn(userService, 'getMotorPlans').and.returnValue(Observable.of(PROFILE_ACTIVE_INFO));
+
+      component.ngOnInit();
+
+      expect(component.isNewSubscription).toBe(false);
     });
 
   });

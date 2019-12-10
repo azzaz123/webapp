@@ -130,7 +130,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   }
 
   private sendRead(message: InboxMessage) {
-    if (eq(this.currentConversation.id, message.thread) && !message.fromSelf) {
+    if (this.currentConversation !== null && eq(this.currentConversation.id, message.thread) && !message.fromSelf) {
       Visibility.onVisible(() => {
         setTimeout(() => {
           this.realTime.sendRead(message.from, message.thread);
@@ -200,7 +200,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
 
   public archiveConversation(): void {
     this.modalService.open(ArchiveInboxConversationComponent).result.then(() => {
-      this.conversationService.archive(this.currentConversation).subscribe(() => {
+      this.conversationService.archive$(this.currentConversation).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
         this.currentConversation = null;
       });

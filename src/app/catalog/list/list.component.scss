@@ -1,41 +1,12 @@
 @import "~style/common";
 
-$icon-size: 12px;
-$height: 40px;
-
 .items {
   margin-top: $spacing-ml;
   margin-bottom: $spacing-xxxl * 2;
-  .add-item {
-    width: 100%;
-    svg {
-      width: 100%;
-      .dashed-border, .pic, .button, text {
-        transition: all .2s ease;
-      }
-    }
-    &:hover {
-      $hover-color: $walla-dark;
-      text-decoration: none;
-      svg {
-        .dashed-border {
-          stroke: $hover-color;
-        }
-        .pic, .button, text {
-          fill: $hover-color;
-        }
-      }
-    }
-  }
 }
 
 tsl-spinner {
   width: 100%;
-}
-
-.nav {
-  margin-bottom: $spacing-ms;
-  margin-top: -$spacing-s;
 }
 
 .info {
@@ -61,41 +32,6 @@ tsl-spinner {
   }
 }
 
-#total-selected {
-  padding: 0 $spacing-ml;
-  cursor: pointer;
-  &:after {
-    display: inline-block;
-    content: ' ';
-    background-image: url('/assets/icons/cross.svg');
-    background-size: $icon-size $icon-size;
-    height: $icon-size;
-    width: $icon-size;
-    margin-left: $spacing-ms;
-    vertical-align: middle;
-    margin-top: -$spacing-xxs;
-  }
-  &.show {
-    animation: fadeInFromNone 0.5s ease-in-out;
-  }
-  &:hover {
-    background: rgba($white, .7);
-  }
-}
-
-#total-selected {
-  border: solid 1px $blue-grey-4;
-  padding: 0 $spacing-ml;
-  border-radius: $border-radius;
-  background: $white;
-  color: $blue-grey-1;
-  font-size: $font-size-s;
-  height: $height;
-  line-height: $line-height-xxl;
-  display: inline-block;
-  margin-bottom: $spacing-xxs;
-}
-
 tsl-selected-items {
   position: absolute;
   bottom: 0;
@@ -110,116 +46,5 @@ tsl-selected-items {
   mat-icon {
     width: 100%;
     height: auto;
-  }
-}
-
-.banner {
-  width: 100%;
-  height: auto;
-  margin-bottom: $spacing-ml;
-  margin-top: -$spacing-xl;
-}
-
-.bulk-actions {
-  align-self: center;
-  & > * {
-    margin: 0 $spacing-s 0 0;
-  }
-  &.disabled {
-    button {
-      cursor: auto;
-      background-color: $blue-grey-5;
-      &.btn-bump, &.btn-sold, &.btn-reserve, &.btn-delete, &.btn-activate, &.btn-deactivate {
-        &:hover {
-          background-color: $blue-grey-5;
-          border: solid 1px rgba($blue-grey-4, 0.5);
-          color: $blue-grey-2;
-        }
-      }
-    }
-  }
-  button {
-    height: 42px;
-    line-height: $line-height-xxl;
-    padding: 0 $spacing-ml;
-    cursor: pointer;
-    border-radius: $border-radius;
-    background: $white;
-    color: $blue-grey-2;
-    border: solid 1px rgba($blue-grey-4, 0.5);
-    font-size: $font-size-s;
-    &.btn-delete, &.btn-deactivate {
-      padding: 0 $spacing-ms;
-      mat-icon {
-        height: 16px;
-        width: 14px;
-        vertical-align: sub;
-        margin-right: $spacing-s;
-      }
-      &:hover {
-        background: $negative-main;
-        border-color: transparent;
-        color: $white;
-        mat-icon /deep/ {
-          svg g g, svg path {
-            fill: $white;
-          }
-        }
-      }
-      &:disabled {
-        mat-icon /deep/ {
-          svg g g, svg path {
-            fill: $blue-grey-2;
-          }
-        }
-      }
-    }
-    &.btn-reserve {
-      padding: 0 $spacing-ms;
-      mat-icon {
-        vertical-align: text-bottom;
-      }
-      &:hover:not(:disabled) {
-        background: $skyblue-dark;
-        border-color: transparent;
-        color: $white;
-        mat-icon /deep/ {
-          svg g g, svg path {
-            fill: $white;
-          }
-        }
-      }
-    }
-    &.btn-activate {
-      &:hover {
-        background: $walla-main;
-        border-color: transparent;
-        color: $white;
-      }
-      &:disabled {
-        background: $blue-grey-5;
-        border-color: $blue-grey-4;
-        color: $blue-grey-2;
-      }
-    }
-    &.btn-deactivate {
-      &:disabled {
-        background: $blue-grey-5;
-        border-color: $blue-grey-4;
-        color: $blue-grey-2;
-      }
-    }
-  }
-
-  tsl-button /deep/ .btn-feat  {
-    &:disabled {
-      cursor: default;
-    }
-  }
-
-  &.show {
-    button {
-      animation: fadeInFromNone 0.5s ease-in-out;
-    }
   }
 }

@@ -1,5 +1,5 @@
 <div class="modal-body">
   <tsl-geolocation class="form-control" (newCoordinate)="onCoordinateUpdate($event)" [value]="coordinates?.name" [updateLocation]="updateLocation" [fromCookie]="false"></tsl-geolocation>
   <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" [zoom]="zoom" [isApproximateLocation]="coordinates.approximated_location"></tsl-here-maps>
-  <button type="button" class="btn btn-secondary" (click)="close()" i18n>Ok</button>
+  <button type="button" class="btn btn-secondary" (click)="close()" i18n>Apply</button>
 </div>

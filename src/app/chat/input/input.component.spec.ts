@@ -1,9 +1,10 @@
 /* tslint:disable:no-unused-variable */
 
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { InputComponent } from './input.component';
-import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { InputComponent } from './input.component';
 import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
@@ -12,6 +13,9 @@ import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../core/i18n/i18n.service';
+import { AutosizeModule } from 'ngx-autosize';
+import { RemoteConsoleService } from '../../core/remote-console';
+import { MockRemoteConsoleService } from '../../../tests';
 
 class MessageServiceMock {
   send(c: Conversation, t: string): void {
@@ -31,15 +35,21 @@ describe('Component: Input', () => {
   let fixture: ComponentFixture<InputComponent>;
   let eventService: EventService;
   let trackingService: TrackingService;
+  let remoteConsoleService: RemoteConsoleService;
   let modalService: NgbModal;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+        AutosizeModule
+      ],
       declarations: [InputComponent],
       providers: [
         I18nService,
         { provide: MessageService, useClass: MessageServiceMock },
         { provide: NgbModal, useClass: NgbModalMock },
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         EventService,
         {
           provide: TrackingService, useValue: {
@@ -57,6 +67,7 @@ describe('Component: Input', () => {
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
     modalService = TestBed.get(NgbModal);
+    remoteConsoleService = TestBed.get(RemoteConsoleService);
     spyOn(messageService, 'send');
   });
 
@@ -90,97 +101,112 @@ describe('Component: Input', () => {
       spyOn(EVENT, 'preventDefault');
       spyOn(trackingService, 'track');
       spyOn(modalService, 'open');
+      spyOn(remoteConsoleService, 'sendMessageTimeout');
+      spyOn(remoteConsoleService, 'sendAcceptTimeout');
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       component.currentConversation = conversation;
     });
 
     it('should call the send method and track the SEND_BUTTON event if texts is present', () => {
-      textarea.value = TEXT;
+      component.message = TEXT;
 
-      component.sendMessage(textarea, EVENT);
+      component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
-      expect(textarea.value).toBe('');
+      expect(component.message).toBe('');
       expect(modalService.open).not.toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id
       });
+      expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(null);
       expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 
     it('should call the send method and track the SEND_BUTTON event if texts is present with spaces', () => {
-      textarea.value = '   ' + TEXT + ' ';
+      component.message = `   ${TEXT}   `;
 
-      component.sendMessage(textarea, EVENT);
+      component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
-      expect(textarea.value).toBe('');
+      expect(messageService.send).toHaveBeenCalledWith(component.currentConversation, TEXT);
+      expect(component.message).toBe('');
       expect(modalService.open).not.toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id
       });
+      expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(null);
       expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if texts is empty', () => {
-      textarea.value = '';
+      component.message = '';
 
-      component.sendMessage(textarea, EVENT);
+      component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
-      expect(textarea.value).toBe('');
+      expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if texts is just spaces', () => {
-      textarea.value = '   ';
+      component.message = '   ';
 
-      component.sendMessage(textarea, EVENT);
+      component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
-      expect(textarea.value).toBe('');
+      expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if disabled', () => {
-      textarea.value = TEXT;
+      component.message = TEXT;
       component.isUserBlocked = true;
 
-      component.sendMessage(textarea, EVENT);
+      component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(trackingService.track).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains link', () => {
       component.isUserBlocked = false;
-      textarea.value = 'Hi, here is a link: www.link-to-something.com ;*';
+      component.message = 'Hi, here is a link: www.link-to-something.com ;*';
 
-      component.sendMessage(textarea, EVENT);
+      component.sendMessage(EVENT);
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(modalService.open).toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(trackingService.track).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
-    it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time', () => {
-      component.isUserBlocked = false;
-      textarea.value = 'Can U access to my webpage outside https://wallapop.com that is www.notAllowedURL.com';
+    it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time',
+      () => {
+        component.isUserBlocked = false;
+        component.message = 'Can U access to my webpage outside https://wallapop.com that is www.notAllowedURL.com';
 
-      component.sendMessage(textarea, EVENT);
-      expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(modalService.open).toHaveBeenCalled();
-      expect(messageService.send).not.toHaveBeenCalled();
-      expect(trackingService.track).not.toHaveBeenCalled();
-    });
+        component.sendMessage(EVENT);
+        expect(EVENT.preventDefault).toHaveBeenCalled();
+        expect(modalService.open).toHaveBeenCalled();
+        expect(messageService.send).not.toHaveBeenCalled();
+        expect(trackingService.track).not.toHaveBeenCalled();
+        expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
+        expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
+      });
   });
 
   describe('ngOnChanges', () => {
@@ -197,10 +223,19 @@ describe('Component: Input', () => {
       component.currentConversation = MOCK_CONVERSATION();
     });
 
-    it('should focus the message area', fakeAsync(() => {
+    it('should focus the message if change conversation', fakeAsync(() => {
       component.ngOnChanges();
       tick(500);
 
+      expect(component.isFocus).toEqual(true);
+      expect(component.messageArea.nativeElement.focus).toHaveBeenCalled();
+    }));
+
+    it('should focus the message area', fakeAsync(() => {
+      component.ngAfterViewInit();
+      tick(500);
+
+      expect(component.isFocus).toEqual(true);
       expect(component.messageArea.nativeElement.focus).toHaveBeenCalled();
     }));
 
@@ -211,7 +246,7 @@ describe('Component: Input', () => {
       component.ngOnChanges(component);
       tick(500);
 
-      expect(component.messageArea.nativeElement.value).toBe('');
+      expect(component.message).toBe('');
     }));
 
     it('should not do anything if there is no message to read', () => {
@@ -238,7 +273,5 @@ describe('Component: Input', () => {
 
       expect(component.isUserBlocked).toBe(false);
     });
-
   });
-
 });

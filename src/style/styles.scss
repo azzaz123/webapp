@@ -5,8 +5,9 @@
 @import '~web-styleguide/scss/fonts';
 
 html, body {
+  height: 100%;
   overflow: hidden;
-  font-size: $font-size-base;
+  font-size: $font-size-base-walla;
 }
 
 body {
@@ -94,4 +95,13 @@ button, input, optgroup, select, textarea {
 .modal-transparent .modal-dialog .modal-content {
   background-color: transparent;
   box-shadow: none;
+}
+
+tsl-topbar {
+  position: sticky;
+}
+
+tsl-chat {
+  height: calc(100% - #{$topbar-height});
+  max-height: calc(100% - #{$topbar-height});
 }

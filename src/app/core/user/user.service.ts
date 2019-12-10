@@ -20,7 +20,7 @@ import { UserData, UserProData, UserProDataNotifications } from './user-data.int
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { FeatureflagService } from './featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
 import { InboxUser } from '../../chat/model/inbox-user';
 import { SplitTestService } from '../tracking/split-test.service';
@@ -100,6 +100,18 @@ export class UserService extends ResourceService {
     });
   }
 
+  public logoutLocal() {
+    const redirectUrl = environment.siteUrl.replace('es', this.subdomain);
+    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+    this.cookieService.remove('publisherId', cookieOptions);
+    this.cookieService.remove('creditName', cookieOptions);
+    this.cookieService.remove('creditQuantity', cookieOptions);
+    this.accessTokenService.deleteAccessToken();
+    this.permissionService.flushPermissions();
+    this.event.emit(EventService.USER_LOGOUT, redirectUrl);
+    this.splitTestService.reset();
+  }
+
   public get isLogged(): boolean {
     return this.accessTokenService.accessToken ? true : false;
   }
@@ -146,8 +158,11 @@ export class UserService extends ResourceService {
       .do(() => {
         this.meObservable = null;
       })
-      .catch(() => {
+      .catch(error => {
         this.meObservable = null;
+        if (!error.ok) {
+          this.logoutLocal();
+        }
         return Observable.of(null);
       });
     return this.meObservable;
@@ -406,5 +421,12 @@ export class UserService extends ResourceService {
 
   public getAvailableSlots(): Observable<AvailableSlots> {
     return this.httpClient.get<AvailableSlots>(`${this.API_URL}/me/items/slots-available`);
+  }
+
+  public setSubscriptionsFeatureFlag(): Observable<boolean> {
+    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS)
+      .map((isActive: boolean) => {
+          return isActive;
+      });
   }
 }

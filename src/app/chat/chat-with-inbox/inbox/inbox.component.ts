@@ -1,4 +1,3 @@
-import { countBy, find, map } from 'lodash-es';
 import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
 import { InboxConversation } from '../../model/inbox-conversation';
@@ -9,10 +8,9 @@ import { trigger, transition, style, animate, keyframes } from '@angular/animati
 import { UserService } from '../../../core/user/user.service';
 import { AdService } from '../../../core/ad/ad.service';
 import { RemoteConsoleService } from '../../../core/remote-console';
-import { SCREENS_IDS } from '../../../core/analytics/resources/analytics-constants';
-import { ViewChatScreen } from './../../../core/analytics/events-interfaces/view-chat-screen.interface';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
-import { ANALYTICS_EVENT_NAMES } from '../../../core/analytics/resources/analytics-event-names';
+import { countBy, map, find } from 'lodash-es';
+import { ANALYTICS_EVENT_NAMES, SCREEN_IDS, AnalyticsPageView, ViewChatScreen } from '../../../core/analytics/analytics-constants';
 
 export enum InboxState { Inbox, Archived }
 
@@ -157,7 +155,6 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.unselectCurrentConversation();
-    this.adService.stopAdsRefresh();
   }
 
   private onInboxReady(conversations: InboxConversation[], callMethodClient: string) {
@@ -199,7 +196,7 @@ export class InboxComponent implements OnInit, OnDestroy {
       this.userService.get(newCurrentConversation.user.id).subscribe(user => newCurrentConversation.user.location = user.location);
     }
     this.conversationService.openConversation(newCurrentConversation);
-    this.adService.startAdsRefresh();
+    this.adService.adsRefresh();
   }
 
   public loadMore() {
@@ -249,15 +246,15 @@ export class InboxComponent implements OnInit, OnDestroy {
   }
 
   private trackViewConversation(conversation: InboxConversation) {
-    const eventAttrs: ViewChatScreen = {
-      itemId: conversation.item.id,
-      conversationId: conversation.id,
-      screenId: SCREENS_IDS.Chat
+    const event: AnalyticsPageView<ViewChatScreen> = {
+      name: ANALYTICS_EVENT_NAMES.ViewChatScreen,
+      attributes: {
+        itemId: conversation.item.id,
+        conversationId: conversation.id,
+        screenId: SCREEN_IDS.Chat
+      }
     };
 
-    this.analyticsService.trackPageView({
-      name: ANALYTICS_EVENT_NAMES.ViewChatScreen,
-      attributes: eventAttrs
-    });
+    this.analyticsService.trackPageView(event);
   }
 }

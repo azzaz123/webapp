@@ -1,4 +1,4 @@
-import { reverse, sortBy, remove, find, findIndex } from 'lodash-es';
+import { reverse, sortBy, remove, find, findIndex, isEmpty } from 'lodash-es';
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
@@ -35,6 +35,7 @@ import { BlockUserXmppService } from './block-user';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { InboxService } from '../inbox/inbox.service';
 import { InboxConversation } from '../../chat/model';
+import { RemoteConsoleService } from '../remote-console';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -68,6 +69,7 @@ export class ConversationService extends LeadService {
               protected trackingService: TrackingService,
               protected notificationService: NotificationService,
               private inboxService: InboxService,
+              private remoteConsole: RemoteConsoleService,
               private modalService: NgbModal,
               private zone: NgZone) {
     super(http, userService, itemService, event, realTime, blockService, connectionService);
@@ -291,6 +293,7 @@ export class ConversationService extends LeadService {
   public processChatSignal(signal: ChatSignal) {
     switch (signal.type) {
       case chatSignalType.SENT:
+        this.remoteConsole.sendAcceptTimeout(signal.messageId);
         this.markAs(messageStatus.SENT, signal.messageId, signal.thread);
         break;
       case chatSignalType.RECEIVED:
@@ -454,11 +457,11 @@ export class ConversationService extends LeadService {
   }
 
   public handleNewMessages(message: Message, updateDate: boolean) {
-    if (!this.firstLoad) {
+    if (!isEmpty(this.inboxService.conversations)) {
       this.onNewMessage(message, updateDate);
     } else {
       const interval: any = setInterval(() => {
-        if (!this.firstLoad) {
+        if (!isEmpty(this.inboxService.conversations)) {
           clearInterval(interval);
           this.onNewMessage(message, updateDate);
         }

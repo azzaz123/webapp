@@ -5,6 +5,7 @@ import { HttpModuleNew } from '../http/http.module.new';
 import { FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
 import { environment } from '../../../environments/environment';
 import { mockFeatureFlagsResponses, mockFeatureFlagsEnum } from '../../../tests';
+import { AccessTokenService } from '../http/access-token.service';
 
 describe('FeatureflagService', () => {
   let injector: TestBed;
@@ -15,8 +16,13 @@ describe('FeatureflagService', () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      imports: [ HttpClientTestingModule, HttpModuleNew ],
-      providers: [ FeatureflagService ]
+      imports: [HttpClientTestingModule, HttpModuleNew],
+      providers: [FeatureflagService,
+        {
+          provide: AccessTokenService, useValue: {
+            accessToken: 'ACCESS_TOKEN'
+          }
+        }]
     });
     httpMock = injector.get(HttpTestingController);
     service = injector.get(FeatureflagService);

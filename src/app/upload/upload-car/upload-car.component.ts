@@ -1,7 +1,4 @@
 import { Observable } from 'rxjs';
-import { EditItemCar } from './../../core/analytics/events-interfaces/edit-item-car.interface';
-import { ListItemCar } from './../../core/analytics/events-interfaces/list-item-car.interface';
-import { EVENT_TYPES, SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
@@ -20,7 +17,16 @@ import { ItemService } from '../../core/item/item.service';
 import { CarInfo, CarContent } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
-import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
+import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { tap } from 'rxjs/operators';
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsEvent,
+  EditItemCar,
+  ListItemCar
+} from '../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -52,6 +58,11 @@ export class UploadCarComponent implements OnInit {
   public customVersion = false;
   private settingItem: boolean;
 
+  private isNormal = true;
+  private isMotorPlan = false;
+  private isCardealer = false;
+  private isWebSubscription = false;
+
   constructor(private fb: FormBuilder,
     private carSuggestionsService: CarSuggestionsService,
     private carKeysService: CarKeysService,
@@ -62,6 +73,7 @@ export class UploadCarComponent implements OnInit {
     private trackingService: TrackingService,
     private analyticsService: AnalyticsService,
     private userService: UserService,
+    private subscriptionService: SubscriptionsService,
     config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
@@ -287,17 +299,39 @@ export class UploadCarComponent implements OnInit {
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
+
+    if (uploadEvent.action === 'createdOnHold') {
+      this.subscriptionService.getUserSubscriptionType().subscribe(type => {
+        this.redirectToList(uploadEvent, type);
+      });
+    } else {
+      this.redirectToList(uploadEvent);
+    }
+  }
+
+  public redirectToList(uploadEvent, type = 1) {
+    const params = this.getRedirectParams(uploadEvent, type);
+
+    this.trackEditOrUpload(!!this.item, uploadEvent.response).subscribe(() =>
+      this.router.navigate(['/catalog/list', params])
+    );
+  }
+
+  private getRedirectParams(uploadEvent, userType: number) {
     const params: any = {
       [uploadEvent.action]: true,
       itemId: uploadEvent.response.id || uploadEvent.response
     };
+
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
 
-    this.item ? this.trackEditOrUpload(true, uploadEvent.response) : this.trackEditOrUpload(false, uploadEvent.response);
+    if (uploadEvent.action === 'createdOnHold') {
+      params.onHoldType = userType;
+    }
 
-    this.router.navigate(['/catalog/list', params]);
+    return params;
   }
 
   onError(response: any) {
@@ -393,10 +427,10 @@ export class UploadCarComponent implements OnInit {
   }
 
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {
-    Observable.forkJoin([
+    return Observable.forkJoin([
       this.userService.isProfessional(),
       this.userService.isProUser(),
-    ]).subscribe((values: any[]) => {
+    ]).pipe(tap((values: any[]) => {
       const baseEventAttrs: any = {
         itemId: item.id,
         categoryId: item.category_id,
@@ -416,29 +450,27 @@ export class UploadCarComponent implements OnInit {
       };
 
       if (isEdit) {
-        const eventAttrs: EditItemCar = {
-          ...baseEventAttrs,
-          screenId: SCREENS_IDS.EditItem
-        };
-
-        this.analyticsService.trackEvent({
+        const editItemCarEvent: AnalyticsEvent<EditItemCar> = {
           name: ANALYTICS_EVENT_NAMES.EditItemCar,
-          eventType: EVENT_TYPES.Other,
-          attributes: eventAttrs
-        });
-      } else {
-        const eventAttrs: ListItemCar = {
-          ...baseEventAttrs,
-          screenId: SCREENS_IDS.Upload
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            ...baseEventAttrs,
+            screenId: SCREEN_IDS.EditItem
+          }
         };
-
-        this.analyticsService.trackEvent({
+        this.analyticsService.trackEvent(editItemCarEvent);
+      } else {
+        const listItemCarEvent: AnalyticsEvent<ListItemCar> = {
           name: ANALYTICS_EVENT_NAMES.ListItemCar,
-          eventType: EVENT_TYPES.Other,
-          attributes: eventAttrs
-        });
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            ...baseEventAttrs,
+            screenId: SCREEN_IDS.Upload
+          }
+        };
+        this.analyticsService.trackEvent(listItemCarEvent);
       }
-    });
+    }));
   }
 
 }

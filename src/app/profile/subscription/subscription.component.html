@@ -1,7 +1,7 @@
 <div class="box">
-  <div class="box-content">
+  <div class="box-content" [hidden]="loading">
     <h4 class="section-title" i18n>PRO subscriptions</h4>
-    <p class="section-subtitle" i18n>Manage your subscriptions for wallapop PRO and take your sales to the next level.</p>
+    <p class="section-subtitle" i18n>Manage your subscriptions to wallapop PRO to increase your sales.</p>
     <div class="Subscriptions">
       <div class="Subscriptions__category" [ngClass]="{'Subscriptions__category--subscribed': subscription.subscribed_from }"
       (click)="openSubscriptionModal(subscription)" *ngFor="let subscription of subscriptions">
@@ -20,76 +20,86 @@
             <p class="Subscriptions__category-info--price" i18n>
               {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
             </p>
-            <!--<p class="Subscriptions__category-info--edit">Edit</p>-->
+            <p class="Subscriptions__category-info--edit" *ngIf="!subscription.subscribed_until" i18n>Unsubscribe</p>
         </div>
-        <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from">Subscribe</tsl-button>
-        <span *ngIf="subscription.subscribed_from" class="Subscriptions__subscribed-from" i18n>
-          Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}</span>
+        <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from" i18n>Subscribe</tsl-button>
+        <span *ngIf="subscription.subscribed_from" [hidden]="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n>
+          Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}
+        </span>
+        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-until" i18n>
+          Subscribed until {{subscription.subscribed_until | date:'dd/MM/yy' }}
+        </span>
+        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-continue" i18n>
+          Keep subscribed
+        </span>
       </div>
     </div>
   </div>
+  <div class="row loading-center">
+    <tsl-spinner [hidden]="!loading"></tsl-spinner>
+  </div>
 </div>
 <div class="box">
-    <div class="box-content">
-      <h4 class="section-title" i18n>Make your sales grow</h4>
-      <p class="section-subtitle" i18n>Thanks to the benefits of the PRO subscription you will sell more.</p>
-      <div class="row">
-        <div class="Subscriptions__benefits col-4">
-          <div class="Subscriptions__benefits-icon">
-            <mat-icon svgIcon="magnet" class="image"></mat-icon>
-          </div>
-          <div class="Subscriptions__benefits-info">
-            <p class="Subscriptions__benefits--title" i18n>Upload all your catalog</p>
-            <p i18n>Publish up to 15 cars and become a PRO seller.</p>
-          </div>
+  <div class="box-content" [hidden]="loading">
+    <h4 class="section-title" i18n>Boost your sales</h4>
+    <p class="section-subtitle" i18n>Take your sales to the next level with the advantages of the PRO subscription.</p>
+    <div class="row">
+      <div class="Subscriptions__benefits col-4">
+        <div class="Subscriptions__benefits-icon">
+          <mat-icon svgIcon="rocket" class="image"></mat-icon>
         </div>
-        <div class="Subscriptions__benefits col-4">
-          <div class="Subscriptions__benefits-icon">
-            <mat-icon svgIcon="megaphone" class="image"></mat-icon>
-          </div>
-          <div class="Subscriptions__benefits-info">
-            <p class="Subscriptions__benefits--title" i18n>Professionalize your profile</p>
-            <p i18n>Add a picture and fill in the extra fields. Stand out over the rest!</p>
-          </div>
-        </div>
-        <div class="Subscriptions__benefits col-4">
-          <div class="Subscriptions__benefits-icon">
-            <mat-icon svgIcon="paintbrush" class="image"></mat-icon>
-          </div>
-          <div class="Subscriptions__benefits-info">
-            <p class="Subscriptions__benefits--title" i18n>Present your business</p>
-            <p i18n>Include a description of what you are offering and share the location.</p>
-          </div>
+        <div class="Subscriptions__benefits-info">
+          <p class="Subscriptions__benefits--title" i18n>Upload all your catalogue</p>
+          <p i18n>Publish up to 15 cars at a time and make yourself a PRO agent.</p>
         </div>
       </div>
-      <div class="row">
-        <div class="col-4">
-          <div class="Subscriptions__benefits-icon">
-            <mat-icon svgIcon="rocket" class="image"></mat-icon>
-          </div>
-          <div class="Subscriptions__benefits-info">
-            <p class="Subscriptions__benefits--title"i18n>Attract more clients</p>
-            <p i18n>Millions of buyers can call you or visit your website from your profile.</p>
-          </div>
+      <div class="Subscriptions__benefits col-4">
+        <div class="Subscriptions__benefits-icon">
+          <mat-icon svgIcon="paintbrush" class="image"></mat-icon>
         </div>
-        <div class="col-4">
-          <div class="Subscriptions__benefits-icon">
-            <mat-icon svgIcon="unlocked" class="image"></mat-icon>
-          </div>
-          <div class="Subscriptions__benefits-info">
-            <p class="Subscriptions__benefits--title" i18n>No time limit</p>
-            <p i18n>Your products won't expire, ever. They are always available.</p>
-          </div>
+        <div class="Subscriptions__benefits-info">
+          <p class="Subscriptions__benefits--title" i18n>Professionalize your profile</p>
+          <p i18n>Add a photo and fill in the extra fields. Stand out over the rest!</p>
         </div>
-        <div class="col-4">
-          <div class="Subscriptions__benefits-icon">
-            <mat-icon svgIcon="watch" class="image"></mat-icon>
-          </div>
-          <div class="Subscriptions__benefits-info">
-            <p class="Subscriptions__benefits--title" i18n>Cancel whenever you want </p>
-            <p i18n>Cancel your subscription whenever you want. No penalties.</p>
-          </div>
+      </div>
+      <div class="Subscriptions__benefits col-4">
+        <div class="Subscriptions__benefits-icon">
+          <mat-icon svgIcon="megaphone" class="image"></mat-icon>
+        </div>
+        <div class="Subscriptions__benefits-info">
+          <p class="Subscriptions__benefits--title" i18n>Introduce your business</p>
+          <p i18n>Include a description of what you offer and share your location.</p>
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-4">
+        <div class="Subscriptions__benefits-icon">
+          <mat-icon svgIcon="magnet" class="image"></mat-icon>
+        </div>
+        <div class="Subscriptions__benefits-info">
+          <p class="Subscriptions__benefits--title"i18n>Win more clients</p>
+          <p i18n>Millions of customers can call you or visit your website from your profile.</p>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="Subscriptions__benefits-icon">
+          <mat-icon svgIcon="watch" class="image"></mat-icon>
+        </div>
+        <div class="Subscriptions__benefits-info">
+          <p class="Subscriptions__benefits--title" i18n>Without time limit</p>
+          <p i18n>Your items won’t expire ever; they will always be available.</p>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="Subscriptions__benefits-icon">
+          <mat-icon svgIcon="unlocked" class="image"></mat-icon>
+        </div>
+        <div class="Subscriptions__benefits-info">
+          <p class="Subscriptions__benefits--title" i18n>Without compromise</p>
+          <p i18n>Cancel your subscription whenever you want, without any penalisation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

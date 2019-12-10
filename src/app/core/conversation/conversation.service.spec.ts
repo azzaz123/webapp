@@ -39,6 +39,7 @@ import {
   MOCK_RANDOM_MESSAGE,
   MOCK_MESSAGE_FROM_OTHER
 } from '../../../tests/message.fixtures.spec';
+import { MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveService } from '../message/archive.service';
@@ -58,11 +59,13 @@ let userService: UserService;
 let itemService: ItemService;
 let messageService: MessageService;
 let notificationService: NotificationService;
+let remoteConsoleService: RemoteConsoleService;
 let realTime: RealTimeService;
 let persistencyService: PersistencyService;
 let eventService: EventService;
 let trackingService: TrackingService;
 let connectionService: ConnectionService;
+let inboxService: InboxService;
 let modalService: NgbModal;
 let archiveService: MsgArchiveService;
 let i18n: I18nService;
@@ -88,28 +91,34 @@ describe('Service: Conversation', () => {
         RealTimeService,
         XmppService,
         ...TEST_HTTP_PROVIDERS,
-        {provide: UserService, useClass: MockedUserService},
-        {provide: ItemService, useClass: MockedItemService},
-        {provide: TrackingService, useClass: MockTrackingService},
-        {provide: PersistencyService, useClass: MockedPersistencyService},
-        {provide: RemoteConsoleService, useClass: MockRemoteConsoleService},
-        {provide: InboxService, useClass: MockedInboxService},
-        {provide: BlockUserXmppService, useValue: { getBlockedUsers() { return ['1', '2', '3']; } }},
+        { provide: UserService, useClass: MockedUserService },
+        { provide: ItemService, useClass: MockedItemService },
+        { provide: TrackingService, useClass: MockTrackingService },
+        { provide: PersistencyService, useClass: MockedPersistencyService },
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
+        { provide: InboxService, useClass: MockedInboxService },
+        {
+          provide: BlockUserXmppService, useValue: {
+            getBlockedUsers() {
+              return ['1', '2', '3'];
+            }
+          }
+        },
         {
           provide: NotificationService, useValue: {
-          sendBrowserNotification() {
+            sendBrowserNotification() {
+            }
           }
-        }
         },
         {
           provide: NgbModal, useValue: {
-          open() {
-            return {
-              result: Promise.resolve(),
-              componentInstance: componentInstance
-            };
+            open() {
+              return {
+                result: Promise.resolve(),
+                componentInstance: componentInstance
+              };
+            }
           }
-        }
         },
         {
           provide: ConnectionService, useValue: {}
@@ -121,6 +130,7 @@ describe('Service: Conversation', () => {
       ]
     });
     service = TestBed.get(ConversationService);
+    inboxService = TestBed.get(InboxService);
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
     messageService = TestBed.get(MessageService);
@@ -128,6 +138,7 @@ describe('Service: Conversation', () => {
     realTime = TestBed.get(RealTimeService);
     persistencyService = TestBed.get(PersistencyService);
     notificationService = TestBed.get(NotificationService);
+    remoteConsoleService = TestBed.get(RemoteConsoleService);
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
     connectionService = TestBed.get(ConnectionService);
@@ -1362,6 +1373,7 @@ describe('Service: Conversation', () => {
 
     beforeEach(() => {
       service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
+      inboxService.conversations = [MOCK_INBOX_CONVERSATION];
       expect(service.leads[0].messages.length).toEqual(0);
       service.firstLoad = false;
     });
@@ -1522,7 +1534,7 @@ describe('Service: Conversation', () => {
 
     it('should wait to call onNewMessage if loading', fakeAsync(() => {
       spyOn<any>(service, 'onNewMessage');
-      service.firstLoad = true;
+      inboxService.conversations = null;
       service.handleNewMessages(MOCK_MESSAGE, false);
 
       expect(service['onNewMessage']).not.toHaveBeenCalled();
@@ -1530,7 +1542,7 @@ describe('Service: Conversation', () => {
 
       expect(service['onNewMessage']).not.toHaveBeenCalled();
 
-      service.firstLoad = false;
+      inboxService.conversations = [MOCK_INBOX_CONVERSATION];
       tick(500);
 
       expect(service['onNewMessage']).toHaveBeenCalled();
@@ -1619,6 +1631,7 @@ describe('Service: Conversation', () => {
       beforeEach(() => {
         spyOn(trackingService, 'addTrackingEvent');
         service.leads = [];
+        inboxService.conversations = [MOCK_INBOX_CONVERSATION];
         service.archivedLeads = [mockedConversation, SECOND_MOCK_CONVERSATION];
       });
 
@@ -1708,7 +1721,8 @@ describe('Service: Conversation', () => {
       it('should request the conversation info, request its messages and add it to the list', () => {
         spyOn(service, 'get').and.returnValue(Observable.of(MOCK_NOT_FOUND_CONVERSATION));
         spyOn(service, 'getSingleConversationMessages').and.callThrough();
-        spyOn(messageService, 'getMessages').and.returnValue(Observable.of({data: [message]}));
+        spyOn(messageService, 'getMessages').and.returnValue(Observable.of({ data: [message] }));
+        inboxService.conversations = [MOCK_INBOX_CONVERSATION];
 
         service.handleNewMessages(message, false);
         const newConversation: Conversation = <Conversation>service.leads[0];

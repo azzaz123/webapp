@@ -4568,7 +4568,6 @@ locate-path@^3.0.0:
 lodash-es@^4.17.15:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
-  integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
 
 lodash._arrayeach@^3.0.0:
   version "3.0.0"
@@ -5162,7 +5161,7 @@ move-concurrently@^1.0.1:
 
 "mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#master":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#5fe3321c46fd312f5432685faf0475549429a8e4"
+  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#bbd125a1639bd9056d06b96c4a58a0b1e7176510"
 
 ms@0.7.1:
   version "0.7.1"
@@ -5266,6 +5265,12 @@ ng2-dnd@^5.0.2:
 ng2-haversine@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ng2-haversine/-/ng2-haversine-0.1.1.tgz#17b1a41102bd33012717a40cc00020c2ee4e5292"
+
+ngx-autosize@1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/ngx-autosize/-/ngx-autosize-1.6.4.tgz#2542c2e92927364972d3d63f11d74a559e3be26c"
+  dependencies:
+    tslib "^1.9.0"
 
 ngx-cookie@4.0.2:
   version "4.0.2"
@@ -8173,9 +8178,9 @@ web-animations-js@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/web-animations-js/-/web-animations-js-2.3.1.tgz#3a6d9bc15196377a90f8e2803fa5262165b04510"
 
-"web-styleguide@git+ssh://git@github.com:Wallapop/web-styleguide#master":
-  version "0.6.0"
-  resolved "git+ssh://git@github.com:Wallapop/web-styleguide#698bebfeeea6f6e188ea80c24d717b4ca5380f9c"
+"web-styleguide@git+ssh://git@github.com:Wallapop/web-styleguide#^0.7.1":
+  version "0.7.1"
+  resolved "git+ssh://git@github.com:Wallapop/web-styleguide#4bd08560323494321dc613c7095f68d8c244607c"
 
 webassemblyjs@1.4.3:
   version "1.4.3"

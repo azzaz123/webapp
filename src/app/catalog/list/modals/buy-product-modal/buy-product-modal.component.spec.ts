@@ -17,6 +17,7 @@ import { StripeService } from '../../../../core/stripe/stripe.service';
 import { Router } from '@angular/router';
 import { STRIPE_CARD_OPTION } from '../../../../../tests/stripe.fixtures.spec';
 import { ErrorsService } from '../../../../core/errors/errors.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT } from '../../../../core/tracking/split-test.service';
 
 describe('BuyProductModalComponent', () => {
   let component: BuyProductModalComponent;
@@ -28,6 +29,7 @@ describe('BuyProductModalComponent', () => {
   let stripeService: StripeService;
   let errorService: ErrorsService;
   let router: Router;
+  let splitTestService: SplitTestService;
   const routerEvents: Subject<any> = new Subject();
 
   beforeEach(async(() => {
@@ -42,55 +44,63 @@ describe('BuyProductModalComponent', () => {
             },
             show() {
             }
-        }
+          }
         },
         {
           provide: Router, useValue: {
             navigate() {
-          },
-          events: routerEvents
-        }
+            },
+            events: routerEvents
+          }
         },
         {
           provide: ItemService, useValue: {
-          get() {
-            return Observable.of(MOCK_ITEM_V3);
-          },
-          purchaseProductsWithCredits() {
-            return Observable.of({
-              payment_needed: true
-            });
+            get() {
+              return Observable.of(MOCK_ITEM_V3);
+            },
+            purchaseProductsWithCredits() {
+              return Observable.of({
+                payment_needed: true
+              });
+            }
           }
-        }
         },
         {
           provide: NgbActiveModal, useValue: {
-          close() {
-          },
-          dismiss() {
+            close() {
+            },
+            dismiss() {
+            }
           }
-        }
         },
         {
           provide: PaymentService, useValue: {
-          getCreditInfo() {
-            return Observable.of({});
-          },
-          pay() {
-            return Observable.of('');
+            getCreditInfo() {
+              return Observable.of({});
+            },
+            pay() {
+              return Observable.of('');
+            }
           }
-        }
         },
         {
           provide: StripeService, useValue: {
-          buy() {},
-          isPaymentMethodStripe$() {
-            return Observable.of(true);
-          },
-          getCards() {
-            return Observable.of([]);
+            buy() {},
+            isPaymentMethodStripe$() {
+              return Observable.of(true);
+            },
+            getCards() {
+              return Observable.of([]);
+            }
           }
-        }
+        },
+        {
+          provide: SplitTestService, useValue: {
+            getVariable() {
+              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
+            },
+            track() {}
+          }
         },
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -109,12 +119,19 @@ describe('BuyProductModalComponent', () => {
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
     errorService = TestBed.get(ErrorsService);
+    splitTestService = TestBed.get(SplitTestService);
     router = TestBed.get(Router);
   });
 
   describe('ngOnInit', () => {
-    it('should get and set item', () => {
+    beforeEach(() => {
+      spyOn(splitTestService, 'getVariable').and.callThrough();
+      spyOn(splitTestService, 'track');
       spyOn(itemService, 'get').and.callThrough();
+      
+    });
+
+    it('should get and set item', () => {
       component.type = 'urgent';
 
       component.ngOnInit();
@@ -123,17 +140,8 @@ describe('BuyProductModalComponent', () => {
       expect(component.item.urgent).toBe(true);
     });
 
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
-
     it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
+      const expectedValue = false;
 
       component.ngOnInit();
 
@@ -168,6 +176,12 @@ describe('BuyProductModalComponent', () => {
         credit: 0,
         factor: 1
       });
+    });
+
+    it('should track the payment method experiment', () => {
+      component.ngOnInit();
+
+      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
     });
   });
 
@@ -316,6 +330,16 @@ describe('BuyProductModalComponent', () => {
       });
 
       describe('with payment_needed true', () => {
+
+        it('should track payment method experiment', () => {
+          spyOn(splitTestService, 'track');
+          spyOn(splitTestService, 'getVariable').and.callThrough();
+          component.hasFinancialCard = true;
+
+          component.checkout();
+
+          expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
+        });
 
         describe('without credit card', () => {
           it('should submit sabadell with orderId', () => {

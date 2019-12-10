@@ -7,19 +7,24 @@ import { MockedPersistencyService } from '../../../tests/persistency.fixtures.sp
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
-import { Observable } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { Message, phoneRequestState } from './message';
 import { ACCESS_TOKEN, MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID, MOCK_CONVERSATION, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment.docker';
 import { RemoteConsoleService } from '../remote-console';
-import { MockRemoteConsoleService } from '../../../tests';
+import { MockRemoteConsoleService, MockConnectionService } from '../../../tests';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
-import { SCREENS_IDS, EVENT_TYPES } from '../analytics/resources/analytics-constants';
-import { ANALYTICS_EVENT_NAMES } from '../analytics/resources/analytics-event-names';
-import { SendFirstMessage } from './../analytics/events-interfaces/send-first-message.interface';
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsEvent,
+  SendFirstMessage
+} from '../analytics/analytics-constants';
+import { ConnectionService } from '../connection/connection.service';
 
 let service: RealTimeService;
 let persistencyService: PersistencyService;
@@ -28,6 +33,7 @@ let xmppService: XmppService;
 let trackingService: TrackingService;
 let remoteConsoleService: RemoteConsoleService;
 let analyticsService: AnalyticsService;
+let connectionService: ConnectionService;
 
 describe('RealTimeService', () => {
   beforeEach(() => {
@@ -40,6 +46,7 @@ describe('RealTimeService', () => {
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
+        { provide: ConnectionService, useClass: MockConnectionService }
       ]
     });
 
@@ -50,17 +57,54 @@ describe('RealTimeService', () => {
     trackingService = TestBed.get(TrackingService);
     remoteConsoleService = TestBed.get(RemoteConsoleService);
     analyticsService = TestBed.get(AnalyticsService);
+    connectionService = TestBed.get(ConnectionService);
     appboy.initialize(environment.appboy);
   });
 
   describe('connect', () => {
-    it('should call xmpp.connect', () => {
-      spyOn(xmppService, 'connect').and.returnValue(Observable.of({}));
+    beforeEach(() => {
       spyOn(remoteConsoleService, 'sendConnectionTimeout').and.callThrough();
+    });
+
+    it('should not call xmpp.connect if user is connected', () => {
+      connectionService.isConnected = true;
+      spyOn(xmppService, 'connect$').and.returnValue(of({}));
+      spyOn(xmppService, 'isConnected$').and.returnValue(of(true));
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
 
-      expect(xmppService.connect).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
+      expect(xmppService.connect$).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
+    });
+
+    it('should call xmpp.connect and return success', () => {
+      connectionService.isConnected = true;
+      spyOn(xmppService, 'connect$').and.returnValue(of({}));
+
+      service.connect(MOCK_USER.id, ACCESS_TOKEN);
+
+      expect(xmppService.connect$).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
+      expect(remoteConsoleService.sendConnectionTimeout).toHaveBeenCalled();
+    });
+
+    it('should NOT call xmpp.connect if user do not have internet connection', () => {
+      connectionService.isConnected = false;
+      service['isConnectingWithXMPP'] = false;
+      spyOn(xmppService, 'connect$').and.returnValue(of({}));
+
+      service.connect(MOCK_USER.id, ACCESS_TOKEN);
+
+      expect(xmppService.connect$).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
+    });
+
+    it('should NOT call xmpp.connect if is already connected', () => {
+      connectionService.isConnected = true;
+      spyOn(xmppService, 'connect$').and.returnValue(of({}));
+
+      service.connect(MOCK_USER.id, ACCESS_TOKEN);
+
+      expect(xmppService.connect$).toHaveBeenCalled();
       expect(remoteConsoleService.sendConnectionTimeout).toHaveBeenCalled();
     });
   });
@@ -113,7 +157,7 @@ describe('RealTimeService', () => {
       });
 
       it('should reset ongoingRetry to FALSE when xmpp.disconnectError return TRUE', () => {
-        spyOn(xmppService, 'disconnectError').and.returnValue(Observable.of(true));
+        spyOn(xmppService, 'disconnectError').and.returnValue(of(true));
         spyOn(xmppService, 'reconnectClient');
         service['ongoingRetry'] = false;
 
@@ -123,7 +167,7 @@ describe('RealTimeService', () => {
       });
 
       it('should keep ongoingRetry to TRUE when xmpp.disconnectError throws and error', () => {
-        spyOn(xmppService, 'disconnectError').and.returnValue(Observable.throw(xmppService['xmppError']));
+        spyOn(xmppService, 'disconnectError').and.returnValue(throwError(xmppService['xmppError']));
         spyOn(xmppService, 'reconnectClient');
         service['ongoingRetry'] = true;
 
@@ -179,7 +223,7 @@ describe('RealTimeService', () => {
     it(`should call sendDeliveryReceipt when a NEW_MESSAGE event is emitted for a message that requests the delivery
     and is NOT fromSelf`, () => {
       spyOn(service, 'sendDeliveryReceipt');
-      spyOn(persistencyService, 'findMessage').and.returnValue(Observable.throw({
+      spyOn(persistencyService, 'findMessage').and.returnValue(throwError({
         reason: 'missing'
       }));
       const msg = new Message('someId', CONVERSATION_ID, 'from other', OTHER_USER_ID);
@@ -192,7 +236,7 @@ describe('RealTimeService', () => {
 
     it('should NOT call sendDeliveryReceipt if the new message is fromSelf', () => {
       spyOn(service, 'sendDeliveryReceipt');
-      spyOn(persistencyService, 'findMessage').and.returnValue(Observable.throw({
+      spyOn(persistencyService, 'findMessage').and.returnValue(throwError({
         reason: 'missing'
       }));
       const msg = new Message('someId', CONVERSATION_ID, 'from myself!', USER_ID);
@@ -206,7 +250,7 @@ describe('RealTimeService', () => {
     it(`should NOT call sendDeliveryReceipt if a NEW_MESSAGE event is emitted without the deliveryReceipt parameter,
       or with the deliveryRecipt parameter set to FALSE`, () => {
       spyOn(service, 'sendDeliveryReceipt');
-      spyOn(persistencyService, 'findMessage').and.returnValue(Observable.throw({
+      spyOn(persistencyService, 'findMessage').and.returnValue(throwError({
         reason: 'missing'
       }));
       const msg = new Message('someId', CONVERSATION_ID, 'from myself!', USER_ID);
@@ -223,7 +267,7 @@ describe('RealTimeService', () => {
 
     it('should NOT call sendDeliveryReceipt if the message already exists (persistencyService.findMessage returns a value)', () => {
       spyOn(service, 'sendDeliveryReceipt');
-      spyOn(persistencyService, 'findMessage').and.returnValue(Observable.of({}));
+      spyOn(persistencyService, 'findMessage').and.returnValue(of({}));
       const msg = new Message('someId', CONVERSATION_ID, 'from myself!', USER_ID);
       msg.fromSelf = false;
 
@@ -315,22 +359,22 @@ describe('RealTimeService', () => {
 
     describe('if it`s the first message', () => {
       it('should send the Send First Message event', () => {
-        const eventAttrs: SendFirstMessage = {
-          itemId: MOCKED_CONVERSATIONS[0].item.id,
-          sellerUserId: MOCKED_CONVERSATIONS[0].user.id,
-          conversationId: MOCKED_CONVERSATIONS[0].id,
-          screenId: SCREENS_IDS.Chat
-        }
+        const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
+          name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            itemId: MOCKED_CONVERSATIONS[0].item.id,
+            sellerUserId: MOCKED_CONVERSATIONS[0].user.id,
+            conversationId: MOCKED_CONVERSATIONS[0].id,
+            screenId: SCREEN_IDS.Chat
+          }
+        };
         MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
         spyOn(analyticsService, 'trackEvent');
 
         eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-          name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
-          eventType: EVENT_TYPES.Other,
-          attributes: eventAttrs
-        });
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
     });
 

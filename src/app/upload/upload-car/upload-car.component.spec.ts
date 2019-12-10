@@ -1,4 +1,3 @@
-import { EVENT_TYPES } from '../../core/analytics/resources/analytics-constants';
 import { MockAnalyticsService } from './../../../tests/analytics.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
@@ -27,11 +26,17 @@ import { CARS_CATEGORY } from '../../core/item/item-categories';
 import { ItemService } from '../../core/item/item.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
-import { SCREENS_IDS } from '../../core/analytics/resources/analytics-constants';
-import { ANALYTICS_EVENT_NAMES } from '../../core/analytics/resources/analytics-event-names';
-import { EditItemCar } from '../../core/analytics/events-interfaces/edit-item-car.interface';
-import { ListItemCar } from '../../core/analytics/events-interfaces/list-item-car.interface';
 import { CarContent } from '../../core/item/item-response.interface';
+import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
+import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
+import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsEvent,
+  EditItemCar,
+  ListItemCar
+} from '../../core/analytics/analytics-constants';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -122,6 +127,9 @@ describe('UploadCarComponent', () => {
               return Observable.of(CAR_INFO);
             }
           }
+        },
+        {
+          provide: SubscriptionsService, useClass: MockSubscriptionService
         }
       ],
       declarations: [UploadCarComponent],
@@ -495,35 +503,35 @@ describe('UploadCarComponent', () => {
           }
         }
         const editResponse: CarContent = MOCK_RESPONSE_CONTENT;
-        const trackingAttrs: EditItemCar = {
-          itemId: MOCK_CAR.id,
-          categoryId: MOCK_CAR.categoryId,
-          salePrice: MOCK_CAR.salePrice,
-          title: MOCK_CAR.title,
-          screenId: SCREENS_IDS.EditItem,
-          brand: MOCK_CAR.brand,
-          model: MOCK_CAR.model,
-          bodyType: MOCK_CAR.bodyType,
-          km: MOCK_CAR.km,
-          year: MOCK_CAR.year,
-          engine: MOCK_CAR.engine,
-          gearbox: MOCK_CAR.gearbox,
-          hp: MOCK_CAR.horsepower,
-          numDoors: MOCK_CAR.numDoors,
-          isCarDealer: false,
-          isPro: false
-        }
+        const expectedEvent: AnalyticsEvent<EditItemCar> = {
+          name: ANALYTICS_EVENT_NAMES.EditItemCar,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            itemId: MOCK_CAR.id,
+            categoryId: MOCK_CAR.categoryId,
+            salePrice: MOCK_CAR.salePrice,
+            title: MOCK_CAR.title,
+            screenId: SCREEN_IDS.EditItem,
+            brand: MOCK_CAR.brand,
+            model: MOCK_CAR.model,
+            bodyType: MOCK_CAR.bodyType,
+            km: MOCK_CAR.km,
+            year: MOCK_CAR.year,
+            engine: MOCK_CAR.engine,
+            gearbox: MOCK_CAR.gearbox,
+            hp: MOCK_CAR.horsepower,
+            numDoors: MOCK_CAR.numDoors,
+            isCarDealer: false,
+            isPro: false
+          }
+        };
         editEvent.response = editResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();
         component.onUploaded(editEvent);
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-          name: ANALYTICS_EVENT_NAMES.EditItemCar,
-          eventType: EVENT_TYPES.Other,
-          attributes: trackingAttrs
-        });
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
     });
 
@@ -537,35 +545,35 @@ describe('UploadCarComponent', () => {
           }
         }
         const uploadResponse: CarContent = MOCK_RESPONSE_CONTENT;
-        const trackingAttrs: ListItemCar = {
-          itemId: MOCK_CAR.id,
-          categoryId: MOCK_CAR.categoryId,
-          salePrice: MOCK_CAR.salePrice,
-          title: MOCK_CAR.title,
-          screenId: SCREENS_IDS.Upload,
-          brand: MOCK_CAR.brand,
-          model: MOCK_CAR.model,
-          bodyType: MOCK_CAR.bodyType,
-          km: MOCK_CAR.km,
-          year: MOCK_CAR.year,
-          engine: MOCK_CAR.engine,
-          gearbox: MOCK_CAR.gearbox,
-          hp: MOCK_CAR.horsepower,
-          numDoors: MOCK_CAR.numDoors,
-          isCarDealer: false,
-          isPro: false
-        }
+        const expectedEvent: AnalyticsEvent<ListItemCar> = {
+          name: ANALYTICS_EVENT_NAMES.ListItemCar,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            itemId: MOCK_CAR.id,
+            categoryId: MOCK_CAR.categoryId,
+            salePrice: MOCK_CAR.salePrice,
+            title: MOCK_CAR.title,
+            screenId: SCREEN_IDS.Upload,
+            brand: MOCK_CAR.brand,
+            model: MOCK_CAR.model,
+            bodyType: MOCK_CAR.bodyType,
+            km: MOCK_CAR.km,
+            year: MOCK_CAR.year,
+            engine: MOCK_CAR.engine,
+            gearbox: MOCK_CAR.gearbox,
+            hp: MOCK_CAR.horsepower,
+            numDoors: MOCK_CAR.numDoors,
+            isCarDealer: false,
+            isPro: false
+          }
+        };
         uploadEvent.response = uploadResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();
         component.onUploaded(uploadEvent);
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-          name: ANALYTICS_EVENT_NAMES.ListItemCar,
-          eventType: EVENT_TYPES.Other,
-          attributes: trackingAttrs
-        });
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
     });
   });

@@ -51,7 +51,7 @@ import { LoginResponse } from './login-response.interface';
 import { UserLocation, MotorPlan, ProfileSubscriptionInfo, Image } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { FeatureflagService } from './featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from './featureflag.service';
 import { SplitTestService } from '../tracking/split-test.service';
 import { HttpModuleNew } from '../http/http.module.new';
 import { APP_VERSION } from '../../../environments/version';
@@ -796,6 +796,7 @@ describe('Service: User', () => {
       const ITEM_HASH = '9ke65g542jox';
       const REASON = 5;
       const COMMENT = 'bla bla bla';
+      accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.reportUser(USER_ID, ITEM_HASH, CONVERSATIONS_HASH, REASON, COMMENT).subscribe();
 
       const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/report/user/${USER_ID}`);
@@ -807,6 +808,16 @@ describe('Service: User', () => {
         reason: REASON
       });
       expect(req.request.headers.get('AppBuild')).toEqual(APP_VERSION);
+    });
+  });
+
+  describe('setSubscriptionsFeatureFlag', () => {
+    it('should call getFlag and add permission if active', () => {
+      spyOn(featureflagService, 'getFlag').and.callThrough();
+
+      service.setSubscriptionsFeatureFlag();
+
+      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);
     });
   });
 });
