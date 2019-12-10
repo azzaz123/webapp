@@ -2,21 +2,15 @@
 
 tsl-card {
   cursor: pointer;
-  width: 220px;
   border-radius: $border-radius;
   box-shadow: 0 0 2px 0 rgba($black, .1);
   transition: all .15s ease;
-  margin: 0 $spacing-s $spacing-ms $spacing-s;
-
   & /deep/ tsl-card-image {
     display: block;
     padding: $spacing-xs;
   }
-
   & /deep/ tsl-card-content {
-
     padding-top: $spacing-ms;
-
     span {
       overflow: hidden;
       white-space: nowrap;
@@ -28,7 +22,6 @@ tsl-card {
 
   & /deep/ tsl-card-footer {
     position: relative;
-
     .cart-footer-icon {
       position: absolute;
       &.active path {
@@ -36,11 +29,9 @@ tsl-card {
         stroke: $negative-dark;
       }
     }
-
     .cart-footer-text {
       text-align: center;
     }
-
     &:hover, &:focus {
       cursor: pointer;
       background: rgba($blue-grey-4, .2);
