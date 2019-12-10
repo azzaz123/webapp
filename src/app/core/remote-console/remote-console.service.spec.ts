@@ -214,7 +214,7 @@ describe('RemoteConsoleService', () => {
         ...commonLog, ...{
           'send_message_time': 1000,
           'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-          'ping_time_ms': 0
+          'ping_time_ms': navigator['connection']['rtt']
         }
       }));
     }));
@@ -232,7 +232,7 @@ describe('RemoteConsoleService', () => {
           'message_id': 'MESSAGE_ID_1',
           'send_message_time': 3000,
           'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-          'ping_time_ms': 0
+          'ping_time_ms': navigator['connection']['rtt']
         }
       }));
 
@@ -243,7 +243,7 @@ describe('RemoteConsoleService', () => {
           'message_id': 'MESSAGE_ID_2',
           'send_message_time': 2000,
           'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-          'ping_time_ms': 0
+          'ping_time_ms': navigator['connection']['rtt']
         }
       }));
     }));
@@ -286,7 +286,7 @@ describe('RemoteConsoleService', () => {
         ...commonLog, ...{
           'send_message_time': 1000,
           'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
-          'ping_time_ms': 0
+          'ping_time_ms': navigator['connection']['rtt']
         }
       }));
     }));
@@ -304,7 +304,7 @@ describe('RemoteConsoleService', () => {
           'message_id': 'MESSAGE_ID_1',
           'send_message_time': 3000,
           'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
-          'ping_time_ms': 0
+          'ping_time_ms': navigator['connection']['rtt']
         }
       }));
 
@@ -315,7 +315,7 @@ describe('RemoteConsoleService', () => {
           'message_id': 'MESSAGE_ID_2',
           'send_message_time': 2000,
           'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
-          'ping_time_ms': 0
+          'ping_time_ms': navigator['connection']['rtt']
         }
       }));
     }));
