@@ -11,7 +11,7 @@ import { Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
 import { HttpServiceNew } from '../http/http.service.new';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { find, isNil, some } from 'lodash-es';
+import { find, isNil, last, some } from 'lodash-es';
 import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
 import * as moment from 'moment';
 
@@ -108,6 +108,10 @@ export class InboxConversationService {
       this.realTime.sendDeliveryReceipt(conversation.user.id, message.id, conversation.id);
       message.status = MessageStatus.RECEIVED;
     }));
+  }
+
+  public sendReadSignal(conversation: InboxConversation): void {
+    this.realTime.sendRead(conversation.user.id, conversation.id);
   }
 
   private findMessage(conversation: InboxConversation, message: InboxMessage) {
@@ -210,7 +214,7 @@ export class InboxConversationService {
     return isNil(conversation) ? false : some(this.archivedConversations, { id: conversation.id });
   }
 
-  public archive(conversation: InboxConversation): Observable<InboxConversation> {
+  public archive$(conversation: InboxConversation): Observable<InboxConversation> {
     return this.archiveConversation(conversation.id)
     .catch((err) => {
       if (err.status === 409) {
@@ -288,8 +292,8 @@ export class InboxConversationService {
 
   public openConversationByItemId$(itemId: string): Observable<InboxConversation> {
     if (this.conversations && this.archivedConversations) {
-      const localConversation = find(this.conversations, (conver) => conver.item.id === itemId && !conver.item.isMine)
-        || find(this.archivedConversations, (conver) => conver.item.id === itemId && !conver.item.isMine);
+      const localConversation = find(this.conversations, (conversation) => conversation.item.id === itemId)
+        || find(this.archivedConversations, (conversation) => conversation.item.id === itemId);
 
       if (localConversation) {
         this.openConversation(localConversation);
