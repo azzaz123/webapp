@@ -108,8 +108,7 @@ export class InboxConversationService {
   }
 
   public sendReadSignal(conversation: InboxConversation): void {
-    const lastMessage: InboxMessage = last(conversation.messages);
-    this.realTime.sendRead(lastMessage.from, lastMessage.thread);
+    this.realTime.sendRead(conversation.user.id, conversation.id);
   }
 
   private findMessage(conversation: InboxConversation, message: InboxMessage) {
