@@ -1,6 +1,9 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+
 import { Observable } from 'rxjs';
 import { DashboardComponent } from './dashboard.component';
 import { EventService } from '../core/event/event.service';
@@ -8,11 +11,18 @@ import { ConversationService } from '../core/conversation/conversation.service';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { CallsService } from '../core/conversation/calls.service';
 import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
-import { createConversationsArray, MOCK_CONVERSATION } from '../../tests/conversation.fixtures.spec';
+import { MOCK_CONVERSATION } from '../../tests/conversation.fixtures.spec';
 import { Lead } from '../core/conversation/lead';
 import { Call } from '../core/conversation/calls';
 import { createCallsArray } from '../../tests/call.fixtures';
-import { Conversation } from '../core/conversation/conversation';
+import { FeatureflagService } from '../core/user/featureflag.service';
+import { FeatureFlagServiceMock, InboxServiceMock, LoggedGuardServiceMock, CallsServiceMock, ConversationServiceMock } from '../../tests';
+import { InboxService } from '../core/inbox/inbox.service';
+import { InboxConversation } from '../chat/model';
+import { createInboxConversationsArray } from '../../tests/inbox.fixtures.spec';
+import { ChatModule } from '../chat/chat.module';
+import { LoggedGuard } from '../core/user/logged.guard';
+import { ChatComponent } from '../chat/chat.component';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -21,37 +31,34 @@ describe('DashboardComponent', () => {
   let conversationService: ConversationService;
   let trackingService: TrackingService;
   let eventService: EventService;
+  let inboxService: InboxService;
+  let featureflagService: FeatureflagService;
+  let router: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DashboardComponent],
+      imports: [
+        ChatModule,
+        RouterTestingModule.withRoutes([{
+          path: 'chat',
+          component: ChatComponent
+        }])
+      ],
+      declarations: [
+        DashboardComponent
+      ],
       providers: [
-        {provide: TrackingService, useClass: MockTrackingService},
         EventService,
-        {
-          provide: CallsService, useValue: {
-          getPage() {
-            return Observable.of([]);
-          },
-          getTotals() {
-            return Observable.of({});
-          }
-        }
-        },
-        {
-          provide: ConversationService, useValue: {
-          getPage() {
-            return Observable.of([]);
-          },
-          getTotals() {
-            return Observable.of({});
-          }
-        }
-        },
+        { provide: TrackingService, useClass: MockTrackingService },
+        { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        { provide: InboxService, useClass: InboxServiceMock },
+        { provide: LoggedGuard, useClass: LoggedGuardServiceMock },
+        { provide: CallsService, useClass: CallsServiceMock },
+        { provide: ConversationService, useClass: ConversationServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
@@ -61,10 +68,18 @@ describe('DashboardComponent', () => {
     conversationService = TestBed.get(ConversationService);
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
+    inboxService = TestBed.get(InboxService);
+    featureflagService = TestBed.get(FeatureflagService);
+    router = TestBed.get(Router);
     fixture.detectChanges();
+    router.initialNavigation();
   });
 
-  describe('ngOninit', () => {
+  it('should create the app', async(() => {
+    expect(fixture.debugElement.componentInstance).toBeTruthy();
+  }));
+
+  describe('ngOnInit', () => {
 
     it('should call methods', () => {
       spyOn<any>(component, 'getData');
@@ -88,12 +103,13 @@ describe('DashboardComponent', () => {
 
   describe('getData', () => {
     const CALLS: Call[] = createCallsArray(5);
-    const CONVERSATIONS: Conversation[] = createConversationsArray(4);
+    const CONVERSATIONS: InboxConversation[] = createInboxConversationsArray(4);
 
     beforeEach(() => {
       spyOn(callService, 'getPage').and.returnValue(Observable.of(CALLS));
       spyOn(conversationService, 'getPage').and.returnValue(Observable.of(CONVERSATIONS));
       spyOn(trackingService, 'track');
+      inboxService.conversations = CONVERSATIONS;
 
       component['getData']();
     });
@@ -104,10 +120,6 @@ describe('DashboardComponent', () => {
     });
 
     it('should set conversations', () => {
-      expect(conversationService.getPage).toHaveBeenCalledWith(1, false, [{
-        key: 'phone',
-        value: undefined
-      }], 5);
       expect(component.conversations).toEqual(CONVERSATIONS);
     });
 
@@ -136,6 +148,7 @@ describe('DashboardComponent', () => {
         archivedMeetings: 7,
         archivedMessages: 8
       }));
+      component.conversations = createInboxConversationsArray(3);
 
       component['getTotals']();
     });
@@ -148,8 +161,8 @@ describe('DashboardComponent', () => {
       expect(component.messagesTotal).toBe(5 - 2);
     });
 
-    it('should set completed to false', () => {
-      expect(component.completed).toBeFalsy();
+    it('should return true if user has calls or messages', () => {
+      expect(component.hasMessagesOrCalls).toBeTruthy();
     });
   });
 
@@ -160,6 +173,44 @@ describe('DashboardComponent', () => {
       component.trackPhoneLeadOpened();
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_OPENED);
+    });
+  });
+
+  describe('router', () => {
+    it('should navigate to chat and open conversation', () => {
+      const spy = spyOn(router, 'navigateByUrl');
+      const conversation = createInboxConversationsArray(1, 'conversationId')[0];
+
+      component.openConversation(conversation);
+
+      expect(spy.calls.first().args[0]).toEqual(`/chat?itemId=${conversation.item.id}`);
+    });
+  });
+
+  describe('countTotalMessages', () => {
+    it('should return 0 if conversations is null', () => {
+      component.conversations = null;
+
+      expect(component.countTotalMessages()).toEqual(0);
+    });
+
+    it('should return 0 if conversations is undefinied', () => {
+      component.conversations = undefined;
+
+      expect(component.countTotalMessages()).toEqual(0);
+    });
+
+    it('should calculate total messages if all messages are read', () => {
+      component.conversations = createInboxConversationsArray(2);
+
+      expect(component.countTotalMessages()).toEqual(2);
+    });
+
+    it('should calculate total messages if user has 2 conversations and 5 unread messages', () => {
+      component.conversations = createInboxConversationsArray(2);
+      component.conversations[0].unreadCounter = 5;
+
+      expect(component.countTotalMessages()).toEqual(6);
     });
   });
 });

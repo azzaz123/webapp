@@ -19,6 +19,9 @@ export class InboxService {
   public conversations: InboxConversation[] = [];
   public archivedConversations: InboxConversation[] = [];
 
+  private inboxReady = false;
+  private archivedInboxReady = false;
+
   private selfId: string;
   private nextPageToken: string = null;
   private nextArchivedPageToken: string = null;
@@ -53,6 +56,7 @@ export class InboxService {
     })
     .subscribe((conversations: InboxConversation[]) => {
       this.conversations = conversations;
+      this.inboxReady = true;
       this.eventService.emit(EventService.INBOX_LOADED, conversations, 'LOAD_INBOX');
       this.eventService.emit(EventService.INBOX_READY, true);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
@@ -62,9 +66,9 @@ export class InboxService {
     .catch(() => {
       this.errorRetrievingArchived = true;
       return this.persistencyService.getArchivedStoredInbox();
-    })
-    .subscribe((conversations) => {
+    }).subscribe((conversations: InboxConversation[]) => {
       this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
+      this.archivedInboxReady = true;
       this.eventService.emit(EventService.ARCHIVED_INBOX_READY, true);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
@@ -160,6 +164,14 @@ export class InboxService {
       tap((inbox: InboxApi) => this.nextArchivedPageToken = inbox.next_from || null),
       map((inbox: InboxApi) => this.archivedConversations = this.archivedConversations = this.processArchivedInboxResponse(inbox))
     );
+  }
+
+  public isInboxReady(): boolean {
+    return this.inboxReady;
+  }
+
+  public isArchivedInboxReady(): boolean {
+    return this.archivedInboxReady;
   }
 
   private processInboxResponse(inbox: InboxApi): InboxConversation[] {
