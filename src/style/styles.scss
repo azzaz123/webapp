@@ -52,7 +52,7 @@ body {
   padding-top: $topbar-height;
   background: rgba(236, 239, 241, 0.6);
   min-height: 100%;
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     padding-left: 0;
     padding-bottom: $topbar-height;
   }
