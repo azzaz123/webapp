@@ -10,4 +10,7 @@ export class InboxConversationServiceMock {
   archive$(conversation: InboxConversation): Observable<InboxConversation> {
     return of(conversation);
   }
+
+  sendReadSignal(conversation: InboxConversation): void {
+  }
 }

@@ -1,6 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { InboxConversation } from '../../../model';
+import { InboxConversation, InboxMessage } from '../../../model';
 import { InboxConversationService } from '../../../../core/inbox/inbox-conversation.service';
+import { InboxService } from '../../../../core/inbox/inbox.service';
+import { RealTimeService } from '../../../../core/message/real-time.service';
+import { last } from 'lodash-es';
 
 @Component({
   selector: 'tsl-inbox-conversation',
@@ -31,6 +34,7 @@ export class InboxConversationComponent {
   }
 
   public onClickArchiveConversation(): void {
+    this.inboxConversationService.sendReadSignal(this.conversation);
     this.inboxConversationService.archive$(this.conversation).subscribe(() => this.conversation = null);
   }
 }
