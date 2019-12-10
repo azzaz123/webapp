@@ -158,6 +158,7 @@ describe('Service: Xmpp', () => {
   it('should create the instance', () => {
     expect(service).toBeTruthy();
   });
+
   it('should create the client', () => {
     service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
     const selfJid = new XMPP.JID(MOCKED_LOGIN_USER, environment.xmppDomain, service['resource']);
@@ -233,6 +234,7 @@ describe('Service: Xmpp', () => {
   describe('bindEvents', () => {
 
     beforeEach(() => {
+      spyOn(remoteConsoleService, 'sendPresentationMessageTimeout');
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD).subscribe();
     });
 
@@ -320,6 +322,7 @@ describe('Service: Xmpp', () => {
       expect(msg.thread).toEqual('thread');
       expect(msg.message).toEqual('body');
       expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.local);
+      expect(remoteConsoleService.sendPresentationMessageTimeout).toHaveBeenCalledWith('id');
     }));
 
     it('should set the message status to SENT when a new xmpp message is received', fakeAsync(() => {
@@ -334,6 +337,7 @@ describe('Service: Xmpp', () => {
       tick();
 
       expect(msg.status).toBe(messageStatus.SENT);
+      expect(remoteConsoleService.sendPresentationMessageTimeout).toHaveBeenCalledWith('id');
     }));
 
     it(`should emit a newMessage event with withDeliveryReceipt TRUE when the message includes
@@ -350,6 +354,7 @@ describe('Service: Xmpp', () => {
 
       expect(MOCKED_SERVER_MESSAGE.requestReceipt).toBe(true);
       expect(expectedVal).toBe(true);
+      expect(remoteConsoleService.sendPresentationMessageTimeout).toHaveBeenCalledWith('id');
     }));
 
     it(`should emit a newMessage event with withDeliveryReceipt FALSE when the message does not include
@@ -368,6 +373,7 @@ describe('Service: Xmpp', () => {
 
       expect(msg.requestReceipt).toBe(false);
       expect(expectedVal).toBe(false);
+      expect(remoteConsoleService.sendPresentationMessageTimeout).toHaveBeenCalledWith('id');
     }));
 
     it('should NOT emit a newMessage event if there is no body', () => {
@@ -701,12 +707,14 @@ describe('Service: Xmpp', () => {
       spyOn(eventService, 'emit');
       spyOn<any>(remoteConsoleService, 'sendMessageTimeout');
       spyOn<any>(remoteConsoleService, 'sendAcceptTimeout');
+      spyOn<any>(remoteConsoleService, 'sendPresentationMessageTimeout');
 
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
 
       expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(queryId);
       expect(remoteConsoleService.sendAcceptTimeout).toHaveBeenCalledWith(queryId);
+      expect(remoteConsoleService.sendPresentationMessageTimeout).not.toHaveBeenCalled();
       expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], queryId);
     });
 
@@ -764,12 +772,17 @@ describe('Service: Xmpp', () => {
   });
 
   describe('onNewMessage', () => {
+    beforeEach(() => {
+      spyOn(remoteConsoleService, 'sendPresentationMessageTimeout');
+    });
+
     it('should emit a CHAT_LAST_RECEIVED_TS event when a new message or chat signal is processed', () => {
       spyOn(eventService, 'emit');
       const expectedTimestamp = new Date(MOCKED_SERVER_RECEIVED_RECEIPT.timestamp.body).getTime();
 
       service['onNewMessage'](MOCKED_SERVER_RECEIVED_RECEIPT);
 
+      expect(remoteConsoleService.sendPresentationMessageTimeout).not.toHaveBeenCalled();
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_LAST_RECEIVED_TS, expectedTimestamp);
     });
 
@@ -789,6 +802,7 @@ describe('Service: Xmpp', () => {
 
       service['onNewMessage'](message);
 
+      expect(remoteConsoleService.sendPresentationMessageTimeout).not.toHaveBeenCalled();
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_SIGNAL, expectedSignal);
     });
 
@@ -807,6 +821,7 @@ describe('Service: Xmpp', () => {
 
       service['onNewMessage'](message);
 
+      expect(remoteConsoleService.sendPresentationMessageTimeout).not.toHaveBeenCalled();
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_SIGNAL, expectedSignal);
     });
 
@@ -827,6 +842,7 @@ describe('Service: Xmpp', () => {
 
       service['onNewMessage'](message);
 
+      expect(remoteConsoleService.sendPresentationMessageTimeout).not.toHaveBeenCalled();
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_SIGNAL, expectedSignal);
     });
 
@@ -847,6 +863,7 @@ describe('Service: Xmpp', () => {
 
       service['onNewMessage'](message);
 
+      expect(remoteConsoleService.sendPresentationMessageTimeout).not.toHaveBeenCalled();
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_SIGNAL, expectedSignal);
     });
   });

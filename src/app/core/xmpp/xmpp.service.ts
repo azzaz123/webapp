@@ -217,6 +217,9 @@ export class XmppService {
     if (message.receipt || message.sentReceipt || message.readReceipt) {
       this.buildChatSignal(message);
     } else if (message.body || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
+      if (!this.isFromSelf(message)) {
+        this.remoteConsoleService.sendPresentationMessageTimeout(message.id);
+      }
       const builtMessage: Message = this.buildMessage(message, markAsPending);
       builtMessage.fromSelf = this.isFromSelf(message);
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
