@@ -64,6 +64,7 @@ describe('UploadProductComponent', () => {
   let trackingService: TrackingService;
   let splitTestService: SplitTestService;
   let analyticsService: AnalyticsService;
+  let deviceService: DeviceDetectorService;
   const componentInstance: any = {};
 
   beforeEach(async(() => {
@@ -167,6 +168,7 @@ describe('UploadProductComponent', () => {
     trackingService = TestBed.get(TrackingService);
     splitTestService = TestBed.get(SplitTestService);
     analyticsService = TestBed.get(AnalyticsService);
+    deviceService = TestBed.get(DeviceDetectorService);
     fixture.detectChanges();
     appboy.initialize(environment.appboy);
   });
@@ -332,6 +334,15 @@ describe('UploadProductComponent', () => {
 
     it('should NOT set focus if edit mode', fakeAsync(() => {
       component.item = MOCK_ITEM;
+      component.ngAfterContentInit();
+
+      expect(component.titleField.nativeElement.focus).not.toHaveBeenCalled();
+      expect(component['focused']).toBe(false);
+    }));
+
+    it('should NOT set focus if it`s a mobile device', fakeAsync(() => {
+      spyOn(deviceService, 'isMobile').and.returnValue(true);
+
       component.ngAfterContentInit();
 
       expect(component.titleField.nativeElement.focus).not.toHaveBeenCalled();

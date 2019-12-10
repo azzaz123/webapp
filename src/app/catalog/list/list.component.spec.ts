@@ -67,6 +67,7 @@ describe('ListComponent', () => {
   let userService: UserService;
   let eventService: EventService;
   let stripeService: StripeService;
+  let deviceService: DeviceDetectorService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
@@ -220,6 +221,7 @@ describe('ListComponent', () => {
     userService = TestBed.get(UserService);
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
+    deviceService = TestBed.get(DeviceDetectorService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -304,6 +306,16 @@ describe('ListComponent', () => {
       expect(component.isUrgent).toBe(false);
       expect(component.isRedirect).toBe(false);
     }));
+
+    describe('if it`s a mobile device', () => {
+      it('should not open upload confirmation modal', () => {
+        spyOn(deviceService, 'isMobile').and.returnValue(true);
+
+        component.ngOnInit();
+
+        expect(modalService.open).not.toHaveBeenCalled();
+      });
+    });
 
     it('should open toastr', fakeAsync(() => {
       spyOn(errorService, 'i18nSuccess');
