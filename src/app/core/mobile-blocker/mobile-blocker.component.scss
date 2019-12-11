@@ -1,0 +1,13 @@
+.MobileBlocker {
+  width: 100vw;
+  height: 100vh;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  background: white;
+  border-radius: 5px;
+
+  z-index: 10000000000;
+}
