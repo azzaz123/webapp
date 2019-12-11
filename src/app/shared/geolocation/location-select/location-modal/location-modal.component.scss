@@ -25,21 +25,6 @@ tsl-here-maps {
         }
         .dropdown-menu {
           width: 100%;
-          margin-top: $spacing-ms;
-          .dropdown-item {
-            display: flex;
-            .location {
-              width: 100%;
-              span {
-                width: calc(100% - $spacing-ml);
-                text-overflow: ellipsis;
-                overflow: hidden;
-              }
-            }
-          }
-          @include media-breakpoint-down(sm) {
-            width: calc(100% + 97px);
-          }
         }
       }
     }

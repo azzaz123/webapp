@@ -158,9 +158,8 @@
   <translation id="4902817035128594900">Descripción</translation>
   <translation id="4908480064602665904">Cuéntanos más. ¿Usado o nuevo? ¿Rojo o amarillo? ¿Tiene algún golpecito?</translation>
   <translation id="6236574297221800719">No te dejes nada. Los detalles son clave para vender más rápido.</translation>
-  <translation id="4276238968704226281">Fotos</translation>
-  <translation id="1873519297986539008">Fotos</translation>
-  <translation id="258836646318650091">Puedes arrastrar las imágenes de tu producto aquí. Selecciona y mueve una imagen para cambiar el orden. Máximo 10MB. Sólo aceptamos formatos .jpg.</translation>
+  <translation id="8405309693308875139">Fotos</translation>
+  <translation id="7052953914167063593">Puedes arrastrar las imágenes de tu producto aquí. Selecciona y mueve una imagen para cambiar el orden. Máximo 10MB. Sólo aceptamos formatos .jpg.</translation>
   <translation id="4756709840226839708">Extras</translation>
   <translation id="7026441111090698984">Precio no negociable</translation>
   <translation id="1292901362619782619">Acepto intercambios</translation>
@@ -229,7 +228,7 @@
   <translation id="6261406176927621365">Borrar foto</translation>
   <translation id="4267028037176582017">Se borrará permanentemente la foto. ¿Estás seguro que quieres proceder?</translation>
   <translation id="5112037422043971210">Deja tus fotos aquí para subirlas</translation>
-  <translation id="7528717071298145350">Ya has llegado al límite de <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> fotos por producto.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph> Elimina una foto primero antes de añadir otra.</translation>
+  <translation id="1417432796546296307">Ya has llegado al límite de <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> fotos por producto.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph> Elimina una foto primero antes de añadir otra.</translation>
   <translation id="6145572175629887249">Foto principal</translation>
   <translation id="1526908168288421707">¿Qué subirás?</translation>
   <translation id="4890891474174650184">En wallapop hay sitio para (casi) todo</translation>
@@ -548,7 +547,7 @@
   <translation id="4468071625554558577">Método de pago:</translation>
   <translation id="8037476586059399916">Expira</translation>
   <translation id="7368172072093620772">Tus estadísticas</translation>
-  <translation id="4480485533144060831">Aquí podrás ver información relativa a las visualizaciones, chats y llamadas que genera tu catálogo de coches. También podrás ver el impacto que tienen sobre las métricas los destacados que apliques.</translation>
+  <translation id="44488151127771040">Aquí podrás ver información relativa a las visualizaciones, chats y llamadas que genera tu catálogo de coches. También podrás ver el impacto que tienen sobre las métricas los destacados que apliques.</translation>
   <translation id="2734780694152757859">Ver más</translation>
   <translation id="8778531687214591857">Has procesado todos los contactos pendientes. ¡Buen trabajo!</translation>
   <translation id="5554592740021607017">Últimos 12 meses</translation>
@@ -815,13 +814,13 @@
   <translation id="6158688416374751486">Añade un precio justo y el area en metros cuadrados. Cuéntanos también el estado de la propiedad</translation>
   <translation id="791299080994199797">Presta atención a los errores ortográficos, así nuestros usuarios podrán encontrar tu propiedad más facilmente.</translation>
   <translation id="6419236949160000852">Este es el lugar donde se encuentra tu espacio. Esta ubicación podría ser diferente de la ubicación de tu perfil.</translation>
-  <translation id="1554463637849211201">Fotos</translation>
+  <translation id="1873519297986539008">Fotos</translation>
   <translation id="591481955696105417">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 4MB.</translation>
-  <translation id="2852614655612881023">¿Que aspecto tiene?</translation>
+  <translation id="3081672444453264897">¿Que aspecto tiene?</translation>
   <translation id="9023062354327973338">No hagas errores, ya que así la gente te encontrará más facilmente.</translation>
   <translation id="2462425780160875270">Añade un precio justo y la categoria que encaja mejor con tu item</translation>
   <translation id="1663822447043824807">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 10MB. Sólo aceptamos imágenes .jpg</translation>
-  <translation id="518944399314816423">Puedes enviar (casi) todo por wallapop. ¡Y es gratis!</translation>
+  <translation id="3063302288001428906">Puedes enviar (casi) todo por wallapop. ¡Y es gratis!</translation>
   <translation id="3784792223212622760">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
   <translation id="8203812558021121397">No guardamos información de la transacción. La compra es hecha mediante Banco Sabadell</translation>
   <translation id="5171793882050317851" desc="La distancia entre el usuario y el item">

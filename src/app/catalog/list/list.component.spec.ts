@@ -44,10 +44,9 @@ import { HttpService } from '../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
 import { FeatureflagService } from '../../core/user/featureflag.service';
-import { FeatureFlagServiceMock, DeviceDetectorServiceMock } from '../../../tests';
+import { FeatureFlagServiceMock } from '../../../tests';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
-import { DeviceDetectorService } from 'ngx-device-detector';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -67,7 +66,6 @@ describe('ListComponent', () => {
   let userService: UserService;
   let eventService: EventService;
   let stripeService: StripeService;
-  let deviceService: DeviceDetectorService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
@@ -87,7 +85,6 @@ describe('ListComponent', () => {
         StripeService,
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: CategoryService, useValue: {
             getCategoryById() {
               return Observable.of(CATEGORY_DATA_WEB);
@@ -221,7 +218,6 @@ describe('ListComponent', () => {
     userService = TestBed.get(UserService);
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
-    deviceService = TestBed.get(DeviceDetectorService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -306,16 +302,6 @@ describe('ListComponent', () => {
       expect(component.isUrgent).toBe(false);
       expect(component.isRedirect).toBe(false);
     }));
-
-    describe('if it`s a mobile device', () => {
-      it('should not open upload confirmation modal', () => {
-        spyOn(deviceService, 'isMobile').and.returnValue(true);
-
-        component.ngOnInit();
-
-        expect(modalService.open).not.toHaveBeenCalled();
-      });
-    });
 
     it('should open toastr', fakeAsync(() => {
       spyOn(errorService, 'i18nSuccess');

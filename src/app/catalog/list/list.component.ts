@@ -37,7 +37,6 @@ import { NavLink } from '../../shared/nav-links/nav-link.interface';
 import { FeatureflagService } from '../../core/user/featureflag.service';
 import { CategoryService } from '../../core/category/category.service';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
-import { DeviceDetectorService } from 'ngx-device-detector';
 
 export const SORTS = [ 'date_desc', 'date_asc', 'price_desc', 'price_asc' ];
 
@@ -96,8 +95,7 @@ export class ListComponent implements OnInit, OnDestroy {
     protected i18n: I18nService,
     private stripeService: StripeService,
     private subscriptionsService: SubscriptionsService,
-    private categoryService: CategoryService,
-    private deviceService: DeviceDetectorService) {
+    private categoryService: CategoryService) {
   }
 
   ngOnInit() {
@@ -224,7 +222,7 @@ export class ListComponent implements OnInit, OnDestroy {
             this.router.navigate(['wallacoins']);
           });
         }
-        if (params && params.created && !this.deviceService.isMobile()) {
+        if (params && params.created) {
           this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
             windowClass: 'modal-standard',
           });

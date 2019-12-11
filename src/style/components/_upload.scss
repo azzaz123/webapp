@@ -1,6 +1,6 @@
 .upload-page {
-  .box,
-  .main-box {
+
+  .box, .main-box {
     border-radius: $border-radius;
     background-color: $white;
     border: solid 1px $blue-grey-5;
@@ -37,29 +37,35 @@
     }
   }
 
-  .selector-title {
-    font-size: $font-size-s;
-    color: $blue-grey-2;
-  }
-
   .selector-container {
-    margin: 0 -#{$spacing-s};
-    .selector {
-      padding: 0 $spacing-s;
-      margin: 0;
-      max-width: 80px;
-      .selector-icon {
-        background-color: $blue-grey-5;
-        border-radius: $border-radius;
-        @include square(60px);
-        position: relative;
-        text-align: center;
-        white-space: normal;
+    margin: $spacing-xs 0 $spacing-xl;
+    &.terms-options {
+      margin-bottom: $spacing-l;
+    }
+    &.features-options {
+      label:not(.selector) {
+        display: block;
       }
+    }
+    h3 {
+      font-size: $font-size-s;
+      color: $blue-grey-2;
+    }
+    .selector {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: $blue-grey-5;
+      border-radius: $border-radius;
+      @include square(60px);
+      margin-right: $spacing-ms;
+      position: relative;
+      text-align: center;
+      white-space: normal;
       &.btn {
+        padding: 0;
         border-radius: $border-radius !important;
-        &:focus,
-        &.focus {
+        &:focus, &.focus {
           box-shadow: none;
         }
         [ngbButton] {
@@ -68,49 +74,39 @@
           pointer-events: none;
         }
       }
-      .selector-text {
+      span {
         display: block;
+        position: absolute;
+        top: 100%;
+        text-transform: uppercase;
         color: $blue-grey-2;
         font-weight: $font-weight-chunky;
-        font-size: $font-size-xxs;
+        font-size: $font-size-xxxs;
+        letter-spacing: .4px;
         line-height: $line-height-m;
         margin-top: $spacing-xs;
-        text-align: center;
-        &--uppercase {
-          text-transform: uppercase;
-        }
       }
       mat-icon {
-        height: 48px;
-        width: 48px;
+        height: 26px;
+        width: 26px;
         @include in-the-middle;
         /deep/ svg {
-          g,
-          path {
+          g, path {
             fill: $blue-grey-3;
           }
         }
       }
-      &--cars {
-        mat-icon {
-          height: 26px;
-          width: 26px;
-        }
-      }
       &.active {
-        .selector-icon {
-          background-color: $walla-main;
-          mat-icon {
-            /deep/ {
-              svg g,
-              svg path {
-                fill: $white;
-              }
-            }
-          }
-        }
+        background-color: $walla-main;
         span {
           color: $walla-main;
+        }
+        mat-icon {
+          /deep/ {
+            svg g, svg path {
+              fill: $white;
+            }
+          }
         }
       }
       &:hover:not(.active) {
@@ -120,31 +116,73 @@
         }
         mat-icon {
           /deep/ {
-            svg g,
-            svg path {
+            svg g, svg path {
               fill: $blue-grey-2;
             }
           }
         }
       }
-      input[type="checkbox"] {
-        position: absolute;
-        clip: rect(0, 0, 0, 0);
-        pointer-events: none;
+      &:last-of-type {
+        margin-right: 0 !important;
       }
     }
     .ng-dirty.ng-invalid {
-      .selector-icon {
+      .selector {
         border: 1px solid $negative-main;
+        span {
+          color: $negative-main;
+        }
       }
-      span {
-        color: $negative-main;
+    }
+    &.shipping-options {
+      margin-bottom: $spacing-m;
+      h2 {
+        margin-bottom: $spacing-ms;
+      }
+      .selector {
+        margin-left: $spacing-ms;
+        margin-right: $spacing-xxl;
+        cursor: pointer;
+        mat-icon, svg {
+          width: 48px;
+          height: 48px;
+        }
+        span {
+          text-transform: none;
+          font-weight: normal;
+          font-size: $font-size-xs;
+          letter-spacing: .6px;
+          line-height: $line-height-m;
+          width: calc(100% + 24px);
+          margin-top: 0;
+          strong {
+            font-weight: $font-weight-chunky;
+          }
+        }
       }
     }
   }
 
-  .btn-primary,
-  .btn-link {
+  .real-estate-form {
+    .selector-container {
+      .selector {
+        margin-right: $spacing-ml;
+        line-height: $line-height-xl;
+        mat-icon {
+          @include square(48px);
+          margin-top: $spacing-xs;
+          /deep/ svg {
+            @include square(48px);
+          }
+        }
+        span {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .btn-primary, .btn-link {
     padding: $spacing-m $spacing-xxl;
     margin-bottom: $spacing-xxxl;
     margin-top: $spacing-xl - $spacing-ml;
@@ -152,14 +190,14 @@
   .btn-link {
     color: $walla-main;
     &[disabled] {
-      opacity: 0.5;
+      opacity: .5;
     }
     &:focus {
       box-shadow: none;
     }
   }
   $checkbox-width: 24px;
-  $transition: all 0.5s ease;
+  $transition: all .5s ease;
   $feature-button-width: 170px;
 
   .checkbox {
@@ -220,7 +258,7 @@
         }
       }
     }
-    input[type="checkbox"] {
+    input[type=checkbox] {
       position: absolute;
       clip: rect(0, 0, 0, 0);
       pointer-events: none;
