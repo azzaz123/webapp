@@ -860,7 +860,7 @@
   <translation id="3570715632180917811">Profesionaliza tu perfil</translation>
   <translation id="5478679026395910607">Añade una foto y rellena los campos extra. ¡Destaca sobre el resto!</translation>
   <translation id="5767272093569717990">Presenta tu negocio</translation>
-  <translation id="8132236892525873540">Ir a Mi perfil</translation>
+  <translation id="8132236892525873540">Ir a mi perfil</translation>
   <translation id="864477022313622893">Añadir nueva suscripción</translation>
   <translation id="8556935148519956491">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>1<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="240806681889331244">Ilimitado</translation>
@@ -911,9 +911,9 @@
   <translation id="95589177980000841">Tus artículos no expiran nunca, siempre están disponibles.</translation>
   <translation id="6568694236700268636">Sin compromiso</translation>
   <translation id="4972682363493759232">Cancela la suscripción cuando quieras, sin penalizaciones.</translation>
-  <translation id="2296943727359810458">¡Perfecto!</translation>
-  <translation id="651992282801976762">La suscripción se ha creado correctamente. ¡Todo preparado para disparar tus ventas!</translation>
-  <translation id="4936564379844079816">Suscríbete to PRO</translation>
+  <translation id="2296943727359810458">¡Enhorabuena!</translation>
+  <translation id="651992282801976762">Ya estás suscrito. ¡Todo preparado para disparar tus ventas!</translation>
+  <translation id="4936564379844079816">Suscríbete a wallapop PRO</translation>
   <translation id="802524079901899408">Define un plan para llevar tus ventas al siguiente nivel.</translation>
   <translation id="6043607490094571574">¿Cuántos productos vas a subir a tu perfil?</translation>
   <translation id="4095633638251105721">Define la forma de pago</translation>
@@ -925,17 +925,29 @@
   <translation id="5018811059755976867">Cambia el límite de la suscripción</translation>
   <translation id="6044974118925437441">Actualiza tu suscripción en función de los productos que quieras subir</translation>
   <translation id="1487803193155715207">Suscripciones PRO</translation>
-  <translation id="1698114086921246480">Darse de baja</translation>
+  <translation id="1698114086921246480">Cancelar la suscripción</translation>
   <translation id="3520858718490550964">Archivar conversación</translation>
   <translation id="603154656968324663">Desarchivar conversación</translation>
   <translation id="511133215426042486">Denunciar producto</translation>
   <translation id="2311423194575383733">Reportar usuario</translation>
   <translation id="8621433484657846443">Bloquear usuario</translation>
   <translation id="7895174555296226408">Desbloquear usuario</translation>
-  <translation id="8316355708637832573">¿Quieres mantener tu suscripción PRO de <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> más allá de este mes?</translation>
-  <translation id="5795496902600772528">¡Nunca es demasiado tarde! Puedes deshacer la cancelación y seguir disfrutando de los beneficios.</translation>
-  <translation id="5189929163900690785">Sí, quiero mantener mi suscripción.</translation>
-  <translation id="1355341408067809538">No, quiero cancelarla.</translation>
+  <translation id="5189929163900690785">Sí, quiero mantener mi suscripción</translation>
+  <translation id="1355341408067809538">No, quiero cancelarla</translation>
   <translation id="6307606007112781268">Mantener suscripción</translation>
   <translation id="9098152328983851571">Comprar</translation>
+  <translation id="3356276673477156226">wallapop PRO</translation>
+  <translation id="8720496095668778360">Límite sin suscripción: <ph name="INTERPOLATION"><ex>{{subscription.current_limit}}</ex></ph></translation>
+  <translation id="8079107042901096560">La suscripción finaliza el <ph name="INTERPOLATION"><ex>{{subscription.subscribed_until | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
+  <translation id="6512533568413132940">Continuar suscrito</translation>
+  <translation id="7112091930611860056">Sube todos tus coches</translation>
+  <translation id="3626762870608560848">Publica hasta 5/9/15 coches y conviértete en un vendedor PRO.</translation>
+  <translation id="2686220196739079129">Elige tu suscripción para llevar tus ventas al siguiente nivel.</translation>
+  <translation id="621723257609689141">¿Cuantos <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> subirás a tu perfil?</translation>
+  <translation id="1718826959797929993"><ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
+  <translation id="7205093490438309267">Introduce tus datos de pago</translation>
+  <translation id="4642285774987209412">¿Quieres seguir suscrito a wallapop PRO <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
+  <translation id="4504623795614136197">¡Nunca es demasiado tarde! Puedes deshacer la cancelación y seguir disfrutando de los beneficios.</translation>
+  <translation id="848453031482663640">Suscríbete ya</translation>
+  <translation id="1812379335568847528">Suscripciones</translation>
 </translationbundle>
