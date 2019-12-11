@@ -464,15 +464,21 @@
   <msg id="2734780694152757859"><source>app/dashboard/dashboard.component.html:27</source><source>app/dashboard/dashboard.component.html:36</source>View all</msg>
   <msg id="8778531687214591857"><source>app/dashboard/dashboard.component.html:51</source>You have processed all the pending leads. Good job!</msg>
   <msg id="5554592740021607017"><source>app/dashboard/stats-graph/stats-graph.component.html:2</source>Last 12 months</msg>
-  <msg id="6938753357996446484"><source>app/favorites/favorites.component.html:12</source>Your favorites</msg>
-  <msg id="2988941833994717815"><source>app/favorites/favorites.component.html:15</source>These are the wallapop products that you like the most</msg>
-  <msg id="9066909356179829078"><source>app/favorites/favorites.component.html:16</source>These are the wallapop profiles that you like the most</msg>
-  <msg id="1339317612974362100"><source>app/favorites/favorites.component.html:22</source>favorites</msg>
-  <msg id="6799485957303243139"><source>app/favorites/favorites.component.html:23</source>favorite</msg>
-  <msg id="351850805832815905" desc="plural" meaning="tab"><source>app/favorites/favorites.component.html:29</source>Profiles</msg>
-  <msg id="2027740642468122404"><source>app/favorites/favorites.component.html:34</source>In this list you can see all the products you saved as favourite</msg>
-  <msg id="8888357426803887074"><source>app/favorites/favorites.component.html:38</source>In this list you can see all the profiles you saved as favourite</msg>
-  <msg id="8212177249756365917"><source>app/favorites/item-cart-favorite/item-cart-favorite.component.html:11</source><source>app/favorites/profile-card-favorite/profile-card-favorite.component.html:15</source> Remove </msg>
+  <msg id="6938753357996446484"><source>app/favorites/favorites.component.html:7</source>Your favorites</msg>
+  <msg id="7695212222770955574"><source>app/favorites/favorites.component.html:10,11</source>These are the wallapop products that
+            you like the most</msg>
+  <msg id="5792496719568397594"><source>app/favorites/favorites.component.html:12,13</source>These are the wallapop profiles that
+            you like the most</msg>
+  <msg id="1339317612974362100"><source>app/favorites/favorites.component.html:19</source>favorites</msg>
+  <msg id="6799485957303243139"><source>app/favorites/favorites.component.html:20</source>favorite</msg>
+  <msg id="351850805832815905" desc="plural" meaning="tab"><source>app/favorites/favorites.component.html:30</source>Profiles</msg>
+  <msg id="7492492990436838508"><source>app/favorites/favorites.component.html:39,41</source>In this list you can see all
+          the products you
+          saved as favourite</msg>
+  <msg id="8518412285806135836"><source>app/favorites/favorites.component.html:42,44</source>In this list you can see all
+          the profiles you
+          saved as favourite</msg>
+  <msg id="8212177249756365917"><source>app/favorites/item-cart-favorite/item-cart-favorite.component.html:11</source><source>app/favorites/profile-card-favorite/profile-card-favorite.component.html:19</source> Remove </msg>
   <msg id="6806883447514569994"><source>app/help/help.component.html:6</source>Your help center</msg>
   <msg id="7002268576514991178"><source>app/help/help.component.html:9</source>We hope that you can find here the answers for all your questions</msg>
   <msg id="606929755258304715"><source>app/help/help.component.html:53</source>Contact details</msg>
