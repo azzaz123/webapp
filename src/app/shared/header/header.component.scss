@@ -42,7 +42,7 @@
         text-align: center;
         display: flex;
         flex-direction: column;
-        align-self: flex-end;
+        justify-content: center;
         .header-numbers-top {
             font-size: $font-size-l;
             font-weight: 700;

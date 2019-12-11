@@ -33,7 +33,7 @@
       margin-bottom: $spacing-s;
       mat-icon {
         @include square(43px);
-        opacity: .5;
+        opacity: 0.5;
       }
     }
     &:hover:not(.active) {
@@ -67,9 +67,28 @@
             }
             .green {
               fill: $white;
-              opacity: .3;
+              opacity: 0.3;
             }
           }
+        }
+      }
+    }
+  }
+  @include media-breakpoint-down(sm) {
+    max-width: 340px;
+    margin: 0 auto;
+    justify-content: space-between;
+    .type {
+      width: 30%;
+      .square {
+        max-width: 90px;
+        width: 100%;
+      }
+      &:first-of-type {
+        width: 65%;
+        .square {
+          width: 100%;
+          max-width: 100%;
         }
       }
     }
