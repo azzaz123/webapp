@@ -9,11 +9,9 @@ import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
 import { Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
-import { UserService } from '../user/user.service';
-import { ItemService } from '../item/item.service';
 import { HttpServiceNew } from '../http/http.service.new';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { find, some, isNil } from 'lodash-es';
+import { find, isNil, last, some } from 'lodash-es';
 import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
 
 @Injectable({
@@ -107,6 +105,10 @@ export class InboxConversationService {
       this.realTime.sendDeliveryReceipt(conversation.user.id, message.id, conversation.id);
       message.status = MessageStatus.RECEIVED;
     }));
+  }
+
+  public sendReadSignal(conversation: InboxConversation): void {
+    this.realTime.sendRead(conversation.user.id, conversation.id);
   }
 
   private findMessage(conversation: InboxConversation, message: InboxMessage) {
@@ -209,7 +211,7 @@ export class InboxConversationService {
     return isNil(conversation) ? false : some(this.archivedConversations, { id: conversation.id });
   }
 
-  public archive(conversation: InboxConversation): Observable<InboxConversation> {
+  public archive$(conversation: InboxConversation): Observable<InboxConversation> {
     return this.archiveConversation(conversation.id)
     .catch((err) => {
       if (err.status === 409) {

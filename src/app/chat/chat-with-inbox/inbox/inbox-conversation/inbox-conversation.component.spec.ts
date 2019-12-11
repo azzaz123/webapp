@@ -1,14 +1,19 @@
 /* tslint:isUserDisable:no-unused-variable */
 
 import { InboxConversationComponent } from './inbox-conversation.component';
-import { TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../../tests/inbox.fixtures.spec';
 import { INBOX_ITEM_STATUSES } from '../../../model/inbox-item';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { InboxConversationService } from '../../../../core/inbox/inbox-conversation.service';
+import { InboxConversationServiceMock } from '../../../../../tests';
+import { of } from 'rxjs';
+import { InboxConversation } from '../../../model';
 
 describe('Component: Conversation', () => {
+  let inboxConversationService: InboxConversationService;
   let component: InboxConversationComponent;
   let fixture: ComponentFixture<InboxConversationComponent>;
 
@@ -19,6 +24,9 @@ describe('Component: Conversation', () => {
         NgxPermissionsModule.forRoot()
       ],
       declarations: [InboxConversationComponent],
+      providers: [
+        { provide: InboxConversationService, useClass: InboxConversationServiceMock },
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
@@ -28,6 +36,7 @@ describe('Component: Conversation', () => {
     fixture = TestBed.createComponent(InboxConversationComponent);
     component = fixture.componentInstance;
     component.conversation = CREATE_MOCK_INBOX_CONVERSATION();
+    inboxConversationService = TestBed.get(InboxConversationService);
     fixture.detectChanges();
   });
 
@@ -82,6 +91,24 @@ describe('Component: Conversation', () => {
       component.conversation.user.available = true;
 
       expect(component.conversation.cannotChat).toBe(false);
+    });
+  });
+
+  describe('archiveConversation', () => {
+    let inboxConversation: InboxConversation;
+
+    beforeEach(() => {
+      inboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
+    });
+
+    it('should archive$ conversation and set conversation to NULL', () => {
+      spyOn(inboxConversationService, 'archive$').and.returnValue(of(inboxConversation));
+      component.conversation = inboxConversation;
+
+      component.onClickArchiveConversation();
+
+      expect(inboxConversationService.archive$).toHaveBeenCalledWith(inboxConversation);
+      expect(component.conversation).toEqual(null);
     });
   });
 });
