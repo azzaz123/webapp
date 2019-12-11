@@ -1,6 +1,8 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { UserService } from '../user/user.service';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'tsl-mobile-blocker',
@@ -12,15 +14,15 @@ export class MobileBlockerComponent {
   public isPro: boolean;
   public isMobile: boolean;
 
-  constructor(private deviceDetector: DeviceDetectorService, private userService: UserService) {
+  constructor(
+    private deviceDetector: DeviceDetectorService,
+    private userService: UserService,
+    sanitizer: DomSanitizer,
+    matIconRegistry: MatIconRegistry,
+  ) {
     this.userService.isProUser().subscribe(val => this.isPro = val);
-    this.checkIsMobile();
-  }
-
-  @HostListener('window:resize', ['$event'])
-  checkIsMobile() {
     this.isMobile = this.deviceDetector.isMobile();
-    console.log('checkIsMobile', this.isMobile);
+    matIconRegistry.addSvgIcon('no-show', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/no-show.svg'));
   }
 
 }
