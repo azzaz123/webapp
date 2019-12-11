@@ -2,6 +2,7 @@
 
 :host {
   display: inline-block;
+  width: 100%;
 }
 
 div {
@@ -12,7 +13,7 @@ div {
   background-size: cover;
   border-radius: 2%;
   background-position: center;
-  width: 350px;
+  width: 100%;
   height: 120px;
   object-fit: cover;
 }

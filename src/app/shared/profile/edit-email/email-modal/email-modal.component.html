@@ -1,20 +1,22 @@
+<div class="modal-close grey" (click)="activeModal.dismiss()">
+  <mat-icon svgIcon="cross"></mat-icon>
+</div>
 <div class="modal-body">
-  <div class="modal-close grey" (click)="activeModal.dismiss()">
-    <mat-icon svgIcon="cross"></mat-icon>
-  </div>
   <h1 i18n>New email?</h1>
   <p i18n>You can update it now</p>
-
-    <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label i18n>Current email</label>
-        <div id="qa-profile-edit-current-email" class="form-control">{{currentEmail}}</div>
-      </div>
-      <div class="form-group">
-        <label for="email" i18n>New email</label>
-        <input type="email" i18n-placeholder placeholder="New email" class="form-control" id="email" formControlName="email_address" maxlength="75" />
-      </div>
-      <tsl-button [type]="'submit'" id="qa-profile-edit-confirm-email" className="btn-primary btn-block" i18n>Change email</tsl-button>
-    </form>
-  <p class="note" i18n>In order to update your email address you will need to confirm it. Go to your inbox to confirm the updated information.</p>
+  <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label i18n>Current email</label>
+      <div id="qa-profile-edit-current-email" class="form-control">{{currentEmail}}</div>
+    </div>
+    <div class="form-group">
+      <label for="email" i18n>New email</label>
+      <input type="email" i18n-placeholder placeholder="New email" class="form-control" id="email"
+        formControlName="email_address" maxlength="75" />
+    </div>
+    <tsl-button [type]="'submit'" id="qa-profile-edit-confirm-email" className="btn-primary btn-block" i18n>Change email
+    </tsl-button>
+  </form>
+  <p class="note" i18n>In order to update your email address you will need to confirm it. Go to your inbox to confirm
+    the updated information.</p>
 </div>
