@@ -1,5 +1,5 @@
 @import "~style/common";
 
 .container {
-  width: $upload-form-width;
+  max-width: $upload-form-width;
 }
