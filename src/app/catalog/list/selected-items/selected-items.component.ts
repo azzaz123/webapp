@@ -17,6 +17,7 @@ export class SelectedItemsComponent implements OnInit {
   @Output() selectedAction: EventEmitter<string> = new EventEmitter();
 
   public selectedItems: Item[];
+  public disableFeatureOption: boolean;
 
   constructor(public itemService: ItemService) {
   }
@@ -24,6 +25,7 @@ export class SelectedItemsComponent implements OnInit {
   ngOnInit() {
     this.itemService.selectedItems$.subscribe(() => {
       this.selectedItems = this.itemService.selectedItems.map(id => this.items.find(item => item.id === id));
+      this.disableFeatureOption = !!this.isItemDisabled(this.selectedItems).length;
     });
   }
 
@@ -36,6 +38,10 @@ export class SelectedItemsComponent implements OnInit {
 
   public onClickAction(action: string) {
     this.selectedAction.emit(action);
+  }
+
+  private isItemDisabled(items: Item[]) {
+    return items.filter(item => item.flags.onhold || item.flags.expired);
   }
 
 }
