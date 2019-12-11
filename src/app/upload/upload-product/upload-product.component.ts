@@ -31,6 +31,8 @@ import { Subject } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { SplitTestService } from '../../core/tracking/split-test.service';
 import { UserService } from '../../core/user/user.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { tap } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
@@ -132,7 +134,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private splitTestService: SplitTestService,
     private analyticsService: AnalyticsService,
     private userService: UserService,
-    config: NgbPopoverConfig) {
+    config: NgbPopoverConfig,
+    private deviceService: DeviceDetectorService) {
     this.uploadForm = fb.group({
       id: '',
       category_id: ['', [Validators.required]],
@@ -237,7 +240,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngAfterContentInit() {
-    if (!this.item && this.titleField && !this.focused) {
+    if (!this.item && this.titleField && !this.focused && !this.deviceService.isMobile()) {
       this.titleField.nativeElement.focus();
       this.focused = true;
     }
@@ -283,6 +286,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
+    
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
       appboy.logCustomEvent('Edit', { platform: 'web' });
@@ -300,9 +304,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       localStorage.setItem('transactionType', 'urgent');
     }
 
-    this.item ? this.trackEditOrUpload(true, uploadEvent.response.content) : this.trackEditOrUpload(false, uploadEvent.response.content);
-
-    this.router.navigate(['/catalog/list', { [uploadEvent.action]: true, itemId: uploadEvent.response.id }]);
+    this.trackEditOrUpload(!!this.item, uploadEvent.response.content).subscribe(() =>
+      this.router.navigate(['/catalog/list', { [uploadEvent.action]: true, itemId: uploadEvent.response.id }])
+    );
   }
 
   onError(response: any) {
@@ -527,49 +531,50 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private trackEditOrUpload(isEdit: boolean, item: ItemContent) {
-    this.userService.isProUser().subscribe((isProfessional: boolean) => {
-      let baseEventAttrs: any = {
-        itemId: item.id,
-        categoryId: item.category_id,
-        salePrice: item.sale_price,
-        title: item.title,
-        isPro: isProfessional
-      };
-
-      if (item.extra_info) {
-        if (item.extra_info.object_type.id) {
-          baseEventAttrs.objectType = item.extra_info.object_type.name;
-        }
-        if (item.extra_info.brand) {
-          baseEventAttrs.brand = item.extra_info.brand;
-        }
-        if (item.extra_info.model) {
-          baseEventAttrs.model = item.extra_info.model;
-        }
-      }
-
-      if (isEdit) {
-        const editItemCGEvent: AnalyticsEvent<EditItemCG> = {
-          name: ANALYTICS_EVENT_NAMES.EditItemCG,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            ...baseEventAttrs,
-            screenId: SCREEN_IDS.EditItem
-          }
+    return this.userService.isProUser()
+      .pipe(tap((isProfessional: boolean) => {
+        let baseEventAttrs: any = {
+          itemId: item.id,
+          categoryId: item.category_id,
+          salePrice: item.sale_price,
+          title: item.title,
+          isPro: isProfessional
         };
-        this.analyticsService.trackEvent(editItemCGEvent);
-      } else {
-        const listItemCGEvent: AnalyticsEvent<ListItemCG> = {
-          name: ANALYTICS_EVENT_NAMES.ListItemCG,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            ...baseEventAttrs,
-            screenId: SCREEN_IDS.Upload
+
+        if (item.extra_info) {
+          if (item.extra_info.object_type.id) {
+            baseEventAttrs.objectType = item.extra_info.object_type.name;
           }
-        };
-        this.analyticsService.trackEvent(listItemCGEvent);
-      }
-    });
+          if (item.extra_info.brand) {
+            baseEventAttrs.brand = item.extra_info.brand;
+          }
+          if (item.extra_info.model) {
+            baseEventAttrs.model = item.extra_info.model;
+          }
+        }
+
+        if (isEdit) {
+          const editItemCGEvent: AnalyticsEvent<EditItemCG> = {
+            name: ANALYTICS_EVENT_NAMES.EditItemCG,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              ...baseEventAttrs,
+              screenId: SCREEN_IDS.EditItem
+            }
+          };
+          this.analyticsService.trackEvent(editItemCGEvent);
+        } else {
+          const listItemCGEvent: AnalyticsEvent<ListItemCG> = {
+            name: ANALYTICS_EVENT_NAMES.ListItemCG,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              ...baseEventAttrs,
+              screenId: SCREEN_IDS.Upload
+            }
+          };
+          this.analyticsService.trackEvent(listItemCGEvent);
+        }
+      }));
   }
 
 }

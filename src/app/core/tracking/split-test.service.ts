@@ -13,7 +13,7 @@ export enum WEB_PAYMENT_EXPERIMENT_TYPE {
 export const WEB_PAYMENT_EXPERIMENT_NAME = 'WebPaymentMethod';
 export const WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT = 'StripeCheckoutPageView';
 export const WEB_PAYMENT_EXPERIMENT_CLICK_EVENT = 'StripeCheckoutClick';
-export const WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT = 'StripeCheckoutSucessful';
+export const WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT = 'StripeCheckoutSuccessful';
 
 @Injectable()
 export class SplitTestService {

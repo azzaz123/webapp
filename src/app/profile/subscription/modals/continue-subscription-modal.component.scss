@@ -1,0 +1,40 @@
+@import "~style/common";
+
+.ContinueSubscription__box {
+  text-align: center;
+  max-width: 640px;
+  &--content {
+    margin: $spacing-xxl auto $spacing-l;
+    max-width: 540px;
+  }
+  &--title {
+    font-size: $font-size-l;
+    font-weight: bold;
+    margin: $spacing-m 0 $spacing-s;
+  }
+  &--subtitle {
+    font-size: $font-size-m;
+    color: $blue-grey-2;
+    margin: 0 0 $spacing-l;
+  }
+  tsl-button {
+    margin: $spacing-s 0;
+    width: 100%;
+    /deep/ button {
+      width: 100%;
+    }
+  }
+}
+
+.modal-close {
+  width: $spacing-ms;
+  height: $spacing-ms;
+  mat-icon {
+    width: $spacing-ms;
+    height: $spacing-ms;
+    line-height: $spacing-ms;
+    /deep/ svg path {
+      fill: $blue-grey-2;
+    }
+  }
+}

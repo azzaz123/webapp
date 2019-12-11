@@ -801,6 +801,7 @@ describe('Service: User', () => {
       const ITEM_HASH = '9ke65g542jox';
       const REASON = 5;
       const COMMENT = 'bla bla bla';
+      accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.reportUser(USER_ID, ITEM_HASH, CONVERSATIONS_HASH, REASON, COMMENT).subscribe();
 
       const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/report/user/${USER_ID}`);
@@ -814,13 +815,13 @@ describe('Service: User', () => {
     });
   });
 
-  describe('setSubscriptionsFeatureFlag', () => {	
-    it('should call getFlag and add permission if active', () => {	
-      spyOn(featureflagService, 'getFlag').and.callThrough();		
+  describe('setSubscriptionsFeatureFlag', () => {
+    it('should call getFlag and add permission if active', () => {
+      spyOn(featureflagService, 'getFlag').and.callThrough();
 
       service.setSubscriptionsFeatureFlag();
-      
-      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);		
-    });	
+
+      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);
+    });
   });
 });

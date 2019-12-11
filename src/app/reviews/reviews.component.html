@@ -2,7 +2,6 @@
      infiniteScroll
      [infiniteScrollDistance]="5"
      [infiniteScrollThrottle]="100"
-     [scrollWindow]="false"
      [infiniteScrollDisabled]="end || loading"
      (scrolled)="loadMore()"
      [scrollTop]="scrollTop">
@@ -16,17 +15,17 @@
           <h4 class="header-subtitle" i18n>This is what people think about you. </h4>
         </div>
       </div>
-      <div class="user-average col-2">
+      <div class="user-average col-2 d-none d-md-block">
         <p i18n>Your average</p>
         <tsl-stars class="header-rating" [stars]="this.userScore" [normalized]="false"></tsl-stars>
       </div>
-      <div class="user-number-reviews text-center col-1">
+      <div class="user-number-reviews text-center col-3 col-md-1">
         <p>{{ numberOfReviews }}</p>
         <p *ngIf="numberOfReviews > 1 || numberOfReviews === 0" i18n>reviews</p>
         <p *ngIf="numberOfReviews === 1" i18n>review</p>
       </div>
     </tsl-header>
-    <div class="row items">
+    <div class="row">
       <div class="reviews-empty-state" *ngIf="!reviews.length && !loading">
         <mat-icon svgIcon="reviews-empty-state" class="image"></mat-icon>
         <div class="message" i18n>Nobody has written a review about you because you didn't buy or sell anything yet. Wake up!</div>

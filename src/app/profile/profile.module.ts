@@ -15,6 +15,7 @@ import { AddNewSubscriptionModalComponent } from './subscription/modals/add-new-
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditSubscriptionModalComponent } from './subscription/modals/edit-subscription-modal.component';
 import { CancelSubscriptionModalComponent } from './subscription/modals/cancel-subscription-modal.component';
+import { ContinueSubscriptionModalComponent } from './subscription/modals/continue-subscription-modal.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { CancelSubscriptionModalComponent } from './subscription/modals/cancel-s
     PaymentSuccessModalComponent,
     AddNewSubscriptionModalComponent,
     EditSubscriptionModalComponent,
-    CancelSubscriptionModalComponent
+    CancelSubscriptionModalComponent,
+    ContinueSubscriptionModalComponent
   ],
   entryComponents: [
     UnsubscribeModalComponent,
@@ -47,7 +49,8 @@ import { CancelSubscriptionModalComponent } from './subscription/modals/cancel-s
     PaymentSuccessModalComponent,
     AddNewSubscriptionModalComponent,
     EditSubscriptionModalComponent,
-    CancelSubscriptionModalComponent
+    CancelSubscriptionModalComponent,
+    ContinueSubscriptionModalComponent
   ]
 })
 export class ProfileModule { }

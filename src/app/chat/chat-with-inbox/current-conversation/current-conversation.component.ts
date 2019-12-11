@@ -200,7 +200,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
 
   public archiveConversation(): void {
     this.modalService.open(ArchiveInboxConversationComponent).result.then(() => {
-      this.conversationService.archive(this.currentConversation).subscribe(() => {
+      this.conversationService.archive$(this.currentConversation).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
         this.currentConversation = null;
       });

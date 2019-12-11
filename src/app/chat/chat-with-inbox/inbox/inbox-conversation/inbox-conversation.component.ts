@@ -1,5 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { InboxConversation } from '../../../model';
+import { InboxConversation, InboxMessage } from '../../../model';
+import { InboxConversationService } from '../../../../core/inbox/inbox-conversation.service';
+import { InboxService } from '../../../../core/inbox/inbox.service';
+import { RealTimeService } from '../../../../core/message/real-time.service';
+import { last } from 'lodash-es';
 
 @Component({
   selector: 'tsl-inbox-conversation',
@@ -9,6 +13,7 @@ import { InboxConversation } from '../../../model';
 export class InboxConversationComponent {
 
   @Input() conversation: InboxConversation;
+  @Input() archiveConversation = false;
 
   public unreadCounterDisplayLimit = 99;
   public momentConfig: any = {
@@ -20,10 +25,16 @@ export class InboxConversationComponent {
     sameElse: 'D MMM.'
   };
 
+  constructor(private inboxConversationService: InboxConversationService) {
+  }
+
   public dateIsThisYear(): boolean {
-    if (this.conversation && this.conversation.modifiedDate) {
-      return this.conversation.modifiedDate.getFullYear() === new Date().getFullYear();
-    }
-    return false;
+    return this.conversation && this.conversation.modifiedDate
+      ? this.conversation.modifiedDate.getFullYear() === new Date().getFullYear() : false;
+  }
+
+  public onClickArchiveConversation(): void {
+    this.inboxConversationService.sendReadSignal(this.conversation);
+    this.inboxConversationService.archive$(this.conversation).subscribe(() => this.conversation = null);
   }
 }
