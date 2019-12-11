@@ -1,4 +1,4 @@
-<div class="box urgent" *ngIf="urgentPrice" [ngbPopover]="coachmarkUrgent" triggers="mouseenter:mouseleave">
+<div class="box urgent d-none d-md-flex" *ngIf="urgentPrice" [ngbPopover]="coachmarkUrgent" triggers="mouseenter:mouseleave">
   <div class="content">
     <h2 i18n>Apply the ASAP Feature</h2>
     <p i18n *ngIf="urgentPrice">
