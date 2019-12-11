@@ -5,8 +5,7 @@ import { MatIconModule } from '@angular/material';
 
 @NgModule({
   imports: [
-    CommonModule,
-    MatIconModule
+    CommonModule
   ],
   declarations: [
     MobileBlockerComponent

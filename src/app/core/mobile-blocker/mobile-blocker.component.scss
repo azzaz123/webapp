@@ -1,4 +1,5 @@
 @import '~web-styleguide/scss/colors';
+@import '~web-styleguide/scss/spacing';
 
 .MobileBlocker {
   width: 100vw;
@@ -11,17 +12,15 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-content: center;
-    align-items: center;
-    text-align: center;
+  text-align: center;
 
   background: $walla-main;
   color: $white;
 
   z-index: 10000;
 
-  mat-icon {
-    width: 33%;
-    height: 20vh;
+  img {
+    margin: $spacing-l;
+    height: 15vh;
   }
 }
