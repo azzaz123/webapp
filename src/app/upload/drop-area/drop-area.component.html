@@ -1,4 +1,5 @@
-<div class="wrapper photos-number-{{maxUploads}}" [ngClass]="{ 'is-drop-over': dragOver}" tslFileDrop (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadService.uploadInput" [options]="options">
+<div class="wrapper photos-number-{{maxUploads}}" [ngClass]="{ 'is-drop-over': dragOver}" tslFileDrop
+  (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadService.uploadInput" [options]="options">
   <div class="drag-area">
     <ng-container *ngIf="files.length < options.maxUploads; else maxUploadsReached">
       <mat-icon svgIcon="upload-dnd"></mat-icon>
@@ -6,30 +7,29 @@
     </ng-container>
     <ng-template #maxUploadsReached>
       <div class="denied-icon">
-          <mat-icon svgIcon="cross"></mat-icon>
+        <mat-icon svgIcon="cross"></mat-icon>
       </div>
-      <p i18n>You have reached the limit of {{maxUploads}} photos per product.<br />Remove one first if you want to add more.</p>
+      <p i18n>You have reached the limit of {{maxUploads}} photos per product.<br />Remove one first if you want to add
+        more.</p>
     </ng-template>
   </div>
   <div class="drop-container">
-    <div class="product-photos-boxes">
-      <div dnd-sortable-container [sortableData]="files">
-        <label class="product-photo" *ngFor="let i of placeholders" [ngClass]="{'placeholder': !files[i], 'one-image': (files.length === 1 && itemId !== null)}" dnd-sortable [sortableIndex]="i" [dragEnabled]="files[i]" (onDropSuccess)="updateOrder()">
+    <div class="product-photos-boxes" dnd-sortable-container [sortableData]="files">
+      <div class="photo-wrapper" *ngFor="let i of placeholders">
+        <label class="product-photo"
+          [ngClass]="{'placeholder': !files[i], 'one-image': (files.length === 1 && itemId !== null)}" dnd-sortable
+          [sortableIndex]="i" [dragEnabled]="files[i]" (onDropSuccess)="updateOrder()">
           <a (click)="remove(files[i], $event)">
             <mat-icon svgIcon="cross"></mat-icon>
           </a>
           <img [src]="files[i]?.preview" *ngIf="files[i] && files[i]?.preview" />
-          <div class="loader" *ngIf="images?.length > 0 && (files[i]?.progress?.status === 0 || files[i]?.progress?.status === 1)">
-            <mat-icon svgIcon="spinner" class="spinner corporate" ></mat-icon>
+          <div class="loader"
+            *ngIf="images?.length > 0 && (files[i]?.progress?.status === 0 || files[i]?.progress?.status === 1)">
+            <mat-icon svgIcon="spinner" class="spinner corporate"></mat-icon>
           </div>
-          <input
-            *ngIf="!files[i]"
-            type="file"
-            tslFileSelect
-            [options]="options"
-            multiple="true"/>
-          <span i18n>Main photo</span>
+          <input *ngIf="!files[i]" type="file" tslFileSelect [options]="options" multiple="true" />
         </label>
+        <span class="main-image-label d-none d-md-block" *ngIf="i === 0" i18n>Main photo</span>
       </div>
     </div>
   </div>
