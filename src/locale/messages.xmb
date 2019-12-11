@@ -21,6 +21,11 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <messagebundle>
+  <msg id="2709150569630268"><source>app/core/mobile-blocker/mobile-blocker.component.html:5,9</source>
+    Your device has a small screen for this content
+    <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+    Check it in the app or in a computer
+  </msg>
   <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.html:13</source><source>app/layout/sidebar/sidebar.component.html:42</source><source>app/shared/catalog/cart/cart.component.html:72</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:35</source><source>app/wallacoins/wallacoins.component.html:27</source>credit</msg>
   <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.html:19</source><source>app/layout/sidebar/sidebar.component.html:33</source><source>app/dashboard/dashboard.component.html:26</source>Messages</msg>
   <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.html:26</source>My Zone</msg>

@@ -939,4 +939,7 @@
   <translation id="1355341408067809538">No, quiero cancelarla.</translation>
   <translation id="6307606007112781268">Mantener suscripción</translation>
   <translation id="9098152328983851571">Comprar</translation>
+  <translation id="2709150569630268">Tu dispositivo tiene una pantalla pequeña para el contenido
+    <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+    Pruébalo en la app o en un ordenador</translation>
 </translationbundle>
