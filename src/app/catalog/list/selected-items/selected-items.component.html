@@ -47,7 +47,7 @@
       (click)="onClickAction('activate')" i18n>Activate</button>
 
     <!-- Feature -->
-    <div class="SelectedItems__feature" [hidden]="selectedStatus === 'inactive' || selectedStatus === 'sold'">
+    <div class="SelectedItems__feature" [hidden]="selectedStatus === 'inactive' || selectedStatus === 'sold' || disableFeatureOption">
       <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
         [routerLink]="['/catalog/checkout']" [params]="{ payment_method: isStripe ? 'STRIPE' : 'SABADELL' }"
         tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE" i18n>Feature</tsl-button>

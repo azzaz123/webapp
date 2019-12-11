@@ -6,6 +6,7 @@ import { HttpServiceNew, DEFAULT_ERROR_MESSAGE } from './http.service.new';
 import { environment } from '../../../environments/environment';
 import { IDictionary } from '../../shared/models/dictionary.interface';
 import { HttpModuleNew } from './http.module.new';
+import { AccessTokenService } from './access-token.service';
 
 const ENDPOINT_NAME = 'endpoint';
 const BASE_WITH_ENDPOINT = environment.baseUrl + ENDPOINT_NAME;
@@ -44,7 +45,12 @@ describe('HttpServiceNew', () => {
     beforeEach(() => {
         injector = getTestBed();
         injector.configureTestingModule({
-            imports: [ HttpClientTestingModule, HttpModuleNew ]
+            imports: [ HttpClientTestingModule, HttpModuleNew ],
+            providers: [{
+              provide: AccessTokenService, useValue: {
+                accessToken: 'ACCESS_TOKEN'
+              }
+            }]
         });
 
         httpService = injector.get(HttpServiceNew);

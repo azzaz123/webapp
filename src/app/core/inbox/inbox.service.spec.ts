@@ -21,7 +21,7 @@ import { HttpModuleNew } from '../http/http.module.new';
 import { HttpServiceNew } from '../http/http.service.new';
 import { RealTimeService } from '../message/real-time.service';
 import { environment } from '../../../environments/environment';
-import { InboxApi } from '../../chat/model/api';
+import { AccessTokenService } from '../http/access-token.service';
 
 describe('InboxService', () => {
 
@@ -50,6 +50,11 @@ describe('InboxService', () => {
         { provide: MessageService, useClass: MockMessageService },
         { provide: UserService, useClass: MockedUserService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        {
+          provide: AccessTokenService, useValue: {
+            accessToken: 'ACCESS_TOKEN'
+          }
+        },
         {
           provide: InboxConversationService, useValue: {
             subscribeChatEvents() {

@@ -917,7 +917,7 @@
   <translation id="802524079901899408">Define un plan para llevar tus ventas al siguiente nivel.</translation>
   <translation id="6043607490094571574">¿Cuántos productos vas a subir a tu perfil?</translation>
   <translation id="4095633638251105721">Define la forma de pago</translation>
-  <translation id="8882282108983733420">¿Seguro que quieres cancelar tu suscripción wallapop PRO a <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
+  <translation id="8882282108983733420">¿Seguro que quieres cancelar tu suscripción wallapop PRO <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
   <translation id="8487121195517337235">Es triste que te vayas. Puedes volver cuando quieras, ¡te estaremos esperando!</translation>
   <translation id="4152309547836555655">Sí, quiero cancelar mi suscripción</translation>
   <translation id="6945361151381926075">No, quiero mantener mi suscripción</translation>

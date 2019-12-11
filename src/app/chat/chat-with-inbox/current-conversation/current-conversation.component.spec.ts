@@ -94,7 +94,6 @@ describe('CurrentConversationComponent', () => {
       imports: [
         NgbModule.forRoot(),
         MomentModule,
-        NgxPermissionsModule,
         NgxPermissionsModule.forRoot()
       ],
       declarations: [CurrentConversationComponent],
