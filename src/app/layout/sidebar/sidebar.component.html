@@ -1,82 +1,80 @@
-<div class="sidebar">
-  <a class="sidebar-section profile-item" id="qa-sidebar-profile" [routerLink]="['/profile']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_PROFILE"
-    [ngClass]="{active: tutorialService.step === 1}" [class.active]="isProfile">
-    <div class="sidebar-section-circle">
-      <tsl-user-avatar class="topbar-avatar" [size]="50" [user]="user" *ngIf="user" [imageUrl]="user?.image?.urls_by_size.medium">
-      </tsl-user-avatar>
-    </div>
-    <h2 i18n>Profile</h2>
-  </a>
+<a class="sidebar-section profile-item" id="qa-sidebar-profile" [routerLink]="['/profile']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_PROFILE"
+  [ngClass]="{active: tutorialService.step === 1}" [class.active]="isProfile">
+  <div class="sidebar-section-circle">
+    <tsl-user-avatar class="topbar-avatar" [size]="50" [user]="user" *ngIf="user" [imageUrl]="user?.image?.urls_by_size.medium">
+    </tsl-user-avatar>
+  </div>
+  <h2 i18n>Profile</h2>
+</a>
 
-  <a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-dashboard" class="sidebar-section" [routerLink]="['/pro/dashboard']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_DASHBOARD"
-    [ngClass]="{active: tutorialService.step === 2}">
-    <div class="sidebar-section-circle">
-      <mat-icon svgIcon="navigation_dashboard"></mat-icon>
-    </div>
-    <h2 i18n>Dashboard</h2>
-  </a>
+<a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-dashboard" class="sidebar-section" [routerLink]="['/pro/dashboard']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_DASHBOARD"
+   [ngClass]="{active: tutorialService.step === 2}">
+  <div class="sidebar-section-circle">
+    <mat-icon svgIcon="navigation_dashboard"></mat-icon>
+  </div>
+  <h2 i18n>Dashboard</h2>
+</a>
 
-  <a class="sidebar-section" id="qa-sidebar-catalog" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_MENU_CATALOG" [class.active]="isProducts"
-    [ngClass]="{active: !isProfessional && tutorialService.step === 2 || isProfessional && tutorialService.step === 3}">
-    <div class="sidebar-section-circle">
-      <mat-icon svgIcon="navigation_catalog"></mat-icon>
-    </div>
-    <h2 *ngxPermissionsOnly="['isNormal']" i18n>Products</h2>
-    <h2 *ngxPermissionsOnly="['isProfessional']" i18n>Catalog</h2>
-  </a>
+<a class="sidebar-section" id="qa-sidebar-catalog" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_MENU_CATALOG" [class.active]="isProducts"
+  [ngClass]="{active: !isProfessional && tutorialService.step === 2 || isProfessional && tutorialService.step === 3}">
+  <div class="sidebar-section-circle">
+    <mat-icon svgIcon="navigation_catalog"></mat-icon>
+  </div>
+  <h2 *ngxPermissionsOnly="['isNormal']" i18n>Products</h2>
+  <h2 *ngxPermissionsOnly="['isProfessional']" i18n>Catalog</h2>
+</a>
 
-  <a class="sidebar-section" id="qa-sidebar-messages" [routerLink]="['/chat']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CHAT"
-    [ngClass]="{active: !isProfessional && tutorialService.step === 3 || isProfessional && tutorialService.step === 4}">
-    <div class="chat-notification-pending" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
-    <div class="sidebar-section-circle">
-      <mat-icon svgIcon="navigation_messages"></mat-icon>
-    </div>
-    <h2 i18n>Messages</h2>
-  </a>
+<a class="sidebar-section" id="qa-sidebar-messages" [routerLink]="['/chat']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CHAT"
+   [ngClass]="{active: !isProfessional && tutorialService.step === 3 || isProfessional && tutorialService.step === 4}">
+  <div class="chat-notification-pending" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
+  <div class="sidebar-section-circle">
+    <mat-icon svgIcon="navigation_messages"></mat-icon>
+  </div>
+  <h2 i18n>Messages</h2>
+</a>
 
-  <a *ngxPermissionsOnly="['isNormal']" id="qa-sidebar-credit" class="sidebar-section" [routerLink]="['/wallacoins']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_WALLACOINS"
-    [ngClass]="{active: tutorialService.step === 4}">
-    <div class="sidebar-section-circle">
-      <mat-icon svgIcon="navigation_wallacoins"></mat-icon>
-    </div>
-    <h2 *ngIf="withCoins">Wallacoins</h2>
-    <h2 *ngIf="!withCoins" i18n>credit</h2>
-  </a>
+<a *ngxPermissionsOnly="['isNormal']" id="qa-sidebar-credit" class="sidebar-section" [routerLink]="['/wallacoins']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_WALLACOINS"
+   [ngClass]="{active: tutorialService.step === 4}">
+  <div class="sidebar-section-circle">
+    <mat-icon svgIcon="navigation_wallacoins"></mat-icon>
+  </div>
+  <h2 *ngIf="withCoins">Wallacoins</h2>
+  <h2 *ngIf="!withCoins" i18n>credit</h2>
+</a>
 
-  <a *ngxPermissionsOnly="['isNormal']" id="qa-sidebar-favorites" class="sidebar-section" [routerLink]="['/favorites']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_FAVOURITES"
-    [ngClass]="{active: tutorialService.step === 5}">
-    <div class="sidebar-section-circle">
-      <mat-icon svgIcon="navigation_favorites"></mat-icon>
-    </div>
-    <h2 i18n>Favorites</h2>
-  </a>
+<a *ngxPermissionsOnly="['isNormal']" id="qa-sidebar-favorites" class="sidebar-section" [routerLink]="['/favorites']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_FAVOURITES"
+  [ngClass]="{active: tutorialService.step === 5}">
+  <div class="sidebar-section-circle">
+    <mat-icon svgIcon="navigation_favorites"></mat-icon>
+  </div>
+  <h2 i18n>Favorites</h2>
+</a>
 
-  <a *ngxPermissionsOnly="['isNormal']" id="qa-sidebar-reviews" class="sidebar-section" [routerLink]="['/reviews']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_REVIEWS" [ngClass]="{active: tutorialService.step === 6}">
-    <div class="sidebar-section-circle">
-      <mat-icon svgIcon="navigation_reviews"></mat-icon>
-    </div>
-    <h2 i18n>Reviews</h2>
-  </a>
+<a *ngxPermissionsOnly="['isNormal']" id="qa-sidebar-reviews" class="sidebar-section" [routerLink]="['/reviews']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_REVIEWS" [ngClass]="{active: tutorialService.step === 6}">
+  <div class="sidebar-section-circle">
+    <mat-icon svgIcon="navigation_reviews"></mat-icon>
+  </div>
+  <h2 i18n>Reviews</h2>
+</a>
 
-  <a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-phones" class="sidebar-section" [routerLink]="['/pro/calls']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CALLS"
-    [ngClass]="{active: tutorialService.step === 5}">
-    <div class="sidebar-section-circle">
-      <mat-icon svgIcon="navigation_phones"></mat-icon>
-    </div>
-    <h2 i18n>Phones</h2>
-  </a>
+<a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-phones" class="sidebar-section" [routerLink]="['/pro/calls']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CALLS"
+   [ngClass]="{active: tutorialService.step === 5}">
+  <div class="sidebar-section-circle">
+    <mat-icon svgIcon="navigation_phones"></mat-icon>
+  </div>
+  <h2 i18n>Phones</h2>
+</a>
 
-  <a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-help" class="sidebar-section" [routerLink]="['/pro/help']" routerLinkActive="active">
-    <div class="sidebar-section-circle">
-      <mat-icon svgIcon="navigation_help"></mat-icon>
-    </div>
-    <h2 i18n>Help</h2>
-  </a>
+<a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-help" class="sidebar-section" [routerLink]="['/pro/help']" routerLinkActive="active">
+  <div class="sidebar-section-circle">
+    <mat-icon svgIcon="navigation_help"></mat-icon>
+  </div>
+  <h2 i18n>Help</h2>
+</a>
 
-  <a *ngxPermissionsOnly="['isNormal']" id="qa-sidebar-stats" class="sidebar-section" [routerLink]="['/stats']" routerLinkActive="active">
-    <div class="sidebar-section-circle">
-      <mat-icon svgIcon="navigation_dashboard"></mat-icon>
-    </div>
-    <h2 i18n>Stats</h2>
-  </a>
-</div>
+<a *ngxPermissionsOnly="['isNormal']" id="qa-sidebar-stats" class="sidebar-section" [routerLink]="['/stats']" routerLinkActive="active">
+  <div class="sidebar-section-circle">
+    <mat-icon svgIcon="navigation_dashboard"></mat-icon>
+  </div>
+  <h2 i18n>Stats</h2>
+</a>
