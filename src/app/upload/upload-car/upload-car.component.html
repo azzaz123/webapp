@@ -1,13 +1,8 @@
 <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
-
   <div class="box">
+    <h2 i18n>Basic Information</h2>
     <div class="row">
-      <div class="col-12">
-        <h2 i18n>Basic Information</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12 col-md-6">
+      <div class="col-sm-6">
         <div class="form-group">
           <label for="brand" i18n>Make</label>
           <div class="pull-right">
@@ -16,26 +11,25 @@
               <span *ngIf="customMake" i18n>Select a predefined make</span>
             </a>
           </div>
-          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Seat" class="form-control"
-            formControlName="brand" id="brand" [ngbPopover]="coachmarkMake" #p1="ngbPopover" triggers="manual"
-            (opened)="p1.open()" (closed)="p1.close()" [options]="brands" (selected)="getModels($event.value)">
-          </ng-select>
-          <input *ngIf="customMake" type="text" placeholder="E.g. Seat" class="form-control" formControlName="brand"
-            id="brand" [ngbPopover]="coachmarkMake" />
+          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Seat" class="form-control" formControlName="brand" id="brand"
+                     [ngbPopover]="coachmarkMake" #p1="ngbPopover" triggers="manual" (opened)="p1.open()" (closed)="p1.close()"
+                     [options]="brands" (selected)="getModels($event.value)"></ng-select>
+          <input *ngIf="customMake" type="text" placeholder="E.g. Seat" class="form-control" formControlName="brand" id="brand"
+                 [ngbPopover]="coachmarkMake" />
           <ng-template #coachmarkMake>
             <div i18n>The basics: make.</div>
           </ng-template>
+
         </div>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-sm-6">
         <div class="form-group">
           <label for="model" i18n>Model</label>
-          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Ibiza" class="form-control"
-            formControlName="model" id="model" [ngbPopover]="coachmarkModel" #p2="ngbPopover" triggers="manual"
-            (opened)="p2.open()" (closed)="p2.close()" [options]="models" (selected)="getYears($event.value)">
-          </ng-select>
-          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="E.g. Ibiza" class="form-control"
-            formControlName="model" id="model" [ngbPopover]="coachmarkModel" />
+          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Ibiza" class="form-control" formControlName="model" id="model"
+                     [ngbPopover]="coachmarkModel" #p2="ngbPopover" triggers="manual" (opened)="p2.open()" (closed)="p2.close()"
+                     [options]="models" (selected)="getYears($event.value)"></ng-select>
+          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="E.g. Ibiza" class="form-control" formControlName="model" id="model"
+                 [ngbPopover]="coachmarkModel" />
           <ng-template #coachmarkModel>
             <div i18n>The basics: model.</div>
           </ng-template>
@@ -43,52 +37,53 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 col-md-5">
+      <div class="col-sm-5">
         <div class="form-group">
           <label for="price" i18n>Cash price</label>
-          <input i18n-placeholder placeholder="With love..." type="number" class="form-control"
-            formControlName="sale_price" id="price" min="0" [ngbPopover]="coachmarkPrice" max="999999999" />
+          <input i18n-placeholder placeholder="With love..." type="number" class="form-control" formControlName="sale_price" id="price" min="0"
+                  [ngbPopover]="coachmarkPrice"
+                  max="999999999"/>
           <ng-template #coachmarkPrice>
             <div i18n>Tell us how much you want for it: we won't tell anyone ;)</div>
           </ng-template>
         </div>
       </div>
-      <div class="col-12 col-md-5">
-        <div class="form-group">
-          <label for="price" i18n>Financed price (optional)</label>
-          <input i18n-placeholder placeholder="Final price when financed" type="number" class="form-control"
-            formControlName="financed_price" id="financed_price" min="0" [ngbPopover]="coachmarkFinancedPrice"
-            max="999999999" />
-          <ng-template #coachmarkFinancedPrice>
-            <div i18n>Optional field. This is the financed price.</div>
-          </ng-template>
+      <div class="col-sm-5">
+          <div class="form-group">
+            <label for="price" i18n>Financed price (optional)</label>
+            <input i18n-placeholder placeholder="Final price when financed" type="number" class="form-control" formControlName="financed_price" id="financed_price" min="0"
+                    [ngbPopover]="coachmarkFinancedPrice"
+                    max="999999999"/>
+            <ng-template #coachmarkFinancedPrice>
+              <div i18n>Optional field. This is the financed price.</div>
+            </ng-template>
+          </div>
         </div>
-      </div>
-      <div class="col-12 col-md-2">
+      <div class="col-sm-2">
         <div class="form-group">
           <label for="currency" i18n>Currency</label>
           <ng-select class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
-            [ngbPopover]="coachmarkPrice" #p3="ngbPopover" triggers="manual" (opened)="p3.open()" (closed)="p3.close()"
-            noFilter="10"></ng-select>
+                      [ngbPopover]="coachmarkPrice" #p3="ngbPopover" triggers="manual" (opened)="p3.open()" (closed)="p3.close()"
+                      noFilter="10"></ng-select>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-12 col-md-4">
+      <div class="col-sm-4">
         <div class="form-group">
           <label for="year" i18n>Year</label>
-          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Number plate" class="form-control"
-            formControlName="year" id="year" [options]="years" (selected)="getVersions($event.value)"></ng-select>
-          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Number plate" class="form-control"
-            formControlName="year" id="year" />
+          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Number plate" class="form-control" formControlName="year" id="year" [options]="years"
+                      (selected)="getVersions($event.value)"></ng-select>
+          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Number plate" class="form-control" formControlName="year" id="year" />
         </div>
       </div>
-      <div class="col-12 col-md-8">
+      <div class="col-sm-8">
         <div class="form-group last">
           <label for="headline" i18n>Title</label>
           <span class="chars-counter">{{uploadForm.value?.title?.length}}/50</span>
-          <input i18n-placeholder placeholder="This is what you will see in the ad" type="text" class="form-control"
-            formControlName="title" id="headline" maxlength="50" [ngbPopover]="coachmarkTitle" />
+          <input i18n-placeholder placeholder="This is what you will see in the ad" type="text"
+                  class="form-control" formControlName="title" id="headline" maxlength="50"
+                  [ngbPopover]="coachmarkTitle" />
           <ng-template #coachmarkTitle>
             <div i18n>Go for it! The more you say the better chance they have of finding of reaching you.</div>
           </ng-template>
@@ -99,7 +94,7 @@
   <div class="box">
     <h2 i18n>Information about your vehicle</h2>
     <div class="row">
-      <div class="col-12 col-md-6">
+      <div class="col-sm-6">
         <div class="form-group">
           <label for="version" i18n>Version</label>
           <div class="pull-right">
@@ -108,19 +103,16 @@
               <span *ngIf="customVersion" i18n>Select a predefined version</span>
             </a>
           </div>
-          <ng-select *ngIf="!customMake && !customVersion" i18n-placeholder
-            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
-            for="version" [options]="versions" (selected)="getInfo($event.value)"></ng-select>
-          <input *ngIf="customMake || customVersion" type="text" i18n-placeholder
-            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
-            id="version" />
+          <ng-select *ngIf="!customMake && !customVersion" i18n-placeholder placeholder="Is is a particular model or series?" class="form-control" formControlName="version" for="version" [options]="versions" (selected)="getInfo($event.value)"></ng-select>
+          <input *ngIf="customMake || customVersion" type="text" i18n-placeholder placeholder="Is is a particular model or series?" class="form-control" formControlName="version" id="version" />
         </div>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-sm-6">
         <div class="form-group">
           <label for="seats" i18n>Number of seats</label>
           <input i18n-placeholder placeholder="Add a number" type="number" class="form-control"
-            [ngbPopover]="coachmarkSeats" formControlName="num_seats" id="seats" min="0" max="99" />
+                 [ngbPopover]="coachmarkSeats"
+                 formControlName="num_seats" id="seats" min="0" max="99"/>
           <ng-template #coachmarkSeats>
             <div i18n>Can all your family fit in there or just the dog?</div>
           </ng-template>
@@ -128,126 +120,94 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 col-md-6">
+      <div class="col-sm-6">
         <div class="form-group">
           <label for="seats" i18n>Number of doors</label>
           <input i18n-placeholder placeholder="Add a number" type="number" class="form-control"
-            formControlName="num_doors" id="doors" min="0" max="99" />
+                 formControlName="num_doors" id="doors" min="0" max="99"/>
         </div>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-sm-6">
         <div class="form-group">
           <label for="seats" i18n>Horsepower</label>
           <input i18n-placeholder placeholder="Add a number" type="number" class="form-control"
-            formControlName="horsepower" id="horsepower" min="0" max="999" />
+                 formControlName="horsepower" id="horsepower" min="0" max="999"/>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-12 col-md-6">
+      <div class="col-md-6">
         <div class="form-group">
           <label for="carType" i18n>Type of car</label>
-          <ng-select i18n-placeholder placeholder="Small, coupé, sedan, family, van..." class="form-control"
-            formControlName="body_type" id="carType" [options]="carTypes" [ngbPopover]="coachmarkType" #p4="ngbPopover"
-            triggers="manual" (opened)="p4.open()" (closed)="p4.close()" noFilter="20"></ng-select>
+          <ng-select i18n-placeholder placeholder="Small, coupé, sedan, family, van..."
+                     class="form-control" formControlName="body_type" id="carType" [options]="carTypes"
+                     [ngbPopover]="coachmarkType" #p4="ngbPopover" triggers="manual" (opened)="p4.open()" (closed)="p4.close()"
+                     noFilter="20"></ng-select>
           <ng-template #coachmarkType>
             <div i18n>Is it for getting around at the weekend or for everyday use?</div>
           </ng-template>
         </div>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-md-6">
         <div class="form-group">
           <label for="km" i18n>Kilometers</label>
-          <input i18n-placeholder placeholder="Exact kilometers" type="number" class="form-control" formControlName="km"
-            id="km" min="0" max="999999999" />
+          <input i18n-placeholder placeholder="Exact kilometers" type="number" class="form-control" formControlName="km" id="km" min="0" max="999999999"/>
         </div>
       </div>
     </div>
     <div class="row" [ngbPopover]="coachmarkMotor" triggers="mouseenter:mouseleave">
-      <div class="col-12 col-md-6">
-        <div class="row">
-          <div class="col">
-            <h3 class="selector-title" i18n>Motor</h3>
-          </div>
-        </div>
-        <div ngbRadioGroup class="row" name="radioBasic" formControlName="engine" tabindex="11">
-          <div class="col">
-            <div class="form-group">
-              <div class="selector-container">
-                <label ngbButtonLabel class="selector selector--cars">
-                  <div class="selector-icon btn">
-                    <input ngbButton type="radio" name="engine" value="gasoline">
-                    <mat-icon svgIcon="gasoline"></mat-icon>
-                  </div>
-                  <span class="selector-text selector-text--uppercase" i18n>Petrol</span>
-                </label>
-                <label ngbButtonLabel class="selector selector--cars">
-                  <div class="selector-icon btn">
-                    <input ngbButton type="radio" name="engine" value="gasoil">
-                    <mat-icon svgIcon="gasoil"></mat-icon>
-                  </div>
-                  <span class="selector-text selector-text--uppercase" i18n>Diesel</span>
-                </label>
-                <label ngbButtonLabel class="selector selector--cars">
-                  <div class="selector-icon btn">
-                    <input ngbButton type="radio" name="engine" value="electric-hybrid">
-                    <mat-icon svgIcon="electric-hybrid"></mat-icon>
-                  </div>
-                  <span class="selector-text selector-text--uppercase" i18n>Electric</span>
-                </label>
-                <label ngbButtonLabel class="selector selector--cars">
-                  <div class="selector-icon btn">
-                    <input ngbButton type="radio" name="engine" value="others">
-                    <mat-icon svgIcon="others"></mat-icon>
-                  </div>
-                  <span class="selector-text selector-text--uppercase" i18n>Other...</span>
-                </label>
-              </div>
-            </div>
-          </div>
+      <div class="col-sm-6 selector-container">
+        <h3 i18n>Motor</h3>
+        <div ngbRadioGroup name="radioBasic" formControlName="engine" tabindex="11">
+          <label ngbButtonLabel class="btn selector">
+            <input ngbButton type="radio" name="engine" value="gasoline">
+            <mat-icon svgIcon="gasoline"></mat-icon>
+            <span i18n>Petrol</span>
+          </label>
+          <label ngbButtonLabel class="btn selector">
+            <input ngbButton type="radio" name="engine" value="gasoil">
+            <mat-icon svgIcon="gasoil"></mat-icon>
+            <span i18n>Diesel</span>
+          </label>
+          <label ngbButtonLabel class="btn selector">
+            <input ngbButton type="radio" name="engine" value="electric-hybrid">
+            <mat-icon svgIcon="electric-hybrid"></mat-icon>
+            <span i18n>Electric</span>
+          </label>
+          <label ngbButtonLabel class="btn selector">
+            <input ngbButton type="radio" name="engine" value="others">
+            <mat-icon svgIcon="others"></mat-icon>
+            <span i18n>Other...</span>
+          </label>
         </div>
         <ng-template #coachmarkMotor>
           <div i18n>It's important, trust us!</div>
         </ng-template>
       </div>
-      <div class="col-12 col-md-6">
-        <div class="row">
-          <div class="col">
-            <h3 class="selector-title" i18n>Transmission</h3>
-          </div>
-        </div>
-        <div ngbRadioGroup class="row" name="radioBasic" formControlName="gearbox" tabindex="12">
-          <div class="col">
-            <div class="form-group">
-              <div class="selector-container">
-                <label ngbButtonLabel class="selector selector--cars">
-                  <div class="selector-icon btn">
-                    <input ngbButton type="radio" name="gearbox" value="manual">
-                    <mat-icon svgIcon="manual"></mat-icon>
-                  </div>
-                  <span class="selector-text selector-text--uppercase" i18n>Manual</span>
-                </label>
-                <label ngbButtonLabel class="selector selector--cars">
-                  <div class="selector-icon btn">
-                    <input ngbButton type="radio" name="gearbox" value="automatic">
-                    <mat-icon svgIcon="automatic"></mat-icon>
-                  </div>
-                  <span class="selector-text selector-text--uppercase" i18n>Automatic</span>
-                </label>
-              </div>
-            </div>
-          </div>
+      <div class="col-sm-6 selector-container">
+        <h3 i18n>Transmission</h3>
+        <div ngbRadioGroup name="radioBasic" formControlName="gearbox" tabindex="12">
+          <label ngbButtonLabel class="btn selector">
+            <input ngbButton type="radio" name="gearbox" value="manual">
+            <mat-icon svgIcon="manual"></mat-icon>
+            <span i18n>Manual</span>
+          </label>
+          <label ngbButtonLabel class="btn selector">
+            <input ngbButton type="radio" name="gearbox" value="automatic">
+            <mat-icon svgIcon="automatic"></mat-icon>
+            <span i18n>Automatic</span>
+          </label>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-12">
+      <div class="col-md-12">
         <div class="form-group last">
           <label for="tellUs" i18n>Description</label>
           <span class="chars-counter">{{uploadForm.value?.storytelling?.length}}/650</span>
-          <textarea i18n-placeholder placeholder="Tell us more. Used or new? Yellow or red? Has it got any bumps?"
-            [ngbPopover]="coachmarkDescription" fz-elastic class="form-control" formControlName="storytelling"
-            id="tellUs" maxlength="650"></textarea>
+            <textarea i18n-placeholder placeholder="Tell us more. Used or new? Yellow or red? Has it got any bumps?"
+                      [ngbPopover]="coachmarkDescription"
+                      fz-elastic class="form-control" formControlName="storytelling" id="tellUs" maxlength="650"></textarea>
           <ng-template #coachmarkDescription>
             <div i18n>Don't leave anything out. The details are key to selling faster.</div>
           </ng-template>
@@ -256,30 +216,40 @@
     </div>
   </div>
   <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave">
-    <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n>Photos
-    </h2>
+    <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n>Photos</h2>
     <tsl-drop-area [uploadEvent]="uploadEvent" type="cars" (onUploaded)="onUploaded($event)" (onError)="onError($event)"
-      formControlName="images" [maxUploads]="10" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
+                   formControlName="images" [maxUploads]="10" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
     <ng-template #coachmarkPictures>
-      <div i18n>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only
-        .jpg images.</div>
+      <div i18n>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images.</div>
     </ng-template>
   </div>
-
-  <tsl-location-box [form]="uploadForm" name="location" (locationSelected)="emitLocation()" title="Your car is in:"
-    i18n-title></tsl-location-box>
-  <tsl-urgent-checkbox [categoryId]="100" [urgentPrice]="urgentPrice" (urgentSelected)="selectUrgent($event)">
-  </tsl-urgent-checkbox>
-  <div class="row">
-    <div class="col-12 col-md-4">
-      <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading" [loading]="loading">
-        <span *ngIf="!item" i18n>Post Ad</span>
-        <span *ngIf="item" i18n>Update</span>
-      </tsl-button>
+  <div class="box" [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave">
+    <div class="selector-container terms-options" formGroupName="sale_conditions" data-toggle="buttons">
+      <h2 i18n>Further information</h2>
+      <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.fix_price">
+        <input type="checkbox" formControlName="fix_price">
+        <mat-icon svgIcon="firm-price"></mat-icon>
+        <span i18n>Firm Price</span>
+      </label>
+      <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.exchange_allowed">
+        <input type="checkbox" formControlName="exchange_allowed">
+        <mat-icon svgIcon="accept-trades"></mat-icon>
+        <span i18n>Accept trades</span>
+      </label>
     </div>
-    <div class="col-md-3 d-none d-md-block">
-      <button type="button" (click)="preview()" class="btn btn-link" [disabled]="!uploadForm.valid"
-        tslTrackEvent="UPLOADFORM_PREVIEW" i18n>How does it look?</button>
-    </div>
+    <ng-template #coachmarkExtras>
+      <div i18n>What sellers usually ask...</div>
+    </ng-template>
   </div>
+  <tsl-location-box [form]="uploadForm" name="location" (locationSelected)="emitLocation()" title="Your car is in:" i18n-title></tsl-location-box>
+  <tsl-urgent-checkbox [categoryId]="100" [urgentPrice]="urgentPrice" (urgentSelected)="selectUrgent($event)"></tsl-urgent-checkbox>
+  <tsl-button [type]="'submit'" className="btn-primary btn-big" [disabled]="loading" [loading]="loading">
+    <span *ngIf="!item" i18n>Post Ad</span>
+    <span *ngIf="item" i18n>Update</span>
+  </tsl-button>
+  <button type="button"
+          (click)="preview()"
+          class="btn btn-link"
+          [disabled]="!uploadForm.valid"
+          tslTrackEvent="UPLOADFORM_PREVIEW" i18n>How does it look?</button>
 </form>

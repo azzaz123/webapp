@@ -24,7 +24,4 @@ export class DeviceDetectorServiceMock {
       browser_version: BROWSER_VERSION
     } as DeviceInfo;
   }
-  isMobile(): boolean {
-    return false
-  }
 }

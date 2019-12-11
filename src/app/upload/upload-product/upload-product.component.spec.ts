@@ -27,9 +27,6 @@ import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { ItemContent } from '../../core/item/item-response.interface';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { DeviceDetectorServiceMock } from '../../../tests';
-
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
@@ -64,7 +61,6 @@ describe('UploadProductComponent', () => {
   let trackingService: TrackingService;
   let splitTestService: SplitTestService;
   let analyticsService: AnalyticsService;
-  let deviceService: DeviceDetectorService;
   const componentInstance: any = {};
 
   beforeEach(async(() => {
@@ -76,7 +72,6 @@ describe('UploadProductComponent', () => {
         TEST_HTTP_PROVIDERS,
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
           provide: UserService, useValue: {
             isProUser() {
@@ -168,7 +163,6 @@ describe('UploadProductComponent', () => {
     trackingService = TestBed.get(TrackingService);
     splitTestService = TestBed.get(SplitTestService);
     analyticsService = TestBed.get(AnalyticsService);
-    deviceService = TestBed.get(DeviceDetectorService);
     fixture.detectChanges();
     appboy.initialize(environment.appboy);
   });
@@ -334,15 +328,6 @@ describe('UploadProductComponent', () => {
 
     it('should NOT set focus if edit mode', fakeAsync(() => {
       component.item = MOCK_ITEM;
-      component.ngAfterContentInit();
-
-      expect(component.titleField.nativeElement.focus).not.toHaveBeenCalled();
-      expect(component['focused']).toBe(false);
-    }));
-
-    it('should NOT set focus if it`s a mobile device', fakeAsync(() => {
-      spyOn(deviceService, 'isMobile').and.returnValue(true);
-
       component.ngAfterContentInit();
 
       expect(component.titleField.nativeElement.focus).not.toHaveBeenCalled();
