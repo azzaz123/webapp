@@ -117,6 +117,7 @@ describe('InboxConversationService', () => {
   describe('openConversation', () => {
     let conversation: InboxConversation;
     beforeEach(() => {
+      spyOn(service, 'resentPendingMessages');
       spyOn(eventService, 'emit').and.callThrough();
       spyOn(realTime, 'sendRead');
       conversation = CREATE_MOCK_INBOX_CONVERSATION('my-id');
@@ -125,6 +126,7 @@ describe('InboxConversationService', () => {
     it('should emit a CURRENT_CONVERSATION_SET event when called', () => {
       service.openConversation(conversation);
 
+      expect(service.resentPendingMessages).toHaveBeenCalled();
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CURRENT_CONVERSATION_SET, conversation);
     });
 
@@ -133,6 +135,7 @@ describe('InboxConversationService', () => {
 
       service.openConversation(conversation);
 
+      expect(service.resentPendingMessages).toHaveBeenCalled();
       expect(realTime.sendRead).toHaveBeenCalledWith(conversation.user.id, conversation.id);
     });
 
@@ -141,6 +144,7 @@ describe('InboxConversationService', () => {
 
       service.openConversation(conversation);
 
+      expect(service.resentPendingMessages).toHaveBeenCalled();
       expect(realTime.sendRead).not.toHaveBeenCalled();
     });
   });

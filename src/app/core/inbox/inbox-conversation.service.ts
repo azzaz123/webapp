@@ -68,6 +68,7 @@ export class InboxConversationService {
   }
 
   public openConversation(conversation: InboxConversation) {
+    this.resentPendingMessages(conversation);
     this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, conversation);
     if (conversation.unreadCounter) {
       this.realTime.sendRead(conversation.user.id, conversation.id);

@@ -123,11 +123,13 @@ describe('Component: ChatWithInboxComponent', () => {
 
     it('should set connectionError to FALSE when a EventService.CONNECTION_RESTORED event is emitted', () => {
       spyOn(inboxConversationService, 'openConversationByItemId$');
+      spyOn(inboxConversationService, 'resentPendingMessages');
 
       component.ngOnInit();
       eventService.emit(EventService.CONNECTION_RESTORED);
 
       expect(component.connectionError).toBe(false);
+      expect(inboxConversationService.resentPendingMessages).toHaveBeenCalled();
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
     });
 

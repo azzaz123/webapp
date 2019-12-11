@@ -50,6 +50,7 @@ export class ChatWithInboxComponent implements OnInit {
       this.conversationsLoading = false;
     });
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
+      this.inboxConversationService.resentPendingMessages(this.currentConversation);
       this.connectionError = false;
     });
     this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation: InboxConversation) => {
