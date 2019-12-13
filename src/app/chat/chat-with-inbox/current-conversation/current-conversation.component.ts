@@ -40,16 +40,16 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   public momentConfig: any;
 
   constructor(private eventService: EventService,
-    private modalService: NgbModal,
-    private toastr: ToastrService,
-    private trackingService: TrackingService,
-    private userService: UserService,
-    private itemService: ItemService,
-    private blockUserService: BlockUserService,
-    private blockUserXmppService: BlockUserXmppService,
-    private i18n: I18nService,
-    private realTime: RealTimeService,
-    private conversationService: InboxConversationService) {
+              private modalService: NgbModal,
+              private toastr: ToastrService,
+              private trackingService: TrackingService,
+              private userService: UserService,
+              private itemService: ItemService,
+              private blockUserService: BlockUserService,
+              private blockUserXmppService: BlockUserXmppService,
+              private i18n: I18nService,
+              private realTime: RealTimeService,
+              private conversationService: InboxConversationService) {
     this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
   }
 

@@ -44,7 +44,7 @@ $menu-width-and-spacing: 10px;
     right: $spacing-ms;
   }
 
-  &:hover {
+  &:hover, &:active {
     background-color: rgba($blue-grey-4, .2);
   }
 
