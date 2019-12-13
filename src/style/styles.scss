@@ -54,7 +54,7 @@ body {
   min-height: 100%;
   @include media-breakpoint-down(md) {
     padding-left: 0;
-    padding-bottom: $topbar-height;
+    padding-bottom: $tabbar-height;
   }
   > .container {
     padding-top: $spacing-xl;
