@@ -35,7 +35,7 @@
           d="M11.085 24.498c0-7.672 6.397-13.846 14.135-13.483 6.872.317 12.533 5.978 12.85 12.85C38.433 31.603 32.25 38 24.587 38H12.919a1.92 1.92 0 0 1-1.797-2.589l1.825-4.86" />
       </g>
     </svg>
-    <span i18n>Chat</span>
+    <span i18n>Messages</span>
   </div>
   <div class="tab-bar__option" [routerLink]="['/catalog/list']" routerLinkActive="active">
     <svg *ngIf="!user?.image?.urls_by_size.medium" xmlns="http://www.w3.org/2000/svg" width="46" height="46"
@@ -54,6 +54,6 @@
       <div class="image" [style.background-image]="'url('+ user?.image?.urls_by_size.medium + ')'">
       </div>
     </div>
-    <span i18n>My zone</span>
+    <span i18n>My Zone</span>
   </div>
 </div>
