@@ -65,7 +65,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   ngOnChanges(changes?: any) {
     if (this.messageArea) {
-      if (!this.deviceService.isMobile) {
+      if (!this.deviceService.isMobile()) {
         setTimeout(() => {
           this.messageArea.nativeElement.focus();
           this.isFocus = true;
@@ -81,7 +81,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this.deviceService.isMobile) {
+    if (!this.deviceService.isMobile()) {
       this.messageArea.nativeElement.focus();
       this.isFocus = true;
     }
