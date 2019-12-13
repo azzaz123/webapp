@@ -19,7 +19,7 @@
     <div class="chat">
 
       <div class="top-bar" [ngClass]="{'faded': !currentConversation.user.available}">
-        <mat-icon svgIcon="back-arrow" class="d-md-none back-arrow" (click)="navigationBack()"></mat-icon>
+        <mat-icon svgIcon="back-arrow" class="d-lg-none back-arrow" (click)="navigationBack()"></mat-icon>
         <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
            target="_blank" class="user-avatar">
           <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
