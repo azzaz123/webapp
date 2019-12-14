@@ -51,7 +51,6 @@ $feature-button-width: 170px;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
   transition: $transition;
-  width: 100%;
 
   &:hover {
     transform: translateY(-2px);
@@ -92,12 +91,7 @@ $feature-button-width: 170px;
       }
     }
   }
-  a {
-    color: $blue-grey-1;
-    &:hover {
-      text-decoration: none;
-    }
-  }
+
   button,
   tsl-button /deep/ .btn-feature {
     display: flex;
@@ -112,17 +106,9 @@ $feature-button-width: 170px;
   }
 
   .published {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-self: stretch;
-    padding-right: $spacing-ms;
     font-size: $font-size-s;
-
-    * > {
-      @include text-truncate();
-    }
   }
+
   .subscribe {
     font-size: $font-size-s;
     color: $negative-main;
@@ -136,14 +122,12 @@ $feature-button-width: 170px;
   }
   .actions {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
     button {
       @include square(40px);
       border-radius: 8px;
       transition: all 0.2s ease;
       background-color: $white;
-      margin-left: $spacing-s;
+      margin-right: $spacing-s;
       mat-icon /deep/ {
         svg g g,
         svg path {
@@ -191,6 +175,9 @@ $feature-button-width: 170px;
           background: $blue-grey-2;
           border-color: transparent;
         }
+      }
+      @include media-breakpoint-down(md) {
+        @include square(36px);
       }
     }
   }
@@ -292,21 +279,17 @@ $feature-button-width: 170px;
   }
 }
 
-.main-info {
-  width: calc(100% - 100px);
-  .info-price {
-    font-weight: $font-weight-chunky;
-    font-size: $font-size-l;
-    width: 100%;
-    @include text-truncate();
-    &:focus {
-      text-decoration: none;
-    }
-  }
+.info-price,
+.info-title {
+  width: 100%;
+  @include text-truncate();
+}
 
-  .info-title {
-    width: 100%;
-    @include text-truncate();
+.info-price {
+  font-weight: $font-weight-chunky;
+  font-size: $font-size-l;
+  &:focus {
+    text-decoration: none;
   }
 }
 
@@ -342,6 +325,28 @@ $feature-button-width: 170px;
       border-width: 5px;
       border-style: solid;
       border-color: $blue-grey-1 transparent transparent transparent;
+    }
+  }
+}
+
+.item-info {
+  flex: 0 0 90px;
+  font-size: $font-size-s;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.item-image {
+  flex: 0 0 80px;
+  /deep/ tsl-item-avatar {
+    padding: $spacing-xs;
+    .big {
+      margin: 0;
+      @include media-breakpoint-down(md) {
+        @include square(100px);
+      }
     }
   }
 }

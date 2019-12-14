@@ -165,13 +165,14 @@ export class CatalogItemComponent implements OnInit {
     });
   }
 
-  public onClickInfoElement() {
+  public openItem() {
     const event = TrackingService.PRODUCT_VIEWED;
     const params = {
       product_id: this.item.id
     };
 
     this.trackingService.track(event, params);
+    window.open(this.link);
   }
 
 }
