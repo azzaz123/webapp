@@ -25,6 +25,6 @@ export class DeviceDetectorServiceMock {
     } as DeviceInfo;
   }
   isMobile(): boolean {
-    return false;
+    return false
   }
 }

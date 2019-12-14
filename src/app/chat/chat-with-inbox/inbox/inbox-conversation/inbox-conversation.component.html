@@ -1,55 +1,53 @@
-<div>
-  <div class="inbox-conversation-container"
-       [ngClass]="{'faded': conversation.cannotChat, 'inbox-archived-container': archiveConversation}">
-    <tsl-item-avatar [item]="conversation?.item" [showAvailableStatus]="conversation.user.available"></tsl-item-avatar>
-    <div class="conversation-info" *ngIf="conversation">
-      <div class="user-name-row">
-        <div class="user-name-row-left">
-          <p class="user-name">
+<div class="inbox-conversation-container"
+     [ngClass]="{'faded': conversation.cannotChat, 'inbox-archived-container': archiveConversation}">
+  <tsl-item-avatar [item]="conversation?.item" [showAvailableStatus]="conversation.user.available"></tsl-item-avatar>
+  <div class="conversation-info" *ngIf="conversation">
+    <div class="user-name-row">
+      <div class="user-name-row-left">
+        <p class="user-name">
         <span *ngIf="conversation.phoneNumber && !!conversation.item.isMine" class="call-shared">
             <mat-icon svgIcon="call-shared"></mat-icon>
           </span>
-            <span *ngIf="!conversation.user.available && !conversation.user.blocked">
+          <span *ngIf="!conversation.user.available && !conversation.user.blocked">
             <mat-icon svgIcon="not-available" class="not-available"></mat-icon>
           </span>
-            <span *ngIf="conversation.user.blocked">
+          <span *ngIf="conversation.user.blocked">
             <mat-icon svgIcon="blocked" class="blocked"></mat-icon>
         </span>
-            <span>{{conversation.user.microName}}</span>
-          </p>
-        </div>
-        <div class="user-name-row-right">
+          <span>{{conversation.user.microName}}</span>
+        </p>
+      </div>
+      <div class="user-name-row-right">
         <span class="message-date"
               *ngIf="dateIsThisYear()">{{conversation?.modifiedDate| amCalendar:momentConfig }}</span>
-          <span class="message-date"
-                *ngIf="!dateIsThisYear()">{{conversation?.modifiedDate| amDateFormat:'D MMM. YYYY' }}</span>
+        <span class="message-date"
+              *ngIf="!dateIsThisYear()">{{conversation?.modifiedDate| amDateFormat:'D MMM. YYYY' }}</span>
+      </div>
+    </div>
+
+    <div class="item-message-row">
+      <div class="item-title-message-column">
+        <div class="item-title-row">
+          <span>{{conversation.item.title}}</span>
+        </div>
+
+        <div class="message-row"
+             [ngClass]="{'showStatus': conversation.lastMessage && conversation.lastMessage.fromSelf && conversation.lastMessage.status }">
+          <div class="message-status" [ngClass]="conversation.lastMessage.status"
+               *ngIf="conversation.lastMessage && conversation.lastMessage.fromSelf && conversation.lastMessage.status"></div>
+          <p *ngIf="conversation.lastMessage" class="message">{{conversation.lastMessage.text}}</p>
         </div>
       </div>
-
-      <div class="item-message-row">
-        <div class="item-title-message-column">
-          <div class="item-title-row">
-            <span>{{conversation.item.title}}</span>
-          </div>
-
-          <div class="message-row"
-               [ngClass]="{'showStatus': conversation.lastMessage && conversation.lastMessage.fromSelf && conversation.lastMessage.status }">
-            <div class="message-status" [ngClass]="conversation.lastMessage.status"
-                 *ngIf="conversation.lastMessage && conversation.lastMessage.fromSelf && conversation.lastMessage.status"></div>
-            <p *ngIf="conversation.lastMessage" class="message">{{conversation.lastMessage.text}}</p>
-          </div>
-        </div>
-        <div class="unread-counter-column">
-          <div class="badge badge-primary badge-pill" [hidden]="conversation.unreadCounter === 0">
+      <div class="unread-counter-column">
+        <div class="badge badge-pill badge-primary" [hidden]="conversation.unreadCounter === 0">
             <span
               *ngIf="conversation.unreadCounter <= unreadCounterDisplayLimit">{{ conversation.unreadCounter }}</span>
-            <span *ngIf="conversation.unreadCounter > unreadCounterDisplayLimit">{{ unreadCounterDisplayLimit }}+</span>
-          </div>
-          <div class="archive-btn-container" *ngxPermissionsOnly="['isProfessional']">
-            <button class="check-corporate">
-              <mat-icon svgIcon="check"></mat-icon>
-            </button>
-          </div>
+          <span *ngIf="conversation.unreadCounter > unreadCounterDisplayLimit">{{ unreadCounterDisplayLimit }}+</span>
+        </div>
+        <div class="badge badge-archive" *ngxPermissionsOnly="['isProfessional']">
+          <button class="check-corporate" (click)="$event.stopPropagation(); onClickArchiveConversation()">
+            <mat-icon svgIcon="check"></mat-icon>
+          </button>
         </div>
       </div>
     </div>

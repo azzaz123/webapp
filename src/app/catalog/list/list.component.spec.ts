@@ -71,6 +71,7 @@ describe('ListComponent', () => {
   let eventService: EventService;
   let stripeService: StripeService;
   let userReviewService: UserReviewService;
+  let deviceService: DeviceDetectorService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
@@ -90,6 +91,7 @@ describe('ListComponent', () => {
         StripeService,
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: CategoryService, useValue: {
             getCategoryById() {
               return Observable.of(CATEGORY_DATA_WEB);
@@ -243,6 +245,7 @@ describe('ListComponent', () => {
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
     userReviewService = TestBed.get(UserReviewService);
+    deviceService = TestBed.get(DeviceDetectorService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -327,6 +330,16 @@ describe('ListComponent', () => {
       expect(component.isUrgent).toBe(false);
       expect(component.isRedirect).toBe(false);
     }));
+
+    describe('if it`s a mobile device', () => {
+      it('should not open upload confirmation modal', () => {
+        spyOn(deviceService, 'isMobile').and.returnValue(true);
+
+        component.ngOnInit();
+
+        expect(modalService.open).not.toHaveBeenCalled();
+      });
+    });
 
     it('should open toastr', fakeAsync(() => {
       spyOn(errorService, 'i18nSuccess');

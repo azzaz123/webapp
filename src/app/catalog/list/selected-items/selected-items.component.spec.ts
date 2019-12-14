@@ -53,6 +53,22 @@ describe('SelectedItemsComponent', () => {
 
       expect(component.selectedItems).toEqual([ITEMS[0], ITEMS[1]]);
     });
+
+    it('should set disableFeatureOption if a selected item is inactive or expired', () => {
+      itemService.selectedAction = 'feature';
+      const ITEMS = createItemsArray(5);
+      component.items = ITEMS;
+      itemService.selectedItems = [anId, anotherId];
+      fixture.detectChanges();
+
+      itemService.selectedItems$.next({
+        id: anId,
+        action: 'selected'
+      });
+
+      expect(component.disableFeatureOption).toBe(true);
+    });
+
   });
 
   describe('deselect', () => {

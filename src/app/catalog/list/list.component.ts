@@ -233,7 +233,7 @@ export class ListComponent implements OnInit, OnDestroy {
             this.router.navigate(['wallacoins']);
           });
         }
-        if (params && params.created) {
+        if (params && params.created && !this.deviceService.isMobile()) {
           this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
             windowClass: 'modal-standard',
           });

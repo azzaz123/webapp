@@ -55,7 +55,7 @@
 
           <!-- Feature -->
           <div class="SelectedItems__feature d-none d-md-flex flex-column mt-3 ml-4"
-            [hidden]="selectedStatus === 'inactive' || selectedStatus === 'sold'">
+            [hidden]="selectedStatus === 'inactive' || selectedStatus === 'sold' || disableFeatureOption">
             <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
               [routerLink]="['/catalog/checkout']" [params]="{ payment_method: isStripe ? 'STRIPE' : 'SABADELL' }"
               tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE" i18n>Feature</tsl-button>
