@@ -22,9 +22,7 @@ export class TabbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.me().subscribe((user) => {
-      this.user = user;
-    });
+    this.userService.me().subscribe(user => this.user = user);
     this.tabBarService.tabBarHidden$.subscribe(hidden => this.hidden = hidden);
   }
 
