@@ -215,9 +215,6 @@ describe('ListComponent', () => {
           provide: UserReviewService, useValue: {
             getPaginationReviews () {
               return of({data: MOCK_REVIEWS, init: 2});
-            },
-            getAllReviews(_start, _offset) {
-              return of(MOCK_REVIEWS);
             }
           }
         },
@@ -574,15 +571,6 @@ describe('ListComponent', () => {
       component.selectedStatus = 'sold';
       component.filterByStatus('sold');
       expect(itemService.mine).not.toHaveBeenCalled();
-    });
-
-    it('should call getAllReviews when status is \'reviews\' and not call mine', () => {
-      spyOn(userReviewService, 'getAllReviews').and.callThrough();
-
-      component.filterByStatus('reviews');
-
-      expect(userReviewService.getAllReviews).toHaveBeenCalledTimes(1);
-      expect(itemService.mine).toHaveBeenCalledTimes(0);
     });
   });
 

@@ -450,7 +450,7 @@ describe('CatalogItemComponent', () => {
     it ('should send PRODUCT_VIEWED to tracking service', () => {
       spyOn(trackingService, 'track');
 
-      component.onClickInfoElement();
+      component.openItem();
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_VIEWED, { product_id: component.item.id });
     });

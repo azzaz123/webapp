@@ -33,10 +33,6 @@ export class UserReviewService {
       );
   }
 
-  public getAllReviews(start: number, offset: number): Observable<Review[]> {
-    return this.recursiveReviews(start, offset).map(allReviewData => this.mapResponse(allReviewData));
-  }
-
   private recursiveReviews(init: number, offset: number): Observable<ReviewResponse[]> {
     return this.http.get(this.API_URL_v3_USER + '/me/reviews', { init })
     .map(r => {
