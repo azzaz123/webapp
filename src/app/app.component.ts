@@ -12,7 +12,7 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/filter';
 import { MatIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouteConfigLoadStart, RouteConfigLoadEnd } from '@angular/router';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
@@ -318,6 +318,12 @@ export class AppComponent implements OnInit {
           this.renderer.addClass(document.body, currentUrlSlug);
         }
         this.previousSlug = currentUrlSlug;
+      }
+
+      if (event instanceof RouteConfigLoadStart) {
+        this.renderer.addClass(document.body, 'route-loading');
+      } else if (event instanceof RouteConfigLoadEnd) {
+        this.renderer.removeClass(document.body, 'route-loading');
       }
     });
   }

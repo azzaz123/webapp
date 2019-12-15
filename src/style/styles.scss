@@ -18,6 +18,32 @@ body {
   & > iframe {
     display: none;
   }
+
+  &.route-loading {
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba($blue-grey-3, 0.5);
+      z-index: 200;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 100px;
+      z-index: 201;
+      border-radius: 20px;
+      background: url('/assets/images/spinner.gif') no-repeat center center / 45px;
+      background-color: $white;
+    }
+  }
 }
 
 :focus {
