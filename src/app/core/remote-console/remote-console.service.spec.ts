@@ -143,11 +143,11 @@ describe('RemoteConsoleService', () => {
       service.sendMessageTimeout(null);
       service.sendMessageTimeout('MESSAGE_ID');
 
+      expect(logger.info).toHaveBeenCalledTimes(1);
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'send_message_time': 1000,
-          'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
-        }
+        ...commonLog,
+        'send_message_time': 1000,
+        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
       }));
     }));
 
@@ -160,19 +160,18 @@ describe('RemoteConsoleService', () => {
       service.sendMessageTimeout('MESSAGE_ID');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'send_message_time': 3000,
-          'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
-        }
+        ...commonLog,
+        'send_message_time': 3000,
+        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
       }));
 
       service.sendMessageTimeout('MESSAGE_ID');
 
+      expect(logger.info).toHaveBeenCalledTimes(2);
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'send_message_time': 2000,
-          'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
-        }
+        ...commonLog,
+        'send_message_time': 2000,
+        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
       }));
     }));
   });
@@ -210,16 +209,16 @@ describe('RemoteConsoleService', () => {
       service.sendAcceptTimeout('MESSAGE_ID');
       service.sendAcceptTimeout('MESSAGE_ID');
 
+      expect(logger.info).toHaveBeenCalledTimes(1);
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'send_message_time': 1000,
-          'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-          'ping_time_ms': navigator['connection']['rtt']
-        }
+        ...commonLog,
+        'send_message_time': 1000,
+        'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
       }));
     }));
 
-    it('should send call with sending time', fakeAsync(() => {
+    it('should send twice time call with sending time', fakeAsync(() => {
       spyOn(logger, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000);
 
@@ -228,23 +227,22 @@ describe('RemoteConsoleService', () => {
       service.sendAcceptTimeout('MESSAGE_ID_1');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'message_id': 'MESSAGE_ID_1',
-          'send_message_time': 3000,
-          'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-          'ping_time_ms': navigator['connection']['rtt']
-        }
+        ...commonLog,
+        'message_id': 'MESSAGE_ID_1',
+        'send_message_time': 3000,
+        'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
       }));
 
       service.sendAcceptTimeout('MESSAGE_ID_2');
 
+      expect(logger.info).toHaveBeenCalledTimes(2);
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'message_id': 'MESSAGE_ID_2',
-          'send_message_time': 2000,
-          'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-          'ping_time_ms': navigator['connection']['rtt']
-        }
+        ...commonLog,
+        'message_id': 'MESSAGE_ID_2',
+        'send_message_time': 2000,
+        'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
       }));
     }));
   });
@@ -282,16 +280,16 @@ describe('RemoteConsoleService', () => {
       service.sendPresentationMessageTimeout('MESSAGE_ID');
       service.sendPresentationMessageTimeout('MESSAGE_ID');
 
+      expect(logger.info).toHaveBeenCalledTimes(1);
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'send_message_time': 1000,
-          'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
-          'ping_time_ms': navigator['connection']['rtt']
-        }
+        ...commonLog,
+        'send_message_time': 1000,
+        'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
       }));
     }));
 
-    it('should send call with presentation message time', fakeAsync(() => {
+    it('should send twice time call with presentation message time', fakeAsync(() => {
       spyOn(logger, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000);
 
@@ -300,23 +298,22 @@ describe('RemoteConsoleService', () => {
       service.sendPresentationMessageTimeout('MESSAGE_ID_1');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'message_id': 'MESSAGE_ID_1',
-          'send_message_time': 3000,
-          'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
-          'ping_time_ms': navigator['connection']['rtt']
-        }
+        ...commonLog,
+        'message_id': 'MESSAGE_ID_1',
+        'send_message_time': 3000,
+        'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
       }));
 
       service.sendPresentationMessageTimeout('MESSAGE_ID_2');
 
+      expect(logger.info).toHaveBeenCalledTimes(2);
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'message_id': 'MESSAGE_ID_2',
-          'send_message_time': 2000,
-          'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
-          'ping_time_ms': navigator['connection']['rtt']
-        }
+        ...commonLog,
+        'message_id': 'MESSAGE_ID_2',
+        'send_message_time': 2000,
+        'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
       }));
     }));
   });
