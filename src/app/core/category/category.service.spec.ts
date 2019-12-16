@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { CategoryService, CATEGORIES_ENDPOINT } from './category.service';
+import { CategoryService, CONSUMER_GOODS_ENDPOINT } from './category.service';
 import {
   CATEGORIES_DATA_CONSUMER_GOODS, CATEGORIES_OPTIONS,
   CATEGORY_DATA_WEB
@@ -57,10 +57,7 @@ describe('CategoryService', () => {
         response = data;
       });
 
-      expect(http.get).toHaveBeenCalledWith(
-        `${environment.baseUrl}${CATEGORIES_ENDPOINT}keys/consumer_goods`,
-        { params: { key: 'language', value: 'es_ES' }}
-      );
+      expect(http.get).toHaveBeenCalledWith(`${environment.baseUrl}${CONSUMER_GOODS_ENDPOINT}`, { params: { language: 'es_ES' }});
       expect(response).toEqual(CATEGORIES_OPTIONS);
     });
 

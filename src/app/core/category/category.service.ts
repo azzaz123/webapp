@@ -5,7 +5,8 @@ import { CategoryOption, CategoryResponse } from './category-response.interface'
 import { I18nService } from '../i18n/i18n.service';
 import { environment } from '../../../environments/environment';
 
-export const CATEGORIES_ENDPOINT = 'api/v3/categories/';
+export const CATEGORIES_ENDPOINT = 'api/v3/categories/keys/';
+export const CONSUMER_GOODS_ENDPOINT = `${CATEGORIES_ENDPOINT}consumer_goods`;
 
 @Injectable()
 export class CategoryService {
@@ -29,9 +30,7 @@ export class CategoryService {
     if (this.categories) {
       return Observable.of(this.categories);
     }
-    return this.http.get<CategoryResponse[]>(
-      `${environment.baseUrl}${CATEGORIES_ENDPOINT}keys/`, { params: { key: 'language', value: this.lang }}
-    );
+    return this.http.get<CategoryResponse[]>(`${environment.baseUrl}${CATEGORIES_ENDPOINT}`, { params: { language: this.lang }});
   }
 
   public getUploadCategories(): Observable<CategoryOption[]> {
@@ -39,7 +38,7 @@ export class CategoryService {
       return Observable.of(this.uploadCategories);
     }
     return this.http
-      .get(`${environment.baseUrl}${CATEGORIES_ENDPOINT}keys/consumer_goods`, { params: { key: 'language', value: this.lang }})
+      .get(`${environment.baseUrl}${CONSUMER_GOODS_ENDPOINT}`, { params: { language: this.lang }})
       .map((categories: CategoryResponse[]) => this.toSelectOptions(categories))
       .do((categories: CategoryOption[]) => this.uploadCategories = categories);
   }
