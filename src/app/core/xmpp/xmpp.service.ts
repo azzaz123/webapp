@@ -13,6 +13,7 @@ import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { InboxUser } from '../../chat/model/inbox-user';
 import { RemoteConsoleService } from '../remote-console';
+import { InboxMessage } from '../../chat/model';
 
 @Injectable()
 export class XmppService {
@@ -60,8 +61,9 @@ export class XmppService {
     this.eventService.emit(EventService.MESSAGE_SENT, conversation, message.id);
   }
 
-  public resendMessage(conversation: Conversation, message: Message) {
-    const msg: XmppBodyMessage = this.createXmppMessage(conversation, message.id, message.message);
+  public resendMessage(conversation: Conversation | InboxConversation, message: Message | InboxMessage) {
+    const msg: XmppBodyMessage =
+      this.createXmppMessage(conversation, message.id, message instanceof Message ? message.message : message.text);
     this.client.sendMessage(msg);
   }
 
