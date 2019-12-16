@@ -4,18 +4,17 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 
-import { HttpServiceNew } from '../http.service.new';
 import { environment } from '../../../../environments/environment';
 import { HttpModuleNew } from '../http.module.new';
 import { MockInterceptor } from './mock.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { FeatureflagService } from '../../user/featureflag.service';
 import { FeatureFlagServiceMock } from '../../../../tests';
 import { AccessTokenService } from '../access-token.service';
 
 describe(`MockInterceptor`, () => {
   let injector: TestBed;
-  let httpService: HttpServiceNew;
+  let http: HttpClient;
   let httpMock: HttpTestingController;
   let interceptor: MockInterceptor;
 
@@ -30,7 +29,7 @@ describe(`MockInterceptor`, () => {
       }]
     });
 
-    httpService = injector.get(HttpServiceNew);
+    http = injector.get(HttpClient);
     httpMock = injector.get(HttpTestingController);
     interceptor = injector.get(HTTP_INTERCEPTORS).filter(inter => inter instanceof MockInterceptor)[0];
 
@@ -48,7 +47,7 @@ describe(`MockInterceptor`, () => {
       }
     ];
 
-    httpService.get('').subscribe();
+    http.get(environment.baseUrl).subscribe();
 
     httpMock.expectNone(environment.baseUrl);
   });
@@ -63,7 +62,7 @@ describe(`MockInterceptor`, () => {
       }
     ];
 
-    httpService.get('').subscribe(response => dataResponse = response);
+    http.get(environment.baseUrl).subscribe(response => dataResponse = response);
 
     expect(dataResponse).toEqual(mockData);
   });
