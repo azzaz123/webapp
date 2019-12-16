@@ -49,6 +49,7 @@ import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -770,7 +771,7 @@ export class ItemService extends ResourceService {
   }
 
   public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemByCategoryResponse[]> {
-    return this.httpNew.get<any>(MINES_BY_CATEGORY_ENDPOINT, {
+    return this.httpNew.get<any>(environment.baseUrl + MINES_BY_CATEGORY_ENDPOINT, {
       params: {
         status,
         init: init.toString(),
