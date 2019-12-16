@@ -24,8 +24,8 @@ import { FeatureflagService, FEATURE_FLAGS_ENUM } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
 import { InboxUser } from '../../chat/model/inbox-user';
 import { SplitTestService } from '../tracking/split-test.service';
-import { HttpServiceNew } from '../http/http.service.new';
 import { InboxItem } from '../../chat/model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -41,7 +41,7 @@ export class UserService extends ResourceService {
   private motorPlanObservable: Observable<MotorPlan>;
 
   constructor(http: HttpService,
-              private httpClient: HttpServiceNew,
+              private httpClient: HttpClient,
               protected event: EventService,
               protected i18n: I18nService,
               protected haversineService: HaversineService,
@@ -199,7 +199,7 @@ export class UserService extends ResourceService {
   }
 
   public reportUser(userId: string, itemHash: string, conversationHash: string, reason: number, comments: string): Observable<any> {
-    return this.httpClient.post(`${this.API_URL}/me/report/user/${userId}`, {
+    return this.httpClient.post(`${environment.baseUrl}${this.API_URL}/me/report/user/${userId}`, {
       itemHashId: itemHash,
       conversationHash: conversationHash,
       comments: comments,
