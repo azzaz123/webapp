@@ -120,6 +120,11 @@ $feature-button-width: 170px;
       opacity: 1;
     }
   }
+
+  .actions {
+    display: flex;
+  }
+
   .actions {
     display: flex;
     button {
@@ -142,14 +147,6 @@ $feature-button-width: 170px;
             fill: $white;
           }
         }
-      }
-      &.btn-featured {
-        width: $feature-button-width;
-        border: 1px solid $walla-main;
-        color: $walla-main;
-        cursor: default;
-        font-size: $font-size-s;
-        font-weight: $font-weight-chunky;
       }
       &.btn-sold {
         &:hover {
@@ -185,6 +182,18 @@ $feature-button-width: 170px;
     .actions {
       min-width: auto;
     }
+  }
+
+  .btn-featured {
+    width: $feature-button-width;
+    height: 40px;
+    border: 1px solid $walla-main;
+    color: $walla-main;
+    cursor: default;
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+    border-radius: 8px;
+    background-color: $white;
   }
 
   .btn-reactivate,

@@ -10,7 +10,7 @@
   </div>
 
   <div class="col">
-    <div class="row CatalogItem__content w-100" [ngClass]="{
+    <div class="row CatalogItem__content" [ngClass]="{
     'CatalogItem__content--expired': item.flags.expired,
     'CatalogItem__content--selected': item.selected,
     'CatalogItem__content--pending': item.flags.pending,
@@ -32,18 +32,18 @@
           </div>
 
           <div class="col d-none d-md-flex flex-column item-info clickable" (click)="openItem()"
-            [hidden]="item.flags.onhold">
+            *ngIf="!item.flags.onhold">
             <div i18n>Published</div>
             <div class="subtitle"> {{ item.publishedDate | amDateFormat: 'DD/MM/YYYY'}}</div>
           </div>
 
           <div class="col d-none d-xl-flex flex-column item-info clickable" (click)="openItem()"
-            [hidden]="item.flags.onhold">
+            *ngIf="!item.flags.onhold">
             <div i18n>Modified</div>
             <div class="subtitle"> {{ item.modifiedDate | amDateFormat: 'DD/MM/YYYY'}}</div>
           </div>
 
-          <div class="col-1 d-none d-md-block" *ngIf="showListingFee() || item.listingFeeExpiringDate"
+          <div class="col-1 d-none d-md-block item-info clickable" *ngIf="showListingFee() || item.listingFeeExpiringDate"
             (click)="openItem()">
             <div *ngIf="showListingFee()" i18n>Active</div>
             <tsl-countdown *ngIf="item.listingFeeExpiringDate" class="subtitle"
@@ -72,7 +72,7 @@
           </div>
 
           <div class="actions align-items-center justify-content-md-end col col-md-4"
-            *ngIf="!item.flags.pending && !item.flags.expired" [hidden]="selectMode">
+            *ngIf="!item.flags.pending && !item.flags.expired && !item.flags.onhold" [hidden]="selectMode">
             <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)"
               [item]="item" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
               <mat-icon svgIcon="btn-sold"></mat-icon>
