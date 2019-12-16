@@ -19,7 +19,7 @@ import * as moment from 'moment';
   providedIn: 'root'
 })
 export class InboxConversationService {
-  public static readonly RESENT_BEFORE_5_DAYS = 5;
+  public static readonly RESEND_BEFORE_5_DAYS = 5;
   public static readonly MESSAGES_IN_CONVERSATION = 30;
 
   private API_URL = 'bff/messaging/conversation/';
@@ -68,7 +68,7 @@ export class InboxConversationService {
   }
 
   public openConversation(conversation: InboxConversation) {
-    this.resentPendingMessages(conversation);
+    this.resendPendingMessages(conversation);
     this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, conversation);
     if (conversation.unreadCounter) {
       this.realTime.sendRead(conversation.user.id, conversation.id);
@@ -318,10 +318,10 @@ export class InboxConversationService {
     .flatMap((response: ConversationResponse) => this.getConversation(response.conversation_id));
   }
 
-  public resentPendingMessages(conversation: InboxConversation): void {
+  public resendPendingMessages(conversation: InboxConversation): void {
     conversation.messages
     .filter((message: InboxMessage) => message.status === messageStatus.PENDING
-      && moment(message.date).isAfter(moment().subtract(InboxConversationService.RESENT_BEFORE_5_DAYS, 'days')))
+      && moment(message.date).isAfter(moment().subtract(InboxConversationService.RESEND_BEFORE_5_DAYS, 'days')))
     .forEach((message: InboxMessage) => this.realTime.resendMessage(conversation, message));
   }
 }

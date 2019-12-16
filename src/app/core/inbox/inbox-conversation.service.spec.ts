@@ -117,7 +117,7 @@ describe('InboxConversationService', () => {
   describe('openConversation', () => {
     let conversation: InboxConversation;
     beforeEach(() => {
-      spyOn(service, 'resentPendingMessages');
+      spyOn(service, 'resendPendingMessages');
       spyOn(eventService, 'emit').and.callThrough();
       spyOn(realTime, 'sendRead');
       conversation = CREATE_MOCK_INBOX_CONVERSATION('my-id');
@@ -126,7 +126,7 @@ describe('InboxConversationService', () => {
     it('should emit a CURRENT_CONVERSATION_SET event when called', () => {
       service.openConversation(conversation);
 
-      expect(service.resentPendingMessages).toHaveBeenCalled();
+      expect(service.resendPendingMessages).toHaveBeenCalled();
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CURRENT_CONVERSATION_SET, conversation);
     });
 
@@ -135,7 +135,7 @@ describe('InboxConversationService', () => {
 
       service.openConversation(conversation);
 
-      expect(service.resentPendingMessages).toHaveBeenCalled();
+      expect(service.resendPendingMessages).toHaveBeenCalled();
       expect(realTime.sendRead).toHaveBeenCalledWith(conversation.user.id, conversation.id);
     });
 
@@ -144,7 +144,7 @@ describe('InboxConversationService', () => {
 
       service.openConversation(conversation);
 
-      expect(service.resentPendingMessages).toHaveBeenCalled();
+      expect(service.resendPendingMessages).toHaveBeenCalled();
       expect(realTime.sendRead).not.toHaveBeenCalled();
     });
   });
@@ -692,13 +692,13 @@ describe('InboxConversationService', () => {
     });
   });
 
-  describe('resentPendingMessages', () => {
+  describe('resendPendingMessages', () => {
     it('should NOT sent SENT SIGNAL if pending message NOT exist', () => {
       const conversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
       conversation.messages[conversation.messages.length - 1].status = MessageStatus.RECEIVED;
       spyOn(realTime, 'resendMessage');
 
-      service.resentPendingMessages(conversation);
+      service.resendPendingMessages(conversation);
 
       expect(realTime.resendMessage).not.toHaveBeenCalled();
     });
@@ -710,7 +710,7 @@ describe('InboxConversationService', () => {
       conversation.messages[lastMessageIndex].date = new Date();
       spyOn(realTime, 'resendMessage');
 
-      service.resentPendingMessages(conversation);
+      service.resendPendingMessages(conversation);
 
       expect(realTime.resendMessage).toHaveBeenCalled();
     });
@@ -722,7 +722,7 @@ describe('InboxConversationService', () => {
       conversation.messages[lastMessageIndex].date = moment(conversation.messages[lastMessageIndex].date).subtract(6, 'days').toDate();
       spyOn(realTime, 'resendMessage');
 
-      service.resentPendingMessages(conversation);
+      service.resendPendingMessages(conversation);
 
       expect(realTime.resendMessage).not.toHaveBeenCalled();
     });
