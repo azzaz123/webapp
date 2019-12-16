@@ -9,10 +9,11 @@ import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
 import { I18nService } from '../i18n/i18n.service';
 import { HttpModuleNew } from '../http/http.module.new';
-import { HttpServiceNew } from '../http/http.service.new';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 let service: CategoryService;
-let http: HttpServiceNew;
+let http: HttpClient;
 
 describe('CategoryService', () => {
   beforeEach(() => {
@@ -20,7 +21,6 @@ describe('CategoryService', () => {
       imports: [HttpModuleNew],
       providers: [
         CategoryService,
-        HttpServiceNew,
         {
           provide: I18nService, useValue: {
             locale: 'es'
@@ -29,7 +29,7 @@ describe('CategoryService', () => {
       ]
     });
     service = TestBed.get(CategoryService);
-    http = TestBed.get(HttpServiceNew);
+    http = TestBed.get(HttpClient);
   });
 
   describe('getCategories', () => {
@@ -57,7 +57,10 @@ describe('CategoryService', () => {
         response = data;
       });
 
-      expect(http.get).toHaveBeenCalledWith(`${CATEGORIES_ENDPOINT}/keys/consumer_goods`, [{ key: 'language', value: 'es_ES' }]);
+      expect(http.get).toHaveBeenCalledWith(
+        `${environment.baseUrl}${CATEGORIES_ENDPOINT}keys/consumer_goods`,
+        { params: { key: 'language', value: 'es_ES' }}
+      );
       expect(response).toEqual(CATEGORIES_OPTIONS);
     });
 

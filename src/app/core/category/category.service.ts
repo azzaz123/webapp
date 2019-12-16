@@ -1,10 +1,11 @@
-import { HttpServiceNew } from './../http/http.service.new';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CategoryOption, CategoryResponse } from './category-response.interface';
 import { I18nService } from '../i18n/i18n.service';
+import { environment } from '../../../environments/environment';
 
-export const CATEGORIES_ENDPOINT = 'api/v3/categories';
+export const CATEGORIES_ENDPOINT = 'api/v3/categories/';
 
 @Injectable()
 export class CategoryService {
@@ -14,7 +15,7 @@ export class CategoryService {
   private fashionCategoryId = 12465;
   private lang = this.i18n.locale === 'es' ? this.i18n.locale + '_ES' : this.i18n.locale;
 
-  constructor(private http: HttpServiceNew,
+  constructor(private http: HttpClient,
     private i18n: I18nService) {
   }
 
@@ -28,14 +29,17 @@ export class CategoryService {
     if (this.categories) {
       return Observable.of(this.categories);
     }
-    return this.http.get(`${CATEGORIES_ENDPOINT}/keys/`, [{ key: 'language', value: this.lang }]);
+    return this.http.get<CategoryResponse[]>(
+      `${environment.baseUrl}${CATEGORIES_ENDPOINT}keys/`, { params: { key: 'language', value: this.lang }}
+    );
   }
 
   public getUploadCategories(): Observable<CategoryOption[]> {
     if (this.uploadCategories) {
       return Observable.of(this.uploadCategories);
     }
-    return this.http.get(`${CATEGORIES_ENDPOINT}/keys/consumer_goods`, [{ key: 'language', value: this.lang }])
+    return this.http
+      .get(`${environment.baseUrl}${CATEGORIES_ENDPOINT}keys/consumer_goods`, { params: { key: 'language', value: this.lang }})
       .map((categories: CategoryResponse[]) => this.toSelectOptions(categories))
       .do((categories: CategoryOption[]) => this.uploadCategories = categories);
   }
