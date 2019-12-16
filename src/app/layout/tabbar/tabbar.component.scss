@@ -1,6 +1,6 @@
 @import "~style/common";
 
-.tab-bar {
+.TabBar {
   position: fixed;
   display: flex;
   bottom: 0;
@@ -20,7 +20,7 @@
   }
 }
 
-.tab-bar__option {
+.TabBar__option {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -43,13 +43,13 @@
     span {
       color: $blue-grey-1;
     }
-    .tab-bar__option-profile .image {
+    .TabBar__option-profile .image {
       border: 2px solid $blue-grey-1;
     }
   }
 }
 
-.tab-bar__option-profile {
+.TabBar__option-profile {
   width: 46px;
   height: 46px;
   padding: 7px;
