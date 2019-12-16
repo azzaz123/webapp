@@ -1,4 +1,4 @@
-<div class="page-content">
+<div class="page-content" *ngIf="featureFlagLoaded">
     <tsl-chat-with-archive *ngIf="!inboxFeatureflagValue"></tsl-chat-with-archive>
     <tsl-chat-with-inbox *ngIf="inboxFeatureflagValue"></tsl-chat-with-inbox>
 </div>
