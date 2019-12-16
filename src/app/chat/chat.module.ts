@@ -90,6 +90,9 @@ import { AutosizeModule } from 'ngx-autosize';
     ScrollingMessageComponent,
     StatusIconComponent
   ],
+  exports: [
+    InboxConversationComponent
+  ],
   entryComponents: [
     ArchiveConversationComponent,
     ArchiveInboxConversationComponent,

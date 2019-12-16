@@ -1,10 +1,10 @@
 <div class="box">
   <div class="box-content" [hidden]="loading">
-    <h4 class="section-title" i18n>PRO subscriptions</h4>
+    <h4 class="section-title" i18n>wallapop PRO</h4>
     <p class="section-subtitle" i18n>Manage your subscriptions to wallapop PRO to increase your sales.</p>
     <div class="Subscriptions">
       <div class="Subscriptions__category" [ngClass]="{'Subscriptions__category--subscribed': subscription.subscribed_from }"
-      (click)="!subscription.subscribed_until && openSubscriptionModal(subscription)" *ngFor="let subscription of subscriptions">
+      (click)="openSubscriptionModal(subscription)" *ngFor="let subscription of subscriptions">
         <div class="Subscriptions__category-icon">
           <mat-icon *ngIf="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}"class="image"></mat-icon>
           <mat-icon [hidden]="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}-disabled" class="image"></mat-icon>
@@ -12,7 +12,7 @@
         <div class="Subscriptions__category-title">{{subscription.category_name}}</div>
         <hr />
         <div [hidden]="subscription.subscribed_from" class="Subscriptions__category-info">
-            <p i18n>Limit: {{subscription.current_limit}}</p>
+            <p i18n>Limit without subscription: {{subscription.current_limit}}</p>
             <p i18n>From: {{subscription.tiers[0].price}}{{subscription.tiers[0].currency}}</p>
         </div>
         <div *ngIf="subscription.subscribed_from" class="Subscriptions__category-info">
@@ -26,8 +26,11 @@
         <span *ngIf="subscription.subscribed_from" [hidden]="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n>
           Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}
         </span>
-        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n>
-          Subscribed until {{subscription.subscribed_until | date:'dd/MM/yy' }}
+        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-until" i18n>
+          Subscription ends on {{subscription.subscribed_until | date:'dd/MM/yy' }}
+        </span>
+        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-continue" i18n>
+          Stay subscribed
         </span>
       </div>
     </div>
@@ -46,8 +49,8 @@
           <mat-icon svgIcon="rocket" class="image"></mat-icon>
         </div>
         <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title" i18n>Upload all your catalogue</p>
-          <p i18n>Publish up to 15 cars at a time and make yourself a PRO agent.</p>
+          <p class="Subscriptions__benefits--title" i18n>Upload all of your cars</p>
+          <p i18n>Publish up to 5/9/15 cars at a time and make yourself a PRO agent.</p>
         </div>
       </div>
       <div class="Subscriptions__benefits col-4">

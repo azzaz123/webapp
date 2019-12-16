@@ -28,11 +28,13 @@
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   color: $blue-grey-2;
   min-width: 200px;
   margin: 0 $spacing-xs;
   flex: 1 1 0px;
   max-width: 250px;
+  height: 282px;
   cursor: pointer;
   p {
     margin: $spacing-xxs;
@@ -42,7 +44,7 @@
     flex-direction: column;
     align-items: center;
     font-size: $font-size-s;
-    margin: 0 0 $spacing-m;
+    margin: 0;
     &--edit {
       color: $walla-main;
       text-align: center;
@@ -87,7 +89,7 @@
       color: $blue-grey-1;
     }
     .Subscriptions__category-info {
-      margin: 0 0 $spacing-xs;
+      margin: 0;
     }
   }
 }
@@ -134,8 +136,19 @@
 
 .Subscriptions__subscribed-from {
   color: $walla-main;
-  font-size: $font-size-s;
   font-weight: bold;
+  font-size: $font-size-s;
+}
+
+.Subscriptions__subscribed-until {
+  color: $blue-grey-2;
+  font-size: $font-size-s;
+  text-align: center;
+}
+
+.Subscriptions__subscribed-continue {
+  color: $walla-main;
+  font-size: $font-size-s;
 }
 
 .loading-center {

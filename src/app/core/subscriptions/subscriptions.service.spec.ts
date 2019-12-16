@@ -13,6 +13,7 @@ import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { SubscriptionsResponse } from './subscriptions.interface';
 import { SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
+import { AccessTokenService } from '../http/access-token.service';
 
 describe('SubscriptionsService', () => {
 
@@ -30,6 +31,11 @@ describe('SubscriptionsService', () => {
       imports: [HttpClientTestingModule, HttpModuleNew],
       providers: [
         SubscriptionsService,
+        {
+          provide: AccessTokenService, useValue: {
+            accessToken: 'ACCESS_TOKEN'
+          }
+        },
         {
           provide: UserService, useValue: {
             hasPerm() {
@@ -50,9 +56,9 @@ describe('SubscriptionsService', () => {
         {
           provide: CategoryService, useValue: {
             getCategories() {
-                return Observable.of(CATEGORY_DATA_WEB);
-              }
+              return Observable.of(CATEGORY_DATA_WEB);
             }
+          }
         },
       ]
     });
@@ -175,8 +181,22 @@ describe('SubscriptionsService', () => {
     });
   });
 
+  describe('continueSubscription', () => {
+    it('should call the endpoint', () => {
+      const planId = '1-2-3';
+      const expectedUrl = `${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/unsubscription/cancel/${planId}`;
+
+      service.continueSubscription(planId).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.method).toBe('PUT');
+    });
+  });
+
   afterAll(() => {
     TestBed.resetTestingModule();
   });
-  
+
 });
