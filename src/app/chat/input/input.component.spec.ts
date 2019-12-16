@@ -119,7 +119,6 @@ describe('Component: Input', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id
       });
-      expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(null);
       expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 
@@ -135,7 +134,6 @@ describe('Component: Input', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id
       });
-      expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(null);
       expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 

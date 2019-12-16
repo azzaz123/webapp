@@ -180,22 +180,6 @@ describe('Service: Message', () => {
 
     describe('when messages with the status PENDING exist in the localDb', () => {
       let response: any;
-      let pendingMsg;
-
-      it('should resend messages that have the status PENDING and is newer than 5 days', () => {
-        spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_PENDING));
-        spyOn(realTime, 'resendMessage');
-        const pendingMsgCount = MOCK_DB_RESPONSE_WITH_PENDING.filter(m => m.doc.status === messageStatus.PENDING).length;
-
-
-        service.getMessages(conversation).subscribe((data: any) => {
-          response = data;
-          pendingMsg = response.data[0];
-        });
-
-        expect(realTime.resendMessage).toHaveBeenCalledTimes(pendingMsgCount);
-        expect(realTime.resendMessage).toHaveBeenCalledWith(conversation, pendingMsg);
-      });
 
       it('should not resend messages that have the status PENDING and are older than 5 days', () => {
         spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_OLD_PENDING));
