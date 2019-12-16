@@ -1470,6 +1470,8 @@ describe('Service: Conversation', () => {
         });
 
         it('should increment unreadMessages and totalUnreadMessages by 2', () => {
+          spyOn(remoteConsoleService, 'sendPresentationMessageTimeout');
+
           service.handleNewMessages(new Message(
             'new',
             MESSAGE_MAIN.thread,
@@ -1478,6 +1480,7 @@ describe('Service: Conversation', () => {
             MESSAGE_MAIN.date
           ), false);
 
+          expect(remoteConsoleService.sendPresentationMessageTimeout).toHaveBeenCalled();
           expect(service.leads[0].unreadMessages).toBe(2);
           expect(messageService.totalUnreadMessages).toBe(2);
         });

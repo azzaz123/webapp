@@ -138,41 +138,42 @@ describe('RemoteConsoleService', () => {
 
     it('should send call with sending time', fakeAsync(() => {
       spyOn(logger, 'info');
-      spyOn(Date, 'now').and.returnValues(1000, 2000, 2000);
+      spyOn(Date, 'now').and.returnValues(1000, 2000);
 
-      service.sendMessageTimeout(null);
+      service.sendMessageTimeout('MESSAGE_ID');
       service.sendMessageTimeout('MESSAGE_ID');
 
+      expect(logger.info).toHaveBeenCalledTimes(1);
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'send_message_time': 1000,
-          'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
-        }
+        ...commonLog,
+        'send_message_time': 1000,
+        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
       }));
     }));
 
-    it('should send call with sending time', fakeAsync(() => {
+    it('should send twice time call with sending time', fakeAsync(() => {
       spyOn(logger, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000);
 
-      service.sendMessageTimeout(null);
-      service.sendMessageTimeout(null);
-      service.sendMessageTimeout('MESSAGE_ID');
+      service.sendMessageTimeout('MESSAGE_ID_1');
+      service.sendMessageTimeout('MESSAGE_ID_2');
+      service.sendMessageTimeout('MESSAGE_ID_1');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'send_message_time': 3000,
-          'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
-        }
+        ...commonLog,
+        'send_message_time': 3000,
+        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
+        'message_id': 'MESSAGE_ID_1'
       }));
 
-      service.sendMessageTimeout('MESSAGE_ID');
+      service.sendMessageTimeout('MESSAGE_ID_2');
 
+      expect(logger.info).toHaveBeenCalledTimes(2);
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'send_message_time': 2000,
-          'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
-        }
+        ...commonLog,
+        'send_message_time': 2000,
+        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
+        'message_id': 'MESSAGE_ID_2'
       }));
     }));
   });
@@ -207,42 +208,114 @@ describe('RemoteConsoleService', () => {
       spyOn(logger, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 2000);
 
-      service.sendAcceptTimeout(null);
+      service.sendAcceptTimeout('MESSAGE_ID');
       service.sendAcceptTimeout('MESSAGE_ID');
 
+      expect(logger.info).toHaveBeenCalledTimes(1);
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'send_message_time': 1000,
-          'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-          'ping_time_ms': 0
-        }
+        ...commonLog,
+        'send_message_time': 1000,
+        'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
       }));
     }));
 
-    it('should send call with sending time', fakeAsync(() => {
+    it('should send twice time call with sending acceptance time', fakeAsync(() => {
       spyOn(logger, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000);
 
-      service.sendAcceptTimeout(null);
-      service.sendAcceptTimeout(null);
-      service.sendAcceptTimeout('MESSAGE_ID');
+      service.sendAcceptTimeout('MESSAGE_ID_1');
+      service.sendAcceptTimeout('MESSAGE_ID_2');
+      service.sendAcceptTimeout('MESSAGE_ID_1');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'send_message_time': 3000,
-          'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-          'ping_time_ms': 0
-        }
+        ...commonLog,
+        'message_id': 'MESSAGE_ID_1',
+        'send_message_time': 3000,
+        'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
       }));
 
-      service.sendAcceptTimeout('MESSAGE_ID');
+      service.sendAcceptTimeout('MESSAGE_ID_2');
+
+      expect(logger.info).toHaveBeenCalledTimes(2);
+      expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
+        ...commonLog,
+        'message_id': 'MESSAGE_ID_2',
+        'send_message_time': 2000,
+        'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
+      }));
+    }));
+  });
+
+  describe('sendPresentationMessageTimeout', () => {
+    const commonLog = {
+      'browser': BROWSER,
+      'browser_version': BROWSER_VERSION,
+      'user_id': USER_ID,
+      'feature_flag': true,
+      'app_version': APP_VERSION,
+      'message_id': 'MESSAGE_ID',
+    };
+
+    it('should NOT send call', () => {
+      spyOn(logger, 'info');
+
+      service.sendPresentationMessageTimeout(null);
+
+      expect(logger.info).not.toHaveBeenCalled();
+    });
+
+    it('should NOT send call if not init calculate time', () => {
+      spyOn(logger, 'info');
+
+      service.sendPresentationMessageTimeout('MESSAGE_ID');
+
+      expect(logger.info).not.toHaveBeenCalledWith();
+    });
+
+    it('should send call with presentation message time', fakeAsync(() => {
+      spyOn(logger, 'info');
+      spyOn(Date, 'now').and.returnValues(1000, 2000);
+
+      service.sendPresentationMessageTimeout('MESSAGE_ID');
+      service.sendPresentationMessageTimeout('MESSAGE_ID');
+
+      expect(logger.info).toHaveBeenCalledTimes(1);
+      expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
+        ...commonLog,
+        'send_message_time': 1000,
+        'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
+      }));
+    }));
+
+    it('should send twice time call with presentation message time', fakeAsync(() => {
+      spyOn(logger, 'info');
+      spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000);
+
+      service.sendPresentationMessageTimeout('MESSAGE_ID_1');
+      service.sendPresentationMessageTimeout('MESSAGE_ID_2');
+      service.sendPresentationMessageTimeout('MESSAGE_ID_1');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
-        ...commonLog, ...{
-          'send_message_time': 2000,
-          'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-          'ping_time_ms': 0
-        }
+        ...commonLog,
+        'message_id': 'MESSAGE_ID_1',
+        'send_message_time': 3000,
+        'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
+      }));
+
+      service.sendPresentationMessageTimeout('MESSAGE_ID_2');
+
+      expect(logger.info).toHaveBeenCalledTimes(2);
+      expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
+        ...commonLog,
+        'message_id': 'MESSAGE_ID_2',
+        'send_message_time': 2000,
+        'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
       }));
     }));
   });
