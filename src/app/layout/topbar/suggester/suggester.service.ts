@@ -1,4 +1,3 @@
-import { IDictionary } from './../../../shared/models/dictionary.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SuggesterResponse } from './suggester-response.interface';
