@@ -17,7 +17,7 @@ export class RemoteConsoleService implements OnDestroy {
 
   deviceId: string;
   private connectionTimeCallNo = 0;
-  private sendMessageTime = [];
+  private sendMessageTime = new Map();
   private acceptMessageTime = new Map();
   private presentationMessageTimeout = new Map();
 
@@ -30,7 +30,7 @@ export class RemoteConsoleService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.sendMessageTime = [];
+    this.sendMessageTime = new Map();
     this.acceptMessageTime = new Map();
     this.presentationMessageTimeout = new Map();
   }
@@ -49,18 +49,16 @@ export class RemoteConsoleService implements OnDestroy {
   }
 
   sendMessageTimeout(messageId: string): void {
-    if (messageId === null) {
-      this.sendMessageTime.push(new Date().getTime());
+    if (!this.sendMessageTime.has(messageId)) {
+      this.sendMessageTime.set(messageId, new Date().getTime());
     } else {
-      if (this.sendMessageTime.length > 0) {
-
-        this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
-          ...commonLog,
-          message_id: messageId,
-          send_message_time: new Date().getTime() - this.sendMessageTime.shift(),
-          metric_type: MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
-        })));
-      }
+      this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
+        ...commonLog,
+        message_id: messageId,
+        send_message_time: new Date().getTime() - this.sendMessageTime.get(messageId),
+        metric_type: MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
+      })));
+      this.sendMessageTime.delete(messageId);
     }
   }
 

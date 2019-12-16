@@ -138,9 +138,9 @@ describe('RemoteConsoleService', () => {
 
     it('should send call with sending time', fakeAsync(() => {
       spyOn(logger, 'info');
-      spyOn(Date, 'now').and.returnValues(1000, 2000, 2000);
+      spyOn(Date, 'now').and.returnValues(1000, 2000);
 
-      service.sendMessageTimeout(null);
+      service.sendMessageTimeout('MESSAGE_ID');
       service.sendMessageTimeout('MESSAGE_ID');
 
       expect(logger.info).toHaveBeenCalledTimes(1);
@@ -151,27 +151,29 @@ describe('RemoteConsoleService', () => {
       }));
     }));
 
-    it('should send call with sending time', fakeAsync(() => {
+    it('should send twice time call with sending time', fakeAsync(() => {
       spyOn(logger, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000);
 
-      service.sendMessageTimeout(null);
-      service.sendMessageTimeout(null);
-      service.sendMessageTimeout('MESSAGE_ID');
+      service.sendMessageTimeout('MESSAGE_ID_1');
+      service.sendMessageTimeout('MESSAGE_ID_2');
+      service.sendMessageTimeout('MESSAGE_ID_1');
 
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
         ...commonLog,
         'send_message_time': 3000,
-        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
+        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
+        'message_id': 'MESSAGE_ID_1'
       }));
 
-      service.sendMessageTimeout('MESSAGE_ID');
+      service.sendMessageTimeout('MESSAGE_ID_2');
 
       expect(logger.info).toHaveBeenCalledTimes(2);
       expect(logger.info).toHaveBeenCalledWith(JSON.stringify({
         ...commonLog,
         'send_message_time': 2000,
-        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME
+        'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
+        'message_id': 'MESSAGE_ID_2'
       }));
     }));
   });
@@ -218,7 +220,7 @@ describe('RemoteConsoleService', () => {
       }));
     }));
 
-    it('should send twice time call with sending time', fakeAsync(() => {
+    it('should send twice time call with sending acceptance time', fakeAsync(() => {
       spyOn(logger, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000);
 
