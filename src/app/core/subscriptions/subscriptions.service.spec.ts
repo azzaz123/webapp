@@ -5,7 +5,6 @@ import { UserService } from '../user/user.service';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { UUID } from 'angular2-uuid';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { HttpServiceNew } from '../http/http.service.new';
 import { HttpModuleNew } from '../http/http.module.new';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
@@ -14,11 +13,12 @@ import { SubscriptionsResponse } from './subscriptions.interface';
 import { SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
+import { HttpClient } from '@angular/common/http';
 
 describe('SubscriptionsService', () => {
 
   let service: SubscriptionsService;
-  let http: HttpServiceNew;
+  let http: HttpClient;
   let httpMock: HttpTestingController;
   let userService: UserService;
   let featureflagService: FeatureflagService;
@@ -63,7 +63,7 @@ describe('SubscriptionsService', () => {
       ]
     });
     service = TestBed.get(SubscriptionsService);
-    http = TestBed.get(HttpServiceNew);
+    http = TestBed.get(HttpClient);
     httpMock = TestBed.get(HttpTestingController);
     userService = TestBed.get(UserService);
     featureflagService = TestBed.get(FeatureflagService);
