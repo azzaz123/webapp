@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { HttpServiceNew } from '../http/http.service.new';
-import { IDictionary } from '../../shared/models/dictionary.interface';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 export interface FeatureFlag {
   name: string;
@@ -22,7 +22,7 @@ export class FeatureflagService {
 
   private storedFeatureFlags: FeatureFlag[] = [];
 
-  constructor(private http: HttpServiceNew) {
+  constructor(private http: HttpClient) {
   }
 
   public getFlag(name: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
@@ -31,27 +31,18 @@ export class FeatureflagService {
     if (storedFeatureFlag && cache) {
       return of(storedFeatureFlag).map(sff => sff.isActive);
     } else {
-      const params: IDictionary[] = [
-        {
-          key: 'featureFlags',
-          value: name
-        },
-        // Prevent browser cache with timestamp parameter
-        {
-          key: 'timestamp',
-          value: new Date().getTime()
+      return this.http.get(environment.baseUrl + FEATURE_FLAG_ENDPOINT, { params: {
+        featureFlags: name.toString(),
+        timestamp: new Date().getTime().toString() // Prevent browser cache with timestamp parameter
+      }})
+      .map(response => {
+        const featureFlag = response[0] ? { name, isActive: response[0].active } : { name, isActive: false };
+        const alreadyStored = this.storedFeatureFlags.find(sff => sff.name === name);
+        if (!alreadyStored) {
+          this.storedFeatureFlags.push(featureFlag);
         }
-      ];
-
-      return this.http.get(FEATURE_FLAG_ENDPOINT, params)
-        .map(response => {
-          const featureFlag = response[0] ? { name, isActive: response[0].active } : { name, isActive: false };
-          const alreadyStored = this.storedFeatureFlags.find(sff => sff.name === name);
-          if (!alreadyStored) {
-            this.storedFeatureFlags.push(featureFlag);
-          }
-          return featureFlag.isActive;
-        });
+        return featureFlag.isActive;
+      });
     }
 
   }
