@@ -48,7 +48,7 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
-import { HttpServiceNew } from '../http/http.service.new';
+import { HttpClient } from '@angular/common/http';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -86,7 +86,7 @@ export class ItemService extends ResourceService {
 
   constructor(
     http: HttpService,
-    private httpNew: HttpServiceNew,
+    private httpNew: HttpClient,
     private i18n: I18nService,
     private trackingService: TrackingService,
     private eventService: EventService) {
@@ -770,12 +770,14 @@ export class ItemService extends ResourceService {
   }
 
   public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemByCategoryResponse[]> {
-    return this.httpNew.get(MINES_BY_CATEGORY_ENDPOINT, [
-      { key: 'status', value: status },
-      { key: 'init', value: init },
-      { key: 'end', value: init + offset },
-      { key: 'category_id', value: categoryId }
-    ])
+    return this.httpNew.get<any>(MINES_BY_CATEGORY_ENDPOINT, {
+      params: {
+        status,
+        init: init.toString(),
+        end: (init + offset).toString(),
+        category_id: categoryId.toString()
+      }
+    })
     .flatMap(res => {
       if (res.length > 0) {
         return this.recursiveMinesByCategory(init + offset, offset, categoryId, status)
