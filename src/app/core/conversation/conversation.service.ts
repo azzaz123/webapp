@@ -556,6 +556,9 @@ export class ConversationService extends LeadService {
         }
       }
     }
+    if (!message.fromSelf) {
+      this.remoteConsole.sendPresentationMessageTimeout(message.id);
+    }
   }
 
   private updateConversation(message: Message, conversation: Conversation): Observable<Conversation> {

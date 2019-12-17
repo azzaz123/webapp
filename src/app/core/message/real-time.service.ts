@@ -20,6 +20,7 @@ import {
 } from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
 import { filter } from 'rxjs/operators';
+import { InboxMessage } from '../../chat/model';
 
 @Injectable()
 export class RealTimeService {
@@ -88,7 +89,7 @@ export class RealTimeService {
     this.xmpp.sendMessage(conversation, body);
   }
 
-  public resendMessage(conversation: Conversation, message: Message) {
+  public resendMessage(conversation: Conversation | InboxConversation, message: Message | InboxMessage) {
     this.xmpp.resendMessage(conversation, message);
   }
 
