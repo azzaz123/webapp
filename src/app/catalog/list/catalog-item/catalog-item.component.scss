@@ -133,6 +133,7 @@ $feature-button-width: 170px;
       transition: all 0.2s ease;
       background-color: $white;
       margin-right: $spacing-s;
+      padding: 0;
       mat-icon /deep/ {
         svg g g,
         svg path {
@@ -258,6 +259,10 @@ $feature-button-width: 170px;
     .few-days {
       color: $magenta-main;
     }
+  }
+
+  @include media-breakpoint-down(sm) {
+    width: 100%;
   }
 }
 

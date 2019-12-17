@@ -134,6 +134,9 @@ $modal-border-radius: 0.3rem;
     border-radius: $border-radius;
     width: $modal-width !important;
     max-width: unset;
+    @include media-breakpoint-down(sm) {
+      width: 100% !important;
+    }
   }
 }
 

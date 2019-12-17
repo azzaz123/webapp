@@ -696,6 +696,7 @@
   <msg id="157339153102985723"><source>app/tutorial/tutorial.component.html:48</source>Here you can see statistics related with visualizations, chats and calls received from your items. Also you can see the impact when you have featured cars in the metrics.</msg>
   <msg id="9086693090800324810"><source>app/tutorial/tutorial.component.html:52</source>From here you can view your items, you can choose to upload more, active your items or edit and feature the items you have for sale.</msg>
   <msg id="5119878065843230741"><source>app/tutorial/tutorial.component.html:60</source>Here you can manage and see the information related with your calls.</msg>
+  <msg id="3749157863216929849"><source>app/upload/edit/edit.component.html:4</source>Back to catalog</msg>
   <msg id="1526908168288421707"><source>app/upload/category-selector/category-selector.component.html:4</source>What will you list?</msg>
   <msg id="4890891474174650184"><source>app/upload/category-selector/category-selector.component.html:9</source>Set the product type</msg>
   <msg id="7926180204931135155"><source>app/upload/category-selector/category-selector.component.html:19</source>Something I don&apos;t use anymore</msg>

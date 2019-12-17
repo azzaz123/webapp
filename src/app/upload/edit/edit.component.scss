@@ -1,7 +1,14 @@
 @import "~style/common";
 
 .container {
-  width: $upload-form-width;
+  max-width: $upload-form-width;
+}
+
+.catalog-back {
+  color: $blue-grey-1;
+  mat-icon {
+    width: 18px;
+  }
 }
 
 .upload-close-icon {
