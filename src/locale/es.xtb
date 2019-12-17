@@ -938,6 +938,9 @@
   <translation id="1355341408067809538">No, quiero cancelarla</translation>
   <translation id="6307606007112781268">Mantener suscripción</translation>
   <translation id="9098152328983851571">Comprar</translation>
+  <translation id="2709150569630268">Tu dispositivo tiene una pantalla pequeña para el contenido
+    <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+    Pruébalo en la app o en un ordenador</translation>
   <translation id="3356276673477156226">wallapop PRO</translation>
   <translation id="8720496095668778360">Límite sin suscripción: <ph name="INTERPOLATION"><ex>{{subscription.current_limit}}</ex></ph></translation>
   <translation id="8079107042901096560">La suscripción finaliza el <ph name="INTERPOLATION"><ex>{{subscription.subscribed_until | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
