@@ -13,15 +13,13 @@ import { UserService } from '../../core/user/user.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { ItemService } from '../../core/item/item.service';
-import { PaymentService } from '../../core/payments/payment.service';
+import { ItemService, ITEM_STATUS } from '../../core/item/item.service';
 import { OrderEvent } from '../../catalog/list/selected-items/selected-product.interface';
 import { UploadConfirmationModalComponent } from '../../catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { ItemChangeEvent } from '../../catalog/list/catalog-item/item-change.interface';
 import { FinancialCard } from '../../core/payments/payment.interface';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Order, Product } from '../../core/item/item-response.interface';
-import { StripeService } from '../../core/stripe/stripe.service';
 
 @Component({
   selector: 'tsl-catalog-pro-list',
@@ -34,9 +32,8 @@ export class CatalogProListComponent implements OnInit {
   public loading = true;
   public end: boolean;
   public isUrgent = false;
-  public isRedirect = false;
   public orderBy: any[];
-  public selectedStatus = 'active';
+  public selectedStatus: string = ITEM_STATUS.ACTIVE;
   public sortBy = 'date_desc';
   public counters: Counters;
   private term: string;
@@ -48,7 +45,6 @@ export class CatalogProListComponent implements OnInit {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public subscriptionPlan: number;
   private uploadModalRef: NgbModalRef;
-  public isStripe: boolean;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
 
@@ -60,14 +56,9 @@ export class CatalogProListComponent implements OnInit {
               private userService: UserService,
               private errorService: ErrorsService,
               private router: Router,
-              private route: ActivatedRoute,
-              private paymentService: PaymentService,
-              private stripeService: StripeService) { }
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
-      this.isStripe = val;
-    });
     this.getCounters();
     this.getItems();
     const sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
@@ -95,9 +86,6 @@ export class CatalogProListComponent implements OnInit {
         this.getItems();
       });
       this.route.params.subscribe((params: any) => {
-        if (!params.urgent) {
-          this.setRedirectToTPV(false);
-        }
         if (params && params.code) {
           this.cache = false;
           this.getItems();
@@ -141,7 +129,6 @@ export class CatalogProListComponent implements OnInit {
             this.uploadModalRef = null;
             if (orderEvent) {
               this.isUrgent = true;
-              this.isRedirect = !this.getRedirectToTPV();
               this.feature(orderEvent);
             }
           }, () => {
@@ -155,21 +142,18 @@ export class CatalogProListComponent implements OnInit {
           }
         } else if (params && params.urgent) {
           this.isUrgent = true;
-          this.isRedirect = !this.getRedirectToTPV();
-          if (!this.getRedirectToTPV()) {
-            setTimeout(() => {
-              this.getUrgentPrice(params.itemId);
-            }, 3000);
-          }
+          setTimeout(() => {
+            this.getUrgentPrice(params.itemId);
+          }, 3000);
         } else if (params && params.updated) {
           this.cache = false;
           if (params.onHold) {
-            this.selectedStatus = 'pending';
+            this.selectedStatus = ITEM_STATUS.PENDING;
           }
           this.getItems();
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
-          this.errorService.i18nError('productCreated', ' ¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.');
+          this.errorService.i18nError('productCreated', 'contactMotor');
         } else if (params && params.sold && params.itemId) {
           this.itemService.get(params.itemId).subscribe((item: Item) => {
             this.soldButton.item = item;
@@ -178,7 +162,7 @@ export class CatalogProListComponent implements OnInit {
               this.eventService.emit('itemChanged');
               this.itemChanged({
                 item: item,
-                action: 'sold'
+                action: ITEM_STATUS.SOLD
               });
               this.eventService.emit(EventService.ITEM_SOLD, item);
             });
@@ -199,7 +183,7 @@ export class CatalogProListComponent implements OnInit {
       this.cache = true;
       return this.active;
     }).subscribe((items: Item[]) => {
-      if (this.selectedStatus === 'sold') {
+      if (this.selectedStatus === ITEM_STATUS.SOLD) {
         this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {total_products: items.length});
       } else {
         this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, {total_products: items.length});
@@ -270,20 +254,11 @@ export class CatalogProListComponent implements OnInit {
 
   public feature(orderEvent: OrderEvent) {
     const orderId: string = UUID.UUID();
-    this.itemService.purchaseProducts(orderEvent.order, orderId, this.isStripe).subscribe((failedProducts: string[]) => {
+    this.itemService.purchaseProducts(orderEvent.order, orderId).subscribe((failedProducts: string[]) => {
       if (failedProducts && failedProducts.length) {
         this.errorService.i18nError('bumpError');
       } else {
-        if (this.isStripe) {
-          this.chooseCreditCard(orderId, orderEvent.total);
-        } else {
-          this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
-            this.chooseCreditCard(orderId, orderEvent.total, financialCard);
-          }, () => {
-            this.setRedirectToTPV(true);
-            this.sabadellSubmit.emit(orderId);
-          });
-        }
+        this.chooseCreditCard(orderId, orderEvent.total);
       }
     }, () => {
       this.deselect();
@@ -295,41 +270,20 @@ export class CatalogProListComponent implements OnInit {
     modalRef.componentInstance.financialCard = financialCard;
     modalRef.componentInstance.total = total;
     modalRef.componentInstance.orderId = orderId;
-    if (!this.isStripe) {
-      this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, {select_card: financialCard.id});
-    }
     modalRef.result.then((result: string) => {
       if (result === undefined) {
         this.isUrgent = false;
         localStorage.removeItem('transactionType');
-        this.isRedirect = !this.getRedirectToTPV();
         this.deselect();
         setTimeout(() => {
           this.router.navigate(['catalog/list']);
         }, 1000);
-      } else if (result === 'new') {
-        this.setRedirectToTPV(true);
-        this.sabadellSubmit.emit(orderId);
       } else {
-        if (this.isStripe) {
-          const code = result === 'success' ? 200 : -1;
-          this.deselect();
-          setTimeout(() => {
-            this.router.navigate(['catalog/list', {code}]);
-          }, 1000);
-        } else {
-          this.paymentService.pay(orderId).subscribe(() => {
-            this.deselect();
-            setTimeout(() => {
-              this.router.navigate(['catalog/list', {code: 200}]);
-            }, 1000);
-          }, () => {
-            this.deselect();
-            setTimeout(() => {
-              this.router.navigate(['catalog/list', {code: -1}]);
-            }, 1000);
-          });
-        }
+        const code = result === 'success' ? 200 : -1;
+        this.deselect();
+        setTimeout(() => {
+          this.router.navigate(['catalog/list', {code}]);
+        }, 1000);
       }
     }, () => {
       this.deselect();
@@ -344,9 +298,9 @@ export class CatalogProListComponent implements OnInit {
   }
 
   private setNumberOfProducts() {
-    if (this.selectedStatus === 'sold') {
+    if (this.selectedStatus === ITEM_STATUS.SOLD) {
       this.numberOfProducts = this.counters.sold;
-    } else if (this.selectedStatus === 'published') {
+    } else if (this.selectedStatus === ITEM_STATUS.PUBLISHED) {
       this.numberOfProducts = this.counters.publish;
     }
   }
@@ -355,15 +309,6 @@ export class CatalogProListComponent implements OnInit {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
       this.counters = userStats.counters;
     });
-  }
-
-  private setRedirectToTPV(state: boolean): void {
-    localStorage.setItem('redirectToTPV', state.toString());
-    this.isRedirect = state;
-  }
-
-  private getRedirectToTPV(): boolean {
-    return localStorage.getItem('redirectToTPV') === 'true';
   }
 
   private getUrgentPrice(itemId: string): void {

@@ -51,16 +51,6 @@ describe('PaymentService', () => {
     userService = TestBed.get(UserService);
   });
 
-  describe('pay', () => {
-    it('should call endpoint', () => {
-      spyOn(http, 'post').and.callThrough();
-      service.pay('1').subscribe();
-      expect(http.post).toHaveBeenCalledWith('api/v3/payments/c2b/sabadell/tpv/pay', {
-        order_id: '1'
-      });
-    });
-  });
-
   describe('paymentIntents', () => {
     it('should call endpoint', () => {
       spyOn(http, 'post').and.callThrough();
@@ -109,19 +99,6 @@ describe('PaymentService', () => {
       spyOn(http, 'delete').and.returnValue(Observable.of(new Response(res)));
       service.deleteFinancialCard().subscribe();
       expect(http.delete).toHaveBeenCalledWith('api/v3/payments/c2b/financial-card');
-    });
-  });
-
-  describe('getSabadellInfo', () => {
-    let response: SabadellInfoResponse;
-    it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(SABADELL_RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      service.getSabadellInfo('1').subscribe((r: SabadellInfoResponse) => {
-        response = r;
-      });
-      expect(http.get).toHaveBeenCalledWith('api/v3/payments/c2b/sabadell/tpv/params', {orderId: '1'});
-      expect(response).toEqual(SABADELL_RESPONSE);
     });
   });
 

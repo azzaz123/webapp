@@ -71,10 +71,6 @@ export class StripeService {
     })
   }
 
-  public isPaymentMethodStripe$(): Observable<boolean> {
-    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.STRIPE);
-  }
-
   public getCards(): Observable<FinancialCard[]> {
     if (this.financialCards) {
       return Observable.of(this.financialCards);

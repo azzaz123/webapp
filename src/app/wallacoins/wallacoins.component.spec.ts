@@ -24,7 +24,6 @@ import { UserService } from '../core/user/user.service';
 import { MOCK_USER, USER_ID } from '../../tests/user.fixtures.spec';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
 import Spy = jasmine.Spy;
-import { StripeService } from '../core/stripe/stripe.service';
 import { WEB_PAYMENT_EXPERIMENT_TYPE, SplitTestService, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT } from '../core/tracking/split-test.service';
 
 describe('WallacoinsComponent', () => {
@@ -35,7 +34,6 @@ describe('WallacoinsComponent', () => {
   let router: Router;
   let eventService: EventService;
   let userService: UserService;
-  let stripeService: StripeService;
   let splitTestService: SplitTestService;
   const CREDITS_PACKS: Pack[] = createWallacoinsPacksFixture().wallacoins;
   const PERKS: PerksModel = createPerksModelFixture();
@@ -101,13 +99,6 @@ describe('WallacoinsComponent', () => {
         }
         },
         {
-          provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return Observable.of(true);
-            }
-        }
-        },
-        {
           provide: SplitTestService, useValue: {
             getVariable() {
               return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
@@ -130,7 +121,6 @@ describe('WallacoinsComponent', () => {
     modalService = TestBed.get(NgbModal);
     router = TestBed.get(Router);
     eventService = TestBed.get(EventService);
-    stripeService = TestBed.get(StripeService);
     splitTestService = TestBed.get(SplitTestService);
   });
 

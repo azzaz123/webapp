@@ -51,9 +51,6 @@ describe('AddNewSubscriptionModalComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return Observable.of(true);
-            },
             addNewCard() {
               return Observable.of(200);
             },
@@ -104,26 +101,6 @@ describe('AddNewSubscriptionModalComponent', () => {
     component.card = STRIPE_CARD;
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     fixture.detectChanges();
-  });
-
-  describe('ngOnInit', () => {
-    it('should call stripeService.isPaymentMethodStripe$', fakeAsync(() => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-      
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    }));
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
-    });
-
   });
 
   describe('close', () => {

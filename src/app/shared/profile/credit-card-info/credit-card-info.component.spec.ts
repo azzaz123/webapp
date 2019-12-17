@@ -50,9 +50,6 @@ describe('CreditCardInfoComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return Observable.of(true);
-            },
             deleteCard() {
               return Observable.of({})
             }

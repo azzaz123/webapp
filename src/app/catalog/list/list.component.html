@@ -71,7 +71,6 @@
         *ngFor="let item of items"
         class="col-md-12" 
         [item]="item"
-        [paymentMethod]="isStripe ? 'STRIPE' : 'SABADELL'"
         (itemChange)="itemChanged($event)"
         (purchaseListingFee)="purchaseListingFee($event)"
       >
@@ -86,11 +85,9 @@
   [items]="items"
   [selectedSubscriptionSlot]="selectedSubscriptionSlot"
   [selectedStatus]="selectedStatus"
-  [isStripe]="isStripe"
   (selectedAction)="onAction($event)"
 >
 </tsl-selected-items>
 
-<tsl-sabadell [hidden]="isStripe" [submit]="sabadellSubmit"></tsl-sabadell>
 <tsl-bump-tutorial></tsl-bump-tutorial>
 <button [hidden]="true" tslItemSold></button>

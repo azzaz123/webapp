@@ -21,7 +21,6 @@ export class CreditCardModalComponent implements OnInit {
   public savedCard = true;
   public selectedCard = false;
   public card: any;
-  public isStripe: boolean;
   public loading: boolean;
 
   constructor(public activeModal: NgbActiveModal,
@@ -30,13 +29,8 @@ export class CreditCardModalComponent implements OnInit {
               private eventService: EventService) { }
 
   ngOnInit() {
-    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
-      this.isStripe = val;
-      if (this.isStripe) {
-        this.eventService.subscribe('paymentResponse', (response) => {
-          this.managePaymentResponse(response);
-        });
-      }
+    this.eventService.subscribe('paymentResponse', (response) => {
+      this.managePaymentResponse(response);
     });
   }
 

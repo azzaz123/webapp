@@ -151,11 +151,6 @@ describe('ListComponent', () => {
         },
         {
           provide: PaymentService, useValue: {
-            getFinancialCard() {
-            },
-            pay() {
-              return Observable.of('');
-            },
             getCreditInfo() {
               return Observable.of({
                 currencyName: CURRENCY,
@@ -191,13 +186,6 @@ describe('ListComponent', () => {
             }
           }
         },
-        {
-          provide: StripeService, useValue: {
-          isPaymentMethodStripe$() {
-            return Observable.of(true)
-          }
-        }
-        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -226,24 +214,6 @@ describe('ListComponent', () => {
   });
 
   describe('ngOnInit', () => {
-
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
-    });
-
     describe('getCreditInfo', () => {
       it('should set the creditInfo', () => {
         const creditInfo: CreditInfo = {
@@ -300,7 +270,6 @@ describe('ListComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, { windowClass: 'modal-standard' });
       expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
       expect(component.isUrgent).toBe(false);
-      expect(component.isRedirect).toBe(false);
     }));
 
     it('should open toastr', fakeAsync(() => {
@@ -326,7 +295,6 @@ describe('ListComponent', () => {
       tick(3000);
 
       expect(component.isUrgent).toBe(true);
-      expect(component.isRedirect).toBe(true);
       expect(localStorage.getItem).toHaveBeenCalledWith('redirectToTPV');
       expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT, 'urgent');
     }));
@@ -339,8 +307,7 @@ describe('ListComponent', () => {
 
       component.ngOnInit();
       tick();
-
-      expect(component.isRedirect).toBe(false);
+      
       expect(localStorage.setItem).toHaveBeenCalledWith('redirectToTPV', 'false');
     }));
 

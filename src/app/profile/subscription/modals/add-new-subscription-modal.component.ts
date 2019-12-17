@@ -24,7 +24,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   public savedCard = true;
   public selectedCard = false;
   public selectedTier: Tier;
-  public isStripe: boolean;
   public loading = false;
   public isPaymentError = false;
   public isRetryInvoice = false;
@@ -47,15 +46,11 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   ngOnInit() {
     this.loaded = true;
     this.selectedTier = this.subscription.selected_tier;
-    
-    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
-      this.isStripe = val;
-      if (this.isStripe) {
-        this.eventService.subscribe('paymentActionResponse', (response) => {
-          this.managePaymentResponse(response);
-        });
-      }
+    this.eventService.subscribe('paymentActionResponse', (response) => {
+      this.managePaymentResponse(response);
     });
+      
+   
   }
 
   public close() {
