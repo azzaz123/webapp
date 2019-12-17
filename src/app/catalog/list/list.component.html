@@ -14,10 +14,10 @@
         <h1 class="header-title">
           <span class="d-none d-md-block" i18n>Your products</span>
           <div class="d-md-none flex-column">
-            <div class="mb-2" i18n>{{user.microName}}</div>
+            <div class="mb-2">{{user.microName}}</div>
             <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
-            <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1">Edit</button>
-            <button (click)="userService.logout()" class="edit-profile-btn">Logout</button>
+            <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n>Edit</button>
+            <button (click)="userService.logout()" class="edit-profile-btn" i18n>Logout</button>
           </div>
           <span class="badge badge-pro" *ngIf="userService?.user?.featured || subscriptionSlots.length !== 0">
             <mat-icon svgIcon="pro-seal"></mat-icon>
@@ -43,7 +43,7 @@
         <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
         <span *ngIf="numberOfProducts === 1" i18n>product</span>
       </p>
-      <a class="d-flex justify-content-end d-md-none" [routerLink]="['/profile/info']" i18n>
+      <a class="d-flex justify-content-end d-md-none" [routerLink]="['/profile/info']">
         <tsl-user-avatar [user]="user" size="80"></tsl-user-avatar>
       </a>
     </div>

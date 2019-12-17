@@ -689,7 +689,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getItems();
   }
 
-  public getUserInfo() {
+  private getUserInfo() {
     this.userService.me().subscribe(user => {
       this.user = user;
       this.userService.getInfo(user.id).subscribe(info => {
