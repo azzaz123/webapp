@@ -513,6 +513,18 @@ describe('ListComponent', () => {
 
       expect(component.selectedItems).toEqual([ITEMS[0], ITEMS[1]]);
     });
+
+    it('should get user information', () => {
+      component.ngOnInit();
+
+      expect(component.user).toEqual(MOCK_USER);
+    });
+
+    it('should get user scoring', () => {
+      component.ngOnInit();
+
+      expect(component.userScore).toEqual(USER_INFO_RESPONSE.scoring_stars);
+    });
   });
 
   describe('getItems', () => {
