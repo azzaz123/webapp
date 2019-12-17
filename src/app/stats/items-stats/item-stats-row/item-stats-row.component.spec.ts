@@ -74,7 +74,6 @@ describe('ItemStatsRowComponent', () => {
       component.ngOnInit();
 
       expect(itemStatsService.getStatistics).toHaveBeenCalledWith(MOCK_ITEM_V3.id);
-      expect(component.statsData).toEqual(ITEM_STATISTIC_RESPONSE);
     });
 
     it('should call getCounters and set it', () => {
@@ -88,6 +87,21 @@ describe('ItemStatsRowComponent', () => {
       expect(component.item.views).toBe(ITEM_VIEWS);
       expect(component.item.favorites).toBe(ITEM_FAVORITES);
       expect(component.item.conversations).toBe(ITEM_CONVERSATIONS);
+    });
+
+    it('should now show the current day stats', () => {
+      let today = new Date();
+      today.setUTCHours(0,0,0,0);
+      const ITEM_STATISTIC_RESPONSE_V2 = ITEM_STATISTIC_RESPONSE;
+      ITEM_STATISTIC_RESPONSE_V2.entries.push({
+        'date': today.toString(),
+        'values': {'favs': 95, 'views': 37, 'chats': 63}
+      })
+      spyOn(itemStatsService, 'getStatistics').and.returnValue(Observable.of(ITEM_STATISTIC_RESPONSE_V2));
+
+      component.ngOnInit();
+
+      expect(component.statsData).toEqual(ITEM_STATISTIC_RESPONSE);
     });
   });
 

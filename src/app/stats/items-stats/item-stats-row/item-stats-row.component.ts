@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Item } from '../../../core/item/item';
 import { ItemStatsService } from './item-stats-graph/item-stats.service';
-import { ItemStatisticFullResponse } from './item-stats-graph/item-stats-response.interface';
+import { ItemStatisticFullResponse, ItemStatisticEntriesResponse } from './item-stats-graph/item-stats-response.interface';
 import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemCounters } from '../../../core/item/item-response.interface';
@@ -74,7 +74,8 @@ export class ItemStatsRowComponent implements OnInit {
   ngOnInit() {
     this.link = this.item.getUrl(this.subdomain);
     this.itemStatsService.getStatistics(this.item.id).subscribe((response: ItemStatisticFullResponse) => {
-      this.statsData = response;
+      this.statsData = { entries: [] };
+      this.statsData.entries = this.removeCurrentDay(response);
       this.noData = every(response.entries, (entry) => !entry.values || isEmpty(entry.values));
     });
     if (this.item.views === 0 || this.item.favorites === 0) {
@@ -93,4 +94,9 @@ export class ItemStatsRowComponent implements OnInit {
     }
   }
 
+  private removeCurrentDay(stats: ItemStatisticFullResponse): ItemStatisticEntriesResponse[] {
+    let today = new Date();
+    today.setUTCHours(0,0,0,0);
+    return stats.entries.filter(stat => stat.date !== today.getTime().toString());
+  }
 }

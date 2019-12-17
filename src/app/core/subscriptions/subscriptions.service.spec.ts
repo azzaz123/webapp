@@ -13,6 +13,7 @@ import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { SubscriptionsResponse } from './subscriptions.interface';
 import { SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
+import { AccessTokenService } from '../http/access-token.service';
 
 describe('SubscriptionsService', () => {
 
@@ -30,6 +31,11 @@ describe('SubscriptionsService', () => {
       imports: [HttpClientTestingModule, HttpModuleNew],
       providers: [
         SubscriptionsService,
+        {
+          provide: AccessTokenService, useValue: {
+            accessToken: 'ACCESS_TOKEN'
+          }
+        },
         {
           provide: UserService, useValue: {
             hasPerm() {
@@ -50,9 +56,9 @@ describe('SubscriptionsService', () => {
         {
           provide: CategoryService, useValue: {
             getCategories() {
-                return Observable.of(CATEGORY_DATA_WEB);
-              }
+              return Observable.of(CATEGORY_DATA_WEB);
             }
+          }
         },
       ]
     });
@@ -192,5 +198,5 @@ describe('SubscriptionsService', () => {
   afterAll(() => {
     TestBed.resetTestingModule();
   });
-  
+
 });

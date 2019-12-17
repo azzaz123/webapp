@@ -12,6 +12,7 @@ import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { StatisticsService } from './stats-graph/statistics.service';
 import { SelectModule } from 'ng-select';
 import { FormsModule } from '@angular/forms';
+import { ChatModule } from '../chat/chat.module';
 
 @NgModule({
   imports: [
@@ -24,9 +25,13 @@ import { FormsModule } from '@angular/forms';
     NgbTooltipModule,
     AmChartsModule,
     SelectModule,
-    FormsModule
+    FormsModule,
+    ChatModule
   ],
   declarations: [dashboardRoutedComponents, CallComponent, StatsGraphComponent],
-  providers: [StatisticsService]
+  providers: [
+    StatisticsService
+  ]
 })
-export class DashboardModule { }
+export class DashboardModule {
+}

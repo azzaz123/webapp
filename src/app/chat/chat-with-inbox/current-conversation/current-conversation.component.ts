@@ -83,12 +83,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
         this.isLoadingMoreMessages = false;
         this.currentConversation = conversation;
       });
-
-    this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation: InboxConversation) => {
-      if (conversation !== this.currentConversation) {
-        this.currentConversation = conversation;
-      }
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -200,7 +194,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
 
   public archiveConversation(): void {
     this.modalService.open(ArchiveInboxConversationComponent).result.then(() => {
-      this.conversationService.archive(this.currentConversation).subscribe(() => {
+      this.conversationService.archive$(this.currentConversation).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
         this.currentConversation = null;
       });
