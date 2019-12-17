@@ -5,9 +5,8 @@
 @import '~web-styleguide/scss/fonts';
 
 html, body {
-  height: 100%;
-  overflow: hidden;
   font-size: $font-size-base-walla;
+  height: 100%;
 }
 
 body {
@@ -49,19 +48,17 @@ body {
 }
 
 .page-content {
-  position: absolute;
-  left: $sidebar-width;
-  top: $topbar-height;
-  height: calc(100vh - #{$topbar-height});
-  width: calc(100% - #{$sidebar-width});
-  overflow: auto;
+  padding-left: $sidebar-width;
+  padding-top: $topbar-height;
   background: rgba(236, 239, 241, 0.6);
-  padding: 0 $spacing-xl;
+  min-height: 100%;
+  @include media-breakpoint-down(md) {
+    padding-left: 0;
+    padding-bottom: $tabbar-height;
+  }
   > .container {
-    padding: $spacing-xl $spacing-ms;
-    @-moz-document url-prefix() { // Firefox hack
-      padding: $spacing-xl $spacing-ms;
-    }
+    padding-top: $spacing-xl;
+    padding-bottom: $spacing-xl;
   }
 }
 
@@ -84,12 +81,6 @@ button, input, optgroup, select, textarea {
 
 .page-profile .popover {
   display: none;
-}
-
-@media (min-width: 1200px) {
-  .container {
-    width: 1200px;
-  }
 }
 
 .modal-transparent .modal-dialog .modal-content {

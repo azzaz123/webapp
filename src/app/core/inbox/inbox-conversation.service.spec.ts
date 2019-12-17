@@ -26,6 +26,8 @@ import { HttpModuleNew } from '../http/http.module.new';
 import { environment } from '../../../environments/environment';
 import { uniq } from 'lodash-es';
 import { AccessTokenService } from '../http/access-token.service';
+import { Conversation } from '../conversation/conversation';
+import * as moment from 'moment';
 
 describe('InboxConversationService', () => {
 
@@ -52,6 +54,8 @@ describe('InboxConversationService', () => {
         {
           provide: RealTimeService, useValue: {
             sendRead() {
+            },
+            resendMessage(conversation: Conversation | InboxConversation, message: Message | InboxMessage) {
             }
           }
         },
@@ -113,6 +117,7 @@ describe('InboxConversationService', () => {
   describe('openConversation', () => {
     let conversation: InboxConversation;
     beforeEach(() => {
+      spyOn(service, 'resendPendingMessages');
       spyOn(eventService, 'emit').and.callThrough();
       spyOn(realTime, 'sendRead');
       conversation = CREATE_MOCK_INBOX_CONVERSATION('my-id');
@@ -121,6 +126,7 @@ describe('InboxConversationService', () => {
     it('should emit a CURRENT_CONVERSATION_SET event when called', () => {
       service.openConversation(conversation);
 
+      expect(service.resendPendingMessages).toHaveBeenCalled();
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CURRENT_CONVERSATION_SET, conversation);
     });
 
@@ -129,6 +135,7 @@ describe('InboxConversationService', () => {
 
       service.openConversation(conversation);
 
+      expect(service.resendPendingMessages).toHaveBeenCalled();
       expect(realTime.sendRead).toHaveBeenCalledWith(conversation.user.id, conversation.id);
     });
 
@@ -137,6 +144,7 @@ describe('InboxConversationService', () => {
 
       service.openConversation(conversation);
 
+      expect(service.resendPendingMessages).toHaveBeenCalled();
       expect(realTime.sendRead).not.toHaveBeenCalled();
     });
   });
@@ -681,6 +689,42 @@ describe('InboxConversationService', () => {
       const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/conversations`);
       expect(req.request.method).toEqual('POST');
       expect(req.request.body).toEqual({ item_id: ITEM_ID });
+    });
+  });
+
+  describe('resendPendingMessages', () => {
+    it('should NOT sent SENT SIGNAL if pending message NOT exist', () => {
+      const conversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
+      conversation.messages[conversation.messages.length - 1].status = MessageStatus.RECEIVED;
+      spyOn(realTime, 'resendMessage');
+
+      service.resendPendingMessages(conversation);
+
+      expect(realTime.resendMessage).not.toHaveBeenCalled();
+    });
+
+    it('should sent SENT SIGNAL if has pending message', () => {
+      const conversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
+      const lastMessageIndex = conversation.messages.length - 1;
+      conversation.messages[lastMessageIndex].status = MessageStatus.PENDING;
+      conversation.messages[lastMessageIndex].date = new Date();
+      spyOn(realTime, 'resendMessage');
+
+      service.resendPendingMessages(conversation);
+
+      expect(realTime.resendMessage).toHaveBeenCalled();
+    });
+
+    it('should NOT sent SENT SIGNAL if has pending message and date is longer than 5 days', () => {
+      const conversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
+      const lastMessageIndex = conversation.messages.length - 1;
+      conversation.messages[lastMessageIndex].status = MessageStatus.PENDING;
+      conversation.messages[lastMessageIndex].date = moment(conversation.messages[lastMessageIndex].date).subtract(6, 'days').toDate();
+      spyOn(realTime, 'resendMessage');
+
+      service.resendPendingMessages(conversation);
+
+      expect(realTime.resendMessage).not.toHaveBeenCalled();
     });
   });
 });

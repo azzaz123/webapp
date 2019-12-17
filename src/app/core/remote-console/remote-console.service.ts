@@ -17,8 +17,9 @@ export class RemoteConsoleService implements OnDestroy {
 
   deviceId: string;
   private connectionTimeCallNo = 0;
-  private sendMessageTime = [];
-  private acceptMessageTime = [];
+  private sendMessageTime = new Map();
+  private acceptMessageTime = new Map();
+  private presentationMessageTimeout = new Map();
 
   constructor(private deviceService: DeviceDetectorService, private featureflagService: FeatureflagService,
               private userService: UserService) {
@@ -29,8 +30,9 @@ export class RemoteConsoleService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.sendMessageTime = [];
-    this.acceptMessageTime = [];
+    this.sendMessageTime = new Map();
+    this.acceptMessageTime = new Map();
+    this.presentationMessageTimeout = new Map();
   }
 
   sendConnectionTimeout(userId: string, connectionTime: number): void {
@@ -47,34 +49,46 @@ export class RemoteConsoleService implements OnDestroy {
   }
 
   sendMessageTimeout(messageId: string): void {
-    if (messageId === null) {
-      this.sendMessageTime.push(new Date().getTime());
+    if (!this.sendMessageTime.has(messageId)) {
+      this.sendMessageTime.set(messageId, new Date().getTime());
     } else {
-      if (this.sendMessageTime.length > 0) {
-
-        this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
-          ...commonLog,
-          message_id: messageId,
-          send_message_time: new Date().getTime() - this.sendMessageTime.shift(),
-          metric_type: MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
-        })));
-      }
+      this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
+        ...commonLog,
+        message_id: messageId,
+        send_message_time: new Date().getTime() - this.sendMessageTime.get(messageId),
+        metric_type: MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
+      })));
+      this.sendMessageTime.delete(messageId);
     }
   }
 
   sendAcceptTimeout(messageId: string): void {
-    if (messageId === null) {
-      this.acceptMessageTime.push(new Date().getTime());
+    if (!this.acceptMessageTime.has(messageId)) {
+      this.acceptMessageTime.set(messageId, new Date().getTime());
     } else {
-      if (this.acceptMessageTime.length > 0) {
-        this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
-          ...commonLog,
-          message_id: messageId,
-          send_message_time: new Date().getTime() - this.acceptMessageTime.shift(),
-          metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-          ping_time_ms: navigator['connection']['rtt']
-        })));
-      }
+      this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
+        ...commonLog,
+        message_id: messageId,
+        send_message_time: new Date().getTime() - this.acceptMessageTime.get(messageId),
+        metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
+        ping_time_ms: navigator['connection']['rtt']
+      })));
+      this.acceptMessageTime.delete(messageId);
+    }
+  }
+
+  sendPresentationMessageTimeout(messageId: string): void {
+    if (!this.presentationMessageTimeout.has(messageId)) {
+      this.presentationMessageTimeout.set(messageId, new Date().getTime());
+    } else {
+      this.getCommonLog(this.userService.user.id).subscribe(commonLog => logger.info(JSON.stringify({
+        ...commonLog,
+        message_id: messageId,
+        send_message_time: new Date().getTime() - this.presentationMessageTimeout.get(messageId),
+        metric_type: MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+        ping_time_ms: navigator['connection']['rtt']
+      })));
+      this.presentationMessageTimeout.delete(messageId);
     }
   }
 
@@ -90,14 +104,14 @@ export class RemoteConsoleService implements OnDestroy {
 
   private getCommonLog(userId: string): Observable<{}> {
     return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.INBOX_PROJECTIONS)
-    .map(fetureFlag => {
+    .map((featureFlag: boolean) => {
       const device = this.deviceService.getDeviceInfo();
       return {
         device_id: this.deviceId,
         browser: device.browser.toUpperCase(),
         browser_version: device.browser_version,
         user_id: userId,
-        feature_flag: fetureFlag,
+        feature_flag: featureFlag,
         app_version: APP_VERSION
       };
     });
