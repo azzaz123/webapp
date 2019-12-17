@@ -6,6 +6,7 @@ import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from './financial-card';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT } from '../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-credit-card-info',
@@ -15,6 +16,8 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 export class CreditCardInfoComponent implements OnInit {
   
   public isStripe: boolean;
+  public paymentMethod: WEB_PAYMENT_EXPERIMENT_TYPE;
+  public paymentTypeSabadell = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
   @Input() financialCard: FinancialCard;
   @Output() onDeleteCard: EventEmitter<FinancialCard> = new EventEmitter();
   @Output() onDeleteStripeCard: EventEmitter<FinancialCard> = new EventEmitter();
@@ -23,12 +26,15 @@ export class CreditCardInfoComponent implements OnInit {
               private modalService: NgbModal,
               private stripeService: StripeService,
               private toastr: ToastrService,
-              private i18n: I18nService) { }
+              private i18n: I18nService,
+              private splitTestService: SplitTestService) { }
 
   ngOnInit() {
-    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
-      this.isStripe = val;
-    });
+    this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
+      .subscribe((paymentMethod: number) => {
+        this.paymentMethod = +paymentMethod;
+        this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
+      });
   }
 
   deleteCreditCard() {

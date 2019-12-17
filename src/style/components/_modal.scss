@@ -26,8 +26,8 @@ $modal-border-radius: 0.3rem;
     @include square(30px);
     cursor: pointer;
     position: absolute;
-    right: 20px;
-    top: 20px;
+    right: 10px;
+    top: 10px;
     z-index: 99;
     text-align: left;
     mat-icon {
@@ -157,6 +157,9 @@ $modal-border-radius: 0.3rem;
     width: $modal-width !important;
     max-width: unset;
     overflow: hidden;
+    @include media-breakpoint-down(sm) {
+      width: 100% !important;
+    }
   }
 }
 
@@ -166,7 +169,7 @@ $modal-border-radius: 0.3rem;
     max-width: $modal-width;
   }
   .modal-content {
-    width: $modal-width !important;
+    width: $modal-width;
     max-width: unset;
   }
 }
@@ -387,5 +390,19 @@ $modal-border-radius: 0.3rem;
         }
       }
     }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .modal-dialog {
+    max-height: calc(100% - #{$spacing-xxl});
+  }
+  .modal-content {
+    height: 100%;
+    width: 100% !important;
+    overflow: scroll !important;
+  }
+  .modal-body {
+    width: 100% !important;
   }
 }

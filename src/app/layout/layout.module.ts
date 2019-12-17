@@ -13,6 +13,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { SharedModule } from '../shared/shared.module';
+import { TabbarComponent } from './tabbar/tabbar.component';
 
 @NgModule({
   imports: [
@@ -28,9 +29,10 @@ import { SharedModule } from '../shared/shared.module';
   ],
   exports: [
     TopbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    TabbarComponent
   ],
-  declarations: [TopbarComponent, SuggesterComponent, SidebarComponent],
+  declarations: [TopbarComponent, SuggesterComponent, SidebarComponent, TabbarComponent],
   providers: [GeolocationService, CategoryService, SuggesterService]
 })
 export class LayoutModule {
