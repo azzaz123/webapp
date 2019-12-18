@@ -141,6 +141,30 @@
         color: $negative-main;
       }
     }
+
+    &.shipping-selector {
+      @include media-breakpoint-down(sm) {
+        .selector {
+          .selector-icon {
+            width: calc(100% / 5);
+            background-color: $white;
+          }
+          &.active {
+            .selector-icon {
+              background-color: $white;
+              mat-icon {
+                /deep/ {
+                  svg g,
+                  svg path {
+                    fill: $walla-main;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   .btn-primary,
