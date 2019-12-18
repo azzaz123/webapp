@@ -32,10 +32,8 @@ import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-m
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { ItemFlags } from '../../core/item/item-response.interface';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
-import { StripeService } from '../../core/stripe/stripe.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { HttpModuleNew } from '../../core/http/http.module.new';
@@ -65,11 +63,9 @@ describe('ListComponent', () => {
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   let eventService: EventService;
-  let stripeService: StripeService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
-  const TRANSACTION_SPENT = '50';
   const mockCounters = {
     sold: 7,
     publish: 12
@@ -82,7 +78,6 @@ describe('ListComponent', () => {
       providers: [
         I18nService,
         EventService,
-        StripeService,
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         { provide: CategoryService, useValue: {
@@ -205,7 +200,6 @@ describe('ListComponent', () => {
     errorService = TestBed.get(ErrorsService);
     userService = TestBed.get(UserService);
     eventService = TestBed.get(EventService);
-    stripeService = TestBed.get(StripeService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -295,20 +289,7 @@ describe('ListComponent', () => {
       tick(3000);
 
       expect(component.isUrgent).toBe(true);
-      expect(localStorage.getItem).toHaveBeenCalledWith('redirectToTPV');
       expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT, 'urgent');
-    }));
-
-    it('should set the redirect to false if it is not urgent', fakeAsync(() => {
-      spyOn(localStorage, 'setItem');
-      route.params = Observable.of({
-        urgent: false
-      });
-
-      component.ngOnInit();
-      tick();
-      
-      expect(localStorage.setItem).toHaveBeenCalledWith('redirectToTPV', 'false');
     }));
 
     it('should open the urgent modal if transaction is set as urgent', fakeAsync(() => {

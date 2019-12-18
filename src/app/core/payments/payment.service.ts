@@ -19,6 +19,15 @@ import { PerksModel } from './payment.model';
 import { UserService } from '../user/user.service';
 import { PERMISSIONS } from '../user/user';
 
+export enum PAYMENT_METHOD {
+  STRIPE = 'STRIPE'
+}
+export enum PAYMENT_RESPONSE_STATUS {
+  SUCCEEDED = 'SUCCEEDED',
+  REQUIRES_PAYMENT_METHOD = 'REQUIRES_PAYMENT_METHOD',
+  REQUIRES_ACTION = 'REQUIRES_ACTION'
+}
+
 @Injectable()
 export class PaymentService {
 

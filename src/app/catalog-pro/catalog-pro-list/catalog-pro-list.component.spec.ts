@@ -450,12 +450,11 @@ describe('CatalogProListComponent', () => {
           });
 
           it('should set financialCard and total to componentInstance', () => {
-            expect(componentInstance.financialCard).toEqual(FINANCIAL_CARD);
             expect(componentInstance.total).toBe(10);
           });
 
           it('should call purchaseProducts', () => {
-            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', false);
+            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
           });
         });
       });

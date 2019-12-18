@@ -13,7 +13,6 @@ import { UUID } from 'angular2-uuid';
 import { StripeService } from '../../core/stripe/stripe.service';
 import { EventService } from '../../core/event/event.service';
 import { STRIPE_CARD_OPTION } from '../../../tests/stripe.fixtures.spec';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../core/tracking/split-test.service';
 
 describe('BuyWallacoinsModalComponent', () => {
   let component: BuyWallacoinsModalComponent;
@@ -23,7 +22,6 @@ describe('BuyWallacoinsModalComponent', () => {
   let errorService: ErrorsService;
   let stripeService: StripeService;
   let eventService: EventService;
-  let splitTestService: SplitTestService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -37,37 +35,27 @@ describe('BuyWallacoinsModalComponent', () => {
             },
             i18nError() {
             }
-        }
+         }
         },
         {
           provide: PaymentService, useValue: {
             orderExtrasProPack() {
               return Observable.of({});
-            },
-            pay() {
-              return Observable.of({});
             }
-        }
+          }
         },
         {
           provide: NgbActiveModal, useValue: {
             close() {
             }
-        }
+          }
         },
         {
           provide: StripeService, useValue: {
             getCards() {
               return Observable.of([]);
-            }
-          }
-        },
-        {
-          provide: SplitTestService, useValue: {
-            getVariable() {
-              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
             },
-            track() {}
+            buy() {}
           }
         },
       ],
@@ -92,7 +80,6 @@ describe('BuyWallacoinsModalComponent', () => {
     errorService = TestBed.get(ErrorsService);
     stripeService = TestBed.get(StripeService);
     eventService = TestBed.get(EventService);
-    splitTestService = TestBed.get(SplitTestService);
   });
 
   describe('hasCard', () => {
@@ -141,91 +128,16 @@ describe('BuyWallacoinsModalComponent', () => {
         spyOn(paymentService, 'orderExtrasProPack').and.callThrough();
         spyOn(UUID, 'UUID').and.returnValue('UUID');
         eventId = null;
-        component.sabadellSubmit.subscribe((id: string) => {
-          eventId = id;
-        });
       });
 
       it('should call paymentService orderExtrasProPack method to create a pack order', () => {
-        component.isStripe = false;
-        component.paymentMethod = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
-
         component.checkout();
         
         expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith({
           id: 'UUID',
           packs: ['id'],
-          origin: 'WEB'
-        });
-      });
-
-      describe('if paymentService OrderExtrasProPack is successful', () => {
-        beforeEach(() => {
-          component.isStripe = false;
-          component.paymentMethod = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
-
-          component.checkout();
-        });
-
-        describe('buy method', () => {
-          describe('should call sabadellSubmit emit', () => {
-            it('if there is not financial card', () => {
-              component.hasFinancialCard = null;
-
-              component.checkout();
-
-              expect(eventId).toBe('UUID');
-            });
-
-            it('if the cardtype is new', () => {
-              component.cardType = 'new';
-
-              component.checkout();
-
-              expect(eventId).toBe('UUID');
-            });
-          });
-
-          describe('should call paymentService pay method', () => {
-
-            beforeEach(() => {
-              component.hasFinancialCard = true;
-            });
-
-            it('if there is a financial card and cartype is old', () => {
-              spyOn(paymentService, 'pay').and.callThrough();
-
-              component.checkout();
-
-              expect(paymentService.pay).toHaveBeenCalledWith('UUID');
-            });
-
-            it('should close modal if the payment was ok', () => {
-              spyOn(paymentService, 'pay').and.callThrough();
-              spyOn(activeModal, 'close');
-
-              component.checkout();
-
-              expect(activeModal.close).toHaveBeenCalled();
-            });
-
-            it('should show error if the payment was ko', () => {
-              spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
-              spyOn(errorService, 'i18nError');
-
-              component.checkout();
-
-              expect(errorService.i18nError).toHaveBeenCalledWith('packError');
-            });
-          });
-
-          it('should call Facebook tracking with StartTrail', () => {
-            spyOn(window, 'fbq');
-
-            component.checkout();
-
-            expect(window['fbq']).toHaveBeenCalledWith('track', 'StartTrial');
-          });
+          origin: 'WEB',
+          provider: 'STRIPE'
         });
       });
 
@@ -247,16 +159,7 @@ describe('BuyWallacoinsModalComponent', () => {
   });
 
   describe('getTrackingAttributes', () => {
-
-    it('should return valid object when Sabadell', () => {
-      component.isStripe = false;
-
-      expect(component.getTrackingAttributes()).toEqual({ payment_method: 'SABADELL' });
-    });
-
     it('should return valid object when Stripe', () => {
-      component.isStripe = true;
-
       expect(component.getTrackingAttributes()).toEqual({ payment_method: 'STRIPE' });
     });
 

@@ -8,6 +8,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
+import { PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -29,9 +30,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
   private invoiceId: string;
-  private REQUIRES_PAYMENT_METHOD = 'REQUIRES_PAYMENT_METHOD';
-  private REQUIRES_ACTION = 'REQUIRES_ACTION';
-  private SUCCEEDED = 'SUCCEEDED';
   public loaded: boolean;
   public isStripeCard = true;
 
@@ -82,17 +80,17 @@ export class AddNewSubscriptionModalComponent implements OnInit {
         if (response.status === 202) {
           this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: SubscriptionResponse) => {
             switch(response.payment_status.toUpperCase() ) {
-              case this.REQUIRES_PAYMENT_METHOD: {
+              case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
                 this.isRetryInvoice = true;
                 this.invoiceId = response.latest_invoice_id;
-                this.requestNewPayment({error: { message: this.REQUIRES_PAYMENT_METHOD }});
+                this.requestNewPayment({error: { message: PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD }});
                 break;
               }
-              case this.REQUIRES_ACTION: {
+              case PAYMENT_RESPONSE_STATUS.REQUIRES_ACTION: {
                 this.stripeService.actionPayment(response.payment_secret_key);
                 break;
               }
-              case this.SUCCEEDED: {
+              case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
                 this.paymentSucceeded();
                 break;
               }
@@ -119,16 +117,16 @@ export class AddNewSubscriptionModalComponent implements OnInit {
       if (response.status === 202) {
         this.subscriptionsService.checkRetrySubscriptionStatus().subscribe((response) => {
           switch(response.status.toUpperCase() ) {
-            case this.REQUIRES_PAYMENT_METHOD: {
+            case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
               this.isRetryInvoice = true;
-              this.requestNewPayment({error: { message: this.REQUIRES_PAYMENT_METHOD }});
+              this.requestNewPayment({error: { message: PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD }});
               break;
             }
-            case this.REQUIRES_ACTION: {
+            case PAYMENT_RESPONSE_STATUS.REQUIRES_ACTION: {
               this.stripeService.actionPayment(response.payment_secret_key);
               break;
             }
-            case this.SUCCEEDED: {
+            case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
               this.paymentSucceeded();
               break;
             }
@@ -181,7 +179,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   private managePaymentResponse(paymentResponse) {
     this.loading = false;
     switch(paymentResponse && paymentResponse.toUpperCase()) {
-      case this.SUCCEEDED: {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
         this.paymentSucceeded();
         break;
       }

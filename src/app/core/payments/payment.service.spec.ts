@@ -3,8 +3,7 @@ import { Response, ResponseOptions } from '@angular/http';
 import { PaymentService } from './payment.service';
 import { Observable } from 'rxjs';
 import {
-  BillingInfoResponse, CreditInfo, FinancialCard, Packs, Perks, Products,
-  SabadellInfoResponse
+  BillingInfoResponse, CreditInfo, FinancialCard, Packs, Perks, Products
 } from './payment.interface';
 import {
   BILLING_INFO_RESPONSE,
@@ -14,7 +13,6 @@ import {
   PACK_RESPONSE,
   PERK_RESPONSE,
   PRODUCTS_RESPONSE_PACKS,
-  SABADELL_RESPONSE,
   WALLACOINS_PACKS_RESPONSE
 } from '../../../tests/payments.fixtures.spec';
 import { HttpService } from '../http/http.service';

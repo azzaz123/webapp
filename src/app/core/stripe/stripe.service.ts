@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PaymentService } from '../payments/payment.service';
+import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../payments/payment.service';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { Router } from '@angular/router';
@@ -52,7 +52,7 @@ export class StripeService {
       });
     } else {
       this.paymentService.paymentIntentsConfirm(orderId, paymentId, card.id).subscribe((response: PaymentIntents) => {
-        if (response.status.toUpperCase() !== 'SUCCEEDED') {
+        if (response.status.toUpperCase() !== PAYMENT_RESPONSE_STATUS.SUCCEEDED) {
           this.savedPayment(response.token).then((response: any) => {
             this.handlePayment(response);
           });

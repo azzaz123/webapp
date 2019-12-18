@@ -11,7 +11,6 @@ import { CreditInfo, FinancialCardOption } from '../../../../core/payments/payme
 import { Response } from '@angular/http';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT } from '../../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-buy-product-modal',
@@ -27,38 +26,23 @@ export class BuyProductModalComponent implements OnInit {
   public cardType = 'old';
   public mainLoading: boolean = true;
   public loading: boolean;
-  public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public creditInfo: CreditInfo;
   public card: any;
-  public isStripe: boolean;
   public isStripeCard = true;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
-  public paymentMethod: WEB_PAYMENT_EXPERIMENT_TYPE;
-  public paymentTypeSabadell = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
-  public paymentTypeStripeV1 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1;
-  public paymentTypeStripeV2 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV2;
 
   constructor(private itemService: ItemService,
               public activeModal: NgbActiveModal,
               private paymentService: PaymentService,
               private eventService: EventService,
               private stripeService: StripeService,
-              private errorService: ErrorsService,
-              private splitTestService: SplitTestService) { }
+              private errorService: ErrorsService) { }
 
   ngOnInit() {
-    this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
-    .subscribe((paymentMethod: number) => {
-      this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
-      this.paymentMethod = +paymentMethod;
-      this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
-      if (this.paymentMethod !== this.paymentTypeSabadell) {
-        this.eventService.subscribe('paymentResponse', (response) => {
-          this.managePaymentResponse(response);
-        });
-      }
+    this.eventService.subscribe('paymentResponse', (response) => {
+      this.managePaymentResponse(response);
     });
     this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
       this.item = item;
@@ -111,7 +95,7 @@ export class BuyProductModalComponent implements OnInit {
     this.loading = true;
     const orderId: string = UUID.UUID();
     const creditsToPay = this.usedCredits(this.orderEvent.total);
-    this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId, this.isStripe).subscribe((response: PurchaseProductsWithCreditsResponse) => {
+    this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (response.items_failed && response.items_failed.length) {
         this.activeModal.close('error');
       } else {
@@ -127,12 +111,7 @@ export class BuyProductModalComponent implements OnInit {
         }
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
-          this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
-          if (this.isStripe) {
-            this.buyStripe(orderId);
-          } else {
-            this.buy(orderId);
-          }
+          this.buyStripe(orderId);
         } else {
           this.activeModal.close('success');
         }
@@ -140,19 +119,6 @@ export class BuyProductModalComponent implements OnInit {
     }, (error: Response) => {
       this.activeModal.close('error');
     });
-  }
-
-  private buy(orderId: string) {
-    if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
-      localStorage.setItem('redirectToTPV', 'true');
-      this.sabadellSubmit.emit(orderId);
-    } else {
-      this.paymentService.pay(orderId).subscribe(() => {
-        this.activeModal.close('success');
-      }, () => {
-        this.activeModal.close('error');
-      });
-    }
   }
 
   private buyStripe(orderId: string) {

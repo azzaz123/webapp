@@ -5,6 +5,7 @@ import { UUID } from 'angular2-uuid/index';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { EventService } from '../../../../core/event/event.service';
+import { PAYMENT_RESPONSE_STATUS } from '../../../../core/payments/payment.service';
 
 @Component({
   selector: 'tsl-credit-card-modal',
@@ -14,6 +15,7 @@ import { EventService } from '../../../../core/event/event.service';
 export class CreditCardModalComponent implements OnInit {
 
   public financialCard: FinancialCard;
+  public orderId: string;
   public cardType = 'old';
   public total: number;
   public isStripeCard = true;
@@ -47,7 +49,7 @@ export class CreditCardModalComponent implements OnInit {
 
   private managePaymentResponse(paymentResponse) {
     switch(paymentResponse && paymentResponse.toUpperCase()) {
-      case 'SUCCEEDED': {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
         this.activeModal.close('success');
         break;
       }

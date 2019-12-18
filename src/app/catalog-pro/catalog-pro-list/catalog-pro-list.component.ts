@@ -42,7 +42,6 @@ export class CatalogProListComponent implements OnInit {
   public active = true;
   private cache = false;
   public numberOfProducts: number;
-  public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public subscriptionPlan: number;
   private uploadModalRef: NgbModalRef;
 

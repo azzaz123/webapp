@@ -22,7 +22,6 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { EventService } from '../../../core/event/event.service';
 import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT } from '../../../core/tracking/split-test.service';
 
 describe('CartExtrasProComponent', () => {
   let component: CartExtrasProComponent;
@@ -34,7 +33,6 @@ describe('CartExtrasProComponent', () => {
   let trackingService: TrackingService;
   let stripeService: StripeService;
   let eventService: EventService;
-  let splitTestService: SplitTestService;
 
   const CART_PRO_EXTRAS = new CartProExtras();
   const CART_CHANGE: CartChange = {
@@ -64,9 +62,6 @@ describe('CartExtrasProComponent', () => {
               return Observable.of({});
             },
             getFinancialCard() { },
-            pay() {
-              return Observable.of({status: 201});
-            },
             orderExtrasProPack() {
               return Observable.of({});
             },
@@ -95,14 +90,6 @@ describe('CartExtrasProComponent', () => {
             getCards() {
               return Observable.of(true);
             }
-          }
-        },
-        {
-          provide: SplitTestService, useValue: {
-            getVariable() {
-              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
-            },
-            track() {}
           }
         },
       ],
@@ -134,7 +121,6 @@ describe('CartExtrasProComponent', () => {
     trackingService = TestBed.get(TrackingService);
     stripeService = TestBed.get(StripeService);
     eventService = TestBed.get(EventService);
-    splitTestService = TestBed.get(SplitTestService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     fixture.detectChanges();
   });
@@ -142,8 +128,6 @@ describe('CartExtrasProComponent', () => {
   describe('ngOnInit', () => {
     beforeEach(() => {
       spyOn(cartService, 'createInstance').and.callThrough();
-      spyOn(splitTestService, 'getVariable').and.callThrough();
-      spyOn(splitTestService, 'track');
 
       component.ngOnInit();
     });
@@ -156,13 +140,6 @@ describe('CartExtrasProComponent', () => {
       expect(component.cart).toEqual(CART_PRO_EXTRAS);
     });
 
-    it('should set the paymentMethod to stripe', () => {
-      expect(component.paymentMethod).toBe(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
-    });
-
-    it('should track the payment method experiment', () => {
-      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
-    });
 
   });
 
@@ -271,9 +248,6 @@ describe('CartExtrasProComponent', () => {
         spyOn(paymentService, 'orderExtrasProPack').and.callThrough();
         spyOn(component.cart, 'prepareOrder').and.returnValue(ORDER_CART_EXTRAS_PRO);
         eventId = null;
-        component.sabadellSubmit.subscribe((id: string) => {
-          eventId = id;
-        });
       });
 
       it('should call paymentService orderExtrasProPack method to create a pack order', () => {
@@ -287,96 +261,6 @@ describe('CartExtrasProComponent', () => {
           spyOn(trackingService, 'track');
         });
 
-        describe('tracking', () => {
-          describe('Stripe', () => {
-            it('should call track with valid values', fakeAsync(() => {
-              spyOn(splitTestService, 'getVariable').and.callThrough();
-              
-              component.checkout();
-              tick(2000);
-
-              expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {
-                selected_packs: ORDER_CART_EXTRAS_PRO.packs,
-                payment_method: 'STRIPE'
-              });
-            }));
-          });
-
-          describe('Sabadell', () => {
-            it('should call track with valid values', () => {
-              component.isStripe = false;
-              component.checkout();
-
-              expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {
-                selected_packs: ORDER_CART_EXTRAS_PRO.packs,
-                payment_method: 'SABADELL'
-              });
-            });
-          });
-        });
-
-        describe('buy method', () => {
-          describe('should call sabadellSubmit emit', () => {
-            it('if there is not financial card', fakeAsync(() => {
-              component.hasFinancialCard = null;
-              component.isStripe = false;
-
-              component.checkout();
-              tick(2000);
-
-              expect(eventId).toBe('UUID');
-            }));
-
-            it('if the cardtype is new', fakeAsync(() => {
-              component.cardType = 'new';
-              component.isStripe = false;
-
-              component.checkout();
-              tick(2000);
-
-              expect(eventId).toBe('UUID');
-            }));
-          });
-
-          describe('should call paymentService pay method', () => {
-
-            beforeEach(() => {
-              component.hasFinancialCard = true;
-            });
-
-            it('if there is a financial card and cartype is old', fakeAsync(() => {
-              spyOn(paymentService, 'pay').and.callThrough();
-              component.isStripe = false;
-
-              component.checkout();
-              tick(2000);
-
-              expect(paymentService.pay).toHaveBeenCalledWith(ORDER_CART_EXTRAS_PRO.id);
-            }));
-
-            it('should navigate to catalog with code 200 if the payment was ok', fakeAsync(() => {
-              spyOn(paymentService, 'pay').and.callThrough();
-              spyOn(router, 'navigate').and.callThrough();
-              component.isStripe = false;
-
-              component.checkout();
-              tick(2000);
-
-              expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { code: 201, extras: true }]);
-            }));
-
-            it('should navigate to catalog with code -1 if the payment was ko', fakeAsync(() => {
-              spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
-              spyOn(router, 'navigate').and.callThrough();
-              component.isStripe = false;
-
-              component.checkout();
-              tick(2000);
-
-              expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { code: -1 }]);
-            }));
-          });
-        });
       });
 
       describe('error', () => {

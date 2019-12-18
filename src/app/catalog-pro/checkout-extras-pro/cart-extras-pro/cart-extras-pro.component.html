@@ -45,18 +45,16 @@
   <span class="pull-left" i18n>Total</span>
   <span class="pull-right price">{{cart?.total | customCurrency}}</span>
 </div>
-<tsl-card-selection [hidden]="isStripe" [(ngModel)]="cardType" name="card-type" (hasCard)="hasCard($event)"
-></tsl-card-selection>
-<tsl-stripe-card-selection *ngIf="isStripe && isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+<tsl-stripe-card-selection *ngIf="isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
                            (hasStripeCard)="hasStripeCard($event)"
 ></tsl-stripe-card-selection>
-<div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="isStripe && savedCard" i18n>+ Add another credit card</div>
-<div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="isStripe && showCard && isStripeCard" i18n>Use saved card</div>
-<tsl-stripe-card-element *ngIf="isStripe && showCard" [type]="'cart'" [cart]="cart" (stripeCardToken)="checkout($event)"
+<div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
+<div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && isStripeCard" i18n>Use saved card</div>
+<tsl-stripe-card-element *ngIf="showCard" [type]="'cart'" [cart]="cart" (stripeCardToken)="checkout($event)"
                          (stripeCard)="setCardInfo($event)" [loading]="loading"
 ></tsl-stripe-card-element>
-<tsl-button [disabled]="(!cart?.total || loading) || (isStripe && !selectedCard)"
-            [hidden]="isStripe && !savedCard"
+<tsl-button [disabled]="!cart?.total || loading || !selectedCard"
+            [hidden]="!savedCard"
             *ngIf="!billingInfoFormEnabled"
             [loading]="loading"
             (click)="checkout()"
@@ -64,11 +62,10 @@
 >
   <div class="secure-payment-button">
     <span i18n>Continue to checkout</span>
-    <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
   </div>
 </tsl-button>
-<tsl-button [disabled]="!cart?.total || loading || !billingInfoForm?.valid || (isStripe && !selectedCard)"
-            [hidden]="isStripe && !savedCard"
+<tsl-button [disabled]="!cart?.total || loading || !billingInfoForm?.valid || !selectedCard"
+            [hidden]="!savedCard"
             *ngIf="billingInfoFormEnabled"
             [loading]="loading"
             (click)="saveAndCheckout()"
@@ -76,13 +73,5 @@
 >
   <div class="secure-payment-button">
     <span i18n>Continue to checkout</span>
-    <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
   </div>
 </tsl-button>
-<div class="secure-payment" [hidden]="isStripe">
-  <mat-icon svgIcon="secure-card"></mat-icon>
-  <span i18n>Secure payment through Sabadell</span>
-</div>
-<div class="stripe-payment" *ngIf="paymentMethod === paymentTypeStripeV2">
-  <a href="https://www.stripe.com/es" target="_blank"><mat-icon svgIcon="poweredByStripe"></mat-icon></a>
-</div>
