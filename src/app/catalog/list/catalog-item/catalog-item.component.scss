@@ -296,6 +296,7 @@ $feature-button-width: 170px;
 .info-price,
 .info-title {
   width: 100%;
+  line-height: normal;
   @include text-truncate();
 }
 
