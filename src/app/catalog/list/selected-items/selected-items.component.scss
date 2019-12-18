@@ -26,10 +26,9 @@
   font-size: $font-size-s;
   height: 45px;
   width: 100%;
-  max-width: 200px;
   a {
     white-space: nowrap;
-    width: calc(100% - $spacing-ms);
+    line-height: normal;
     overflow: hidden;
     text-overflow: ellipsis;
   }

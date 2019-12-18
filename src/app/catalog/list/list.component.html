@@ -30,11 +30,11 @@
           sell them faster</h4>
       </div>
     </div>
-    <div class="col info d-none d-md-block">
+    <div class="col info d-none d-md-flex">
       <mat-icon svgIcon="feature"></mat-icon>
       <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
     </div>
-    <div class="col-4 col-md-2 header-numbers">
+    <div class="col-4 col-md-1 header-numbers">
       <p class="header-numbers-top d-none d-md-block">
         <span *ngIf="numberOfProducts === 0 && loading">--</span>
         <span *ngIf="!loading">{{numberOfProducts}}</span>
