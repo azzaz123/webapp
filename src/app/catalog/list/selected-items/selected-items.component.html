@@ -1,61 +1,72 @@
-<div class="SelectedItems">
+<div class="SelectedItems" [ngClass]="{'SelectedItems--selection': itemService.selectedItems.length > 0}">
 
-  <div class="SelectedItems__total-selected" [hidden]="itemService.selectedItems.length === 0" (click)="deselect()">
-    <a>
-      <ng-container [ngPlural]="itemService.selectedItems.length">
-        <ng-template ngPluralCase="=1">
-          <ng-container i18n>1 item selected</ng-container>
-        </ng-template>
-        <ng-template ngPluralCase="other">
-          <ng-container i18n>{{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected
-          </ng-container>
-        </ng-template>
-      </ng-container>
-    </a>
-  </div>
+  <div class="container h-100">
+    <div class="row h-100">
 
-  <div class="SelectedItems__items">
-    <div *ngFor="let item of selectedItems | slice:0:4; let last = last" class="SelectedItems__item">
-      <tsl-item-avatar [item]="item" size="small">
-      </tsl-item-avatar>
-      <span *ngIf="selectedItems.length === 1">{{item.title}}</span>
-      <div *ngIf="selectedItems.length - 3 > 1 && last" class="last">
-        <span>+{{selectedItems.length - 3}}</span>
+      <div class="col-3 d-none d-md-flex align-items-center justify-content-start">
+        <div class="SelectedItems__total-selected" [hidden]="itemService.selectedItems.length === 0"
+          (click)="deselect()">
+          <a class="mr-2">
+            <ng-container [ngPlural]="itemService.selectedItems.length">
+              <ng-template ngPluralCase="=1">
+                <ng-container i18n>1 item selected</ng-container>
+              </ng-template>
+              <ng-template ngPluralCase="other">
+                <ng-container i18n>{{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected
+                </ng-container>
+              </ng-template>
+            </ng-container>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 d-flex align-items-center justify-content-center">
+        <div *ngFor="let item of selectedItems | slice:0:4; let last = last" class="SelectedItems__item">
+          <tsl-item-avatar [item]="item" size="small">
+          </tsl-item-avatar>
+          <span class="SelectedItems__item-title" *ngIf="selectedItems.length === 1">{{item.title}}</span>
+          <div *ngIf="selectedItems.length - 3 > 1 && last" class="last">
+            <span>+{{selectedItems.length - 3}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-5 d-flex align-items-center justify-content-end">
+        <div class="SelectedItems__actions d-flex align-items-center">
+
+          <!-- Delete -->
+          <button class="btn-delete dark" (click)="onClickAction('delete')"
+            [hidden]="itemService.selectedAction === 'feature'" [disabled]="!itemService.selectedItems.length">
+            <mat-icon svgIcon="delete"></mat-icon>
+            <span i18n>Delete</span>
+          </button>
+
+          <!-- Deactivate -->
+          <button class="btn-deactivate dark" *ngIf="selectedSubscriptionSlot && selectedStatus === 'active'"
+            (click)="onClickAction('deactivate')"
+            [hidden]="itemService.selectedAction === 'feature' || (selectedStatus !== 'published' && selectedStatus !== 'active')"
+            [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE"
+            i18n>Deactivate</button>
+
+          <!-- Activate -->
+          <button class="btn-activate" *ngIf="selectedSubscriptionSlot && selectedStatus === 'inactive'"
+            [hidden]="itemService.selectedAction === 'feature' || selectedStatus !== 'inactive'"
+            [disabled]="!itemService.selectedItems.length" (click)="onClickAction('activate')" i18n>Activate</button>
+
+          <!-- Feature -->
+          <div class="SelectedItems__feature d-none d-md-flex flex-column mt-3 ml-4"
+            [hidden]="selectedStatus === 'inactive' || selectedStatus === 'sold' || disableFeatureOption">
+            <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
+              [routerLink]="['/catalog/checkout']" [params]="{ payment_method: isStripe ? 'STRIPE' : 'SABADELL' }"
+              tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE" i18n>Feature</tsl-button>
+            <span class="address mt-1">
+              Avenida Meridiana 89, 08026 Barcelona, España
+            </span>
+          </div>
+
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="SelectedItems__actions">
-
-    <!-- Delete -->
-    <button class="btn-delete dark" (click)="onClickAction('delete')"
-      [hidden]="itemService.selectedAction === 'feature'"
-      [disabled]="!itemService.selectedItems.length">
-      <mat-icon svgIcon="delete"></mat-icon>
-      <span i18n>Delete</span>
-    </button>
-
-    <!-- Deactivate -->
-    <button class="btn-deactivate dark" *ngIf="selectedSubscriptionSlot && selectedStatus === 'active'"
-      (click)="onClickAction('deactivate')" 
-      [hidden]="itemService.selectedAction === 'feature' || (selectedStatus !== 'published' && selectedStatus !== 'active')"
-      [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button>
-
-    <!-- Activate -->
-    <button class="btn-activate" *ngIf="selectedSubscriptionSlot && selectedStatus === 'inactive'"
-      [hidden]="itemService.selectedAction === 'feature' || selectedStatus !== 'inactive'" [disabled]="!itemService.selectedItems.length"
-      (click)="onClickAction('activate')" i18n>Activate</button>
-
-    <!-- Feature -->
-    <div class="SelectedItems__feature" [hidden]="selectedStatus === 'inactive' || selectedStatus === 'sold' || disableFeatureOption">
-      <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
-        [routerLink]="['/catalog/checkout']" [params]="{ payment_method: isStripe ? 'STRIPE' : 'SABADELL' }"
-        tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE" i18n>Feature</tsl-button>
-      <span class="address">
-        Avenida Meridiana 89, 08026 Barcelona, España
-      </span>
-    </div>
-
   </div>
 
 </div>

@@ -21,6 +21,9 @@ import { SharedModule } from '../shared/shared.module';
   ],
   providers: [
     UserReviewService
+  ],
+  exports: [
+    reviewsRoutedComponents
   ]
 })
 export class ReviewsModule { }

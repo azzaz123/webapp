@@ -112,7 +112,7 @@
   <translation id="5529951643694823242" desc="plural" meaning="tab">Vendidos</translation>
   <translation id="464749780222721589">Caducados</translation>
   <translation id="5262427597279775777">1 producto seleccionado</translation>
-  <translation id="3618067650338827326"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
+  <translation id="8061241481597934094"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
   <translation id="8141228329244837517">Subir un producto a mi catálogo</translation>
   <translation id="6946649608831221934">Subir un producto más a mi catálogo</translation>
   <translation id="243983274320667129">Información de tu producto</translation>
@@ -331,7 +331,7 @@
   <translation id="3258601590058086652">¿Tienes prisa para vender tu producto?</translation>
   <translation id="4495547321385209565">Diferencia tu producto durante 7 días en el muro para que sea más fácil de encontrar mediante el filtro "Urge"</translation>
   <translation id="4532380494593950343">Aquí podrás ver y editar los datos de tu perfil</translation>
-  <translation id="1953428607881051577">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
+  <translation id="140771848071043686">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
   <translation id="6938753357996446484">Tus favoritos</translation>
   <translation id="7695212222770955574">Estos son los productos de wallapop que más te gustan</translation>
   <translation id="1339317612974362100">favoritos</translation>
@@ -755,7 +755,7 @@
   <translation id="140684299515781998">No gracias (El coche permanecerá inactivo)</translation>
   <translation id="2652477817167335614">Publica tu coche</translation>
   <translation id="7588966777090643410">Tu coche esta publicado por 60 días. Lo encontrarás en tu catálogo.</translation>
-  <translation id="2368996742348144344">Inactivo</translation>
+  <translation id="7974113370320120814">Inactivo</translation>
   <translation id="2323764505157256373">Reactiva tu producto</translation>
   <translation id="5501995834284128332">Para poder ver estadísticas de tu producto reactívalo para que los demás usuarios lo vean y puedan contactarte.</translation>
   <translation id="495907666381542902">En este momento no tienes destacados disponibles.</translation>
@@ -955,4 +955,5 @@
   <translation id="4504623795614136197">¡Nunca es demasiado tarde! Puedes deshacer la cancelación y seguir disfrutando de los beneficios.</translation>
   <translation id="848453031482663640">Suscríbete ya</translation>
   <translation id="1812379335568847528">Suscripciones</translation>
+  <translation id="3749157863216929849">Volver al catálogo</translation>
 </translationbundle>

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { find } from 'lodash-es';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
@@ -47,7 +47,10 @@ import { FeatureflagService } from '../../core/user/featureflag.service';
 import { FeatureFlagServiceMock, DeviceDetectorServiceMock } from '../../../tests';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
+import { UserReviewService } from '../../reviews/user-review.service';
+import { MOCK_REVIEWS } from '../../../tests/review.fixtures.spec';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { MOCK_USER, USER_INFO_RESPONSE } from '../../../tests/user.fixtures.spec';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -67,6 +70,7 @@ describe('ListComponent', () => {
   let userService: UserService;
   let eventService: EventService;
   let stripeService: StripeService;
+  let userReviewService: UserReviewService;
   let deviceService: DeviceDetectorService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
@@ -191,6 +195,12 @@ describe('ListComponent', () => {
             },
             getAvailableSlots() {
                 return Observable.of({});
+            },
+            me() {
+              return Observable.of(MOCK_USER);
+            },
+            getInfo() {
+              return Observable.of(USER_INFO_RESPONSE);
             }
           }
         },
@@ -201,6 +211,16 @@ describe('ListComponent', () => {
           }
         }
         },
+        {
+          provide: UserReviewService, useValue: {
+            getPaginationReviews () {
+              return of({data: MOCK_REVIEWS, init: 2});
+            }
+          }
+        },
+        {
+          provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -221,6 +241,7 @@ describe('ListComponent', () => {
     userService = TestBed.get(UserService);
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
+    userReviewService = TestBed.get(UserReviewService);
     deviceService = TestBed.get(DeviceDetectorService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
@@ -491,6 +512,18 @@ describe('ListComponent', () => {
       });
 
       expect(component.selectedItems).toEqual([ITEMS[0], ITEMS[1]]);
+    });
+
+    it('should get user information', () => {
+      component.ngOnInit();
+
+      expect(component.user).toEqual(MOCK_USER);
+    });
+
+    it('should get user scoring', () => {
+      component.ngOnInit();
+
+      expect(component.userScore).toEqual(USER_INFO_RESPONSE.scoring_stars);
     });
   });
 
