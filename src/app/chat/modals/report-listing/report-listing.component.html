@@ -1,5 +1,5 @@
-<div class="modal-body center-heading">
-  <h1 i18n>Report</h1>
+<div class="modal-body">
+  <h1 class="text-center" i18n>Report</h1>
   <div class="modal-close" (click)="activeModal.dismiss()">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
@@ -7,17 +7,17 @@
     <div [ngClass]="{selected: selectedReportListingReason === reason.id}"
          class="report-ban-reason row align-items-center"
          (click)="selectReportListingReason(reason.id)" *ngFor="let reason of listingBanReasons">
-      <div class="col-3">
+      <div class="col-3 d-flex justify-content-center">
         <div class="ban-reason-icon-container">
           <mat-icon svgIcon="report-listing-{{reason.id}}"></mat-icon>
         </div>
       </div>
-      <div class="col-auto label">
-        {{reason.label}}
+      <div class="col-9">
+        <span class="label">{{reason.label}}</span>
       </div>
     </div>
   </div>
-<div class="centered">
+<div class="text-center">
   <tsl-button [disabled]="!selectedReportListingReason"
               (click)="close();"
               i18n>Report</tsl-button>
