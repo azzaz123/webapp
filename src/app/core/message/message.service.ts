@@ -26,9 +26,6 @@ export class MessageService {
   private _totalUnreadMessages = 0;
   private allMessages = [];
 
-  /* The age (in days) of the messages we want to resend; if there are pending messages that are older than this, we won't resend them; */
-  private resendOlderThan = 5;
-
   constructor(private realTime: RealTimeService,
               private archiveService: MsgArchiveService,
               private persistencyService: PersistencyService,
@@ -66,12 +63,6 @@ export class MessageService {
               message.doc.payload,
               message.doc.phoneRequest);
 
-            if (msg.status === messageStatus.PENDING) {
-              const timeLimit = new Date().getTime() - (this.resendOlderThan * 24 * 60 * 60 * 1000);
-              if (Date.parse(msg.date.toString()) > timeLimit) {
-                this.realTime.resendMessage(conversation, msg);
-              }
-            }
             this.allMessages.push(msg);
             return msg;
           })

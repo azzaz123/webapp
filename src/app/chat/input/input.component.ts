@@ -51,7 +51,6 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
           this.trackingService.track(TrackingService.SEND_BUTTON, {
             thread_id: this.currentConversation.id,
           });
-          this.remoteConsoleService.sendMessageTimeout(null);
           this.messageService.send(this.currentConversation, this.message);
           this.message = '';
         }
