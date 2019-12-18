@@ -6,8 +6,13 @@
 
 .catalog-back {
   color: $blue-grey-1;
+  display: flex;
+  align-items: center;
   mat-icon {
     width: 18px;
+  }
+  span {
+    font-size: $font-size-s;
   }
 }
 
