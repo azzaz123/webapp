@@ -1,8 +1,8 @@
-<div id="left-panel" [ngClass]="{'active-conversation': currentConversation}">
+<div id="left-panel" [ngClass]="{'active-conversation': !!currentConversation}">
     <tsl-connection-alert></tsl-connection-alert>
     <tsl-inbox (loadingEvent)="onLoad($event)" (loadingError)="onChangeInboxOrArchivedDropdown($event)"></tsl-inbox>
 </div>
-<div id="center-panel" *ngIf="!conversationsLoading" [ngClass]="{'active-conversation': currentConversation}">
+<div id="center-panel" *ngIf="!conversationsLoading" [ngClass]="{'active-conversation': !!currentConversation}">
     <tsl-current-conversation [currentConversation]="currentConversation"
     [conversationsTotal]="conversationsTotal"
     [connectionError]="connectionError"
