@@ -28,7 +28,7 @@ import { HttpServiceNew } from '../http/http.service.new';
 import { InboxItem } from '../../chat/model';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
@@ -45,7 +45,7 @@ export class UserService extends ResourceService {
   private motorPlanObservable: Observable<MotorPlan>;
 
   constructor(http: HttpService,
-              private httpClient: HttpServiceNew,
+              private httpClient: HttpClient,
               protected event: EventService,
               protected i18n: I18nService,
               protected haversineService: HaversineService,
@@ -67,8 +67,8 @@ export class UserService extends ResourceService {
       'shnm-portlet/api/v1/access.json/login3',
       data
     )
-      .map((r: Response) => r.json())
-      .map((r: LoginResponse) => this.storeData(r));
+    .map((r: Response) => r.json())
+    .map((r: LoginResponse) => this.storeData(r));
 
     // TODO: Use new HttpService
     // const headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
@@ -148,23 +148,23 @@ export class UserService extends ResourceService {
       return this.meObservable;
     }
     this.meObservable = this.http.get(this.API_URL + '/me')
-      .map((r: Response) => r.json())
-      .map((r: UserResponse) => this.mapRecordData(r))
-      .map((user: User) => {
-        this._user = user;
-        return user;
-      })
-      .share()
-      .do(() => {
-        this.meObservable = null;
-      })
-      .catch(error => {
-        this.meObservable = null;
-        if (!error.ok) {
-          this.logoutLocal();
-        }
-        return Observable.of(null);
-      });
+    .map((r: Response) => r.json())
+    .map((r: UserResponse) => this.mapRecordData(r))
+    .map((user: User) => {
+      this._user = user;
+      return user;
+    })
+    .share()
+    .do(() => {
+      this.meObservable = null;
+    })
+    .catch(error => {
+      this.meObservable = null;
+      if (!error.ok) {
+        this.logoutLocal();
+      }
+      return Observable.of(null);
+    });
     return this.meObservable;
   }
 
@@ -204,28 +204,27 @@ export class UserService extends ResourceService {
 
   public reportUser(userId: string, itemHash: string, conversationHash: string, reason: number, comments: string)
     : Observable<UserReportApi> {
-    return this.httpClient.post(`${this.API_URL}/me/report/user/${userId}`, {
+    return this.httpClient.post<UserReportApi>(`${environment.baseUrl}${this.API_URL}/me/report/user/${userId}`, {
         itemHashId: itemHash,
         conversationHash: conversationHash,
         comments: comments,
         reason: reason
       },
-      [],
       {
         headers: new HttpHeaders().append('AppBuild', APP_VERSION)
       });
   }
 
   public getInfo(id: string): Observable<UserInfoResponse> {
-    return this.httpClient.get<UserInfoResponse>(`${this.API_URL}/${id}/extra-info`);
+    return this.httpClient.get<UserInfoResponse>(`${environment.baseUrl}${this.API_URL}/${id}/extra-info`);
   }
 
   public getProInfo(): Observable<UserProInfo> {
-    return this.httpClient.get<UserProInfo>(`${this.API_URL_PROTOOL}/extraInfo`);
+    return this.httpClient.get<UserProInfo>(`${environment.baseUrl}${this.API_URL_PROTOOL}/extraInfo`);
   }
 
   public getUserCover(): Observable<Image> {
-    return this.httpClient.get<Image>(`${this.API_URL}/me/cover-image`)
+    return this.httpClient.get<Image>(`${environment.baseUrl}${this.API_URL}/me/cover-image`)
     .pipe(catchError(error => of({} as Image)));
   }
 
@@ -242,7 +241,7 @@ export class UserService extends ResourceService {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude
     })
-      .map((r: Response) => r.json());
+    .map((r: Response) => r.json());
   }
 
   public updateSearchLocationCookies(location: Coordinate) {
@@ -261,31 +260,31 @@ export class UserService extends ResourceService {
       longitude: coordinates.longitude,
       address: coordinates.name
     })
-      .map((r: Response) => r.json());
+    .map((r: Response) => r.json());
   }
 
   public getStats(): Observable<UserStatsResponse> {
     return this.http.get(this.API_URL + '/me/stats')
-      .map((r: Response) => {
-        return {
-          ratings: this.toRatingsStats(r.json().ratings),
-          counters: this.toCountersStats(r.json().counters)
-        };
-      });
+    .map((r: Response) => {
+      return {
+        ratings: this.toRatingsStats(r.json().ratings),
+        counters: this.toCountersStats(r.json().counters)
+      };
+    });
   }
 
   public getUserStats(userId: string): Observable<UserStatsResponse> {
     return this.http.get(this.API_URL + '/' + userId + '/stats')
-      .map((r: Response) => {
-        return {
-          ratings: this.toRatingsStats(r.json().ratings),
-          counters: this.toCountersStats(r.json().counters)
-        };
-      });
+    .map((r: Response) => {
+      return {
+        ratings: this.toRatingsStats(r.json().ratings),
+        counters: this.toCountersStats(r.json().counters)
+      };
+    });
   }
 
   public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
-    return this.httpClient.get<PhoneMethodResponse>(`${this.API_URL}/${userId}/phone-method`)
+    return this.httpClient.get<PhoneMethodResponse>(`${environment.baseUrl}${this.API_URL}/${userId}/phone-method`)
     .pipe(catchError(() => of(null)));
   }
 
@@ -304,11 +303,11 @@ export class UserService extends ResourceService {
 
   public edit(data: UserData): Observable<User> {
     return this.http.post(this.API_URL + '/me', data)
-      .map((r: Response) => r.json())
-      .map((r: UserResponse) => this.mapRecordData(r))
-      .do((user: User) => {
-        this._user = user;
-      });
+    .map((r: Response) => r.json())
+    .map((r: UserResponse) => this.mapRecordData(r))
+    .do((user: User) => {
+      this._user = user;
+    });
   }
 
   public updateEmail(email: string): Observable<any> {
@@ -372,9 +371,9 @@ export class UserService extends ResourceService {
 
   public hasPerm(permission: string): Observable<boolean> {
     return this.me()
-      .flatMap(() => {
-        return Observable.fromPromise(this.permissionService.hasPermission(PERMISSIONS[permission]));
-      });
+    .flatMap(() => {
+      return Observable.fromPromise(this.permissionService.hasPermission(PERMISSIONS[permission]));
+    });
   }
 
   public isProfessional(): Observable<boolean> {
@@ -387,9 +386,9 @@ export class UserService extends ResourceService {
       this.getMotorPlan(),
       this.me()
     ])
-      .map((values: any[]) => {
-        return values[0] || !!(values[1] && values[1].type) || values[2].featured;
-      });
+    .map((values: any[]) => {
+      return values[0] || !!(values[1] && values[1].type) || values[2].featured;
+    });
   }
 
   public getMotorPlan(): Observable<MotorPlan> {
@@ -399,34 +398,34 @@ export class UserService extends ResourceService {
       return this.motorPlanObservable;
     }
     this.motorPlanObservable = this.http.get(this.API_URL + '/me/profile-subscription-info/type')
-      .map((r: Response) => r.json())
-      .map((motorPlan: MotorPlan) => {
-        this._motorPlan = motorPlan;
-        return motorPlan;
-      })
-      .share()
-      .do(() => {
-        this.motorPlanObservable = null;
-      })
-      .catch(() => {
-        this.motorPlanObservable = null;
-        return Observable.of(null);
-      });
+    .map((r: Response) => r.json())
+    .map((motorPlan: MotorPlan) => {
+      this._motorPlan = motorPlan;
+      return motorPlan;
+    })
+    .share()
+    .do(() => {
+      this.motorPlanObservable = null;
+    })
+    .catch(() => {
+      this.motorPlanObservable = null;
+      return Observable.of(null);
+    });
     return this.motorPlanObservable;
   }
 
   public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
-    return this.httpClient.get<ProfileSubscriptionInfo>(`${this.API_URL}/me/profile-subscription-info`);
+    return this.httpClient.get<ProfileSubscriptionInfo>(`${environment.baseUrl}${this.API_URL}/me/profile-subscription-info`);
   }
 
   public getAvailableSlots(): Observable<AvailableSlots> {
-    return this.httpClient.get<AvailableSlots>(`${this.API_URL}/me/items/slots-available`);
+    return this.httpClient.get<AvailableSlots>(`${environment.baseUrl}${this.API_URL}/me/items/slots-available`);
   }
 
   public setSubscriptionsFeatureFlag(): Observable<boolean> {
     return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS)
-      .map((isActive: boolean) => {
-          return isActive;
-      });
+    .map((isActive: boolean) => {
+      return isActive;
+    });
   }
 }
