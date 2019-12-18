@@ -341,6 +341,9 @@ $feature-button-width: 170px;
       border-color: $blue-grey-1 transparent transparent transparent;
     }
   }
+  @include media-breakpoint-down(md) {
+    display: none;
+  }
 }
 
 .item-info {
