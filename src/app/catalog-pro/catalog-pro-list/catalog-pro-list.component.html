@@ -2,7 +2,6 @@
      infiniteScroll
      [infiniteScrollDistance]="5"
      [infiniteScrollThrottle]="100"
-     [scrollWindow]="false"
      [infiniteScrollDisabled]="end || loading"
      (scrolled)="loadMore()">
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent && isRedirect"></tsl-spinner>
