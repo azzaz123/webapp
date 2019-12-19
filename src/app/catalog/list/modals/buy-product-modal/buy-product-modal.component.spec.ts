@@ -197,15 +197,6 @@ describe('BuyProductModalComponent', () => {
     });
   });
 
-  describe('hasCard', () => {
-    it('should set card if present', () => {
-      component.hasCard(true);
-
-      expect(component.hasFinancialCard).toBe(true);
-      expect(component.mainLoading).toBe(false);
-    });
-  });
-
   describe('hasStripeCard', () => {
     it('should set if stripeCard is present', () => {
       component.hasStripeCard(true);
@@ -293,10 +284,6 @@ describe('BuyProductModalComponent', () => {
 
       describe('with payment_needed true', () => {
         describe('with credit card', () => {
-          beforeEach(() => {
-            component.hasFinancialCard = true;
-          });
-
           describe('user wants new one', () => {
             it('should buy with stripe', () => {
               spyOn(stripeService, 'buy').and.callThrough();

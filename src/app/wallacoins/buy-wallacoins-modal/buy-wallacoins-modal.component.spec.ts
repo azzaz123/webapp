@@ -82,14 +82,6 @@ describe('BuyWallacoinsModalComponent', () => {
     eventService = TestBed.get(EventService);
   });
 
-  describe('hasCard', () => {
-    it('should set true if card exists', () => {
-      component.hasCard(true);
-
-      expect(component.hasFinancialCard).toEqual(true);
-    });
-  });
-
   describe('addNewCard', () => {
     it('should set showCard and savedCard', () => {
       component.addNewCard();

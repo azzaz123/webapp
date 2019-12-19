@@ -67,9 +67,6 @@
                               (stripeCard)="setCardInfo($event)" [loading]="loading"
       ></tsl-stripe-card-element>
     </div>
-    <div class="credit-card" [hidden]="creditInfo?.credit >= orderEvent.total">
-      <tsl-card-selection [(ngModel)]="cardType" (hasCard)="hasCard($event)"></tsl-card-selection>
-    </div>
     <tsl-button [hidden]="!savedCard || totalToPay > 0 && !savedCard"
                 className="btn-block btn-primary"
                 (click)="checkout()"

@@ -17,8 +17,6 @@ import { EventService } from '../../core/event/event.service';
 export class BuyWallacoinsModalComponent implements OnInit {
 
   public pack: Pack;
-  public hasFinancialCard: boolean;
-  public cardType = 'old';
   public mainLoading: boolean = true;
   public loading: boolean;
   public packIndex: number;
@@ -45,12 +43,8 @@ export class BuyWallacoinsModalComponent implements OnInit {
     return this.pack.name === 'wallacredits';
   }
 
-  public hasCard(hasCard: boolean) {
-    this.hasFinancialCard = hasCard;
-    this.mainLoading = false;
-  }
-
   public hasStripeCard(hasCard: boolean) {
+    this.mainLoading = false;
     this.isStripeCard = hasCard;
     if (!hasCard) {
       this.addNewCard();

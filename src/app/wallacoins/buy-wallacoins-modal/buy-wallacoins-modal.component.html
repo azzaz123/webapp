@@ -32,7 +32,6 @@
     <tsl-stripe-card-element *ngIf="showCard" [type]="'bump'" [cart]="cart" (stripeCardToken)="checkout($event)"
                              (stripeCard)="setCardInfo($event)" [loading]="loading"
     ></tsl-stripe-card-element>
-    <tsl-card-selection [hidden]="!hasFinancialCard" [(ngModel)]="cardType" (hasCard)="hasCard($event)"></tsl-card-selection>
     <tsl-button [hidden]="!savedCard"
                 className="btn-block btn-primary"
                 (click)="checkout()"

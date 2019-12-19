@@ -9,7 +9,7 @@ import { Response } from '@angular/http';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { CreditInfo, FinancialCardOption } from '../../../core/payments/payment.interface';
-import { PAYMENT_METHOD } from '../../../core/payments/payment.service';
+import { PAYMENT_METHOD, PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
 import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
@@ -107,7 +107,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   private managePaymentResponse(paymentResponse: string): void {
     switch(paymentResponse && paymentResponse.toUpperCase()) {
-      case PAYMENT_METHOD.STRIPE: {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
         this.success();
         break;
       }

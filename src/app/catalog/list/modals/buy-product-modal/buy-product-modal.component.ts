@@ -22,8 +22,6 @@ export class BuyProductModalComponent implements OnInit {
   public type: string;
   public orderEvent: OrderEvent;
   public item: Item;
-  public hasFinancialCard: boolean;
-  public cardType = 'old';
   public mainLoading: boolean = true;
   public loading: boolean;
   public creditInfo: CreditInfo;
@@ -79,12 +77,8 @@ export class BuyProductModalComponent implements OnInit {
     return Math.min(this.creditInfo.credit, this.orderEvent.total * this.creditInfo.factor) * -1;
   }
 
-  public hasCard(hasCard: boolean) {
-    this.hasFinancialCard = hasCard;
-    this.mainLoading = false;
-  }
-
   public hasStripeCard(hasCard: boolean) {
+    this.mainLoading = false;
     this.isStripeCard = hasCard;
     if (!hasCard) {
       this.addNewCard();
