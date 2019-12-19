@@ -66,18 +66,16 @@ describe('CreditCardInfoComponent', () => {
     }));
 
     it('should open modal', fakeAsync(() => {
-      component.deleteStripeCard(event);
       tick();
 
       expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
         windowClass: 'modal-prompt'
       });
       expect(componentInstance.type).toBe(4);
-      expect(component.onDeleteStripeCard.emit).toHaveBeenCalledWith(createFinancialCardFixture());
+      expect(component.onDeleteStripeCard.emit).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     }));
 
     it('should call deleteCard and rest card', fakeAsync(() => {
-      component.deleteStripeCard(event);
       tick();
 
       expect(stripeService.deleteCard).toHaveBeenCalled();
