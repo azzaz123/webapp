@@ -37,7 +37,7 @@
                 (click)="checkout()"
                 [loading]="loading"
                 [disabled]="!selectedCard"
-                [tslTrackEvent]="hasFinancialCard || isStripeCard ? 'PURCHASE_CONFIRM_PACK_CREDITS' : 'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
+                [tslTrackEvent]="isStripeCard ? 'PURCHASE_CONFIRM_PACK_CREDITS' : 'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
                 [params]="getTrackingAttributes()"
     >
       <div class="secure-payment-button">
