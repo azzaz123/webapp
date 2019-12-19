@@ -11,6 +11,7 @@ import { OrderEvent } from '../selected-items/selected-product.interface';
 import { DEFAULT_ERROR_MESSAGE } from '../../../core/errors/errors.service';
 import { Item } from '../../../core/item/item';
 import { EventService } from '../../../core/event/event.service';
+import { PAYMENT_METHOD } from '../../../core/payments/payment.service';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -158,7 +159,7 @@ export class CatalogItemComponent implements OnInit {
       localStorage.setItem('transactionType', 'purchaseListingFee');
       this.trackingService.track(TrackingService.PURCHASE_LISTING_FEE_CATALOG, {
         item_id: this.item.id,
-        payment_method: 'STRIPE'
+        payment_method: PAYMENT_METHOD.STRIPE
       });
       this.purchaseListingFee.next(orderEvent);
     });
