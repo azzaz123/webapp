@@ -10,7 +10,6 @@ import { phoneMethod } from '../../core/message/message';
 import { ConversationService } from '../../core/conversation/conversation.service';
 import { isEmpty, isNil } from 'lodash-es';
 import { InboxService } from '../../core/inbox/inbox.service';
-import { splitNamespace } from '@angular/core/src/view/util';
 
 @Component({
   selector: 'tsl-chat-with-inbox',
