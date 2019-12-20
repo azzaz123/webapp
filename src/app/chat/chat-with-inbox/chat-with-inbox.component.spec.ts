@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ChatWithInboxComponent } from './chat-with-inbox.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -29,7 +29,7 @@ class MockUserService {
   }
 }
 
-describe('Component: ChatWithInboxComponent', () => {
+describe('Component: ChatWithInboxComponent with ItemId', () => {
   let component: ChatWithInboxComponent;
   let fixture: ComponentFixture<ChatWithInboxComponent>;
   let eventService: EventService;
@@ -148,12 +148,13 @@ describe('Component: ChatWithInboxComponent', () => {
       const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
       spyOn(inboxService, 'isInboxReady').and.returnValue(true);
       spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversation));
-      spyOn(userService, 'getPhoneInfo').and.returnValue(of({}));
-      spyOn(activatedRoute, 'queryParams').and.returnValue(Observable.of(convertToParamMap({ itemId: inboxConversation.item.id })));
+      spyOn(inboxConversationService, 'openConversationByConversationId$').and.returnValue(of(null));
+      spyOn(userService, 'getPhoneInfo').and.returnValue(of(convertToParamMap({})));
 
       component.ngOnInit();
 
       expect(inboxConversationService.openConversationByItemId$).toHaveBeenCalledWith('itemId');
+      expect(inboxConversationService.openConversationByConversationId$).not.toHaveBeenCalled();
     });
   });
 
@@ -174,6 +175,75 @@ describe('Component: ChatWithInboxComponent', () => {
 
       expect(component.loadingError).toBeTruthy();
       expect(component.currentConversation).toBeNull();
+    });
+  });
+});
+
+describe('Component: ChatWithInboxComponent with ConversationId', () => {
+  let component: ChatWithInboxComponent;
+  let fixture: ComponentFixture<ChatWithInboxComponent>;
+  let eventService: EventService;
+  let adService: AdService;
+  let userService: UserService;
+  let activatedRoute: ActivatedRoute;
+  let inboxService: InboxService;
+  let inboxConversationService: InboxConversationService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [ChatWithInboxComponent],
+      imports: [NgbModule.forRoot(), FormsModule, NgxPermissionsModule],
+      providers: [
+        ChatWithInboxComponent,
+        { provide: ConversationService, useClass: ConversationServiceMock },
+        { provide: InboxService, useClass: InboxServiceMock },
+        { provide: UserService, useClass: MockUserService },
+        { provide: HttpService, useValue: {} },
+        { provide: InboxConversationService, useClass: InboxConversationServiceMock },
+        {
+          provide: ActivatedRoute, useValue: {
+            params: Observable.from([{}]),
+            queryParams: Observable.from([{ conversationId: 'itemId' }])
+          }
+        },
+        I18nService,
+        EventService,
+        {
+          provide: AdService,
+          useValue: {
+            adsRefresh() {
+            }
+          }
+        }
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    });
+    fixture = TestBed.createComponent(ChatWithInboxComponent);
+    component = fixture.componentInstance;
+    eventService = TestBed.get(EventService);
+    adService = TestBed.get(AdService);
+    userService = TestBed.get(UserService);
+    activatedRoute = TestBed.get(ActivatedRoute);
+    inboxService = TestBed.get(InboxService);
+    inboxConversationService = TestBed.get(InboxConversationService);
+
+    fixture.autoDetectChanges();
+  });
+
+  describe('ngOnInit', () => {
+
+    it('should open conversation by conversationId', () => {
+      const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
+
+      spyOn(inboxService, 'isInboxReady').and.returnValue(true);
+      spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversation));
+      spyOn(inboxConversationService, 'openConversationByConversationId$').and.returnValue(of(inboxConversation));
+      spyOn(userService, 'getPhoneInfo').and.returnValue(of({}));
+
+      component.ngOnInit();
+
+      expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
+      expect(inboxConversationService.openConversationByConversationId$).toHaveBeenCalled();
     });
   });
 });
