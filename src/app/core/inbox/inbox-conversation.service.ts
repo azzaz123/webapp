@@ -292,6 +292,9 @@ export class InboxConversationService {
   }
 
   public openConversationByConversationId$(conversationId: string): Observable<InboxConversation> {
+    if (this.conversations === null || this.conversations === undefined) {
+      return of(null);
+    }
     return of(head(this.conversations.filter(conversation => conversation.id === conversationId)));
   }
 

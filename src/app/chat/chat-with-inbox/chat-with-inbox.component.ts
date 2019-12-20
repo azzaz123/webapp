@@ -96,7 +96,7 @@ export class ChatWithInboxComponent implements OnInit {
     });
   }
 
-  private openConversationByConversationId(conversationId) {
+  private openConversationByConversationId(conversationId: string) {
     if (isNil(conversationId)) {
       return;
     }
@@ -111,7 +111,7 @@ export class ChatWithInboxComponent implements OnInit {
     });
   }
 
-  private openConversationByItmId(itemId) {
+  private openConversationByItmId(itemId: string) {
     if (isNil(itemId)) {
       return;
     }
