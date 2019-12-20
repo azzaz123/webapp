@@ -99,4 +99,16 @@ describe('EditSubscriptionModalComponent', () => {
     });
   });
 
+  describe('isCurrentTier selected', () => {
+    it('should return if the selected tier is the current subscription', () => {
+      const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
+
+      component.ngOnInit();
+      component.selectListingLimit(tier);
+      component.isCurrentTier();
+      
+      expect(component.isCurrentTier()).toBe(true);
+    })
+  });
+
 });
