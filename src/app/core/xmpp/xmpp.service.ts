@@ -13,6 +13,7 @@ import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { InboxUser } from '../../chat/model/inbox-user';
 import { RemoteConsoleService } from '../remote-console';
+import { InboxMessage } from '../../chat/model';
 
 @Injectable()
 export class XmppService {
@@ -50,16 +51,19 @@ export class XmppService {
   }
 
   public sendMessage(conversation: Conversation | InboxConversation, body: string) {
-    const message = this.createXmppMessage(conversation, this.client.nextId(), body);
+    const messageId = this.client.nextId();
+    this.remoteConsoleService.sendMessageTimeout(messageId);
+    const message = this.createXmppMessage(conversation, messageId, body);
     this.onNewMessage(clone(message), true);
     this.client.sendMessage(message);
     this.remoteConsoleService.sendMessageTimeout(message.id);
-    this.remoteConsoleService.sendAcceptTimeout(null);
+    this.remoteConsoleService.sendAcceptTimeout(message.id);
     this.eventService.emit(EventService.MESSAGE_SENT, conversation, message.id);
   }
 
-  public resendMessage(conversation: Conversation, message: Message) {
-    const msg: XmppBodyMessage = this.createXmppMessage(conversation, message.id, message.message);
+  public resendMessage(conversation: Conversation | InboxConversation, message: Message | InboxMessage) {
+    const msg: XmppBodyMessage =
+      this.createXmppMessage(conversation, message.id, message instanceof Message ? message.message : message.text);
     this.client.sendMessage(msg);
   }
 
@@ -217,6 +221,9 @@ export class XmppService {
     if (message.receipt || message.sentReceipt || message.readReceipt) {
       this.buildChatSignal(message);
     } else if (message.body || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
+      if (!this.isFromSelf(message)) {
+        this.remoteConsoleService.sendPresentationMessageTimeout(message.id);
+      }
       const builtMessage: Message = this.buildMessage(message, markAsPending);
       builtMessage.fromSelf = this.isFromSelf(message);
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
@@ -285,12 +292,13 @@ export class XmppService {
         }
       }
     })
-    .catch(() => {}))
+    .catch(() => {
+    }))
     .map((response: any) => {
       const blockedIds = [];
-        if (response && response.privacy && response.privacy.jids) {
-          response.privacy.jids.map((jid: string) => blockedIds.push(jid.split('@')[0]));
-        }
+      if (response && response.privacy && response.privacy.jids) {
+        response.privacy.jids.map((jid: string) => blockedIds.push(jid.split('@')[0]));
+      }
       return blockedIds;
     });
   }
@@ -304,17 +312,19 @@ export class XmppService {
       }
       return Observable.of({});
     })
-    .do(() => { user.blocked = true;
-                this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
-              });
+    .do(() => {
+      user.blocked = true;
+      this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
+    });
   }
 
   public unblockUser(user: User | InboxUser): Observable<any> {
     remove(this.blockedUsers, (userId) => userId === user.id);
     return this.setPrivacyList(this.blockedUsers)
-    .do(() => { user.blocked = false;
-                this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
-              });
+    .do(() => {
+      user.blocked = false;
+      this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
+    });
   }
 
   private onPrivacyListChange(iq: any) {

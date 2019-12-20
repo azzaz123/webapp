@@ -13,4 +13,7 @@ export class InboxConversationServiceMock {
 
   sendReadSignal(conversation: InboxConversation): void {
   }
+
+  resendPendingMessages(conversation: InboxConversation): void {
+  }
 }
