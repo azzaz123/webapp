@@ -21,7 +21,6 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
-import { CardSelectionComponent } from '../../payments/card-selection/card-selection.component';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
@@ -49,7 +48,7 @@ describe('CartComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, NgbButtonsModule],
-      declarations: [CartComponent, CustomCurrencyPipe, CardSelectionComponent],
+      declarations: [CartComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
         EventService,

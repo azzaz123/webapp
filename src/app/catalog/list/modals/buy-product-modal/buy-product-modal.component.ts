@@ -67,6 +67,7 @@ export class BuyProductModalComponent implements OnInit {
   get totalToPay(): number {
     const totalCreditsToPay: number = this.orderEvent.total * this.creditInfo.factor;
     if (totalCreditsToPay < this.creditInfo.credit) {
+      this.mainLoading = false;
       return 0;
     } else {
       return this.orderEvent.total - this.creditInfo.credit / this.creditInfo.factor;
