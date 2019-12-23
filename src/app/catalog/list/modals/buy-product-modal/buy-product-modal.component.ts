@@ -5,7 +5,7 @@ import { Item } from '../../../../core/item/item';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
 import { PurchaseProductsWithCreditsResponse } from '../../../../core/item/item-response.interface';
-import { PaymentService } from '../../../../core/payments/payment.service';
+import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo, FinancialCardOption } from '../../../../core/payments/payment.interface';
 import { Response } from '@angular/http';
@@ -128,8 +128,8 @@ export class BuyProductModalComponent implements OnInit {
   }
 
   private managePaymentResponse(paymentResponse) {
-    switch(paymentResponse) {
-      case 'succeeded': {
+    switch(paymentResponse && paymentResponse.toUpperCase()) {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
         this.activeModal.close('success');
         break;
       }
