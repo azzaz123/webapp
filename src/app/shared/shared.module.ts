@@ -40,7 +40,6 @@ import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-moda
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
 import { RestrictInputNumberDirective } from './restrict-input-number/restrict-input-number.directive';
 import { CardSelectionComponent } from './payments/card-selection/card-selection.component';
-import { SabadellComponent } from './payments/sabadell/sabadell.component';
 import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
 import { ProfileFormComponent } from './profile/profile-form/profile-form.component';
 import { EditEmailComponent } from './profile/edit-email/edit-email.component';
@@ -126,7 +125,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     SelectComponent,
     RestrictInputNumberDirective,
     CardSelectionComponent,
-    SabadellComponent,
     WallacoinComponent,
     EditEmailComponent,
     EmailModalComponent,
@@ -187,7 +185,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     AlreadyFeaturedModalComponent,
     RestrictInputNumberDirective,
     CardSelectionComponent,
-    SabadellComponent,
     WallacoinComponent,
     EditEmailComponent,
     EmailModalComponent,

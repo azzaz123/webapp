@@ -159,13 +159,6 @@ export interface Order {
   packs: string[];
 }
 
-export interface SabadellInfoResponse {
-  merchant_parameters: string;
-  signature: string;
-  signature_version: string;
-  target_url: string;
-}
-
 export interface ScheduledStatus {
   active: boolean;
   autorenew_alert: number;

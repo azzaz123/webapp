@@ -13,7 +13,6 @@ export class SelectedItemsComponent implements OnInit {
   @Input() items: Item[] = [];
   @Input() selectedSubscriptionSlot: SubscriptionSlot;
   @Input() selectedStatus: string;
-  @Input() isStripe = false;
   @Output() selectedAction: EventEmitter<string> = new EventEmitter();
 
   public selectedItems: Item[];
