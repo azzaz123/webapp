@@ -16,7 +16,7 @@
     <h2 *ngIf="type === 'urgent'" i18n>Mark as urgent</h2>
     <h2 *ngIf="type === 'reactivate'" i18n>Reactivate + visibility</h2>
     <h2 *ngIf="type === 'listing-fee'" i18n>Publish your car</h2>
-    <h3 *ngIf="creditInfo?.credit > 0 && creditInfo?.credit < orderEvent.total && !isStripeCard">
+    <h3 *ngIf="creditInfo?.credit > 0 && creditInfo?.credit < orderEvent.total && !hasSavedCard">
       <span *ngIf="withCredits" i18n>Pay with your credit and credit card:</span>
     </h3>
     <div class="price" [class.with-credit]="creditInfo?.credit > 0">
@@ -58,11 +58,11 @@
       </div>
     </div>
     <div class="BuyProduct__card-container" *ngIf="totalToPay > 0">
-      <tsl-stripe-card-selection *ngIf="isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
-                                (hasStripeCard)="hasStripeCard($event)"
+      <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+                                (hasCard)="hasCard($event)"
       ></tsl-stripe-card-selection>
       <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
-      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && isStripeCard" i18n>Use saved card</div>
+      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
       <tsl-stripe-card-element *ngIf="showCard" [type]="'bump'" [cart]="cart" (stripeCardToken)="checkout($event)"
                               (stripeCard)="setCardInfo($event)" [loading]="loading"
       ></tsl-stripe-card-element>

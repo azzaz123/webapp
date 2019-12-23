@@ -43,8 +43,8 @@ export class StripeService {
     this.elements = this.lib.elements();
   }
 
-  public buy(orderId: string, paymentId: string, isStripeCard: boolean, isSaved: boolean, card: any): void {
-    if (!isStripeCard || isStripeCard && !isSaved) {
+  public buy(orderId: string, paymentId: string, hasSavedCard: boolean, isSaved: boolean, card: any): void {
+    if (!hasSavedCard || hasSavedCard && !isSaved) {
       this.paymentService.paymentIntents(orderId, paymentId).subscribe((response: PaymentIntents) => {
         this.payment(response.token, card).then((response: any) => {
           this.handlePayment(response);

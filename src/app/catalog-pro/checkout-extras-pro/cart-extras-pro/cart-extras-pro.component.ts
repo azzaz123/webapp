@@ -23,13 +23,12 @@ import { UUID } from 'angular2-uuid';
 export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   public cart: CartBase;
-  public hasFinancialCard: boolean;
   public types: string[] = BUMP_TYPES;
   public loading: boolean;
   public cardType = 'old';
   private active = true;
   public card: any;
-  public isStripeCard = true;
+  public hasSavedCard = true;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
@@ -99,7 +98,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     order.provider = PAYMENT_METHOD.STRIPE;
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
       this.track(order);
-      this.stripeService.buy(order.id, paymentId, this.isStripeCard, this.savedCard, this.card);
+      this.stripeService.buy(order.id, paymentId, this.hasSavedCard, this.savedCard, this.card);
     }, (error: Response) => {
       this.loading = false;
       if (error.text()) {
@@ -120,11 +119,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   }
 
   public hasCard(hasCard: boolean) {
-    this.hasFinancialCard = hasCard;
-  }
-
-  public hasStripeCard(hasCard: boolean) {
-    this.isStripeCard = hasCard;
+    this.hasSavedCard = hasCard;
     if (!hasCard) {
       this.addNewCard();
     }

@@ -24,11 +24,11 @@
       <div class="total" i18n>Price</div>
       <div class="amount">{{pack.price | customCurrency}}</div>
     </div>
-    <tsl-stripe-card-selection *ngIf="isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
-                               (hasStripeCard)="hasStripeCard($event)"
+    <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+                               (hasCard)="hasCard($event)"
     ></tsl-stripe-card-selection>
     <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
-    <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && isStripeCard" i18n>Use saved card</div>
+    <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
     <tsl-stripe-card-element *ngIf="showCard" [type]="'bump'" [cart]="cart" (stripeCardToken)="checkout($event)"
                              (stripeCard)="setCardInfo($event)" [loading]="loading"
     ></tsl-stripe-card-element>
@@ -37,7 +37,7 @@
                 (click)="checkout()"
                 [loading]="loading"
                 [disabled]="!selectedCard"
-                [tslTrackEvent]="isStripeCard ? 'PURCHASE_CONFIRM_PACK_CREDITS' : 'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
+                [tslTrackEvent]="hasSavedCard ? 'PURCHASE_CONFIRM_PACK_CREDITS' : 'PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD'"
                 [params]="getTrackingAttributes()"
     >
       <div class="secure-payment-button">

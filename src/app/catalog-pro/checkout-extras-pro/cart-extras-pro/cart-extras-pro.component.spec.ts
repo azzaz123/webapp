@@ -144,24 +144,16 @@ describe('CartExtrasProComponent', () => {
   });
 
   describe('hasCard', () => {
-    it('should set true if card exists', () => {
+    it('should set true if stripe card exists', () => {
       component.hasCard(true);
 
-      expect(component.hasFinancialCard).toEqual(true);
-    });
-  });
-
-  describe('hasStripeCard', () => {
-    it('should set true if stripe card exists', () => {
-      component.hasStripeCard(true);
-
-      expect(component.isStripeCard).toEqual(true);
+      expect(component.hasSavedCard).toEqual(true);
     });
 
     it('should not call addNewCard if stripe card exists', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasStripeCard(true);
+      component.hasCard(true);
 
       expect(component.addNewCard).not.toHaveBeenCalled();
     });
@@ -169,7 +161,7 @@ describe('CartExtrasProComponent', () => {
     it('should call addNewCard if stripe card does not exist', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasStripeCard(false);
+      component.hasCard(false);
 
       expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });

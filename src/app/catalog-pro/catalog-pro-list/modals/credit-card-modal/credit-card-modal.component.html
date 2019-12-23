@@ -2,14 +2,14 @@
   <div class="modal-close" (click)="activeModal.close()">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
-  <h4 *ngIf="showCard && isStripeCard" i18n>Feature for {{total | number:'1.2-2'}} Euros</h4>
+  <h4 *ngIf="showCard && hasSavedCard" i18n>Feature for {{total | number:'1.2-2'}} Euros</h4>
   <form>
     <div>
-      <tsl-stripe-card-selection *ngIf="isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
-                                 (hasStripeCard)="hasStripeCard($event)"
+      <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+                                 (hasCard)="hasCard($event)"
       ></tsl-stripe-card-selection>
       <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
-      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && isStripeCard" i18n>Use saved card</div>
+      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
       <tsl-stripe-card-element *ngIf="showCard" [type]="'bump'" [cart]="cart" (stripeCardToken)="checkout(orderId)"
                                (stripeCard)="setCardInfo($event)" [loading]="loading"
       ></tsl-stripe-card-element>

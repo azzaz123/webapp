@@ -18,7 +18,7 @@ export class CreditCardModalComponent implements OnInit {
   public orderId: string;
   public cardType = 'old';
   public total: number;
-  public isStripeCard = true;
+  public hasSavedCard = true;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
@@ -40,7 +40,7 @@ export class CreditCardModalComponent implements OnInit {
     const paymentId: string = UUID.UUID();
 
     if (this.selectedCard || !this.savedCard) {
-      this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
+      this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
     } else {
       this.loading = false;
       this.errorService.i18nError('noCardSelectedError');
@@ -81,8 +81,8 @@ export class CreditCardModalComponent implements OnInit {
     this.setCardInfo(selectedCard);
   }
 
-  public hasStripeCard(hasCard: boolean) {
-    this.isStripeCard = hasCard;
+  public hasCard(hasCard: boolean) {
+    this.hasSavedCard = hasCard;
     if (!hasCard) {
       this.addNewCard();
     }

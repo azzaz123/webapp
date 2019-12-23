@@ -27,8 +27,7 @@ export class CartComponent implements OnInit, OnDestroy {
   private active = true;
   public cart: CartBase;
   public types: string[] = BUMP_TYPES;
-  public hasFinancialCard: boolean;
-  public isStripeCard = true;
+  public hasSavedCard = true;
   public cardType = 'old';
   public loading: boolean;
   public card: any;
@@ -122,7 +121,7 @@ export class CartComponent implements OnInit, OnDestroy {
     const paymentId: string = UUID.UUID();
     
     if (this.selectedCard || !this.savedCard) {
-      this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
+      this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
     } else {
       this.loading = false;
       this.errorService.i18nError('noCardSelectedError');
@@ -162,11 +161,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   public hasCard(hasCard: boolean) {
-    this.hasFinancialCard = hasCard;
-  }
-
-  public hasStripeCard(hasCard: boolean) {
-    this.isStripeCard = hasCard;
+    this.hasSavedCard = hasCard;
     if (!hasCard) {
       this.addNewCard();
     }

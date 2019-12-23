@@ -4,7 +4,7 @@
     <span i18n>Delete list</span>
   </a>
 </div>
-<div class="cart-wrapper" [ngClass]="{'has-financial-card': hasFinancialCard || isStripeCard}">
+<div class="cart-wrapper" [ngClass]="{'has-financial-card': hasCard || hasSavedCard}">
   <div class="scroll-panel">
     <ul *ngIf="cart" class="items-list">
       <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
@@ -45,11 +45,11 @@
   <span class="pull-left" i18n>Total</span>
   <span class="pull-right price">{{cart?.total | customCurrency}}</span>
 </div>
-<tsl-stripe-card-selection *ngIf="isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
-                           (hasStripeCard)="hasStripeCard($event)"
+<tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+                           (hasCard)="hasCard($event)"
 ></tsl-stripe-card-selection>
 <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
-<div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && isStripeCard" i18n>Use saved card</div>
+<div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
 <tsl-stripe-card-element *ngIf="showCard" [type]="'cart'" [cart]="cart" (stripeCardToken)="checkout($event)"
                          (stripeCard)="setCardInfo($event)" [loading]="loading"
 ></tsl-stripe-card-element>

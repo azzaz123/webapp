@@ -21,7 +21,7 @@ export class BuyWallacoinsModalComponent implements OnInit {
   public loading: boolean;
   public packIndex: number;
   public card: any;
-  public isStripeCard = true;
+  public hasSavedCard = true;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
@@ -43,9 +43,9 @@ export class BuyWallacoinsModalComponent implements OnInit {
     return this.pack.name === 'wallacredits';
   }
 
-  public hasStripeCard(hasCard: boolean) {
+  public hasCard(hasCard: boolean) {
     this.mainLoading = false;
-    this.isStripeCard = hasCard;
+    this.hasSavedCard = hasCard;
     if (!hasCard) {
       this.addNewCard();
     }
@@ -62,7 +62,7 @@ export class BuyWallacoinsModalComponent implements OnInit {
     order.provider = PAYMENT_METHOD.STRIPE;
     this.loading = true;
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
-    this.stripeService.buy(order.id, paymentId, this.isStripeCard, this.savedCard, this.card);
+    this.stripeService.buy(order.id, paymentId, this.hasSavedCard, this.savedCard, this.card);
     }, (error: Response) => {
       this.loading = false;
       if (error.text()) {

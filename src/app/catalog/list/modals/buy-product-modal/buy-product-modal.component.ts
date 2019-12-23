@@ -26,7 +26,7 @@ export class BuyProductModalComponent implements OnInit {
   public loading: boolean;
   public creditInfo: CreditInfo;
   public card: any;
-  public isStripeCard = true;
+  public hasSavedCard = true;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
@@ -77,9 +77,9 @@ export class BuyProductModalComponent implements OnInit {
     return Math.min(this.creditInfo.credit, this.orderEvent.total * this.creditInfo.factor) * -1;
   }
 
-  public hasStripeCard(hasCard: boolean) {
+  public hasCard(hasCard: boolean) {
     this.mainLoading = false;
-    this.isStripeCard = hasCard;
+    this.hasSavedCard = hasCard;
     if (!hasCard) {
       this.addNewCard();
     }
@@ -119,7 +119,7 @@ export class BuyProductModalComponent implements OnInit {
     const paymentId: string = UUID.UUID();
 
     if (this.selectedCard || !this.savedCard) {
-      this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
+      this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
     } else {
       this.loading = false;
       this.errorService.i18nError('noCardSelectedError');

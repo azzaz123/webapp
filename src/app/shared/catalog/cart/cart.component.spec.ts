@@ -26,8 +26,6 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
-import { PaymentService } from '../../../core/payments/payment.service';
-import { HttpService } from '../../../core/http/http.service';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -141,24 +139,16 @@ describe('CartComponent', () => {
   });
 
   describe('hasCard', () => {
-    it('should set true if card exists', () => {
+    it('should set true if stripe card exists', () => {
       component.hasCard(true);
 
-      expect(component.hasFinancialCard).toEqual(true);
-    });
-  });
-
-  describe('hasStripeCard', () => {
-    it('should set true if stripe card exists', () => {
-      component.hasStripeCard(true);
-
-      expect(component.isStripeCard).toEqual(true);
+      expect(component.hasSavedCard).toEqual(true);
     });
 
     it('should not call addNewCard if stripe card exists', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasStripeCard(true);
+      component.hasCard(true);
 
       expect(component.addNewCard).not.toHaveBeenCalled();
     });
@@ -166,7 +156,7 @@ describe('CartComponent', () => {
     it('should call addNewCard if stripe card does not exist', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasStripeCard(false);
+      component.hasCard(false);
 
       expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });

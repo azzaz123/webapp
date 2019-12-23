@@ -13,7 +13,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { I18nService } from '../../../../core/i18n/i18n.service';
 import { UUID } from 'angular2-uuid/index';
-import { Observable } from 'rxjs';
 
 describe('CreditCardModalComponent', () => {
   let component: CreditCardModalComponent;
@@ -75,17 +74,17 @@ describe('CreditCardModalComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('hasStripeCard', () => {
+  describe('hasCard', () => {
     it('should set if stripeCard is present', () => {
-      component.hasStripeCard(true);
+      component.hasCard(true);
 
-      expect(component.isStripeCard).toBe(true);
+      expect(component.hasSavedCard).toBe(true);
     });
 
     it('should not call addNewCard if stripe card exists', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasStripeCard(true);
+      component.hasCard(true);
 
       expect(component.addNewCard).not.toHaveBeenCalled();
     });
@@ -93,7 +92,7 @@ describe('CreditCardModalComponent', () => {
     it('should call addNewCard if stripe card does not exist', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasStripeCard(false);
+      component.hasCard(false);
 
       expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
@@ -139,7 +138,7 @@ describe('CreditCardModalComponent', () => {
 
       component.checkout(orderId);
 
-      expect(stripeService.buy).toHaveBeenCalledWith(orderId, paymentId, component.isStripeCard, component.savedCard, component.card);
+      expect(stripeService.buy).toHaveBeenCalledWith(orderId, paymentId, component.hasSavedCard, component.savedCard, component.card);
     });
   });
 });

@@ -231,17 +231,17 @@ describe('AddNewSubscriptionModalComponent', () => {
     });
   });
 
-  describe('hasStripeCard', () => {
+  describe('hasCard', () => {
     it('should not call addNewCard if hasCard is true', () => {
       spyOn(component, 'addNewCard').and.callThrough();
-      component.hasStripeCard(true);
+      component.hasCard(true);
 
       expect(component.addNewCard).not.toHaveBeenCalled();
     });
 
     it('should call addNewCard if hasCard is false', () => {
       spyOn(component, 'addNewCard').and.callThrough();
-      component.hasStripeCard(false);
+      component.hasCard(false);
 
       expect(component.addNewCard).toHaveBeenCalled();
     });

@@ -5,7 +5,7 @@
   </a>
 </div>
 <div [class.with-credits]="creditInfo?.currencyName === 'wallacredits'">
-  <div class="cart-wrapper" [class.has-financial-card]="hasFinancialCard"
+  <div class="cart-wrapper" [class.has-financial-card]="hasSavedCard"
        [class.no-credit]="!creditInfo?.credit"
        [class.no-discount]="!cart?.discountedTotal && !creditInfo?.credit">
     <div class="scroll-panel">
@@ -98,11 +98,11 @@
     <span class="price">{{totalToPay | customCurrency}}</span>
   </div>
   <div *ngIf="totalToPay > 0">
-    <tsl-stripe-card-selection *ngIf="isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
-                              (hasStripeCard)="hasStripeCard($event)"
+    <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+                              (hasCard)="hasCard($event)"
     ></tsl-stripe-card-selection>
     <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
-    <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && isStripeCard" i18n>Use saved card</div>
+    <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
     <tsl-stripe-card-element *ngIf="showCard" [type]="'cart'" [cart]="cart" (stripeCardToken)="checkout($event)"
                             (stripeCard)="setCardInfo($event)" [loading]="loading"
     ></tsl-stripe-card-element>

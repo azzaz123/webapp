@@ -31,7 +31,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   public subscription: SubscriptionsResponse;
   private invoiceId: string;
   public loaded: boolean;
-  public isStripeCard = true;
+  public hasSavedCard = true;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -148,8 +148,8 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     this.card = card;
   }
 
-  public hasStripeCard(hasCard: boolean): void {
-    this.isStripeCard = hasCard;
+  public hasCard(hasCard: boolean): void {
+    this.hasSavedCard = hasCard;
     if (!hasCard) {
         this.addNewCard();
     }
