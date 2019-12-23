@@ -3,7 +3,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from './modals/add-new-subscription-modal.component';
 import { SubscriptionsResponse, Tier } from '../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
-import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-modal.component';
 import { isEqual } from 'lodash-es';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';

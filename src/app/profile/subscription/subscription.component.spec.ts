@@ -101,7 +101,7 @@ describe('SubscriptionComponent', () => {
     it('should not open the EditSubscription modal', () => {
       spyOn(modalService, 'open').and.callThrough();
 
-      component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[2]);
+      component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[1]);
 
       expect(modalService.open).not.toHaveBeenCalledWith(EditSubscriptionModalComponent, {
         windowClass: 'review'
