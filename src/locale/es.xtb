@@ -551,7 +551,6 @@
   <translation id="2734780694152757859">Ver más</translation>
   <translation id="8778531687214591857">Has procesado todos los contactos pendientes. ¡Buen trabajo!</translation>
   <translation id="5554592740021607017">Últimos 12 meses</translation>
-  <translation id="3708302938863076299">Pago seguro con Banco Sabadell</translation>
   <translation id="466090356732378705">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="9195373106604759125">Para que los anuncios que voy a ver sean de mi interés, acepto que wallapop comparta con empresas con las que colaboramos información recabada durante la sesión.</translation>
   <translation id="7514254130085804538">Marcar como vendido</translation>
@@ -591,7 +590,6 @@
   <translation id="6315786827665033981">Total a pagar</translation>
   <translation id="8729513055451382632">Recarga</translation>
   <translation id="5745314848838735502">Comprar ya</translation>
-  <translation id="1381141590254425331">No guardaremos los datos de esta transacción. La compra se realiza a través del Banco Sabadell.</translation>
   <translation id="1443195823760151170">¡Listo!</translation>
   <translation id="5711960821733439342">Destacar productos</translation>
   <translation id="5378722151309930038">Comprar más wallacoins</translation>
@@ -645,8 +643,6 @@
   <translation id="70240206675549090">¿Wallacoins? Los wallacoins son la nueva moneda de wallapop con la que podrás ahorrar comprando Destacados. Hazte con alguno de nuestros packs y te regalaremos más wallacoins para tus compras.</translation>
   <translation id="7478441329490273363">¿Qué es esto? Son packs de ahorro para tus Destacados. Recarga tu saldo aquí y obtendrás descuentos para comprar tus Destacados.</translation>
   <translation id="8329528856479718352">Marcar como urgente</translation>
-  <translation id="708817521397622777">Paga parte con tu saldo y con tu tarjeta de pago seguro a través de Banco Sabadell:</translation>
-  <translation id="3743194622120127205">Paga parte con tus wallacoins y con tu tarjeta de pago seguro a través de Banco Sabadell:</translation>
   <translation id="3549265484659972037">Paga con tu saldo:</translation>
   <translation id="5266269636016082386">Paga con tus wallacoins:</translation>
   <translation id="4418606013051113523">Marcar como urgente por <ph name="INTERPOLATION"><ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
@@ -822,7 +818,6 @@
   <translation id="1663822447043824807">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 10MB. Sólo aceptamos imágenes .jpg</translation>
   <translation id="3063302288001428906">Puedes enviar (casi) todo por wallapop. ¡Y es gratis!</translation>
   <translation id="3784792223212622760">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
-  <translation id="8203812558021121397">No guardamos información de la transacción. La compra es hecha mediante Banco Sabadell</translation>
   <translation id="5171793882050317851" desc="La distancia entre el usuario y el item">
     A
     <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>
@@ -950,4 +945,5 @@
   <translation id="4504623795614136197">¡Nunca es demasiado tarde! Puedes deshacer la cancelación y seguir disfrutando de los beneficios.</translation>
   <translation id="848453031482663640">Suscríbete ya</translation>
   <translation id="1812379335568847528">Suscripciones</translation>
+  <translation id="708817521397622777">Paga con tu saldo o con tarjeta de crédito:</translation>
 </translationbundle>

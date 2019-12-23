@@ -49,7 +49,7 @@
     <!-- Feature -->
     <div class="SelectedItems__feature" [hidden]="selectedStatus === 'inactive' || selectedStatus === 'sold' || disableFeatureOption">
       <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
-        [routerLink]="['/catalog/checkout']" [params]="{ payment_method: isStripe ? 'STRIPE' : 'SABADELL' }"
+        [routerLink]="['/catalog/checkout']" [params]="{ payment_method: 'STRIPE' }"
         tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE" i18n>Feature</tsl-button>
       <span class="address">
         Avenida Meridiana 89, 08026 Barcelona, España

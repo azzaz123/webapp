@@ -20,15 +20,11 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { PaymentService } from '../../../core/payments/payment.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
-import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
-import { CardSelectionComponent } from '../../payments/card-selection/card-selection.component';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT } from '../../../core/tracking/split-test.service';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -36,12 +32,10 @@ describe('CartComponent', () => {
   let cartService: CartService;
   let itemService: ItemService;
   let errorService: ErrorsService;
-  let paymentService: PaymentService;
   let router: Router;
   let trackingService: TrackingService;
   let eventService: EventService;
   let stripeService: StripeService;
-  let splitTestService: SplitTestService;
 
   const CART = new Cart();
   const CART_CHANGE: CartChange = {
@@ -54,7 +48,7 @@ describe('CartComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, NgbButtonsModule],
-      declarations: [CartComponent, CustomCurrencyPipe, CardSelectionComponent],
+      declarations: [CartComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
         EventService,
@@ -95,15 +89,6 @@ describe('CartComponent', () => {
         }
         },
         {
-          provide: PaymentService, useValue: {
-          getFinancialCard() {
-          },
-          pay() {
-            return Observable.of('');
-          }
-        }
-        },
-        {
           provide: Router, useValue: {
           navigate() {
           }
@@ -112,14 +97,6 @@ describe('CartComponent', () => {
         {
           provide: StripeService, useValue: {
             buy() {}
-          }
-        },
-        {
-          provide: SplitTestService, useValue: {
-            getVariable() {
-              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
-            },
-            track() {}
           }
         },
       ],
@@ -134,13 +111,10 @@ describe('CartComponent', () => {
     cartService = TestBed.get(CartService);
     itemService = TestBed.get(ItemService);
     errorService = TestBed.get(ErrorsService);
-    paymentService = TestBed.get(PaymentService);
     router = TestBed.get(Router);
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
-    splitTestService = TestBed.get(SplitTestService);
-    spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     component.creditInfo = {
       currencyName: 'wallacoins',
       credit: 200,
@@ -161,45 +135,19 @@ describe('CartComponent', () => {
     it('should set cart', () => {
       expect(component.cart).toEqual(CART);
     });
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(splitTestService, 'getVariable').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
-    });
-
-    it('should track the payment method experiment', () => {
-      spyOn(splitTestService, 'track');
-      spyOn(splitTestService, 'getVariable').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
-    });
   });
 
   describe('hasCard', () => {
-    it('should set true if card exists', () => {
+    it('should set true if stripe card exists', () => {
       component.hasCard(true);
 
-      expect(component.hasFinancialCard).toEqual(true);
-    });
-  });
-
-  describe('hasStripeCard', () => {
-    it('should set true if stripe card exists', () => {
-      component.hasStripeCard(true);
-
-      expect(component.isStripeCard).toEqual(true);
+      expect(component.hasSavedCard).toEqual(true);
     });
 
     it('should not call addNewCard if stripe card exists', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasStripeCard(true);
+      component.hasCard(true);
 
       expect(component.addNewCard).not.toHaveBeenCalled();
     });
@@ -207,7 +155,7 @@ describe('CartComponent', () => {
     it('should call addNewCard if stripe card does not exist', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasStripeCard(false);
+      component.hasCard(false);
 
       expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
@@ -290,14 +238,8 @@ describe('CartComponent', () => {
         spyOn(trackingService, 'track');
         spyOn(localStorage, 'setItem');
         spyOn(eventService, 'emit');
-        spyOn(splitTestService, 'track');
-        spyOn(splitTestService, 'getVariable').and.callThrough();
 
         eventId = null;
-        component.sabadellSubmit.subscribe((id: string) => {
-          eventId = id;
-        });
-        component.isStripe = false;
         component.cart = CART;
         component.cart.total = 1;
         component.loading = false;
@@ -319,115 +261,15 @@ describe('CartComponent', () => {
       }));
 
       describe('with payment_needed true', () => {
-
-        describe('without credit card', () => {
-          it('should submit sabadell with orderId', fakeAsync(() => {
-            component.hasFinancialCard = false;
-
-            component.checkout();
-            tick(2000);
-
-            expect(eventId).toBe('UUID');
-          }));
-        });
-
-        describe('with credit card', () => {
-
-          beforeEach(() => {
-            component.hasFinancialCard = true;
-          });
-
-          describe('user wants new one', () => {
-
-            it('should submit sabadell with orderId', fakeAsync(() => {
-              component.cardType = 'new';
-
-              component.checkout();
-              tick(2000);
-
-              expect(eventId).toBe('UUID');
-            }));
-          });
-
-          describe('user wants old one', () => {
-            beforeEach(() => {
-              spyOn(router, 'navigate');
-            });
-
-            describe('payment ok', () => {
-              beforeEach(() => {
-                spyOn(paymentService, 'pay').and.callThrough();
-                spyOn(itemService, 'deselectItems');
-                itemService.selectedAction = 'feature';
-              });
-
-              it('should redirect to code 200', fakeAsync(() => {
-                component.checkout();
-                tick(2000);
-
-                expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
-                expect(paymentService.pay).toHaveBeenCalledWith('UUID');
-              }));
-
-              it('should call deselectItems', fakeAsync(() => {
-                component.checkout();
-                tick(2000);
-
-                expect(itemService.deselectItems).toHaveBeenCalled();
-                expect(itemService.selectedAction).toBeNull();
-                expect(paymentService.pay).toHaveBeenCalledWith('UUID');
-              }));
-            });
-
-            describe('payment ko', () => {
-              beforeEach(() => {
-                spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
-              });
-
-              it('should redirect to code -1', fakeAsync(() => {
-                component.checkout();
-                tick(2000);
-
-                expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
-                expect(paymentService.pay).toHaveBeenCalledWith('UUID');
-              }));
-            });
-          });
-        });
-
         describe('track', () => {
-
           beforeEach(() => {
             component.creditInfo.credit = 0;
             component.cart = CART;
             component.cart.total = 1;
           });
 
-          describe('PaymentMethodTest', () => {
-            it('should track the payment method experiment', () => {
-              component.checkout();
-        
-              expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
-            });
-          });
-
-          describe('Sabadell', () => {
-
-            it('should call track of trackingService with valid attributes', () => {
-              component.checkout();
-
-              expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
-                selected_products: CART_ORDER_TRACK,
-                payment_method: 'SABADELL'
-              });
-            });
-
-          });
-
           describe('Stripe', () => {
             it('should call track of trackingService with valid attributes', () => {
-              component.isStripe = true;
-
               component.checkout();
 
               expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
@@ -446,7 +288,6 @@ describe('CartComponent', () => {
             payment_needed: false,
             items_failed: []
           }));
-          spyOn(paymentService, 'pay').and.callThrough();
           spyOn(itemService, 'deselectItems');
           spyOn(router, 'navigate');
           itemService.selectedAction = 'feature';
