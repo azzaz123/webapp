@@ -49,23 +49,23 @@ describe('StripeCardSelectionComponent', () => {
 
     it('should get and set financial card and emit true if present', () => {
       spyOn(stripeService, 'getCards').and.returnValue(Observable.of([FINANCIAL_STRIPE_CARD]));
-      spyOn(component.hasStripeCard, 'emit');
+      spyOn(component.hasCard, 'emit');
 
       component.ngOnInit();
 
       expect(component.financialCards[0]).toEqual(FINANCIAL_CARD_OPTION[0]);
-      expect(component.hasStripeCard.emit).toHaveBeenCalledWith(true);
+      expect(component.hasCard.emit).toHaveBeenCalledWith(true);
     });
 
     it('should get financial card and emit false if not present', () => {
       component.financialCards = undefined;
       spyOn(stripeService, 'getCards').and.returnValue(Observable.throw({}));
-      spyOn(component.hasStripeCard, 'emit');
+      spyOn(component.hasCard, 'emit');
 
       component.ngOnInit();
 
       expect(component.financialCards).toBeUndefined();
-      expect(component.hasStripeCard.emit).toHaveBeenCalledWith(false);
+      expect(component.hasCard.emit).toHaveBeenCalledWith(false);
     });
 
     it('should ask to i18nService for `noResultsFound` translation', () => {

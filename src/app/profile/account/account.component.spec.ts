@@ -11,7 +11,6 @@ import { Observable } from 'rxjs/Rx';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../core/tracking/split-test.service';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
@@ -22,7 +21,6 @@ describe('AccountComponent', () => {
   let modalService: NgbModal;
   let userService: UserService;
   let errorsService: ErrorsService;
-  let splitTestService: SplitTestService;
 
   const componentInstance: any = {
     init: jasmine.createSpy('init')
@@ -72,14 +70,6 @@ describe('AccountComponent', () => {
             canExit() { }
           }
         },
-        {
-          provide: SplitTestService, useValue: {
-            getVariable() {
-              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
-            },
-            track() {}
-          }
-        },
       ],
       declarations: [AccountComponent],
       schemas: [NO_ERRORS_SCHEMA]
@@ -96,7 +86,6 @@ describe('AccountComponent', () => {
     fixture.detectChanges();
     errorsService = TestBed.get(ErrorsService);
     modalService = TestBed.get(NgbModal);
-    splitTestService = TestBed.get(SplitTestService);
   });
 
   describe('initForm', () => {
@@ -112,15 +101,7 @@ describe('AccountComponent', () => {
       expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
     });
-
-    it('should set isStripe to the value returned by splitTestService getVariable', () => {
-      const expectedValue = true;
-      spyOn(splitTestService, 'getVariable').and.callThrough();
-
-      component.initForm();
-
-      expect(component.isStripe).toBe(expectedValue);
-    });
+    
   });
 
   describe('onSubmit', () => {
@@ -147,19 +128,6 @@ describe('AccountComponent', () => {
         expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
       });
 
-      it('should set isStripe to PAYMENT_PROVIDER_STRIPE value (true)', () => {
-        component.initForm();
-
-        expect(component.isStripe).toBe(true);
-      });
-
-      it('should set isStripe to PAYMENT_PROVIDER_STRIPE value (false)', () => {
-        spyOn(splitTestService, 'getVariable').and.returnValue(Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell));
-
-        component.initForm();
-
-        expect(component.isStripe).toBe(false);
-      });
     });
 
     describe('invalid form', () => {

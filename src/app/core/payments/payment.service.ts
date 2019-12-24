@@ -10,7 +10,6 @@ import {
   PerkResponse,
   ProductResponse,
   Products,
-  SabadellInfoResponse,
   ScheduledStatus, PaymentIntents
 } from './payment.interface';
 import { HttpService } from '../http/http.service';
@@ -19,6 +18,15 @@ import { COINS_FACTOR, COINS_PACK_ID, CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PAC
 import { PerksModel } from './payment.model';
 import { UserService } from '../user/user.service';
 import { PERMISSIONS } from '../user/user';
+
+export enum PAYMENT_METHOD {
+  STRIPE = 'STRIPE'
+}
+export enum PAYMENT_RESPONSE_STATUS {
+  SUCCEEDED = 'SUCCEEDED',
+  REQUIRES_PAYMENT_METHOD = 'REQUIRES_PAYMENT_METHOD',
+  REQUIRES_ACTION = 'REQUIRES_ACTION'
+}
 
 @Injectable()
 export class PaymentService {
@@ -41,13 +49,6 @@ export class PaymentService {
     return this.http.delete(this.API_URL + '/c2b/financial-card');
   }
 
-  public getSabadellInfo(orderId: string): Observable<SabadellInfoResponse> {
-    return this.http.get(this.API_URL + '/c2b/sabadell/tpv/params', {
-      orderId: orderId
-    })
-      .map((r: Response) => r.json());
-  }
-
   public getBillingInfo(): Observable<BillingInfoResponse> {
     return this.http.get(this.API_URL + '/billing-info/me')
       .map((r: Response) => r.json());
@@ -55,12 +56,6 @@ export class PaymentService {
 
   public updateBillingInfo(data: any): Observable<any> {
     return this.http.put(this.API_URL + '/billing-info', data);
-  }
-
-  public pay(orderId: string): Observable<any> {
-    return this.http.post(this.API_URL + '/c2b/sabadell/tpv/pay', {
-      order_id: orderId
-    });
   }
 
   public paymentIntents(orderId: string, paymentId: string): Observable<PaymentIntents> {
