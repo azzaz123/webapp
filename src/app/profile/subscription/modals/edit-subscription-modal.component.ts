@@ -4,6 +4,7 @@ import { SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscri
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
+import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
@@ -27,6 +28,7 @@ export class EditSubscriptionModalComponent implements OnInit {
   public subscription: SubscriptionsResponse;
 
   constructor(public activeModal: NgbActiveModal,
+              public subscriptionsService: SubscriptionsService,
               private toastr: ToastrService,
               private i18n: I18nService,
               private modalService: NgbModal) {
@@ -41,11 +43,18 @@ export class EditSubscriptionModalComponent implements OnInit {
     this.activeModal.close('update');
   }
 
-  public updateSubscription() {
+  public editSubscription() {
     this.loading = true;
-    //update subs endpoint
-    this.close();
-    this.toastr.success(this.i18n.getTranslations('editSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('editSubscriptionSuccessBody'));
+    this.subscriptionsService.editSubscription(this.subscription, this.selectedTier.id).subscribe((response) => {
+      if (response.status === 202) {
+          this.toastr.success(this.i18n.getTranslations('editSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('editSubscriptionSuccessBody'));
+          this.loading = false;
+      } else {
+        this.loading = false;
+        this.toastr.error(this.i18n.getTranslations('editSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('editSubscriptionErrorBody'));
+      }
+      this.close();
+    });
   }
 
   public selectListingLimit(tier: Tier): void {
@@ -61,9 +70,11 @@ export class EditSubscriptionModalComponent implements OnInit {
     const modal = CancelSubscriptionModalComponent
     let modalRef: NgbModalRef = this.modalService.open(modal, {windowClass: 'review'});
     modalRef.componentInstance.subscription = this.subscription;
-    modalRef.result.then(() => {
+    modalRef.result.then((result: string) => {
       modalRef = null;
-      this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
+      if (result !== 'cancel') {
+        this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
+      }
     }, () => {});
   }
 

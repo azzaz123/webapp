@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <tsl-button *ngIf="!isCurrentTier()" (click)="updateSubscription()" i18n>Confirm change</tsl-button>
+    <tsl-button *ngIf="!isCurrentTier()" (click)="editSubscription()" i18n>Confirm change</tsl-button>
     <tsl-button *ngIf="isCurrentTier()" [disabled]="isCurrentTier()" i18n>This is your current plan</tsl-button>
     <div class="EditSubscription__cancel-link" (click)="cancelSubscription()">I want to cancel my subscription</div>
 </div>
