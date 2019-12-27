@@ -561,6 +561,7 @@
       This is your current plan
     </msg>
   <msg id="6998541290982927512"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:37</source>Confirm change</msg>
+  <msg id="3174471160045690426"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:39</source>I want to cancel my subscription</msg>
   <msg id="3356276673477156226"><source>app/profile/subscription/subscription.component.html:3</source>wallapop PRO</msg>
   <msg id="191727416046037791"><source>app/profile/subscription/subscription.component.html:4</source>Manage your subscriptions to wallapop PRO to increase your sales.</msg>
   <msg id="8720496095668778360"><source>app/profile/subscription/subscription.component.html:15</source>Limit without subscription: <ph name="INTERPOLATION"><ex>{{subscription.current_limit}}</ex></ph></msg>
