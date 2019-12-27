@@ -18,15 +18,23 @@
       </div>
       <div class="row EditSubscription__listing-limit-payment">
         <div class="col-12 EditSubscription__listing-limit-selection">
-            <span *ngIf="!isCurrentTier()" i18n>New price:</span>
-            <span *ngIf="isCurrentTier()" i18n>Price: </span>
+            <span *ngIf="isCurrentTier(); else nonCurrent">
+              Price: 
+            </span>
+            <ng-template #nonCurrent>
+              <span>New price: </span>
+            </ng-template>
             <span class="EditSubscription__listing-limit-price" i18n>
               {{selectedTier.price}}{{selectedTier.currency}}/month
             </span>
         </div>
       </div>
     </div>
-    <tsl-button *ngIf="!isCurrentTier()" (click)="editSubscription()" i18n>Confirm change</tsl-button>
-    <tsl-button *ngIf="isCurrentTier()" [disabled]="isCurrentTier()" i18n>This is your current plan</tsl-button>
+    <tsl-button *ngIf="isCurrentTier(); else nonCurrentButton" [disabled]="isCurrentTier()" i18n>
+      This is your current plan
+    </tsl-button>
+    <ng-template #nonCurrentButton>
+      <tsl-button (click)="editSubscription()" i18n>Confirm change</tsl-button>
+    </ng-template>
     <div class="EditSubscription__cancel-link" (click)="cancelSubscription()">I want to cancel my subscription</div>
 </div>
