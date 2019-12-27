@@ -550,13 +550,17 @@
   <msg id="5018811059755976867"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:6</source>Change the limits of the subscription</msg>
   <msg id="2477437471140226346"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:7</source>What limit do you want to put on your subscription?</msg>
   <msg id="3072739349487522347"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:15</source><ph name="INTERPOLATION"><ex>{{subscription?.tiers[i]?.limit}}</ex></ph></msg>
-  <msg id="5135045952459940132"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:21</source>New price:</msg>
-  <msg id="2502388485848434957"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:22</source>Price: </msg>
-  <msg id="3744004942164134121"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:23,25</source>
+  <msg id="1583909574923079873"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:21,23</source>
+              Price: 
+            </msg>
+  <msg id="930351548904901118"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:25</source>New price: </msg>
+  <msg id="3744004942164134121"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:27,29</source>
               <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/month
             </msg>
-  <msg id="6998541290982927512"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:29</source>Confirm change</msg>
-  <msg id="5656512856960596660"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:30</source>This is your current plan</msg>
+  <msg id="7063014133288240503"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:33,35</source>
+      This is your current plan
+    </msg>
+  <msg id="6998541290982927512"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:37</source>Confirm change</msg>
   <msg id="3356276673477156226"><source>app/profile/subscription/subscription.component.html:3</source>wallapop PRO</msg>
   <msg id="191727416046037791"><source>app/profile/subscription/subscription.component.html:4</source>Manage your subscriptions to wallapop PRO to increase your sales.</msg>
   <msg id="8720496095668778360"><source>app/profile/subscription/subscription.component.html:15</source>Limit without subscription: <ph name="INTERPOLATION"><ex>{{subscription.current_limit}}</ex></ph></msg>

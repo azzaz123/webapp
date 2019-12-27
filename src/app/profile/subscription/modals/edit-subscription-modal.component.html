@@ -18,11 +18,11 @@
       </div>
       <div class="row EditSubscription__listing-limit-payment">
         <div class="col-12 EditSubscription__listing-limit-selection">
-            <span *ngIf="isCurrentTier(); else nonCurrent">
+            <span *ngIf="isCurrentTier(); else nonCurrent" i18n>
               Price: 
             </span>
             <ng-template #nonCurrent>
-              <span>New price: </span>
+              <span i18n>New price: </span>
             </ng-template>
             <span class="EditSubscription__listing-limit-price" i18n>
               {{selectedTier.price}}{{selectedTier.currency}}/month
