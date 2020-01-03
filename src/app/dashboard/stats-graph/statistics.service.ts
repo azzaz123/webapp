@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import { StatisticFullResponse } from './statistic-response.interface';
-import { HttpService } from '../../core/http/http.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class StatisticsService {
 
-  constructor(private http: HttpService) {
+  constructor(private http: HttpClient) {
   }
 
-  public getStatistics(duration: string = '30'): Observable<StatisticFullResponse> {
-    return this.http.get('api/v3/protool/dashboard/statistics?durationInDays=' + duration)
-      .map((res: Response) => res.json());
+  public getStatistics(duration = '30'): Observable<StatisticFullResponse> {
+    return this.http.get<StatisticFullResponse>(`${environment.baseUrl}api/v3/protool/dashboard/statistics/`, {
+      params: { durationInDays: duration}
+    });
   }
 }

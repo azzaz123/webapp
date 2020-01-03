@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
-import { Response } from '@angular/http';
 import { map, filter } from 'lodash-es';
-import { HttpService } from '../../core/http/http.service';
 import { I18nService } from '../../core/i18n/i18n.service';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class CarKeysService {
 
-  private API_URL = 'api/v3/cars/keys';
+  private API_URL = `${environment.baseUrl}api/v3/cars/keys`;
   private cache: any[];
 
-  constructor(private http: HttpService,
+  constructor(private http: HttpClient,
               private i18n: I18nService) {
   }
 
@@ -33,8 +33,10 @@ export class CarKeysService {
     if (this.cache) {
       return Observable.of(this.cache);
     }
-    return this.http.get(this.API_URL + '/bodytype', {language: this.i18n.locale})
-    .map((r: Response) => r.json());
+
+    const params = { language: this.i18n.locale };
+
+    return this.http.get<any[]>(`${this.API_URL}/bodytype`, { params });
   }
 
   private toSelectOptions(values: any[]): IOption[] {
