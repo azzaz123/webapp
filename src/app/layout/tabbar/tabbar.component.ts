@@ -3,6 +3,7 @@ import { Component, OnInit, Inject, HostListener } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
 import { User } from '../../core/user/user';
 import { TabbarService } from './tabbar.service';
+import { MessageService } from '../../core/message/message.service';
 
 @Component({
   selector: 'tsl-tabbar',
@@ -14,9 +15,11 @@ export class TabbarComponent implements OnInit {
   public user: User;
   public homeUrl: string;
   public hidden = false;
+  public hasUnreadMessages = false;
 
   constructor(private userService: UserService,
     private tabBarService: TabbarService,
+    private messageService: MessageService,
     @Inject('SUBDOMAIN') private subdomain: string) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
   }
@@ -24,6 +27,7 @@ export class TabbarComponent implements OnInit {
   ngOnInit() {
     this.userService.me().subscribe(user => this.user = user);
     this.tabBarService.tabBarHidden$.subscribe(hidden => this.hidden = hidden);
+    this.messageService.totalUnreadMessages$.subscribe(unreadMessages => this.hasUnreadMessages = !!unreadMessages);
   }
 
   private isTextInputOrTextarea(elementType: string) {

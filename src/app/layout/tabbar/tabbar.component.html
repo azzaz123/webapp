@@ -24,7 +24,8 @@
     </svg>
     <span i18n>Upload</span>
   </div>
-  <div class="TabBar__option" [routerLink]="['/chat']" routerLinkActive="active">
+  <div class="TabBar__option TabBar__chat" [routerLink]="['/chat']" routerLinkActive="active"
+    [ngClass]="{'TabBar__option--pending': hasUnreadMessages}">
     <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 48 48">
       <g fill="none" fill-rule="evenodd">
         <path class="fill-path" fill="#90A4AE"
@@ -36,6 +37,7 @@
       </g>
     </svg>
     <span i18n>Messages</span>
+    <div class="TabBar__badge"></div>
   </div>
   <div class="TabBar__option" [routerLink]="['/catalog/list']" routerLinkActive="active">
     <svg *ngIf="!user?.image?.urls_by_size.medium" xmlns="http://www.w3.org/2000/svg" width="46" height="46"

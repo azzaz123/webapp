@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MockMessageService } from '../../../tests/message.fixtures.spec';
+import { MessageService } from '../../core/message/message.service';
 
 describe('TabbarComponent', () => {
   let component: TabbarComponent;
@@ -26,6 +28,7 @@ describe('TabbarComponent', () => {
             }
           },
         },
+        { provide: MessageService, useClass: MockMessageService },
         { provide: 'SUBDOMAIN', useValue: 'es' }
       ],
       schemas: [NO_ERRORS_SCHEMA]
