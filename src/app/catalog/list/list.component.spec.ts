@@ -32,10 +32,8 @@ import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-m
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { ItemFlags } from '../../core/item/item-response.interface';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
-import { StripeService } from '../../core/stripe/stripe.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { HttpModuleNew } from '../../core/http/http.module.new';
@@ -69,13 +67,10 @@ describe('ListComponent', () => {
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   let eventService: EventService;
-  let stripeService: StripeService;
-  let userReviewService: UserReviewService;
   let deviceService: DeviceDetectorService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
-  const TRANSACTION_SPENT = '50';
   const mockCounters = {
     sold: 7,
     publish: 12
@@ -88,7 +83,6 @@ describe('ListComponent', () => {
       providers: [
         I18nService,
         EventService,
-        StripeService,
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
@@ -158,11 +152,6 @@ describe('ListComponent', () => {
         },
         {
           provide: PaymentService, useValue: {
-            getFinancialCard() {
-            },
-            pay() {
-              return Observable.of('');
-            },
             getCreditInfo() {
               return Observable.of({
                 currencyName: CURRENCY,
@@ -205,20 +194,6 @@ describe('ListComponent', () => {
           }
         },
         {
-          provide: StripeService, useValue: {
-          isPaymentMethodStripe$() {
-            return Observable.of(true)
-          }
-        }
-        },
-        {
-          provide: UserReviewService, useValue: {
-            getPaginationReviews () {
-              return of({data: MOCK_REVIEWS, init: 2});
-            }
-          }
-        },
-        {
           provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock
         }
       ],
@@ -240,8 +215,6 @@ describe('ListComponent', () => {
     errorService = TestBed.get(ErrorsService);
     userService = TestBed.get(UserService);
     eventService = TestBed.get(EventService);
-    stripeService = TestBed.get(StripeService);
-    userReviewService = TestBed.get(UserReviewService);
     deviceService = TestBed.get(DeviceDetectorService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
@@ -251,24 +224,6 @@ describe('ListComponent', () => {
   });
 
   describe('ngOnInit', () => {
-
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
-    });
-
     describe('getCreditInfo', () => {
       it('should set the creditInfo', () => {
         const creditInfo: CreditInfo = {
@@ -325,7 +280,6 @@ describe('ListComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, { windowClass: 'modal-standard' });
       expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
       expect(component.isUrgent).toBe(false);
-      expect(component.isRedirect).toBe(false);
     }));
 
     describe('if it`s a mobile device', () => {
@@ -361,22 +315,7 @@ describe('ListComponent', () => {
       tick(3000);
 
       expect(component.isUrgent).toBe(true);
-      expect(component.isRedirect).toBe(true);
-      expect(localStorage.getItem).toHaveBeenCalledWith('redirectToTPV');
       expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT, 'urgent');
-    }));
-
-    it('should set the redirect to false if it is not urgent', fakeAsync(() => {
-      spyOn(localStorage, 'setItem');
-      route.params = Observable.of({
-        urgent: false
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(component.isRedirect).toBe(false);
-      expect(localStorage.setItem).toHaveBeenCalledWith('redirectToTPV', 'false');
     }));
 
     it('should open the urgent modal if transaction is set as urgent', fakeAsync(() => {

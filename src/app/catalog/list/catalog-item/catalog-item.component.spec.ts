@@ -436,21 +436,7 @@ describe('CatalogItemComponent', () => {
       expect(itemService.getListingFeeInfo).toHaveBeenCalledWith(item.id);
     });
 
-    it('should send PURCHASE_LISTING_FEE_CATALOG tracking event for Sabadell', () => {
-      component.paymentMethod = 'SABADELL';
-      spyOn(trackingService, 'track');
-
-      component.publishItem();
-
-      expect(trackingService.track)
-      .toHaveBeenCalledWith(TrackingService.PURCHASE_LISTING_FEE_CATALOG, {
-        item_id: item.id,
-        payment_method: 'SABADELL'
-      });
-    });
-
     it('should send PURCHASE_LISTING_FEE_CATALOG tracking event for Stripe', () => {
-      component.paymentMethod = 'STRIPE';
       spyOn(trackingService, 'track');
 
       component.publishItem();

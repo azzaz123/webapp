@@ -45,14 +45,11 @@ h1 {
 
 .cart-wrapper {
   min-height: $margin-height;
-  height: calc(100% - #{$margin-height});
+  height: calc(100% - #{$margin-height + $extra-height});
   background-color: rgba($blue-grey-5, 0.3);
   border-radius: 5px;
   position: relative;
   flex: 2 0px;
-  &.stripe {
-    height: calc(100% - #{$margin-height + $extra-height});
-  }
   .with-credits & {
     &.no-discount {
       margin-bottom: $spacing-s;

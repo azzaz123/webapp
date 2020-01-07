@@ -8,10 +8,8 @@ import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
-import { StripeService } from '../core/stripe/stripe.service';
 import { HttpService } from '../core/http/http.service';
 import { FeatureflagService } from '../core/user/featureflag.service';
-import { CategoryService } from '../core/category/category.service';
 import { SUBSCRIPTIONS, SUBSCRIPTIONS_NOT_SUB } from '../../tests/subscriptions.fixtures.spec';
 import { EventService } from '../core/event/event.service';
 
@@ -20,8 +18,6 @@ describe('ProfileComponent', () => {
   let fixture: ComponentFixture<ProfileComponent>;
   let userService: UserService;
   let subscriptionsService: SubscriptionsService;
-  let stripeService: StripeService;
-  let featureflagService: FeatureflagService;
   let eventService: EventService;
   const mockMotorPlan = {
     type: 'motor_plan_pro',
@@ -59,13 +55,6 @@ describe('ProfileComponent', () => {
             },
             isProfessional() {
               return Observable.of(false);
-            }
-          }
-        },
-        {
-          provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return Observable.of(true);
             }
           }
         },

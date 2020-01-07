@@ -12,6 +12,7 @@ import { DEFAULT_ERROR_MESSAGE } from '../../../core/errors/errors.service';
 import { Item } from '../../../core/item/item';
 import { EventService } from '../../../core/event/event.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { PAYMENT_METHOD } from '../../../core/payments/payment.service';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -21,7 +22,6 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 export class CatalogItemComponent implements OnInit {
 
   @Input() item: Item;
-  @Input() paymentMethod: string;
   @Input() showPublishCTA = false;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
   @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
@@ -165,7 +165,7 @@ export class CatalogItemComponent implements OnInit {
       localStorage.setItem('transactionType', 'purchaseListingFee');
       this.trackingService.track(TrackingService.PURCHASE_LISTING_FEE_CATALOG, {
         item_id: this.item.id,
-        payment_method: this.paymentMethod
+        payment_method: PAYMENT_METHOD.STRIPE
       });
       this.purchaseListingFee.next(orderEvent);
     });
