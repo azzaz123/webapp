@@ -184,7 +184,7 @@
     <div class="row">
       <div class="col-12">
         <div class="form-group" [ngbPopover]="coachmarkLocation" triggers="mouseenter:mouseleave">
-          <tsl-location-select [form]="uploadForm" name="location" (locationSelected)="emitLocation()"
+          <tsl-location-select *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"
             [updateLocation]="false"></tsl-location-select>
           <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small" [isApproximateLocation]="
               uploadForm.value.location.approximated_location

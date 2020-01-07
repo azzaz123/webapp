@@ -194,7 +194,7 @@
     </ng-template>
   </div>
 
-  <tsl-location-box [form]="uploadForm" name="location" (locationSelected)="emitLocation()"></tsl-location-box>
+  <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"></tsl-location-box>
   <tsl-urgent-checkbox [categoryId]="categoryId" [urgentPrice]="urgentPrice" (urgentSelected)="selectUrgent($event)">
   </tsl-urgent-checkbox>
   <div class="row">

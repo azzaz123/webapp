@@ -266,7 +266,7 @@
     </ng-template>
   </div>
 
-  <tsl-location-box [form]="uploadForm" name="location" (locationSelected)="emitLocation()" title="Your car is in:"
+  <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()" title="Your car is in:"
     i18n-title></tsl-location-box>
   <tsl-urgent-checkbox [categoryId]="100" [urgentPrice]="urgentPrice" (urgentSelected)="selectUrgent($event)">
   </tsl-urgent-checkbox>
