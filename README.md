@@ -65,12 +65,12 @@ Currently this project uses gitflow. To start and finish a release one has to us
 
 ### Start release
 ```
-release_begin repo=web version_update=minor
+release_begin repo=webapp version_update=minor
 ```
 
 ### End release
 ```
-release_end repo=web
+release_end repo=webapp
 ```
 
 
