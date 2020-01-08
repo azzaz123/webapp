@@ -103,7 +103,7 @@ Resources:
                 Capabilities: CAPABILITY_IAM
                 StackName: !Sub webapp-cloudfront-${EnvName}
                 TemplateConfiguration: !Sub App::infrastructure/cloudfront/${EnvName}.json
-                  TemplatePath: App::infrastructure/cloudfront/template.yaml
+                TemplatePath: App::infrastructure/cloudfront/template.yaml
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
               InputArtifacts:
                 - Name: App
