@@ -20,8 +20,9 @@ phases:
 
   build:
     commands:
+      # RUN cfn-lint ON CLOUDFORMATION TEMPLATE FILES
       - ecr="745640521341.dkr.ecr.eu-west-1.amazonaws.com"
-      - docker run -v "$PWD":/code -w /code $ecr/cfn-lint:stable -t infrastructure/cloudfront/template.yaml
+      - docker run -v "$PWD":/code -w /code $ecr/cfn-lint:stable -t infrastructure/*/*.yaml
 
       # OBTAIN WORKING BRANCH
       - BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
