@@ -1,12 +1,4 @@
 {
-  "Statement": [
-    {
-      "Action": "Update:*",
-      "Effect": "Allow",
-      "Principal": "*",
-      "Resource": "*"
-    }
-  ],
   "Parameters": {
     "EnvName": "prod",
     "ProjectName": "webapp",
