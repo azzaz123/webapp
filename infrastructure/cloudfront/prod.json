@@ -1,0 +1,28 @@
+{
+  "Statement": [
+    {
+      "Action": "Update:*",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Resource": "*"
+    }
+  ],
+  "Parameters": {
+    "EnvName": "prod",
+    "ProjectName": "webapp",
+    "Team": "frontend",
+    "Repo": "webapp",
+    "BucketES": "web-es.wallapop.com",
+    "BucketEN": "web-en.wallapop.com",
+    "HostES": "web",
+    "HostEN": "web-en"
+  },
+  "Tags": {
+    "Project": "webapp",
+    "Team": "frontend",
+    "Contact": "frontend@wallapop.com",
+    "Env": "prod",
+    "Name": "webapp",
+    "Repo": "webapp"
+  }
+}
