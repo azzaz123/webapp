@@ -10,8 +10,6 @@
   "Parameters": {
     "EnvName": "prod",
     "ProjectName": "webapp",
-    "Team": "frontend",
-    "Repo": "webapp",
     "BucketES": "web-es.wallapop.com",
     "BucketEN": "web-en.wallapop.com",
     "HostES": "web",
