@@ -528,7 +528,7 @@ describe('Service: Item', () => {
       let resp: string[];
       let options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
 
-      service.purchaseProducts([ORDER], 'UUID', true).subscribe((r: string[]) => {
+      service.purchaseProducts([ORDER], 'UUID').subscribe((r: string[]) => {
         resp = r;
       });
       expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/UUID', [ORDER], options);
@@ -547,7 +547,7 @@ describe('Service: Item', () => {
       let resp: PurchaseProductsWithCreditsResponse;
       let options: RequestOptions = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
 
-      service.purchaseProductsWithCredits([ORDER], 'UUID', true).subscribe((r: PurchaseProductsWithCreditsResponse) => {
+      service.purchaseProductsWithCredits([ORDER], 'UUID').subscribe((r: PurchaseProductsWithCreditsResponse) => {
         resp = r;
       });
       expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/credit/UUID', [ORDER], options);

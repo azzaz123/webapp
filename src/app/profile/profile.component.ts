@@ -4,7 +4,6 @@ import { User } from '../core/user/user';
 import { MotorPlan, MotorPlanType, ProfileSubscriptionInfo } from '../core/user/user-response.interface';
 import { I18nService } from '../core/i18n/i18n.service';
 import { UserStatsResponse } from '../core/user/user-stats.interface';
-import { StripeService } from '../core/stripe/stripe.service';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { flatMap } from 'rxjs/operators';
 
@@ -26,7 +25,6 @@ export class ProfileComponent implements OnInit {
 
   constructor(private userService: UserService,
               protected i18n: I18nService,
-              private stripeService: StripeService,
               private subscriptionsService: SubscriptionsService,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
@@ -49,10 +47,8 @@ export class ProfileComponent implements OnInit {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
       this.userStats = userStats;
     });
-    this.stripeService.isPaymentMethodStripe$()
-    .pipe(
-      flatMap(() => this.subscriptionsService.isSubscriptionsActive$())
-    )
+
+    this.subscriptionsService.isSubscriptionsActive$()
     .subscribe(val => {
       if (val) {
         this.isSubscriptionsActive = val;

@@ -4,12 +4,15 @@ import { TutorialGuard } from './tutorial.guard';
 import { TutorialService } from '../../core/tutorial/tutorial.service';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { DeviceDetectorServiceMock } from '../../../tests';
 
 describe('TutorialGuard', () => {
 
   let guard: TutorialGuard;
   let router: Router;
   let tutorialService: TutorialService;
+  let deviceService: DeviceDetectorService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -27,12 +30,14 @@ describe('TutorialGuard', () => {
           navigate() {
           }
         }
-        }
+        },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
       ]
     });
     guard = TestBed.get(TutorialGuard);
     router = TestBed.get(Router);
     tutorialService = TestBed.get(TutorialService);
+    deviceService = TestBed.get(DeviceDetectorService);
   });
 
   describe('canActivate', () => {
@@ -50,7 +55,7 @@ describe('TutorialGuard', () => {
       });
 
       expect(router.navigate).toHaveBeenCalledWith(['tutorial']);
-      expect(displayed).toBeFalsy();
+      expect(displayed).toBe(false);
     });
 
     it('should not redirect if tutorial has already displayed', () => {
@@ -61,7 +66,18 @@ describe('TutorialGuard', () => {
       });
 
       expect(router.navigate).not.toHaveBeenCalled();
-      expect(displayed).toBeTruthy();
+      expect(displayed).toBe(true);
+    });
+
+    it('should not redirect if is a mobile device', () => {
+      spyOn(deviceService, 'isMobile').and.returnValue(true);
+
+      (<Observable<boolean>>guard.canActivate()).subscribe((val: boolean) => {
+        displayed = val;
+      });
+
+      expect(router.navigate).not.toHaveBeenCalled();
+      expect(displayed).toBe(true);
     });
   });
 });

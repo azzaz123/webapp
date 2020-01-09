@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PaymentService } from '../payments/payment.service';
+import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../payments/payment.service';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { Router } from '@angular/router';
@@ -43,8 +43,8 @@ export class StripeService {
     this.elements = this.lib.elements();
   }
 
-  public buy(orderId: string, paymentId: string, isStripeCard: boolean, isSaved: boolean, card: any): void {
-    if (!isStripeCard || isStripeCard && !isSaved) {
+  public buy(orderId: string, paymentId: string, hasSavedCard: boolean, isSaved: boolean, card: any): void {
+    if (!hasSavedCard || hasSavedCard && !isSaved) {
       this.paymentService.paymentIntents(orderId, paymentId).subscribe((response: PaymentIntents) => {
         this.payment(response.token, card).then((response: any) => {
           this.handlePayment(response);
@@ -52,7 +52,7 @@ export class StripeService {
       });
     } else {
       this.paymentService.paymentIntentsConfirm(orderId, paymentId, card.id).subscribe((response: PaymentIntents) => {
-        if (response.status.toUpperCase() !== 'SUCCEEDED') {
+        if (response.status.toUpperCase() !== PAYMENT_RESPONSE_STATUS.SUCCEEDED) {
           this.savedPayment(response.token).then((response: any) => {
             this.handlePayment(response);
           });
@@ -69,10 +69,6 @@ export class StripeService {
     this.requiresActionPayment(paymentSecretKey).then((response: any) => {
       this.handlePayment(response, 'paymentActionResponse');
     })
-  }
-
-  public isPaymentMethodStripe$(): Observable<boolean> {
-    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.STRIPE);
   }
 
   public getCards(): Observable<FinancialCard[]> {

@@ -4,7 +4,6 @@ import { getMockItem } from './item.fixtures.spec';
 import { COINS_PACK_ID, CREDITS_PACK_ID, Pack } from '../app/core/payments/pack';
 import {
   BillingInfoResponse,
-  SabadellInfoResponse,
   Packs,
   PackResponse,
   ProductResponse,
@@ -37,13 +36,6 @@ export const FINANCIAL_STRIPE_CARD: FinancialCard = {
     three_d_secure_usage: { supported : null },
     wallet: null
   }
-};
-
-export const SABADELL_RESPONSE: SabadellInfoResponse = {
-  merchant_parameters: 'eyJEU19NRVJDSEFOVF9BTU9VTlQi',
-  signature: '/XvjPsRtYubYTmKLCGkpA6XxOXj/rJ3sdGZl0+gz3lw=',
-  signature_version: 'HMAC_SHA256_V1',
-  target_url: 'https://sis-t.redsys.es:25443/sis/realizarPago'
 };
 
 export const PURCHASES_RESPONSE: Purchase[] = [{

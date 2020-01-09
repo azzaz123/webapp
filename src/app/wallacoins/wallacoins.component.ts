@@ -13,8 +13,6 @@ import { UserService } from '../core/user/user.service';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
 import { Observable } from 'rxjs';
 import { User } from '../core/user/user';
-import { StripeService } from '../core/stripe/stripe.service';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT } from '../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -30,7 +28,6 @@ export class WallacoinsComponent implements OnInit {
   public factor: number;
   public loading = true;
   private localStorageName = '-wallacoins-tutorial';
-  public paymentMethod: WEB_PAYMENT_EXPERIMENT_TYPE;
 
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,
@@ -38,8 +35,7 @@ export class WallacoinsComponent implements OnInit {
               private route: ActivatedRoute,
               private trackingService: TrackingService,
               private router: Router,
-              private userService: UserService,
-              private splitTestService: SplitTestService){
+              private userService: UserService){
 
     this.userService.isProfessional().subscribe((value: boolean) => {
       if (value) {
@@ -49,11 +45,6 @@ export class WallacoinsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
-    .subscribe((paymentMethod: number) => {
-      this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
-      this.paymentMethod = +paymentMethod;
-    });
     this.openTutorialModal();
     this.carouselOptions = {
       grid: {xs: 3, sm: 3, md: 3, lg: 3, all: 0},
@@ -108,7 +99,6 @@ export class WallacoinsComponent implements OnInit {
     let code = '-1';
     modal.componentInstance.pack = pack;
     modal.componentInstance.packIndex = packIndex;
-    modal.componentInstance.paymentMethod = this.paymentMethod;
     modal.result.then((response) => {
       console.warn(response.status);
       if (response === 'success' || response.status === '201' || response.status === 201) {
@@ -125,9 +115,6 @@ export class WallacoinsComponent implements OnInit {
     modal.componentInstance.pack = pack;
     modal.componentInstance.code = code;
     modal.componentInstance.total = this.wallacoins;
-    if (code === '200') {
-      this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT);
-    }
     modal.result.then(() => {
       this.router.navigate(['catalog/list']);
     }, () => {
