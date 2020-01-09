@@ -5,9 +5,8 @@
 @import '~web-styleguide/scss/fonts';
 
 html, body {
-  height: 100%;
-  overflow: hidden;
   font-size: $font-size-base-walla;
+  height: 100%;
 }
 
 body {
@@ -17,6 +16,32 @@ body {
 
   & > iframe {
     display: none;
+  }
+
+  &.route-loading {
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba($blue-grey-3, 0.5);
+      z-index: 200;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 100px;
+      z-index: 201;
+      border-radius: 20px;
+      background: url('/assets/images/spinner.gif') no-repeat center center / 45px;
+      background-color: $white;
+    }
   }
 }
 
@@ -49,19 +74,17 @@ body {
 }
 
 .page-content {
-  position: absolute;
-  left: $sidebar-width;
-  top: $topbar-height;
-  height: calc(100vh - #{$topbar-height});
-  width: calc(100% - #{$sidebar-width});
-  overflow: auto;
+  padding-left: $sidebar-width;
+  padding-top: $topbar-height;
   background: rgba(236, 239, 241, 0.6);
-  padding: 0 $spacing-xl;
+  min-height: 100%;
+  @include media-breakpoint-down(md) {
+    padding-left: 0;
+    padding-bottom: $tabbar-height;
+  }
   > .container {
-    padding: $spacing-xl $spacing-ms;
-    @-moz-document url-prefix() { // Firefox hack
-      padding: $spacing-xl $spacing-ms;
-    }
+    padding-top: $spacing-xl;
+    padding-bottom: $spacing-xl;
   }
 }
 
@@ -86,12 +109,6 @@ button, input, optgroup, select, textarea {
   display: none;
 }
 
-@media (min-width: 1200px) {
-  .container {
-    width: 1200px;
-  }
-}
-
 .modal-transparent .modal-dialog .modal-content {
   background-color: transparent;
   box-shadow: none;
@@ -99,9 +116,4 @@ button, input, optgroup, select, textarea {
 
 tsl-topbar {
   position: sticky;
-}
-
-tsl-chat {
-  height: calc(100% - #{$topbar-height});
-  max-height: calc(100% - #{$topbar-height});
 }

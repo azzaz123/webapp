@@ -14,6 +14,8 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { AutosizeModule } from 'ngx-autosize';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { DeviceDetectorServiceMock } from '../../../tests';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
 
@@ -37,6 +39,7 @@ describe('Component: Input', () => {
   let trackingService: TrackingService;
   let remoteConsoleService: RemoteConsoleService;
   let modalService: NgbModal;
+  let deviceService: DeviceDetectorService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -49,6 +52,7 @@ describe('Component: Input', () => {
         I18nService,
         { provide: MessageService, useClass: MessageServiceMock },
         { provide: NgbModal, useClass: NgbModalMock },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         EventService,
         {
@@ -68,6 +72,7 @@ describe('Component: Input', () => {
     trackingService = TestBed.get(TrackingService);
     modalService = TestBed.get(NgbModal);
     remoteConsoleService = TestBed.get(RemoteConsoleService);
+    deviceService = TestBed.get(DeviceDetectorService);
     spyOn(messageService, 'send');
   });
 
@@ -236,6 +241,27 @@ describe('Component: Input', () => {
       expect(component.isFocus).toEqual(true);
       expect(component.messageArea.nativeElement.focus).toHaveBeenCalled();
     }));
+
+    describe('if it`s a mobile device', () => {
+      beforeEach(() => {
+        spyOn(deviceService, 'isMobile').and.returnValue(true);
+      });
+
+      it('should not focus the message if change conversation', fakeAsync(() => {
+        component.ngOnChanges();
+        tick(500);
+
+        expect(component.messageArea.nativeElement.focus).not.toHaveBeenCalled();
+      }));
+
+      it('should not focus the message area', fakeAsync(() => {
+        component.ngAfterViewInit();
+        tick(500);
+
+        expect(component.messageArea.nativeElement.focus).not.toHaveBeenCalled();
+      }));
+    });
+
 
     it('should reset the input value when the conversation is changed', fakeAsync(() => {
       component.messageArea.nativeElement.value = 'I typed some some text...';

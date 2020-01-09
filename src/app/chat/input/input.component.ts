@@ -9,6 +9,7 @@ import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { isEmpty, includes, find } from 'lodash-es';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { RemoteConsoleService } from '../../core/remote-console';
 
 @Component({
@@ -30,7 +31,8 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
               private trackingService: TrackingService,
               private remoteConsoleService: RemoteConsoleService,
               private modalService: NgbModal,
-              private i18n: I18nService) {
+              private i18n: I18nService,
+              private deviceService: DeviceDetectorService) {
   }
 
   ngOnInit() {
@@ -62,10 +64,12 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   ngOnChanges(changes?: any) {
     if (this.messageArea) {
-      setTimeout(() => {
-        this.messageArea.nativeElement.focus();
-        this.isFocus = true;
-      }, 500);
+      if (!this.deviceService.isMobile()) {
+        setTimeout(() => {
+          this.messageArea.nativeElement.focus();
+          this.isFocus = true;
+        }, 500);
+      }
 
       if (changes && changes.currentConversation && this.messageArea.nativeElement.value.length) {
         this.message = '';
@@ -76,8 +80,10 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.messageArea.nativeElement.focus();
-    this.isFocus = true;
+    if (!this.deviceService.isMobile()) {
+      this.messageArea.nativeElement.focus();
+      this.isFocus = true;
+    }
   }
 
   public getPlaceholder(): string {

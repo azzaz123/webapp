@@ -1,0 +1,26 @@
+@import '~web-styleguide/scss/colors';
+@import '~web-styleguide/scss/spacing';
+
+.MobileBlocker {
+  width: 100vw;
+  height: 100vh;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+
+  background: $walla-main;
+  color: $white;
+
+  z-index: 10000;
+
+  img {
+    margin: $spacing-l;
+    height: 15vh;
+  }
+}

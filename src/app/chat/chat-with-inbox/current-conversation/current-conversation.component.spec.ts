@@ -550,4 +550,16 @@ describe('CurrentConversationComponent', () => {
       expect(realTime.sendRead).toHaveBeenCalledWith(inboxMessage.from, inboxMessage.thread);
     }));
   });
+
+  describe('navigationBack', () => {
+    it('should set the current conversation as null', () => {
+      spyOn(eventService, 'emit');
+      component.ngOnInit();
+      component.currentConversation = MOCK_CONVERSATION();
+
+      component.navigationBack();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CURRENT_CONVERSATION_SET, null);
+    });
+  });
 });

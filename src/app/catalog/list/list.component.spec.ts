@@ -1,7 +1,7 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { find } from 'lodash-es';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
@@ -42,9 +42,13 @@ import { HttpService } from '../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
 import { FeatureflagService } from '../../core/user/featureflag.service';
-import { FeatureFlagServiceMock } from '../../../tests';
+import { FeatureFlagServiceMock, DeviceDetectorServiceMock } from '../../../tests';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
+import { UserReviewService } from '../../reviews/user-review.service';
+import { MOCK_REVIEWS } from '../../../tests/review.fixtures.spec';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { MOCK_USER, USER_INFO_RESPONSE } from '../../../tests/user.fixtures.spec';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -63,6 +67,7 @@ describe('ListComponent', () => {
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   let eventService: EventService;
+  let deviceService: DeviceDetectorService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
@@ -80,6 +85,7 @@ describe('ListComponent', () => {
         EventService,
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: CategoryService, useValue: {
             getCategoryById() {
               return Observable.of(CATEGORY_DATA_WEB);
@@ -178,9 +184,18 @@ describe('ListComponent', () => {
             },
             getAvailableSlots() {
                 return Observable.of({});
+            },
+            me() {
+              return Observable.of(MOCK_USER);
+            },
+            getInfo() {
+              return Observable.of(USER_INFO_RESPONSE);
             }
           }
         },
+        {
+          provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -200,6 +215,7 @@ describe('ListComponent', () => {
     errorService = TestBed.get(ErrorsService);
     userService = TestBed.get(UserService);
     eventService = TestBed.get(EventService);
+    deviceService = TestBed.get(DeviceDetectorService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -265,6 +281,16 @@ describe('ListComponent', () => {
       expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
       expect(component.isUrgent).toBe(false);
     }));
+
+    describe('if it`s a mobile device', () => {
+      it('should not open upload confirmation modal', () => {
+        spyOn(deviceService, 'isMobile').and.returnValue(true);
+
+        component.ngOnInit();
+
+        expect(modalService.open).not.toHaveBeenCalled();
+      });
+    });
 
     it('should open toastr', fakeAsync(() => {
       spyOn(errorService, 'i18nSuccess');
@@ -425,6 +451,18 @@ describe('ListComponent', () => {
       });
 
       expect(component.selectedItems).toEqual([ITEMS[0], ITEMS[1]]);
+    });
+
+    it('should get user information', () => {
+      component.ngOnInit();
+
+      expect(component.user).toEqual(MOCK_USER);
+    });
+
+    it('should get user scoring', () => {
+      component.ngOnInit();
+
+      expect(component.userScore).toEqual(USER_INFO_RESPONSE.scoring_stars);
     });
   });
 
