@@ -11,7 +11,7 @@ import { Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
 import { HttpServiceNew } from '../http/http.service.new';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { find, isNil, last, some } from 'lodash-es';
+import { find, isNil, some } from 'lodash-es';
 import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
 import * as moment from 'moment';
 

@@ -119,6 +119,7 @@ describe('Component: ChatWithInboxComponent', () => {
       expect(component.connectionError).toBe(true);
       expect(component.conversationsLoading).toBe(false);
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
+      expect(component.conversationsLoading).toEqual(false);
     });
 
     it('should set connectionError to FALSE when a EventService.CONNECTION_RESTORED event is emitted', () => {
@@ -131,6 +132,7 @@ describe('Component: ChatWithInboxComponent', () => {
       expect(component.connectionError).toBe(false);
       expect(inboxConversationService.resendPendingMessages).toHaveBeenCalled();
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
+      expect(component.conversationsLoading).toEqual(false);
     });
 
     it('should set currentConversation when a EventService.CURRENT_CONVERSATION_SET is emitted', () => {
@@ -142,6 +144,7 @@ describe('Component: ChatWithInboxComponent', () => {
 
       expect(component.currentConversation).toEqual(mockConversation);
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
+      expect(component.conversationsLoading).toEqual(false);
     });
 
     it('should set current conversation if link contains itemId', () => {
@@ -154,6 +157,7 @@ describe('Component: ChatWithInboxComponent', () => {
       component.ngOnInit();
 
       expect(inboxConversationService.openConversationByItemId$).toHaveBeenCalledWith('itemId');
+      expect(component.conversationsLoading).toEqual(true);
     });
   });
 
