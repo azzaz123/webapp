@@ -21,51 +21,60 @@ Resources:
             Principal:
               Service: codepipeline.amazonaws.com
             Action: sts:AssumeRole
-      Policies:
-        - PolicyName: webapp-pipeline-codepipeline-policy
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Resource: "*"
-                Effect: Allow
-                Action:
-                  - s3:CreateBucket
-                  - s3:PutObject
-                  - s3:GetObject
-                  - s3:GetObjectVersion
-                  - s3:GetBucketVersioning
-              - Resource: "*"
-                Effect: Allow
-                Action:
-                  - cloudformation:DescribeStacks
-                  - cloudformation:UpdateStack
-                  - cloudformation:CreateStack
+
+  PipelinePolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "webapp-pipeline-codepipeline-policy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Resource: "*" #todo
+            Effect: Allow
+            Action:
+              - s3:CreateBucket
+              - s3:PutObject
+              - s3:GetObject
+              - s3:GetObjectVersion
+              - s3:GetBucketVersioning
+          - Resource: "*" #todo
+            Effect: Allow
+            Action:
+              - cloudformation:DescribeStacks
+              - cloudformation:UpdateStack
+              - cloudformation:CreateStack
+      Roles:
+        - Ref: "CodePipelineServiceRole"
 
   CloudFormationExecutionRole:
     Type: AWS::IAM::Role
     DeletionPolicy: Retain
     Properties:
       Path: /
-      AssumeRolePolicyDocument: |
-        {
-          "Statement": [{
-              "Effect": "Allow",
-              "Principal": { "Service": [ "cloudformation.amazonaws.com" ]},
-              "Action": [ "sts:AssumeRole" ]
-          }]
-        }
-      Policies:
-        - PolicyName: webapp-pipeline-cloudformation-policy
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Resource: "*"
-                Effect: Allow
-                Action:
-                  - codepipeline:*
-                  - s3:*
-                  - route53:*
-                  - cloudfront:*
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+            Action: sts:AssumeRole
+
+  CloudformationPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "webapp-pipeline-cloudformation-policy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Resource: "*"
+            Effect: Allow
+            Action:
+              - codepipeline:*
+              - s3:*
+              - route53:*
+              - cloudfront:*
+      Roles:
+        - Ref: "CloudFormationExecutionRole"
 
   ArtifactBucket:
     Type: AWS::S3::Bucket
