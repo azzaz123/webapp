@@ -25,7 +25,6 @@ export class ChatWithInboxComponent implements OnInit {
   public firstLoad: boolean;
   public isProfessional: boolean;
   public currentConversation: InboxConversation;
-  public isLoading = false;
   private archivedInboxReady: boolean;
 
   constructor(public userService: UserService,
@@ -42,6 +41,7 @@ export class ChatWithInboxComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.conversationsLoading = false;
     if (this.inboxService.isInboxReady()) {
       this.openConversationIfNeeded();
     }
@@ -118,10 +118,12 @@ export class ChatWithInboxComponent implements OnInit {
     // Try to find the conversation within the downloaded ones
     this.conversationsLoading = true;
     this.inboxConversationService.openConversationByItemId$(itemId)
-    .catch(() => Observable.of({}))
+    .catch(() => Observable.of(null))
     .subscribe((conversation: InboxConversation) => {
       if (conversation) {
         this.currentConversation = conversation;
+      } else {
+        this.conversationsLoading = false;
       }
       if (isEmpty(conversation.messages)) {
         this.getPhoneInfo(conversation);
