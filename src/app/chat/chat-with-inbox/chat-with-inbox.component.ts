@@ -131,19 +131,11 @@ export class ChatWithInboxComponent implements OnInit {
     });
   }
 
-);
-}
-
-private
-getPhoneInfo(conversation
-:
-InboxConversation;
-):
-void {
-  this.userService.getPhoneInfo(conversation.user.id).subscribe(phoneInfo => {
-    if (!isNil(phoneInfo) && phoneInfo.phone_method === phoneMethod.popUp) {
-      this.conversationService.openPhonePopup(conversation, true);
-    }
-  });
-}
+  private getPhoneInfo(conversation: InboxConversation): void {
+    this.userService.getPhoneInfo(conversation.user.id).subscribe(phoneInfo => {
+      if (!isNil(phoneInfo) && phoneInfo.phone_method === phoneMethod.popUp) {
+        this.conversationService.openPhonePopup(conversation, true);
+      }
+    });
+  }
 }
