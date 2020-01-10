@@ -41,6 +41,7 @@ export class ChatWithInboxComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.connectionError = false;
     this.conversationsLoading = false;
     if (this.inboxService.isInboxReady()) {
       this.openConversationIfNeeded();
@@ -50,9 +51,12 @@ export class ChatWithInboxComponent implements OnInit {
       this.conversationsLoading = false;
     });
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      this.inboxConversationService.resendPendingMessages(this.currentConversation);
       this.connectionError = false;
     });
+
+    this.eventService.subscribe(EventService.CHAT_RT_CONNECTED, () => this.inboxConversationService.conversations
+    .forEach((conversation: InboxConversation) => this.inboxConversationService.resendPendingMessages(conversation)));
+
     this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation: InboxConversation) => {
       this.currentConversation = conversation;
       this.conversationsLoading = false;
