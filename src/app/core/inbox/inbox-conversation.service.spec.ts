@@ -149,6 +149,29 @@ describe('InboxConversationService', () => {
     });
   });
 
+  describe('openConversationByConversationId$', () => {
+
+    it('should return undefined if id is NULL', () => {
+      service.conversations = null;
+      service.openConversationByConversationId$(null).subscribe(conversation => expect(conversation).toBeNull());
+    });
+
+    it('should return undefined if list of conversations is empty', () => {
+      service.conversations = [];
+      service.openConversationByConversationId$(null).subscribe(conversation => expect(conversation).toBeUndefined());
+    });
+
+    it('should return undefined if conversations list does not contains conversation with id', () => {
+      service.conversations = createInboxConversationsArray(1);
+      service.openConversationByConversationId$('ID_DOES_NOT_EXIST').subscribe(conversation => expect(conversation).toBeUndefined());
+    });
+
+    it('should return undefined if conversations list does not contains conversation with id', () => {
+      service.conversations = createInboxConversationsArray(5);
+      service.openConversationByConversationId$('4').subscribe(conversation => expect(conversation.id).toEqual('4'));
+    });
+  });
+
   describe('processNewMessage', () => {
     let conversations, currentLastMessage, newInboxMessage;
     beforeEach(() => {

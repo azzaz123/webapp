@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { EventService } from '../core/event/event.service';
 import { Lead } from '../core/conversation/lead';
 import { TrackingService } from '../core/tracking/tracking.service';
@@ -7,7 +9,6 @@ import { CallTotals, ConversationTotals } from '../core/conversation/totals.inte
 import { CallsService } from '../core/conversation/calls.service';
 import { InboxService } from '../core/inbox/inbox.service';
 import { InboxConversation } from '../chat/model';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'tsl-dashboard',
@@ -78,7 +79,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     public openConversation(inboxConversation: InboxConversation): void {
-        this.router.navigateByUrl(`/chat?itemId=${inboxConversation.item.id}`);
+        this.router.navigateByUrl(`/chat?conversationId=${inboxConversation.id}`);
     }
 
     public countTotalMessages(): number {

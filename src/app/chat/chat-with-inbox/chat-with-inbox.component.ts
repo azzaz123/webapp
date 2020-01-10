@@ -85,23 +85,47 @@ export class ChatWithInboxComponent implements OnInit {
 
     this.route.queryParams.subscribe((params: Params) => {
       const itemId = params.itemId;
+      const conversationId = params.conversationId;
 
-      if (isNil(itemId)) {
+      if (conversationId) {
+        this.openConversationByConversationId(conversationId);
+      } else if (itemId) {
+        this.openConversationByItmId(itemId);
+      }
+    });
+  }
+
+  private openConversationByConversationId(conversationId: string) {
+    if (isNil(conversationId)) {
+      return;
+    }
+
+    this.conversationsLoading = true;
+    this.inboxConversationService.openConversationByConversationId$(conversationId).subscribe((inboxConversation: InboxConversation) => {
+      if (inboxConversation) {
+        this.currentConversation = inboxConversation;
         return;
       }
+      this.conversationsLoading = false;
+    });
+  }
 
-      // Try to find the conversation within the downloaded ones
-      this.conversationsLoading = true;
-      this.inboxConversationService.openConversationByItemId$(itemId)
-      .catch(() => Observable.of({}))
-      .subscribe((conversation: InboxConversation) => {
-        if (conversation) {
-          this.currentConversation = conversation;
-        }
-        if (isEmpty(conversation.messages)) {
-          this.getPhoneInfo(conversation);
-        }
-      });
+  private openConversationByItmId(itemId: string) {
+    if (isNil(itemId)) {
+      return;
+    }
+
+    // Try to find the conversation within the downloaded ones
+    this.conversationsLoading = true;
+    this.inboxConversationService.openConversationByItemId$(itemId)
+    .catch(() => Observable.of({}))
+    .subscribe((conversation: InboxConversation) => {
+      if (conversation) {
+        this.currentConversation = conversation;
+      }
+      if (isEmpty(conversation.messages)) {
+        this.getPhoneInfo(conversation);
+      }
     });
   }
 
