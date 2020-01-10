@@ -7,6 +7,10 @@ export class InboxConversationServiceMock {
     return Observable.empty();
   }
 
+  openConversationByConversationId$(conversation: string): Observable<InboxConversation> {
+    return Observable.empty();
+  }
+
   archive$(conversation: InboxConversation): Observable<InboxConversation> {
     return of(conversation);
   }

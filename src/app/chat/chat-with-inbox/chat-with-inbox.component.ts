@@ -85,33 +85,65 @@ export class ChatWithInboxComponent implements OnInit {
 
     this.route.queryParams.subscribe((params: Params) => {
       const itemId = params.itemId;
+      const conversationId = params.conversationId;
 
-      if (isNil(itemId)) {
+      if (conversationId) {
+        this.openConversationByConversationId(conversationId);
+      } else if (itemId) {
+        this.openConversationByItmId(itemId);
+      }
+    });
+  }
+
+  private openConversationByConversationId(conversationId: string) {
+    if (isNil(conversationId)) {
+      return;
+    }
+
+    this.conversationsLoading = true;
+    this.inboxConversationService.openConversationByConversationId$(conversationId).subscribe((inboxConversation: InboxConversation) => {
+      if (inboxConversation) {
+        this.currentConversation = inboxConversation;
         return;
       }
-
-      // Try to find the conversation within the downloaded ones
-      this.conversationsLoading = true;
-      this.inboxConversationService.openConversationByItemId$(itemId)
-      .catch(() => Observable.of(null))
-      .subscribe((conversation: InboxConversation) => {
-        if (conversation) {
-          this.currentConversation = conversation;
-        } else {
-          this.conversationsLoading = false;
-        }
-        if (isEmpty(conversation.messages)) {
-          this.getPhoneInfo(conversation);
-        }
-      });
+      this.conversationsLoading = false;
     });
   }
 
-  private getPhoneInfo(conversation: InboxConversation): void {
-    this.userService.getPhoneInfo(conversation.user.id).subscribe(phoneInfo => {
-      if (!isNil(phoneInfo) && phoneInfo.phone_method === phoneMethod.popUp) {
-        this.conversationService.openPhonePopup(conversation, true);
+  private openConversationByItmId(itemId: string) {
+    if (isNil(itemId)) {
+      return;
+    }
+
+    // Try to find the conversation within the downloaded ones
+    this.conversationsLoading = true;
+    this.inboxConversationService.openConversationByItemId$(itemId)
+    .catch(() => Observable.of(null))
+    .subscribe((conversation: InboxConversation) => {
+      if (conversation) {
+        this.currentConversation = conversation;
+      } else {
+        this.conversationsLoading = false;
+      }
+      if (isEmpty(conversation.messages)) {
+        this.getPhoneInfo(conversation);
       }
     });
   }
+
+);
+}
+
+private
+getPhoneInfo(conversation
+:
+InboxConversation;
+):
+void {
+  this.userService.getPhoneInfo(conversation.user.id).subscribe(phoneInfo => {
+    if (!isNil(phoneInfo) && phoneInfo.phone_method === phoneMethod.popUp) {
+      this.conversationService.openPhonePopup(conversation, true);
+    }
+  });
+}
 }
