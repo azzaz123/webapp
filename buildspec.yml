@@ -25,7 +25,7 @@ phases:
       - docker run -v "$PWD":/code -w /code $ecr/cfn-lint:stable -t infrastructure/*/*.yaml
 
       # OBTAIN WORKING BRANCH
-      - export BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
+      - BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
       - echo $BRANCH
 
       # EXPORT TAG ENV FROM BRANCH
