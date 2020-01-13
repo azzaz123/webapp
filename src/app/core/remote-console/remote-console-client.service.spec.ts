@@ -26,13 +26,9 @@ describe('RemoteConsoleClientService', () => {
     httpMock.verify();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   describe('info', () => {
     it('should send info log', () => {
-      service.info({ json: 'json' }).subscribe();
+      service.info({ json: 'json' });
 
       const req = httpMock.expectOne(environment.remoteConsoleUrl);
       expect(req.request.method).toEqual('POST');
