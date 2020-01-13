@@ -25,7 +25,7 @@ phases:
       - docker run -v "$PWD":/code -w /code $ecr/cfn-lint:stable -t infrastructure/*/*.yaml
 
       # OBTAIN WORKING BRANCH
-      - BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
+      - export BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
       - echo $BRANCH
 
       # EXPORT TAG ENV FROM BRANCH
@@ -36,8 +36,9 @@ phases:
       - echo $ENV
 
       # EXPORT TAG IMAGE_TAG FROM BRANCH
-      - export IMAGE_TAG="release"
+      - export IMAGE_TAG=${BRANCH//\//-}
       - if [ "`echo $BRANCH | grep master`" != "" ]; then export IMAGE_TAG="stable"; fi
+      - if [ "`echo $BRANCH | grep release/`" != "" ]; then export IMAGE_TAG="release"; fi
       - echo $IMAGE_TAG
 
       # LOAD YARN DEPENDENCIES
@@ -85,10 +86,8 @@ phases:
 
       # TRIGGER BETA/PROD INFRASTRUCTURE PIPELINES
       - >
-        if [ "`echo $ENV | grep 'prod\|beta'`" != "" ]; then
-          zip -r webapp-${IMAGE_TAG}.zip infrastructure/*
-          aws s3 cp webapp-${IMAGE_TAG}.zip s3://wallapop-trigger-link-cicd/webapp/ --metadata image_tag=$IMAGE_TAG
-        fi
+        zip -r webapp-${IMAGE_TAG}.zip infrastructure/*
+        aws s3 cp webapp-${IMAGE_TAG}.zip s3://wallapop-trigger-link-cicd/webapp/ --metadata image_tag=$IMAGE_TAG
 
       # SEND RELEASE EMAIL
       - >
