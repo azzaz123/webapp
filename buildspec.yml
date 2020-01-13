@@ -36,7 +36,7 @@ phases:
       - echo $ENV
 
       # EXPORT TAG IMAGE_TAG FROM BRANCH
-      - export IMAGE_TAG=${BRANCH//\//-}
+      - export IMAGE_TAG=${$BRANCH//\//-}
       - if [ "`echo $BRANCH | grep master`" != "" ]; then export IMAGE_TAG="stable"; fi
       - if [ "`echo $BRANCH | grep release/`" != "" ]; then export IMAGE_TAG="release"; fi
       - echo $IMAGE_TAG
