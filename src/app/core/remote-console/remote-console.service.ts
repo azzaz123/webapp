@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { APP_VERSION } from '../../../environments/version';
 import { UserService } from '../user/user.service';
+import { RemoteConsoleClientService } from './remote-console-client.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class RemoteConsoleService implements OnDestroy {
   private acceptMessageTime = new Map();
   private presentationMessageTimeout = new Map();
 
-  constructor(private deviceService: DeviceDetectorService, private featureflagService: FeatureflagService,
-              private userService: UserService) {
+  constructor(private remoteConsoleClientService: RemoteConsoleClientService, private deviceService: DeviceDetectorService,
+              private featureflagService: FeatureflagService, private userService: UserService) {
     this.deviceId = Fingerprint2.get({}, components => {
       const values = components.map(component => component.value);
       this.deviceId = Fingerprint2.x64hash128(values.join(''), 31);
@@ -107,6 +108,8 @@ export class RemoteConsoleService implements OnDestroy {
     .map((featureFlag: boolean) => {
       const device = this.deviceService.getDeviceInfo();
       return {
+        timestamp: Date.now(),
+        client: 'WEB',
         device_id: this.deviceId,
         browser: device.browser.toUpperCase(),
         browser_version: device.browser_version,
