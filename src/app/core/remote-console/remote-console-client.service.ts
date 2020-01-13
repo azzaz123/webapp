@@ -11,7 +11,7 @@ export class RemoteConsoleClientService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public infoLog(message: {}): Observable<any> {
-    return this.httpClient.post(environment.remoteConsoleUrl, { logs: [message] });
+  public info(message: {}): void {
+    this.httpClient.post(environment.remoteConsoleUrl, { logs: [message] }).subscribe();
   }
 }
