@@ -17,7 +17,7 @@ import { ConversationService } from '../../core/conversation/conversation.servic
 import { InboxService } from '../../core/inbox/inbox.service';
 import { ConversationServiceMock, InboxConversationServiceMock, InboxServiceMock } from '../../../tests';
 import { PhoneMethodResponse } from '../../core/user/phone-method.interface';
-import { InboxConversation } from '../model';
+import { InboxConversation, MessageStatus } from '../model';
 
 class MockUserService {
   public isProfessional() {
@@ -130,7 +130,6 @@ describe('Component: ChatWithInboxComponent with ItemId', () => {
       eventService.emit(EventService.CONNECTION_RESTORED);
 
       expect(component.connectionError).toBe(false);
-      expect(inboxConversationService.resendPendingMessages).toHaveBeenCalled();
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
       expect(component.conversationsLoading).toEqual(false);
     });
@@ -159,6 +158,22 @@ describe('Component: ChatWithInboxComponent with ItemId', () => {
       expect(inboxConversationService.openConversationByItemId$).toHaveBeenCalledWith('itemId');
       expect(inboxConversationService.openConversationByConversationId$).not.toHaveBeenCalled();
       expect(component.conversationsLoading).toEqual(true);
+    });
+
+    it('should set connectionError to FALSE when a EventService.CHAT_RT_CONNECTED event is emitted', () => {
+      const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
+      inboxConversation.messages[inboxConversation.messages.length - 1].status = MessageStatus.PENDING;
+
+      spyOn(inboxConversationService, 'openConversationByItemId$');
+      spyOn(inboxConversationService, 'resendPendingMessages');
+      inboxConversationService.conversations = [inboxConversation];
+
+      component.ngOnInit();
+      eventService.emit(EventService.CHAT_RT_CONNECTED);
+
+      expect(component.connectionError).toBe(false);
+      expect(inboxConversationService.resendPendingMessages).toHaveBeenCalled();
+      expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
     });
   });
 
