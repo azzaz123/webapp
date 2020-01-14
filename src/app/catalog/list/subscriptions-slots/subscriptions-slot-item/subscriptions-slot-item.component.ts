@@ -1,5 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SubscriptionSlot } from '../../../../core/subscriptions/subscriptions.interface';
+import { AnalyticsService } from '../../../../core/analytics/analytics.service';
+import {
+  AnalyticsEvent,
+  ClickCatalogManagmentButton,
+  SCREEN_IDS,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES} from '../../../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-subscriptions-slot-item',
@@ -13,7 +20,7 @@ export class SubscriptionsSlotItemComponent implements OnInit {
   @Input() selectedSubscriptionSlot: SubscriptionSlot = null;
   @Output() selected: EventEmitter<SubscriptionSlot> = new EventEmitter();
 
-  constructor() { }
+  constructor(private analyticsService: AnalyticsService) { }
 
   ngOnInit() {
   }
@@ -30,6 +37,16 @@ export class SubscriptionsSlotItemComponent implements OnInit {
       this.selected.emit(null);
     } else {
       this.selected.emit(subscriptionSlot);
+
+      const event: AnalyticsEvent<ClickCatalogManagmentButton> = {
+        name: ANALYTICS_EVENT_NAMES.ClickCatalogManagmentButton,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          screenId: SCREEN_IDS.MyProfile
+        }
+      };
+
+      this.analyticsService.trackEvent(event);
     }
 
     if (!subscriptionSlot) {

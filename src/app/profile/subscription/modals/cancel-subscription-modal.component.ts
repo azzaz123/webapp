@@ -4,6 +4,14 @@ import { SubscriptionsResponse } from '../../../core/subscriptions/subscriptions
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import {
+  AnalyticsEvent,
+  ClickUnsuscribeConfirmation,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  SCREEN_IDS
+} from '../../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-cancel-subscription-modal',
@@ -19,26 +27,35 @@ export class CancelSubscriptionModalComponent {
   constructor(public activeModal: NgbActiveModal,
               public subscriptionsService: SubscriptionsService,
               private toastr: ToastrService,
-              private i18n: I18nService) {
-  }
-
-  public close() {
-    this.activeModal.close('cancel');
+              private i18n: I18nService,
+              private analyticsService: AnalyticsService) {
   }
 
   public cancelSubscription() {
     this.loading = true;
+    this.trackCancelSubscription();
     this.subscriptionsService.cancelSubscription(this.subscription.selected_tier_id).subscribe((response) => {
       if (response.status === 202) {
           this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
           this.loading = false;
+          this.activeModal.close('success');
       } else {
         this.loading = false;
         this.toastr.error(this.i18n.getTranslations('cancelSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionErrorBody'));
+        this.activeModal.close('fail');
       }
-      this.close();
     });
-    
   }
 
+  private trackCancelSubscription() {
+    const event: AnalyticsEvent<ClickUnsuscribeConfirmation> = {
+      name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeConfirmation,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        screenId: SCREEN_IDS.ProfileSubscription
+      }
+    };
+    
+    this.analyticsService.trackEvent(event);
+  }
 }
