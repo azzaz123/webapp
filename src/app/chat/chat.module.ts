@@ -22,7 +22,6 @@ import { UserResponseRateComponent } from './user-response-rate/user-response-ra
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { InboxComponent } from './inbox/inbox.component';
 import { InboxConversationComponent } from './inbox/inbox-conversation/inbox-conversation.component';
-import { ChatWithInboxComponent } from './chat-with-inbox/chat-with-inbox.component';
 import { CurrentConversationComponent } from './current-conversation/current-conversation.component';
 import { ArchiveInboxConversationComponent } from './modals/archive-inbox-conversation/archive-inbox-conversation.component';
 import { UnarchiveInboxConversationComponent } from './modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component';
@@ -72,7 +71,6 @@ import { AutosizeModule } from 'ngx-autosize';
     InboxComponent,
     InboxConversationComponent,
     ArchivedInboxConversationComponent,
-    ChatWithInboxComponent,
     CurrentConversationComponent,
     InboxUserDetailComponent,
     InboxItemDetailComponent,
