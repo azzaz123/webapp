@@ -9,9 +9,4 @@ mat-icon {
   width: 15px;
   margin-right: $spacing-s;
   display: inline-flex;
-  /deep/ #images {
-    &:not(:root:root) {
-      fill: #FFD300;
-    }
-  }
 }

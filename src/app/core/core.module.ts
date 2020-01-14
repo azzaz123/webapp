@@ -32,6 +32,7 @@ import { InboxService } from './inbox/inbox.service';
 import { StripeService } from './stripe/stripe.service';
 import { BlockUserService } from './conversation/block-user';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
+import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
 
 @NgModule({
   imports: [
@@ -42,14 +43,16 @@ import { SubscriptionsService } from './subscriptions/subscriptions.service';
     TrackingModule,
     ConversationModule.forRoot(),
     PushNotificationsModule,
-    ProfileModule
+    ProfileModule,
+    MobileBlockerModule
   ],
   exports: [
     CommonModule,
     UserModule,
     ItemModule,
     TrackingModule,
-    ProfileModule
+    ProfileModule,
+    MobileBlockerModule
   ]
 })
 export class CoreModule {

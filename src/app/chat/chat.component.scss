@@ -3,7 +3,10 @@
 :host {
   display: block;
   overflow: hidden;
-  margin-left: $sidebar-width;
-  margin-top: $topbar-height;
+  height: 100%;
+}
+
+.page-content {
+  height: 100%;
 }
 
