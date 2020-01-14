@@ -89,32 +89,36 @@ export class SubscriptionComponent implements OnInit {
   }
 
   private trackOpenModalEvent(subscription: SubscriptionsResponse) {
-    if (subscription.subscribed_from) {
-      const event: AnalyticsEvent<ClickProfileUnsuscribe> = {
-        name: ANALYTICS_EVENT_NAMES.ClickProfileUnsuscribe,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          screenId: SCREEN_IDS.ProfileSubscription,
-          subscription: subscription.category_id as any
-        }
-      };
-
-      this.analyticsService.trackEvent(event);
+    if (subscription.subscribed_until) {
+      // TODO: Add tracking for Continue subscription
     } else {
-      const isNewSubscriber =
-        this.subscriptions.filter(s => s.category_id !== subscription.category_id && s.subscribed_from).length === 0;
+      if (subscription.subscribed_from) {
+        const event: AnalyticsEvent<ClickProfileUnsuscribe> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProfileUnsuscribe,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: SCREEN_IDS.ProfileSubscription,
+            subscription: subscription.category_id as any
+          }
+        };
 
-      const event: AnalyticsEvent<ClickProfileSubscribeButton> = {
-        name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          screenId: SCREEN_IDS.ProfileSubscription,
-          subscription: subscription.category_id as any,
-          isNewSubscriber
-        }
-      };
+        this.analyticsService.trackEvent(event);
+      } else {
+        const isNewSubscriber =
+          this.subscriptions.filter(s => s.category_id !== subscription.category_id && s.subscribed_from).length === 0;
 
-      this.analyticsService.trackEvent(event);
+        const event: AnalyticsEvent<ClickProfileSubscribeButton> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: SCREEN_IDS.ProfileSubscription,
+            subscription: subscription.category_id as any,
+            isNewSubscriber
+          }
+        };
+
+        this.analyticsService.trackEvent(event);
+      }
     }
   }
 
