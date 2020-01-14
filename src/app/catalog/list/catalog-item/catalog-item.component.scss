@@ -102,6 +102,7 @@ $feature-button-width: 170px;
   }
   .subtitle {
     color: $blue-grey-3;
+    max-width: 250px;
     @include text-truncate();
   }
 
