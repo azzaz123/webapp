@@ -19,7 +19,6 @@ export class AccountComponent implements CanComponentDeactivate {
 
   public profileForm: FormGroup;
   public user: User;
-  public isStripe: boolean;
   public loading = false;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
