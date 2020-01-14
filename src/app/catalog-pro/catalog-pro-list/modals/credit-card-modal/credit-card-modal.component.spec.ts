@@ -13,7 +13,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { I18nService } from '../../../../core/i18n/i18n.service';
 import { UUID } from 'angular2-uuid/index';
-import { Observable } from 'rxjs';
 
 describe('CreditCardModalComponent', () => {
   let component: CreditCardModalComponent;
@@ -41,23 +40,20 @@ describe('CreditCardModalComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return Observable.of(false);
-            },
             buy() {}
-        }
+          }
         },
         {
           provide: Router, useValue: {
             navigate() {
             }
-        }
+          }
         },
         {
           provide: I18nService, useValue: {
             getTranslations() {
             }
-        }
+          }
         }
       ],
       declarations: [CreditCardModalComponent],
@@ -78,36 +74,17 @@ describe('CreditCardModalComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('OnInit', () => {
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
-    });
-  });
-
-  describe('hasStripeCard', () => {
+  describe('hasCard', () => {
     it('should set if stripeCard is present', () => {
-      component.hasStripeCard(true);
+      component.hasCard(true);
 
-      expect(component.isStripeCard).toBe(true);
+      expect(component.hasSavedCard).toBe(true);
     });
 
     it('should not call addNewCard if stripe card exists', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasStripeCard(true);
+      component.hasCard(true);
 
       expect(component.addNewCard).not.toHaveBeenCalled();
     });
@@ -115,7 +92,7 @@ describe('CreditCardModalComponent', () => {
     it('should call addNewCard if stripe card does not exist', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasStripeCard(false);
+      component.hasCard(false);
 
       expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
@@ -157,12 +134,11 @@ describe('CreditCardModalComponent', () => {
       const orderId = 'UUID';
       const paymentId = '1-2-3';
       spyOn(UUID, 'UUID').and.returnValue('1-2-3');
-      component.isStripe = true;
       component.savedCard = false;
 
       component.checkout(orderId);
 
-      expect(stripeService.buy).toHaveBeenCalledWith(orderId, paymentId, component.isStripeCard, component.savedCard, component.card);
+      expect(stripeService.buy).toHaveBeenCalledWith(orderId, paymentId, component.hasSavedCard, component.savedCard, component.card);
     });
   });
 });

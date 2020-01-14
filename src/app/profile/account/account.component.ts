@@ -7,10 +7,8 @@ import { UserService } from '../../core/user/user.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { User } from '../../core/user/user';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_NAME } from '../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-account',
@@ -23,14 +21,12 @@ export class AccountComponent implements CanComponentDeactivate {
   public user: User;
   public isStripe: boolean;
   public loading = false;
-  public paymentTypeSabadell = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
   constructor(private modalService: NgbModal,
     private fb: FormBuilder,
     private userService: UserService,
-    private errorsService: ErrorsService,
-    private splitTestService: SplitTestService) {
+    private errorsService: ErrorsService) {
     this.profileForm = fb.group({
       birth_date: ['', [Validators.required, this.dateValidator]],
       gender: ['', [Validators.required]],
@@ -38,13 +34,8 @@ export class AccountComponent implements CanComponentDeactivate {
   }
 
   initForm() {    
-    Observable.forkJoin([
-      this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell),
-      this.userService.me()
-    ]).subscribe(values => {
-      this.isStripe = +values[0] !== this.paymentTypeSabadell;
-      this.user = values[1];
-
+    this.userService.me().subscribe((user: User) => {
+      this.user = user;
       this.profileForm.patchValue({
         birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
         gender: this.user.gender ? this.user.gender.toUpperCase().substr(0, 1) : null

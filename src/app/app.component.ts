@@ -12,7 +12,7 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/filter';
 import { MatIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouteConfigLoadStart, RouteConfigLoadEnd } from '@angular/router';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
@@ -39,7 +39,6 @@ import { Subscription, Observable } from 'rxjs';
 import { SplitTestService } from './core/tracking/split-test.service';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
-import { configRemoteConsole } from './config/remote-console.config';
 
 @Component({
   selector: 'tsl-root',
@@ -129,7 +128,6 @@ export class AppComponent implements OnInit {
   private config() {
     configMoment(this.i18n.locale);
     configIcons(this.matIconRegistry, this.sanitizer);
-    configRemoteConsole();
   }
 
   private updateSessionCookie() {
@@ -318,6 +316,12 @@ export class AppComponent implements OnInit {
           this.renderer.addClass(document.body, currentUrlSlug);
         }
         this.previousSlug = currentUrlSlug;
+      }
+
+      if (event instanceof RouteConfigLoadStart) {
+        this.renderer.addClass(document.body, 'route-loading');
+      } else if (event instanceof RouteConfigLoadEnd) {
+        this.renderer.removeClass(document.body, 'route-loading');
       }
     });
   }

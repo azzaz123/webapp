@@ -4,6 +4,7 @@ The private web app for Wallapop once you do login in the public one.
 ## Table of Contents
 - [Installation](#installation)
 - [Scripts](#scripts)
+- [How to delploy](#how-to-deploy)
 - [Commentaries](#commentaries)
 - [Documentation](#documentation)
 
@@ -58,6 +59,20 @@ yarn buildbeta-en
 yarn buildprod
 yarn buildprod-en
 ```
+
+## How to deploy:
+Currently this project uses gitflow. To start and finish a release one has to use the ReleaseBot
+
+### Start release
+```
+release_begin repo=webapp version_update=minor
+```
+
+### End release
+```
+release_end repo=webapp
+```
+
 
 ## Commentaries
 ### Login

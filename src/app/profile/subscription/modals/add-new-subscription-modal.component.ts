@@ -17,6 +17,7 @@ import {
   SCREEN_IDS,
   ClickPaySubscription
 } from '../../../core/analytics/analytics-constants';
+import { PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -33,17 +34,13 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   public savedCard = true;
   public selectedCard = false;
   public selectedTier: Tier;
-  public isStripe: boolean;
   public loading = false;
   public isPaymentError = false;
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
   private invoiceId: string;
-  private REQUIRES_PAYMENT_METHOD = 'REQUIRES_PAYMENT_METHOD';
-  private REQUIRES_ACTION = 'REQUIRES_ACTION';
-  private SUCCEEDED = 'SUCCEEDED';
   public loaded: boolean;
-  public isStripeCard = true;
+  public hasSavedCard = true;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -57,15 +54,11 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   ngOnInit() {
     this.loaded = true;
     this.selectedTier = this.subscription.selected_tier;
-    
-    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
-      this.isStripe = val;
-      if (this.isStripe) {
-        this.eventService.subscribe('paymentActionResponse', (response) => {
-          this.managePaymentResponse(response);
-        });
-      }
+    this.eventService.subscribe('paymentActionResponse', (response) => {
+      this.managePaymentResponse(response);
     });
+      
+   
   }
 
   public close() {
@@ -97,17 +90,17 @@ export class AddNewSubscriptionModalComponent implements OnInit {
         if (response.status === 202) {
           this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: SubscriptionResponse) => {
             switch(response.payment_status.toUpperCase() ) {
-              case this.REQUIRES_PAYMENT_METHOD: {
+              case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
                 this.isRetryInvoice = true;
                 this.invoiceId = response.latest_invoice_id;
-                this.requestNewPayment({error: { message: this.REQUIRES_PAYMENT_METHOD }});
+                this.requestNewPayment({error: { message: PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD }});
                 break;
               }
-              case this.REQUIRES_ACTION: {
+              case PAYMENT_RESPONSE_STATUS.REQUIRES_ACTION: {
                 this.stripeService.actionPayment(response.payment_secret_key);
                 break;
               }
-              case this.SUCCEEDED: {
+              case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
                 this.paymentSucceeded();
                 break;
               }
@@ -134,16 +127,16 @@ export class AddNewSubscriptionModalComponent implements OnInit {
       if (response.status === 202) {
         this.subscriptionsService.checkRetrySubscriptionStatus().subscribe((response) => {
           switch(response.status.toUpperCase() ) {
-            case this.REQUIRES_PAYMENT_METHOD: {
+            case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
               this.isRetryInvoice = true;
-              this.requestNewPayment({error: { message: this.REQUIRES_PAYMENT_METHOD }});
+              this.requestNewPayment({error: { message: PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD }});
               break;
             }
-            case this.REQUIRES_ACTION: {
+            case PAYMENT_RESPONSE_STATUS.REQUIRES_ACTION: {
               this.stripeService.actionPayment(response.payment_secret_key);
               break;
             }
-            case this.SUCCEEDED: {
+            case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
               this.paymentSucceeded();
               break;
             }
@@ -165,8 +158,8 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     this.card = card;
   }
 
-  public hasStripeCard(hasCard: boolean): void {
-    this.isStripeCard = hasCard;
+  public hasCard(hasCard: boolean): void {
+    this.hasSavedCard = hasCard;
     if (!hasCard) {
         this.addNewCard();
     }
@@ -196,7 +189,7 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   private managePaymentResponse(paymentResponse) {
     this.loading = false;
     switch(paymentResponse && paymentResponse.toUpperCase()) {
-      case this.SUCCEEDED: {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
         this.paymentSucceeded();
         break;
       }

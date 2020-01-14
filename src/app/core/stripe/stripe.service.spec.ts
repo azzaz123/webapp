@@ -106,16 +106,6 @@ describe('StripeService', () => {
     });
   });
 
-  describe('isPaymentMethodStripe', () => {
-    it('should call featureflagService.getFlag when called', () => {
-      spyOn(featureflagService, 'getFlag');
-
-      service.isPaymentMethodStripe$();
-
-      expect(featureflagService.getFlag).toHaveBeenCalledWith('web_stripe');
-    });
-  });
-
   describe('getCards', () => {
     let response: FinancialCard[];
 

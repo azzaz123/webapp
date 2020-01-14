@@ -190,9 +190,9 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
               return file.progress.status === UploadStatus.Done;
             })) {
             if (this.item.hasOwnProperty('flags') && this.item.flags['onhold']) {
-              this.onUploaded.emit({action: 'createdOnHold', response: output.file.response});
+              this.onUploaded.emit({action: 'createdOnHold', response: this.item});
             } else {
-              this.onUploaded.emit({action: this.images ? 'updated' : 'created', response: output.file.response});
+              this.onUploaded.emit({action: this.images ? 'updated' : 'created', response: this.item});
             }
           } else {
             this.pictureUploadedOnUpdate(output);

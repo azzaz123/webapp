@@ -22,6 +22,7 @@ import { ListingfeeConfirmationModalComponent } from './list/modals/listingfee-c
 import { SelectModule } from 'ng-select';
 import { SubscriptionsSlotsListComponent } from './list/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
 import { SubscriptionsSlotItemComponent } from './list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
+import { ReviewsModule } from '../reviews/reviews.module';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { SubscriptionsSlotItemComponent } from './list/subscriptions-slots/subsc
     TrackingModule,
     NgbButtonsModule,
     NgbTooltipModule,
-    SelectModule
+    SelectModule,
+    ReviewsModule
   ],
   providers: [
     BumpTutorialService,

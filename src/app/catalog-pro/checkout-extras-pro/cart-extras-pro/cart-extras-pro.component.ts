@@ -7,14 +7,13 @@ import { CartService } from '../../../shared/catalog/cart/cart.service';
 import { CartProExtras } from '../../../shared/catalog/cart/cart-pro-extras';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
-import { PaymentService } from '../../../core/payments/payment.service';
+import { PaymentService, PAYMENT_METHOD, PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
 import { CartChange } from '../../../shared/catalog/cart/cart-item.interface';
 import { Pack } from '../../../core/payments/pack';
 import { OrderProExtras, FinancialCardOption } from '../../../core/payments/payment.interface';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { EventService } from '../../../core/event/event.service';
 import { UUID } from 'angular2-uuid';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT, WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT } from '../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-cart-extras-pro',
@@ -24,22 +23,15 @@ import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_P
 export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   public cart: CartBase;
-  public hasFinancialCard: boolean;
   public types: string[] = BUMP_TYPES;
   public loading: boolean;
-  public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public cardType = 'old';
   private active = true;
   public card: any;
-  public isStripeCard = true;
+  public hasSavedCard = true;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
-  public isStripe: boolean;
-  public paymentMethod: WEB_PAYMENT_EXPERIMENT_TYPE;
-  public paymentTypeSabadell = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
-  public paymentTypeStripeV1 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1;
-  public paymentTypeStripeV2 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV2;
   @Output() billingInfoMissing: EventEmitter<boolean> = new EventEmitter();
   @Input() billingInfoForm: FormGroup;
   @Input() billingInfoFormEnabled: boolean;
@@ -52,20 +44,11 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
               private router: Router,
               private errorsService: ErrorsService,
               private stripeService: StripeService,
-              private eventService: EventService,
-              private splitTestService: SplitTestService) { }
+              private eventService: EventService) { }
 
   ngOnInit() {
-    this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
-    .subscribe((paymentMethod: number) => {
-      this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
-      this.paymentMethod = +paymentMethod;
-      this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
-      if (this.isStripe) {
-        this.eventService.subscribe('paymentResponse', (response) => {
-          this.managePaymentResponse(response);
-        });
-      }
+    this.eventService.subscribe('paymentResponse', (response) => {
+      this.managePaymentResponse(response);
     });
     this.cartService.createInstance(new CartProExtras());
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
@@ -112,18 +95,10 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   private processCheckout() {
     const order: OrderProExtras = this.cart.prepareOrder();
     const paymentId: string = UUID.UUID();
-    if (this.isStripe) {
-      order.provider = 'STRIPE';
-    }
+    order.provider = PAYMENT_METHOD.STRIPE;
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
       this.track(order);
-      if (this.isStripe) {
-        this.stripeService.buy(order.id, paymentId, this.isStripeCard, this.savedCard, this.card);
-      } else {
-        setTimeout(() => {
-          this.buy(order.id);
-        }, 2000);
-      }
+      this.stripeService.buy(order.id, paymentId, this.hasSavedCard, this.savedCard, this.card);
     }, (error: Response) => {
       this.loading = false;
       if (error.text()) {
@@ -134,35 +109,17 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     });
   }
 
-  private buy(orderId: string) {
-    if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
-      this.sabadellSubmit.emit(orderId);
-    } else {
-      this.paymentService.pay(orderId).subscribe((response) => {
-        this.router.navigate(['pro/catalog/list', {code: response.status, extras: true}]);
-      }, () => {
-        this.router.navigate(['pro/catalog/list', {code: -1}]);
-      });
-    }
-  }
-
   private track(order: OrderProExtras) {
-    const payment_method = this.isStripe ? 'STRIPE' : 'SABADELL';
+    const payment_method = PAYMENT_METHOD.STRIPE;
     this.trackingService.track(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART,
       {
         selected_packs: order.packs,
         payment_method
       });
-
-    this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
   }
 
   public hasCard(hasCard: boolean) {
-    this.hasFinancialCard = hasCard;
-  }
-
-  public hasStripeCard(hasCard: boolean) {
-    this.isStripeCard = hasCard;
+    this.hasSavedCard = hasCard;
     if (!hasCard) {
       this.addNewCard();
     }
@@ -174,7 +131,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   private managePaymentResponse(paymentResponse: string): void {
     switch(paymentResponse && paymentResponse.toUpperCase()) {
-      case 'SUCCEEDED': {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
         this.router.navigate(['pro/catalog/list', {code: '200', extras: true}]);
         break;
       }

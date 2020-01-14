@@ -26,10 +26,6 @@
   margin: 0 0 $spacing-s;
 }
 
-.container {
-  margin-bottom: $spacing-xxxl;
-}
-
 .reviews-empty-state {
   border-top: 1px solid $blue-grey-5;
   margin: $spacing-ml $spacing-ms;
@@ -57,5 +53,16 @@
   mat-icon {
     width: 22px;
     height: 21px;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .page-content {
+    padding: 0;
+    background: none;
+  }
+
+  tsl-header {
+    display: none;
   }
 }

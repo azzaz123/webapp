@@ -4,23 +4,16 @@ import { CreditCardInfoComponent } from './credit-card-info.component';
 import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { PaymentService } from '../../../core/payments/payment.service';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { FINANCIAL_CARD, FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
-import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
-import { createFinancialCardFixture } from '../../../../tests/stripe.fixtures.spec';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE } from '../../../core/tracking/split-test.service';
+import { createFinancialCardFixture, STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 
 describe('CreditCardInfoComponent', () => {
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;
-  let paymentService: PaymentService;
   let stripeService: StripeService;
   let modalService: NgbModal;
-  let toastrService: ToastrService;
-  let splitTestService: SplitTestService;
   const componentInstance: any = {};
 
   beforeEach(async(() => {
@@ -28,16 +21,6 @@ describe('CreditCardInfoComponent', () => {
       declarations: [CreditCardInfoComponent],
       providers: [
         I18nService,
-        {
-          provide: PaymentService, useValue: {
-          getFinancialCard() {
-            return Observable.of(FINANCIAL_CARD);
-          },
-          deleteFinancialCard() {
-            return Observable.of({})
-          }
-        }
-        },
         {
           provide: NgbModal, useValue: {
             open() {
@@ -50,27 +33,11 @@ describe('CreditCardInfoComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return Observable.of(true);
-            },
             deleteCard() {
               return Observable.of({})
             }
         }
         },
-        {
-          provide: ToastrService, useValue: {
-            error() {
-            }
-          }
-        },
-        {
-          provide: SplitTestService, useValue: {
-            getVariable() {
-              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1);
-            }
-          }
-        }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -81,44 +48,9 @@ describe('CreditCardInfoComponent', () => {
     fixture = TestBed.createComponent(CreditCardInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    paymentService = TestBed.get(PaymentService);
     stripeService = TestBed.get(StripeService);
     modalService = TestBed.get(NgbModal);
-    toastrService = TestBed.get(ToastrService);
-    splitTestService = TestBed.get(SplitTestService);
-  });
-
-  describe('ngOnInit', () => {
-    it('should set isStripe to the value returned by splitTestService getVariable', () => {
-      const expectedValue = true;
-      spyOn(splitTestService, 'getVariable').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
-    });
-  });
-
-  describe('deleteCreditCard', () => {
-
-    beforeEach(fakeAsync(() => {
-      spyOn(modalService, 'open').and.callThrough();
-      spyOn(paymentService, 'deleteFinancialCard').and.callThrough();
-
-      component.deleteCreditCard();
-    }));
-
-    it('should open modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
-        windowClass: 'modal-prompt'
-      });
-      expect(componentInstance.type).toBe(4);
-    });
-
-    it('should call deleteFinancialCard and rest card', () => {
-      expect(paymentService.deleteFinancialCard).toHaveBeenCalled();
-      expect(component.financialCard).toBeNull();
-    });
+    component.financialCard = STRIPE_CARD_OPTION;
   });
 
   describe('deleteStripeCreditCard', () => {
@@ -134,20 +66,16 @@ describe('CreditCardInfoComponent', () => {
     }));
 
     it('should open modal', fakeAsync(() => {
-      component.financialCard = createFinancialCardFixture();
-      component.deleteStripeCard(event);
       tick();
 
       expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
         windowClass: 'modal-prompt'
       });
       expect(componentInstance.type).toBe(4);
-      expect(component.onDeleteStripeCard.emit).toHaveBeenCalledWith(createFinancialCardFixture());
+      expect(component.onDeleteStripeCard.emit).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     }));
 
     it('should call deleteCard and rest card', fakeAsync(() => {
-      component.financialCard = createFinancialCardFixture();
-      component.deleteStripeCard(event);
       tick();
 
       expect(stripeService.deleteCard).toHaveBeenCalled();

@@ -54,7 +54,6 @@
     "json-schema-to-typescript": "^7.0.0",
     "libphonenumber-js": "^1.6.8",
     "lodash-es": "^4.17.15",
-    "loglevel-plugin-remote": "0.6.8",
     "ng-elastic": "1.0.0-beta.5",
     "ng-push": "0.2.2",
     "ng-select": "1.0.0",

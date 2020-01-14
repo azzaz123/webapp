@@ -5,6 +5,7 @@ import { UUID } from 'angular2-uuid/index';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { EventService } from '../../../../core/event/event.service';
+import { PAYMENT_RESPONSE_STATUS } from '../../../../core/payments/payment.service';
 
 @Component({
   selector: 'tsl-credit-card-modal',
@@ -14,14 +15,14 @@ import { EventService } from '../../../../core/event/event.service';
 export class CreditCardModalComponent implements OnInit {
 
   public financialCard: FinancialCard;
+  public orderId: string;
   public cardType = 'old';
   public total: number;
-  public isStripeCard = true;
+  public hasSavedCard = true;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
   public card: any;
-  public isStripe: boolean;
   public loading: boolean;
 
   constructor(public activeModal: NgbActiveModal,
@@ -30,13 +31,8 @@ export class CreditCardModalComponent implements OnInit {
               private eventService: EventService) { }
 
   ngOnInit() {
-    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
-      this.isStripe = val;
-      if (this.isStripe) {
-        this.eventService.subscribe('paymentResponse', (response) => {
-          this.managePaymentResponse(response);
-        });
-      }
+    this.eventService.subscribe('paymentResponse', (response) => {
+      this.managePaymentResponse(response);
     });
   }
 
@@ -44,7 +40,7 @@ export class CreditCardModalComponent implements OnInit {
     const paymentId: string = UUID.UUID();
 
     if (this.selectedCard || !this.savedCard) {
-      this.stripeService.buy(orderId, paymentId, this.isStripeCard, this.savedCard, this.card);
+      this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
     } else {
       this.loading = false;
       this.errorService.i18nError('noCardSelectedError');
@@ -53,7 +49,7 @@ export class CreditCardModalComponent implements OnInit {
 
   private managePaymentResponse(paymentResponse) {
     switch(paymentResponse && paymentResponse.toUpperCase()) {
-      case 'SUCCEEDED': {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
         this.activeModal.close('success');
         break;
       }
@@ -85,8 +81,8 @@ export class CreditCardModalComponent implements OnInit {
     this.setCardInfo(selectedCard);
   }
 
-  public hasStripeCard(hasCard: boolean) {
-    this.isStripeCard = hasCard;
+  public hasCard(hasCard: boolean) {
+    this.hasSavedCard = hasCard;
     if (!hasCard) {
       this.addNewCard();
     }
