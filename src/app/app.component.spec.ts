@@ -365,45 +365,6 @@ describe('App', () => {
         expect(callsService.init).toHaveBeenCalledTimes(2);
       });
 
-      describe('when getInboxFeatureFlag returns false', () => {
-        beforeEach(() => {
-          spyOn(inboxService, 'getInboxFeatureFlag$').and.returnValue(Observable.of(false));
-        });
-
-        it('should call conversationService.init after login, db_ready and chat connected events are emitted', () => {
-          component.ngOnInit();
-          emitSuccessChatEvents();
-
-          expect(conversationService.init).toHaveBeenCalledTimes(1);
-        });
-
-        it('should call conversationService.init twice if user is professional', () => {
-          spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
-
-          component.ngOnInit();
-          emitSuccessChatEvents();
-
-          expect(conversationService.init).toHaveBeenCalledTimes(2);
-        });
-
-        it('should unsubscribe from the RT_CONNECTED_EVENT', () => {
-          spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
-
-          component.ngOnInit();
-          emitSuccessChatEvents();
-
-          expect(component['RTConnectedSubscription'].closed).toBe(true);
-        });
-      });
-
-      it('should init the old chat (call conversationService.init) when getInboxFeatureFlag throws an error', () => {
-        spyOn(inboxService, 'getInboxFeatureFlag$').and.returnValue(Observable.throw(false));
-        component.ngOnInit();
-        emitSuccessChatEvents();
-
-        expect(conversationService.init).toHaveBeenCalled();
-      });
-
       describe('when getInboxFeatureFlag return true', () => {
         beforeEach(() => {
           spyOn(inboxService, 'getInboxFeatureFlag$').and.returnValue(Observable.of(true));

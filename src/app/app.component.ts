@@ -178,15 +178,9 @@ export class AppComponent implements OnInit {
     this.event.subscribe(EventService.DB_READY, (dbName) => {
       if (!dbName) {
         this.RTConnectedSubscription = this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
-          this.inboxService.getInboxFeatureFlag$()
-          .catch(() => Observable.of(false))
-          .subscribe((active) => {
-            if (active) {
-              this.initCalls();
-              this.initConversations();
-            }
-            active ? this.inboxService.init() : this.initOldChat();
-          });
+          this.initCalls();
+          this.initConversations();
+          this.inboxService.init();
         });
         this.realTime.connect(user.id, accessToken);
       }
@@ -248,11 +242,11 @@ export class AppComponent implements OnInit {
     this.event.subscribe(EventService.CHAT_SIGNAL,
       (signal: ChatSignal) => this.conversationService.processChatSignal(signal));
 
-      this.event.subscribe(EventService.CHAT_RT_DISCONNECTED, () => {
-        if (this.userService.isLogged && this.connectionService.isConnected) {
-          this.realTime.reconnect();
-        }
-      });
+    this.event.subscribe(EventService.CHAT_RT_DISCONNECTED, () => {
+      if (this.userService.isLogged && this.connectionService.isConnected) {
+        this.realTime.reconnect();
+      }
+    });
 
     this.subscribeUnreadMessages();
   }
