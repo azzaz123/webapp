@@ -45,4 +45,8 @@ export interface Browse {
    * The distance in km from the location where the browsing is performed and the location of the first item returned in the browse results
    */
   firstItemDistance: number;
+  /**
+   * Order criteria in which the results of the browsing are shown
+   */
+  orderBy: "distance" | "price_low_to_high" | "price_high_to_low" | "newest" | "most_relevant";
 }

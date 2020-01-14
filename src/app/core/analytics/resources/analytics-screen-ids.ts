@@ -33,4 +33,8 @@ export enum SCREEN_IDS {
 	ShippingInbox = 204,
 	ShippingTimeline = 205,
 	ProfileSubscription = 206,
+	CarsSubscription = 207,
+	CarsSubscriptionPaymentSuccess = 208,
+	PayScreen = 209,
+	AcceptOffer = 210,
 }
