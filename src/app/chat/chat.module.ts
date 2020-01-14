@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { ConversationsPanelComponent } from './chat-with-archive/conversations-panel/conversations-panel.component';
-import { MessagesPanelComponent } from './chat-with-archive/messages-panel/messages-panel.component';
 import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
 import { InputComponent } from './input/input.component';
 import { ConnectionAlertComponent } from './connection-alert/connection-alert.component';
@@ -57,8 +55,6 @@ import { AutosizeModule } from 'ngx-autosize';
   ],
   declarations: [
     chatRoutedComponents,
-    ConversationsPanelComponent,
-    MessagesPanelComponent,
     InputComponent,
     ConnectionAlertComponent,
     ItemComponent,
@@ -78,7 +74,6 @@ import { AutosizeModule } from 'ngx-autosize';
     InboxConversationComponent,
     ArchivedInboxConversationComponent,
     ChatWithInboxComponent,
-    ChatWithArchiveComponent,
     CurrentConversationComponent,
     InboxUserDetailComponent,
     InboxItemDetailComponent,
