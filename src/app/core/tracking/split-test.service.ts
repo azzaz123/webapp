@@ -4,17 +4,6 @@ import { Observer } from 'rxjs/Observer';
 import { SplitTestUserInfo } from './split-test.interface';
 import { environment } from '../../../environments/environment';
 
-export enum WEB_PAYMENT_EXPERIMENT_TYPE {
-  sabadell = 0,
-  stripeV1 = 1,
-  stripeV2 = 2
-}
-
-export const WEB_PAYMENT_EXPERIMENT_NAME = 'WebPaymentMethod';
-export const WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT = 'StripeCheckoutPageView';
-export const WEB_PAYMENT_EXPERIMENT_CLICK_EVENT = 'StripeCheckoutClick';
-export const WEB_PAYMENT_EXPERIMENT_SUCCESSFUL_EVENT = 'StripeCheckoutSuccessful';
-
 @Injectable()
 export class SplitTestService {
 

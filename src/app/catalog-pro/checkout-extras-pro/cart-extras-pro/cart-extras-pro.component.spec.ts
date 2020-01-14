@@ -61,7 +61,6 @@ describe('CartExtrasProComponent', () => {
             getBillingInfo() {
               return Observable.of({});
             },
-            getFinancialCard() { },
             orderExtrasProPack() {
               return Observable.of({});
             },
@@ -121,7 +120,6 @@ describe('CartExtrasProComponent', () => {
     trackingService = TestBed.get(TrackingService);
     stripeService = TestBed.get(StripeService);
     eventService = TestBed.get(EventService);
-    spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     fixture.detectChanges();
   });
 
