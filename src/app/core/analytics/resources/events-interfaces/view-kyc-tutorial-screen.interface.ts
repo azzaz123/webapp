@@ -6,11 +6,15 @@
  */
 
 /**
- * Tap on back button on wallapop register screen after register presentation page
+ * User views KYC tutorial screen
  */
-export interface TapRegisterEmailBack {
+export interface ViewKYCTutorialScreen {
   /**
-   * Identifier of the screen that the user arrives to the register page
+   * Identifier of the user viewing KYC tutorial screen
    */
-  screenId: number;
+  userId?: string;
+  /**
+   * Identifier of the KYC tutorial screen
+   */
+  screenId: 196;
 }

@@ -4,15 +4,20 @@ import { SubscriptionsSlotItemComponent } from './subscriptions-slot-item.compon
 import { MatIconModule } from '@angular/material/icon';
 import { MOCK_SUBSCRIPTION_SLOT_CARS } from '../../../../../tests/subscriptions.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '../../../../../tests/category.fixtures.spec';
+import { AnalyticsService } from '../../../../core/analytics/analytics.service';
+import { MockAnalyticsService } from '../../../../../tests/analytics.fixtures.spec';
+import { AnalyticsEvent, ClickCatalogManagmentButton, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS } from '../../../../core/analytics/analytics-constants';
 
 describe('SubscriptionsSlotItemComponent', () => {
   let component: SubscriptionsSlotItemComponent;
+  let analyticsService: AnalyticsService;
   let fixture: ComponentFixture<SubscriptionsSlotItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ MatIconModule ],
-      declarations: [ SubscriptionsSlotItemComponent ]
+      declarations: [ SubscriptionsSlotItemComponent ],
+      providers: [ { provide: AnalyticsService, useClass: MockAnalyticsService }]
     })
     .compileComponents();
   }));
@@ -22,6 +27,7 @@ describe('SubscriptionsSlotItemComponent', () => {
     component = fixture.componentInstance;
     component.subscriptionSlot = MOCK_SUBSCRIPTION_SLOT_CARS;
     component.selectedSubscriptionSlot = MOCK_SUBSCRIPTION_SLOT_CARS;
+    analyticsService = TestBed.get(AnalyticsService);
     fixture.detectChanges();
   });
 
@@ -73,6 +79,31 @@ describe('SubscriptionsSlotItemComponent', () => {
       component.onClick(null, event);
 
       expect(event.stopPropagation).toHaveBeenCalledTimes(1);
+    });
+
+    it('should send event to analytics', () => {
+      component.selectedSubscriptionSlot = null;
+      const expectedEvent: AnalyticsEvent<ClickCatalogManagmentButton> = {
+        name: ANALYTICS_EVENT_NAMES.ClickCatalogManagmentButton,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          screenId: SCREEN_IDS.MyProfile
+        }
+      };
+      spyOn(analyticsService, 'trackEvent');
+
+      component.onClick(MOCK_SUBSCRIPTION_SLOT_CARS, event);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+    });
+
+    it('should NOT send event to analytics if user deselects category', () => {
+      component.selectedSubscriptionSlot = MOCK_SUBSCRIPTION_SLOT_CARS;
+      spyOn(analyticsService, 'trackEvent');
+
+      component.onClick(MOCK_SUBSCRIPTION_SLOT_CARS, event);
+
+      expect(analyticsService.trackEvent).not.toHaveBeenCalled();
     });
   });
 });

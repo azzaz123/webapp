@@ -26,7 +26,7 @@
         <nav class="nav filters-nav">
           <a class="nav-link" [routerLink]="['info']" routerLinkActive="active" i18n>Profile</a>
           <a class="nav-link" [routerLink]="['account']" routerLinkActive="active" i18n>Account</a>
-          <a class="nav-link d-none d-md-inline" [routerLink]="['manage-subscription']" routerLinkActive="active"
+          <a class="nav-link d-none d-md-inline-block" [routerLink]="['manage-subscription']" routerLinkActive="active"
             *ngIf="isSubscriptionsActive && isNewSubscription" i18n>Subscriptions</a>
           <a class="nav-link" [routerLink]="['subscription']" routerLinkActive="active"
             *ngIf="showSubscriptionTab && !isNewSubscription" i18n>Subscription</a>

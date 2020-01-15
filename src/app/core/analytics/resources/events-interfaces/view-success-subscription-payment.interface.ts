@@ -6,11 +6,11 @@
  */
 
 /**
- * Tap on register button on wallapop register screen after register presentation page
+ * View modal after payment success
  */
-export interface TapRegisterEmailRegister {
+export interface ViewSuccessSubscriptionPayment {
   /**
-   * Identifier of the screen that the user arrives to the register page
+   * Identifier of the screen from which the message was sent from
    */
-  screenId: number;
+  screenId: 206;
 }

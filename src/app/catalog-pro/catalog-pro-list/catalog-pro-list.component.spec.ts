@@ -124,8 +124,6 @@ describe('CatalogProListComponent', () => {
         },
         {
           provide: PaymentService, useValue: {
-            getFinancialCard() {
-             },
             pay() {
               return Observable.of({});
             }

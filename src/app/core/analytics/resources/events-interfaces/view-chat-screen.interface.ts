@@ -6,7 +6,7 @@
  */
 
 /**
- * Users views chat screen
+ * Users view chat screen
  */
 export interface ViewChatScreen {
   /**

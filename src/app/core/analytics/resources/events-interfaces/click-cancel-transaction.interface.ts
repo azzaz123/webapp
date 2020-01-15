@@ -6,21 +6,21 @@
  */
 
 /**
- * Users views transaction timeline screen
+ * User clicks on timeline cancel transaction button
  */
-export interface ViewTransactionTimelineScreen {
+export interface ClickCancelTransaction {
   /**
    * The unique identifier for an item
    */
-  itemId?: string;
+  itemId: string;
   /**
    * Identifier of the user interested in the item
    */
-  buyerUserId?: string;
+  buyerUserId: string;
   /**
    * Identifier of the user that the item belongs to
    */
-  sellerUserId?: string;
+  sellerUserId: string;
   /**
    * Identifier of the transaction request
    */
@@ -28,9 +28,29 @@ export interface ViewTransactionTimelineScreen {
   /**
    * Identifier of the category that the transaction item belongs to
    */
-  categoryId?: number;
+  categoryId: number;
   /**
-   * Identifier of the transaction timeline screen
+   * If the item is from a professional user
    */
-  screenId: number;
+  isPro?: boolean;
+  /**
+   * Item total price
+   */
+  totalPrice: number;
+  /**
+   * Item offered price
+   */
+  offeredPrice: number;
+  /**
+   * Item price without fees
+   */
+  itemPrice: number;
+  /**
+   * Item title
+   */
+  title: string;
+  /**
+   * Identifier of the accept offer screen
+   */
+  screenId: 205;
 }
