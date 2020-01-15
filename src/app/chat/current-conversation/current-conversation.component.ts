@@ -38,6 +38,13 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   @Input() loadingError: boolean;
 
   public momentConfig: any;
+  private newMessageSubscription: Subscription;
+  public isLoadingMoreMessages = false;
+  private lastInboxMessage: InboxMessage;
+  public isEndOfConversation = true;
+  public scrollHeight = 0;
+  public scrollLocalPosition = 0;
+  public noMessages = 0;
 
   constructor(private eventService: EventService,
               private modalService: NgbModal,
@@ -53,19 +60,12 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
     this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
   }
 
-  private newMessageSubscription: Subscription;
-  public isLoadingMoreMessages = false;
-  private lastInboxMessage: InboxMessage;
-  private isEndOfConversation = true;
-  public scrollHeight = 0;
-  public scrollLocalPosition = 0;
-  public noMessages = 0;
-
   get emptyInbox(): boolean {
     return this.conversationsTotal === 0;
   }
 
   ngOnInit() {
+    this.isEndOfConversation = true;
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
       (message: InboxMessage) => {
         this.lastInboxMessage = message;
