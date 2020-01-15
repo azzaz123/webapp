@@ -76,34 +76,7 @@ export class ConversationService extends LeadService {
   }
 
   public getLeads(since?: number, archived?: boolean): Observable<Conversation[]> {
-    return this.inboxService.getInboxFeatureFlag$()
-    .flatMap((featureFlag) => {
-      return featureFlag ? Observable.of([]) : this.query(since, archived)
-      .flatMap((conversations: Conversation[]) => {
-        if (conversations && conversations.length > 0) {
-          return this.loadMessagesIntoConversations(conversations, archived)
-          .map((convWithMessages: Conversation[]) => {
-            if (!archived) {
-              if (!convWithMessages.length) {
-                this.ended.pending = true;
-              } else {
-                this.leads = this.leads.concat(convWithMessages);
-              }
-            } else {
-              this.archivedLeads = this.archivedLeads.concat(convWithMessages);
-              this.ended.processed = false;
-            }
-            this.firstLoad = false;
-            this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-            return convWithMessages;
-          });
-        } else {
-          this.firstLoad = false;
-          archived ? this.ended.processed = true : this.ended.pending = true;
-          return Observable.of([]);
-        }
-      });
-    });
+    return Observable.of([]);
   }
 
   public loadMore(): Observable<any> {

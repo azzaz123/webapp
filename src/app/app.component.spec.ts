@@ -94,10 +94,7 @@ describe('App', () => {
         {
           provide: InboxService, useValue: {
             init() {},
-            saveInbox() {},
-            getInboxFeatureFlag$() {
-              return Observable.of(false);
-            }
+            saveInbox() {}
           }
         },
         {
@@ -366,9 +363,6 @@ describe('App', () => {
       });
 
       describe('when getInboxFeatureFlag return true', () => {
-        beforeEach(() => {
-          spyOn(inboxService, 'getInboxFeatureFlag$').and.returnValue(Observable.of(true));
-        });
 
         it('should call inboxService.init', () => {
           component.ngOnInit();
