@@ -61,7 +61,7 @@ import { RealTimeService } from '../message/real-time.service';
 import { BlockUserXmppService } from './block-user';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { RemoteConsoleService } from '../remote-console';
-import { MockRemoteConsoleService } from '../../../tests';
+import { InboxServiceMock, MockRemoteConsoleService } from '../../../tests';
 import { InboxService } from '../inbox/inbox.service';
 
 let service: ConversationService;
@@ -88,12 +88,6 @@ const CONVERSATION_RESPONSE: Response = new Response(new ResponseOptions(
 );
 const componentInstance: any = { SendPhoneComponent: jasmine.createSpy('SendPhoneComponent') };
 
-class MockedInboxService {
-  public getInboxFeatureFlag$(): Observable<boolean> {
-    return Observable.of(false);
-  }
-}
-
 describe('Service: Conversation', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -107,7 +101,7 @@ describe('Service: Conversation', () => {
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
-        { provide: InboxService, useClass: MockedInboxService },
+        { provide: InboxService, useClass: InboxServiceMock },
         {
           provide: BlockUserXmppService, useValue: {
             getBlockedUsers() {
