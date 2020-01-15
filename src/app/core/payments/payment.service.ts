@@ -40,15 +40,6 @@ export class PaymentService {
               private userService: UserService) {
   }
 
-  public getFinancialCard(): Observable<FinancialCard> {
-    return this.http.get(this.API_URL + '/c2b/financial-card')
-      .map((r: Response) => r.json());
-  }
-
-  public deleteFinancialCard(): Observable<any> {
-    return this.http.delete(this.API_URL + '/c2b/financial-card');
-  }
-
   public getBillingInfo(): Observable<BillingInfoResponse> {
     return this.http.get(this.API_URL + '/billing-info/me')
       .map((r: Response) => r.json());
