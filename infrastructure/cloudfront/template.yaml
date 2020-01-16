@@ -1,26 +1,22 @@
 Parameters:
   EnvName:
-    Description: EnvName
+    Description: 'Environment where it has to be deployed'
     Type: String
-  Branch:
-    Description: Branch
-    Type: String
-  Commit:
-    Description: Commit
+  ProjectName:
+    Description: 'Name of this project'
     Type: String
   BucketES:
-    Description: BucketES
+    Description: 'Bucket where the ES webapp resides'
     Type: String
   BucketEN:
-    Description: BucketEN
+    Description: 'Bucket where the EN webapp resides'
     Type: String
   HostES:
-    Description: HostES
+    Description: 'HostES'
     Type: String
   HostEN:
-    Description: HostEN
+    Description: 'HostEN'
     Type: String
-
 
 Conditions:
   IsProdEnv: !Equals [ !Ref EnvName, prod ]
@@ -54,7 +50,7 @@ Resources:
         Enabled: true
         HttpVersion: http2
         Origins:
-        - DomainName: !Join [ ".", [ !Ref BucketES, "s3.amazonaws.com" ] ]
+        - DomainName: !Sub "${BucketES}.s3.amazonaws.com"
           Id: myS3Origin
           S3OriginConfig:
             OriginAccessIdentity: origin-access-identity/cloudfront/ECJ0NOZMYCRH1
@@ -67,14 +63,10 @@ Resources:
           - AcmCertificateArn: !FindInMap ["Certificates", "Wildcard", "default"]
             SslSupportMethod: 'sni-only'
       Tags:
-      - Key: Branch
-        Value: !Ref Branch
-      - Key: Commit
-        Value: !Ref Commit
       - Key: Env
         Value: !Ref EnvName
       - Key: Project
-        Value: Frontend
+        Value: !Ref ProjectName
 
   WebEnDistribution:
     Type: AWS::CloudFront::Distribution
@@ -98,7 +90,7 @@ Resources:
         Enabled: true
         HttpVersion: http2
         Origins:
-        - DomainName: !Join [ ".", [ !Ref BucketEN, "s3.amazonaws.com" ] ]
+        - DomainName: !Sub "${BucketEN}.s3.amazonaws.com"
           Id: myS3Origin
           S3OriginConfig:
             OriginAccessIdentity: origin-access-identity/cloudfront/ECJ0NOZMYCRH1
@@ -111,14 +103,10 @@ Resources:
           - AcmCertificateArn: !FindInMap ["Certificates", "Wildcard", "default"]
             SslSupportMethod: 'sni-only'
       Tags:
-      - Key: Branch
-        Value: !Ref Branch
-      - Key: Commit
-        Value: !Ref Commit
       - Key: Env
         Value: !Ref EnvName
       - Key: Project
-        Value: Frontend
+        Value: !Ref ProjectName
 
   WebEsRecordSetGroup:
     Type: AWS::Route53::RecordSetGroup
