@@ -22,7 +22,7 @@ Resources:
               Service: codepipeline.amazonaws.com
             Action: sts:AssumeRole
 
-  PipelinePolicy:
+  CodePipelinePolicy:
     Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: "webapp-pipeline-codepipeline-policy"
@@ -53,6 +53,8 @@ Resources:
               - iam:TagRole
               - iam:UntagUser
               - iam:UntagRole
+              - iam:DeleteRole
+              - iam:DeleteRolePolicy
       Roles:
         - Ref: "CodePipelineServiceRole"
 
@@ -69,7 +71,7 @@ Resources:
               Service: cloudformation.amazonaws.com
             Action: sts:AssumeRole
 
-  CloudformationPolicy:
+  CloudFormationPolicy:
     Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: "webapp-pipeline-cloudformation-policy"
@@ -90,6 +92,7 @@ Resources:
               - iam:UntagUser
               - iam:UntagRole
               - iam:UpdateAssumeRolePolicy
+              - iam:DeleteRole
               - iam:DeleteRolePolicy
       Roles:
         - Ref: "CloudFormationExecutionRole"
