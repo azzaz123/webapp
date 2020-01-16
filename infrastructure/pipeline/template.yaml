@@ -89,6 +89,7 @@ Resources:
               - iam:TagRole
               - iam:UntagUser
               - iam:UntagRole
+              - iam:UpdateAssumeRolePolicy
       Roles:
         - Ref: "CloudFormationExecutionRole"
 
