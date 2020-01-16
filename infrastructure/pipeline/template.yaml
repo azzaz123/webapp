@@ -43,6 +43,10 @@ Resources:
               - cloudformation:DescribeStacks
               - cloudformation:UpdateStack
               - cloudformation:CreateStack
+          - Resource: "*" #todo
+            Effect: Allow
+            Action:
+              - iam:PassRole
       Roles:
         - Ref: "CodePipelineServiceRole"
 
