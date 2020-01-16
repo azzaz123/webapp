@@ -1,5 +1,5 @@
 <div class="review-item row">
-  <div class="col-1 images-container">
+  <div class="images-container">
     <div class="review-image">
       <ng-container *ngIf="review.item?.image; else categoryIcon">
         <a href="{{ itemWebLink }}" target="_blank" tslsanitizedBackground="{{ review.item?.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"></a>
@@ -17,7 +17,7 @@
       <tsl-user-avatar  *ngIf="this.review.user" [user]="this.review.user" size="40"></tsl-user-avatar>
     </a>
   </div>
-  <div class="info col-10">
+  <div class="info">
     <div class="review-type">
       <span *ngIf="this.review.isSold" i18n>Sold:</span>
       <span *ngIf="this.review.isBought" i18n>Bought:</span>

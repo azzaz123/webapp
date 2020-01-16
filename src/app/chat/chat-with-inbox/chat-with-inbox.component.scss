@@ -6,6 +6,13 @@
   background-color: $white;
   width: $left-panel-width;
   border-right: 1px solid $blue-grey-4;
+  height: 100%;
+  @include media-breakpoint-down(md) {
+    width: 100%;
+    &.active-conversation {
+      display: none;
+    }
+  }
 }
 
 #center-panel {
@@ -17,5 +24,15 @@
   tsl-current-conversation {
     height: 100%;
   }
-}
 
+  @include media-breakpoint-down(md) {
+    display: none;
+    margin-left: 0;
+    width: 100%;
+    &.active-conversation {
+      display: block;
+      height: calc(100% + #{$tabbar-height});
+      z-index: 21;
+    }
+  }
+}

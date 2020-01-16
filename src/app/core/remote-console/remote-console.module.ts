@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RemoteConsoleService } from './remote-console.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { FeatureflagService } from '../user/featureflag.service';
+import { RemoteConsoleClientService } from './remote-console-client.service';
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import { FeatureflagService } from '../user/featureflag.service';
   declarations: [],
   providers: [
     RemoteConsoleService,
+    RemoteConsoleClientService,
     DeviceDetectorService,
     FeatureflagService
   ]

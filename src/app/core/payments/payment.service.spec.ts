@@ -78,28 +78,6 @@ describe('PaymentService', () => {
     });
   });
 
-  describe('getFinancialCard', () => {
-    let response: FinancialCard;
-    it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(FINANCIAL_CARD)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      service.getFinancialCard().subscribe((r: FinancialCard) => {
-        response = r;
-      });
-      expect(http.get).toHaveBeenCalledWith('api/v3/payments/c2b/financial-card');
-      expect(response).toEqual(FINANCIAL_CARD);
-    });
-  });
-
-  describe('deleteFinancialCard', () => {
-    it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify({})});
-      spyOn(http, 'delete').and.returnValue(Observable.of(new Response(res)));
-      service.deleteFinancialCard().subscribe();
-      expect(http.delete).toHaveBeenCalledWith('api/v3/payments/c2b/financial-card');
-    });
-  });
-
   describe('getPacks', () => {
     let response: Packs;
 

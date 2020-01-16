@@ -11,6 +11,20 @@ import { AddNewSubscriptionModalComponent } from "./modals/add-new-subscription-
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component'
 import { EventService } from "../../core/event/event.service";
 import { Router } from "@angular/router";
+import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import {
+  SCREEN_IDS,
+  ANALYTICS_EVENT_NAMES,
+  AnalyticsEvent,
+  ClickSuscribeOnTheBenefitsScreen,
+  ANALYTIC_EVENT_TYPES,
+  AnalyticsPageView,
+  ViewProfileSubscription,
+  ClickProfileSubscribeButton,
+  ClickProfileUnsuscribe,
+  ClickUnsuscribeCancelation
+} from '../../core/analytics/analytics-constants';
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionComponent;
@@ -19,6 +33,7 @@ describe('SubscriptionComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
   let router: Router;
+  let analyticsService: AnalyticsService;
   const componentInstance = {subscription: MAPPED_SUBSCRIPTIONS[0]};
   
   beforeEach(async(() => {
@@ -55,7 +70,8 @@ describe('SubscriptionComponent', () => {
             navigate() {
             }
           }
-        }
+        },
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
       ],
     schemas: [NO_ERRORS_SCHEMA]
     })
@@ -69,6 +85,7 @@ describe('SubscriptionComponent', () => {
     subscriptionsService = TestBed.get(SubscriptionsService);
     categoryService = TestBed.get(CategoryService);
     router = TestBed.get(Router);
+    analyticsService = TestBed.get(AnalyticsService);
     fixture.detectChanges();
   });
 
@@ -80,6 +97,21 @@ describe('SubscriptionComponent', () => {
       component.ngOnInit();
       
       expect(component.subscriptions).toEqual(MAPPED_SUBSCRIPTIONS);
+    });
+
+    it('should send page view event to analytics', () => {
+      spyOn(analyticsService, 'trackPageView');
+      const expectedPageViewEvent: AnalyticsPageView<ViewProfileSubscription> = {
+        name: ANALYTICS_EVENT_NAMES.ViewProfileSubscription,
+        attributes: {
+          screenId: SCREEN_IDS.ProfileSubscription
+        }
+      };
+
+      component.ngOnInit();
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
     });
 
     afterEach(() => {
@@ -137,6 +169,99 @@ describe('SubscriptionComponent', () => {
       expect(router.navigate).toHaveBeenCalledWith(['profile/info']);
     }));
 
+    describe('when the user is subscribed to the selected category', () => {
+      it('should send click profile unsubscribe event', () => {
+        spyOn(analyticsService, 'trackEvent');
+        const expectedEvent: AnalyticsEvent<ClickProfileUnsuscribe> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProfileUnsuscribe,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: SCREEN_IDS.ProfileSubscription,
+            subscription: MAPPED_SUBSCRIPTIONS_ADDED[0].category_id as any
+          }
+        };
+
+        component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS_ADDED[0]);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
+    describe('when the user is NOT subscribed to the selected category and has another subscription', () => {
+      it('should send click profile subscribe event with isNewSubscriber false', () => {
+        spyOn(analyticsService, 'trackEvent');
+        const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: SCREEN_IDS.ProfileSubscription,
+            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any,
+            isNewSubscriber: false
+          }
+        };
+
+        component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
+    describe('when the user is NOT subscribed to the selected category and no other category', () => {
+      it('should send click profile subscribe event with isNewSubscriber true', () => {
+        spyOn(analyticsService, 'trackEvent');
+        const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: SCREEN_IDS.ProfileSubscription,
+            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any,
+            isNewSubscriber: true
+          }
+        };
+        component.subscriptions.forEach(s => { s.subscribed_from = null; s.subscribed_until = null; });
+
+        component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
+    describe('when the modal dismisses', () => {
+      it('should send close event with the open one', fakeAsync(() => {
+        spyOn(analyticsService, 'trackEvent');
+        spyOn(modalService, 'open').and.returnValue({
+          result: Promise.reject({}),
+          componentInstance
+        });
+        const expectedOpenModalEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: SCREEN_IDS.ProfileSubscription,
+            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any,
+            isNewSubscriber: true
+          }
+        };
+        const expectedCloseModalEvent: AnalyticsEvent<ClickUnsuscribeCancelation> = {
+          name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeCancelation,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: SCREEN_IDS.ProfileSubscription
+          }
+        };
+
+        component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+        tick();
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(2);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedOpenModalEvent);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedCloseModalEvent);
+      }));
+    });
+
     afterEach(() => {
       TestBed.resetTestingModule();
     });
@@ -145,5 +270,5 @@ describe('SubscriptionComponent', () => {
   afterAll(() => {
     TestBed.resetTestingModule();
   });
-  
+
 });

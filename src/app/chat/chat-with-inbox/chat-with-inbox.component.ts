@@ -25,7 +25,6 @@ export class ChatWithInboxComponent implements OnInit {
   public firstLoad: boolean;
   public isProfessional: boolean;
   public currentConversation: InboxConversation;
-  public isLoading = false;
   private archivedInboxReady: boolean;
 
   constructor(public userService: UserService,
@@ -42,6 +41,8 @@ export class ChatWithInboxComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.connectionError = false;
+    this.conversationsLoading = false;
     if (this.inboxService.isInboxReady()) {
       this.openConversationIfNeeded();
     }
@@ -50,9 +51,12 @@ export class ChatWithInboxComponent implements OnInit {
       this.conversationsLoading = false;
     });
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      this.inboxConversationService.resendPendingMessages(this.currentConversation);
       this.connectionError = false;
     });
+
+    this.eventService.subscribe(EventService.CHAT_RT_CONNECTED, () => this.inboxConversationService.conversations
+    .forEach((conversation: InboxConversation) => this.inboxConversationService.resendPendingMessages(conversation)));
+
     this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation: InboxConversation) => {
       this.currentConversation = conversation;
       this.conversationsLoading = false;
@@ -85,23 +89,49 @@ export class ChatWithInboxComponent implements OnInit {
 
     this.route.queryParams.subscribe((params: Params) => {
       const itemId = params.itemId;
+      const conversationId = params.conversationId;
 
-      if (isNil(itemId)) {
+      if (conversationId) {
+        this.openConversationByConversationId(conversationId);
+      } else if (itemId) {
+        this.openConversationByItmId(itemId);
+      }
+    });
+  }
+
+  private openConversationByConversationId(conversationId: string) {
+    if (isNil(conversationId)) {
+      return;
+    }
+
+    this.conversationsLoading = true;
+    this.inboxConversationService.openConversationByConversationId$(conversationId).subscribe((inboxConversation: InboxConversation) => {
+      if (inboxConversation) {
+        this.currentConversation = inboxConversation;
         return;
       }
+      this.conversationsLoading = false;
+    });
+  }
 
-      // Try to find the conversation within the downloaded ones
-      this.conversationsLoading = true;
-      this.inboxConversationService.openConversationByItemId$(itemId)
-      .catch(() => Observable.of({}))
-      .subscribe((conversation: InboxConversation) => {
-        if (conversation) {
-          this.currentConversation = conversation;
-        }
-        if (isEmpty(conversation.messages)) {
-          this.getPhoneInfo(conversation);
-        }
-      });
+  private openConversationByItmId(itemId: string) {
+    if (isNil(itemId)) {
+      return;
+    }
+
+    // Try to find the conversation within the downloaded ones
+    this.conversationsLoading = true;
+    this.inboxConversationService.openConversationByItemId$(itemId)
+    .catch(() => Observable.of(null))
+    .subscribe((conversation: InboxConversation) => {
+      if (conversation) {
+        this.currentConversation = conversation;
+      } else {
+        this.conversationsLoading = false;
+      }
+      if (isEmpty(conversation.messages)) {
+        this.getPhoneInfo(conversation);
+      }
     });
   }
 

@@ -2,44 +2,52 @@
      infiniteScroll
      [infiniteScrollDistance]="5"
      [infiniteScrollThrottle]="100"
-     [scrollWindow]="false"
      [infiniteScrollDisabled]="end || loading"
      (scrolled)="loadMore()"
      [scrollTop]="scrollTop">
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent"></tsl-spinner>
   <div class="container" *ngIf="!isUrgent">
-    <tsl-header>
-      <div class="col-7">
-        <div class="header-row">
-          <h1 class="header-title">
-            <span i18n>Your products</span>
-            <span class="badge badge-pro" *ngIf="userService?.user?.featured || subscriptionSlots.length !== 0">
-              <mat-icon svgIcon="pro-seal"></mat-icon>
-              Pro
-            </span>
-          </h1>
-        </div>
-        <div class="header-row header-row--margin">
-          <h4 class="header-subtitle" i18n>Here you can list items, manage the ones you already have and featured to sell them faster</h4>
-        </div>
+
+  <tsl-header>
+    <div class="col-8 col-md-7">
+      <div class="header-row">
+        <h1 class="header-title">
+          <span class="d-none d-md-block" i18n>Your products</span>
+          <div class="d-md-none flex-column">
+            <div class="mb-2">{{user.microName}}</div>
+            <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
+            <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n>Edit</button>
+            <button (click)="userService.logout()" class="edit-profile-btn" i18n>Logout</button>
+          </div>
+          <span class="badge badge-pro" *ngIf="userService?.user?.featured || subscriptionSlots.length !== 0">
+            <mat-icon svgIcon="pro-seal"></mat-icon>
+            Pro
+          </span>
+        </h1>
       </div>
-      <div class="col info">
-        <mat-icon svgIcon="feature"></mat-icon>
-        <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
+      <div class="header-row d-none d-md-block">
+        <h4 class="header-subtitle" i18n>Here you can list items, manage the ones you already have and featured to
+          sell them faster</h4>
       </div>
-      <div class="col-1 header-numbers">
-        <ng-container>
-          <p class="header-numbers-top">
-            <span *ngIf="numberOfProducts === 0 && loading">--</span>
-            <span *ngIf="!loading">{{numberOfProducts}}</span>
-          </p>
-          <p class="header-numbers-bottom">
-            <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
-            <span *ngIf="numberOfProducts === 1" i18n>product</span>
-          </p>
-        </ng-container>
-      </div>
-    </tsl-header>
+    </div>
+    <div class="col info d-none d-md-flex">
+      <mat-icon svgIcon="feature"></mat-icon>
+      <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
+    </div>
+    <div class="col-4 col-md-1 header-numbers">
+      <p class="header-numbers-top d-none d-md-block">
+        <span *ngIf="numberOfProducts === 0 && loading">--</span>
+        <span *ngIf="!loading">{{numberOfProducts}}</span>
+      </p>
+      <p class="header-numbers-bottom d-none d-md-block">
+        <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
+        <span *ngIf="numberOfProducts === 1" i18n>product</span>
+      </p>
+      <a class="d-flex justify-content-end d-md-none" [routerLink]="['/profile/info']">
+        <tsl-user-avatar [user]="user" size="80"></tsl-user-avatar>
+      </a>
+    </div>
+  </tsl-header>
 
     <tsl-subscriptions-slots-list
       [subscriptionsSlots]="subscriptionSlots"
@@ -61,19 +69,20 @@
     >
     </tsl-nav-links>
 
-    <div class="row items">
-      <div id="catalog-empty-state" *ngIf="!items.length && !loading">
+    <div class="items">
+      <div id="catalog-empty-state" *ngIf="!items.length && !loading && selectedStatus !== 'reviews'">
         <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
       </div>
 
       <tsl-catalog-item 
         *ngFor="let item of items"
-        class="col-md-12" 
         [item]="item"
         (itemChange)="itemChanged($event)"
         (purchaseListingFee)="purchaseListingFee($event)"
       >
       </tsl-catalog-item>
+
+      <tsl-reviews *ngIf="selectedStatus === 'reviews'"></tsl-reviews>
 
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
