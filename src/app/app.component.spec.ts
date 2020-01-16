@@ -548,7 +548,8 @@ describe('App', () => {
   });
 
   describe('process new message event', () => {
-    it('should call conversationService.handleNewMessages when a NEW_MESSAGE event is triggered', () => {
+    // TODO test for legacy code
+    xit('should call conversationService.handleNewMessages when a NEW_MESSAGE event is triggered', () => {
       spyOn(conversationService, 'handleNewMessages');
       const timestamp = new Date().getTime();
 
