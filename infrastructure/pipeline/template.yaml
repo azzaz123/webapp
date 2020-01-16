@@ -22,7 +22,7 @@ Resources:
               Service: codepipeline.amazonaws.com
             Action: sts:AssumeRole
 
-  PipelinePolicy:
+  CodePipelinePolicy:
     Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: "webapp-pipeline-codepipeline-policy"
@@ -43,6 +43,20 @@ Resources:
               - cloudformation:DescribeStacks
               - cloudformation:UpdateStack
               - cloudformation:CreateStack
+          - Resource: "*" #todo
+            Effect: Allow
+            Action:
+              - iam:PassRole
+              - iam:ListUserTags
+              - iam:ListRoleTags
+              - iam:TagUser
+              - iam:TagRole
+              - iam:UntagUser
+              - iam:UntagRole
+              - iam:DeleteRole
+              - iam:DeleteRolePolicy
+              - iam:PutRolePolicy
+              - iam:GetRole
       Roles:
         - Ref: "CodePipelineServiceRole"
 
@@ -56,10 +70,10 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Service: codepipeline.amazonaws.com
+              Service: cloudformation.amazonaws.com
             Action: sts:AssumeRole
 
-  CloudformationPolicy:
+  CloudFormationPolicy:
     Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: "webapp-pipeline-cloudformation-policy"
@@ -73,6 +87,17 @@ Resources:
               - s3:*
               - route53:*
               - cloudfront:*
+              - iam:ListUserTags
+              - iam:ListRoleTags
+              - iam:TagUser
+              - iam:TagRole
+              - iam:UntagUser
+              - iam:UntagRole
+              - iam:UpdateAssumeRolePolicy
+              - iam:DeleteRole
+              - iam:DeleteRolePolicy
+              - iam:PutRolePolicy
+              - iam:GetRole
       Roles:
         - Ref: "CloudFormationExecutionRole"
 
@@ -136,7 +161,7 @@ Resources:
               Configuration:
                 ActionMode: CREATE_UPDATE
                 Capabilities: CAPABILITY_IAM
-                StackName: !Sub webapp-cloudfront-${EnvName}
+                StackName: !Sub Webapp-${EnvName}
                 TemplateConfiguration: !Sub App::infrastructure/cloudfront/${EnvName}.json
                 TemplatePath: App::infrastructure/cloudfront/template.yaml
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
