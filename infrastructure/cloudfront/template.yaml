@@ -24,7 +24,7 @@ Conditions:
 Mappings:
   Certificates:
     Wildcard:
-      default: "arn:aws:acm:us-east-1:745640521341:certificate/e7ed6a3d-db7c-4fae-9daf-a9daea4cc02d"
+      default: "arn:aws:acm:us-east-1:745640521341:certificate/1927ef21-ffc9-44c8-887e-c9f0ef3da20f"
 
 Resources:
   WebEsDistribution:
