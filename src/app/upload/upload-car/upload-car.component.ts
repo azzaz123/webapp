@@ -428,7 +428,7 @@ export class UploadCarComponent implements OnInit {
   }
 
   public updateUploadPercentage(percentage: number) {
-    this.uploadCompletedPercentage = parseInt(percentage as any, 10);
+    this.uploadCompletedPercentage = Math.round(percentage);
   }
 
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {

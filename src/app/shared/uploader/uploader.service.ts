@@ -188,7 +188,7 @@ export class UploaderService {
           time += diff;
           load = e.loaded - load;
           const speed = parseInt((load / diff * 1000) as any, 10);
-          const totalFilesSize = this.files.map(file => { return file.size }).reduce((acc, size) => acc + size, 0);
+          const totalFilesSize = this.files.map(file => file.size).reduce((acc, size) => acc + size);
           const uploadedPercentage = e.loaded / totalFilesSize * 100;
 
           file.progress = {

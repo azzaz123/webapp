@@ -523,7 +523,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public updateUploadPercentage(percentage: number) {
-    this.uploadCompletedPercentage = parseInt(percentage as any, 10);
+    this.uploadCompletedPercentage = Math.round(percentage);
   }
 
   public onDeliveryChange(newDeliveryValue: any) {
