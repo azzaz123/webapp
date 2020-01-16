@@ -474,7 +474,7 @@ describe('UploadRealestateComponent', () => {
     it('should update the completed percentage of the upload', () => {
       component.updateUploadPercentage(19.52);
 
-      expect(component.uploadCompletedPercentage).toBe(19);
+      expect(component.uploadCompletedPercentage).toBe(20);
     });
   });
 
