@@ -55,6 +55,7 @@ Resources:
               - iam:UntagRole
               - iam:DeleteRole
               - iam:DeleteRolePolicy
+              - iam:PutRolePolicy
       Roles:
         - Ref: "CodePipelineServiceRole"
 
@@ -94,6 +95,7 @@ Resources:
               - iam:UpdateAssumeRolePolicy
               - iam:DeleteRole
               - iam:DeleteRolePolicy
+              - iam:PutRolePolicy
       Roles:
         - Ref: "CloudFormationExecutionRole"
 
