@@ -161,7 +161,7 @@ Resources:
               Configuration:
                 ActionMode: CREATE_UPDATE
                 Capabilities: CAPABILITY_IAM
-                StackName: !Sub webapp-cloudfront-${EnvName}
+                StackName: !Sub Webapp-${EnvName}
                 TemplateConfiguration: !Sub App::infrastructure/cloudfront/${EnvName}.json
                 TemplatePath: App::infrastructure/cloudfront/template.yaml
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
