@@ -17,6 +17,12 @@ Parameters:
   HostEN:
     Description: 'HostEN'
     Type: String
+  HostESName:
+    Description: 'HostES name for route53'
+    Type: String
+  HostENName:
+    Description: 'HostEN name for route53'
+    Type: String
 
 Conditions:
   IsProdEnv: !Equals [ !Ref EnvName, prod ]
@@ -116,7 +122,7 @@ Resources:
       - AliasTarget:
           DNSName: !GetAtt WebEsDistribution.DomainName
           HostedZoneId: Z2FDTNDATAQYW2
-        Name: !Ref HostES
+        Name: !Ref HostESName
         Type: A
 
   WebEnRecordSetGroup:
@@ -127,5 +133,5 @@ Resources:
       - AliasTarget:
           DNSName: !GetAtt WebEnDistribution.DomainName
           HostedZoneId: Z2FDTNDATAQYW2
-        Name: !Ref HostEN
+        Name: !Ref HostENName
         Type: A
