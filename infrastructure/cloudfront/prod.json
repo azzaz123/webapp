@@ -4,8 +4,8 @@
     "ProjectName": "webapp",
     "BucketES": "web-es.wallapop.com",
     "BucketEN": "web-en.wallapop.com",
-    "HostES": "web",
-    "HostEN": "web-en"
+    "HostES": "web.wallapop.com",
+    "HostEN": "web-en.wallapop.com"
   },
   "Tags": {
     "Project": "webapp",
