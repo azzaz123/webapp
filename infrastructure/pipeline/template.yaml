@@ -60,7 +60,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Service: codepipeline.amazonaws.com
+              Service: cloudformation.amazonaws.com
             Action: sts:AssumeRole
 
   CloudformationPolicy:
