@@ -131,7 +131,7 @@
   <msg id="6181907632373133266"><source>app/shared/catalog/catalog-card/catalog-card.component.html:55</source><source>app/stats/items-stats/items-stats.component.html:13</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:18</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:41</source>Chats</msg>
   <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.html:62</source><source>app/catalog/list/catalog-item/catalog-item.component.html:77</source>Mark as sold</msg>
   <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.html:65</source><source>app/catalog/list/catalog-item/catalog-item.component.html:81</source>Mark as reserved</msg>
-  <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.html:68</source><source>app/catalog/list/list.component.html:19</source><source>app/catalog/list/catalog-item/catalog-item.component.html:86</source>Edit</msg>
+  <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.html:68</source><source>app/catalog/list/list.component.html:19</source><source>app/catalog/list/catalog-item/catalog-item.component.html:86</source><source>app/profile/subscription/subscription.component.html:23</source>Edit</msg>
   <msg id="4416413576346763682"><source>app/shared/catalog/catalog-card/catalog-card.component.html:76</source><source>app/calls/calls.component.html:22</source><source>app/calls/calls.component.html:44</source><source>app/catalog/list/catalog-item/catalog-item.component.html:102</source><source>app/chat/chat-with-archive/conversations-panel/conversations-panel.component.html:9</source><source>app/dashboard/dashboard.component.html:18</source>Pending</msg>
   <msg id="5272763997595694217"><source>app/shared/catalog/catalog-card/catalog-card.component.html:83</source>Cancel Autorenew</msg>
   <msg id="291347435854981703"><source>app/shared/catalog/catalog-card/catalog-card.component.html:84</source>Do you really want to cancel the autorenew for this item?</msg>
@@ -195,7 +195,7 @@
   <msg id="3768927257183755959"><source>app/shared/payments/stripe/stripe-card-element.component.html:34</source><source>app/profile/profile-info/profile-info.component.html:85</source><source>app/profile/account/account.component.html:36</source><source>app/profile/profile-pro-billing/profile-pro-billing.component.html:69</source>Save</msg>
   <msg id="848453031482663640"><source>app/shared/payments/stripe/stripe-card-element.component.html:45</source>Subscribe now</msg>
   <msg id="6201766420022369899"><source>app/shared/modals/new-card-modal/new-card-modal.component.html:6</source>Add a new credit card</msg>
-  <msg id="5722353260643724736"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:5</source><source>app/shared/profile/credit-cards/credit-cards.component.html:3</source>Payment method</msg>
+  <msg id="5722353260643724736"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:5</source>Payment method</msg>
   <msg id="5691966639616932851"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:9</source>Card</msg>
   <msg id="4940843552280014819"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:18</source>+ Add new card</msg>
   <msg id="8429052002955936753"><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source>Select your card</msg>
@@ -546,10 +546,10 @@
   <msg id="3948439187870398089"><source>app/profile/account/account.component.html:17</source>Gender</msg>
   <msg id="8012344910054029733"><source>app/profile/account/account.component.html:23</source><source>app/upload/upload-product/upload-product.component.html:115</source>Male</msg>
   <msg id="5667840900782067941"><source>app/profile/account/account.component.html:28</source><source>app/upload/upload-product/upload-product.component.html:111</source>Female</msg>
-  <msg id="3004455960309356224"><source>app/profile/account/account.component.html:49</source>Account info</msg>
-  <msg id="4768749765465246664"><source>app/profile/account/account.component.html:53</source>Email</msg>
-  <msg id="1431416938026210429"><source>app/profile/account/account.component.html:59</source>Password</msg>
-  <msg id="2322688793988378029"><source>app/profile/account/account.component.html:66</source>Close account</msg>
+  <msg id="3004455960309356224"><source>app/profile/account/account.component.html:48</source>Account info</msg>
+  <msg id="4768749765465246664"><source>app/profile/account/account.component.html:52</source>Email</msg>
+  <msg id="1431416938026210429"><source>app/profile/account/account.component.html:58</source>Password</msg>
+  <msg id="2322688793988378029"><source>app/profile/account/account.component.html:65</source>Close account</msg>
   <msg id="2296943727359810458"><source>app/profile/subscription/modals/payment-success-modal.component.html:8</source>Perfect!</msg>
   <msg id="651992282801976762"><source>app/profile/subscription/modals/payment-success-modal.component.html:9</source>The subscription has been correctly created. Everything is prepared to boost your sales!</msg>
   <msg id="8132236892525873540"><source>app/profile/subscription/modals/payment-success-modal.component.html:10</source>Go to my profile</msg>
@@ -665,26 +665,6 @@
   <msg id="994112968931678611"><source>app/profile/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.html:12</source>Feature on your country</msg>
   <msg id="6008122510223331138"><source>app/profile/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.html:13</source>You will appear on nice positions of your country</msg>
   <msg id="7413249870341285211"><source>app/profile/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.html:17</source>Contact us for more info</msg>
-  <msg id="4185227957442923918"><source>app/reviews/reviews.component.html:13</source>Your Reviews</msg>
-  <msg id="5263225898611875859"><source>app/reviews/reviews.component.html:16</source>This is what people think about you. </msg>
-  <msg id="5858407943986110221"><source>app/reviews/reviews.component.html:20</source>Your average</msg>
-  <msg id="994157966875519838"><source>app/reviews/reviews.component.html:26</source>review</msg>
-  <msg id="5327426729320041573"><source>app/reviews/reviews.component.html:32</source>Nobody has written a review about you because you didn&apos;t buy or sell anything yet. Wake up!</msg>
-  <msg id="5653113390991708232"><source>app/reviews/review-item/review-item.component.html:22</source>Sold:</msg>
-  <msg id="4179349933130995178"><source>app/reviews/review-item/review-item.component.html:23</source>Bought:</msg>
-  <msg id="3188298240836661570"><source>app/reviews/review-item/review-item.component.html:28</source>A wallapop item</msg>
-  <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.html:33</source>Posted by</msg>
-  <msg id="5941682960252754908"><source>app/reviews/review-item/review-item.component.html:35</source>a wallapop user</msg>
-  <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.html:36</source>on</msg>
-  <msg id="605166699517966750"><source>app/stats/stats.component.html:16</source>Control the progress of your listings and improve your sales.</msg>
-  <msg id="5018811059755976867"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:6</source>Change the limits of the subscription</msg>
-  <msg id="6044974118925437441"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:7</source>Update your subscription according to the items that you would like to upload.</msg>
-  <msg id="3072739349487522347"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:14</source><ph name="INTERPOLATION"><ex>{{subscription?.tiers[i]?.limit}}</ex></ph></msg>
-  <msg id="5135045952459940132"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:20</source>New price:</msg>
-  <msg id="3744004942164134121"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:20,22</source>
-              <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/month
-            </msg>
-  <msg id="6998541290982927512"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:26</source>Confirm change</msg>
   <msg id="605166699517966750"><source>app/stats/stats.component.html:15</source>Control the progress of your listings and improve your sales.</msg>
   <msg id="7616770651914901276"><source>app/stats/items-stats/items-stats.component.html:4</source>Product</msg>
   <msg id="2868602391152223921"><source>app/stats/items-stats/items-stats.component.html:7</source>Listed on</msg>
