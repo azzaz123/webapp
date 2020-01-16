@@ -879,4 +879,12 @@ describe('UploadProductComponent', () => {
     });
   });
 
+  describe('updateUploadPercentage', () => {
+    it('should update the completed percentage of the upload', () => {
+      component.updateUploadPercentage(55.99);
+
+      expect(component.uploadCompletedPercentage).toBe(56);
+    });
+  });
+
 });

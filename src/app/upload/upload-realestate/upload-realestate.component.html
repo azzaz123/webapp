@@ -218,7 +218,7 @@
       Photos
     </h2>
     <tsl-drop-area [uploadEvent]="uploadEvent" type="real_estate" (onUploaded)="onUploaded($event)"
-      (onError)="onError($event)" formControlName="images" [maxUploads]="10" [images]="item?.images"
+      (onError)="onError($event)" (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images" [maxUploads]="10" [images]="item?.images"
       [itemId]="item?.id"></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n>
@@ -231,9 +231,10 @@
   </tsl-urgent-checkbox>
   <div class="row">
     <div class="col-12 col-md-4">
-      <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading" [loading]="loading">
-        <span *ngIf="!item" i18n>Post Ad</span>
-        <span *ngIf="item" i18n>Update</span>
+      <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
+        <span *ngIf="!item && !loading" i18n>Post Ad</span>
+        <span *ngIf="item && !loading" i18n>Update</span>
+        <span *ngIf="loading" i18n>Uploading... {{ uploadCompletedPercentage }}%</span>
       </tsl-button>
     </div>
     <div class="col-md-3 d-none d-md-block">

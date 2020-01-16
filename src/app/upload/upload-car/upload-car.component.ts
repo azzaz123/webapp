@@ -57,6 +57,7 @@ export class UploadCarComponent implements OnInit {
   public customMake = false;
   public customVersion = false;
   private settingItem: boolean;
+  public uploadCompletedPercentage = 0;
 
   private isNormal = true;
   private isMotorPlan = false;
@@ -424,6 +425,10 @@ export class UploadCarComponent implements OnInit {
     } else if (!this.customMake && !this.years && !this.brands && !this.models || this.customMake) {
       this.toggleField('version', 'disable');
     }
+  }
+
+  public updateUploadPercentage(percentage: number) {
+    this.uploadCompletedPercentage = Math.round(percentage);
   }
 
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {

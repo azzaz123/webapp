@@ -767,7 +767,8 @@
   <msg id="258836646318650091"><source>app/upload/upload-car/upload-car.component.html:264,265</source>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only
         .jpg images.</msg>
   <msg id="3738144900818451024"><source>app/upload/upload-car/upload-car.component.html:269</source>Your car is in:</msg>
-  <msg id="4138346261331244869"><source>app/upload/upload-car/upload-car.component.html:282</source>How does it look?</msg>
+  <msg id="2174289057200208170"><source>app/upload/upload-car/upload-car.component.html:278</source><source>app/upload/upload-product/upload-product.component.html:205</source><source>app/upload/upload-realestate/upload-realestate.component.html:237</source>Uploading... <ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex></ph>%</msg>
+  <msg id="4138346261331244869"><source>app/upload/upload-car/upload-car.component.html:283</source>How does it look?</msg>
   <msg id="243983274320667129"><source>app/upload/upload-product/upload-product.component.html:6</source>Information about your item</msg>
   <msg id="3322682308330601072"><source>app/upload/upload-product/upload-product.component.html:12</source>What are you selling?</msg>
   <msg id="5635139981490841331"><source>app/upload/upload-product/upload-product.component.html:14</source><source>app/upload/upload-realestate/upload-realestate.component.html:156</source>In some words...</msg>
@@ -802,7 +803,7 @@
         Tell us how much your product weighs. Remember that the sum of the
         length, height and width can not exceed 270cm.
       </msg>
-  <msg id="2852614655612881023"><source>app/upload/upload-product/upload-product.component.html:209,211</source><source>app/upload/upload-realestate/upload-realestate.component.html:241,243</source>
+  <msg id="2852614655612881023"><source>app/upload/upload-product/upload-product.component.html:210,212</source><source>app/upload/upload-realestate/upload-realestate.component.html:242,244</source>
         How does it look?
       </msg>
   <msg id="4601810369894625886"><source>app/upload/upload-realestate/upload-realestate.component.html:6</source>Information about your property</msg>

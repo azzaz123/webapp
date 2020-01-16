@@ -85,7 +85,7 @@
       </div>
     </div>
     <tsl-drop-area [uploadEvent]="uploadEvent" type="consumer_goods" (onUploaded)="onUploaded($event)"
-      (onError)="onError($event)" formControlName="images" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
+      (onError)="onError($event)" (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n>
         You can drag and drop your photos here. Select and drag to change the
@@ -199,9 +199,10 @@
   </tsl-urgent-checkbox>
   <div class="row">
     <div class="col-12 col-md-4">
-      <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading" [loading]="loading">
-        <span *ngIf="!item" i18n>Post Ad</span>
-        <span *ngIf="item" i18n>Update</span>
+      <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
+        <span *ngIf="!item && !loading" i18n>Post Ad</span>
+        <span *ngIf="item && !loading" i18n>Update</span>
+        <span *ngIf="loading" i18n>Uploading... {{ uploadCompletedPercentage }}%</span>
       </tsl-button>
     </div>
     <div class="col-md-3 d-none d-md-block">

@@ -952,6 +952,7 @@
   <translation id="1812379335568847528">Suscripciones</translation>
   <translation id="3749157863216929849">Volver al catálogo</translation>
   <translation id="708817521397622777">Paga con tu saldo o con tarjeta de crédito:</translation>
+  <translation id="2174289057200208170">Subiendo...<ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex></ph>%</translation>
   <translation id="2477437471140226346">¿Qué límite quieres poner a tu suscripción?</translation>
   <translation id="5656512856960596660">Este es tu plan actual</translation>
   <translation id="1583909574923079873">Precio: </translation>
