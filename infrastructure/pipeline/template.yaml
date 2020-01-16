@@ -47,6 +47,12 @@ Resources:
             Effect: Allow
             Action:
               - iam:PassRole
+              - iam:ListUserTags
+              - iam:ListRoleTags
+              - iam:TagUser
+              - iam:TagRole
+              - iam:UntagUser
+              - iam:UntagRole
       Roles:
         - Ref: "CodePipelineServiceRole"
 
@@ -77,6 +83,12 @@ Resources:
               - s3:*
               - route53:*
               - cloudfront:*
+              - iam:ListUserTags
+              - iam:ListRoleTags
+              - iam:TagUser
+              - iam:TagRole
+              - iam:UntagUser
+              - iam:UntagRole
       Roles:
         - Ref: "CloudFormationExecutionRole"
 
