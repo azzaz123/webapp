@@ -71,6 +71,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public selectedBrand: Subject<string> = new Subject();
   public selectedModel: Subject<string> = new Subject();
+  public uploadCompletedPercentage = 0;
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
@@ -286,7 +287,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
-    
+
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
       appboy.logCustomEvent('Edit', { platform: 'web' });
@@ -519,6 +520,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public getBrandPlaceholder() {
     return this.isFashionCategory ? 'fashion_brand_example' : 'phones_brand_example';
+  }
+
+  public updateUploadPercentage(percentage: number) {
+    this.uploadCompletedPercentage = parseInt(percentage as any, 10);
   }
 
   public onDeliveryChange(newDeliveryValue: any) {

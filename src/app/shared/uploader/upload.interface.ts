@@ -36,6 +36,7 @@ export interface UploadOutput {
   reason?: string;
   files?: UploadFile[];
   imageType?: string;
+  percentage?: number;
 }
 
 export interface UploadInput {

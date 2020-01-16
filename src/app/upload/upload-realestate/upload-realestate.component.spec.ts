@@ -469,4 +469,13 @@ describe('UploadRealestateComponent', () => {
       expect(component.onSubmit).toHaveBeenCalled();
     }));
   });
+
+  describe('updateUploadPercentage', () => {
+    it('should update the completed percentage of the upload', () => {
+      component.updateUploadPercentage(19.52);
+
+      expect(component.uploadCompletedPercentage).toBe(19);
+    });
+  });
+
 });

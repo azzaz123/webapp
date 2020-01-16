@@ -56,6 +56,7 @@ export class UploadRealestateComponent implements OnInit {
     { value: 'EUR', label: '€' },
     { value: 'GBP', label: '£' }
   ];
+  public uploadCompletedPercentage = 0;
 
   constructor(private fb: FormBuilder,
     private realestateKeysService: RealestateKeysService,
@@ -265,6 +266,10 @@ export class UploadRealestateComponent implements OnInit {
       this.onSubmit();
     }, () => {
     });
+  }
+
+  public updateUploadPercentage(percentage: number) {
+    this.uploadCompletedPercentage = parseInt(percentage as any, 10);
   }
 
   private trackEditOrUpload(isEdit: boolean, item: RealestateContent) {
