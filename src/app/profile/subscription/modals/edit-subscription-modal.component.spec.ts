@@ -8,6 +8,9 @@ import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
+import { Observable } from 'rxjs';
+import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
+import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import {
@@ -24,6 +27,8 @@ describe('EditSubscriptionModalComponent', () => {
   let toastrService: ToastrService;
   let analyticsService: AnalyticsService;
   let eventService: EventService;
+  let subscriptionsService: SubscriptionsService;
+  let modalService: NgbModal;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -58,6 +63,13 @@ describe('EditSubscriptionModalComponent', () => {
             }
           }
         },
+        {
+          provide: SubscriptionsService, useValue: {
+            editSubscription() {
+              return Observable.of(202);
+            }
+          }
+        },
         I18nService,
         EventService,
         {
@@ -74,7 +86,9 @@ describe('EditSubscriptionModalComponent', () => {
     component = fixture.componentInstance;
     toastrService = TestBed.get(ToastrService);
     activeModal = TestBed.get(NgbActiveModal);
+    modalService = TestBed.get(NgbModal);
     eventService = TestBed.get(EventService);
+    subscriptionsService = TestBed.get(SubscriptionsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     analyticsService = TestBed.get(AnalyticsService);
     fixture.detectChanges();
@@ -123,6 +137,43 @@ describe('EditSubscriptionModalComponent', () => {
       component.selectListingLimit(tier);
 
       expect(component.selectedTier).toEqual(tier);
+    });
+  });
+
+  describe('isCurrentTier selected', () => {
+    it('should return if the selected tier is the current subscription', () => {
+      const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
+
+      component.ngOnInit();
+      component.selectListingLimit(tier);
+      component.isCurrentTier();
+      
+      expect(component.isCurrentTier()).toBe(true);
+    })
+  });
+
+  describe('editSubscription', () => {
+    const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
+
+    it('should call the editSubscription service', () => {
+      spyOn(subscriptionsService, 'editSubscription').and.callThrough();
+
+      component.editSubscription();
+      
+      expect(component.subscriptionsService.editSubscription).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS[2], tier.id);
+      expect(component.loading).toBe(false);
+    });
+  });
+
+  describe('cancelSubscriptionModal', () => {
+    it('should open the cancelSubscription modal', () => {
+      spyOn(modalService, 'open').and.callThrough();
+
+      component.cancelSubscription();
+
+      expect(modalService.open).toHaveBeenCalledWith(CancelSubscriptionModalComponent, {
+        windowClass: 'review'
+      });
     });
   });
 
