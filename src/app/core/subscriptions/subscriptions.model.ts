@@ -1,6 +1,7 @@
 import { SubscriptionsResponse, Tier } from './subscriptions.interface';
 
 export class SubscriptionsModel implements SubscriptionsResponse {
+  id: string;
   category_id: number;
   current_limit: number;
   subscribed_from: number;
@@ -11,6 +12,14 @@ export class SubscriptionsModel implements SubscriptionsResponse {
   category_name?: string;
   selected_tier?: Tier
   subscribed_until?: number;
+
+  setId(value: string) {
+    this.id = value;
+  }
+
+  getId(): string {
+    return this.id;
+  }
 
   setCategoryId(value: number) {
     this.category_id = value;

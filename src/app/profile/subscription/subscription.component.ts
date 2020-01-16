@@ -3,7 +3,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from './modals/add-new-subscription-modal.component';
 import { SubscriptionsResponse } from '../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
-import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-modal.component';
 import { isEqual } from 'lodash-es';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
@@ -20,6 +19,7 @@ import {
   ClickUnsuscribeCancelation
 } from '../../core/analytics/analytics-constants';
 import { ContinueSubscriptionModalComponent } from './modals/continue-subscription-modal.component';
+import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component';
 
 @Component({
   selector: 'tsl-subscription',
@@ -55,8 +55,8 @@ export class SubscriptionComponent implements OnInit {
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
-    const modal = subscription.subscribed_until ? ContinueSubscriptionModalComponent : subscription.subscribed_from ? CancelSubscriptionModalComponent : AddNewSubscriptionModalComponent;
-    let modalRef = this.modalService.open(modal, {windowClass: 'review'});
+    const modal = subscription.subscribed_until ? ContinueSubscriptionModalComponent : subscription.subscribed_from ? EditSubscriptionModalComponent : AddNewSubscriptionModalComponent;
+    let modalRef: NgbModalRef = this.modalService.open(modal, {windowClass: 'review'});
     modalRef.componentInstance.subscription = subscription;
     modalRef.result.then((action: string) => {
       if (action) {

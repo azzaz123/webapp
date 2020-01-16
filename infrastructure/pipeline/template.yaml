@@ -1,0 +1,145 @@
+Parameters:
+  EnvName:
+    Description: 'Environment where it has to be deployed'
+    Type: String
+  ImageTag:
+    Description: 'Tag how the .zip file is tagged'
+    Type: String
+  ProjectName:
+    Description: 'Name of the project'
+    Type: String
+
+Resources:
+  CodePipelineServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+            Action: sts:AssumeRole
+
+  PipelinePolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "webapp-pipeline-codepipeline-policy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Resource: "*" #todo
+            Effect: Allow
+            Action:
+              - s3:CreateBucket
+              - s3:PutObject
+              - s3:GetObject
+              - s3:GetObjectVersion
+              - s3:GetBucketVersioning
+          - Resource: "*" #todo
+            Effect: Allow
+            Action:
+              - cloudformation:DescribeStacks
+              - cloudformation:UpdateStack
+              - cloudformation:CreateStack
+      Roles:
+        - Ref: "CodePipelineServiceRole"
+
+  CloudFormationExecutionRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Retain
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+            Action: sts:AssumeRole
+
+  CloudformationPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "webapp-pipeline-cloudformation-policy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Resource: "*"
+            Effect: Allow
+            Action:
+              - codepipeline:*
+              - s3:*
+              - route53:*
+              - cloudfront:*
+      Roles:
+        - Ref: "CloudFormationExecutionRole"
+
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      Tags:
+        - Key: Env
+          Value: !Ref EnvName
+        - Key: Project
+          Value: !Ref ProjectName
+
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: !Sub webapp-${EnvName}
+      RoleArn: !GetAtt CodePipelineServiceRole.Arn
+      ArtifactStore:
+        Type: S3
+        Location: !Ref ArtifactBucket
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: webapp
+              ActionTypeId:
+                Category: Source
+                Provider: S3
+                Owner: AWS
+                Version: "1"
+              Configuration:
+                S3Bucket: wallapop-trigger-link-cicd
+                S3ObjectKey: !Sub webapp/webapp-${ImageTag}.zip
+              OutputArtifacts:
+                - Name: App
+
+        - Name: Infrastructure
+          Actions:
+            - Name: Pipeline
+              ActionTypeId:
+                Category: Deploy
+                Provider: CloudFormation
+                Owner: AWS
+                Version: "1"
+              Configuration:
+                ActionMode: CREATE_UPDATE
+                Capabilities: CAPABILITY_IAM
+                StackName: !Sub webapp-pipeline-${EnvName}
+                TemplateConfiguration: !Sub App::infrastructure/pipeline/${EnvName}.json
+                TemplatePath: App::infrastructure/pipeline/template.yaml
+                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+              InputArtifacts:
+                - Name: App
+              RunOrder: 1
+            - Name: Cloudfront
+              ActionTypeId:
+                Category: Deploy
+                Provider: CloudFormation
+                Owner: AWS
+                Version: "1"
+              Configuration:
+                ActionMode: CREATE_UPDATE
+                Capabilities: CAPABILITY_IAM
+                StackName: !Sub webapp-cloudfront-${EnvName}
+                TemplateConfiguration: !Sub App::infrastructure/cloudfront/${EnvName}.json
+                TemplatePath: App::infrastructure/cloudfront/template.yaml
+                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+              InputArtifacts:
+                - Name: App
+              RunOrder: 2

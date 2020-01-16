@@ -123,4 +123,11 @@ export class CatalogItemActionsComponent implements OnInit {
     this.itemService.selectedItems = [];
   }
 
+  public selectAll() {
+    this.items.forEach(item => {
+      this.itemService.selectItem(item.id);
+      item.selected = true;
+    });
+  }
+
 }
