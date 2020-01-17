@@ -17,6 +17,7 @@ export interface Tier {
 }
 
 export interface SubscriptionsResponse {
+  id: string,
   category_id: number,
   current_limit: number,
   subscribed_from: number,

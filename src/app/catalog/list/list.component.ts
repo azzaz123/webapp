@@ -133,6 +133,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.userService.getAvailableSlots().subscribe(slots => {
       if (slots.user_can_manage && slots.num_max_cars) {
         this.categoryService.getCategoryById(CATEGORY_IDS.CAR).subscribe(category => {
+          category.icon_id = 'herocat-cars';
           const mappedSubscriptionSlot: SubscriptionSlot = {
             category,
             available: slots.num_slots_cars,

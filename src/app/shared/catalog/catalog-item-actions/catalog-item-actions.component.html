@@ -8,6 +8,9 @@
       </ng-template>
     </ng-container>
   </a>
+  <button class="btn-select-all dark" [hidden]="itemService.selectedItems.length" (click)="selectAll()">
+    <span i18n>Select All</span>
+  </button>
   <button class="btn-delete dark" (click)="delete(deleteItemsModal)" [disabled]="!itemService.selectedItems.length">
     <mat-icon svgIcon="delete"></mat-icon>
     <span i18n>Delete</span>

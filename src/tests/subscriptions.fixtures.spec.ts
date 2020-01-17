@@ -57,6 +57,7 @@ export const MOCK_SUBSCRIPTION_SLOT_CARS: SubscriptionSlot = {
 export const SUBSCRIPTIONS: SubscriptionsResponse[] = 
 [
   {
+    id: 'abcd-1234-efgh-5678',
     category_id: 12800, 
     current_limit: 2,
     subscribed_from: null,
@@ -91,6 +92,7 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
     ]
   },
   {
+    id: 'efgh-1234-abcd-5678',
     category_id: 100, 
     current_limit: 1,
     subscribed_from: null,
@@ -125,6 +127,7 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
     ]
   },
   {
+    id: 'abcd-5678-efgh-1234',
     category_id: 14000, 
     current_limit: 3,
     subscribed_from: 1567675697,
@@ -159,6 +162,7 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
     ]
   },
   {
+    id: '1234-abcd-5678-efgh',
     category_id: 14000, 
     current_limit: 3,
     subscribed_from: 1567675697,
@@ -198,6 +202,7 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
 export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] = 
 [
   {
+    id: 'abcd-1234-efgh-5678',
     category_id: 12800, 
     current_limit: 2,
     subscribed_from: null,
@@ -232,6 +237,7 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
     ]
   },
   {
+    id: '1234-abcd-5678-efgh',
     category_id: 100, 
     current_limit: 1,
     subscribed_from: null,
@@ -266,6 +272,7 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
     ]
   },
   {
+    id: 'abcd-4321-efgh-5678',
     category_id: 14000, 
     current_limit: 3,
     subscribed_from: null,
@@ -300,6 +307,7 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
     ]
   },
   {
+    id: 'abcd-1234-efgh-8765',
     category_id: 14000, 
     current_limit: 3,
     subscribed_from: null,
@@ -339,6 +347,7 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
 export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = 
 [
   {
+    id: 'abcd-1234-efgh-5678',
     category_id: 12800, 
     current_limit: 2,
     subscribed_from: null,
@@ -376,6 +385,7 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
     selected_tier: null
   },
   {
+    id: 'abcd-4321-efgh-8765',
     category_id: 100, 
     current_limit: 1,
     subscribed_from: null,
@@ -413,6 +423,7 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
     selected_tier: null
   },
   {
+    id: 'dcba-1234-hgfe-5678',
     category_id: 14000, 
     current_limit: 3,
     subscribed_from: 1567675697,
@@ -459,6 +470,7 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
 export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] = 
 [
   {
+    id: 'abcd-1234-efgh-5678',
     category_id: 12800, 
     current_limit: 2,
     subscribed_from: 1567675697,
@@ -496,6 +508,7 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] =
     selected_tier: null
   },
   {
+    id: '1234-abcd-efgh-5678',
     category_id: 100, 
     current_limit: 1,
     subscribed_from: null,
@@ -533,6 +546,7 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] =
     selected_tier: null
   },
   {
+    id: 'abcd-1234-5678-efgh',
     category_id: 14000, 
     current_limit: 3,
     subscribed_from: 1567675697,

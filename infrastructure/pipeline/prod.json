@@ -1,0 +1,15 @@
+{
+  "Parameters": {
+    "EnvName": "prod",
+    "ImageTag": "stable",
+    "ProjectName": "webapp"
+  },
+  "Tags": {
+    "Project": "webapp",
+    "Team": "frontend",
+    "Contact": "frontend@wallapop.com",
+    "Env": "prod",
+    "Name": "webapp",
+    "Repo": "webapp"
+  }
+}

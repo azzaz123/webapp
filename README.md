@@ -73,6 +73,12 @@ release_begin repo=webapp version_update=minor
 release_end repo=webapp
 ```
 
+### Image Tagging
+| Branch Name   | Tag |
+| :-------------: | :-------------: |
+| master  | stable  |
+| release  | release  |
+| any other branch (eg: feature/CLOUD-666) | name of the branch (eg: feature-CLOUD-666) |
 
 ## Commentaries
 ### Login

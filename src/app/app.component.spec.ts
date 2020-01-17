@@ -362,23 +362,20 @@ describe('App', () => {
         expect(callsService.init).toHaveBeenCalledTimes(2);
       });
 
-      describe('when getInboxFeatureFlag return true', () => {
+      it('should call inboxService.init', () => {
+        component.ngOnInit();
+        emitSuccessChatEvents();
 
-        it('should call inboxService.init', () => {
-          component.ngOnInit();
-          emitSuccessChatEvents();
+        expect(inboxService.init).toHaveBeenCalledTimes(1);
+      });
 
-          expect(inboxService.init).toHaveBeenCalledTimes(1);
-        });
+      it('should NOT unsubscribe from the RT_CONNECTED_EVENT', () => {
+        spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
 
-        it('should NOT unsubscribe from the RT_CONNECTED_EVENT', () => {
-          spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+        component.ngOnInit();
+        emitSuccessChatEvents();
 
-          component.ngOnInit();
-          emitSuccessChatEvents();
-
-          expect(component['RTConnectedSubscription'].closed).toBe(false);
-        });
+        expect(component['RTConnectedSubscription'].closed).toBe(false);
       });
 
       it('should send open_app event if cookie does not exist', () => {
