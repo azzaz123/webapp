@@ -38,10 +38,6 @@ export class InboxService {
               private userService: UserService) {
   }
 
-  public getInboxFeatureFlag$(): Observable<boolean> {
-    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.INBOX_PROJECTIONS);
-  }
-
   public init() {
     this.conversationService.subscribeChatEvents();
     this.selfId = this.userService.user.id;
