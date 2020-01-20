@@ -222,18 +222,35 @@ describe('DropAreaComponent', () => {
 
     });
 
-    it('should update file if event uploading', () => {
-      const fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
-      fileUploaded.progress.data.percentage = 100;
-      component.files = [UPLOAD_FILE];
-
-      component.onUploadOutput({
-        type: 'uploading',
-        file: fileUploaded
+    describe('if event is uploading', () => {
+      it('should update file', () => {
+        const fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
+        fileUploaded.progress.data.percentage = 100;
+        component.files = [UPLOAD_FILE];
+  
+        component.onUploadOutput({
+          type: 'uploading',
+          file: fileUploaded
+        });
+  
+        expect(component.files[0].progress.data.percentage).toBe(100);
       });
-
-      expect(component.files[0].progress.data.percentage).toBe(100);
+  
+      it('should emit the completed upload percentage', () => {
+        const fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
+        component.files = [UPLOAD_FILE];
+        spyOn(component.onUploadPercentageChange, 'emit');
+  
+        component.onUploadOutput({
+          type: 'uploading',
+          file: fileUploaded,
+          percentage: 54.23
+        });
+  
+        expect(component.onUploadPercentageChange.emit).toHaveBeenCalledWith(54.23);
+      });
     });
+
 
     it('should remove the file if event removed', () => {
       spyOn(component, 'propagateChange');

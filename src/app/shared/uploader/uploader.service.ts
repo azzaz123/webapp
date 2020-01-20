@@ -22,30 +22,30 @@ export class UploaderService {
   handleFiles(files: FileList, imageType?: string): void {
     [].forEach.call(files, (file: File, i: number) => {
       const uploadFile: UploadFile = {
-        fileIndex:        this.files[this.files.length - 1] ? this.files[this.files.length - 1].fileIndex + 1 : 0,
-        file:             file,
-        id:               this.generateId(),
-        name:             file.name,
-        size:             file.size,
-        type:             file.type,
-        progress:         {
+        fileIndex: this.files[this.files.length - 1] ? this.files[this.files.length - 1].fileIndex + 1 : 0,
+        file: file,
+        id: this.generateId(),
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        progress: {
           status: UploadStatus.Queue,
-          data:   {
+          data: {
             percentage: 0,
-            speed:      null,
+            speed: null,
             speedHuman: null
           }
         },
         lastModifiedDate: file.lastModifiedDate
       };
       if (this.checkExtension(uploadFile, imageType) &&
-          this.checkMaxUploads(uploadFile, imageType) &&
-          this.checkMaxSize(uploadFile, imageType)) {
+        this.checkMaxUploads(uploadFile, imageType) &&
+        this.checkMaxSize(uploadFile, imageType)) {
         let reader: FileReader = new FileReader();
         reader.readAsDataURL(<Blob>file);
         reader.addEventListener('load', (event: any) => {
           uploadFile.preview = this.sanitizer.bypassSecurityTrustResourceUrl(event.target.result);
-          this.serviceEvents.emit({type: 'addedToQueue', file: uploadFile, imageType: imageType});
+          this.serviceEvents.emit({ type: 'addedToQueue', file: uploadFile, imageType: imageType });
         });
         this.files.push(uploadFile);
       }
@@ -64,7 +64,7 @@ export class UploaderService {
       return true;
     }
 
-    this.serviceEvents.emit({type: 'rejected', file: file, reason: 'ExtensionNotAllowed', imageType });
+    this.serviceEvents.emit({ type: 'rejected', file: file, reason: 'ExtensionNotAllowed', imageType });
 
     return false;
   }
@@ -73,7 +73,7 @@ export class UploaderService {
     if (this.files.length < this.options.maxUploads) {
       return true;
     }
-    this.serviceEvents.emit({type: 'rejected', file: file, reason: 'MaxUploadsExceeded', imageType});
+    this.serviceEvents.emit({ type: 'rejected', file: file, reason: 'MaxUploadsExceeded', imageType });
     return false;
   }
 
@@ -81,7 +81,7 @@ export class UploaderService {
     if (!this.options.maxSize || file.size < this.options.maxSize) {
       return true;
     }
-    this.serviceEvents.emit({type: 'rejected', file: file, reason: 'MaxSizeExceeded', imageType});
+    this.serviceEvents.emit({ type: 'rejected', file: file, reason: 'MaxSizeExceeded', imageType });
     return false;
   }
 
@@ -188,6 +188,8 @@ export class UploaderService {
           time += diff;
           load = e.loaded - load;
           const speed = parseInt((load / diff * 1000) as any, 10);
+          const totalFilesSize = this.files.map(file => file.size).reduce((acc, size) => acc + size);
+          const uploadedPercentage = e.loaded / totalFilesSize * 100;
 
           file.progress = {
             status: UploadStatus.Uploading,
@@ -198,7 +200,7 @@ export class UploaderService {
             }
           };
 
-          observer.next({ type: 'uploading', file: file });
+          observer.next({ type: 'uploading', file: file, percentage: uploadedPercentage });
         }
       }, false);
 
@@ -239,7 +241,7 @@ export class UploaderService {
         if (this.uploads[uploadIndex] && this.uploads[uploadIndex].file.progress.status === UploadStatus.Canceled) {
           observer.complete();
         }
-        form.append( event.fieldName || 'file', uploadFile, uploadFile.name);
+        form.append(event.fieldName || 'file', uploadFile, uploadFile.name);
 
         Object.keys(data).forEach(key => {
           let value = (key === 'order') ? file.fileIndex.toString() : data[key];

@@ -28,6 +28,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   @Input() uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @Output() onUploaded: EventEmitter<UploadedEvent> = new EventEmitter();
   @Output() onError: EventEmitter<any> = new EventEmitter();
+  @Output() onUploadPercentageChange: EventEmitter<number> = new EventEmitter();
   @Input() maxUploads = 10;
   @Input() images: Image[];
   @Input() itemId: string;
@@ -146,6 +147,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
       case 'uploading':
         const index = this.files.findIndex(file => file.id === output.file.id);
         this.files[index] = output.file;
+        this.onUploadPercentageChange.emit(output.percentage);
         break;
       case 'removed':
         this.files = this.files.filter((file: UploadFile) => file !== output.file);
