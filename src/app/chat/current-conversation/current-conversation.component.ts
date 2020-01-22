@@ -41,7 +41,7 @@ import { InboxConversation, InboxMessage, MessageType } from '../model';
 export class CurrentConversationComponent implements OnInit, OnChanges, AfterViewChecked, OnDestroy {
 
   public readonly BOTTOM_BUFFER_ZONE = 100;
-  private MESSAGE_HEIGHT = 42;
+  private MESSAGE_HEIGHT = 14;
 
   @Input() currentConversation: InboxConversation;
   @Input() conversationsTotal: number;
@@ -81,6 +81,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.isEndOfConversation = true;
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
       (message: InboxMessage) => {
+        this.isConversationChanged = true;
         this.lastInboxMessage = message;
         if (this.isEndOfConversation) {
           this.sendReadForLastInboxMessage();
