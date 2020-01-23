@@ -50,7 +50,7 @@ export class SubscriptionsService {
   }
 
   public getSlots(): Observable<SubscriptionSlot[]> {
-    return this.http.get<any>(environment.baseUrl + SUBSCRIPTIONS_SLOTS_ENDPOINT)
+    return this.http.get<any>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`)
       .flatMap(slots => {
         return Observable.forkJoin(
           slots.map(s => this.mapSlotResponseToSlot(s))
@@ -145,7 +145,7 @@ export class SubscriptionsService {
     return this.categoryService.getCategories()
     .pipe(
       mergeMap((categories) => {
-        return this.http.get(environment.baseUrl + SUBSCRIPTIONS_URL)
+        return this.http.get(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`)
         .catch((error) => {
           return Observable.of(error);
         })

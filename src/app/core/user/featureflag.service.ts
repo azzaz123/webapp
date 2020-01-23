@@ -30,7 +30,7 @@ export class FeatureflagService {
     if (storedFeatureFlag && cache) {
       return of(storedFeatureFlag).map(sff => sff.isActive);
     } else {
-      return this.http.get(environment.baseUrl + FEATURE_FLAG_ENDPOINT, { params: {
+      return this.http.get(`${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`, { params: {
         featureFlags: name.toString(),
         timestamp: new Date().getTime().toString() // Prevent browser cache with timestamp parameter
       }})

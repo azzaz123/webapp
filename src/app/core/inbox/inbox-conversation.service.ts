@@ -327,7 +327,7 @@ export class InboxConversationService {
   }
 
   private fetchConversationByItem$(itemId: string): Observable<InboxConversation> {
-    return this.httpClient.post<ConversationResponse>(environment.baseUrl + 'api/v3/conversations', { item_id: itemId })
+    return this.httpClient.post<ConversationResponse>(`${environment.baseUrl}api/v3/conversations`, { item_id: itemId })
     .flatMap((response: ConversationResponse) => this.getConversation(response.conversation_id));
   }
 

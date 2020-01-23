@@ -46,13 +46,13 @@ describe(`TokenInterceptor`, () => {
   it('should return 401 and empty response if user is NOT logged in', () => {
     accessTokenService.storeAccessToken(null);
 
-    http.get<HttpResponse<Object>>(environment.baseUrl + MOCK_V3_ENDPOINT, { observe: 'response' as 'body' })
+    http.get<HttpResponse<Object>>(`${environment.baseUrl}${MOCK_V3_ENDPOINT}`, { observe: 'response' as 'body' })
     .subscribe(response => {
       expect(response.status).toEqual(401);
       expect(response.statusText).toEqual('Unauthorized');
       expect(response.body).toEqual({});
     });
-    httpMock.expectNone(environment.baseUrl + MOCK_V3_ENDPOINT);
+    httpMock.expectNone(`${environment.baseUrl}${MOCK_V3_ENDPOINT}`);
   });
 
   it('should add authorization header if token exists', () => {
@@ -64,14 +64,14 @@ describe(`TokenInterceptor`, () => {
 
     const authHeaderValue = req.request.headers.get(TOKEN_AUTHORIZATION_HEADER_NAME);
     expect(authHeaderValue).toBeTruthy();
-    expect(authHeaderValue).toBe('Bearer ' + MOCK_TOKEN);
+    expect(authHeaderValue).toBe(`Bearer ${MOCK_TOKEN}`);
   });
 
   it('should add authorization headers for v3 urls if token exists', () => {
     accessTokenService.storeAccessToken(MOCK_TOKEN);
 
-    http.get(environment.baseUrl + MOCK_V3_ENDPOINT).subscribe();
-    const req: TestRequest = httpMock.expectOne(environment.baseUrl + MOCK_V3_ENDPOINT);
+    http.get(`${environment.baseUrl}${MOCK_V3_ENDPOINT}`).subscribe();
+    const req: TestRequest = httpMock.expectOne(`${environment.baseUrl}${MOCK_V3_ENDPOINT}`);
     req.flush({});
 
     expect(req.request.headers.has(TOKEN_TIMESTAMP_HEADER_NAME)).toEqual(true);

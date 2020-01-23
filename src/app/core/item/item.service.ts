@@ -775,7 +775,7 @@ export class ItemService extends ResourceService {
   }
 
   public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemByCategoryResponse[]> {
-    return this.httpNew.get<any>(environment.baseUrl + MINES_BY_CATEGORY_ENDPOINT, {
+    return this.httpNew.get<any>(`${environment.baseUrl}${MINES_BY_CATEGORY_ENDPOINT}`, {
       params: {
         status,
         init: init.toString(),
