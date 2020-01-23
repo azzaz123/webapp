@@ -32,16 +32,16 @@ export class InboxService {
   constructor(private httpClient: HttpServiceNew,
               private persistencyService: PersistencyService,
               private messageService: MessageService,
-              private conversationService: InboxConversationService,
+              private inboxConversationService: InboxConversationService,
               private featureflagService: FeatureflagService,
               private eventService: EventService,
               private userService: UserService) {
   }
 
   public init() {
-    this.conversationService.subscribeChatEvents();
+    this.inboxConversationService.subscribeChatEvents();
     this.selfId = this.userService.user.id;
-    this.conversationService.selfId = this.selfId;
+    this.inboxConversationService.selfId = this.selfId;
     this.subscribeArchiveEvents();
     this.subscribeUnarchiveEvents();
 
@@ -51,7 +51,7 @@ export class InboxService {
       return this.persistencyService.getStoredInbox();
     })
     .subscribe((conversations: InboxConversation[]) => {
-      this.conversations = conversations;
+      this.inboxConversationService.conversations = conversations;
       this.inboxReady = true;
       this.eventService.emit(EventService.INBOX_LOADED, conversations, 'LOAD_INBOX');
       this.eventService.emit(EventService.INBOX_READY, true);
@@ -71,14 +71,18 @@ export class InboxService {
 
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (blockedUsers: string[]) => {
       blockedUsers.map(id => {
-        this.conversations.filter(conv => conv.user.id === id && !conv.user.blocked)
+        this.inboxConversationService.conversations
+        .filter(conv => conv.user.id === id && !conv.user.blocked)
         .map(conv => conv.user.blocked = true);
-        this.archivedConversations.filter(conv => conv.user.id === id && !conv.user.blocked)
+        this.archivedConversations
+        .filter(conv => conv.user.id === id && !conv.user.blocked)
         .map(conv => conv.user.blocked = true);
       });
-      this.conversations.filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
+      this.inboxConversationService.conversations
+      .filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
       .map(conv => conv.user.blocked = false);
-      this.archivedConversations.filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
+      this.archivedConversations
+      .filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
       .map(conv => conv.user.blocked = false);
     });
   }
@@ -125,7 +129,7 @@ export class InboxService {
     ])
     .pipe(
       tap((inbox: InboxApi) => this.nextPageToken = inbox.next_from || null),
-      map((inbox: InboxApi) => this.conversations = this.processInboxResponse(inbox))
+      map((inbox: InboxApi) => this.inboxConversationService.conversations = this.processInboxResponse(inbox))
     );
   }
 
@@ -136,7 +140,7 @@ export class InboxService {
     ])
     .pipe(
       tap((inbox: InboxApi) => this.nextPageToken = inbox.next_from || null),
-      map((inbox: InboxApi) => this.conversations = this.processInboxResponse(inbox))
+      map((inbox: InboxApi) => this.inboxConversationService.conversations = this.processInboxResponse(inbox))
     );
   }
 
@@ -172,8 +176,8 @@ export class InboxService {
 
   private processInboxResponse(inbox: InboxApi): InboxConversation[] {
     const conversations: InboxConversation[] = this.buildConversations(inbox.conversations);
-    this.conversationService.sendReceiveSignalByConversations(conversations);
-    return uniqBy([...this.conversations, ...conversations], 'id');
+    this.inboxConversationService.sendReceiveSignalByConversations(conversations);
+    return uniqBy([...this.inboxConversationService.conversations, ...conversations], 'id');
   }
 
   private processArchivedInboxResponse(response: InboxApi): InboxConversation[] {
@@ -195,8 +199,8 @@ export class InboxService {
 
   private subscribeArchiveEvents() {
     this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, (conversation) => {
-      const index = this.conversations.indexOf(conversation);
-      this.conversations.splice(index, 1);
+      const index = this.inboxConversationService.conversations.indexOf(conversation);
+      this.inboxConversationService.conversations.splice(index, 1);
       this.archivedConversations.unshift(conversation);
       this.archivedConversations.sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
     });
@@ -206,8 +210,8 @@ export class InboxService {
     this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, (conversation) => {
       const index = this.archivedConversations.indexOf(conversation);
       this.archivedConversations.splice(index, 1);
-      this.conversations.unshift(conversation);
-      this.conversations.sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
+      this.inboxConversationService.conversations.unshift(conversation);
+      this.inboxConversationService.conversations.sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
     });
   }
 }

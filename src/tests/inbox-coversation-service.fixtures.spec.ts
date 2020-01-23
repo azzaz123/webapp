@@ -3,6 +3,9 @@ import { InboxConversation } from '../app/chat/model';
 
 export class InboxConversationServiceMock {
 
+  public conversations: InboxConversation[] = [];
+  public archivedConversations: InboxConversation[] = [];
+
   openConversationByItemId$(itemId: string): Observable<InboxConversation> {
     return Observable.empty();
   }
