@@ -113,7 +113,7 @@ export class InboxComponent implements OnInit, OnDestroy {
     if (this.inboxConversationService.conversations) {
       this.onInboxReady(this.inboxConversationService.conversations, 'INIT_INBOX');
       this.conversations = this.inboxConversationService.conversations;
-      this.archivedConversations = this.inboxService.archivedConversations;
+      this.archivedConversations = this.inboxConversationService.archivedConversations;
       this.loading = false;
     } else {
       this.loading = true;
@@ -125,7 +125,7 @@ export class InboxComponent implements OnInit, OnDestroy {
     });
 
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
-      this.archivedConversations = this.inboxService.archivedConversations;
+      this.archivedConversations = this.inboxConversationService.archivedConversations;
       this.setStatusesAfterLoadConversations();
     });
 

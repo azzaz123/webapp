@@ -16,9 +16,6 @@ import { uniqBy } from 'lodash-es';
 export class InboxService {
   public static readonly PAGE_SIZE = 30;
 
-  public conversations: InboxConversation[] = [];
-  public archivedConversations: InboxConversation[] = [];
-
   private inboxReady = false;
   private archivedInboxReady = false;
 
@@ -74,14 +71,14 @@ export class InboxService {
         this.inboxConversationService.conversations
         .filter(conv => conv.user.id === id && !conv.user.blocked)
         .map(conv => conv.user.blocked = true);
-        this.archivedConversations
+        this.inboxConversationService.archivedConversations
         .filter(conv => conv.user.id === id && !conv.user.blocked)
         .map(conv => conv.user.blocked = true);
       });
       this.inboxConversationService.conversations
       .filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
       .map(conv => conv.user.blocked = false);
-      this.archivedConversations
+      this.inboxConversationService.archivedConversations
       .filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
       .map(conv => conv.user.blocked = false);
     });
@@ -151,7 +148,7 @@ export class InboxService {
     ])
     .pipe(
       tap((inbox: InboxApi) => this.nextArchivedPageToken = inbox.next_from || null),
-      map((inbox: InboxApi) => this.archivedConversations = this.processArchivedInboxResponse(inbox))
+      map((inbox: InboxApi) => this.inboxConversationService.archivedConversations = this.processArchivedInboxResponse(inbox))
     );
   }
 
@@ -162,7 +159,9 @@ export class InboxService {
     ])
     .pipe(
       tap((inbox: InboxApi) => this.nextArchivedPageToken = inbox.next_from || null),
-      map((inbox: InboxApi) => this.archivedConversations = this.archivedConversations = this.processArchivedInboxResponse(inbox))
+      map((inbox: InboxApi) =>
+        this.inboxConversationService.archivedConversations
+          = this.inboxConversationService.archivedConversations = this.processArchivedInboxResponse(inbox))
     );
   }
 
@@ -181,7 +180,7 @@ export class InboxService {
   }
 
   private processArchivedInboxResponse(response: InboxApi): InboxConversation[] {
-    return uniqBy([...this.archivedConversations, ...this.buildArchivedConversations(response.conversations)], 'id');
+    return uniqBy([...this.inboxConversationService.archivedConversations, ...this.buildArchivedConversations(response.conversations)], 'id');
   }
 
   private buildArchivedConversations(conversations: InboxConversationApi[]) {
@@ -201,17 +200,19 @@ export class InboxService {
     this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, (conversation) => {
       const index = this.inboxConversationService.conversations.indexOf(conversation);
       this.inboxConversationService.conversations.splice(index, 1);
-      this.archivedConversations.unshift(conversation);
-      this.archivedConversations.sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
+      this.inboxConversationService.archivedConversations.unshift(conversation);
+      this.inboxConversationService.archivedConversations
+      .sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
     });
   }
 
   private subscribeUnarchiveEvents() {
     this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, (conversation) => {
-      const index = this.archivedConversations.indexOf(conversation);
-      this.archivedConversations.splice(index, 1);
+      const index = this.inboxConversationService.archivedConversations.indexOf(conversation);
+      this.inboxConversationService.archivedConversations.splice(index, 1);
       this.inboxConversationService.conversations.unshift(conversation);
-      this.inboxConversationService.conversations.sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
+      this.inboxConversationService.conversations
+      .sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
     });
   }
 }
