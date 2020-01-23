@@ -20,6 +20,9 @@
     font-size: $font-size-s;
     text-decoration: none;
   }
+  @include media-breakpoint-down(md) {
+    padding: 0;
+  }
 }
 .main-header-my-zone {
   tsl-user-avatar {
@@ -273,4 +276,10 @@
   background-size: contain;
   box-shadow: 0 2px 4px 0 rgba($blue-grey-1, 0.1);
   border-radius: 10px;
+}
+
+.topbar-logo-icon {
+  @include media-breakpoint-down(md) {
+		padding-left: $spacing-m;
+	}
 }

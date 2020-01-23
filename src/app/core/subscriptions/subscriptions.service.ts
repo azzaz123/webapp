@@ -170,6 +170,10 @@ export class SubscriptionsService {
       null, { observe: 'response' as 'body' });
   }
 
+  public editSubscription(subscription: SubscriptionsResponse, newPlanId: string): Observable<any> {
+    return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${subscription.id}`, { plan_id: newPlanId }, null, { observe: 'response' as 'body' });
+  }
+
   private mapSubscriptions(subscription: SubscriptionsResponse, categories: CategoryResponse[]): SubscriptionsResponse {
     let category = categories.find((category: CategoryResponse) => subscription.category_id === category.category_id);
     if (category) {

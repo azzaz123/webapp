@@ -30,13 +30,13 @@ import { ActivateItemsModalComponent } from '../../shared/catalog/catalog-item-a
 import { DeactivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { CreditInfo } from '../../core/payments/payment.interface';
-import { StripeService } from '../../core/stripe/stripe.service';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '../../core/subscriptions/subscriptions.service';
 import { SubscriptionSlot } from '../../core/subscriptions/subscriptions.interface';
 import { NavLink } from '../../shared/nav-links/nav-link.interface';
-import { FeatureflagService } from '../../core/user/featureflag.service';
 import { CategoryService } from '../../core/category/category.service';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
+import { User } from '../../core/user/user';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 export const SORTS = [ 'date_desc', 'date_asc', 'price_desc', 'price_asc' ];
 
@@ -54,20 +54,17 @@ export class ListComponent implements OnInit, OnDestroy {
   public loading = true;
   private init = 0;
   public end: boolean;
-  public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public scrollTop: number;
   private uploadModalRef: NgbModalRef;
   private active = true;
   private firstItemLoad = true;
   public isUrgent = false;
   public numberOfProducts: number;
-  public isRedirect = false;
   private counters: Counters;
   private tooManyItemsModalRef: NgbModalRef;
   public userCanDeactivate: boolean;
   public selectedItems: Item[];
   public creditInfo: CreditInfo;
-  public isStripe: boolean;
   public subscriptionSlots: SubscriptionSlot[] = [];
   public selectedSubscriptionSlot: SubscriptionSlot;
   public navLinks: NavLink[] = [];
@@ -79,6 +76,8 @@ export class ListComponent implements OnInit, OnDestroy {
   private pageSize = 20;
   public normalNavLinks: NavLink[] = [];
   public subscriptionSelectedNavLinks: NavLink[] = [];
+  public user: User;
+  public userScore: number;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -93,16 +92,22 @@ export class ListComponent implements OnInit, OnDestroy {
     public userService: UserService,
     private eventService: EventService,
     protected i18n: I18nService,
-    private stripeService: StripeService,
     private subscriptionsService: SubscriptionsService,
-    private categoryService: CategoryService) {
+    private categoryService: CategoryService,
+    private deviceService: DeviceDetectorService) {
   }
 
   ngOnInit() {
+    this.getUserInfo();
+
     this.normalNavLinks = [
       { id: 'published', display: this.i18n.getTranslations('selling') },
       { id: 'sold', display: this.i18n.getTranslations('sold') }
     ];
+
+    if (this.deviceService.isMobile()) {
+      this.normalNavLinks.push({ id: 'reviews', display: this.i18n.getTranslations('reviews')})
+    }
 
     this.subscriptionSelectedNavLinks = [
       { id: 'active', display: this.i18n.getTranslations('active') },
@@ -114,10 +119,6 @@ export class ListComponent implements OnInit, OnDestroy {
 
     this.getItems();
     this.getCreditInfo();
-
-    this.stripeService.isPaymentMethodStripe$().subscribe(val => {
-      this.isStripe = val;
-    });
 
     // TODO: New subscriptions will come from this endpoint and eventually drop support for Motor Plan
     // this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS).subscribe(active => {
@@ -132,6 +133,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.userService.getAvailableSlots().subscribe(slots => {
       if (slots.user_can_manage && slots.num_max_cars) {
         this.categoryService.getCategoryById(CATEGORY_IDS.CAR).subscribe(category => {
+          category.icon_id = 'herocat-cars';
           const mappedSubscriptionSlot: SubscriptionSlot = {
             category,
             available: slots.num_slots_cars,
@@ -161,9 +163,6 @@ export class ListComponent implements OnInit, OnDestroy {
         this.getItems();
       });
       this.route.params.subscribe((params: any) => {
-        if (!params.urgent) {
-          this.setRedirectToTPV(false);
-        }
         if (params && params.code) {
           const modals = {
             urgent: UrgentConfirmationModalComponent,
@@ -222,7 +221,7 @@ export class ListComponent implements OnInit, OnDestroy {
             this.router.navigate(['wallacoins']);
           });
         }
-        if (params && params.created) {
+        if (params && params.created && !this.deviceService.isMobile()) {
           this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
             windowClass: 'modal-standard',
           });
@@ -230,19 +229,15 @@ export class ListComponent implements OnInit, OnDestroy {
             this.uploadModalRef = null;
             if (orderEvent) {
               this.isUrgent = true;
-              this.isRedirect = !this.getRedirectToTPV();
               this.feature(orderEvent, 'urgent');
             }
           }, () => {
           });
         } else if (params && params.urgent) {
           this.isUrgent = true;
-          this.isRedirect = !this.getRedirectToTPV();
-          if (!this.getRedirectToTPV()) {
-            setTimeout(() => {
-              this.getUrgentPrice(params.itemId);
-            }, 3000);
-          }
+          setTimeout(() => {
+            this.getUrgentPrice(params.itemId);
+          }, 3000);
         } else if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
@@ -301,6 +296,12 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public filterByStatus(status: string) {
     this.deselect();
+
+    if (status === 'reviews') {
+      this.items = [];
+      this.selectedStatus = status;
+    }
+
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
       this.init = 0;
@@ -449,7 +450,6 @@ export class ListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.creditInfo = this.creditInfo;
     modalRef.result.then((result: string) => {
       this.isUrgent = false;
-      this.setRedirectToTPV(false);
       if (result === 'success') {
         this.router.navigate(['catalog/list', { code: 200 }]);
       } else {
@@ -457,7 +457,6 @@ export class ListComponent implements OnInit, OnDestroy {
       }
     }, () => {
       this.isUrgent = false;
-      this.setRedirectToTPV(false);
     });
   }
 
@@ -475,14 +474,11 @@ export class ListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.creditInfo = this.creditInfo;
     localStorage.setItem('transactionType', 'purchaseListingFee');
     modalRef.result.then((result: string) => {
-      this.setRedirectToTPV(false);
       if (result === 'success') {
         this.router.navigate(['catalog/list', { code: 200 }]);
       } else {
         this.router.navigate(['catalog/list', { code: -1 }]);
       }
-    }, () => {
-      this.setRedirectToTPV(false);
     });
   }
 
@@ -511,15 +507,6 @@ export class ListComponent implements OnInit, OnDestroy {
       };
       this.feature(orderEvent, 'urgent');
     });
-  }
-
-  private setRedirectToTPV(state: boolean): void {
-    localStorage.setItem('redirectToTPV', state.toString());
-    this.isRedirect = state;
-  }
-
-  private getRedirectToTPV(): boolean {
-    return localStorage.getItem('redirectToTPV') === 'true';
   }
 
   public deactivate() {
@@ -670,6 +657,15 @@ export class ListComponent implements OnInit, OnDestroy {
   public onSortChange(value: any) {
     this.sortBy = value;
     this.getItems();
+  }
+
+  private getUserInfo() {
+    this.userService.me().subscribe(user => {
+      this.user = user;
+      this.userService.getInfo(user.id).subscribe(info => {
+        this.userScore = info.scoring_stars;
+      });
+    });
   }
 
 }

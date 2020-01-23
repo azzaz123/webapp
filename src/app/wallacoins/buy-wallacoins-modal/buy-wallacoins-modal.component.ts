@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Pack } from '../../core/payments/pack';
-import { PaymentService } from '../../core/payments/payment.service';
+import { PaymentService, PAYMENT_RESPONSE_STATUS, PAYMENT_METHOD } from '../../core/payments/payment.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UUID } from 'angular2-uuid';
 import { OrderProExtras, FinancialCardOption } from '../../core/payments/payment.interface';
@@ -8,7 +8,6 @@ import { Response } from '@angular/http';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../core/stripe/stripe.service';
 import { EventService } from '../../core/event/event.service';
-import { WEB_PAYMENT_EXPERIMENT_TYPE, SplitTestService, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT } from '../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-buy-wallacoins-modal',
@@ -18,38 +17,26 @@ import { WEB_PAYMENT_EXPERIMENT_TYPE, SplitTestService, WEB_PAYMENT_EXPERIMENT_C
 export class BuyWallacoinsModalComponent implements OnInit {
 
   public pack: Pack;
-  public hasFinancialCard: boolean;
-  public cardType = 'old';
-  public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public mainLoading: boolean = true;
   public loading: boolean;
   public packIndex: number;
   public card: any;
-  public paymentMethod: number;
-  public isStripe: boolean;
-  public isStripeCard = true;
+  public hasSavedCard = true;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
-  public paymentTypeSabadell = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
-  public paymentTypeStripeV1 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1;
-  public paymentTypeStripeV2 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV2;
 
   constructor(private errorService: ErrorsService,
               private paymentService: PaymentService,
               public activeModal: NgbActiveModal,
               private stripeService: StripeService,
-              private eventService: EventService,
-              private splitTestService: SplitTestService) {
+              private eventService: EventService) {
   }
 
   ngOnInit() {
-    this.isStripe = this.paymentMethod !== this.paymentTypeSabadell;
-    if (this.isStripe) {
-      this.eventService.subscribe('paymentResponse', (response) => {
-        this.managePaymentResponse(response);
-      });
-    }
+    this.eventService.subscribe('paymentResponse', (response) => {
+      this.managePaymentResponse(response);
+    });
   }
 
   get withCredits(): boolean {
@@ -57,12 +44,8 @@ export class BuyWallacoinsModalComponent implements OnInit {
   }
 
   public hasCard(hasCard: boolean) {
-    this.hasFinancialCard = hasCard;
     this.mainLoading = false;
-  }
-
-  public hasStripeCard(hasCard: boolean) {
-    this.isStripeCard = hasCard;
+    this.hasSavedCard = hasCard;
     if (!hasCard) {
       this.addNewCard();
     }
@@ -76,17 +59,10 @@ export class BuyWallacoinsModalComponent implements OnInit {
     };
     const paymentId: string = UUID.UUID();
 
-    if (this.isStripe) {
-      order.provider = 'STRIPE';
-    }
+    order.provider = PAYMENT_METHOD.STRIPE;
     this.loading = true;
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
-      this.splitTestService.track(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
-      if (this.isStripe) {
-        this.stripeService.buy(order.id, paymentId, this.isStripeCard, this.savedCard, this.card);
-      } else {
-        this.buy(order.id);
-      }
+    this.stripeService.buy(order.id, paymentId, this.hasSavedCard, this.savedCard, this.card);
     }, (error: Response) => {
       this.loading = false;
       if (error.text()) {
@@ -97,26 +73,9 @@ export class BuyWallacoinsModalComponent implements OnInit {
     });
   }
 
-  private buy(orderId: string) {
-    fbq('track', 'StartTrial');
-
-    if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
-      localStorage.setItem('transactionType', 'wallapack');
-      localStorage.setItem('pack', JSON.stringify(this.pack));
-      this.sabadellSubmit.emit(orderId);
-    } else {
-      this.paymentService.pay(orderId).subscribe((response: any) => {
-        this.activeModal.close(response);
-      }, () => {
-        this.errorService.i18nError('packError');
-        this.loading = false;
-      });
-    }
-  }
-
   private managePaymentResponse(paymentResponse: string): void {
     switch(paymentResponse && paymentResponse.toUpperCase()) {
-      case 'SUCCEEDED': {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
         this.activeModal.close('success');
         break;
       }
@@ -149,7 +108,7 @@ export class BuyWallacoinsModalComponent implements OnInit {
   }
 
   public getTrackingAttributes(): Object {
-    const payment_method = this.isStripe ? 'STRIPE' : 'SABADELL';
+    const payment_method = PAYMENT_METHOD.STRIPE;
     return { payment_method };
   }
 }

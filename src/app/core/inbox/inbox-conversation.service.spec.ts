@@ -9,15 +9,15 @@ import { MockedPersistencyService } from '../../../tests/persistency.fixtures.sp
 import { EventService } from '../event/event.service';
 import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { chatSignalType, ChatSignal } from '../message/chat-signal.interface';
+import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { Message } from '../message/message';
-import { MessageStatus, InboxMessage, MessageType } from '../../chat/model/inbox-message';
+import { InboxMessage, MessageStatus, MessageType } from '../../chat/model/inbox-message';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../user/user.service';
-import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { ResponseOptions, Response } from '@angular/http';
+import { Response, ResponseOptions } from '@angular/http';
 import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs';
 import { ItemService } from '../item/item.service';
@@ -26,8 +26,8 @@ import { HttpModuleNew } from '../http/http.module.new';
 import { environment } from '../../../environments/environment';
 import { uniq } from 'lodash-es';
 import { AccessTokenService } from '../http/access-token.service';
-import { Conversation } from '../conversation/conversation';
 import * as moment from 'moment';
+import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 
 describe('InboxConversationService', () => {
 
@@ -51,14 +51,7 @@ describe('InboxConversationService', () => {
         InboxConversationService,
         ...TEST_HTTP_PROVIDERS,
         EventService,
-        {
-          provide: RealTimeService, useValue: {
-            sendRead() {
-            },
-            resendMessage(conversation: Conversation | InboxConversation, message: Message | InboxMessage) {
-            }
-          }
-        },
+        { provide: RealTimeService, useClass: RealTimeServiceMock },
         {
           provide: AccessTokenService, useValue: {
             accessToken: 'ACCESS_TOKEN'
@@ -146,6 +139,29 @@ describe('InboxConversationService', () => {
 
       expect(service.resendPendingMessages).toHaveBeenCalled();
       expect(realTime.sendRead).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('openConversationByConversationId$', () => {
+
+    it('should return undefined if id is NULL', () => {
+      service.conversations = null;
+      service.openConversationByConversationId$(null).subscribe(conversation => expect(conversation).toBeNull());
+    });
+
+    it('should return undefined if list of conversations is empty', () => {
+      service.conversations = [];
+      service.openConversationByConversationId$(null).subscribe(conversation => expect(conversation).toBeUndefined());
+    });
+
+    it('should return undefined if conversations list does not contains conversation with id', () => {
+      service.conversations = createInboxConversationsArray(1);
+      service.openConversationByConversationId$('ID_DOES_NOT_EXIST').subscribe(conversation => expect(conversation).toBeUndefined());
+    });
+
+    it('should return undefined if conversations list does not contains conversation with id', () => {
+      service.conversations = createInboxConversationsArray(5);
+      service.openConversationByConversationId$('4').subscribe(conversation => expect(conversation.id).toEqual('4'));
     });
   });
 

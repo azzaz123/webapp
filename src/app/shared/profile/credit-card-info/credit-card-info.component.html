@@ -2,20 +2,18 @@
   <div class="credit-card-field">
     <div class="info">
       <mat-icon svgIcon="{{financialCard?.stripeCard?.brand}}"
-      *ngIf="isStripe && (financialCard?.stripeCard?.brand === 'visa' || financialCard?.stripeCard?.brand === 'mastercard')"
+      *ngIf="financialCard?.stripeCard?.brand === 'visa' || financialCard?.stripeCard?.brand === 'mastercard'"
       class="card-icon">
       </mat-icon>
       <mat-icon svgIcon="card"
-      *ngIf="!isStripe || (financialCard?.stripeCard?.brand !== 'visa' && financialCard?.stripeCard?.brand !== 'mastercard')"
+      *ngIf="financialCard?.stripeCard?.brand !== 'visa' && financialCard?.stripeCard?.brand !== 'mastercard'"
       class="card-icon">
       </mat-icon>
-      <div class="number"><span *ngIf="isStripe">**** **** **** </span>{{financialCard?.number}}</div>
-      <div class="date" *ngIf="isStripe">{{financialCard?.expire_date}}</div>
-      <div class="date" *ngIf="!isStripe">{{financialCard?.expire_date | date:'MM/yy'}}</div>
+      <div class="number"><span>**** **** **** </span>{{financialCard?.number}}</div>
+      <div class="date">{{financialCard?.expire_date | date:'MM/yy'}}</div>
     </div>
     <div class="delete-link">
-      <a (click)="deleteCreditCard()" [hidden]="isStripe" i18n>Delete card</a>
-      <a (click)="deleteStripeCard($event)" *ngIf="isStripe" i18n>Delete card</a>
+      <a (click)="deleteStripeCard($event)" i18n>Delete card</a>
     </div>
   </div>
 </div>

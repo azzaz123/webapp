@@ -13,8 +13,7 @@ export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
 
 export enum FEATURE_FLAGS_ENUM {
   STRIPE = 'web_stripe',
-  SUBSCRIPTIONS = 'web_subscriptions',
-  INBOX_PROJECTIONS = 'web_inbox_projections'
+  SUBSCRIPTIONS = 'web_subscriptions'
 }
 
 @Injectable()

@@ -63,6 +63,12 @@ export const ITEM_STATUSES: any = {
 
 export const PAYMENT_PROVIDER = 'STRIPE';
 export const MINES_BY_CATEGORY_ENDPOINT = 'api/v3/items/manageable-items/';
+export enum ITEM_STATUS {
+  SOLD = 'sold',
+  ACTIVE = 'active',
+  PENDING = 'pending',
+  PUBLISHED = 'published'
+}
 
 @Injectable()
 export class ItemService extends ResourceService {
@@ -508,20 +514,18 @@ export class ItemService extends ResourceService {
     .map((r: Response) => r.json());
   }
 
-  public purchaseProducts(orderParams: Order[], orderId: string, isStripe: boolean): Observable<string[]> {
+  public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
     let options: RequestOptions = null;
-    if (isStripe) {
-      options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
-    }
+    options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+    
     return this.http.post(this.API_URL_WEB + '/purchase/products/' + orderId, orderParams, options)
     .map((r: Response) => r.json());
   }
 
-  public purchaseProductsWithCredits(orderParams: Order[], orderId: string, isStripe: boolean): Observable<PurchaseProductsWithCreditsResponse> {
+  public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
     let options: RequestOptions = null;
-    if (isStripe) {
-      options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
-    }
+    options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+    
     return this.http.post(this.API_URL_WEB + '/purchase/products/credit/' + orderId, orderParams, options)
       .map((r: Response) => r.json());
   }

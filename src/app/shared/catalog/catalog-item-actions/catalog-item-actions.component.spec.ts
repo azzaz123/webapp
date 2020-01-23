@@ -44,6 +44,8 @@ describe('CatalogItemActionsComponent', () => {
             bulkSetDeactivate() {
             },
             bulkSetActivate() {
+            },
+            selectItem() {
             }
           }
         },
@@ -223,6 +225,26 @@ describe('CatalogItemActionsComponent', () => {
 
     });
 
+  });
+
+  describe('selectAll', () => {
+    it('should mark all items as selected', () => {
+      component.items = createItemsArray(5);
+
+      component.selectAll();
+
+      component.items.forEach(item => expect(item.selected).toBe(true));
+    });
+
+    it('should call n times the selectItem function', () => {
+      const TOTAL = 5;
+      component.items = createItemsArray(TOTAL);
+      spyOn(itemService, 'selectItem');
+
+      component.selectAll();
+
+      expect(itemService.selectItem).toHaveBeenCalledTimes(TOTAL);
+    });
   });
 
 });

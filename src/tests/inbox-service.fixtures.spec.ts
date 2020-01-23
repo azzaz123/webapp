@@ -5,10 +5,6 @@ export class InboxServiceMock {
   public conversations: InboxConversation[] = [];
   public archivedConversations: InboxConversation[] = [];
 
-  public getInboxFeatureFlag$(): Observable<boolean> {
-    return Observable.of(false);
-  }
-
   public isInboxReady(): boolean {
     return false;
   }

@@ -28,6 +28,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   @Input() uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @Output() onUploaded: EventEmitter<UploadedEvent> = new EventEmitter();
   @Output() onError: EventEmitter<any> = new EventEmitter();
+  @Output() onUploadPercentageChange: EventEmitter<number> = new EventEmitter();
   @Input() maxUploads = 10;
   @Input() images: Image[];
   @Input() itemId: string;
@@ -146,6 +147,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
       case 'uploading':
         const index = this.files.findIndex(file => file.id === output.file.id);
         this.files[index] = output.file;
+        this.onUploadPercentageChange.emit(output.percentage);
         break;
       case 'removed':
         this.files = this.files.filter((file: UploadFile) => file !== output.file);
@@ -190,9 +192,9 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
               return file.progress.status === UploadStatus.Done;
             })) {
             if (this.item.hasOwnProperty('flags') && this.item.flags['onhold']) {
-              this.onUploaded.emit({action: 'createdOnHold', response: output.file.response});
+              this.onUploaded.emit({action: 'createdOnHold', response: this.item});
             } else {
-              this.onUploaded.emit({action: this.images ? 'updated' : 'created', response: output.file.response});
+              this.onUploaded.emit({action: this.images ? 'updated' : 'created', response: this.item});
             }
           } else {
             this.pictureUploadedOnUpdate(output);

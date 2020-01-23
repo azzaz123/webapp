@@ -5,7 +5,7 @@
 </div>
 <tsl-suggester (newSearchSubmit)="onSearchSubmit($event)" (newKeyword)="onKeywordUpdate($event)"
   (newSearch)="onSearchUpdate($event)"></tsl-suggester>
-<div class="main-header-login" [class.professional]="isProfessional">
+<div class="main-header-login d-none d-lg-flex" [class.professional]="isProfessional">
   <a [hidden]="!currencyName" *ngxPermissionsOnly="['isNormal']" tslTrackEvent="MYZONE_NAVBAR_WALLACOINS"
     class="main-header-credits menu-link" [routerLink]="['/wallacoins']" [routerLinkActive]="['active']">
     <mat-icon svgIcon="wallacoins-nav" class="topbar-icon"></mat-icon>

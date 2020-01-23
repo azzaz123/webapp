@@ -2,37 +2,23 @@
   <div class="modal-close" (click)="activeModal.close()">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
-  <h4 *ngIf="isStripe && showCard && isStripeCard" i18n>Feature for {{total | number:'1.2-2'}} Euros</h4>
-  <div id="credit-card" [hidden]="isStripe">
-    <div class="date">{{financialCard?.expire_date | date:'MM/yy'}}</div>
-    <div class="number">{{financialCard?.number}}</div>
-  </div>
+  <h4 *ngIf="showCard && hasSavedCard" i18n>Feature for {{total | number:'1.2-2'}} Euros</h4>
   <form>
-    <div [hidden]="isStripe">
-      <label>
-        <input type="radio" name="cardType" [(ngModel)]="cardType" value="old" /> <span i18n>Use this card:</span><br />
-        <strong>{{financialCard?.number}}</strong>
-      </label>
-      <label>
-        <input type="radio" name="cardType" [(ngModel)]="cardType" value="new" /> <span i18n>Add a new card</span>
-      </label>
-      <tsl-button className="btn-primary btn-block" (click)="activeModal.close(cardType)" i18n>Feature for {{total | number:'1.2-2'}} Euros</tsl-button>
-    </div>
-    <div *ngIf="isStripe">
-      <tsl-stripe-card-selection *ngIf="isStripe && isStripeCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
-                                 (hasStripeCard)="hasStripeCard($event)"
+    <div>
+      <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+                                 (hasCard)="hasCard($event)"
       ></tsl-stripe-card-selection>
-      <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="isStripe && savedCard" i18n>+ Add another credit card</div>
-      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="isStripe && showCard && isStripeCard" i18n>Use saved card</div>
-      <tsl-stripe-card-element *ngIf="isStripe && showCard" [type]="'bump'" [cart]="cart" (stripeCardToken)="checkout(orderId)"
+      <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
+      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
+      <tsl-stripe-card-element *ngIf="showCard" [type]="'bump'" [cart]="cart" (stripeCardToken)="checkout(orderId)"
                                (stripeCard)="setCardInfo($event)" [loading]="loading"
       ></tsl-stripe-card-element>
       <tsl-button
-              [hidden]="isStripe && !savedCard"
+              [hidden]="!savedCard"
               className="btn-block btn-primary"
               (click)="checkout(orderId)"
               [loading]="loading"
-              [disabled]="isStripe && !selectedCard"
+              [disabled]="!selectedCard"
               i18n>Feature for {{total | number:'1.2-2'}} Euros</tsl-button>
     </div>
   </form>

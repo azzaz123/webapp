@@ -20,6 +20,16 @@ import { PaymentSuccessModalComponent } from './payment-success-modal.component'
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { PAYMENT_METHOD_DATA } from '../../../../tests/payments.fixtures.spec';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
+import {
+  AnalyticsEvent,
+  ClickContinuePaymentSubscription,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  SCREEN_IDS,
+  ClickPaySubscription
+} from '../../../core/analytics/analytics-constants';
 
 describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
@@ -29,6 +39,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   let errorsService: ErrorsService;
   let stripeService: StripeService;
   let subscriptionsService: SubscriptionsService;
+  let analyticsService: AnalyticsService;
   const componentInstance = {
     subscription: MAPPED_SUBSCRIPTIONS[2]
   };
@@ -51,9 +62,6 @@ describe('AddNewSubscriptionModalComponent', () => {
         },
         {
           provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return Observable.of(true);
-            },
             addNewCard() {
               return Observable.of(200);
             },
@@ -86,6 +94,9 @@ describe('AddNewSubscriptionModalComponent', () => {
             }
           }
         },
+        {
+          provide: AnalyticsService, useClass: MockAnalyticsService
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -101,29 +112,10 @@ describe('AddNewSubscriptionModalComponent', () => {
     subscriptionsService = TestBed.get(SubscriptionsService);
     errorsService = TestBed.get(ErrorsService);
     event = TestBed.get(EventService);
+    analyticsService = TestBed.get(AnalyticsService);
     component.card = STRIPE_CARD;
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     fixture.detectChanges();
-  });
-
-  describe('ngOnInit', () => {
-    it('should call stripeService.isPaymentMethodStripe$', fakeAsync(() => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-      
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    }));
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
-    });
-
   });
 
   describe('close', () => {
@@ -254,17 +246,17 @@ describe('AddNewSubscriptionModalComponent', () => {
     });
   });
 
-  describe('hasStripeCard', () => {
+  describe('hasCard', () => {
     it('should not call addNewCard if hasCard is true', () => {
       spyOn(component, 'addNewCard').and.callThrough();
-      component.hasStripeCard(true);
+      component.hasCard(true);
 
       expect(component.addNewCard).not.toHaveBeenCalled();
     });
 
     it('should call addNewCard if hasCard is false', () => {
       spyOn(component, 'addNewCard').and.callThrough();
-      component.hasStripeCard(false);
+      component.hasCard(false);
 
       expect(component.addNewCard).toHaveBeenCalled();
     });
@@ -308,4 +300,57 @@ describe('AddNewSubscriptionModalComponent', () => {
     });
   });
 
+  describe('onClickContinueToPayment', () => {
+    it('should send event to analytics', () => {
+      spyOn(analyticsService, 'trackEvent');
+      const expectedEvent: AnalyticsEvent<ClickContinuePaymentSubscription> = {
+        name: ANALYTICS_EVENT_NAMES.ClickContinuePaymentSubscription,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          screenId: SCREEN_IDS.ProfileSubscription,
+          tier: component.selectedTier.id as any
+        }
+      };
+
+      component.onClickContinueToPayment();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+    });
+  });
+
+  describe('onClickPay', () => {
+    const expectedEvent: AnalyticsEvent<ClickPaySubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        screenId: SCREEN_IDS.ProfileSubscription,
+        isNewVisa: true
+      }
+    };
+
+    beforeEach(() => {
+      spyOn(analyticsService, 'trackEvent');
+    });
+
+    describe('when isNewVisa is true', () => {
+      it('should send valid event', () => {
+        component.onClickPay(true);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
+    describe('when isNewVisa is false', () => {
+      it('should send valid event', () => {
+        expectedEvent.attributes.isNewVisa = false;
+
+        component.onClickPay(false);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+  });
 });

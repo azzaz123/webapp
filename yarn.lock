@@ -4804,10 +4804,6 @@ loggly@^1.1.0:
     request "2.75.x"
     timespan "2.3.x"
 
-loglevel-plugin-remote@0.6.8:
-  version "0.6.8"
-  resolved "https://registry.yarnpkg.com/loglevel-plugin-remote/-/loglevel-plugin-remote-0.6.8.tgz#9234b75520491dc5b1a34abbbba0101f02dd2b39"
-
 loglevel@^1.4.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
@@ -5161,7 +5157,7 @@ move-concurrently@^1.0.1:
 
 "mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#master":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#bbd125a1639bd9056d06b96c4a58a0b1e7176510"
+  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#eb15e5d2c0be83b77a2ff65427440ac46b77f14c"
 
 ms@0.7.1:
   version "0.7.1"

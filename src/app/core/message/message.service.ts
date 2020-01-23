@@ -101,7 +101,8 @@ export class MessageService {
     messages.filter(message => !message.fromSelf).map(message => {
       const msgAlreadyConfirmed = receivedReceipts.find(receipt => receipt.messageId === message.id);
       if (!msgAlreadyConfirmed) {
-        this.realTime.sendDeliveryReceipt(message.from, message.id, message.thread);
+        // TODO legacy code
+        // this.realTime.sendDeliveryReceipt(message.from, message.id, message.thread);
       }
     });
   }

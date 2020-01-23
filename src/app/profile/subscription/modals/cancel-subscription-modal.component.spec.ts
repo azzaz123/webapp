@@ -8,12 +8,22 @@ import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { Observable } from 'rxjs';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
+import {
+  AnalyticsEvent,
+  ClickUnsuscribeConfirmation,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  SCREEN_IDS
+} from '../../../core/analytics/analytics-constants';
 
 describe('CancelSubscriptionModalComponent', () => {
   let component: CancelSubscriptionModalComponent;
   let fixture: ComponentFixture<CancelSubscriptionModalComponent>;
   let activeModal: NgbActiveModal;
   let subscriptionsService: SubscriptionsService;
+  let analyticsService: AnalyticsService;
   let toastrService: ToastrService;
 
   beforeEach(async(() => {
@@ -56,6 +66,9 @@ describe('CancelSubscriptionModalComponent', () => {
           }
         },
         I18nService,
+        {
+          provide: AnalyticsService, useClass: MockAnalyticsService
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -68,19 +81,10 @@ describe('CancelSubscriptionModalComponent', () => {
     activeModal = TestBed.get(NgbActiveModal);
     toastrService = TestBed.get(ToastrService);
     subscriptionsService = TestBed.get(SubscriptionsService);
+    analyticsService = TestBed.get(AnalyticsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     fixture.detectChanges();
   });
-
-  describe('close', () => {
-    it('should close the modal and redirect to the profile', () => {
-      spyOn(activeModal, 'close');
-
-      component.close();
-
-      expect(activeModal.close).toHaveBeenCalledWith('cancel');
-    })
-  })
 
   describe('cancelSubscription', () => {
     const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
@@ -92,6 +96,23 @@ describe('CancelSubscriptionModalComponent', () => {
       
       expect(component.subscriptionsService.cancelSubscription).toHaveBeenCalledWith(tier.id);
       expect(component.loading).toBe(false);
+    });
+
+    it('should send the event', () => {
+      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(Observable.of({status: 202}));
+      spyOn(analyticsService, 'trackEvent');
+      const expectedEvent: AnalyticsEvent<ClickUnsuscribeConfirmation> = {
+        name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeConfirmation,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          screenId: SCREEN_IDS.ProfileSubscription
+        }
+      };
+
+      component.cancelSubscription();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
 

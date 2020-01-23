@@ -183,7 +183,7 @@ describe('DashboardComponent', () => {
 
       component.openConversation(conversation);
 
-      expect(spy.calls.first().args[0]).toEqual(`/chat?itemId=${conversation.item.id}`);
+      expect(spy.calls.first().args[0]).toEqual(`/chat?conversationId=${conversation.id}`);
     });
   });
 

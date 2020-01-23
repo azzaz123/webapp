@@ -109,7 +109,8 @@ export class RealTimeService {
         this.persistencyService.findMessage(message.id).subscribe(() => {
         }, (error) => {
           if (error.reason === 'missing') {
-            this.sendDeliveryReceipt(message.from, message.id, message.thread);
+            // TODO legacy code in new chat message is saved in local db immediately after subscribe EventService.NEW_MESSAGE
+            // this.sendDeliveryReceipt(message.from, message.id, message.thread);
           }
         });
       }

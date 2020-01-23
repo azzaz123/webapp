@@ -723,4 +723,12 @@ describe('UploadCarComponent', () => {
     });
   });
 
+  describe('updateUploadPercentage', () => {
+    it('should update the completed percentage of the upload', () => {
+      component.updateUploadPercentage(88.01);
+
+      expect(component.uploadCompletedPercentage).toBe(88);
+    });
+  });
+
 });

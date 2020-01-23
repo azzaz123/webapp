@@ -1,7 +1,7 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { find } from 'lodash-es';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
@@ -32,10 +32,8 @@ import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-m
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { ItemFlags } from '../../core/item/item-response.interface';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
-import { StripeService } from '../../core/stripe/stripe.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { HttpModuleNew } from '../../core/http/http.module.new';
@@ -44,9 +42,13 @@ import { HttpService } from '../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
 import { FeatureflagService } from '../../core/user/featureflag.service';
-import { FeatureFlagServiceMock } from '../../../tests';
+import { FeatureFlagServiceMock, DeviceDetectorServiceMock } from '../../../tests';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
+import { UserReviewService } from '../../reviews/user-review.service';
+import { MOCK_REVIEWS } from '../../../tests/review.fixtures.spec';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { MOCK_USER, USER_INFO_RESPONSE } from '../../../tests/user.fixtures.spec';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -65,11 +67,10 @@ describe('ListComponent', () => {
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   let eventService: EventService;
-  let stripeService: StripeService;
+  let deviceService: DeviceDetectorService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
-  const TRANSACTION_SPENT = '50';
   const mockCounters = {
     sold: 7,
     publish: 12
@@ -82,9 +83,9 @@ describe('ListComponent', () => {
       providers: [
         I18nService,
         EventService,
-        StripeService,
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: CategoryService, useValue: {
             getCategoryById() {
               return Observable.of(CATEGORY_DATA_WEB);
@@ -151,11 +152,6 @@ describe('ListComponent', () => {
         },
         {
           provide: PaymentService, useValue: {
-            getFinancialCard() {
-            },
-            pay() {
-              return Observable.of('');
-            },
             getCreditInfo() {
               return Observable.of({
                 currencyName: CURRENCY,
@@ -188,16 +184,18 @@ describe('ListComponent', () => {
             },
             getAvailableSlots() {
                 return Observable.of({});
+            },
+            me() {
+              return Observable.of(MOCK_USER);
+            },
+            getInfo() {
+              return Observable.of(USER_INFO_RESPONSE);
             }
           }
         },
         {
-          provide: StripeService, useValue: {
-          isPaymentMethodStripe$() {
-            return Observable.of(true)
-          }
+          provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock
         }
-        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -217,7 +215,7 @@ describe('ListComponent', () => {
     errorService = TestBed.get(ErrorsService);
     userService = TestBed.get(UserService);
     eventService = TestBed.get(EventService);
-    stripeService = TestBed.get(StripeService);
+    deviceService = TestBed.get(DeviceDetectorService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -226,24 +224,6 @@ describe('ListComponent', () => {
   });
 
   describe('ngOnInit', () => {
-
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
-    });
-
     describe('getCreditInfo', () => {
       it('should set the creditInfo', () => {
         const creditInfo: CreditInfo = {
@@ -300,8 +280,17 @@ describe('ListComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, { windowClass: 'modal-standard' });
       expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
       expect(component.isUrgent).toBe(false);
-      expect(component.isRedirect).toBe(false);
     }));
+
+    describe('if it`s a mobile device', () => {
+      it('should not open upload confirmation modal', () => {
+        spyOn(deviceService, 'isMobile').and.returnValue(true);
+
+        component.ngOnInit();
+
+        expect(modalService.open).not.toHaveBeenCalled();
+      });
+    });
 
     it('should open toastr', fakeAsync(() => {
       spyOn(errorService, 'i18nSuccess');
@@ -326,22 +315,7 @@ describe('ListComponent', () => {
       tick(3000);
 
       expect(component.isUrgent).toBe(true);
-      expect(component.isRedirect).toBe(true);
-      expect(localStorage.getItem).toHaveBeenCalledWith('redirectToTPV');
       expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT, 'urgent');
-    }));
-
-    it('should set the redirect to false if it is not urgent', fakeAsync(() => {
-      spyOn(localStorage, 'setItem');
-      route.params = Observable.of({
-        urgent: false
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(component.isRedirect).toBe(false);
-      expect(localStorage.setItem).toHaveBeenCalledWith('redirectToTPV', 'false');
     }));
 
     it('should open the urgent modal if transaction is set as urgent', fakeAsync(() => {
@@ -477,6 +451,18 @@ describe('ListComponent', () => {
       });
 
       expect(component.selectedItems).toEqual([ITEMS[0], ITEMS[1]]);
+    });
+
+    it('should get user information', () => {
+      component.ngOnInit();
+
+      expect(component.user).toEqual(MOCK_USER);
+    });
+
+    it('should get user scoring', () => {
+      component.ngOnInit();
+
+      expect(component.userScore).toEqual(USER_INFO_RESPONSE.scoring_stars);
     });
   });
 

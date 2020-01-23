@@ -13,10 +13,14 @@ import { Observable } from 'rxjs';
 import { I18nService } from '../i18n/i18n.service';
 import {
   CUSTOM_REASON,
+  IMAGE,
   MICRO_NAME,
+  MOCK_FULL_USER,
   MOCK_USER,
   MOCK_USER_RESPONSE_BODY,
+  MOTORPLAN_DATA,
   ONLINE,
+  PROFILE_SUB_INFO,
   REASONS,
   RESPONSE_RATE,
   SCORING_STARS,
@@ -36,10 +40,8 @@ import {
   USERS_STATS,
   USERS_STATS_RESPONSE,
   VALIDATIONS,
-  VERIFICATION_LEVEL,
-  MOTORPLAN_DATA, PROFILE_SUB_INFO, IMAGE, MOCK_FULL_USER
+  VERIFICATION_LEVEL
 } from '../../../tests/user.fixtures.spec';
-import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { AvailableSlots, UserStatsResponse } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
@@ -48,12 +50,13 @@ import { EventService } from '../event/event.service';
 import { PERMISSIONS, User } from './user';
 import { environment } from '../../../environments/environment';
 import { LoginResponse } from './login-response.interface';
-import { UserLocation, MotorPlan, ProfileSubscriptionInfo, Image } from './user-response.interface';
+import { Image, MotorPlan, UserLocation } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from './featureflag.service';
+import { FEATURE_FLAGS_ENUM, FeatureflagService } from './featureflag.service';
 import { SplitTestService } from '../tracking/split-test.service';
 import { HttpModuleNew } from '../http/http.module.new';
+import { APP_VERSION } from '../../../environments/version';
 
 describe('Service: User', () => {
 
@@ -97,7 +100,7 @@ describe('Service: User', () => {
             put(key, value) {
               this.cookies[key] = value;
             },
-            remove (key) {
+            remove(key) {
               delete this.cookies[key];
             }
           }
@@ -105,22 +108,26 @@ describe('Service: User', () => {
         {
           provide: NgxPermissionsService,
           useValue: {
-            addPermission() {},
-            flushPermissions() {},
-            hasPermission() {}
+            addPermission() {
+            },
+            flushPermissions() {
+            },
+            hasPermission() {
+            }
           }
         },
         {
           provide: FeatureflagService, useValue: {
-          getFlag() {
-            return Observable.of(true);
+            getFlag() {
+              return Observable.of(true);
+            }
           }
-        }
         },
         {
           provide: SplitTestService, useValue: {
-          reset() {}
-        }
+            reset() {
+            }
+          }
         }
       ]
     });
@@ -136,6 +143,10 @@ describe('Service: User', () => {
     featureflagService = TestBed.get(FeatureflagService);
     splitTestService = TestBed.get(SplitTestService);
     httpTestingController = TestBed.get(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
   it('should create an instance', () => {
@@ -165,7 +176,7 @@ describe('Service: User', () => {
       beforeEach(fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/' + USER_ID);
-          const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
+          const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USER_DATA) });
           connection.mockRespond(new Response(res));
         });
       }));
@@ -212,7 +223,7 @@ describe('Service: User', () => {
       spyOn(http, 'get').and.callThrough();
       mockBackend.connections.subscribe((connection: MockConnection) => {
         expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/me');
-        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
+        const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USER_DATA) });
         connection.mockRespond(new Response(res));
       });
       let user: User;
@@ -320,7 +331,7 @@ describe('Service: User', () => {
       installationType: 'ANDROID',
       password: 'test'
     };
-    const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_USER_RESPONSE_BODY)});
+    const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(MOCK_USER_RESPONSE_BODY) });
     beforeEach(() => {
       spyOn(http, 'postUrlEncoded').and.returnValue(Observable.of(new Response(res)));
       spyOn<any>(service, 'storeData').and.callThrough();
@@ -338,7 +349,7 @@ describe('Service: User', () => {
   });
 
   describe('logout', () => {
-    const res: ResponseOptions = new ResponseOptions({body: 'redirect_url'});
+    const res: ResponseOptions = new ResponseOptions({ body: 'redirect_url' });
     let redirectUrl: string;
 
     beforeEach(() => {
@@ -419,45 +430,46 @@ describe('Service: User', () => {
   });
 
   describe('getInfo', () => {
-    it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_INFO_RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: UserInfoResponse;
-      service.getInfo(USER_ID).subscribe((response: UserInfoResponse) => {
-        resp = response;
-      });
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/extra-info');
-      expect(resp).toEqual(USER_INFO_RESPONSE);
+    it('should call endpoint GET info and return response', () => {
+      accessTokenService.storeAccessToken('ACCESS_TOKEN');
+      service.getInfo(USER_ID).subscribe(response => expect(response).toEqual(USER_INFO_RESPONSE));
+
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/extra-info`);
+
+      expect(req.request.method).toEqual('GET');
+      req.flush(USER_INFO_RESPONSE);
     });
   });
 
   describe('getProInfo', () => {
-    it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_PRO_INFO_RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: UserProInfo;
+    it('should call endpoint GET phone info and return response', () => {
+      accessTokenService.storeAccessToken('ACCESS_TOKEN');
+      service.getProInfo().subscribe(response => expect(response).toEqual(USER_PRO_INFO_RESPONSE));
 
-      service.getProInfo().subscribe((response: UserProInfo) => {
-        resp = response;
-      });
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/protool/extraInfo`);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/protool/extraInfo');
-      expect(resp).toEqual(USER_PRO_INFO_RESPONSE);
+      expect(req.request.method).toEqual('GET');
+      req.flush(USER_PRO_INFO_RESPONSE);
     });
   });
 
   describe('getUserCover', () => {
-    it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(IMAGE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: Image;
+    it('should call endpoint GET user cover and return response', () => {
+      accessTokenService.storeAccessToken('ACCESS_TOKEN');
+      service.getUserCover().subscribe(response => expect(response).toEqual(IMAGE));
 
-      service.getUserCover().subscribe((response: Image) => {
-        resp = response;
-      });
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/cover-image`);
+      expect(req.request.method).toEqual('GET');
+      req.flush(IMAGE);
+    });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/cover-image');
-      expect(resp).toEqual(IMAGE);
+    it('should return empty object if endpoint return error', () => {
+      accessTokenService.storeAccessToken('ACCESS_TOKEN');
+      service.getUserCover().subscribe(response => expect(response).toEqual({} as Image));
+
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/cover-image`);
+      expect(req.request.method).toEqual('GET');
+      req.error(new ErrorEvent('network error'));
     });
   });
 
@@ -483,7 +495,7 @@ describe('Service: User', () => {
 
   describe('updateLocation', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_LOCATION)});
+      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USER_LOCATION) });
       spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
       let resp: UserLocation;
       service.updateLocation(USER_LOCATION_COORDINATES).subscribe((response: UserLocation) => {
@@ -499,7 +511,7 @@ describe('Service: User', () => {
 
   describe('updateStoreLocation', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_LOCATION)});
+      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USER_LOCATION) });
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
       let resp: UserLocation;
 
@@ -515,7 +527,7 @@ describe('Service: User', () => {
 
   describe('getStats', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USERS_STATS)});
+      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USERS_STATS) });
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
 
       let resp: UserStatsResponse;
@@ -530,7 +542,7 @@ describe('Service: User', () => {
 
   describe('getUserStats', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USERS_STATS)});
+      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USERS_STATS) });
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
 
       let resp: UserStatsResponse;
@@ -544,24 +556,30 @@ describe('Service: User', () => {
   });
 
   describe('getPhoneInfo', () => {
-    it('should call endpoint and return response', () => {
+    it('should call endpoint GET phone info and return response', () => {
       const PHONE_METHOD_RESPONSE = { phone_method: 'bubble' };
-      const res: Response = new Response(new ResponseOptions({body: JSON.stringify(PHONE_METHOD_RESPONSE)}));
-      spyOn(http, 'get').and.returnValue(Observable.of(res));
 
-      let resp: any;
-      service.getPhoneInfo(USER_ID).subscribe((response: any) => {
-        resp = response;
-      });
+      accessTokenService.storeAccessToken('ACCESS_TOKEN');
+      service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(PHONE_METHOD_RESPONSE));
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/phone-method');
-      expect(resp).toEqual(PHONE_METHOD_RESPONSE);
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/phone-method`);
+      expect(req.request.method).toEqual('GET');
+      req.flush(PHONE_METHOD_RESPONSE);
+    });
+
+    it('should return null if endpoint GET phone info return error', () => {
+      accessTokenService.storeAccessToken('ACCESS_TOKEN');
+      service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(null));
+
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/phone-method`);
+      expect(req.request.method).toEqual('GET');
+      req.error(new ErrorEvent('network error'));
     });
   });
 
   describe('edit', () => {
     it('should call endpoint, return user and set it', () => {
-      const res: ResponseOptions = new ResponseOptions({body: USER_DATA});
+      const res: ResponseOptions = new ResponseOptions({ body: USER_DATA });
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
       spyOn<any>(service, 'mapRecordData').and.returnValue(MOCK_USER);
       let resp: User;
@@ -577,7 +595,7 @@ describe('Service: User', () => {
 
   describe('updateEmail', () => {
     it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({body: ''});
+      const res: ResponseOptions = new ResponseOptions({ body: '' });
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
 
       service.updateEmail(USER_EMAIL).subscribe();
@@ -590,7 +608,7 @@ describe('Service: User', () => {
 
   describe('updatePassword', () => {
     it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({body: ''});
+      const res: ResponseOptions = new ResponseOptions({ body: '' });
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
       const OLD_PASSWORD = 'old';
       const NEW_PASSWORD = 'new';
@@ -606,7 +624,7 @@ describe('Service: User', () => {
 
   describe('getUnsubscribeReasons', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(REASONS)});
+      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(REASONS) });
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let resp: UnsubscribeReason[];
 
@@ -614,14 +632,14 @@ describe('Service: User', () => {
         resp = response;
       });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/unsubscribe/reason', {language: 'en'});
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/unsubscribe/reason', { language: 'en' });
       expect(resp).toEqual(REASONS);
     });
   });
 
   describe('unsubscribe', () => {
     it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({body: ''});
+      const res: ResponseOptions = new ResponseOptions({ body: '' });
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
 
       service.unsubscribe(SELECTED_REASON, CUSTOM_REASON).subscribe();
@@ -724,7 +742,7 @@ describe('Service: User', () => {
       spyOn(http, 'get').and.callThrough();
       mockBackend.connections.subscribe((connection: MockConnection) => {
         expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/me/profile-subscription-info/type');
-        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOTORPLAN_DATA)});
+        const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(MOTORPLAN_DATA) });
         connection.mockRespond(new Response(res));
       });
       let motorPlan: MotorPlan;
@@ -762,36 +780,30 @@ describe('Service: User', () => {
   });
 
   describe('getMotorPlans', () => {
-    it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PROFILE_SUB_INFO)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: ProfileSubscriptionInfo;
+    it('should call endpoint GET motor plans and return response', () => {
+      accessTokenService.storeAccessToken('ACCESS_TOKEN');
+      service.getMotorPlans().subscribe(response => expect(response).toEqual(PROFILE_SUB_INFO));
 
-      service.getMotorPlans().subscribe((response: ProfileSubscriptionInfo) => {
-        resp = response;
-      });
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/profile-subscription-info`);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/profile-subscription-info');
-      expect(resp).toEqual(PROFILE_SUB_INFO);
+      expect(req.request.method).toEqual('GET');
+      req.flush(PROFILE_SUB_INFO);
     });
   });
 
   describe('getAvailableSlots', () => {
-    it('should call endpoint and return response', () => {
+    it('should call endpoint GET available slots and return response', () => {
       const SLOTS: AvailableSlots = {
         num_slots_cars: 3,
         user_can_manage: true
       };
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(SLOTS)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: AvailableSlots;
+      accessTokenService.storeAccessToken('ACCESS_TOKEN');
+      service.getAvailableSlots().subscribe(response => expect(response).toEqual(SLOTS));
 
-      service.getAvailableSlots().subscribe((response: AvailableSlots) => {
-        resp = response;
-      });
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/items/slots-available`);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/items/slots-available');
-      expect(resp).toEqual(SLOTS);
+      expect(req.request.method).toEqual('GET');
+      req.flush(SLOTS);
     });
   });
 
@@ -812,6 +824,7 @@ describe('Service: User', () => {
         comments: COMMENT,
         reason: REASON
       });
+      expect(req.request.headers.get('AppBuild')).toEqual(APP_VERSION);
     });
   });
 

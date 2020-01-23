@@ -5,12 +5,12 @@ import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { Message, messageStatus } from '../message/message';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpService } from '../http/http.service';
 import { Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { find, isNil, last, some } from 'lodash-es';
+import { find, isNil, last, some, head } from 'lodash-es';
 import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -99,6 +99,11 @@ export class InboxConversationService {
       if (!message.fromSelf) {
         this.incrementUnreadCounter(conversation);
       }
+
+      if (!message.fromSelf) {
+        this.realTime.sendDeliveryReceipt(message.from, message.id, message.thread);
+      }
+
       this.persistencyService.saveInboxMessages(message);
     }
   }
@@ -290,6 +295,13 @@ export class InboxConversationService {
         max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION,
         from: nextPageToken
       });
+  }
+
+  public openConversationByConversationId$(conversationId: string): Observable<InboxConversation> {
+    if (this.conversations === null || this.conversations === undefined) {
+      return of(null);
+    }
+    return of(head(this.conversations.filter(conversation => conversation.id === conversationId)));
   }
 
   public openConversationByItemId$(itemId: string): Observable<InboxConversation> {
