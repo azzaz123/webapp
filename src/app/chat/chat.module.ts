@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { ConversationsPanelComponent } from './chat-with-archive/conversations-panel/conversations-panel.component';
-import { MessagesPanelComponent } from './chat-with-archive/messages-panel/messages-panel.component';
 import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
 import { InputComponent } from './input/input.component';
 import { ConnectionAlertComponent } from './connection-alert/connection-alert.component';
@@ -22,23 +20,21 @@ import { ItemSoldComponent } from './item/item-sold/item-sold.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { UserResponseRateComponent } from './user-response-rate/user-response-rate.component';
 import { TrackingModule } from '../core/tracking/tracking.module';
-import { InboxComponent } from './chat-with-inbox/inbox/inbox.component';
-import { InboxConversationComponent } from './chat-with-inbox/inbox/inbox-conversation/inbox-conversation.component';
-import { ChatWithInboxComponent } from './chat-with-inbox/chat-with-inbox.component';
-import { ChatWithArchiveComponent } from './chat-with-archive/chat-with-archive.component';
-import { CurrentConversationComponent } from './chat-with-inbox/current-conversation/current-conversation.component';
-import { ArchiveInboxConversationComponent } from './chat-with-inbox/modals/archive-inbox-conversation/archive-inbox-conversation.component';
-import { UnarchiveInboxConversationComponent } from './chat-with-inbox/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component';
-import { ArchivedInboxConversationComponent } from './chat-with-inbox/inbox/archived-inbox-conversation/archived-inbox-conversation.component';
-import { InboxUserDetailComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component';
-import { InboxItemDetailComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component';
+import { InboxComponent } from './inbox/inbox.component';
+import { InboxConversationComponent } from './inbox/inbox-conversation/inbox-conversation.component';
+import { CurrentConversationComponent } from './current-conversation/current-conversation.component';
+import { ArchiveInboxConversationComponent } from './modals/archive-inbox-conversation/archive-inbox-conversation.component';
+import { UnarchiveInboxConversationComponent } from './modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component';
+import { ArchivedInboxConversationComponent } from './inbox/archived-inbox-conversation/archived-inbox-conversation.component';
+import { InboxUserDetailComponent } from './inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component';
+import { InboxItemDetailComponent } from './inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component';
 import { BlockSendLinkComponent } from './modals/block-send-link';
-import { ThirdVoiceMessageComponent } from './chat-with-inbox/message/third-voice-message';
-import { TextMessageComponent } from './chat-with-inbox/message/text-message';
-import { ThirdVoiceReviewComponent } from './chat-with-inbox/message/third-voice-message/third-voice-review';
-import { ScrollingMessageComponent } from './chat-with-inbox/scrolling-message';
-import { StatusIconComponent } from './chat-with-inbox/inbox/inbox-metadata/status-icon';
-import { InboxItemForSellComponent } from './chat-with-inbox/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component';
+import { ThirdVoiceMessageComponent } from './message/third-voice-message';
+import { TextMessageComponent } from './message/text-message';
+import { ThirdVoiceReviewComponent } from './message/third-voice-message/third-voice-review';
+import { ScrollingMessageComponent } from './scrolling-message';
+import { StatusIconComponent } from './inbox/inbox-metadata/status-icon';
+import { InboxItemForSellComponent } from './inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component';
 import { AutosizeModule } from 'ngx-autosize';
 
 @NgModule({
@@ -57,8 +53,6 @@ import { AutosizeModule } from 'ngx-autosize';
   ],
   declarations: [
     chatRoutedComponents,
-    ConversationsPanelComponent,
-    MessagesPanelComponent,
     InputComponent,
     ConnectionAlertComponent,
     ItemComponent,
@@ -77,8 +71,6 @@ import { AutosizeModule } from 'ngx-autosize';
     InboxComponent,
     InboxConversationComponent,
     ArchivedInboxConversationComponent,
-    ChatWithInboxComponent,
-    ChatWithArchiveComponent,
     CurrentConversationComponent,
     InboxUserDetailComponent,
     InboxItemDetailComponent,

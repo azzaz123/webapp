@@ -88,16 +88,6 @@ describe('InboxService', () => {
     httpTestingController.verify();
   });
 
-  describe('getInboxFeatureFlag', () => {
-    it('should call getFlag from feature flag service', () => {
-      spyOn(featureflagService, 'getFlag');
-
-      service.getInboxFeatureFlag$();
-
-      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.INBOX_PROJECTIONS);
-    });
-  });
-
   describe('init', () => {
     let parsedConversationsResponse;
 
