@@ -171,7 +171,7 @@ export class SubscriptionsService {
   }
 
   public editSubscription(subscription: SubscriptionsResponse, newPlanId: string): Observable<any> {
-    return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${subscription.id}`, { plan_id: newPlanId }, null, { observe: 'response' as 'body' });
+    return this.http.put(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${subscription.id}`, { plan_id: newPlanId }, { observe: 'response' as 'body' });
   }
 
   private mapSubscriptions(subscription: SubscriptionsResponse, categories: CategoryResponse[]): SubscriptionsResponse {
