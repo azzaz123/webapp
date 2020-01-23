@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../../chat/model';
 import { MessageService } from '../message/message.service';
-import { FEATURE_FLAGS_ENUM, FeatureflagService } from '../user/featureflag.service';
+import { FeatureflagService } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
 import { UserService } from '../user/user.service';
 import { InboxConversationService } from './inbox-conversation.service';

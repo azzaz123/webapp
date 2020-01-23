@@ -44,12 +44,6 @@ export class InboxConversationService {
   }
 
   public subscribeChatEvents() {
-    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
-      this.conversations = conversations;
-    });
-    this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
-      this.archivedConversations = conversations;
-    });
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
       this.processNewMessage(this.buildInboxMessage(message));
     });
