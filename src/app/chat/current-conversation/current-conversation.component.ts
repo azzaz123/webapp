@@ -1,4 +1,15 @@
-import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../core/event/event.service';
@@ -27,15 +38,16 @@ import { InboxConversation, InboxMessage, MessageType } from '../model';
   templateUrl: './current-conversation.component.html',
   styleUrls: ['./current-conversation.component.scss']
 })
-export class CurrentConversationComponent implements OnInit, OnChanges, OnDestroy {
+export class CurrentConversationComponent implements OnInit, OnChanges, AfterViewChecked, OnDestroy {
 
   public readonly BOTTOM_BUFFER_ZONE = 100;
-  private MESSAGE_HEIGHT = 42;
+  private MESSAGE_HEIGHT = 14;
 
   @Input() currentConversation: InboxConversation;
   @Input() conversationsTotal: number;
   @Input() connectionError: boolean;
   @Input() loadingError: boolean;
+  @ViewChild('scrollElement') private scrollElement: ElementRef;
 
   public momentConfig: any;
   private newMessageSubscription: Subscription;
@@ -45,6 +57,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   public scrollHeight = 0;
   public scrollLocalPosition = 0;
   public noMessages = 0;
+  public isConversationChanged: boolean;
 
   constructor(private eventService: EventService,
               private modalService: NgbModal,
@@ -68,6 +81,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
     this.isEndOfConversation = true;
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED,
       (message: InboxMessage) => {
+        this.isConversationChanged = true;
         this.lastInboxMessage = message;
         if (this.isEndOfConversation) {
           this.sendReadForLastInboxMessage();
@@ -81,12 +95,23 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
     this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED,
       (conversation: InboxConversation) => {
         this.isLoadingMoreMessages = false;
+        this.isConversationChanged = false;
         this.currentConversation = conversation;
       });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.scrollHeight = 0;
     this.scrollLocalPosition = 0;
+    if (changes['currentConversation']) {
+      this.isConversationChanged = true;
+    }
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.isConversationChanged && this.scrollElement) {
+      this.scrollElement.nativeElement.scrollTop = this.scrollElement.nativeElement.scrollHeight - this.scrollHeight;
+    }
   }
 
   ngOnDestroy() {
@@ -99,6 +124,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
   @HostListener('scroll', ['$event'])
   onScrollMessages(event: any) {
     this.noMessages = 0;
+    this.isConversationChanged = false;
     this.scrollLocalPosition = event.target.scrollHeight - event.target.scrollTop;
     if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - this.BOTTOM_BUFFER_ZONE) {
       this.sendReadForLastInboxMessage();
@@ -230,6 +256,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, OnDestro
     if (this.isLoadingMoreMessages) {
       return;
     }
+    this.isConversationChanged = true;
     this.isLoadingMoreMessages = true;
     this.scrollHeight = scrollHeight;
     this.conversationService.loadMoreMessages(this.currentConversation.id);
