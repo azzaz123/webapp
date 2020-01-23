@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 
-import { HttpServiceNew } from './http.service.new';
 import { TokenInterceptor, MockInterceptor } from './interceptors';
 import { AccessTokenService } from './access-token.service';
 
@@ -12,7 +11,6 @@ import { AccessTokenService } from './access-token.service';
         CookieModule.forChild(),
     ],
     providers: [
-        HttpServiceNew,
         AccessTokenService,
         {
             provide: HTTP_INTERCEPTORS,

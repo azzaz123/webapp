@@ -9,10 +9,11 @@ import { Observable, of } from 'rxjs';
 import { HttpService } from '../http/http.service';
 import { Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
-import { HttpServiceNew } from '../http/http.service.new';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { find, isNil, last, some, head } from 'lodash-es';
 import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
 
 @Injectable({
@@ -30,7 +31,7 @@ export class InboxConversationService {
 
   constructor(
     private http: HttpService,
-    private httpClient: HttpServiceNew,
+    private httpClient: HttpClient,
     private realTime: RealTimeService,
     private messageService: MessageService,
     private persistencyService: PersistencyService,
@@ -326,7 +327,7 @@ export class InboxConversationService {
   }
 
   private fetchConversationByItem$(itemId: string): Observable<InboxConversation> {
-    return this.httpClient.post<ConversationResponse>('api/v3/conversations', { item_id: itemId })
+    return this.httpClient.post<ConversationResponse>(`${environment.baseUrl}api/v3/conversations`, { item_id: itemId })
     .flatMap((response: ConversationResponse) => this.getConversation(response.conversation_id));
   }
 

@@ -9,8 +9,9 @@ import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptio
 import { CategoryResponse } from '../category/category-response.interface';
 import { mergeMap, map } from 'rxjs/operators';
 import { CARS_CATEGORY } from '../item/item-categories';
-import { HttpServiceNew } from '../http/http.service.new';
 import { CategoryService } from '../category/category.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -41,7 +42,7 @@ export class SubscriptionsService {
 
   constructor(private userService: UserService,
               private featureflagService: FeatureflagService,
-              private http: HttpServiceNew,
+              private http: HttpClient,
               private categoryService: CategoryService) {
     this.userService.me().subscribe((user: User) => {
       this.fullName = user ? `${user.firstName} ${user.lastName}` : '';
@@ -49,7 +50,7 @@ export class SubscriptionsService {
   }
 
   public getSlots(): Observable<SubscriptionSlot[]> {
-    return this.http.get(SUBSCRIPTIONS_SLOTS_ENDPOINT)
+    return this.http.get<any>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`)
       .flatMap(slots => {
         return Observable.forkJoin(
           slots.map(s => this.mapSlotResponseToSlot(s))
@@ -100,14 +101,18 @@ export class SubscriptionsService {
 
   public newSubscription(subscriptionId: string, paymentId: string): Observable<any> {
     this.uuid = UUID.UUID();
-    return this.http.post(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`, {
-      payment_method_id: paymentId,
-      product_subscription_id: subscriptionId
-    }, null, { observe: 'response' as 'body' });
+    return this.http.post(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`, {
+        payment_method_id: paymentId,
+        product_subscription_id: subscriptionId
+      },
+      {
+        observe: 'response' as 'body'
+      }
+    );
   }
 
   public checkNewSubscriptionStatus(): Observable<SubscriptionResponse> {
-    return this.http.get(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`)
+    return this.http.get<any>(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`)
       .retryWhen((errors) => {
         return errors
           .mergeMap((error) => (error.status !== 404) ? Observable.throw(error) : Observable.of(error))
@@ -118,14 +123,14 @@ export class SubscriptionsService {
 
   public retrySubscription(invoiceId: string, paymentId: string): Observable<any> {
     this.uuid = UUID.UUID();
-    return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`, {
+    return this.http.put(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`, {
       invoice_id: invoiceId,
       payment_method_id: paymentId,
-    }, null, { observe: 'response' as 'body' });
+    }, { observe: 'response' as 'body' });
   }
 
   public checkRetrySubscriptionStatus(): Observable<any> {
-    return this.http.get(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`);
+    return this.http.get(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`);
   }
 
   public isSubscriptionsActive$(): Observable<boolean> {
@@ -140,7 +145,7 @@ export class SubscriptionsService {
     return this.categoryService.getCategories()
     .pipe(
       mergeMap((categories) => {
-        return this.http.get(SUBSCRIPTIONS_URL)
+        return this.http.get(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`)
         .catch((error) => {
           return Observable.of(error);
         })
@@ -156,15 +161,17 @@ export class SubscriptionsService {
   }
 
   public cancelSubscription(planId: string): Observable<any> {
-    return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/cancel/${planId}`, null, null, { observe: 'response' as 'body' });
+    return this.http.put(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/cancel/${planId}`,
+      null, { observe: 'response' as 'body' });
   }
 
   public continueSubscription(planId: string): Observable<any> {
-    return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/unsubscription/cancel/${planId}`, null, null, { observe: 'response' as 'body' });
+    return this.http.put(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/unsubscription/cancel/${planId}`,
+      null, { observe: 'response' as 'body' });
   }
 
   public editSubscription(subscription: SubscriptionsResponse, newPlanId: string): Observable<any> {
-    return this.http.put(`${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${subscription.id}`, { plan_id: newPlanId }, null, { observe: 'response' as 'body' });
+    return this.http.put(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${subscription.id}`, { plan_id: newPlanId }, { observe: 'response' as 'body' });
   }
 
   private mapSubscriptions(subscription: SubscriptionsResponse, categories: CategoryResponse[]): SubscriptionsResponse {
