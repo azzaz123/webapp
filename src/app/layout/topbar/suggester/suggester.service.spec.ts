@@ -3,20 +3,20 @@ import { TestBed } from '@angular/core/testing';
 import { SuggesterService } from './suggester.service';
 import { SuggesterResponse } from './suggester-response.interface';
 import { SUGGESTER_DATA_WEB } from '../../../../tests/suggester.fixtures.spec';
-import { HttpServiceNew } from '../../../core/http/http.service.new';
 import { HttpModuleNew } from '../../../core/http/http.module.new';
+import { HttpClient } from '@angular/common/http';
 
 let service: SuggesterService;
-let http: HttpServiceNew;
+let http: HttpClient;
 
 describe('SuggesterService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpModuleNew],
-      providers: [SuggesterService, HttpServiceNew]
+      providers: [SuggesterService]
     });
     service = TestBed.get(SuggesterService);
-    http = TestBed.get(HttpServiceNew);
+    http = TestBed.get(HttpClient);
   });
 
   describe('getSuggestions', () => {

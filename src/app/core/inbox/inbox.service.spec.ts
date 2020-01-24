@@ -18,15 +18,15 @@ import { InboxConversationService } from './inbox-conversation.service';
 import { FeatureFlagServiceMock } from '../../../tests';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpModuleNew } from '../http/http.module.new';
-import { HttpServiceNew } from '../http/http.service.new';
 import { RealTimeService } from '../message/real-time.service';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../http/access-token.service';
+import { HttpClient } from '@angular/common/http';
 
 describe('InboxService', () => {
 
   let inboxService: InboxService;
-  let httpService: HttpServiceNew;
+  let http: HttpClient;
   let realTime: RealTimeService;
   let persistencyService: PersistencyService;
   let messageService: MessageService;
@@ -65,7 +65,7 @@ describe('InboxService', () => {
       ]
     });
     inboxService = TestBed.get(InboxService);
-    httpService = TestBed.get(HttpServiceNew);
+    http = TestBed.get(HttpClient);
     realTime = TestBed.get(RealTimeService);
     persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
@@ -84,7 +84,7 @@ describe('InboxService', () => {
   describe('init', () => {
     let parsedConversationsResponse;
 
-    beforeEach(() => spyOn(httpService, 'get').and.returnValue(of(JSON.parse(MOCK_INBOX_API_RESPONSE))));
+    beforeEach(() => spyOn(http, 'get').and.returnValue(of(JSON.parse(MOCK_INBOX_API_RESPONSE))));
 
     it('should set selfId as the of the logged in used', () => {
       inboxService.init();
@@ -166,7 +166,7 @@ describe('InboxService', () => {
 
     it('should set item.reserved TRUE when the API response returns an item with status reserved', () => {
       modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.reserved;
-      spyOn(httpService, 'get').and.returnValue(of(modifiedResponse));
+      spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
       inboxService.init();
 
@@ -175,7 +175,7 @@ describe('InboxService', () => {
 
     it('should set item.sold TRUE when the API response returns an item with status sold', () => {
       modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.sold;
-      spyOn(httpService, 'get').and.returnValue(of(modifiedResponse));
+      spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
       inboxService.init();
 
@@ -184,7 +184,7 @@ describe('InboxService', () => {
 
     it('should set item.notAvailable TRUE when the API response returns an item with status not_available', () => {
       modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.notAvailable;
-      spyOn(httpService, 'get').and.returnValue(of(modifiedResponse));
+      spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
       inboxService.init();
 
@@ -200,7 +200,7 @@ describe('InboxService', () => {
 
       it('should set user.blocked FALSE when the API response returns blocked FALSE', () => {
         modifiedResponse.conversations[0].with_user.blocked = false;
-        spyOn(httpService, 'get').and.returnValue(of(modifiedResponse));
+        spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
         inboxService.init();
 
@@ -210,7 +210,7 @@ describe('InboxService', () => {
       it('should set user.blocked TRUE when the API response returns blocked TRUE AND available TRUE', () => {
         modifiedResponse.conversations[0].with_user.blocked = true;
         modifiedResponse.conversations[0].with_user.available = true;
-        spyOn(httpService, 'get').and.returnValue(of(modifiedResponse));
+        spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
         inboxService.init();
 
@@ -220,7 +220,7 @@ describe('InboxService', () => {
       it('should set user.blocked FALSE when the API response returns blocked TRUE AND available FALSE', () => {
         modifiedResponse.conversations[0].with_user.blocked = true;
         modifiedResponse.conversations[0].with_user.available = false;
-        spyOn(httpService, 'get').and.returnValue(of(modifiedResponse));
+        spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
         inboxService.init();
 
@@ -231,7 +231,7 @@ describe('InboxService', () => {
     describe('user available', () => {
       it('should set user.available FALSE when the API response returns available FALSE', () => {
         modifiedResponse.conversations[0].with_user.available = false;
-        spyOn(httpService, 'get').and.returnValue(of(modifiedResponse));
+        spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
         inboxService.init();
 
@@ -241,7 +241,7 @@ describe('InboxService', () => {
       it('should set user.available TRUE when the API response returns blocked TRUE AND available TRUE', () => {
         modifiedResponse.conversations[0].with_user.blocked = true;
         modifiedResponse.conversations[0].with_user.available = true;
-        spyOn(httpService, 'get').and.returnValue(of(modifiedResponse));
+        spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
         inboxService.init();
 
@@ -251,7 +251,7 @@ describe('InboxService', () => {
       it('should set user.available TRUE when the API response returns blocked FALSE AND available TRUE', () => {
         modifiedResponse.conversations[0].with_user.blocked = false;
         modifiedResponse.conversations[0].with_user.available = true;
-        spyOn(httpService, 'get').and.returnValue(of(modifiedResponse));
+        spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
         inboxService.init();
 
@@ -266,7 +266,7 @@ describe('InboxService', () => {
 
     it('should set InboxItemPlaceholder as the item of a InboxConversation, when the API response does not return an item object', () => {
       delete modifiedResponse.conversations[0].item;
-      spyOn(httpService, 'get').and.returnValue(of(modifiedResponse));
+      spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
       inboxService.init();
 
@@ -275,7 +275,7 @@ describe('InboxService', () => {
 
     it('should set InboxUserPlaceholder as the user of a InboxConversation, when the API response does not return a user object', () => {
       delete modifiedResponse.conversations[0].with_user;
-      spyOn(httpService, 'get').and.returnValue(of(modifiedResponse));
+      spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
       inboxService.init();
 
@@ -290,7 +290,7 @@ describe('InboxService', () => {
 
     it('should emit CHAT_CAN_PROCESS_RT with false', () => {
       spyOn(eventService, 'emit').and.callThrough();
-      spyOn(httpService, 'get')
+      spyOn(http, 'get')
       .and.returnValues(of(modifiedResponse), of(modifiedResponse), of(modifiedResponse));
 
       inboxService.init();
@@ -313,7 +313,7 @@ describe('InboxService', () => {
     });
 
     it('should not add existing conversations', () => {
-      spyOn(httpService, 'get')
+      spyOn(http, 'get')
       .and.returnValues(of(modifiedResponse), of(modifiedResponse), of(modifiedResponse));
 
       inboxService.init();
@@ -327,7 +327,7 @@ describe('InboxService', () => {
       const apiResponse = JSON.parse(JSON.stringify(modifiedResponse));
       apiResponse.conversations.map(conversation => conversation.hash = `${conversation.hash}new`);
 
-      spyOn(httpService, 'get')
+      spyOn(http, 'get')
       .and.returnValues(of(modifiedResponse), of(apiResponse), of(apiResponse));
 
       inboxService.init();
@@ -344,7 +344,7 @@ describe('InboxService', () => {
     beforeEach(() => modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE));
 
     it('should return TRUE if APIResponse has next_from', () => {
-      spyOn(httpService, 'get')
+      spyOn(http, 'get')
       .and.returnValues(of(modifiedResponse), of(modifiedResponse));
 
       inboxService.init();
@@ -354,7 +354,7 @@ describe('InboxService', () => {
 
     it('should return FALSE if APIResponse has not next_from', () => {
       delete modifiedResponse.next_from;
-      spyOn(httpService, 'get').and.returnValues(of(modifiedResponse), of(modifiedResponse));
+      spyOn(http, 'get').and.returnValues(of(modifiedResponse), of(modifiedResponse));
 
       inboxService.init();
 

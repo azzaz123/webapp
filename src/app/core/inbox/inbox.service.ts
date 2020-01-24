@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpServiceNew } from '../http/http.service.new';
 import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../../chat/model';
@@ -11,6 +10,8 @@ import { InboxConversationService } from './inbox-conversation.service';
 import { InboxApi, InboxConversationApi } from '../../chat/model/api';
 import { map, tap } from 'rxjs/operators';
 import { uniqBy } from 'lodash-es';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class InboxService {
@@ -26,7 +27,7 @@ export class InboxService {
   public errorRetrievingInbox = false;
   public errorRetrievingArchived = false;
 
-  constructor(private httpClient: HttpServiceNew,
+  constructor(private httpClient: HttpClient,
               private persistencyService: PersistencyService,
               private messageService: MessageService,
               private inboxConversationService: InboxConversationService,
@@ -120,10 +121,9 @@ export class InboxService {
 
   public getInbox$(): Observable<InboxConversation[]> {
     this.messageService.totalUnreadMessages = 0;
-    return this.httpClient.get<InboxApi>('bff/messaging/inbox', [
-      { key: 'page_size', value: InboxService.PAGE_SIZE },
-      { key: 'max_messages', value: InboxConversationService.MESSAGES_IN_CONVERSATION }
-    ])
+    return this.httpClient.get<InboxApi>(`${environment.baseUrl}bff/messaging/inbox`, {
+      params: { page_size: InboxService.PAGE_SIZE.toString(), max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION.toString() }
+    })
     .pipe(
       tap((inbox: InboxApi) => this.nextPageToken = inbox.next_from || null),
       map((inbox: InboxApi) => this.inboxConversationService.conversations = this.processInboxResponse(inbox))
@@ -131,10 +131,12 @@ export class InboxService {
   }
 
   public getNextPage$(): Observable<InboxConversation[]> {
-    return this.httpClient.get<InboxApi>('bff/messaging/inbox', [
-      { key: 'page_size', value: InboxService.PAGE_SIZE },
-      { key: 'from', value: this.nextPageToken }
-    ])
+    return this.httpClient.get<InboxApi>(`${environment.baseUrl}bff/messaging/inbox`, {
+      params: {
+        page_size: InboxService.PAGE_SIZE.toString(),
+        from: this.nextPageToken
+      }
+    })
     .pipe(
       tap((inbox: InboxApi) => this.nextPageToken = inbox.next_from || null),
       map((inbox: InboxApi) => this.inboxConversationService.conversations = this.processInboxResponse(inbox))
@@ -142,10 +144,12 @@ export class InboxService {
   }
 
   public getArchivedInbox$(): Observable<InboxConversation[]> {
-    return this.httpClient.get<InboxApi>('bff/messaging/archived', [
-      { key: 'page_size', value: InboxService.PAGE_SIZE },
-      { key: 'max_messages', value: InboxConversationService.MESSAGES_IN_CONVERSATION }
-    ])
+    return this.httpClient.get<InboxApi>(`${environment.baseUrl}bff/messaging/archived`, {
+      params: {
+        page_size: InboxService.PAGE_SIZE.toString(),
+        max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION.toString()
+      }
+    })
     .pipe(
       tap((inbox: InboxApi) => this.nextArchivedPageToken = inbox.next_from || null),
       map((inbox: InboxApi) => this.inboxConversationService.archivedConversations = this.processArchivedInboxResponse(inbox))
@@ -153,10 +157,12 @@ export class InboxService {
   }
 
   public getNextArchivedPage$(): Observable<InboxConversation[]> {
-    return this.httpClient.get<InboxApi>('bff/messaging/archived', [
-      { key: 'page_size', value: InboxService.PAGE_SIZE },
-      { key: 'from', value: this.nextArchivedPageToken }
-    ])
+    return this.httpClient.get<InboxApi>(`${environment.baseUrl}bff/messaging/archived`, {
+      params: {
+        page_size: InboxService.PAGE_SIZE.toString(),
+        from: this.nextArchivedPageToken
+      }
+    })
     .pipe(
       tap((inbox: InboxApi) => this.nextArchivedPageToken = inbox.next_from || null),
       map((inbox: InboxApi) =>
