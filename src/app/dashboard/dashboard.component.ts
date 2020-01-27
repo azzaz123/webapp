@@ -79,7 +79,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     public openConversation(inboxConversation: InboxConversation): void {
-        this.router.navigateByUrl(`/chat?conversationId=${inboxConversation.id}`);
+      this.inboxConversationService.openConversation(inboxConversation);
+      this.router.navigateByUrl(`/chat?conversationId=${inboxConversation.id}`);
     }
 
     public countTotalMessages(): number {

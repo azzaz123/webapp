@@ -14,6 +14,9 @@ export class InboxConversationServiceMock {
     return Observable.empty();
   }
 
+  public openConversation(conversation: InboxConversation): void {
+  }
+
   archive$(conversation: InboxConversation): Observable<InboxConversation> {
     return of(conversation);
   }
