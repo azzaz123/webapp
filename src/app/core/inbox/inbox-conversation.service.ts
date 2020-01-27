@@ -27,7 +27,11 @@ export class InboxConversationService {
   private ARCHIVE_URL = '/api/v3/instant-messaging/conversations/archive';
   private UNARCHIVE_URL = '/api/v3/instant-messaging/conversations/unarchive';
   private MORE_MESSAGES_URL = '/api/v3/instant-messaging/archive/conversation/CONVERSATION_HASH/messages';
+
   private _selfId: string;
+
+  public conversations: InboxConversation[];
+  public archivedConversations: InboxConversation[];
 
   constructor(
     private http: HttpService,
@@ -40,16 +44,7 @@ export class InboxConversationService {
     this.archivedConversations = [];
   }
 
-  public conversations: InboxConversation[];
-  public archivedConversations: InboxConversation[];
-
   public subscribeChatEvents() {
-    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
-      this.conversations = conversations;
-    });
-    this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
-      this.archivedConversations = conversations;
-    });
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
       this.processNewMessage(this.buildInboxMessage(message));
     });

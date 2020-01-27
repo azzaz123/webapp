@@ -7,8 +7,8 @@ import { TrackingService } from '../core/tracking/tracking.service';
 import { ConversationService } from '../core/conversation/conversation.service';
 import { CallTotals, ConversationTotals } from '../core/conversation/totals.interface';
 import { CallsService } from '../core/conversation/calls.service';
-import { InboxService } from '../core/inbox/inbox.service';
 import { InboxConversation } from '../chat/model';
+import { InboxConversationService } from '../core/inbox/inbox-conversation.service';
 
 @Component({
     selector: 'tsl-dashboard',
@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 private trackingService: TrackingService,
                 private conversationService: ConversationService,
                 private router: Router,
-                private inboxService: InboxService,
+                private inboxConversationService: InboxConversationService,
                 private eventService: EventService) {
     }
 
@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.getTotals();
         this.eventService.subscribe(EventService.LEAD_ARCHIVED, (lead: Lead) => this.archivedLead = lead);
         this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) =>
-            this.conversations = this.inboxService.conversations);
+            this.conversations = this.inboxConversationService.conversations);
     }
 
     ngOnDestroy() {
@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.trackingService.track(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
             this.calls = calls;
 
-            this.conversations = this.inboxService.conversations;
+            this.conversations = this.inboxConversationService.conversations;
             this.trackingService.track(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
             this.loading = false;
         });

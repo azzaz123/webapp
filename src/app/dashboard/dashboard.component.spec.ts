@@ -16,13 +16,21 @@ import { Lead } from '../core/conversation/lead';
 import { Call } from '../core/conversation/calls';
 import { createCallsArray } from '../../tests/call.fixtures';
 import { FeatureflagService } from '../core/user/featureflag.service';
-import { FeatureFlagServiceMock, InboxServiceMock, LoggedGuardServiceMock, CallsServiceMock, ConversationServiceMock } from '../../tests';
+import {
+  FeatureFlagServiceMock,
+  InboxServiceMock,
+  LoggedGuardServiceMock,
+  CallsServiceMock,
+  ConversationServiceMock,
+  InboxConversationServiceMock
+} from '../../tests';
 import { InboxService } from '../core/inbox/inbox.service';
 import { InboxConversation } from '../chat/model';
 import { createInboxConversationsArray } from '../../tests/inbox.fixtures.spec';
 import { ChatModule } from '../chat/chat.module';
 import { LoggedGuard } from '../core/user/logged.guard';
 import { ChatComponent } from '../chat/chat.component';
+import { InboxConversationService } from '../core/inbox/inbox-conversation.service';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -32,6 +40,7 @@ describe('DashboardComponent', () => {
   let trackingService: TrackingService;
   let eventService: EventService;
   let inboxService: InboxService;
+  let inboxConversationService: InboxConversationService;
   let featureflagService: FeatureflagService;
   let router: Router;
 
@@ -52,6 +61,7 @@ describe('DashboardComponent', () => {
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         { provide: InboxService, useClass: InboxServiceMock },
+        { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         { provide: LoggedGuard, useClass: LoggedGuardServiceMock },
         { provide: CallsService, useClass: CallsServiceMock },
         { provide: ConversationService, useClass: ConversationServiceMock },
@@ -69,6 +79,7 @@ describe('DashboardComponent', () => {
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
     inboxService = TestBed.get(InboxService);
+    inboxConversationService = TestBed.get(InboxConversationService);
     featureflagService = TestBed.get(FeatureflagService);
     router = TestBed.get(Router);
     fixture.detectChanges();
@@ -109,7 +120,7 @@ describe('DashboardComponent', () => {
       spyOn(callService, 'getPage').and.returnValue(Observable.of(CALLS));
       spyOn(conversationService, 'getPage').and.returnValue(Observable.of(CONVERSATIONS));
       spyOn(trackingService, 'track');
-      inboxService.conversations = CONVERSATIONS;
+      inboxConversationService.conversations = CONVERSATIONS;
 
       component['getData']();
     });
