@@ -15,7 +15,7 @@ export class GeneralSuggestionsService {
   constructor(private http: HttpService, private i18n: I18nService) {
   }
 
-  getObjectTypes(categoryId: string): Observable<IOption[]> {
+  getObjectTypes(categoryId: number): Observable<IOption[]> {
     return this.http.get(this.API_URL + '/object-type', {
       category_id: categoryId,
       language: this.i18n.locale

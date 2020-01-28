@@ -45,15 +45,12 @@
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="category" i18n>Category</label>
-          <ng-select [hidden]="fixedCategory" i18n-placeholder placeholder="Category"
-            (selected)="handleItemExtraInfo(true, $event)" class="form-control" formControlName="category_id"
-            [ngbPopover]="coachmarkPrice" #p2="ngbPopover" triggers="manual" (opened)="p2.open()" (closed)="p2.close()"
-            id="category" [options]="categories" noFilter="10">
+          <ng-select [hidden]="fixedCategory" i18n-placeholder placeholder="Category" class="form-control"
+            formControlName="category_id" [ngbPopover]="coachmarkPrice" #p2="ngbPopover" triggers="manual"
+            (opened)="p2.open()" (closed)="p2.close()" id="category" [options]="categories" noFilter="10">
             <ng-template #optionTemplate let-option="option">
-              <div (click)="setCategory(option.value)">
-                <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
-                {{ option?.label }}
-              </div>
+              <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
+              {{ option?.label }}
             </ng-template>
           </ng-select>
           <input *ngIf="fixedCategory" disabled type="text" class="form-control" [value]="fixedCategory" />
@@ -85,7 +82,8 @@
       </div>
     </div>
     <tsl-drop-area [uploadEvent]="uploadEvent" type="consumer_goods" (onUploaded)="onUploaded($event)"
-      (onError)="onError($event)" (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
+      (onError)="onError($event)" (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images"
+      [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n>
         You can drag and drop your photos here. Select and drag to change the
@@ -94,18 +92,18 @@
     </ng-template>
   </div>
 
-  <div class="box" *ngIf="showExtraFields">
+  <div class="box" *ngIf="uploadForm.controls.extra_fields_fashion">
     <div class="row">
       <div class="col">
         <h2><span i18n>The more precise, the better</span></h2>
       </div>
     </div>
-    <div class="row" formGroupName="extra_info" *ngIf="isFashionCategory">
+    <div class="row" formGroupName="extra_fields_fashion"
+      *ngIf="uploadForm.controls.extra_fields_fashion?.controls.gender">
       <div class="col">
         <div class="form-group last">
           <label i18n>Choose the gender of the garment</label>
-          <div ngbRadioGroup name="radioGender" formControlName="gender" class="input-radio"
-            (change)="initializeItemExtraInfo(null)">
+          <div ngbRadioGroup name="radioGender" formControlName="gender" class="input-radio" (change)="resetFashionExtraFields()">
             <label ngbButtonLabel>
               <input ngbButton type="radio" value="female">
               <span i18n>Female</span>
@@ -118,38 +116,63 @@
         </div>
       </div>
     </div>
-    <div class="row" formGroupName="extra_info">
-      <div class="col-12 col-md-4" *ngIf="currentCategory.has_object_type">
+    <div class="row" formGroupName="extra_fields_fashion">
+      <div class="col-12 col-md-4" *ngIf="uploadForm.controls.extra_fields_fashion?.controls.object_type">
         <div class="form-group last" formGroupName="object_type">
-          <label for="objectType">{{ objectTypeTitle }}</label>
+          <label for="objectType">Type of garment</label>
           <ng-select class="form-control" formControlName="id" id="objectType" i18n-placeholder
-            placeholder="Select a type" [options]="objectTypes" noFilter="10"
-            (selected)="initializeItemExtraInfo($event.value)"></ng-select>
+            placeholder="Select a type" [options]="objectTypes" noFilter="10" (opened)="getObjectTypes()"
+            (selected)="resetFashionExtraFields()"></ng-select>
         </div>
       </div>
-      <div class="col-12 col-md-4" *ngIf="currentCategory.has_brand">
+      <div class="col-12 col-md-4" *ngIf="uploadForm.controls.extra_fields_fashion?.controls.brand">
         <div class="form-group last">
           <label for="brand" i18n>Brand</label>
-          <tsl-keyword-suggester [placeholder]="getBrandPlaceholder()" [initialValue]="item?.extraInfo?.brand"
-            [value]="selectedBrand" [suggestions]="brandSuggestions" (inputChange)="getBrands($event)"
-            (suggestionSelect)="selectBrandOrModel($event, 'brand')">
+          <tsl-keyword-suggester [form]="uploadForm.controls.extra_fields_fashion" [controlName]="'brand'"
+            placeholder="fashion_brand_example" [suggestions]="brandSuggestions" (inputChange)="getBrands($event)">
           </tsl-keyword-suggester>
         </div>
       </div>
-      <div class="col-md-4" *ngIf="currentCategory.has_model">
-        <div class="form-group last">
-          <label for="model" i18n>Model</label>
-          <tsl-keyword-suggester placeholder="model_example" [initialValue]="item?.extraInfo?.model"
-            [value]="selectedModel" [suggestions]="modelSuggestions" (inputChange)="getModels($event)"
-            (suggestionSelect)="selectBrandOrModel($event, 'model')">
-          </tsl-keyword-suggester>
-        </div>
-      </div>
-      <div class="col-md-4" *ngIf="isFashionCategory">
+      <div class="col-md-4" *ngIf="uploadForm.controls.extra_fields_fashion?.controls.size">
         <div class="form-group last" formGroupName="size">
           <label for="size" i18n>Size</label>
           <ng-select class="form-control" formControlName="id" id="fashionSizes" i18n-placeholder
             placeholder="Select a size" [options]="sizes" noFilter="10" (opened)="getSizes()"></ng-select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box" *ngIf="uploadForm.controls.extra_fields_cellphones">
+    <div class="row">
+      <div class="col">
+        <h2><span i18n>The more precise, the better</span></h2>
+      </div>
+    </div>
+    <div class="row" formGroupName="extra_fields_cellphones">
+      <div class="col-12 col-md-4" *ngIf="uploadForm.controls.extra_fields_cellphones?.controls.object_type">
+        <div class="form-group last" formGroupName="object_type">
+          <label for="objectType">Type of object</label>
+          <ng-select class="form-control" formControlName="id" id="objectType" i18n-placeholder
+            placeholder="Select a type" [options]="objectTypes" noFilter="10" (selected)="resetCellphonesExtraFields()"
+            (opened)="getObjectTypes()"></ng-select>
+        </div>
+      </div>
+      <div class="col-12 col-md-4" *ngIf="uploadForm.controls.extra_fields_cellphones?.controls.brand">
+        <div class="form-group last">
+          <label for="brand" i18n>Brand</label>
+          <tsl-keyword-suggester [form]="uploadForm.controls.extra_fields_cellphones" [controlName]="'brand'"
+            placeholder="phones_brand_example" [suggestions]="brandSuggestions" (inputChange)="getBrands($event)"
+            (onSuggestionSelect)="autoCompleteCellphonesModel($event)">
+          </tsl-keyword-suggester>
+        </div>
+      </div>
+      <div class="col-md-4" *ngIf="uploadForm.controls.extra_fields_cellphones?.controls.model">
+        <div class="form-group last">
+          <label for="model" i18n>Model</label>
+          <tsl-keyword-suggester [form]="uploadForm.controls.extra_fields_cellphones" [controlName]="'model'"
+            placeholder="model_example" [suggestions]="modelSuggestions" (inputChange)="getModels($event)">
+          </tsl-keyword-suggester>
         </div>
       </div>
     </div>
@@ -174,7 +197,8 @@
       </div>
       <div class="row">
         <div class="col">
-          <div class="selector-container shipping-selector" ngbRadioGroup name="radioBasic" formControlName="delivery_info">
+          <div class="selector-container shipping-selector" ngbRadioGroup name="radioBasic"
+            formControlName="delivery_info">
             <label ngbButtonLabel class="selector" *ngFor="let delivery of deliveryInfo">
               <div class="selector-icon btn">
                 <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value)" />
@@ -194,7 +218,8 @@
     </ng-template>
   </div>
 
-  <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"></tsl-location-box>
+  <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()">
+  </tsl-location-box>
   <tsl-urgent-checkbox [categoryId]="categoryId" [urgentPrice]="urgentPrice" (urgentSelected)="selectUrgent($event)">
   </tsl-urgent-checkbox>
   <div class="row">
