@@ -62,7 +62,7 @@
                 </div>
                 <div class="AddNewSubscription__payment-add-card" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
                 <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [disabled]="isPaymentError" [type]="'subscription'"
-                [listingLimit]="selectedTier" [action]="action" (onStripeCardCreate)="addSubscription($event); onClickPay(true);" (stripeCard)="setCardInfo($event)">
+                [listingLimit]="selectedTier" [action]="action" (click)="loading = true" (onStripeCardCreate)="addSubscription($event); onClickPay(true);" (stripeCard)="setCardInfo($event)">
                 </tsl-stripe-card-element>
               </div>
               <tsl-button [hidden]="!savedCard"
