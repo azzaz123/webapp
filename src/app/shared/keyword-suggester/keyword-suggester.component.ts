@@ -49,8 +49,11 @@ export class KeywordSuggesterComponent implements OnInit, OnChanges {
   }
 
   selectSuggestion(suggestion: KeywordSuggestion) {
-    this.form.get(String(this.controlName)).patchValue(suggestion.suggestion);
+    if (this.controlName) {
+      this.form.get(String(this.controlName)).patchValue(suggestion.suggestion);
+    }
     this.onSuggestionSelect.emit(suggestion.value);
+    this.suggestionsOpened = false;
   }
 
   onKeydown(event: any) {
