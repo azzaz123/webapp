@@ -50,10 +50,8 @@
             [ngbPopover]="coachmarkPrice" #p2="ngbPopover" triggers="manual" (opened)="p2.open()" (closed)="p2.close()"
             id="category" [options]="categories" noFilter="10">
             <ng-template #optionTemplate let-option="option">
-              <div (click)="setCategory(option.value)">
-                <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
-                {{ option?.label }}
-              </div>
+              <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
+              {{ option?.label }}
             </ng-template>
           </ng-select>
           <input *ngIf="fixedCategory" disabled type="text" class="form-control" [value]="fixedCategory" />

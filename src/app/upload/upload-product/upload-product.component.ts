@@ -13,7 +13,7 @@ import {
   SimpleChange
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators, FormControl } from '@angular/forms';
 import { IOption } from 'ng-select';
 import { find, omit, isEqual } from 'lodash-es';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -149,17 +149,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         fix_price: false,
         exchange_allowed: false
       }),
-      extra_info: fb.group({
-        object_type: fb.group({
-          id: [null, [Validators.required]]
-        }),
-        brand: [null, [Validators.required]],
-        model: [null, [Validators.required]],
-        size: fb.group({
-          id: [null, [Validators.required]]
-        }),
-        gender: [null, [Validators.required]]
-      }),
       delivery_info: [null],
       location: this.fb.group({
         address: ['', [Validators.required]],
@@ -207,6 +196,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         this.handleItemExtraInfo(false, selectedCategory);
       }
       this.detectFormChanges();
+      this.detectCategoryChanges();
     });
   }
 
@@ -231,6 +221,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
   }
 
+  private detectCategoryChanges() {
+    this.uploadForm.get('category_id').valueChanges.subscribe((categoryId: number) => {
+      this.onCategorySelect.emit(categoryId);
+    });
+  }
+
   private getDeliveryInfo(): DeliveryInfo {
     if (!this.item.deliveryInfo) {
       return null;
@@ -248,37 +244,38 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   onSubmit() {
-    if (this.uploadForm.valid) {
-      this.loading = true;
-      if (CATEGORIES_WITH_EXTRA_FIELDS.includes(this.uploadForm.value.category_id)) {
-        if (this.uploadForm.value.extra_info.brand === '') {
-          this.uploadForm.value.extra_info.brand = null;
-        }
-        if (this.uploadForm.value.extra_info.model === '') {
-          this.uploadForm.value.extra_info.model = null;
-        }
-      } else {
-        delete this.uploadForm.value.extra_info;
-      }
-      if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
-        this.uploadForm.value.sale_conditions.shipping_allowed = this.uploadForm.value.delivery_info ? true : false;
-      }
-      this.uploadEvent.emit({
-        type: this.item ? 'update' : 'create',
-        values: this.uploadForm.value
-      });
-    } else {
-      this.uploadForm.markAsPending();
-      if (!this.uploadForm.get('location.address').valid) {
-        this.uploadForm.get('location.address').markAsDirty();
-      }
-      if (!this.uploadForm.get('images').valid) {
-        this.errorsService.i18nError('missingImageError');
-      } else {
-        this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
-        this.onValidationError.emit();
-      }
-    }
+    console.log(this.uploadForm.value.extra_info)
+    // if (this.uploadForm.valid) {
+    //   this.loading = true;
+    //   if (CATEGORIES_WITH_EXTRA_FIELDS.includes(this.uploadForm.value.category_id)) {
+    //     if (this.uploadForm.value.extra_info.brand === '') {
+    //       this.uploadForm.value.extra_info.brand = null;
+    //     }
+    //     if (this.uploadForm.value.extra_info.model === '') {
+    //       this.uploadForm.value.extra_info.model = null;
+    //     }
+    //   } else {
+    //     delete this.uploadForm.value.extra_info;
+    //   }
+    //   if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
+    //     this.uploadForm.value.sale_conditions.shipping_allowed = this.uploadForm.value.delivery_info ? true : false;
+    //   }
+    //   this.uploadEvent.emit({
+    //     type: this.item ? 'update' : 'create',
+    //     values: this.uploadForm.value
+    //   });
+    // } else {
+    //   this.uploadForm.markAsPending();
+    //   if (!this.uploadForm.get('location.address').valid) {
+    //     this.uploadForm.get('location.address').markAsDirty();
+    //   }
+    //   if (!this.uploadForm.get('images').valid) {
+    //     this.errorsService.i18nError('missingImageError');
+    //   } else {
+    //     this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
+    //     this.onValidationError.emit();
+    //   }
+    // }
   }
 
   onUploaded(uploadEvent: any) {
@@ -362,10 +359,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
   }
 
-  public setCategory(value: number): void {
-    this.onCategorySelect.emit(value);
-  }
-
   public emitLocation(): void {
     this.locationSelected.emit(this.categoryId);
   }
@@ -426,50 +419,40 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
   }
 
-  public selectBrandOrModel(value = null, type: string) {
-    if (value !== null) {
-      if (typeof value === 'string') {
-        if (type === 'brand') {
-          this.setBrand(value);
-        }
-        if (type === 'model') {
-          this.setModel(value);
-        }
-      } else if (typeof value === 'object') {
-        if (value.brand) {
-          this.setBrand(value.brand);
-        }
-        if (value.model) {
-          this.setModel(value.model);
-        }
-      }
-    }
-  }
-
-  private setBrand(brand: string) {
-    this.selectedBrand.next(brand);
-    this.uploadForm.patchValue({
-      extra_info: {
-        brand
-      }
-    });
-  }
-
-  private setModel(model: string) {
-    this.selectedModel.next(model);
-    this.uploadForm.patchValue({
-      extra_info: {
-        model
-      }
-    });
-  }
-
   public handleItemExtraInfo(initializeExtraInfo: boolean, category: CategoryOption) {
+    let extraFields;
     this.currentCategory = category;
     this.isFashionCategory = this.categoryService.isFashionCategory(parseInt(category.value, 10));
 
+    const FASHION_EXTRA_FIELDS: FormGroup = new FormGroup({
+      object_type: new FormGroup({
+        id: new FormControl(null, Validators.required)
+      }),
+      brand: new FormControl(null, Validators.required),
+      size: new FormGroup({
+        id: new FormControl(null, Validators.required)
+      }),
+      gender: new FormControl(null, Validators.required)
+    });
+
+    const CELLPHONES_EXTRA_FIELDS: FormGroup = new FormGroup({
+      object_type: new FormGroup({
+        id: new FormControl(null, Validators.required)
+      }),
+      brand: new FormControl(null, Validators.required),
+      model: new FormControl(null, Validators.required)
+    });
+
     if (category.has_object_type || category.has_brand || category.has_model) {
       this.showExtraFields = true;
+      extraFields = this.isFashionCategory ? FASHION_EXTRA_FIELDS : CELLPHONES_EXTRA_FIELDS;
+
+      if (!this.uploadForm.get('extra_info')) {
+        this.uploadForm.addControl('extra_info', extraFields);
+      } else {
+        this.uploadForm.setControl('extra_info', extraFields);
+      }
+
       if (!this.item) {
         this.splitTestService.track('CategoryWithBrandModelSelected');
       }
@@ -481,6 +464,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }
     } else {
       this.showExtraFields = false;
+      this.uploadForm.removeControl('extra_info');
     }
 
     if (initializeExtraInfo) {
@@ -519,8 +503,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
 
     delete this.sizes;
-    this.setModel(null);
-    this.setBrand(null);
 
     this.getBrandPlaceholder();
   }

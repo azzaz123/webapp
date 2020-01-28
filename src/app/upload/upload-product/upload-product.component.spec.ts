@@ -480,45 +480,6 @@ describe('UploadProductComponent', () => {
     });
   });
 
-  describe('selectBrandOrModel', () => {
-    describe('when reciving a string', () => {
-      it('should select the brand', () => {
-        component.selectBrandOrModel('Apple', 'brand');
-
-        expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
-      });
-
-      it('should select the model', () => {
-        component.selectBrandOrModel('iPhone', 'model');
-
-        expect(component.uploadForm.value.extra_info.model).toEqual('iPhone');
-      });
-    });
-
-    describe('when reciving an object', () => {
-      it('should select the brand and model', () => {
-        component.selectBrandOrModel({ brand: 'Apple', model: 'iPhone XSX' }, null);
-
-        expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
-        expect(component.uploadForm.value.extra_info.model).toEqual('iPhone XSX');
-      });
-
-      it('should select the brand', () => {
-        component.selectBrandOrModel({ brand: 'Apple' }, null);
-
-        expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
-        expect(component.uploadForm.value.extra_info.model).toBe(null);
-      });
-
-      it('should select the model', () => {
-        component.selectBrandOrModel({ model: 'iPhone XSX' }, null);
-
-        expect(component.uploadForm.value.extra_info.brand).toBe(null);
-        expect(component.uploadForm.value.extra_info.model).toEqual('iPhone XSX');
-      });
-    });
-  });
-
   describe(('handleItemExtraInfo'), () => {
     const MOCK_CATEGORY_OPTION_1: CategoryOption = {
       value: '16000',
