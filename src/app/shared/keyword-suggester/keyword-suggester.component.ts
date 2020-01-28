@@ -1,22 +1,23 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges, ViewEncapsulation } from '@angular/core';
 import { KeywordSuggestion } from './keyword-suggestion.interface';
 import { Subject } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
+import { FormGroup, FormControlName } from '@angular/forms';
 
 @Component({
   selector: 'tsl-keyword-suggester',
   templateUrl: './keyword-suggester.component.html',
-  styleUrls: ['./keyword-suggester.component.scss']
+  styleUrls: ['./keyword-suggester.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class KeywordSuggesterComponent implements OnInit, OnChanges {
 
-  @Input() value: Subject<string>;
+  @Input() form: FormGroup;
+  @Input() controlName: FormControlName;
   @Input() placeholder: string;
-  @Input() initialValue: string;
   @Input() suggestions: Subject<KeywordSuggestion[]>;
-  @Input() suggestionValue: string;
   @Output() inputChange: EventEmitter<string> = new EventEmitter();
-  @Output() suggestionSelect: EventEmitter<any> = new EventEmitter();
+  @Output() onSuggestionSelect: EventEmitter<any> = new EventEmitter();
 
   public keywordSuggestions: KeywordSuggestion[];
   public suggestionsOpened = false;
@@ -30,13 +31,6 @@ export class KeywordSuggesterComponent implements OnInit, OnChanges {
       this.keywordSuggestions = suggestions;
       this.suggestionsOpened = suggestions.length ? true : false;
     });
-    this.value.subscribe((value: string) => {
-      this.setSuggestionValue(value);
-    });
-
-    if (this.initialValue) {
-      this.setSuggestionValue(this.initialValue);
-    }
   }
 
   ngOnChanges(changes?) {
@@ -52,13 +46,11 @@ export class KeywordSuggesterComponent implements OnInit, OnChanges {
 
   handleInputBlur() {
     this.suggestionsOpened = false;
-    this.suggestionSelect.emit(this.suggestionValue);
   }
 
   selectSuggestion(suggestion: KeywordSuggestion) {
-    this.setSuggestionValue(suggestion.suggestion);
-    this.suggestionSelect.emit(suggestion.value);
-    this.suggestionsOpened = false;
+    this.form.get(String(this.controlName)).patchValue(suggestion.suggestion);
+    this.onSuggestionSelect.emit(suggestion.value);
   }
 
   onKeydown(event: any) {
@@ -82,9 +74,4 @@ export class KeywordSuggesterComponent implements OnInit, OnChanges {
       }
     }
   }
-
-  private setSuggestionValue(value) {
-    this.suggestionValue = value;
-  }
-
 }

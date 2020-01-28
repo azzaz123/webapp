@@ -1,11 +1,13 @@
-<input #suggesterInput type="text" class="keyword-suggester" placeholder="{{placeholderValue}}"
-  (input)="inputValueChange($event)" (blur)="handleInputBlur()" [(ngModel)]="suggestionValue"
-  (keydown)=onKeydown($event) />
-<div class="keyword-suggester-suggestions" *ngIf="suggestionsOpened">
-  <ul>
-    <li *ngFor="let suggestion of keywordSuggestions; let i = index" class="keyword-suggestion"
-      (mousedown)="selectSuggestion(suggestion)" [ngClass]="{active: i === suggestionIndexSelected}">
-      {{suggestion.suggestion}}
-    </li>
-  </ul>
+<div [formGroup]="form" class="keyword-suggester-component">
+  <input #suggesterInput formControlName="{{controlName}}" type="text" class="keyword-suggester"
+    placeholder="{{placeholderValue}}" (input)="inputValueChange($event)" (blur)="handleInputBlur()"
+    (keydown)=onKeydown($event) />
+  <div class="keyword-suggester-suggestions" *ngIf="suggestionsOpened">
+    <ul>
+      <li *ngFor="let suggestion of keywordSuggestions; let i = index" class="keyword-suggestion"
+        (mousedown)="selectSuggestion(suggestion)" [ngClass]="{active: i === suggestionIndexSelected}">
+        {{suggestion.suggestion}}
+      </li>
+    </ul>
+  </div>
 </div>
