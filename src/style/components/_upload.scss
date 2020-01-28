@@ -133,14 +133,6 @@
         pointer-events: none;
       }
     }
-    .ng-dirty.ng-invalid {
-      .selector-icon {
-        border: 1px solid $negative-main;
-      }
-      span {
-        color: $negative-main;
-      }
-    }
 
     &.shipping-selector {
       @include media-breakpoint-down(sm) {
@@ -248,6 +240,34 @@
       position: absolute;
       clip: rect(0, 0, 0, 0);
       pointer-events: none;
+    }
+  }
+}
+
+form {
+  &.ng-pending {
+    input,
+    textarea {
+      &.ng-invalid {
+        border: 1px solid $negative-main !important;
+      }
+    }
+    ng-select.ng-invalid > div {
+      border: 1px solid $negative-main !important;
+    }
+    .photo-wrapper:first-of-type .product-photo {
+      border-color: $negative-main !important;
+      background-image: url("/assets/icons/camera-red.svg") !important;
+    }
+    .input-radio.ng-invalid input {
+      border: 1px solid $negative-main !important;
+    }
+  }
+
+  &.disabled {
+    .form-control:disabled {
+      cursor: auto;
+      border: 0;
     }
   }
 }

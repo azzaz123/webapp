@@ -201,11 +201,7 @@ export class UploadRealestateComponent implements OnInit {
         values: this.uploadForm.value
       });
     } else {
-      for (const control in this.uploadForm.controls) {
-        if (this.uploadForm.controls.hasOwnProperty(control) && !this.uploadForm.controls[control].valid) {
-          this.uploadForm.controls[control].markAsDirty();
-        }
-      }
+      this.uploadForm.markAsPending();
       if (!this.uploadForm.get('location.address').valid) {
         this.uploadForm.get('location.address').markAsDirty();
       }

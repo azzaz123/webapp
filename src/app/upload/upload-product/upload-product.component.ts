@@ -151,14 +151,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }),
       extra_info: fb.group({
         object_type: fb.group({
-          id: null
+          id: [null, [Validators.required]]
         }),
-        brand: null,
-        model: null,
+        brand: [null, [Validators.required]],
+        model: [null, [Validators.required]],
         size: fb.group({
-          id: null
+          id: [null, [Validators.required]]
         }),
-        gender: null
+        gender: [null, [Validators.required]]
       }),
       delivery_info: [null],
       location: this.fb.group({
@@ -268,11 +268,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         values: this.uploadForm.value
       });
     } else {
-      for (const control in this.uploadForm.controls) {
-        if (this.uploadForm.controls.hasOwnProperty(control) && !this.uploadForm.controls[control].valid) {
-          this.uploadForm.controls[control].markAsDirty();
-        }
-      }
+      this.uploadForm.markAsPending();
       if (!this.uploadForm.get('location.address').valid) {
         this.uploadForm.get('location.address').markAsDirty();
       }
@@ -493,6 +489,17 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
     if (this.isFashionCategory) {
       this.getSizes();
+    }
+  }
+
+  public autoCompleteModel(brandModelObj: BrandModel): void {
+    if ('model' in brandModelObj) {
+      this.uploadForm.patchValue({
+        extra_info: {
+          brand: brandModelObj.brand,
+          model: brandModelObj.model
+        }
+      });
     }
   }
 
