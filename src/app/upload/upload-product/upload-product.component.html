@@ -50,8 +50,10 @@
             [ngbPopover]="coachmarkPrice" #p2="ngbPopover" triggers="manual" (opened)="p2.open()" (closed)="p2.close()"
             id="category" [options]="categories" noFilter="10">
             <ng-template #optionTemplate let-option="option">
-              <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
-              {{ option?.label }}
+              <div (click)="setCategory(option.value)">
+                <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
+                {{ option?.label }}
+              </div>
             </ng-template>
           </ng-select>
           <input *ngIf="fixedCategory" disabled type="text" class="form-control" [value]="fixedCategory" />
@@ -83,8 +85,7 @@
       </div>
     </div>
     <tsl-drop-area [uploadEvent]="uploadEvent" type="consumer_goods" (onUploaded)="onUploaded($event)"
-      (onError)="onError($event)" (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images"
-      [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
+      (onError)="onError($event)" (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n>
         You can drag and drop your photos here. Select and drag to change the
@@ -129,17 +130,18 @@
       <div class="col-12 col-md-4" *ngIf="currentCategory.has_brand">
         <div class="form-group last">
           <label for="brand" i18n>Brand</label>
-          <tsl-keyword-suggester [form]="uploadForm.controls.extra_info" [controlName]="'brand'"
-            [placeholder]="getBrandPlaceholder()" [suggestions]="brandSuggestions" (inputChange)="getBrands($event)"
-            (onSuggestionSelect)="autoCompleteModel($event)">
+          <tsl-keyword-suggester [placeholder]="getBrandPlaceholder()" [initialValue]="item?.extraInfo?.brand"
+            [value]="selectedBrand" [suggestions]="brandSuggestions" (inputChange)="getBrands($event)"
+            (suggestionSelect)="selectBrandOrModel($event, 'brand')">
           </tsl-keyword-suggester>
         </div>
       </div>
       <div class="col-md-4" *ngIf="currentCategory.has_model">
         <div class="form-group last">
           <label for="model" i18n>Model</label>
-          <tsl-keyword-suggester [form]="uploadForm.controls.extra_info" [controlName]="'model'"
-            placeholder="model_example" [suggestions]="modelSuggestions" (inputChange)="getModels($event)">
+          <tsl-keyword-suggester placeholder="model_example" [initialValue]="item?.extraInfo?.model"
+            [value]="selectedModel" [suggestions]="modelSuggestions" (inputChange)="getModels($event)"
+            (suggestionSelect)="selectBrandOrModel($event, 'model')">
           </tsl-keyword-suggester>
         </div>
       </div>
@@ -172,8 +174,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <div class="selector-container shipping-selector" ngbRadioGroup name="radioBasic"
-            formControlName="delivery_info">
+          <div class="selector-container shipping-selector" ngbRadioGroup name="radioBasic" formControlName="delivery_info">
             <label ngbButtonLabel class="selector" *ngFor="let delivery of deliveryInfo">
               <div class="selector-icon btn">
                 <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value)" />
@@ -193,8 +194,7 @@
     </ng-template>
   </div>
 
-  <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()">
-  </tsl-location-box>
+  <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"></tsl-location-box>
   <tsl-urgent-checkbox [categoryId]="categoryId" [urgentPrice]="urgentPrice" (urgentSelected)="selectUrgent($event)">
   </tsl-urgent-checkbox>
   <div class="row">
