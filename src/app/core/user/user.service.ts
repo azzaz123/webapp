@@ -24,7 +24,6 @@ import { FeatureflagService, FEATURE_FLAGS_ENUM } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
 import { InboxUser } from '../../chat/model/inbox-user';
 import { SplitTestService } from '../tracking/split-test.service';
-import { HttpServiceNew } from '../http/http.service.new';
 import { InboxItem } from '../../chat/model';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';

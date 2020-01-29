@@ -9,15 +9,15 @@ import { MockedPersistencyService } from '../../../tests/persistency.fixtures.sp
 import { EventService } from '../event/event.service';
 import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { chatSignalType, ChatSignal } from '../message/chat-signal.interface';
+import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { Message } from '../message/message';
-import { MessageStatus, InboxMessage, MessageType } from '../../chat/model/inbox-message';
+import { InboxMessage, MessageStatus, MessageType } from '../../chat/model/inbox-message';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../user/user.service';
-import { MockedUserService, MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { ResponseOptions, Response } from '@angular/http';
+import { Response, ResponseOptions } from '@angular/http';
 import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs';
 import { ItemService } from '../item/item.service';
@@ -26,8 +26,8 @@ import { HttpModuleNew } from '../http/http.module.new';
 import { environment } from '../../../environments/environment';
 import { uniq } from 'lodash-es';
 import { AccessTokenService } from '../http/access-token.service';
-import { Conversation } from '../conversation/conversation';
 import * as moment from 'moment';
+import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 
 describe('InboxConversationService', () => {
 
@@ -51,14 +51,7 @@ describe('InboxConversationService', () => {
         InboxConversationService,
         ...TEST_HTTP_PROVIDERS,
         EventService,
-        {
-          provide: RealTimeService, useValue: {
-            sendRead() {
-            },
-            resendMessage(conversation: Conversation | InboxConversation, message: Message | InboxMessage) {
-            }
-          }
-        },
+        { provide: RealTimeService, useClass: RealTimeServiceMock },
         {
           provide: AccessTokenService, useValue: {
             accessToken: 'ACCESS_TOKEN'
@@ -81,6 +74,7 @@ describe('InboxConversationService', () => {
     httpTestingController = TestBed.get(HttpTestingController);
     spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
     service.subscribeChatEvents();
+    service.conversations = [];
     service.archivedConversations = [];
   });
 
@@ -94,14 +88,6 @@ describe('InboxConversationService', () => {
       eventService.emit(EventService.NEW_MESSAGE, message);
 
       expect(service.processNewMessage).toHaveBeenCalledWith(inboxMessage);
-    });
-
-    it('should set conversations when a INBOX_LOADED event is emitted', () => {
-      const conversations = createInboxConversationsArray(6);
-
-      eventService.emit(EventService.INBOX_LOADED, conversations);
-
-      expect(service.conversations).toBe(conversations);
     });
 
     it('should call procesNewChatSignal when a CHAT_SIGNAL event is emitted', () => {
@@ -176,7 +162,7 @@ describe('InboxConversationService', () => {
     let conversations, currentLastMessage, newInboxMessage;
     beforeEach(() => {
       conversations = createInboxConversationsArray(4);
-      eventService.emit(EventService.INBOX_LOADED, conversations);
+      service.conversations = conversations;
     });
 
     describe('when called with a message that does not already exist', () => {
@@ -416,7 +402,7 @@ describe('InboxConversationService', () => {
     let mockedConversation: InboxConversation;
     const timestamp = new Date(CREATE_MOCK_INBOX_CONVERSATION().messages[0].date).getTime();
     beforeEach(() => {
-      eventService.emit(EventService.INBOX_LOADED, createInboxConversationsArray(12));
+      service.conversations = createInboxConversationsArray(12);
     });
 
     describe('when processing read signals', () => {

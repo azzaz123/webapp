@@ -36,6 +36,7 @@ import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { InboxService } from '../inbox/inbox.service';
 import { InboxConversation } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
+import { InboxConversationService } from '../inbox/inbox-conversation.service';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -69,6 +70,7 @@ export class ConversationService extends LeadService {
               protected trackingService: TrackingService,
               protected notificationService: NotificationService,
               private inboxService: InboxService,
+              private inboxConversationService: InboxConversationService,
               private remoteConsole: RemoteConsoleService,
               private modalService: NgbModal,
               private zone: NgZone) {
@@ -430,11 +432,11 @@ export class ConversationService extends LeadService {
   }
 
   public handleNewMessages(message: Message, updateDate: boolean) {
-    if (!isEmpty(this.inboxService.conversations)) {
+    if (!isEmpty(this.inboxConversationService.conversations)) {
       this.onNewMessage(message, updateDate);
     } else {
       const interval: any = setInterval(() => {
-        if (!isEmpty(this.inboxService.conversations)) {
+        if (!isEmpty(this.inboxConversationService.conversations)) {
           clearInterval(interval);
           this.onNewMessage(message, updateDate);
         }
