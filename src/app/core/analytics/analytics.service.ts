@@ -1,4 +1,5 @@
 import mParticle from '@mparticle/web-sdk';
+import mixpanelKit from '@mparticle/web-mixpanel-kit';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
@@ -28,6 +29,7 @@ export class AnalyticsService {
         }
       };
 
+      mixpanelKit.register(CONFIG);
       mParticle.init(environment.mParticleKey, CONFIG);
     });
   }
