@@ -117,6 +117,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private oldDeliveryValue: any;
   public isUrgent = false;
   private allCategories: CategoryOption[];
+  public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
+  public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -204,10 +206,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         });
         this.oldDeliveryValue = this.getDeliveryInfo();
         if (extraInfo) {
-          if (+this.item.categoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
+          if (+this.item.categoryId === this.cellPhonesCategoryId) {
             this.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).patchValue(this.item.extraInfo);
           }
-          if (+this.item.categoryId === CATEGORY_IDS.FASHIN_ACCESSORIES) {
+          if (+this.item.categoryId === this.fashionCategoryId) {
             this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).patchValue(this.item.extraInfo);
             this.getSizes();
           }
@@ -292,10 +294,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private prepareFormBeforeUpload(): void {
     const formValue = this.uploadForm.value;
 
-    if (+formValue.category_id === CATEGORY_IDS.FASHIN_ACCESSORIES) {
+    if (+formValue.category_id === this.fashionCategoryId) {
       this.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).disable();
       this.renameObjectKey(this.uploadForm.value, FASHION_EXTRA_FIELDS_NAME, 'extra_info');
-    } else if (+formValue.category_id === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
+    } else if (+formValue.category_id === this.cellPhonesCategoryId) {
       this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).disable();
       this.renameObjectKey(this.uploadForm.value, CELLPHONES_EXTRA_FIELDS_NAME, 'extra_info');
     } else {
@@ -388,9 +390,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     const suggestions: KeywordSuggestion[] = [];
     let objectTypeId: number;
 
-    if (+this.uploadForm.value.category_id === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
+    if (+this.uploadForm.value.category_id === this.cellPhonesCategoryId) {
       objectTypeId = this.uploadForm.value[CELLPHONES_EXTRA_FIELDS_NAME].object_type.id;
-    } else if (+this.uploadForm.value.category_id === CATEGORY_IDS.FASHIN_ACCESSORIES) {
+    } else if (+this.uploadForm.value.category_id === this.fashionCategoryId) {
       objectTypeId = this.uploadForm.value[FASHION_EXTRA_FIELDS_NAME].object_type.id;
     }
 
