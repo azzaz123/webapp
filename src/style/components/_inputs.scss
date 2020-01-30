@@ -57,9 +57,6 @@ ng-select {
     border-radius: 6px;
     height: $form-control-height;
     margin-left: -$spacing-xxs;
-    &.disabled {
-      background-color: transparent !important;
-    }
     &.focus {
       border-color: $walla-main !important;
     }

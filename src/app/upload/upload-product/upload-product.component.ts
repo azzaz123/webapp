@@ -12,7 +12,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators, FormControl } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
 import { find, omit, isEqual } from 'lodash-es';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +23,7 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Item, ITEM_TYPES } from '../../core/item/item';
-import { DeliveryInfo, ItemContent, ItemExtraInfo } from '../../core/item/item-response.interface';
+import { DeliveryInfo, ItemContent } from '../../core/item/item-response.interface';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
 import { Subject } from 'rxjs';
@@ -40,6 +40,9 @@ import {
   EditItemCG
 } from '../../core/analytics/analytics-constants';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
+
+const FASHION_EXTRA_FIELDS_NAME = 'fashion_extra_fields';
+const CELLPHONES_EXTRA_FIELDS_NAME = 'cellphones_extra_fields';
 
 @Component({
   selector: 'tsl-upload-product',
@@ -143,6 +146,23 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         address: ['', [Validators.required]],
         latitude: ['', [Validators.required]],
         longitude: ['', [Validators.required]],
+      }),
+      [CELLPHONES_EXTRA_FIELDS_NAME]: this.fb.group({
+        object_type: this.fb.group({
+          id: [null, [Validators.required]]
+        }),
+        brand: [null, [Validators.required]],
+        model: [null, [Validators.required]]
+      }),
+      [FASHION_EXTRA_FIELDS_NAME]: this.fb.group({
+        object_type: this.fb.group({
+          id: [null, [Validators.required]]
+        }),
+        brand: [null, [Validators.required]],
+        size: this.fb.group({
+          id: [null, [Validators.required]]
+        }),
+        gender: [null, [Validators.required]]
       })
     });
     config.placement = 'right';
@@ -154,7 +174,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.allCategories = categories;
       this.categories = categories.filter((category: CategoryOption) => {
-        this.detectCategoryChanges();
         return !this.categoryService.isHeroCategory(+category.value);
       });
       if (!this.item) {
@@ -168,6 +187,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         }
       } else {
         const selectedCategory = find(categories, { value: this.item.categoryId.toString() });
+        const extraInfo = this.item.extraInfo;
+
         if (this.categoryService.isHeroCategory(this.item.categoryId)) {
           this.fixedCategory = selectedCategory ? selectedCategory.label : null;
         }
@@ -179,11 +200,21 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           description: this.item.description,
           sale_conditions: this.item.saleConditions ? this.item.saleConditions : {},
           category_id: this.item.categoryId.toString(),
-          delivery_info: this.getDeliveryInfo(),
-          extra_info: this.item.extraInfo ? this.item.extraInfo : {}
+          delivery_info: this.getDeliveryInfo()
         });
         this.oldDeliveryValue = this.getDeliveryInfo();
+        if (extraInfo) {
+          if (+this.item.categoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
+            this.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).patchValue(this.item.extraInfo);
+          }
+          if (+this.item.categoryId === CATEGORY_IDS.FASHIN_ACCESSORIES) {
+            this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).patchValue(this.item.extraInfo);
+            this.getSizes();
+          }
+          this.getObjectTypes();
+        }
       }
+      this.detectCategoryChanges();
       this.detectFormChanges();
     });
   }
@@ -212,7 +243,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private detectCategoryChanges() {
     this.uploadForm.get('category_id').valueChanges.subscribe((categoryId: number) => {
       this.onCategorySelect.emit(categoryId);
-      this.handleCategoryExtraFields();
     });
   }
 
@@ -233,14 +263,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   onSubmit() {
+    this.prepareFormBeforeUpload();
     if (this.uploadForm.valid) {
       this.loading = true;
-      if (this.uploadForm.value['extra_fields_cellphones']) {
-        this.renameObjectKey(this.uploadForm.value, 'extra_fields_cellphones', 'extra_info');
-      }
-      if (this.uploadForm.value['extra_fields_fashion']) {
-        this.renameObjectKey(this.uploadForm.value, 'extra_fields_fashion', 'extra_info');
-      }
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
         this.uploadForm.value.sale_conditions.shipping_allowed = this.uploadForm.value.delivery_info ? true : false;
       }
@@ -249,6 +274,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         values: this.uploadForm.value
       });
     } else {
+      this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).enable();
+      this.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).enable();
       this.uploadForm.markAsPending();
       if (!this.uploadForm.get('location.address').valid) {
         this.uploadForm.get('location.address').markAsDirty();
@@ -259,6 +286,21 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
         this.onValidationError.emit();
       }
+    }
+  }
+
+  private prepareFormBeforeUpload(): void {
+    const formValue = this.uploadForm.value;
+
+    if (+formValue.category_id === CATEGORY_IDS.FASHIN_ACCESSORIES) {
+      this.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).disable();
+      this.renameObjectKey(this.uploadForm.value, FASHION_EXTRA_FIELDS_NAME, 'extra_info');
+    } else if (+formValue.category_id === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
+      this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).disable();
+      this.renameObjectKey(this.uploadForm.value, CELLPHONES_EXTRA_FIELDS_NAME, 'extra_info');
+    } else {
+      this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).disable();
+      this.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).disable();
     }
   }
 
@@ -346,10 +388,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     const suggestions: KeywordSuggestion[] = [];
     let objectTypeId: number;
 
-    if (this.uploadForm.value['extra_fields_cellphones']) {
-      objectTypeId = this.uploadForm.value['extra_fields_cellphones'].object_type.id;
-    } else if (this.uploadForm.value['extra_fields_fashion']) {
-      objectTypeId = this.uploadForm.value['extra_fields_fashion'].object_type.id;
+    if (+this.uploadForm.value.category_id === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
+      objectTypeId = this.uploadForm.value[CELLPHONES_EXTRA_FIELDS_NAME].object_type.id;
+    } else if (+this.uploadForm.value.category_id === CATEGORY_IDS.FASHIN_ACCESSORIES) {
+      objectTypeId = this.uploadForm.value[FASHION_EXTRA_FIELDS_NAME].object_type.id;
     }
 
     this.generalSuggestionsService.
@@ -382,8 +424,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       getModels(
         modelKeyword,
         this.uploadForm.value.category_id,
-        this.uploadForm.value['extra_fields_cellphones'].brand,
-        this.uploadForm.value['extra_fields_cellphones'].object_type.id)
+        this.uploadForm.value[CELLPHONES_EXTRA_FIELDS_NAME].brand,
+        this.uploadForm.value[CELLPHONES_EXTRA_FIELDS_NAME].object_type.id)
       .subscribe((models: Model[]) => {
         const suggestions: KeywordSuggestion[] = [];
 
@@ -395,12 +437,15 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getSizes(): void {
-    const objectTypeId = this.uploadForm.value['extra_fields_fashion'].object_type.id;
-    const gender = this.uploadForm.value['extra_fields_fashion'].gender;
+    const objectTypeId = this.uploadForm.value[FASHION_EXTRA_FIELDS_NAME].object_type.id;
+    const gender = this.uploadForm.value[FASHION_EXTRA_FIELDS_NAME].gender;
 
     if (objectTypeId && gender) {
       this.generalSuggestionsService.getSizes(objectTypeId, gender).subscribe((sizes: IOption[]) => {
+        this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).get('size').enable();
         this.sizes = sizes;
+      }, () => {
+        this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).get('size').disable();
       });
     }
   }
@@ -415,7 +460,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public autoCompleteCellphonesModel(brandModelObj: BrandModel): void {
     if ('model' in brandModelObj) {
       this.uploadForm.patchValue({
-        extra_fields_cellphones: {
+        [CELLPHONES_EXTRA_FIELDS_NAME]: {
           brand: brandModelObj.brand,
           model: brandModelObj.model
         }
@@ -423,132 +468,22 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
   }
 
-  public handleCategoryExtraFields() {
-    const currentCategoryId = this.uploadForm.get('category_id').value;
-
-    if (this.uploadForm.get('extra_fields_fashion')) {
-      this.uploadForm.get('extra_fields_fashion').reset();
-      this.uploadForm.removeControl('extra_fields_fashion');
-    }
-    if (this.uploadForm.get('extra_fields_cellphones')) {
-      this.uploadForm.get('extra_fields_cellphones').reset();
-      this.uploadForm.removeControl('extra_fields_cellphones');
-    }
-
-    if (+currentCategoryId === CATEGORY_IDS.FASHIN_ACCESSORIES) {
-      this.uploadForm.addControl('extra_fields_fashion', this.getFashionExtraFields());
-    } else if (+currentCategoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
-      this.uploadForm.addControl('extra_fields_cellphones', this.getCellPhonesExtraFields());
-    }    
-  }
-
   public resetCellphonesExtraFields(): void {
-    this.uploadForm.get('extra_fields_cellphones').patchValue({
+    this.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).patchValue({
       brand: null,
       model: null
     });
   }
 
   public resetFashionExtraFields(): void {
-    this.uploadForm.get('extra_fields_fashion').patchValue({
+    this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).patchValue({
       brand: null,
       size: {
         id: null
       },
     });
-  }
 
-  private getCellPhonesExtraFields(): FormGroup {
-    if (this.item) {
-      const itemExtraInfo: ItemExtraInfo = this.item.extraInfo;
-      let cellPhonesExtraFields = {};
-
-      if (itemExtraInfo && itemExtraInfo.object_type) {
-        cellPhonesExtraFields['object_type'] = new FormGroup(
-          { id: new FormControl(itemExtraInfo.object_type.id, Validators.required) }
-        );
-        this.getObjectTypes();
-      } else {
-        cellPhonesExtraFields['object_type'] = new FormGroup(
-          { id: new FormControl(null, Validators.required) }
-        );
-      }
-
-      if (itemExtraInfo && itemExtraInfo.brand) {
-        cellPhonesExtraFields['brand'] = new FormControl(itemExtraInfo.brand, Validators.required);
-      } else {
-        cellPhonesExtraFields['brand'] = new FormControl(null, Validators.required);
-      }
-
-      if (itemExtraInfo && itemExtraInfo.model) {
-        cellPhonesExtraFields['model'] = new FormControl(itemExtraInfo.model, Validators.required);
-      } else {
-        cellPhonesExtraFields['model'] = new FormControl(null, Validators.required);
-      }
-
-      return new FormGroup(cellPhonesExtraFields);
-    } else {
-      return new FormGroup({
-        object_type: new FormGroup({
-          id: new FormControl(null, Validators.required)
-        }),
-        brand: new FormControl(null, Validators.required),
-        model: new FormControl(null, Validators.required)
-      });
-    }
-  }
-
-  private getFashionExtraFields(): FormGroup {
-    if (this.item) {
-      const itemExtraInfo: ItemExtraInfo = this.item.extraInfo;
-      let fashionExtraFields = {};
-
-      if (itemExtraInfo && itemExtraInfo.object_type) {
-        fashionExtraFields['object_type'] = new FormGroup(
-          { id: new FormControl(itemExtraInfo.object_type.id, Validators.required) }
-        );
-        this.getObjectTypes();
-      } else {
-        fashionExtraFields['object_type'] = new FormGroup(
-          { id: new FormControl(null, Validators.required) }
-        );
-      }
-
-      if (itemExtraInfo && itemExtraInfo.brand) {
-        fashionExtraFields['brand'] = new FormControl(itemExtraInfo.brand, Validators.required);
-      } else {
-        fashionExtraFields['brand'] = new FormControl(null, Validators.required);
-      }
-
-      if (itemExtraInfo && itemExtraInfo.object_type) {
-        fashionExtraFields['size'] = new FormGroup(
-          { id: new FormControl(itemExtraInfo.size.id, Validators.required) }
-        );
-      } else {
-        fashionExtraFields['size'] = new FormGroup(
-          { id: new FormControl(null, Validators.required) }
-        );
-      }
-
-      if (itemExtraInfo && itemExtraInfo.gender) {
-        fashionExtraFields['gender'] = new FormControl(itemExtraInfo.gender, Validators.required);
-      } else {
-        fashionExtraFields['gender'] = new FormControl(null, Validators.required);
-      }
-
-      return new FormGroup(fashionExtraFields);
-    } else {
-      return new FormGroup({
-        object_type: new FormGroup({
-          id: new FormControl(null, Validators.required)
-        }),
-        brand: new FormControl(null, Validators.required),
-        size: new FormGroup({
-          id: new FormControl(null, Validators.required)
-        }),
-        gender: new FormControl(null, Validators.required)
-      });
-    }
+    this.getSizes();
   }
 
   public updateUploadPercentage(percentage: number) {
