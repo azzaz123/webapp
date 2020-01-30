@@ -84,12 +84,4 @@ describe('CategoryService', () => {
     });
   });
 
-  describe('isFashionCategory', () => {
-    it('should return true if the category is Fashion&Accessories', () => {
-      const isFashionCategory = service.isFashionCategory(service['fashionCategoryId']);
-
-      expect(isFashionCategory).toEqual(true);
-    });
-  });
-
 });

@@ -41,8 +41,8 @@ import {
 } from '../../core/analytics/analytics-constants';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
 
-const FASHION_EXTRA_FIELDS_NAME = 'fashion_extra_fields';
-const CELLPHONES_EXTRA_FIELDS_NAME = 'cellphones_extra_fields';
+export const FASHION_EXTRA_FIELDS_NAME = 'fashion_extra_fields';
+export const CELLPHONES_EXTRA_FIELDS_NAME = 'cellphones_extra_fields';
 
 @Component({
   selector: 'tsl-upload-product',
