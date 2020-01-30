@@ -276,7 +276,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         values: this.uploadForm.value
       });
     } else {
-      this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).enable();
+      Object.keys((<FormGroup>this.uploadForm.controls[FASHION_EXTRA_FIELDS_NAME]).controls).forEach(key => {
+        if (key !== 'size') {
+          this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).get(key).enable();
+        }
+      });
       this.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).enable();
       this.uploadForm.markAsPending();
       if (!this.uploadForm.get('location.address').valid) {
@@ -448,6 +452,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         this.sizes = sizes;
       }, () => {
         this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).get('size').disable();
+        this.sizes = [];
       });
     }
   }
