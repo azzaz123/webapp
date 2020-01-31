@@ -18,13 +18,15 @@ import {
   ClickPaySubscription
 } from '../../../core/analytics/analytics-constants';
 import { PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
+import { CATEGORY_IDS } from '../../../core/category/category-ids';
+
+export const CAR_DEALER_TYPEFORM_LINK = 'https://wallapop.typeform.com/to/xj3GPt';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
   templateUrl: './add-new-subscription-modal.component.html',
   styleUrls: ['./add-new-subscription-modal.component.scss']
 })
-
 export class AddNewSubscriptionModalComponent implements OnInit {
 
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
@@ -41,6 +43,8 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   private invoiceId: string;
   public loaded: boolean;
   public hasSavedCard = true;
+  public carsCategoryId = CATEGORY_IDS.CAR;
+  public carDealerTypeformLink = CAR_DEALER_TYPEFORM_LINK;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -52,13 +56,12 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.subscription.category_id = 123;
     this.loaded = true;
     this.selectedTier = this.subscription.selected_tier;
     this.eventService.subscribe('paymentActionResponse', (response) => {
       this.managePaymentResponse(response);
     });
-      
-   
   }
 
   public close() {
