@@ -85,7 +85,7 @@
   <msg id="5340498030552368470"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:10</source><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:11</source>Current password</msg>
   <msg id="3588415639242079458"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:14</source><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:15</source>New password</msg>
   <msg id="8656126574213649581"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:18</source><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:19</source>Confirm new password</msg>
-  <msg id="4021752662928002901"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:21</source><source>app/upload/preview-modal/preview-modal.component.html:7</source><source>app/upload/upload-car/upload-car.component.html:277</source><source>app/upload/upload-product/upload-product.component.html:204</source><source>app/upload/upload-realestate/upload-realestate.component.html:236</source>Update</msg>
+  <msg id="4021752662928002901"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:21</source><source>app/upload/preview-modal/preview-modal.component.html:7</source><source>app/upload/upload-car/upload-car.component.html:277</source><source>app/upload/upload-product/upload-product.component.html:229</source><source>app/upload/upload-realestate/upload-realestate.component.html:236</source>Update</msg>
   <msg id="3395733106362662025"><source>app/shared/profile/picture-upload/picture-upload.component.html:3</source>Profile images</msg>
   <msg id="5064069563768684657"><source>app/shared/profile/picture-upload/picture-upload.component.html:8</source>Main image</msg>
   <msg id="2099215062285114503"><source>app/shared/profile/picture-upload/picture-upload.component.html:21</source><source>app/shared/profile/cover-upload/cover-upload.component.html:17</source>Update picture</msg>
@@ -516,7 +516,7 @@
   <msg id="3586674587150281199"><source>app/profile/profile-info/profile-info.component.html:24</source>Last name</msg>
   <msg id="8953033926734869941"><source>app/profile/profile-info/profile-info.component.html:31</source>Name</msg>
   <msg id="8443942333850081361"><source>app/profile/profile-info/profile-info.component.html:41</source>Product location</msg>
-  <msg id="4902817035128594900"><source>app/profile/profile-info/profile-info.component.html:49</source><source>app/upload/upload-car/upload-car.component.html:246</source><source>app/upload/upload-product/upload-product.component.html:66</source><source>app/upload/upload-realestate/upload-realestate.component.html:170</source>Description</msg>
+  <msg id="4902817035128594900"><source>app/profile/profile-info/profile-info.component.html:49</source><source>app/upload/upload-car/upload-car.component.html:246</source><source>app/upload/upload-product/upload-product.component.html:63</source><source>app/upload/upload-realestate/upload-realestate.component.html:170</source>Description</msg>
   <msg id="857364676078926106"><source>app/profile/profile-info/profile-info.component.html:57</source>Opening Hours</msg>
   <msg id="2458848059908306406"><source>app/profile/profile-info/profile-info.component.html:65</source>Telephone</msg>
   <msg id="7548733830385801837"><source>app/profile/profile-info/profile-info.component.html:69,70</source>This telephone number will never be public, we will
@@ -535,8 +535,8 @@
   <msg id="2618743771935093938"><source>app/profile/account/account.component.html:7</source>Personal info</msg>
   <msg id="3179148736830644140"><source>app/profile/account/account.component.html:11</source>Date of birth</msg>
   <msg id="3948439187870398089"><source>app/profile/account/account.component.html:17</source>Gender</msg>
-  <msg id="8012344910054029733"><source>app/profile/account/account.component.html:23</source><source>app/upload/upload-product/upload-product.component.html:115</source>Male</msg>
-  <msg id="5667840900782067941"><source>app/profile/account/account.component.html:28</source><source>app/upload/upload-product/upload-product.component.html:111</source>Female</msg>
+  <msg id="8012344910054029733"><source>app/profile/account/account.component.html:23</source><source>app/upload/upload-product/upload-product.component.html:113</source>Male</msg>
+  <msg id="5667840900782067941"><source>app/profile/account/account.component.html:28</source><source>app/upload/upload-product/upload-product.component.html:109</source>Female</msg>
   <msg id="3004455960309356224"><source>app/profile/account/account.component.html:48</source>Account info</msg>
   <msg id="4768749765465246664"><source>app/profile/account/account.component.html:52</source>Email</msg>
   <msg id="1431416938026210429"><source>app/profile/account/account.component.html:58</source>Password</msg>
@@ -701,7 +701,7 @@
   <msg id="7528717071298145350"><source>app/upload/drop-area/drop-area.component.html:12,13</source>You have reached the limit of <ph name="INTERPOLATION"><ex>{{maxUploads}}</ex></ph> photos per product.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Remove one first if you want to add
         more.</msg>
   <msg id="6145572175629887249"><source>app/upload/drop-area/drop-area.component.html:32</source>Main photo</msg>
-  <msg id="6622336784189066984"><source>app/upload/preview-modal/preview-modal.component.html:6</source><source>app/upload/upload-car/upload-car.component.html:276</source><source>app/upload/upload-product/upload-product.component.html:203</source><source>app/upload/upload-realestate/upload-realestate.component.html:235</source>Post Ad</msg>
+  <msg id="6622336784189066984"><source>app/upload/preview-modal/preview-modal.component.html:6</source><source>app/upload/upload-car/upload-car.component.html:276</source><source>app/upload/upload-product/upload-product.component.html:228</source><source>app/upload/upload-realestate/upload-realestate.component.html:235</source>Post Ad</msg>
   <msg id="2233560223291461480"><source>app/upload/preview-modal/preview-modal.component.html:27</source><source>app/upload/upload-car/upload-car.component.html:228</source>Manual</msg>
   <msg id="810888510148304696"><source>app/upload/preview-modal/preview-modal.component.html:28</source><source>app/upload/upload-car/upload-car.component.html:235</source>Automatic</msg>
   <msg id="7493844856700299080"><source>app/upload/preview-modal/preview-modal.component.html:42</source><source>app/upload/upload-car/upload-car.component.html:182</source>Petrol</msg>
@@ -717,7 +717,7 @@
   <msg id="6589788805402268888"><source>app/upload/upload-car/upload-car.component.html:16</source>Select a predefined make</msg>
   <msg id="3937675945889395823"><source>app/upload/upload-car/upload-car.component.html:19</source>E.g. Seat</msg>
   <msg id="6532546314500089011"><source>app/upload/upload-car/upload-car.component.html:26</source>The basics: make.</msg>
-  <msg id="1141886420788473147"><source>app/upload/upload-car/upload-car.component.html:32</source><source>app/upload/upload-product/upload-product.component.html:141</source>Model</msg>
+  <msg id="1141886420788473147"><source>app/upload/upload-car/upload-car.component.html:32</source><source>app/upload/upload-product/upload-product.component.html:172</source>Model</msg>
   <msg id="2547360803785971520"><source>app/upload/upload-car/upload-car.component.html:33</source><source>app/upload/upload-car/upload-car.component.html:37</source>E.g. Ibiza</msg>
   <msg id="3089964188307740"><source>app/upload/upload-car/upload-car.component.html:40</source>The basics: model.</msg>
   <msg id="6904447978553402020"><source>app/upload/upload-car/upload-car.component.html:48</source>Cash price</msg>
@@ -757,7 +757,7 @@
   <msg id="258836646318650091"><source>app/upload/upload-car/upload-car.component.html:264,265</source>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only
         .jpg images.</msg>
   <msg id="3738144900818451024"><source>app/upload/upload-car/upload-car.component.html:269</source>Your car is in:</msg>
-  <msg id="2174289057200208170"><source>app/upload/upload-car/upload-car.component.html:278</source><source>app/upload/upload-product/upload-product.component.html:205</source><source>app/upload/upload-realestate/upload-realestate.component.html:237</source>Uploading... <ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex></ph>%</msg>
+  <msg id="2174289057200208170"><source>app/upload/upload-car/upload-car.component.html:278</source><source>app/upload/upload-product/upload-product.component.html:230</source><source>app/upload/upload-realestate/upload-realestate.component.html:237</source>Uploading... <ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex></ph>%</msg>
   <msg id="4138346261331244869"><source>app/upload/upload-car/upload-car.component.html:283</source>How does it look?</msg>
   <msg id="243983274320667129"><source>app/upload/upload-product/upload-product.component.html:6</source>Information about your item</msg>
   <msg id="3322682308330601072"><source>app/upload/upload-product/upload-product.component.html:12</source>What are you selling?</msg>
@@ -770,30 +770,30 @@
               Add a fair price and the category that best suits your item.
             </msg>
   <msg id="1806667489382256324"><source>app/upload/upload-product/upload-product.component.html:47</source><source>app/upload/upload-product/upload-product.component.html:48</source>Category</msg>
-  <msg id="5433438112560949935"><source>app/upload/upload-product/upload-product.component.html:68</source>Add relevant information such as condition, model, color...</msg>
-  <msg id="7493287338252374869"><source>app/upload/upload-product/upload-product.component.html:72</source>Every detail helps: so tell us more!</msg>
-  <msg id="1554463637849211201"><source>app/upload/upload-product/upload-product.component.html:82,84</source>
+  <msg id="5433438112560949935"><source>app/upload/upload-product/upload-product.component.html:65</source>Add relevant information such as condition, model, color...</msg>
+  <msg id="7493287338252374869"><source>app/upload/upload-product/upload-product.component.html:69</source>Every detail helps: so tell us more!</msg>
+  <msg id="1554463637849211201"><source>app/upload/upload-product/upload-product.component.html:79,81</source>
           Photos
         </msg>
-  <msg id="1663822447043824807"><source>app/upload/upload-product/upload-product.component.html:90,93</source>
+  <msg id="1663822447043824807"><source>app/upload/upload-product/upload-product.component.html:88,91</source>
         You can drag and drop your photos here. Select and drag to change the
         order. Max 10MB. We accept only .jpg images.
       </msg>
-  <msg id="8132836034776935972"><source>app/upload/upload-product/upload-product.component.html:100</source>The more precise, the better</msg>
-  <msg id="3644199581629588381"><source>app/upload/upload-product/upload-product.component.html:106</source>Choose the gender of the garment</msg>
-  <msg id="3892318280760368021"><source>app/upload/upload-product/upload-product.component.html:126</source>Select a type</msg>
-  <msg id="2559885490456050359"><source>app/upload/upload-product/upload-product.component.html:132</source>Brand</msg>
-  <msg id="45739481977493163"><source>app/upload/upload-product/upload-product.component.html:150</source>Size</msg>
-  <msg id="1243184761486172945"><source>app/upload/upload-product/upload-product.component.html:152</source>Select a size</msg>
-  <msg id="5972351850683239127"><source>app/upload/upload-product/upload-product.component.html:165</source>Shipping</msg>
-  <msg id="518944399314816423"><source>app/upload/upload-product/upload-product.component.html:170,172</source>
+  <msg id="8132836034776935972"><source>app/upload/upload-product/upload-product.component.html:98</source><source>app/upload/upload-product/upload-product.component.html:149</source>The more precise, the better</msg>
+  <msg id="3644199581629588381"><source>app/upload/upload-product/upload-product.component.html:104</source>Choose the gender of the garment</msg>
+  <msg id="3892318280760368021"><source>app/upload/upload-product/upload-product.component.html:124</source><source>app/upload/upload-product/upload-product.component.html:157</source>Select a type</msg>
+  <msg id="2559885490456050359"><source>app/upload/upload-product/upload-product.component.html:130</source><source>app/upload/upload-product/upload-product.component.html:163</source>Brand</msg>
+  <msg id="45739481977493163"><source>app/upload/upload-product/upload-product.component.html:138</source>Size</msg>
+  <msg id="1243184761486172945"><source>app/upload/upload-product/upload-product.component.html:140</source>Select a size</msg>
+  <msg id="5972351850683239127"><source>app/upload/upload-product/upload-product.component.html:188</source>Shipping</msg>
+  <msg id="518944399314816423"><source>app/upload/upload-product/upload-product.component.html:193,195</source>
             You can send (almost) anything through wallapop. And it&apos;s free for you!
           </msg>
-  <msg id="3784792223212622760"><source>app/upload/upload-product/upload-product.component.html:190,193</source>
+  <msg id="3784792223212622760"><source>app/upload/upload-product/upload-product.component.html:214,217</source>
         Tell us how much your product weighs. Remember that the sum of the
         length, height and width can not exceed 270cm.
       </msg>
-  <msg id="2852614655612881023"><source>app/upload/upload-product/upload-product.component.html:210,212</source><source>app/upload/upload-realestate/upload-realestate.component.html:242,244</source>
+  <msg id="2852614655612881023"><source>app/upload/upload-product/upload-product.component.html:235,237</source><source>app/upload/upload-realestate/upload-realestate.component.html:242,244</source>
         How does it look?
       </msg>
   <msg id="4601810369894625886"><source>app/upload/upload-realestate/upload-realestate.component.html:6</source>Information about your property</msg>
