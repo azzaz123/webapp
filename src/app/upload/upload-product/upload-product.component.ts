@@ -300,10 +300,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
     if (+formValue.category_id === this.fashionCategoryId) {
       this.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).disable();
-      this.renameObjectKey(this.uploadForm.value, FASHION_EXTRA_FIELDS_NAME, 'extra_info');
+      if (this.uploadForm.valid) {
+        this.renameObjectKey(this.uploadForm.value, FASHION_EXTRA_FIELDS_NAME, 'extra_info');
+      }
     } else if (+formValue.category_id === this.cellPhonesCategoryId) {
       this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).disable();
-      this.renameObjectKey(this.uploadForm.value, CELLPHONES_EXTRA_FIELDS_NAME, 'extra_info');
+      if (this.uploadForm.valid) {
+        this.renameObjectKey(this.uploadForm.value, CELLPHONES_EXTRA_FIELDS_NAME, 'extra_info');
+      }
     } else {
       this.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).disable();
       this.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).disable();
