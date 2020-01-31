@@ -42,10 +42,12 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   @Input() listingLimit: Tier;
   @Input() disabled: number;
   @Input() spaceBetween = false;
+  @Input() showUseSavedCard = false;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
   @Output() onStripeCardCreate: EventEmitter<PaymentMethodResponse> = new EventEmitter();
+  @Output() onClickUseSavedCard = new EventEmitter();
 
   cardHandler = this.onChange.bind(this);
   error: string;
@@ -166,6 +168,10 @@ export class StripeCardElementComponent implements ControlValueAccessor {
 
   public registerOnTouched(fn: Function): void {
     this.onTouched = fn;
+  }
+
+  public clickUseSavedCard() {
+    this.onClickUseSavedCard.emit(true);
   }
 
 }

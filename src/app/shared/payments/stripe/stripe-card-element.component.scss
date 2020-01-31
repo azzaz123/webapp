@@ -78,3 +78,17 @@ tsl-button {
     }
   }
 }
+
+.card-feedback {
+  &--flexible {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.card-feedback__action {
+  color: $walla-main;
+  font-size: $font-size-s;
+  text-align: left;
+  cursor: pointer;
+}
