@@ -141,11 +141,14 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   }
 
   public createNewCard() {
+    this.newLoading = true;
     this.stripeService.createStripeCard(this.card).then((paymentMethod: PaymentMethodResponse) => {
       if (paymentMethod) {
         this.onStripeCardCreate.emit(paymentMethod);
+      } else {
+        this.newLoading = false;
       }
-    });
+    }).catch(() => this.newLoading = false);
   }
 
   public get model(): boolean {

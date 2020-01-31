@@ -95,7 +95,7 @@
               </div>
               <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [disabled]="isPaymentError"
                 [type]="'subscription'" [listingLimit]="selectedTier" [spaceBetween]="true" [action]="action"
-                [showUseSavedCard]="hasSavedCard" (onClickUseSavedCard)="removeNewCard()" (click)="loading = true"
+                [showUseSavedCard]="hasSavedCard" (onClickUseSavedCard)="removeNewCard()"
                 (onStripeCardCreate)="addSubscription($event); onClickPay(true);" (stripeCard)="setCardInfo($event)">
               </tsl-stripe-card-element>
               <tsl-button [hidden]="!savedCard" [disabled]="!selectedCard || loading" [loading]="loading"
