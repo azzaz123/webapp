@@ -41,6 +41,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   @Input() action: string;
   @Input() listingLimit: Tier;
   @Input() disabled: number;
+  @Input() spaceBetween = false;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
