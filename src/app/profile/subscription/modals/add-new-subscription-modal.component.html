@@ -70,8 +70,8 @@
             </div>
           </div>
           <div class="h-50">
-              <div class="w-100 h-100 align-items-center">
-                <div class="AddNewSubscription__selection">
+              <div class="w-100 h-100 align-items-center" [ngClass]="{'AddNewSubscription__selection-container--with-saved-card': savedCard}">
+                <div>
                   <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
                   (hasCard)="hasCard($event)"></tsl-stripe-card-selection>
                 </div>
@@ -81,16 +81,16 @@
                 </div>
                 <div class="AddNewSubscription__payment-add-card" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
                 <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [disabled]="isPaymentError" [type]="'subscription'"
-                [listingLimit]="selectedTier" [action]="action" (click)="loading = true" (onStripeCardCreate)="addSubscription($event); onClickPay(true);" (stripeCard)="setCardInfo($event)">
+                [listingLimit]="selectedTier" [spaceBetween]="true" [action]="action" (click)="loading = true" (onStripeCardCreate)="addSubscription($event); onClickPay(true);" (stripeCard)="setCardInfo($event)">
                 </tsl-stripe-card-element>
+                <tsl-button [hidden]="!savedCard"
+                [disabled]="!selectedCard || loading"
+                [loading]="loading"
+                (click)="addSubscriptionFromSavedCard(); onClickPay(false);"
+                id="qa-checkout-subscription"
+                className="btn-primary btn-medium stripe"
+                i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}</tsl-button>
               </div>
-              <tsl-button [hidden]="!savedCard"
-              [disabled]="!selectedCard || loading"
-              [loading]="loading"
-              (click)="addSubscriptionFromSavedCard(); onClickPay(false);"
-              id="qa-checkout-subscription"
-              className="btn-primary btn-medium stripe"
-              i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}</tsl-button>
             </div>
         </div>
       </div>

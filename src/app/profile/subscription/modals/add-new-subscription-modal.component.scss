@@ -101,12 +101,14 @@
   }
 }
 
-.AddNewSubscription__selection {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  tsl-stripe-card-selection {
-    width: 100%;
+.AddNewSubscription__selection-container {
+  &--with-saved-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    div {
+      width: 100%;
+    }
   }
 }
 
@@ -149,16 +151,18 @@
 }
 
 .AddNewSubscription__payment-add-card {
+  width: 100%;
   color: $walla-main;
   font-size: $font-size-s;
   text-align: left;
   cursor: pointer;
 }
 
-tsl-button {
+tsl-button, tsl-stripe-card-element /deep/ tsl-button {
   width: 100%;
   /deep/ {
-    .btn-text  {
+    .btn-text {
+      font-size: $spacing-m;
       padding: $spacing-ms $spacing-ml;
       background-color: transparent;
       color: $blue-grey-3;
@@ -172,7 +176,13 @@ tsl-button {
     }
     button {
       width: 280px;
-      height: 100%;
+      height: 42px;
+
+      .secure-payment {
+        span {
+          font-size: $spacing-m;
+        }
+      }
     }
   }
 }
