@@ -34,24 +34,22 @@
               <a href="{{carDealerTypeformLink}}" target="_blank">Contact us directly</a>
             </div>
           </div>
-
           <div>
-          </div>
-          <div class="AddNewSubscription__listing-limit-payment AddNewSubscription__listing-limit-payment--line-top">
-            <div class="text-left">
-              <span class="AddNewSubscription__listing-limit-quantity">{{selectedTier.limit}}
-                {{subscription.category_name}}</span>
-              <span class="AddNewSubscription__listing-limit-quantity" *ngIf="selectedTier.limit < 0" i18n>Unlimited
-                {{subscription.category_name}}</span>
+            <div class="AddNewSubscription__listing-limit-payment AddNewSubscription__listing-limit-payment--line-top">
+              <div class="text-left">
+                <span class="AddNewSubscription__listing-limit-quantity">{{selectedTier.limit}}
+                  {{subscription.category_name}}</span>
+                <span class="AddNewSubscription__listing-limit-quantity" *ngIf="selectedTier.limit < 0" i18n>Unlimited
+                  {{subscription.category_name}}</span>
+              </div>
+              <div class="text-right">
+                <span class="AddNewSubscription__listing-limit-price"
+                  i18n>{{selectedTier.price}}{{selectedTier.currency}}/month</span>
+              </div>
             </div>
-            <div class="text-right">
-              <span class="AddNewSubscription__listing-limit-price"
-                i18n>{{selectedTier.price}}{{selectedTier.currency}}/month</span>
-            </div>
+            <tsl-button [disabled]="!selectedTier" (click)="carousel.next(); onClickContinueToPayment()" i18n>Continue to
+              payment</tsl-button>
           </div>
-          <tsl-button [disabled]="!selectedTier" (click)="carousel.next(); onClickContinueToPayment()" i18n>Continue to
-            payment</tsl-button>
-
         </div>
       </div>
     </ng-template>

@@ -56,7 +56,6 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.subscription.category_id = 123;
     this.loaded = true;
     this.selectedTier = this.subscription.selected_tier;
     this.eventService.subscribe('paymentActionResponse', (response) => {

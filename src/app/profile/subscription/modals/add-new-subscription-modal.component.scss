@@ -86,7 +86,7 @@
 
 .AddNewSubscription__listing-limit-more {
   margin-top: $spacing-m;
-  font-size: 14px;
+  font-size: $font-size-s;
   
   a {
     text-decoration: underline;
@@ -124,7 +124,7 @@
   justify-content: space-between;
   
   &--line-top {
-    padding-top: $spacing-m;
+    padding: $spacing-m 0;
     &:before {
       content: '';
       height: 1px;
