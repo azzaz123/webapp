@@ -45,21 +45,9 @@ Resources:
           - Resource:
               - !GetAtt ArtifactBucket.Arn
               - !Sub "arn:aws:s3:::wallapop-trigger-link-cicd/webapp/webapp-${ImageTag}.zip"
-            Effect: Allow
-            Action:
-              - s3:*
-
-          - Resource:
               - !Ref BucketES
               - !Ref BucketEN
-            Effect: Allow
-            Action:
-              - s3:*
-
-          - Resource: !Join
-              - ''
-              - - !GetAtt ArtifactBucket.Arn
-                - '/*'
+              - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
             Effect: Allow
             Action:
               - s3:*
