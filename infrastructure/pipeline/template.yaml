@@ -38,6 +38,11 @@ Resources:
               - s3:GetBucketVersioning
               - s3:ListBucket
 
+          - Resource: "arn:aws:s3:::wallapop-trigger-link-cicd/webapp/webapp*"
+            Effect: Allow
+            Action:
+              - s3:*
+
           - Resource:
               - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/webapp-pipeline-${EnvName}*"
               - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/Webapp-${EnvName}*"
