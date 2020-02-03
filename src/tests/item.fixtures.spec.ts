@@ -18,7 +18,7 @@ import {
   Order,
   Product,
   ProductDurations,
-  Purchase, ItemProResponse, ItemProContent, RealEstateUploadForm, ListingFeeProductInfo
+  Purchase, ItemProResponse, RealEstateUploadForm, ListingFeeProductInfo, ItemExtraInfo
 } from '../app/core/item/item-response.interface';
 import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.interface';
 import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
@@ -26,10 +26,11 @@ import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
 import { clone } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { Item } from '../app/core/item/item';
+import { Item, ITEM_TYPES } from '../app/core/item/item';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../app/core/item/item-categories';
 import * as moment from 'moment';
 import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from './subscriptions.fixtures.spec';
+import { CATEGORY_IDS } from '../app/core/category/category-ids';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
 export const ITEM_CATEGORY_ID = 12545;
@@ -218,6 +219,27 @@ export const ITEM_COUNTERS_DATA: ItemCounters = {
   'conversations': ITEM_CONVERSATIONS
 };
 
+export const ITEM_FASHION_EXTRA_INFO: ItemExtraInfo = {
+  object_type: {
+    id: '1',
+    name: 'Accessories'
+  },
+  brand: 'Zara',
+  size: {
+    id: '1'
+  },
+  gender: 'male'
+}
+
+export const ITEM_CELLPHONES_EXTRA_INFO: ItemExtraInfo = {
+  object_type: {
+    id: '1',
+    name: 'Phones and Accessories'
+  },
+  brand: 'Apple',
+  model: 'iPhone 11 Pro'
+}
+
 export const MOCK_ITEM: Item = new Item(
   ITEM_DATA.id,
   ITEM_DATA.legacy_id,
@@ -260,6 +282,54 @@ export const MOCK_ITEM_CAR: Item = new Item(
   ITEM_DATA.web_slug,
   ITEM_DATA.published_date,
   ITEM_DATA.delivery_info
+);
+
+export const MOCK_ITEM_FASHION: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  CATEGORY_IDS.FASHION_ACCESSORIES,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info,
+  ITEM_TYPES.CONSUMER_GOODS,
+  ITEM_FASHION_EXTRA_INFO
+);
+
+export const MOCK_ITEM_CELLPHONES: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info,
+  ITEM_TYPES.CONSUMER_GOODS,
+  ITEM_CELLPHONES_EXTRA_INFO
 );
 
 export function getMockItem(id: string, legacyId: number) {
