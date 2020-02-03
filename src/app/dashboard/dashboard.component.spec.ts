@@ -17,12 +17,12 @@ import { Call } from '../core/conversation/calls';
 import { createCallsArray } from '../../tests/call.fixtures';
 import { FeatureflagService } from '../core/user/featureflag.service';
 import {
-  FeatureFlagServiceMock,
-  InboxServiceMock,
-  LoggedGuardServiceMock,
   CallsServiceMock,
   ConversationServiceMock,
-  InboxConversationServiceMock
+  FeatureFlagServiceMock,
+  InboxConversationServiceMock,
+  InboxServiceMock,
+  LoggedGuardServiceMock
 } from '../../tests';
 import { InboxService } from '../core/inbox/inbox.service';
 import { InboxConversation } from '../chat/model';
@@ -31,6 +31,8 @@ import { ChatModule } from '../chat/chat.module';
 import { LoggedGuard } from '../core/user/logged.guard';
 import { ChatComponent } from '../chat/chat.component';
 import { InboxConversationService } from '../core/inbox/inbox-conversation.service';
+import { RealTimeService } from '../core/message/real-time.service';
+import { RealTimeServiceMock } from '../../tests/real-time.fixtures.spec';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -41,8 +43,8 @@ describe('DashboardComponent', () => {
   let eventService: EventService;
   let inboxService: InboxService;
   let inboxConversationService: InboxConversationService;
-  let featureflagService: FeatureflagService;
   let router: Router;
+  let realTimeService: RealTimeService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -65,6 +67,7 @@ describe('DashboardComponent', () => {
         { provide: LoggedGuard, useClass: LoggedGuardServiceMock },
         { provide: CallsService, useClass: CallsServiceMock },
         { provide: ConversationService, useClass: ConversationServiceMock },
+        { provide: RealTimeService, useClass: RealTimeServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -80,8 +83,8 @@ describe('DashboardComponent', () => {
     eventService = TestBed.get(EventService);
     inboxService = TestBed.get(InboxService);
     inboxConversationService = TestBed.get(InboxConversationService);
-    featureflagService = TestBed.get(FeatureflagService);
     router = TestBed.get(Router);
+    realTimeService = TestBed.get(RealTimeService);
     fixture.detectChanges();
     router.initialNavigation();
   });
@@ -190,10 +193,12 @@ describe('DashboardComponent', () => {
   describe('router', () => {
     it('should navigate to chat and open conversation', () => {
       const spy = spyOn(router, 'navigateByUrl');
+      spyOn(inboxConversationService, 'openConversation');
       const conversation = createInboxConversationsArray(1, 'conversationId')[0];
 
       component.openConversation(conversation);
 
+      expect(inboxConversationService.openConversation).toHaveBeenCalledTimes(1);
       expect(spy.calls.first().args[0]).toEqual(`/chat?conversationId=${conversation.id}`);
     });
   });
