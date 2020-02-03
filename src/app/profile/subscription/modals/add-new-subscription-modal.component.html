@@ -88,8 +88,7 @@
                 <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard"
                   (onSelectExistingCard)="setSavedCard($event)" (hasCard)="hasCard($event)"></tsl-stripe-card-selection>
               </div>
-              <div class="AddNewSubscription__payment-add-card" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add
-                another credit card</div>
+              <div class="AddNewSubscription__payment-add-card" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
               <div class="AddNewSubscription__payment-response-message" *ngIf="isPaymentError">
                 <p i18n>The payment failed. Please enter another credit card.</p>
               </div>
