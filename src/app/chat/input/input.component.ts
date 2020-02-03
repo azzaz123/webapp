@@ -36,6 +36,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.isFocus = true;
     this.isUserBlocked = false;
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
       this.isUserBlocked = includes(userIds, this.currentConversation.user.id);
