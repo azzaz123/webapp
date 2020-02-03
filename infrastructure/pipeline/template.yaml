@@ -30,15 +30,25 @@ Resources:
         Version: "2012-10-17"
         Statement:
 
-          - Resource: "arn:aws:s3:::wallapop-trigger-link-cicd"
+          - Resource:
+              - "arn:aws:s3:::wallapop-trigger-link-cicd"
+              - "arn:aws:s3:::wallapop-trigger-link-cicd/webapp/*"
             Effect: Allow
             Action:
-              - s3:GetObject
-              - s3:GetObjectVersion
-              - s3:GetBucketVersioning
-              - s3:ListBucket
+              - s3:Get*
+              - s3:List*
 
-          - Resource: !Sub "arn:aws:s3:::wallapop-trigger-link-cicd/webapp/webapp-${ImageTag}.zip"
+          - Resource:
+              - !GetAtt ArtifactBucket.Arn
+              - !Sub "arn:aws:s3:::wallapop-trigger-link-cicd/webapp/webapp-${ImageTag}.zip"
+            Effect: Allow
+            Action:
+              - s3:*
+
+          - Resource: !Join
+              - ''
+              - - !GetAtt ArtifactBucket.Arn
+                - '/*'
             Effect: Allow
             Action:
               - s3:*
