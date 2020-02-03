@@ -220,21 +220,6 @@ describe('RealTimeService', () => {
   });
 
   describe('subscribeEventNewMessage', () => {
-    // TODO legacy code
-    xit(`should call sendDeliveryReceipt when a NEW_MESSAGE event is emitted for a message that requests the delivery
-    and is NOT fromSelf`, () => {
-      spyOn(service, 'sendDeliveryReceipt');
-      spyOn(persistencyService, 'findMessage').and.returnValue(throwError({
-        reason: 'missing'
-      }));
-      const msg = new Message('someId', CONVERSATION_ID, 'from other', OTHER_USER_ID);
-      msg.fromSelf = false;
-
-      eventService.emit(EventService.NEW_MESSAGE, msg, false, true);
-
-      expect(service.sendDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.thread);
-    });
-
     it('should NOT call sendDeliveryReceipt if the new message is fromSelf', () => {
       spyOn(service, 'sendDeliveryReceipt');
       spyOn(persistencyService, 'findMessage').and.returnValue(throwError({

@@ -1,23 +1,21 @@
 import { Injectable } from '@angular/core';
-import { HttpServiceNew } from '../http/http.service.new';
 import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../../chat/model';
 import { MessageService } from '../message/message.service';
-import { FEATURE_FLAGS_ENUM, FeatureflagService } from '../user/featureflag.service';
+import { FeatureflagService } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
 import { UserService } from '../user/user.service';
 import { InboxConversationService } from './inbox-conversation.service';
 import { InboxApi, InboxConversationApi } from '../../chat/model/api';
 import { map, tap } from 'rxjs/operators';
 import { uniqBy } from 'lodash-es';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class InboxService {
   public static readonly PAGE_SIZE = 30;
-
-  public conversations: InboxConversation[] = [];
-  public archivedConversations: InboxConversation[] = [];
 
   private inboxReady = false;
   private archivedInboxReady = false;
@@ -29,19 +27,19 @@ export class InboxService {
   public errorRetrievingInbox = false;
   public errorRetrievingArchived = false;
 
-  constructor(private httpClient: HttpServiceNew,
+  constructor(private httpClient: HttpClient,
               private persistencyService: PersistencyService,
               private messageService: MessageService,
-              private conversationService: InboxConversationService,
+              private inboxConversationService: InboxConversationService,
               private featureflagService: FeatureflagService,
               private eventService: EventService,
               private userService: UserService) {
   }
 
   public init() {
-    this.conversationService.subscribeChatEvents();
+    this.inboxConversationService.subscribeChatEvents();
     this.selfId = this.userService.user.id;
-    this.conversationService.selfId = this.selfId;
+    this.inboxConversationService.selfId = this.selfId;
     this.subscribeArchiveEvents();
     this.subscribeUnarchiveEvents();
 
@@ -51,7 +49,7 @@ export class InboxService {
       return this.persistencyService.getStoredInbox();
     })
     .subscribe((conversations: InboxConversation[]) => {
-      this.conversations = conversations;
+      this.inboxConversationService.conversations = conversations;
       this.inboxReady = true;
       this.eventService.emit(EventService.INBOX_LOADED, conversations, 'LOAD_INBOX');
       this.eventService.emit(EventService.INBOX_READY, true);
@@ -71,14 +69,18 @@ export class InboxService {
 
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (blockedUsers: string[]) => {
       blockedUsers.map(id => {
-        this.conversations.filter(conv => conv.user.id === id && !conv.user.blocked)
+        this.inboxConversationService.conversations
+        .filter(conv => conv.user.id === id && !conv.user.blocked)
         .map(conv => conv.user.blocked = true);
-        this.archivedConversations.filter(conv => conv.user.id === id && !conv.user.blocked)
+        this.inboxConversationService.archivedConversations
+        .filter(conv => conv.user.id === id && !conv.user.blocked)
         .map(conv => conv.user.blocked = true);
       });
-      this.conversations.filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
+      this.inboxConversationService.conversations
+      .filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
       .map(conv => conv.user.blocked = false);
-      this.archivedConversations.filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
+      this.inboxConversationService.archivedConversations
+      .filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
       .map(conv => conv.user.blocked = false);
     });
   }
@@ -119,46 +121,53 @@ export class InboxService {
 
   public getInbox$(): Observable<InboxConversation[]> {
     this.messageService.totalUnreadMessages = 0;
-    return this.httpClient.get<InboxApi>('bff/messaging/inbox', [
-      { key: 'page_size', value: InboxService.PAGE_SIZE },
-      { key: 'max_messages', value: InboxConversationService.MESSAGES_IN_CONVERSATION }
-    ])
+    return this.httpClient.get<InboxApi>(`${environment.baseUrl}bff/messaging/inbox`, {
+      params: { page_size: InboxService.PAGE_SIZE.toString(), max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION.toString() }
+    })
     .pipe(
       tap((inbox: InboxApi) => this.nextPageToken = inbox.next_from || null),
-      map((inbox: InboxApi) => this.conversations = this.processInboxResponse(inbox))
+      map((inbox: InboxApi) => this.inboxConversationService.conversations = this.processInboxResponse(inbox))
     );
   }
 
   public getNextPage$(): Observable<InboxConversation[]> {
-    return this.httpClient.get<InboxApi>('bff/messaging/inbox', [
-      { key: 'page_size', value: InboxService.PAGE_SIZE },
-      { key: 'from', value: this.nextPageToken }
-    ])
+    return this.httpClient.get<InboxApi>(`${environment.baseUrl}bff/messaging/inbox`, {
+      params: {
+        page_size: InboxService.PAGE_SIZE.toString(),
+        from: this.nextPageToken
+      }
+    })
     .pipe(
       tap((inbox: InboxApi) => this.nextPageToken = inbox.next_from || null),
-      map((inbox: InboxApi) => this.conversations = this.processInboxResponse(inbox))
+      map((inbox: InboxApi) => this.inboxConversationService.conversations = this.processInboxResponse(inbox))
     );
   }
 
   public getArchivedInbox$(): Observable<InboxConversation[]> {
-    return this.httpClient.get<InboxApi>('bff/messaging/archived', [
-      { key: 'page_size', value: InboxService.PAGE_SIZE },
-      { key: 'max_messages', value: InboxConversationService.MESSAGES_IN_CONVERSATION }
-    ])
+    return this.httpClient.get<InboxApi>(`${environment.baseUrl}bff/messaging/archived`, {
+      params: {
+        page_size: InboxService.PAGE_SIZE.toString(),
+        max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION.toString()
+      }
+    })
     .pipe(
       tap((inbox: InboxApi) => this.nextArchivedPageToken = inbox.next_from || null),
-      map((inbox: InboxApi) => this.archivedConversations = this.processArchivedInboxResponse(inbox))
+      map((inbox: InboxApi) => this.inboxConversationService.archivedConversations = this.processArchivedInboxResponse(inbox))
     );
   }
 
   public getNextArchivedPage$(): Observable<InboxConversation[]> {
-    return this.httpClient.get<InboxApi>('bff/messaging/archived', [
-      { key: 'page_size', value: InboxService.PAGE_SIZE },
-      { key: 'from', value: this.nextArchivedPageToken }
-    ])
+    return this.httpClient.get<InboxApi>(`${environment.baseUrl}bff/messaging/archived`, {
+      params: {
+        page_size: InboxService.PAGE_SIZE.toString(),
+        from: this.nextArchivedPageToken
+      }
+    })
     .pipe(
       tap((inbox: InboxApi) => this.nextArchivedPageToken = inbox.next_from || null),
-      map((inbox: InboxApi) => this.archivedConversations = this.archivedConversations = this.processArchivedInboxResponse(inbox))
+      map((inbox: InboxApi) =>
+        this.inboxConversationService.archivedConversations
+          = this.inboxConversationService.archivedConversations = this.processArchivedInboxResponse(inbox))
     );
   }
 
@@ -172,12 +181,12 @@ export class InboxService {
 
   private processInboxResponse(inbox: InboxApi): InboxConversation[] {
     const conversations: InboxConversation[] = this.buildConversations(inbox.conversations);
-    this.conversationService.sendReceiveSignalByConversations(conversations);
-    return uniqBy([...this.conversations, ...conversations], 'id');
+    this.inboxConversationService.sendReceiveSignalByConversations(conversations);
+    return uniqBy([...this.inboxConversationService.conversations, ...conversations], 'id');
   }
 
   private processArchivedInboxResponse(response: InboxApi): InboxConversation[] {
-    return uniqBy([...this.archivedConversations, ...this.buildArchivedConversations(response.conversations)], 'id');
+    return uniqBy([...this.inboxConversationService.archivedConversations, ...this.buildArchivedConversations(response.conversations)], 'id');
   }
 
   private buildArchivedConversations(conversations: InboxConversationApi[]) {
@@ -195,19 +204,21 @@ export class InboxService {
 
   private subscribeArchiveEvents() {
     this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, (conversation) => {
-      const index = this.conversations.indexOf(conversation);
-      this.conversations.splice(index, 1);
-      this.archivedConversations.unshift(conversation);
-      this.archivedConversations.sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
+      const index = this.inboxConversationService.conversations.indexOf(conversation);
+      this.inboxConversationService.conversations.splice(index, 1);
+      this.inboxConversationService.archivedConversations.unshift(conversation);
+      this.inboxConversationService.archivedConversations
+      .sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
     });
   }
 
   private subscribeUnarchiveEvents() {
     this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, (conversation) => {
-      const index = this.archivedConversations.indexOf(conversation);
-      this.archivedConversations.splice(index, 1);
-      this.conversations.unshift(conversation);
-      this.conversations.sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
+      const index = this.inboxConversationService.archivedConversations.indexOf(conversation);
+      this.inboxConversationService.archivedConversations.splice(index, 1);
+      this.inboxConversationService.conversations.unshift(conversation);
+      this.inboxConversationService.conversations
+      .sort((first, second) => second.lastMessage.date.getTime() - first.lastMessage.date.getTime());
     });
   }
 }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
@@ -8,7 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { isEmpty, includes, find } from 'lodash-es';
+import { find, includes, isEmpty } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { RemoteConsoleService } from '../../core/remote-console';
 

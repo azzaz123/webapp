@@ -61,8 +61,9 @@ import { RealTimeService } from '../message/real-time.service';
 import { BlockUserXmppService } from './block-user';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { RemoteConsoleService } from '../remote-console';
-import { InboxServiceMock, MockRemoteConsoleService } from '../../../tests';
+import { InboxConversationServiceMock, InboxServiceMock, MockRemoteConsoleService } from '../../../tests';
 import { InboxService } from '../inbox/inbox.service';
+import { InboxConversationService } from '../inbox/inbox-conversation.service';
 
 let service: ConversationService;
 let http: HttpService;
@@ -77,6 +78,7 @@ let eventService: EventService;
 let trackingService: TrackingService;
 let connectionService: ConnectionService;
 let inboxService: InboxService;
+let inboxConversationService: InboxConversationService;
 let modalService: NgbModal;
 let archiveService: MsgArchiveService;
 let i18n: I18nService;
@@ -102,6 +104,7 @@ describe('Service: Conversation', () => {
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: InboxService, useClass: InboxServiceMock },
+        { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         {
           provide: BlockUserXmppService, useValue: {
             getBlockedUsers() {
@@ -136,6 +139,7 @@ describe('Service: Conversation', () => {
     });
     service = TestBed.get(ConversationService);
     inboxService = TestBed.get(InboxService);
+    inboxConversationService = TestBed.get(InboxConversationService);
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
     messageService = TestBed.get(MessageService);
@@ -1252,7 +1256,7 @@ describe('Service: Conversation', () => {
 
     beforeEach(() => {
       service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
-      inboxService.conversations = [MOCK_INBOX_CONVERSATION];
+      inboxConversationService.conversations = [MOCK_INBOX_CONVERSATION];
       expect(service.leads[0].messages.length).toEqual(0);
       service.firstLoad = false;
     });
@@ -1416,7 +1420,7 @@ describe('Service: Conversation', () => {
 
     it('should wait to call onNewMessage if loading', fakeAsync(() => {
       spyOn<any>(service, 'onNewMessage');
-      inboxService.conversations = null;
+      inboxConversationService.conversations = null;
       service.handleNewMessages(MOCK_MESSAGE, false);
 
       expect(service['onNewMessage']).not.toHaveBeenCalled();
@@ -1424,7 +1428,7 @@ describe('Service: Conversation', () => {
 
       expect(service['onNewMessage']).not.toHaveBeenCalled();
 
-      inboxService.conversations = [MOCK_INBOX_CONVERSATION];
+      inboxConversationService.conversations = [MOCK_INBOX_CONVERSATION];
       tick(500);
 
       expect(service['onNewMessage']).toHaveBeenCalled();
@@ -1513,7 +1517,7 @@ describe('Service: Conversation', () => {
       beforeEach(() => {
         spyOn(trackingService, 'addTrackingEvent');
         service.leads = [];
-        inboxService.conversations = [MOCK_INBOX_CONVERSATION];
+        inboxConversationService.conversations = [MOCK_INBOX_CONVERSATION];
         service.archivedLeads = [mockedConversation, SECOND_MOCK_CONVERSATION];
       });
 
@@ -1604,7 +1608,7 @@ describe('Service: Conversation', () => {
         spyOn(service, 'get').and.returnValue(Observable.of(MOCK_NOT_FOUND_CONVERSATION));
         spyOn(service, 'getSingleConversationMessages').and.callThrough();
         spyOn(messageService, 'getMessages').and.returnValue(Observable.of({ data: [message] }));
-        inboxService.conversations = [MOCK_INBOX_CONVERSATION];
+        inboxConversationService.conversations = [MOCK_INBOX_CONVERSATION];
 
         service.handleNewMessages(message, false);
         const newConversation: Conversation = <Conversation>service.leads[0];
@@ -1618,37 +1622,39 @@ describe('Service: Conversation', () => {
   });
 
   describe('getSingleConversationMessages', () => {
-    it('should call messageService.getMessages, return the conversation with messages and emit a CHAT_CAN_PROCESS_RT event with true', fakeAsync(() => {
-      spyOn(messageService, 'getMessages').and.returnValue(Observable.of({ data: [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE] }));
-      spyOn(eventService, 'emit');
-      let conversation = SECOND_MOCK_CONVERSATION;
-      const expectedConversation = SECOND_MOCK_CONVERSATION;
-      expectedConversation.messages = [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE];
+    it('should call messageService.getMessages, return the conversation with messages and emit a CHAT_CAN_PROCESS_RT event with true',
+      fakeAsync(() => {
+        spyOn(messageService, 'getMessages').and.returnValue(Observable.of({ data: [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE] }));
+        spyOn(eventService, 'emit');
+        let conversation = SECOND_MOCK_CONVERSATION;
+        const expectedConversation = SECOND_MOCK_CONVERSATION;
+        expectedConversation.messages = [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE];
 
-      service.getSingleConversationMessages(conversation).subscribe(response => conversation = response);
-      tick();
+        service.getSingleConversationMessages(conversation).subscribe(response => conversation = response);
+        tick();
 
-      expect(messageService.getMessages).toHaveBeenCalled();
-      expect(conversation).toEqual(expectedConversation);
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, true);
-    }));
+        expect(messageService.getMessages).toHaveBeenCalled();
+        expect(conversation).toEqual(expectedConversation);
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, true);
+      }));
 
-    it('should emit a REQUEST_PHONE event when the conversation has no messages AND getPhoneInfo returns a phone method type', fakeAsync(() => {
-      const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify(MOCK_CONVERSATION()) }));
-      spyOn(http, 'post').and.returnValue(Observable.of(RESPONSE));
-      spyOn(userService, 'get').and.returnValue(Observable.of({}));
-      spyOn(itemService, 'get').and.returnValue(Observable.of({}));
-      spyOn(userService, 'getPhoneInfo').and.returnValue(Observable.of({ phone_method: phoneMethod.chatMessage }));
-      spyOn(messageService, 'getMessages').and.returnValue(Observable.of({ data: [] }));
-      spyOn(eventService, 'emit');
-      let conversation = MOCK_CONVERSATION();
+    it('should emit a REQUEST_PHONE event when the conversation has no messages AND getPhoneInfo returns a phone method type',
+      fakeAsync(() => {
+        const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify(MOCK_CONVERSATION()) }));
+        spyOn(http, 'post').and.returnValue(Observable.of(RESPONSE));
+        spyOn(userService, 'get').and.returnValue(Observable.of({}));
+        spyOn(itemService, 'get').and.returnValue(Observable.of({}));
+        spyOn(userService, 'getPhoneInfo').and.returnValue(Observable.of({ phone_method: phoneMethod.chatMessage }));
+        spyOn(messageService, 'getMessages').and.returnValue(Observable.of({ data: [] }));
+        spyOn(eventService, 'emit');
+        let conversation = MOCK_CONVERSATION();
 
-      service.createConversation(MOCK_CONVERSATION().item.id).subscribe();
-      service.getSingleConversationMessages(conversation).subscribe(response => conversation = response);
-      tick();
+        service.createConversation(MOCK_CONVERSATION().item.id).subscribe();
+        service.getSingleConversationMessages(conversation).subscribe(response => conversation = response);
+        tick();
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.REQUEST_PHONE, phoneMethod.chatMessage);
-    }));
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.REQUEST_PHONE, phoneMethod.chatMessage);
+      }));
   });
 
 });

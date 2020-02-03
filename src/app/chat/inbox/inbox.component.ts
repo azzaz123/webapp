@@ -72,7 +72,7 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   constructor(private inboxService: InboxService,
               private eventService: EventService,
-              private conversationService: InboxConversationService,
+              private inboxConversationService: InboxConversationService,
               private userService: UserService,
               private adService: AdService,
               private remoteConsoleService: RemoteConsoleService,
@@ -110,22 +110,22 @@ export class InboxComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.componentState = InboxState.Inbox;
     this.bindNewMessageToast();
-    if (this.inboxService.conversations) {
-      this.onInboxReady(this.inboxService.conversations, 'INIT_INBOX');
-      this.conversations = this.inboxService.conversations;
-      this.archivedConversations = this.inboxService.archivedConversations;
+    if (this.inboxConversationService.conversations) {
+      this.onInboxReady(this.inboxConversationService.conversations, 'INIT_INBOX');
+      this.conversations = this.inboxConversationService.conversations;
+      this.archivedConversations = this.inboxConversationService.archivedConversations;
       this.loading = false;
     } else {
       this.loading = true;
     }
 
     this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], callMethodClient: string) => {
-      this.conversations = this.inboxService.conversations;
+      this.conversations = this.inboxConversationService.conversations;
       this.onInboxReady(conversations, callMethodClient);
     });
 
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
-      this.archivedConversations = this.inboxService.archivedConversations;
+      this.archivedConversations = this.inboxConversationService.archivedConversations;
       this.setStatusesAfterLoadConversations();
     });
 
@@ -195,7 +195,7 @@ export class InboxComponent implements OnInit, OnDestroy {
     if (!newCurrentConversation.user.location) {
       this.userService.get(newCurrentConversation.user.id).subscribe(user => newCurrentConversation.user.location = user.location);
     }
-    this.conversationService.openConversation(newCurrentConversation);
+    this.inboxConversationService.openConversation(newCurrentConversation);
     this.adService.adsRefresh();
   }
 

@@ -74,6 +74,7 @@ describe('InboxConversationService', () => {
     httpTestingController = TestBed.get(HttpTestingController);
     spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
     service.subscribeChatEvents();
+    service.conversations = [];
     service.archivedConversations = [];
   });
 
@@ -87,14 +88,6 @@ describe('InboxConversationService', () => {
       eventService.emit(EventService.NEW_MESSAGE, message);
 
       expect(service.processNewMessage).toHaveBeenCalledWith(inboxMessage);
-    });
-
-    it('should set conversations when a INBOX_LOADED event is emitted', () => {
-      const conversations = createInboxConversationsArray(6);
-
-      eventService.emit(EventService.INBOX_LOADED, conversations);
-
-      expect(service.conversations).toBe(conversations);
     });
 
     it('should call procesNewChatSignal when a CHAT_SIGNAL event is emitted', () => {
@@ -169,7 +162,7 @@ describe('InboxConversationService', () => {
     let conversations, currentLastMessage, newInboxMessage;
     beforeEach(() => {
       conversations = createInboxConversationsArray(4);
-      eventService.emit(EventService.INBOX_LOADED, conversations);
+      service.conversations = conversations;
     });
 
     describe('when called with a message that does not already exist', () => {
@@ -409,7 +402,7 @@ describe('InboxConversationService', () => {
     let mockedConversation: InboxConversation;
     const timestamp = new Date(CREATE_MOCK_INBOX_CONVERSATION().messages[0].date).getTime();
     beforeEach(() => {
-      eventService.emit(EventService.INBOX_LOADED, createInboxConversationsArray(12));
+      service.conversations = createInboxConversationsArray(12);
     });
 
     describe('when processing read signals', () => {
