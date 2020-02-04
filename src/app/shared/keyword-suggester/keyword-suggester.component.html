@@ -1,4 +1,4 @@
-<div [formGroup]="form" class="keyword-suggester-component">
+<div [formGroup]="form">
   <input #suggesterInput formControlName="{{controlName}}" type="text" class="keyword-suggester"
     placeholder="{{placeholderValue}}" (input)="inputValueChange($event)" (blur)="handleInputBlur()"
     (keydown)=onKeydown($event) />

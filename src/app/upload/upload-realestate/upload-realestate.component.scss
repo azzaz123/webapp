@@ -34,7 +34,7 @@
 #condition /deep/ select-dropdown > div {
   .options ul li {
     background-repeat: no-repeat;
-    background-position: 8px;
+    background-position: $spacing-s;
     padding-left: $spacing-xxxl !important;
     &:nth-child(1) {
       background-image: url(/assets/icons/new_construction.svg);

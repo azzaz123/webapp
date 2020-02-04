@@ -781,10 +781,12 @@
       </msg>
   <msg id="8132836034776935972"><source>app/upload/upload-product/upload-product.component.html:98</source><source>app/upload/upload-product/upload-product.component.html:149</source>The more precise, the better</msg>
   <msg id="3644199581629588381"><source>app/upload/upload-product/upload-product.component.html:104</source>Choose the gender of the garment</msg>
+  <msg id="3584751519463738454"><source>app/upload/upload-product/upload-product.component.html:122</source>Type of garment</msg>
   <msg id="3892318280760368021"><source>app/upload/upload-product/upload-product.component.html:124</source><source>app/upload/upload-product/upload-product.component.html:157</source>Select a type</msg>
   <msg id="2559885490456050359"><source>app/upload/upload-product/upload-product.component.html:130</source><source>app/upload/upload-product/upload-product.component.html:163</source>Brand</msg>
   <msg id="45739481977493163"><source>app/upload/upload-product/upload-product.component.html:138</source>Size</msg>
   <msg id="1243184761486172945"><source>app/upload/upload-product/upload-product.component.html:140</source>Select a size</msg>
+  <msg id="8634562482546031854"><source>app/upload/upload-product/upload-product.component.html:155</source>Type of object</msg>
   <msg id="5972351850683239127"><source>app/upload/upload-product/upload-product.component.html:188</source>Shipping</msg>
   <msg id="518944399314816423"><source>app/upload/upload-product/upload-product.component.html:193,195</source>
             You can send (almost) anything through wallapop. And it&apos;s free for you!

@@ -606,10 +606,11 @@ describe('UploadProductComponent', () => {
 
     it('should get brands and models if the brand endpoint doesn`t return any result', () => {
       spyOn(generalSuggestionsService, 'getBrandsAndModels').and.callThrough();
+      spyOn(generalSuggestionsService, 'getBrands').and.returnValue(Observable.of([]));
 
-      component.getBrands('Apple');
+      component.getBrands('iPhone');
 
-      expect(generalSuggestionsService.getBrandsAndModels).toHaveBeenCalledWith('Apple', CATEGORY_IDS.CELL_PHONES_ACCESSORIES, '365');
+      expect(generalSuggestionsService.getBrandsAndModels).toHaveBeenCalledWith('iPhone', CATEGORY_IDS.CELL_PHONES_ACCESSORIES, '365');
     });
   });
 
