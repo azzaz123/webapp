@@ -58,7 +58,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 26px;
+  margin-top: $spacing-l;
   .AddNewSubscription__listing-limit-box {
     padding: $spacing-m;
     height: 60px;
@@ -226,7 +226,7 @@ ngb-carousel {
     .box-content {
       max-width: 80%;
       height: 100%;
-      padding: 20px 0 42px;
+      padding: $spacing-ml 0 $spacing-xxl;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
