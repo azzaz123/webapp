@@ -2,7 +2,6 @@
 
 .AddNewSubscription__box {
   text-align: center;
-  padding: 0 0 $spacing-m;
   .AddNewSubscription__box-header {
     background: $walla-main;
     border-top-left-radius: 0.3rem;
@@ -29,7 +28,6 @@
   color: $blue-grey-1;
   font-size: $font-size-m;
   font-weight: bold;
-  margin: 0 0 $spacing-l;
 }
 
 .AddNewSubscription__listing-limit-price {
@@ -52,14 +50,15 @@
 .AddNewSubscription__listing-limit-steps {
   color: $blue-grey-2;
   font-size: $font-size-s;
-  margin: $spacing-ml 0 $spacing-s;
+  margin-top: 0px;
+  margin-bottom: $spacing-s;
 }
 
 .AddNewSubscription__listing-limit-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: $spacing-m;
+  margin-top: $spacing-l;
   .AddNewSubscription__listing-limit-box {
     padding: $spacing-m;
     height: 60px;
@@ -77,12 +76,20 @@
 }
 
 .AddNewSubscription__listing-limit-selection {
-  width: 250px;
   &--left {
     text-align: left;
   }
   &--right {
     text-align: right;
+  }
+}
+
+.AddNewSubscription__listing-limit-more {
+  margin-top: $spacing-m;
+  font-size: $font-size-s;
+  
+  a {
+    text-decoration: underline;
   }
 }
 
@@ -94,12 +101,14 @@
   }
 }
 
-.AddNewSubscription__selection {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  tsl-stripe-card-selection {
-    width: 100%;
+.AddNewSubscription__selection-container {
+  &--with-saved-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    div {
+      width: 100%;
+    }
   }
 }
 
@@ -110,8 +119,24 @@
 }
 
 .AddNewSubscription__listing-limit-payment {
-  width: 80%;
-  margin: $spacing-m auto;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  
+  &--line-top {
+    padding: $spacing-m 0;
+    &:before {
+      content: '';
+      height: 1px;
+      width: 100%;
+      background-color: $blue-grey-5;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+
 }
 
 .AddNewSubscription__listing-limit-payment-price {
@@ -125,29 +150,40 @@
   font-size: $font-size-s;
 }
 
-.AddNewSubscription__group {
-  width: 100%;
-  margin: $spacing-xxs 0 $spacing-l;
-}
-
 .AddNewSubscription__payment-add-card {
+  width: 100%;
   color: $walla-main;
   font-size: $font-size-s;
   text-align: left;
   cursor: pointer;
 }
 
-tsl-button /deep/ .btn-text  {
-  padding: $spacing-ms $spacing-ml;
-  background-color: transparent;
-  color: $blue-grey-3;
-  font-size: $font-size-s;
-  border: 1px solid $blue-grey-3;
-  border-radius: $button-border-radius;
-  &:hover {
-    color: $black;
-    background-color: $blue-grey-5;
-    border: 1px solid $black;
+tsl-button, tsl-stripe-card-element /deep/ tsl-button {
+  width: 100%;
+  /deep/ {
+    .btn-text {
+      font-size: $spacing-m;
+      padding: $spacing-ms $spacing-ml;
+      background-color: transparent;
+      color: $blue-grey-3;
+      border: 1px solid $blue-grey-3;
+      border-radius: $button-border-radius;
+      &:hover {
+        color: $black;
+        background-color: $blue-grey-5;
+        border: 1px solid $black;
+      }
+    }
+    button {
+      width: 280px;
+      height: 42px;
+
+      .secure-payment {
+        span {
+          font-size: $spacing-m;
+        }
+      }
+    }
   }
 }
 
@@ -155,13 +191,14 @@ hr {
   display: block;
   height: 1px;
   border: 0;
-  border-top: 1px solid $blue-grey-5;
-  margin: 24px auto;
-  width: 80%;
 }
 
 ngb-carousel {
+  height: 100%;
   /deep/ {
+    .step {
+      height: 100%;
+    }
     .carousel-control-prev, .carousel-control-next {
       display: none;
     }
@@ -169,6 +206,7 @@ ngb-carousel {
       margin: 0;
       padding: 0;
       z-index: 0;
+      bottom: 20px;
       li {
         background-color: $blue-grey-4;
         @include square(6px);
@@ -184,6 +222,22 @@ ngb-carousel {
     .carousel-item {
       height: 350px;
     }
+
+    .box-content {
+      max-width: 80%;
+      height: 100%;
+      padding: $spacing-ml 0 $spacing-xxl;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+
+  &.extra-info /deep/ {
+    .carousel-item {
+      height: 384px;
+    };
   }
 }
 
