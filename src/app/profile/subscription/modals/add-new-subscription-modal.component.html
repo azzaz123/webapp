@@ -28,10 +28,10 @@
                 <span *ngIf="subscription.tiers[i].limit < 0" i18n>Unlimited</span>
               </div>
             </div>
-            <div class="AddNewSubscription__listing-limit-more" *ngIf="subscription.category_id === carsCategoryId">
-              <span i18n>Do you have more than {{subscription.tiers[subscription.tiers.length - 1].limit}}
-              {{subscription.category_name.toLowerCase()}}?</span>
-              <a href="{{carDealerTypeformLink}}" target="_blank" i18n>Contact us directly</a>
+            <div class="AddNewSubscription__listing-limit-more" *ngIf="subscription.category_id === carsCategoryId" i18n>
+              Do you have more than
+              {{subscription.tiers[subscription.tiers.length - 1].limit}} {{subscription.category_name.toLowerCase()}}?
+              <a href="{{carDealerTypeformLink}}" target="_blank">Contact us directly</a>
             </div>
           </div>
           <div>
