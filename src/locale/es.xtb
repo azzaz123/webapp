@@ -960,5 +960,5 @@
   <translation id="7063014133288240503">Este es tu plan actual</translation>
   <translation id="3174471160045690426">Quiero cancelar mi suscripción</translation>
   <translation id="8716359834484489616">Seleccionar todos</translation>
-  <translation id="7609145883180181653">¿Tienes más de <ph name="INTERPOLATION"><ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name.toLowerCase()}}</ex></ph>?<ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Contáctanos directamente<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
+  <translation id="7609145883180181653">¿Tienes más de <ph name="INTERPOLATION"><ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name.toLowerCase()}}</ex></ph>? <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Contáctanos directamente<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
 </translationbundle>
