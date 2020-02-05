@@ -624,9 +624,9 @@ app-root-path@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/app-root-path/-/app-root-path-2.1.0.tgz#98bf6599327ecea199309866e8140368fd2e646a"
 
-appboy-web-sdk@2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/appboy-web-sdk/-/appboy-web-sdk-2.2.2.tgz#836963b24fb8dfef01e45b8e80b0c899d2032352"
+appboy-web-sdk@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/appboy-web-sdk/-/appboy-web-sdk-2.4.3.tgz#b268acb3c7e02a19cc6c4d2bee0b754516bac8ef"
 
 append-transform@^1.0.0:
   version "1.0.0"

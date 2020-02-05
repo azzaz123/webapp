@@ -44,7 +44,7 @@
     "@types/heremaps": "3.0.12",
     "angular2-moment": "https://github.com/Wallapop/angular2-moment#2.2.0",
     "angular2-uuid": "^1.1.1",
-    "appboy-web-sdk": "2.2.2",
+    "appboy-web-sdk": "^2.4.3",
     "bootstrap": "4.0.0-alpha.6",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.5.7",
