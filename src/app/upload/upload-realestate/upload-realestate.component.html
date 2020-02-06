@@ -1,28 +1,32 @@
 <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="real-estate-form">
+
   <div class="box">
-    <h2 i18n>Information about your property</h2>
     <div class="row">
-      <div
-        class="col-sm-12 selector-container"
-        [ngbPopover]="coachmarkOperation"
-        triggers="mouseenter:mouseleave"
-      >
-        <h3 i18n>Rent or sale?</h3>
-        <div ngbRadioGroup name="radioBasic" formControlName="operation">
-          <label
-            ngbButtonLabel
-            class="btn selector"
-            *ngFor="let operation of operations"
-          >
-            <input
-              ngbButton
-              type="radio"
-              name="operation"
-              [value]="operation.id"
-            />
-            <mat-icon [svgIcon]="operation.icon_id"></mat-icon>
-            <span>{{ operation.text }}</span>
-          </label>
+      <div class="col-12">
+        <h2 i18n>Information about your property</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col" [ngbPopover]="coachmarkOperation" triggers="mouseenter:mouseleave">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="selector-title" i18n>Rent or sale?</h3>
+          </div>
+        </div>
+        <div ngbRadioGroup class="row" name="radioBasic" formControlName="operation">
+          <div class="col">
+            <div class="form-group">
+              <div class="selector-container">
+                <label ngbButtonLabel class="btn selector" *ngFor="let operation of operations">
+                  <div class="selector-icon">
+                    <input ngbButton type="radio" name="operation" [value]="operation.id" />
+                    <mat-icon [svgIcon]="operation.icon_id"></mat-icon>
+                  </div>
+                  <span class="selector-text">{{ operation.text }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
         <ng-template #coachmarkOperation>
           <div i18n>Is your property for sale or for rent?</div>
@@ -30,18 +34,26 @@
       </div>
     </div>
     <div class="row">
-      <div
-        class="col-sm-12 selector-container"
-        [ngbPopover]="coachmarkType"
-        triggers="mouseenter:mouseleave"
-      >
-        <h3 i18n>Type of space</h3>
-        <div ngbRadioGroup name="radioBasic" formControlName="type">
-          <label ngbButtonLabel class="btn selector" *ngFor="let type of types">
-            <input ngbButton type="radio" name="type" [value]="type.id" />
-            <mat-icon [svgIcon]="type.icon_id"></mat-icon>
-            <span>{{ type.text }}</span>
-          </label>
+      <div class="col" [ngbPopover]="coachmarkType" triggers="mouseenter:mouseleave">
+        <div class="row">
+          <div class="col">
+            <h3 class="selector-title" i18n>Type of space</h3>
+          </div>
+        </div>
+        <div ngbRadioGroup class="row" name="radioBasic" formControlName="type">
+          <div class="col">
+            <div class="form-group">
+              <div class="selector-container">
+                <label ngbButtonLabel class="selector" *ngFor="let type of types">
+                  <div class="selector-icon">
+                    <input ngbButton type="radio" name="type" [value]="type.id" />
+                    <mat-icon [svgIcon]="type.icon_id"></mat-icon>
+                  </div>
+                  <span class="selector-text">{{ type.text }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
         <ng-template #coachmarkType>
           <div i18n>What kind of space is it?</div>
@@ -49,20 +61,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-3">
+      <div class="col-6 col-md-3">
         <div class="form-group">
           <label for="price" i18n>Price</label>
-          <input
-            i18n-placeholder
-            placeholder="With love..."
-            type="number"
-            class="form-control"
-            formControlName="sale_price"
-            id="price"
-            min="0"
-            [ngbPopover]="coachmarkPrice"
-            max="999999999"
-          />
+          <input i18n-placeholder placeholder="With love..." type="number" class="form-control"
+            formControlName="sale_price" id="price" min="0" [ngbPopover]="coachmarkPrice" max="999999999" />
           <ng-template #coachmarkPrice>
             <div i18n>
               Add a fair price and the area in m2. Tell us also the state of the
@@ -71,121 +74,74 @@
           </ng-template>
         </div>
       </div>
-      <div class="col-sm-2">
+      <div class="col-6 col-md-2">
         <div class="form-group">
           <label for="currency" i18n>Currency</label>
-          <ng-select
-            class="form-control"
-            formControlName="currency_code"
-            id="currency"
-            [ngbPopover]="coachmarkPrice"
-            #p3="ngbPopover"
-            triggers="manual"
-            (opened)="p3.open()"
-            (closed)="p3.close()"
-            [options]="currencies"
-            noFilter="10"
-          ></ng-select>
+          <ng-select class="form-control" formControlName="currency_code" id="currency" [ngbPopover]="coachmarkPrice"
+            #p3="ngbPopover" triggers="manual" (opened)="p3.open()" (closed)="p3.close()" [options]="currencies"
+            noFilter="10"></ng-select>
         </div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-6 col-md-3">
         <div class="form-group">
           <label for="surface" i18n>Area m2</label>
-          <input
-            placeholder="m2"
-            type="number"
-            class="form-control"
-            formControlName="surface"
-            [ngbPopover]="coachmarkPrice"
-            id="surface"
-            min="0"
-            max="999999999"
-          />
+          <input placeholder="m2" type="number" class="form-control" formControlName="surface"
+            [ngbPopover]="coachmarkPrice" id="surface" min="0" max="999999999" />
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-6 col-md-4">
         <div class="form-group">
           <label for="condition" i18n>Status</label>
-          <ng-select
-            id="condition"
-            class="form-control"
-            formControlName="condition"
-            [ngbPopover]="coachmarkPrice"
-            #p3="ngbPopover"
-            triggers="manual"
-            (opened)="p3.open()"
-            (closed)="p3.close()"
-            [options]="conditions"
-            noFilter="10"
-          ></ng-select>
+          <ng-select id="condition" class="form-control" formControlName="condition" [ngbPopover]="coachmarkPrice"
+            #p3="ngbPopover" triggers="manual" (opened)="p3.open()" (closed)="p3.close()" [options]="conditions"
+            noFilter="10"></ng-select>
         </div>
       </div>
     </div>
-    <div
-      class="row"
-      *ngIf="
+    <div class="row" *ngIf="
         uploadForm.value?.type === 'house' ||
         uploadForm.value?.type === 'apartment'
-      "
-    >
-      <div class="col-sm-3">
+      ">
+      <div class="col-6 col-md-3">
         <div class="form-group">
           <label for="rooms" i18n>Nº of rooms</label>
-          <input
-            placeholder="1, 2, 3..."
-            [ngbPopover]="coachmarkRooms"
-            type="number"
-            class="form-control"
-            formControlName="rooms"
-            id="rooms"
-            min="0"
-            max="999999999"
-          />
+          <input placeholder="1, 2, 3..." [ngbPopover]="coachmarkRooms" type="number" class="form-control"
+            formControlName="rooms" id="rooms" min="0" max="999999999" />
           <ng-template #coachmarkRooms>
             <div i18n>How many rooms and bathrooms does it have?</div>
           </ng-template>
         </div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-6 col-md-3">
         <div class="form-group">
           <label for="bathrooms" i18n>Nº of bathrooms</label>
-          <input
-            placeholder="1, 2, 3..."
-            [ngbPopover]="coachmarkRooms"
-            type="number"
-            class="form-control"
-            formControlName="bathrooms"
-            id="bathrooms"
-            min="0"
-            max="999999999"
-          />
+          <input placeholder="1, 2, 3..." [ngbPopover]="coachmarkRooms" type="number" class="form-control"
+            formControlName="bathrooms" id="bathrooms" min="0" max="999999999" />
         </div>
       </div>
     </div>
-    <div
-      class="row"
-      *ngIf="
-        uploadForm.value?.type === 'house' ||
-        uploadForm.value?.type === 'apartment'
-      "
-      [ngbPopover]="coachmarkExtras"
-      triggers="mouseenter:mouseleave"
-    >
-      <div class="col-12">
-        <div
-          class="selector-container features-options form-group"
-          data-toggle="buttons"
-        >
-          <label i18n>Features of the house</label>
-          <label
-            class="btn selector"
-            [class.active]="uploadForm.value[extra.id]"
-            *ngFor="let extra of extras"
-          >
-            <input type="checkbox" [formControlName]="extra.id" />
-            <mat-icon [svgIcon]="extra.icon_id"></mat-icon>
-            <span>{{ extra.text }}</span>
-          </label>
+    <div class="row" *ngIf="uploadForm.value?.type === 'house' || uploadForm.value?.type === 'apartment'"
+      [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave">
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <h3 class="selector-title" i18n>Features of the house</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <div class="selector-container">
+                <label class="selector" [class.active]="uploadForm.value[extra.id]" *ngFor="let extra of extras">
+                  <div class="selector-icon">
+                    <input type="checkbox" [formControlName]="extra.id" />
+                    <mat-icon [svgIcon]="extra.icon_id"></mat-icon>
+                  </div>
+                  <span class="selector-text">{{ extra.text }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <ng-template #coachmarkExtras>
@@ -193,22 +149,12 @@
       </ng-template>
     </div>
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-12">
         <div class="form-group">
           <label for="title" i18n>Title</label>
-          <span class="chars-counter"
-            >{{ uploadForm.value?.title?.length }}/50</span
-          >
-          <input
-            i18n-placeholder
-            placeholder="In some words..."
-            type="text"
-            class="form-control"
-            formControlName="title"
-            [ngbPopover]="coachmarkTitle"
-            id="title"
-            maxlength="50"
-          />
+          <span class="chars-counter">{{ uploadForm.value?.title?.length }}/50</span>
+          <input i18n-placeholder placeholder="In some words..." type="text" class="form-control"
+            formControlName="title" [ngbPopover]="coachmarkTitle" id="title" maxlength="50" />
           <ng-template #coachmarkTitle>
             <div i18n>
               Pay attention to spelling mistakes, so our users can find your
@@ -222,19 +168,10 @@
       <div class="col-md-12">
         <div class="form-group last">
           <label for="storytelling" i18n>Description</label>
-          <span class="chars-counter"
-            >{{ uploadForm.value?.storytelling?.length }}/650</span
-          >
-          <textarea
-            i18n-placeholder
-            placeholder="Tell us more about your space"
-            fz-elastic
-            class="form-control"
-            [ngbPopover]="coachmarkDescription"
-            formControlName="storytelling"
-            id="storytelling"
-            maxlength="650"
-          ></textarea>
+          <span class="chars-counter">{{ uploadForm.value?.storytelling?.length }}/650</span>
+          <textarea i18n-placeholder placeholder="Tell us more about your space" fz-elastic class="form-control"
+            [ngbPopover]="coachmarkDescription" formControlName="storytelling" id="storytelling"
+            maxlength="650"></textarea>
           <ng-template #coachmarkDescription>
             <div i18n>Every detail counts, so tell us more!</div>
           </ng-template>
@@ -245,45 +182,24 @@
   <div class="main-box">
     <h2 i18n>Property location</h2>
     <div class="row">
-      <div class="col-sm-12">
-        <div
-          class="form-group"
-          [ngbPopover]="coachmarkLocation"
-          triggers="mouseenter:mouseleave"
-        >
-          <tsl-location-select
-            [form]="uploadForm"
-            name="location"
-            (locationSelected)="emitLocation()"
-            [updateLocation]="false"
-          ></tsl-location-select>
-          <tsl-here-maps
-            *ngIf="coordinates"
-            [coordinates]="coordinates"
-            zoom="15"
-            size="small"
-            [isApproximateLocation]="
+      <div class="col-12">
+        <div class="form-group" [ngbPopover]="coachmarkLocation" triggers="mouseenter:mouseleave">
+          <tsl-location-select *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"
+            [updateLocation]="false"></tsl-location-select>
+          <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small" [isApproximateLocation]="
               uploadForm.value.location.approximated_location
-            "
-          ></tsl-here-maps>
+            "></tsl-here-maps>
           <div class="fake-map" *ngIf="!coordinates"></div>
           <p i18n>
             This is the spot where your space is located. This location could be
             different from your profile location.
           </p>
           <label class="checkbox checkbox-corporate" formGroupName="location">
-            <div
-              class="select"
-              [ngClass]="{
+            <div class="select" [ngClass]="{
                 selected: uploadForm.value.location.approximated_location
-              }"
-            >
+              }">
               <mat-icon svgIcon="check"></mat-icon>
-              <input
-                type="checkbox"
-                formControlName="approximated_location"
-                (change)="emitLocation()"
-              />
+              <input type="checkbox" formControlName="approximated_location" (change)="emitLocation()" />
             </div>
             <span i18n>Show the property's approximate location</span>
           </label>
@@ -294,30 +210,16 @@
       </div>
     </div>
   </div>
-  <div
-    class="box product-photos"
-    [ngbPopover]="coachmarkPictures"
-    triggers="mouseenter:mouseleave"
-  >
-    <h2
-      [ngClass]="{
+  <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave">
+    <h2 [ngClass]="{
         'ng-invalid':
           !uploadForm.controls.images.valid && uploadForm.controls.images.dirty
-      }"
-      i18n
-    >
+      }" i18n>
       Photos
     </h2>
-    <tsl-drop-area
-      [uploadEvent]="uploadEvent"
-      type="real_estate"
-      (onUploaded)="onUploaded($event)"
-      (onError)="onError($event)"
-      formControlName="images"
-      [maxUploads]="10"
-      [images]="item?.images"
-      [itemId]="item?.id"
-    ></tsl-drop-area>
+    <tsl-drop-area [uploadEvent]="uploadEvent" type="real_estate" (onUploaded)="onUploaded($event)"
+      (onError)="onError($event)" (onUploadPercentageChange)="updateUploadPercentage($event)" formControlName="images" [maxUploads]="10" [images]="item?.images"
+      [itemId]="item?.id"></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n>
         You can drag and drop your photos here. Also drag and drop to change the
@@ -325,28 +227,21 @@
       </div>
     </ng-template>
   </div>
-  <tsl-urgent-checkbox
-    [categoryId]="13000"
-    [urgentPrice]="urgentPrice"
-    (urgentSelected)="selectUrgent($event)"
-  ></tsl-urgent-checkbox>
-  <tsl-button
-    [type]="'submit'"
-    className="btn-primary btn-big"
-    [disabled]="loading"
-    [loading]="loading"
-  >
-    <span *ngIf="!item" i18n>Post Ad</span>
-    <span *ngIf="item" i18n>Update</span>
-  </tsl-button>
-  <button
-    type="button"
-    (click)="preview()"
-    class="btn btn-link"
-    [disabled]="!uploadForm.valid"
-    tslTrackEvent="UPLOADFORM_PREVIEW"
-    i18n
-  >
-    How does it look?
-  </button>
+  <tsl-urgent-checkbox [categoryId]="13000" [urgentPrice]="urgentPrice" (urgentSelected)="selectUrgent($event)">
+  </tsl-urgent-checkbox>
+  <div class="row">
+    <div class="col-12 col-md-4">
+      <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
+        <span *ngIf="!item && !loading" i18n>Post Ad</span>
+        <span *ngIf="item && !loading" i18n>Update</span>
+        <span *ngIf="loading" i18n>Uploading... {{ uploadCompletedPercentage }}%</span>
+      </tsl-button>
+    </div>
+    <div class="col-md-3 d-none d-md-block">
+      <button type="button" (click)="preview()" class="btn btn-link" [disabled]="!uploadForm.valid"
+        tslTrackEvent="UPLOADFORM_PREVIEW" i18n>
+        How does it look?
+      </button>
+    </div>
+  </div>
 </form>

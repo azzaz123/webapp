@@ -1,2 +1,18 @@
-<tsl-chat-with-archive *ngIf="!inboxFeatureflagValue"></tsl-chat-with-archive>
-<tsl-chat-with-inbox *ngIf="inboxFeatureflagValue"></tsl-chat-with-inbox>
+<div class="page-content">
+  <div id="left-panel" [ngClass]="{'active-conversation': !!currentConversation}">
+    <tsl-connection-alert></tsl-connection-alert>
+    <tsl-inbox (loadingEvent)="onLoad($event)" (loadingError)="onChangeInboxOrArchivedDropdown($event)"></tsl-inbox>
+  </div>
+  <div id="center-panel" *ngIf="!conversationsLoading" [ngClass]="{'active-conversation': !!currentConversation}">
+    <tsl-current-conversation [currentConversation]="currentConversation"
+                              [conversationsTotal]="conversationsTotal"
+                              [connectionError]="connectionError"
+                              [loadingError]="loadingError"></tsl-current-conversation>
+  </div>
+
+  <div id="loading-state" *ngIf="conversationsLoading">
+    <div class="content">
+      <tsl-spinner [firstLoad]="firstLoad"></tsl-spinner>
+    </div>
+  </div>
+</div>

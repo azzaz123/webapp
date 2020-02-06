@@ -38,8 +38,8 @@
 }
 
 #card-errors {
-  margin: 0 0 $spacing-s;
   color: $negative-dark;
+  font-size: $font-size-s;
 }
 
 tsl-button {
@@ -64,4 +64,31 @@ tsl-button {
 
 .field-row {
   width: 100%;
+}
+
+#stripe {
+  &.space-between {
+    height: 100%;
+
+    form {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+}
+
+.card-feedback {
+  &--flexible {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.card-feedback__action {
+  color: $walla-main;
+  font-size: $font-size-s;
+  text-align: left;
+  cursor: pointer;
 }

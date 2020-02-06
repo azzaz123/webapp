@@ -5,20 +5,20 @@ import { UserService } from '../user/user.service';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { UUID } from 'angular2-uuid';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { HttpServiceNew } from '../http/http.service.new';
 import { HttpModuleNew } from '../http/http.module.new';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { SubscriptionsResponse } from './subscriptions.interface';
-import { SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
+import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
+import { HttpClient } from '@angular/common/http';
 
 describe('SubscriptionsService', () => {
 
   let service: SubscriptionsService;
-  let http: HttpServiceNew;
+  let http: HttpClient;
   let httpMock: HttpTestingController;
   let userService: UserService;
   let featureflagService: FeatureflagService;
@@ -63,7 +63,7 @@ describe('SubscriptionsService', () => {
       ]
     });
     service = TestBed.get(SubscriptionsService);
-    http = TestBed.get(HttpServiceNew);
+    http = TestBed.get(HttpClient);
     httpMock = TestBed.get(HttpTestingController);
     userService = TestBed.get(UserService);
     featureflagService = TestBed.get(FeatureflagService);
@@ -187,6 +187,20 @@ describe('SubscriptionsService', () => {
       const expectedUrl = `${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/unsubscription/cancel/${planId}`;
 
       service.continueSubscription(planId).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.method).toBe('PUT');
+    });
+  });
+
+  describe('editSubscription', () => {
+    it('should call the endpoint', () => {
+      const planId = 'plan_FWuGNucr7WgWUc';
+      const expectedUrl = `${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${MAPPED_SUBSCRIPTIONS[2].id}`;
+
+      service.editSubscription(MAPPED_SUBSCRIPTIONS[2], planId).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 

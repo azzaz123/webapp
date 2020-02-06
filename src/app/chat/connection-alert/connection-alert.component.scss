@@ -2,13 +2,13 @@
 
 #alert {
   $alert-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: $negative-main;
   color: $white;
-  text-align: center;
   height: $alert-height;
-  line-height: $line-height-xxl;
   font-size: $font-size-m;
-  padding-left: $spacing-ms;
   &.connected {
     background: $positive-main;
   }

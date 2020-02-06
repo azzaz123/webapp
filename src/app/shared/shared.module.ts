@@ -39,8 +39,6 @@ import { SelectComponent } from './select/select.component';
 import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
 import { RestrictInputNumberDirective } from './restrict-input-number/restrict-input-number.directive';
-import { CardSelectionComponent } from './payments/card-selection/card-selection.component';
-import { SabadellComponent } from './payments/sabadell/sabadell.component';
 import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
 import { ProfileFormComponent } from './profile/profile-form/profile-form.component';
 import { EditEmailComponent } from './profile/edit-email/edit-email.component';
@@ -67,7 +65,6 @@ import { CoverUploadComponent } from './profile/cover-upload/cover-upload.compon
 import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
 import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.component';
-import { CreditCardsComponent } from './profile/credit-cards/credit-cards.component';
 import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { SelectModule } from 'ng-select';
@@ -125,8 +122,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     SearchInputComponent,
     SelectComponent,
     RestrictInputNumberDirective,
-    CardSelectionComponent,
-    SabadellComponent,
     WallacoinComponent,
     EditEmailComponent,
     EmailModalComponent,
@@ -147,7 +142,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     KeywordSuggesterComponent,
     StripeCardElementComponent,
     StripeCardsComponent,
-    CreditCardsComponent,
     NewCardModalComponent,
     StripeCardSelectionComponent,
     SelectModule,
@@ -186,8 +180,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent,
     RestrictInputNumberDirective,
-    CardSelectionComponent,
-    SabadellComponent,
     WallacoinComponent,
     EditEmailComponent,
     EmailModalComponent,
@@ -210,7 +202,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     KeywordSuggesterComponent,
     StripeCardElementComponent,
     StripeCardsComponent,
-    CreditCardsComponent,
     NewCardModalComponent,
     StripeCardSelectionComponent,
     NavLinksComponent,

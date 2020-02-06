@@ -4,6 +4,9 @@ $form-control-height: 50px;
 
 .form-group {
   margin-bottom: $spacing-xl;
+  @include media-breakpoint-down(sm) {
+    margin-bottom: $spacing-m;
+  }
   &.last {
     margin-bottom: 0;
   }

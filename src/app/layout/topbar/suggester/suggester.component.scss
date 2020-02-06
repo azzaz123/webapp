@@ -77,6 +77,9 @@
   margin: $spacing-xs 0 0;
   left: 0 !important;
   width: 500px;
+  @include media-breakpoint-down(md) {
+    width: 100%;
+  }
 }
 :host /deep/ .dropdown-item {
   background-color: transparent;

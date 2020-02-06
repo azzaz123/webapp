@@ -69,6 +69,14 @@ $height: 40px;
         color: $blue-grey-2;
       }
     }
+    &.btn-select-all {
+      &:hover, &:disabled {
+        background: $walla-main;
+        border-color: transparent;
+        color: $white;
+        cursor: pointer;
+      }
+    }
   }
 
   tsl-button /deep/ .btn-feat  {

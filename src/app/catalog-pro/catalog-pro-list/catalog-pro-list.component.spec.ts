@@ -9,7 +9,7 @@ import { UUID } from 'angular2-uuid';
 import { Subject } from 'rxjs/Subject';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
-import { ItemService } from '../../core/item/item.service';
+import { ItemService, ITEM_STATUS } from '../../core/item/item.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -25,7 +25,6 @@ import {
 import { USERS_STATS_RESPONSE } from '../../../tests/user.fixtures.spec';
 import { FINANCIAL_CARD } from '../../../tests/payments.fixtures.spec';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
-import { StripeService } from '../../core/stripe/stripe.service';
 
 describe('CatalogProListComponent', () => {
   let component: CatalogProListComponent;
@@ -37,13 +36,11 @@ describe('CatalogProListComponent', () => {
   let trackingServiceSpy: jasmine.Spy;
   let itemServiceSpy: jasmine.Spy;
   let userService: UserService;
-  let paymentService: PaymentService;
   let router: Router;
   let route: ActivatedRoute;
   let eventService: EventService;
   let errorService: ErrorsService;
   let modalSpy: jasmine.Spy;
-  let stripeService: StripeService;
   const routerEvents: Subject<any> = new Subject();
   const mockCounters = {
     sold: 0,
@@ -127,8 +124,6 @@ describe('CatalogProListComponent', () => {
         },
         {
           provide: PaymentService, useValue: {
-            getFinancialCard() {
-             },
             pay() {
               return Observable.of({});
             }
@@ -140,14 +135,7 @@ describe('CatalogProListComponent', () => {
               code: 200
             })
           }
-        },
-        {
-          provide: StripeService, useValue: {
-            isPaymentMethodStripe$() {
-              return Observable.of(true);
-            }
         }
-        },
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
@@ -164,8 +152,6 @@ describe('CatalogProListComponent', () => {
     router = TestBed.get(Router);
     route = TestBed.get(ActivatedRoute);
     errorService = TestBed.get(ErrorsService);
-    paymentService = TestBed.get(PaymentService);
-    stripeService = TestBed.get(StripeService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemServiceSpy = spyOn(itemService, 'mines').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -239,22 +225,7 @@ describe('CatalogProListComponent', () => {
       tick(3000);
 
       expect(component.isUrgent).toBe(true);
-      expect(component.isRedirect).toBe(true);
-      expect(localStorage.getItem).toHaveBeenCalledWith('redirectToTPV');
       expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
-    }));
-
-    it('should set the redirect to false if it is not urgent', fakeAsync(() => {
-      spyOn(localStorage, 'setItem');
-      route.params = Observable.of({
-        urgent: false
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(component.isRedirect).toBe(false);
-      expect(localStorage.setItem).toHaveBeenCalledWith('redirectToTPV', 'false');
     }));
 
     it('should open the urgent modal if transaction is set as urgent', fakeAsync(() => {
@@ -332,23 +303,6 @@ describe('CatalogProListComponent', () => {
 
       expect(errorService.i18nError).toHaveBeenCalledWith('alreadyFeatured');
     }));
-
-    it('should call stripeService.isPaymentMethodStripe$', () => {
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(stripeService.isPaymentMethodStripe$).toHaveBeenCalled();
-    });
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = true;
-      spyOn(stripeService, 'isPaymentMethodStripe$').and.returnValue(Observable.of(expectedValue));
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
-    });
   });
 
   describe('getItems', () => {
@@ -362,7 +316,7 @@ describe('CatalogProListComponent', () => {
     });
 
     it('should track the ProductListSoldViewed if the selectedStatus is sold', () => {
-      component['selectedStatus'] = 'sold';
+      component['selectedStatus'] = ITEM_STATUS.SOLD;
       trackingServiceSpy.calls.reset();
 
       component.ngOnInit();
@@ -371,7 +325,7 @@ describe('CatalogProListComponent', () => {
     });
 
     it('should track the ProductListActiveViewed if the selectedStatus is published', () => {
-      component['selectedStatus'] = 'published';
+      component['selectedStatus'] = ITEM_STATUS.PUBLISHED;
       trackingServiceSpy.calls.reset();
 
       component.ngOnInit();
@@ -457,74 +411,14 @@ describe('CatalogProListComponent', () => {
   describe('feature', () => {
     let eventId: string;
     beforeEach(() => {
-      component.isStripe = false;
       spyOn(UUID, 'UUID').and.returnValue('UUID');
     });
     describe('success', () => {
       beforeEach(() => {
         spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.of([]));
         eventId = null;
-        component.sabadellSubmit.subscribe((id: string) => {
-          eventId = id;
-        });
-      });
-      describe('without credit card', () => {
-        beforeEach(() => {
-          spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.throw(''));
-          component.feature({
-            order: [ORDER],
-            total: 10
-          });
-        });
-        it('should submit sabadell with orderId', () => {
-          expect(eventId).toBe('UUID');
-        });
-
-        it('should call purchaseProducts', () => {
-          expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', false);
-        });
-
-        it('should call getFinancialCard', () => {
-          expect(paymentService.getFinancialCard).toHaveBeenCalled();
-        });
       });
       describe('with credit card', () => {
-        beforeEach(() => {
-          spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
-        });
-        describe('user wants new one', () => {
-          beforeEach(fakeAsync(() => {
-            modalSpy.and.returnValue({
-              result: Promise.resolve('new'),
-              componentInstance: componentInstance
-            });
-            component.feature({
-              order: [ORDER],
-              total: 10
-            });
-          }));
-
-          it('should submit sabadell with orderId', () => {
-            expect(eventId).toBe('UUID');
-          });
-
-          it('should open modal', () => {
-            expect(modalService.open).toHaveBeenCalledWith(CreditCardModalComponent, {windowClass: 'credit-card'});
-          });
-
-          it('should set financialCard and total to componentInstance', () => {
-            expect(componentInstance.financialCard).toEqual(FINANCIAL_CARD);
-            expect(componentInstance.total).toBe(10);
-          });
-
-          it('should call purchaseProducts', () => {
-            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', false);
-          });
-
-          it('should call getFinancialCard', () => {
-            expect(paymentService.getFinancialCard).toHaveBeenCalled();
-          });
-        });
         describe('user wants old one', () => {
           beforeEach(fakeAsync(() => {
             modalSpy.and.returnValue({
@@ -534,88 +428,9 @@ describe('CatalogProListComponent', () => {
             spyOn(router, 'navigate');
             spyOn(component, 'deselect');
           }));
-          describe('payment ok', () => {
-            beforeEach(fakeAsync(() => {
-              spyOn(paymentService, 'pay').and.callThrough();
-              component.feature({
-                order: [ORDER],
-                total: 10
-              });
-              tick(1000);
-            }));
-
-            it('should redirect to code 200', () => {
-              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
-            });
-
-            it('should call deselect', () => {
-              expect(component.deselect).toHaveBeenCalled();
-            });
-
-            it('should call pay', () => {
-              expect(paymentService.pay).toHaveBeenCalledWith('UUID');
-            });
-
-            it('should open modal', () => {
-              expect(modalService.open).toHaveBeenCalledWith(CreditCardModalComponent, {windowClass: 'credit-card'});
-            });
-
-            it('should set financialCard and total to componentInstance', () => {
-              expect(componentInstance.financialCard).toEqual(FINANCIAL_CARD);
-              expect(componentInstance.total).toBe(10);
-            });
-
-            it('should call purchaseProducts', () => {
-              expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', false);
-            });
-
-            it('should call getFinancialCard', () => {
-              expect(paymentService.getFinancialCard).toHaveBeenCalled();
-            });
-          });
-          describe('payment ko', () => {
-            beforeEach(fakeAsync(() => {
-              spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
-              component.feature({
-                order: [ORDER],
-                total: 10
-              });
-              tick(1000);
-            }));
-
-            it('should redirect to code -1', () => {
-              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
-            });
-
-            it('should call deselect', () => {
-              expect(component.deselect).toHaveBeenCalled();
-            });
-
-            it('should call pay', () => {
-              expect(paymentService.pay).toHaveBeenCalledWith('UUID');
-            });
-
-            it('should open modal', () => {
-              expect(modalService.open).toHaveBeenCalledWith(CreditCardModalComponent, {windowClass: 'credit-card'});
-            });
-
-            it('should set financialCard and total to componentInstance', () => {
-              expect(componentInstance.financialCard).toEqual(FINANCIAL_CARD);
-              expect(componentInstance.total).toBe(10);
-            });
-
-            it('should call purchaseProducts', () => {
-              expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', false);
-            });
-
-            it('should call getFinancialCard', () => {
-              expect(paymentService.getFinancialCard).toHaveBeenCalled();
-            });
-          });
         });
         describe('user closes modal', () => {
           beforeEach(fakeAsync(() => {
-            spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
             spyOn(router, 'navigate');
             component.feature({
               order: [ORDER],
@@ -633,16 +448,11 @@ describe('CatalogProListComponent', () => {
           });
 
           it('should set financialCard and total to componentInstance', () => {
-            expect(componentInstance.financialCard).toEqual(FINANCIAL_CARD);
             expect(componentInstance.total).toBe(10);
           });
 
           it('should call purchaseProducts', () => {
-            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID', false);
-          });
-
-          it('should call getFinancialCard', () => {
-            expect(paymentService.getFinancialCard).toHaveBeenCalled();
+            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
           });
         });
       });

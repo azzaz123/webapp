@@ -17,7 +17,6 @@ import { StripeService } from '../../../../core/stripe/stripe.service';
 import { Router } from '@angular/router';
 import { STRIPE_CARD_OPTION } from '../../../../../tests/stripe.fixtures.spec';
 import { ErrorsService } from '../../../../core/errors/errors.service';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_CLICK_EVENT, WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT } from '../../../../core/tracking/split-test.service';
 
 describe('BuyProductModalComponent', () => {
   let component: BuyProductModalComponent;
@@ -29,7 +28,6 @@ describe('BuyProductModalComponent', () => {
   let stripeService: StripeService;
   let errorService: ErrorsService;
   let router: Router;
-  let splitTestService: SplitTestService;
   const routerEvents: Subject<any> = new Subject();
 
   beforeEach(async(() => {
@@ -77,29 +75,15 @@ describe('BuyProductModalComponent', () => {
           provide: PaymentService, useValue: {
             getCreditInfo() {
               return Observable.of({});
-            },
-            pay() {
-              return Observable.of('');
             }
           }
         },
         {
           provide: StripeService, useValue: {
             buy() {},
-            isPaymentMethodStripe$() {
-              return Observable.of(true);
-            },
             getCards() {
               return Observable.of([]);
             }
-          }
-        },
-        {
-          provide: SplitTestService, useValue: {
-            getVariable() {
-              return Observable.of(WEB_PAYMENT_EXPERIMENT_TYPE.sabadell);
-            },
-            track() {}
           }
         },
       ],
@@ -119,16 +103,12 @@ describe('BuyProductModalComponent', () => {
     eventService = TestBed.get(EventService);
     stripeService = TestBed.get(StripeService);
     errorService = TestBed.get(ErrorsService);
-    splitTestService = TestBed.get(SplitTestService);
     router = TestBed.get(Router);
   });
 
   describe('ngOnInit', () => {
     beforeEach(() => {
-      spyOn(splitTestService, 'getVariable').and.callThrough();
-      spyOn(splitTestService, 'track');
       spyOn(itemService, 'get').and.callThrough();
-      
     });
 
     it('should get and set item', () => {
@@ -138,14 +118,6 @@ describe('BuyProductModalComponent', () => {
 
       expect(component.item).toEqual(MOCK_ITEM_V3);
       expect(component.item.urgent).toBe(true);
-    });
-
-    it('should set isStripe to the value returned by stripeService.isPaymentMethodStripe$', () => {
-      const expectedValue = false;
-
-      component.ngOnInit();
-
-      expect(component.isStripe).toBe(expectedValue);
     });
 
     it('should call getCreditInfo and set it', () => {
@@ -176,12 +148,6 @@ describe('BuyProductModalComponent', () => {
         credit: 0,
         factor: 1
       });
-    });
-
-    it('should track the payment method experiment', () => {
-      component.ngOnInit();
-
-      expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_PAGEVIEW_EVENT);
     });
   });
 
@@ -232,25 +198,16 @@ describe('BuyProductModalComponent', () => {
   });
 
   describe('hasCard', () => {
-    it('should set card if present', () => {
+    it('should set if stripeCard is present', () => {
       component.hasCard(true);
 
-      expect(component.hasFinancialCard).toBe(true);
-      expect(component.mainLoading).toBe(false);
-    });
-  });
-
-  describe('hasStripeCard', () => {
-    it('should set if stripeCard is present', () => {
-      component.hasStripeCard(true);
-
-      expect(component.isStripeCard).toBe(true);
+      expect(component.hasSavedCard).toBe(true);
     });
 
     it('should not call addNewCard if stripe card exists', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasStripeCard(true);
+      component.hasCard(true);
 
       expect(component.addNewCard).not.toHaveBeenCalled();
     });
@@ -258,7 +215,7 @@ describe('BuyProductModalComponent', () => {
     it('should call addNewCard if stripe card does not exist', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasStripeCard(false);
+      component.hasCard(false);
 
       expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
@@ -305,16 +262,12 @@ describe('BuyProductModalComponent', () => {
         spyOn(UUID, 'UUID').and.returnValue('UUID');
         spyOn(activeModal, 'close');
         eventId = null;
-        component.sabadellSubmit.subscribe((id: string) => {
-          eventId = id;
-        });
         component.creditInfo = {
           currencyName: 'wallacoins',
           credit: 200,
           factor: 100
         };
         component.orderEvent = {...ORDER_EVENT} as OrderEvent;
-        component.isStripe = false;
       });
 
       it('should set localStorage with transaction amount', () => {
@@ -330,107 +283,19 @@ describe('BuyProductModalComponent', () => {
       });
 
       describe('with payment_needed true', () => {
-
-        it('should track payment method experiment', () => {
-          spyOn(splitTestService, 'track');
-          spyOn(splitTestService, 'getVariable').and.callThrough();
-          component.hasFinancialCard = true;
-
-          component.checkout();
-
-          expect(splitTestService.track).toHaveBeenCalledWith(WEB_PAYMENT_EXPERIMENT_CLICK_EVENT);
-        });
-
-        describe('without credit card', () => {
-          it('should submit sabadell with orderId', () => {
-            component.hasFinancialCard = false;
-
-            component.checkout();
-
-            expect(eventId).toBe('UUID');
-          });
-        });
-
         describe('with credit card', () => {
-
-          beforeEach(() => {
-            component.hasFinancialCard = true;
-          });
-
           describe('user wants new one', () => {
-
-            it('should submit sabadell with orderId', () => {
-              component.cardType = 'new';
-
-              component.checkout();
-
-              expect(eventId).toBe('UUID');
-            });
-
             it('should buy with stripe', () => {
               spyOn(stripeService, 'buy').and.callThrough();
               const orderId = 'UUID';
               const paymentId = 'UUID';
-              component.isStripe = true;
               component.savedCard = false;
 
               component.checkout();
 
-              expect(stripeService.buy).toHaveBeenCalledWith(orderId, paymentId, component.isStripeCard, component.savedCard, component.card);
+              expect(stripeService.buy).toHaveBeenCalledWith(orderId, paymentId, component.hasSavedCard, component.savedCard, component.card);
             });
           });
-
-          describe('user wants old one', () => {
-
-            describe('payment ok', () => {
-              beforeEach(() => {
-                spyOn(paymentService, 'pay').and.callThrough();
-
-                component.checkout();
-              });
-
-              it('should close with success', () => {
-                expect(activeModal.close).toHaveBeenCalledWith('success');
-              });
-            });
-
-            describe('payment ko', () => {
-              beforeEach(() => {
-                spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
-
-                component.checkout();
-              });
-
-              it('should close with error', () => {
-                expect(activeModal.close).toHaveBeenCalledWith('error');
-              });
-            });
-
-            describe('on checkout', () => {
-              afterEach(() => {
-                it('should call pay', () => {
-                  expect(paymentService.pay).toHaveBeenCalledWith('UUID');
-                });
-              });
-            });
-
-          });
-        });
-      });
-
-      describe('with payment_needed false', () => {
-        beforeEach(() => {
-          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(Observable.of({
-            payment_needed: false,
-            items_failed: []
-          }));
-          spyOn(paymentService, 'pay').and.callThrough();
-
-          component.checkout();
-        });
-
-        it('should close with success', () => {
-          expect(activeModal.close).toHaveBeenCalledWith('success');
         });
       });
 

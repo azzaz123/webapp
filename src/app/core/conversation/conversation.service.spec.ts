@@ -3,7 +3,7 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ConversationService } from './conversation.service';
 import { HttpService } from '../http/http.service';
-import { Response, ResponseOptions, RequestOptions, Headers } from '@angular/http';
+import { Headers, RequestOptions, Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 import { Conversation } from './conversation';
 import { UserService } from '../user/user.service';
@@ -15,29 +15,40 @@ import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { Message, messageStatus, phoneMethod } from '../message/message';
 import { EventService } from '../event/event.service';
-import { clone } from 'lodash-es';
 import { NotificationService } from '../notification/notification.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { ConversationTotals } from './totals.interface';
 import { Lead } from './lead';
 import {
-  CONVERSATION_DATE, CONVERSATION_ID, CONVERSATION_PHONE,
-  CONVERSATIONS_DATA, createConversationsArray,
-  MOCK_CONVERSATION, MOCK_NOT_FOUND_CONVERSATION, NOT_FOUND_CONVERSATION_ID,
-  SECOND_MOCK_CONVERSATION, SURVEY_RESPONSES } from '../../../tests/conversation.fixtures.spec';
-import { MOCK_USER,
+  CONVERSATION_DATE,
+  CONVERSATION_ID,
+  CONVERSATION_PHONE,
+  CONVERSATIONS_DATA,
+  createConversationsArray,
+  MOCK_CONVERSATION,
+  MOCK_NOT_FOUND_CONVERSATION,
+  NOT_FOUND_CONVERSATION_ID,
+  SECOND_MOCK_CONVERSATION,
+  SURVEY_RESPONSES
+} from '../../../tests/conversation.fixtures.spec';
+import {
+  MOCK_OTHER_USER,
+  MOCK_USER,
   MockedUserService,
-  USER_ID,
-  USER_ITEM_DISTANCE,
   OTHER_USER_ID,
-  MOCK_OTHER_USER} from '../../../tests/user.fixtures.spec';
-import { ITEM_ID, MockedItemService, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
+  USER_ID,
+  USER_ITEM_DISTANCE
+} from '../../../tests/user.fixtures.spec';
+import { ITEM_ID, MOCK_ITEM, MockedItemService } from '../../../tests/item.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import {
-  createMessagesArray, MESSAGE_MAIN, MESSAGE_MAIN_UPDATED, MOCK_MESSAGE,
-  MOCK_RANDOM_MESSAGE,
-  MOCK_MESSAGE_FROM_OTHER
+  createMessagesArray,
+  MESSAGE_MAIN,
+  MESSAGE_MAIN_UPDATED,
+  MOCK_MESSAGE,
+  MOCK_MESSAGE_FROM_OTHER,
+  MOCK_RANDOM_MESSAGE
 } from '../../../tests/message.fixtures.spec';
 import { MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
@@ -50,8 +61,9 @@ import { RealTimeService } from '../message/real-time.service';
 import { BlockUserXmppService } from './block-user';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { RemoteConsoleService } from '../remote-console';
-import { MockRemoteConsoleService } from '../../../tests';
+import { InboxConversationServiceMock, InboxServiceMock, MockRemoteConsoleService } from '../../../tests';
 import { InboxService } from '../inbox/inbox.service';
+import { InboxConversationService } from '../inbox/inbox-conversation.service';
 
 let service: ConversationService;
 let http: HttpService;
@@ -66,22 +78,17 @@ let eventService: EventService;
 let trackingService: TrackingService;
 let connectionService: ConnectionService;
 let inboxService: InboxService;
+let inboxConversationService: InboxConversationService;
 let modalService: NgbModal;
 let archiveService: MsgArchiveService;
 let i18n: I18nService;
 
 const MOCKED_CONVERSATION_DATA: any = CONVERSATIONS_DATA[0];
-const EMPTY_RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
+const EMPTY_RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify([]) }));
 const CONVERSATION_RESPONSE: Response = new Response(new ResponseOptions(
-  {body: JSON.stringify(MOCKED_CONVERSATION_DATA)})
+  { body: JSON.stringify(MOCKED_CONVERSATION_DATA) })
 );
 const componentInstance: any = { SendPhoneComponent: jasmine.createSpy('SendPhoneComponent') };
-
-class MockedInboxService {
-  public getInboxFeatureFlag$(): Observable<boolean> {
-    return Observable.of(false);
-  }
-}
 
 describe('Service: Conversation', () => {
   beforeEach(() => {
@@ -96,7 +103,8 @@ describe('Service: Conversation', () => {
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
-        { provide: InboxService, useClass: MockedInboxService },
+        { provide: InboxService, useClass: InboxServiceMock },
+        { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         {
           provide: BlockUserXmppService, useValue: {
             getBlockedUsers() {
@@ -131,6 +139,7 @@ describe('Service: Conversation', () => {
     });
     service = TestBed.get(ConversationService);
     inboxService = TestBed.get(InboxService);
+    inboxConversationService = TestBed.get(InboxConversationService);
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
     messageService = TestBed.get(MessageService);
@@ -152,159 +161,9 @@ describe('Service: Conversation', () => {
   });
 
   describe('getLeads', () => {
-    const TOTAL = 4;
-    const QUERY_RESULT: Conversation[] = createConversationsArray(TOTAL);
-    const SINCE = 1234567;
-    const UNREAD_MESSAGES = 2;
-    const TOTAL_MESSAGES = 4;
-    let response: Conversation[];
-    describe('with results', () => {
-      beforeEach(() => {
-        spyOn(service, 'query').and.returnValue(Observable.of(clone(QUERY_RESULT)));
-        spyOn(service, 'loadMessagesIntoConversations').and.callFake((conversations: Conversation[]) => {
-          return Observable.of(conversations.map((conversation: Conversation) => {
-            conversation.unreadMessages = UNREAD_MESSAGES;
-            conversation.messages = createMessagesArray(TOTAL_MESSAGES);
-            return conversation;
-          }));
-        });
-        response = null;
-      });
-      describe('no archived', () => {
-        describe('without parameters', () => {
-          beforeEach(() => {
-            spyOn(trackingService, 'trackAccumulatedEvents').and.callThrough();
-            service.getLeads().subscribe((r: Conversation[]) => {
-              response = r;
-            });
-          });
 
-          it('should return conversations with unreadMessages and messages', () => {
-            expect(response.length).toEqual(TOTAL);
-            response.forEach((conversation: Conversation) => {
-              expect(conversation instanceof Conversation).toBe(true);
-              expect(conversation.unreadMessages).toBe(UNREAD_MESSAGES);
-              expect(conversation.messages.length).toBe(TOTAL_MESSAGES);
-            });
-          });
-
-          it('should set conversations', () => {
-            expect(service.leads).toEqual(QUERY_RESULT);
-          });
-
-          it('should set firstLoad to false', () => {
-            expect(service.firstLoad).toBe(false);
-          });
-
-          it('should call other functions', () => {
-            expect(service['loadMessagesIntoConversations']).toHaveBeenCalled();
-          });
-        });
-
-        it('should call query with since', () => {
-          service.getLeads(SINCE).subscribe();
-
-          expect(service.query).toHaveBeenCalledWith(SINCE, undefined);
-        });
-
-        it('should return concatenated convesations', () => {
-          const INITIAL_TOTAL = 3;
-          service.leads = createConversationsArray(INITIAL_TOTAL);
-
-          service.getLeads(SINCE).subscribe((r: Conversation[]) => {
-            response = r;
-          });
-
-          expect(service.leads.length).toBe(TOTAL + INITIAL_TOTAL);
-          expect(response.length).toBe(TOTAL);
-        });
-      });
-      describe('archived', () => {
-        describe('without parameters', () => {
-          beforeEach(() => {
-            service.getLeads(null, true).subscribe((r: Conversation[]) => {
-              response = r;
-            });
-          });
-
-          it('should return conversations with unreadMessages and messages', () => {
-            expect(response.length).toEqual(TOTAL);
-            response.forEach((conversation: Conversation) => {
-              expect(conversation instanceof Conversation).toBe(true);
-              expect(conversation.unreadMessages).toBe(UNREAD_MESSAGES);
-              expect(conversation.messages.length).toBe(TOTAL_MESSAGES);
-            });
-          });
-
-          it('should set conversations', () => {
-            expect(service.archivedLeads).toEqual(QUERY_RESULT);
-          });
-
-          it('should set firstLoad to false', () => {
-            expect(service.firstLoad).toBe(false);
-          });
-
-          it('should call other functions', () => {
-            expect(service['loadMessagesIntoConversations']).toHaveBeenCalled();
-          });
-        });
-
-        it('should call query with since', () => {
-          service.getLeads(SINCE, true).subscribe();
-
-          expect(service.query).toHaveBeenCalledWith(SINCE, true);
-        });
-
-        it('should return concatenated convesations', () => {
-          const INITIAL_TOTAL = 3;
-          service.archivedLeads = createConversationsArray(INITIAL_TOTAL);
-
-          service.getLeads(SINCE, true).subscribe((r: Conversation[]) => {
-            response = r;
-          });
-
-          expect(service.archivedLeads.length).toBe(TOTAL + INITIAL_TOTAL);
-          expect(response.length).toBe(TOTAL);
-        });
-      });
-    });
-
-    describe('with no results', () => {
-      beforeEach(() => {
-        spyOn(service, 'query').and.returnValue(Observable.of([]));
-      });
-
-      it('should return empty array', () => {
-        service.getLeads(SINCE).subscribe((r: Conversation[]) => {
-          response = r;
-        });
-
-        expect(response.length).toBe(0);
-      });
-
-      it('should set ended.pending to TRUE when getLeads is called without a second param', () => {
-        service.getLeads(SINCE).subscribe((r: Conversation[]) => {
-          response = r;
-        });
-
-        expect(service.ended.pending).toBe(true);
-      });
-
-      it('should set ended.pending to TRUE when getLeads is called with the second param false', () => {
-        service.getLeads(SINCE, false).subscribe((r: Conversation[]) => {
-          response = r;
-        });
-
-        expect(service.ended.pending).toBe(true);
-      });
-
-      it('should set ended.processed to TRUE when getLeads is called with the second param true', () => {
-        service.getLeads(SINCE, true).subscribe((r: Conversation[]) => {
-          response = r;
-        });
-
-        expect(service.ended.processed).toBe(true);
-      });
+    it('should return empty list', () => {
+      service.getLeads().subscribe((leads: Conversation[]) => expect(leads).toEqual([]));
     });
   });
 
@@ -604,7 +463,7 @@ describe('Service: Conversation', () => {
 
   describe('openPhonePopup', () => {
     const conversation = MOCK_CONVERSATION();
-    const modalOptions = {windowClass: 'phone-request', backdrop: 'static', keyboard: false};
+    const modalOptions = { windowClass: 'phone-request', backdrop: 'static', keyboard: false };
 
     beforeEach(() => {
       spyOn(modalService, 'open').and.callThrough();
@@ -639,7 +498,7 @@ describe('Service: Conversation', () => {
 
   describe('checkIfLastPage', () => {
     it('should call endpoint with lastDate', () => {
-      const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify(createConversationsArray(2))}));
+      const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify(createConversationsArray(2)) }));
       spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
       spyOn<any>(service, 'getLastDate').and.returnValue(12345);
 
@@ -652,7 +511,7 @@ describe('Service: Conversation', () => {
     });
 
     it('should set ended.pending to TRUE when called without any argument', () => {
-      const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
+      const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify([]) }));
       spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
       spyOn<any>(service, 'getLastDate').and.returnValue(12345);
 
@@ -662,7 +521,7 @@ describe('Service: Conversation', () => {
     });
 
     it('should set ended.pending to TRUE when called with false', () => {
-      const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
+      const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify([]) }));
       spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
       spyOn<any>(service, 'getLastDate').and.returnValue(12345);
 
@@ -672,7 +531,7 @@ describe('Service: Conversation', () => {
     });
 
     it('should set ended.processed to TRUE when called with true', () => {
-      const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
+      const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify([]) }));
       spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
       spyOn<any>(service, 'getLastDate').and.returnValue(12345);
 
@@ -768,7 +627,7 @@ describe('Service: Conversation', () => {
       });
 
       it('should call messageService.getMessages', () => {
-        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({reason: 'missing'}));
+        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({ reason: 'missing' }));
         service.loadMessagesIntoConversations(conversations).subscribe((res: Conversation[]) => {
           convWithMessages = res;
         });
@@ -778,7 +637,7 @@ describe('Service: Conversation', () => {
 
       it(`should set messageService.totalUnreadMessages to the sum of conversations' unread counters,
       when messagesService.totalUnreadMessages is 0`, () => {
-        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({reason: 'missing'}));
+        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({ reason: 'missing' }));
         spyOnProperty(messageService, 'totalUnreadMessages', 'get').and.callThrough();
 
         service.loadMessagesIntoConversations(conversations).subscribe((res: Conversation[]) => {
@@ -790,7 +649,7 @@ describe('Service: Conversation', () => {
 
       it(`should increment messageService.totalUnreadMessages with the sum of conversations' unread counters,
       when messagesService.totalUnreadMessages is greater than 0`, () => {
-        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({reason: 'missing'}));
+        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({ reason: 'missing' }));
         spyOnProperty(messageService, 'totalUnreadMessages', 'get').and.callThrough();
         messageService.totalUnreadMessages = 10;
 
@@ -802,7 +661,7 @@ describe('Service: Conversation', () => {
       });
 
       it('should fill conversations with messages', () => {
-        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({reason: 'missing'}));
+        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({ reason: 'missing' }));
         service.loadMessagesIntoConversations(conversations).subscribe();
 
         conversations.map(c => expect(c.messages.length).toBe(7));
@@ -937,274 +796,298 @@ describe('Service: Conversation', () => {
     const timestamp = new Date(MOCK_MESSAGE.date).getTime();
 
     describe('when processing read signals', () => {
-    let mockedConversation: Conversation;
-    let expectedMarkedAsRead, expectedNotMarkedAsRead;
-    const unreadCount = 5;
-    mockedConversation = MOCK_CONVERSATION();
-    mockedConversation.messages = createMessagesArray(10);
-    beforeEach(() => {
-      spyOn(persistencyService, 'updateMessageStatus');
-      spyOn(trackingService, 'addTrackingEvent');
-      service.leads.push(mockedConversation);
-      messageService.totalUnreadMessages = unreadCount;
-      mockedConversation.unreadMessages = unreadCount;
-    });
-    describe('when the signal ID does not match any message ID in the conversation', () => {
-      const signal = new ChatSignal(chatSignalType.READ, 'non-existant-conv-id', timestamp);
-      it('should NOT call trackingService.addTrackingEvent', () => {
-        service.processChatSignal(signal);
-
-        expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
-      });
-
-      it('should NOT call persistencyService.updateMessageStatus', () => {
-        service.processChatSignal(signal);
-
-        expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
-      });
-    });
-
-    describe('when processing a READ chat signal NOT fromSelf', () => {
-      it(`should update status to READ and push tracking event MESSAGE_READ for messages fromSelf and status RECEIVED`, () => {
-        mockedConversation.messages.map((m, index) => {
-          m.fromSelf = index < unreadCount ? true : false;
-          m.status = messageStatus.RECEIVED;
-        });
-        expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === messageStatus.SENT || m.status === messageStatus.RECEIVED));
-        expectedNotMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
-
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-        service.processChatSignal(signal);
-
-        const attributes = {
-          thread_id: mockedConversation.id,
-          message_id: null
-        };
-
-        expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(unreadCount);
-        expectedMarkedAsRead.forEach(m => {
-          attributes.message_id = m.id;
-          expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.MESSAGE_READ, attributes: attributes }, false);
-          expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
-        });
-
-        expectedNotMarkedAsRead.forEach(m => {
-          attributes.message_id = m.id;
-          expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({ eventData: TrackingService.MESSAGE_READ, attributes: attributes }, false);
-          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
-        });
-      });
-
-      it(`should update status to READ and push tracking event MESSAGE_READ for messages fromSelf and status SENT`, () => {
-        mockedConversation.messages.map((m, index) => {
-          m.fromSelf = index < unreadCount ? true : false;
-          m.status = messageStatus.SENT;
-        });
-        expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === messageStatus.SENT || m.status === messageStatus.RECEIVED));
-        expectedNotMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
-
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-        service.processChatSignal(signal);
-
-        const attributes = {
-          thread_id: mockedConversation.id,
-          message_id: null
-        };
-
-        expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(unreadCount);
-        expectedMarkedAsRead.forEach(m => {
-          attributes.message_id = m.id;
-          expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.MESSAGE_READ, attributes: attributes }, false);
-          expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
-        });
-
-        expectedNotMarkedAsRead.forEach(m => {
-          attributes.message_id = m.id;
-          expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({ eventData: TrackingService.MESSAGE_READ, attributes: attributes }, false);
-          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
-        });
-      });
-
-      it(`should NOT update status to READ and NOT push tracking event MESSAGE_READ for messages fromSelf and status PENDING`, () => {
-        mockedConversation.messages.map((m, index) => {
-          m.fromSelf = index < unreadCount ? true : false;
-          m.status = messageStatus.PENDING;
-        });
-
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-        service.processChatSignal(signal);
-
-        expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
-        expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
-      });
-
-      it('should NOT decrase the unreadMessages counter of the conversation', () => {
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-        service.processChatSignal(signal);
-
-        expect(mockedConversation.unreadMessages).toBe(unreadCount);
-      });
-
-      it('should NOT decrease messageService.totalUnreadMessages counter', () => {
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-        service.processChatSignal(signal);
-
-        expect(messageService.totalUnreadMessages).toBe(unreadCount);
-      });
-    });
-
-    describe('when processing a READ chat signal fromSelf', () => {
+      let mockedConversation: Conversation;
+      let expectedMarkedAsRead, expectedNotMarkedAsRead;
+      const unreadCount = 5;
+      mockedConversation = MOCK_CONVERSATION();
+      mockedConversation.messages = createMessagesArray(10);
       beforeEach(() => {
-        mockedConversation.messages.map((m, index) => {
-          m.fromSelf = index < unreadCount ? false : true;
-          m.status = messageStatus.RECEIVED;
-        });
-        expectedMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
-        expectedNotMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf);
+        spyOn(persistencyService, 'updateMessageStatus');
+        spyOn(trackingService, 'addTrackingEvent');
+        service.leads.push(mockedConversation);
+        messageService.totalUnreadMessages = unreadCount;
+        mockedConversation.unreadMessages = unreadCount;
       });
+      describe('when the signal ID does not match any message ID in the conversation', () => {
+        const signal = new ChatSignal(chatSignalType.READ, 'non-existant-conv-id', timestamp);
+        it('should NOT call trackingService.addTrackingEvent', () => {
+          service.processChatSignal(signal);
 
-      it(`should update status to READ and push tracking events MESSAGE_READ_ACK for messages NOT fromSelf`, () => {
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-        service.processChatSignal(signal);
-
-        const attributes = {
-          thread_id: mockedConversation.id,
-          message_id: null
-        };
-
-        expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(unreadCount);
-        expectedMarkedAsRead.forEach(m => {
-          attributes.message_id = m.id;
-          expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.MESSAGE_READ_ACK, attributes: attributes }, false);
-          expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
+          expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
         });
 
-        expectedNotMarkedAsRead.forEach(m => {
-          attributes.message_id = m.id;
-          expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({ eventData: TrackingService.MESSAGE_READ_ACK, attributes: attributes }, false);
-          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
+        it('should NOT call persistencyService.updateMessageStatus', () => {
+          service.processChatSignal(signal);
+
+          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
         });
       });
 
-      it('should decrase the unreadMessages counter of the conversation by the number of messages that are being marked as READ', () => {
-        expect(mockedConversation.unreadMessages).toBe(unreadCount);
+      describe('when processing a READ chat signal NOT fromSelf', () => {
+        it(`should update status to READ and push tracking event MESSAGE_READ for messages fromSelf and status RECEIVED`, () => {
+          mockedConversation.messages.map((m, index) => {
+            m.fromSelf = index < unreadCount ? true : false;
+            m.status = messageStatus.RECEIVED;
+          });
+          expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === messageStatus.SENT || m.status === messageStatus.RECEIVED));
+          expectedNotMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
 
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-        service.processChatSignal(signal);
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+          service.processChatSignal(signal);
 
-        expect(mockedConversation.unreadMessages).toBe(0);
+          const attributes = {
+            thread_id: mockedConversation.id,
+            message_id: null
+          };
+
+          expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(unreadCount);
+          expectedMarkedAsRead.forEach(m => {
+            attributes.message_id = m.id;
+            expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({
+              eventData: TrackingService.MESSAGE_READ,
+              attributes: attributes
+            }, false);
+            expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
+          });
+
+          expectedNotMarkedAsRead.forEach(m => {
+            attributes.message_id = m.id;
+            expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({
+              eventData: TrackingService.MESSAGE_READ,
+              attributes: attributes
+            }, false);
+            expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
+          });
+        });
+
+        it(`should update status to READ and push tracking event MESSAGE_READ for messages fromSelf and status SENT`, () => {
+          mockedConversation.messages.map((m, index) => {
+            m.fromSelf = index < unreadCount ? true : false;
+            m.status = messageStatus.SENT;
+          });
+          expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === messageStatus.SENT || m.status === messageStatus.RECEIVED));
+          expectedNotMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
+
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+          service.processChatSignal(signal);
+
+          const attributes = {
+            thread_id: mockedConversation.id,
+            message_id: null
+          };
+
+          expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(unreadCount);
+          expectedMarkedAsRead.forEach(m => {
+            attributes.message_id = m.id;
+            expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({
+              eventData: TrackingService.MESSAGE_READ,
+              attributes: attributes
+            }, false);
+            expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
+          });
+
+          expectedNotMarkedAsRead.forEach(m => {
+            attributes.message_id = m.id;
+            expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({
+              eventData: TrackingService.MESSAGE_READ,
+              attributes: attributes
+            }, false);
+            expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
+          });
+        });
+
+        it(`should NOT update status to READ and NOT push tracking event MESSAGE_READ for messages fromSelf and status PENDING`, () => {
+          mockedConversation.messages.map((m, index) => {
+            m.fromSelf = index < unreadCount ? true : false;
+            m.status = messageStatus.PENDING;
+          });
+
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+          service.processChatSignal(signal);
+
+          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
+          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
+        });
+
+        it('should NOT decrase the unreadMessages counter of the conversation', () => {
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+          service.processChatSignal(signal);
+
+          expect(mockedConversation.unreadMessages).toBe(unreadCount);
+        });
+
+        it('should NOT decrease messageService.totalUnreadMessages counter', () => {
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+          service.processChatSignal(signal);
+
+          expect(messageService.totalUnreadMessages).toBe(unreadCount);
+        });
       });
 
-      it(`should set unreadMessages counter of the conversation to 0 if the number of messages that are being marked as READ is greater
+      describe('when processing a READ chat signal fromSelf', () => {
+        beforeEach(() => {
+          mockedConversation.messages.map((m, index) => {
+            m.fromSelf = index < unreadCount ? false : true;
+            m.status = messageStatus.RECEIVED;
+          });
+          expectedMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
+          expectedNotMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf);
+        });
+
+        it(`should update status to READ and push tracking events MESSAGE_READ_ACK for messages NOT fromSelf`, () => {
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          service.processChatSignal(signal);
+
+          const attributes = {
+            thread_id: mockedConversation.id,
+            message_id: null
+          };
+
+          expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(unreadCount);
+          expectedMarkedAsRead.forEach(m => {
+            attributes.message_id = m.id;
+            expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({
+              eventData: TrackingService.MESSAGE_READ_ACK,
+              attributes: attributes
+            }, false);
+            expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
+          });
+
+          expectedNotMarkedAsRead.forEach(m => {
+            attributes.message_id = m.id;
+            expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({
+              eventData: TrackingService.MESSAGE_READ_ACK,
+              attributes: attributes
+            }, false);
+            expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
+          });
+        });
+
+        it('should decrase the unreadMessages counter of the conversation by the number of messages that are being marked as READ', () => {
+          expect(mockedConversation.unreadMessages).toBe(unreadCount);
+
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          service.processChatSignal(signal);
+
+          expect(mockedConversation.unreadMessages).toBe(0);
+        });
+
+        it(`should set unreadMessages counter of the conversation to 0 if the number of messages that are being marked as READ is greater
         than the existing counter (disallow negative values in counter)`, () => {
-        mockedConversation.unreadMessages = 1;
+          mockedConversation.unreadMessages = 1;
 
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-        service.processChatSignal(signal);
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          service.processChatSignal(signal);
 
-        expect(mockedConversation.unreadMessages).toBe(0);
-      });
+          expect(mockedConversation.unreadMessages).toBe(0);
+        });
 
-      it('should decrase messageService.totalUnreadMessages counter by the number of messages that are being marked as READ', () => {
-        expect(mockedConversation.unreadMessages).toBe(unreadCount);
+        it('should decrase messageService.totalUnreadMessages counter by the number of messages that are being marked as READ', () => {
+          expect(mockedConversation.unreadMessages).toBe(unreadCount);
 
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-        service.processChatSignal(signal);
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          service.processChatSignal(signal);
 
-        expect(messageService.totalUnreadMessages).toBe(0);
-      });
+          expect(messageService.totalUnreadMessages).toBe(0);
+        });
 
-      it(`should set messageService.totalUnreadMessages counter to 0 if the number of messages that are being marked as READ is greater
+        it(`should set messageService.totalUnreadMessages counter to 0 if the number of messages that are being marked as READ is greater
         than the existing counter (disallow negative values in counter)`, () => {
-        mockedConversation.unreadMessages = 1;
+          mockedConversation.unreadMessages = 1;
 
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-        service.processChatSignal(signal);
+          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          service.processChatSignal(signal);
 
-        expect(messageService.totalUnreadMessages).toBe(0);
+          expect(messageService.totalUnreadMessages).toBe(0);
+        });
       });
     });
-  });
 
     describe('when processing sent and received signals', () => {
-    const mockedConversation = MOCK_CONVERSATION();
-    beforeEach(() => {
-      spyOn(persistencyService, 'updateMessageStatus');
-      spyOn(trackingService, 'addTrackingEvent');
-      service.leads.push(mockedConversation);
-    });
-
-    describe('when called with a thread that does not match any conversation ID', () => {
-      mockedConversation.messages = [MOCK_MESSAGE];
-      const sentSignal = new ChatSignal(chatSignalType.SENT, 'non-existant-thread', timestamp, MOCK_MESSAGE.id);
-
-      it('should NOT call trackingService.addTrackingEvent', () => {
-        service.processChatSignal(sentSignal);
-
-        expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
+      const mockedConversation = MOCK_CONVERSATION();
+      beforeEach(() => {
+        spyOn(persistencyService, 'updateMessageStatus');
+        spyOn(trackingService, 'addTrackingEvent');
+        service.leads.push(mockedConversation);
       });
 
-      it('should NOT call persistencyService.updateMessageStatus', () => {
-        service.processChatSignal(sentSignal);
+      describe('when called with a thread that does not match any conversation ID', () => {
+        mockedConversation.messages = [MOCK_MESSAGE];
+        const sentSignal = new ChatSignal(chatSignalType.SENT, 'non-existant-thread', timestamp, MOCK_MESSAGE.id);
 
-        expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
+        it('should NOT call trackingService.addTrackingEvent', () => {
+          service.processChatSignal(sentSignal);
+
+          expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
+        });
+
+        it('should NOT call persistencyService.updateMessageStatus', () => {
+          service.processChatSignal(sentSignal);
+
+          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
+        });
       });
-    });
 
-    describe('when called with a messageId does not match any message ID in the conversation', () => {
-      mockedConversation.messages = [MOCK_MESSAGE];
+      describe('when called with a messageId does not match any message ID in the conversation', () => {
+        mockedConversation.messages = [MOCK_MESSAGE];
         const sentSignal = new ChatSignal(chatSignalType.SENT, mockedConversation.id, timestamp, 'non-existant-id');
 
-      it('should NOT call trackingService.addTrackingEvent', () => {
-        service.processChatSignal(sentSignal);
+        it('should NOT call trackingService.addTrackingEvent', () => {
+          service.processChatSignal(sentSignal);
 
-        expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
+          expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
+        });
+
+        it('should NOT call persistencyService.updateMessageStatus', () => {
+          service.processChatSignal(sentSignal);
+
+          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
+        });
       });
 
-      it('should NOT call persistencyService.updateMessageStatus', () => {
-        service.processChatSignal(sentSignal);
-
-        expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
-      });
-    });
-
-    it(`should update message status and add a tracking event ONLY for messages that meet the criteria:
+      it(`should update message status and add a tracking event ONLY for messages that meet the criteria:
         message status is missing OR message status is NULL OR the new status order is greater than the current status order`, () => {
-      mockedConversation.messages = [MOCK_RANDOM_MESSAGE, MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER];
-      mockedConversation.messages[0].status = messageStatus.SENT;
-      mockedConversation.messages[1].status = null;
-      mockedConversation.messages[2].status = messageStatus.RECEIVED;
-      service.leads.push(mockedConversation);
-      const attributes = {
-        thread_id: mockedConversation.id,
-        message_id: null
-      };
+        mockedConversation.messages = [MOCK_RANDOM_MESSAGE, MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER];
+        mockedConversation.messages[0].status = messageStatus.SENT;
+        mockedConversation.messages[1].status = null;
+        mockedConversation.messages[2].status = messageStatus.RECEIVED;
+        service.leads.push(mockedConversation);
+        const attributes = {
+          thread_id: mockedConversation.id,
+          message_id: null
+        };
 
-      const signal1 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[0].id);
-      const signal2 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[1].id);
-      const signal3 = new ChatSignal(chatSignalType.SENT, mockedConversation.id, timestamp, mockedConversation.messages[2].id);
+        const signal1 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[0].id);
+        const signal2 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[1].id);
+        const signal3 = new ChatSignal(chatSignalType.SENT, mockedConversation.id, timestamp, mockedConversation.messages[2].id);
 
-      service.processChatSignal(signal1);
-      service.processChatSignal(signal2);
-      service.processChatSignal(signal3);
+        service.processChatSignal(signal1);
+        service.processChatSignal(signal2);
+        service.processChatSignal(signal3);
 
-      const expectedChangedMessages = mockedConversation.messages.slice(0, 2);
-      const expectedNotChangedMessages = mockedConversation.messages.slice(-1);
+        const expectedChangedMessages = mockedConversation.messages.slice(0, 2);
+        const expectedNotChangedMessages = mockedConversation.messages.slice(-1);
 
-      expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(2);
-      expectedChangedMessages.forEach(m => {
-        attributes.message_id = m.id;
-        expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.MESSAGE_RECEIVED, attributes: attributes }, false);
-        expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m, messageStatus.RECEIVED);
-      });
+        expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(2);
+        expectedChangedMessages.forEach(m => {
+          attributes.message_id = m.id;
+          expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({
+            eventData: TrackingService.MESSAGE_RECEIVED,
+            attributes: attributes
+          }, false);
+          expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m, messageStatus.RECEIVED);
+        });
 
-      expectedNotChangedMessages.forEach(m => {
-        attributes.message_id = m.id;
-        expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({ eventData: TrackingService.MESSAGE_SENT, attributes: attributes }, false);
-        expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.SENT);
+        expectedNotChangedMessages.forEach(m => {
+          attributes.message_id = m.id;
+          expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({
+            eventData: TrackingService.MESSAGE_SENT,
+            attributes: attributes
+          }, false);
+          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.SENT);
+        });
       });
     });
-  });
   });
 
   describe('get', () => {
@@ -1352,11 +1235,11 @@ describe('Service: Conversation', () => {
 
       service.createConversation(MOCK_CONVERSATION().item.id);
 
-      expect(http.post).toHaveBeenCalledWith('api/v3/conversations', JSON.stringify({item_id: MOCK_CONVERSATION().item.id}), options);
+      expect(http.post).toHaveBeenCalledWith('api/v3/conversations', JSON.stringify({ item_id: MOCK_CONVERSATION().item.id }), options);
     });
 
     it('should call userService.getPhoneInfo with the other_user_id of the conversations', fakeAsync(() => {
-      const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify(MOCK_CONVERSATION())}));
+      const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify(MOCK_CONVERSATION()) }));
       spyOn(http, 'post').and.returnValue(Observable.of(RESPONSE));
       spyOn(userService, 'get').and.returnValue(Observable.of({}));
       spyOn(itemService, 'get').and.returnValue(Observable.of({}));
@@ -1373,7 +1256,7 @@ describe('Service: Conversation', () => {
 
     beforeEach(() => {
       service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
-      inboxService.conversations = [MOCK_INBOX_CONVERSATION];
+      inboxConversationService.conversations = [MOCK_INBOX_CONVERSATION];
       expect(service.leads[0].messages.length).toEqual(0);
       service.firstLoad = false;
     });
@@ -1537,7 +1420,7 @@ describe('Service: Conversation', () => {
 
     it('should wait to call onNewMessage if loading', fakeAsync(() => {
       spyOn<any>(service, 'onNewMessage');
-      inboxService.conversations = null;
+      inboxConversationService.conversations = null;
       service.handleNewMessages(MOCK_MESSAGE, false);
 
       expect(service['onNewMessage']).not.toHaveBeenCalled();
@@ -1545,7 +1428,7 @@ describe('Service: Conversation', () => {
 
       expect(service['onNewMessage']).not.toHaveBeenCalled();
 
-      inboxService.conversations = [MOCK_INBOX_CONVERSATION];
+      inboxConversationService.conversations = [MOCK_INBOX_CONVERSATION];
       tick(500);
 
       expect(service['onNewMessage']).toHaveBeenCalled();
@@ -1634,7 +1517,7 @@ describe('Service: Conversation', () => {
       beforeEach(() => {
         spyOn(trackingService, 'addTrackingEvent');
         service.leads = [];
-        inboxService.conversations = [MOCK_INBOX_CONVERSATION];
+        inboxConversationService.conversations = [MOCK_INBOX_CONVERSATION];
         service.archivedLeads = [mockedConversation, SECOND_MOCK_CONVERSATION];
       });
 
@@ -1725,7 +1608,7 @@ describe('Service: Conversation', () => {
         spyOn(service, 'get').and.returnValue(Observable.of(MOCK_NOT_FOUND_CONVERSATION));
         spyOn(service, 'getSingleConversationMessages').and.callThrough();
         spyOn(messageService, 'getMessages').and.returnValue(Observable.of({ data: [message] }));
-        inboxService.conversations = [MOCK_INBOX_CONVERSATION];
+        inboxConversationService.conversations = [MOCK_INBOX_CONVERSATION];
 
         service.handleNewMessages(message, false);
         const newConversation: Conversation = <Conversation>service.leads[0];
@@ -1739,37 +1622,39 @@ describe('Service: Conversation', () => {
   });
 
   describe('getSingleConversationMessages', () => {
-    it('should call messageService.getMessages, return the conversation with messages and emit a CHAT_CAN_PROCESS_RT event with true', fakeAsync(() => {
-      spyOn(messageService, 'getMessages').and.returnValue(Observable.of({data: [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE]}));
-      spyOn(eventService, 'emit');
-      let conversation = SECOND_MOCK_CONVERSATION;
-      const expectedConversation = SECOND_MOCK_CONVERSATION;
-      expectedConversation.messages = [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE];
+    it('should call messageService.getMessages, return the conversation with messages and emit a CHAT_CAN_PROCESS_RT event with true',
+      fakeAsync(() => {
+        spyOn(messageService, 'getMessages').and.returnValue(Observable.of({ data: [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE] }));
+        spyOn(eventService, 'emit');
+        let conversation = SECOND_MOCK_CONVERSATION;
+        const expectedConversation = SECOND_MOCK_CONVERSATION;
+        expectedConversation.messages = [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE];
 
-      service.getSingleConversationMessages(conversation).subscribe(response => conversation = response);
-      tick();
+        service.getSingleConversationMessages(conversation).subscribe(response => conversation = response);
+        tick();
 
-      expect(messageService.getMessages).toHaveBeenCalled();
-      expect(conversation).toEqual(expectedConversation);
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, true);
-    }));
+        expect(messageService.getMessages).toHaveBeenCalled();
+        expect(conversation).toEqual(expectedConversation);
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, true);
+      }));
 
-    it('should emit a REQUEST_PHONE event when the conversation has no messages AND getPhoneInfo returns a phone method type', fakeAsync(() => {
-      const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify(MOCK_CONVERSATION())}));
-      spyOn(http, 'post').and.returnValue(Observable.of(RESPONSE));
-      spyOn(userService, 'get').and.returnValue(Observable.of({}));
-      spyOn(itemService, 'get').and.returnValue(Observable.of({}));
-      spyOn(userService, 'getPhoneInfo').and.returnValue(Observable.of({ phone_method: phoneMethod.chatMessage }));
-      spyOn(messageService, 'getMessages').and.returnValue(Observable.of({data: []}));
-      spyOn(eventService, 'emit');
-      let conversation = MOCK_CONVERSATION();
+    it('should emit a REQUEST_PHONE event when the conversation has no messages AND getPhoneInfo returns a phone method type',
+      fakeAsync(() => {
+        const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify(MOCK_CONVERSATION()) }));
+        spyOn(http, 'post').and.returnValue(Observable.of(RESPONSE));
+        spyOn(userService, 'get').and.returnValue(Observable.of({}));
+        spyOn(itemService, 'get').and.returnValue(Observable.of({}));
+        spyOn(userService, 'getPhoneInfo').and.returnValue(Observable.of({ phone_method: phoneMethod.chatMessage }));
+        spyOn(messageService, 'getMessages').and.returnValue(Observable.of({ data: [] }));
+        spyOn(eventService, 'emit');
+        let conversation = MOCK_CONVERSATION();
 
-      service.createConversation(MOCK_CONVERSATION().item.id).subscribe();
-      service.getSingleConversationMessages(conversation).subscribe(response => conversation = response);
-      tick();
+        service.createConversation(MOCK_CONVERSATION().item.id).subscribe();
+        service.getSingleConversationMessages(conversation).subscribe(response => conversation = response);
+        tick();
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.REQUEST_PHONE, phoneMethod.chatMessage);
-    }));
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.REQUEST_PHONE, phoneMethod.chatMessage);
+      }));
   });
 
 });

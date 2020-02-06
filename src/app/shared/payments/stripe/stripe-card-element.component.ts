@@ -15,7 +15,6 @@ import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { ToastrService } from 'ngx-toastr';
 import { Tier } from '../../../core/subscriptions/subscriptions.interface';
-import { SplitTestService, WEB_PAYMENT_EXPERIMENT_TYPE, WEB_PAYMENT_EXPERIMENT_NAME } from '../../../core/tracking/split-test.service';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -35,10 +34,6 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   public financialCard: FinancialCard;
   public hasFinancialCard: boolean;
   public card: any;
-  public paymentMethod: WEB_PAYMENT_EXPERIMENT_TYPE;
-  public paymentTypeSabadell = WEB_PAYMENT_EXPERIMENT_TYPE.sabadell;
-  public paymentTypeStripeV1 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV1;
-  public paymentTypeStripeV2 = WEB_PAYMENT_EXPERIMENT_TYPE.stripeV2;
   @Input() type: string;
   @Input() cart: CartBase;
   @Input() loading: boolean;
@@ -46,10 +41,13 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   @Input() action: string;
   @Input() listingLimit: Tier;
   @Input() disabled: number;
+  @Input() spaceBetween = false;
+  @Input() showUseSavedCard = false;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
   @Output() onStripeCardCreate: EventEmitter<PaymentMethodResponse> = new EventEmitter();
+  @Output() onClickUseSavedCard = new EventEmitter();
 
   cardHandler = this.onChange.bind(this);
   error: string;
@@ -60,15 +58,10 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   constructor(private cd: ChangeDetectorRef,
               private i18n: I18nService,
               private stripeService: StripeService,
-              private toastrService: ToastrService,
-              private splitTestService: SplitTestService) {
+              private toastrService: ToastrService) {
   }
 
   ngAfterViewInit() {
-    this.splitTestService.getVariable<WEB_PAYMENT_EXPERIMENT_TYPE>(WEB_PAYMENT_EXPERIMENT_NAME, WEB_PAYMENT_EXPERIMENT_TYPE.sabadell)
-    .subscribe((paymentMethod: number) => {
-      this.paymentMethod = +paymentMethod;
-    });
     this.initStripe();
   }
 
@@ -148,11 +141,14 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   }
 
   public createNewCard() {
+    this.newLoading = true;
     this.stripeService.createStripeCard(this.card).then((paymentMethod: PaymentMethodResponse) => {
       if (paymentMethod) {
         this.onStripeCardCreate.emit(paymentMethod);
+      } else {
+        this.newLoading = false;
       }
-    });
+    }).catch(() => this.newLoading = false);
   }
 
   public get model(): boolean {
@@ -175,6 +171,10 @@ export class StripeCardElementComponent implements ControlValueAccessor {
 
   public registerOnTouched(fn: Function): void {
     this.onTouched = fn;
+  }
+
+  public clickUseSavedCard() {
+    this.onClickUseSavedCard.emit(true);
   }
 
 }

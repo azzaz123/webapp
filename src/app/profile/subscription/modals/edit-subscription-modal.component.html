@@ -4,25 +4,37 @@
       <mat-icon svgIcon="cross"></mat-icon>
     </div>
     <h4 class="EditSubscription__box--title" i18n>Change the limits of the subscription</h4>
-    <p class="EditSubscription__box--subtitle" i18n>Update your subscription according to the items that you would like to upload.</p>
+    <p class="EditSubscription__box--subtitle" i18n>What limit do you want to put on your subscription?</p>
   </div>
     <div class="box-content">
       <div class="EditSubscription__listing-limit-container">
         <div *ngFor="let tier of subscription.tiers; let i = index" class="EditSubscription__listing-limit-box"
         (click)="selectListingLimit(subscription.tiers[i])"
-        [ngClass]="{'EditSubscription__listing-limit-box--selected': selectedTier.id === subscription?.tiers[i]?.id}">
+        [ngClass]="{'EditSubscription__listing-limit-box--selected': selectedTier.id === subscription?.tiers[i]?.id && currentTier.id !== subscription?.tiers[i]?.id,
+        'EditSubscription__listing-limit-box--current': selectedTier.id === subscription?.tiers[i]?.id && currentTier.id === subscription?.tiers[i]?.id}">
         <span *ngIf="subscription.tiers[i].limit >= 0" i18n>{{subscription?.tiers[i]?.limit}}</span>
         <span *ngIf="subscription.tiers[i].limit < 0" i18n>Unlimited</span>
       </div>
       </div>
       <div class="row EditSubscription__listing-limit-payment">
         <div class="col-12 EditSubscription__listing-limit-selection">
-            <span i18n>New price:</span> <span class="EditSubscription__listing-limit-price" i18n>
+            <span *ngIf="isCurrentTier(); else nonCurrent" i18n>
+              Price: 
+            </span>
+            <ng-template #nonCurrent>
+              <span i18n>New price: </span>
+            </ng-template>
+            <span class="EditSubscription__listing-limit-price" i18n>
               {{selectedTier.price}}{{selectedTier.currency}}/month
             </span>
         </div>
       </div>
     </div>
-    <tsl-button i18n (click)="updateSubscription()">Confirm change</tsl-button>
-    <div class="EditSubscription__cancel-link" (click)="cancelSubscription()">I want to cancel my subscription</div>
+    <tsl-button *ngIf="isCurrentTier(); else nonCurrentButton" [disabled]="isCurrentTier()" i18n>
+      This is your current plan
+    </tsl-button>
+    <ng-template #nonCurrentButton>
+      <tsl-button [loading]="loading" (click)="editSubscription()" i18n>Confirm change</tsl-button>
+    </ng-template>
+    <div class="EditSubscription__cancel-link" (click)="cancelSubscription()" i18n>I want to cancel my subscription</div>
 </div>

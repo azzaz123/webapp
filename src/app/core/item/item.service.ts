@@ -48,7 +48,8 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
-import { HttpServiceNew } from '../http/http.service.new';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -62,6 +63,12 @@ export const ITEM_STATUSES: any = {
 
 export const PAYMENT_PROVIDER = 'STRIPE';
 export const MINES_BY_CATEGORY_ENDPOINT = 'api/v3/items/manageable-items/';
+export enum ITEM_STATUS {
+  SOLD = 'sold',
+  ACTIVE = 'active',
+  PENDING = 'pending',
+  PUBLISHED = 'published'
+}
 
 @Injectable()
 export class ItemService extends ResourceService {
@@ -86,7 +93,7 @@ export class ItemService extends ResourceService {
 
   constructor(
     http: HttpService,
-    private httpNew: HttpServiceNew,
+    private httpNew: HttpClient,
     private i18n: I18nService,
     private trackingService: TrackingService,
     private eventService: EventService) {
@@ -507,20 +514,18 @@ export class ItemService extends ResourceService {
     .map((r: Response) => r.json());
   }
 
-  public purchaseProducts(orderParams: Order[], orderId: string, isStripe: boolean): Observable<string[]> {
+  public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
     let options: RequestOptions = null;
-    if (isStripe) {
-      options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
-    }
+    options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+    
     return this.http.post(this.API_URL_WEB + '/purchase/products/' + orderId, orderParams, options)
     .map((r: Response) => r.json());
   }
 
-  public purchaseProductsWithCredits(orderParams: Order[], orderId: string, isStripe: boolean): Observable<PurchaseProductsWithCreditsResponse> {
+  public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
     let options: RequestOptions = null;
-    if (isStripe) {
-      options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
-    }
+    options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
+    
     return this.http.post(this.API_URL_WEB + '/purchase/products/credit/' + orderId, orderParams, options)
       .map((r: Response) => r.json());
   }
@@ -770,12 +775,14 @@ export class ItemService extends ResourceService {
   }
 
   public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemByCategoryResponse[]> {
-    return this.httpNew.get(MINES_BY_CATEGORY_ENDPOINT, [
-      { key: 'status', value: status },
-      { key: 'init', value: init },
-      { key: 'end', value: init + offset },
-      { key: 'category_id', value: categoryId }
-    ])
+    return this.httpNew.get<any>(`${environment.baseUrl}${MINES_BY_CATEGORY_ENDPOINT}`, {
+      params: {
+        status,
+        init: init.toString(),
+        end: (init + offset).toString(),
+        category_id: categoryId.toString()
+      }
+    })
     .flatMap(res => {
       if (res.length > 0) {
         return this.recursiveMinesByCategory(init + offset, offset, categoryId, status)

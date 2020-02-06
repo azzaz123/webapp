@@ -3,8 +3,15 @@ import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstra
 import { SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
-import { EventService } from '../../../core/event/event.service';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
+import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import {
+  AnalyticsPageView,
+  ViewEditSubscriptionPlan,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS
+} from '../../../core/analytics/analytics-constants';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
@@ -21,35 +28,58 @@ export class EditSubscriptionModalComponent implements OnInit {
   public savedCard = true;
   public selectedCard = false;
   public selectedTier: Tier;
+  public currentTier: Tier;
   public loading = false;
   public isPaymentError = false;
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
 
   constructor(public activeModal: NgbActiveModal,
+              public subscriptionsService: SubscriptionsService,
               private toastr: ToastrService,
               private i18n: I18nService,
-              private eventService: EventService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private analyticsService: AnalyticsService) {
   }
 
   ngOnInit() {
     this.selectedTier = this.subscription.selected_tier;
+    this.currentTier = this.selectedTier;
+
+    const pageView: AnalyticsPageView<ViewEditSubscriptionPlan> = {
+      name: ANALYTICS_EVENT_NAMES.ViewEditSubscriptionPlan,
+      attributes: {
+        screenId: SCREEN_IDS.SubscriptionManagment
+      }
+    };
+
+    this.analyticsService.trackPageView(pageView);
   }
 
   public close() {
     this.activeModal.close('update');
   }
 
-  public updateSubscription() {
+  public editSubscription() {
     this.loading = true;
-    //update subs endpoint
-    this.close();
-    this.toastr.success(this.i18n.getTranslations('editSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('editSubscriptionSuccessBody'));
+    this.subscriptionsService.editSubscription(this.subscription, this.selectedTier.id).subscribe((response) => {
+      if (response.status === 202) {
+          this.toastr.success(this.i18n.getTranslations('editSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('editSubscriptionSuccessBody'));
+          this.loading = false;
+      } else {
+        this.loading = false;
+        this.toastr.error(this.i18n.getTranslations('editSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('editSubscriptionErrorBody'));
+      }
+      this.close();
+    });
   }
 
   public selectListingLimit(tier: Tier): void {
     this.selectedTier = tier;
+  }
+
+  public isCurrentTier(): boolean {
+    return this.selectedTier && this.currentTier ? this.currentTier === this.selectedTier : false;
   }
 
   public cancelSubscription() {
@@ -57,9 +87,11 @@ export class EditSubscriptionModalComponent implements OnInit {
     const modal = CancelSubscriptionModalComponent
     let modalRef: NgbModalRef = this.modalService.open(modal, {windowClass: 'review'});
     modalRef.componentInstance.subscription = this.subscription;
-    modalRef.result.then(() => {
+    modalRef.result.then((result: string) => {
       modalRef = null;
-      this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
+      if (result !== 'cancel') {
+        this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
+      }
     }, () => {});
   }
 

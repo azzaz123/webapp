@@ -26,6 +26,7 @@ import { environment } from '../../../../environments/environment';
 import * as moment from 'moment';
 import { ThousandSuffixesPipe } from '../../../shared/number-conversion/thousand-suffixes.pipe';
 import { SelectedItemsAction } from '../../../core/item/item-response.interface';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -35,6 +36,7 @@ describe('CatalogItemComponent', () => {
   let trackingService: TrackingService;
   let errorsService: ErrorsService;
   let eventService: EventService;
+  let deviceService: DeviceDetectorService;
   const componentInstance = {
     price: null,
     item: null
@@ -48,6 +50,7 @@ describe('CatalogItemComponent', () => {
         DecimalPipe,
         EventService,
         { provide: TrackingService, useClass: MockTrackingService },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorService },
         {
           provide: ItemService, useValue: {
             selectedItems: [],
@@ -114,6 +117,7 @@ describe('CatalogItemComponent', () => {
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
     eventService = TestBed.get(EventService);
+    deviceService = TestBed.get(DeviceDetectorService);
     appboy.initialize(environment.appboy);
   });
 
@@ -268,6 +272,19 @@ describe('CatalogItemComponent', () => {
 
       expect(component.reactivateItem).toHaveBeenCalledWith(MOCK_ITEM);
     }));
+
+    describe('if it`s a mobile device', () => {
+      it('should reactivate the item without showing the modal', () => {
+        spyOn(deviceService, 'isMobile').and.returnValue(true);
+        spyOn(component, 'reactivateItem');
+        spyOn(modalService, 'open');
+
+        component.reactivate(MOCK_ITEM);
+
+        expect(modalService.open).not.toHaveBeenCalled();
+        expect(component.reactivateItem).toHaveBeenCalledWith(MOCK_ITEM);
+      });
+    });
   });
 
   describe('reactivateItem', () => {
@@ -419,21 +436,7 @@ describe('CatalogItemComponent', () => {
       expect(itemService.getListingFeeInfo).toHaveBeenCalledWith(item.id);
     });
 
-    it('should send PURCHASE_LISTING_FEE_CATALOG tracking event for Sabadell', () => {
-      component.paymentMethod = 'SABADELL';
-      spyOn(trackingService, 'track');
-
-      component.publishItem();
-
-      expect(trackingService.track)
-      .toHaveBeenCalledWith(TrackingService.PURCHASE_LISTING_FEE_CATALOG, {
-        item_id: item.id,
-        payment_method: 'SABADELL'
-      });
-    });
-
     it('should send PURCHASE_LISTING_FEE_CATALOG tracking event for Stripe', () => {
-      component.paymentMethod = 'STRIPE';
       spyOn(trackingService, 'track');
 
       component.publishItem();
@@ -450,7 +453,7 @@ describe('CatalogItemComponent', () => {
     it ('should send PRODUCT_VIEWED to tracking service', () => {
       spyOn(trackingService, 'track');
 
-      component.onClickInfoElement();
+      component.openItem();
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_VIEWED, { product_id: component.item.id });
     });

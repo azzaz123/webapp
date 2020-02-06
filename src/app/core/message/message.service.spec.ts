@@ -55,7 +55,12 @@ describe('Service: Message', () => {
         I18nService,
         MsgArchiveService,
         RealTimeService,
-        { provide: HttpService, useValue: { get() { } } },
+        {
+          provide: HttpService, useValue: {
+            get() {
+            }
+          }
+        },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: ConnectionService, useValue: {} },
         { provide: PersistencyService, useClass: MockedPersistencyService },
@@ -325,15 +330,6 @@ describe('Service: Message', () => {
 
           conversations[0].messages.map(msg => {
             expect(msg.status).toBe(messageStatus.READ);
-          });
-        });
-
-        it(`should sendDeliveryReceipt for messages from the response, that don't have a corresponding receivedReceipt`, () => {
-          service.getNotSavedMessages(conversations, false).subscribe();
-
-          expect(realTime.sendDeliveryReceipt).toHaveBeenCalledTimes(messagesArray.length);
-          messagesArray.map(msg => {
-            expect(realTime.sendDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.thread);
           });
         });
 

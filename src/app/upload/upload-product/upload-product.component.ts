@@ -31,6 +31,7 @@ import { Subject } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { SplitTestService } from '../../core/tracking/split-test.service';
 import { UserService } from '../../core/user/user.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { tap } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
@@ -70,6 +71,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public selectedBrand: Subject<string> = new Subject();
   public selectedModel: Subject<string> = new Subject();
+  public uploadCompletedPercentage = 0;
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
@@ -133,7 +135,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private splitTestService: SplitTestService,
     private analyticsService: AnalyticsService,
     private userService: UserService,
-    config: NgbPopoverConfig) {
+    config: NgbPopoverConfig,
+    private deviceService: DeviceDetectorService) {
     this.uploadForm = fb.group({
       id: '',
       category_id: ['', [Validators.required]],
@@ -238,7 +241,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngAfterContentInit() {
-    if (!this.item && this.titleField && !this.focused) {
+    if (!this.item && this.titleField && !this.focused && !this.deviceService.isMobile()) {
       this.titleField.nativeElement.focus();
       this.focused = true;
     }
@@ -284,7 +287,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
-    
+
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
       appboy.logCustomEvent('Edit', { platform: 'web' });
@@ -517,6 +520,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public getBrandPlaceholder() {
     return this.isFashionCategory ? 'fashion_brand_example' : 'phones_brand_example';
+  }
+
+  public updateUploadPercentage(percentage: number) {
+    this.uploadCompletedPercentage = Math.round(percentage);
   }
 
   public onDeliveryChange(newDeliveryValue: any) {

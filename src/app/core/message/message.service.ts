@@ -92,18 +92,8 @@ export class MessageService {
     if (archived) {
       r.messages.filter(m => !m.fromSelf).map(m => m.status = messageStatus.READ);
     }
-    this.confirmUnconfirmedMessages(r.messages, r.receivedReceipts);
     this.persistencyService.saveMessages(r.messages);
     return r;
-  }
-
-  private confirmUnconfirmedMessages(messages: Array<Message>, receivedReceipts: Array<ReceivedReceipt>) {
-    messages.filter(message => !message.fromSelf).map(message => {
-      const msgAlreadyConfirmed = receivedReceipts.find(receipt => receipt.messageId === message.id);
-      if (!msgAlreadyConfirmed) {
-        this.realTime.sendDeliveryReceipt(message.from, message.id, message.thread);
-      }
-    });
   }
 
   public getNotSavedMessages(conversations: Conversation[], archived: boolean): Observable<Conversation[]> {

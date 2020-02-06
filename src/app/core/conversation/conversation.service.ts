@@ -36,6 +36,7 @@ import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { InboxService } from '../inbox/inbox.service';
 import { InboxConversation } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
+import { InboxConversationService } from '../inbox/inbox-conversation.service';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -69,6 +70,7 @@ export class ConversationService extends LeadService {
               protected trackingService: TrackingService,
               protected notificationService: NotificationService,
               private inboxService: InboxService,
+              private inboxConversationService: InboxConversationService,
               private remoteConsole: RemoteConsoleService,
               private modalService: NgbModal,
               private zone: NgZone) {
@@ -76,34 +78,7 @@ export class ConversationService extends LeadService {
   }
 
   public getLeads(since?: number, archived?: boolean): Observable<Conversation[]> {
-    return this.inboxService.getInboxFeatureFlag$()
-    .flatMap((featureFlag) => {
-      return featureFlag ? Observable.of([]) : this.query(since, archived)
-      .flatMap((conversations: Conversation[]) => {
-        if (conversations && conversations.length > 0) {
-          return this.loadMessagesIntoConversations(conversations, archived)
-          .map((convWithMessages: Conversation[]) => {
-            if (!archived) {
-              if (!convWithMessages.length) {
-                this.ended.pending = true;
-              } else {
-                this.leads = this.leads.concat(convWithMessages);
-              }
-            } else {
-              this.archivedLeads = this.archivedLeads.concat(convWithMessages);
-              this.ended.processed = false;
-            }
-            this.firstLoad = false;
-            this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-            return convWithMessages;
-          });
-        } else {
-          this.firstLoad = false;
-          archived ? this.ended.processed = true : this.ended.pending = true;
-          return Observable.of([]);
-        }
-      });
-    });
+    return Observable.of([]);
   }
 
   public loadMore(): Observable<any> {
@@ -457,11 +432,11 @@ export class ConversationService extends LeadService {
   }
 
   public handleNewMessages(message: Message, updateDate: boolean) {
-    if (!isEmpty(this.inboxService.conversations)) {
+    if (!isEmpty(this.inboxConversationService.conversations)) {
       this.onNewMessage(message, updateDate);
     } else {
       const interval: any = setInterval(() => {
-        if (!isEmpty(this.inboxService.conversations)) {
+        if (!isEmpty(this.inboxConversationService.conversations)) {
           clearInterval(interval);
           this.onNewMessage(message, updateDate);
         }

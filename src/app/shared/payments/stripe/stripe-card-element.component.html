@@ -1,15 +1,19 @@
-<div id="stripe">
+<div id="stripe" [ngClass]="{'space-between': spaceBetween}">
     <form id="payment-form" method="POST" action="/orders">
         <fieldset class="field-row">
             <div class="form-row">
                 <div class="field">
-                    <div id="checkout-card" class="input empty" [class.variant]="paymentMethod === paymentTypeStripeV2"></div>
+                    <div id="checkout-card" class="input empty"></div>
                 </div>
             </div>
         </fieldset>
-        <div id="card-errors" role="alert" *ngIf="error">
-            {{ error }}
+        <div class="card-feedback" [ngClass]="{'card-feedback--flexible': showUseSavedCard}">
+            <div *ngIf="type === 'subscription' && showUseSavedCard" class="card-feedback__action"(click)="clickUseSavedCard()" i18n>Use saved card</div>
+            <div id="card-errors" role="alert" *ngIf="error">
+                {{ error }}
+            </div>
         </div>
+
         <tsl-button [hidden]="type === 'new' || type === 'subscription'"
                     id="checkout-card-button"
                     className="btn-primary btn-medium stripe"
@@ -21,7 +25,6 @@
         >
             <div class="secure-payment">
                 <span i18n>Continue to Checkout</span>
-                <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
             </div>
         </tsl-button>
         <tsl-button *ngIf="type === 'new'"
@@ -33,7 +36,6 @@
         >
             <div class="secure-payment">
                 <span i18n>Save</span>
-                <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
             </div>
         </tsl-button>
         <tsl-button *ngIf="type === 'subscription'"
@@ -45,7 +47,6 @@
         >
             <div class="secure-payment">
                 <span i18n>Subscribe now</span>
-                <mat-icon svgIcon="lock-new" *ngIf="paymentMethod === paymentTypeStripeV2"></mat-icon>
             </div>
         </tsl-button>
     </form>

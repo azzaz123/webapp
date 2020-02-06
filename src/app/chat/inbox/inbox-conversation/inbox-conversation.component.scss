@@ -1,0 +1,346 @@
+@import "~style/common";
+
+$transition-time: .15s;
+$check-width-and-spacing: 50px;
+$menu-width-and-spacing: 10px;
+:host {
+  display: flex;
+  box-sizing: border-box;
+  transition: $transition-time ease background-color,
+  $transition-time ease border;
+  border-top: 1px solid $blue-grey-5;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+
+  div:first-of-type {
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+  }
+
+  &:first-child {
+    border-top: 0;
+  }
+
+  &.active {
+    background-color: $blue-grey-6;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 100%;
+      background-color: $walla-main;
+    }
+  }
+
+  tsl-archive-button, tsl-unarchive-button {
+    @include hide();
+    position: absolute;
+    top: 43px;
+    right: $spacing-ms;
+  }
+
+  &:hover, &:active {
+    background-color: rgba($blue-grey-4, .2);
+  }
+
+  &.professional {
+    &:hover {
+      tsl-archive-button, tsl-unarchive-button {
+        @include show();
+      }
+
+      .badge-pill, .blocked {
+        display: none;
+      }
+
+      .message-row, .user-name-row-left {
+        max-width: calc(100% - #{$check-width-and-spacing});
+      }
+
+      &.archive {
+        overflow: visible;
+
+        .message-row, .user-name-row-left {
+          max-width: calc(100% - #{$menu-width-and-spacing});
+        }
+      }
+    }
+  }
+
+
+  & /deep/ tsl-item-avatar div {
+    float: left;
+    border-radius: 10px;
+
+    .overlay {
+      border-radius: 10px;
+      opacity: .25;
+    }
+
+    .sold, .reserved, .not-available {
+      @include square(25px);
+      position: absolute;
+      top: 4px;
+      left: 4px;
+
+      mat-icon {
+        height: 100% !important;
+      }
+    }
+
+    .sold mat-icon {
+      width: 17px !important;
+    }
+
+    .not-available, .reserved {
+      mat-icon {
+        width: 10px !important;
+      }
+    }
+  }
+}
+
+.conversation-info {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  height: $item-avatar-size;
+  color: $blue-grey-1;
+
+  p {
+    font-size: $font-size-s;
+    margin-bottom: 0;
+    @include text-truncate();
+  }
+
+  .user-name-row {
+    $phone-icon-size: 18px;
+    $phone-icon-adjusted-size: 15px;
+    color: $blue-grey-3;
+    line-height: $phone-icon-size;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+
+    .user-name-row-left {
+      @include text-truncate;
+      flex-grow: 1;
+
+      span {
+        @include text-truncate;
+        flex-grow: 1;
+      }
+    }
+
+    .user-name-row-right {
+      flex: none;
+    }
+
+    mat-icon, span {
+      vertical-align: middle;
+    }
+
+    mat-icon {
+      @include square($phone-icon-adjusted-size);
+    }
+
+    mat-icon.blocked, mat-icon.not-available {
+      @include square(10px);
+      position: relative;
+      bottom: 4px;
+      margin-right: $spacing-xs;
+    }
+
+    .user-name {
+      font-size: $font-size-xs;
+
+      .call-shared {
+        margin-right: $spacing-xs;
+      }
+
+      .blocked {
+        color: $negative-main;
+      }
+    }
+
+    &.has-phone {
+      $phone-icon-size: 10px;
+
+      .user-name {
+        width: calc(100% - #{$phone-icon-size});
+      }
+    }
+  }
+
+  .item-message-row {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 2;
+
+    .item-title-message-column {
+      flex-direction: column;
+    }
+
+    .item-title-row {
+      line-height: $spacing-m;
+      display: flex;
+      flex-direction: row;
+      vertical-align: super;
+      font-weight: $font-weight-chunky;
+      font-size: $font-size-m;
+      display: flex;
+      @include text-truncate;
+      flex-grow: 1;
+
+      span {
+        @include text-truncate;
+        flex-grow: 1;
+      }
+    }
+
+    .message-row {
+      position: relative;
+      line-height: $font-size-s;
+
+      p.message {
+        font-size: $font-size-s;
+        color: $blue-grey-3;
+      }
+
+      mat-icon {
+        height: 15px;
+        width: 15px;
+        vertical-align: bottom;
+      }
+
+      &.showStatus {
+        p.message {
+          padding-left: $spacing-xxs;
+        }
+
+        .message-status {
+          float: left;
+          width: 20px;
+          height: 14px;
+          background: center left no-repeat;
+          &.pending { background-image: url(/assets/icons/msg-status-pending.svg); }
+          &.sent { background-image: url(/assets/icons/msg-status-sent.svg); }
+          &.received { background-image: url(/assets/icons/msg-status-received.svg); }
+          &.read { background-image: url(/assets/icons/msg-status-read-wallaColor.svg); }
+          &.error { background-image: url(/assets/icons/msg-status-error.svg); }
+        }
+      }
+    }
+
+    .unread-counter-column {
+      display: flex;
+      align-items: flex-end;
+      flex-direction: row-reverse;
+
+      .badge-pill {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        background-color: $warn;
+        height: 24px;
+        width: 24px;
+        font-size: $font-size-xs;
+        align-self: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+
+.message-date {
+  font-size: $font-size-xs;
+  color: $blue-grey-3;
+}
+
+a {
+  cursor: pointer;
+}
+
+.faded {
+  padding-top: 50px;
+
+  tsl-item-avatar, .badge-pill {
+    opacity: 0.6;
+  }
+
+  .item-title-row {
+    color: $blue-grey-3;
+  }
+}
+
+.inbox-conversation-container {
+  padding: $spacing-ml $spacing-ms $spacing-ml $spacing-ml;
+
+  &.inbox-archived-container:hover {
+    .conversation-info {
+      .item-message-row {
+        .unread-counter-column {
+          width: 100px;
+
+          .badge.badge-primary {
+            display: none;
+          }
+
+          .badge.badge-archive {
+            .check-corporate {
+              display: flex;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.badge-archive {
+  .check-corporate {
+    position: absolute;
+    display: none;
+    top: $spacing-xxl;
+    right: $spacing-ms;
+
+    @include square(30px);
+    border: 3px solid $blue-grey-4;
+    border-radius: 50%;
+    padding: 0;
+    transition: none;
+    transform: none;
+    background-color: $blue-grey-4;
+    line-height: 0;
+    cursor: pointer;
+
+    mat-icon {
+      height: 10px;
+      width: $spacing-l;
+
+      /deep/ g g {
+        fill: $blue-grey-3;
+      }
+    }
+
+    &:hover {
+      background-color: $walla-main;
+      border-color: $walla-main;
+
+      mat-icon {
+        /deep/ g g {
+          fill: $white;
+        }
+      }
+    }
+  }
+}

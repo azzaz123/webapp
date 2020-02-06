@@ -15,7 +15,7 @@ export class StripeCardSelectionComponent implements OnInit {
   public financialCards: FinancialCardOption[];
   public card: string = '';
   private notFoundMsg = '';
-  @Output() hasStripeCard: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onSelectExistingCard: EventEmitter<FinancialCardOption> = new EventEmitter<FinancialCardOption>();
 
   private onModelChange: any = () => {};
@@ -29,9 +29,9 @@ export class StripeCardSelectionComponent implements OnInit {
   ngOnInit() {
     this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
       this.financialCards = stripeCards.map((financialCard: FinancialCard) => this.toSelectOptions(financialCard));
-      this.hasStripeCard.emit(this.financialCards.length > 0);
+      this.hasCard.emit(this.financialCards.length > 0);
     }, () => {
-      this.hasStripeCard.emit(false);
+      this.hasCard.emit(false);
     });
     this.notFoundMsg = this.i18nService.getTranslations('noResultsFound');
   }
@@ -75,3 +75,4 @@ export class StripeCardSelectionComponent implements OnInit {
   }
 
 }
+

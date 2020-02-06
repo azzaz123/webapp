@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
@@ -8,7 +8,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { isEmpty, includes, find } from 'lodash-es';
+import { find, includes, isEmpty } from 'lodash-es';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { RemoteConsoleService } from '../../core/remote-console';
 
 @Component({
@@ -30,10 +31,12 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
               private trackingService: TrackingService,
               private remoteConsoleService: RemoteConsoleService,
               private modalService: NgbModal,
-              private i18n: I18nService) {
+              private i18n: I18nService,
+              private deviceService: DeviceDetectorService) {
   }
 
   ngOnInit() {
+    this.isFocus = true;
     this.isUserBlocked = false;
     this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
       this.isUserBlocked = includes(userIds, this.currentConversation.user.id);
@@ -62,10 +65,12 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   ngOnChanges(changes?: any) {
     if (this.messageArea) {
-      setTimeout(() => {
-        this.messageArea.nativeElement.focus();
-        this.isFocus = true;
-      }, 500);
+      if (!this.deviceService.isMobile()) {
+        setTimeout(() => {
+          this.messageArea.nativeElement.focus();
+          this.isFocus = true;
+        }, 500);
+      }
 
       if (changes && changes.currentConversation && this.messageArea.nativeElement.value.length) {
         this.message = '';
@@ -76,8 +81,10 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.messageArea.nativeElement.focus();
-    this.isFocus = true;
+    if (!this.deviceService.isMobile()) {
+      this.messageArea.nativeElement.focus();
+      this.isFocus = true;
+    }
   }
 
   public getPlaceholder(): string {

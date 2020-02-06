@@ -3,8 +3,7 @@ import { Response, ResponseOptions } from '@angular/http';
 import { PaymentService } from './payment.service';
 import { Observable } from 'rxjs';
 import {
-  BillingInfoResponse, CreditInfo, FinancialCard, Packs, Perks, Products,
-  SabadellInfoResponse
+  BillingInfoResponse, CreditInfo, FinancialCard, Packs, Perks, Products
 } from './payment.interface';
 import {
   BILLING_INFO_RESPONSE,
@@ -14,7 +13,6 @@ import {
   PACK_RESPONSE,
   PERK_RESPONSE,
   PRODUCTS_RESPONSE_PACKS,
-  SABADELL_RESPONSE,
   WALLACOINS_PACKS_RESPONSE
 } from '../../../tests/payments.fixtures.spec';
 import { HttpService } from '../http/http.service';
@@ -51,16 +49,6 @@ describe('PaymentService', () => {
     userService = TestBed.get(UserService);
   });
 
-  describe('pay', () => {
-    it('should call endpoint', () => {
-      spyOn(http, 'post').and.callThrough();
-      service.pay('1').subscribe();
-      expect(http.post).toHaveBeenCalledWith('api/v3/payments/c2b/sabadell/tpv/pay', {
-        order_id: '1'
-      });
-    });
-  });
-
   describe('paymentIntents', () => {
     it('should call endpoint', () => {
       spyOn(http, 'post').and.callThrough();
@@ -87,41 +75,6 @@ describe('PaymentService', () => {
         order_id: orderId,
         payment_method_id: paymentMethodId
       });
-    });
-  });
-
-  describe('getFinancialCard', () => {
-    let response: FinancialCard;
-    it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(FINANCIAL_CARD)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      service.getFinancialCard().subscribe((r: FinancialCard) => {
-        response = r;
-      });
-      expect(http.get).toHaveBeenCalledWith('api/v3/payments/c2b/financial-card');
-      expect(response).toEqual(FINANCIAL_CARD);
-    });
-  });
-
-  describe('deleteFinancialCard', () => {
-    it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify({})});
-      spyOn(http, 'delete').and.returnValue(Observable.of(new Response(res)));
-      service.deleteFinancialCard().subscribe();
-      expect(http.delete).toHaveBeenCalledWith('api/v3/payments/c2b/financial-card');
-    });
-  });
-
-  describe('getSabadellInfo', () => {
-    let response: SabadellInfoResponse;
-    it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(SABADELL_RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      service.getSabadellInfo('1').subscribe((r: SabadellInfoResponse) => {
-        response = r;
-      });
-      expect(http.get).toHaveBeenCalledWith('api/v3/payments/c2b/sabadell/tpv/params', {orderId: '1'});
-      expect(response).toEqual(SABADELL_RESPONSE);
     });
   });
 

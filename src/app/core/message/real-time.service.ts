@@ -32,7 +32,6 @@ export class RealTimeService {
               private remoteConsoleService: RemoteConsoleService,
               private analyticsService: AnalyticsService,
               private connectionService: ConnectionService) {
-    this.subscribeEventNewMessage();
     this.subscribeEventMessageSent();
     this.subscribeConnectionRestored();
   }
@@ -101,19 +100,6 @@ export class RealTimeService {
     this.xmpp.sendConversationStatus(to, thread);
     this.eventService.emit(EventService.CHAT_SIGNAL,
       new ChatSignal(chatSignalType.READ, thread, new Date().getTime(), null, true));
-  }
-
-  private subscribeEventNewMessage() {
-    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message, replaceTimestamp: boolean, withDeliveryReceipt: boolean) => {
-      if (!message.fromSelf && withDeliveryReceipt) {
-        this.persistencyService.findMessage(message.id).subscribe(() => {
-        }, (error) => {
-          if (error.reason === 'missing') {
-            this.sendDeliveryReceipt(message.from, message.id, message.thread);
-          }
-        });
-      }
-    });
   }
 
   private subscribeEventMessageSent() {
