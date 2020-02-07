@@ -19,7 +19,6 @@ describe('ReviewService', () => {
     httpMock = TestBed.get(HttpTestingController);
   });
 
-
   afterEach(() => {
     httpMock.verify();
   });
