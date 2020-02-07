@@ -8,9 +8,8 @@ import {
   PaymentIntents, PaymentMethodResponse, PaymentMethodCardResponse
 } from '../payments/payment.interface';
 import { Observable } from 'rxjs';
-import { Response } from '@angular/http';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
+import { FeatureflagService } from '../user/featureflag.service';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 
