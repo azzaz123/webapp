@@ -3,67 +3,36 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { GeolocationResponse } from './geolocation-response.interface';
 import { Coordinate } from './address-response.interface';
-import { HttpService } from '../http/http.service';
+import { HttpClient } from '@angular/common/http';
+
+export const MAPS_PLACES_API = 'maps/places';
+export const MAPS_PLACE_API = 'maps/here/place';
+export const MAPS_PROVIDER = 'here';
 
 @Injectable()
 export class GeolocationService {
 
-  private apiKey = 'AIzaSyCwbqhPH-_1Zyh9hAYi6GDwiyk1we41DZ4';
-
-  constructor(private http: HttpService) { }
+  constructor(private http: HttpClient) { }
 
   public search(query: string): Observable<GeolocationResponse[]> {
-    const params: any =  {
+    const params: any = {
       query: query,
-      provider: 'here'
+      provider: MAPS_PROVIDER
     };
-    return this.http.getNoBase(environment.siteUrl + 'maps/places', params)
-      .map(res => res.json());
 
-    // TODO:
-    // const params: IDictionary[] = [
-    //   {
-    //     key: 'query',
-    //     value: query
-    //   },
-    //   {
-    //     key: 'provider',
-    //     value: 'here'
-    //   }
-    // ];
-
-    // return this.httpNew.getNoBase(environment.siteUrl + 'maps/places', params);
+    return this.http.get<GeolocationResponse[]>(`${environment.siteUrl}${MAPS_PLACES_API}`, { params });
   }
 
   public geocode(placeId: string): Observable<Coordinate> {
-    const params: any =  {
-      placeId: placeId,
-    };
-    return this.http.getNoBase(environment.siteUrl + 'maps/here/place', params)
-      .map(res => res.json())
-      .map((res: any) => {
+    const params: any = { placeId };
+
+    return this.http.get<Coordinate>(`${environment.siteUrl}${MAPS_PLACE_API}`, { params })
+      .map(res => {
         return {
           ...res,
           name: placeId
         };
       });
-
-    // TODO:
-    // const params: IDictionary[] = [
-    //   {
-    //     key: 'placeId',
-    //     value: placeId
-    //   }
-    // ];
-
-    // return this.httpNew.getNoBase(environment.siteUrl + 'maps/here/place', params)
-    // .map(res => res.json())
-    //   .map((res: any) => {
-    //     return {
-    //       ...res,
-    //       name: placeId
-    //     };
-    //   });
   }
 
 }
