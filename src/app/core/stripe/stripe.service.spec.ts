@@ -16,7 +16,7 @@ import { TestRequest, HttpClientTestingModule, HttpTestingController } from '@an
 
 const MOCK_PAYMENT_METHOD_ID = 'a0b1c2';
 
-fdescribe('StripeService', () => {
+describe('StripeService', () => {
 
   let service: StripeService;
   let paymentService: PaymentService;
