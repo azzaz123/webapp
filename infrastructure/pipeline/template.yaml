@@ -8,6 +8,10 @@ Parameters:
   ProjectName:
     Description: 'Name of the project'
     Type: String
+  BucketES:
+    Type: String
+  BucketEN:
+    Type: String
 
 Resources:
   CodePipelineServiceRole:
@@ -41,23 +45,9 @@ Resources:
           - Resource:
               - !GetAtt ArtifactBucket.Arn
               - !Sub "arn:aws:s3:::wallapop-trigger-link-cicd/webapp/webapp-${ImageTag}.zip"
-            Effect: Allow
-            Action:
-              - s3:*
-
-          - Resource: #TODO FIX
-              - "arn:aws:s3:::web-es.beta.wallapop.com"
-              - "arn:aws:s3:::web-en.beta.wallapop.com"
-              - "arn:aws:s3:::web-es.wallapop.com"
-              - "arn:aws:s3:::web-en.wallapop.com"
-            Effect: Allow
-            Action:
-              - s3:*
-
-          - Resource: !Join
-              - ''
-              - - !GetAtt ArtifactBucket.Arn
-                - '/*'
+              - !Ref BucketES
+              - !Ref BucketEN
+              - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
             Effect: Allow
             Action:
               - s3:*
