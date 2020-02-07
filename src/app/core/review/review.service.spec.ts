@@ -1,66 +1,79 @@
 import { TestBed } from '@angular/core/testing';
-
-import { ReviewService } from './review.service';
-import { HttpService } from '../http/http.service';
-import { Observable } from 'rxjs';
-import 'rxjs/add/observable/throw';
+import { ReviewService, REVIEWS_API_URL } from './review.service';
 import { REVIEW_DATA_BUYER, REVIEW_DATA_SELLER } from '../../../tests/review.fixtures.spec';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
+import { USER_ID } from '../../../tests/user.fixtures.spec';
+import { environment } from '../../../environments/environment';
+import 'rxjs/add/observable/throw';
 
 let service: ReviewService;
-let http: HttpService;
+let httpMock: HttpTestingController;
 
 describe('ReviewService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ReviewService,
-        ...TEST_HTTP_PROVIDERS
-      ]
+      providers: [ReviewService],
+      imports: [HttpClientTestingModule],
     });
     service = TestBed.get(ReviewService);
-    http = TestBed.get(HttpService);
+    httpMock = TestBed.get(HttpTestingController);
   });
 
-  it('should instanciate', () => {
-    expect(service).toBeTruthy();
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   describe('check', () => {
-    it('should call endpoint and return true', () => {
-      let bool: boolean;
-      spyOn(http, 'head').and.returnValue(Observable.of({}));
-      service.check('1').subscribe((check: boolean) => {
-        bool = check;
-      });
-      expect(http.head).toHaveBeenCalledWith('api/v3/reviews/1');
-      expect(bool).toBeTruthy();
+    it('should return true if response is OK', () => {
+      const expectedUrl = `${environment.baseUrl}${REVIEWS_API_URL}/${USER_ID}`;
+      let response: boolean;
+
+      service.check(USER_ID).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(response).toBe(true);
     });
-    it('should return true', () => {
-      let bool: boolean;
-      spyOn(http, 'head').and.returnValue(Observable.throw(''));
-      service.check('1').subscribe((check: boolean) => {
-        bool = check;
-      });
-      expect(bool).toBeFalsy();
+
+    it('should return false if there is an error', () => {
+      const expectedUrl = `${environment.baseUrl}${REVIEWS_API_URL}/${USER_ID}`;
+      let response: boolean;
+
+      service.check(USER_ID).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.error(new ErrorEvent('Error when getting reviews'))
+
+      expect(response).toBe(false);
     });
   });
 
   describe('createAsBuyer', () => {
     it('should call endpoint', () => {
-      spyOn(http, 'post').and.returnValue(Observable.of({}));
+      const expectedUrl = `${environment.baseUrl}${REVIEWS_API_URL}/buyer`;
+
       service.createAsBuyer(REVIEW_DATA_BUYER).subscribe();
-      expect(http.post).toHaveBeenCalledWith('api/v3/reviews/buyer', REVIEW_DATA_BUYER);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.body).toEqual(REVIEW_DATA_BUYER);
+      expect(req.request.method).toBe('POST');
     });
   });
 
   describe('createAsSeller', () => {
     it('should call endpoint', () => {
-      spyOn(http, 'post').and.returnValue(Observable.of({}));
+      const expectedUrl = `${environment.baseUrl}${REVIEWS_API_URL}/seller`;
+
       service.createAsSeller(REVIEW_DATA_SELLER).subscribe();
-      expect(http.post).toHaveBeenCalledWith('api/v3/reviews/seller', REVIEW_DATA_SELLER);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.body).toEqual(REVIEW_DATA_SELLER);
+      expect(req.request.method).toBe('POST');
     });
   });
-
 
 });
