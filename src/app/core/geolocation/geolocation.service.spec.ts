@@ -18,7 +18,7 @@ describe('GeolocationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [GeolocationService],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule]
     });
     service = TestBed.get(GeolocationService);
     httpMock = TestBed.get(HttpTestingController);
