@@ -27,7 +27,7 @@ export class InboxService {
   public errorRetrievingInbox = false;
   public errorRetrievingArchived = false;
 
-  constructor(private httpClient: HttpClient,
+  constructor(private http: HttpClient,
               private persistencyService: PersistencyService,
               private messageService: MessageService,
               private inboxConversationService: InboxConversationService,
@@ -121,7 +121,7 @@ export class InboxService {
 
   public getInbox$(): Observable<InboxConversation[]> {
     this.messageService.totalUnreadMessages = 0;
-    return this.httpClient.get<InboxApi>(`${environment.baseUrl}bff/messaging/inbox`, {
+    return this.http.get<InboxApi>(`${environment.baseUrl}bff/messaging/inbox`, {
       params: { page_size: InboxService.PAGE_SIZE.toString(), max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION.toString() }
     })
     .pipe(
@@ -131,7 +131,7 @@ export class InboxService {
   }
 
   public getNextPage$(): Observable<InboxConversation[]> {
-    return this.httpClient.get<InboxApi>(`${environment.baseUrl}bff/messaging/inbox`, {
+    return this.http.get<InboxApi>(`${environment.baseUrl}bff/messaging/inbox`, {
       params: {
         page_size: InboxService.PAGE_SIZE.toString(),
         from: this.nextPageToken
@@ -144,7 +144,7 @@ export class InboxService {
   }
 
   public getArchivedInbox$(): Observable<InboxConversation[]> {
-    return this.httpClient.get<InboxApi>(`${environment.baseUrl}bff/messaging/archived`, {
+    return this.http.get<InboxApi>(`${environment.baseUrl}bff/messaging/archived`, {
       params: {
         page_size: InboxService.PAGE_SIZE.toString(),
         max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION.toString()
@@ -157,7 +157,7 @@ export class InboxService {
   }
 
   public getNextArchivedPage$(): Observable<InboxConversation[]> {
-    return this.httpClient.get<InboxApi>(`${environment.baseUrl}bff/messaging/archived`, {
+    return this.http.get<InboxApi>(`${environment.baseUrl}bff/messaging/archived`, {
       params: {
         page_size: InboxService.PAGE_SIZE.toString(),
         from: this.nextArchivedPageToken
