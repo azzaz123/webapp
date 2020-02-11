@@ -5,7 +5,7 @@ import { REVIEWS_RESPONSE, MOCK_REVIEWS } from '../../tests/review.fixtures.spec
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { environment } from '../../environments/environment';
 
-fdescribe('UserReviewService', () => {
+describe('UserReviewService', () => {
 
   let service: UserReviewService;
   let httpMock: HttpTestingController;
@@ -34,5 +34,5 @@ fdescribe('UserReviewService', () => {
       expect(req.request.method).toBe('GET');
     });
   });
-  
+
 });
