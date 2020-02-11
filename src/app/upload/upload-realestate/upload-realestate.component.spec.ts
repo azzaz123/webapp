@@ -240,12 +240,10 @@ describe('UploadRealestateComponent', () => {
       expect(component.loading).toBe(true);
     });
 
-    it('should set dirty invalid fields', () => {
+    it('should set form as pending', () => {
       component.onSubmit();
 
-      expect(component.uploadForm.get('title').dirty).toBe(true);
-      expect(component.uploadForm.get('sale_price').dirty).toBe(true);
-      expect(component.uploadForm.get('location.address').dirty).toBe(true);
+      expect(component.uploadForm.pending).toBe(true);
     });
 
     it('should show image error', () => {

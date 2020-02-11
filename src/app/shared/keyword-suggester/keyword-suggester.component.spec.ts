@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KeywordSuggesterComponent } from './keyword-suggester.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { Subject } from 'rxjs';
 import { KeywordSuggestion } from './keyword-suggestion.interface';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 const MOCK_SUGGESTION: KeywordSuggestion = {
   suggestion: 'Samsung Galaxy S7',
@@ -18,8 +19,8 @@ describe('KeywordSuggesterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
       declarations: [KeywordSuggesterComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
           provide: I18nService, useValue: {
@@ -36,20 +37,9 @@ describe('KeywordSuggesterComponent', () => {
     fixture = TestBed.createComponent(KeywordSuggesterComponent);
     component = fixture.componentInstance;
     i18n = TestBed.get(I18nService);
-    component.value = new Subject();
     component.suggestions = new Subject();
     component.placeholder = 'Brand';
     fixture.detectChanges();
-  });
-
-  describe('ngOnInit', () => {
-    it('should set the initial value if it`s provided', () => {
-      component.initialValue = 'Apple';
-
-      component.ngOnInit();
-
-      expect(component.suggestionValue).toEqual('Apple');
-    });
   });
 
   describe('ngOnChanges', () => {
@@ -74,17 +64,9 @@ describe('KeywordSuggesterComponent', () => {
   });
 
   describe(('handleInputBlur'), () => {
-    it('should emit the suggestionSelect event with the input value', () => {
-      spyOn(component.suggestionSelect, 'emit');
-
-      component.suggestionValue = 'iPhone XS';
-      component.handleInputBlur();
-
-      expect(component.suggestionSelect.emit).toHaveBeenCalledWith('iPhone XS');
-    });
-
     it('should hide the suggestions element', () => {
       component.suggestionsOpened = true;
+
       component.handleInputBlur();
 
       expect(component.suggestionsOpened).toBe(false);
@@ -94,17 +76,10 @@ describe('KeywordSuggesterComponent', () => {
   describe(('selectSuggestion'), () => {
     it('should hide the suggestions element', () => {
       component.suggestionsOpened = true;
+      
       component.selectSuggestion(MOCK_SUGGESTION);
 
       expect(component.suggestionsOpened).toBe(false);
-    });
-
-    it('should emit the suggestionSelect event with the suggestion value', () => {
-      spyOn(component.suggestionSelect, 'emit');
-
-      component.selectSuggestion(MOCK_SUGGESTION);
-
-      expect(component.suggestionSelect.emit).toHaveBeenCalledWith(MOCK_SUGGESTION.value);
     });
   });
 

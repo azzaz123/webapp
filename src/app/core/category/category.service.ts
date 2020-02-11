@@ -47,10 +47,6 @@ export class CategoryService {
     return this.heroCategoriesIds.indexOf(categoryId) !== -1;
   }
 
-  public isFashionCategory(categoryId: number) {
-    return categoryId === this.fashionCategoryId;
-  }
-
   private toSelectOptions(categories: CategoryResponse[]): CategoryOption[] {
     return categories.map((category: CategoryResponse) => ({
       value: category.category_id.toString(),
