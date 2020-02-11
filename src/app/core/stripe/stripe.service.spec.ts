@@ -4,7 +4,7 @@ import { UserService } from '../user/user.service';
 import { StripeService, PAYMENTS_API_URL } from './stripe.service';
 import { EventService } from '../event/event.service';
 import { PaymentService } from '../payments/payment.service';
-import { PaymentIntents} from '../payments/payment.interface';
+import { PaymentIntents } from '../payments/payment.interface';
 import { Router } from '@angular/router';
 import { USER_DATA } from '../../../tests/user.fixtures.spec';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
@@ -31,45 +31,46 @@ describe('StripeService', () => {
         StripeService,
         {
           provide: UserService, useValue: {
-          hasPerm() {
-            return Observable.of(true);
+            hasPerm() {
+              return Observable.of(true);
+            }
           }
-        }
         },
         {
           provide: Router, useValue: {
-          navigate() {
-          },
-          events: routerEvents
-        }
+            navigate() {
+            },
+            events: routerEvents
+          }
         },
         {
           provide: UserService, useValue: {
-          me() {
-            return Observable.of(USER_DATA);
+            me() {
+              return Observable.of(USER_DATA);
+            }
           }
-        }
         },
         {
           provide: PaymentService, useValue: {
-          paymentIntents() {
-            return Observable.of({
-              token: 'a1-b2-c3-d4'
-            })
-          },
-          paymentIntentsConfirm() {
-            return Observable.of({
-              token: 'a1-b2-c3-d4',
-              status: 'SUCCEEDED'
-            })
+            paymentIntents() {
+              return Observable.of({
+                token: 'a1-b2-c3-d4'
+              })
+            },
+            paymentIntentsConfirm() {
+              return Observable.of({
+                token: 'a1-b2-c3-d4',
+                status: 'SUCCEEDED'
+              })
+            }
           }
-        }
         },
-        { provide: FeatureflagService, useValue: {
-          getFlag() {
-            return Observable.of(false);
+        {
+          provide: FeatureflagService, useValue: {
+            getFlag() {
+              return Observable.of(false);
+            }
           }
-        }
         }
       ],
       imports: [HttpClientTestingModule]
@@ -101,16 +102,16 @@ describe('StripeService', () => {
 
   describe('getCards', () => {
     it('should call endpoint and return saved card', () => {
-    const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/cards`;
-    let response: FinancialCard[];
+      const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/cards`;
+      let response: FinancialCard[];
 
-    service.getCards().subscribe(r => response = r);
-    const req: TestRequest = httpMock.expectOne(expectedUrl);
-    req.flush(PAYMENT_METHOD_CARD_RESPONSE);
+      service.getCards().subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(PAYMENT_METHOD_CARD_RESPONSE);
 
-    expect(req.request.urlWithParams).toEqual(expectedUrl);
-    expect(response[0]).toEqual(createFinancialCardFixture());
-    expect(req.request.method).toBe('GET');
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(response[0]).toEqual(createFinancialCardFixture());
+      expect(req.request.method).toBe('GET');
     });
   });
 
@@ -147,7 +148,7 @@ describe('StripeService', () => {
       expect(financialCard).toEqual(createFinancialCardFixture());
     });
   });
-  
+
 });
 
 
