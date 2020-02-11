@@ -323,6 +323,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
       appboy.logCustomEvent('List', { platform: 'web' });
+      ga('send', 'event', 'Upload', 'done', 'Web mobile analysis');
     }
 
     if (this.isUrgent) {
