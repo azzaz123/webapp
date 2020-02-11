@@ -17,10 +17,10 @@ export class GeneralSuggestionsService {
   constructor(private http: HttpClient, private i18n: I18nService) {
   }
 
-  getObjectTypes(category_id: string): Observable<IOption[]> {
+  getObjectTypes(category_id: number): Observable<IOption[]> {
     return this.http.get(`${environment.baseUrl}${SUGGESTERS_API_URL}/object-type`, {
       params: {
-        category_id,
+        category_id: category_id.toString(),
         language: this.i18n.locale
       }
     })

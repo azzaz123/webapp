@@ -75,7 +75,7 @@ describe('GeneralSuggestionsService', () => {
       const expectedUrl = `${environment.baseUrl}${SUGGESTERS_API_URL}/object-type?${expectedUrlParams}`;
       let response: IOption[];
 
-      service.getObjectTypes(CATEGORY_IDS.CELL_PHONES_ACCESSORIES.toString()).subscribe(r => response = r);
+      service.getObjectTypes(CATEGORY_IDS.CELL_PHONES_ACCESSORIES).subscribe(r => response = r);
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(MOCK_OBJECT_TYPES);
 
