@@ -28,7 +28,7 @@ describe('GeneralSuggestionsService', () => {
 
   describe('getObjectTypes', () => {
     let response: IOption[];
-    const CATEGORY = '1';
+    const categoryId = 1;
 
     beforeEach(fakeAsync(() => {
       const OBJECT_TYPES = [{
@@ -41,13 +41,13 @@ describe('GeneralSuggestionsService', () => {
       const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(OBJECT_TYPES) });
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
 
-      service.getObjectTypes(CATEGORY).subscribe((r: IOption[]) => {
+      service.getObjectTypes(categoryId).subscribe((r: IOption[]) => {
         response = r;
       });
     }));
 
     it('should call the object-type endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith(`${service['API_URL']}/object-type`, { category_id: CATEGORY, language: 'en' });
+      expect(http.get).toHaveBeenCalledWith(`${service['API_URL']}/object-type`, { category_id: categoryId, language: 'en' });
     });
 
     it('should return the object type options', () => {
