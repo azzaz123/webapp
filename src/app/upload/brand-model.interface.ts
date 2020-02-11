@@ -1,3 +1,8 @@
+export interface ObjectType {
+  id: string;
+  name: string;
+}
+
 export interface Brand {
   brand: string;
 }
