@@ -1,36 +1,39 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ReviewResponse, ReviewsData } from './review-response.interface';
-import { Response } from '@angular/http';
 import { Review } from './review';
 import { ReviewItem } from './review-item';
-import { HttpService } from '../core/http/http.service';
 import { User } from '../core/user/user';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+
+export const USER_REVIEWS_API_URL = 'api/v3/users/me/reviews';
 
 @Injectable()
 export class UserReviewService {
 
-  private API_URL_v3_USER = 'api/v3/users';
 
-  constructor(private http: HttpService) {
+  constructor(private http: HttpClient) {
   }
 
   public getPaginationReviews(init: number): Observable<ReviewsData> {
-    return this.http.get(this.API_URL_v3_USER + '/me/reviews', {
-        init: init
-      })
-      .map((r: Response) => {
-          const res: ReviewResponse[] = r.json();
-          const nextPage: string = r.headers.get('x-nextpage');
-          const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
-          const data: Review[] = this.mapResponse(res);
+    return this.http.get<HttpResponse<ReviewResponse[]>>(`${environment.baseUrl}${USER_REVIEWS_API_URL}`, {
+      params: {
+        init: init.toString()
+      },
+      observe: 'response' as 'body'
+    })
+      .map(r => {
+        const res: ReviewResponse[] = r.body;
+        const nextPage: string = r.headers.get('x-nextpage');
+        const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
+        const data: Review[] = this.mapResponse(res);
 
-          return {
-            data: data,
-            init: nextInit
-          };
-        }
-      );
+        return {
+          data,
+          init: nextInit
+        };
+      });
   }
 
   private mapResponse(res: ReviewResponse[]): Review[] {
@@ -67,7 +70,7 @@ export class UserReviewService {
     return new User(
       reviewResponse.user.id,
       reviewResponse.user.micro_name,
-      reviewResponse.user.image ? {urls_by_size: reviewResponse.user.image} : null,
+      reviewResponse.user.image ? { urls_by_size: reviewResponse.user.image } : null,
       null,
       null,
       null,
