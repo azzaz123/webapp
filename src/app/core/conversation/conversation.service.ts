@@ -173,20 +173,6 @@ export class ConversationService extends LeadService {
     }
   }
 
-  public checkIfLastPage(archive: boolean = false): Observable<any> {
-    const lastDate: number = archive ? this.getLastDate(this.archivedLeads) : this.getLastDate(this.leads);
-    if (lastDate) {
-      return this.http.get(this.API_URL, { until: lastDate, hidden: archive })
-      .map((res: Response) => res.json())
-      .map((res: ConversationResponse[]) => {
-        if (res.length === 0) {
-          archive ? this.ended.processed = true : this.ended.pending = true;
-        }
-      });
-    }
-    return Observable.of({});
-  }
-
   public archiveWithPhones() {
     const archivedConversations: Conversation[] = remove(<Conversation[]>this.leads, (conversation: Conversation) => {
       return conversation.phone !== undefined;

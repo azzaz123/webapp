@@ -39,7 +39,7 @@ import {
   USER_ID,
   USER_ITEM_DISTANCE
 } from '../../../tests/user.fixtures.spec';
-import { ITEM_ID, MOCK_ITEM, MockedItemService } from '../../../tests/item.fixtures.spec';
+import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import {
@@ -496,61 +496,7 @@ describe('Service: Conversation', () => {
     });
   });
 
-  describe('checkIfLastPage', () => {
-    it('should call endpoint with lastDate', () => {
-      const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify(createConversationsArray(2)) }));
-      spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
-      spyOn<any>(service, 'getLastDate').and.returnValue(12345);
-
-      service.checkIfLastPage().subscribe();
-
-      expect(http.get).toHaveBeenCalledWith('api/v3/protool/conversations', {
-        until: 12345,
-        hidden: false
-      });
-    });
-
-    it('should set ended.pending to TRUE when called without any argument', () => {
-      const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify([]) }));
-      spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
-      spyOn<any>(service, 'getLastDate').and.returnValue(12345);
-
-      service.checkIfLastPage().subscribe();
-
-      expect(service.ended.pending).toBe(true);
-    });
-
-    it('should set ended.pending to TRUE when called with false', () => {
-      const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify([]) }));
-      spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
-      spyOn<any>(service, 'getLastDate').and.returnValue(12345);
-
-      service.checkIfLastPage().subscribe();
-
-      expect(service.ended.pending).toBe(true);
-    });
-
-    it('should set ended.processed to TRUE when called with true', () => {
-      const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify([]) }));
-      spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
-      spyOn<any>(service, 'getLastDate').and.returnValue(12345);
-
-      service.checkIfLastPage(true).subscribe();
-
-      expect(service.ended.processed).toBe(true);
-    });
-
-    it('should do not call endpoint', () => {
-      spyOn(http, 'get');
-      spyOn<any>(service, 'getLastDate').and.returnValue(null);
-
-      service.checkIfLastPage().subscribe();
-
-      expect(http.get).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('archiveWithPhones', () => {
+ describe('archiveWithPhones', () => {
     const CONVERSATIONS_WITH_PHONE: Conversation[] = createConversationsArray(4, true);
     const NORMAL_CONVERSATIONS: Conversation[] = createConversationsArray(6);
     beforeEach(() => {
