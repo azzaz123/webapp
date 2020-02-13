@@ -1216,16 +1216,6 @@ describe('Service: Conversation', () => {
     });
   });
 
-  describe('getByItemId', () => {
-    it('should call the endpoint', () => {
-      spyOn(http, 'get').and.callThrough();
-
-      service.getByItemId(MOCK_ITEM.id);
-
-      expect(http.get).toHaveBeenCalledWith(`api/v3/items/${MOCK_ITEM.id}/conversation`);
-    });
-  });
-
   describe('createConversation', () => {
     it('should make a post request to the conversations endpoint', () => {
       spyOn(http, 'post').and.returnValue(Observable.of({}));

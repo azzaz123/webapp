@@ -14,7 +14,7 @@ import { MessagesData } from '../message/messages.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import { NotificationService } from '../notification/notification.service';
 import { LeadService } from './lead.service';
-import { ConversationResponse, NewConversationResponse } from './conversation-response.interface';
+import { ConversationResponse } from './conversation-response.interface';
 import { Filter } from './filter.interface';
 import { Filters } from './conversation-filters';
 import { TrackingService } from '../tracking/tracking.service';
@@ -446,12 +446,6 @@ export class ConversationService extends LeadService {
 
   public getItemFromThread(thread: string): Item {
     return find(this.leads, { id: thread }).item;
-  }
-
-  public getByItemId(itemId): Observable<NewConversationResponse> {
-    return this.http.get(`api/v3/items/${itemId}/conversation`).map((r: Response) => {
-      return r.json();
-    });
   }
 
   public createConversation(itemId: string): Observable<Conversation> {
