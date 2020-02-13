@@ -1,3 +1,5 @@
+import { InboxMessageApi } from './api';
+
 export enum MessageType {
   TEXT = 'text',
   /** Projections */
@@ -104,11 +106,11 @@ export class InboxMessage {
     return this._phoneRequest;
   }
 
-  public static messsagesFromJson(json: any, conversationId: string, currentUserId: string, otherUserId: string): InboxMessage[] {
-    return json.map(message => this.buildMessage(message, conversationId, currentUserId, otherUserId));
+  public static messsagesFromJson(messagesApiModel: InboxMessageApi[], conversationId: string, currentUserId: string, otherUserId: string): InboxMessage[] {
+    return messagesApiModel.map(message => this.buildMessage(message, conversationId, currentUserId, otherUserId));
   }
 
-  private static buildMessage(message: any, conversationId: string, currentUserId: string, otherUserId: string) {
+  private static buildMessage(message: InboxMessageApi, conversationId: string, currentUserId: string, otherUserId: string) {
     return new InboxMessage(message.id, conversationId, message.text,
       message.from_self ? currentUserId : otherUserId, message.from_self, new Date(message.timestamp),
       message.status, message.type, message.payload);

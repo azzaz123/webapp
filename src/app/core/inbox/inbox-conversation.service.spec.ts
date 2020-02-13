@@ -15,7 +15,6 @@ import { InboxMessage, MessageStatus, MessageType } from '../../chat/model/inbox
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
-import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { Response, ResponseOptions } from '@angular/http';
 import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
@@ -32,7 +31,6 @@ import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 describe('InboxConversationService', () => {
 
   let service: InboxConversationService;
-  let http: HttpService;
   let eventService: EventService;
   let realTime: RealTimeService;
   let persistencyService: PersistencyService;
@@ -64,7 +62,6 @@ describe('InboxConversationService', () => {
       ]
     });
     service = TestBed.get(InboxConversationService);
-    http = TestBed.get(HttpService);
     eventService = TestBed.get(EventService);
     realTime = TestBed.get(RealTimeService);
     persistencyService = TestBed.get(PersistencyService);
@@ -370,28 +367,29 @@ describe('InboxConversationService', () => {
       });
 
       it('should call fetch new conversation', () => {
-        spyOn(http, 'get').and.callThrough();
-
         service.processNewMessage(newInboxMessage);
 
-        expect(http.get).toHaveBeenCalledWith(service['API_URL'] + newInboxMessage.thread);
+        const req = httpTestingController.expectOne(`${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`);
+        expect(req.request.method).toEqual('GET');
       });
 
       it('should add new conversation to the top of the list if fetch succeed', () => {
-        const apiResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify(MOCK_API_CONVERSATION) }));
-        spyOn(http, 'get').and.returnValue(Observable.of(apiResponse));
-
         service.processNewMessage(newInboxMessage);
 
+        const req = httpTestingController.expectOne(`${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`);
+        req.flush(MOCK_API_CONVERSATION);
+
+        expect(req.request.method).toEqual('GET');
         expect(service.conversations[0].id).toEqual(MOCK_API_CONVERSATION.hash);
       });
 
       it('should add new conversation with received message to the top of the list if fetch failed', () => {
-        const apiResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify(MOCK_API_CONVERSATION) }));
-        spyOn(http, 'get').and.returnValue(Observable.throw(new Error('Test error')));
-
         service.processNewMessage(newInboxMessage);
 
+        const req = httpTestingController.expectOne(`${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`);
+        req.error(new ErrorEvent('connection failed'));
+
+        expect(req.request.method).toEqual('GET');
         expect(service.conversations[0].id).toEqual(newInboxMessage.thread);
         expect(service.conversations[0].lastMessage.id).toEqual(newInboxMessage.id);
       });
@@ -623,19 +621,21 @@ describe('InboxConversationService', () => {
     });
 
     it('with success should emit CONVERSATION_ARCHIVED event', () => {
-      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      service.archive$(service.conversations[0]).subscribe((conversation: InboxConversation) =>
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]));
 
-      service.archive$(service.conversations[0]).subscribe().unsubscribe();
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]);
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/conversations/archive`);
+      expect(req.request.method).toEqual('PUT');
+      expect(req.request.body).toEqual({ conversation_ids: [service.conversations[0].id] });
     });
 
     it('with 409 error should emit CONVERSATION_ARCHIVED event', () => {
-      spyOn(http, 'put').and.returnValue(Observable.throwError({ status: 409 }));
+      service.archive$(service.conversations[0]).subscribe((conversation: InboxConversation) =>
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]));
 
-      service.archive$(service.conversations[0]).subscribe().unsubscribe();
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]);
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/conversations/archive`);
+      expect(req.request.method).toEqual('PUT');
+      req.flush('conflict', { status: 409, statusText: 'Conflict' });
     });
   });
 
@@ -646,19 +646,23 @@ describe('InboxConversationService', () => {
     });
 
     it('with success should emit CONVERSATION_UNARCHIVED event', () => {
-      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      service.unarchive(service.archivedConversations[0])
+      .subscribe((conversation: InboxConversation) =>
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]));
 
-      service.unarchive(service.archivedConversations[0]).subscribe().unsubscribe();
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]);
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/conversations/unarchive`);
+      expect(req.request.method).toEqual('PUT');
+      expect(req.request.body).toEqual({ conversation_ids: [service.archivedConversations[0].id] });
     });
 
     it('with 409 error should emit CONVERSATION_UNARCHIVED event', () => {
-      spyOn(http, 'put').and.returnValue(Observable.throwError({ status: 409 }));
+      service.unarchive(service.archivedConversations[0])
+      .subscribe((conversation: InboxConversation) =>
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]));
 
-      service.unarchive(service.archivedConversations[0]).subscribe().unsubscribe();
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]);
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/conversations/unarchive`);
+      expect(req.request.method).toEqual('PUT');
+      req.flush('conflict', { status: 409, statusText: 'Conflict' });
     });
   });
 
