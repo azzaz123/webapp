@@ -229,28 +229,6 @@ export class ConversationService extends LeadService {
     })[0];
   }
 
-  private addMessage(conversation: Conversation, message: Message): boolean {
-    if (!this.findMessage(conversation.messages, message)) {
-      conversation.messages.push(message);
-      conversation.modifiedDate = new Date().getTime();
-      if (!message.fromSelf) {
-        this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
-          const trackEvent: TrackingEventData = {
-            eventData: TrackingService.MESSAGE_RECEIVED_ACK,
-            attributes: {
-              thread_id: message.thread,
-              message_id: message.id
-            }
-          };
-          this.trackingService.addTrackingEvent(trackEvent, false);
-          this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
-        });
-        this.handleUnreadMessage(conversation);
-      }
-      return true;
-    }
-  }
-
   public processChatSignal(signal: ChatSignal) {
     switch (signal.type) {
       case chatSignalType.SENT:
@@ -359,13 +337,6 @@ export class ConversationService extends LeadService {
     }
   }
 
-  private handleUnreadMessage(conversation: Conversation) {
-    this.zone.run(() => {
-      conversation.unreadMessages++;
-      this.messageService.totalUnreadMessages++;
-    });
-  }
-
   private loadMessages(conversations: Conversation[]): Observable<Conversation[]> {
     if (this.messagesObservable) {
       return this.messagesObservable;
@@ -417,19 +388,6 @@ export class ConversationService extends LeadService {
     );
   }
 
-  public handleNewMessages(message: Message, updateDate: boolean) {
-    if (!isEmpty(this.inboxConversationService.conversations)) {
-      this.onNewMessage(message, updateDate);
-    } else {
-      const interval: any = setInterval(() => {
-        if (!isEmpty(this.inboxConversationService.conversations)) {
-          clearInterval(interval);
-          this.onNewMessage(message, updateDate);
-        }
-      }, 500);
-    }
-  }
-
   public getItemFromThread(thread: string): Item {
     return find(this.leads, { id: thread }).item;
   }
@@ -475,91 +433,5 @@ export class ConversationService extends LeadService {
       this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       return conversation;
     });
-  }
-
-  private onNewMessage(message: Message, updateDate: boolean) {
-    const conversation: Conversation = (<Conversation[]>this.leads).find((c: Conversation) => c.id === message.thread);
-    const messageToUpdate: Message = conversation ? conversation.messages.find((m: Message) => m.id === message.id) : null;
-    if (updateDate && messageToUpdate) {
-      messageToUpdate.date = message.date;
-      this.persistencyService.updateMessageDate(message);
-    } else if (message.message) {
-      if (!message.fromSelf) {
-        message.status = messageStatus.RECEIVED;
-      }
-      this.persistencyService.updateMessageStatus(message, message.status);
-      if (conversation) {
-        this.updateConversation(message, conversation).subscribe(() => {
-          message = this.messageService.addUserInfo(conversation, message);
-          if (this.addMessage(conversation, message)) {
-            this.event.emit(EventService.MESSAGE_ADDED, message);
-            this.bumpConversation(conversation);
-            if (!message.fromSelf) {
-              this.notificationService.sendBrowserNotification(message, conversation.item.id);
-            }
-          }
-        });
-      } else {
-        const archivedConversationIndex: number = findIndex(this.archivedLeads, { 'id': message.thread });
-        if (archivedConversationIndex > -1) {
-          const unarchivedConversation: Conversation = (<Conversation[]>this.archivedLeads).splice(archivedConversationIndex, 1)[0];
-          unarchivedConversation.archived = false;
-          this.addConversation(unarchivedConversation, message);
-          this.event.emit(EventService.CONVERSATION_UNARCHIVED);
-        } else {
-          this.requestConversationInfo(message);
-        }
-      }
-    }
-    if (!message.fromSelf) {
-      this.remoteConsole.sendPresentationMessageTimeout(message.id);
-    }
-  }
-
-  private updateConversation(message: Message, conversation: Conversation): Observable<Conversation> {
-    if (message.message.indexOf(this.PHONE_MESSAGE) !== -1 || message.message.indexOf(this.SURVEY_MESSAGE) !== -1) {
-      return this.http.get(`${this.API_URL}/${conversation.id}`)
-      .map((res: Response) => {
-        return res.json();
-      })
-      .map((conversationResponse: ConversationResponse) => {
-        conversation.phone = conversationResponse.buyer_phone_number;
-        conversation.surveyResponses = conversationResponse.survey_responses;
-        return conversation;
-      });
-    } else {
-      return Observable.of(conversation);
-    }
-  }
-
-  private bumpConversation(conversation: Conversation) {
-    const index: number = this.leads.indexOf(conversation);
-    if (index > 0) {
-      this.leads.splice(index, 1);
-      this.leads.unshift(conversation);
-    }
-    this.event.emit(EventService.CONVERSATION_BUMPED, this.leads);
-  }
-
-  private requestConversationInfo(message: Message) {
-    this.get(message.thread).subscribe((conversation: Conversation) => {
-      if (!(<Conversation[]>this.leads).find((c: Conversation) => c.id === message.thread)) {
-        this.getSingleConversationMessages(conversation).subscribe(() => {
-          this.addConversation(conversation, message);
-          this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-        });
-      }
-    });
-  }
-
-  private addConversation(conversation: Conversation, message: Message) {
-    const conversationAlreadyAdded = this.leads.find(conv => conv.id === conversation.id);
-    if (!conversationAlreadyAdded) {
-      message = this.messageService.addUserInfo(conversation, message);
-      this.addMessage(conversation, message);
-      this.leads.unshift(conversation);
-      this.notificationService.sendBrowserNotification(message, conversation.item.id);
-      this.stream$.next(this.leads);
-    }
   }
 }
