@@ -13,3 +13,10 @@
 tsl-button {
   margin-top: $spacing-ml;
 }
+
+.image-col {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
