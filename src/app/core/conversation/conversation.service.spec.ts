@@ -148,50 +148,6 @@ describe('Service: Conversation', () => {
     });
   });
 
-  describe('loadMore', () => {
-    let response: Lead[];
-    const LEADS: Lead[] = createConversationsArray(4);
-    beforeEach(() => {
-      spyOn<any>(service, 'getLastDate').and.returnValue(1234);
-      spyOn(service, 'getLeads').and.returnValue(Observable.of({}));
-      service.stream$.subscribe((leads: Lead[]) => {
-        response = leads;
-      });
-      service['leads'] = LEADS;
-      service.loadMore().subscribe();
-    });
-
-    it('should call getLeads', () => {
-      expect(service['getLeads']).toHaveBeenCalledWith(1234);
-    });
-
-    it('should emit stream', () => {
-      expect(response).toEqual(LEADS);
-    });
-  });
-
-  describe('loadMoreArchived', () => {
-    let response: Lead[];
-    const LEADS: Lead[] = createConversationsArray(4);
-    beforeEach(() => {
-      spyOn<any>(service, 'getLastDate').and.returnValue(1234);
-      spyOn(service, 'getLeads').and.returnValue(Observable.of({}));
-      service.archivedStream$.subscribe((leads: Lead[]) => {
-        response = leads;
-      });
-      service['archivedLeads'] = LEADS;
-      service.loadMoreArchived().subscribe();
-    });
-
-    it('should call getLeads', () => {
-      expect(service['getLeads']).toHaveBeenCalledWith(1234, true);
-    });
-
-    it('should emit stream', () => {
-      expect(response).toEqual(LEADS);
-    });
-  });
-
   describe('getTotals', () => {
     it('should return totals', () => {
       const CONVERSATIONS_WITH_PHONE: Conversation[] = createConversationsArray(4, true);

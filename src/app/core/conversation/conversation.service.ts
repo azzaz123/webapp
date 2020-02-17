@@ -75,17 +75,11 @@ export class ConversationService extends LeadService {
   }
 
   public loadMore(): Observable<any> {
-    return this.getLeads(this.getLastDate(this.leads))
-    .map(() => {
-      this.stream$.next(this.leads);
-    });
+    return of({});
   }
 
   public loadMoreArchived(): Observable<any> {
-    return this.getLeads(this.getLastDate(this.archivedLeads), true)
-    .map(() => {
-      this.archivedStream$.next(this.archivedLeads);
-    });
+    return of({});
   }
 
   public getPage(page: number, archive?: boolean, filters?: Filter[], pageSize: number = this.PAGE_SIZE): Observable<Conversation[]> {
