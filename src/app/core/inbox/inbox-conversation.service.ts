@@ -30,6 +30,8 @@ export class InboxConversationService {
 
   private _selfId: string;
 
+  public currentConversation: InboxConversation;
+
   public conversations: InboxConversation[];
   public archivedConversations: InboxConversation[];
 
