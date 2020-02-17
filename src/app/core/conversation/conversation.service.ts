@@ -191,23 +191,6 @@ export class ConversationService extends LeadService {
     this.stream(true);
   }
 
-  public loadMessagesIntoConversations(conversations: Conversation[], archived: boolean = false): Observable<Conversation[]> {
-    this.event.subscribe(EventService.FOUND_MESSAGES_IN_DB, () => {
-      this.loadNotStoredMessages(conversations, archived);
-      this.event.unsubscribeAll(EventService.FOUND_MESSAGES_IN_DB);
-    });
-
-    return this.loadMessages(conversations).map((convWithMessages: Conversation[]) => {
-      if (convWithMessages) {
-      return convWithMessages.filter((conversation: Conversation) => {
-        return conversation.messages.length > 0;
-      });
-      } else {
-        return null;
-      }
-    });
-  }
-
   public getConversationPage(id: string, archive?: boolean): number {
     const index: number = (archive ? this.archivedLeads : this.leads).findIndex((conversation: Conversation) => {
       return conversation.id === id;
@@ -216,12 +199,6 @@ export class ConversationService extends LeadService {
       return -1;
     }
     return Math.ceil((index + 1) / this.PAGE_SIZE);
-  }
-
-  private findMessage(messages: Message[], message: Message): Message {
-    return messages.filter((msg: Message): boolean => {
-      return (msg.id === message.id);
-    })[0];
   }
 
   public processChatSignal(signal: ChatSignal) {
@@ -314,39 +291,6 @@ export class ConversationService extends LeadService {
       this.messageService.totalUnreadMessages -= conversation.unreadMessages;
       conversation.unreadMessages = 0;
     }
-  }
-
-  private loadMessages(conversations: Conversation[]): Observable<Conversation[]> {
-    if (this.messagesObservable) {
-      return this.messagesObservable;
-    }
-    if (this.connectionService.isConnected) {
-      this.messagesObservable = this.recursiveLoadMessages(conversations)
-      .share()
-      .do(() => {
-        this.messagesObservable = null;
-      });
-    }
-    return this.messagesObservable;
-  }
-
-  private recursiveLoadMessages(conversations: Conversation[], index: number = 0): Observable<Conversation[]> {
-      if (conversations && conversations[index] && this.connectionService.isConnected) {
-      return this.messageService.getMessages(conversations[index], !index)
-        .flatMap((res: MessagesData) => {
-          conversations[index].messages = res.data;
-          conversations[index].unreadMessages = res.data.filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
-        this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
-          this.messageService.totalUnreadMessages + conversations[index].unreadMessages :
-          conversations[index].unreadMessages;
-          if (index < conversations.length - 1) {
-            return this.recursiveLoadMessages(conversations, index + 1);
-          }
-          return Observable.of(conversations);
-        });
-      } else {
-        return Observable.of(null);
-      }
   }
 
   public loadNotStoredMessages(conversations: Conversation[], archived: boolean = false) {
