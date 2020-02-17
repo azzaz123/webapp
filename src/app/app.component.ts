@@ -202,21 +202,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private initOldChat() {
-    this.conversationService.init().subscribe(() => {
-      this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-        if (isProfessional) {
-          this.callService.init().subscribe(() => {
-            this.conversationService.init(true).subscribe(() => {
-              this.callService.init(true).subscribe();
-            });
-          });
-        }
-      });
-    });
-    this.RTConnectedSubscription.unsubscribe();
-  }
-
   private subscribeEventUserLogout() {
     this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {
       this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
