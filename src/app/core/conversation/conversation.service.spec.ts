@@ -3,11 +3,10 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ConversationService } from './conversation.service';
 import { HttpService } from '../http/http.service';
-import { Headers, RequestOptions, Response, ResponseOptions } from '@angular/http';
+import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 import { Conversation } from './conversation';
 import { UserService } from '../user/user.service';
-import { User } from '../user/user';
 import { ItemService } from '../item/item.service';
 import { Item } from '../item/item';
 import { XmppService } from '../xmpp/xmpp.service';
@@ -28,7 +27,7 @@ import {
   MOCK_CONVERSATION,
   SECOND_MOCK_CONVERSATION
 } from '../../../tests/conversation.fixtures.spec';
-import { MOCK_USER, MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
+import { MockedUserService, USER_ID } from '../../../tests/user.fixtures.spec';
 import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
@@ -1015,35 +1014,6 @@ describe('Service: Conversation', () => {
           expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.SENT);
         });
       });
-    });
-  });
-
-  describe('get', () => {
-    it('should return the requested conversation info and map the user and item data', () => {
-      spyOn(http, 'get').and.returnValue(Observable.of(CONVERSATION_RESPONSE));
-      let mappedResponse: any;
-
-      service.get(MOCKED_CONVERSATION_DATA.id).subscribe((response) => {
-        mappedResponse = response;
-      });
-
-      expect(mappedResponse.item instanceof Item).toBe(true);
-      expect(mappedResponse.user instanceof User).toBe(true);
-      expect(mappedResponse.user.itemDistance).toBe(USER_ITEM_DISTANCE);
-      expect(mappedResponse.user.blocked).toEqual(MOCK_USER.blocked);
-    });
-
-    it('should return an empty array if no data', () => {
-      spyOn(http, 'get').and.returnValues(Observable.of(EMPTY_RESPONSE));
-      let conversations: Conversation[];
-      connectionService.isConnected = true;
-
-      service.query().subscribe((res: Conversation[]) => {
-        conversations = res;
-      });
-
-      expect(conversations instanceof Array).toBe(true);
-      expect(conversations.length).toBe(0);
     });
   });
 

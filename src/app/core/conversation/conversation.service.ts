@@ -11,7 +11,6 @@ import { Message, messageStatus, statusOrder } from '../message/message';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { MessagesData } from '../message/messages.interface';
-import { Response } from '@angular/http';
 import { NotificationService } from '../notification/notification.service';
 import { LeadService } from './lead.service';
 import { ConversationResponse } from './conversation-response.interface';
@@ -43,14 +42,10 @@ export class ConversationService extends LeadService {
 
   protected API_URL = 'api/v3/protool/conversations';
   protected ARCHIVE_URL = 'api/v3/conversations';
-  private PHONE_MESSAGE = 'Mi número de teléfono es';
-  private SURVEY_MESSAGE = 'Ya he respondido a tus preguntas';
 
   private messagesObservable: Observable<Conversation[]>;
   private readSubscription: Subscription;
 
-  public pendingPagesLoaded = 0;
-  public processedPagesLoaded = 0;
   public storedPhoneNumber: string;
   private phoneRequestType;
   public ended = {
@@ -306,22 +301,6 @@ export class ConversationService extends LeadService {
     }
 
     this.trackingService.addTrackingEvent(trackingEv, false);
-  }
-
-  public get(id: string): Observable<Conversation> {
-    return this.http.get(`${this.API_URL}/${id}`)
-    .flatMap((res: Response) => {
-      let conversation: ConversationResponse = res.json();
-      return Observable.forkJoin(
-        this.itemService.get(conversation.item_id),
-        this.userService.get(conversation.other_user_id)
-      ).map((data: any[]) => {
-        conversation.user = data[1];
-        conversation = <ConversationResponse>this.setItem(conversation, data[0]);
-        return conversation;
-      });
-    })
-    .map((data: ConversationResponse) => this.mapRecordData(data));
   }
 
   public sendRead(conversation: Conversation) {
