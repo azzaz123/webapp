@@ -1,16 +1,15 @@
-import { find, remove, reverse, sortBy } from 'lodash-es';
+import { remove } from 'lodash-es';
 import { Injectable, NgZone } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpService } from '../http/http.service';
 import { Conversation } from './conversation';
 import { ConnectionService } from '../connection/connection.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { MessageService } from '../message/message.service';
-import { Message, messageStatus, statusOrder } from '../message/message';
+import { messageStatus, statusOrder } from '../message/message';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
-import { MessagesData } from '../message/messages.interface';
 import { NotificationService } from '../notification/notification.service';
 import { LeadService } from './lead.service';
 import { ConversationResponse } from './conversation-response.interface';
@@ -18,7 +17,6 @@ import { Filter } from './filter.interface';
 import { Filters } from './conversation-filters';
 import { TrackingService } from '../tracking/tracking.service';
 import { ConversationTotals } from './totals.interface';
-import { Item } from '../item/item';
 import { Subscription } from 'rxjs/Subscription';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import 'rxjs/add/observable/of';
@@ -91,28 +89,7 @@ export class ConversationService extends LeadService {
   }
 
   public getPage(page: number, archive?: boolean, filters?: Filter[], pageSize: number = this.PAGE_SIZE): Observable<Conversation[]> {
-    const init: number = (page - 1) * pageSize;
-    const end: number = init + pageSize;
-    return (archive ? this.archivedStream$ : this.stream$).asObservable()
-      .map((conversations: Conversation[]) => {
-        if (filters) {
-          return this.filter(conversations, filters);
-        }
-        conversations = this.markBlockedUsers(conversations);
-        return conversations;
-      })
-      .map((filteredConversations: Conversation[]) => {
-        return reverse(sortBy(filteredConversations, 'modifiedDate'));
-      })
-      .map((sortedConversations: Conversation[]) => {
-        return sortedConversations.slice(0, end);
-      });
-  }
-
-  private markBlockedUsers(conversations: Conversation[]): Conversation[] {
-    const blockedUsers = this.blockService.getBlockedUsers();
-    conversations.filter(conv => blockedUsers.indexOf(conv.user.id) !== -1).map(conv => conv.user.blocked = true);
-    return conversations;
+    return of([]);
   }
 
   private filter(conversations: Conversation[], filters: Filter[]): Conversation[] {
@@ -293,10 +270,6 @@ export class ConversationService extends LeadService {
     }
   }
 
-  public loadNotStoredMessages(conversations: Conversation[], archived: boolean = false) {
-    this.messageService.getNotSavedMessages(conversations, archived).subscribe();
-  }
-
   protected mapRecordData(data: ConversationResponse): Conversation {
     return new Conversation(
       data.conversation_id,
@@ -309,24 +282,5 @@ export class ConversationService extends LeadService {
       data.buyer_phone_number,
       data.survey_responses
     );
-  }
-
-  public getItemFromThread(thread: string): Item {
-    return find(this.leads, { id: thread }).item;
-  }
-
-  public getSingleConversationMessages(conversation: Conversation) {
-    return this.messageService.getMessages(conversation, true).map((res: MessagesData) => {
-      conversation.messages = res.data;
-      if (!conversation.messages.length && this.phoneRequestType) {
-        this.event.emit(EventService.REQUEST_PHONE, this.phoneRequestType);
-      }
-      conversation.unreadMessages = res.data.filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
-      this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
-        this.messageService.totalUnreadMessages + conversation.unreadMessages :
-        conversation.unreadMessages;
-      this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-      return conversation;
-    });
   }
 }
