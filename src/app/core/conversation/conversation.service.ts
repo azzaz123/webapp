@@ -14,9 +14,7 @@ import { NotificationService } from '../notification/notification.service';
 import { LeadService } from './lead.service';
 import { ConversationResponse } from './conversation-response.interface';
 import { Filter } from './filter.interface';
-import { Filters } from './conversation-filters';
 import { TrackingService } from '../tracking/tracking.service';
-import { ConversationTotals } from './totals.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import 'rxjs/add/observable/of';
@@ -94,34 +92,6 @@ export class ConversationService extends LeadService {
         bool = bool && conversation[filter.key] === filter.value;
       });
       return bool;
-    });
-  }
-
-  public getTotals(): Observable<ConversationTotals> {
-    return this.stream$.asObservable()
-    .flatMap((conversations: Conversation[]) => {
-      return this.archivedStream$.asObservable()
-      .map((archivedConversations: Conversation[]) => {
-        const phonesShared: number = conversations.filter((conversation: Conversation) => {
-          return conversation.phone !== undefined;
-        }).length;
-        const meetings: number = this.filter(conversations, Filters.MEETINGS).length;
-        const messages: number = this.filter(conversations, Filters.OTHERS).length;
-        const archivedPhonesShared: number = archivedConversations.filter((conversation: Conversation) => {
-          return conversation.phone !== undefined;
-        }).length;
-        const archivedMeetings: number = this.filter(archivedConversations, Filters.MEETINGS).length;
-        const archivedMessages: number = this.filter(archivedConversations, Filters.OTHERS).length;
-        return {
-          phonesShared: phonesShared,
-          meetings: meetings,
-          messages: messages,
-          conversations: conversations.length,
-          archivedPhonesShared: archivedPhonesShared,
-          archivedMeetings: archivedMeetings,
-          archivedMessages: archivedMessages
-        };
-      });
     });
   }
 

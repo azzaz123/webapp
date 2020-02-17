@@ -148,58 +148,6 @@ describe('Service: Conversation', () => {
     });
   });
 
-  describe('getTotals', () => {
-    it('should return totals', () => {
-      const CONVERSATIONS_WITH_PHONE: Conversation[] = createConversationsArray(4, true);
-      const CONVERSATION_WITH_MEETING: Conversation = new Conversation('id', 1, CONVERSATION_DATE, true);
-      const NORMAL_CONVERSATIONS: Conversation[] = createConversationsArray(6);
-      let result: ConversationTotals;
-      service.getTotals().subscribe((r: ConversationTotals) => {
-        result = r;
-      });
-      const CONVERSATIONS: Conversation[] = [...CONVERSATIONS_WITH_PHONE, CONVERSATION_WITH_MEETING, ...NORMAL_CONVERSATIONS];
-
-      service.stream$.next(CONVERSATIONS);
-      service.archivedStream$.next(CONVERSATIONS);
-
-      expect(result.phonesShared).toBe(CONVERSATIONS_WITH_PHONE.length);
-      expect(result.meetings).toBe(1);
-      expect(result.messages).toBe(NORMAL_CONVERSATIONS.length);
-      expect(result.conversations).toBe(CONVERSATIONS.length);
-      expect(result.archivedPhonesShared).toBe(CONVERSATIONS_WITH_PHONE.length);
-      expect(result.archivedMeetings).toBe(1);
-      expect(result.archivedMessages).toBe(NORMAL_CONVERSATIONS.length);
-    });
-
-    it('should count only as phone a conversation with phone AND meeting', () => {
-      const CONVERSATIONS_WITH_PHONE: Conversation[] = createConversationsArray(4, true);
-      const CONVERSATION_WITH_MEETING: Conversation = new Conversation('id', 1, CONVERSATION_DATE, true);
-      const CONVERSATION_WITH_MEETING_AND_PHONE: Conversation = new Conversation('id2', 2, CONVERSATION_DATE, true, undefined, undefined, [], CONVERSATION_PHONE);
-      const NORMAL_CONVERSATIONS: Conversation[] = createConversationsArray(6);
-      let result: ConversationTotals;
-      service.getTotals().subscribe((r: ConversationTotals) => {
-        result = r;
-      });
-      const CONVERSATIONS: Conversation[] = [
-        ...CONVERSATIONS_WITH_PHONE,
-        CONVERSATION_WITH_MEETING,
-        CONVERSATION_WITH_MEETING_AND_PHONE,
-        ...NORMAL_CONVERSATIONS
-      ];
-
-      service.stream$.next(CONVERSATIONS);
-      service.archivedStream$.next(CONVERSATIONS);
-
-      expect(result.phonesShared).toBe(CONVERSATIONS_WITH_PHONE.length + 1);
-      expect(result.meetings).toBe(1);
-      expect(result.messages).toBe(NORMAL_CONVERSATIONS.length);
-      expect(result.conversations).toBe(CONVERSATIONS.length);
-      expect(result.archivedPhonesShared).toBe(CONVERSATIONS_WITH_PHONE.length + 1);
-      expect(result.archivedMeetings).toBe(1);
-      expect(result.archivedMessages).toBe(NORMAL_CONVERSATIONS.length);
-    });
-  });
-
   describe('openPhonePopup', () => {
     const conversation = MOCK_CONVERSATION();
     const modalOptions = { windowClass: 'phone-request', backdrop: 'static', keyboard: false };
