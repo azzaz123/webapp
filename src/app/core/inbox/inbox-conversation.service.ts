@@ -72,8 +72,9 @@ export class InboxConversationService {
   }
 
   public processNewMessage(message: InboxMessage) {
-    const existingConversation = this.conversations.find(c => c.id === message.thread);
-    const existingArchivedConversation = this.archivedConversations.find(c => c.id === message.thread);
+    const existingConversation = this.conversations.find((conversation: InboxConversation) => conversation.id === message.thread);
+    const existingArchivedConversation = this.archivedConversations
+    .find((conversation: InboxConversation) => conversation.id === message.thread);
     if (existingConversation) {
       this.addNewMessage(existingConversation, message);
     } else if (existingArchivedConversation) {
