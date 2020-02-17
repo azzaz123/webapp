@@ -168,16 +168,6 @@ export class ConversationService extends LeadService {
     this.stream(true);
   }
 
-  public getConversationPage(id: string, archive?: boolean): number {
-    const index: number = (archive ? this.archivedLeads : this.leads).findIndex((conversation: Conversation) => {
-      return conversation.id === id;
-    });
-    if (index === -1) {
-      return -1;
-    }
-    return Math.ceil((index + 1) / this.PAGE_SIZE);
-  }
-
   public processChatSignal(signal: ChatSignal) {
     switch (signal.type) {
       case chatSignalType.SENT:
