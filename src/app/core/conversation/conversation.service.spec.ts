@@ -1144,32 +1144,6 @@ describe('Service: Conversation', () => {
     });
   });
 
-  describe('createConversation', () => {
-    it('should make a post request to the conversations endpoint', () => {
-      spyOn(http, 'post').and.returnValue(Observable.of({}));
-      const options = new RequestOptions();
-      options.headers = new Headers();
-      options.headers.append('Content-Type', 'application/json');
-
-      service.createConversation(MOCK_CONVERSATION().item.id);
-
-      expect(http.post).toHaveBeenCalledWith('api/v3/conversations', JSON.stringify({ item_id: MOCK_CONVERSATION().item.id }), options);
-    });
-
-    it('should call userService.getPhoneInfo with the other_user_id of the conversations', fakeAsync(() => {
-      const RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify(MOCK_CONVERSATION()) }));
-      spyOn(http, 'post').and.returnValue(Observable.of(RESPONSE));
-      spyOn(userService, 'get').and.returnValue(Observable.of({}));
-      spyOn(itemService, 'get').and.returnValue(Observable.of({}));
-      spyOn(userService, 'getPhoneInfo').and.returnValue(Observable.of({}));
-
-      service.createConversation(MOCK_CONVERSATION().item.id).subscribe();
-      tick();
-
-      expect(userService.getPhoneInfo).toHaveBeenCalledWith(MOCK_CONVERSATION().other_user_id);
-    }));
-  });
-
   describe('getSingleConversationMessages', () => {
     it('should call messageService.getMessages, return the conversation with messages and emit a CHAT_CAN_PROCESS_RT event with true',
       fakeAsync(() => {
@@ -1198,7 +1172,6 @@ describe('Service: Conversation', () => {
         spyOn(eventService, 'emit');
         let conversation = MOCK_CONVERSATION();
 
-        service.createConversation(MOCK_CONVERSATION().item.id).subscribe();
         service.getSingleConversationMessages(conversation).subscribe(response => conversation = response);
         tick();
 

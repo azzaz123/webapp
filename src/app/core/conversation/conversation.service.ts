@@ -1,4 +1,4 @@
-import { reverse, sortBy, remove, find, findIndex, isEmpty } from 'lodash-es';
+import { find, remove, reverse, sortBy } from 'lodash-es';
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
@@ -11,7 +11,7 @@ import { Message, messageStatus, statusOrder } from '../message/message';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { MessagesData } from '../message/messages.interface';
-import { Headers, RequestOptions, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { NotificationService } from '../notification/notification.service';
 import { LeadService } from './lead.service';
 import { ConversationResponse } from './conversation-response.interface';
@@ -390,34 +390,6 @@ export class ConversationService extends LeadService {
 
   public getItemFromThread(thread: string): Item {
     return find(this.leads, { id: thread }).item;
-  }
-
-  public createConversation(itemId: string): Observable<Conversation> {
-    const options = new RequestOptions();
-    options.headers = new Headers();
-    options.headers.append('Content-Type', 'application/json');
-    return this.http.post(`api/v3/conversations`, JSON.stringify({ item_id: itemId }), options).flatMap((r: Response) => {
-      const response: ConversationResponse = r.json();
-      return Observable.forkJoin(
-        this.userService.get(response.other_user_id),
-        this.itemService.get(itemId),
-        this.userService.getPhoneInfo(response.other_user_id)
-      ).map((data: any) => {
-        const userResponse = data[0];
-        const itemResponse = data[1];
-        const phoneMethodResponse = data[2];
-        if (phoneMethodResponse) {
-          this.phoneRequestType = phoneMethodResponse.phone_method;
-        }
-        return new Conversation(
-          response.conversation_id,
-          null,
-          response.modified_date,
-          false,
-          userResponse,
-          itemResponse);
-      });
-    });
   }
 
   public getSingleConversationMessages(conversation: Conversation) {
