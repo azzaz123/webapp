@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { User } from '../../../core/user/user';
-import { HttpService } from '../../../core/http/http.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { UserService } from '../../../core/user/user.service';
 import { environment } from '../../../../environments/environment';
 import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from '../../uploader/upload.interface';
+import { HttpUtilsService } from '../../../core/http/http-utils.service';
 
 @Component({
   selector: 'tsl-picture-upload',
@@ -18,7 +18,7 @@ export class PictureUploadComponent implements OnInit {
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
   options: NgUploaderOptions;
 
-  constructor(private http: HttpService,
+  constructor(private httpUtils: HttpUtilsService,
               private errorsService: ErrorsService,
               private userService: UserService) { }
 
@@ -57,7 +57,7 @@ export class PictureUploadComponent implements OnInit {
       url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',
-      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
+      headers: this.httpUtils.getOptions(null, url, 'POST').headers.toJSON(),
       file: this.file
     };
 

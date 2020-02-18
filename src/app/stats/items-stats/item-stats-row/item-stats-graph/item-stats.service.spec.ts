@@ -2,12 +2,12 @@ import { TestBed } from '@angular/core/testing';
 
 import { ItemStatsService } from './item-stats.service';
 import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
+import { HttpService } from '../../../../core/http/http.service';
 
 describe('ItemStatsService', () => {
 
-  let http: HttpClient;
+  let http: HttpService;
   let httpMock: HttpTestingController;
   let service: ItemStatsService;
 
@@ -20,14 +20,14 @@ describe('ItemStatsService', () => {
     });
 
     service = TestBed.get(ItemStatsService);
-    http = TestBed.get(HttpClient);
+    http = TestBed.get(HttpService);
     httpMock = TestBed.get(HttpTestingController);
   });
 
   describe('getStatistics', () => {
     it('should call endpoint', () => {
       const itemId = '123';
-      const expectedUrl = `${environment.baseUrl}api/v3/statistics/item/${itemId}`;
+      const expectedUrl = `${environment.baseUrl}${environment.baseUrl}api/v3/statistics/item/${itemId}`;
 
       service.getStatistics(itemId).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
