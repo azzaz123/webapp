@@ -32,7 +32,7 @@ export class ChatComponent implements OnInit {
               private route: ActivatedRoute,
               private conversationService: ConversationService,
               private inboxService: InboxService,
-              private inboxConversationService: InboxConversationService) {
+              public inboxConversationService: InboxConversationService) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
