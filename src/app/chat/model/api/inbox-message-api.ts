@@ -1,4 +1,4 @@
-import { MessageType } from '../inbox-message';
+import { MessagePayload, MessageType } from '../inbox-message';
 
 export class InboxMessageApi {
   id: string;
@@ -7,4 +7,5 @@ export class InboxMessageApi {
   timestamp: Date;
   status: string;
   type: MessageType;
+  payload: MessagePayload;
 }

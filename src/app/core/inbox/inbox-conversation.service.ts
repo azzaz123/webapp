@@ -6,15 +6,14 @@ import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { Message, messageStatus } from '../message/message';
 import { Observable, of } from 'rxjs';
-import { HttpService } from '../http/http.service';
-import { Response } from '@angular/http';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { find, isNil, last, some, head } from 'lodash-es';
+import { find, head, isNil, some } from 'lodash-es';
 import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
+import { InboxConversationApi, InboxMessagesApi } from '../../chat/model/api';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +23,8 @@ export class InboxConversationService {
   public static readonly MESSAGES_IN_CONVERSATION = 30;
 
   private API_URL = 'bff/messaging/conversation/';
-  private ARCHIVE_URL = '/api/v3/instant-messaging/conversations/archive';
-  private UNARCHIVE_URL = '/api/v3/instant-messaging/conversations/unarchive';
-  private MORE_MESSAGES_URL = '/api/v3/instant-messaging/archive/conversation/CONVERSATION_HASH/messages';
+  private ARCHIVE_URL = 'api/v3/instant-messaging/conversations/archive';
+  private UNARCHIVE_URL = 'api/v3/instant-messaging/conversations/unarchive';
 
   private _selfId: string;
 
@@ -34,7 +32,6 @@ export class InboxConversationService {
   public archivedConversations: InboxConversation[];
 
   constructor(
-    private http: HttpService,
     private httpClient: HttpClient,
     private realTime: RealTimeService,
     private messageService: MessageService,
@@ -204,8 +201,8 @@ export class InboxConversationService {
   }
 
   private getConversation(id: String): Observable<InboxConversation> {
-    return this.http.get(this.API_URL + id)
-    .map((res: Response) => InboxConversation.fromJSON(res.json(), this._selfId));
+    return this.httpClient.get<InboxConversationApi>(`${environment.baseUrl}${this.API_URL}${id}`)
+    .map((conversationResponse: InboxConversationApi) => InboxConversation.fromJSON(conversationResponse, this._selfId));
   }
 
   public containsConversation(conversation: InboxConversation): boolean {
@@ -247,13 +244,13 @@ export class InboxConversationService {
   }
 
   private archiveConversation(conversationId: string): Observable<any> {
-    return this.http.put(this.ARCHIVE_URL, {
+    return this.httpClient.put<any>(`${environment.baseUrl}${this.ARCHIVE_URL}`, {
       conversation_ids: [conversationId]
     });
   }
 
   private unarchiveConversation(conversationId: string): Observable<any> {
-    return this.http.put(this.UNARCHIVE_URL, {
+    return this.httpClient.put<any>(`${environment.baseUrl}${this.UNARCHIVE_URL}`, {
       conversation_ids: [conversationId]
     });
   }
@@ -274,21 +271,21 @@ export class InboxConversationService {
 
   private loadMoreMessagesFor$(conversation: InboxConversation): Observable<InboxConversation> {
     return this.getMoreMessages$(conversation.id, conversation.nextPageToken).delay(1000)
-    .map((res) => {
-      const json = res.json();
-      const newmessages = InboxMessage.messsagesFromJson(json.messages, conversation.id, this.selfId, conversation.user.id);
-      newmessages.forEach((mess) => conversation.messages.push(mess));
-      conversation.nextPageToken = json.next_from;
+    .map((messagesResponse: InboxMessagesApi) => {
+      const inboxMessages = InboxMessage.messsagesFromJson(messagesResponse.messages, conversation.id, this.selfId, conversation.user.id);
+      inboxMessages.forEach((mess) => conversation.messages.push(mess));
+      conversation.nextPageToken = messagesResponse.next_from;
       return conversation;
     });
   }
 
-  private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<any> {
-    const url = this.MORE_MESSAGES_URL.replace('CONVERSATION_HASH', conversationId);
-    return this.http.get(url,
-      {
-        max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION,
-        from: nextPageToken
+  private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<InboxMessagesApi> {
+    return this.httpClient.get<InboxMessagesApi>(
+      `${environment.baseUrl}api/v3/instant-messaging/archive/conversation/${conversationId}/messages`, {
+        params: {
+          max_messages: InboxConversationService.MESSAGES_IN_CONVERSATION.toString(),
+          from: nextPageToken
+        }
       });
   }
 
