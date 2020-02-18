@@ -155,6 +155,17 @@ export class RealTimeService {
       value: conversation.item.salePrice,
       currency: conversation.item.currencyCode,
     });
+
+    pintrk('track', 'checkout', {
+      value: conversation.item.salePrice,
+      currency: conversation.item.currencyCode,
+      line_items: [
+        {
+          product_category: conversation.item.categoryId,
+          product_id: conversation.item.id,
+        }
+      ]
+    });
   }
 
   private trackSendFirstMessage(conversation: Conversation | InboxConversation) {

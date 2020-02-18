@@ -309,6 +309,26 @@ describe('RealTimeService', () => {
       expect(window['fbq']).toHaveBeenCalledWith('track', 'InitiateCheckout', event);
     });
 
+    it('should call pinterest checkout tracking with data', () => {
+      spyOn(window, 'pintrk');
+      const newConversation = MOCK_CONVERSATION('newId');
+      newConversation.messages.push(MOCK_MESSAGE);
+      const event = {
+        value: newConversation.item.salePrice,
+        currency: newConversation.item.currencyCode,
+        line_items: [
+          {
+            product_category: newConversation.item.categoryId,
+            product_id: newConversation.item.id,
+          }
+        ]
+      }
+
+      eventService.emit(EventService.MESSAGE_SENT, newConversation, MOCK_MESSAGE.id);
+
+      expect(window['pintrk']).toHaveBeenCalledWith('track', 'checkout', event);
+    });
+
     it('should add MessageSent event in the pendingTrackingEvents queue when the MESSAGE_SENT event is triggered', () => {
       spyOn(trackingService, 'addTrackingEvent');
       const conv = MOCK_CONVERSATION('newId');
