@@ -15,8 +15,6 @@ import { InboxMessage, MessageStatus, MessageType } from '../../chat/model/inbox
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { Response, ResponseOptions } from '@angular/http';
 import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs';
 import { ItemService } from '../item/item.service';
@@ -47,7 +45,6 @@ describe('InboxConversationService', () => {
       ],
       providers: [
         InboxConversationService,
-        ...TEST_HTTP_PROVIDERS,
         EventService,
         { provide: RealTimeService, useClass: RealTimeServiceMock },
         {
