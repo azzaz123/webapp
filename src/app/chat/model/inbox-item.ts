@@ -24,7 +24,7 @@ export class InboxItem {
         private _itemUrl: string,
         private _status: string,
         private _isMine: boolean,
-        private _category: number,
+        public categoryId: number,
     ) {
         this.mapStatusToFlags(this.status);
     }
@@ -35,7 +35,6 @@ export class InboxItem {
     public notAvailable = false;
     public views: number;
     public favorites: number;
-    public categoryId: number;
 
     private mapStatusToFlags(status: string) {
         switch (status) {

@@ -8,5 +8,5 @@ export class InboxItemApi {
   price: InboxPriceApi;
   slug: string;
   is_mine: boolean;
-  categoryId: number;
+  category_id: number;
 }
