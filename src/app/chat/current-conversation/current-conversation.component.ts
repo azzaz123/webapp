@@ -200,6 +200,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.modalService.open(BlockUserComponent).result.then(() => {
       this.blockUserService.blockUser(this.currentConversation.user.id).subscribe(() => {
         this.blockUserXmppService.blockUser(this.currentConversation.user).subscribe(() => {
+          this.scrollToLastMessage();
           this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
         });
       }, () => {
