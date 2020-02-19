@@ -104,6 +104,7 @@ export class RealTimeService {
 
   private subscribeEventMessageSent() {
     this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: Conversation, messageId: string) => {
+      console.log('conversation', conversation);
       if (this.isFirstMessage(conversation)) {
         this.trackConversationCreated(conversation, messageId);
         this.trackSendFirstMessage(conversation);
