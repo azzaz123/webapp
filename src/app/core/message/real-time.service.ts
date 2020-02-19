@@ -103,8 +103,8 @@ export class RealTimeService {
   }
 
   private subscribeEventMessageSent() {
-    this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: Conversation, messageId: string) => {
-      console.log('conversation', conversation);
+    this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: InboxConversation , messageId: string) => {
+
       if (this.isFirstMessage(conversation)) {
         this.trackConversationCreated(conversation, messageId);
         this.trackSendFirstMessage(conversation);
@@ -124,7 +124,7 @@ export class RealTimeService {
     });
   }
 
-  private isFirstMessage(conversation: Conversation): boolean {
+  private isFirstMessage(conversation: InboxConversation): boolean {
     const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
     if (conversation.messages.length === 1 || (phoneRequestMsg && conversation.messages.length === 2)) {
       return true;
@@ -142,7 +142,7 @@ export class RealTimeService {
     }, false);
   }
 
-  private trackConversationCreated(conversation: Conversation, messageId: string) {
+  private trackConversationCreated(conversation: InboxConversation, messageId: string) {
     this.trackingService.addTrackingEvent({
       eventData: TrackingService.CONVERSATION_CREATE_NEW,
       attributes: {
@@ -153,13 +153,13 @@ export class RealTimeService {
     }, false);
 
     fbq('track', 'InitiateCheckout', {
-      value: conversation.item.salePrice,
-      currency: conversation.item.currencyCode,
+      value: conversation.item.price.amount,
+      currency: conversation.item.price.currency,
     });
 
     pintrk('track', 'checkout', {
-      value: conversation.item.salePrice,
-      currency: conversation.item.currencyCode,
+      value: conversation.item.price.amount,
+      currency: conversation.item.price.currency,
       line_items: [
         {
           product_category: conversation.item.categoryId,

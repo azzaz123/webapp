@@ -138,7 +138,7 @@ export class InboxConversation {
             return InboxItemPlaceholder;
         }
         const itemUrl = `${environment.siteUrl}item/${item.slug}`;
-        return new InboxItem(item.hash, item.price, item.title, image, itemUrl, item.status, item.is_mine);
+        return new InboxItem(item.hash, item.price, item.title, image, itemUrl, item.status, item.is_mine, item.categoryId);
     }
 
     private static buildInboxMessages(conversation, id) {
