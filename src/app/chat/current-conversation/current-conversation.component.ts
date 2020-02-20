@@ -277,6 +277,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       this.sendReadForLastInboxMessage();
       this.isEndOfConversation = true;
     }
+    const lastNotification = document.querySelector('.date-marker');
+    if (lastNotification) {
+      lastMessage.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   public navigationBack(): void {
