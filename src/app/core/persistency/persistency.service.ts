@@ -213,14 +213,6 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get('phone')).catch(() => Observable.of({}));
   }
 
-  public updateMessageDate(message: Message) {
-    return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
-        doc.date = message.date.toISOString();
-        return doc;
-      })
-    );
-  }
-
   public markPhoneRequestAnswered(message: Message) {
     return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
       doc.phoneRequest = phoneRequestState.answered;

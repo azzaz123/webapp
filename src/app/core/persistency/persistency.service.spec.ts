@@ -306,22 +306,6 @@ describe('Service: Persistency', () => {
     });
   });
 
-  describe('updateMessageDate', () => {
-    beforeEach(fakeAsync(() => {
-      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
-      tick();
-    }));
-
-    it('should update the date of an existing message', fakeAsync(() => {
-      service.updateMessageDate(MOCK_MESSAGE).subscribe();
-      tick();
-
-      expect((service as any).upsert).toHaveBeenCalled();
-      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
-      expect((service as any).upsert.calls.allArgs()[0][1]).toBe(MOCK_MESSAGE.id);
-    }));
-  });
-
   describe('getMetaInformation', () => {
     it('should return the meta information from the database', () => {
       spyOn(service.messagesDb, 'get').and.returnValue(Promise.resolve({}));

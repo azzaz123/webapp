@@ -1320,17 +1320,6 @@ describe('Service: Conversation', () => {
       expect(service.leads[0].messages[0].date).toBe(MESSAGE_MAIN_UPDATED.date);
     });
 
-    it('should not save the message if there is no text, no update date && messageToUpdate', () => {
-      spyOn(persistencyService, 'updateMessageDate');
-      service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
-
-      service.handleNewMessages(new Message(MESSAGE_MAIN.id, MESSAGE_MAIN.thread, null, MESSAGE_MAIN.from,
-        MESSAGE_MAIN_UPDATED.date), true);
-
-      expect(service.leads[0].messages.length).toBe(0);
-      expect(persistencyService.updateMessageDate).not.toHaveBeenCalled();
-    });
-
     describe('conversation is archived', () => {
       const mockedConversation = MOCK_CONVERSATION();
 

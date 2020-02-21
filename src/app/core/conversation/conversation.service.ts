@@ -500,7 +500,6 @@ export class ConversationService extends LeadService {
     const messageToUpdate: Message = conversation ? conversation.messages.find((m: Message) => m.id === message.id) : null;
     if (updateDate && messageToUpdate) {
       messageToUpdate.date = message.date;
-      this.persistencyService.updateMessageDate(message);
     } else if (message.message) {
       if (!message.fromSelf) {
         message.status = messageStatus.RECEIVED;
