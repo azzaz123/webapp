@@ -402,16 +402,6 @@ describe('Service: Persistency', () => {
     });
   });
 
-  describe('findMessage', () => {
-    it('should return the message if found in the database', () => {
-      spyOn(service.messagesDb, 'get').and.returnValue(Promise.resolve({}));
-
-      service.findMessage('someId');
-
-      expect(service.messagesDb.get).toHaveBeenCalledWith('someId');
-    });
-  });
-
   describe('resetCache', () => {
     it('should set the storedMessages to null', () => {
       service['storedMessages'] = MOCK_DB_FILTERED_RESPONSE[0];

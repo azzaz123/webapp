@@ -221,10 +221,6 @@ export class PersistencyService {
     );
   }
 
-  public findMessage(messageId: string): Observable<any> {
-    return Observable.fromPromise(this.messagesDb.get(messageId));
-  }
-
   public markPhoneRequestAnswered(message: Message) {
     return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
       doc.phoneRequest = phoneRequestState.answered;
