@@ -41,10 +41,6 @@ export class DebugService {
       this.persistencyService.messagesDb = new PouchDB('messages');
       console.log('Messages deleted!');
     });
-    new PouchDB('conversations').destroy().then(() => {
-      this.persistencyService.conversationsDb = new PouchDB('conversations');
-      console.log('Conversations deleted!');
-    });
   }
 
   private debugXMPP() {

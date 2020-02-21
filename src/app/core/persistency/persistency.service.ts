@@ -27,7 +27,6 @@ import { InboxMessage, statusOrder } from '../../chat/model/inbox-message';
 @Injectable()
 export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
-  private _conversationsDb: Database<any>;
   private _inboxDb: Database<StoredInboxConversation>;
   private _archivedInboxDb: Database<StoredInboxConversation>;
   private clickstreamDb: any;
@@ -227,10 +226,6 @@ export class PersistencyService {
     };
   }
 
-  set conversationsDb(value: PouchDB.Database<any>) {
-    this._conversationsDb = value;
-  }
-
   get messagesDb(): PouchDB.Database<any> {
     return this._messagesDb;
   }
@@ -241,10 +236,6 @@ export class PersistencyService {
 
   get archivedInboxDb(): PouchDB.Database<StoredInboxConversation> {
     return this._archivedInboxDb;
-  }
-
-  get conversationsDb(): PouchDB.Database<any> {
-    return this._conversationsDb;
   }
 
   private destroyDbs(...dbs: Array<Database>) {
