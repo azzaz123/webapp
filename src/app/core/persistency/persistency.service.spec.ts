@@ -447,21 +447,6 @@ describe('Service: Persistency', () => {
     });
   });
 
-  describe('updateInboxMessageStatus', () => {
-    it('should upsert the message status', fakeAsync(() => {
-      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
-      const mockMsg = MOCK_INBOX_CONVERSATION.messages.messages[0];
-      tick();
-
-      service.updateInboxMessageStatus(mockMsg, MessageStatus.READ).subscribe();
-      tick();
-
-      expect((service as any).upsert).toHaveBeenCalled();
-      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
-      expect((service as any).upsert.calls.allArgs()[0][1]).toBe(mockMsg.id);
-    }));
-  });
-
   describe('markPhoneRequestAnswered', () => {
     beforeEach(fakeAsync(() => {
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));

@@ -273,22 +273,6 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get(messageId));
   }
 
-  public updateMessageStatus(message: Message, newStatus: string) {
-    return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
-      if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
-        this.saveMessages(message);
-      }
-    }));
-  }
-
-  public updateInboxMessageStatus(message: InboxMessage, newStatus: string) {
-    return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
-      if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
-        this.saveInboxMessages(message);
-      }
-    }));
-  }
-
   public markPhoneRequestAnswered(message: Message) {
     return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
       doc.phoneRequest = phoneRequestState.answered;

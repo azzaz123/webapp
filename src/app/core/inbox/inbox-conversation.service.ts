@@ -156,7 +156,6 @@ export class InboxConversationService {
         new Date(message.date).getTime() <= timestamp : !message.fromSelf));
       unreadMessages.map((message) => {
         message.status = MessageStatus.READ;
-        this.persistencyService.updateInboxMessageStatus(message, MessageStatus.READ);
       });
       if (!markMessagesFromSelf) {
         this.messageService.totalUnreadMessages -= conversation.unreadCounter;
@@ -177,7 +176,6 @@ export class InboxConversationService {
 
     if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status) || message.status === null) {
       message.status = newStatus;
-      this.persistencyService.updateInboxMessageStatus(message, newStatus);
     }
   }
 
