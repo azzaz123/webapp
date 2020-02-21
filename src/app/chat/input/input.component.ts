@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { Conversation } from '../../core/conversation/conversation';
+import {  } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
@@ -19,7 +19,7 @@ import { RemoteConsoleService } from '../../core/remote-console';
 })
 export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
-  @Input() currentConversation: Conversation | InboxConversation;
+  @Input() currentConversation: InboxConversation;
   @ViewChild('messageTextarea') messageArea: ElementRef;
 
   public message: string;
@@ -76,8 +76,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
         this.message = '';
       }
     }
-    this.isUserBlocked = this.currentConversation instanceof Conversation ? this.currentConversation.user.blocked
-      : this.currentConversation.cannotChat;
+    this.isUserBlocked = this.currentConversation.cannotChat;
   }
 
   ngAfterViewInit(): void {

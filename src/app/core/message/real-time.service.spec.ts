@@ -8,7 +8,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { of, throwError } from 'rxjs';
-import { Message, phoneRequestState } from './message';
+import { Message, messageStatus, phoneRequestState } from './message';
 import { ACCESS_TOKEN, MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID, MOCK_CONVERSATION, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
@@ -25,6 +25,8 @@ import {
   SendFirstMessage
 } from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
+import { CREATE_MOCK_INBOX_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE } from '../../../tests/inbox.fixtures.spec';
+import { InboxConversation, InboxMessage, MessageType } from '../../chat/model';
 
 let service: RealTimeService;
 let persistencyService: PersistencyService;
@@ -267,71 +269,77 @@ describe('RealTimeService', () => {
 
     it('should emit a CONV_WITH_PHONE_CREATED event when the MESSAGE_SENT event is triggered, if a hasPhoneRequestMessage exists', () => {
       spyOn<any>(eventService, 'emit').and.callThrough();
-      const conv = MOCKED_CONVERSATIONS[0];
-      const phoneRequestMsg = new Message('someId', conv.id, 'some text', USER_ID, new Date());
+      const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
+      const phoneRequestMsg = new InboxMessage('someId', inboxConversation.id, 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
       phoneRequestMsg.phoneRequest = phoneRequestState.pending;
-      conv.messages.push(phoneRequestMsg);
+      inboxConversation.messages.push(phoneRequestMsg);
 
-      eventService.emit(EventService.MESSAGE_SENT, conv, MOCK_MESSAGE.id);
+      eventService.emit(EventService.MESSAGE_SENT, inboxConversation, MOCK_MESSAGE.id);
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONV_WITH_PHONE_CREATED, conv, phoneRequestMsg);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONV_WITH_PHONE_CREATED, inboxConversation, phoneRequestMsg);
     });
 
     it('should call addTrackingEvent with the conversationCreateNew event when the MESSAGE_SENT event is triggered', () => {
       spyOn(trackingService, 'addTrackingEvent');
-      const newConversation = MOCK_CONVERSATION('newId');
-      newConversation.messages.push(MOCK_MESSAGE);
+      const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
+      const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
+      newConversation.messages.push(inboxMessage);
       const expectedEvent: TrackingEventData = {
         eventData: TrackingService.CONVERSATION_CREATE_NEW,
         attributes: {
           thread_id: newConversation.id,
-          message_id: MOCK_MESSAGE.id,
+          message_id: inboxMessage.id,
           item_id: newConversation.item.id
         }
       };
 
-      eventService.emit(EventService.MESSAGE_SENT, newConversation, MOCK_MESSAGE.id);
+      eventService.emit(EventService.MESSAGE_SENT, newConversation, inboxMessage.id);
 
       expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(expectedEvent, false);
     });
 
     it('should call addTrackingEvent with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
       spyOn(window, 'fbq');
-      const newConversation = MOCK_CONVERSATION('newId');
-      newConversation.messages.push(MOCK_MESSAGE);
+      const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
+      const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
+      newConversation.messages.push(inboxMessage);
+
       const event = {
-        value: newConversation.item.salePrice,
-        currency: newConversation.item.currencyCode,
+        value: newConversation.item.price.amount,
+        currency: newConversation.item.price.currency,
       };
 
-      eventService.emit(EventService.MESSAGE_SENT, newConversation, MOCK_MESSAGE.id);
+      console.log('conversation', newConversation);
+
+      eventService.emit(EventService.MESSAGE_SENT, newConversation, newConversation.id);
 
       expect(window['fbq']).toHaveBeenCalledWith('track', 'InitiateCheckout', event);
     });
 
     it('should call pinterest checkout tracking with data', () => {
       spyOn(window, 'pintrk');
-      const newConversation = MOCK_CONVERSATION('newId');
-      newConversation.messages.push(MOCK_MESSAGE);
+      const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
+      const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
+      newConversation.messages.push(inboxMessage);
       const event = {
-        value: newConversation.item.salePrice,
-        currency: newConversation.item.currencyCode,
+        value: newConversation.item.price.amount,
+        currency: newConversation.item.price.currency,
         line_items: [
           {
             product_category: newConversation.item.categoryId,
             product_id: newConversation.item.id,
           }
         ]
-      }
+      };
 
-      eventService.emit(EventService.MESSAGE_SENT, newConversation, MOCK_MESSAGE.id);
+      eventService.emit(EventService.MESSAGE_SENT, newConversation, newConversation.id);
 
       expect(window['pintrk']).toHaveBeenCalledWith('track', 'checkout', event);
     });
 
     it('should add MessageSent event in the pendingTrackingEvents queue when the MESSAGE_SENT event is triggered', () => {
       spyOn(trackingService, 'addTrackingEvent');
-      const conv = MOCK_CONVERSATION('newId');
+      const conv = CREATE_MOCK_INBOX_CONVERSATION('newId');
       const expectedEvent: TrackingEventData = {
         eventData: TrackingService.MESSAGE_SENT,
         attributes: {
@@ -347,9 +355,11 @@ describe('RealTimeService', () => {
 
     it('should call appboy.logCustomEvent if this is the first message message sent', () => {
       spyOn(appboy, 'logCustomEvent');
-      MOCKED_CONVERSATIONS[0].messages.push(MOCK_MESSAGE);
+      const inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
+      const conv = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
+      conv.messages.push(inboxMessage);
 
-      eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
+      eventService.emit(EventService.MESSAGE_SENT, conv, 'newMsgId');
 
       expect(appboy.logCustomEvent).toHaveBeenCalledWith('FirstMessage', { platform: 'web' });
     });
@@ -365,20 +375,22 @@ describe('RealTimeService', () => {
 
     describe('if it`s the first message', () => {
       it('should send the Send First Message event', () => {
+        const inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
+        const inboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
         const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
           name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
-            itemId: MOCKED_CONVERSATIONS[0].item.id,
-            sellerUserId: MOCKED_CONVERSATIONS[0].user.id,
-            conversationId: MOCKED_CONVERSATIONS[0].id,
+            itemId: inboxConversation.item.id,
+            sellerUserId: inboxConversation.user.id,
+            conversationId: inboxConversation.id,
             screenId: SCREEN_IDS.Chat
           }
         };
-        MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
+        inboxConversation.messages.push(inboxMessage);
         spyOn(analyticsService, 'trackEvent');
 
-        eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
+        eventService.emit(EventService.MESSAGE_SENT, inboxConversation, 'newMsgId');
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });

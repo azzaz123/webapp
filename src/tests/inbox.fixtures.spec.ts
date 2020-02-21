@@ -173,6 +173,16 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
     null, 0, inboxMessages[0]);
 };
 
+export const CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE: Function = (
+  id: string = CONVERSATION_ID,
+  userId: string = OTHER_USER_ID
+) => {
+  const conv = CREATE_MOCK_INBOX_CONVERSATION(id, userId);
+  conv.messages = [];
+  console.log(conv.messages);
+  return conv;
+}
+
 export const SECOND_MOCK_INBOX_CONVERSATION: InboxConversation = new InboxConversation('secondId', INBOX_CONVERSATION_DATE,
   mockInboxUser, mockInboxItem, null, mockInboxMessages, false, null, 0, mockInboxMessages[0]);
 export const MOCKED_INBOX_CONVERSATIONS: InboxConversation[] = [CREATE_MOCK_INBOX_CONVERSATION(), SECOND_MOCK_INBOX_CONVERSATION];

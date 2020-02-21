@@ -84,7 +84,7 @@ export class RealTimeService {
     });
   }
 
-  public sendMessage(conversation: Conversation | InboxConversation, body: string) {
+  public sendMessage(conversation: InboxConversation, body: string) {
     this.xmpp.sendMessage(conversation, body);
   }
 
