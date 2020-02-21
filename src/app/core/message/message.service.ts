@@ -190,7 +190,6 @@ export class MessageService {
     this.realTime.sendMessage(conversation, message);
     const phoneRequestMsg = conversation.messages.find(m => m.phoneRequest);
     phoneRequestMsg.phoneRequest = phoneRequestState.answered;
-    this.persistencyService.markPhoneRequestAnswered(phoneRequestMsg);
     this.persistencyService.setPhoneNumber(phone);
   }
 

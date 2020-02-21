@@ -213,13 +213,6 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get('phone')).catch(() => Observable.of({}));
   }
 
-  public markPhoneRequestAnswered(message: Message) {
-    return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
-      doc.phoneRequest = phoneRequestState.answered;
-      return doc;
-    }));
-  }
-
   public getMetaInformation(): Observable<StoredMetaInfoData> {
     return Observable.fromPromise(this.messagesDb.get('meta'));
   }

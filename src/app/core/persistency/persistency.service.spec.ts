@@ -316,25 +316,6 @@ describe('Service: Persistency', () => {
     });
   });
 
-  describe('markPhoneRequestAnswered', () => {
-    beforeEach(fakeAsync(() => {
-      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
-      tick();
-    }));
-
-    it('should update the status of an existing phoneRequest message', fakeAsync(() => {
-      const phoneRequestMsg = new Message(MOCK_MESSAGE.id, CONVERSATION_ID, 'some text', USER_ID, new Date());
-      phoneRequestMsg.phoneRequest = phoneRequestState.pending;
-
-      service.markPhoneRequestAnswered(phoneRequestMsg).subscribe();
-      tick();
-
-      expect((service as any).upsert).toHaveBeenCalled();
-      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
-      expect((service as any).upsert.calls.allArgs()[0][1]).toBe(MOCK_MESSAGE.id);
-    }));
-  });
-
   describe('localDbVersionUpdate', () => {
     let callbackCalled = false;
     function mockCallback() { callbackCalled = true; }
