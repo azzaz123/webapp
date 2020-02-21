@@ -190,23 +190,6 @@ export class PersistencyService {
     };
   }
 
-  public saveInboxMessages(messages: Array<InboxMessage> | InboxMessage): Observable<any> {
-    if (Array.isArray(messages)) {
-      const messagesToSave: StoredMessage[] = messages.map((message: InboxMessage) => {
-        return this.buildResponse(message);
-      });
-      return Observable.fromPromise(this.messagesDb.bulkDocs(
-        messagesToSave
-      ));
-    } else {
-      return Observable.fromPromise(
-        this.upsert(this.messagesDb, messages.id, () => {
-          return this.buildResponse(messages);
-        })
-      );
-    }
-  }
-
   public saveMessages(messages: Array<Message> | Message): Observable<any> {
     if (Array.isArray(messages)) {
       const messagesToSave: StoredMessage[] = messages.map((message: Message) => {

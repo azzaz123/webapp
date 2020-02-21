@@ -331,40 +331,6 @@ describe('Service: Persistency', () => {
     }));
   });
 
-  describe('saveInboxMessages', () => {
-    it('should save the messages with bulkDocs when an array of InboxMessages is passed', fakeAsync(() => {
-      spyOn(service.messagesDb, 'bulkDocs').and.returnValue(Promise.resolve());
-      spyOn<any>(service, 'buildResponse');
-      const messages: Array<InboxMessage> = createInboxMessagesArray(2);
-      let saveMessagePromise: any;
-
-      service.saveInboxMessages(messages).subscribe((data: any) => {
-        saveMessagePromise = data;
-      });
-      tick();
-
-      expect((service as any).buildResponse).toHaveBeenCalledTimes(2);
-      expect(service.messagesDb.bulkDocs).toHaveBeenCalledWith(
-        messages.map((message: InboxMessage) => {
-          return (service as any).buildResponse(message);
-        }));
-    }));
-
-    it('should call the upsert when a single InboxMessage is passed', fakeAsync(() => {
-      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve());
-      let saveMessagePromise: any;
-
-      service.saveMessages(MOCK_MESSAGE).subscribe((data: any) => {
-        saveMessagePromise = data;
-      });
-      tick();
-
-      expect((service as any).upsert).toHaveBeenCalled();
-      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
-      expect((service as any).upsert.calls.allArgs()[0][1]).toBe(MOCK_MESSAGE.id);
-    }));
-  });
-
   describe('saveMetaInformation', () => {
     beforeEach(fakeAsync(() => {
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));

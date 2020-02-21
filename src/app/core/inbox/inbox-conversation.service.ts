@@ -95,8 +95,6 @@ export class InboxConversationService {
       if (!message.fromSelf) {
         this.realTime.sendDeliveryReceipt(message.from, message.id, message.thread);
       }
-
-      this.persistencyService.saveInboxMessages(message);
     }
   }
 
