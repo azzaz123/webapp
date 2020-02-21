@@ -447,20 +447,6 @@ describe('Service: Persistency', () => {
     });
   });
 
-  describe('updateMessageStatus', () => {
-    it('should upsert the message status', fakeAsync(() => {
-      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
-      tick();
-
-      service.updateMessageStatus(MOCK_MESSAGE, MessageStatus.READ).subscribe();
-      tick();
-
-      expect((service as any).upsert).toHaveBeenCalled();
-      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
-      expect((service as any).upsert.calls.allArgs()[0][1]).toBe(MOCK_MESSAGE.id);
-    }));
-  });
-
   describe('updateInboxMessageStatus', () => {
     it('should upsert the message status', fakeAsync(() => {
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));

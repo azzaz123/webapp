@@ -802,7 +802,6 @@ describe('Service: Conversation', () => {
       mockedConversation = MOCK_CONVERSATION();
       mockedConversation.messages = createMessagesArray(10);
       beforeEach(() => {
-        spyOn(persistencyService, 'updateMessageStatus');
         spyOn(trackingService, 'addTrackingEvent');
         service.leads.push(mockedConversation);
         messageService.totalUnreadMessages = unreadCount;
@@ -815,99 +814,9 @@ describe('Service: Conversation', () => {
 
           expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
         });
-
-        it('should NOT call persistencyService.updateMessageStatus', () => {
-          service.processChatSignal(signal);
-
-          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
-        });
       });
 
       describe('when processing a READ chat signal NOT fromSelf', () => {
-        it(`should update status to READ and push tracking event MESSAGE_READ for messages fromSelf and status RECEIVED`, () => {
-          mockedConversation.messages.map((m, index) => {
-            m.fromSelf = index < unreadCount ? true : false;
-            m.status = messageStatus.RECEIVED;
-          });
-          expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === messageStatus.SENT || m.status === messageStatus.RECEIVED));
-          expectedNotMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
-
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-          service.processChatSignal(signal);
-
-          const attributes = {
-            thread_id: mockedConversation.id,
-            message_id: null
-          };
-
-          expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(unreadCount);
-          expectedMarkedAsRead.forEach(m => {
-            attributes.message_id = m.id;
-            expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({
-              eventData: TrackingService.MESSAGE_READ,
-              attributes: attributes
-            }, false);
-            expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
-          });
-
-          expectedNotMarkedAsRead.forEach(m => {
-            attributes.message_id = m.id;
-            expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({
-              eventData: TrackingService.MESSAGE_READ,
-              attributes: attributes
-            }, false);
-            expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
-          });
-        });
-
-        it(`should update status to READ and push tracking event MESSAGE_READ for messages fromSelf and status SENT`, () => {
-          mockedConversation.messages.map((m, index) => {
-            m.fromSelf = index < unreadCount ? true : false;
-            m.status = messageStatus.SENT;
-          });
-          expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === messageStatus.SENT || m.status === messageStatus.RECEIVED));
-          expectedNotMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
-
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-          service.processChatSignal(signal);
-
-          const attributes = {
-            thread_id: mockedConversation.id,
-            message_id: null
-          };
-
-          expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(unreadCount);
-          expectedMarkedAsRead.forEach(m => {
-            attributes.message_id = m.id;
-            expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({
-              eventData: TrackingService.MESSAGE_READ,
-              attributes: attributes
-            }, false);
-            expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
-          });
-
-          expectedNotMarkedAsRead.forEach(m => {
-            attributes.message_id = m.id;
-            expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({
-              eventData: TrackingService.MESSAGE_READ,
-              attributes: attributes
-            }, false);
-            expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
-          });
-        });
-
-        it(`should NOT update status to READ and NOT push tracking event MESSAGE_READ for messages fromSelf and status PENDING`, () => {
-          mockedConversation.messages.map((m, index) => {
-            m.fromSelf = index < unreadCount ? true : false;
-            m.status = messageStatus.PENDING;
-          });
-
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-          service.processChatSignal(signal);
-
-          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
-          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
-        });
 
         it('should NOT decrase the unreadMessages counter of the conversation', () => {
           const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
@@ -932,35 +841,6 @@ describe('Service: Conversation', () => {
           });
           expectedMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
           expectedNotMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf);
-        });
-
-        it(`should update status to READ and push tracking events MESSAGE_READ_ACK for messages NOT fromSelf`, () => {
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-          service.processChatSignal(signal);
-
-          const attributes = {
-            thread_id: mockedConversation.id,
-            message_id: null
-          };
-
-          expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(unreadCount);
-          expectedMarkedAsRead.forEach(m => {
-            attributes.message_id = m.id;
-            expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({
-              eventData: TrackingService.MESSAGE_READ_ACK,
-              attributes: attributes
-            }, false);
-            expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m, messageStatus.READ);
-          });
-
-          expectedNotMarkedAsRead.forEach(m => {
-            attributes.message_id = m.id;
-            expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({
-              eventData: TrackingService.MESSAGE_READ_ACK,
-              attributes: attributes
-            }, false);
-            expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
-          });
         });
 
         it('should decrase the unreadMessages counter of the conversation by the number of messages that are being marked as READ', () => {
@@ -1006,7 +886,6 @@ describe('Service: Conversation', () => {
     describe('when processing sent and received signals', () => {
       const mockedConversation = MOCK_CONVERSATION();
       beforeEach(() => {
-        spyOn(persistencyService, 'updateMessageStatus');
         spyOn(trackingService, 'addTrackingEvent');
         service.leads.push(mockedConversation);
       });
@@ -1020,12 +899,6 @@ describe('Service: Conversation', () => {
 
           expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
         });
-
-        it('should NOT call persistencyService.updateMessageStatus', () => {
-          service.processChatSignal(sentSignal);
-
-          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
-        });
       });
 
       describe('when called with a messageId does not match any message ID in the conversation', () => {
@@ -1036,55 +909,6 @@ describe('Service: Conversation', () => {
           service.processChatSignal(sentSignal);
 
           expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
-        });
-
-        it('should NOT call persistencyService.updateMessageStatus', () => {
-          service.processChatSignal(sentSignal);
-
-          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
-        });
-      });
-
-      it(`should update message status and add a tracking event ONLY for messages that meet the criteria:
-        message status is missing OR message status is NULL OR the new status order is greater than the current status order`, () => {
-        mockedConversation.messages = [MOCK_RANDOM_MESSAGE, MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER];
-        mockedConversation.messages[0].status = messageStatus.SENT;
-        mockedConversation.messages[1].status = null;
-        mockedConversation.messages[2].status = messageStatus.RECEIVED;
-        service.leads.push(mockedConversation);
-        const attributes = {
-          thread_id: mockedConversation.id,
-          message_id: null
-        };
-
-        const signal1 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[0].id);
-        const signal2 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[1].id);
-        const signal3 = new ChatSignal(chatSignalType.SENT, mockedConversation.id, timestamp, mockedConversation.messages[2].id);
-
-        service.processChatSignal(signal1);
-        service.processChatSignal(signal2);
-        service.processChatSignal(signal3);
-
-        const expectedChangedMessages = mockedConversation.messages.slice(0, 2);
-        const expectedNotChangedMessages = mockedConversation.messages.slice(-1);
-
-        expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(2);
-        expectedChangedMessages.forEach(m => {
-          attributes.message_id = m.id;
-          expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({
-            eventData: TrackingService.MESSAGE_RECEIVED,
-            attributes: attributes
-          }, false);
-          expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m, messageStatus.RECEIVED);
-        });
-
-        expectedNotChangedMessages.forEach(m => {
-          attributes.message_id = m.id;
-          expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({
-            eventData: TrackingService.MESSAGE_SENT,
-            attributes: attributes
-          }, false);
-          expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.SENT);
         });
       });
     });
@@ -1499,7 +1323,6 @@ describe('Service: Conversation', () => {
     it('should not save the message if there is no text, no update date && messageToUpdate', () => {
       spyOn(persistencyService, 'saveMessages');
       spyOn(persistencyService, 'updateMessageDate');
-      spyOn(persistencyService, 'updateMessageStatus');
       service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
 
       service.handleNewMessages(new Message(MESSAGE_MAIN.id, MESSAGE_MAIN.thread, null, MESSAGE_MAIN.from,
@@ -1508,7 +1331,6 @@ describe('Service: Conversation', () => {
       expect(service.leads[0].messages.length).toBe(0);
       expect(persistencyService.saveMessages).not.toHaveBeenCalled();
       expect(persistencyService.updateMessageDate).not.toHaveBeenCalled();
-      expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
     });
 
     describe('conversation is archived', () => {

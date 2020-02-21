@@ -373,16 +373,6 @@ describe('Service: Message', () => {
           expect(archiveService.updateStatuses).toHaveBeenCalledWith(newAndOldMessages, [], receivedReceipts);
         });
 
-        it('should call persistencyService.updateMessageStatus for each old and new message', () => {
-          spyOn(persistencyService, 'updateMessageStatus');
-
-          service.getNotSavedMessages(conversations, false).subscribe();
-
-          newAndOldMessages.map(msg => {
-            expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(msg, msg.status);
-          });
-        });
-
         it('should update unreadMessages counter and the totalUnreadMessages counter if the conversation is NOT archived', () => {
           conversations[0].archived = false;
           service.getNotSavedMessages(conversations, false).subscribe();

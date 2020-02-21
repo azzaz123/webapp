@@ -292,7 +292,6 @@ export class ConversationService extends LeadService {
         new Date(message.date).getTime() <= timestamp : !message.fromSelf));
       unreadMessages.map((message) => {
         message.status = messageStatus.READ;
-        this.persistencyService.updateMessageStatus(message, messageStatus.READ);
         const eventAttributes = {
           thread_id: message.thread,
           message_id: message.id
@@ -321,7 +320,6 @@ export class ConversationService extends LeadService {
 
     if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status) || message.status === null) {
       message.status = newStatus;
-      this.persistencyService.updateMessageStatus(message, newStatus);
     }
 
     const trackingEv: TrackingEventData = {
@@ -507,7 +505,6 @@ export class ConversationService extends LeadService {
       if (!message.fromSelf) {
         message.status = messageStatus.RECEIVED;
       }
-      this.persistencyService.updateMessageStatus(message, message.status);
       if (conversation) {
         this.updateConversation(message, conversation).subscribe(() => {
           message = this.messageService.addUserInfo(conversation, message);

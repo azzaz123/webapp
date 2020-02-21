@@ -128,7 +128,6 @@ export class MessageService {
           if (r.readReceipts.length || r.receivedReceipts.length) {
             let updatedMesages = [];
             updatedMesages = this.archiveService.updateStatuses(this.allMessages, r.readReceipts, r.receivedReceipts);
-            updatedMesages.map(m => this.persistencyService.updateMessageStatus(m, m.status));
 
             if (!archived) {
               this.totalUnreadMessages = 0;
