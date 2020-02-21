@@ -1321,7 +1321,6 @@ describe('Service: Conversation', () => {
     });
 
     it('should not save the message if there is no text, no update date && messageToUpdate', () => {
-      spyOn(persistencyService, 'saveMessages');
       spyOn(persistencyService, 'updateMessageDate');
       service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
 
@@ -1329,7 +1328,6 @@ describe('Service: Conversation', () => {
         MESSAGE_MAIN_UPDATED.date), true);
 
       expect(service.leads[0].messages.length).toBe(0);
-      expect(persistencyService.saveMessages).not.toHaveBeenCalled();
       expect(persistencyService.updateMessageDate).not.toHaveBeenCalled();
     });
 

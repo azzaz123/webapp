@@ -222,27 +222,6 @@ describe('Service: Message', () => {
         expect(r.data[1].status).toBe(messageStatus.READ);
       });
     });
-
-    it('should call persistencyService.saveMessages and .saveMetaInformation to save the new messages and meta in the localDb', () => {
-      spyOn(persistencyService, 'saveMessages');
-      spyOn(persistencyService, 'saveMetaInformation');
-      spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of([]));
-      spyOn(archiveService, 'getAllEvents').and.returnValue(Observable.of({
-        messages: [MESSAGE_MAIN, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE_FROM_OTHER],
-        receivedReceipts: [],
-        readReceipts: [],
-        metaDate: nanoTimestamp
-      }));
-      connectionService.isConnected = true;
-
-      service.getMessages(conversation).subscribe();
-
-      expect(persistencyService.saveMessages).toHaveBeenCalledWith([MESSAGE_MAIN, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE_FROM_OTHER]);
-      expect(persistencyService.saveMetaInformation).toHaveBeenCalledWith({
-        start: nanoTimestamp,
-        last: null
-      });
-    });
   });
 
   describe('getNotSavedMessages', () => {
@@ -331,14 +310,6 @@ describe('Service: Message', () => {
           conversations[0].messages.map(msg => {
             expect(msg.status).toBe(messageStatus.READ);
           });
-        });
-
-        it('should call persistencyService.saveMessages with the new messages from the response', () => {
-          spyOn(persistencyService, 'saveMessages');
-
-          service.getNotSavedMessages(conversations, false).subscribe();
-
-          expect(persistencyService.saveMessages).toHaveBeenCalledWith(messagesArray);
         });
       });
 
@@ -486,24 +457,6 @@ describe('Service: Message', () => {
 
     beforeEach(() => {
       conversation = MOCK_CONVERSATION();
-    });
-
-    it('should subscribe to the EventService.CONV_WITH_PHONE_CREATED event when called', () => {
-      spyOn(eventService, 'subscribe');
-
-      service.addPhoneNumberRequestMessage(conversation);
-
-      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.CONV_WITH_PHONE_CREATED);
-    });
-
-    it('should call persistencyService.saveMessage and save the request msg when a CONV_WITH_PHONE_CREATED event is triggered', () => {
-      spyOn(persistencyService, 'saveMessages');
-      service.addPhoneNumberRequestMessage(conversation);
-      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
-
-      eventService.emit(EventService.CONV_WITH_PHONE_CREATED, conversation, requestMessage);
-
-      expect(persistencyService.saveMessages).toHaveBeenCalledWith([requestMessage]);
     });
 
     it('should create a phoneRequest message with the phoneRequestState as PENDING', () => {

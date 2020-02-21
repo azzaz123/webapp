@@ -2,15 +2,8 @@
 
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PersistencyService } from './persistency.service';
-import {
-  createInboxMessagesArray,
-  createMessagesArray,
-  MESSAGE_MAIN,
-  MOCK_MESSAGE,
-  MOCK_PAYLOAD_OK
-} from '../../../tests/message.fixtures.spec';
+import { MESSAGE_MAIN, MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { Message, phoneRequestState } from '../message/message';
-import { InboxMessage, MessageStatus } from '../../chat/model/inbox-message';
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_RESPONSE,
@@ -26,7 +19,6 @@ import { EventService } from '../event/event.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
-import { MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 
 let service: PersistencyService;
 let userService: UserService;
@@ -255,79 +247,6 @@ describe('Service: Persistency', () => {
 
       expect(observableResponse).toEqual([]);
       expect(service.messagesDb.allDocs).toHaveBeenCalledWith({include_docs: true});
-    }));
-  });
-
-  describe('buildResponse', () => {
-    it('should return the object message that will be saved on the database', () => {
-      expect((service as any).buildResponse(MOCK_MESSAGE)).toEqual({
-        _id: MOCK_MESSAGE.id,
-        date: MOCK_MESSAGE.date,
-        message: MOCK_MESSAGE.message,
-        status: MOCK_MESSAGE.status,
-        from: MOCK_MESSAGE.from.split('@')[0],
-        // TODO - replace conversationId with thread with DB version update to standardizes prop. names
-        conversationId: MOCK_MESSAGE.thread,
-        payload: undefined,
-        phoneRequest: undefined
-      });
-    });
-    it('should return the object message with payload that will be saved on the database', () => {
-      const MOCK_MESSAGE: Message = new Message(
-        MESSAGE_MAIN.id,
-        MESSAGE_MAIN.thread,
-        MESSAGE_MAIN.body,
-        MESSAGE_MAIN.from,
-        MESSAGE_MAIN.date,
-        MessageStatus.READ,
-        MOCK_PAYLOAD_OK
-      );
-
-      expect((service as any).buildResponse(MOCK_MESSAGE)).toEqual({
-        _id: MOCK_MESSAGE.id,
-        date: MOCK_MESSAGE.date,
-        message: MOCK_MESSAGE.message,
-        status: MOCK_MESSAGE.status,
-        from: MOCK_MESSAGE.from.split('@')[0],
-        // TODO - replace conversationId with thread with DB version update to standardizes prop. names
-        conversationId: MOCK_MESSAGE.thread,
-        payload: MOCK_PAYLOAD_OK,
-        phoneRequest: undefined
-      });
-    });
-  });
-
-  describe('saveMessages', () => {
-    it('should save the messages with bulkDocs when an array of messages is passed', fakeAsync(() => {
-      spyOn(service.messagesDb, 'bulkDocs').and.returnValue(Promise.resolve());
-      spyOn<any>(service, 'buildResponse');
-      const messages: Array<Message> = createMessagesArray(2);
-      let saveMessagePromise: any;
-
-      service.saveMessages(messages).subscribe((data: any) => {
-        saveMessagePromise = data;
-      });
-      tick();
-
-      expect((service as any).buildResponse).toHaveBeenCalledTimes(2);
-      expect(service.messagesDb.bulkDocs).toHaveBeenCalledWith(
-        messages.map((message: Message) => {
-          return (service as any).buildResponse(message);
-        }));
-    }));
-
-    it('should call the upsert when a single message is passed', fakeAsync(() => {
-      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve());
-      let saveMessagePromise: any;
-
-      service.saveMessages(MOCK_MESSAGE).subscribe((data: any) => {
-        saveMessagePromise = data;
-      });
-      tick();
-
-      expect((service as any).upsert).toHaveBeenCalled();
-      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
-      expect((service as any).upsert.calls.allArgs()[0][1]).toBe(MOCK_MESSAGE.id);
     }));
   });
 

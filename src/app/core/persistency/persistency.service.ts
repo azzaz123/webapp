@@ -176,37 +176,6 @@ export class PersistencyService {
     }));
   }
 
-  private buildResponse(message: Message | InboxMessage): StoredMessage {
-    const text = message instanceof Message ? message.message : message.text;
-    return {
-      _id: message.id,
-      date: message.date,
-      message: text,
-      status: message.status,
-      from: message.from,
-      conversationId: message.thread,
-      payload: message.payload,
-      phoneRequest: message.phoneRequest
-    };
-  }
-
-  public saveMessages(messages: Array<Message> | Message): Observable<any> {
-    if (Array.isArray(messages)) {
-      const messagesToSave: StoredMessage[] = messages.map((message: Message) => {
-        return this.buildResponse(message);
-      });
-      return Observable.fromPromise(this.messagesDb.bulkDocs(
-        messagesToSave
-      ));
-    } else {
-      return Observable.fromPromise(
-        this.upsert(this.messagesDb, messages.id, () => {
-          return this.buildResponse(messages);
-        })
-      );
-    }
-  }
-
   private subscribeEventNewMessage() {
     this.eventService.subscribe(EventService.CHAT_LAST_RECEIVED_TS, (timestamp: number) => {
       this.saveMetaInformation({

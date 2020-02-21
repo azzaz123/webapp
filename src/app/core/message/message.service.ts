@@ -92,7 +92,6 @@ export class MessageService {
     if (archived) {
       r.messages.filter(m => !m.fromSelf).map(m => m.status = messageStatus.READ);
     }
-    this.persistencyService.saveMessages(r.messages);
     return r;
   }
 
@@ -170,11 +169,6 @@ export class MessageService {
   }
 
   public addPhoneNumberRequestMessage(conversation, withTracking = true): Conversation {
-    this.eventService.subscribe(EventService.CONV_WITH_PHONE_CREATED, (conv: Conversation, message: Message) => {
-      if (conversation.id === conv.id) {
-        this.persistencyService.saveMessages([message]);
-      }
-    });
     let msg = new Message(UUID.UUID(),
       conversation.id,
       this.i18n.getTranslations('phoneRequestMessage'),
