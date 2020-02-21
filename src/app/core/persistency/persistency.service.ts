@@ -86,10 +86,6 @@ export class PersistencyService {
     this._inboxDb = value;
   }
 
-  set archivedInboxDb(value: PouchDB.Database<StoredInboxConversation>) {
-    this._archivedInboxDb = value;
-  }
-
   public initInboxDb(userId: string) {
     this.inboxDb = new PouchDB('inbox-' + userId, { auto_compaction: true });
   }
@@ -111,13 +107,6 @@ export class PersistencyService {
     );
   }
 
-  public saveInboxConversation(inboxConversation: InboxConversation): Observable<any> {
-    const conversation = new StoredInboxConversation(inboxConversation.id, inboxConversation.modifiedDate || new Date(),
-      inboxConversation.user, inboxConversation.item, inboxConversation.phoneShared, inboxConversation.phoneNumber,
-      inboxConversation.unreadCounter, inboxConversation.nextPageToken, inboxConversation.lastMessage);
-    return Observable.fromPromise(this.inboxDb.put(conversation));
-  }
-
   private updateStoredArchivedInbox(conversations: InboxConversation[]): Observable<any> {
     return Observable.fromPromise(
       this.inboxDb.destroy().then(() => {
@@ -135,12 +124,6 @@ export class PersistencyService {
     return Observable.fromPromise((this.inboxDb.allDocs({ include_docs: true })).then((data) => {
       return this.mapToInboxConversation(data);
     }));
-  }
-
-  public getArchivedStoredInbox(): Observable<InboxConversation[]> {
-    return this.archivedInboxDb ? Observable.fromPromise((this.archivedInboxDb.allDocs({ include_docs: true })).then((data) => {
-      return this.mapToInboxConversation(data);
-    })) : Observable.of([]);
   }
 
   private mapToInboxConversation(data): InboxConversation[] {
