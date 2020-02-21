@@ -11,7 +11,7 @@ import { User } from '../user/user';
 import { EventService } from '../event/event.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TrackingEvent } from '../tracking/tracking-event';
-import { InboxConversation, StoredInboxConversation } from '../../chat/model/inbox-conversation';
+import { StoredInboxConversation } from '../../chat/model/inbox-conversation';
 import { InboxMessage, statusOrder } from '../../chat/model/inbox-message';
 import Database = PouchDB.Database;
 import AllDocsResponse = PouchDB.Core.AllDocsResponse;
@@ -21,7 +21,6 @@ import Document = PouchDB.Core.Document;
 export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
   private _inboxDb: Database<StoredInboxConversation>;
-  private _archivedInboxDb: Database<StoredInboxConversation>;
   private clickstreamDb: any;
   private storedMessages: AllDocsResponse<StoredMessage>;
   private latestVersion = 2.0;
@@ -52,23 +51,7 @@ export class PersistencyService {
         });
       });
     });
-    this.subscribeEventInboxLoaded();
-    this.subscribeEventArchivedInboxLoaded();
     this.subscribeEventNewMessage();
-  }
-
-  private subscribeEventInboxLoaded() {
-    this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[], loadMoreConversations: boolean) => {
-      this.updateStoredInbox(conversations);
-      conversations.map(conv => this.saveInboxMessages(conv.messages));
-    });
-  }
-
-  private subscribeEventArchivedInboxLoaded() {
-    this.eventService.subscribe(EventService.ARCHIVED_INBOX_LOADED, (conversations: InboxConversation[]) => {
-      this.updateStoredArchivedInbox(conversations);
-      conversations.map(conv => this.saveInboxMessages(conv.messages));
-    });
   }
 
   set messagesDb(value: PouchDB.Database<any>) {
@@ -85,32 +68,6 @@ export class PersistencyService {
 
   public initArchivedInboxDb(userId: string) {
     this.inboxDb = new PouchDB('archivedInbox-' + userId, { auto_compaction: true });
-  }
-
-  private updateStoredInbox(conversations: InboxConversation[]): Observable<any> {
-    return Observable.fromPromise(
-      this.inboxDb.destroy().then(() => {
-        this.inboxDb = new PouchDB('inbox-' + this.userId, { auto_compaction: true });
-        const inboxToSave = conversations.map((conversation: InboxConversation) =>
-          new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
-            conversation.phoneShared, conversation.phoneNumber, conversation.unreadCounter, conversation.nextPageToken,
-            conversation.lastMessage));
-        return Observable.fromPromise(this.inboxDb.bulkDocs(inboxToSave));
-      })
-    );
-  }
-
-  private updateStoredArchivedInbox(conversations: InboxConversation[]): Observable<any> {
-    return Observable.fromPromise(
-      this.inboxDb.destroy().then(() => {
-        this.inboxDb = new PouchDB('archivedInbox-' + this.userId, { auto_compaction: true });
-        const inboxToSave = conversations.map((conversation: InboxConversation) =>
-          new StoredInboxConversation(conversation.id, conversation.modifiedDate, conversation.user, conversation.item,
-            conversation.phoneShared, conversation.phoneNumber, conversation.unreadCounter, conversation.nextPageToken,
-            conversation.lastMessage));
-        return Observable.fromPromise(this.inboxDb.bulkDocs(inboxToSave));
-      })
-    );
   }
 
   private initClickstreamDb(dbName: string, version?: number) {
@@ -182,10 +139,6 @@ export class PersistencyService {
 
   get messagesDb(): PouchDB.Database<any> {
     return this._messagesDb;
-  }
-
-  get inboxDb(): PouchDB.Database<StoredInboxConversation> {
-    return this._inboxDb;
   }
 
   private destroyDbs(...dbs: Array<Database>) {
