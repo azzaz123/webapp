@@ -589,20 +589,5 @@ describe('Service: Persistency', () => {
       expect(service['storedMessages']).toBe(null);
     });
   });
-
-  describe('getStoredInbox', () => {
-    it('should fetch all documents from the inboxDb and return them as an array of InboxConversations', fakeAsync(() => {
-      spyOn(service.inboxDb, 'allDocs').and.returnValue(Promise.resolve(MOCK_INBOX_DB_RESPONSE));
-      let convs: any;
-
-      service.getStoredInbox().subscribe((data: any) => convs = data);
-      tick();
-
-      expect(service.inboxDb.allDocs).toHaveBeenCalledWith({include_docs: true});
-      convs.map(conv => {
-        expect(conv instanceof InboxConversation);
-      });
-    }));
-  });
 });
 

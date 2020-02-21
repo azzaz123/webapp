@@ -142,7 +142,6 @@ describe('InboxService', () => {
     beforeEach(() => {
       spyOn<any>(inboxService, 'getInbox$').and.returnValue(throwError(''));
       spyOn<any>(inboxService, 'getArchivedInbox$').and.returnValue(of([]));
-      spyOn(persistencyService, 'getStoredInbox').and.returnValue((createInboxConversationsArray(2)));
     });
 
     it('should set errorRetrievingInbox to true', () => {
