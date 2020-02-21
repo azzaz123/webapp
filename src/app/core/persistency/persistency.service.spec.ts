@@ -280,16 +280,6 @@ describe('Service: Persistency', () => {
     }));
   });
 
-  describe('getPhoneNumber', () => {
-    it('should return the phone number from the database', () => {
-      spyOn(service.messagesDb, 'get').and.returnValue('test');
-
-      service.getPhoneNumber();
-
-      expect(service.messagesDb.get).toHaveBeenCalledWith('phone');
-    });
-  });
-
   describe('getMetaInformation', () => {
     it('should return the meta information from the database', () => {
       spyOn(service.messagesDb, 'get').and.returnValue(Promise.resolve({}));
