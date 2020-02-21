@@ -309,8 +309,6 @@ describe('RealTimeService', () => {
         currency: newConversation.item.price.currency,
       };
 
-      console.log('conversation', newConversation);
-
       eventService.emit(EventService.MESSAGE_SENT, newConversation, newConversation.id);
 
       expect(window['fbq']).toHaveBeenCalledWith('track', 'InitiateCheckout', event);

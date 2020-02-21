@@ -179,7 +179,6 @@ export const CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE: Function = (
 ) => {
   const conv = CREATE_MOCK_INBOX_CONVERSATION(id, userId);
   conv.messages = [];
-  console.log(conv.messages);
   return conv;
 }
 
