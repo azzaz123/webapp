@@ -280,22 +280,6 @@ describe('Service: Persistency', () => {
     }));
   });
 
-  describe('setPhoneNumber', () => {
-    beforeEach(fakeAsync(() => {
-      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
-      tick();
-    }));
-
-    it('should upsert the phone number information', fakeAsync(() => {
-      service.setPhoneNumber('+34912345678').subscribe();
-      tick();
-
-      expect((service as any).upsert).toHaveBeenCalled();
-      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
-      expect((service as any).upsert.calls.allArgs()[0][1]).toBe('phone');
-    }));
-  });
-
   describe('getPhoneNumber', () => {
     it('should return the phone number from the database', () => {
       spyOn(service.messagesDb, 'get').and.returnValue('test');

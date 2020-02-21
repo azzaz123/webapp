@@ -526,14 +526,6 @@ describe('Service: Message', () => {
 
       expect(requestMessage.phoneRequest).toBe(phoneRequestState.answered);
     });
-
-    it('should call persistencyService.setPhoneNumber with the phone numbered entered', () => {
-      spyOn(persistencyService, 'setPhoneNumber');
-
-      service.createPhoneNumberMessage(conversation, phone);
-
-      expect(persistencyService.setPhoneNumber).toHaveBeenCalledWith(phone);
-    });
   });
 
   describe('resetCache', () => {
