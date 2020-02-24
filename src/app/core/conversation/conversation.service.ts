@@ -221,21 +221,6 @@ export class ConversationService extends LeadService {
     }
   }
 
-  private handleUnreadMessage(conversation: Conversation) {
-    this.zone.run(() => {
-      conversation.unreadMessages++;
-      this.messageService.totalUnreadMessages++;
-    });
-  }
-
-  private loadMessages(conversations: Conversation[]): Observable<Conversation[]> {
-    return of(conversations);
-  }
-
-  public loadNotStoredMessages(conversations: Conversation[], archived: boolean = false) {
-    this.messageService.getNotSavedMessages(conversations, archived).subscribe();
-  }
-
   protected mapRecordData(data: ConversationResponse): Conversation {
     return new Conversation(
       data.conversation_id,
@@ -248,58 +233,5 @@ export class ConversationService extends LeadService {
       data.buyer_phone_number,
       data.survey_responses
     );
-  }
-
-  public getItemFromThread(thread: string): Item {
-    return find(this.leads, { id: thread }).item;
-  }
-
-  public getByItemId(itemId): Observable<NewConversationResponse> {
-    return this.http.get(`api/v3/items/${itemId}/conversation`).map((r: Response) => {
-      return r.json();
-    });
-  }
-
-  public createConversation(itemId: string): Observable<Conversation> {
-    const options = new RequestOptions();
-    options.headers = new Headers();
-    options.headers.append('Content-Type', 'application/json');
-    return this.http.post(`api/v3/conversations`, JSON.stringify({ item_id: itemId }), options).flatMap((r: Response) => {
-      const response: ConversationResponse = r.json();
-      return Observable.forkJoin(
-        this.userService.get(response.other_user_id),
-        this.itemService.get(itemId),
-        this.userService.getPhoneInfo(response.other_user_id)
-      ).map((data: any) => {
-        const userResponse = data[0];
-        const itemResponse = data[1];
-        const phoneMethodResponse = data[2];
-        if (phoneMethodResponse) {
-          this.phoneRequestType = phoneMethodResponse.phone_method;
-        }
-        return new Conversation(
-          response.conversation_id,
-          null,
-          response.modified_date,
-          false,
-          userResponse,
-          itemResponse);
-      });
-    });
-  }
-
-  public getSingleConversationMessages(conversation: Conversation) {
-    return this.messageService.getMessages(conversation, true).map((res: MessagesData) => {
-      conversation.messages = res.data;
-      if (!conversation.messages.length && this.phoneRequestType) {
-        this.event.emit(EventService.REQUEST_PHONE, this.phoneRequestType);
-      }
-      conversation.unreadMessages = res.data.filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
-      this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
-        this.messageService.totalUnreadMessages + conversation.unreadMessages :
-        conversation.unreadMessages;
-      this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-      return conversation;
-    });
   }
 }
