@@ -8,15 +8,17 @@ import { environment } from '../../../../environments/environment';
 })
 export class BlockUserService {
 
+  private readonly BLOCK_USER_ENDPOINT = `api/v3/instant-messaging/privacy/user`;
+
   constructor(private httpClient: HttpClient) {
   }
 
   public blockUser(userHash: string): Observable<any> {
-    return this.httpClient.put(`${environment.baseUrl}api/v3/instant-messaging/privacy/user`, { 'block_user_hashes': [userHash] });
+    return this.httpClient.put(`${environment.baseUrl}${this.BLOCK_USER_ENDPOINT}`, { 'block_user_hashes': [userHash] });
   }
 
   public unblockUser(userHash: string): Observable<any> {
     return this.httpClient
-    .request('delete', `${environment.baseUrl}api/v3/instant-messaging/privacy/user`, { body: { 'unblock_user_hashes': [userHash] } });
+    .request('delete', `${environment.baseUrl}${this.BLOCK_USER_ENDPOINT}`, { body: { 'unblock_user_hashes': [userHash] } });
   }
 }
