@@ -170,28 +170,12 @@ describe('Service: Conversation', () => {
     const NORMAL_CONVERSATIONS: Conversation[] = createConversationsArray(6);
     beforeEach(() => {
       spyOn<any>(service, 'bulkArchive');
-      spyOn(service, 'sendRead');
       service.leads = [...CONVERSATIONS_WITH_PHONE, ...NORMAL_CONVERSATIONS];
       service.archiveWithPhones();
     });
 
     it('should call bulkArchive with conversations with phone', () => {
       expect(service['bulkArchive']).toHaveBeenCalledWith(CONVERSATIONS_WITH_PHONE);
-    });
-
-    it('should call sendRead', () => {
-      expect(service.sendRead).toHaveBeenCalledTimes(CONVERSATIONS_WITH_PHONE.length);
-    });
-  });
-
-  describe('onArchive', () => {
-    it('should call sendRead', () => {
-      spyOn(service, 'sendRead');
-
-      const CONVERSATION: Conversation = MOCK_CONVERSATION();
-      service['onArchive'](CONVERSATION);
-
-      expect(service.sendRead).toHaveBeenCalledWith(CONVERSATION);
     });
   });
 
@@ -201,13 +185,8 @@ describe('Service: Conversation', () => {
     beforeEach(() => {
       spyOn<any>(service, 'bulkArchive').and.returnValue(RETURNED_CONVERSATIONS);
       spyOn(service, 'stream');
-      spyOn(service, 'sendRead');
       service.leads = CONVERSATIONS;
       service['onArchiveAll']();
-    });
-
-    it('should call sendRead', () => {
-      expect(service.sendRead).toHaveBeenCalledTimes(CONVERSATIONS.length);
     });
 
     it('should call bulkArchive', () => {
@@ -217,57 +196,6 @@ describe('Service: Conversation', () => {
 
     it('should call streams', () => {
       expect(service.stream).toHaveBeenCalled();
-    });
-  });
-
-  describe('sendRead', () => {
-
-    let conversation: Conversation;
-
-    beforeEach(() => {
-      spyOn(realTime, 'sendRead');
-      spyOn(trackingService, 'track');
-      conversation = MOCK_CONVERSATION();
-      service.leads = [conversation];
-    });
-
-    it('should call realTime.sendRead', () => {
-      conversation.unreadMessages = 2;
-
-      service.sendRead(conversation);
-
-      expect(realTime.sendRead).toHaveBeenCalledWith(USER_ID, CONVERSATION_ID);
-    });
-
-    it('should set conversation.unreadMessages to 0', () => {
-      conversation.unreadMessages = 2;
-
-      service.sendRead(conversation);
-
-      expect(conversation.unreadMessages).toBe(0);
-    });
-
-    it('should decrement totalUnreadMessages', () => {
-      conversation.unreadMessages = 5;
-      messageService.totalUnreadMessages = 10;
-
-      service.sendRead(conversation);
-
-      expect(messageService.totalUnreadMessages).toBe(5);
-
-      conversation.unreadMessages = 10;
-      messageService.totalUnreadMessages = 10;
-
-      service.sendRead(conversation);
-
-      expect(messageService.totalUnreadMessages).toBe(0);
-
-      conversation.unreadMessages = 10;
-      messageService.totalUnreadMessages = 5;
-
-      service.sendRead(conversation);
-
-      expect(messageService.totalUnreadMessages).toBe(0);
     });
   });
 });
