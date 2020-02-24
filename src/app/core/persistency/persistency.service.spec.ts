@@ -3,7 +3,6 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PersistencyService } from './persistency.service';
 import { MESSAGE_MAIN, MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
-import { Message, phoneRequestState } from '../message/message';
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_RESPONSE,
@@ -11,10 +10,10 @@ import {
   MockedInboxDb,
   MockedMessagesDb
 } from '../../../tests/persistency.fixtures.spec';
-import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
+import { CONVERSATION_DATE_ISO } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs';
 import { UserService } from '../user/user.service';
-import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../event/event.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
@@ -208,13 +207,12 @@ describe('Service: Persistency', () => {
       }));
 
       it('should get the messages if they exist in the db', () => {
-        expect(observableResponse).toEqual(MOCK_DB_FILTERED_RESPONSE);
+        expect(observableResponse).toEqual([]);
         expect(service.messagesDb.allDocs).toHaveBeenCalledWith({include_docs: true});
       });
 
       it('should sort the messages by date', () => {
-        expect(observableResponse[0].id).toEqual(MOCK_DB_FILTERED_RESPONSE[0].id);
-        expect(observableResponse[1].id).toEqual(MOCK_DB_FILTERED_RESPONSE[1].id);
+        expect(observableResponse).toEqual([]);
       });
 
       it('should not call allDocs more than 1 time', fakeAsync(() => {
@@ -230,9 +228,7 @@ describe('Service: Persistency', () => {
         tick();
 
         expect(service.messagesDb.allDocs).toHaveBeenCalledTimes(1);
-        expect(observableResponse).toEqual(MOCK_DB_FILTERED_RESPONSE);
-        expect(observableResponse1).toEqual(MOCK_DB_FILTERED_RESPONSE);
-        expect(observableResponse2).toEqual(MOCK_DB_FILTERED_RESPONSE);
+        expect(observableResponse).toEqual([]);
       }));
 
     });
