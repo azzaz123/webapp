@@ -1,8 +1,7 @@
 import PouchDB from 'pouchdb';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, throwError } from 'rxjs';
-import * as moment from 'moment';
-import { StoredMessage, StoredMetaInfo, StoredMetaInfoData } from '../message/messages.interface';
+import { StoredMessage, StoredMetaInfoData } from '../message/messages.interface';
 import 'rxjs/add/observable/fromPromise';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
@@ -44,7 +43,6 @@ export class PersistencyService {
         });
       });
     });
-    this.subscribeEventNewMessage();
   }
 
   set messagesDb(value: PouchDB.Database<any>) {
@@ -126,29 +124,6 @@ export class PersistencyService {
     dbs.forEach((db) => {
       new PouchDB(db).destroy().catch(() => {});
     });
-  }
-
-  private subscribeEventNewMessage() {
-    this.eventService.subscribe(EventService.CHAT_LAST_RECEIVED_TS, (timestamp: number) => {
-      this.saveMetaInformation({
-        start: new Date(timestamp).toISOString(),
-        last: null
-      });
-    });
-  }
-
-  public saveMetaInformation(data: StoredMetaInfo): Observable<any> {
-    const newMoment = (data.start.indexOf('.') === 10 || data.start === '0')
-      ? moment.unix(Number(data.start)) // handle cases: '0' (from firstArchive) OR nanotimestamp (from server response)
-      : moment(data.start);             // handle ISO format (from localDb meta doc)
-    data.start = newMoment.toISOString();
-    return Observable.fromPromise(
-      this.upsert(this.messagesDb, 'meta', (doc: Document<any>) => {
-      if (!doc.data || !doc.data.start || newMoment.isAfter(moment(doc.data.start))) {
-        doc.data = data;
-      }
-      return doc;
-    }));
   }
 
   public getMetaInformation(): Observable<StoredMetaInfoData> {

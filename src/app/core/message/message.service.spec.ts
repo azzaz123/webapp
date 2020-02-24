@@ -150,20 +150,6 @@ describe('Service: Message', () => {
         expect(archiveService.getEventsSince).toHaveBeenCalledWith(MOCK_DB_META.data.start);
       });
 
-      it('should call persistencyService.saveMetaInformation with the metaDate provided in the response', () => {
-        spyOn(persistencyService, 'saveMetaInformation');
-        spyOn(archiveService, 'getEventsSince').and.returnValue(Observable.of({
-          messages: [],
-          receivedReceipts: [],
-          readReceipts: [],
-          metaDate: timestamp
-        }));
-
-        service.getNotSavedMessages(conversations, true).subscribe();
-
-        expect(persistencyService.saveMetaInformation).toHaveBeenCalledWith({ start: timestamp, last: null });
-      });
-
       describe('with response that contains new messages', () => {
         beforeEach(() => {
           messagesArray.map(m => m.fromSelf = false);

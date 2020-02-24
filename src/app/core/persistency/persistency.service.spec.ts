@@ -192,36 +192,6 @@ describe('Service: Persistency', () => {
     });
   });
 
-  describe('saveMetaInformation', () => {
-    beforeEach(fakeAsync(() => {
-      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
-      tick();
-    }));
-
-    it('should be called with the new date when a CHAT_LAST_RECEIVED_TS event is emitted', () => {
-      spyOn(service, 'saveMetaInformation');
-      const newTimestamp = new Date().getTime();
-      const newMeta = {
-        start: new Date(newTimestamp).toISOString(),
-        last: null
-      };
-
-      eventService.emit(EventService.CHAT_LAST_RECEIVED_TS, newTimestamp);
-
-      expect(service.saveMetaInformation).toHaveBeenCalledWith(newMeta);
-    });
-
-    it('should upsert the meta information', fakeAsync(() => {
-      service.saveMetaInformation(MOCK_SAVE_DATA).subscribe();
-
-      tick();
-
-      expect((service as any).upsert).toHaveBeenCalled();
-      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
-      expect((service as any).upsert.calls.allArgs()[0][1]).toBe('meta');
-    }));
-  });
-
   describe('getMetaInformation', () => {
     it('should return the meta information from the database', () => {
       spyOn(service.messagesDb, 'get').and.returnValue(Promise.resolve({}));

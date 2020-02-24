@@ -37,7 +37,7 @@ export class MessageService {
   }
 
   set totalUnreadMessages(value: number) {
-    value = Math.max(value , 0);
+    value = Math.max(value, 0);
     this._totalUnreadMessages = value;
     this.totalUnreadMessages$.next(value);
   }
@@ -65,7 +65,6 @@ export class MessageService {
       return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
         this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
         return this.archiveService.getEventsSince(resp.data.start).map(r => {
-          this.persistencyService.saveMetaInformation({ start: r.metaDate, last: null });
           if (r.messages.length) {
             const messagesByThread = groupBy(r.messages, 'thread');
             Object.keys(messagesByThread).map((thread) => {
