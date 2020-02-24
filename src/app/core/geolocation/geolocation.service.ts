@@ -16,7 +16,7 @@ export class GeolocationService {
 
   public search(query: string): Observable<GeolocationResponse[]> {
     const params: any = {
-      query: query,
+      query,
       provider: MAPS_PROVIDER
     };
 

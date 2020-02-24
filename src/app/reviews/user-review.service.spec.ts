@@ -27,10 +27,11 @@ describe('UserReviewService', () => {
 
       service.getPaginationReviews(0).subscribe(r => response = r);
       const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(REVIEWS_RESPONSE);
+      req.flush(REVIEWS_RESPONSE, { headers: { 'x-nextpage': 'init=1' } });
 
       expect(req.request.urlWithParams).toEqual(expectedUrl);
       expect(response.data).toEqual(MOCK_REVIEWS);
+      expect(response.init).toEqual(1);
       expect(req.request.method).toBe('GET');
     });
   });

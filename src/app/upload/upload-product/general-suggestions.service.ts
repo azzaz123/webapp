@@ -1,8 +1,7 @@
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
 import { IOption } from 'ng-select';
-import { HttpService } from '../../core/http/http.service';
 import { Brand, BrandModel, Model, SizesResponse, Size, ObjectType } from '../brand-model.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { HttpClient } from '@angular/common/http';
@@ -23,23 +22,22 @@ export class GeneralSuggestionsService {
         category_id: category_id.toString(),
         language: this.i18n.locale
       }
-    })
-      .map((types: ObjectType[]) => {
-        return types
-          .filter((type: ObjectType) => type.id)
-          .map((type: ObjectType) => ({
-            value: type.id,
-            label: type.name
-          }));
-      });
+    }).pipe(map((types: ObjectType[]) => {
+      return types
+        .filter((type: ObjectType) => type.id)
+        .map((type: ObjectType) => ({
+          value: type.id,
+          label: type.name
+        }));
+    }));
   }
 
   getBrandsAndModels(suggestion: string, categoryId: number, objectTypeId: number): Observable<BrandModel[]> {
     return this.http.get<BrandModel[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/brand-model`, {
       params: {
         text: suggestion,
-        category_id: categoryId.toString(),
-        object_type_id: objectTypeId.toString()
+        category_id: String(categoryId),
+        object_type_id: String(objectTypeId)
       }
     });
   }
@@ -48,9 +46,9 @@ export class GeneralSuggestionsService {
     return this.http.get<Model[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/model`, {
       params: {
         text: suggestion,
-        category_id: categoryId.toString(),
+        category_id: String(categoryId),
         brand,
-        object_type_id: objectTypeId.toString()
+        object_type_id: String(objectTypeId)
       }
     })
   }
@@ -59,8 +57,8 @@ export class GeneralSuggestionsService {
     return this.http.get<Brand[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/brand`, {
       params: {
         text: suggestion,
-        category_id: categoryId.toString(),
-        object_type_id: objectTypeId.toString()
+        category_id: String(categoryId),
+        object_type_id: String(objectTypeId)
       }
     })
   }
@@ -68,17 +66,16 @@ export class GeneralSuggestionsService {
   getSizes(objectTypeId: number, gender: string): Observable<IOption[]> {
     return this.http.get(`${environment.baseUrl}${FASHION_KEYS_API_URL}/size`, {
       params: {
-        object_type_id: objectTypeId.toString(),
+        object_type_id: String(objectTypeId),
         language: this.i18n.locale
       }
-    })
-      .map((sizes: SizesResponse) => {
-        return sizes[gender]
-          .map((size: Size) => ({
-            value: size.id.toString(),
-            label: size.text
-          }));
-      });
+    }).pipe(map((sizes: SizesResponse) => {
+      return sizes[gender]
+        .map((size: Size) => ({
+          value: String(size.id),
+          label: size.text
+        }));
+    }))
   }
 
 }
