@@ -1,4 +1,4 @@
-import { reverse, sortBy, remove, find, findIndex, isEmpty } from 'lodash-es';
+import { remove } from 'lodash-es';
 import { Injectable, NgZone } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpService } from '../http/http.service';
@@ -7,19 +7,14 @@ import { ConnectionService } from '../connection/connection.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { MessageService } from '../message/message.service';
-import { Message, messageStatus, statusOrder } from '../message/message';
+import { messageStatus, statusOrder } from '../message/message';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
-import { MessagesData } from '../message/messages.interface';
-import { Headers, RequestOptions, Response } from '@angular/http';
 import { NotificationService } from '../notification/notification.service';
 import { LeadService } from './lead.service';
-import { ConversationResponse, NewConversationResponse } from './conversation-response.interface';
+import { ConversationResponse } from './conversation-response.interface';
 import { Filter } from './filter.interface';
-import { Filters } from './conversation-filters';
 import { TrackingService } from '../tracking/tracking.service';
-import { ConversationTotals } from './totals.interface';
-import { Item } from '../item/item';
 import { Subscription } from 'rxjs/Subscription';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import 'rxjs/add/observable/of';
@@ -43,8 +38,6 @@ export class ConversationService extends LeadService {
 
   protected API_URL = 'api/v3/protool/conversations';
   protected ARCHIVE_URL = 'api/v3/conversations';
-  private PHONE_MESSAGE = 'Mi número de teléfono es';
-  private SURVEY_MESSAGE = 'Ya he respondido a tus preguntas';
 
   private readSubscription: Subscription;
 
@@ -79,42 +72,15 @@ export class ConversationService extends LeadService {
   }
 
   public loadMore(): Observable<any> {
-    return this.getLeads(this.getLastDate(this.leads))
-    .map(() => {
-      this.stream$.next(this.leads);
-    });
+    return of({});
   }
 
   public loadMoreArchived(): Observable<any> {
-    return this.getLeads(this.getLastDate(this.archivedLeads), true)
-    .map(() => {
-      this.archivedStream$.next(this.archivedLeads);
-    });
+    return of({});
   }
 
   public getPage(page: number, archive?: boolean, filters?: Filter[], pageSize: number = this.PAGE_SIZE): Observable<Conversation[]> {
-    const init: number = (page - 1) * pageSize;
-    const end: number = init + pageSize;
-    return (archive ? this.archivedStream$ : this.stream$).asObservable()
-      .map((conversations: Conversation[]) => {
-        if (filters) {
-          return this.filter(conversations, filters);
-        }
-        conversations = this.markBlockedUsers(conversations);
-        return conversations;
-      })
-      .map((filteredConversations: Conversation[]) => {
-        return reverse(sortBy(filteredConversations, 'modifiedDate'));
-      })
-      .map((sortedConversations: Conversation[]) => {
-        return sortedConversations.slice(0, end);
-      });
-  }
-
-  private markBlockedUsers(conversations: Conversation[]): Conversation[] {
-    const blockedUsers = this.blockService.getBlockedUsers();
-    conversations.filter(conv => blockedUsers.indexOf(conv.user.id) !== -1).map(conv => conv.user.blocked = true);
-    return conversations;
+    return of([]);
   }
 
   private filter(conversations: Conversation[], filters: Filter[]): Conversation[] {
@@ -125,34 +91,6 @@ export class ConversationService extends LeadService {
         bool = bool && conversation[filter.key] === filter.value;
       });
       return bool;
-    });
-  }
-
-  public getTotals(): Observable<ConversationTotals> {
-    return this.stream$.asObservable()
-    .flatMap((conversations: Conversation[]) => {
-      return this.archivedStream$.asObservable()
-      .map((archivedConversations: Conversation[]) => {
-        const phonesShared: number = conversations.filter((conversation: Conversation) => {
-          return conversation.phone !== undefined;
-        }).length;
-        const meetings: number = this.filter(conversations, Filters.MEETINGS).length;
-        const messages: number = this.filter(conversations, Filters.OTHERS).length;
-        const archivedPhonesShared: number = archivedConversations.filter((conversation: Conversation) => {
-          return conversation.phone !== undefined;
-        }).length;
-        const archivedMeetings: number = this.filter(archivedConversations, Filters.MEETINGS).length;
-        const archivedMessages: number = this.filter(archivedConversations, Filters.OTHERS).length;
-        return {
-          phonesShared: phonesShared,
-          meetings: meetings,
-          messages: messages,
-          conversations: conversations.length,
-          archivedPhonesShared: archivedPhonesShared,
-          archivedMeetings: archivedMeetings,
-          archivedMessages: archivedMessages
-        };
-      });
     });
   }
 
@@ -168,20 +106,6 @@ export class ConversationService extends LeadService {
         attributes: { item_id: conversation.item.id }
       });
     }
-  }
-
-  public checkIfLastPage(archive: boolean = false): Observable<any> {
-    const lastDate: number = archive ? this.getLastDate(this.archivedLeads) : this.getLastDate(this.leads);
-    if (lastDate) {
-      return this.http.get(this.API_URL, { until: lastDate, hidden: archive })
-      .map((res: Response) => res.json())
-      .map((res: ConversationResponse[]) => {
-        if (res.length === 0) {
-          archive ? this.ended.processed = true : this.ended.pending = true;
-        }
-      });
-    }
-    return Observable.of({});
   }
 
   public archiveWithPhones() {
@@ -205,61 +129,6 @@ export class ConversationService extends LeadService {
     this.leads = this.bulkArchive(this.leads);
     this.stream();
     this.stream(true);
-  }
-
-  public loadMessagesIntoConversations(conversations: Conversation[], archived: boolean = false): Observable<Conversation[]> {
-    this.event.subscribe(EventService.FOUND_MESSAGES_IN_DB, () => {
-      this.loadNotStoredMessages(conversations, archived);
-      this.event.unsubscribeAll(EventService.FOUND_MESSAGES_IN_DB);
-    });
-
-    return this.loadMessages(conversations).map((convWithMessages: Conversation[]) => {
-      if (convWithMessages) {
-      return convWithMessages.filter((conversation: Conversation) => {
-        return conversation.messages.length > 0;
-      });
-      } else {
-        return null;
-      }
-    });
-  }
-
-  public getConversationPage(id: string, archive?: boolean): number {
-    const index: number = (archive ? this.archivedLeads : this.leads).findIndex((conversation: Conversation) => {
-      return conversation.id === id;
-    });
-    if (index === -1) {
-      return -1;
-    }
-    return Math.ceil((index + 1) / this.PAGE_SIZE);
-  }
-
-  private findMessage(messages: Message[], message: Message): Message {
-    return messages.filter((msg: Message): boolean => {
-      return (msg.id === message.id);
-    })[0];
-  }
-
-  private addMessage(conversation: Conversation, message: Message): boolean {
-    if (!this.findMessage(conversation.messages, message)) {
-      conversation.messages.push(message);
-      conversation.modifiedDate = new Date().getTime();
-      if (!message.fromSelf) {
-        this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
-          const trackEvent: TrackingEventData = {
-            eventData: TrackingService.MESSAGE_RECEIVED_ACK,
-            attributes: {
-              thread_id: message.thread,
-              message_id: message.id
-            }
-          };
-          this.trackingService.addTrackingEvent(trackEvent, false);
-          this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
-        });
-        this.handleUnreadMessage(conversation);
-      }
-      return true;
-    }
   }
 
   public processChatSignal(signal: ChatSignal) {
@@ -337,22 +206,6 @@ export class ConversationService extends LeadService {
     }
 
     this.trackingService.addTrackingEvent(trackingEv, false);
-  }
-
-  public get(id: string): Observable<Conversation> {
-    return this.http.get(`${this.API_URL}/${id}`)
-    .flatMap((res: Response) => {
-      let conversation: ConversationResponse = res.json();
-      return Observable.forkJoin(
-        this.itemService.get(conversation.item_id),
-        this.userService.get(conversation.other_user_id)
-      ).map((data: any[]) => {
-        conversation.user = data[1];
-        conversation = <ConversationResponse>this.setItem(conversation, data[0]);
-        return conversation;
-      });
-    })
-    .map((data: ConversationResponse) => this.mapRecordData(data));
   }
 
   public sendRead(conversation: Conversation) {
