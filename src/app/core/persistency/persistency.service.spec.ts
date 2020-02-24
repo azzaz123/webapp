@@ -192,60 +192,6 @@ describe('Service: Persistency', () => {
     });
   });
 
-  describe('getMessages', () => {
-
-    let observableResponse: any;
-
-    describe('with success', () => {
-
-      beforeEach(fakeAsync(() => {
-        spyOn(service.messagesDb, 'allDocs').and.returnValue(Promise.resolve(MOCK_DB_RESPONSE));
-        service.getMessages(MESSAGE_MAIN.thread).subscribe((data: any) => {
-          observableResponse = data;
-        });
-        tick();
-      }));
-
-      it('should get the messages if they exist in the db', () => {
-        expect(observableResponse).toEqual([]);
-        expect(service.messagesDb.allDocs).toHaveBeenCalledWith({include_docs: true});
-      });
-
-      it('should sort the messages by date', () => {
-        expect(observableResponse).toEqual([]);
-      });
-
-      it('should not call allDocs more than 1 time', fakeAsync(() => {
-        let observableResponse1: any;
-        let observableResponse2: any;
-
-        service.getMessages(MESSAGE_MAIN.thread).subscribe((data: any) => {
-          observableResponse1 = data;
-        });
-        service.getMessages(MESSAGE_MAIN.thread).subscribe((data: any) => {
-          observableResponse2 = data;
-        });
-        tick();
-
-        expect(service.messagesDb.allDocs).toHaveBeenCalledTimes(1);
-        expect(observableResponse).toEqual([]);
-      }));
-
-    });
-
-    it('should get an empty array if the messages do not exist on the db', fakeAsync(() => {
-      spyOn(service.messagesDb, 'allDocs').and.returnValue(Promise.reject({}));
-
-      service.getMessages(MESSAGE_MAIN.thread).subscribe((data: any) => {
-        observableResponse = data;
-      });
-      tick();
-
-      expect(observableResponse).toEqual([]);
-      expect(service.messagesDb.allDocs).toHaveBeenCalledWith({include_docs: true});
-    }));
-  });
-
   describe('saveMetaInformation', () => {
     beforeEach(fakeAsync(() => {
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));

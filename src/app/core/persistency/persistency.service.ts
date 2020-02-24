@@ -145,27 +145,11 @@ export class PersistencyService {
   }
 
   public getMessages(thread: string): Observable<StoredMessageRow[]> {
-    return Observable.create((observer: Observer<StoredMessageRow[]>) => {
-      this.getMessageFromLocal().then((data: AllDocsResponse<StoredMessage>) => {
-        observer.next([]);
-      }, () => {
-        observer.next([]);
-      });
-    });
+    return Observable.create((observer: Observer<StoredMessageRow[]>) => observer.next([]));
   }
 
   public resetCache() {
     this.storedMessages = null;
-  }
-
-  private getMessageFromLocal(): Promise<AllDocsResponse<StoredMessage>> {
-    if (this.storedMessages && this.storedMessages.total_rows > 0) {
-      return Promise.resolve(this.storedMessages);
-    }
-    return (this.messagesDb.allDocs({ include_docs: true }).then((data: AllDocsResponse<StoredMessage>) => {
-      this.storedMessages = data;
-      return data;
-    }));
   }
 
   private subscribeEventNewMessage() {
