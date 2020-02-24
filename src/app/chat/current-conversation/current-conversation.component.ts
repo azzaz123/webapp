@@ -48,6 +48,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   @Input() connectionError: boolean;
   @Input() loadingError: boolean;
   @ViewChild('scrollElement') private scrollElement: ElementRef;
+  @ViewChild('userWarringNotification') private userWarringNotification: ElementRef;
 
   public momentConfig: any;
   private newMessageSubscription: Subscription;
@@ -241,10 +242,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     return this.currentConversation.item.isMine;
   }
 
-  get conversationChattable(): boolean {
-    return !this.currentConversation.cannotChat;
-  }
-
   get currentConversationisArchived(): boolean {
     return this.inboxConversationService.containsArchivedConversation(this.currentConversation);
   }
@@ -277,6 +274,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       lastMessage.scrollIntoView({ behavior: 'smooth' });
       this.sendReadForLastInboxMessage();
       this.isEndOfConversation = true;
+    }
+
+    if (this.userWarringNotification) {
+      this.userWarringNotification.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
