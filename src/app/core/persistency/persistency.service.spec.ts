@@ -192,16 +192,6 @@ describe('Service: Persistency', () => {
     });
   });
 
-  describe('getMetaInformation', () => {
-    it('should return the meta information from the database', () => {
-      spyOn(service.messagesDb, 'get').and.returnValue(Promise.resolve({}));
-
-      service.getMetaInformation();
-
-      expect(service.messagesDb.get).toHaveBeenCalledWith('meta');
-    });
-  });
-
   describe('localDbVersionUpdate', () => {
     let callbackCalled = false;
     function mockCallback() { callbackCalled = true; }

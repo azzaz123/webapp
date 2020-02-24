@@ -1,7 +1,5 @@
-import { groupBy } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
-import { Observable } from 'rxjs';
 import { MsgArchiveService } from './archive.service';
 import { Subject } from 'rxjs/Subject';
 import { Conversation } from '../conversation/conversation';
@@ -9,9 +7,7 @@ import { Message, messageStatus, phoneRequestState } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
-import { MessagesData, StoredMessageRow, StoredMetaInfoData } from './messages.interface';
 import { ConnectionService } from '../connection/connection.service';
-import { MsgArchiveResponse, ReceivedReceipt } from './archive.interface';
 import 'rxjs/add/operator/first';
 import { EventService } from '../event/event.service';
 import { I18nService } from '../i18n/i18n.service';
@@ -24,7 +20,6 @@ export class MessageService {
 
   public totalUnreadMessages$: Subject<number> = new Subject<number>();
   private _totalUnreadMessages = 0;
-  private allMessages = [];
 
   constructor(private realTime: RealTimeService,
               private archiveService: MsgArchiveService,
@@ -44,73 +39,6 @@ export class MessageService {
 
   get totalUnreadMessages(): number {
     return this._totalUnreadMessages;
-  }
-
-  public getMessages(conversation: Conversation, firstArchive: boolean = false): Observable<MessagesData> {
-    const response: MessagesData = {
-      data: []
-    };
-    return Observable.of(response);
-  }
-
-  private confirmAndSaveMessagesByThread(r: MsgArchiveResponse, archived: boolean): MsgArchiveResponse {
-    if (archived) {
-      r.messages.filter(m => !m.fromSelf).map(m => m.status = messageStatus.READ);
-    }
-    return r;
-  }
-
-  public getNotSavedMessages(conversations: Conversation[], archived: boolean): Observable<Conversation[]> {
-    if (this.connectionService.isConnected) {
-      return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
-        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
-        return this.archiveService.getEventsSince(resp.data.start).map(r => {
-          if (r.messages.length) {
-            const messagesByThread = groupBy(r.messages, 'thread');
-            Object.keys(messagesByThread).map((thread) => {
-              const msgAndSingalsForThread = {
-                messages: messagesByThread[thread],
-                receivedReceipts: r.receivedReceipts.filter(rec => rec.thread === thread),
-                readReceipts: r.readReceipts.filter(rec => rec.thread === thread),
-                metaDate: r.metaDate
-              };
-              const conversation = conversations.find(c => c.id === thread);
-              if (conversation) {
-                this.confirmAndSaveMessagesByThread(msgAndSingalsForThread, conversation.archived);
-                messagesByThread[thread].map(msg => {
-                  if (!(conversation.messages).find(m => m.id === msg.id)) {
-                    msg = this.addUserInfo(conversation, msg);
-                    conversation.messages.push(msg);
-                    this.allMessages.push(msg);
-                  }
-                });
-              }
-            });
-          }
-
-          if (r.readReceipts.length || r.receivedReceipts.length) {
-            let updatedMesages = [];
-            updatedMesages = this.archiveService.updateStatuses(this.allMessages, r.readReceipts, r.receivedReceipts);
-
-            if (!archived) {
-              this.totalUnreadMessages = 0;
-            }
-
-            const updateMessagesByThread = groupBy(updatedMesages, 'thread');
-            Object.keys(updateMessagesByThread).map((thread) => {
-              const unreadCount = updateMessagesByThread[thread].filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
-              const conv = conversations.find(c => c.id === thread);
-              if (conv && !conv.archived) {
-                conv.unreadMessages = unreadCount;
-                this.totalUnreadMessages += unreadCount;
-              }
-            });
-          }
-          this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-          return conversations;
-        });
-      });
-    }
   }
 
   public addUserInfoToArray(conversation: Conversation, messages: Message[]): Message[] {

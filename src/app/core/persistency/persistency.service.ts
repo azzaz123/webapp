@@ -9,14 +9,12 @@ import { EventService } from '../event/event.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TrackingEvent } from '../tracking/tracking-event';
 import Database = PouchDB.Database;
-import AllDocsResponse = PouchDB.Core.AllDocsResponse;
 import Document = PouchDB.Core.Document;
 
 @Injectable()
 export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
   private clickstreamDb: any;
-  private storedMessages: AllDocsResponse<StoredMessage>;
   private latestVersion = 2.0;
   public clickstreamDbName = 'clickstreamEvents';
   private eventsStore;
@@ -124,10 +122,6 @@ export class PersistencyService {
     dbs.forEach((db) => {
       new PouchDB(db).destroy().catch(() => {});
     });
-  }
-
-  public getMetaInformation(): Observable<StoredMetaInfoData> {
-    return Observable.fromPromise(this.messagesDb.get('meta'));
   }
 
   private getDbVersion(localDb): Observable<any> {
