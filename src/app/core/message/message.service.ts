@@ -156,9 +156,4 @@ export class MessageService {
     const phoneRequestMsg = conversation.messages.find(m => m.phoneRequest);
     phoneRequestMsg.phoneRequest = phoneRequestState.answered;
   }
-
-  public resetCache() {
-    this.totalUnreadMessages = 0;
-  }
-
 }

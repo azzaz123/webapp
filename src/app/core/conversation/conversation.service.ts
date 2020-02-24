@@ -1,6 +1,6 @@
 import { reverse, sortBy, remove, find, findIndex, isEmpty } from 'lodash-es';
 import { Injectable, NgZone } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpService } from '../http/http.service';
 import { Conversation } from './conversation';
 import { ConnectionService } from '../connection/connection.service';
@@ -46,11 +46,8 @@ export class ConversationService extends LeadService {
   private PHONE_MESSAGE = 'Mi número de teléfono es';
   private SURVEY_MESSAGE = 'Ya he respondido a tus preguntas';
 
-  private messagesObservable: Observable<Conversation[]>;
   private readSubscription: Subscription;
 
-  public pendingPagesLoaded = 0;
-  public processedPagesLoaded = 0;
   public storedPhoneNumber: string;
   private phoneRequestType;
   public ended = {
@@ -379,36 +376,11 @@ export class ConversationService extends LeadService {
   }
 
   private loadMessages(conversations: Conversation[]): Observable<Conversation[]> {
-    if (this.messagesObservable) {
-      return this.messagesObservable;
-    }
-    if (this.connectionService.isConnected) {
-      this.messagesObservable = this.recursiveLoadMessages(conversations)
-      .share()
-      .do(() => {
-        this.messagesObservable = null;
-      });
-    }
-    return this.messagesObservable;
+    return of(conversations);
   }
 
   private recursiveLoadMessages(conversations: Conversation[], index: number = 0): Observable<Conversation[]> {
-      if (conversations && conversations[index] && this.connectionService.isConnected) {
-      return this.messageService.getMessages(conversations[index], !index)
-        .flatMap((res: MessagesData) => {
-          conversations[index].messages = res.data;
-          conversations[index].unreadMessages = res.data.filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
-        this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
-          this.messageService.totalUnreadMessages + conversations[index].unreadMessages :
-          conversations[index].unreadMessages;
-          if (index < conversations.length - 1) {
-            return this.recursiveLoadMessages(conversations, index + 1);
-          }
-          return Observable.of(conversations);
-        });
-      } else {
-        return Observable.of(null);
-      }
+    return Observable.of([]);
   }
 
   public loadNotStoredMessages(conversations: Conversation[], archived: boolean = false) {

@@ -90,7 +90,7 @@ const CONVERSATION_RESPONSE: Response = new Response(new ResponseOptions(
 );
 const componentInstance: any = { SendPhoneComponent: jasmine.createSpy('SendPhoneComponent') };
 
-describe('Service: Conversation', () => {
+fdescribe('Service: Conversation', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -624,47 +624,6 @@ describe('Service: Conversation', () => {
         convWithMessages = [];
         connectionService.isConnected = true;
         conversations = createConversationsArray(5);
-      });
-
-      it('should call messageService.getMessages', () => {
-        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({ reason: 'missing' }));
-        service.loadMessagesIntoConversations(conversations).subscribe((res: Conversation[]) => {
-          convWithMessages = res;
-        });
-
-        expect(messageService.getMessages).toHaveBeenCalledTimes(5);
-      });
-
-      it(`should set messageService.totalUnreadMessages to the sum of conversations' unread counters,
-      when messagesService.totalUnreadMessages is 0`, () => {
-        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({ reason: 'missing' }));
-        spyOnProperty(messageService, 'totalUnreadMessages', 'get').and.callThrough();
-
-        service.loadMessagesIntoConversations(conversations).subscribe((res: Conversation[]) => {
-          convWithMessages = res;
-        });
-
-        expect(messageService.totalUnreadMessages).toBe(35);
-      });
-
-      it(`should increment messageService.totalUnreadMessages with the sum of conversations' unread counters,
-      when messagesService.totalUnreadMessages is greater than 0`, () => {
-        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({ reason: 'missing' }));
-        spyOnProperty(messageService, 'totalUnreadMessages', 'get').and.callThrough();
-        messageService.totalUnreadMessages = 10;
-
-        service.loadMessagesIntoConversations(conversations).subscribe((res: Conversation[]) => {
-          convWithMessages = res;
-        });
-
-        expect(messageService.totalUnreadMessages).toBe(45);
-      });
-
-      it('should fill conversations with messages', () => {
-        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({ reason: 'missing' }));
-        service.loadMessagesIntoConversations(conversations).subscribe();
-
-        conversations.map(c => expect(c.messages.length).toBe(7));
       });
 
       it('should set the lastMessageRef', () => {
