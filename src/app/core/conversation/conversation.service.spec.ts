@@ -1,37 +1,24 @@
 /* tslint:disable:no-unused-variable */
 
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ConversationService } from './conversation.service';
 import { HttpService } from '../http/http.service';
-import { Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs';
 import { Conversation } from './conversation';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
-import { Item } from '../item/item';
 import { XmppService } from '../xmpp/xmpp.service';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
-import { messageStatus, phoneMethod } from '../message/message';
+import { messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { NotificationService } from '../notification/notification.service';
 import { TrackingService } from '../tracking/tracking.service';
-import { ConversationTotals } from './totals.interface';
-import { Lead } from './lead';
-import {
-  CONVERSATION_DATE,
-  CONVERSATION_ID,
-  CONVERSATION_PHONE,
-  CONVERSATIONS_DATA,
-  createConversationsArray,
-  MOCK_CONVERSATION,
-  SECOND_MOCK_CONVERSATION
-} from '../../../tests/conversation.fixtures.spec';
+import { CONVERSATION_ID, createConversationsArray, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { MockedUserService, USER_ID } from '../../../tests/user.fixtures.spec';
-import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
+import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
-import { createMessagesArray, MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER, MOCK_RANDOM_MESSAGE } from '../../../tests/message.fixtures.spec';
+import { createMessagesArray, MOCK_MESSAGE, MOCK_RANDOM_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveService } from '../message/archive.service';
@@ -64,14 +51,9 @@ let modalService: NgbModal;
 let archiveService: MsgArchiveService;
 let i18n: I18nService;
 
-const MOCKED_CONVERSATION_DATA: any = CONVERSATIONS_DATA[0];
-const EMPTY_RESPONSE: Response = new Response(new ResponseOptions({ body: JSON.stringify([]) }));
-const CONVERSATION_RESPONSE: Response = new Response(new ResponseOptions(
-  { body: JSON.stringify(MOCKED_CONVERSATION_DATA) })
-);
 const componentInstance: any = { SendPhoneComponent: jasmine.createSpy('SendPhoneComponent') };
 
-fdescribe('Service: Conversation', () => {
+describe('Service: Conversation', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -238,128 +220,6 @@ fdescribe('Service: Conversation', () => {
     });
   });
 
-  describe('processChatSignals', () => {
-    const timestamp = new Date(MOCK_MESSAGE.date).getTime();
-
-    describe('when processing read signals', () => {
-      let mockedConversation: Conversation;
-      let expectedMarkedAsRead, expectedNotMarkedAsRead;
-      const unreadCount = 5;
-      mockedConversation = MOCK_CONVERSATION();
-      mockedConversation.messages = createMessagesArray(10);
-      beforeEach(() => {
-        spyOn(trackingService, 'addTrackingEvent');
-        service.leads.push(mockedConversation);
-        messageService.totalUnreadMessages = unreadCount;
-        mockedConversation.unreadMessages = unreadCount;
-      });
-      describe('when the signal ID does not match any message ID in the conversation', () => {
-        const signal = new ChatSignal(chatSignalType.READ, 'non-existant-conv-id', timestamp);
-        it('should NOT call trackingService.addTrackingEvent', () => {
-          service.processChatSignal(signal);
-
-          expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
-        });
-      });
-
-      describe('when processing a READ chat signal NOT fromSelf', () => {
-
-        it('should NOT decrase the unreadMessages counter of the conversation', () => {
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-          service.processChatSignal(signal);
-
-          expect(mockedConversation.unreadMessages).toBe(unreadCount);
-        });
-
-        it('should NOT decrease messageService.totalUnreadMessages counter', () => {
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-          service.processChatSignal(signal);
-
-          expect(messageService.totalUnreadMessages).toBe(unreadCount);
-        });
-      });
-
-      describe('when processing a READ chat signal fromSelf', () => {
-        beforeEach(() => {
-          mockedConversation.messages.map((m, index) => {
-            m.fromSelf = index < unreadCount ? false : true;
-            m.status = messageStatus.RECEIVED;
-          });
-          expectedMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
-          expectedNotMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf);
-        });
-
-        it('should decrase the unreadMessages counter of the conversation by the number of messages that are being marked as READ', () => {
-          expect(mockedConversation.unreadMessages).toBe(unreadCount);
-
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-          service.processChatSignal(signal);
-
-          expect(mockedConversation.unreadMessages).toBe(0);
-        });
-
-        it(`should set unreadMessages counter of the conversation to 0 if the number of messages that are being marked as READ is greater
-        than the existing counter (disallow negative values in counter)`, () => {
-          mockedConversation.unreadMessages = 1;
-
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-          service.processChatSignal(signal);
-
-          expect(mockedConversation.unreadMessages).toBe(0);
-        });
-
-        it('should decrase messageService.totalUnreadMessages counter by the number of messages that are being marked as READ', () => {
-          expect(mockedConversation.unreadMessages).toBe(unreadCount);
-
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-          service.processChatSignal(signal);
-
-          expect(messageService.totalUnreadMessages).toBe(0);
-        });
-
-        it(`should set messageService.totalUnreadMessages counter to 0 if the number of messages that are being marked as READ is greater
-        than the existing counter (disallow negative values in counter)`, () => {
-          mockedConversation.unreadMessages = 1;
-
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-          service.processChatSignal(signal);
-
-          expect(messageService.totalUnreadMessages).toBe(0);
-        });
-      });
-    });
-
-    describe('when processing sent and received signals', () => {
-      const mockedConversation = MOCK_CONVERSATION();
-      beforeEach(() => {
-        spyOn(trackingService, 'addTrackingEvent');
-        service.leads.push(mockedConversation);
-      });
-
-      describe('when called with a thread that does not match any conversation ID', () => {
-        mockedConversation.messages = [MOCK_MESSAGE];
-        const sentSignal = new ChatSignal(chatSignalType.SENT, 'non-existant-thread', timestamp, MOCK_MESSAGE.id);
-
-        it('should NOT call trackingService.addTrackingEvent', () => {
-          service.processChatSignal(sentSignal);
-
-          expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
-        });
-      });
-
-      describe('when called with a messageId does not match any message ID in the conversation', () => {
-        mockedConversation.messages = [MOCK_MESSAGE];
-        const sentSignal = new ChatSignal(chatSignalType.SENT, mockedConversation.id, timestamp, 'non-existant-id');
-
-        it('should NOT call trackingService.addTrackingEvent', () => {
-          service.processChatSignal(sentSignal);
-
-          expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
-        });
-      });
-    });
-  });
-
   describe('sendRead', () => {
 
     let conversation: Conversation;
@@ -369,18 +229,6 @@ fdescribe('Service: Conversation', () => {
       spyOn(trackingService, 'track');
       conversation = MOCK_CONVERSATION();
       service.leads = [conversation];
-    });
-
-    it('should call processChatsignal with a READ signal when a MESSAGE_READ_ACK event is triggered', () => {
-      spyOn(service, 'processChatSignal');
-      conversation.messages = [MOCK_MESSAGE, MOCK_MESSAGE, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE];
-      conversation.unreadMessages = 2;
-      const readSignalFromSelf = new ChatSignal(chatSignalType.READ, conversation.id, null, null, true);
-
-      service.sendRead(conversation);
-      eventService.emit(EventService.MESSAGE_READ_ACK);
-
-      expect(service.processChatSignal).toHaveBeenCalledWith(readSignalFromSelf);
     });
 
     it('should call realTime.sendRead', () => {
@@ -421,17 +269,5 @@ fdescribe('Service: Conversation', () => {
 
       expect(messageService.totalUnreadMessages).toBe(0);
     });
-
-    it('should NOT call realTime.sendRead, NOR processChatSignal if conversation.unreadMessages is 0', () => {
-      spyOn(service, 'processChatSignal');
-      conversation.unreadMessages = 0;
-
-      service.sendRead(conversation);
-      eventService.emit(EventService.MESSAGE_READ_ACK);
-
-      expect(realTime.sendRead).not.toHaveBeenCalled();
-      expect(service.processChatSignal).not.toHaveBeenCalled();
-    });
-
   });
 });

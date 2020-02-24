@@ -220,9 +220,6 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeChatEvents() {
-    this.event.subscribe(EventService.CHAT_SIGNAL,
-      (signal: ChatSignal) => this.conversationService.processChatSignal(signal));
-
     this.event.subscribe(EventService.CHAT_RT_DISCONNECTED, () => {
       if (this.userService.isLogged && this.connectionService.isConnected) {
         this.realTime.reconnect();
