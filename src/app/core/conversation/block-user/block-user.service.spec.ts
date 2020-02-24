@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { BlockUserService } from './block-user.service';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
+import { environment } from '../../../../environments/environment';
 
 describe('BlockUserService', () => {
   const USER_ID = '7s6gwr3c54s';
@@ -36,7 +37,7 @@ describe('BlockUserService', () => {
   it('should block user', () => {
     service.blockUser(USER_ID).subscribe();
 
-    const req = httpTestingController.expectOne('api/v3/instant-messaging/privacy/user');
+    const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/privacy/user`);
     expect(req.request.method).toEqual('PUT');
     expect(req.request.body).toEqual({ block_user_hashes: [USER_ID] });
   });
@@ -44,7 +45,7 @@ describe('BlockUserService', () => {
   it('should unblock user', () => {
     service.unblockUser(USER_ID).subscribe();
 
-    const req = httpTestingController.expectOne('api/v3/instant-messaging/privacy/user');
+    const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/privacy/user`);
     expect(req.request.method).toEqual('DELETE');
     expect(req.request.body).toEqual({ unblock_user_hashes: [USER_ID] });
   });

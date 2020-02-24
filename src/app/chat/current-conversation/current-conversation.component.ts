@@ -69,7 +69,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
               private blockUserXmppService: BlockUserXmppService,
               private i18n: I18nService,
               private realTime: RealTimeService,
-              private conversationService: InboxConversationService) {
+              private inboxConversationService: InboxConversationService) {
     this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
   }
 
@@ -200,6 +200,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.modalService.open(BlockUserComponent).result.then(() => {
       this.blockUserService.blockUser(this.currentConversation.user.id).subscribe(() => {
         this.blockUserXmppService.blockUser(this.currentConversation.user).subscribe(() => {
+          this.scrollToLastMessage();
           this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
         });
       }, () => {
@@ -220,7 +221,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   public archiveConversation(): void {
     this.modalService.open(ArchiveInboxConversationComponent).result.then(() => {
-      this.conversationService.archive$(this.currentConversation).subscribe(() => {
+      this.inboxConversationService.archive$(this.currentConversation).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
         this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, null);
       });
@@ -229,7 +230,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   public unarchiveConversation() {
     this.modalService.open(UnarchiveInboxConversationComponent).result.then(() => {
-      this.conversationService.unarchive(this.currentConversation).subscribe(() => {
+      this.inboxConversationService.unarchive(this.currentConversation).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('unarchiveConversationSuccess'));
         this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, null);
       });
@@ -245,7 +246,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   get currentConversationisArchived(): boolean {
-    return this.conversationService.containsArchivedConversation(this.currentConversation);
+    return this.inboxConversationService.containsArchivedConversation(this.currentConversation);
   }
 
   public hasMoreMessages(): boolean {
@@ -259,7 +260,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.isConversationChanged = true;
     this.isLoadingMoreMessages = true;
     this.scrollHeight = scrollHeight;
-    this.conversationService.loadMoreMessages(this.currentConversation.id);
+    this.inboxConversationService.loadMoreMessages(this.currentConversation.id);
   }
 
   public isTextMessage(messageType: MessageType): boolean {

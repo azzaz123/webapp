@@ -26,8 +26,6 @@ import { ArchivableComponent } from './archivable/archivable.component';
 import { ArchiveButtonComponent } from './archive-button/archive-button.component';
 import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { MessageComponent } from './message/message.component';
-import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { SwitchComponent } from './switch/switch.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ConversationComponent } from './conversation/conversation.component';
@@ -115,8 +113,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
-    MessageComponent,
-    ReviewButtonComponent,
     ConversationComponent,
     ItemAvatarComponent,
     SearchInputComponent,
@@ -168,8 +164,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
     ReviewModalComponent,
-    MessageComponent,
-    ReviewButtonComponent,
     SwitchComponent,
     ReviewModalComponent,
     CheckboxComponent,

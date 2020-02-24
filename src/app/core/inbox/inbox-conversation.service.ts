@@ -8,7 +8,7 @@ import { Message, messageStatus } from '../message/message';
 import { Observable, of } from 'rxjs';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { find, head, isNil, some } from 'lodash-es';
+import { find, head, isNil, some, isEmpty } from 'lodash-es';
 import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -28,6 +28,8 @@ export class InboxConversationService {
 
   private _selfId: string;
 
+  public currentConversation: InboxConversation;
+
   public conversations: InboxConversation[];
   public archivedConversations: InboxConversation[];
 
@@ -39,6 +41,7 @@ export class InboxConversationService {
     private eventService: EventService) {
     this.conversations = [];
     this.archivedConversations = [];
+    this.currentConversation = null;
   }
 
   public subscribeChatEvents() {
@@ -69,8 +72,9 @@ export class InboxConversationService {
   }
 
   public processNewMessage(message: InboxMessage) {
-    const existingConversation = this.conversations.find(c => c.id === message.thread);
-    const existingArchivedConversation = this.archivedConversations.find(c => c.id === message.thread);
+    const existingConversation = this.conversations.find((conversation: InboxConversation) => conversation.id === message.thread);
+    const existingArchivedConversation = this.archivedConversations
+    .find((conversation: InboxConversation) => conversation.id === message.thread);
     if (existingConversation) {
       this.addNewMessage(existingConversation, message);
     } else if (existingArchivedConversation) {
@@ -87,6 +91,13 @@ export class InboxConversationService {
       conversation.lastMessage = message;
       conversation.modifiedDate = message.date;
       this.bumpConversation(conversation);
+
+      if (this.currentConversation !== null
+        && this.currentConversation.id === conversation.id
+        && isEmpty(this.currentConversation.messages)) {
+        this.currentConversation = conversation;
+      }
+
       this.eventService.emit(EventService.MESSAGE_ADDED, message);
       if (!message.fromSelf) {
         this.incrementUnreadCounter(conversation);
