@@ -2,7 +2,7 @@ import PouchDB from 'pouchdb';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, throwError } from 'rxjs';
 import * as moment from 'moment';
-import { StoredMessage, StoredMessageRow, StoredMetaInfo, StoredMetaInfoData } from '../message/messages.interface';
+import { StoredMessage, StoredMetaInfo, StoredMetaInfoData } from '../message/messages.interface';
 import 'rxjs/add/observable/fromPromise';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
@@ -142,10 +142,6 @@ export class PersistencyService {
     dbs.forEach((db) => {
       new PouchDB(db).destroy().catch(() => {});
     });
-  }
-
-  public getMessages(thread: string): Observable<StoredMessageRow[]> {
-    return Observable.create((observer: Observer<StoredMessageRow[]>) => observer.next([]));
   }
 
   public resetCache() {

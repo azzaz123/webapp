@@ -47,45 +47,10 @@ export class MessageService {
   }
 
   public getMessages(conversation: Conversation, firstArchive: boolean = false): Observable<MessagesData> {
-    return this.persistencyService.getMessages(conversation.id)
-    .flatMap((messages: StoredMessageRow[]) => {
-      if (messages.length) {
-        this.eventService.emit(EventService.FOUND_MESSAGES_IN_DB);
-        const res: MsgArchiveResponse = {
-          messages: messages.map((message: any): Message => {
-            const msg = new Message(message.doc._id,
-              // TODO - replace conversationId with thread with DB version update to standardizes prop. names
-              message.doc.conversationId,
-              message.doc.message,
-              message.doc.from,
-              message.doc.date,
-              message.doc.status,
-              message.doc.payload,
-              message.doc.phoneRequest);
-
-            this.allMessages.push(msg);
-            return msg;
-          })
-        };
-        return Observable.of(res);
-      } else if (this.connectionService.isConnected) {
-        if (firstArchive) {
-          this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
-        }
-        return this.archiveService.getAllEvents(conversation.id).map(r => {
-          this.persistencyService.saveMetaInformation({start: r.metaDate, last: null});
-          if (r.messages.length) {
-            r = this.confirmAndSaveMessagesByThread(r, conversation.archived);
-          }
-          return r;
-        });
-      }
-    })
-    .map((res: any) => {
-      return {
-        data: this.addUserInfoToArray(conversation, res.messages)
-      };
-    });
+    const response: MessagesData = {
+      data: []
+    };
+    return Observable.of(response);
   }
 
   private confirmAndSaveMessagesByThread(r: MsgArchiveResponse, archived: boolean): MsgArchiveResponse {

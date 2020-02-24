@@ -99,131 +99,6 @@ describe('Service: Message', () => {
 
   });
 
-  describe('getMessages', () => {
-
-    let conversation: Conversation;
-    const nanoTimestamp = (new Date(MOCK_DB_META.data.start).getTime() / 1000) + '000';
-
-    beforeEach(() => {
-      spyOn(realTime, 'sendDeliveryReceipt');
-      conversation = MOCK_CONVERSATION();
-    });
-
-    describe('when messages exist in the localDb', () => {
-      let response: any;
-
-      beforeEach(() => {
-        spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_FILTERED_RESPONSE));
-      });
-
-      it('should emit FOUND_MESSAGES_IN_DB event if messages exit in the database', () => {
-        spyOn(eventService, 'emit');
-
-        service.getMessages(conversation).subscribe((data: any) => {
-          response = data;
-        });
-
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.FOUND_MESSAGES_IN_DB);
-
-      });
-
-      it('should return data from the database if it exists', () => {
-        service.getMessages(conversation).subscribe((data: any) => {
-          response = data;
-        });
-
-        expect(response.data.length).toBe(MOCK_DB_FILTERED_RESPONSE.length);
-        expect(response.data[0] instanceof Message).toBe(true);
-        expect(response.data[0].id).toBe(MOCK_DB_FILTERED_RESPONSE[0].doc._id);
-        expect(response.data[0].message).toBe(MOCK_DB_FILTERED_RESPONSE[0].doc.message);
-      });
-
-      it('should return at least 1 message', () => {
-        service.getMessages(conversation).subscribe((data: any) => {
-          response = data;
-        });
-        expect(response.data.length >= 1).toBe(true);
-      });
-
-      it('should call addUserInfoToArray', () => {
-        const MESSAGES: Message[] = createMessagesArray(2);
-
-        spyOn(service, 'addUserInfoToArray').and.returnValue(MESSAGES);
-        service.getMessages(conversation).subscribe((data: any) => {
-          response = data;
-        });
-
-        expect(service.addUserInfoToArray).toHaveBeenCalled();
-        expect(response.data).toEqual(MESSAGES);
-      });
-    });
-
-    describe('when messages have a phoneRequest property', () => {
-      let response: any;
-      it('should add the phoneRequest property to the message if it exists in the Db doc', () => {
-        spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_MSG_WITH_PHONEREQUEST));
-
-        service.getMessages(conversation).subscribe((data: any) => {
-          response = data;
-        });
-
-        expect(response.data[0].phoneRequest).toBeTruthy();
-      });
-
-      it('should NOT add the phoneRequest property to the message if it does NOT exists in the Db doc', () => {
-        spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_FILTERED_RESPONSE));
-
-        service.getMessages(conversation).subscribe((data: any) => {
-          response = data;
-        });
-
-        response.data.forEach(m => {
-          expect(m.phoneRequest).toBeFalsy();
-        });
-      });
-    });
-
-    describe('when messages with the status PENDING exist in the localDb', () => {
-      let response: any;
-
-      it('should not resend messages that have the status PENDING and are older than 5 days', () => {
-        spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_OLD_PENDING));
-        spyOn(realTime, 'resendMessage');
-
-        service.getMessages(conversation).subscribe((data: any) => {
-          response = data;
-        });
-
-        expect(realTime.resendMessage).not.toHaveBeenCalled();
-      });
-    });
-
-    it('should call the archiveService.getAllEvents when there are no messages in the localDb AND there is internet connection', () => {
-      spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of([]));
-      spyOn(archiveService, 'getAllEvents').and.returnValue(Observable.of({ messages: [] }));
-      connectionService.isConnected = true;
-
-      service.getMessages(conversation).subscribe();
-
-      expect(archiveService.getAllEvents).toHaveBeenCalledWith(conversation.id);
-    });
-
-    it('should set status to READ for all mesasges fromSelf, when parameter archived is true', () => {
-      spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of([]));
-      spyOn(archiveService, 'getAllEvents').and.returnValue(Observable.of({
-        messages: [MOCK_RANDOM_MESSAGE, MOCK_MESSAGE_FROM_OTHER],
-        receivedReceipts: [],
-        readReceipts: []
-      }));
-      conversation.archived = true;
-      connectionService.isConnected = true;
-
-      service.getMessages(conversation).subscribe(r => {
-        expect(r.data[1].status).toBe(messageStatus.READ);
-      });
-    });
-  });
-
   describe('getNotSavedMessages', () => {
     let conversations = createConversationsArray(3);
     const timestamp = new Date(MOCK_DB_META.data.start);
@@ -323,7 +198,6 @@ describe('Service: Message', () => {
           messagesArray.map(m => m.status = messageStatus.RECEIVED);
           const clonedMockDbResponse = JSON.parse(JSON.stringify(MOCK_DB_FILTERED_RESPONSE));
           clonedMockDbResponse.map(msg => msg.thread = messagesArray[0].thread);
-          spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(clonedMockDbResponse));
           spyOn(archiveService, 'getEventsSince').and.returnValue(Observable.of({
             messages: messagesArray,
             receivedReceipts: receivedReceipts,
