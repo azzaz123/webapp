@@ -401,13 +401,4 @@ describe('Service: Message', () => {
       expect(requestMessage.phoneRequest).toBe(phoneRequestState.answered);
     });
   });
-
-  describe('resetCache', () => {
-    it('should reset unread messages', () => {
-      service.totalUnreadMessages = 5;
-      service.resetCache();
-      expect(service.totalUnreadMessages).toBe(0);
-    });
-  });
-
 });

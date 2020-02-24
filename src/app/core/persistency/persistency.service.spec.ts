@@ -282,15 +282,5 @@ describe('Service: Persistency', () => {
       expect(eventService.emit).toHaveBeenCalledWith(EventService.DB_READY);
     });
   });
-
-  describe('resetCache', () => {
-    it('should set the storedMessages to null', () => {
-      service['storedMessages'] = MOCK_DB_FILTERED_RESPONSE[0];
-
-      service.resetCache();
-
-      expect(service['storedMessages']).toBe(null);
-    });
-  });
 });
 

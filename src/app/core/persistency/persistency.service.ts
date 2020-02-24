@@ -9,7 +9,6 @@ import { User } from '../user/user';
 import { EventService } from '../event/event.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TrackingEvent } from '../tracking/tracking-event';
-import { StoredInboxConversation } from '../../chat/model/inbox-conversation';
 import Database = PouchDB.Database;
 import AllDocsResponse = PouchDB.Core.AllDocsResponse;
 import Document = PouchDB.Core.Document;
@@ -17,7 +16,6 @@ import Document = PouchDB.Core.Document;
 @Injectable()
 export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
-  private _inboxDb: Database<StoredInboxConversation>;
   private clickstreamDb: any;
   private storedMessages: AllDocsResponse<StoredMessage>;
   private latestVersion = 2.0;
@@ -36,8 +34,6 @@ export class PersistencyService {
         this.initClickstreamDb(this.clickstreamDbName);
         this.eventsStore = 'events-' + this.userId;
         this._messagesDb = new PouchDB('messages-' + this.userId, { auto_compaction: true });
-        this.initInboxDb(this.userId);
-        this.initArchivedInboxDb(this.userId);
         this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
           this.messagesDb.destroy().then(() => {
             this._messagesDb = new PouchDB('messages-' + this.userId, { auto_compaction: true });
@@ -53,18 +49,6 @@ export class PersistencyService {
 
   set messagesDb(value: PouchDB.Database<any>) {
     this._messagesDb = value;
-  }
-
-  set inboxDb(value: PouchDB.Database<StoredInboxConversation>) {
-    this._inboxDb = value;
-  }
-
-  public initInboxDb(userId: string) {
-    this.inboxDb = new PouchDB('inbox-' + userId, { auto_compaction: true });
-  }
-
-  public initArchivedInboxDb(userId: string) {
-    this.inboxDb = new PouchDB('archivedInbox-' + userId, { auto_compaction: true });
   }
 
   private initClickstreamDb(dbName: string, version?: number) {
@@ -142,10 +126,6 @@ export class PersistencyService {
     dbs.forEach((db) => {
       new PouchDB(db).destroy().catch(() => {});
     });
-  }
-
-  public resetCache() {
-    this.storedMessages = null;
   }
 
   private subscribeEventNewMessage() {
