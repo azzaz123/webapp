@@ -239,6 +239,19 @@ ngb-carousel {
       height: 384px;
     };
   }
+
+  &.single /deep/ {
+    .carousel-item {
+      height: 312px;
+    }
+    .carousel-indicators {
+      display: none;
+    }
+
+    .box-content {
+      padding: 20px;
+    }
+  }
 }
 
 .modal-close {
