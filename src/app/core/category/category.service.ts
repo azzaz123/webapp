@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CategoryOption, CategoryResponse } from './category-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { environment } from '../../../environments/environment';
+import { map } from 'rxjs/operators';
 
 export const CATEGORIES_ENDPOINT = 'api/v3/categories/keys/';
 export const CONSUMER_GOODS_ENDPOINT = `${CATEGORIES_ENDPOINT}consumer_goods`;
@@ -21,9 +22,7 @@ export class CategoryService {
   }
 
   public getCategoryById(id: number): Observable<CategoryResponse> {
-    return this.getCategories().map((categories: CategoryResponse[]) => {
-      return categories.find((category: CategoryResponse) => category.category_id === id);
-    });
+    return this.getCategories().map(categories => categories.find(category => category.category_id === id));
   }
 
   public getCategories(): Observable<CategoryResponse[]> {
@@ -57,5 +56,17 @@ export class CategoryService {
       has_model: category.has_model,
       object_type_title: category.object_type_title
     }));
+  }
+
+  public getConsumerGoodsCategory(): CategoryResponse {
+    return {
+      category_id: 0,
+      name: this.i18n.getTranslations('consumerGoodsGeneralCategoryTitle'),
+      icon_id: 'All',
+      vertical_id: 'consumer_goods',
+      has_object_type: false,
+      has_brand: false,
+      has_model: false
+    }
   }
 }
