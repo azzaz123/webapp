@@ -175,7 +175,6 @@ export class AppComponent implements OnInit {
   private initRealTimeChat(user: User, accessToken: string) {
     this.RTConnectedSubscription = this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
       this.initCalls();
-      this.initConversations();
       this.inboxService.init();
     });
     this.realTime.connect(user.id, accessToken);
@@ -185,14 +184,6 @@ export class AppComponent implements OnInit {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
       if (isProfessional) {
         this.callService.init().subscribe(() => this.callService.init(true).subscribe());
-      }
-    });
-  }
-
-  private initConversations() {
-    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-      if (isProfessional) {
-        this.conversationService.init().subscribe(() => this.conversationService.init(true).subscribe());
       }
     });
   }
