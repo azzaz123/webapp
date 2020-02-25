@@ -317,16 +317,6 @@ describe('App', () => {
         expect(realTime.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
       });
 
-      it('should NOT perform a xmpp connect when the DB_READY event is triggered with a dbName', () => {
-        spyOn(realTime, 'connect').and.callThrough();
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        eventService.emit(EventService.DB_READY, 'some-db-name');
-
-        expect(realTime.connect).not.toHaveBeenCalled();
-      });
-
       it('should call userService.sendUserPresenceInterval', () => {
         spyOn(userService, 'sendUserPresenceInterval');
 

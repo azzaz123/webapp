@@ -32,7 +32,6 @@ import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
 import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
-import { ChatSignal } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
 import { Subscription } from 'rxjs';
 import { SplitTestService } from './core/tracking/split-test.service';
@@ -174,16 +173,12 @@ export class AppComponent implements OnInit {
   }
 
   private initRealTimeChat(user: User, accessToken: string) {
-    this.event.subscribe(EventService.DB_READY, (dbName) => {
-      if (!dbName) {
-        this.RTConnectedSubscription = this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
-          this.initCalls();
-          this.initConversations();
-          this.inboxService.init();
-        });
-        this.realTime.connect(user.id, accessToken);
-      }
+    this.RTConnectedSubscription = this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
+      this.initCalls();
+      this.initConversations();
+      this.inboxService.init();
     });
+    this.realTime.connect(user.id, accessToken);
   }
 
   private initCalls() {

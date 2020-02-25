@@ -1,19 +1,16 @@
 import PouchDB from 'pouchdb';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, throwError } from 'rxjs';
-import { StoredMessage, StoredMetaInfoData } from '../message/messages.interface';
 import 'rxjs/add/observable/fromPromise';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { EventService } from '../event/event.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TrackingEvent } from '../tracking/tracking-event';
-import Database = PouchDB.Database;
 import Document = PouchDB.Core.Document;
 
 @Injectable()
 export class PersistencyService {
-  private _messagesDb: Database<StoredMessage>;
   private clickstreamDb: any;
   private latestVersion = 2.0;
   public clickstreamDbName = 'clickstreamEvents';
@@ -30,21 +27,8 @@ export class PersistencyService {
         this.userId = user.id;
         this.initClickstreamDb(this.clickstreamDbName);
         this.eventsStore = 'events-' + this.userId;
-        this._messagesDb = new PouchDB('messages-' + this.userId, { auto_compaction: true });
-        this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
-          this.messagesDb.destroy().then(() => {
-            this._messagesDb = new PouchDB('messages-' + this.userId, { auto_compaction: true });
-            this.saveDbVersion(this.messagesDb, this.latestVersion);
-            this.eventService.emit(EventService.DB_READY);
-          });
-          this.destroyDbs('messages', 'conversations', 'conversations-' + this.userId);
-        });
       });
     });
-  }
-
-  set messagesDb(value: PouchDB.Database<any>) {
-    this._messagesDb = value;
   }
 
   private initClickstreamDb(dbName: string, version?: number) {
@@ -86,20 +70,20 @@ export class PersistencyService {
 
   public getClickstreamEvents(): Observable<Array<TrackingEventData>> {
     return Observable.create(
-    (observer: Observer<Array<TrackingEventData>>) => {
-      this.clickstreamDb.transaction([this.eventsStore]).objectStore(this.eventsStore).getAll().onsuccess = (event) => {
-        observer.next(event.target.result);
-      };
-    });
+      (observer: Observer<Array<TrackingEventData>>) => {
+        this.clickstreamDb.transaction([this.eventsStore]).objectStore(this.eventsStore).getAll().onsuccess = (event) => {
+          observer.next(event.target.result);
+        };
+      });
   }
 
   public getPackagedClickstreamEvents(): Observable<Array<TrackingEvent>> {
     return Observable.create(
-    (observer: Observer<Array<TrackingEventData>>) => {
-      this.clickstreamDb.transaction([this.packagedEventsStore]).objectStore(this.packagedEventsStore).getAll().onsuccess = (event) => {
-        observer.next(event.target.result);
-      };
-    });
+      (observer: Observer<Array<TrackingEventData>>) => {
+        this.clickstreamDb.transaction([this.packagedEventsStore]).objectStore(this.packagedEventsStore).getAll().onsuccess = (event) => {
+          observer.next(event.target.result);
+        };
+      });
   }
 
   public storeClickstreamEvent(clickstreamEvent: TrackingEventData | any) {
@@ -114,16 +98,6 @@ export class PersistencyService {
     };
   }
 
-  get messagesDb(): PouchDB.Database<any> {
-    return this._messagesDb;
-  }
-
-  private destroyDbs(...dbs: Array<Database>) {
-    dbs.forEach((db) => {
-      new PouchDB(db).destroy().catch(() => {});
-    });
-  }
-
   private getDbVersion(localDb): Observable<any> {
     return Observable.fromPromise(localDb.get('version'));
   }
@@ -133,7 +107,8 @@ export class PersistencyService {
       this.upsert(localDb, 'version', (doc: Document<any>) => {
         doc.version = newVersion;
         return doc;
-      }).catch((err) => {}));
+      }).catch((err) => {
+      }));
   }
 
   /* This method is used to update data in the local database when the schema is changed, and we want

@@ -1,15 +1,9 @@
 /* tslint:disable:no-unused-variable */
 
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { PersistencyService } from './persistency.service';
-import { MESSAGE_MAIN, MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
-import {
-  MOCK_DB_FILTERED_RESPONSE,
-  MOCK_DB_RESPONSE,
-  MockedConversationsDb,
-  MockedInboxDb,
-  MockedMessagesDb
-} from '../../../tests/persistency.fixtures.spec';
+import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
+import { MockedConversationsDb, MockedInboxDb, MockedMessagesDb } from '../../../tests/persistency.fixtures.spec';
 import { CONVERSATION_DATE_ISO } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs';
 import { UserService } from '../user/user.service';
@@ -45,16 +39,6 @@ describe('Service: Persistency', () => {
     (service as any)['_messagesDb'] = new MockedMessagesDb();
     (service as any)['_conversationsDb'] = new MockedConversationsDb();
     (service as any)['_inboxDb'] = new MockedInboxDb();
-  });
-
-  it('should call localDbVersionUpdate through the constructor after USER_LOGIN event is trigegred', () => {
-    spyOn(service, 'localDbVersionUpdate').and.callThrough();
-    spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_USER));
-    spyOn<any>(service, 'getDbVersion').and.returnValue(Observable.of({version: 1.0}));
-
-    eventService.emit(EventService.USER_LOGIN);
-
-    expect(service.localDbVersionUpdate).toHaveBeenCalled();
   });
 
   describe('init clickstream DB', () => {
@@ -202,25 +186,6 @@ describe('Service: Persistency', () => {
       callbackCalled = false;
     });
 
-    it(`should save the version and call the callback method when called with a version number
-    greater than the current version number`, () => {
-      spyOn<any>(service, 'getDbVersion').and.returnValue(Observable.of({version: 1.0}));
-
-      service.localDbVersionUpdate(service.messagesDb, 1.2, mockCallback);
-
-      expect(service['saveDbVersion']).toHaveBeenCalled();
-      expect(callbackCalled).toBe(true);
-    });
-
-    it(`should save the version and call the callback method when the error reason is 'missing'`, () => {
-      spyOn<any>(service, 'getDbVersion').and.returnValue(Observable.throw({reason: 'missing'}));
-
-      service.localDbVersionUpdate(service.messagesDb, 1.2, mockCallback);
-
-      expect(service['saveDbVersion']).toHaveBeenCalled();
-      expect(callbackCalled).toBe(true);
-    });
-
     it(`should NOT save the version  NOR call the callback method when the error message reason is not 'missing'`, () => {
       spyOn<any>(service, 'getDbVersion').and.returnValue(Observable.throw({reason: 'something else'}));
 
@@ -228,18 +193,6 @@ describe('Service: Persistency', () => {
 
       expect(service['saveDbVersion']).not.toHaveBeenCalled();
       expect(callbackCalled).toBe(false);
-    });
-
-    it(`should NOT call saveDbVersion, NOT call the callback method AND emit a EventService.DB_READY event when called
-    with a version number less than the current version number`, () => {
-      spyOn<any>(service, 'getDbVersion').and.returnValue(Observable.of({version: 2.0}));
-      spyOn(eventService, 'emit');
-
-      service.localDbVersionUpdate(service.messagesDb, 1.2, mockCallback);
-
-      expect(service['saveDbVersion']).not.toHaveBeenCalled();
-      expect(callbackCalled).toBe(false);
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.DB_READY);
     });
   });
 });
