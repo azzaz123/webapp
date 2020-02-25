@@ -44,10 +44,10 @@ Resources:
 
           - Resource:
               - !GetAtt ArtifactBucket.Arn
+              - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
               - !Sub "arn:aws:s3:::wallapop-trigger-link-cicd/webapp/webapp-${ImageTag}.zip"
               - !Ref BucketES
               - !Ref BucketEN
-              - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
             Effect: Allow
             Action:
               - s3:*
@@ -99,10 +99,18 @@ Resources:
           - Resource: "*"
             Effect: Allow
             Action:
-              - codepipeline:*
-              - s3:*
-              - route53:*
-              - cloudfront:*
+              - codepipeline:List*
+              - codepipeline:Get*
+              - codepipeline:Create*
+              - codepipeline:Tag*
+              - s3:Get*
+              - s3:List*
+              - route53:Create*
+              - route53:Get*
+              - route53:List*
+              - cloudfront:List*
+              - cloudfront:Get*
+              - cloudfront:CreateCloudFrontOriginAccessIdentity
               - iam:ListUserTags
               - iam:ListRoleTags
               - iam:TagUser
@@ -114,6 +122,53 @@ Resources:
               - iam:DeleteRolePolicy
               - iam:PutRolePolicy
               - iam:GetRole
+
+          - Resource:
+              - !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:webapp-${EnvName}"
+            Effect: Allow
+            Action:
+              - codepipeline:*
+
+          - Resource:
+              - !GetAtt ArtifactBucket.Arn
+              - !Ref BucketES
+              - !Ref BucketEN
+            Effect: Allow
+            Action:
+              - s3:*
+
+          - Resource: !Join
+              - ''
+              - - 'arn:aws:route53:::hostedzone/'
+                - Fn::ImportValue: !Sub 'Core-${EnvName}-HostedZone'
+            Effect: Allow
+            Action:
+              - route53:Get*
+              - route53:List*
+              - route53:Change*
+              - route53:Update*
+
+          - Resource:
+              - !GetAtt CodePipelineServiceRole.Arn
+              - !GetAtt CloudFormationExecutionRole.Arn
+            Effect: Allow
+            Action:
+              - iam:*
+
+          - Resource: !Join
+              - ''
+              - - !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/'
+                - Fn::ImportValue: !Sub webapp-es-cloudfront-distribution-id-${EnvName}
+            Effect: Allow
+            Action:
+              - cloudfront:*
+          - Resource: !Join
+              - ''
+              - - !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/'
+                - Fn::ImportValue: !Sub webapp-es-cloudfront-distribution-id-${EnvName}
+            Effect: Allow
+            Action:
+              - cloudfront:*
       Roles:
         - Ref: "CloudFormationExecutionRole"
 
