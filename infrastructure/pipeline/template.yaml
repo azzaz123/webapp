@@ -92,7 +92,7 @@ Resources:
   CloudFormationPolicy:
     Type: "AWS::IAM::Policy"
     Properties:
-      PolicyName: "webapp-pipeline-cloudformation-policy"
+      PolicyName: !Sub "webapp-cloudformation-policy-${EnvName}"
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
