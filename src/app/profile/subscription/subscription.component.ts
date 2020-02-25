@@ -20,6 +20,7 @@ import {
 } from '../../core/analytics/analytics-constants';
 import { ContinueSubscriptionModalComponent } from './modals/continue-subscription-modal.component';
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component';
+import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-modal.component';
 
 @Component({
   selector: 'tsl-subscription',
@@ -39,23 +40,15 @@ export class SubscriptionComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    this.subscriptionsService.getSubscriptions(false).subscribe((subscriptions) => {
-      this.subscriptions = subscriptions;
-      this.loading = false;
-    });
+    this.subscriptionsService.getSubscriptions(false)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(subscriptions => this.subscriptions = subscriptions);
 
-    const pageView: AnalyticsPageView<ViewProfileSubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ViewProfileSubscription,
-      attributes: {
-        screenId: SCREEN_IDS.ProfileSubscription
-      }
-    };
-
-    this.analyticsService.trackPageView(pageView);
+    this.trackPageView();
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
-    const modal = subscription.subscribed_until ? ContinueSubscriptionModalComponent : subscription.subscribed_from ? EditSubscriptionModalComponent : AddNewSubscriptionModalComponent;
+    const modal = this.getModalTypeDependingOnSubscription(subscription);
     let modalRef: NgbModalRef = this.modalService.open(modal, {windowClass: 'review'});
     modalRef.componentInstance.subscription = subscription;
     modalRef.result.then((action: string) => {
@@ -75,17 +68,24 @@ export class SubscriptionComponent implements OnInit {
   private isSubscriptionUpdated() {
     this.subscriptionsService.getSubscriptions(false)
     .repeatWhen(completed => completed.delay(1000).takeWhile(() => this.loading)).take(5)
-    .pipe( 
-      finalize(() => {
-        this.router.navigate(['profile/info']);
-      })
-    )
+    .pipe(finalize(() => this.router.navigate(['profile/info'])))
     .subscribe(
       (updatedSubscriptions) => {
       if (!isEqual(this.subscriptions, updatedSubscriptions)) {
         this.loading = false;
       }
     });
+  }
+
+  private trackPageView() {
+    const pageView: AnalyticsPageView<ViewProfileSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ViewProfileSubscription,
+      attributes: {
+        screenId: SCREEN_IDS.ProfileSubscription
+      }
+    };
+
+    this.analyticsService.trackPageView(pageView);
   }
 
   private trackOpenModalEvent(subscription: SubscriptionsResponse) {
@@ -123,6 +123,7 @@ export class SubscriptionComponent implements OnInit {
   }
 
   private trackCloseModalEvent() {
+    // TODO: This event type needs to be changed
     const event: AnalyticsEvent<ClickUnsuscribeCancelation> = {
       name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeCancelation,
       eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -131,6 +132,26 @@ export class SubscriptionComponent implements OnInit {
       }
     };
     this.analyticsService.trackEvent(event);
+  }
+
+  private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse) {
+    // Subscription is active with only one tier and no limits (Consumer Goods)
+    if (subscription.subscribed_from && subscription.tiers.length === 1 && !subscription.tiers[0].limit) {
+      return CancelSubscriptionModalComponent;
+    }
+    
+    // Subscription was previously canceled
+    if (subscription.subscribed_until) {
+      return ContinueSubscriptionModalComponent;
+    }
+
+    // Subscription is active
+    if (subscription.subscribed_from) {
+      return EditSubscriptionModalComponent;
+    }
+
+    // Subscription is inactive
+    return AddNewSubscriptionModalComponent;
   }
 
 }

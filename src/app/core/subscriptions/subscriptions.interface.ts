@@ -19,7 +19,7 @@ export interface Tier {
 export interface SubscriptionsResponse {
   id: string,
   category_id: number,
-  current_limit: number,
+  current_limit?: number,
   subscribed_from: number,
   selected_tier_id: string,
   default_tier_id: string,
