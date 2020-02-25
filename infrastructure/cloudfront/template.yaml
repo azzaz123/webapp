@@ -51,7 +51,7 @@ Resources:
           - DomainName: !Sub "${BucketES}.s3.amazonaws.com"
             Id: myS3Origin
             S3OriginConfig:
-              OriginAccessIdentity: origin-access-identity/cloudfront/ECJ0NOZMYCRH1
+              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${BucketESCloudFrontOriginaccessIdentity}
         PriceClass: PriceClass_100
         ViewerCertificate:
           AcmCertificateArn: !Ref Certificate
@@ -88,7 +88,7 @@ Resources:
           - DomainName: !Sub "${BucketEN}.s3.amazonaws.com"
             Id: myS3Origin
             S3OriginConfig:
-              OriginAccessIdentity: origin-access-identity/cloudfront/ECJ0NOZMYCRH1
+              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${BucketENCloudFrontOriginaccessIdentity}
         PriceClass: PriceClass_100
         ViewerCertificate:
           AcmCertificateArn: !Ref Certificate
@@ -99,6 +99,50 @@ Resources:
           Value: !Ref EnvName
         - Key: Project
           Value: !Ref ProjectName
+
+  BucketESCloudFrontOriginaccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 'Access identity for CloudFront'
+
+  BucketESPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref BucketES
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - !Sub "arn:aws:s3:::${BucketES}/*"
+              - !Sub "arn:aws:s3:::${BucketES}"
+            Principal:
+              CanonicalUser: !GetAtt BucketESCloudFrontOriginaccessIdentity.S3CanonicalUserId
+
+  BucketENPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref BucketEN
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - !Sub "arn:aws:s3:::${BucketEN}/*"
+              - !Sub "arn:aws:s3:::${BucketEN}"
+            Principal:
+              CanonicalUser: !GetAtt BucketENCloudFrontOriginaccessIdentity.S3CanonicalUserId
+
+  BucketENCloudFrontOriginaccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 'Access identity for CloudFront'
 
   WebEsRecordSetGroup:
     Type: AWS::Route53::RecordSetGroup
@@ -121,3 +165,16 @@ Resources:
             HostedZoneId: Z2FDTNDATAQYW2
           Name: !Ref HostEN
           Type: A
+
+Outputs:
+  WebappEsDistributionId:
+    Description: Webapp CloudFront Distribution Id
+    Value: !Ref WebEsDistribution
+    Export:
+      Name: !Sub webapp-es-cloudfront-distribution-id-${EnvName}
+
+  WebappEnDistributionId:
+    Description: Webapp CloudFront Distribution Id
+    Value: !Ref WebEnDistribution
+    Export:
+      Name: !Sub webapp-en-cloudfront-distribution-id-${EnvName}
