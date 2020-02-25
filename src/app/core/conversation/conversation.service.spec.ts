@@ -9,16 +9,14 @@ import { ItemService } from '../item/item.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
-import { messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { NotificationService } from '../notification/notification.service';
 import { TrackingService } from '../tracking/tracking.service';
-import { CONVERSATION_ID, createConversationsArray, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { MockedUserService, USER_ID } from '../../../tests/user.fixtures.spec';
+import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { MockedUserService } from '../../../tests/user.fixtures.spec';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
-import { createMessagesArray, MOCK_MESSAGE, MOCK_RANDOM_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveService } from '../message/archive.service';
@@ -27,7 +25,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 import { RealTimeService } from '../message/real-time.service';
 import { BlockUserXmppService } from './block-user';
-import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { RemoteConsoleService } from '../remote-console';
 import { InboxConversationServiceMock, InboxServiceMock, MockRemoteConsoleService } from '../../../tests';
 import { InboxService } from '../inbox/inbox.service';
@@ -162,40 +159,6 @@ describe('Service: Conversation', () => {
       service.openPhonePopup(conversation, true);
 
       expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(event);
-    });
-  });
-
-  describe('archiveWithPhones', () => {
-    const CONVERSATIONS_WITH_PHONE: Conversation[] = createConversationsArray(4, true);
-    const NORMAL_CONVERSATIONS: Conversation[] = createConversationsArray(6);
-    beforeEach(() => {
-      spyOn<any>(service, 'bulkArchive');
-      service.leads = [...CONVERSATIONS_WITH_PHONE, ...NORMAL_CONVERSATIONS];
-      service.archiveWithPhones();
-    });
-
-    it('should call bulkArchive with conversations with phone', () => {
-      expect(service['bulkArchive']).toHaveBeenCalledWith(CONVERSATIONS_WITH_PHONE);
-    });
-  });
-
-  describe('onArchiveAll', () => {
-    const CONVERSATIONS: Conversation[] = createConversationsArray(4);
-    const RETURNED_CONVERSATIONS: Conversation[] = createConversationsArray(2);
-    beforeEach(() => {
-      spyOn<any>(service, 'bulkArchive').and.returnValue(RETURNED_CONVERSATIONS);
-      spyOn(service, 'stream');
-      service.leads = CONVERSATIONS;
-      service['onArchiveAll']();
-    });
-
-    it('should call bulkArchive', () => {
-      expect(service['bulkArchive']).toHaveBeenCalledWith(CONVERSATIONS);
-      expect(service.leads).toEqual(RETURNED_CONVERSATIONS);
-    });
-
-    it('should call streams', () => {
-      expect(service.stream).toHaveBeenCalled();
     });
   });
 });

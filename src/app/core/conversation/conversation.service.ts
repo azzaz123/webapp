@@ -88,19 +88,12 @@ export class ConversationService extends LeadService {
   }
 
   public archiveWithPhones() {
-    const archivedConversations: Conversation[] = remove(<Conversation[]>this.leads, (conversation: Conversation) => {
-      return conversation.phone !== undefined;
-    });
-    this.bulkArchive(archivedConversations);
   }
 
   protected onArchive(conversation: Conversation) {
   }
 
   protected onArchiveAll() {
-    this.leads = this.bulkArchive(this.leads);
-    this.stream();
-    this.stream(true);
   }
 
   protected mapRecordData(data: ConversationResponse): Conversation {
