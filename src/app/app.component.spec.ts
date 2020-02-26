@@ -23,7 +23,6 @@ import { NotificationService } from './core/notification/notification.service';
 import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { UserService } from './core/user/user.service';
-import { DebugService } from './core/debug/debug.service';
 import { MOCK_USER, USER_DATA, USER_ID, MOCK_FULL_USER } from '../tests/user.fixtures.spec';
 import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
@@ -90,7 +89,6 @@ describe('App', () => {
             }
           }
         },
-        {provide: DebugService, useValue: {}},
         {
           provide: InboxService, useValue: {
             init() {},

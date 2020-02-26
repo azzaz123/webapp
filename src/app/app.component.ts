@@ -25,7 +25,6 @@ import { MessageService } from './core/message/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
-import { DebugService } from './core/debug/debug.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
@@ -72,7 +71,6 @@ export class AppComponent implements OnInit {
               private winRef: WindowRef,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private debugService: DebugService,
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
@@ -284,4 +282,3 @@ export class AppComponent implements OnInit {
     });
   }
 }
-
