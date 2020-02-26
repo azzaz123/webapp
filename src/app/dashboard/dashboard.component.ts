@@ -28,7 +28,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     constructor(private callService: CallsService,
                 private trackingService: TrackingService,
-                private conversationService: ConversationService,
                 private router: Router,
                 private inboxConversationService: InboxConversationService,
                 private eventService: EventService) {
