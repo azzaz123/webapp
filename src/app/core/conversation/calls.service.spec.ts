@@ -402,30 +402,4 @@ describe('CallsService', () => {
       expect(result.archived).toBe(4);
     });
   });
-
-  describe('onArchiveAll', () => {
-    const CONVERSATIONS: Conversation[] = createConversationsArray(4);
-    const RETURNED_CONVERSATIONS: Conversation[] = createConversationsArray(2);
-
-    beforeEach(() => {
-      spyOn<any>(service, 'bulkArchive').and.returnValue(RETURNED_CONVERSATIONS);
-      spyOn(service, 'stream');
-      spyOn(conversationService, 'stream');
-      spyOn(conversationService, 'archiveWithPhones');
-      service.leads = CONVERSATIONS;
-
-      service['onArchiveAll']();
-    });
-
-    it('should call bulkArchive and archiveWithPhones', () => {
-      expect(service['bulkArchive']).toHaveBeenCalledWith(CONVERSATIONS);
-      expect(service.leads).toEqual(RETURNED_CONVERSATIONS);
-      expect(conversationService.archiveWithPhones).toHaveBeenCalled();
-    });
-
-    it('should call streams', () => {
-      expect(service.stream).toHaveBeenCalled();
-      expect(conversationService.stream).toHaveBeenCalled();
-    });
-  });
 });
