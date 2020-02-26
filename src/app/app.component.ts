@@ -11,7 +11,6 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/filter';
 import { MatIconRegistry } from '@angular/material';
-import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
@@ -67,7 +66,6 @@ export class AppComponent implements OnInit {
               private matIconRegistry: MatIconRegistry,
               private trackingService: TrackingService,
               private i18n: I18nService,
-              private conversationService: ConversationService,
               private winRef: WindowRef,
               private router: Router,
               private activatedRoute: ActivatedRoute,
@@ -101,7 +99,6 @@ export class AppComponent implements OnInit {
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
-    this.conversationService.firstLoad = true;
     this.trackingService.trackAccumulatedEvents();
 
     __cmp('init', quancastOptions[this.i18n.locale]);
@@ -226,7 +223,6 @@ export class AppComponent implements OnInit {
 
   private subscribeEventItemUpdated() {
     const syncItem = (item: Item) => {
-      this.conversationService.syncItem(item);
       this.callService.syncItem(item);
     };
     this.event.subscribe(EventService.ITEM_UPDATED, syncItem);
