@@ -19,7 +19,6 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
-import { MsgArchiveService } from '../message/archive.service';
 import { I18nService } from '../i18n/i18n.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
@@ -45,7 +44,6 @@ let connectionService: ConnectionService;
 let inboxService: InboxService;
 let inboxConversationService: InboxConversationService;
 let modalService: NgbModal;
-let archiveService: MsgArchiveService;
 let i18n: I18nService;
 
 const componentInstance: any = { SendPhoneComponent: jasmine.createSpy('SendPhoneComponent') };
@@ -93,7 +91,6 @@ describe('Service: Conversation', () => {
         },
         MessageService,
         EventService,
-        MsgArchiveService,
         I18nService
       ]
     });
@@ -111,7 +108,6 @@ describe('Service: Conversation', () => {
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
     connectionService = TestBed.get(ConnectionService);
-    archiveService = TestBed.get(MsgArchiveService);
     modalService = TestBed.get(NgbModal);
     i18n = TestBed.get(I18nService);
   });
