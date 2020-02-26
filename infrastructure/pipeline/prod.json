@@ -2,7 +2,9 @@
   "Parameters": {
     "EnvName": "prod",
     "ImageTag": "stable",
-    "ProjectName": "webapp"
+    "ProjectName": "webapp",
+    "BucketES": "arn:aws:s3:::web-es.wallapop.com",
+    "BucketEN": "arn:aws:s3:::web-en.wallapop.com"
   },
   "Tags": {
     "Project": "webapp",

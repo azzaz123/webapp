@@ -382,15 +382,10 @@ describe('UploadCarComponent', () => {
       expect(component.loading).toBeTruthy();
     });
 
-    it('should set dirty invalid fields', () => {
+    it('should set form as pending', () => {
       component.onSubmit();
 
-      expect(component.uploadForm.get('model').dirty).toBeTruthy();
-      expect(component.uploadForm.get('brand').dirty).toBeTruthy();
-      expect(component.uploadForm.get('title').dirty).toBeTruthy();
-      expect(component.uploadForm.get('year').dirty).toBeTruthy();
-      expect(component.uploadForm.get('sale_price').dirty).toBeTruthy();
-      expect(component.uploadForm.get('location.address').dirty).toBeTruthy();
+      expect(component.uploadForm.pending).toBe(true);
     });
 
     it('should show image error', () => {

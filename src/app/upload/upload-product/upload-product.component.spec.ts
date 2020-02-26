@@ -1,3 +1,4 @@
+import { MOCK_ITEM_CELLPHONES } from './../../../tests/item.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -5,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { UploadProductComponent } from './upload-product.component';
+import { UploadProductComponent, CELLPHONES_EXTRA_FIELDS_NAME, FASHION_EXTRA_FIELDS_NAME } from './upload-product.component';
 import { CategoryService } from '../../core/category/category.service';
 import { CATEGORIES_OPTIONS, CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../../tests/category.fixtures.spec';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
@@ -15,14 +16,13 @@ import { User } from '../../core/user/user';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { ITEM_CATEGORY_ID, ITEM_DATA, ITEM_DELIVERY_INFO, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
+import { ITEM_CATEGORY_ID, ITEM_DATA, ITEM_DELIVERY_INFO, MOCK_ITEM, MOCK_ITEM_FASHION } from '../../../tests/item.fixtures.spec';
 import { Item } from '../../core/item/item';
 import { UserLocation } from '../../core/user/user-response.interface';
 import { environment } from '../../../environments/environment';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { SplitTestService } from '../../core/tracking/split-test.service';
-import { CategoryOption } from '../../core/category/category-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
@@ -38,6 +38,8 @@ import {
   EditItemCG,
   ListItemCG
 } from '../../core/analytics/analytics-constants';
+import { BrandModel } from '../brand-model.interface';
+import { CATEGORY_IDS } from '../../core/category/category-ids';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -105,8 +107,6 @@ describe('UploadProductComponent', () => {
             },
             isHeroCategory() {
             },
-            isFashionCategory() {
-            }
           }
         },
         {
@@ -194,14 +194,20 @@ describe('UploadProductComponent', () => {
           latitude: '',
           longitude: ''
         },
-        extra_info: {
+        [CELLPHONES_EXTRA_FIELDS_NAME]: {
           object_type: {
-            id: null
+            id: null,
           },
           brand: null,
           model: null,
+        },
+        [FASHION_EXTRA_FIELDS_NAME]: {
+          object_type: {
+            id: null,
+          },
+          brand: null,
           size: {
-            id: null
+            id: null,
           },
           gender: null
         }
@@ -253,42 +259,125 @@ describe('UploadProductComponent', () => {
 
         expect(component.fixedCategory).toBe('Real Estate');
       });
+    });
 
-      it('should show upload extra fields if the item category is fashion', () => {
-        spyOn(categoryService, 'isFashionCategory').and.returnValue(true);
-        component.item = new Item(
-          ITEM_DATA.id,
-          ITEM_DATA.legacy_id,
-          ITEM_DATA.owner,
-          ITEM_DATA.title,
-          ITEM_DATA.description,
-          12465
-        );
+    describe('when the item has extra fields', () => {
+      describe('if it`s a fashion item', () => {
+        it('should patch the fashion extra fields values', () => {
+          component.item = MOCK_ITEM_FASHION;
 
-        component.ngOnInit();
+          component.ngOnInit();
 
-        expect(component.currentCategory.has_brand).toBe(true);
-        expect(component.currentCategory.has_model).toBe(true);
-        expect(component.isFashionCategory).toBe(true);
+          expect(component.uploadForm.value).toEqual({
+            id: MOCK_ITEM_FASHION.id,
+            title: MOCK_ITEM_FASHION.title,
+            sale_price: MOCK_ITEM_FASHION.salePrice,
+            currency_code: MOCK_ITEM_FASHION.currencyCode,
+            description: MOCK_ITEM_FASHION.description,
+            sale_conditions: MOCK_ITEM_FASHION.saleConditions,
+            category_id: String(CATEGORY_IDS.FASHION_ACCESSORIES),
+            delivery_info: MOCK_ITEM_FASHION.deliveryInfo,
+            images: [],
+            location: {
+              address: '',
+              latitude: '',
+              longitude: ''
+            },
+            [CELLPHONES_EXTRA_FIELDS_NAME]: {
+              object_type: {
+                id: null,
+              },
+              brand: null,
+              model: null,
+            },
+            [FASHION_EXTRA_FIELDS_NAME]: {
+              object_type: {
+                id: MOCK_ITEM_FASHION.extraInfo.object_type.id,
+              },
+              brand: MOCK_ITEM_FASHION.extraInfo.brand,
+              size: {
+                id: MOCK_ITEM_FASHION.extraInfo.size.id,
+              },
+              gender: MOCK_ITEM_FASHION.extraInfo.gender
+            }
+          });
+        });
+
+        it('should get object types for the selected category', () => {
+          spyOn(component, 'getObjectTypes');
+          component.item = MOCK_ITEM_FASHION;
+
+          component.ngOnInit();
+
+          expect(component.getObjectTypes).toHaveBeenCalled();
+        });
+
+        it('should get sizes types for the selected object type', () => {
+          spyOn(component, 'getSizes');
+          component.item = MOCK_ITEM_FASHION;
+
+          component.ngOnInit();
+
+          expect(component.getSizes).toHaveBeenCalled();
+        });
+
       });
 
-      it('should show upload extra fields if the item category is cell phones', () => {
-        component.item = new Item(
-          ITEM_DATA.id,
-          ITEM_DATA.legacy_id,
-          ITEM_DATA.owner,
-          ITEM_DATA.title,
-          ITEM_DATA.description,
-          16000
-        );
+      describe('if it`s a cellphones item', () => {
+        it('should patch cellphones extra fields values into the form', () => {
+          component.item = MOCK_ITEM_CELLPHONES;
 
-        component.ngOnInit();
+          component.ngOnInit();
 
-        expect(component.currentCategory.has_brand).toBe(true);
-        expect(component.currentCategory.has_model).toBe(true);
+          expect(component.uploadForm.value).toEqual({
+            id: MOCK_ITEM_CELLPHONES.id,
+            title: MOCK_ITEM_CELLPHONES.title,
+            sale_price: MOCK_ITEM_CELLPHONES.salePrice,
+            currency_code: MOCK_ITEM_CELLPHONES.currencyCode,
+            description: MOCK_ITEM_CELLPHONES.description,
+            sale_conditions: MOCK_ITEM_CELLPHONES.saleConditions,
+            category_id: String(MOCK_ITEM_CELLPHONES.categoryId),
+            delivery_info: MOCK_ITEM_CELLPHONES.deliveryInfo,
+            images: [],
+            location: {
+              address: '',
+              latitude: '',
+              longitude: ''
+            },
+            [CELLPHONES_EXTRA_FIELDS_NAME]: {
+              object_type: {
+                id: MOCK_ITEM_CELLPHONES.extraInfo.object_type.id,
+              },
+              brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
+              model: MOCK_ITEM_CELLPHONES.extraInfo.model,
+            },
+            [FASHION_EXTRA_FIELDS_NAME]: {
+              object_type: {
+                id: null,
+              },
+              brand: null,
+              size: {
+                id: null,
+              },
+              gender: null
+            }
+          });
+        });
       });
     });
 
+    it('should get object types for the selected category', () => {
+      spyOn(component, 'getObjectTypes');
+      component.item = MOCK_ITEM_CELLPHONES;
+
+      component.ngOnInit();
+
+      expect(component.getObjectTypes).toHaveBeenCalled();
+    });
+
+    afterAll(() => {
+      component.item = MOCK_ITEM;
+    });
   });
 
   describe('detectFormChanges', () => {
@@ -313,7 +402,6 @@ describe('UploadProductComponent', () => {
   });
 
   describe('ngAfterContentInit', () => {
-
     beforeEach(() => {
       component['focused'] = false;
       component.titleField = {
@@ -366,7 +454,6 @@ describe('UploadProductComponent', () => {
         longitude: USER_LOCATION.approximated_longitude
       });
 
-      expect(component.uploadForm.valid).toBeTruthy();
       component.uploadEvent.subscribe((i: any) => {
         input = i;
       });
@@ -375,15 +462,14 @@ describe('UploadProductComponent', () => {
         type: 'create',
         values: component.uploadForm.value
       });
-      expect(component.loading).toBeTruthy();
+      expect(component.uploadForm.valid).toBe(true);
+      expect(component.loading).toBe(true);
     });
 
-    it('should set dirty invalid fields', () => {
+    it('should set form as pending', () => {
       component.onSubmit();
 
-      expect(component.uploadForm.get('title').dirty).toBeTruthy();
-      expect(component.uploadForm.get('sale_price').dirty).toBeTruthy();
-      expect(component.uploadForm.get('location.address').dirty).toBeTruthy();
+      expect(component.uploadForm.pending).toBe(true);
     });
 
     it('should show image error', () => {
@@ -406,30 +492,108 @@ describe('UploadProductComponent', () => {
       expect(component.uploadForm.valid).toBeFalsy();
     });
 
-    it('should delete the extra_info object if the selected category doesn`t accept brand and model', () => {
-      component.uploadForm.get('category_id').patchValue('12463');
-      component.uploadForm.get('title').patchValue('test');
-      component.uploadForm.get('description').patchValue('test');
-      component.uploadForm.get('sale_price').patchValue(1000000);
-      component.uploadForm.get('currency_code').patchValue('EUR');
-      component.uploadForm.get('images').patchValue([{ 'image': true }]);
-      component.uploadForm.get('location').patchValue({
-        address: USER_LOCATION.full_address,
-        latitude: USER_LOCATION.approximated_latitude,
-        longitude: USER_LOCATION.approximated_longitude
+    describe('when the upload category doesn`t allow extra fields', () => {
+      it('should disable extra info fields', () => {
+        component.item = MOCK_ITEM;
+        component.uploadForm.get('location').patchValue({
+          address: USER_LOCATION.full_address,
+          latitude: USER_LOCATION.approximated_latitude,
+          longitude: USER_LOCATION.approximated_longitude
+        });
+        component.uploadForm.get('images').patchValue([{ 'image': true }]);
+
+        component.ngOnInit();
+        component.onSubmit();
+
+        expect(component.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).disabled).toBe(true);
+        expect(component.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).disabled).toBe(true);
+      });
+    });
+
+    describe('when the upload category is cellphones', () => {
+      beforeEach(() => {
+        component.item = MOCK_ITEM_CELLPHONES;
+        component.uploadForm.get('location').patchValue({
+          address: USER_LOCATION.full_address,
+          latitude: USER_LOCATION.approximated_latitude,
+          longitude: USER_LOCATION.approximated_longitude
+        });
+        component.uploadForm.get('images').patchValue([{ 'image': true }]);
       });
 
-      component.onSubmit();
+      it('should disable fashion extra fields', () => {
+        component.ngOnInit();
+        component.onSubmit();
 
-      expect(component.uploadForm.value.extra_info).toBeUndefined();
+        expect(component.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).disabled).toBe(true);
+        expect(component.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).disabled).toBe(false);
+      });
+
+      it('should rename `cellphones_extra_fields` object to `extra_info`', () => {
+        component.ngOnInit();
+        const cellphonesExtraFields = component.uploadForm.value[CELLPHONES_EXTRA_FIELDS_NAME];
+
+        component.onSubmit();
+
+        expect(component.uploadForm.value.extra_info).toEqual(cellphonesExtraFields);
+        expect(component.uploadForm.value[CELLPHONES_EXTRA_FIELDS_NAME]).toBeUndefined();
+      });
+    });
+
+    describe('when the upload category is fashion', () => {
+      beforeEach(() => {
+        component.item = MOCK_ITEM_FASHION;
+        component.uploadForm.get('location').patchValue({
+          address: USER_LOCATION.full_address,
+          latitude: USER_LOCATION.approximated_latitude,
+          longitude: USER_LOCATION.approximated_longitude
+        });
+        component.uploadForm.get('images').patchValue([{ 'image': true }]);
+      });
+
+      it('should disable cellphones extra fields', () => {
+        component.ngOnInit();
+
+        component.onSubmit();
+
+        expect(component.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).disabled).toBe(false);
+        expect(component.uploadForm.get(CELLPHONES_EXTRA_FIELDS_NAME).disabled).toBe(true);
+      });
+
+      it('should rename `fashion_extra_fields` object to `extra_info`', () => {
+        component.ngOnInit();
+        const fashionExtraFieldsName = component.uploadForm.value[FASHION_EXTRA_FIELDS_NAME];
+
+        component.onSubmit();
+
+        expect(component.uploadForm.value.extra_info).toEqual(fashionExtraFieldsName);
+        expect(component.uploadForm.value[FASHION_EXTRA_FIELDS_NAME]).toBeUndefined();
+      });
     });
 
   });
 
+  describe('getObjectTypes', () => {
+    it('should get the object types for the selected category', () => {
+      component.uploadForm.patchValue({ category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES });
+      spyOn(generalSuggestionsService, 'getObjectTypes').and.callThrough();
+
+      component.getObjectTypes();
+
+      expect(generalSuggestionsService.getObjectTypes).toHaveBeenCalledWith(CATEGORY_IDS.CELL_PHONES_ACCESSORIES);
+    });
+  });
+
   describe('getBrands', () => {
     beforeEach(() => {
-      component.uploadForm.value.extra_info.object_type.id = '365';
-      component.uploadForm.value.category_id = '16000';
+      component.uploadForm.patchValue({
+        category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+        [CELLPHONES_EXTRA_FIELDS_NAME]: {
+          object_type: {
+            id: '365'
+          }
+        }
+      });
     });
 
     it('should get the brands for the provided keyword', () => {
@@ -437,187 +601,51 @@ describe('UploadProductComponent', () => {
 
       component.getBrands('Apple');
 
-      expect(generalSuggestionsService.getBrands).toHaveBeenCalledWith('Apple', '16000', '365');
+      expect(generalSuggestionsService.getBrands).toHaveBeenCalledWith('Apple', CATEGORY_IDS.CELL_PHONES_ACCESSORIES, '365');
     });
 
     it('should get brands and models if the brand endpoint doesn`t return any result', () => {
       spyOn(generalSuggestionsService, 'getBrandsAndModels').and.callThrough();
+      spyOn(generalSuggestionsService, 'getBrands').and.returnValue(Observable.of([]));
 
-      component.getBrands('Apple');
+      component.getBrands('iPhone');
 
-      expect(generalSuggestionsService.getBrandsAndModels).toHaveBeenCalledWith('Apple', '16000', '365');
+      expect(generalSuggestionsService.getBrandsAndModels).toHaveBeenCalledWith('iPhone', CATEGORY_IDS.CELL_PHONES_ACCESSORIES, '365');
     });
   });
 
   describe('getModels', () => {
-    beforeEach(() => {
-      component.uploadForm.value.category_id = '16000';
-      component.uploadForm.value.extra_info.object_type.id = '365';
-      component.uploadForm.value.extra_info.brand = 'Apple';
-    });
-
     it('should get the models for the provided keyword and the selected brand', () => {
+      component.uploadForm.patchValue({
+        category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+        [CELLPHONES_EXTRA_FIELDS_NAME]: {
+          object_type: {
+            id: '365'
+          },
+          brand: 'Apple'
+        }
+      });
       spyOn(generalSuggestionsService, 'getModels').and.callThrough();
 
       component.getModels('iPhone');
 
-      expect(generalSuggestionsService.getModels).toHaveBeenCalledWith('iPhone', '16000', 'Apple', '365');
+      expect(generalSuggestionsService.getModels).toHaveBeenCalledWith('iPhone', CATEGORY_IDS.CELL_PHONES_ACCESSORIES, 'Apple', '365');
     });
   });
 
   describe('getSizes', () => {
-    beforeEach(() => {
-      component.uploadForm.value.extra_info.object_type.id = '365';
-      component.uploadForm.value.extra_info.gender = 'male';
-    });
-
     it('should get the sizes for the current object type and gender', () => {
+      component.uploadForm.get(FASHION_EXTRA_FIELDS_NAME).patchValue({
+        object_type: {
+          id: '365'
+        },
+        gender: 'male'
+      });
       spyOn(generalSuggestionsService, 'getSizes').and.callThrough();
 
       component.getSizes();
 
       expect(generalSuggestionsService.getSizes).toHaveBeenCalledWith('365', 'male');
-    });
-  });
-
-  describe('selectBrandOrModel', () => {
-    describe('when reciving a string', () => {
-      it('should select the brand', () => {
-        component.selectBrandOrModel('Apple', 'brand');
-
-        expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
-      });
-
-      it('should select the model', () => {
-        component.selectBrandOrModel('iPhone', 'model');
-
-        expect(component.uploadForm.value.extra_info.model).toEqual('iPhone');
-      });
-    });
-
-    describe('when reciving an object', () => {
-      it('should select the brand and model', () => {
-        component.selectBrandOrModel({ brand: 'Apple', model: 'iPhone XSX' }, null);
-
-        expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
-        expect(component.uploadForm.value.extra_info.model).toEqual('iPhone XSX');
-      });
-
-      it('should select the brand', () => {
-        component.selectBrandOrModel({ brand: 'Apple' }, null);
-
-        expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
-        expect(component.uploadForm.value.extra_info.model).toBe(null);
-      });
-
-      it('should select the model', () => {
-        component.selectBrandOrModel({ model: 'iPhone XSX' }, null);
-
-        expect(component.uploadForm.value.extra_info.brand).toBe(null);
-        expect(component.uploadForm.value.extra_info.model).toEqual('iPhone XSX');
-      });
-    });
-  });
-
-  describe(('handleItemExtraInfo'), () => {
-    const MOCK_CATEGORY_OPTION_1: CategoryOption = {
-      value: '16000',
-      label: 'label',
-      icon_id: '1',
-      object_type_title: 'title',
-      has_object_type: true,
-      has_brand: true,
-      has_model: true
-    };
-
-    it('should check if the selected category is the fashion category', () => {
-      spyOn(categoryService, 'isFashionCategory');
-
-      component.handleItemExtraInfo(false, CATEGORIES_OPTIONS_CONSUMER_GOODS[0]);
-
-      expect(categoryService.isFashionCategory).toHaveBeenCalledWith(parseInt(CATEGORIES_OPTIONS_CONSUMER_GOODS[0].value, 10));
-    });
-
-    describe('if the selected category allows brand/model fields', () => {
-      it('should show the form extra fields', () => {
-        component.handleItemExtraInfo(false, MOCK_CATEGORY_OPTION_1);
-
-        expect(component.showExtraFields).toBe(true);
-      });
-
-      it('should update the object type title', () => {
-        component.handleItemExtraInfo(false, MOCK_CATEGORY_OPTION_1);
-
-        expect(component.objectTypeTitle).toBe('title');
-      });
-
-      it('should get the object types for the selected category', () => {
-        spyOn(generalSuggestionsService, 'getObjectTypes').and.callThrough();
-
-        component.handleItemExtraInfo(false, MOCK_CATEGORY_OPTION_1);
-
-        expect(generalSuggestionsService.getObjectTypes).toHaveBeenCalledWith('16000');
-      });
-    });
-
-    describe('if the selected category is the fashion category', () => {
-      it('should get the sizes', () => {
-        spyOn(component, 'getSizes');
-        spyOn(categoryService, 'isFashionCategory').and.returnValue(true);
-
-        component.handleItemExtraInfo(false, CATEGORIES_OPTIONS_CONSUMER_GOODS[0]);
-
-        expect(component.getSizes).toHaveBeenCalled();
-      });
-    });
-
-    it('should send the Taplytics `CategoryWithBrandModelSelected` event', () => {
-      spyOn(splitTestService, 'track');
-
-      component.handleItemExtraInfo(false, CATEGORIES_OPTIONS_CONSUMER_GOODS[0]);
-
-      expect(splitTestService.track).toHaveBeenCalledWith('CategoryWithBrandModelSelected');
-    });
-
-    describe('when initializeExtraInfo parameter is true', () => {
-      it('should initialize the extra info object ', () => {
-        spyOn(component, 'initializeItemExtraInfo');
-
-        component.handleItemExtraInfo(true, CATEGORIES_OPTIONS_CONSUMER_GOODS[0]);
-
-        expect(component.initializeItemExtraInfo).toHaveBeenCalledWith(null);
-      });
-    });
-  });
-
-  describe(('initializeItemExtraInfo'), () => {
-    it('should initialize the upload form extra info fields with the default values', () => {
-      component.initializeItemExtraInfo(1);
-
-      expect(component.uploadForm.value.extra_info.brand).toBe(null);
-      expect(component.uploadForm.value.extra_info.model).toBe(null);
-      expect(component.uploadForm.value.extra_info.size.id).toBe(null);
-      expect(component.uploadForm.value.extra_info.gender).toBe(null);
-    });
-  });
-
-  describe('getBrandPlaceholder', () => {
-    describe('if the category is fashion', () => {
-      it('should return the fashion placeholder ', () => {
-        component.isFashionCategory = true;
-
-        const placeholder = component.getBrandPlaceholder();
-
-        expect(placeholder).toEqual('fashion_brand_example');
-      });
-    });
-
-    it('should return the generic placeholder ', () => {
-      component.isFashionCategory = false;
-
-      const placeholder = component.getBrandPlaceholder();
-
-      expect(placeholder).toEqual('phones_brand_example');
     });
   });
 
@@ -675,15 +703,6 @@ describe('UploadProductComponent', () => {
       component.onUploaded(uploadedEvent);
 
       expect(appboy.logCustomEvent).toHaveBeenCalledWith('List', { platform: 'web' });
-    });
-
-    it('should send the Taplytics `UploadCompleted` event if the category allow extra fields', () => {
-      spyOn(splitTestService, 'track');
-
-      component.uploadForm.value.category_id = '16000';
-      component.onUploaded(uploadedEvent);
-
-      expect(splitTestService.track).toHaveBeenCalledWith('UploadCompleted');
     });
 
     describe('if it`s a item modification', () => {
@@ -824,16 +843,22 @@ describe('UploadProductComponent', () => {
           latitude: USER_LOCATION.approximated_latitude,
           longitude: USER_LOCATION.approximated_longitude
         },
-        extra_info: {
+        [CELLPHONES_EXTRA_FIELDS_NAME]: {
           object_type: {
-            id: null
+            id: null,
           },
           brand: null,
           model: null,
-          size: {
-            id: null
+        },
+        [FASHION_EXTRA_FIELDS_NAME]: {
+          object_type: {
+            id: null,
           },
-          gender: null
+          brand: null,
+          size: {
+            id: null,
+          },
+          gender: null,
         }
       });
     });
@@ -856,7 +881,8 @@ describe('UploadProductComponent', () => {
     });
   });
 
-  describe('Set category', () => {
+
+  describe('when changing the upload category', () => {
     let categoryId: number;
 
     it('should emit category select event', () => {
@@ -864,7 +890,7 @@ describe('UploadProductComponent', () => {
         categoryId = s;
       });
 
-      component.setCategory(ITEM_CATEGORY_ID);
+      component.uploadForm.patchValue({ category_id: ITEM_CATEGORY_ID });
 
       expect(categoryId).toBe(ITEM_CATEGORY_ID);
     });
@@ -884,6 +910,81 @@ describe('UploadProductComponent', () => {
       component.updateUploadPercentage(55.99);
 
       expect(component.uploadCompletedPercentage).toBe(56);
+    });
+  });
+
+  describe('autoCompleteCellphonesModel', () => {
+    describe('when selecting a model in the brand field', () => {
+      it('should patch brand and model values', () => {
+        const brandModelObj: BrandModel = { brand: 'Apple', model: 'iPhone 11 Pro' };
+
+        component.autoCompleteCellphonesModel(brandModelObj);
+
+        expect(component.uploadForm.value[CELLPHONES_EXTRA_FIELDS_NAME].brand).toEqual('Apple');
+        expect(component.uploadForm.value[CELLPHONES_EXTRA_FIELDS_NAME].model).toEqual('iPhone 11 Pro');
+      });
+    });
+  });
+
+  describe('resetCellphonesExtraFields', () => {
+    it('should reset the brand to the default value', () => {
+      component.uploadForm.patchValue({
+        [CELLPHONES_EXTRA_FIELDS_NAME]: {
+          brand: 'Apple'
+        }
+      })
+
+      component.resetCellphonesExtraFields();
+
+      expect(component.uploadForm.value[CELLPHONES_EXTRA_FIELDS_NAME].brand).toBeNull();
+    });
+
+    it('should reset the model to the default value', () => {
+      component.uploadForm.patchValue({
+        [CELLPHONES_EXTRA_FIELDS_NAME]: {
+          model: 'iPhone'
+        }
+      })
+
+      component.resetCellphonesExtraFields();
+
+      expect(component.uploadForm.value[CELLPHONES_EXTRA_FIELDS_NAME].model).toBeNull();
+    });
+  });
+
+  describe('resetFashionExtraFields', () => {
+    it('should reset the brand to the default value', () => {
+      component.uploadForm.patchValue({
+        [FASHION_EXTRA_FIELDS_NAME]: {
+          brand: 'Zara'
+        }
+      })
+
+      component.resetFashionExtraFields();
+
+      expect(component.uploadForm.value[FASHION_EXTRA_FIELDS_NAME].brand).toBeNull();
+    });
+
+    it('should reset the size to the default value', () => {
+      component.uploadForm.patchValue({
+        [FASHION_EXTRA_FIELDS_NAME]: {
+          size: {
+            id: 1
+          }
+        }
+      })
+
+      component.resetFashionExtraFields();
+
+      expect(component.uploadForm.value[FASHION_EXTRA_FIELDS_NAME].size.id).toBeNull();
+    });
+
+    it('should get sizes for the new options', () => {
+      spyOn(component, 'getSizes');
+
+      component.resetFashionExtraFields();
+
+      expect(component.getSizes).toHaveBeenCalled();
     });
   });
 

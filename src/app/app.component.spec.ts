@@ -544,19 +544,6 @@ describe('App', () => {
     });
   });
 
-  describe('process new message event', () => {
-    // TODO test for legacy code
-    xit('should call conversationService.handleNewMessages when a NEW_MESSAGE event is triggered', () => {
-      spyOn(conversationService, 'handleNewMessages');
-      const timestamp = new Date().getTime();
-
-      component.ngOnInit();
-      eventService.emit(EventService.NEW_MESSAGE, MOCK_MESSAGE, timestamp);
-
-      expect(conversationService.handleNewMessages).toHaveBeenCalledWith(MOCK_MESSAGE, timestamp);
-    });
-  });
-
   describe('totalUnreadMessages$', () => {
 
     beforeEach(() => {

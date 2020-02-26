@@ -1,7 +1,8 @@
 @import "~style/common";
 
 .main-box {
-  tsl-here-maps, .fake-map {
+  tsl-here-maps,
+  .fake-map {
     margin-top: $spacing-ml;
     display: block;
   }
@@ -9,7 +10,8 @@
     color: $blue-grey-3;
     margin-top: $spacing-ml;
   }
-  .form-group, p {
+  .form-group,
+  p {
     margin-bottom: 0;
   }
 }
@@ -26,5 +28,22 @@
   span {
     font-size: $font-size-m;
     user-select: none;
+  }
+}
+
+#condition /deep/ select-dropdown > div {
+  .options ul li {
+    background-repeat: no-repeat;
+    background-position: $spacing-s;
+    padding-left: $spacing-xxxl !important;
+    &:nth-child(1) {
+      background-image: url(/assets/icons/new_construction.svg);
+    }
+    &:nth-child(2) {
+      background-image: url(/assets/icons/to_reform.svg);
+    }
+    &:nth-child(3) {
+      background-image: url(/assets/icons/mint.svg);
+    }
   }
 }
