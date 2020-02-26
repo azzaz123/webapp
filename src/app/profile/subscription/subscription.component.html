@@ -23,8 +23,8 @@
               {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
             </p>
             <p class="Subscriptions__category-info--edit" *ngIf="!subscription.subscribed_until">
-              <span *ngIf="subscription.tiers.length !== 1">Edit</span>
-              <span *ngIf="subscription.tiers.length === 1">Cancel</span>
+              <span *ngIf="subscription.tiers.length !== 1" i18n>Edit</span>
+              <span *ngIf="subscription.tiers.length === 1" i18n>Cancel</span>
             </p>
         </div>
         <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from" i18n>Subscribe</tsl-button>

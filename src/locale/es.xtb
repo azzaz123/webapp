@@ -103,7 +103,7 @@
   <translation id="2785911750257412726">Un unicornio desbocado ha desmontado algo. Vuelve a probarlo más tarde. </translation>
   <translation id="880177930328984754">De acuerdo</translation>
   <translation id="6686102860613242031">Utiliza esta tarjeta:</translation>
-  <translation id="2005530248451232459">Añadir nueva tarjeta</translation>
+  <translation id="1295676086551276396">Añadir nueva tarjeta</translation>
   <translation id="4699023020194351074">Destacar por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</translation>
   <translation id="868815663264397508">Ya tienes tu producto subido a wallapop.</translation>
   <translation id="8199257104398637162">Promociónalo y véndelo más rápido</translation>
@@ -850,7 +850,7 @@
   <translation id="4467323362722952678">Desconocido</translation>
   <translation id="3893097575013115653">+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex></ph> Más</translation>
   <translation id="8963479695802930465">Límite: <ph name="INTERPOLATION"><ex>{{subscription.current_limit}}</ex></ph></translation>
-  <translation id="2264879768509848219">Desde: <ph name="INTERPOLATION"><ex>{{subscription.tiers[0].price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscription.tiers[0].currency}}</ex></ph></translation>
+  <translation id="2239742692583764806">Desde: </translation>
   <translation id="656874927403996411"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.limit}}</ex></ph> productos</translation>
   <translation id="6319315156225724559"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscription.selected_tier.currency}}</ex></ph>/mes</translation>
   <translation id="3570715632180917811">Profesionaliza tu perfil</translation>
@@ -863,7 +863,7 @@
   <translation id="5542355947851525347">Productos ilimitados</translation>
   <translation id="4353369238495213964"><ph name="INTERPOLATION"><ex>{{selectedTier.limit}}</ex></ph> productos</translation>
   <translation id="8107784429181471644"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
-  <translation id="3877602419256395670">Siguiente paso</translation>
+  <translation id="7062481251391297631">Siguiente paso</translation>
   <translation id="4264336981703427297">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="1230154438678955604">Cambiar</translation>
   <translation id="4121630926102377372">El pago ha fallado. Por favor introduce otra tarjeta de crédito.</translation>
@@ -963,4 +963,7 @@
   <translation id="8634562482546031854">Tipo de objeto</translation>
   <translation id="3584751519463738454">Tipo de prenda</translation>
   <translation id="7609145883180181653">¿Tienes más de <ph name="INTERPOLATION"><ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name.toLowerCase()}}</ex></ph>? <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Contáctanos directamente<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
+  <translation id="931255636742351800">Sin límite</translation>
+  <translation id="3953884740420390564">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
+  <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
 </translationbundle>
