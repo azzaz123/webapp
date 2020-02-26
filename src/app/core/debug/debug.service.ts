@@ -20,7 +20,6 @@ export class DebugService {
     if (!environment.production) {
       window['tesla'] = {
         debug: this.debug.bind(this),
-        destroyDatabase: this.destroyDatabase.bind(this),
         debugXMPP: this.debugXMPP.bind(this)
       };
     }
@@ -36,20 +35,7 @@ export class DebugService {
     };
   }
 
-  private destroyDatabase() {
-    new PouchDB('messages').destroy().then(() => {
-      this.persistencyService.messagesDb = new PouchDB('messages');
-      console.log('Messages deleted!');
-    });
-    new PouchDB('conversations').destroy().then(() => {
-      this.persistencyService.conversationsDb = new PouchDB('conversations');
-      console.log('Conversations deleted!');
-    });
-  }
-
   private debugXMPP() {
     this.xmppService.debug();
   }
-
-
 }
