@@ -19,8 +19,8 @@ export class UserReviewService {
   public getPaginationReviews(init: number): Observable<ReviewsData> {
     return this.http.get<HttpResponse<ReviewResponse[]>>(`${environment.baseUrl}${USER_REVIEWS_API_URL}`, {
       params: {
-        init: init.toString()
-      },
+        init
+      } as any,
       observe: 'response' as 'body'
     })
       .map(r => {

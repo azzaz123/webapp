@@ -19,9 +19,9 @@ export class GeneralSuggestionsService {
   getObjectTypes(category_id: number): Observable<IOption[]> {
     return this.http.get(`${environment.baseUrl}${SUGGESTERS_API_URL}/object-type`, {
       params: {
-        category_id: category_id.toString(),
+        category_id: category_id,
         language: this.i18n.locale
-      }
+      } as any
     }).pipe(map((types: ObjectType[]) => {
       return types
         .filter((type: ObjectType) => type.id)
@@ -36,9 +36,9 @@ export class GeneralSuggestionsService {
     return this.http.get<BrandModel[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/brand-model`, {
       params: {
         text: suggestion,
-        category_id: String(categoryId),
-        object_type_id: String(objectTypeId)
-      }
+        category_id: categoryId,
+        object_type_id: objectTypeId
+      } as any
     });
   }
 
@@ -46,10 +46,10 @@ export class GeneralSuggestionsService {
     return this.http.get<Model[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/model`, {
       params: {
         text: suggestion,
-        category_id: String(categoryId),
+        category_id: categoryId,
         brand,
-        object_type_id: String(objectTypeId)
-      }
+        object_type_id: objectTypeId
+      } as any
     })
   }
 
@@ -57,18 +57,18 @@ export class GeneralSuggestionsService {
     return this.http.get<Brand[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/brand`, {
       params: {
         text: suggestion,
-        category_id: String(categoryId),
-        object_type_id: String(objectTypeId)
-      }
+        category_id: categoryId,
+        object_type_id: objectTypeId
+      } as any
     })
   }
 
   getSizes(objectTypeId: number, gender: string): Observable<IOption[]> {
     return this.http.get(`${environment.baseUrl}${FASHION_KEYS_API_URL}/size`, {
       params: {
-        object_type_id: String(objectTypeId),
+        object_type_id: objectTypeId,
         language: this.i18n.locale
-      }
+      } as any
     }).pipe(map((sizes: SizesResponse) => {
       return sizes[gender]
         .map((size: Size) => ({
