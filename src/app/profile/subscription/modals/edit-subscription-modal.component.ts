@@ -87,12 +87,7 @@ export class EditSubscriptionModalComponent implements OnInit {
     const modal = CancelSubscriptionModalComponent
     let modalRef: NgbModalRef = this.modalService.open(modal, {windowClass: 'review'});
     modalRef.componentInstance.subscription = this.subscription;
-    modalRef.result.then((result: string) => {
-      modalRef = null;
-      if (result !== 'cancel') {
-        this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
-      }
-    }, () => {});
+    modalRef.result.then((result: string) => modalRef = null, () => {});
   }
 
 }

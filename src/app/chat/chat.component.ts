@@ -24,7 +24,6 @@ export class ChatComponent implements OnInit {
   public connectionError: boolean;
   public firstLoad: boolean;
   public isProfessional: boolean;
-  public currentConversation: InboxConversation;
   private archivedInboxReady: boolean;
 
   constructor(public userService: UserService,
@@ -33,7 +32,7 @@ export class ChatComponent implements OnInit {
               private route: ActivatedRoute,
               private conversationService: ConversationService,
               private inboxService: InboxService,
-              private inboxConversationService: InboxConversationService) {
+              public inboxConversationService: InboxConversationService) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
@@ -58,7 +57,7 @@ export class ChatComponent implements OnInit {
     .forEach((conversation: InboxConversation) => this.inboxConversationService.resendPendingMessages(conversation)));
 
     this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation: InboxConversation) => {
-      this.currentConversation = conversation;
+      this.inboxConversationService.currentConversation = conversation;
       this.conversationsLoading = false;
     });
     this.eventService.subscribe(EventService.INBOX_READY, (ready) => {
@@ -77,13 +76,13 @@ export class ChatComponent implements OnInit {
 
   public onChangeInboxOrArchivedDropdown(event: boolean) {
     if (event) {
-      this.currentConversation = null;
+      this.inboxConversationService.currentConversation = null;
     }
     this.loadingError = event;
   }
 
   private openConversationIfNeeded() {
-    if (this.currentConversation || !this.inboxService.isInboxReady()) {
+    if (this.inboxConversationService.currentConversation || !this.inboxService.isInboxReady()) {
       return;
     }
 
@@ -107,7 +106,7 @@ export class ChatComponent implements OnInit {
     this.conversationsLoading = true;
     this.inboxConversationService.openConversationByConversationId$(conversationId).subscribe((inboxConversation: InboxConversation) => {
       if (inboxConversation) {
-        this.currentConversation = inboxConversation;
+        this.inboxConversationService.currentConversation = inboxConversation;
         return;
       }
       this.conversationsLoading = false;
@@ -125,7 +124,7 @@ export class ChatComponent implements OnInit {
     .catch(() => Observable.of(null))
     .subscribe((conversation: InboxConversation) => {
       if (conversation) {
-        this.currentConversation = conversation;
+        this.inboxConversationService.currentConversation = conversation;
       } else {
         this.conversationsLoading = false;
       }
