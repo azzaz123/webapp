@@ -1,4 +1,4 @@
 export class InboxPriceApi {
-  amount: string;
+  amount: number;
   currency: string;
 }

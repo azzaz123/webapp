@@ -5,12 +5,12 @@ export const INBOX_ITEM_STATUSES: any = {
     published: 'published'
 };
 
-export interface InboxItemPrice {
+export class InboxItemPrice {
     amount: number;
     currency: string;
 }
 
-export interface InboxImage {
+export class InboxImage {
     urls_by_size: {
         small: string;
     };

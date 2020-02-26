@@ -1,7 +1,8 @@
 import { InboxMessage } from './inbox-message';
 import { InboxUser, InboxUserPlaceholder } from './inbox-user';
-import { InboxItem, InboxImage, InboxItemPlaceholder, INBOX_ITEM_STATUSES } from './inbox-item';
+import { InboxImage, InboxItem, InboxItemPlaceholder } from './inbox-item';
 import { environment } from '../../../environments/environment';
+import { InboxConversationApi, InboxItemApi, InboxUserApi } from './api';
 
 export class InboxConversation {
 
@@ -106,18 +107,18 @@ export class InboxConversation {
         return new InboxConversation(hash, dateModified, user, item, null, messages, false, null, messages.length, lastMessage);
     }
 
-    static fromJSON(json: any, withSelfId: string): InboxConversation {
-        const user = this.buildInboxUser(json.with_user);
-        const item = this.buildInboxItem(json.item);
-        const messages = this.buildInboxMessages(json, withSelfId);
-        const nextPageToken = json.messages.next_from || null;
+    static fromJSON(conversation: InboxConversationApi, withSelfId: string): InboxConversation {
+        const user = this.buildInboxUser(conversation.with_user);
+        const item = this.buildInboxItem(conversation.item);
+        const messages = this.buildInboxMessages(conversation, withSelfId);
+        const nextPageToken = conversation.messages.next_from || null;
         const lastMessage = messages[0];
         const dateModified = lastMessage ? lastMessage.date : null;
-        return new InboxConversation(json.hash, dateModified, user, item, nextPageToken, messages, json.phone_shared, json.phone_number,
-            json.unread_messages, lastMessage);
+        return new InboxConversation(conversation.hash, dateModified, user, item, nextPageToken, messages, conversation.phone_shared,
+          conversation.phone_number, conversation.unread_messages, lastMessage);
     }
 
-    private static buildInboxUser(user: any): InboxUser {
+    private static buildInboxUser(user: InboxUserApi): InboxUser {
         if (!user) {
             return InboxUserPlaceholder;
         }
@@ -127,7 +128,7 @@ export class InboxConversation {
             user.score, user.location, undefined);
     }
 
-    private static buildInboxItem(item: any): InboxItem {
+    private static buildInboxItem(item: InboxItemApi): InboxItem {
         const image: InboxImage = {
             urls_by_size: {
                 small: item && item.image_url ? item.image_url : null
