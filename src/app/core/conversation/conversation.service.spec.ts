@@ -3,7 +3,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ConversationService } from './conversation.service';
 import { HttpService } from '../http/http.service';
-import { Conversation } from './conversation';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { XmppService } from '../xmpp/xmpp.service';
@@ -118,13 +117,6 @@ describe('Service: Conversation', () => {
 
   it('should instantiate the service', () => {
     expect(service).toBeTruthy();
-  });
-
-  describe('getLeads', () => {
-
-    it('should return empty list', () => {
-      service.getLeads().subscribe((leads: Conversation[]) => expect(leads).toEqual([]));
-    });
   });
 
   describe('openPhonePopup', () => {

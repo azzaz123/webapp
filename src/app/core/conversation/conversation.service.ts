@@ -1,4 +1,3 @@
-import { remove } from 'lodash-es';
 import { Injectable, NgZone } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpService } from '../http/http.service';
@@ -10,7 +9,6 @@ import { MessageService } from '../message/message.service';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { NotificationService } from '../notification/notification.service';
-import { LeadService } from './lead.service';
 import { ConversationResponse } from './conversation-response.interface';
 import { Filter } from './filter.interface';
 import { TrackingService } from '../tracking/tracking.service';
@@ -30,7 +28,7 @@ import { RemoteConsoleService } from '../remote-console';
 import { InboxConversationService } from '../inbox/inbox-conversation.service';
 
 @Injectable()
-export class ConversationService extends LeadService {
+export class ConversationService {
 
   protected API_URL = 'api/v3/protool/conversations';
   protected ARCHIVE_URL = 'api/v3/conversations';
@@ -42,23 +40,22 @@ export class ConversationService extends LeadService {
     processed: false
   };
 
-  constructor(http: HttpService,
-              userService: UserService,
-              itemService: ItemService,
-              event: EventService,
-              realTime: RealTimeService,
-              blockService: BlockUserXmppService,
-              connectionService: ConnectionService,
+  constructor(private http: HttpService,
+              private userService: UserService,
+              private itemService: ItemService,
+              private event: EventService,
+              private realTime: RealTimeService,
+              private blockService: BlockUserXmppService,
+              private connectionService: ConnectionService,
               private persistencyService: PersistencyService,
-              protected messageService: MessageService,
-              protected trackingService: TrackingService,
-              protected notificationService: NotificationService,
+              private messageService: MessageService,
+              private trackingService: TrackingService,
+              private notificationService: NotificationService,
               private inboxService: InboxService,
               private inboxConversationService: InboxConversationService,
               private remoteConsole: RemoteConsoleService,
               private modalService: NgbModal,
               private zone: NgZone) {
-    super(http, userService, itemService, event, realTime, blockService, connectionService);
   }
 
   public getLeads(since?: number, archived?: boolean): Observable<Conversation[]> {
@@ -69,7 +66,7 @@ export class ConversationService extends LeadService {
     return of({});
   }
 
-  public getPage(page: number, archive?: boolean, filters?: Filter[], pageSize: number = this.PAGE_SIZE): Observable<Conversation[]> {
+  public getPage(page: number, archive?: boolean, filters?: Filter[], pageSize: number = 10): Observable<Conversation[]> {
     return of([]);
   }
 

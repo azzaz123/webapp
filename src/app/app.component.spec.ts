@@ -289,7 +289,6 @@ describe('App', () => {
           const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
           connection.mockRespond(new Response(res));
         });
-        spyOn(conversationService, 'init').and.returnValue(Observable.of({}));
         spyOn(callsService, 'init').and.returnValue(Observable.of({}));
         spyOn(inboxService, 'init');
       }));
@@ -458,35 +457,29 @@ describe('App', () => {
     });
 
     it('should call syncItem on ITEM_UPDATED', () => {
-      spyOn(conversationService, 'syncItem');
       spyOn(callsService, 'syncItem');
 
       component.ngOnInit();
       eventService.emit(EventService.ITEM_UPDATED, MOCK_ITEM_V3);
 
-      expect(conversationService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
       expect(callsService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
     });
 
     it('should call syncItem on ITEM_SOLD', () => {
-      spyOn(conversationService, 'syncItem');
       spyOn(callsService, 'syncItem');
 
       component.ngOnInit();
       eventService.emit(EventService.ITEM_SOLD, MOCK_ITEM_V3);
 
-      expect(conversationService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
       expect(callsService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
     });
 
     it('should call syncItem on ITEM_RESERVED', () => {
-      spyOn(conversationService, 'syncItem');
       spyOn(callsService, 'syncItem');
 
       component.ngOnInit();
       eventService.emit(EventService.ITEM_RESERVED, MOCK_ITEM_V3);
 
-      expect(conversationService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
       expect(callsService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
     });
   });
