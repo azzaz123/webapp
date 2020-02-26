@@ -289,18 +289,6 @@ describe('LeadService', () => {
     });
   });
 
-  describe('resetCache', () => {
-    it('should reset objects', () => {
-      service.leads = createConversationsArray(4);
-      service.archivedLeads = createConversationsArray(4);
-      service.firstLoad = false;
-      service.resetCache();
-      expect(service.leads.length).toBe(0);
-      expect(service.archivedLeads.length).toBe(0);
-      expect(service.firstLoad).toBeTruthy();
-    });
-  });
-
   describe('archive', () => {
     let archivedConv: Conversation;
     let response: Conversation;
