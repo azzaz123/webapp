@@ -36,7 +36,7 @@ describe(`NullQueryParamsInterceptor`, () => {
     httpMock.verify();
   });
 
-  describe('when doing a request with query params and some of them are null', () => {
+  describe('when doing a request to the backend with query params and some of them are null', () => {
     it('should remove only the null params', () => {
       const expectedParams = 'param1=asap&param2=123';
       const expectedUrl = `${environment.baseUrl}?${expectedParams}`;
@@ -51,7 +51,7 @@ describe(`NullQueryParamsInterceptor`, () => {
     });
   });
 
-  describe('when doing a request with non null params', () => {
+  describe('when doing a request to the backend with non null params', () => {
     it('should not modify them', () => {
       const expectedParams = 'param1=asap&param2=123&param3=bruh';
       const expectedUrl = `${environment.baseUrl}?${expectedParams}`;

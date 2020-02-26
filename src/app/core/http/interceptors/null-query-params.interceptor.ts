@@ -10,9 +10,6 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class NullQueryParamsInterceptor implements HttpInterceptor {
-
-  constructor() { }
-
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let params = new HttpParams();
     request.params.keys().forEach(paramKey => {
