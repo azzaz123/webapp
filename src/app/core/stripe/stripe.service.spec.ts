@@ -1,90 +1,84 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Observable, Subject } from 'rxjs';
-import { HttpService } from '../http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { UserService } from '../user/user.service';
-import { StripeService } from './stripe.service';
+import { StripeService, PAYMENTS_API_URL } from './stripe.service';
 import { EventService } from '../event/event.service';
 import { PaymentService } from '../payments/payment.service';
-import { PaymentIntents, PaymentMethodCardResponse, PaymentMethodResponse } from '../payments/payment.interface';
+import { PaymentIntents } from '../payments/payment.interface';
 import { Router } from '@angular/router';
 import { USER_DATA } from '../../../tests/user.fixtures.spec';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
 import { PAYMENT_METHOD_CARD_RESPONSE, PAYMENT_METHOD_DATA } from '../../../tests/payments.fixtures.spec';
-import { ResponseOptions, Response } from '@angular/http';
 import { createFinancialCardFixture } from '../../../tests/stripe.fixtures.spec';
-import { PaymentIntent } from './stripe.interface';
 import { FeatureflagService } from '../user/featureflag.service';
+import { environment } from '../../../environments/environment';
+import { TestRequest, HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
+const MOCK_PAYMENT_METHOD_ID = 'a0b1c2';
 
 describe('StripeService', () => {
 
   let service: StripeService;
-  let http: HttpService;
-  let eventService: EventService;
   let paymentService: PaymentService;
   let userService: UserService;
-  let featureflagService: FeatureflagService;
-  let router: Router;
   const routerEvents: Subject<any> = new Subject();
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ...TEST_HTTP_PROVIDERS,
         EventService,
         StripeService,
         {
           provide: UserService, useValue: {
-          hasPerm() {
-            return Observable.of(true);
+            hasPerm() {
+              return Observable.of(true);
+            }
           }
-        }
         },
         {
           provide: Router, useValue: {
-          navigate() {
-          },
-          events: routerEvents
-        }
+            navigate() {
+            },
+            events: routerEvents
+          }
         },
         {
           provide: UserService, useValue: {
-          me() {
-            return Observable.of(USER_DATA);
+            me() {
+              return Observable.of(USER_DATA);
+            }
           }
-        }
         },
         {
           provide: PaymentService, useValue: {
-          paymentIntents() {
-            return Observable.of({
-              token: 'a1-b2-c3-d4'
-            })
-          },
-          paymentIntentsConfirm() {
-            return Observable.of({
-              token: 'a1-b2-c3-d4',
-              status: 'SUCCEEDED'
-            })
+            paymentIntents() {
+              return Observable.of({
+                token: 'a1-b2-c3-d4'
+              })
+            },
+            paymentIntentsConfirm() {
+              return Observable.of({
+                token: 'a1-b2-c3-d4',
+                status: 'SUCCEEDED'
+              })
+            }
           }
-        }
         },
-        { provide: FeatureflagService, useValue: {
-          getFlag() {
-            return Observable.of(false);
+        {
+          provide: FeatureflagService, useValue: {
+            getFlag() {
+              return Observable.of(false);
+            }
           }
         }
-        }
-      ]
+      ],
+      imports: [HttpClientTestingModule]
     });
     service = TestBed.get(StripeService);
-    http = TestBed.get(HttpService);
-    eventService = TestBed.get(EventService);
     paymentService = TestBed.get(PaymentService);
     userService = TestBed.get(UserService);
-    featureflagService = TestBed.get(FeatureflagService);
-    router = TestBed.get(Router);
+    httpMock = TestBed.get(HttpTestingController);
   });
 
   describe('buy', () => {
@@ -107,41 +101,44 @@ describe('StripeService', () => {
   });
 
   describe('getCards', () => {
-    let response: FinancialCard[];
+    it('should call endpoint and return saved card', () => {
+      const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/cards`;
+      let response: FinancialCard[];
 
-    beforeEach(fakeAsync(() => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PAYMENT_METHOD_CARD_RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      service.getCards().subscribe((data: FinancialCard[]) => {
-        response = data;
-      });
-    }));
+      service.getCards().subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(PAYMENT_METHOD_CARD_RESPONSE);
 
-    it('should return an array of financial cards', () => {
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
       expect(response[0]).toEqual(createFinancialCardFixture());
+      expect(req.request.method).toBe('GET');
     });
   });
 
   describe('addNewCard', () => {
-    it('should call the endpoint with put', fakeAsync(() => {
-      const paymentMethodId = 'a0b1c2';
-      spyOn(http, 'put').and.returnValue(Observable.of({}));
+    it('should call the endpoint and add a new credit card', () => {
+      const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${MOCK_PAYMENT_METHOD_ID}/attach`;
 
-      service.addNewCard(paymentMethodId).subscribe();
+      service.addNewCard(MOCK_PAYMENT_METHOD_ID).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
 
-      expect(http.put).toHaveBeenCalledWith(`api/v3/payments/c2b/stripe/payment_methods/${paymentMethodId}/attach`);
-    }));
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.method).toBe('PUT');
+    });
   });
 
   describe('deleteCard', () => {
-    it('should call the endpoint with post', fakeAsync(() => {
-      const paymentMethodId = 'a0b1c2';
-      spyOn(http, 'post').and.returnValue(Observable.of({}));
+    it('should call the endpoint and delete the credit card', () => {
+      const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${MOCK_PAYMENT_METHOD_ID}/detach`;
 
-      service.deleteCard(paymentMethodId).subscribe();
+      service.deleteCard(MOCK_PAYMENT_METHOD_ID).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
 
-      expect(http.post).toHaveBeenCalledWith(`api/v3/payments/c2b/stripe/payment_methods/${paymentMethodId}/detach`);
-    }));
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.method).toBe('POST');
+    });
   });
 
   describe('mapPaymentResponse', () => {
@@ -151,7 +148,7 @@ describe('StripeService', () => {
       expect(financialCard).toEqual(createFinancialCardFixture());
     });
   });
-  
+
 });
 
 

@@ -1,51 +1,39 @@
 import { TestBed } from '@angular/core/testing';
-import { UserReviewService } from './user-review.service';
-import { Observable } from 'rxjs';
+import { UserReviewService, USER_REVIEWS_API_URL } from './user-review.service';
 import { ReviewsData } from './review-response.interface';
 import { REVIEWS_RESPONSE, MOCK_REVIEWS } from '../../tests/review.fixtures.spec';
-import { Response, ResponseOptions, Headers } from '@angular/http';
-import { HttpService } from '../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../tests/utils.spec';
+import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { environment } from '../../environments/environment';
 
 describe('UserReviewService', () => {
 
   let service: UserReviewService;
-  let http: HttpService;
-  const API_URL_v3_USER = 'api/v3/users/me/reviews';
-  const init = 1;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        UserReviewService,
-        ...TEST_HTTP_PROVIDERS
-      ]
+      providers: [UserReviewService],
+      imports: [HttpClientTestingModule]
     });
     service = TestBed.get(UserReviewService);
-    http = TestBed.get(HttpService);
+    httpMock = TestBed.get(HttpTestingController);
   });
 
   describe('getPaginationReviews', () => {
-    let resp: ReviewsData;
+    it('should call reviews endpoint and return reviews', () => {
+      const expectedUrlParams = `init=0`;
+      const expectedUrl = `${environment.baseUrl}${USER_REVIEWS_API_URL}?${expectedUrlParams}`;
+      let response: ReviewsData;
 
-    beforeEach(() => {
-      const res: ResponseOptions = new ResponseOptions({
-        body: JSON.stringify(REVIEWS_RESPONSE),
-        headers: new Headers({'x-nextpage': 'init=1'})
-      });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      service.getPaginationReviews(0).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(REVIEWS_RESPONSE, { headers: { 'x-nextpage': 'init=1' } });
 
-      service.getPaginationReviews(init).subscribe((data: ReviewsData) => {
-        resp = data;
-      });
-    });
-
-    it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith(API_URL_v3_USER, {init: init});
-    });
-
-    it('should return an array of reviews', () => {
-      expect(resp.data).toEqual(MOCK_REVIEWS);
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(response.data).toEqual(MOCK_REVIEWS);
+      expect(response.init).toEqual(1);
+      expect(req.request.method).toBe('GET');
     });
   });
+
 });

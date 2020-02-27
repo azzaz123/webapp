@@ -1,73 +1,81 @@
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
 import { IOption } from 'ng-select';
-import { HttpService } from '../../core/http/http.service';
-import { Brand, BrandModel, Model, SizesResponse, Size } from '../brand-model.interface';
+import { Brand, BrandModel, Model, SizesResponse, Size, ObjectType } from '../brand-model.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+
+export const SUGGESTERS_API_URL = 'api/v3/suggesters/general';
+export const FASHION_KEYS_API_URL = 'api/v3/fashion/keys';
 
 @Injectable()
 export class GeneralSuggestionsService {
 
-  private API_URL = 'api/v3/suggesters/general';
-  private FASHION_KEYS_URL = 'api/v3/fashion/keys';
-
-  constructor(private http: HttpService, private i18n: I18nService) {
+  constructor(private http: HttpClient, private i18n: I18nService) {
   }
 
-  getObjectTypes(categoryId: number): Observable<IOption[]> {
-    return this.http.get(this.API_URL + '/object-type', {
-      category_id: categoryId,
-      language: this.i18n.locale
-    })
-      .map((r: Response) => r.json())
-      .map((types: any[]) => {
-        return types
-          .filter((type: any) => type.id)
-          .map((type: any) => ({
-            value: type.id,
-            label: type.name
-          }));
-      });
+  getObjectTypes(category_id: number): Observable<IOption[]> {
+    return this.http.get(`${environment.baseUrl}${SUGGESTERS_API_URL}/object-type`, {
+      params: {
+        category_id: category_id,
+        language: this.i18n.locale
+      } as any
+    }).pipe(map((types: ObjectType[]) => {
+      return types
+        .filter((type: ObjectType) => type.id)
+        .map((type: ObjectType) => ({
+          value: type.id,
+          label: type.name
+        }));
+    }));
   }
 
   getBrandsAndModels(suggestion: string, categoryId: number, objectTypeId: number): Observable<BrandModel[]> {
-    return this.http.get(this.API_URL + '/brand-model', {
-      text: suggestion,
-      category_id: categoryId,
-      object_type_id: objectTypeId
-    }).map((r: Response) => r.json());
+    return this.http.get<BrandModel[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/brand-model`, {
+      params: {
+        text: suggestion,
+        category_id: categoryId,
+        object_type_id: objectTypeId
+      } as any
+    });
   }
 
   getModels(suggestion: string, categoryId: number, brand: string, objectTypeId: number): Observable<Model[]> {
-    return this.http.get(this.API_URL + '/model', {
-      text: suggestion,
-      category_id: categoryId,
-      brand: brand,
-      object_type_id: objectTypeId
-    }).map((r: Response) => r.json());
+    return this.http.get<Model[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/model`, {
+      params: {
+        text: suggestion,
+        category_id: categoryId,
+        brand,
+        object_type_id: objectTypeId
+      } as any
+    })
   }
 
   getBrands(suggestion: string, categoryId: number, objectTypeId: number): Observable<Brand[]> {
-    return this.http.get(this.API_URL + '/brand', {
-      text: suggestion,
-      category_id: categoryId,
-      object_type_id: objectTypeId
-    }).map((r: Response) => r.json());
+    return this.http.get<Brand[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/brand`, {
+      params: {
+        text: suggestion,
+        category_id: categoryId,
+        object_type_id: objectTypeId
+      } as any
+    })
   }
 
   getSizes(objectTypeId: number, gender: string): Observable<IOption[]> {
-    return this.http.get(this.FASHION_KEYS_URL + '/size', {
-      object_type_id: objectTypeId,
-      language: this.i18n.locale
-    }).map((r: Response) => r.json())
-      .map((sizes: SizesResponse) => {
-        return sizes[gender]
-          .map((size: Size) => ({
-            value: size.id.toString(),
-            label: size.text
-          }));
-      });
+    return this.http.get(`${environment.baseUrl}${FASHION_KEYS_API_URL}/size`, {
+      params: {
+        object_type_id: objectTypeId,
+        language: this.i18n.locale
+      } as any
+    }).pipe(map((sizes: SizesResponse) => {
+      return sizes[gender]
+        .map((size: Size) => ({
+          value: String(size.id),
+          label: size.text
+        }));
+    }))
   }
 
 }
