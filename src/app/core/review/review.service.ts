@@ -1,33 +1,33 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs';
 import { ReviewDataBuyer, ReviewDataSeller } from './review.interface';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+
+export const REVIEWS_API_URL = 'api/v3/reviews';
 
 @Injectable()
 export class ReviewService {
 
-  protected API_URL = 'api/v3/reviews';
-
-  constructor(private http: HttpService) {
+  constructor(private http: HttpClient) {
   }
 
   public check(itemId: string): Observable<boolean> {
-    return this.http.head(this.API_URL + '/' + itemId)
-    .map(() => {
-      return true;
-    })
-    .catch(() => {
-      return Observable.of(false);
-    });
+    return this.http.head(`${environment.baseUrl}${REVIEWS_API_URL}/${itemId}`)
+      .map(() => {
+        return true;
+      })
+      .catch(() => {
+        return Observable.of(false);
+      });
   }
 
   public createAsBuyer(reviewData: ReviewDataBuyer): Observable<any> {
-    return this.http.post(this.API_URL + '/buyer', reviewData);
+    return this.http.post(`${environment.baseUrl}${REVIEWS_API_URL}/buyer`, reviewData);
   }
 
   public createAsSeller(reviewData: ReviewDataSeller): Observable<any> {
-    return this.http.post(this.API_URL + '/seller', reviewData);
+    return this.http.post(`${environment.baseUrl}${REVIEWS_API_URL}/seller`, reviewData);
   }
-
 
 }
