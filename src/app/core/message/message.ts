@@ -1,6 +1,6 @@
 import { Model } from '../resource/model.interface';
 import { User } from '../user/user';
-import { MessagePayload } from './messages.interface';
+import { MessagePayload } from '../../chat/model';
 
 export const messageStatus = {
   PENDING: 'pending',

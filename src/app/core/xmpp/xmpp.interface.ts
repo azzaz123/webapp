@@ -1,4 +1,4 @@
-import { MessagePayload } from '../message/messages.interface';
+import { MessagePayload } from '../../chat/model';
 
 export interface XMPPClient {
   on(event: string, handler: Function): void;
