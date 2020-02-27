@@ -1,195 +1,151 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import { GeneralSuggestionsService } from './general-suggestions.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { HttpService } from '../../core/http/http.service';
+import { GeneralSuggestionsService, SUGGESTERS_API_URL, FASHION_KEYS_API_URL } from './general-suggestions.service';
 import { IOption } from 'ng-select';
-import { ResponseOptions, Response } from '@angular/http';
-import { Observable } from 'rxjs';
-import { BrandModel, Brand, Model, SizesResponse } from '../brand-model.interface';
+import { BrandModel, Brand, Model } from '../brand-model.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
+import { CATEGORY_IDS } from '../../core/category/category-ids';
+import { environment } from '../../../environments/environment';
+import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+
+const MOCK_OBJECT_TYPES = [{
+  id: '1',
+  name: 'object type 1'
+}, {
+  id: '2',
+  name: 'object type 2'
+}];
+const MOCK_OBJECT_TYPES_RESPONSE = [{
+  value: '1',
+  label: 'object type 1'
+}, {
+  value: '2',
+  label: 'object type 2'
+}];
+const MOCK_BRAND_MODEL_RESPONSE = [{
+  brand: 'brand1',
+  model: 'model1'
+}, {
+  brand: 'brand2',
+  model: 'model2'
+}];
+const MOCK_MODELS_RESPONSE = [{ model: 'model1' }, { model: 'model2' }];
+const MOCK_BRANDS_RESPONSE = [{ brand: 'brand1' }, { brand: 'brand2' }];
+const MOCK_BRAND = 'Apple';
+const MOCK_MODEL = 'iPhone';
+const MOCK_OBJECT_TYPE_ID = 130;
+const MOCK_GENDER = 'male';
+const MOCK_SIZES = {
+  female: [{
+    id: 34, text: '35'
+  }],
+  male: [{
+    id: 57, text: '48'
+  }]
+};
+const MOCK_SIZES_RESPONSE = [{
+  value: '57',
+  label: '48'
+}];
 
 describe('GeneralSuggestionsService', () => {
 
   let service: GeneralSuggestionsService;
-  let http: HttpService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         GeneralSuggestionsService,
         I18nService,
-        ...TEST_HTTP_PROVIDERS
-      ]
+      ],
+      imports: [HttpClientTestingModule]
     });
     service = TestBed.get(GeneralSuggestionsService);
-    http = TestBed.get(HttpService);
+    httpMock = TestBed.get(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   describe('getObjectTypes', () => {
-    let response: IOption[];
-    const categoryId = 1;
+    it('should call the object-type endpoint and return object types', () => {
+      const expectedUrlParams = `category_id=${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}&language=en`;
+      const expectedUrl = `${environment.baseUrl}${SUGGESTERS_API_URL}/object-type?${expectedUrlParams}`;
+      let response: IOption[];
 
-    beforeEach(fakeAsync(() => {
-      const OBJECT_TYPES = [{
-        id: '1',
-        name: 'name1'
-      }, {
-        id: '2',
-        name: 'name2'
-      }];
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(OBJECT_TYPES) });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      service.getObjectTypes(CATEGORY_IDS.CELL_PHONES_ACCESSORIES).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_OBJECT_TYPES);
 
-      service.getObjectTypes(categoryId).subscribe((r: IOption[]) => {
-        response = r;
-      });
-    }));
-
-    it('should call the object-type endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith(`${service['API_URL']}/object-type`, { category_id: categoryId, language: 'en' });
-    });
-
-    it('should return the object type options', () => {
-      expect(response).toEqual([{
-        value: '1',
-        label: 'name1'
-      }, {
-        value: '2',
-        label: 'name2'
-      }]);
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(response).toEqual(MOCK_OBJECT_TYPES_RESPONSE);
+      expect(req.request.method).toBe('GET');
     });
   });
 
   describe('getBrandsAndModels', () => {
-    let response: BrandModel[];
-    const CATEGORY = 1;
-    const OBJECT_TYPE_ID = 2;
-    const SUGGESTION = 'suggestion';
+    it('should call the brand-model endpoint and return brand&model results', () => {
+      const expectedUrlParams = `text=${MOCK_BRAND}&category_id=${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}&object_type_id=${MOCK_OBJECT_TYPE_ID}`;
+      const expectedUrl = `${environment.baseUrl}${SUGGESTERS_API_URL}/brand-model?${expectedUrlParams}`;
+      let response: BrandModel[];
 
-    beforeEach(fakeAsync(() => {
-      const BRAND_MODELS: BrandModel[] = [{
-        brand: 'brand1',
-        model: 'model1'
-      }, {
-        brand: 'brand2',
-        model: 'model2'
-      }];
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(BRAND_MODELS) });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      service.getBrandsAndModels(MOCK_BRAND, CATEGORY_IDS.CELL_PHONES_ACCESSORIES, MOCK_OBJECT_TYPE_ID).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_BRAND_MODEL_RESPONSE);
 
-      service.getBrandsAndModels(SUGGESTION, CATEGORY, OBJECT_TYPE_ID).subscribe((r: BrandModel[]) => {
-        response = r;
-      });
-    }));
-
-    it('should call the brand-model endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith(`${service['API_URL']}/brand-model`,
-        { text: SUGGESTION, category_id: CATEGORY, object_type_id: OBJECT_TYPE_ID });
-    });
-
-    it('should return the brand-model options', () => {
-      expect(response).toEqual([{
-        brand: 'brand1',
-        model: 'model1'
-      }, {
-        brand: 'brand2',
-        model: 'model2'
-      }]);
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(response).toEqual(MOCK_BRAND_MODEL_RESPONSE);
+      expect(req.request.method).toBe('GET');
     });
   });
 
   describe('getModels', () => {
-    let response: Model[];
-    const CATEGORY = 1;
-    const OBJECT_TYPE_ID = 2;
-    const SUGGESTION = 'suggestion';
-    const BRAND = 'suggestion';
+    it('should call the model endpoint and return models', () => {
+      const expectedUrlParams = `text=${MOCK_MODEL}&category_id=${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}&brand=${MOCK_BRAND}&object_type_id=${MOCK_OBJECT_TYPE_ID}`;
+      const expectedUrl = `${environment.baseUrl}${SUGGESTERS_API_URL}/model?${expectedUrlParams}`;
+      let response: Model[];
 
-    beforeEach(fakeAsync(() => {
-      const MODELS: Model[] = [{
-        model: 'model1'
-      }, {
-        model: 'model2'
-      }];
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(MODELS) });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      service.getModels(MOCK_MODEL, CATEGORY_IDS.CELL_PHONES_ACCESSORIES, MOCK_BRAND, MOCK_OBJECT_TYPE_ID).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_MODELS_RESPONSE);
 
-      service.getModels(SUGGESTION, CATEGORY, BRAND, OBJECT_TYPE_ID).subscribe((r: Model[]) => {
-        response = r;
-      });
-    }));
-
-    it('should call the model endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith(`${service['API_URL']}/model`,
-        { text: SUGGESTION, category_id: CATEGORY, brand: BRAND, object_type_id: OBJECT_TYPE_ID });
-    });
-
-    it('should return the model options', () => {
-      expect(response).toEqual([{ model: 'model1' }, { model: 'model2' }]);
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(response).toEqual(MOCK_MODELS_RESPONSE);
+      expect(req.request.method).toBe('GET');
     });
   });
 
   describe('getBrands', () => {
-    let response: Brand[];
-    const CATEGORY = 1;
-    const OBJECT_TYPE_ID = 2;
-    const SUGGESTION = 'suggestion';
+    it('should call the brand endpoint and return brands', () => {
+      const expectedUrlParams = `text=${MOCK_MODEL}&category_id=${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}&object_type_id=${MOCK_OBJECT_TYPE_ID}`;
+      const expectedUrl = `${environment.baseUrl}${SUGGESTERS_API_URL}/brand?${expectedUrlParams}`;
+      let response: Brand[];
 
-    beforeEach(fakeAsync(() => {
-      const BRANDS: Brand[] = [{
-        brand: 'brand1'
-      }, {
-        brand: 'brand2'
-      }];
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(BRANDS) });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      service.getBrands(MOCK_MODEL, CATEGORY_IDS.CELL_PHONES_ACCESSORIES, MOCK_OBJECT_TYPE_ID).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_BRANDS_RESPONSE);
 
-      service.getBrands(SUGGESTION, CATEGORY, OBJECT_TYPE_ID).subscribe((r: Brand[]) => {
-        response = r;
-      });
-    }));
-
-    it('should call the brand endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith(`${service['API_URL']}/brand`,
-        { text: SUGGESTION, category_id: CATEGORY, object_type_id: OBJECT_TYPE_ID });
-    });
-
-    it('should return the brand options', () => {
-      expect(response).toEqual([{ brand: 'brand1' }, { brand: 'brand2' }]);
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(response).toEqual(MOCK_BRANDS_RESPONSE);
+      expect(req.request.method).toBe('GET');
     });
   });
 
   describe('getSizes', () => {
-    let response: IOption[];
-    const OBJECT_TYPE_ID = 2;
+    it('should call the size endpoint and return sizes', () => {
+      const expectedUrlParams = `object_type_id=${MOCK_OBJECT_TYPE_ID}&language=en`;
+      const expectedUrl = `${environment.baseUrl}${FASHION_KEYS_API_URL}/size?${expectedUrlParams}`;
+      let response: IOption[];
 
-    beforeEach(fakeAsync(() => {
-      const SIZES = {
-        female: [{
-          id: 34, text: '35'
-        }],
-        male: [{
-          id: 57, text: '48'
-        }]
-      };
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(SIZES) });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      service.getSizes(MOCK_OBJECT_TYPE_ID, MOCK_GENDER).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_SIZES);
 
-      service.getSizes(OBJECT_TYPE_ID, 'male').subscribe((r: IOption[]) => {
-        response = r;
-      });
-    }));
-
-    it('should call the size endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith(`${service['FASHION_KEYS_URL']}/size`, { object_type_id: OBJECT_TYPE_ID, language: 'en' });
-    });
-
-    it('should return the size options', () => {
-      expect(response).toEqual([{
-        value: '57',
-        label: '48'
-      }]);
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(response).toEqual(MOCK_SIZES_RESPONSE);
+      expect(req.request.method).toBe('GET');
     });
   });
 

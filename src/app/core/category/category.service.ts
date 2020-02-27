@@ -13,7 +13,6 @@ export class CategoryService {
   private uploadCategories: CategoryOption[];
   private categories: CategoryResponse[];
   private heroCategoriesIds = [100, 13200, 13000, 21000];
-  private fashionCategoryId = 12465;
   private lang = this.i18n.locale === 'es' ? this.i18n.locale + '_ES' : this.i18n.locale;
 
   constructor(private http: HttpClient,

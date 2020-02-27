@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 
-import { TokenInterceptor, MockInterceptor } from './interceptors';
+import { TokenInterceptor, MockInterceptor, NullQueryParamsInterceptor } from './interceptors';
 import { AccessTokenService } from './access-token.service';
 
 @NgModule({
@@ -20,6 +20,11 @@ import { AccessTokenService } from './access-token.service';
         {
             provide: HTTP_INTERCEPTORS,
             useClass: MockInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: NullQueryParamsInterceptor,
             multi: true
         }
     ]

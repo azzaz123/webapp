@@ -1,44 +1,40 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Response } from '@angular/http';
-import { map } from 'lodash-es';
 import { IOption } from 'ng-select';
-import { HttpService } from '../../core/http/http.service';
+import { environment } from '../../../environments/environment';
+import { map } from 'rxjs/operators/map';
+import { HttpClient } from '@angular/common/http';
+
+export const CARS_SUGGESTER_API_URL = 'api/v3/suggesters/cars';
 
 @Injectable()
 export class CarSuggestionsService {
 
-  private API_URL = 'api/v3/suggesters/cars';
-
-  constructor(private http: HttpService) {
+  constructor(private http: HttpClient) {
   }
 
   getBrands(): Observable<IOption[]> {
-    return this.http.get(this.API_URL + '/brands')
-    .map((r: Response) => r.json())
-    .map((values: string[]) => this.toSelectOptions(values));
+    return this.http.get(`${environment.baseUrl}${CARS_SUGGESTER_API_URL}/brands`)
+      .pipe(map((values: string[]) => this.toSelectOptions(values)));
   }
 
   getModels(brand: string): Observable<IOption[]> {
-    return this.http.get(this.API_URL + '/models', {brand: brand})
-    .map((r: Response) => r.json())
-    .map((values: string[]) => this.toSelectOptions(values));
+    return this.http.get(`${environment.baseUrl}${CARS_SUGGESTER_API_URL}/models`, { params: { brand } })
+      .pipe(map((values: string[]) => this.toSelectOptions(values)))
   }
 
   getYears(brand: string, model: string): Observable<IOption[]> {
-    return this.http.get(this.API_URL + '/years', {brand: brand, model: model})
-    .map((r: Response) => r.json())
-    .map((values: string[]) => this.toSelectOptions(values));
+    return this.http.get(`${environment.baseUrl}${CARS_SUGGESTER_API_URL}/years`, { params: { brand, model } })
+      .pipe(map((values: string[]) => this.toSelectOptions(values)));
   }
 
   getVersions(brand: string, model: string, year: string): Observable<IOption[]> {
-    return this.http.get(this.API_URL + '/versions', {brand: brand, model: model, year: year})
-    .map((r: Response) => r.json())
-    .map((values: string[]) => this.toSelectOptions(values));
+    return this.http.get(`${environment.baseUrl}${CARS_SUGGESTER_API_URL}/versions`, { params: { brand, model, year } })
+      .pipe(map((values: string[]) => this.toSelectOptions(values)));
   }
 
   private toSelectOptions(values: string[]): IOption[] {
-    return map(values, (label: string) => ({
+    return values.map((label: string) => ({
       value: label.toString(),
       label: label.toString()
     }));

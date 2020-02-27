@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../../chat/model';
 import { MessageService } from '../message/message.service';
@@ -46,7 +46,7 @@ export class InboxService {
     this.getInbox$()
     .catch(() => {
       this.errorRetrievingInbox = true;
-      return this.persistencyService.getStoredInbox();
+      return of([]);
     })
     .subscribe((conversations: InboxConversation[]) => {
       this.inboxConversationService.conversations = conversations;
@@ -59,7 +59,7 @@ export class InboxService {
     this.getArchivedInbox$()
     .catch(() => {
       this.errorRetrievingArchived = true;
-      return this.persistencyService.getArchivedStoredInbox();
+      return of([]);
     }).subscribe((conversations: InboxConversation[]) => {
       this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
       this.archivedInboxReady = true;
