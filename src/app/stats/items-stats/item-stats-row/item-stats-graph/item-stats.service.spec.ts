@@ -1,13 +1,19 @@
+import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { ItemStatsService } from './item-stats.service';
-import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '../../../../../environments/environment';
-import { HttpService } from '../../../../core/http/http.service';
+
+import { ItemStatsService, ITEM_STATS_ENDPOINT } from './item-stats.service';
+import { ItemStatisticFullResponse } from './item-stats-response.interface';
+
+export const MOCK_ITEM_STATS: ItemStatisticFullResponse = {
+  entries: [
+    { date: '2020-20-20', bumped: true, values: { views: 123, chats: 0, favs: 42 } },
+    { date: 'asap', values: { views: 10, chats: 0, favs: 1 } },
+  ]
+}
 
 describe('ItemStatsService', () => {
-
-  let http: HttpService;
   let httpMock: HttpTestingController;
   let service: ItemStatsService;
 
@@ -20,21 +26,22 @@ describe('ItemStatsService', () => {
     });
 
     service = TestBed.get(ItemStatsService);
-    http = TestBed.get(HttpService);
     httpMock = TestBed.get(HttpTestingController);
   });
 
   describe('getStatistics', () => {
-    it('should call endpoint', () => {
+    it('should get user statistics', () => {
+      let response: ItemStatisticFullResponse;
       const itemId = '123';
-      const expectedUrl = `${environment.baseUrl}${environment.baseUrl}api/v3/statistics/item/${itemId}`;
+      const expectedUrl = `${environment.baseUrl}${ITEM_STATS_ENDPOINT}${itemId}`;
 
-      service.getStatistics(itemId).subscribe();
+      service.getStatistics(itemId).subscribe(r => response = r);
       const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush({});
+      req.flush(MOCK_ITEM_STATS);
 
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.method).toBe('GET');
+      expect(response).toBe(MOCK_ITEM_STATS);
     });
   });
 });
