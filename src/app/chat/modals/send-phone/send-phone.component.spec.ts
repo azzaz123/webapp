@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { SendPhoneComponent } from './send-phone.component';
+import { SendPhoneComponent, SEND_PHONE_ENDPOINT } from './send-phone.component';
 import { MessageService } from '../../../core/message/message.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
@@ -11,12 +11,11 @@ import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec'
 import { WindowRef } from '../../../core/window/window.service';
 import { environment } from '../../../../environments/environment';
 import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
-import { HttpService } from '../../../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { By } from '@angular/platform-browser';
 import { format } from 'libphonenumber-js';
 import { Observable } from 'rxjs';
 import { MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
 describe('SendPhoneComponent', () => {
   let component: SendPhoneComponent;
@@ -24,18 +23,16 @@ describe('SendPhoneComponent', () => {
   let messageService: MessageService;
   let trackingService: TrackingService;
   let errorsService: ErrorsService;
-  let http: HttpService;
+  let httpMock: HttpTestingController;
   let windowRef: WindowRef;
   let element: DebugElement;
   const phoneNumber = format('+34912345678', 'ES', 'International');
-  const API_URL = 'api/v3/conversations';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [NgbActiveModal,
         FormBuilder,
-        ...TEST_HTTP_PROVIDERS,
         {
           provide: MessageService, useValue: {
             createPhoneNumberMessage() {
@@ -75,7 +72,7 @@ describe('SendPhoneComponent', () => {
     messageService = TestBed.get(MessageService);
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
-    http = TestBed.get(HttpService);
+    httpMock = TestBed.get(HttpTestingController);
     windowRef = TestBed.get(WindowRef);
     fixture.detectChanges();
   });
@@ -150,15 +147,17 @@ describe('SendPhoneComponent', () => {
         });
       });
 
-      it('should PUT the phone numberto the relevant API', () => {
-        spyOn(http, 'put').and.returnValue(Observable.of(true));
+      it('should send to the backend the phone number', () => {
         component.conversation = MOCK_CONVERSATION();
+        const expectedUrl = `${environment.baseUrl}${SEND_PHONE_ENDPOINT}/${component.conversation.id}/buyer-phone-number`;
 
         component.createPhoneNumberMessage();
-
-        expect(http.put).toHaveBeenCalledWith(`${API_URL}/${component.conversation.id}/buyer-phone-number`, {
-          phone_number: phoneNumber
-        });
+        const req: TestRequest = httpMock.expectOne(expectedUrl);
+        req.flush({});
+  
+        expect(req.request.url).toBe(expectedUrl);
+        expect(req.request.body).toEqual({ phone_number: phoneNumber });
+        expect(req.request.method).toBe('PUT');
       });
 
       it('should call messageService.createPhoneNumberMessage with the conversation and phoneNumber', () => {
