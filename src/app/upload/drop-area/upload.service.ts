@@ -1,10 +1,10 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Headers, RequestOptions } from '@angular/http';
+import { HttpService } from '../../core/http/http.service';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { ITEM_TYPES } from '../../core/item/item';
 import { UploadFile, UploadInput } from '../../shared/uploader/upload.interface';
-import { HttpUtilsService } from '../../core/http/http-utils.service';
 
 @Injectable()
 export class UploadService {
@@ -12,7 +12,7 @@ export class UploadService {
   private API_URL = 'api/v3/items';
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
 
-  constructor(private httpUtils: HttpUtilsService) {
+  constructor(private http: HttpService) {
   }
 
   public createItemWithFirstImage(values: any, file: UploadFile, itemType: string) {
@@ -45,7 +45,7 @@ export class UploadService {
           type: 'application/json'
         })
       },
-      headers: this.httpUtils.getOptions(options, url, 'POST').headers.toJSON(),
+      headers: this.http.getOptions(options, url, 'POST').headers.toJSON(),
       file: file
     };
   }
@@ -62,7 +62,7 @@ export class UploadService {
       data: {
         order: '$order'
       },
-      headers: this.httpUtils.getOptions(null, url, 'POST').headers.toJSON(),
+      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
     };
     this.uploadInput.emit(inputEvent);
   }
@@ -79,7 +79,7 @@ export class UploadService {
       data: {
         order: '$order'
       },
-      headers: this.httpUtils.getOptions(null, url, 'POST').headers.toJSON(),
+      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
       file: file
     };
     this.uploadInput.emit(inputEvent);

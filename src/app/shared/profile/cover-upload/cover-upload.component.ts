@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '../../../core/user/user';
+import { HttpService } from '../../../core/http/http.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { UserService } from '../../../core/user/user.service';
 import { environment } from '../../../../environments/environment';
 import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from '../../uploader/upload.interface';
-import { HttpUtilsService } from '../../../core/http/http-utils.service';
 
 @Component({
   selector: 'tsl-cover-upload',
@@ -21,7 +21,7 @@ export class CoverUploadComponent implements OnInit {
   @Input() isPro: boolean;
   @Output() clickNotPro: EventEmitter<any> = new EventEmitter();
 
-  constructor(private httpUtils: HttpUtilsService,
+  constructor(private http: HttpService,
               private errorsService: ErrorsService,
               private userService: UserService) { }
 
@@ -60,7 +60,7 @@ export class CoverUploadComponent implements OnInit {
       url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',
-      headers: this.httpUtils.getOptions(null, url, 'POST').headers.toJSON(),
+      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
       file: this.file
     };
     this.uploadCoverInput.emit(uploadinput);
