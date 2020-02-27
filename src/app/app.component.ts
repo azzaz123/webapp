@@ -32,7 +32,6 @@ import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
 import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
-import { ChatSignal } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
 import { Subscription } from 'rxjs';
 import { SplitTestService } from './core/tracking/split-test.service';
@@ -174,30 +173,17 @@ export class AppComponent implements OnInit {
   }
 
   private initRealTimeChat(user: User, accessToken: string) {
-    this.event.subscribe(EventService.DB_READY, (dbName) => {
-      if (!dbName) {
-        this.RTConnectedSubscription = this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
-          this.initCalls();
-          this.initConversations();
-          this.inboxService.init();
-        });
-        this.realTime.connect(user.id, accessToken);
-      }
+    this.RTConnectedSubscription = this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
+      this.initCalls();
+      this.inboxService.init();
     });
+    this.realTime.connect(user.id, accessToken);
   }
 
   private initCalls() {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
       if (isProfessional) {
         this.callService.init().subscribe(() => this.callService.init(true).subscribe());
-      }
-    });
-  }
-
-  private initConversations() {
-    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-      if (isProfessional) {
-        this.conversationService.init().subscribe(() => this.conversationService.init(true).subscribe());
       }
     });
   }
@@ -220,9 +206,6 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeChatEvents() {
-    this.event.subscribe(EventService.CHAT_SIGNAL,
-      (signal: ChatSignal) => this.conversationService.processChatSignal(signal));
-
     this.event.subscribe(EventService.CHAT_RT_DISCONNECTED, () => {
       if (this.userService.isLogged && this.connectionService.isConnected) {
         this.realTime.reconnect();
