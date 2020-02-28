@@ -1,118 +1,96 @@
-import { TestBed, inject, fakeAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import { RealestateKeysService } from './realestate-keys.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { RealestateKeysService, REAL_ESTATE_KEYS_ENDPOINT } from './realestate-keys.service';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { HttpService } from '../../core/http/http.service';
 import { Key } from './key.interface';
-import { ResponseOptions, Response } from '@angular/http';
-import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
+import { environment } from '../../../environments/environment';
+import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('RealestateKeysService', () => {
-
   let service: RealestateKeysService;
-  let http: HttpService;
-  const RESPONSE = [{id: 'test', icon_id: 'test', text: 'test'}];
+  let httpMock: HttpTestingController;
+  const MOCK_REAL_ESTATE_OPTIONS = [{ id: 'test', icon_id: 'test', text: 'test' }];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         RealestateKeysService,
-        I18nService,
-        TEST_HTTP_PROVIDERS
-      ]
+        I18nService
+      ],
+      imports: [HttpClientTestingModule]
     });
     service = TestBed.get(RealestateKeysService);
-    http = TestBed.get(HttpService);
+    httpMock = TestBed.get(HttpTestingController);
   });
 
   describe('getOperations', () => {
-    let response: Key[];
+    it('should get real estate operations options', () => {
+      let response: Key[];
+      const expectedUrlParams = `language=en&filter=false`;
+      const expectedUrl = `${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/operation?${expectedUrlParams}`;
 
-    beforeEach(fakeAsync(() => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      service.getOperations().subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_REAL_ESTATE_OPTIONS);
 
-      service.getOperations().subscribe((r: Key[]) => {
-        response = r;
-      });
-    }));
-
-    it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/real_estate/keys/operation', {language: 'en', filter: false});
-    });
-
-    it('should return options', () => {
-      expect(response).toEqual(RESPONSE);
+      expect(response).toEqual(MOCK_REAL_ESTATE_OPTIONS);
+      expect(req.request.urlWithParams).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
   });
 
   describe('getTypes', () => {
-    let response: Key[];
-    const OPERATION = 'operation';
+    it('should get real estate type options', () => {
+      const OPERATION = 'rent';
+      let response: Key[];
+      const expectedUrlParams = `language=en&operation=${OPERATION}`;
+      const expectedUrl = `${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/type?${expectedUrlParams}`;
 
-    beforeEach(fakeAsync(() => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      service.getTypes(OPERATION).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_REAL_ESTATE_OPTIONS);
 
-      service.getTypes(OPERATION).subscribe((r: Key[]) => {
-        response = r;
-      });
-    }));
-
-    it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/real_estate/keys/type', {language: 'en', operation: OPERATION});
-    });
-
-    it('should return options', () => {
-      expect(response).toEqual(RESPONSE);
+      expect(response).toEqual(MOCK_REAL_ESTATE_OPTIONS);
+      expect(req.request.urlWithParams).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
   });
 
   describe('getConditions', () => {
-    let response: IOption[];
+    it('should get real estate condition options', () => {
+      let response: IOption[];
+      const expectedUrlParams = `language=en`;
+      const expectedUrl = `${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/condition?${expectedUrlParams}`;
 
-    beforeEach(fakeAsync(() => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      service.getConditions().subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_REAL_ESTATE_OPTIONS);
 
-      service.getConditions().subscribe((r: IOption[]) => {
-        response = r;
-      });
-    }));
-
-    it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/real_estate/keys/condition', {language: 'en'});
-    });
-
-    it('should return options', () => {
       expect(response).toEqual([{
         value: 'test',
         label: 'test'
       }]);
+      expect(req.request.urlWithParams).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
   });
 
   describe('getExtras', () => {
-    let response: Key[];
-    const TYPE = 'house';
+    it('should get real estate extra options', () => {
+      const TYPE = 'house';
+      let response: Key[];
+      const expectedUrlParams = `language=en&type=${TYPE}`;
+      const expectedUrl = `${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/extra?${expectedUrlParams}`;
 
-    beforeEach(fakeAsync(() => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      service.getExtras(TYPE).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_REAL_ESTATE_OPTIONS);
 
-      service.getExtras(TYPE).subscribe((r: Key[]) => {
-        response = r;
-      });
-    }));
-
-    it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/real_estate/keys/extra', {language: 'en', type: TYPE});
-    });
-
-    it('should return options', () => {
-      expect(response).toEqual(RESPONSE);
+      expect(response).toEqual(MOCK_REAL_ESTATE_OPTIONS);
+      expect(req.request.urlWithParams).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
   });
+
 });
