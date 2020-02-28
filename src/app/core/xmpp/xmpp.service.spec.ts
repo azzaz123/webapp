@@ -19,7 +19,7 @@ import {
   MOCK_MESSAGE_FROM_OTHER
 } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
-import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { ChatSignal, ChatSignalType } from '../message/chat-signal.interface';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
 import { MessageStatus } from '../../chat/model';
@@ -768,7 +768,8 @@ describe('Service: Xmpp', () => {
 
   describe('buildMessage', () => {
     it('should set the date of the message using the timestamp if it exists', () => {
-      expect((service as any).buildMessage(MOCKED_SERVER_RECEIVED_RECEIPT).date).toEqual(new Date(MOCKED_SERVER_RECEIVED_RECEIPT.timestamp.body));
+      expect((service as any).buildMessage(MOCKED_SERVER_RECEIVED_RECEIPT).date)
+      .toEqual(new Date(MOCKED_SERVER_RECEIVED_RECEIPT.timestamp.body));
     });
   });
 
@@ -799,7 +800,7 @@ describe('Service: Xmpp', () => {
         id: 'someId',
         receipt: 'receipt'
       };
-      const expectedSignal = new ChatSignal(chatSignalType.RECEIVED, message.thread, new Date(message.date).getTime(), message.receipt);
+      const expectedSignal = new ChatSignal(ChatSignalType.RECEIVED, message.thread, new Date(message.date).getTime(), message.receipt);
 
       service['onNewMessage'](message);
 
@@ -818,7 +819,7 @@ describe('Service: Xmpp', () => {
         id: 'someId',
         sentReceipt: { id: 'someId' }
       };
-      const expectedSignal = new ChatSignal(chatSignalType.SENT, message.thread, new Date(message.date).getTime(), message.sentReceipt.id);
+      const expectedSignal = new ChatSignal(ChatSignalType.SENT, message.thread, new Date(message.date).getTime(), message.sentReceipt.id);
 
       service['onNewMessage'](message);
 
@@ -839,7 +840,7 @@ describe('Service: Xmpp', () => {
         id: 'someId',
         readReceipt: { id: 'someId' }
       };
-      const expectedSignal = new ChatSignal(chatSignalType.READ, message.thread, new Date(message.date).getTime(), null, false);
+      const expectedSignal = new ChatSignal(ChatSignalType.READ, message.thread, new Date(message.date).getTime(), null, false);
 
       service['onNewMessage'](message);
 
@@ -860,7 +861,7 @@ describe('Service: Xmpp', () => {
         id: 'someId',
         readReceipt: { id: 'someId' }
       };
-      const expectedSignal = new ChatSignal(chatSignalType.READ, message.thread, new Date(message.date).getTime(), null, true);
+      const expectedSignal = new ChatSignal(ChatSignalType.READ, message.thread, new Date(message.date).getTime(), null, true);
 
       service['onNewMessage'](message);
 

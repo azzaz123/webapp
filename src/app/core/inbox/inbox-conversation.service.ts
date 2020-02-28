@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RealTimeService } from '../message/real-time.service';
 import { EventService } from '../event/event.service';
-import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { ChatSignal, ChatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { Message } from '../message/message';
@@ -141,13 +141,13 @@ export class InboxConversationService {
 
   public processNewChatSignal(signal: ChatSignal) {
     switch (signal.type) {
-      case chatSignalType.SENT:
+      case ChatSignalType.SENT:
         this.markAs(MessageStatus.SENT, signal.messageId, signal.thread);
         break;
-      case chatSignalType.RECEIVED:
+      case ChatSignalType.RECEIVED:
         this.markAs(MessageStatus.RECEIVED, signal.messageId, signal.thread);
         break;
-      case chatSignalType.READ:
+      case ChatSignalType.READ:
         /* the last argument passed to markAllAsRead is the reverse of fromSelf, as markAllAsRead method uses it to filter which messages
            it should mark with status 'read'; when receiving a READ signal fromSelf we want to mark as 'read' messages from other */
         this.markAllAsRead(signal.thread, signal.timestamp, !signal.fromSelf);

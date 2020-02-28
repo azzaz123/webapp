@@ -1,21 +1,21 @@
 import { MessageStatus } from '../../chat/model';
 
-export const chatSignalType = {
-  SENT: MessageStatus.SENT,
-  RECEIVED: MessageStatus.RECEIVED,
-  READ: MessageStatus.READ
-};
+export enum ChatSignalType {
+  SENT = MessageStatus.SENT,
+  RECEIVED = MessageStatus.RECEIVED,
+  READ = MessageStatus.READ
+}
 
 export class ChatSignal {
   constructor(
-    private _type: string,
+    private _type: ChatSignalType,
     private _thread: string,
     private _timestamp: number,
     private _messageId?: string,
     private _fromSelf?: boolean) {
   }
 
-  get type(): string {
+  get type(): ChatSignalType {
     return this._type;
   }
 

@@ -9,7 +9,7 @@ import { MockedPersistencyService } from '../../../tests/persistency.fixtures.sp
 import { EventService } from '../event/event.service';
 import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { ChatSignal, ChatSignalType } from '../message/chat-signal.interface';
 import { Message } from '../message/message';
 import { InboxMessage, MessageStatus, MessageType } from '../../chat/model/inbox-message';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
@@ -86,7 +86,7 @@ describe('InboxConversationService', () => {
 
     it('should call procesNewChatSignal when a CHAT_SIGNAL event is emitted', () => {
       spyOn(service, 'processNewChatSignal');
-      const signal = new ChatSignal(chatSignalType.SENT, 'thread id', null, 'message-id');
+      const signal = new ChatSignal(ChatSignalType.SENT, 'thread id', null, 'message-id');
 
       eventService.emit(EventService.CHAT_SIGNAL, signal);
 
@@ -393,14 +393,14 @@ describe('InboxConversationService', () => {
 
       describe('when processing a READ chat signal NOT fromSelf', () => {
         it('should NOT decrase the unreadMessages counter of the conversation', () => {
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, false);
           service.processNewChatSignal(signal);
 
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
         });
 
         it('should NOT decrease messageService.totalUnreadMessages counter', () => {
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, false);
           service.processNewChatSignal(signal);
 
           expect(messageService.totalUnreadMessages).toBe(unreadCount);
@@ -420,7 +420,7 @@ describe('InboxConversationService', () => {
         it('should decrase the unreadMessages counter of the conversation by the number of messages that are being marked as READ', () => {
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
 
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, true);
           service.processNewChatSignal(signal);
 
           expect(mockedConversation.unreadCounter).toBe(0);
@@ -430,7 +430,7 @@ describe('InboxConversationService', () => {
         than the existing counter (disallow negative values in counter)`, () => {
           mockedConversation.unreadCounter = 1;
 
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, true);
           service.processNewChatSignal(signal);
 
           expect(mockedConversation.unreadCounter).toBe(0);
@@ -439,7 +439,7 @@ describe('InboxConversationService', () => {
         it('should decrase messageService.totalUnreadMessages counter by the number of messages that are being marked as READ', () => {
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
 
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, true);
           service.processNewChatSignal(signal);
 
           expect(messageService.totalUnreadMessages).toBe(0);
@@ -449,7 +449,7 @@ describe('InboxConversationService', () => {
         than the existing counter (disallow negative values in counter)`, () => {
           mockedConversation.unreadCounter = 5;
 
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, true);
           service.processNewChatSignal(signal);
 
           expect(messageService.totalUnreadMessages).toBe(0);

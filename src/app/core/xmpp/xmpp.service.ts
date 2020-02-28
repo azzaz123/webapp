@@ -9,7 +9,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
-import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { ChatSignal, ChatSignalType } from '../message/chat-signal.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { InboxUser } from '../../chat/model/inbox-user';
 import { RemoteConsoleService } from '../remote-console';
@@ -240,11 +240,11 @@ export class XmppService {
   private buildChatSignal(message: XmppBodyMessage) {
     let signal: ChatSignal;
     if (message.timestamp && message.receipt && message.from.bare !== message.to.bare && !message.carbon) {
-      signal = new ChatSignal(chatSignalType.RECEIVED, message.thread, message.date, message.receipt);
+      signal = new ChatSignal(ChatSignalType.RECEIVED, message.thread, message.date, message.receipt);
     } else if (!message.carbon && message.sentReceipt) {
-      signal = new ChatSignal(chatSignalType.SENT, message.thread, message.date, message.sentReceipt.id);
+      signal = new ChatSignal(ChatSignalType.SENT, message.thread, message.date, message.sentReceipt.id);
     } else if (message.readReceipt) {
-      signal = new ChatSignal(chatSignalType.READ, message.thread, message.date, null, this.isFromSelf(message));
+      signal = new ChatSignal(ChatSignalType.READ, message.thread, message.date, null, this.isFromSelf(message));
     }
 
     if (signal) {
