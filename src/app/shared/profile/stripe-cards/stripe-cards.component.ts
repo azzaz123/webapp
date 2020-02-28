@@ -4,6 +4,7 @@ import { StripeService } from '../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { NewCardModalComponent } from '../../modals/new-card-modal/new-card-modal.component';
 import { FinancialCard } from '../credit-card-info/financial-card';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -12,6 +13,7 @@ import { FinancialCard } from '../credit-card-info/financial-card';
 })
 export class StripeCardsComponent implements OnInit {
 
+  public loading = false;
   public stripeCards: FinancialCard[];
 
   constructor(private stripeService: StripeService,
@@ -34,20 +36,26 @@ export class StripeCardsComponent implements OnInit {
   }
 
   public addNewCard() {
+    console.log('addNewCard')
     let modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {windowClass: 'review'});
     modalRef.result.then((financialCard: FinancialCard) => {
-      const existingCard = this.stripeCards.filter((stripeCard: FinancialCard) => {
-        return stripeCard.id === financialCard.id;
-      });
+      console.log('modal closed')
+      this.loading = true;
+      const existingCard = this.stripeCards.filter(stripeCard => stripeCard.id === financialCard.id);
+
       if (!existingCard.length) {
-        this.stripeService.addNewCard(financialCard.id).subscribe(() => {
-          this.stripeCards.push(financialCard);
-        }, () => {
-          this.errorService.i18nError('addNewCardError');
-        });
+        console.log('does not exists, adding it')
+        this.stripeService.addNewCard(financialCard.id)
+          .pipe(finalize(() => this.loading = false))
+          .subscribe(
+            () => { this.stripeCards.push(financialCard); console.log('added new card')},
+            () => this.errorService.i18nError('addNewCardError')
+          );
       }
       modalRef = null;
-    }, () => {});
+    },
+    () => this.loading = false)
+    .catch(() => this.loading = false)
   }
   
 }
