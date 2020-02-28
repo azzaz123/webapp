@@ -5,6 +5,7 @@ import { Key } from './key.interface';
 import { IOption } from 'ng-select';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 export const REAL_ESTATE_KEYS_ENDPOINT = 'api/v3/real_estate/keys';
 
@@ -25,7 +26,7 @@ export class RealestateKeysService {
   }
 
   getTypes(operation: string): Observable<Key[]> {
-    const params = { language: this.i18n.locale, operation: operation };
+    const params = { language: this.i18n.locale, operation };
 
     return this.http.get<Key[]>(`${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/type`, { params });
   }
@@ -34,12 +35,12 @@ export class RealestateKeysService {
     const params = { language: this.i18n.locale };
 
     return this.http.get(`${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/condition`, { params })
-      .map((keys: Key[]) => {
+      .pipe(map((keys: Key[]) => {
         return keys.map((item: Key) => ({
           value: item.id,
           label: item.text
         }));
-      });
+      }));
   }
 
   getExtras(type: string): Observable<Key[]> {
