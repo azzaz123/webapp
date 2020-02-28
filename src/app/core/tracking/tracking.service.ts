@@ -10,12 +10,12 @@ import { CookieService } from 'ngx-cookie';
 import { HttpService } from '../http/http.service';
 import { NavigatorService } from './navigator.service';
 import { WindowRef } from '../window/window.service';
-import 'rxjs/add/operator/bufferTime';
 import { PersistencyService } from '../persistency/persistency.service';
 import { EventService } from '../event/event.service';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/bufferTime';
 import { Subscription } from 'rxjs/Subscription';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 const maxBatchSize = 1000;
 const sendInterval = 10000;
@@ -924,6 +924,7 @@ export class TrackingService {
 
   constructor(private navigatorService: NavigatorService,
     private http: HttpService,
+    private httpNew: HttpClient,
     private userService: UserService,
     private winRef: WindowRef,
     private eventService: EventService,
@@ -940,8 +941,8 @@ export class TrackingService {
     const newEvent = this.createNewEvent(event, attributes);
     delete newEvent.sessions[0].window;
     const stringifiedEvent: string = JSON.stringify(newEvent);
-    const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
-    return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body).subscribe();
+    const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY).toString();
+    return this.httpNew.post(`${environment.clickStreamURL}`, stringifiedEvent, { headers: ({ 'Authorization': sha1Body }) }).subscribe();
   }
 
   private sendMultipleEvents(events: Array<TrackingEventData>) {
