@@ -14,7 +14,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpService } from '../../../core/http/http.service';
 import { UserService } from '../../../core/user/user.service';
 
-fdescribe('CreditCardInfoComponent', () => {
+describe('CreditCardInfoComponent', () => {
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;
   let stripeService: StripeService;
