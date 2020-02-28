@@ -29,6 +29,10 @@ describe('ItemStatsService', () => {
     httpMock = TestBed.get(HttpTestingController);
   });
 
+  afterEach(() => {
+    httpMock.verify();
+  });
+
   describe('getStatistics', () => {
     it('should get user statistics', () => {
       let response: ItemStatisticFullResponse;

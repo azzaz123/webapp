@@ -1,5 +1,5 @@
 import { HttpTestingController, TestRequest, HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { environment } from '../../../environments/environment';
 
@@ -18,6 +18,10 @@ describe('StatisticsService', () => {
     });
     service = TestBed.get(StatisticsService);
     httpMock = TestBed.get(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   describe('getStatistics', () => {

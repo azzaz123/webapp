@@ -2,20 +2,21 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { SendPhoneComponent, SEND_PHONE_ENDPOINT } from './send-phone.component';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { format } from 'libphonenumber-js';
+import { By } from '@angular/platform-browser';
+
+import { environment } from '../../../../environments/environment';
 import { MessageService } from '../../../core/message/message.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { WindowRef } from '../../../core/window/window.service';
+
+import { SendPhoneComponent, SEND_PHONE_ENDPOINT } from './send-phone.component';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
-import { WindowRef } from '../../../core/window/window.service';
-import { environment } from '../../../../environments/environment';
 import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
-import { By } from '@angular/platform-browser';
-import { format } from 'libphonenumber-js';
-import { Observable } from 'rxjs';
 import { MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
 describe('SendPhoneComponent', () => {
   let component: SendPhoneComponent;
@@ -61,7 +62,7 @@ describe('SendPhoneComponent', () => {
       declarations: [SendPhoneComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -154,10 +155,11 @@ describe('SendPhoneComponent', () => {
         component.createPhoneNumberMessage();
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.flush({});
-  
+
         expect(req.request.url).toBe(expectedUrl);
         expect(req.request.body).toEqual({ phone_number: phoneNumber });
         expect(req.request.method).toBe('PUT');
+        httpMock.verify();
       });
 
       it('should call messageService.createPhoneNumberMessage with the conversation and phoneNumber', () => {

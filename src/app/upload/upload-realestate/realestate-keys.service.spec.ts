@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { IOption } from 'ng-select';
+
+import { environment } from '../../../environments/environment';
 
 import { RealestateKeysService, REAL_ESTATE_KEYS_ENDPOINT } from './realestate-keys.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { Key } from './key.interface';
-import { IOption } from 'ng-select';
-import { environment } from '../../../environments/environment';
-import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('RealestateKeysService', () => {
   let service: RealestateKeysService;
@@ -22,6 +23,10 @@ describe('RealestateKeysService', () => {
     });
     service = TestBed.get(RealestateKeysService);
     httpMock = TestBed.get(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   describe('getOperations', () => {
