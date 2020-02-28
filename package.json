@@ -18,7 +18,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "svgo": "svgo -f ./src/assets/icons --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}; svgo -f ./src/assets/images --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}",
-    "mparticle": "node mparticle.js"
+    "mparticle": "node mparticle.js",
+    "analyze-bundle": "yarn buildprod --statsJson=true && yarn webpack-bundle-analyzer dist/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -102,7 +103,8 @@
     "retry": "^0.12.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "2.7.2"
+    "typescript": "2.7.2",
+    "webpack-bundle-analyzer": "^3.6.0"
   },
   "resolutions": {
     "**/rxjs": "6.3.2"
