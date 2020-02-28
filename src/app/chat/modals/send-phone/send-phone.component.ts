@@ -33,7 +33,6 @@ export class SendPhoneComponent implements OnInit {
     private trackingService: TrackingService,
     private windowRef: WindowRef,
     public activeModal: NgbActiveModal) {
-    this.trackingService.trackAccumulatedEvents();
     this.sendPhoneForm = this.fb.group({
       phone: ['', [Validators.required, this.phoneNumberFormatValidator]]
     });

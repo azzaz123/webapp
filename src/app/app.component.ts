@@ -104,7 +104,6 @@ export class AppComponent implements OnInit {
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
     this.conversationService.firstLoad = true;
-    this.trackingService.trackAccumulatedEvents();
 
     __cmp('init', quancastOptions[this.i18n.locale]);
   }
