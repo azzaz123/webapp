@@ -94,8 +94,9 @@ fdescribe('CreditCardInfoComponent', () => {
       tick();
       fixture.detectChanges();
 
-      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('.CreditCard__info--loading');
+      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('.CreditCard__info--loading > mat-icon');
       expect(loadingComponent).toBeTruthy();
+      expect(loadingComponent.getAttribute('svgicon')).toBe('spinner');
       tick(backendResponseTimeMs);
     }));
 

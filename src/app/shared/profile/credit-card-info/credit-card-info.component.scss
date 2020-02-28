@@ -48,6 +48,7 @@ $card-height: 88px;
 
 .CreditCard__info {
   &--loading {
+    border: solid 1px $blue-grey-5;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -56,11 +57,5 @@ $card-height: 88px;
     width: $card-width;
     height: $card-height;
     background: white;
-
-    div {
-      width: 45px;
-      height: 45px;
-      background: url(/assets/images/spinner.gif) no-repeat center center / 45px;
-    }
   }
 }
