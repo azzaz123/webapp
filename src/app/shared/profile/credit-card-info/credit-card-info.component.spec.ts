@@ -59,7 +59,7 @@ describe('CreditCardInfoComponent', () => {
     component.financialCard = STRIPE_CARD_OPTION;
   });
 
-  fdescribe('deleteStripeCreditCard', () => {
+  describe('deleteStripeCreditCard', () => {
     beforeEach(() => deleteStripeCardButton = fixture.debugElement.nativeElement.querySelector('a'));
 
     it('should open modal when clicking in add more cards button', fakeAsync(() => {
