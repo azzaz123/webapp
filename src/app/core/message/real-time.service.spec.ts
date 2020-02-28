@@ -2,8 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { RealTimeService } from './real-time.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
-import { PersistencyService } from '../persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
@@ -27,7 +25,6 @@ import {
 import { ConnectionService } from '../connection/connection.service';
 
 let service: RealTimeService;
-let persistencyService: PersistencyService;
 let eventService: EventService;
 let xmppService: XmppService;
 let trackingService: TrackingService;
@@ -42,7 +39,6 @@ describe('RealTimeService', () => {
         RealTimeService,
         XmppService,
         EventService,
-        { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
@@ -52,7 +48,6 @@ describe('RealTimeService', () => {
 
     service = TestBed.get(RealTimeService);
     eventService = TestBed.get(EventService);
-    persistencyService = TestBed.get(PersistencyService);
     xmppService = TestBed.get(XmppService);
     trackingService = TestBed.get(TrackingService);
     remoteConsoleService = TestBed.get(RemoteConsoleService);
@@ -245,7 +240,7 @@ describe('RealTimeService', () => {
       expect(service.sendDeliveryReceipt).not.toHaveBeenCalled();
     });
 
-    it('should NOT call sendDeliveryReceipt if the message already exists (persistencyService.findMessage returns a value)', () => {
+    it('should NOT call sendDeliveryReceipt if the message already exists', () => {
       spyOn(service, 'sendDeliveryReceipt');
       const msg = new Message('someId', CONVERSATION_ID, 'from myself!', USER_ID);
       msg.fromSelf = false;

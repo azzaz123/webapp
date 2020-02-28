@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../../chat/model';
 import { MessageService } from '../message/message.service';
 import { FeatureflagService } from '../user/featureflag.service';
@@ -28,7 +27,6 @@ export class InboxService {
   public errorRetrievingArchived = false;
 
   constructor(private httpClient: HttpClient,
-              private persistencyService: PersistencyService,
               private messageService: MessageService,
               private inboxConversationService: InboxConversationService,
               private featureflagService: FeatureflagService,

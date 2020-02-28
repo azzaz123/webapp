@@ -8,7 +8,6 @@ import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { MessageService } from '../message/message.service';
-import { PersistencyService } from '../persistency/persistency.service';
 import { EventService } from '../event/event.service';
 import { NotificationService } from '../notification/notification.service';
 import { TrackingService } from '../tracking/tracking.service';
@@ -16,7 +15,6 @@ import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { MockedUserService } from '../../../tests/user.fixtures.spec';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveService } from '../message/archive.service';
@@ -38,7 +36,6 @@ let messageService: MessageService;
 let notificationService: NotificationService;
 let remoteConsoleService: RemoteConsoleService;
 let realTime: RealTimeService;
-let persistencyService: PersistencyService;
 let eventService: EventService;
 let trackingService: TrackingService;
 let connectionService: ConnectionService;
@@ -61,7 +58,6 @@ describe('Service: Conversation', () => {
         { provide: UserService, useClass: MockedUserService },
         { provide: ItemService, useClass: MockedItemService },
         { provide: TrackingService, useClass: MockTrackingService },
-        { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: InboxService, useClass: InboxServiceMock },
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
@@ -105,7 +101,6 @@ describe('Service: Conversation', () => {
     messageService = TestBed.get(MessageService);
     http = TestBed.get(HttpService);
     realTime = TestBed.get(RealTimeService);
-    persistencyService = TestBed.get(PersistencyService);
     notificationService = TestBed.get(NotificationService);
     remoteConsoleService = TestBed.get(RemoteConsoleService);
     eventService = TestBed.get(EventService);

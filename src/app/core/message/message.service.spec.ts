@@ -6,20 +6,12 @@ import { Conversation } from '../conversation/conversation';
 import { Message, messageStatus, phoneRequestState } from './message';
 import { Observable } from 'rxjs';
 import { EventService } from '../event/event.service';
-import { PersistencyService } from '../persistency/persistency.service';
 import {
   createMessagesArray, createReceivedReceiptsArray,
   MESSAGE_MAIN, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE_FROM_OTHER
 } from '../../../tests/message.fixtures.spec';
 import { MOCK_CONVERSATION, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
-import {
-  MOCK_DB_FILTERED_RESPONSE,
-  MOCK_DB_META,
-  MockedPersistencyService,
-  MOCK_DB_RESPONSE_WITH_PENDING,
-  MOCK_DB_RESPONSE_WITH_OLD_PENDING,
-  MOCK_DB_MSG_WITH_PHONEREQUEST
-} from '../../../tests/persistency.fixtures.spec';
+
 import { USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
@@ -37,7 +29,6 @@ describe('Service: Message', () => {
 
   let realTime: RealTimeService;
   let service: MessageService;
-  let persistencyService: PersistencyService;
   let userService: UserService;
   let connectionService: ConnectionService;
   let archiveService: MsgArchiveService;
@@ -63,14 +54,12 @@ describe('Service: Message', () => {
         },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: ConnectionService, useValue: {} },
-        { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: UserService, useValue: { user: new User(USER_ID) } },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
       ]
     });
     realTime = TestBed.get(RealTimeService);
     service = TestBed.get(MessageService);
-    persistencyService = TestBed.get(PersistencyService);
     userService = TestBed.get(UserService);
     connectionService = TestBed.get(ConnectionService);
     archiveService = TestBed.get(MsgArchiveService);

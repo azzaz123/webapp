@@ -5,7 +5,6 @@ import { XmppService } from '../xmpp/xmpp.service';
 import { Conversation } from '../conversation/conversation';
 import { EventService } from '../event/event.service';
 import { Message } from './message';
-import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { ChatSignal, chatSignalType } from './chat-signal.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
@@ -27,7 +26,6 @@ export class RealTimeService {
 
   constructor(private xmpp: XmppService,
               private eventService: EventService,
-              private persistencyService: PersistencyService,
               private trackingService: TrackingService,
               private remoteConsoleService: RemoteConsoleService,
               private analyticsService: AnalyticsService,

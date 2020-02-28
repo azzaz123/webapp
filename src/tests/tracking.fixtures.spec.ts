@@ -22,8 +22,6 @@ export class MockTrackingService {
   }
   trackMultiple(events: Array<TrackingEventData>) {
   }
-  trackAccumulatedEvents() {
-  }
 
 }
 

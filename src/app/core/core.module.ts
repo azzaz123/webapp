@@ -18,7 +18,6 @@ import { MessageService } from './message/message.service';
 import { MsgArchiveService } from './message/archive.service';
 import { NotificationService } from './notification/notification.service';
 import { PaymentService } from './payments/payment.service';
-import { PersistencyService } from './persistency/persistency.service';
 import { WindowRef } from './window/window.service';
 import { XmppService } from './xmpp/xmpp.service';
 import { PushNotificationsModule } from 'ng-push';
@@ -73,7 +72,6 @@ export class CoreModule {
         MsgArchiveService,
         NotificationService,
         PaymentService,
-        PersistencyService,
         WindowRef,
         XmppService,
         RealTimeService,

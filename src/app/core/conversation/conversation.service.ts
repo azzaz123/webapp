@@ -8,7 +8,6 @@ import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { MessageService } from '../message/message.service';
 import { EventService } from '../event/event.service';
-import { PersistencyService } from '../persistency/persistency.service';
 import { NotificationService } from '../notification/notification.service';
 import { LeadService } from './lead.service';
 import { ConversationResponse } from './conversation-response.interface';
@@ -49,7 +48,6 @@ export class ConversationService extends LeadService {
               realTime: RealTimeService,
               blockService: BlockUserXmppService,
               connectionService: ConnectionService,
-              private persistencyService: PersistencyService,
               protected messageService: MessageService,
               protected trackingService: TrackingService,
               protected notificationService: NotificationService,

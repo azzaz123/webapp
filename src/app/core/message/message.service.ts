@@ -4,7 +4,6 @@ import { MsgArchiveService } from './archive.service';
 import { Subject } from 'rxjs/Subject';
 import { Conversation } from '../conversation/conversation';
 import { Message, messageStatus, phoneRequestState } from './message';
-import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { ConnectionService } from '../connection/connection.service';
@@ -23,7 +22,6 @@ export class MessageService {
 
   constructor(private realTime: RealTimeService,
               private archiveService: MsgArchiveService,
-              private persistencyService: PersistencyService,
               private userService: UserService,
               private connectionService: ConnectionService,
               private i18n: I18nService,

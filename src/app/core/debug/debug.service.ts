@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
 import { find } from 'lodash-es';
 import PouchDB from 'pouchdb';
@@ -14,7 +13,6 @@ export class DebugService {
 
   constructor(private userService: UserService,
               private conversationService: ConversationService,
-              private persistencyService: PersistencyService,
               private messageService: MessageService,
               private xmppService: XmppService) {
     if (!environment.production) {

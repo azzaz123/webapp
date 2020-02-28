@@ -10,8 +10,6 @@ import { EventService } from '../event/event.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockedUserService } from '../../../tests/user.fixtures.spec';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
-import { PersistencyService } from '../persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Call } from './calls';
@@ -44,7 +42,6 @@ describe('CallsService', () => {
         ...TEST_HTTP_PROVIDERS,
         {provide: UserService, useClass: MockedUserService},
         {provide: ItemService, useClass: MockedItemService},
-        {provide: PersistencyService, useClass: MockedPersistencyService},
         {provide: RemoteConsoleService, useClass: MockRemoteConsoleService},
         {provide: TrackingService, useValue: {}},
         {

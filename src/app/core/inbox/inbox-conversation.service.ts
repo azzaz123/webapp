@@ -3,7 +3,6 @@ import { RealTimeService } from '../message/real-time.service';
 import { EventService } from '../event/event.service';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
-import { PersistencyService } from '../persistency/persistency.service';
 import { Message, messageStatus } from '../message/message';
 import { Observable, of } from 'rxjs';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
@@ -37,7 +36,6 @@ export class InboxConversationService {
     private httpClient: HttpClient,
     private realTime: RealTimeService,
     private messageService: MessageService,
-    private persistencyService: PersistencyService,
     private eventService: EventService) {
     this.conversations = [];
     this.archivedConversations = [];

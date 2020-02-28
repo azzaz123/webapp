@@ -7,10 +7,8 @@ import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { getTimestamp } from './getTimestamp.func';
 import { CookieService } from 'ngx-cookie';
-import { HttpService } from '../http/http.service';
 import { NavigatorService } from './navigator.service';
 import { WindowRef } from '../window/window.service';
-import { PersistencyService } from '../persistency/persistency.service';
 import { EventService } from '../event/event.service';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/bufferTime';
@@ -919,12 +917,10 @@ export class TrackingService {
   private dbReady = false;
 
   constructor(private navigatorService: NavigatorService,
-    private http: HttpService,
-    private httpNew: HttpClient,
+    private http: HttpClient,
     private userService: UserService,
     private winRef: WindowRef,
     private eventService: EventService,
-    private persistencyService: PersistencyService,
     private cookieService: CookieService) {
     this.setSessionStartTime();
     this.setSessionId(this.sessionIdCookieName);
@@ -936,7 +932,7 @@ export class TrackingService {
     delete newEvent.sessions[0].window;
     const stringifiedEvent: string = JSON.stringify(newEvent);
     const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY).toString();
-    return this.httpNew.post(`${environment.clickStreamURL}`, stringifiedEvent, { headers: ({ 'Authorization': sha1Body }) }).subscribe();
+    return this.http.post(`${environment.clickStreamURL}`, stringifiedEvent, { headers: ({ 'Authorization': sha1Body }) }).subscribe();
   }
 
   public addTrackingEvent(event: TrackingEventData, acceptDuplicates: boolean = true) {
