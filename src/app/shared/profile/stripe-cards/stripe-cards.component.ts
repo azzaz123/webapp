@@ -36,19 +36,16 @@ export class StripeCardsComponent implements OnInit {
   }
 
   public addNewCard() {
-    console.log('addNewCard')
     let modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {windowClass: 'review'});
     modalRef.result.then((financialCard: FinancialCard) => {
-      console.log('modal closed')
       this.loading = true;
       const existingCard = this.stripeCards.filter(stripeCard => stripeCard.id === financialCard.id);
 
       if (!existingCard.length) {
-        console.log('does not exists, adding it')
         this.stripeService.addNewCard(financialCard.id)
           .pipe(finalize(() => this.loading = false))
           .subscribe(
-            () => { this.stripeCards.push(financialCard); console.log('added new card')},
+            () => this.stripeCards.push(financialCard),
             () => this.errorService.i18nError('addNewCardError')
           );
       }
