@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { find } from 'lodash-es';
-import PouchDB from 'pouchdb';
 import { MessageService } from '../message/message.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { ConversationService } from '../conversation/conversation.service';

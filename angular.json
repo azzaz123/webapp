@@ -33,7 +33,6 @@
               "src/style/styles.scss"
             ],
             "scripts": [
-              "node_modules/pouchdb/dist/pouchdb.js",
               "node_modules/stanza.io/build/stanzaio.bundle.js",
               "node_modules/visibilityjs/lib/visibility.core.js",
               "node_modules/appboy-web-sdk/appboy.min.js",
@@ -117,7 +116,6 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
-              "node_modules/pouchdb/dist/pouchdb.js",
               "node_modules/stanza.io/build/stanzaio.bundle.js",
               "node_modules/visibilityjs/lib/visibility.core.js",
               "node_modules/appboy-web-sdk/appboy.min.js",
