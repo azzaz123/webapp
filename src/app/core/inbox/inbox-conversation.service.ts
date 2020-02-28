@@ -4,7 +4,7 @@ import { EventService } from '../event/event.service';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
-import { Message, messageStatus } from '../message/message';
+import { Message } from '../message/message';
 import { Observable, of } from 'rxjs';
 import { ConversationResponse } from '../conversation/conversation-response.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
@@ -173,7 +173,7 @@ export class InboxConversationService {
     }
   }
 
-  private markAs(newStatus: string, messageId: string, thread: string) {
+  private markAs(newStatus: MessageStatus, messageId: string, thread: string) {
     const conversation = this.conversations.find(c => c.id === thread);
     if (!conversation) {
       return;
@@ -332,7 +332,7 @@ export class InboxConversationService {
 
   public resendPendingMessages(conversation: InboxConversation): void {
     conversation.messages
-    .filter((message: InboxMessage) => message.status === messageStatus.PENDING
+    .filter((message: InboxMessage) => message.status === MessageStatus.PENDING
       && moment(message.date).isAfter(moment().subtract(InboxConversationService.RESEND_BEFORE_5_DAYS, 'days')))
     .forEach((message: InboxMessage) => this.realTime.resendMessage(conversation, message));
   }

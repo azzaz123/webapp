@@ -1,4 +1,4 @@
-import { MessagePayload } from '../../chat/model';
+import { MessagePayload, MessageStatus } from '../../chat/model';
 
 export interface XMPPClient {
   on(event: string, handler: Function): void;
@@ -20,7 +20,7 @@ export interface XmppMessage {
   to: JID;
   thread: string;
   read?: any;
-  status?: string;
+  status?: MessageStatus;
   type?: string;
   received?: any;
   receipt?: string;

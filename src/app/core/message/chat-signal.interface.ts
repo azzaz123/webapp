@@ -1,9 +1,9 @@
-import { messageStatus } from './message';
+import { MessageStatus } from '../../chat/model';
 
 export const chatSignalType = {
-  SENT: messageStatus.SENT,
-  RECEIVED: messageStatus.RECEIVED,
-  READ: messageStatus.READ
+  SENT: MessageStatus.SENT,
+  RECEIVED: MessageStatus.RECEIVED,
+  READ: MessageStatus.READ
 };
 
 export class ChatSignal {

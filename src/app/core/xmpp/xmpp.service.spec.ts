@@ -3,7 +3,7 @@
 import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
-import { Message, messageStatus } from '../message/message';
+import { Message } from '../message/message';
 import { MOCK_USER, USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
 import {
   CONVERSATION_ID,
@@ -22,6 +22,7 @@ import { environment } from '../../../environments/environment';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
+import { MessageStatus } from '../../chat/model';
 
 const mamFirstIndex = '1899';
 const mamCount = 1900;
@@ -336,7 +337,7 @@ describe('Service: Xmpp', () => {
       eventService.emit('message', MOCKED_SERVER_MESSAGE);
       tick();
 
-      expect(msg.status).toBe(messageStatus.SENT);
+      expect(msg.status).toBe(MessageStatus.SENT);
       expect(remoteConsoleService.sendPresentationMessageTimeout).toHaveBeenCalledWith('id');
     }));
 
@@ -700,7 +701,7 @@ describe('Service: Xmpp', () => {
       service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
       tick();
 
-      expect(msg.status).toBe(messageStatus.PENDING);
+      expect(msg.status).toBe(MessageStatus.PENDING);
     }));
 
     it('should emit a MESSAGE_SENT event when called', () => {

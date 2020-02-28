@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InboxService } from '../core/inbox/inbox.service';
-import { InboxConversation } from './model';
+import { InboxConversation, PhoneMethod } from './model';
 import { UserService } from '../core/user/user.service';
 import { EventService } from '../core/event/event.service';
 import { AdService } from '../core/ad/ad.service';
@@ -8,7 +8,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { ConversationService } from '../core/conversation/conversation.service';
 import { InboxConversationService } from '../core/inbox/inbox-conversation.service';
 import { Observable } from 'rxjs';
-import { phoneMethod } from '../core/message/message';
 import { isEmpty, isNil } from 'lodash-es';
 
 @Component({
@@ -136,7 +135,7 @@ export class ChatComponent implements OnInit {
 
   private getPhoneInfo(conversation: InboxConversation): void {
     this.userService.getPhoneInfo(conversation.user.id).subscribe(phoneInfo => {
-      if (!isNil(phoneInfo) && phoneInfo.phone_method === phoneMethod.popUp) {
+      if (!isNil(phoneInfo) && phoneInfo.phone_method === PhoneMethod.POP_UP) {
         this.conversationService.openPhonePopup(conversation, true);
       }
     });

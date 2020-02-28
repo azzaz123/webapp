@@ -7,11 +7,12 @@ import { UserService } from '../user/user.service';
 import { Observable } from 'rxjs';
 import { createMockMessageEvents, createMockReceivedEvents, createMockReadEvents } from '../../../tests/archive.fixture.spec';
 import { MsgArchiveResponse } from './archive.interface';
-import { Message, messageStatus } from './message';
+import { Message } from './message';
 import { CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
 import { EventService } from '../event/event.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { MessageStatus } from '../../chat/model';
 
 let service: MsgArchiveService;
 let http: HttpService;
@@ -180,7 +181,7 @@ describe('MsgArchiveService', () => {
         tick();
 
         response.messages.map(m => {
-          m.fromSelf ? expect(m.status).toBe(messageStatus.SENT) : expect(m.status).toBe(messageStatus.RECEIVED);
+          m.fromSelf ? expect(m.status).toBe(MessageStatus.SENT) : expect(m.status).toBe(MessageStatus.RECEIVED);
         });
       }));
 
@@ -198,7 +199,7 @@ describe('MsgArchiveService', () => {
         tick();
 
         expect(response.messages[0].fromSelf).toBe(false);
-        expect(response.messages[0].status).toBe(messageStatus.RECEIVED);
+        expect(response.messages[0].status).toBe(MessageStatus.RECEIVED);
       }));
 
     describe('process receivedReceipts', () => {
@@ -310,7 +311,7 @@ describe('MsgArchiveService', () => {
       tick();
 
       response.messages.map(m => {
-        m.fromSelf ? expect(m.status).toBe(messageStatus.SENT) : expect(m.status).toBe(messageStatus.RECEIVED);
+        m.fromSelf ? expect(m.status).toBe(MessageStatus.SENT) : expect(m.status).toBe(MessageStatus.RECEIVED);
       });
     }));
 
@@ -390,9 +391,9 @@ describe('MsgArchiveService', () => {
       service.getEventsSince('0').subscribe(r => response = r);
       tick();
 
-      expect(response.messages[0].status).toBe(messageStatus.RECEIVED);
-      expect(response.messages[1].status).toBe(messageStatus.SENT);
-      expect(response.messages[2].status).toBe(messageStatus.SENT);
+      expect(response.messages[0].status).toBe(MessageStatus.RECEIVED);
+      expect(response.messages[1].status).toBe(MessageStatus.SENT);
+      expect(response.messages[2].status).toBe(MessageStatus.SENT);
     }));
 
     it(`should update the status of messages fromSelf to READ, for messages with a timestamp prior or equal to
@@ -415,9 +416,9 @@ describe('MsgArchiveService', () => {
       service.getEventsSince('0').subscribe(r => response = r);
       tick();
 
-      expect(response.messages[0].status).toBe(messageStatus.READ);
-      expect(response.messages[1].status).toBe(messageStatus.READ);
-      expect(response.messages[2].status).toBe(messageStatus.SENT);
+      expect(response.messages[0].status).toBe(MessageStatus.READ);
+      expect(response.messages[1].status).toBe(MessageStatus.READ);
+      expect(response.messages[2].status).toBe(MessageStatus.SENT);
     }));
 
     it(`should update the status of messages NOT fromSelf to READ, for messages with a timestamp prior or equal to
@@ -440,9 +441,9 @@ describe('MsgArchiveService', () => {
       service.getEventsSince('0').subscribe(r => response = r);
       tick();
 
-      expect(response.messages[0].status).toBe(messageStatus.READ);
-      expect(response.messages[1].status).toBe(messageStatus.RECEIVED);
-      expect(response.messages[2].status).toBe(messageStatus.RECEIVED);
+      expect(response.messages[0].status).toBe(MessageStatus.READ);
+      expect(response.messages[1].status).toBe(MessageStatus.RECEIVED);
+      expect(response.messages[2].status).toBe(MessageStatus.RECEIVED);
     }));
 
     it(`should update the status of messages from third voice (with payload) to READ, for messages with a timestamp prior or equal to
@@ -469,9 +470,9 @@ describe('MsgArchiveService', () => {
       service.getEventsSince('0').subscribe(r => response = r);
       tick();
 
-      expect(response.messages[0].status).toBe(messageStatus.READ);
-      expect(response.messages[1].status).toBe(messageStatus.RECEIVED);
-      expect(response.messages[2].status).toBe(messageStatus.RECEIVED);
+      expect(response.messages[0].status).toBe(MessageStatus.READ);
+      expect(response.messages[1].status).toBe(MessageStatus.RECEIVED);
+      expect(response.messages[2].status).toBe(MessageStatus.RECEIVED);
     }));
   });
 

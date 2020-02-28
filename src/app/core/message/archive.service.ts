@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MsgArchiveResponse, ReceivedReceipt, ReadReceipt, ArchiveMetrics } from './archive.interface';
 import { HttpService } from '../http/http.service';
-import { Message, messageStatus } from './message';
+import { Message } from './message';
 import { UserService } from '../user/user.service';
 import { EventService } from '../event/event.service';
 import { Subscription } from 'rxjs/Subscription';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
+import { MessageStatus } from '../../chat/model';
 
 
 @Injectable()
@@ -177,15 +178,15 @@ export class MsgArchiveService {
         return threadMatches && olderThanReadTs && senderMatches;
       })
       .map(m => {
-        m.status = messageStatus.READ;
+        m.status = MessageStatus.READ;
         return m;
       });
     });
 
     receivedReceipts.forEach(r => {
       const msg = messages.find(m => m.id === r.messageId);
-      if (msg && msg.status !== messageStatus.READ) {
-        msg.status = messageStatus.RECEIVED;
+      if (msg && msg.status !== MessageStatus.READ) {
+        msg.status = MessageStatus.RECEIVED;
       }
     });
 
@@ -207,7 +208,7 @@ export class MsgArchiveService {
         m.event.body,
         m.event.from_user_hash,
         new Date(m.event.created_ts * 1000),
-        fromSelf ? messageStatus.SENT : messageStatus.RECEIVED,
+        fromSelf ? MessageStatus.SENT : MessageStatus.RECEIVED,
         m.event.payload ? JSON.parse(m.event.payload) : null);
         msg.fromSelf = fromSelf;
 

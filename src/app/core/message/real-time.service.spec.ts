@@ -8,7 +8,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { of, throwError } from 'rxjs';
-import { Message, phoneRequestState } from './message';
+import { Message } from './message';
 import { ACCESS_TOKEN, MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID, MOCK_CONVERSATION, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
@@ -25,6 +25,7 @@ import {
   SendFirstMessage
 } from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
+import { PhoneRequestState } from '../../chat/model';
 
 let service: RealTimeService;
 let persistencyService: PersistencyService;
@@ -262,7 +263,7 @@ describe('RealTimeService', () => {
       spyOn<any>(eventService, 'emit').and.callThrough();
       const conv = MOCKED_CONVERSATIONS[0];
       const phoneRequestMsg = new Message('someId', conv.id, 'some text', USER_ID, new Date());
-      phoneRequestMsg.phoneRequest = phoneRequestState.pending;
+      phoneRequestMsg.phoneRequest = PhoneRequestState.PENDING;
       conv.messages.push(phoneRequestMsg);
 
       eventService.emit(EventService.MESSAGE_SENT, conv, MOCK_MESSAGE.id);

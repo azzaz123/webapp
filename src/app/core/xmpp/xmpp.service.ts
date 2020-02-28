@@ -1,6 +1,6 @@
 import { clone, remove } from 'lodash-es';
 import { Injectable } from '@angular/core';
-import { Message, messageStatus } from '../message/message';
+import { Message } from '../message/message';
 import { EventService } from '../event/event.service';
 import { XmppBodyMessage, XMPPClient, JID } from './xmpp.interface';
 import { Observable, Observer } from 'rxjs';
@@ -13,7 +13,7 @@ import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { InboxUser } from '../../chat/model/inbox-user';
 import { RemoteConsoleService } from '../remote-console';
-import { InboxMessage } from '../../chat/model';
+import { InboxMessage, MessageStatus } from '../../chat/model';
 
 @Injectable()
 export class XmppService {
@@ -253,7 +253,7 @@ export class XmppService {
   }
 
   private buildMessage(message: XmppBodyMessage, markAsPending = false) {
-    message.status = markAsPending ? messageStatus.PENDING : messageStatus.SENT;
+    message.status = markAsPending ? MessageStatus.PENDING : MessageStatus.SENT;
     return new Message(message.id, message.thread, message.body, message.from.local,
       new Date(message.date), message.status, message.payload);
   }
