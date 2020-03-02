@@ -935,10 +935,6 @@ export class TrackingService {
     return this.http.post(`${environment.clickStreamURL}`, stringifiedEvent, { headers: ({ 'Authorization': sha1Body }) }).subscribe();
   }
 
-  public addTrackingEvent(event: TrackingEventData, acceptDuplicates: boolean = true) {
-    this.track(event.eventData, event.attributes);
-  }
-
   private setSessionStartTime() {
     this.sessionStartTime = getTimestamp();
   }
