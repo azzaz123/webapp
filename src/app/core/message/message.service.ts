@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
-import { MsgArchiveService } from './archive.service';
 import { Subject } from 'rxjs/Subject';
 import { Conversation } from '../conversation/conversation';
 import { Message, messageStatus, phoneRequestState } from './message';
@@ -21,7 +20,6 @@ export class MessageService {
   private _totalUnreadMessages = 0;
 
   constructor(private realTime: RealTimeService,
-              private archiveService: MsgArchiveService,
               private userService: UserService,
               private connectionService: ConnectionService,
               private i18n: I18nService,
