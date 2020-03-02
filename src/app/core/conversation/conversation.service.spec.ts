@@ -5,10 +5,6 @@ import { ConversationService } from './conversation.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { ConnectionService } from '../connection/connection.service';
-import { I18nService } from '../i18n/i18n.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 
