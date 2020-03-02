@@ -15,9 +15,6 @@ import { InboxMessage, MessageStatus, MessageType } from '../../chat/model/inbox
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
-import { HttpService } from '../http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { Response, ResponseOptions } from '@angular/http';
 import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs';
 import { ItemService } from '../item/item.service';
@@ -32,7 +29,6 @@ import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 describe('InboxConversationService', () => {
 
   let service: InboxConversationService;
-  let http: HttpService;
   let eventService: EventService;
   let realTime: RealTimeService;
   let persistencyService: PersistencyService;
@@ -49,7 +45,6 @@ describe('InboxConversationService', () => {
       ],
       providers: [
         InboxConversationService,
-        ...TEST_HTTP_PROVIDERS,
         EventService,
         { provide: RealTimeService, useClass: RealTimeServiceMock },
         {
@@ -64,7 +59,6 @@ describe('InboxConversationService', () => {
       ]
     });
     service = TestBed.get(InboxConversationService);
-    http = TestBed.get(HttpService);
     eventService = TestBed.get(EventService);
     realTime = TestBed.get(RealTimeService);
     persistencyService = TestBed.get(PersistencyService);
@@ -172,31 +166,24 @@ describe('InboxConversationService', () => {
       });
 
       it('should prepend the new message to the conversation messages array', () => {
-        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
-
         service.processNewMessage(newInboxMessage);
 
         expect(service.conversations[0].messages[0]).toEqual(newInboxMessage);
       });
 
       it('should set conversation lastMessage to the new message', () => {
-        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
-
         service.processNewMessage(newInboxMessage);
 
         expect(service.conversations[0].lastMessage).toEqual(newInboxMessage);
       });
 
       it('should update the conversaiton modifiedDate with the new message date', () => {
-        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
-
         service.processNewMessage(newInboxMessage);
 
         expect(service.conversations[0].modifiedDate).toEqual(newInboxMessage.date);
       });
 
       it('should bump the conversation to 1st position', () => {
-        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         const conversationToBump = service.conversations[1];
         const message = new InboxMessage('mockId', conversationToBump.id, 'hola!', 'mockUserId', true,
           new Date(), MessageStatus.SENT, MessageType.TEXT);
@@ -206,16 +193,7 @@ describe('InboxConversationService', () => {
         expect(service.conversations.indexOf(conversationToBump)).toBe(0);
       });
 
-      it('should call persistencyService.saveInboxMessages with the new message', () => {
-        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
-
-        service.processNewMessage(newInboxMessage);
-
-        expect(persistencyService.saveInboxMessages).toHaveBeenCalledWith(newInboxMessage);
-      });
-
       it('should emit a MESSAGE_ADDED event, passing the new InboxMessage', () => {
-        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         spyOn(eventService, 'emit').and.callThrough();
 
         service.processNewMessage(newInboxMessage);
@@ -224,7 +202,6 @@ describe('InboxConversationService', () => {
       });
 
       it('should increment the unread counters by one for each new message not fromSelf', () => {
-        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         const unreadCounterBefore = service.conversations[0].unreadCounter;
         const count = 3;
         for (let i = 0; i < count; i++) {
@@ -238,7 +215,6 @@ describe('InboxConversationService', () => {
       });
 
       it('should only increment the unread counters for new messages NOT fromSelf AND with unique IDs', () => {
-        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         const unreadCounterBefore = service.conversations[0].unreadCounter;
         const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', false, new Date(),
           MessageStatus.SENT, MessageType.TEXT);
@@ -252,7 +228,6 @@ describe('InboxConversationService', () => {
       });
 
       it('should not increment the conversation.unreadCount nor the messageService.totalUnreadMessages for new messages fromSelf', () => {
-        spyOn(persistencyService, 'saveInboxMessages').and.returnValue(Observable.of({}));
         const message = new InboxMessage('mockId', conversations[0].id, 'hola!', 'mockUserId', true, new Date(),
           MessageStatus.SENT, MessageType.TEXT);
         const unreadCounterBefore = service.conversations[0].unreadCounter;
@@ -370,28 +345,29 @@ describe('InboxConversationService', () => {
       });
 
       it('should call fetch new conversation', () => {
-        spyOn(http, 'get').and.callThrough();
-
         service.processNewMessage(newInboxMessage);
 
-        expect(http.get).toHaveBeenCalledWith(service['API_URL'] + newInboxMessage.thread);
+        const req = httpTestingController.expectOne(`${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`);
+        expect(req.request.method).toEqual('GET');
       });
 
       it('should add new conversation to the top of the list if fetch succeed', () => {
-        const apiResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify(MOCK_API_CONVERSATION) }));
-        spyOn(http, 'get').and.returnValue(Observable.of(apiResponse));
-
         service.processNewMessage(newInboxMessage);
 
+        const req = httpTestingController.expectOne(`${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`);
+        req.flush(MOCK_API_CONVERSATION);
+
+        expect(req.request.method).toEqual('GET');
         expect(service.conversations[0].id).toEqual(MOCK_API_CONVERSATION.hash);
       });
 
       it('should add new conversation with received message to the top of the list if fetch failed', () => {
-        const apiResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify(MOCK_API_CONVERSATION) }));
-        spyOn(http, 'get').and.returnValue(Observable.throw(new Error('Test error')));
-
         service.processNewMessage(newInboxMessage);
 
+        const req = httpTestingController.expectOne(`${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`);
+        req.error(new ErrorEvent('connection failed'));
+
+        expect(req.request.method).toEqual('GET');
         expect(service.conversations[0].id).toEqual(newInboxMessage.thread);
         expect(service.conversations[0].lastMessage.id).toEqual(newInboxMessage.id);
       });
@@ -409,79 +385,13 @@ describe('InboxConversationService', () => {
       let expectedMarkedAsRead, expectedNotMarkedAsRead;
       const unreadCount = 5;
       beforeEach(() => {
-        spyOn(persistencyService, 'updateInboxMessageStatus');
         mockedConversation = service.conversations[0];
         mockedConversation.messages = createInboxMessagesArray(10);
         messageService.totalUnreadMessages = unreadCount;
         mockedConversation.unreadCounter = unreadCount;
       });
 
-      it(`should NOT call persistencyService.updateInboxMessageStatus when the signal ID does not match
-        any message ID in the conversation`, () => {
-        const signal = new ChatSignal(chatSignalType.READ, 'non-existant-conv-id', timestamp);
-
-        service.processNewChatSignal(signal);
-
-        expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalled();
-      });
-
       describe('when processing a READ chat signal NOT fromSelf', () => {
-        it(`should update status to READ for messages fromSelf and status RECEIVED`, () => {
-          mockedConversation.messages.map((m, index) => {
-            m.fromSelf = index < unreadCount ? true : false;
-            m.status = MessageStatus.RECEIVED;
-          });
-          expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === MessageStatus.SENT ||
-            m.status === MessageStatus.RECEIVED));
-          expectedNotMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
-
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-          service.processNewChatSignal(signal);
-
-          expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(unreadCount);
-          expectedMarkedAsRead.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, MessageStatus.READ);
-          });
-
-          expectedNotMarkedAsRead.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, MessageStatus.READ);
-          });
-        });
-
-        it(`should update status to READ for messages fromSelf and status SENT`, () => {
-          mockedConversation.messages.map((m, index) => {
-            m.fromSelf = index < unreadCount ? true : false;
-            m.status = MessageStatus.SENT;
-          });
-          expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === MessageStatus.SENT ||
-            m.status === MessageStatus.RECEIVED));
-          expectedNotMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
-
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-          service.processNewChatSignal(signal);
-
-          expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(unreadCount);
-          expectedMarkedAsRead.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, MessageStatus.READ);
-          });
-
-          expectedNotMarkedAsRead.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, MessageStatus.READ);
-          });
-        });
-
-        it(`should NOT update status to READ for messages fromSelf and status PENDING`, () => {
-          mockedConversation.messages.map((m, index) => {
-            m.fromSelf = index < unreadCount ? true : false;
-            m.status = MessageStatus.PENDING;
-          });
-
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
-          service.processNewChatSignal(signal);
-
-          expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalled();
-        });
-
         it('should NOT decrase the unreadMessages counter of the conversation', () => {
           const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
           service.processNewChatSignal(signal);
@@ -505,21 +415,6 @@ describe('InboxConversationService', () => {
           });
           expectedMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
           expectedNotMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf);
-        });
-
-        it(`should update status to READ for messages NOT fromSelf`, () => {
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
-
-          service.processNewChatSignal(signal);
-
-          expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(unreadCount);
-          expectedMarkedAsRead.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, MessageStatus.READ);
-          });
-
-          expectedNotMarkedAsRead.forEach(m => {
-            expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, MessageStatus.READ);
-          });
         });
 
         it('should decrase the unreadMessages counter of the conversation by the number of messages that are being marked as READ', () => {
@@ -564,54 +459,8 @@ describe('InboxConversationService', () => {
 
     describe('when processing sent and received signals', () => {
       beforeEach(() => {
-        spyOn(persistencyService, 'updateInboxMessageStatus');
         mockedConversation = service.conversations[0];
         mockedConversation.messages = createInboxMessagesArray(8);
-      });
-
-      it(`should NOT call persistencyService.updateInboxMessageStatus when called with a thread that does not match
-      any conversation ID`, () => {
-        const sentSignal = new ChatSignal(chatSignalType.SENT, 'non-existant-thread', timestamp, mockedConversation.messages[0].id);
-
-        service.processNewChatSignal(sentSignal);
-
-        expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalled();
-      });
-
-      it(`should NOT call persistencyService.updateInboxMessageStatus when called with a messageId does not match any message ID
-      in the conversation`, () => {
-        const sentSignal = new ChatSignal(chatSignalType.SENT, mockedConversation.id, timestamp, 'non-existant-id');
-
-        service.processNewChatSignal(sentSignal);
-
-        expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalled();
-      });
-
-      it(`should update message status ONLY for messages that meet the criteria:
-        message status is missing OR message status is NULL OR the new status order is greater than the current status order`, () => {
-        mockedConversation.messages[0].status = MessageStatus.SENT;
-        mockedConversation.messages[1].status = null;
-        mockedConversation.messages[2].status = MessageStatus.RECEIVED;
-
-        const signal1 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[0].id);
-        const signal2 = new ChatSignal(chatSignalType.RECEIVED, mockedConversation.id, timestamp, mockedConversation.messages[1].id);
-        const signal3 = new ChatSignal(chatSignalType.SENT, mockedConversation.id, timestamp, mockedConversation.messages[2].id);
-
-        service.processNewChatSignal(signal1);
-        service.processNewChatSignal(signal2);
-        service.processNewChatSignal(signal3);
-
-        const expectedChangedMessages = mockedConversation.messages.slice(0, 2);
-        const expectedNotChangedMessages = mockedConversation.messages.slice(-1);
-
-        expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledTimes(2);
-        expectedChangedMessages.forEach(m => {
-          expect(persistencyService.updateInboxMessageStatus).toHaveBeenCalledWith(m, MessageStatus.RECEIVED);
-        });
-
-        expectedNotChangedMessages.forEach(m => {
-          expect(persistencyService.updateInboxMessageStatus).not.toHaveBeenCalledWith(m, MessageStatus.SENT);
-        });
       });
     });
   });
@@ -623,19 +472,21 @@ describe('InboxConversationService', () => {
     });
 
     it('with success should emit CONVERSATION_ARCHIVED event', () => {
-      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      service.archive$(service.conversations[0]).subscribe((conversation: InboxConversation) =>
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]));
 
-      service.archive$(service.conversations[0]).subscribe().unsubscribe();
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]);
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/conversations/archive`);
+      expect(req.request.method).toEqual('PUT');
+      expect(req.request.body).toEqual({ conversation_ids: [service.conversations[0].id] });
     });
 
     it('with 409 error should emit CONVERSATION_ARCHIVED event', () => {
-      spyOn(http, 'put').and.returnValue(Observable.throwError({ status: 409 }));
+      service.archive$(service.conversations[0]).subscribe((conversation: InboxConversation) =>
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]));
 
-      service.archive$(service.conversations[0]).subscribe().unsubscribe();
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_ARCHIVED, service.conversations[0]);
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/conversations/archive`);
+      expect(req.request.method).toEqual('PUT');
+      req.flush('conflict', { status: 409, statusText: 'Conflict' });
     });
   });
 
@@ -646,19 +497,23 @@ describe('InboxConversationService', () => {
     });
 
     it('with success should emit CONVERSATION_UNARCHIVED event', () => {
-      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      service.unarchive(service.archivedConversations[0])
+      .subscribe((conversation: InboxConversation) =>
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]));
 
-      service.unarchive(service.archivedConversations[0]).subscribe().unsubscribe();
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]);
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/conversations/unarchive`);
+      expect(req.request.method).toEqual('PUT');
+      expect(req.request.body).toEqual({ conversation_ids: [service.archivedConversations[0].id] });
     });
 
     it('with 409 error should emit CONVERSATION_UNARCHIVED event', () => {
-      spyOn(http, 'put').and.returnValue(Observable.throwError({ status: 409 }));
+      service.unarchive(service.archivedConversations[0])
+      .subscribe((conversation: InboxConversation) =>
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]));
 
-      service.unarchive(service.archivedConversations[0]).subscribe().unsubscribe();
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED, service.archivedConversations[0]);
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/instant-messaging/conversations/unarchive`);
+      expect(req.request.method).toEqual('PUT');
+      req.flush('conflict', { status: 409, statusText: 'Conflict' });
     });
   });
 

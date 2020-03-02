@@ -153,22 +153,13 @@ describe('DashboardComponent', () => {
         calls: 6,
         archived: 9
       }));
-      spyOn(conversationService, 'getTotals').and.returnValue(Observable.of({
-        phonesShared: 2,
-        meetings: 3,
-        messages: 4,
-        conversations: 5,
-        archivedPhonesShared: 6,
-        archivedMeetings: 7,
-        archivedMessages: 8
-      }));
       component.conversations = createInboxConversationsArray(3);
 
       component['getTotals']();
     });
 
     it('should set phonesTotal', () => {
-      expect(component.phonesTotal).toBe(6 + 2);
+      expect(component.phonesTotal).toBe(6);
     });
 
     it('should set messagesTotal', () => {

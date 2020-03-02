@@ -307,15 +307,6 @@ describe('App', () => {
         expect(eventServiceCalls).toContain(EventService.USER_LOGIN);
       });
 
-      it('should call the eventService.subscribe passing the CHAT_SIGNAL event', () => {
-        spyOn(eventService, 'subscribe').and.callThrough();
-
-        component.ngOnInit();
-        const eventServiceCalls = getEventServiceSubscribeArgs();
-
-        expect(eventServiceCalls).toContain(EventService.CHAT_SIGNAL);
-      });
-
       it('should perform a xmpp connect when the login event and the DB_READY event are triggered with the correct user data', () => {
         spyOn(realTime, 'connect').and.callThrough();
 
@@ -324,16 +315,6 @@ describe('App', () => {
         eventService.emit(EventService.DB_READY);
 
         expect(realTime.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
-      });
-
-      it('should NOT perform a xmpp connect when the DB_READY event is triggered with a dbName', () => {
-        spyOn(realTime, 'connect').and.callThrough();
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        eventService.emit(EventService.DB_READY, 'some-db-name');
-
-        expect(realTime.connect).not.toHaveBeenCalled();
       });
 
       it('should call userService.sendUserPresenceInterval', () => {
@@ -523,37 +504,6 @@ describe('App', () => {
       eventService.emit(EventService.USER_LOGOUT);
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MY_PROFILE_LOGGED_OUT);
-    });
-  });
-
-  describe('process chat signals', () => {
-    it('should call conversationService.processChatSignal when a CHAT_SIGNAL event is emitted with a Sent, Received or Read signal', () => {
-      const timestamp = new Date(MOCK_MESSAGE.date).getTime();
-      const sentSignal = new ChatSignal(chatSignalType.SENT, MOCK_MESSAGE.thread, timestamp, MOCK_MESSAGE.id);
-      const receivedSignal =  new ChatSignal(chatSignalType.RECEIVED, MOCK_MESSAGE.thread, timestamp, MOCK_MESSAGE.id);
-      const readSignal = new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.thread, timestamp, null, false);
-      const testWithignals = [sentSignal, receivedSignal, readSignal];
-      spyOn(conversationService, 'processChatSignal');
-      component.ngOnInit();
-
-      testWithignals.map((signal: ChatSignal) => {
-        eventService.emit(EventService.CHAT_SIGNAL, signal);
-
-        expect(conversationService.processChatSignal).toHaveBeenCalledWith(signal);
-      });
-    });
-  });
-
-  describe('process new message event', () => {
-    // TODO test for legacy code
-    xit('should call conversationService.handleNewMessages when a NEW_MESSAGE event is triggered', () => {
-      spyOn(conversationService, 'handleNewMessages');
-      const timestamp = new Date().getTime();
-
-      component.ngOnInit();
-      eventService.emit(EventService.NEW_MESSAGE, MOCK_MESSAGE, timestamp);
-
-      expect(conversationService.handleNewMessages).toHaveBeenCalledWith(MOCK_MESSAGE, timestamp);
     });
   });
 
