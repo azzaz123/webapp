@@ -341,14 +341,15 @@ describe('RemoteConsoleService', () => {
       spyOn(userService, 'me').and.returnValue(of({ id: USER_ID }));
       spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000, 1000);
+      const message = 'MESSAGE';
 
-      service.sendXmppConnectionClosedWithError();
+      service.sendXmppConnectionClosedWithError(message);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(1);
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
         'metric_type': MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
-        'message': 'send log when XMPP connection is closed due to an error',
+        'message': message,
         'ping_time_ms': navigator['connection']['rtt']
       });
     }));

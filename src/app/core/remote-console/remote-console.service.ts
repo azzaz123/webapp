@@ -102,11 +102,11 @@ export class RemoteConsoleService implements OnDestroy {
     });
   }
 
-  sendXmppConnectionClosedWithError(): void {
+  sendXmppConnectionClosedWithError(message: string): void {
     this.userService.me().subscribe((user: User) => this.remoteConsoleClientService.info({
         ...this.getCommonLog(user.id),
         metric_type: MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
-        message: 'send log when XMPP connection is closed due to an error',
+        message: message,
         ping_time_ms: navigator['connection']['rtt']
       })
     );
