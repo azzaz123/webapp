@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from './financial-card';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-credit-card-info',
@@ -10,6 +11,7 @@ import { FinancialCard } from './financial-card';
   styleUrls: ['./credit-card-info.component.scss']
 })
 export class CreditCardInfoComponent {
+  public loading = false;
   
   @Input() financialCard: FinancialCard;
   @Output() onDeleteCard: EventEmitter<FinancialCard> = new EventEmitter();
@@ -25,7 +27,8 @@ export class CreditCardInfoComponent {
     });
     modalRef.componentInstance.type = 4;
     modalRef.result.then(() => {
-      this.stripeService.deleteCard(this.financialCard.id).subscribe(() => {
+      this.loading = true;
+      this.stripeService.deleteCard(this.financialCard.id).pipe(finalize(() => this.loading = false)).subscribe(() => {
         this.onDeleteStripeCard.emit(this.financialCard);
         this.financialCard = null;
       });
