@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Conversation } from './conversation';
 import { TrackingService } from '../tracking/tracking.service';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -8,7 +7,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
+import { SendPhoneComponent } from '../../chat/modals/send-phone';
 import { InboxConversation } from '../../chat/model';
 
 @Injectable()
@@ -26,7 +25,7 @@ export class ConversationService {
               private modalService: NgbModal) {
   }
 
-  public openPhonePopup(conversation: Conversation | InboxConversation, required = false) {
+  public openPhonePopup(conversation: InboxConversation, required = false) {
     const modalOptions: NgbModalOptions = { windowClass: 'phone-request', backdrop: 'static', keyboard: false };
     const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, modalOptions);
     modalRef.componentInstance.conversation = conversation;
