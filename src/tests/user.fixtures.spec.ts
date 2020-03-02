@@ -8,7 +8,7 @@ import {
   Image, UserExtrainfo, UserLocation, UserResponse, UserStats, UserValidations,
   MotorPlan, ProfileSubscriptionInfo
 } from '../app/core/user/user-response.interface';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Item } from '../app/core/item/item';
 import { User } from '../app/core/user/user';
 
@@ -114,7 +114,7 @@ export const USER_DATA: UserResponse = {
 export const MOCK_USER_RESPONSE_BODY: any = {
   'token': ACCESS_TOKEN,
   'resetToken': 'eZXAqOYOyGK9tI4YbwI8Lsd65hs7rIN2mvQVekZ5euFDBBUMDcgJ7jbhTQ325FUA49W1j4',
-  'registerInfo': {'userId': 500002515, 'userUUID': USER_ID, 'idUser': 500002515}
+  'registerInfo': { 'userId': 500002515, 'userUUID': USER_ID, 'idUser': 500002515 }
 };
 
 export const MOCK_USER: User = new User(
@@ -173,7 +173,6 @@ export const MOCK_FULL_USER = new User(
   USER_DATA.email,
   USER_DATA.featured,
   USER_DATA.extra_info
-
 );
 
 export const MOCK_USER_PRO: User = new User(
@@ -219,7 +218,12 @@ export class MockedUserService {
     return new User(USER_ID);
   }
 
-  public getPhoneInfo(userId: string) {}
+  public me(): Observable<User> {
+    return of(new User(USER_ID));
+  }
+
+  public getPhoneInfo(userId: string) {
+  }
 }
 
 export const USER_INFO_RESPONSE: UserInfoResponse = {
@@ -360,7 +364,6 @@ export const MOTORPLAN_DATA: MotorPlan = {
   'limit': 5
 };
 
-
 export const PROFILE_SUB_INFO: ProfileSubscriptionInfo = {
   'status': 'PURCHASE_ACTIVE',
   'product_group': {
@@ -389,7 +392,7 @@ export const PROFILE_SUB_INFO: ProfileSubscriptionInfo = {
         }, {
           'name': 'cars_subscription_tutorial_description3',
           'enable': true
-        }, {'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true}]
+        }, { 'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true }]
       }]
     }, {
       'id': 'dwlqzmo6vm94',
@@ -418,7 +421,7 @@ export const PROFILE_SUB_INFO: ProfileSubscriptionInfo = {
         }, {
           'name': 'pro_subscription_tutorial_items_no_expire',
           'enable': true
-        }, {'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true}]
+        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
       }]
     }, {
       'id': 'd1mxzo7j9yq2',
@@ -447,7 +450,7 @@ export const PROFILE_SUB_INFO: ProfileSubscriptionInfo = {
         }, {
           'name': 'pro_subscription_tutorial_items_no_expire',
           'enable': true
-        }, {'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true}]
+        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
       }]
     }],
     'type': 'motor_plan_pro'
@@ -482,7 +485,7 @@ export const PROFILE_NOT_SUB_INFO: ProfileSubscriptionInfo = {
         }, {
           'name': 'cars_subscription_tutorial_description3',
           'enable': true
-        }, {'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true}]
+        }, { 'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true }]
       }]
     }, {
       'id': 'dwlqzmo6vm94',
@@ -511,7 +514,7 @@ export const PROFILE_NOT_SUB_INFO: ProfileSubscriptionInfo = {
         }, {
           'name': 'pro_subscription_tutorial_items_no_expire',
           'enable': true
-        }, {'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true}]
+        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
       }]
     }, {
       'id': 'd1mxzo7j9yq2',
@@ -540,7 +543,7 @@ export const PROFILE_NOT_SUB_INFO: ProfileSubscriptionInfo = {
         }, {
           'name': 'pro_subscription_tutorial_items_no_expire',
           'enable': true
-        }, {'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true}]
+        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
       }]
     }],
     'type': 'motor_plan_pro'
@@ -575,7 +578,7 @@ export const PROFILE_ELIGIBLE_INFO: ProfileSubscriptionInfo = {
         }, {
           'name': 'cars_subscription_tutorial_description3',
           'enable': true
-        }, {'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true}]
+        }, { 'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true }]
       }]
     }, {
       'id': 'dwlqzmo6vm94',
@@ -604,7 +607,7 @@ export const PROFILE_ELIGIBLE_INFO: ProfileSubscriptionInfo = {
         }, {
           'name': 'pro_subscription_tutorial_items_no_expire',
           'enable': true
-        }, {'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true}]
+        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
       }]
     }, {
       'id': 'd1mxzo7j9yq2',
@@ -633,7 +636,7 @@ export const PROFILE_ELIGIBLE_INFO: ProfileSubscriptionInfo = {
         }, {
           'name': 'pro_subscription_tutorial_items_no_expire',
           'enable': true
-        }, {'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true}]
+        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
       }]
     }],
     'type': 'motor_plan_pro'
@@ -668,7 +671,7 @@ export const PROFILE_ACTIVE_INFO: ProfileSubscriptionInfo = {
         }, {
           'name': 'cars_subscription_tutorial_description3',
           'enable': true
-        }, {'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true}]
+        }, { 'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true }]
       }]
     }, {
       'id': 'dwlqzmo6vm94',
@@ -697,7 +700,7 @@ export const PROFILE_ACTIVE_INFO: ProfileSubscriptionInfo = {
         }, {
           'name': 'pro_subscription_tutorial_items_no_expire',
           'enable': true
-        }, {'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true}]
+        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
       }]
     }, {
       'id': 'd1mxzo7j9yq2',
@@ -726,7 +729,7 @@ export const PROFILE_ACTIVE_INFO: ProfileSubscriptionInfo = {
         }, {
           'name': 'pro_subscription_tutorial_items_no_expire',
           'enable': true
-        }, {'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true}]
+        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
       }]
     }],
     'type': 'motor_plan_pro'

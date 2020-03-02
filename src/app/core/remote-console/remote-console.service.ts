@@ -8,6 +8,7 @@ import { FeatureflagService } from '../user/featureflag.service';
 import { APP_VERSION } from '../../../environments/version';
 import { UserService } from '../user/user.service';
 import { RemoteConsoleClientService } from './remote-console-client.service';
+import { User } from '../user/user';
 
 @Injectable({
   providedIn: 'root'
@@ -99,6 +100,16 @@ export class RemoteConsoleService implements OnDestroy {
       call_method_client: callMethodClient,
       conversations_count_by_id: JSON.stringify(conversationsGroupById)
     });
+  }
+
+  sendXmppConnectionClosedWithError(): void {
+    this.userService.me().subscribe((user: User) => this.remoteConsoleClientService.info({
+        ...this.getCommonLog(user.id),
+        metric_type: MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
+        message: 'send log when XMPP connection is closed due to an error',
+        ping_time_ms: navigator['connection']['rtt']
+      })
+    );
   }
 
   private getCommonLog(userId: string): {} {
