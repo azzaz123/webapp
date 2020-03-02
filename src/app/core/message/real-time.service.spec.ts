@@ -265,25 +265,21 @@ describe('RealTimeService', () => {
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CONV_WITH_PHONE_CREATED, conv, phoneRequestMsg);
     });
 
-    it('should call addTrackingEvent with the conversationCreateNew event when the MESSAGE_SENT event is triggered', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+    it('should call track with the conversationCreateNew event when the MESSAGE_SENT event is triggered', () => {
+      spyOn(trackingService, 'track');
       const newConversation = MOCK_CONVERSATION('newId');
       newConversation.messages.push(MOCK_MESSAGE);
-      const expectedEvent: TrackingEventData = {
-        eventData: TrackingService.CONVERSATION_CREATE_NEW,
-        attributes: {
-          thread_id: newConversation.id,
-          message_id: MOCK_MESSAGE.id,
-          item_id: newConversation.item.id
-        }
-      };
 
       eventService.emit(EventService.MESSAGE_SENT, newConversation, MOCK_MESSAGE.id);
 
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(expectedEvent, false);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW, {
+        thread_id: newConversation.id,
+        message_id: MOCK_MESSAGE.id,
+        item_id: newConversation.item.id
+      });
     });
 
-    it('should call addTrackingEvent with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
+    it('should call track with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
       spyOn(window, 'fbq');
       const newConversation = MOCK_CONVERSATION('newId');
       newConversation.messages.push(MOCK_MESSAGE);
@@ -298,7 +294,7 @@ describe('RealTimeService', () => {
     });
 
     it('should add MessageSent event in the pendingTrackingEvents queue when the MESSAGE_SENT event is triggered', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+      spyOn(trackingService, 'track');
       const conv = MOCK_CONVERSATION('newId');
       const expectedEvent: TrackingEventData = {
         eventData: TrackingService.MESSAGE_SENT,
@@ -310,7 +306,7 @@ describe('RealTimeService', () => {
 
       eventService.emit(EventService.MESSAGE_SENT, conv, MOCK_MESSAGE.id);
 
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(expectedEvent, false);
+      expect(trackingService.track).toHaveBeenCalledWith(expectedEvent, false);
     });
 
     it('should call appboy.logCustomEvent if this is the first message message sent', () => {

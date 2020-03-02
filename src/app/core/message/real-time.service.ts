@@ -129,25 +129,16 @@ export class RealTimeService {
     return false;
   }
 
-  private trackMessageSent(thread: string, messageId: string) {
-    this.trackingService.addTrackingEvent({
-      eventData: TrackingService.MESSAGE_SENT,
-      attributes: {
-        thread_id: thread,
-        message_id: messageId
-      }
-    }, false);
+  private trackMessageSent(thread_id: string, message_id: string) {
+    this.trackingService.track(TrackingService.MESSAGE_SENT, { thread_id, message_id });
   }
 
   private trackConversationCreated(conversation: Conversation, messageId: string) {
-    this.trackingService.addTrackingEvent({
-      eventData: TrackingService.CONVERSATION_CREATE_NEW,
-      attributes: {
-        item_id: conversation.item.id,
-        thread_id: conversation.id,
-        message_id: messageId
-      }
-    }, false);
+    this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
+      item_id: conversation.item.id,
+      thread_id: conversation.id,
+      message_id: messageId
+    });
 
     fbq('track', 'InitiateCheckout', {
       value: conversation.item.salePrice,
