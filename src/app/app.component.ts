@@ -11,7 +11,6 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/filter';
 import { MatIconRegistry } from '@angular/material';
-import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
@@ -25,7 +24,6 @@ import { MessageService } from './core/message/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
-import { DebugService } from './core/debug/debug.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
@@ -68,11 +66,9 @@ export class AppComponent implements OnInit {
               private matIconRegistry: MatIconRegistry,
               private trackingService: TrackingService,
               private i18n: I18nService,
-              private conversationService: ConversationService,
               private winRef: WindowRef,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private debugService: DebugService,
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
@@ -103,7 +99,6 @@ export class AppComponent implements OnInit {
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
-    this.conversationService.firstLoad = true;
 
     __cmp('init', quancastOptions[this.i18n.locale]);
   }
@@ -227,7 +222,6 @@ export class AppComponent implements OnInit {
 
   private subscribeEventItemUpdated() {
     const syncItem = (item: Item) => {
-      this.conversationService.syncItem(item);
       this.callService.syncItem(item);
     };
     this.event.subscribe(EventService.ITEM_UPDATED, syncItem);
@@ -283,4 +277,3 @@ export class AppComponent implements OnInit {
     });
   }
 }
-

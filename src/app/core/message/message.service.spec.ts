@@ -4,21 +4,15 @@ import { MessageService } from './message.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Conversation } from '../conversation/conversation';
 import { Message, messageStatus, phoneRequestState } from './message';
-import { Observable } from 'rxjs';
 import { EventService } from '../event/event.service';
-import {
-  createMessagesArray, createReceivedReceiptsArray,
-  MESSAGE_MAIN, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE_FROM_OTHER
-} from '../../../tests/message.fixtures.spec';
-import { MOCK_CONVERSATION, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
-
-import { USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
+import { createMessagesArray, MESSAGE_MAIN } from '../../../tests/message.fixtures.spec';
+import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
 import { ConnectionService } from '../connection/connection.service';
-import { MsgArchiveService } from './archive.service';
 import { HttpService } from '../http/http.service';
 import { I18nService } from '../i18n/i18n.service';
 import { RealTimeService } from './real-time.service';
@@ -31,7 +25,6 @@ describe('Service: Message', () => {
   let service: MessageService;
   let userService: UserService;
   let connectionService: ConnectionService;
-  let archiveService: MsgArchiveService;
   let trackingService: TrackingService;
   let httpService: HttpService;
   let i18n: I18nService;
@@ -44,7 +37,6 @@ describe('Service: Message', () => {
         XmppService,
         EventService,
         I18nService,
-        MsgArchiveService,
         RealTimeService,
         {
           provide: HttpService, useValue: {
@@ -62,7 +54,6 @@ describe('Service: Message', () => {
     service = TestBed.get(MessageService);
     userService = TestBed.get(UserService);
     connectionService = TestBed.get(ConnectionService);
-    archiveService = TestBed.get(MsgArchiveService);
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
     httpService = TestBed.get(HttpService);

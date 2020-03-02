@@ -1,14 +1,17 @@
 @import "~style/common";
 
+$card-width: 300px;
+$card-height: 88px;
+
 .credit-card-field {
   border: solid 1px $blue-grey-5;
-  height: 88px;
+  height: $card-height;
   padding: 0 $spacing-ml;
   flex-direction: column;
   border-radius: 6px;
   align-items: center;
   font-size: $font-size-s;
-  width: 300px;
+  width: $card-width;
   display: flex;
   justify-content: center;
   .card-icon {
@@ -43,3 +46,16 @@
   }
 }
 
+.CreditCard__info {
+  &--loading {
+    border: solid 1px $blue-grey-5;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+
+    width: $card-width;
+    height: $card-height;
+    background: white;
+  }
+}
