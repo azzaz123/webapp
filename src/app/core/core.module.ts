@@ -14,7 +14,6 @@ import { AccessTokenService } from './http/access-token.service';
 import { HttpService } from './http/http.service';
 import { ConversationModule } from './conversation/conversation.module';
 import { MessageService } from './message/message.service';
-import { MsgArchiveService } from './message/archive.service';
 import { NotificationService } from './notification/notification.service';
 import { PaymentService } from './payments/payment.service';
 import { PersistencyService } from './persistency/persistency.service';
@@ -24,12 +23,11 @@ import { PushNotificationsModule } from 'ng-push';
 import { ReviewService } from './review/review.service';
 import { ConnectionService } from './connection/connection.service';
 import { RealTimeService } from './message/real-time.service';
-import { BlockUserXmppService } from './conversation/block-user';
+import { BlockUserService, BlockUserXmppService } from './conversation/block-user';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
 import { InboxService } from './inbox/inbox.service';
 import { StripeService } from './stripe/stripe.service';
-import { BlockUserService } from './conversation/block-user';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
 import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
 
@@ -68,7 +66,6 @@ export class CoreModule {
         AccessTokenService,
         HttpService,
         MessageService,
-        MsgArchiveService,
         NotificationService,
         PaymentService,
         PersistencyService,
