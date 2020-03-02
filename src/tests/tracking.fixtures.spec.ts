@@ -17,7 +17,5 @@ export const TRACKING_EVENT: TrackingEvent = new TrackingEvent({
 export class MockTrackingService {
   track(event: TrackingEventBase, params?: any) {
   }
-  trackMultiple(events: Array<TrackingEventData>) {
-  }
 }
 
