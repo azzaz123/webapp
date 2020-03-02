@@ -76,18 +76,15 @@ export class PaymentService {
   }
 
   public getCreditInfo(cache: boolean = true): Observable<CreditInfo> {
-    return this.userService.hasPerm(PERMISSIONS.coins)
-      .flatMap((hasPerm: boolean) => {
-        return this.getPerks(cache)
-          .map((perks: PerksModel) => {
-            const currencyName: string = hasPerm ? 'wallacoins' : 'wallacredits';
-            const factor: number = hasPerm ? COINS_FACTOR : CREDITS_FACTOR;
-            return {
-              currencyName: currencyName,
-              credit: perks[currencyName].quantity,
-              factor: factor
-            }
-          });
+    return this.getPerks(cache)
+      .map((perks: PerksModel) => {
+        const currencyName: string = 'wallacredits';
+        const factor: number = CREDITS_FACTOR;
+        return {
+          currencyName,
+          credit: perks[currencyName].quantity,
+          factor: factor
+        }
       });
   }
 

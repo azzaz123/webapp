@@ -59,50 +59,6 @@ describe('PaymentService', () => {
     httpMock.verify();
   });
 
-  describe('getCreditInfo', () => {
-    const PERKS_MODEL = new PerksModel();
-
-    it('should call getPerks, hasPerm and return credit and wallacoins if perm is true', () => {
-      let resp: CreditInfo;
-      spyOn(userService, 'hasPerm').and.returnValue(Observable.of(true));
-      spyOn(service, 'getPerks').and.returnValue(Observable.of(PERKS_MODEL));
-      const CREDIT = 100;
-      PERKS_MODEL.wallacoins.quantity = CREDIT;
-
-      service.getCreditInfo().subscribe((r: CreditInfo) => {
-        resp = r;
-      });
-
-      expect(service.getPerks).toHaveBeenCalledWith(true);
-      expect(userService.hasPerm).toHaveBeenCalledWith(PERMISSIONS.coins);
-      expect(resp).toEqual({
-        currencyName: 'wallacoins',
-        credit: CREDIT,
-        factor: COINS_FACTOR
-      });
-    });
-
-    it('should call getPerks, hasPerm and return credit and wallacredits if perm is false', () => {
-      let resp: CreditInfo;
-      spyOn(userService, 'hasPerm').and.returnValue(Observable.of(false));
-      spyOn(service, 'getPerks').and.returnValue(Observable.of(PERKS_MODEL));
-      const CREDIT = 100;
-      PERKS_MODEL.wallacredits.quantity = CREDIT;
-
-      service.getCreditInfo().subscribe((r: CreditInfo) => {
-        resp = r;
-      });
-
-      expect(service.getPerks).toHaveBeenCalledWith(true);
-      expect(userService.hasPerm).toHaveBeenCalledWith(PERMISSIONS.coins);
-      expect(resp).toEqual({
-        currencyName: 'wallacredits',
-        credit: CREDIT,
-        factor: CREDITS_FACTOR
-      });
-    });
-  });
-
   xdescribe('getCoinsCreditsPacks', () => {
     const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/packs`;
 
@@ -298,6 +254,28 @@ describe('PaymentService', () => {
       });
     });
 
+  });
+
+  fdescribe('getCreditInfo', () => {
+    const PERKS_MODEL = new PerksModel();
+
+    it('should get user credit', () => {
+      let resp: CreditInfo;
+      spyOn(service, 'getPerks').and.returnValue(Observable.of(PERKS_MODEL));
+      const CREDIT = 100;
+      PERKS_MODEL.wallacredits.quantity = CREDIT;
+
+      service.getCreditInfo().subscribe((r: CreditInfo) => {
+        resp = r;
+      });
+
+      expect(service.getPerks).toHaveBeenCalledWith(true);
+      expect(resp).toEqual({
+        currencyName: 'wallacredits',
+        credit: CREDIT,
+        factor: CREDITS_FACTOR
+      });
+    });
   });
 
   xdescribe('getSubscriptionPacks', () => {
