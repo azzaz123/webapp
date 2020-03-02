@@ -15,7 +15,6 @@ import { User } from '../user/user';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
 import { ConnectionService } from '../connection/connection.service';
-import { MsgArchiveService } from './archive.service';
 import { HttpService } from '../http/http.service';
 import { I18nService } from '../i18n/i18n.service';
 import { RealTimeService } from './real-time.service';
@@ -30,7 +29,6 @@ describe('Service: Message', () => {
   let persistencyService: PersistencyService;
   let userService: UserService;
   let connectionService: ConnectionService;
-  let archiveService: MsgArchiveService;
   let trackingService: TrackingService;
   let httpService: HttpService;
   let i18n: I18nService;
@@ -43,7 +41,6 @@ describe('Service: Message', () => {
         XmppService,
         EventService,
         I18nService,
-        MsgArchiveService,
         RealTimeService,
         {
           provide: HttpService, useValue: {
@@ -63,7 +60,6 @@ describe('Service: Message', () => {
     persistencyService = TestBed.get(PersistencyService);
     userService = TestBed.get(UserService);
     connectionService = TestBed.get(ConnectionService);
-    archiveService = TestBed.get(MsgArchiveService);
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
     httpService = TestBed.get(HttpService);

@@ -1,4 +1,4 @@
-<div class="CreditCard__info">
+<div class="CreditCard__info" *ngIf="!loading">
   <div class="credit-card-field">
     <div class="info">
       <mat-icon svgIcon="{{financialCard?.stripeCard?.brand}}"
@@ -16,4 +16,8 @@
       <a (click)="deleteStripeCard($event)" i18n>Delete card</a>
     </div>
   </div>
+</div>
+
+<div class="CreditCard__info--loading" *ngIf="loading">
+  <mat-icon svgIcon="spinner" class="spinner"></mat-icon>
 </div>
