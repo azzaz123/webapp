@@ -11,7 +11,6 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/filter';
 import { MatIconRegistry } from '@angular/material';
-import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
@@ -25,14 +24,12 @@ import { MessageService } from './core/message/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
-import { DebugService } from './core/debug/debug.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
 import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
-import { ChatSignal } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
 import { Subscription } from 'rxjs';
 import { SplitTestService } from './core/tracking/split-test.service';
@@ -69,11 +66,9 @@ export class AppComponent implements OnInit {
               private matIconRegistry: MatIconRegistry,
               private trackingService: TrackingService,
               private i18n: I18nService,
-              private conversationService: ConversationService,
               private winRef: WindowRef,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private debugService: DebugService,
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
@@ -104,7 +99,6 @@ export class AppComponent implements OnInit {
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
-    this.conversationService.firstLoad = true;
     this.trackingService.trackAccumulatedEvents();
 
     __cmp('init', quancastOptions[this.i18n.locale]);
@@ -174,30 +168,17 @@ export class AppComponent implements OnInit {
   }
 
   private initRealTimeChat(user: User, accessToken: string) {
-    this.event.subscribe(EventService.DB_READY, (dbName) => {
-      if (!dbName) {
-        this.RTConnectedSubscription = this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
-          this.initCalls();
-          this.initConversations();
-          this.inboxService.init();
-        });
-        this.realTime.connect(user.id, accessToken);
-      }
+    this.RTConnectedSubscription = this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
+      this.initCalls();
+      this.inboxService.init();
     });
+    this.realTime.connect(user.id, accessToken);
   }
 
   private initCalls() {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
       if (isProfessional) {
         this.callService.init().subscribe(() => this.callService.init(true).subscribe());
-      }
-    });
-  }
-
-  private initConversations() {
-    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-      if (isProfessional) {
-        this.conversationService.init().subscribe(() => this.conversationService.init(true).subscribe());
       }
     });
   }
@@ -220,9 +201,6 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeChatEvents() {
-    this.event.subscribe(EventService.CHAT_SIGNAL,
-      (signal: ChatSignal) => this.conversationService.processChatSignal(signal));
-
     this.event.subscribe(EventService.CHAT_RT_DISCONNECTED, () => {
       if (this.userService.isLogged && this.connectionService.isConnected) {
         this.realTime.reconnect();
@@ -245,7 +223,6 @@ export class AppComponent implements OnInit {
 
   private subscribeEventItemUpdated() {
     const syncItem = (item: Item) => {
-      this.conversationService.syncItem(item);
       this.callService.syncItem(item);
     };
     this.event.subscribe(EventService.ITEM_UPDATED, syncItem);
@@ -301,4 +278,3 @@ export class AppComponent implements OnInit {
     });
   }
 }
-

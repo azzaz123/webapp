@@ -15,7 +15,7 @@
                         </tsl-credit-card-info>
                     </div>
                     <div class="StripeCards__newCard" *ngIf="stripeCards?.length < 10">
-                        <a (click)="addNewCard()" i18n>+ Add new card</a>
+                        <tsl-button [disabled]="loading" [loading]="loading" (click)="addNewCard()" i18n>+ Add new card</tsl-button>
                     </div>
                 </div>
             </div>
