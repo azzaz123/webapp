@@ -107,8 +107,8 @@ describe('PaymentService', () => {
   });
 
   describe('getPacks', () => {
-    describe('with no param', () => {
-      it('', () => {
+    describe('when no products are selected', () => {
+      it('should return all packs', () => {
         const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/packs`;
         const expectedProductsUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/products`;
         let response: Packs;
@@ -127,8 +127,8 @@ describe('PaymentService', () => {
       });
     });
 
-    describe('with param', () => {
-      it('', () => {
+    describe('when products are selected', () => {
+      it('should return packs related with the selected products', () => {
         const product: Products = {
           [CREDITS_PACK_ID]: {
             id: CREDITS_PACK_ID,
