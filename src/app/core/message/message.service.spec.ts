@@ -192,27 +192,27 @@ describe('Service: Message', () => {
     });
 
     it('should track the CHAT_SHAREPHONE_OPENSHARING event when no second argument is passed', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+      spyOn(trackingService, 'track');
 
       service.addPhoneNumberRequestMessage(conversation);
 
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
     });
 
     it('should track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is true', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+      spyOn(trackingService, 'track');
 
       service.addPhoneNumberRequestMessage(conversation, true);
 
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
     });
 
     it('should NOT track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is false', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+      spyOn(trackingService, 'track');
 
       service.addPhoneNumberRequestMessage(conversation, false);
 
-      expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+      expect(trackingService.track).not.toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
     });
   });
 

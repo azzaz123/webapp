@@ -69,7 +69,7 @@ export class MessageService {
     msg.phoneRequest = phoneRequestState.pending;
     conversation.messages.push(msg);
     if (withTracking) {
-      this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+      this.trackingService.track(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
     }
     conversation.modifiedDate = new Date().getTime();
     return conversation;
