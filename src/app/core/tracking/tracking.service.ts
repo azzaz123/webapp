@@ -932,7 +932,7 @@ export class TrackingService {
     delete newEvent.sessions[0].window;
     const stringifiedEvent: string = JSON.stringify(newEvent);
     const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY).toString();
-    return this.http.post(`${environment.clickStreamURL}`, stringifiedEvent, { headers: ({ 'Authorization': sha1Body }) }).subscribe();
+    return this.http.post(`${environment.clickStreamURL}`, stringifiedEvent, { headers: { 'Authorization': sha1Body } }).subscribe();
   }
 
   private setSessionStartTime() {
