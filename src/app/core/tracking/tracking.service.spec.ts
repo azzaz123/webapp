@@ -12,6 +12,7 @@ import { TrackingService } from './tracking.service';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
 import { NavigatorService } from './navigator.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { TrackingEvent } from './tracking-event';
 
 class MockedNavigatorService {
   private parseVersionInfo() {
@@ -33,29 +34,12 @@ class MockedNavigatorService {
   }
 }
 
-const eventsArray = [
-  {
-    eventData: TrackingService.NOTIFICATION_RECEIVED,
-    attributes: { thread_id: 'conversation', message_id: '123' }
-  },
-  {
-    eventData: TrackingService.MESSAGE_RECEIVED,
-    attributes: { thread_id: 'abc', message_id: '234' }
-  },
-  {
-    eventData: TrackingService.MESSAGE_RECEIVED,
-    attributes: { thread_id: 'abc', message_id: '345' }
-  }
-];
-
-const sendInterval = 10000;
-
-
 describe('Service: Tracking', () => {
 
   let service: TrackingService;
   let eventService: EventService;
   let userService: UserService;
+  let navigatorService: NavigatorService;
   let cookieService: CookieService;
   let window: any;
   let httpMock: HttpTestingController;
@@ -99,52 +83,46 @@ describe('Service: Tracking', () => {
     userService = TestBed.get(UserService);
     httpMock = TestBed.get(HttpTestingController);
     window = TestBed.get(WindowRef).nativeWindow;
+    navigatorService = TestBed.get(NavigatorService);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   describe('track', () => {
-    it('should call createNewEvent with passing the given arguments', () => {
-      spyOn<any>(service, 'createNewEvent').and.callThrough();
-
+    it('should send event to server', () => {
       service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
 
-      expect((service as any).createNewEvent).toHaveBeenCalledWith(TrackingService.NOTIFICATION_RECEIVED,
-        { conversation_id: 'conversation' });
+      const req = httpMock.expectOne(environment.clickStreamURL);
+      req.flush({});
+
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toBeTruthy(); // ideally would be expectedSendEvent, but this service is going to be deprecated
     });
 
-    // it('should do a post to clickstream', () => {
-    //   spyOn(httpMock, 'postNoBase').and.returnValue(of({}));
-    //   spyOn<any>(service, 'createNewEvent').and.callThrough();
+    it('should send professional flag when user is professional', () => {
+      const expectedAttributes = JSON.stringify({ conversation_id: 'conversation', professional: true });
+      spyOnProperty(userService, 'user').and.returnValue({ type: 'professional' });
 
-    //   const result = service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
+      service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
+      const req = httpMock.expectOne(environment.clickStreamURL);
+      req.flush({});
 
-    //   expect(httpMock.postNoBase['calls'].argsFor(0)[0]).toBe(environment.clickStreamURL);
-    //   expect(result).toBeTruthy();
-    // });
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toContain(expectedAttributes);
+    });
 
-    // it('should set the attribute professional to TRUE when the user.type is professional', () => {
-    //   spyOn(httpMock, 'postNoBase').and.returnValue(of({}));
-    //   spyOn<any>(service, 'createNewEvent').and.callThrough();
-    //   spyOnProperty(userService, 'user').and.returnValue({ type: 'professional' });
+    it('should not send professional flag when user is not professional', () => {
+      const expectedAttributes = JSON.stringify({ conversation_id: 'conversation' });
+      spyOnProperty(userService, 'user').and.returnValue({ type: 'normal' });
 
-    //   service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
-    //   const expectedAttributes = JSON.stringify({ conversation_id: 'conversation', professional: true });
+      service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
+      const req = httpMock.expectOne(environment.clickStreamURL);
+      req.flush({});
 
-    //   expect(httpMock.postNoBase['calls'].argsFor(0)[1]).toContain(expectedAttributes);
-    // });
-
-    // it('should NOT set the attribute professional to TRUE when the user.type is not professional', () => {
-    //   spyOn(httpMock, 'postNoBase').and.returnValue(of({}));
-    //   spyOn<any>(service, 'createNewEvent').and.callThrough();
-    //   spyOnProperty(userService, 'user').and.returnValue({ type: 'normal' });
-
-    //   service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
-    //   const expectedAttributes = JSON.stringify({ conversation_id: 'conversation' });
-
-    //   expect(httpMock.postNoBase['calls'].argsFor(0)[1]).toContain(expectedAttributes);
-    // });
-  });
-
-  describe('addTrackingEvent', () => {
-
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toContain(expectedAttributes);
+    });
   });
 });
