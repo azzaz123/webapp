@@ -15,13 +15,9 @@ export const TRACKING_EVENT: TrackingEvent = new TrackingEvent({
 
 /* istanbul ignore next */
 export class MockTrackingService {
-
-  addTrackingEvent() {}
-
   track(event: TrackingEventBase, params?: any) {
   }
   trackMultiple(events: Array<TrackingEventData>) {
   }
-
 }
 
