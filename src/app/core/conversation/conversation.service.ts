@@ -78,10 +78,7 @@ export class ConversationService extends LeadService {
     modalRef.componentInstance.required = required;
     modalRef.componentInstance.phone = this.storedPhoneNumber;
     if (required) {
-      this.trackingService.addTrackingEvent({
-        eventData: TrackingService.ITEM_SHAREPHONE_SHOWFORM,
-        attributes: { item_id: conversation.item.id }
-      });
+      this.trackingService.track(TrackingService.ITEM_SHAREPHONE_SHOWFORM, { item_id: conversation.item.id });
     }
   }
 
