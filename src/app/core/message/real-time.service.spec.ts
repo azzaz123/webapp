@@ -296,17 +296,13 @@ describe('RealTimeService', () => {
     it('should add MessageSent event in the pendingTrackingEvents queue when the MESSAGE_SENT event is triggered', () => {
       spyOn(trackingService, 'track');
       const conv = MOCK_CONVERSATION('newId');
-      const expectedEvent: TrackingEventData = {
-        eventData: TrackingService.MESSAGE_SENT,
-        attributes: {
-          thread_id: conv.id,
-          message_id: MOCK_MESSAGE.id
-        }
-      };
 
       eventService.emit(EventService.MESSAGE_SENT, conv, MOCK_MESSAGE.id);
 
-      expect(trackingService.track).toHaveBeenCalledWith(expectedEvent, false);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT, {
+        thread_id: conv.id,
+        message_id: MOCK_MESSAGE.id
+      });
     });
 
     it('should call appboy.logCustomEvent if this is the first message message sent', () => {
