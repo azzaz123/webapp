@@ -39,16 +39,12 @@ export class MsgArchiveService {
         if (val) {
           this.sinceArchiveMetrics = this.calculateMetrics(this.sinceArchiveMetrics);
           if (this.sinceArchiveMetrics.downloadingTime) {
-            const trackEvent: TrackingEventData = {
-              eventData: TrackingService.CONVERSATION_SINCEARCHIVE_OK,
-              attributes: {
-                processing_time: this.sinceArchiveMetrics.processingTime,
-                downloading_time: this.sinceArchiveMetrics.downloadingTime,
-                number_of_messages: this.sinceArchiveMetrics.eventsCount,
-                number_of_page_elems: this.pageSize
-              }
-            };
-            this.trackingService.addTrackingEvent(trackEvent);
+            this.trackingService.track(TrackingService.CONVERSATION_SINCEARCHIVE_OK, {
+              processing_time: this.sinceArchiveMetrics.processingTime,
+              downloading_time: this.sinceArchiveMetrics.downloadingTime,
+              number_of_messages: this.sinceArchiveMetrics.eventsCount,
+              number_of_page_elems: this.pageSize
+            });
           }
           this.sinceArchiveMetrics = {} as ArchiveMetrics;
         }
@@ -105,16 +101,12 @@ export class MsgArchiveService {
         if (val) {
           this.firstArchiveMetrics = this.calculateMetrics(this.firstArchiveMetrics);
           if (this.firstArchiveMetrics.downloadingTime) {
-            const trackEvent: TrackingEventData = {
-              eventData: TrackingService.CONVERSATION_FIRSTARCHIVE_OK,
-              attributes: {
-                processing_time: this.firstArchiveMetrics.processingTime,
-                downloading_time: this.firstArchiveMetrics.downloadingTime,
-                number_of_messages: this.firstArchiveMetrics.eventsCount,
-                number_of_page_elems: this.pageSize
-              }
-            };
-            this.trackingService.addTrackingEvent(trackEvent);
+            this.trackingService.track(TrackingService.CONVERSATION_FIRSTARCHIVE_OK, {
+              processing_time: this.firstArchiveMetrics.processingTime,
+              downloading_time: this.firstArchiveMetrics.downloadingTime,
+              number_of_messages: this.firstArchiveMetrics.eventsCount,
+              number_of_page_elems: this.pageSize
+            });
           }
           this.firstArchiveMetrics = {} as ArchiveMetrics;
         }
