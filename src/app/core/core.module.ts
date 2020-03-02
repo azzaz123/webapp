@@ -13,7 +13,6 @@ import { TutorialService } from './tutorial/tutorial.service';
 import { AccessTokenService } from './http/access-token.service';
 import { HttpService } from './http/http.service';
 import { ConversationModule } from './conversation/conversation.module';
-import { DebugService } from './debug/debug.service';
 import { MessageService } from './message/message.service';
 import { NotificationService } from './notification/notification.service';
 import { PaymentService } from './payments/payment.service';
@@ -66,7 +65,6 @@ export class CoreModule {
         TutorialService,
         AccessTokenService,
         HttpService,
-        DebugService,
         MessageService,
         NotificationService,
         PaymentService,

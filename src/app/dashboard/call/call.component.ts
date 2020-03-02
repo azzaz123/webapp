@@ -24,18 +24,14 @@ export class CallComponent {
     sameElse: 'D MMM'
   };
 
-  constructor(private callService: CallsService,
-              private conversationService: ConversationService) {
+  constructor(private callService: CallsService) {
   }
 
   @HostListener('@remove.done') onAnimationDone($event: Event) {
     if (this.archived) {
       if (this.call instanceof Call) {
         this.callService.stream();
-      } else {
-        this.conversationService.stream();
       }
     }
   }
-
 }
