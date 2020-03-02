@@ -11,10 +11,8 @@ import {
   ScheduledStatus, PaymentIntents
 } from './payment.interface';
 import { mapValues, values, keyBy, groupBy, min } from 'lodash-es';
-import { COINS_FACTOR, COINS_PACK_ID, CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
+import { CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
 import { PerksModel } from './payment.model';
-import { UserService } from '../user/user.service';
-import { PERMISSIONS } from '../user/user';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
@@ -36,8 +34,7 @@ export class PaymentService {
   private products: Products;
   private perksModel: PerksModel;
 
-  constructor(private http: HttpClient,
-    private userService: UserService) {
+  constructor(private http: HttpClient) {
   }
 
   public getBillingInfo(): Observable<BillingInfoResponse> {
@@ -85,26 +82,6 @@ export class PaymentService {
           credit: perks[currencyName].quantity,
           factor: factor
         }
-      });
-  }
-
-  public getCoinsCreditsPacks(): Observable<Pack[]> {
-    return this.userService.hasPerm('coins')
-      .flatMap((isActive: boolean) => {
-        return isActive ? this.getCoinsPacks() : this.getCreditsPacks();
-      });
-  }
-
-  public getCoinsPacks(): Observable<Pack[]> {
-    const product: Products = {
-      [COINS_PACK_ID]: {
-        id: COINS_PACK_ID,
-        name: 'WALLACOINS'
-      }
-    };
-    return this.getPacks(product)
-      .map((packs: Packs) => {
-        return packs.wallacoins;
       });
   }
 

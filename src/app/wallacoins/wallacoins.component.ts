@@ -57,7 +57,7 @@ export class WallacoinsComponent implements OnInit {
       loop: false,
       custom: 'banner'
     };
-    this.paymentService.getCoinsCreditsPacks().subscribe((packs: Pack[]) => {
+    this.paymentService.getCreditsPacks().subscribe((packs: Pack[]) => {
       this.packs = packs;
       this.currencyName = this.packs[0].name;
       this.factor = this.packs[0].factor;
