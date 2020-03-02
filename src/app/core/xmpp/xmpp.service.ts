@@ -2,7 +2,7 @@ import { clone, remove } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
-import { XmppBodyMessage, XMPPClient, JID } from './xmpp.interface';
+import { XmppBodyMessage, XMPPClient, JID, XmppError } from './xmpp.interface';
 import { Observable, Observer } from 'rxjs';
 import 'rxjs/add/observable/from';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -163,8 +163,9 @@ export class XmppService {
       this.buildChatSignal(message);
     });
 
-    this.client.on('disconnected', () => {
+    this.client.on('disconnected', (error: XmppError) => {
       this.clientConnected = false;
+      this.remoteConsoleService.sendXmppConnectionClosedWithError(JSON.stringify(error) || '');
       console.warn('Client disconnected');
       this.eventService.emit(EventService.CHAT_RT_DISCONNECTED);
     });

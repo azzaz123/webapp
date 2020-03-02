@@ -475,10 +475,12 @@ describe('Service: Xmpp', () => {
 
     it('should emit a CHAT_RT_DISCONNECTED event and set clientConnected to FALSE when the Xmpp client is disconnected', () => {
       spyOn(eventService, 'emit').and.callThrough();
+      spyOn(remoteConsoleService, 'sendXmppConnectionClosedWithError').and.callThrough();
 
       eventService.emit('disconnected');
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_RT_DISCONNECTED);
+      expect(remoteConsoleService.sendXmppConnectionClosedWithError).toHaveBeenCalledWith('');
       expect(service.clientConnected).toBe(false);
     });
 
@@ -767,7 +769,8 @@ describe('Service: Xmpp', () => {
 
   describe('buildMessage', () => {
     it('should set the date of the message using the timestamp if it exists', () => {
-      expect((service as any).buildMessage(MOCKED_SERVER_RECEIVED_RECEIPT).date).toEqual(new Date(MOCKED_SERVER_RECEIVED_RECEIPT.timestamp.body));
+      expect((service as any).buildMessage(MOCKED_SERVER_RECEIVED_RECEIPT).date)
+      .toEqual(new Date(MOCKED_SERVER_RECEIVED_RECEIPT.timestamp.body));
     });
   });
 
