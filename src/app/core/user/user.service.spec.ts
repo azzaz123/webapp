@@ -791,22 +791,6 @@ describe('Service: User', () => {
     });
   });
 
-  describe('getAvailableSlots', () => {
-    it('should call endpoint GET available slots and return response', () => {
-      const SLOTS: AvailableSlots = {
-        num_slots_cars: 3,
-        user_can_manage: true
-      };
-      accessTokenService.storeAccessToken('ACCESS_TOKEN');
-      service.getAvailableSlots().subscribe(response => expect(response).toEqual(SLOTS));
-
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/items/slots-available`);
-
-      expect(req.request.method).toEqual('GET');
-      req.flush(SLOTS);
-    });
-  });
-
   describe('reportUser', () => {
     it('should check parameters of request to report user', () => {
       const CONVERSATIONS_HASH = 'vdqjwyk1kzon';
