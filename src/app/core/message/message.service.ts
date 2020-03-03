@@ -54,7 +54,7 @@ export class MessageService {
     return message;
   }
 
-  public send(conversation: Conversation | InboxConversation, message: string) {
+  public send(conversation: InboxConversation, message: string) {
     this.realTime.sendMessage(conversation, message);
   }
 
