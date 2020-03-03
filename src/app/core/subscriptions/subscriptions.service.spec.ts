@@ -211,10 +211,7 @@ describe('SubscriptionsService', () => {
       let mappedSlots: SubscriptionSlot[];
       const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`;
 
-      service.getSlots().subscribe(response => {
-        mappedSlots = response;
-        console.log('wtf', JSON.stringify(mappedSlots), '..', JSON.stringify(response))
-      });
+      service.getSlots().subscribe(response => mappedSlots = response);
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE);
 
