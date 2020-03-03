@@ -182,9 +182,6 @@ describe('ListComponent', () => {
                 counters: mockCounters
               });
             },
-            getAvailableSlots() {
-                return Observable.of({});
-            },
             me() {
               return Observable.of(MOCK_USER);
             },
