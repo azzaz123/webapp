@@ -45,8 +45,8 @@ export const CATEGORY_DATA_WEB: Array<CategoryResponse> = [
     has_brand: false,
     has_model: false,
     has_object_type: false,
-    icon_id: 'pc',
-    name: 'Computers & Electronic',
+    icon_id: 'helmet',
+    name: 'Motor parts',
     vertical_id: 'consumer_goods'
   }
 ];
