@@ -224,9 +224,6 @@ describe('RealTimeService', () => {
   describe('subscribeEventNewMessage', () => {
     it('should NOT call sendDeliveryReceipt if the new message is fromSelf', () => {
       spyOn(service, 'sendDeliveryReceipt');
-      spyOn(persistencyService, 'findMessage').and.returnValue(throwError({
-        reason: 'missing'
-      }));
       const msg = new Message('someId', CONVERSATION_ID, 'from myself!', USER_ID);
       msg.fromSelf = true;
 
@@ -238,9 +235,6 @@ describe('RealTimeService', () => {
     it(`should NOT call sendDeliveryReceipt if a NEW_MESSAGE event is emitted without the deliveryReceipt parameter,
       or with the deliveryRecipt parameter set to FALSE`, () => {
       spyOn(service, 'sendDeliveryReceipt');
-      spyOn(persistencyService, 'findMessage').and.returnValue(throwError({
-        reason: 'missing'
-      }));
       const msg = new Message('someId', CONVERSATION_ID, 'from myself!', USER_ID);
       msg.fromSelf = false;
 
@@ -255,7 +249,6 @@ describe('RealTimeService', () => {
 
     it('should NOT call sendDeliveryReceipt if the message already exists (persistencyService.findMessage returns a value)', () => {
       spyOn(service, 'sendDeliveryReceipt');
-      spyOn(persistencyService, 'findMessage').and.returnValue(of({}));
       const msg = new Message('someId', CONVERSATION_ID, 'from myself!', USER_ID);
       msg.fromSelf = false;
 

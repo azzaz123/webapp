@@ -7,12 +7,13 @@ import { EventService } from '../event/event.service';
 import {
   PaymentIntents, PaymentMethodResponse, PaymentMethodCardResponse
 } from '../payments/payment.interface';
-import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs';
-import { Response } from '@angular/http';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
+import { FeatureflagService } from '../user/featureflag.service';
 import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+
+export const PAYMENTS_API_URL = 'api/v3/payments';
 
 @Injectable()
 export class StripeService {
@@ -22,14 +23,13 @@ export class StripeService {
 
   public fullName: string;
   public PAYMENT_PROVIDER_STRIPE = false;
-  private API_URL = 'api/v3/payments';
   private financialCards: FinancialCard[];
 
   constructor(private paymentService: PaymentService,
               private userService: UserService,
               private router: Router,
               private eventService: EventService,
-              private http: HttpService,
+              private http: HttpClient,
               private featureflagService: FeatureflagService) {
     this.userService.me().subscribe((user: User) => {
       this.fullName = user ?  `${user.firstName} ${user.lastName}` : '';
@@ -75,18 +75,17 @@ export class StripeService {
     if (this.financialCards) {
       return Observable.of(this.financialCards);
     }
-    return this.http.get(`${this.API_URL}/c2b/stripe/payment_methods/cards`)
-      .map((r: Response) => r.json())
+    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/cards`)
       .map((financialCards: PaymentMethodCardResponse[]) => this.mapPaymentMethodCard(financialCards))
       .do((financialCards: FinancialCard[]) => this.financialCards = financialCards);
   }
 
   public deleteCard(paymentMethodId: string) {
-    return this.http.post(`${this.API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/detach`)
+    return this.http.post(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/detach`, {})
   }
 
   public addNewCard(paymentMethodId: string): Observable<any> {
-    return this.http.put(`${this.API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/attach`)
+    return this.http.put(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/attach`, {})
     .catch(() => {
       return Observable.of(null);
     });

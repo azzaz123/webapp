@@ -6,7 +6,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { CallStatusLabelPipe } from '../../core/conversation/call-status-label.pipe';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ConversationService } from '../../core/conversation/conversation.service';
 import { CallsService } from '../../core/conversation/calls.service';
 import { MOCK_CALL } from '../../../tests/call.fixtures';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
@@ -16,7 +15,6 @@ describe('CallComponent', () => {
   let component: CallComponent;
   let fixture: ComponentFixture<CallComponent>;
   let callService: CallsService;
-  let conversationService: ConversationService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -32,12 +30,6 @@ describe('CallComponent', () => {
           }
         }
         },
-        {
-          provide: ConversationService, useValue: {
-          stream() {
-          }
-        }
-        }
       ],
       declarations: [ CallComponent, CallStatusLabelPipe ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -50,7 +42,6 @@ describe('CallComponent', () => {
     component = fixture.componentInstance;
     component.call = MOCK_CALL();
     callService = TestBed.get(CallsService);
-    conversationService = TestBed.get(ConversationService);
     fixture.detectChanges();
   });
 
@@ -58,7 +49,6 @@ describe('CallComponent', () => {
 
     beforeEach(() => {
       spyOn(callService, 'stream');
-      spyOn(conversationService, 'stream');
     });
 
     it('should call callService.stream if lead is Call', () => {
@@ -67,7 +57,6 @@ describe('CallComponent', () => {
 
       component.onAnimationDone(new Event(''));
 
-      expect(conversationService.stream).not.toHaveBeenCalled();
       expect(callService.stream).toHaveBeenCalled();
     });
 
@@ -78,7 +67,6 @@ describe('CallComponent', () => {
       component.onAnimationDone(new Event(''));
 
       expect(callService.stream).not.toHaveBeenCalled();
-      expect(conversationService.stream).toHaveBeenCalled();
     });
 
     it('should do nothing if not archive', () => {
@@ -87,7 +75,6 @@ describe('CallComponent', () => {
       component.onAnimationDone(new Event(''));
 
       expect(callService.stream).not.toHaveBeenCalled();
-      expect(conversationService.stream).not.toHaveBeenCalled();
     });
   });
 });

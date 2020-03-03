@@ -38,7 +38,6 @@ describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
   let callService: CallsService;
-  let conversationService: ConversationService;
   let trackingService: TrackingService;
   let eventService: EventService;
   let inboxService: InboxService;
@@ -66,7 +65,6 @@ describe('DashboardComponent', () => {
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         { provide: LoggedGuard, useClass: LoggedGuardServiceMock },
         { provide: CallsService, useClass: CallsServiceMock },
-        { provide: ConversationService, useClass: ConversationServiceMock },
         { provide: RealTimeService, useClass: RealTimeServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -78,7 +76,6 @@ describe('DashboardComponent', () => {
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
     callService = TestBed.get(CallsService);
-    conversationService = TestBed.get(ConversationService);
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
     inboxService = TestBed.get(InboxService);
@@ -121,7 +118,6 @@ describe('DashboardComponent', () => {
 
     beforeEach(() => {
       spyOn(callService, 'getPage').and.returnValue(Observable.of(CALLS));
-      spyOn(conversationService, 'getPage').and.returnValue(Observable.of(CONVERSATIONS));
       spyOn(trackingService, 'track');
       inboxConversationService.conversations = CONVERSATIONS;
 
@@ -153,22 +149,13 @@ describe('DashboardComponent', () => {
         calls: 6,
         archived: 9
       }));
-      spyOn(conversationService, 'getTotals').and.returnValue(Observable.of({
-        phonesShared: 2,
-        meetings: 3,
-        messages: 4,
-        conversations: 5,
-        archivedPhonesShared: 6,
-        archivedMeetings: 7,
-        archivedMessages: 8
-      }));
       component.conversations = createInboxConversationsArray(3);
 
       component['getTotals']();
     });
 
     it('should set phonesTotal', () => {
-      expect(component.phonesTotal).toBe(6 + 2);
+      expect(component.phonesTotal).toBe(6);
     });
 
     it('should set messagesTotal', () => {

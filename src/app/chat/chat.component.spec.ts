@@ -141,7 +141,7 @@ describe('Component: ChatComponent with ItemId', () => {
       component.ngOnInit();
       eventService.emit(EventService.CURRENT_CONVERSATION_SET, mockConversation);
 
-      expect(component.currentConversation).toEqual(mockConversation);
+      expect(inboxConversationService.currentConversation).toEqual(mockConversation);
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
       expect(component.conversationsLoading).toEqual(false);
     });
@@ -181,19 +181,19 @@ describe('Component: ChatComponent with ItemId', () => {
 
     it('should update model when conversations are NOT available', () => {
       const mockConversation = CREATE_MOCK_INBOX_CONVERSATION();
-      component.currentConversation = mockConversation;
+      inboxConversationService.currentConversation = mockConversation;
       component.onChangeInboxOrArchivedDropdown(false);
 
       expect(component.loadingError).toBeFalsy();
-      expect(component.currentConversation).toEqual(mockConversation);
+      expect(inboxConversationService.currentConversation).toEqual(mockConversation);
     });
 
     it('should update model when conversations are available', () => {
-      component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
+      inboxConversationService.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
       component.onChangeInboxOrArchivedDropdown(true);
 
       expect(component.loadingError).toBeTruthy();
-      expect(component.currentConversation).toBeNull();
+      expect(inboxConversationService.currentConversation).toBeNull();
     });
   });
 });

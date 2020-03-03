@@ -28,7 +28,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     constructor(private callService: CallsService,
                 private trackingService: TrackingService,
-                private conversationService: ConversationService,
                 private router: Router,
                 private inboxConversationService: InboxConversationService,
                 private eventService: EventService) {
@@ -60,18 +59,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     private getTotals() {
-        this.callService.getTotals()
-        .takeWhile(() => this.active)
-        .subscribe((callsTotals: CallTotals) => {
-            this.conversationService.getTotals()
-            .takeWhile(() => this.active)
-            .subscribe((conversationsTotals: ConversationTotals) => {
-                this.phonesTotal = callsTotals.calls + conversationsTotals.phonesShared;
-                this.messagesTotal = this.countTotalMessages();
-                this.hasMessagesOrCalls =
-                    conversationsTotals.phonesShared + callsTotals.calls + conversationsTotals.meetings + conversationsTotals.messages > 0;
-            });
-        });
+      this.callService.getTotals()
+      .takeWhile(() => this.active)
+      .subscribe((callsTotals: CallTotals) => {
+        this.phonesTotal = callsTotals.calls;
+        this.messagesTotal = this.countTotalMessages();
+        this.hasMessagesOrCalls = this.phonesTotal + this.messagesTotal > 0;
+      });
     }
 
     public trackPhoneLeadOpened() {
