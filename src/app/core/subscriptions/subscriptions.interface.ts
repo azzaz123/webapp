@@ -11,7 +11,7 @@ export interface SubscriptionResponse {
 
 export interface Tier {
     id: string,
-    limit: number,
+    limit?: number,
     price: number,
     currency: string
 }
