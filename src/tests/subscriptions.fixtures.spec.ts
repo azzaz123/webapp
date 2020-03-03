@@ -54,6 +54,22 @@ export const MOCK_SUBSCRIPTION_SLOT_CARS: SubscriptionSlot = {
   limit: 10
 };
 
+export const SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED: SubscriptionsResponse = {
+  id: 'abcd-1234-efgh-5678',
+  category_id: 0,
+  subscribed_from: null,
+  selected_tier_id: null,
+  default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+  tiers:
+  [
+    {
+      id: 'plan_Fsf0Htv8L6Ox91',
+      price: 39.99,
+      currency: '€'
+    }   
+  ]
+}
+
 export const SUBSCRIPTIONS: SubscriptionsResponse[] = 
 [
   {
