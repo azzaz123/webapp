@@ -5,7 +5,8 @@ import {
   SubscriptionsResponse,
   Tier,
   SubscriptionSlotResponse,
-  SubscriptionSlot
+  SubscriptionSlot,
+  SubscriptionSlotGeneralResponse
 } from '../app/core/subscriptions/subscriptions.interface';
 import { CATEGORY_DATA_WEB } from './category.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
@@ -44,15 +45,37 @@ export const MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE: SubscriptionSlot
 
 export const MOCK_SUBSCRIPTION_SLOTS_RESPONSE: SubscriptionSlotResponse[] = [
   MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE,
-  MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE,
-  MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE
+  MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE,
+  MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE
 ];
+
+export const MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE: SubscriptionSlotGeneralResponse = {
+  slots: MOCK_SUBSCRIPTION_SLOTS_RESPONSE
+}
 
 export const MOCK_SUBSCRIPTION_SLOT_CARS: SubscriptionSlot = {
   category: CATEGORY_DATA_WEB[0],
-  available: 0,
-  limit: 10
+  available: MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE.available,
+  limit: MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE.limit
 };
+
+export const MOCK_SUBSCRIPTION_SLOT_MOTORBIKES: SubscriptionSlot = {
+  category: CATEGORY_DATA_WEB[3],
+  available: MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE.available,
+  limit: MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE.limit
+};
+
+export const MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES: SubscriptionSlot = {
+  category: CATEGORY_DATA_WEB[4],
+  available: MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE.available,
+  limit: MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE.limit
+};
+
+export const MOCK_SUBSCRIPTION_SLOTS: SubscriptionSlot[] = [
+  MOCK_SUBSCRIPTION_SLOT_CARS,
+  MOCK_SUBSCRIPTION_SLOT_MOTORBIKES,
+  MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES
+];
 
 export const SUBSCRIPTIONS: SubscriptionsResponse[] = 
 [
