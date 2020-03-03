@@ -33,7 +33,6 @@ export class SendPhoneComponent implements OnInit {
     private trackingService: TrackingService,
     private windowRef: WindowRef,
     public activeModal: NgbActiveModal) {
-    this.trackingService.trackAccumulatedEvents();
     this.sendPhoneForm = this.fb.group({
       phone: ['', [Validators.required, this.phoneNumberFormatValidator]]
     });
@@ -57,12 +56,9 @@ export class SendPhoneComponent implements OnInit {
     if (this.sendPhoneForm.valid) {
       if (this.required) {
         this.messageService.addPhoneNumberRequestMessage(this.conversation, false);
-        this.trackingService.addTrackingEvent({
-          eventData: TrackingService.ITEM_SHAREPHONE_SENDPHONE,
-          attributes: { item_id: this.conversation.item.id }
-        });
+        this.trackingService.track(TrackingService.ITEM_SHAREPHONE_SENDPHONE, { item_id: this.conversation.item.id });
       } else {
-        this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
+        this.trackingService.track(TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING);
       }
       this.http.put(`${this.API_URL}/${this.conversation.id}/buyer-phone-number`, {
         phone_number: phoneNumber
@@ -70,10 +66,7 @@ export class SendPhoneComponent implements OnInit {
       this.messageService.createPhoneNumberMessage(this.conversation, phoneNumber);
       this.activeModal.close();
     } else if (!this.sendPhoneForm.controls.phone.valid) {
-      this.trackingService.addTrackingEvent({
-        eventData: TrackingService.ITEM_SHAREPHONE_WRONGPHONE,
-        attributes: { item_id: this.conversation.item.id, phone_number: phoneNumber }
-      });
+      this.trackingService.track(TrackingService.ITEM_SHAREPHONE_WRONGPHONE, { item_id: this.conversation.item.id, phone_number: phoneNumber });
       this.sendPhoneForm.controls.phone.markAsDirty();
       this.errorsService.i18nError('formErrors');
     }
@@ -106,7 +99,7 @@ export class SendPhoneComponent implements OnInit {
         : this.conversation.item.itemUrl;
 
     } else {
-      this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
+      this.trackingService.track(TrackingService.CHAT_SHAREPHONE_CANCELSHARING);
       this.activeModal.dismiss();
     }
   }

@@ -7,15 +7,13 @@ import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { getTimestamp } from './getTimestamp.func';
 import { CookieService } from 'ngx-cookie';
-import { HttpService } from '../http/http.service';
 import { NavigatorService } from './navigator.service';
 import { WindowRef } from '../window/window.service';
-import 'rxjs/add/operator/bufferTime';
-import { PersistencyService } from '../persistency/persistency.service';
 import { EventService } from '../event/event.service';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/bufferTime';
 import { Subscription } from 'rxjs/Subscription';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 const maxBatchSize = 1000;
 const sendInterval = 10000;
@@ -915,129 +913,30 @@ export class TrackingService {
   private sessionIdCookieName = 'session_id';
   private deviceAccessTokenIdCookieName = 'device_access_token_id';
   private trackingEvents$: Subject<TrackingEventData> = new Subject();
-  private pendingTrackingEvents: Array<TrackingEventData> = [];
-  private pendingTrackingEvents$ = this.trackingEvents$.bufferTime(sendInterval, null, maxBatchSize).filter((buffer) => buffer.length > 0);
   private sentEvents: Array<TrackingEventData> = [];
-  private sendFailed = false;
   private dbReady = false;
-  public trackAccumulatedEventsSubscription: Subscription;
 
   constructor(private navigatorService: NavigatorService,
-    private http: HttpService,
+    private http: HttpClient,
     private userService: UserService,
     private winRef: WindowRef,
     private eventService: EventService,
-    private persistencyService: PersistencyService,
     private cookieService: CookieService) {
     this.setSessionStartTime();
     this.setSessionId(this.sessionIdCookieName);
     this.setDeviceAccessTokenId(this.deviceAccessTokenIdCookieName);
-    this.subscribeDbReady();
-    this.subscribePostRequestFailed();
   }
 
   public track(event: TrackingEventBase, attributes?: any) {
     const newEvent = this.createNewEvent(event, attributes);
     delete newEvent.sessions[0].window;
     const stringifiedEvent: string = JSON.stringify(newEvent);
-    const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
-    return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body).subscribe();
-  }
-
-  private sendMultipleEvents(events: Array<TrackingEventData>) {
-    const originalEvents = [];
-    events.map(e => originalEvents.push(Object.assign({}, e)));
-    const eventsPackage: TrackingEvent = this.createMultipleEvents(events);
-    delete eventsPackage.sessions[0].window;
-    this.persistencyService.storePackagedClickstreamEvents(eventsPackage);
-    if (!this.sendFailed) {
-      this.postPackagedEvents(eventsPackage, originalEvents);
-    }
-  }
-
-  private postPackagedEvents(eventsPackage: TrackingEvent, originalEvents?: Array<TrackingEventData>) {
-    const stringifiedEvent: string = JSON.stringify(eventsPackage);
-    const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
-    return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body, null, true)
-      .subscribe(() => {
-        this.persistencyService.removePackagedClickstreamEvents(eventsPackage).subscribe(() => {
-          if (this.sendFailed) {
-            this.sendStoredPackagedEvents();
-            this.sendFailed = false;
-          }
-        });
-        if (originalEvents) {
-          this.sentEvents = this.sentEvents.concat(originalEvents);
-        }
-      });
-  }
-
-  public addTrackingEvent(event: TrackingEventData, acceptDuplicates: boolean = true) {
-    const checkInArray = this.sentEvents.concat(this.pendingTrackingEvents);
-    if (acceptDuplicates || this.checkIsUnique(event, checkInArray)) {
-      event.id = event.id ? event.id : UUID.UUID();
-      this.trackingEvents$.next(event);
-      this.pendingTrackingEvents.push(event);
-      if (this.dbReady) {
-        this.persistencyService.storeClickstreamEvent(event);
-      } else {
-      this.eventService.subscribe(EventService.DB_READY, (dbName) => {
-        if (dbName === this.persistencyService.clickstreamDbName) {
-            this.dbReady = true;
-          this.persistencyService.storeClickstreamEvent(event);
-        }
-      });
-    }
-  }
-  }
-
-  public trackAccumulatedEvents() {
-    if (!this.trackAccumulatedEventsSubscription) {
-      this.trackAccumulatedEventsSubscription = this.pendingTrackingEvents$.subscribe((events: Array<TrackingEventData>) => {
-        this.sendMultipleEvents(events);
-        this.pendingTrackingEvents = [];
-      });
-    }
-  }
-
-  private checkIsUnique(event: TrackingEventData, checkInArray: TrackingEventData[]): boolean {
-    const existsInArray = checkInArray.find(e => e.eventData === event.eventData
-      && e.attributes.message_id === event.attributes.message_id);
-    return existsInArray ? false : true;
+    const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY).toString();
+    return this.http.post(`${environment.clickStreamURL}`, stringifiedEvent, { headers: { 'Authorization': sha1Body } }).subscribe();
   }
 
   private setSessionStartTime() {
     this.sessionStartTime = getTimestamp();
-  }
-
-  private createMultipleEvents(events: Array<TrackingEventData>): TrackingEvent {
-    const transformedArr = events.map(ev => {
-      for (const key in ev.eventData) {
-        if (ev.eventData.hasOwnProperty(key)) {
-          ev[key] = ev.eventData[key];
-        }
-      }
-      delete ev.eventData;
-      ev.attributes = ev.attributes;
-      ev.timestamp = getTimestamp();
-      if (this.userService.user.type === 'professional') {
-        ev.attributes.professional = true;
-      }
-      return ev;
-    });
-
-    const newEvent: TrackingEvent = new TrackingEvent(
-      this.winRef.nativeWindow,
-      this.userService.user.id,
-      this.sessionStartTime,
-      null,
-      transformedArr);
-    newEvent.setDeviceInfo(
-      this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId,
-      this.navigatorService.browserName, this.navigatorService.fullVersion
-    );
-    newEvent.setSessionId(this.sessionId);
-    return newEvent;
   }
 
   private createNewEvent(event: TrackingEventBase, attributes?: any): TrackingEvent {
@@ -1089,36 +988,5 @@ export class TrackingService {
     const cookieOptions = {expires: expirationDate, domain: '.wallapop.com'};
 
     this.cookieService.put(cookieName, value, cookieOptions);
-  }
-
-  private sendStoredPackagedEvents() {
-    this.persistencyService.getPackagedClickstreamEvents().subscribe(pendingPackagedEvents => {
-      pendingPackagedEvents.map((eventsPackage) => {
-        this.postPackagedEvents(eventsPackage);
-      });
-    });
-  }
-
-  private subscribePostRequestFailed() {
-    this.eventService.subscribe(EventService.HTTP_REQUEST_FAILED, (url) => {
-      if (url === environment.clickStreamURL) {
-        this.sendFailed = true;
-      }
-    });
-  }
-
-  private subscribeDbReady() {
-    this.eventService.subscribe(EventService.DB_READY, (dbName) => {
-      if (dbName === this.persistencyService.clickstreamDbName) {
-        this.dbReady = true;
-        this.sendStoredPackagedEvents();
-
-        this.persistencyService.getClickstreamEvents().subscribe(pendingEvents => {
-          pendingEvents.map(e => {
-            this.addTrackingEvent(e);
-          });
-        });
-      }
-    });
   }
 }

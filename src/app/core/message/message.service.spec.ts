@@ -5,10 +5,8 @@ import { XmppService } from '../xmpp/xmpp.service';
 import { Conversation } from '../conversation/conversation';
 import { Message, messageStatus, phoneRequestState } from './message';
 import { EventService } from '../event/event.service';
-import { PersistencyService } from '../persistency/persistency.service';
 import { createMessagesArray, MESSAGE_MAIN } from '../../../tests/message.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
@@ -25,7 +23,6 @@ describe('Service: Message', () => {
 
   let realTime: RealTimeService;
   let service: MessageService;
-  let persistencyService: PersistencyService;
   let userService: UserService;
   let connectionService: ConnectionService;
   let trackingService: TrackingService;
@@ -49,14 +46,12 @@ describe('Service: Message', () => {
         },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: ConnectionService, useValue: {} },
-        { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: UserService, useValue: { user: new User(USER_ID) } },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
       ]
     });
     realTime = TestBed.get(RealTimeService);
     service = TestBed.get(MessageService);
-    persistencyService = TestBed.get(PersistencyService);
     userService = TestBed.get(UserService);
     connectionService = TestBed.get(ConnectionService);
     trackingService = TestBed.get(TrackingService);
@@ -188,27 +183,27 @@ describe('Service: Message', () => {
     });
 
     it('should track the CHAT_SHAREPHONE_OPENSHARING event when no second argument is passed', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+      spyOn(trackingService, 'track');
 
       service.addPhoneNumberRequestMessage(conversation);
 
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
     });
 
     it('should track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is true', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+      spyOn(trackingService, 'track');
 
       service.addPhoneNumberRequestMessage(conversation, true);
 
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
     });
 
     it('should NOT track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is false', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+      spyOn(trackingService, 'track');
 
       service.addPhoneNumberRequestMessage(conversation, false);
 
-      expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+      expect(trackingService.track).not.toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
     });
   });
 

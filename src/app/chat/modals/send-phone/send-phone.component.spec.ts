@@ -120,16 +120,12 @@ describe('SendPhoneComponent', () => {
           expect(messageService.addPhoneNumberRequestMessage).toHaveBeenCalledWith(component.conversation, false);
         });
 
-        it('should call trackingService.addTrackingEvent with ITEM_SHAREPHONE_SENDPHONE', () => {
-          spyOn(trackingService, 'addTrackingEvent');
-          const event = {
-            eventData: TrackingService.ITEM_SHAREPHONE_SENDPHONE,
-            attributes: { item_id: component.conversation.item.id }
-          };
+        it('should call trackingService.track with ITEM_SHAREPHONE_SENDPHONE', () => {
+          spyOn(trackingService, 'track');
 
           component.createPhoneNumberMessage();
 
-          expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(event);
+          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_SENDPHONE, { item_id: component.conversation.item.id });
         });
 
       });
@@ -141,12 +137,12 @@ describe('SendPhoneComponent', () => {
           fixture.detectChanges();
         });
 
-        it('should call trackingService.addTrackingEvent with CHAT_SHAREPHONE_ACCEPTSHARING', () => {
-          spyOn(trackingService, 'addTrackingEvent');
+        it('should call trackingService.track with CHAT_SHAREPHONE_ACCEPTSHARING', () => {
+          spyOn(trackingService, 'track');
 
           component.createPhoneNumberMessage();
 
-          expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
+          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING);
         });
       });
 
@@ -186,16 +182,12 @@ describe('SendPhoneComponent', () => {
         component.conversation = MOCK_CONVERSATION();
       });
 
-      it('should call trackingService.addTrackingEvent with ITEM_SHAREPHONE_WRONGPHONE', () => {
-        spyOn(trackingService, 'addTrackingEvent');
-        const event = {
-          eventData: TrackingService.ITEM_SHAREPHONE_WRONGPHONE,
-          attributes: { item_id: component.conversation.item.id, phone_number: component.sendPhoneForm.controls.phone.value }
-        };
+      it('should call trackingService.track with ITEM_SHAREPHONE_WRONGPHONE', () => {
+        spyOn(trackingService, 'track');
 
         component.createPhoneNumberMessage();
 
-        expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(event);
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_WRONGPHONE, { item_id: component.conversation.item.id, phone_number: component.sendPhoneForm.controls.phone.value });
       });
 
       it('should call markAsDirty', () => {
@@ -297,12 +289,12 @@ describe('SendPhoneComponent', () => {
         fixture.detectChanges();
       });
 
-      it('should call trackingService.addTrackingEvent with CHAT_SHAREPHONE_CANCELSHARING', () => {
-        spyOn(trackingService, 'addTrackingEvent');
+      it('should call trackingService.track with CHAT_SHAREPHONE_CANCELSHARING', () => {
+        spyOn(trackingService, 'track');
 
         component.dismiss();
 
-        expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_SHAREPHONE_CANCELSHARING);
       });
 
       it('should call dismiss() on the active modal', () => {

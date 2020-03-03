@@ -3,8 +3,6 @@ import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { BlockUserXmppService } from './block-user-xmpp.service';
 import { XmppService } from '../../xmpp/xmpp.service';
 import { EventService } from '../../event/event.service';
-import { MockedPersistencyService } from '../../../../tests/persistency.fixtures.spec';
-import { PersistencyService } from '../../persistency/persistency.service';
 import { TrackingService } from '../../tracking/tracking.service';
 import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
 import { Observable } from 'rxjs';
@@ -21,7 +19,6 @@ describe('BlockUserXmppService', () => {
         BlockUserXmppService,
         XmppService,
         EventService,
-        { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: TrackingService, useValue: {} }
       ]
