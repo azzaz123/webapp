@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SubscriptionSlot, SubscriptionSlotResponse } from './subscriptions.interface';
+import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse } from './subscriptions.interface';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
@@ -50,10 +50,10 @@ export class SubscriptionsService {
   }
 
   public getSlots(): Observable<SubscriptionSlot[]> {
-    return this.http.get<any>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`)
+    return this.http.get<SubscriptionSlotGeneralResponse>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`)
       .flatMap(response => {
         return Observable.forkJoin(
-          response.slots.map(s => this.mapSlotResponseToSlot(s))
+          response.slots.map(slot => this.mapSlotResponseToSlot(slot))
         );
       });
   }

@@ -30,6 +30,10 @@ export interface SubscriptionsResponse {
   subscribed_until?: number
 }
 
+export interface SubscriptionSlotGeneralResponse {
+  slots: SubscriptionSlotResponse[]
+}
+
 export interface SubscriptionSlotResponse {
   category_id: number;
   available: number;
