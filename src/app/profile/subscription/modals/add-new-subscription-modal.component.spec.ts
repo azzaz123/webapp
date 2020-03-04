@@ -357,7 +357,6 @@ describe('AddNewSubscriptionModalComponent', () => {
   describe('when the selected subscription type has only one tier', () => {
     it('should set a CSS class that is used for subscriptions with only one tier', () => {
       component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED;
-
       fixture.detectChanges();
 
       const carousel: HTMLElement = fixture.elementRef.nativeElement.querySelector('ngb-carousel');
@@ -366,7 +365,6 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     it('should hide first step, carousel indicators, current step indicator and change button', () => {
       component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED;
-
       fixture.detectChanges();
 
       const firstStepElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.step-1');
