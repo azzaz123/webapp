@@ -181,8 +181,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       this.itemService.reportListing(
         this.currentConversation.item.id,
         result.message,
-        result.reason,
-        this.currentConversation.id
+        result.reason
       ).subscribe(() => {
         this.trackingService.track(TrackingService.PRODUCT_REPPORTED,
           { product_id: this.currentConversation.item.id, reason_id: result.reason });
