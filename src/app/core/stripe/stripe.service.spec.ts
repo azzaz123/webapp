@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
-import { Observable, Subject } from 'rxjs';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Observable, Subject, of } from 'rxjs';
 import { UserService } from '../user/user.service';
-import { StripeService, PAYMENTS_API_URL } from './stripe.service';
+import { StripeService, PAYMENTS_API_URL, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from './stripe.service';
 import { EventService } from '../event/event.service';
-import { PaymentService } from '../payments/payment.service';
+import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../payments/payment.service';
 import { PaymentIntents } from '../payments/payment.interface';
 import { Router } from '@angular/router';
 import { USER_DATA } from '../../../tests/user.fixtures.spec';
@@ -21,6 +21,7 @@ describe('StripeService', () => {
   let service: StripeService;
   let paymentService: PaymentService;
   let userService: UserService;
+  let eventService: EventService;
   const routerEvents: Subject<any> = new Subject();
   let httpMock: HttpTestingController;
 
@@ -79,6 +80,7 @@ describe('StripeService', () => {
     paymentService = TestBed.get(PaymentService);
     userService = TestBed.get(UserService);
     httpMock = TestBed.get(HttpTestingController);
+    eventService = TestBed.get(EventService);
   });
 
   describe('buy', () => {
@@ -147,6 +149,19 @@ describe('StripeService', () => {
 
       expect(financialCard).toEqual(createFinancialCardFixture());
     });
+  });
+
+  describe('when creating a new card with the Stripe SDK', () => {
+    it('should emit an error if response from backend has error', fakeAsync(() => {
+      spyOn(eventService, 'emit').and.callThrough();
+      spyOn(service, 'createStripePaymentMethod').and.returnValue(Promise.resolve({ error: { message: 'The man in the chair' } }));
+
+      service.createStripeCard({});
+      tick();
+
+      expect(eventService.emit).toHaveBeenCalledTimes(1);
+      expect(eventService.emit).toHaveBeenCalledWith(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, PAYMENT_RESPONSE_STATUS.FAILED);
+    }));
   });
 
 });
