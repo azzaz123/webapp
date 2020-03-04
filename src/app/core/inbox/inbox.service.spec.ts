@@ -142,8 +142,6 @@ describe('InboxService', () => {
     beforeEach(() => {
       spyOn<any>(inboxService, 'getInbox$').and.returnValue(throwError(''));
       spyOn<any>(inboxService, 'getArchivedInbox$').and.returnValue(of([]));
-      spyOn(persistencyService, 'getStoredInbox').and.returnValue((createInboxConversationsArray(2)));
-      spyOn(persistencyService, 'getArchivedStoredInbox').and.returnValue(createInboxConversationsArray(2));
     });
 
     it('should set errorRetrievingInbox to true', () => {
@@ -152,10 +150,10 @@ describe('InboxService', () => {
       expect(inboxService.errorRetrievingInbox).toBe(true);
     });
 
-    it('should call persistencyService.getStoredInbox', () => {
+    it('should return empty list', () => {
       inboxService.init();
 
-      expect(persistencyService.getStoredInbox).toHaveBeenCalled();
+      expect(inboxConversationService.conversations).toEqual([]);
     });
   });
 

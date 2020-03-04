@@ -39,6 +39,7 @@ phases:
       - export IMAGE_TAG=feature-$(echo $BRANCH | cut -d '/' -f 2)
       - if [ "`echo $BRANCH | grep master`" != "" ]; then export IMAGE_TAG="stable"; fi
       - if [ "`echo $BRANCH | grep release/`" != "" ]; then export IMAGE_TAG="release"; fi
+      - if [ "`echo $BRANCH | grep hotfix/`" != "" ]; then export IMAGE_TAG="release"; fi
       - echo $IMAGE_TAG
 
       # LOAD YARN DEPENDENCIES

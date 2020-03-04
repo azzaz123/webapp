@@ -1,4 +1,4 @@
-import { TestBed, inject, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ConnectionService } from './connection.service';
 import { WindowRef } from '../window/window.service';
 import { EventService } from '../event/event.service';

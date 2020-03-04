@@ -13,12 +13,10 @@ import { CallsService } from '../../core/conversation/calls.service';
 })
 export class ArchiveButtonComponent {
 
-  private active = true;
   @Input() lead: Lead;
   @Output() click: EventEmitter<any> = new EventEmitter();
 
-  constructor(private conversationService: ConversationService,
-              private trackingService: TrackingService,
+  constructor(private trackingService: TrackingService,
               private callService: CallsService) {
   }
 
@@ -28,8 +26,6 @@ export class ArchiveButtonComponent {
     let observable: Observable<any>;
     if (this.lead instanceof Call) {
       observable = this.callService.archive(this.lead.id);
-    } else {
-      observable = this.conversationService.archive(this.lead.id);
     }
     observable.subscribe(() => {
       if (this.lead.phone) {

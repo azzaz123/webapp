@@ -23,8 +23,7 @@ import { NotificationService } from './core/notification/notification.service';
 import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { UserService } from './core/user/user.service';
-import { DebugService } from './core/debug/debug.service';
-import { MOCK_USER, USER_DATA, USER_ID, MOCK_FULL_USER } from '../tests/user.fixtures.spec';
+import { MOCK_FULL_USER, MOCK_USER, USER_DATA, USER_ID } from '../tests/user.fixtures.spec';
 import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
@@ -34,9 +33,7 @@ import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
 import { PaymentService } from './core/payments/payment.service';
-import { MOCK_MESSAGE } from '../tests/message.fixtures.spec';
 import { RealTimeService } from './core/message/real-time.service';
-import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
 import { createInboxConversationsArray } from '../tests/inbox.fixtures.spec';
 import { SplitTestService } from './core/tracking/split-test.service';
@@ -90,7 +87,6 @@ describe('App', () => {
             }
           }
         },
-        {provide: DebugService, useValue: {}},
         {
           provide: InboxService, useValue: {
             init() {},
@@ -293,7 +289,6 @@ describe('App', () => {
           const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
           connection.mockRespond(new Response(res));
         });
-        spyOn(conversationService, 'init').and.returnValue(Observable.of({}));
         spyOn(callsService, 'init').and.returnValue(Observable.of({}));
         spyOn(inboxService, 'init');
       }));
@@ -307,15 +302,6 @@ describe('App', () => {
         expect(eventServiceCalls).toContain(EventService.USER_LOGIN);
       });
 
-      it('should call the eventService.subscribe passing the CHAT_SIGNAL event', () => {
-        spyOn(eventService, 'subscribe').and.callThrough();
-
-        component.ngOnInit();
-        const eventServiceCalls = getEventServiceSubscribeArgs();
-
-        expect(eventServiceCalls).toContain(EventService.CHAT_SIGNAL);
-      });
-
       it('should perform a xmpp connect when the login event and the DB_READY event are triggered with the correct user data', () => {
         spyOn(realTime, 'connect').and.callThrough();
 
@@ -324,16 +310,6 @@ describe('App', () => {
         eventService.emit(EventService.DB_READY);
 
         expect(realTime.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
-      });
-
-      it('should NOT perform a xmpp connect when the DB_READY event is triggered with a dbName', () => {
-        spyOn(realTime, 'connect').and.callThrough();
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        eventService.emit(EventService.DB_READY, 'some-db-name');
-
-        expect(realTime.connect).not.toHaveBeenCalled();
       });
 
       it('should call userService.sendUserPresenceInterval', () => {
@@ -481,35 +457,29 @@ describe('App', () => {
     });
 
     it('should call syncItem on ITEM_UPDATED', () => {
-      spyOn(conversationService, 'syncItem');
       spyOn(callsService, 'syncItem');
 
       component.ngOnInit();
       eventService.emit(EventService.ITEM_UPDATED, MOCK_ITEM_V3);
 
-      expect(conversationService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
       expect(callsService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
     });
 
     it('should call syncItem on ITEM_SOLD', () => {
-      spyOn(conversationService, 'syncItem');
       spyOn(callsService, 'syncItem');
 
       component.ngOnInit();
       eventService.emit(EventService.ITEM_SOLD, MOCK_ITEM_V3);
 
-      expect(conversationService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
       expect(callsService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
     });
 
     it('should call syncItem on ITEM_RESERVED', () => {
-      spyOn(conversationService, 'syncItem');
       spyOn(callsService, 'syncItem');
 
       component.ngOnInit();
       eventService.emit(EventService.ITEM_RESERVED, MOCK_ITEM_V3);
 
-      expect(conversationService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
       expect(callsService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
     });
   });
@@ -523,37 +493,6 @@ describe('App', () => {
       eventService.emit(EventService.USER_LOGOUT);
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MY_PROFILE_LOGGED_OUT);
-    });
-  });
-
-  describe('process chat signals', () => {
-    it('should call conversationService.processChatSignal when a CHAT_SIGNAL event is emitted with a Sent, Received or Read signal', () => {
-      const timestamp = new Date(MOCK_MESSAGE.date).getTime();
-      const sentSignal = new ChatSignal(chatSignalType.SENT, MOCK_MESSAGE.thread, timestamp, MOCK_MESSAGE.id);
-      const receivedSignal =  new ChatSignal(chatSignalType.RECEIVED, MOCK_MESSAGE.thread, timestamp, MOCK_MESSAGE.id);
-      const readSignal = new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.thread, timestamp, null, false);
-      const testWithignals = [sentSignal, receivedSignal, readSignal];
-      spyOn(conversationService, 'processChatSignal');
-      component.ngOnInit();
-
-      testWithignals.map((signal: ChatSignal) => {
-        eventService.emit(EventService.CHAT_SIGNAL, signal);
-
-        expect(conversationService.processChatSignal).toHaveBeenCalledWith(signal);
-      });
-    });
-  });
-
-  describe('process new message event', () => {
-    // TODO test for legacy code
-    xit('should call conversationService.handleNewMessages when a NEW_MESSAGE event is triggered', () => {
-      spyOn(conversationService, 'handleNewMessages');
-      const timestamp = new Date().getTime();
-
-      component.ngOnInit();
-      eventService.emit(EventService.NEW_MESSAGE, MOCK_MESSAGE, timestamp);
-
-      expect(conversationService.handleNewMessages).toHaveBeenCalledWith(MOCK_MESSAGE, timestamp);
     });
   });
 
