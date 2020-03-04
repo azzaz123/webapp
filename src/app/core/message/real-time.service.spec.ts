@@ -11,7 +11,6 @@ import { of, throwError } from 'rxjs';
 import { Message, messageStatus, phoneRequestState } from './message';
 import { ACCESS_TOKEN, MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID, MOCK_CONVERSATION, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';
-import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment.docker';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService, MockConnectionService } from '../../../tests';
@@ -25,7 +24,11 @@ import {
   SendFirstMessage
 } from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
-import { CREATE_MOCK_INBOX_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE } from '../../../tests/inbox.fixtures.spec';
+import {
+  CREATE_MOCK_INBOX_CONVERSATION,
+  CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE,
+  MOCK_INBOX_CONVERSATION
+} from '../../../tests/inbox.fixtures.spec';
 import { InboxConversation, InboxMessage, MessageType } from '../../chat/model';
 
 let service: RealTimeService;
@@ -185,9 +188,9 @@ describe('RealTimeService', () => {
     it('should call xmpp.sendMessage', () => {
       spyOn(xmppService, 'sendMessage');
 
-      service.sendMessage(MOCK_CONVERSATION(), MOCK_MESSAGE.message);
+      service.sendMessage(MOCK_CONVERSATION(), MOCK_INBOX_CONVERSATION.message);
 
-      expect(xmppService.sendMessage).toHaveBeenCalledWith(MOCK_CONVERSATION(), MOCK_MESSAGE.message);
+      expect(xmppService.sendMessage).toHaveBeenCalledWith(MOCK_CONVERSATION(), MOCK_INBOX_CONVERSATION.message);
     });
   });
 
@@ -195,9 +198,9 @@ describe('RealTimeService', () => {
     it('should call xmpp.resendMessage', () => {
       spyOn(xmppService, 'resendMessage');
 
-      service.resendMessage(MOCK_CONVERSATION(), MOCK_MESSAGE);
+      service.resendMessage(MOCK_CONVERSATION(), MOCK_INBOX_CONVERSATION);
 
-      expect(xmppService.resendMessage).toHaveBeenCalledWith(MOCK_CONVERSATION(), MOCK_MESSAGE);
+      expect(xmppService.resendMessage).toHaveBeenCalledWith(MOCK_CONVERSATION(), MOCK_INBOX_CONVERSATION);
     });
   });
 
@@ -205,9 +208,9 @@ describe('RealTimeService', () => {
     it('should call xmpp.sendMessageDeliveryReceipt when called', () => {
       spyOn(xmppService, 'sendMessageDeliveryReceipt');
 
-      service.sendDeliveryReceipt(MOCK_USER.id, MOCK_MESSAGE.id, MOCK_CONVERSATION().id);
+      service.sendDeliveryReceipt(MOCK_USER.id, MOCK_INBOX_CONVERSATION.id, MOCK_CONVERSATION().id);
 
-      expect(xmppService.sendMessageDeliveryReceipt).toHaveBeenCalledWith(MOCK_USER.id, MOCK_MESSAGE.id, MOCK_CONVERSATION().id);
+      expect(xmppService.sendMessageDeliveryReceipt).toHaveBeenCalledWith(MOCK_USER.id, MOCK_INBOX_CONVERSATION.id, MOCK_CONVERSATION().id);
     });
   });
 
@@ -263,11 +266,12 @@ describe('RealTimeService', () => {
     it('should emit a CONV_WITH_PHONE_CREATED event when the MESSAGE_SENT event is triggered, if a hasPhoneRequestMessage exists', () => {
       spyOn<any>(eventService, 'emit').and.callThrough();
       const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
-      const phoneRequestMsg = new InboxMessage('someId', inboxConversation.id, 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
+      const phoneRequestMsg = new InboxMessage('someId', inboxConversation.id, 'some text', USER_ID, true, new Date(),
+        messageStatus.SENT, MessageType.TEXT);
       phoneRequestMsg.phoneRequest = phoneRequestState.pending;
       inboxConversation.messages.push(phoneRequestMsg);
 
-      eventService.emit(EventService.MESSAGE_SENT, inboxConversation, MOCK_MESSAGE.id);
+      eventService.emit(EventService.MESSAGE_SENT, inboxConversation, MOCK_INBOX_CONVERSATION.id);
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CONV_WITH_PHONE_CREATED, inboxConversation, phoneRequestMsg);
     });
@@ -275,7 +279,8 @@ describe('RealTimeService', () => {
     it('should call addTrackingEvent with the conversationCreateNew event when the MESSAGE_SENT event is triggered', () => {
       spyOn(trackingService, 'addTrackingEvent');
       const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
-      const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
+      const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(),
+        messageStatus.SENT, MessageType.TEXT);
       newConversation.messages.push(inboxMessage);
       const expectedEvent: TrackingEventData = {
         eventData: TrackingService.CONVERSATION_CREATE_NEW,
@@ -294,7 +299,8 @@ describe('RealTimeService', () => {
     it('should call addTrackingEvent with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
       spyOn(window, 'fbq');
       const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
-      const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
+      const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(),
+        messageStatus.SENT, MessageType.TEXT);
       newConversation.messages.push(inboxMessage);
 
       const event = {
@@ -310,7 +316,8 @@ describe('RealTimeService', () => {
     it('should call pinterest checkout tracking with data', () => {
       spyOn(window, 'pintrk');
       const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
-      const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
+      const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(),
+        messageStatus.SENT, MessageType.TEXT);
       newConversation.messages.push(inboxMessage);
       const event = {
         value: newConversation.item.price.amount,
@@ -335,18 +342,19 @@ describe('RealTimeService', () => {
         eventData: TrackingService.MESSAGE_SENT,
         attributes: {
           thread_id: conv.id,
-          message_id: MOCK_MESSAGE.id
+          message_id: MOCK_INBOX_CONVERSATION.id
         }
       };
 
-      eventService.emit(EventService.MESSAGE_SENT, conv, MOCK_MESSAGE.id);
+      eventService.emit(EventService.MESSAGE_SENT, conv, MOCK_INBOX_CONVERSATION.id);
 
       expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(expectedEvent, false);
     });
 
     it('should call appboy.logCustomEvent if this is the first message message sent', () => {
       spyOn(appboy, 'logCustomEvent');
-      const inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
+      const inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(),
+        messageStatus.SENT, MessageType.TEXT);
       const conv = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
       conv.messages.push(inboxMessage);
 
@@ -357,7 +365,7 @@ describe('RealTimeService', () => {
 
     it('should not call appboy.logCustomEvent if the conversation is not empty (has messages)', () => {
       spyOn(appboy, 'logCustomEvent');
-      MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE, MOCK_MESSAGE];
+      MOCKED_CONVERSATIONS[0].messages = [MOCK_INBOX_CONVERSATION, MOCK_INBOX_CONVERSATION];
 
       eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
 
@@ -366,7 +374,7 @@ describe('RealTimeService', () => {
 
     describe('if it`s the first message', () => {
       it('should send the Send First Message event', () => {
-        const inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
+        const inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT);
         const inboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
         const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
           name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
@@ -389,7 +397,7 @@ describe('RealTimeService', () => {
 
     describe('if it`s not the first message', () => {
       it('should not send the Send First Message event', () => {
-        MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE, MOCK_MESSAGE];
+        MOCKED_CONVERSATIONS[0].messages = [MOCK_INBOX_CONVERSATION, MOCK_INBOX_CONVERSATION];
         spyOn(analyticsService, 'trackEvent');
 
         eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');

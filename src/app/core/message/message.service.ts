@@ -13,6 +13,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { RealTimeService } from './real-time.service';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
+import { InboxMessage, MessageType } from '../../chat/model';
 
 @Injectable()
 export class MessageService {
@@ -58,27 +59,27 @@ export class MessageService {
     this.realTime.sendMessage(conversation, message);
   }
 
-  public addPhoneNumberRequestMessage(conversation, withTracking = true): Conversation {
-    let msg = new Message(UUID.UUID(),
+  public addPhoneNumberRequestMessage(conversation: InboxConversation, withTracking = true): InboxConversation {
+    const message = new InboxMessage(UUID.UUID(),
       conversation.id,
       this.i18n.getTranslations('phoneRequestMessage'),
       conversation.user.id,
+      true,
       new Date(),
-      messageStatus.READ);
-    msg = this.addUserInfo(conversation, msg);
-    msg.phoneRequest = phoneRequestState.pending;
-    conversation.messages.push(msg);
+      messageStatus.READ,
+      MessageType.TEXT,
+      null,
+      phoneRequestState.pending);
+    conversation.messages.push(message);
     if (withTracking) {
       this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
     }
-    conversation.modifiedDate = new Date().getTime();
+    conversation.modifiedDate = new Date();
     return conversation;
   }
 
   public createPhoneNumberMessage(conversation, phone) {
     const message = this.i18n.getTranslations('phoneMessage') + phone;
     this.realTime.sendMessage(conversation, message);
-    const phoneRequestMsg = conversation.messages.find(m => m.phoneRequest);
-    phoneRequestMsg.phoneRequest = phoneRequestState.answered;
   }
 }

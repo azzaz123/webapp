@@ -65,7 +65,6 @@ export class ChatComponent implements OnInit {
     });
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_READY, (ready) => {
       this.archivedInboxReady = ready;
-      this.openConversationIfNeeded();
     });
   }
 

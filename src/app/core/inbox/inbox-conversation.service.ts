@@ -45,18 +45,12 @@ export class InboxConversationService {
   }
 
   public subscribeChatEvents() {
-    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
-      this.processNewMessage(this.buildInboxMessage(message));
+    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
+      this.processNewMessage(message);
     });
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processNewChatSignal(signal);
     });
-  }
-
-  public buildInboxMessage(message: Message) {
-    const messageType = message.payload ? message.payload.type as MessageType : MessageType.TEXT;
-    return new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
-      message.status, messageType, message.payload, message.phoneRequest);
   }
 
   set selfId(value: string) {

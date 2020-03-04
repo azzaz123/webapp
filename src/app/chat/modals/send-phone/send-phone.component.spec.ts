@@ -10,7 +10,6 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
 import { WindowRef } from '../../../core/window/window.service';
 import { environment } from '../../../../environments/environment';
-import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 import { HttpService } from '../../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { By } from '@angular/platform-browser';
@@ -110,14 +109,6 @@ describe('SendPhoneComponent', () => {
           component.conversation = MOCK_CONVERSATION();
           component.required = true;
           fixture.detectChanges();
-        });
-
-        it('should call messageService.addPhoneNumberRequestMessage with the conversation and FALSE', () => {
-          spyOn(messageService, 'addPhoneNumberRequestMessage');
-
-          component.createPhoneNumberMessage();
-
-          expect(messageService.addPhoneNumberRequestMessage).toHaveBeenCalledWith(component.conversation, false);
         });
 
         it('should call trackingService.addTrackingEvent with ITEM_SHAREPHONE_SENDPHONE', () => {
@@ -317,8 +308,8 @@ describe('SendPhoneComponent', () => {
     describe('when required is true in archive chat', () => {
       beforeEach(() => {
         component.required = true;
-        component.conversation = MOCK_CONVERSATION();
-        component.conversation.item = MOCK_ITEM;
+        component.conversation = MOCK_INBOX_CONVERSATION;
+        component.conversation.item.itemUrl = `${environment.siteUrl}item/aa-186156806`;
         fixture.detectChanges();
       });
 
@@ -334,7 +325,7 @@ describe('SendPhoneComponent', () => {
       it('should redirect to the item detail page', () => {
         component.dismiss();
 
-        expect(windowRef.nativeWindow.location.href).toEqual(`${environment.siteUrl}item/${component.conversation.item['webSlug']}`);
+        expect(windowRef.nativeWindow.location.href).toEqual(`${component.conversation.item.itemUrl}`);
       });
     });
 

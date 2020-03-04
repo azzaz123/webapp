@@ -2,9 +2,7 @@ import { now } from 'lodash-es';
 import * as retry from 'retry';
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
-import { Conversation } from '../conversation/conversation';
 import { EventService } from '../event/event.service';
-import { Message } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { ChatSignal, chatSignalType } from './chat-signal.interface';
@@ -88,7 +86,7 @@ export class RealTimeService {
     this.xmpp.sendMessage(conversation, body);
   }
 
-  public resendMessage(conversation: Conversation | InboxConversation, message: Message | InboxMessage) {
+  public resendMessage(conversation: InboxConversation, message: InboxMessage) {
     this.xmpp.resendMessage(conversation, message);
   }
 
@@ -169,7 +167,7 @@ export class RealTimeService {
     });
   }
 
-  private trackSendFirstMessage(conversation: Conversation | InboxConversation) {
+  private trackSendFirstMessage(conversation: InboxConversation) {
     const event: AnalyticsEvent<SendFirstMessage> = {
       name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
       eventType: ANALYTIC_EVENT_TYPES.Other,
