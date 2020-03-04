@@ -27,7 +27,7 @@ import {
 } from '../../core/analytics/analytics-constants';
 import { CancelSubscriptionModalComponent } from "./modals/cancel-subscription-modal.component";
 
-fdescribe('SubscriptionComponent', () => {
+describe('SubscriptionComponent', () => {
   let component: SubscriptionComponent;
   let fixture: ComponentFixture<SubscriptionComponent>;
   let categoryService: CategoryService;
