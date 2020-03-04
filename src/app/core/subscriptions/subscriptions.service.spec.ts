@@ -10,7 +10,7 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { SubscriptionsResponse } from './subscriptions.interface';
-import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS, SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED } from '../../../tests/subscriptions.fixtures.spec';
+import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { HttpClient } from '@angular/common/http';
@@ -165,7 +165,7 @@ describe('SubscriptionsService', () => {
 
     it('should map the mock consumer goods category when backend returns a subscription type with category as 0', () => {
       const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_URL}`;
-      const subscriptionsWithConsumerGoods = [...SUBSCRIPTIONS, SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED];
+      const subscriptionsWithConsumerGoods = [...SUBSCRIPTIONS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED];
       service.subscriptions = null;
       let response: SubscriptionsResponse[];
 
