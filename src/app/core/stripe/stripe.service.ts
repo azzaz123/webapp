@@ -15,6 +15,8 @@ import { HttpClient } from '@angular/common/http';
 
 export const PAYMENTS_API_URL = 'api/v3/payments';
 
+export const STRIPE_PAYMENT_RESPONSE_EVENT_KEY = 'paymentActionResponse';
+
 @Injectable()
 export class StripeService {
 
@@ -67,7 +69,7 @@ export class StripeService {
 
   public actionPayment(paymentSecretKey): void {
     this.requiresActionPayment(paymentSecretKey).then((response: any) => {
-      this.handlePayment(response, 'paymentActionResponse');
+      this.handlePayment(response, STRIPE_PAYMENT_RESPONSE_EVENT_KEY);
     })
   }
 
@@ -94,10 +96,10 @@ export class StripeService {
   public createStripeCard(cardElement: any): Promise<any> {
     return this.createStripePaymentMethod(cardElement).then((response: any) => {
       if (response.error) {
-        return this.eventService.emit('paymentActionResponse', PAYMENT_RESPONSE_STATUS.FAILED);
+        return this.eventService.emit(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, PAYMENT_RESPONSE_STATUS.FAILED);
       }
       return response.paymentMethod;
-    }).catch(() => this.eventService.emit('paymentActionResponse', PAYMENT_RESPONSE_STATUS.FAILED));
+    }).catch(() => this.eventService.emit(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, PAYMENT_RESPONSE_STATUS.FAILED));
   }
 
   createStripePaymentMethod = async (cardElement: any) => await this.lib.createPaymentMethod('card', cardElement);

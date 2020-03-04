@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, ViewChild, OnDestroy } from '@angular/core';
 import { NgbActiveModal, NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
-import { StripeService } from '../../../core/stripe/stripe.service';
+import { StripeService, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from '../../../core/stripe/stripe.service';
 import { FinancialCardOption, PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { EventService } from '../../../core/event/event.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
@@ -58,13 +58,13 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loaded = true;
     this.selectedTier = this.subscription.selected_tier;
-    this.eventService.subscribe('paymentActionResponse', (response) => {
+    this.eventService.subscribe(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, (response) => {
       this.managePaymentResponse(response);
     });
   }
 
   ngOnDestroy() {
-    this.eventService.unsubscribeAll('paymentActionResponse');
+    this.eventService.unsubscribeAll(STRIPE_PAYMENT_RESPONSE_EVENT_KEY);
   }
 
   public close() {
