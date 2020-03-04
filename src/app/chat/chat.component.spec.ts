@@ -160,7 +160,7 @@ describe('Component: ChatComponent with ItemId', () => {
       expect(component.conversationsLoading).toEqual(true);
     });
 
-    xit('should set connectionError to FALSE when a EventService.CHAT_RT_CONNECTED event is emitted', () => {
+    it('should set connectionError to FALSE when a EventService.CHAT_RT_CONNECTED event is emitted', () => {
       const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
       inboxConversation.messages[inboxConversation.messages.length - 1].status = MessageStatus.PENDING;
 
