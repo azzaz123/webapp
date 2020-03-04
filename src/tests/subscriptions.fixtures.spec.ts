@@ -88,6 +88,24 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED: Subscriptio
   ]
 }
 
+export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED: SubscriptionsResponse = {
+  id: 'abcd-1234-efgh-5678',
+  category_id: 0,
+  category_icon: 'All',
+  category_name: 'Everything else',
+  subscribed_from: 1567675698,
+  selected_tier_id: 'plan_Fsf0Htv8L6Ox92',
+  default_tier_id: 'plan_Fsf0Htv8L6Ox92',
+  tiers:
+  [
+    {
+      id: 'plan_Fsf0Htv8L6Ox92',
+      price: 39.99,
+      currency: '€'
+    }   
+  ]
+}
+
 export const SUBSCRIPTIONS: SubscriptionsResponse[] = 
 [
   {
