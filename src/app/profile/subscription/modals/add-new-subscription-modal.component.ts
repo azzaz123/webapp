@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, OnDestroy } from '@angular/core';
 import { NgbActiveModal, NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCardOption, PaymentMethodResponse } from '../../../core/payments/payment.interface';
@@ -27,7 +27,7 @@ export const CAR_DEALER_TYPEFORM_LINK = 'https://wallapop.typeform.com/to/xj3GPt
   templateUrl: './add-new-subscription-modal.component.html',
   styleUrls: ['./add-new-subscription-modal.component.scss']
 })
-export class AddNewSubscriptionModalComponent implements OnInit {
+export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
 
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   public card: any;
@@ -61,6 +61,10 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     this.eventService.subscribe('paymentActionResponse', (response) => {
       this.managePaymentResponse(response);
     });
+  }
+
+  ngOnDestroy() {
+    this.eventService.unsubscribeAll('paymentActionResponse');
   }
 
   public close() {
