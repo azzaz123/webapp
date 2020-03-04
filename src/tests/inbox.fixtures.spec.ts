@@ -4,7 +4,8 @@ import { InboxItem, INBOX_ITEM_STATUSES } from '../app/chat/model/inbox-item';
 import { InboxMessage } from '../app/chat/model/inbox-message';
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { OTHER_USER_ID, USER_ID } from './user.fixtures.spec';
-import { ITEM_CATEGORY, ITEM_ID } from './item.fixtures.spec';
+import { ITEM_ID } from './item.fixtures.spec';
+import { CATEGORY_IDS } from '../app/core/category/category-ids';
 
 export const CONVERSATION_ID: string = MESSAGE_MAIN.thread;
 export const CONVERSATION_PHONE = '123.456.789';
@@ -150,7 +151,7 @@ const apiConvUser = MOCK_INBOX_CONVERSATION.with_user;
 let mockInboxUser = new InboxUser(OTHER_USER_ID, apiConvUser.name, apiConvUser.blocked, apiConvUser.available, apiConvUser.slug,
   apiConvUser.avatar_url, apiConvUser.response_rate, apiConvUser.sellingItem, apiConvUser.sellingItemCount, apiConvUser.scoring,
   apiConvUser.location, undefined);
-let mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, null, INBOX_ITEM_STATUSES.published, false, ITEM_CATEGORY);
+let mockInboxItem = new InboxItem(ITEM_ID, null, 'Some item', null, null, INBOX_ITEM_STATUSES.published, false, CATEGORY_IDS.CELL_PHONES_ACCESSORIES);
 const mockInboxMessages = MOCK_INBOX_CONVERSATION.messages.messages.filter(m => m.type === 'text')
 .map(m => new InboxMessage(m.id, MOCK_INBOX_CONVERSATION.hash, m.text,
   m.from_self ? USER_ID : (MOCK_INBOX_CONVERSATION.with_user ? MOCK_INBOX_CONVERSATION.with_user.hash : null),
@@ -164,7 +165,7 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
     m.from_self ? USER_ID : (MOCK_INBOX_CONVERSATION.with_user ? MOCK_INBOX_CONVERSATION.with_user.hash : null),
     m.from_self, new Date(m.timestamp), m.status, m.payload));
 
-  mockInboxItem = new InboxItem(ITEM_ID, { amount: 100, currency: '€' }, 'Some item', null, null, INBOX_ITEM_STATUSES.published, false, ITEM_CATEGORY);
+  mockInboxItem = new InboxItem(ITEM_ID, { amount: 100, currency: '€' }, 'Some item', null, null, INBOX_ITEM_STATUSES.published, false, CATEGORY_IDS.CELL_PHONES_ACCESSORIES);
   mockInboxUser = new InboxUser(userId, apiConvUser.name, apiConvUser.blocked, apiConvUser.available, apiConvUser.slug,
     apiConvUser.avatar_url, apiConvUser.response_rate, apiConvUser.scoring, 0, 0, {}, undefined);
   const next_from = MOCK_INBOX_CONVERSATION.messages.next_from ? MOCK_INBOX_CONVERSATION.messages.next_from : null;
