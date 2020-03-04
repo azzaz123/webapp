@@ -94,10 +94,10 @@ export class StripeService {
   public createStripeCard(cardElement: any): Promise<any> {
     return this.createStripePaymentMethod(cardElement).then((response: any) => {
       if (response.error) {
-        return this.eventService.emit('paymentActionResponse', response.error);
+        return this.eventService.emit('paymentActionResponse', PAYMENT_RESPONSE_STATUS.FAILED);
       }
       return response.paymentMethod;
-    }).catch(() => this.eventService.emit('paymentActionResponse', 'Error'));
+    }).catch(() => this.eventService.emit('paymentActionResponse', PAYMENT_RESPONSE_STATUS.FAILED));
   }
 
   createStripePaymentMethod = async (cardElement: any) => await this.lib.createPaymentMethod('card', cardElement);

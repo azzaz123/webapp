@@ -195,6 +195,10 @@ export class AddNewSubscriptionModalComponent implements OnInit {
         this.paymentSucceeded();
         break;
       }
+      case PAYMENT_RESPONSE_STATUS.FAILED: {
+        this.requestNewPayment();
+        break;
+      }
       default: {
         console.warn('error on action payment');
         break;
