@@ -107,10 +107,6 @@ export class RealTimeService {
         this.trackConversationCreated(conversation, messageId);
         this.trackSendFirstMessage(conversation);
         appboy.logCustomEvent('FirstMessage', { platform: 'web' });
-        const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
-        if (phoneRequestMsg) {
-          this.eventService.emit(EventService.CONV_WITH_PHONE_CREATED, conversation, phoneRequestMsg);
-        }
       }
       this.trackMessageSent(conversation.id, messageId);
     });
@@ -123,11 +119,7 @@ export class RealTimeService {
   }
 
   private isFirstMessage(conversation: InboxConversation): boolean {
-    const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
-    if (conversation.messages.length === 1 || (phoneRequestMsg && conversation.messages.length === 2)) {
-      return true;
-    }
-    return false;
+    return conversation.messages.length === 1;
   }
 
   private trackMessageSent(thread: string, messageId: string) {

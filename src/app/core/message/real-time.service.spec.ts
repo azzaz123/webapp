@@ -263,19 +263,6 @@ describe('RealTimeService', () => {
 
   describe('subscribeEventChatMessageSent', () => {
 
-    it('should emit a CONV_WITH_PHONE_CREATED event when the MESSAGE_SENT event is triggered, if a hasPhoneRequestMessage exists', () => {
-      spyOn<any>(eventService, 'emit').and.callThrough();
-      const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
-      const phoneRequestMsg = new InboxMessage('someId', inboxConversation.id, 'some text', USER_ID, true, new Date(),
-        messageStatus.SENT, MessageType.TEXT);
-      phoneRequestMsg.phoneRequest = phoneRequestState.pending;
-      inboxConversation.messages.push(phoneRequestMsg);
-
-      eventService.emit(EventService.MESSAGE_SENT, inboxConversation, MOCK_INBOX_CONVERSATION.id);
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONV_WITH_PHONE_CREATED, inboxConversation, phoneRequestMsg);
-    });
-
     it('should call addTrackingEvent with the conversationCreateNew event when the MESSAGE_SENT event is triggered', () => {
       spyOn(trackingService, 'addTrackingEvent');
       const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');

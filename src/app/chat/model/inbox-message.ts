@@ -38,8 +38,7 @@ export class InboxMessage {
     private _date: Date,
     private _status: string,
     private _type: MessageType,
-    private _payload?: MessagePayload,
-    private _phoneRequest?: string) {
+    private _payload?: MessagePayload) {
   }
 
   get id(): string {
@@ -96,14 +95,6 @@ export class InboxMessage {
 
   get payload(): MessagePayload {
     return this._payload;
-  }
-
-  set phoneRequest(value: string) {
-    this._phoneRequest = value;
-  }
-
-  get phoneRequest(): string {
-    return this._phoneRequest;
   }
 
   public static messsagesFromJson(messagesApiModel: InboxMessageApi[], conversationId: string, currentUserId: string, otherUserId: string): InboxMessage[] {

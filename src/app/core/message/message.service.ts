@@ -68,8 +68,7 @@ export class MessageService {
       new Date(),
       messageStatus.READ,
       MessageType.TEXT,
-      null,
-      phoneRequestState.pending);
+      null);
     conversation.messages.push(message);
     if (withTracking) {
       this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });

@@ -171,25 +171,6 @@ describe('Service: Message', () => {
       conversation = CREATE_MOCK_INBOX_CONVERSATION();
     });
 
-    it('should create a phoneRequest message with the phoneRequestState as PENDING', () => {
-      service.addPhoneNumberRequestMessage(conversation);
-      conversation.messages.push(new InboxMessage('message-id', conversation.id, 'test', USER_ID, true, new Date(),
-        MessageStatus.PENDING, MessageType.TEXT));
-      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
-
-      expect(requestMessage.phoneRequest).toBe(phoneRequestState.pending);
-    });
-
-    it('should add the phone request message to the conversation', () => {
-      const msgExistsBefore = conversation.messages.find(m => !!m.phoneRequest);
-
-      service.addPhoneNumberRequestMessage(conversation);
-      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
-
-      expect(msgExistsBefore).toBeFalsy();
-      expect(requestMessage instanceof InboxMessage).toBe(true);
-    });
-
     it('should track the CHAT_SHAREPHONE_OPENSHARING event when no second argument is passed', () => {
       spyOn(trackingService, 'addTrackingEvent');
 
