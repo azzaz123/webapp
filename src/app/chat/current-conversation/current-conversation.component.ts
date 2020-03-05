@@ -32,6 +32,7 @@ import { ThirdVoiceMessageComponent } from '../message/third-voice-message';
 import { BlockUserService, BlockUserXmppService } from '../../core/conversation/block-user';
 import { eq, includes } from 'lodash-es';
 import { InboxConversation, InboxMessage, MessageType } from '../model';
+import { ThirdVoiceDropPriceComponent } from '../message/third-voice-drop-price';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -262,6 +263,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   public isTextMessage(messageType: MessageType): boolean {
     return includes(TextMessageComponent.ALLOW_MESSAGES_TYPES, messageType);
+  }
+
+  public isThirdVoiceDropPrice(messageType: MessageType): boolean {
+    return includes(ThirdVoiceDropPriceComponent.ALLOW_MESSAGES_TYPES, messageType);
   }
 
   public isThirdVoiceMessage(messageType: MessageType): boolean {

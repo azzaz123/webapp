@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { InboxMessage, MessageType } from '../../model';
 
 @Component({
   selector: 'tsl-third-voice-drop-price',
   templateUrl: './third-voice-drop-price.component.html',
   styleUrls: ['./third-voice-drop-price.component.scss']
 })
-export class ThirdVoiceDropPriceComponent implements OnInit {
+export class ThirdVoiceDropPriceComponent {
 
-  constructor() { }
+  public static ALLOW_MESSAGES_TYPES = [MessageType.PRICE_DROP, MessageType.DROP_PRICE];
 
-  ngOnInit() {
-  }
-
+  @Input() message: InboxMessage;
 }

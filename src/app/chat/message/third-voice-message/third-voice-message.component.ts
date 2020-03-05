@@ -11,7 +11,7 @@ import { InboxItem, InboxUser, MessageType } from '../../model';
 })
 export class ThirdVoiceMessageComponent extends MessageComponent implements OnInit {
 
-  public static ALLOW_MESSAGES_TYPES = [MessageType.PRICE_DROP, MessageType.DROP_PRICE, MessageType.REVIEW];
+  public static ALLOW_MESSAGES_TYPES = [MessageType.REVIEW];
 
   @Input() user: InboxUser;
   @Input() item: InboxItem;
