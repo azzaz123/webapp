@@ -6,6 +6,7 @@
       <mat-icon svgIcon="robot"></mat-icon>
     </div>
     <div class="message-content">
+<!--      <ng-content></ng-content>-->
       <span *ngIf="message.payload" [innerHTML]="message.text | linkTransform"></span>
       <tsl-third-voice-button *ngIf="isReview()" [message]="message" [user]="user" [item]="item"></tsl-third-voice-button>
       <small class="message-date" [ngClass]="{'third-voice': isReview()}">{{message.date | date:'shortTime'}}</small>

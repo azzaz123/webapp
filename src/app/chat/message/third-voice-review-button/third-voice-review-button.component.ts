@@ -1,18 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ReviewService } from '../../../../core/review/review.service';
-import { ReviewModalComponent } from '../../../../shared/modals/review-modal/review-modal.component';
-import { SoldModalComponent } from '../../../../shared/modals/sold-modal/sold-modal.component';
-import { ConversationUser } from '../../../../core/item/item-response.interface';
-import { InboxItem, InboxMessage, InboxUser } from '../../../model';
+import { ReviewService } from '../../../core/review/review.service';
+import { ReviewModalComponent } from '../../../shared/modals/review-modal/review-modal.component';
+import { SoldModalComponent } from '../../../shared/modals/sold-modal/sold-modal.component';
+import { ConversationUser } from '../../../core/item/item-response.interface';
+import { InboxItem, InboxMessage, InboxUser } from '../../model';
 
 @Component({
   selector: 'tsl-third-voice-button',
-  templateUrl: './third-voice-review.component.html',
-  styleUrls: ['./third-voice-review.component.scss']
+  templateUrl: './third-voice-review-button.component.html',
+  styleUrls: ['./third-voice-review-button.component.scss']
 })
-export class ThirdVoiceReviewComponent implements OnInit {
+export class ThirdVoiceReviewButtonComponent implements OnInit {
 
   @Input() message: InboxMessage;
   @Input() user: InboxUser;
