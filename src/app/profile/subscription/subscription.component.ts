@@ -135,8 +135,8 @@ export class SubscriptionComponent implements OnInit {
   }
 
   private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse) {
-    // Subscription is active with only one tier and no limits (Consumer Goods)
-    if (subscription.subscribed_from && subscription.tiers.length === 1 && !subscription.tiers[0].limit) {
+    // Subscription is active, not cancelled, with only one tier and no limits (Consumer Goods)
+    if (subscription.subscribed_from && !subscription.subscribed_until && subscription.tiers.length === 1 && !subscription.tiers[0].limit) {
       return CancelSubscriptionModalComponent;
     }
     
