@@ -1,7 +1,7 @@
 import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Observable } from 'rxjs';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { StripeCardsComponent } from './stripe-cards.component';
@@ -12,6 +12,10 @@ import {
   createFinancialCardFixture,
   createFavoriteFinancialCardFixture
 } from '../../../../tests/stripe.fixtures.spec';
+import { delay } from 'rxjs/operators';
+import { MatIconModule } from '@angular/material';
+import { ButtonComponent } from '../../button/button.component';
+import { CreditCardInfoComponent } from '../credit-card-info/credit-card-info.component';
 
 describe('StripeCardsComponent', () => {
   let component: StripeCardsComponent;
@@ -23,7 +27,7 @@ describe('StripeCardsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [StripeCardsComponent],
+        declarations: [StripeCardsComponent, ButtonComponent],
         providers: [
           I18nService,
           {
@@ -99,12 +103,12 @@ describe('StripeCardsComponent', () => {
   describe('onAddNewCard', () => {
     beforeEach(fakeAsync(() => {
       spyOn(component, 'addNewCard').and.callThrough();
-      spyOn(stripeService, 'addNewCard').and.callThrough();
       modalSpy = spyOn(modalService, 'open').and.callThrough();
       component.stripeCards[0] = createFinancialCardFixture();
     }));
 
     it('should add card if it is new', fakeAsync(() => {
+      spyOn(stripeService, 'addNewCard').and.callThrough();
       modalSpy.and.returnValue({
         result: Promise.resolve(FINANCIAL_STRIPE_CARD)
       });
@@ -116,11 +120,38 @@ describe('StripeCardsComponent', () => {
     }));
 
     it('should not add card if card already exists', () => {
+      spyOn(stripeService, 'addNewCard').and.callThrough();
       component.addNewCard();
 
       expect(stripeService.addNewCard).not.toHaveBeenCalled();
       expect(component.stripeCards.length).toBe(1);
     });
+
+    it('should change the button content for a loading spinner while waiting backend', fakeAsync(() => {
+      const backendResponseTimeMs = 3000;
+      spyOn(stripeService, 'addNewCard').and.returnValue(of().pipe(delay(backendResponseTimeMs)));
+
+      component.addNewCard();
+      tick();
+      fixture.detectChanges();
+
+      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('tsl-button > button > mat-icon');
+      expect(loadingComponent).toBeTruthy();
+      expect(loadingComponent.getAttribute('svgicon')).toBe('spinner');
+      tick(backendResponseTimeMs);
+    }));
+
+    it('should remove the loading component in the button content when backend answered', fakeAsync(() => {
+      const backendResponseTimeMs = 3000;
+      spyOn(stripeService, 'addNewCard').and.returnValue(of().pipe(delay(backendResponseTimeMs)));
+
+      component.addNewCard();
+      tick(backendResponseTimeMs + 1);
+      fixture.detectChanges();
+
+      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('tsl-button > button > mat-icon');
+      expect(loadingComponent).toBeFalsy();
+    }));
 
   });
 

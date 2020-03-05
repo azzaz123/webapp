@@ -4,43 +4,29 @@ import { MessageService } from './message.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Conversation } from '../conversation/conversation';
 import { Message, messageStatus, phoneRequestState } from './message';
-import { Observable } from 'rxjs';
 import { EventService } from '../event/event.service';
-import { PersistencyService } from '../persistency/persistency.service';
-import {
-  createMessagesArray, createReceivedReceiptsArray,
-  MESSAGE_MAIN, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE_FROM_OTHER
-} from '../../../tests/message.fixtures.spec';
-import { MOCK_CONVERSATION, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
-import {
-  MOCK_DB_FILTERED_RESPONSE,
-  MOCK_DB_META,
-  MockedPersistencyService,
-  MOCK_DB_RESPONSE_WITH_PENDING,
-  MOCK_DB_RESPONSE_WITH_OLD_PENDING,
-  MOCK_DB_MSG_WITH_PHONEREQUEST
-} from '../../../tests/persistency.fixtures.spec';
-import { USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
+import { createMessagesArray, MESSAGE_MAIN } from '../../../tests/message.fixtures.spec';
+import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
 import { ConnectionService } from '../connection/connection.service';
-import { MsgArchiveService } from './archive.service';
 import { HttpService } from '../http/http.service';
 import { I18nService } from '../i18n/i18n.service';
 import { RealTimeService } from './real-time.service';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
+import { InboxConversation } from '../../chat/model';
 
 describe('Service: Message', () => {
 
   let realTime: RealTimeService;
   let service: MessageService;
-  let persistencyService: PersistencyService;
   let userService: UserService;
   let connectionService: ConnectionService;
-  let archiveService: MsgArchiveService;
   let trackingService: TrackingService;
   let httpService: HttpService;
   let i18n: I18nService;
@@ -53,7 +39,6 @@ describe('Service: Message', () => {
         XmppService,
         EventService,
         I18nService,
-        MsgArchiveService,
         RealTimeService,
         {
           provide: HttpService, useValue: {
@@ -63,17 +48,14 @@ describe('Service: Message', () => {
         },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: ConnectionService, useValue: {} },
-        { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: UserService, useValue: { user: new User(USER_ID) } },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
       ]
     });
     realTime = TestBed.get(RealTimeService);
     service = TestBed.get(MessageService);
-    persistencyService = TestBed.get(PersistencyService);
     userService = TestBed.get(UserService);
     connectionService = TestBed.get(ConnectionService);
-    archiveService = TestBed.get(MsgArchiveService);
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
     httpService = TestBed.get(HttpService);
@@ -171,7 +153,7 @@ describe('Service: Message', () => {
   describe('send', () => {
     it('should call the send message', () => {
       spyOn(realTime, 'sendMessage');
-      const conversation: Conversation = MOCK_CONVERSATION();
+      const conversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
       service.send(conversation, 'text');
       expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, 'text');
     });
@@ -203,27 +185,27 @@ describe('Service: Message', () => {
     });
 
     it('should track the CHAT_SHAREPHONE_OPENSHARING event when no second argument is passed', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+      spyOn(trackingService, 'track');
 
       service.addPhoneNumberRequestMessage(conversation);
 
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
     });
 
     it('should track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is true', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+      spyOn(trackingService, 'track');
 
       service.addPhoneNumberRequestMessage(conversation, true);
 
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
     });
 
     it('should NOT track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is false', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+      spyOn(trackingService, 'track');
 
       service.addPhoneNumberRequestMessage(conversation, false);
 
-      expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+      expect(trackingService.track).not.toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
     });
   });
 

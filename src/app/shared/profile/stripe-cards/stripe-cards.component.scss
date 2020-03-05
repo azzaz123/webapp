@@ -1,5 +1,7 @@
 @import "~style/common";
 
+$card-width: 300px;
+
 .StripeCards {
   h3 {
     position: absolute;
@@ -10,44 +12,24 @@
 
 .StripeCards__group {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   margin-right: 0;
   margin-left: 0;
-  justify-content: flex-start;
 }
 
 .StripeCards__card {
-  width: 300px;
+  width: $card-width;
   margin: 0 $spacing-ms $spacing-ml;
 }
 
 .StripeCards__newCard {
   color: $walla-main;
-  border: solid 1px $blue-grey-5;
-  padding: 0 $spacing-ml;
   display: flex;
-  flex-direction: column;
-  border-radius: 6px;
-  align-items: center;
-  font-size: $font-size-s;
-  width: 100%;
-  height: 88px;
   justify-content: center;
-  a {
-    font-size: $font-size-m;
-    cursor: pointer;
-  }
-  .card-icon {
-    flex: 0 0 34px;
-    margin-right: $spacing-m;
-  }
-  .number {
-    flex: 1;
-  }
-  .date {
-    color: $blue-grey-3;
-    span {
-      font-size: $font-size-xs;
-    }
-  }
+  align-items: center;
+
+  width: $card-width;
+  height: 88px;
 }
