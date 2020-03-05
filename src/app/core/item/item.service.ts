@@ -794,11 +794,11 @@ export class ItemService extends ResourceService {
   }
 
   public bulkSetActivate(): Observable<any> {
-    return this.http.post(this.API_URL_PROTOOL + '/changeItemStatus', {
+    return this.httpNew.post(`${environment.baseUrl}${this.API_URL_PROTOOL}/changeItemStatus`, {
       itemIds: this.selectedItems,
       publishStatus: PUBLISHED_ID
-    })
-      .do(() => {
+    }).pipe(
+      tap(() => {
         this.selectedItems.forEach((id: string) => {
           let index: number = findIndex(this.items.pending, { 'id': id });
           let deletedItem: Item = this.items.pending.splice(index, 1)[0];
@@ -810,73 +810,71 @@ export class ItemService extends ResourceService {
         });
         this.eventService.emit('itemChangeStatus', this.selectedItems);
         this.deselectItems();
-      }).catch((errorResponse: Response) => {
+      }),
+      catchError((errorResponse) => {
         return Observable.of(errorResponse);
-      });
+      })
+    );
   }
 
   public activate(): Observable<any> {
-    return this.http.put(this.API_URL + '/activate', {
+    return this.httpNew.put(`${environment.baseUrl}${this.API_URL}/activate`, {
       ids: this.selectedItems
-    })
-      .do(() => this.deselectItems());
-  }
-
-  public bulkSetDeactivate(): Observable<any> {
-    return this.http.post(this.API_URL_PROTOOL + '/changeItemStatus', {
-      itemIds: this.selectedItems,
-      publishStatus: ONHOLD_ID
-    })
-      .do(() => {
-        this.selectedItems.forEach((id: string) => {
-          let index: number = findIndex(this.items.active, { 'id': id });
-          let deletedItem: Item = this.items.active.splice(index, 1)[0];
-          deletedItem.flags['onhold'] = true;
-          deletedItem.selected = false;
-          if (this.items.pending.length) {
-            this.items.pending.push(deletedItem);
-          }
-        });
-        this.eventService.emit('itemChangeStatus', this.selectedItems);
-        this.deselectItems();
-      });
+    }).pipe(tap(() => this.deselectItems()))
   }
 
   public deactivate(): Observable<any> {
-    return this.http.put(this.API_URL + '/inactivate', {
+    return this.httpNew.put(`${environment.baseUrl}${this.API_URL}/inactivate`, {
       ids: this.selectedItems
-    })
-      .do(() => this.deselectItems());
+    }).pipe(tap(() => this.deselectItems()))
+  }
+
+  public bulkSetDeactivate(): Observable<any> {
+    return this.httpNew.post(`${environment.baseUrl}${this.API_URL_PROTOOL}/changeItemStatus`, {
+      itemIds: this.selectedItems,
+      publishStatus: ONHOLD_ID
+    }).pipe(tap(() => {
+      this.selectedItems.forEach((id: string) => {
+        let index: number = findIndex(this.items.active, { 'id': id });
+        let deletedItem: Item = this.items.active.splice(index, 1)[0];
+        deletedItem.flags['onhold'] = true;
+        deletedItem.selected = false;
+        if (this.items.pending.length) {
+          this.items.pending.push(deletedItem);
+        }
+      });
+      this.eventService.emit('itemChangeStatus', this.selectedItems);
+      this.deselectItems();
+    }));
   }
 
   public setSold(id: number): Observable<any> {
-    return this.http.post(this.API_URL_V1 + '/item.json/' + id + '/sold')
-      .do(() => {
+    return this.httpNew.post(`${environment.baseUrl}${this.API_URL_V1}/item.json/${id}/sold`, {})
+      .pipe(tap(() => {
         let index: number = findIndex(this.items.active, { 'legacyId': id });
         let deletedItem: Item = this.items.active.splice(index, 1)[0];
         if (this.items.sold.length) {
           this.items.sold.push(deletedItem);
         }
         this.eventService.emit(EventService.ITEM_SOLD, deletedItem);
-      });
+      }));
   }
 
   public cancelAutorenew(itemId: string): Observable<any> {
-    return this.http.put(this.API_URL_PROTOOL + '/autorenew/update', [{
+    return this.httpNew.put(`${environment.baseUrl}${this.API_URL_PROTOOL}/autorenew/update`, {
       item_id: itemId,
       autorenew: false
-    }]);
+    });
   }
 
   public getLatest(userId: string): Observable<ItemDataResponse> {
-    return this.http.get(this.API_URL + '/latest-cars', { userId: userId })
-      .map((r: Response) => r.json())
-      .map((resp: LatestItemResponse) => {
+    return this.httpNew.get(`${environment.baseUrl}${this.API_URL}/latest-cars`, { params: { userId: userId } })
+      .pipe(mapRx.map((resp: LatestItemResponse) => {
         return {
           count: resp.count - 1,
           data: resp.items[0] ? this.mapRecordData(resp.items[0]) : null
         };
-      });
+      }));
   }
 
   public bumpProItems(orderParams: OrderPro[]): Observable<string[]> {

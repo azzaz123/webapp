@@ -62,7 +62,7 @@ import {
 } from '../../../tests/realestate.fixtures.spec';
 import { Realestate } from './realestate';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 fdescribe('Service: Item', () => {
 
@@ -145,7 +145,7 @@ fdescribe('Service: Item', () => {
     });
   });
 
-  fdescribe('bulkDelete', () => {
+  describe('bulkDelete', () => {
     it('should delete the selected items', () => {
       const selectedItemIds = ['1', '2', '3'];
       const expectedUrl = `${environment.baseUrl}api/v3/items/delete`;
@@ -778,6 +778,24 @@ fdescribe('Service: Item', () => {
     });
   });
 
+  fdescribe('cancelAutorenew', () => {
+    it('should cancel the item bump autorenew', () => {
+      const expectedUrl = `${environment.baseUrl}api/v3/protool/autorenew/update`;
+      const expectedBody = {
+        item_id: ITEM_ID,
+        autorenew: false
+      };
+
+      service.cancelAutorenew(ITEM_ID).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.body).toEqual(expectedBody);
+      expect(req.request.method).toBe('PUT');
+    })
+  });
+
   describe('getLatest', () => {
     it('should return the latest item', () => {
       let observableResponse: ItemDataResponse;
@@ -984,22 +1002,23 @@ fdescribe('Service: Item', () => {
     const ID: number = 1;
     const TOTAL: number = 5;
     let eventEmitted: boolean;
+    let req: TestRequest;
+    const expectedUrl = `${environment.baseUrl}shnm-portlet/api/v1/item.json/${ID}/sold`;
 
-    beforeEach(fakeAsync(() => {
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        expect(connection.request.url).toBe(environment['baseUrl'] + 'shnm-portlet/api/v1/item.json/' + ID + '/sold');
-        connection.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify({}) })));
-      });
+    beforeEach(() => {
       service['items']['active'] = createItemsArray(TOTAL);
-      eventService.subscribe(EventService.ITEM_SOLD, () => {
-        eventEmitted = true;
-      });
-    }));
+    });
 
     describe('sold array with items', () => {
       beforeEach(fakeAsync(() => {
         service['items']['sold'] = createItemsArray(TOTAL, TOTAL);
+        eventService.subscribe(EventService.ITEM_SOLD, () => {
+          eventEmitted = true;
+        });
         service.setSold(ID).subscribe();
+
+        req = httpMock.expectOne(expectedUrl);
+        req.flush({});
       }));
       it('should remove item from active array', () => {
         expect(service['items']['active'].length).toBe(TOTAL - 1);
@@ -1012,14 +1031,18 @@ fdescribe('Service: Item', () => {
       });
 
       it('should emit event', () => {
-        expect(eventEmitted).toBeTruthy();
+        expect(eventEmitted).toBe(true);
       });
     });
 
     describe('sold array without items', () => {
       beforeEach(fakeAsync(() => {
         service.setSold(ID).subscribe();
+
+        req = httpMock.expectOne(expectedUrl);
+        req.flush({});
       }));
+
       it('should NOT add item to sold array', () => {
         expect(service['items']['sold'].length).toBe(0);
       });
@@ -1090,129 +1113,105 @@ fdescribe('Service: Item', () => {
   //     });
   //   });
 
-  //   describe('bulkSetActivate', () => {
+  describe('bulkSetActivate', () => {
+    const TOTAL: number = 5;
+    let eventEmitted: boolean;
+    let req: TestRequest;
+    const expectedUrl = `${environment.baseUrl}api/v3/protool/changeItemStatus`;
 
-  //     const TOTAL: number = 5;
-  //     let eventEmitted: boolean;
+    beforeEach(() => {
+      spyOn(service, 'deselectItems');
+      service['items']['active'] = createItemsArray(TOTAL);
+      service['items']['pending'] = createItemsArray(TOTAL);
+      service.selectedItems = ITEMS_BULK_UPDATED_IDS;
+      eventService.subscribe('itemChangeStatus', () => {
+        eventEmitted = true;
+      });
 
-  //     describe('if there are not problems', () => {
+      service.bulkSetActivate().subscribe();
+      req = httpMock.expectOne(expectedUrl);
+      req.flush({});
+    });
 
-  //       beforeEach(() => {
-  //         spyOn(http, 'post').and.returnValue(Observable.of({}));
-  //         spyOn(service, 'deselectItems');
-  //         service['items']['active'] = createItemsArray(TOTAL);
-  //         service['items']['pending'] = createItemsArray(TOTAL);
-  //         service.selectedItems = ITEMS_BULK_UPDATED_IDS;
+    it('should call a post method with params', () => {
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.body).toEqual({ itemIds: ITEMS_BULK_UPDATED_IDS, publishStatus: PUBLISHED_ID });
+      expect(req.request.method).toBe('POST');
+    });
 
-  //         eventService.subscribe('itemChangeStatus', () => {
-  //           eventEmitted = true;
-  //         });
+    it('should remove item from pending array', () => {
+      expect(service['items']['pending'].length).toBe(TOTAL - 3);
+      expect(find(service['items']['pending'], { 'id': ITEMS_BULK_UPDATED_IDS[0] })).toBeFalsy();
+      expect(find(service['items']['pending'], { 'id': ITEMS_BULK_UPDATED_IDS[1] })).toBeFalsy();
+      expect(find(service['items']['pending'], { 'id': ITEMS_BULK_UPDATED_IDS[2] })).toBeFalsy();
+    });
 
-  //         service.bulkSetActivate().subscribe();
-  //       });
+    it('should add item to active array', () => {
+      expect(service['items']['active'].length).toBe(TOTAL + 3);
+      expect(find(service['items']['active'], { 'id': ITEMS_BULK_UPDATED_IDS[0] })).toBeTruthy();
+      expect(find(service['items']['active'], { 'id': ITEMS_BULK_UPDATED_IDS[1] })).toBeTruthy();
+      expect(find(service['items']['active'], { 'id': ITEMS_BULK_UPDATED_IDS[2] })).toBeTruthy();
+    });
 
-  //       it('should call a post method with params', () => {
-  //         expect(http.post).toHaveBeenCalledWith('api/v3/protool/changeItemStatus', {
-  //           itemIds: ITEMS_BULK_UPDATED_IDS,
-  //           publishStatus: PUBLISHED_ID
-  //         });
-  //       });
+    it('should call deselectItems', () => {
+      expect(service.deselectItems).toHaveBeenCalled();
+    });
 
-  //       it('should remove item from pending array', () => {
-  //         expect(service['items']['pending'].length).toBe(TOTAL - 3);
-  //         expect(find(service['items']['pending'], { 'id': ITEMS_BULK_UPDATED_IDS[0] })).toBeFalsy();
-  //         expect(find(service['items']['pending'], { 'id': ITEMS_BULK_UPDATED_IDS[1] })).toBeFalsy();
-  //         expect(find(service['items']['pending'], { 'id': ITEMS_BULK_UPDATED_IDS[2] })).toBeFalsy();
-  //       });
+    it('should emit event', () => {
+      expect(eventEmitted).toBe(true);
+    });
+  });
 
-  //       it('should add item to active array', () => {
-  //         expect(service['items']['active'].length).toBe(TOTAL + 3);
-  //         expect(find(service['items']['active'], { 'id': ITEMS_BULK_UPDATED_IDS[0] })).toBeTruthy();
-  //         expect(find(service['items']['active'], { 'id': ITEMS_BULK_UPDATED_IDS[1] })).toBeTruthy();
-  //         expect(find(service['items']['active'], { 'id': ITEMS_BULK_UPDATED_IDS[2] })).toBeTruthy();
-  //       });
+  describe('bulkSetDeactivate', () => {
+    const TOTAL: number = 5;
+    let eventEmitted: boolean;
+    let req: TestRequest;
+    const expectedUrl = `${environment.baseUrl}api/v3/protool/changeItemStatus`;
 
-  //       it('should call deselectItems', () => {
-  //         expect(service.deselectItems).toHaveBeenCalled();
-  //       });
+    beforeEach(() => {
+      spyOn(http, 'post').and.returnValue(Observable.of({}));
+      spyOn(service, 'deselectItems');
+      service['items']['active'] = createItemsArray(TOTAL);
+      service['items']['pending'] = createItemsArray(TOTAL);
+      service.selectedItems = ITEMS_BULK_UPDATED_IDS;
 
-  //       it('should emit event', () => {
-  //         expect(eventEmitted).toBeTruthy();
-  //       });
-  //     });
+      eventService.subscribe('itemChangeStatus', () => {
+        eventEmitted = true;
+      });
 
-  //     describe('if there are problems', () => {
-  //       const ERROR: any = {
-  //         'code': 1,
-  //         'type': 'error',
-  //         'message': 'many items activated'
-  //       };
+      service.bulkSetDeactivate().subscribe();
+      req = httpMock.expectOne(expectedUrl);
+      req.flush({});
+    });
 
-  //       let response: any;
+    it('should call a post method with params', () => {
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.body).toEqual({ itemIds: ITEMS_BULK_UPDATED_IDS, publishStatus: ONHOLD_ID });
+      expect(req.request.method).toBe('POST');
+    });
 
-  //       beforeEach(() => {
-  //         spyOn(http, 'post').and.returnValue(Observable.throw(ERROR));
+    it('should remove item from active array', () => {
+      expect(service['items']['active'].length).toBe(TOTAL - 3);
+      expect(find(service['items']['active'], { 'id': ITEMS_BULK_UPDATED_IDS[0] })).toBeFalsy();
+      expect(find(service['items']['active'], { 'id': ITEMS_BULK_UPDATED_IDS[1] })).toBeFalsy();
+      expect(find(service['items']['active'], { 'id': ITEMS_BULK_UPDATED_IDS[2] })).toBeFalsy();
+    });
 
-  //         service.bulkSetActivate().subscribe((resp) => {
-  //           response = resp;
-  //         });
-  //       });
+    it('should add item to pending array', () => {
+      expect(service['items']['pending'].length).toBe(TOTAL + 3);
+      expect(find(service['items']['pending'], { 'id': ITEMS_BULK_UPDATED_IDS[0] })).toBeTruthy();
+      expect(find(service['items']['pending'], { 'id': ITEMS_BULK_UPDATED_IDS[1] })).toBeTruthy();
+      expect(find(service['items']['pending'], { 'id': ITEMS_BULK_UPDATED_IDS[2] })).toBeTruthy();
+    });
 
-  //       it('should enter in catch method', () => {
-  //         expect(response).toBe(ERROR);
-  //       });
-  //     });
-  //   });
+    it('should call deselectItems', () => {
+      expect(service.deselectItems).toHaveBeenCalled();
+    });
 
-  //   describe('bulkSetDeactivate', () => {
-
-  //     const TOTAL: number = 5;
-  //     let eventEmitted: boolean;
-
-  //     beforeEach(() => {
-  //       spyOn(http, 'post').and.returnValue(Observable.of({}));
-  //       spyOn(service, 'deselectItems');
-  //       service['items']['active'] = createItemsArray(TOTAL);
-  //       service['items']['pending'] = createItemsArray(TOTAL);
-  //       service.selectedItems = ITEMS_BULK_UPDATED_IDS;
-
-  //       eventService.subscribe('itemChangeStatus', () => {
-  //         eventEmitted = true;
-  //       });
-
-  //       service.bulkSetDeactivate().subscribe();
-  //     });
-
-  //     it('should call a post method with params', () => {
-  //       expect(http.post).toHaveBeenCalledWith('api/v3/protool/changeItemStatus', {
-  //         itemIds: ITEMS_BULK_UPDATED_IDS,
-  //         publishStatus: ONHOLD_ID
-  //       });
-  //     });
-
-  //     it('should remove item from active array', () => {
-  //       expect(service['items']['active'].length).toBe(TOTAL - 3);
-  //       expect(find(service['items']['active'], { 'id': ITEMS_BULK_UPDATED_IDS[0] })).toBeFalsy();
-  //       expect(find(service['items']['active'], { 'id': ITEMS_BULK_UPDATED_IDS[1] })).toBeFalsy();
-  //       expect(find(service['items']['active'], { 'id': ITEMS_BULK_UPDATED_IDS[2] })).toBeFalsy();
-  //     });
-
-  //     it('should add item to pending array', () => {
-  //       expect(service['items']['pending'].length).toBe(TOTAL + 3);
-  //       expect(find(service['items']['pending'], { 'id': ITEMS_BULK_UPDATED_IDS[0] })).toBeTruthy();
-  //       expect(find(service['items']['pending'], { 'id': ITEMS_BULK_UPDATED_IDS[1] })).toBeTruthy();
-  //       expect(find(service['items']['pending'], { 'id': ITEMS_BULK_UPDATED_IDS[2] })).toBeTruthy();
-  //     });
-
-  //     it('should call deselectItems', () => {
-  //       expect(service.deselectItems).toHaveBeenCalled();
-  //     });
-
-  //     it('should emit event', () => {
-  //       expect(eventEmitted).toBeTruthy();
-  //     });
-  //   });
-  // });
+    it('should emit event', () => {
+      expect(eventEmitted).toBe(true);
+    });
+  });
 
   describe('getItemAndSetPurchaseInfo', () => {
     it('should return item by id', () => {
@@ -1258,30 +1257,40 @@ fdescribe('Service: Item', () => {
   });
 
   describe('activate', () => {
-    it('should call endpoint', () => {
-      spyOn(http, 'put').and.returnValue(Observable.of({}));
-      spyOn(service, 'deselectItems');
-      const IDS = ['1', '2'];
-      service.selectedItems = IDS;
+    it('should mark the item as active', () => {
+      const selectedItemIds = ['1', '2', '3'];
+      const expectedUrl = `${environment.baseUrl}api/v3/items/activate`;
+      const expectedBody = {
+        ids: selectedItemIds
+      };
 
+      service.selectedItems = selectedItemIds;
       service.activate().subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
 
-      expect(http.put).toHaveBeenCalledWith('api/v3/items/activate', { ids: IDS });
-      expect(service.deselectItems).toHaveBeenCalled();
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.body).toEqual(expectedBody);
+      expect(req.request.method).toBe('PUT');
     });
   });
 
   describe('deactivate', () => {
-    it('should call endpoint', () => {
-      spyOn(http, 'put').and.returnValue(Observable.of({}));
-      spyOn(service, 'deselectItems');
-      const IDS = ['1', '2'];
-      service.selectedItems = IDS;
+    it('should mark the item as inactive', () => {
+      const selectedItemIds = ['1', '2', '3'];
+      const expectedUrl = `${environment.baseUrl}api/v3/items/inactivate`;
+      const expectedBody = {
+        ids: selectedItemIds
+      };
 
+      service.selectedItems = selectedItemIds;
       service.deactivate().subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
 
-      expect(http.put).toHaveBeenCalledWith('api/v3/items/inactivate', { ids: IDS });
-      expect(service.deselectItems).toHaveBeenCalled();
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.body).toEqual(expectedBody);
+      expect(req.request.method).toBe('PUT');
     });
   });
 
