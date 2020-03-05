@@ -269,16 +269,17 @@ describe('RealTimeService', () => {
 
     it('should call track with the conversationCreateNew event when the MESSAGE_SENT event is triggered', () => {
       spyOn(trackingService, 'track');
-      const newConversation = MOCK_CONVERSATION('newId');
-      newConversation.messages.push(MOCK_MESSAGE);
+      const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
+      const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT) ;
+      newConversation.messages.push(inboxMessage);
 
       eventService.emit(EventService.MESSAGE_SENT, newConversation, inboxMessage.id);
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW, {
-        thread_id: newConversation.id,
-        message_id: MOCK_MESSAGE.id,
-        item_id: newConversation.item.id
-      });
+          thread_id: newConversation.id,
+          message_id: inboxMessage.id,
+          item_id: newConversation.item.id
+        });
     });
 
     it('should call track with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
@@ -320,7 +321,7 @@ describe('RealTimeService', () => {
 
     it('should add MessageSent event in the pendingTrackingEvents queue when the MESSAGE_SENT event is triggered', () => {
       spyOn(trackingService, 'track');
-      const conv = MOCK_CONVERSATION('newId');
+      const conv = CREATE_MOCK_INBOX_CONVERSATION('newId');
 
       eventService.emit(EventService.MESSAGE_SENT, conv, MOCK_MESSAGE.id);
 

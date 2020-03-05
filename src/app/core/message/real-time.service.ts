@@ -134,7 +134,7 @@ export class RealTimeService {
     this.trackingService.track(TrackingService.MESSAGE_SENT, { thread_id, message_id });
   }
 
-  private trackConversationCreated(conversation: Conversation, messageId: string) {
+  private trackConversationCreated(conversation: InboxConversation, messageId: string) {
     this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
       item_id: conversation.item.id,
       thread_id: conversation.id,
