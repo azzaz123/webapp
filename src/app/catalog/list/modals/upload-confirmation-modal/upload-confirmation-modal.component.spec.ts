@@ -130,6 +130,25 @@ describe('UploadConfirmationModalComponent', () => {
 
       expect(window['fbq']).toHaveBeenCalledWith('track', 'AddToCart', event);
     });
+
+    it('should send pinterest addtocart tracking', () => {
+      spyOn(window, 'pintrk');
+      component.item = MOCK_ITEM;
+      const event = {
+        value: component.item.salePrice,
+        currency: component.item.currencyCode,
+        line_items: [
+          {
+            product_category: component.item.categoryId,
+            product_id: component.item.id,
+          }
+        ]
+      };
+
+      component.trackUploaded();
+
+      expect(window['pintrk']).toHaveBeenCalledWith('track', 'addtocart', event);
+    });
   });
 
 });
