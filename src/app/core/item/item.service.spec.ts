@@ -52,7 +52,7 @@ import {
 import { Realestate } from './realestate';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
-fdescribe('Service: Item', () => {
+describe('Service: Item', () => {
   const FAKE_ITEM_TITLE = 'No disponible';
   let service: ItemService;
   let eventService: EventService;

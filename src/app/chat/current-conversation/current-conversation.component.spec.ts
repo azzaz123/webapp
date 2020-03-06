@@ -314,8 +314,7 @@ describe('CurrentConversationComponent', () => {
 
         expect(itemService.reportListing).toHaveBeenCalledWith(ITEM_ID,
           'Report Listing Reason',
-          1,
-          component.currentConversation.id);
+          1);
         expect(toastr.success).toHaveBeenCalledWith('The listing has been reported correctly');
       }));
 
