@@ -15,6 +15,7 @@ import { CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
 import { PerksModel } from './payment.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { map, catchError, flatMap } from 'rxjs/operators';
 
 export enum PAYMENT_METHOD {
   STRIPE = 'STRIPE'
@@ -66,23 +67,23 @@ export class PaymentService {
       };
     }
     return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/packs`, { params })
-      .flatMap((packs: PackResponse[]) => {
+      .pipe(flatMap((packs: PackResponse[]) => {
         const sortedPacks = this.sortPacksByQuantity(packs);
         return this.preparePacks(sortedPacks, product);
-      });
+      }));
   }
 
   public getCreditInfo(cache: boolean = true): Observable<CreditInfo> {
     return this.getPerks(cache)
-      .map((perks: PerksModel) => {
+      .pipe(map((perks: PerksModel) => {
         const currencyName: string = 'wallacredits';
         const factor: number = CREDITS_FACTOR;
         return {
           currencyName,
           credit: perks[currencyName].quantity,
-          factor: factor
+          factor
         }
-      });
+      }));
   }
 
   public getCreditsPacks(): Observable<Pack[]> {
@@ -93,17 +94,17 @@ export class PaymentService {
       }
     };
     return this.getPacks(product)
-      .map((packs: Packs) => {
+      .pipe(map((packs: Packs) => {
         return packs.wallacredits;
-      });
+      }));
   }
 
   public getSubscriptionPacks(): Observable<Packs> {
     return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/subscription/packs`)
-      .flatMap((packs: PackResponse[]) => {
+      .pipe(flatMap((packs: PackResponse[]) => {
         const sortedPacks = this.sortPacksByQuantity(packs);
         return this.preparePacks(sortedPacks);
-      });
+      }));
   }
 
   public orderExtrasProPack(order: OrderProExtras): Observable<any> {
@@ -117,9 +118,9 @@ export class PaymentService {
     const response = new PerksModel();
 
     return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/perks/me`)
-      .flatMap((perks: PerkResponse[]) => {
+      .pipe(flatMap((perks: PerkResponse[]) => {
         return this.getProducts()
-          .map((products: Products) => {
+          .pipe(map((products: Products) => {
             perks.forEach((perk: PerkResponse) => {
               if (products[perk.product_id] != null) {
                 const name: string = products[perk.product_id].name;
@@ -148,9 +149,9 @@ export class PaymentService {
             });
             this.perksModel = response;
             return response;
-          });
-      })
-      .catch(() => Observable.of(response));
+          }),
+            catchError(() => Observable.of(response)));
+      }));
   }
 
   public getStatus(): Observable<ScheduledStatus> {
@@ -174,7 +175,7 @@ export class PaymentService {
       wallacredits: []
     };
     return (product ? Observable.of(product) : this.getProducts())
-      .map((products: Products) => {
+      .pipe(map((products: Products) => {
         const valuesVar = groupBy(sortedPacks, (pack) => {
           return Object.keys(pack.benefits)[0];
         });
@@ -215,7 +216,7 @@ export class PaymentService {
           }
         });
         return packsResponse;
-      });
+      }));
   }
 
   private sortPacksByQuantity(packs: PackResponse[]): PackResponse[] {
@@ -232,10 +233,10 @@ export class PaymentService {
       return Observable.of(this.products);
     }
     return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/products`)
-      .map((products: ProductResponse[]) => {
+      .pipe(map((products: ProductResponse[]) => {
         this.products = keyBy(products, 'id');
         return this.products;
-      });
+      }));
   }
 }
 

@@ -1,4 +1,3 @@
-import { WALLACREDITS_PACKS_RESPONSE } from './../../../tests/payments.fixtures.spec';
 import { TestBed } from '@angular/core/testing';
 import { PaymentService, PAYMENTS_API_URL, PROTOOL_API_URL } from './payment.service';
 import { Observable } from 'rxjs';
@@ -12,7 +11,8 @@ import {
   PACK_RESPONSE,
   PERK_RESPONSE,
   PRODUCTS_RESPONSE_PACKS,
-  ORDER_CART_EXTRAS_PRO
+  ORDER_CART_EXTRAS_PRO,
+  WALLACREDITS_PACKS_RESPONSE
 } from '../../../tests/payments.fixtures.spec';
 import { PerksModel } from './payment.model';
 import { PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
