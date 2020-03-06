@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Headers, RequestOptions, Response } from '@angular/http';
 import {
   BillingInfoResponse, CreditInfo,
-  FinancialCard,
   OrderProExtras,
   PackResponse,
   Packs,
@@ -12,12 +10,12 @@ import {
   Products,
   ScheduledStatus, PaymentIntents
 } from './payment.interface';
-import { HttpService } from '../http/http.service';
-import { reduce, mapValues, values, keyBy, groupBy, min } from 'lodash-es';
-import { COINS_FACTOR, COINS_PACK_ID, CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
+import { mapValues, values, keyBy, groupBy, min } from 'lodash-es';
+import { CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
 import { PerksModel } from './payment.model';
-import { UserService } from '../user/user.service';
-import { PERMISSIONS } from '../user/user';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { map, catchError, flatMap } from 'rxjs/operators';
 
 export enum PAYMENT_METHOD {
   STRIPE = 'STRIPE'
@@ -28,40 +26,37 @@ export enum PAYMENT_RESPONSE_STATUS {
   REQUIRES_ACTION = 'REQUIRES_ACTION'
 }
 
+export const PAYMENTS_API_URL = 'api/v3/payments';
+export const PROTOOL_API_URL = 'api/v3/protool';
+
 @Injectable()
 export class PaymentService {
 
-  private API_URL = 'api/v3/payments';
-  private API_URL_PROTOOL = 'api/v3/protool';
   private products: Products;
   private perksModel: PerksModel;
 
-  constructor(private http: HttpService,
-              private userService: UserService) {
+  constructor(private http: HttpClient) {
   }
 
   public getBillingInfo(): Observable<BillingInfoResponse> {
-    return this.http.get(this.API_URL + '/billing-info/me')
-      .map((r: Response) => r.json());
+    return this.http.get<BillingInfoResponse>(`${environment.baseUrl}${PAYMENTS_API_URL}/billing-info/me`);
   }
 
   public updateBillingInfo(data: any): Observable<any> {
-    return this.http.put(this.API_URL + '/billing-info', data);
+    return this.http.put(`${environment.baseUrl}${PAYMENTS_API_URL}/billing-info`, data);
   }
 
   public paymentIntents(orderId: string, paymentId: string): Observable<PaymentIntents> {
-    return this.http.post(`${this.API_URL}/c2b/stripe/payment_intents/${paymentId}`, {
+    return this.http.post<PaymentIntents>(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_intents/${paymentId}`, {
       order_id: orderId
-    })
-      .map((r: Response) => r.json());
+    });
   }
 
   public paymentIntentsConfirm(orderId: string, paymentId: string, paymentMethodId: string): Observable<PaymentIntents> {
-    return this.http.post(`${this.API_URL}/c2b/stripe/payment_intents/${paymentId}/confirm`, {
+    return this.http.post<PaymentIntents>(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_intents/${paymentId}/confirm`, {
       order_id: orderId,
       payment_method_id: paymentMethodId
-    })
-      .map((r: Response) => r.json());
+    });
   }
 
   public getPacks(product?: Products): Observable<Packs> {
@@ -71,49 +66,24 @@ export class PaymentService {
         products: Object.keys(product)[0]
       };
     }
-    return this.http.get(this.API_URL + '/packs', params)
-      .map((r: Response) => r.json())
-      .flatMap((packs: PackResponse[]) => {
-          const sortedPacks = this.sortPacksByQuantity(packs);
-          return this.preparePacks(sortedPacks, product);
-        }
-      );
+    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/packs`, { params })
+      .pipe(flatMap((packs: PackResponse[]) => {
+        const sortedPacks = this.sortPacksByQuantity(packs);
+        return this.preparePacks(sortedPacks, product);
+      }));
   }
 
   public getCreditInfo(cache: boolean = true): Observable<CreditInfo> {
-    return this.userService.hasPerm(PERMISSIONS.coins)
-      .flatMap((hasPerm: boolean) => {
-        return this.getPerks(cache)
-          .map((perks: PerksModel) => {
-            const currencyName: string = hasPerm ? 'wallacoins' : 'wallacredits';
-            const factor: number = hasPerm ? COINS_FACTOR : CREDITS_FACTOR;
-            return {
-              currencyName: currencyName,
-              credit: perks[currencyName].quantity,
-              factor: factor
-            }
-          });
-      });
-  }
-
-  public getCoinsCreditsPacks(): Observable<Pack[]> {
-    return this.userService.hasPerm('coins')
-      .flatMap((isActive: boolean) => {
-        return isActive ? this.getCoinsPacks() : this.getCreditsPacks();
-      });
-  }
-
-  public getCoinsPacks(): Observable<Pack[]> {
-    const product: Products = {
-      [COINS_PACK_ID]: {
-        id: COINS_PACK_ID,
-        name: 'WALLACOINS'
-      }
-    };
-    return this.getPacks(product)
-      .map((packs: Packs) => {
-        return packs.wallacoins;
-      });
+    return this.getPerks(cache)
+      .pipe(map((perks: PerksModel) => {
+        const currencyName: string = 'wallacredits';
+        const factor: number = CREDITS_FACTOR;
+        return {
+          currencyName,
+          credit: perks[currencyName].quantity,
+          factor
+        }
+      }));
   }
 
   public getCreditsPacks(): Observable<Pack[]> {
@@ -124,31 +94,21 @@ export class PaymentService {
       }
     };
     return this.getPacks(product)
-      .map((packs: Packs) => {
+      .pipe(map((packs: Packs) => {
         return packs.wallacredits;
-      });
-  }
-
-  private chunkArray(array, chunkSize): Pack[][] {
-    return reduce(array, function (result, val) {
-      const lastChunk = result[result.length - 1];
-      if (lastChunk.length < chunkSize) lastChunk.push(val);
-      else result.push([val]);
-      return result;
-    }, [[]]);
+      }));
   }
 
   public getSubscriptionPacks(): Observable<Packs> {
-    return this.http.get(this.API_URL + '/subscription/packs')
-      .map((r: Response) => r.json())
-      .flatMap((packs: PackResponse[]) => {
+    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/subscription/packs`)
+      .pipe(flatMap((packs: PackResponse[]) => {
         const sortedPacks = this.sortPacksByQuantity(packs);
         return this.preparePacks(sortedPacks);
-      });
+      }));
   }
 
   public orderExtrasProPack(order: OrderProExtras): Observable<any> {
-    return this.http.post(this.API_URL + '/c2b/pack-order/create', order);
+    return this.http.post(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/pack-order/create`, order);
   }
 
   public getPerks(cache: boolean = true): Observable<PerksModel> {
@@ -157,11 +117,10 @@ export class PaymentService {
     }
     const response = new PerksModel();
 
-    return this.http.get(this.API_URL + '/perks/me')
-      .map((r: Response) => r.json())
-      .flatMap((perks: PerkResponse[]) => {
+    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/perks/me`)
+      .pipe(flatMap((perks: PerkResponse[]) => {
         return this.getProducts()
-          .map((products: Products) => {
+          .pipe(map((products: Products) => {
             perks.forEach((perk: PerkResponse) => {
               if (products[perk.product_id] != null) {
                 const name: string = products[perk.product_id].name;
@@ -184,25 +143,23 @@ export class PaymentService {
                 } else if (name === 'WALLACOINS') {
                   response.setWallacoins(perk);
                 } else if (name === 'WALLACREDITS') {
-                response.setWallacredits(perk);
-              }
+                  response.setWallacredits(perk);
+                }
               }
             });
             this.perksModel = response;
             return response;
-          });
-      })
-      .catch(() => Observable.of(response));
+          }),
+            catchError(() => Observable.of(response)));
+      }));
   }
 
   public getStatus(): Observable<ScheduledStatus> {
-    return this.http.get(this.API_URL_PROTOOL + '/status')
-      .map((r: Response) => r.json());
+    return this.http.get<ScheduledStatus>(`${environment.baseUrl}${PROTOOL_API_URL}/status`);
   }
 
   public deleteBillingInfo(billingInfoId: string): Observable<any> {
-    return this.http.delete(this.API_URL + '/billing-info/' + billingInfoId)
-      .map((r: Response) => r.json());
+    return this.http.delete(`${environment.baseUrl}${PAYMENTS_API_URL}/billing-info/${billingInfoId}`);
   }
 
   public deleteCache() {
@@ -218,7 +175,7 @@ export class PaymentService {
       wallacredits: []
     };
     return (product ? Observable.of(product) : this.getProducts())
-      .map((products: Products) => {
+      .pipe(map((products: Products) => {
         const valuesVar = groupBy(sortedPacks, (pack) => {
           return Object.keys(pack.benefits)[0];
         });
@@ -259,7 +216,7 @@ export class PaymentService {
           }
         });
         return packsResponse;
-      });
+      }));
   }
 
   private sortPacksByQuantity(packs: PackResponse[]): PackResponse[] {
@@ -275,12 +232,11 @@ export class PaymentService {
     if (this.products) {
       return Observable.of(this.products);
     }
-    return this.http.get(this.API_URL + '/products')
-      .map((r: Response) => r.json())
-      .map((products: ProductResponse[]) => {
+    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/products`)
+      .pipe(map((products: ProductResponse[]) => {
         this.products = keyBy(products, 'id');
         return this.products;
-      });
+      }));
   }
 }
 
