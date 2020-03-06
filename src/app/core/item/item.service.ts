@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '../http/http.service';
 import { FAKE_ITEM_IMAGE_BASE_PATH, Item, ITEM_TYPES } from './item';
-import { ResourceService } from '../resource/resource.service';
 import {
   AllowedActionResponse,
   AvailableProductsResponse,
@@ -30,7 +28,6 @@ import {
   ListingFeeProductInfo,
   ItemByCategoryResponse
 } from './item-response.interface';
-import { Response } from '@angular/http';
 import { find, findIndex, reverse, without, map, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
@@ -73,7 +70,7 @@ export enum ITEM_STATUS {
 }
 
 @Injectable()
-export class ItemService extends ResourceService {
+export class ItemService {
 
   protected API_URL = 'api/v3/items';
   private API_URL_WEB = 'api/v3/web/items';
@@ -94,12 +91,10 @@ export class ItemService extends ResourceService {
   private lastCategoryIdSearched: number;
 
   constructor(
-    http: HttpService,
-    private httpNew: HttpClient,
+    private http: HttpClient,
     private i18n: I18nService,
     private trackingService: TrackingService,
     private eventService: EventService) {
-    super(http);
   }
 
   public getFakeItem(id: string): Item {
@@ -109,12 +104,12 @@ export class ItemService extends ResourceService {
   }
 
   public getCounters(id: string): Observable<ItemCounters> {
-    return this.httpNew.get<ItemCounters>(`${environment.baseUrl}${this.API_URL}/${id}/counters`)
+    return this.http.get<ItemCounters>(`${environment.baseUrl}${this.API_URL}/${id}/counters`)
       .pipe(catchError(() => Observable.of({ views: 0, favorites: 0 })));
   }
 
   public bulkDelete(type: string): Observable<ItemBulkResponse> {
-    return this.httpNew.put<ItemBulkResponse>(`${environment.baseUrl}${this.API_URL}/delete`, {
+    return this.http.put<ItemBulkResponse>(`${environment.baseUrl}${this.API_URL}/delete`, {
       ids: this.selectedItems
     })
       .pipe(tap(
@@ -372,14 +367,14 @@ export class ItemService extends ResourceService {
   }
 
   public reportListing(itemId: number | string, comments: string, reason: number): Observable<any> {
-    return this.httpNew.post(`${environment.baseUrl}${this.API_URL}/${itemId}/report`, {
+    return this.http.post(`${environment.baseUrl}${this.API_URL}/${itemId}/report`, {
       comments: comments,
       reason: ITEM_BAN_REASONS[reason]
     });
   }
 
   public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
-    return this.httpNew.get<HttpResponse<ItemResponse[]>>(`${environment.baseUrl}${url}`, {
+    return this.http.get<HttpResponse<ItemResponse[]>>(`${environment.baseUrl}${url}`, {
       params: {
         init: init,
         expired: status
@@ -464,54 +459,54 @@ export class ItemService extends ResourceService {
   }
 
   public deleteItem(id: string): Observable<any> {
-    return this.httpNew.delete(`${environment.baseUrl}${this.API_URL}/${id}`);
+    return this.http.delete(`${environment.baseUrl}${this.API_URL}/${id}`);
   }
 
   public reserveItem(id: string, reserved: boolean): Observable<any> {
-    return this.httpNew.put(`${environment.baseUrl}${this.API_URL}/${id}/reserve`, {
+    return this.http.put(`${environment.baseUrl}${this.API_URL}/${id}/reserve`, {
       reserved
     });
   }
 
   public reactivateItem(id: string): Observable<any> {
-    return this.httpNew.put(`${environment.baseUrl}${this.API_URL}/${id}/reactivate`, {});
+    return this.http.put(`${environment.baseUrl}${this.API_URL}/${id}/reactivate`, {});
   }
 
   public favoriteItem(id: string, favorited: boolean): Observable<any> {
-    return this.httpNew.put(`${environment.baseUrl}${this.API_URL}/${id}/favorite`, {
+    return this.http.put(`${environment.baseUrl}${this.API_URL}/${id}/favorite`, {
       favorited
     });
   }
 
   public bulkReserve(): Observable<ItemBulkResponse> {
-    return this.httpNew.put<ItemBulkResponse>(`${environment.baseUrl}${this.API_URL}/reserve`, {
+    return this.http.put<ItemBulkResponse>(`${environment.baseUrl}${this.API_URL}/reserve`, {
       ids: this.selectedItems
     });
   }
 
   public soldOutside(id: string): Observable<any> {
-    return this.httpNew.put(`${environment.baseUrl}${this.API_URL}/${id}/sold`, {});
+    return this.http.put(`${environment.baseUrl}${this.API_URL}/${id}/sold`, {});
   }
 
   public getConversationUsers(id: string): Observable<ConversationUser[]> {
-    return this.httpNew.get<ConversationUser[]>(`${environment.baseUrl}${this.API_URL}/${id}/conversation-users`);
+    return this.http.get<ConversationUser[]>(`${environment.baseUrl}${this.API_URL}/${id}/conversation-users`);
   }
 
   public getAvailableReactivationProducts(id: string): Observable<Product> {
-    return this.httpNew.get(`${environment.baseUrl}${this.API_URL_WEB}/${id}/available-reactivation-products`)
+    return this.http.get(`${environment.baseUrl}${this.API_URL_WEB}/${id}/available-reactivation-products`)
       .pipe(
         mapRx.map((response: AvailableProductsResponse) => response.products[0])
       );
   }
 
   private getPurchases(): Observable<Purchase[]> {
-    return this.httpNew.get<Purchase[]>(`${environment.baseUrl}${this.API_URL_WEB}/mine/purchases`);
+    return this.http.get<Purchase[]>(`${environment.baseUrl}${this.API_URL_WEB}/mine/purchases`);
   }
 
   public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
     const headers: HttpHeaders = new HttpHeaders({ 'X-PaymentProvider': PAYMENT_PROVIDER });
 
-    return this.httpNew.post<string[]>(`${environment.baseUrl}${this.API_URL_WEB}/purchase/products/${orderId}`, orderParams, {
+    return this.http.post<string[]>(`${environment.baseUrl}${this.API_URL_WEB}/purchase/products/${orderId}`, orderParams, {
       headers
     });
   }
@@ -519,7 +514,7 @@ export class ItemService extends ResourceService {
   public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
     const headers = new HttpHeaders({ 'X-PaymentProvider': PAYMENT_PROVIDER });
 
-    return this.httpNew.post<PurchaseProductsWithCreditsResponse>(`${environment.baseUrl}${this.API_URL_WEB}/purchase/products/credit/${orderId}`, orderParams, { headers });
+    return this.http.post<PurchaseProductsWithCreditsResponse>(`${environment.baseUrl}${this.API_URL_WEB}/purchase/products/credit/${orderId}`, orderParams, { headers });
   }
 
   public update(item: any, itemType: string): Observable<any> {
@@ -535,34 +530,34 @@ export class ItemService extends ResourceService {
       url += 'real_estate/';
     }
 
-    return this.httpNew.put(`${environment.baseUrl}${url}${item.id}`, item, { headers }).pipe(
+    return this.http.put(`${environment.baseUrl}${url}${item.id}`, item, { headers }).pipe(
       tap(() => this.eventService.emit(EventService.ITEM_UPDATED, item))
     );
   }
 
   public updateRealEstateLocation(itemId: string, location: ItemLocation): Observable<any> {
-    return this.httpNew.put(`${environment.baseUrl}${this.API_URL}/real_estate/${itemId}/location`, location);
+    return this.http.put(`${environment.baseUrl}${this.API_URL}/real_estate/${itemId}/location`, location);
   }
 
   public deletePicture(itemId: string, pictureId: string): Observable<any> {
-    return this.httpNew.delete(`${environment.baseUrl}${this.API_URL}/${itemId}/picture/${pictureId}`);
+    return this.http.delete(`${environment.baseUrl}${this.API_URL}/${itemId}/picture/${pictureId}`);
   }
 
   public get(id: string): Observable<Item> {
-    return this.httpNew.get<Item>(`${environment.baseUrl}${this.API_URL}/${id}`).pipe(
+    return this.http.get<Item>(`${environment.baseUrl}${this.API_URL}/${id}`).pipe(
       mapRx.map((r) => this.mapRecordData(r)),
       catchError(() => Observable.of(this.getFakeItem(id))
       ));
   }
 
   public updatePicturesOrder(itemId: string, pictures_order: { [fileId: string]: number }): Observable<any> {
-    return this.httpNew.put(`${environment.baseUrl}${this.API_URL}/${itemId}/change-picture-order`, {
+    return this.http.put(`${environment.baseUrl}${this.API_URL}/${itemId}/change-picture-order`, {
       pictures_order
     });
   }
 
   public getItemsWithAvailableProducts(ids: string[]): Observable<ItemWithProducts[]> {
-    return this.httpNew.get(`${environment.baseUrl}${this.API_URL_WEB}/available-visibility-products`, {
+    return this.http.get(`${environment.baseUrl}${this.API_URL_WEB}/available-visibility-products`, {
       params: {
         itemsIds: ids.join(',')
       }
@@ -578,7 +573,7 @@ export class ItemService extends ResourceService {
   }
 
   public getCheapestProductPrice(ids: string[]): Observable<CheapestProducts> {
-    return this.httpNew.get(`${environment.baseUrl}${this.API_URL_WEB}/available-visibility-products`, {
+    return this.http.get(`${environment.baseUrl}${this.API_URL_WEB}/available-visibility-products`, {
       params: {
         itemsIds: ids.join(',')
       }
@@ -594,7 +589,7 @@ export class ItemService extends ResourceService {
   }
 
   private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {
-    return this.httpNew.get<AllowedActionResponse[]>(`${environment.baseUrl}${this.API_URL}/${id}/actions-allowed`);
+    return this.http.get<AllowedActionResponse[]>(`${environment.baseUrl}${this.API_URL}/${id}/actions-allowed`);
   }
 
   public canDoAction(action: string, id: string): Observable<boolean> {
@@ -626,12 +621,12 @@ export class ItemService extends ResourceService {
   }
 
   public getUrgentProducts(itemId: string): Observable<Product> {
-    return this.httpNew.get(`${environment.baseUrl}${this.API_URL_WEB}/${itemId}/available-urgent-products`)
+    return this.http.get(`${environment.baseUrl}${this.API_URL_WEB}/${itemId}/available-urgent-products`)
       .pipe((mapRx.map((response: AvailableProductsResponse) => response.products[0])));
   }
 
   public getUrgentProductByCategoryId(categoryId: string): Observable<Product> {
-    return this.httpNew.get(`${environment.baseUrl}${this.API_URL_WEB}/available-urgent-products`, {
+    return this.http.get(`${environment.baseUrl}${this.API_URL_WEB}/available-urgent-products`, {
       params: {
         categoryId
       }
@@ -692,7 +687,7 @@ export class ItemService extends ResourceService {
   }
 
   private recursiveMines(init: number, offset: number, status?: string): Observable<ItemProResponse[]> {
-    return this.httpNew.get<any>(`${environment.baseUrl}${this.API_URL_PROTOOL}/mines`, {
+    return this.http.get<any>(`${environment.baseUrl}${this.API_URL_PROTOOL}/mines`, {
       params: {
         status: ITEM_STATUSES[status],
         init,
@@ -762,7 +757,7 @@ export class ItemService extends ResourceService {
   }
 
   public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemByCategoryResponse[]> {
-    return this.httpNew.get<any>(`${environment.baseUrl}${MINES_BY_CATEGORY_ENDPOINT}`, {
+    return this.http.get<any>(`${environment.baseUrl}${MINES_BY_CATEGORY_ENDPOINT}`, {
       params: {
         status,
         init: init.toString(),
@@ -798,7 +793,7 @@ export class ItemService extends ResourceService {
   }
 
   public bulkSetActivate(): Observable<any> {
-    return this.httpNew.post(`${environment.baseUrl}${this.API_URL_PROTOOL}/changeItemStatus`, {
+    return this.http.post(`${environment.baseUrl}${this.API_URL_PROTOOL}/changeItemStatus`, {
       itemIds: this.selectedItems,
       publishStatus: PUBLISHED_ID
     }).pipe(
@@ -822,19 +817,19 @@ export class ItemService extends ResourceService {
   }
 
   public activate(): Observable<any> {
-    return this.httpNew.put(`${environment.baseUrl}${this.API_URL}/activate`, {
+    return this.http.put(`${environment.baseUrl}${this.API_URL}/activate`, {
       ids: this.selectedItems
     }).pipe(tap(() => this.deselectItems()))
   }
 
   public deactivate(): Observable<any> {
-    return this.httpNew.put(`${environment.baseUrl}${this.API_URL}/inactivate`, {
+    return this.http.put(`${environment.baseUrl}${this.API_URL}/inactivate`, {
       ids: this.selectedItems
     }).pipe(tap(() => this.deselectItems()))
   }
 
   public bulkSetDeactivate(): Observable<any> {
-    return this.httpNew.post(`${environment.baseUrl}${this.API_URL_PROTOOL}/changeItemStatus`, {
+    return this.http.post(`${environment.baseUrl}${this.API_URL_PROTOOL}/changeItemStatus`, {
       itemIds: this.selectedItems,
       publishStatus: ONHOLD_ID
     }).pipe(tap(() => {
@@ -853,7 +848,7 @@ export class ItemService extends ResourceService {
   }
 
   public setSold(id: number): Observable<any> {
-    return this.httpNew.post(`${environment.baseUrl}${this.API_URL_V1}/item.json/${id}/sold`, {})
+    return this.http.post(`${environment.baseUrl}${this.API_URL_V1}/item.json/${id}/sold`, {})
       .pipe(tap(() => {
         let index: number = findIndex(this.items.active, { 'legacyId': id });
         let deletedItem: Item = this.items.active.splice(index, 1)[0];
@@ -865,14 +860,14 @@ export class ItemService extends ResourceService {
   }
 
   public cancelAutorenew(itemId: string): Observable<any> {
-    return this.httpNew.put(`${environment.baseUrl}${this.API_URL_PROTOOL}/autorenew/update`, {
+    return this.http.put(`${environment.baseUrl}${this.API_URL_PROTOOL}/autorenew/update`, {
       item_id: itemId,
       autorenew: false
     });
   }
 
   public getLatest(userId: string): Observable<ItemDataResponse> {
-    return this.httpNew.get(`${environment.baseUrl}${this.API_URL}/latest-cars`, {
+    return this.http.get(`${environment.baseUrl}${this.API_URL}/latest-cars`, {
       params: { userId }
     })
       .pipe(mapRx.map((resp: LatestItemResponse) => {
@@ -884,11 +879,11 @@ export class ItemService extends ResourceService {
   }
 
   public bumpProItems(orderParams: OrderPro[]): Observable<string[]> {
-    return this.httpNew.post<string[]>(`${environment.baseUrl}${this.API_URL_PROTOOL}/purchaseItems`, orderParams);
+    return this.http.post<string[]>(`${environment.baseUrl}${this.API_URL_PROTOOL}/purchaseItems`, orderParams);
   }
 
   public getCarInfo(brand: string, model: string, version: string): Observable<CarInfo> {
-    return this.httpNew.get<CarInfo>(`${environment.baseUrl}${this.API_URL}/cars/info`, {
+    return this.http.get<CarInfo>(`${environment.baseUrl}${this.API_URL}/cars/info`, {
       params: {
         brand,
         model,
@@ -898,7 +893,7 @@ export class ItemService extends ResourceService {
   }
 
   public getListingFeeInfo(itemId: string): Observable<Product> {
-    return this.httpNew.get(`${environment.baseUrl}${this.API_URL_WEB}/${itemId}/listing-fee-info`)
+    return this.http.get(`${environment.baseUrl}${this.API_URL_WEB}/${itemId}/listing-fee-info`)
       .pipe(mapRx.map((response: ListingFeeProductInfo) => response.product_group.products[0]));
   }
 
