@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from '../../../core/message/message.service';
 import { Conversation } from '../../../core/conversation/conversation';
@@ -7,9 +7,11 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { environment } from '../../../../environments/environment';
 import { WindowRef } from '../../../core/window/window.service';
-import { HttpService } from '../../../core/http/http.service';
 import { AsYouType, format, getCountryCallingCode, isValidNumber } from 'libphonenumber-js';
 import { InboxConversation } from '../../model';
+import { HttpClient } from '@angular/common/http';
+
+export const SEND_PHONE_ENDPOINT = 'api/v3/conversations';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -23,12 +25,11 @@ export class SendPhoneComponent implements OnInit {
   @Input() phone: string;
   @ViewChild('phoneInput') phoneField: ElementRef;
   public sendPhoneForm: FormGroup;
-  protected API_URL = 'api/v3/conversations';
 
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
-    private http: HttpService,
+    private http: HttpClient,
     private errorsService: ErrorsService,
     private trackingService: TrackingService,
     private windowRef: WindowRef,
@@ -60,7 +61,7 @@ export class SendPhoneComponent implements OnInit {
       } else {
         this.trackingService.track(TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING);
       }
-      this.http.put(`${this.API_URL}/${this.conversation.id}/buyer-phone-number`, {
+      this.http.put(`${environment.baseUrl}${SEND_PHONE_ENDPOINT}/${this.conversation.id}/buyer-phone-number`, {
         phone_number: phoneNumber
       }).subscribe();
       this.messageService.createPhoneNumberMessage(this.conversation, phoneNumber);

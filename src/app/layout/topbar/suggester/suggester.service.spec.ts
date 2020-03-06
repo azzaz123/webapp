@@ -1,34 +1,44 @@
-import { Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
-import { SuggesterService } from './suggester.service';
+import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
+import { Observable } from 'rxjs';
+
+import { environment } from '../../../../environments/environment';
+
+import { SuggesterService, SUGGESTER_ENDPOINT } from './suggester.service';
 import { SuggesterResponse } from './suggester-response.interface';
 import { SUGGESTER_DATA_WEB } from '../../../../tests/suggester.fixtures.spec';
-import { HttpModuleNew } from '../../../core/http/http.module.new';
-import { HttpClient } from '@angular/common/http';
-
-let service: SuggesterService;
-let http: HttpClient;
 
 describe('SuggesterService', () => {
+  let service: SuggesterService;
+  let httpMock: HttpTestingController;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpModuleNew],
+      imports: [HttpClientTestingModule],
       providers: [SuggesterService]
     });
     service = TestBed.get(SuggesterService);
-    http = TestBed.get(HttpClient);
+    httpMock = TestBed.get(HttpTestingController);
   });
 
-  describe('getSuggestions', () => {
-    it('should return the json from the suggester', () => {
-      let response: SuggesterResponse[];
-      spyOn(http, 'get').and.returnValue(Observable.of(SUGGESTER_DATA_WEB));
+  afterEach(() => {
+    httpMock.verify();
+  })
 
-      service.getSuggestions('Seat').subscribe((data: SuggesterResponse[]) => {
-        response = data;
-      });
+  describe('getSuggestions', () => {
+    it('should get search suggestions by keyword from the backend', () => {
+      let response: SuggesterResponse[];
+      const keyword = 'trainedhug';
+      const expectedUrlParams = `keyword=${keyword}`;
+      const expectedUrl = `${environment.baseUrl}${SUGGESTER_ENDPOINT}?${expectedUrlParams}`;
+
+      service.getSuggestions(keyword).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(SUGGESTER_DATA_WEB);
 
       expect(response).toEqual(SUGGESTER_DATA_WEB);
+      expect(req.request.urlWithParams).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
   });
 });
