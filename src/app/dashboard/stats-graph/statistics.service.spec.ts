@@ -31,7 +31,7 @@ describe('StatisticsService', () => {
       const expectedUrl = `${environment.baseUrl}${STATISTICS_ENDPOINT}?${expectedUrlParams}`;
       let response: StatisticFullResponse;
     
-      service.getStatistics('60').subscribe(r => response = r);
+      service.getStatistics(durationInDays.toString()).subscribe(r => response = r);
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush(STATISTICS_RESPONSE);
 
