@@ -1,10 +1,5 @@
-import { PICTURE_ID } from './../../../tests/item.fixtures.spec';
-/* tslint:disable:no-unused-variable */
-
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { ItemService, PUBLISHED_ID, ONHOLD_ID, PAYMENT_PROVIDER } from './item.service';
-import { MockBackend, MockConnection } from '@angular/http/testing';
-import { Headers, RequestMethod, RequestOptions, Response, ResponseOptions } from '@angular/http';
+import { ItemService, PUBLISHED_ID, ONHOLD_ID, PAYMENT_PROVIDER, ITEM_STATUSES } from './item.service';
 import {
   ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE,
   ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE,
@@ -17,9 +12,7 @@ import {
   ITEM_FAVORITES,
   ITEM_ID,
   ITEM_VIEWS,
-  ITEMS_BULK_FAILED_IDS,
   ITEMS_BULK_RESPONSE,
-  ITEMS_BULK_RESPONSE_FAILED,
   ITEMS_BULK_UPDATED_IDS,
   ITEMS_DATA_V3,
   ITEMS_DATA_v3_FAVORITES,
@@ -31,15 +24,13 @@ import {
   PURCHASES, ITEM_PUBLISHED_DATE, ITEM_SALE_PRICE, ITEM_DATA_V4, ITEM_DATA_V5, MOCK_LISTING_FEE_PRODUCT
 } from '../../../tests/item.fixtures.spec';
 import { Item, ITEM_BASE_PATH, ITEM_TYPES } from './item';
-import { Observable } from 'rxjs';
 import {
   CarInfo, CheapestProducts,
   ConversationUser,
-  ItemBulkResponse,
   ItemCounters, ItemDataResponse,
   ItemsData,
   ItemWithProducts,
-  Product, PurchaseProductsWithCreditsResponse
+  Product
 } from './item-response.interface';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { HttpService } from '../http/http.service';
@@ -62,15 +53,11 @@ import {
 } from '../../../tests/realestate.fixtures.spec';
 import { Realestate } from './realestate';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 fdescribe('Service: Item', () => {
-
   const FAKE_ITEM_TITLE = 'No disponible';
   let service: ItemService;
-  let mockBackend: MockBackend;
   let http: HttpService;
-  let trackingService: TrackingService;
   let eventService: EventService;
   let httpMock: HttpTestingController;
 
@@ -91,10 +78,8 @@ fdescribe('Service: Item', () => {
       ]
     });
     service = TestBed.get(ItemService);
-    mockBackend = TestBed.get(MockBackend);
     http = TestBed.get(HttpService);
     httpMock = TestBed.get(HttpTestingController);
-    trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
     spyOn(UUID, 'UUID').and.returnValues('1', '2');
   });
@@ -104,20 +89,18 @@ fdescribe('Service: Item', () => {
   });
 
   describe('getCounters', () => {
-    describe('with no error', () => {
-      it('should return the counters', () => {
-        const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/counters`;
-        let response: ItemCounters;
+    it('should return counters value', () => {
+      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/counters`;
+      let response: ItemCounters;
 
-        service.getCounters(ITEM_ID).subscribe(r => response = r);
-        const req: TestRequest = httpMock.expectOne(expectedUrl);
-        req.flush(ITEM_COUNTERS_DATA);
+      service.getCounters(ITEM_ID).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(ITEM_COUNTERS_DATA);
 
-        expect(req.request.url).toEqual(expectedUrl);
-        expect(response.views).toEqual(ITEM_VIEWS);
-        expect(response.favorites).toEqual(ITEM_FAVORITES);
-        expect(req.request.method).toBe('GET');
-      });
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(response.views).toEqual(ITEM_VIEWS);
+      expect(response.favorites).toEqual(ITEM_FAVORITES);
+      expect(req.request.method).toBe('GET');
     });
 
     describe('when receiving an error from the server', () => {
@@ -156,7 +139,7 @@ fdescribe('Service: Item', () => {
       service.selectedItems = selectedItemIds;
       service.bulkDelete('sold').subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush({});
+      req.flush(ITEMS_BULK_RESPONSE);
 
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.body).toEqual(expectedBody);
@@ -172,9 +155,11 @@ fdescribe('Service: Item', () => {
       });
       service.selectItem('1');
     });
+
     it('should push id into selectedItems', () => {
       expect(service.selectedItems[0]).toBe('1');
     });
+
     it('should emit event', () => {
       expect(event).toEqual({
         id: '1',
@@ -192,11 +177,13 @@ fdescribe('Service: Item', () => {
       });
       service.deselectItem('1');
     });
+
     it('should remove id from selectedItems', () => {
       expect(service.selectedItems.length).toBe(1);
       expect(service.selectedItems[0]).toBe('2');
     });
-    it('should emit event', () => {
+
+    it('should emit deselected event', () => {
       expect(event).toEqual({
         id: '1',
         action: 'deselected'
@@ -252,34 +239,24 @@ fdescribe('Service: Item', () => {
   });
 
   describe('mine', () => {
-    let resp: ItemsData;
     describe('no purchases', () => {
-      beforeEach(() => {
-        const res: ResponseOptions = new ResponseOptions({
-          body: JSON.stringify(ITEMS_DATA_V3),
-          headers: new Headers({ 'x-nextpage': 'init=20' })
-        });
-        const res2: ResponseOptions = new ResponseOptions({
-          body: JSON.stringify([])
-        });
-        spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
-      });
       it('should call endpoint', () => {
-        service.mine(10, 'published').subscribe((data: ItemsData) => {
-          resp = data;
-        });
-        expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/published', {
-          init: 10,
-          expired: true
-        });
-      });
-      it('should return an array of items and the init', () => {
-        service.mine(0, 'published').subscribe((data: ItemsData) => {
-          resp = data;
-        });
+        let response: ItemsData;
+        const INIT = 10;
+        const expectedUrlParams = `init=${INIT}&expired=true`;
+        const expectedUrl = `${environment.baseUrl}api/v3/web/items/mine/published?${expectedUrlParams}`;
+        const expectedUrl2 = `${environment.baseUrl}api/v3/web/items/mine/purchases`;
 
-        expect(resp.data.length).toBe(4);
-        const item = resp.data[0];
+        service.mine(10, 'published').subscribe(r => response = r);
+        const req: TestRequest = httpMock.expectOne(expectedUrl);
+        req.flush(ITEMS_DATA_V3, { headers: { 'x-nextpage': `init=${INIT + 10}` } });
+        const req2: TestRequest = httpMock.expectOne(expectedUrl2);
+        req2.flush([]);
+
+        expect(req.request.urlWithParams).toEqual(expectedUrl);
+        expect(req.request.method).toBe('GET');
+        expect(response.data.length).toBe(4);
+        const item = response.data[0];
         expect(item.id).toBe(ITEMS_DATA_V3[0].id);
         expect(item.title).toBe(ITEMS_DATA_V3[0].content.title);
         expect(item.description).toBe(ITEMS_DATA_V3[0].content.description);
@@ -296,60 +273,54 @@ fdescribe('Service: Item', () => {
         });
         expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug);
         expect(item.bumpExpiringDate).toBeUndefined();
-        expect(resp.init).toBe(20);
+        expect(response.init).toBe(INIT + 10);
       });
     });
+
     describe('with purchases', () => {
-      beforeEach(() => {
-        const res: ResponseOptions = new ResponseOptions({
-          body: JSON.stringify(ITEMS_DATA_V3),
-          headers: new Headers({ 'x-nextpage': 'init=20' })
-        });
-        const res2: ResponseOptions = new ResponseOptions({
-          body: JSON.stringify(PURCHASES)
-        });
-        spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
-        service.mine(0, 'published').subscribe((data: ItemsData) => {
-          resp = data;
-        });
-      });
       it('should call purchases', () => {
-        expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/purchases');
-      });
-      it('should set purchased data to featured items', () => {
-        expect(resp.data[0].bumpExpiringDate).toBe(1510221655715);
-        expect(resp.data[0].flags.highlighted).toBeTruthy();
-        expect(resp.data[0].listingFeeExpiringDate).toBe(1510221346789);
-        expect(resp.data[2].bumpExpiringDate).toBe(1509874085135);
-        expect(resp.data[2].flags.bumped).toBeTruthy();
+        let response: ItemsData;
+        const INIT = 10;
+        const expectedUrlParams = `init=${INIT}&expired=true`;
+        const expectedUrl = `${environment.baseUrl}api/v3/web/items/mine/published?${expectedUrlParams}`;
+        const expectedUrl2 = `${environment.baseUrl}api/v3/web/items/mine/purchases`;
+
+        service.mine(10, 'published').subscribe(r => response = r);
+        const req: TestRequest = httpMock.expectOne(expectedUrl);
+        req.flush(ITEMS_DATA_V3, { headers: { 'x-nextpage': `init=${INIT + 10}` } });
+        const req2: TestRequest = httpMock.expectOne(expectedUrl2);
+        req2.flush(PURCHASES);
+
+        expect(response.data[0].bumpExpiringDate).toBe(1510221655715);
+        expect(response.data[0].flags.highlighted).toBeTruthy();
+        expect(response.data[0].listingFeeExpiringDate).toBe(1510221346789);
+        expect(response.data[2].bumpExpiringDate).toBe(1509874085135);
+        expect(response.data[2].flags.bumped).toBeTruthy();
       });
     });
   });
 
   describe('myFavorites', () => {
-    let resp: ItemsData;
-    beforeEach(() => {
-      const res: ResponseOptions = new ResponseOptions({
-        body: JSON.stringify(ITEMS_DATA_v3_FAVORITES),
-        headers: new Headers({ 'x-nextpage': 'init=20' })
-      });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-    });
     it('should call endpoint', () => {
-      service.myFavorites(10).subscribe((data: ItemsData) => {
-        resp = data;
-      });
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/items/favorites', {
-        init: 10,
-        expired: undefined
-      });
-    });
-    it('should return an array of items and the init', () => {
-      service.myFavorites(0).subscribe((data: ItemsData) => {
-        resp = data;
-      });
-      expect(resp.data.length).toBe(2);
-      const item = resp.data[0];
+      let response: ItemsData;
+      const INIT = 0;
+      const expectedUrlParams = `init=${INIT}&expired=undefined`;
+      const expectedUrl = `${environment.baseUrl}api/v3/users/me/items/favorites?${expectedUrlParams}`;
+      const expectedUrl2 = `${environment.baseUrl}api/v3/web/items/mine/purchases`;
+
+      service.myFavorites(0).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(ITEMS_DATA_v3_FAVORITES, { headers: { 'x-nextpage': `init=${INIT + 10}` } });
+      const req2: TestRequest = httpMock.expectOne(expectedUrl2);
+      req2.flush([]);
+
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      expect(req2.request.url).toEqual(expectedUrl2);
+      expect(req2.request.method).toEqual('GET');
+
+      expect(response.data.length).toBe(2);
+      const item = response.data[0];
       expect(item.id).toBe(ITEMS_DATA_v3_FAVORITES[0].id);
       expect(item.favorited).toBe(true);
       expect(item.title).toBe(ITEMS_DATA_v3_FAVORITES[0].content.title);
@@ -364,7 +335,7 @@ fdescribe('Service: Item', () => {
         average_hex_color: '',
         urls_by_size: ITEMS_DATA_v3_FAVORITES[0].content.image
       });
-      expect(resp.init).toBe(20);
+      expect(response.init).toBe(10);
     });
   });
 
@@ -484,10 +455,10 @@ fdescribe('Service: Item', () => {
 
       service.getAvailableReactivationProducts(ITEM_ID).subscribe(r => response = r);
       const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(PRODUCT_RESPONSE);
+      req.flush(PRODUCTS_RESPONSE);
 
       expect(req.request.url).toEqual(expectedUrl);
-      expect(response).toEqual(PRODUCT_RESPONSE[0]);
+      expect(response).toEqual(PRODUCT_RESPONSE);
       expect(req.request.method).toBe('GET');
     });
   });
@@ -503,6 +474,7 @@ fdescribe('Service: Item', () => {
 
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual([ORDER]);
       expect(req.request.headers.get('X-PaymentProvider')).toEqual(PAYMENT_PROVIDER);
     });
   });
@@ -518,6 +490,7 @@ fdescribe('Service: Item', () => {
 
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual([ORDER]);
       expect(req.request.headers.get('X-PaymentProvider')).toEqual(PAYMENT_PROVIDER);
     });
   });
@@ -778,7 +751,7 @@ fdescribe('Service: Item', () => {
     });
   });
 
-  fdescribe('cancelAutorenew', () => {
+  describe('cancelAutorenew', () => {
     it('should cancel the item bump autorenew', () => {
       const expectedUrl = `${environment.baseUrl}api/v3/protool/autorenew/update`;
       const expectedBody = {
@@ -798,203 +771,165 @@ fdescribe('Service: Item', () => {
 
   describe('getLatest', () => {
     it('should return the latest item', () => {
-      let observableResponse: ItemDataResponse;
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        connection.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify(LATEST_ITEM_DATA) })));
-      });
-      service.getLatest(USER_ID).subscribe((r: ItemDataResponse) => {
-        observableResponse = r;
-      });
-      expect(observableResponse.count).toBe(LATEST_ITEM_COUNT - 1);
-      expect(observableResponse.data).toEqual(MOCK_ITEM_V3);
+      const expectedUrlParams = `userId=${USER_ID}`;
+      const expectedUrl = `${environment.baseUrl}api/v3/items/latest-cars?${expectedUrlParams}`;
+      let response: ItemDataResponse;
+
+      service.getLatest(USER_ID).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(LATEST_ITEM_DATA);
+
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(response.data).toEqual(MOCK_ITEM_V3);
+      expect(response.count).toEqual(LATEST_ITEM_COUNT - 1);
+      expect(req.request.method).toBe('GET');
     });
+
     it('should return null item', () => {
-      let observableResponse: ItemDataResponse;
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        connection.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify(LATEST_ITEM_DATA_EMPTY) })));
-      });
-      service.getLatest(USER_ID).subscribe((r: ItemDataResponse) => {
-        observableResponse = r;
-      });
-      expect(observableResponse.count).toBe(LATEST_ITEM_COUNT - 1);
-      expect(observableResponse.data).toEqual(null);
+      const expectedUrlParams = `userId=${USER_ID}`;
+      const expectedUrl = `${environment.baseUrl}api/v3/items/latest-cars?${expectedUrlParams}`;
+      let response: ItemDataResponse;
+
+      service.getLatest(USER_ID).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(LATEST_ITEM_DATA_EMPTY);
+
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(response.data).toEqual(null);
+      expect(response.count).toEqual(LATEST_ITEM_COUNT - 1);
+      expect(req.request.method).toBe('GET');
     });
   });
 
   describe('bumpProItems', () => {
-    it('should call endpoint', () => {
-      let resp: string[];
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(['1234']) });
-      const API_URL_PROTOOL = 'api/v3/protool';
-      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+    it('should bump the selected items', () => {
+      const expectedUrl = `${environment.baseUrl}api/v3/protool/purchaseItems`;
+      let response: string[];
 
-      service.bumpProItems(CART_ORDER_PRO).subscribe((r: string[]) => {
-        resp = r;
-      });
+      service.bumpProItems(CART_ORDER_PRO).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush('1234');
 
-      expect(http.post).toHaveBeenCalledWith(API_URL_PROTOOL + '/purchaseItems', CART_ORDER_PRO);
-      expect(resp).toEqual(['1234']);
+      expect(req.request.url).toBe(expectedUrl);
+      expect(response).toEqual('1234');
+      expect(req.request.body).toEqual(CART_ORDER_PRO);
+      expect(req.request.method).toBe('POST');
     });
   });
 
   describe('mines', () => {
-    describe('with data', () => {
-      beforeEach(() => {
-        mockBackend.connections.subscribe((connection: MockConnection) => {
-          if (connection.request.url.indexOf('init=0&end=300') !== -1) {
-            connection.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify([ITEM_DATA_V4, ITEM_DATA_V5]) })));
-          } else if (connection.request.url.indexOf('init=300&end=600') !== -1) {
-            connection.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify([ITEM_DATA_V4, ITEM_DATA_V5]) })));
-          } else {
-            connection.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify([]) })));
-          }
-          expect(connection.request.url).toContain('/mines');
-        });
-        spyOn(http, 'get').and.callThrough();
-      });
-      it('should return 3 pages recursively', () => {
-        let observableResponse: Item[];
-        service.mines(1, 10, 'date_desc').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
+    function testPaginationAndGetMines() {
+      let INIT = 0;
+      const OFFSET = 300;
+      let END = INIT + OFFSET;
+      const STATUS = 'active';
 
-        expect(observableResponse.length).toBe(4);
-      });
-      it('should return cached results the second time', () => {
-        let observableResponse: Item[];
-        let observableResponse2: Item[];
+      let expectedUrlParams = `status=${ITEM_STATUSES[STATUS]}&init=${INIT}&end=${END}&newVersion=true`;
+      let expectedUrl = `${environment.baseUrl}api/v3/protool/mines?${expectedUrlParams}`;
 
-        service.mines(1, 10, 'date_desc').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      INIT = OFFSET * 1;
+      END = INIT + OFFSET
+      req.flush([ITEM_DATA_V4, ITEM_DATA_V5]);
 
-        expect(http.get).toHaveBeenCalledTimes(3);
-      });
-      it('should NOT return cached results the second time', () => {
-        service.mines(1, 10, 'date_desc').subscribe();
+      expectedUrlParams = `status=${ITEM_STATUSES[STATUS]}&init=${INIT}&end=${END}&newVersion=true`
+      expectedUrl = `${environment.baseUrl}api/v3/protool/mines?${expectedUrlParams}`;
+      const req2: TestRequest = httpMock.expectOne(expectedUrl);
+      req2.flush([ITEM_DATA_V4, ITEM_DATA_V5]);
 
-        expect(http.get).toHaveBeenCalledTimes(3);
-      });
-      it('should filter by term', () => {
-        let observableResponse: Item[];
-        service.mines(1, 10, 'date_desc', undefined, 'title').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
+      INIT = OFFSET * 2;
+      END = INIT + OFFSET
 
-        expect(observableResponse.length).toBe(4);
+      expectedUrlParams = `status=${ITEM_STATUSES[STATUS]}&init=${INIT}&end=${END}&newVersion=true`
+      expectedUrl = `${environment.baseUrl}api/v3/protool/mines?${expectedUrlParams}`;
+      const req3: TestRequest = httpMock.expectOne(expectedUrl);
+      req3.flush([]);
+    }
 
-        observableResponse = undefined;
-        service.mines(1, 10, 'date_desc', undefined, 'TITLE').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
+    it('should map paginated responses from backend into one array', () => {
+      let response: Item[];
 
-        expect(observableResponse.length).toBe(4);
+      service.mines(1, 10, 'date_desc').subscribe(r => response = r);
+      testPaginationAndGetMines();
 
-        observableResponse = undefined;
-        service.mines(1, 10, 'date_desc', undefined, 'title2').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
-
-        expect(observableResponse.length).toBe(0);
-
-        observableResponse = undefined;
-        service.mines(1, 10, 'date_desc', undefined, 'test').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
-
-        expect(observableResponse.length).toBe(0);
-
-        observableResponse = undefined;
-        service.mines(1, 10, 'date_desc', undefined, 'description').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
-
-        expect(observableResponse.length).toBe(4);
-
-        observableResponse = undefined;
-        service.mines(1, 10, 'date_desc', undefined, 'description2').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
-
-        expect(observableResponse.length).toBe(0);
-      });
-
-      it('should sort by date', () => {
-        let observableResponse: Item[];
-        service.mines(1, 10, 'date_desc').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
-
-        expect(observableResponse[0].publishedDate).toBe(ITEM_PUBLISHED_DATE);
-        expect(observableResponse[1].publishedDate).toBe(ITEM_PUBLISHED_DATE);
-        expect(observableResponse[2].publishedDate).toBe(ITEM_PUBLISHED_DATE);
-        expect(observableResponse[3].publishedDate).toBe(ITEM_PUBLISHED_DATE);
-
-        observableResponse = undefined;
-        service.mines(1, 10, 'date_asc').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
-        expect(observableResponse[0].publishedDate).toBe(ITEM_PUBLISHED_DATE);
-        expect(observableResponse[1].publishedDate).toBe(ITEM_PUBLISHED_DATE);
-        expect(observableResponse[2].publishedDate).toBe(ITEM_PUBLISHED_DATE);
-        expect(observableResponse[3].publishedDate).toBe(ITEM_PUBLISHED_DATE);
-
-        observableResponse = undefined;
-        service.mines(1, 10, 'price_asc').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
-
-        expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[2].salePrice).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[3].salePrice).toBe(ITEM_SALE_PRICE);
-
-        observableResponse = undefined;
-
-        service.mines(1, 10, 'price_desc').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
-
-        expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[2].salePrice).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[3].salePrice).toBe(ITEM_SALE_PRICE);
-      });
-      it('should paginate', () => {
-        let observableResponse: Item[];
-        service.mines(1, 2, 'date_desc').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
-        expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
-
-        observableResponse = undefined;
-        service.mines(2, 2, 'date_desc').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
-
-        expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
-
-        observableResponse = undefined;
-        service.mines(1, 4, 'date_desc').subscribe((r: Item[]) => {
-          observableResponse = r;
-        });
-
-        expect(observableResponse.length).toBe(4);
-      });
+      expect(response.length).toBe(4);
     });
-    it('should return an empty array', () => {
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        connection.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify([]) })));
-        expect(connection.request.url).toContain('/mines');
-      });
+
+    it('should return cached results after the second request', () => {
+      let INIT = 0;
+      const OFFSET = 300;
+      let END = INIT + OFFSET;
+      const STATUS = 'active';
+      let expectedUrlParams = `status=${ITEM_STATUSES[STATUS]}&init=${INIT}&end=${END}&newVersion=true`;
+      let expectedUrl = `${environment.baseUrl}api/v3/protool/mines?${expectedUrlParams}`;
+
+      service['items'][STATUS] = [ITEM_DATA_V4.content, ITEM_DATA_V5.content] as any;
+      service.mines(1, 10, 'date_desc').subscribe();
+
+      httpMock.expectNone(expectedUrl);
+    });
+
+    it('should filter by term', () => {
       let observableResponse: Item[];
-      service.mines(1, 2, 'date_desc').subscribe((r: Item[]) => {
-        observableResponse = r;
-      });
+
+      service.mines(1, 10, 'date_desc', undefined, 'title').subscribe(r => observableResponse = r);
+      testPaginationAndGetMines();
+
+      observableResponse = undefined;
+      service.mines(1, 10, 'date_desc', undefined, 'title2').subscribe(r => observableResponse = r);
 
       expect(observableResponse.length).toBe(0);
+
+      observableResponse = undefined;
+      service.mines(1, 10, 'date_desc', undefined, 'test').subscribe(r => observableResponse = r);
+
+      expect(observableResponse.length).toBe(0);
+
+      observableResponse = undefined;
+      service.mines(1, 10, 'date_desc', undefined, 'description').subscribe(r => observableResponse = r);
+
+      expect(observableResponse.length).toBe(4);
+
+      observableResponse = undefined;
+      service.mines(1, 10, 'date_desc', undefined, 'description2').subscribe(r => observableResponse = r);
+
+      expect(observableResponse.length).toBe(0);
+    });
+
+    it('should sort by date', () => {
+      let observableResponse: Item[];
+
+      service.mines(1, 10, 'date_desc').subscribe(r => observableResponse = r);
+      testPaginationAndGetMines();
+
+      expect(observableResponse[0].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+      expect(observableResponse[1].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+      expect(observableResponse[2].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+      expect(observableResponse[3].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+
+      observableResponse = undefined;
+      service.mines(1, 10, 'date_asc').subscribe(r => observableResponse = r);
+      expect(observableResponse[0].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+      expect(observableResponse[1].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+      expect(observableResponse[2].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+      expect(observableResponse[3].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+
+      observableResponse = undefined;
+      service.mines(1, 10, 'price_asc').subscribe(r => observableResponse = r);
+
+      expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
+      expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
+      expect(observableResponse[2].salePrice).toBe(ITEM_SALE_PRICE);
+      expect(observableResponse[3].salePrice).toBe(ITEM_SALE_PRICE);
+
+      observableResponse = undefined;
+
+      service.mines(1, 10, 'price_desc').subscribe(r => observableResponse = r);
+
+      expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
+      expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
+      expect(observableResponse[2].salePrice).toBe(ITEM_SALE_PRICE);
+      expect(observableResponse[3].salePrice).toBe(ITEM_SALE_PRICE);
     });
   });
 
@@ -1047,71 +982,7 @@ fdescribe('Service: Item', () => {
         expect(service['items']['sold'].length).toBe(0);
       });
     });
-
   });
-
-  // describe('bulk actions', () => {
-
-  //   const TOTAL: number = 5;
-  //   let response: ItemBulkResponse;
-
-  //   describe('bulkDelete', () => {
-
-  //     describe('success', () => {
-  //       beforeEach(fakeAsync(() => {
-  //         mockBackend.connections.subscribe((connection: MockConnection) => {
-  //           expect(connection.request.url).toBe(environment['baseUrl'] + 'api/v3/items/delete');
-  //           expect(connection.request.method).toBe(RequestMethod.Put);
-  //           connection.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify(ITEMS_BULK_RESPONSE) })));
-  //         });
-  //         response = null;
-  //         spyOn(service, 'deselectItems');
-  //       }));
-  //       describe('from active array', () => {
-  //         beforeEach(() => {
-  //           service['items']['active'] = createItemsArray(TOTAL);
-  //           service.bulkDelete('active').subscribe((r: ItemBulkResponse) => {
-  //             response = r;
-  //           });
-  //         });
-  //         it('should remove items', () => {
-  //           expect(service['items']['active'].length).toBe(TOTAL - 3);
-  //         });
-  //         it('should return updated and failed ids list', () => {
-  //           expect(response.updatedIds).toEqual(ITEMS_BULK_UPDATED_IDS);
-  //           expect(response.failedIds).toEqual([]);
-  //         });
-  //         it('should call deselectItems', () => {
-  //           expect(service.deselectItems).toHaveBeenCalled();
-  //         });
-  //       });
-  //       describe('from sold array', () => {
-  //         beforeEach(() => {
-  //           service['items']['sold'] = createItemsArray(TOTAL);
-  //           service.bulkDelete('sold').subscribe((r: ItemBulkResponse) => {
-  //             response = r;
-  //           });
-  //         });
-  //         it('should remove items', () => {
-  //           expect(service['items']['sold'].length).toBe(TOTAL - 3);
-  //         });
-  //       });
-  //     });
-  //     describe('failed', () => {
-  //       beforeEach(fakeAsync(() => {
-  //         mockBackend.connections.subscribe((connection: MockConnection) => {
-  //           connection.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify(ITEMS_BULK_RESPONSE_FAILED) })));
-  //         });
-  //         response = null;
-  //       }));
-  //       it('should return updated items', () => {
-  //         service.bulkDelete('active').subscribe((r: ItemBulkResponse) => {
-  //           response = r;
-  //         });
-  //         expect(response.failedIds).toEqual(ITEMS_BULK_FAILED_IDS);
-  //       });
-  //     });
-  //   });
 
   describe('bulkSetActivate', () => {
     const TOTAL: number = 5;
@@ -1169,7 +1040,6 @@ fdescribe('Service: Item', () => {
     const expectedUrl = `${environment.baseUrl}api/v3/protool/changeItemStatus`;
 
     beforeEach(() => {
-      spyOn(http, 'post').and.returnValue(Observable.of({}));
       spyOn(service, 'deselectItems');
       service['items']['active'] = createItemsArray(TOTAL);
       service['items']['pending'] = createItemsArray(TOTAL);
@@ -1235,24 +1105,21 @@ fdescribe('Service: Item', () => {
   });
 
   describe('getCarInfo', () => {
-    it('should call endpoint', () => {
-      let resp: CarInfo;
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(CAR_INFO) });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+    it('should get the car information', () => {
       const BRAND = 'brand';
       const MODEL = 'model';
       const VERSION = 'version';
+      const expectedUrlParams = `brand=${BRAND}&model=${MODEL}&version=${VERSION}`;
+      const expectedUrl = `${environment.baseUrl}api/v3/items/cars/info?${expectedUrlParams}`;
+      let response: CarInfo;
 
-      service.getCarInfo(BRAND, MODEL, VERSION).subscribe((r: CarInfo) => {
-        resp = r;
-      });
+      service.getCarInfo(BRAND, MODEL, VERSION).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(CAR_INFO);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/items/cars/info', {
-        brand: BRAND,
-        model: MODEL,
-        version: VERSION
-      });
-      expect(resp).toEqual(CAR_INFO);
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(response).toEqual(CAR_INFO);
+      expect(req.request.method).toBe('GET');
     });
   });
 
@@ -1295,21 +1162,19 @@ fdescribe('Service: Item', () => {
   });
 
   describe('getListingFeeInfo', () => {
-    it('should call endpoint', () => {
-      const itemId = 'p4w67gxww6xq';
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(MOCK_LISTING_FEE_PRODUCT) });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: Product;
+    it('should get the item listing fee information', () => {
+      const expectedUrl = `${environment.baseUrl}api/v3/web/items/${ITEM_ID}/listing-fee-info`;
+      let response: Product;
 
-      service.getListingFeeInfo(itemId).subscribe((r: Product) => {
-        resp = r;
-      });
+      service.getListingFeeInfo(ITEM_ID).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_LISTING_FEE_PRODUCT);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/p4w67gxww6xq/listing-fee-info');
-      expect(resp).toEqual(MOCK_LISTING_FEE_PRODUCT.product_group.products[0]);
+      expect(req.request.url).toEqual(expectedUrl);
+      expect(response).toEqual(MOCK_LISTING_FEE_PRODUCT.product_group.products[0]);
+      expect(req.request.method).toBe('GET');
     });
   });
-
 });
 
 function checkItemResponse(item: Item) {

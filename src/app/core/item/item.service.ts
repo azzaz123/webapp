@@ -48,7 +48,7 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { catchError, tap } from 'rxjs/operators';
 import * as mapRx from 'rxjs/operators/map';
@@ -128,6 +128,14 @@ export class ItemService extends ResourceService {
       ));
   }
 
+  public selectItem(id: string) {
+    this.selectedItems.push(id);
+    this.selectedItems$.next({
+      id: id,
+      action: 'selected'
+    });
+  }
+
   public deselectItems() {
     this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_UNSELECTED, { product_ids: this.selectedItems.join(', ') });
     this.selectedItems = [];
@@ -152,14 +160,6 @@ export class ItemService extends ResourceService {
       this.banReasons = this.i18n.getTranslations('reportListingReasons');
     }
     return Observable.of(this.banReasons);
-  }
-
-  public selectItem(id: string) {
-    this.selectedItems.push(id);
-    this.selectedItems$.next({
-      id: id,
-      action: 'selected'
-    });
   }
 
   public deselectItem(id: string) {
@@ -379,12 +379,15 @@ export class ItemService extends ResourceService {
   }
 
   public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
-    return this.http.get(url, {
-      init: init,
-      expired: status
+    return this.httpNew.get<HttpResponse<ItemResponse[]>>(`${environment.baseUrl}${url}`, {
+      params: {
+        init: init,
+        expired: status
+      },
+      observe: 'response' as 'body'
     })
-      .map((r: Response) => {
-        const res: ItemResponse[] = r.json();
+      .map(r => {
+        const res: ItemResponse[] = r.body;
         const nextPage: string = r.headers.get('x-nextpage');
 
         let params = {};
@@ -689,14 +692,15 @@ export class ItemService extends ResourceService {
   }
 
   private recursiveMines(init: number, offset: number, status?: string): Observable<ItemProResponse[]> {
-    return this.http.get(this.API_URL_PROTOOL + '/mines', {
-      status: ITEM_STATUSES[status],
-      init: init,
-      end: init + offset,
-      newVersion: true
+    return this.httpNew.get<any>(`${environment.baseUrl}${this.API_URL_PROTOOL}/mines`, {
+      params: {
+        status: ITEM_STATUSES[status],
+        init,
+        end: init + offset,
+        newVersion: true
+      } as any
     })
-      .map((r: Response) => r.json())
-      .flatMap((res: ItemProResponse[]) => {
+      .flatMap((res) => {
         if (res.length > 0) {
           return this.recursiveMines(init + offset, offset, status)
             .map((res2: ItemProResponse[]) => {
@@ -868,7 +872,9 @@ export class ItemService extends ResourceService {
   }
 
   public getLatest(userId: string): Observable<ItemDataResponse> {
-    return this.httpNew.get(`${environment.baseUrl}${this.API_URL}/latest-cars`, { params: { userId: userId } })
+    return this.httpNew.get(`${environment.baseUrl}${this.API_URL}/latest-cars`, {
+      params: { userId }
+    })
       .pipe(mapRx.map((resp: LatestItemResponse) => {
         return {
           count: resp.count - 1,
@@ -878,23 +884,22 @@ export class ItemService extends ResourceService {
   }
 
   public bumpProItems(orderParams: OrderPro[]): Observable<string[]> {
-    return this.http.post(this.API_URL_PROTOOL + '/purchaseItems', orderParams)
-      .map((r: Response) => r.json());
+    return this.httpNew.post<string[]>(`${environment.baseUrl}${this.API_URL_PROTOOL}/purchaseItems`, orderParams);
   }
 
   public getCarInfo(brand: string, model: string, version: string): Observable<CarInfo> {
-    return this.http.get(this.API_URL + '/cars/info', {
-      brand: brand,
-      model: model,
-      version: version
+    return this.httpNew.get<CarInfo>(`${environment.baseUrl}${this.API_URL}/cars/info`, {
+      params: {
+        brand,
+        model,
+        version
+      }
     })
-      .map((r: Response) => r.json());
   }
 
   public getListingFeeInfo(itemId: string): Observable<Product> {
-    return this.http.get(this.API_URL_WEB + '/' + itemId + '/listing-fee-info')
-      .map((r: Response) => r.json())
-      .map((response: ListingFeeProductInfo) => response.product_group.products[0]);
+    return this.httpNew.get(`${environment.baseUrl}${this.API_URL_WEB}/${itemId}/listing-fee-info`)
+      .pipe(mapRx.map((response: ListingFeeProductInfo) => response.product_group.products[0]));
   }
 
 }
