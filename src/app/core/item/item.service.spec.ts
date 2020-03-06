@@ -273,7 +273,7 @@ describe('Service: Item', () => {
     });
 
     describe('with purchases', () => {
-      it('should call purchases', () => {
+      it('should get purchases', () => {
         let response: ItemsData;
         const INIT = 10;
         const expectedUrlParams = `init=${INIT}&expired=true`;
@@ -296,7 +296,7 @@ describe('Service: Item', () => {
   });
 
   describe('myFavorites', () => {
-    it('should call endpoint', () => {
+    it('should get user favorites', () => {
       let response: ItemsData;
       const INIT = 0;
       const expectedUrlParams = `init=${INIT}&expired=undefined`;
@@ -335,7 +335,7 @@ describe('Service: Item', () => {
   });
 
   describe('deleteItem', () => {
-    it('should delete the item', () => {
+    it('should delete the selected item', () => {
       const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}`;
 
       service.deleteItem(ITEM_ID).subscribe();
@@ -348,7 +348,7 @@ describe('Service: Item', () => {
   });
 
   describe('reserveItem', () => {
-    it('should mark the item as reserved', () => {
+    it('should mark the selected item as reserved', () => {
       const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/reserve`;
       const RESERVED = false;
       const expectedBody = {
@@ -366,7 +366,7 @@ describe('Service: Item', () => {
   });
 
   describe('reactivateItem', () => {
-    it('should reactivate the item', () => {
+    it('should reactivate the selected item', () => {
       const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/reactivate`;
 
       service.reactivateItem(ITEM_ID).subscribe();
@@ -379,7 +379,7 @@ describe('Service: Item', () => {
   });
 
   describe('favoriteItem', () => {
-    it('should mark the item as favorite', () => {
+    it('should mark the selected item as favorite', () => {
       const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/favorite`;
       const FAVORITED = false;
       const expectedBody = {
@@ -397,7 +397,7 @@ describe('Service: Item', () => {
   });
 
   describe('bulkReserve', () => {
-    it('should mark the selected items as reserved', () => {
+    it('should mark the selecteds items as reserved', () => {
       const selectedItemIds = ['1', '2', '3'];
       const expectedUrl = `${environment.baseUrl}api/v3/items/reserve`;
       const expectedBody = {
@@ -416,7 +416,7 @@ describe('Service: Item', () => {
   });
 
   describe('soldOutside', () => {
-    it('should set the item as sold', () => {
+    it('should set the selected item as sold', () => {
       const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/sold`;
 
       service.soldOutside(ITEM_ID).subscribe();
@@ -594,7 +594,7 @@ describe('Service: Item', () => {
   });
 
   describe('deletePicture', () => {
-    it('should call endpoint', () => {
+    it('should delete one picture', () => {
       const PICTURE_ID = '1';
       const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/picture/${PICTURE_ID}`;
 
@@ -671,7 +671,7 @@ describe('Service: Item', () => {
   });
 
   describe('getCheapestProductPrice', () => {
-    it('should call get', () => {
+    it('should get the cheapest product', () => {
       const ITEM_IDS = ['1', '2'];
       const expectedUrlParams = `itemsIds=${ITEM_IDS.join(',')}`;
       const expectedUrl = `${environment.baseUrl}api/v3/web/items/available-visibility-products?${expectedUrlParams}`;
@@ -716,7 +716,7 @@ describe('Service: Item', () => {
   });
 
   describe('getUrgentProducts', () => {
-    it('should return the product info', () => {
+    it('should return the urgent product information', () => {
       const expectedUrl = `${environment.baseUrl}api/v3/web/items/${ITEM_ID}/available-urgent-products`;
       let response: Product;
 
@@ -731,7 +731,7 @@ describe('Service: Item', () => {
   });
 
   describe('getUrgentProductByCategoryId', () => {
-    it('should return the product info', () => {
+    it('should return the urgent product information by category', () => {
       const expectedUrlParams = `categoryId=${ITEM_CATEGORY_ID.toString()}`;
       const expectedUrl = `${environment.baseUrl}api/v3/web/items/available-urgent-products?${expectedUrlParams}`;
       let response: Product;
@@ -864,7 +864,7 @@ describe('Service: Item', () => {
       httpMock.expectNone(expectedUrl);
     });
 
-    it('should filter by term', () => {
+    it('should filter items by term', () => {
       let observableResponse: Item[];
 
       service.mines(1, 10, 'date_desc', undefined, 'title').subscribe(r => observableResponse = r);
@@ -891,7 +891,7 @@ describe('Service: Item', () => {
       expect(observableResponse.length).toBe(0);
     });
 
-    it('should sort by date', () => {
+    it('should sort items by date', () => {
       let observableResponse: Item[];
 
       service.mines(1, 10, 'date_desc').subscribe(r => observableResponse = r);
