@@ -25,7 +25,6 @@ import { ThirdVoiceReviewComponent } from './third-voice-review';
   ],
   exports: [
     TextMessageComponent,
-    ThirdVoiceMessageComponent,
     ThirdVoiceReviewComponent,
     ThirdVoiceDropPriceComponent
   ]
