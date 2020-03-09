@@ -59,7 +59,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <div class="form-group last">
+        <div class="form-group mb-0">
           <label for="tellUs" i18n>Description</label>
           <span class="chars-counter">{{ uploadForm.value?.description?.length }}/650</span>
           <textarea i18n-placeholder placeholder="Add relevant information such as condition, model, color..."
@@ -68,6 +68,20 @@
           <ng-template #coachmarkDescription>
             <div i18n>Every detail helps: so tell us more!</div>
           </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3" *ngIf="conditions?.length">
+      <div class="col-12 col-md-6">
+        <div class="form-group mb-0" formGroupName="extra_info">
+          <label for="conditions" i18n>Product condition</label>
+          <ng-select class="form-control" formControlName="condition" id="conditions" i18n-placeholder
+            placeholder="Select a condition" [options]="conditions">
+            <ng-template #optionTemplate let-option="option">
+              {{ option?.label }}
+              <span class="option-description">{{ option?.description }}</span>
+            </ng-template>
+          </ng-select>
         </div>
       </div>
     </div>

@@ -63,6 +63,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public itemTypes: any = ITEM_TYPES;
   public currentCategory: CategoryOption;
   public objectTypes: IOption[];
+  public conditions: IOption[];
   public brands: IOption[];
   public models: IOption[];
   public sizes: IOption[];
@@ -165,6 +166,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           id: [null, [Validators.required]]
         }),
         gender: [null, [Validators.required]]
+      }),
+      extra_info: this.fb.group({
+        condition: [null]
       })
     });
     config.placement = 'right';
@@ -214,6 +218,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
             this.getSizes();
           }
           this.getObjectTypes();
+          this.getConditions();
         }
       }
       this.detectCategoryChanges();
@@ -244,6 +249,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private detectCategoryChanges() {
     this.uploadForm.get('category_id').valueChanges.subscribe((categoryId: number) => {
+      this.getConditions();
       this.onCategorySelect.emit(categoryId);
     });
   }
@@ -502,6 +508,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.uploadCompletedPercentage = Math.round(percentage);
   }
 
+  public getConditions(): void {
+    const currentCategorId: number = +this.uploadForm.get('category_id').value;
+    this.conditions = [];
+    this.generalSuggestionsService.getConditions(currentCategorId).subscribe((conditions: IOption[]) => {
+      this.conditions = conditions;
+    });
+  }
+
   public onDeliveryChange(newDeliveryValue: any) {
     if (newDeliveryValue === this.oldDeliveryValue) {
       this.uploadForm.controls['delivery_info'].reset();
@@ -523,7 +537,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         };
 
         if (item.extra_info) {
-          if (item.extra_info.object_type.id) {
+          if (item.extra_info.object_type && item.extra_info.object_type.id) {
             baseEventAttrs.objectType = item.extra_info.object_type.name;
           }
           if (item.extra_info.brand) {
