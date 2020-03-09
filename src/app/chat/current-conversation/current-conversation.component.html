@@ -89,10 +89,12 @@
             </div>
 
             <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message"></tsl-text-message>
-            <tsl-third-voice-drop-price *ngIf="isThirdVoiceDropPrice(message.type)" [message]="message"></tsl-third-voice-drop-price>
-            <tsl-third-voice-message *ngIf="isThirdVoiceMessage(message.type)" [message]="message"
-                                     [user]="currentConversation.user"
-                                     [item]="currentConversation.item"></tsl-third-voice-message>
+            <tsl-third-voice-drop-price *ngIf="isThirdVoiceDropPrice(message.type)"
+                                        [message]="message"></tsl-third-voice-drop-price>
+            <tsl-third-voice-review *ngIf="isThirdVoiceReview(message.type)"
+                                    [message]="message"
+                                    [user]="currentConversation.user"
+                                    [item]="currentConversation.item"></tsl-third-voice-review>
           </div>
 
           <div class="notification-container">
