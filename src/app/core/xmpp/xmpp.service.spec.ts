@@ -674,7 +674,7 @@ describe('Service: Xmpp', () => {
       spyOn<any>(remoteConsoleService, 'sendAcceptTimeout');
 
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+      service.sendMessage(CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE(CONVERSATION_ID, USER_ID), MESSAGE_BODY);
       const message: any = {
         id: queryId,
         to: new XMPP.JID(USER_ID, environment.xmppDomain),
@@ -698,7 +698,7 @@ describe('Service: Xmpp', () => {
         msg = message;
       });
 
-      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+      service.sendMessage(CREATE_MOCK_INBOX_CONVERSATION(), MESSAGE_BODY);
       tick();
 
       expect(msg.status).toBe(MessageStatus.PENDING);
@@ -711,12 +711,12 @@ describe('Service: Xmpp', () => {
       spyOn<any>(remoteConsoleService, 'sendPresentationMessageTimeout');
 
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+      service.sendMessage(CREATE_MOCK_INBOX_CONVERSATION(), MESSAGE_BODY);
 
       expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(queryId);
       expect(remoteConsoleService.sendAcceptTimeout).toHaveBeenCalledWith(queryId);
       expect(remoteConsoleService.sendPresentationMessageTimeout).not.toHaveBeenCalled();
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], queryId);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT, CREATE_MOCK_INBOX_CONVERSATION(), queryId);
     });
 
     it('should send a new message with the true updateDate parameter', () => {

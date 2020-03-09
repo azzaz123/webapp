@@ -50,7 +50,7 @@ export class XmppService {
     }
   }
 
-  public sendMessage(conversation: Conversation | InboxConversation, body: string) {
+  public sendMessage(conversation: InboxConversation, body: string) {
     const messageId = this.client.nextId();
     this.remoteConsoleService.sendMessageTimeout(messageId);
     const message = this.createXmppMessage(conversation, messageId, body);

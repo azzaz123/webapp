@@ -11,6 +11,7 @@ declare const require: any;
 
 declare global {
   interface Window { fbq: any; }
+  interface Window { pintrk: any; }
 }
 
 window['ga'] = function() {};
@@ -40,6 +41,7 @@ window['googletag'] = {
 };
 window['gtag'] = function() {};
 window['fbq'] = function() {};
+window['pintrk'] = function() {};
 window['twq'] = function() {};
 
 window['apstag'] = {

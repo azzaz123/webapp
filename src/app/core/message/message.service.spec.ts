@@ -157,7 +157,7 @@ describe('Service: Message', () => {
   describe('send', () => {
     it('should call the send message', () => {
       spyOn(realTime, 'sendMessage');
-      const conversation: Conversation = MOCK_CONVERSATION();
+      const conversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
       service.send(conversation, 'text');
       expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, 'text');
     });
