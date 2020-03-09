@@ -78,6 +78,9 @@ export class InboxConversationService {
   }
 
   private addNewMessage(conversation: InboxConversation, message: InboxMessage) {
+    if (isEmpty(conversation.messages)) {
+      conversation.messages = [];
+    }
     if (!this.findMessage(conversation, message)) {
       conversation.messages.unshift(message);
       conversation.lastMessage = message;
