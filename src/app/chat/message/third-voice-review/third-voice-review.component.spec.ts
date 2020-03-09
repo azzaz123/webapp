@@ -7,7 +7,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
-import { InboxMessage, MessageType } from '../../model';
+import { InboxMessage, MessageStatus, MessageType } from '../../model';
 
 describe('ThirdVoiceReviewComponent', () => {
   let component: ThirdVoiceReviewComponent;
@@ -39,21 +39,21 @@ describe('ThirdVoiceReviewComponent', () => {
 
     it('should return false if message type is not review', () => {
       component.message = new InboxMessage('message-id', 'conversation-id', 'text', 'user-id', true,
-        new Date(), 'SEND', MessageType.TEXT);
+        new Date(), MessageStatus.SENT, MessageType.TEXT);
       expect(component.isReview()).toBeFalsy();
 
       component.message = new InboxMessage('message-id', 'conversation-id', 'text', 'user-id', true,
-        new Date(), 'SEND', MessageType.PRICE_DROP);
+        new Date(), MessageStatus.SENT, MessageType.PRICE_DROP);
       expect(component.isReview()).toBeFalsy();
 
       component.message = new InboxMessage('message-id', 'conversation-id', 'text', 'user-id', true,
-        new Date(), 'SEND', MessageType.DROP_PRICE);
+        new Date(), MessageStatus.SENT, MessageType.DROP_PRICE);
       expect(component.isReview()).toBeFalsy();
     });
 
     it('should return false if message type is review', () => {
       component.message = new InboxMessage('message-id', 'conversation-id', 'text', 'user-id', true,
-        new Date(), 'SEND', MessageType.REVIEW);
+        new Date(), MessageStatus.SENT, MessageType.REVIEW);
       expect(component.isReview()).toBeTruthy();
     });
   });
