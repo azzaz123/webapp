@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GeneralSuggestionsService, SUGGESTERS_API_URL, FASHION_KEYS_API_URL } from './general-suggestions.service';
+import { GeneralSuggestionsService, SUGGESTERS_API_URL, FASHION_KEYS_API_URL, CONDITION_KEYS_API_URL } from './general-suggestions.service';
 import { IOption } from 'ng-select';
 import { BrandModel, Brand, Model } from '../brand-model.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -47,6 +47,76 @@ const MOCK_SIZES_RESPONSE = [{
   value: '57',
   label: '48'
 }];
+
+const MOCK_CONDITIONS = [
+  {
+    category_id: "16000",
+    conditions: [
+      {
+        id: "un_opened",
+        title: "Unopened",
+        description: "With its seal"
+      },
+      {
+        id: "new",
+        title: "New",
+        description: "Never been used"
+      },
+      {
+        id: "as_good_as_new",
+        title: "As good as new",
+        description: "In perfect condition"
+      },
+      {
+        id: "good",
+        title: "Good",
+        description: "Quite used, but well preserved"
+      },
+      {
+        id: "fair",
+        title: "Fair",
+        description: "With evidents signs of use"
+      },
+      {
+        id: "has_given_it_all",
+        title: "Has given it all",
+        description: "May have to be repaired"
+      }
+    ]
+  }];
+
+const MOCK_CONDITIONS_RESPONSE = [
+  {
+    value: "un_opened",
+    label: "Unopened",
+    description: "With its seal"
+  },
+  {
+    value: "new",
+    label: "New",
+    description: "Never been used"
+  },
+  {
+    value: "as_good_as_new",
+    label: "As good as new",
+    description: "In perfect condition"
+  },
+  {
+    value: "good",
+    label: "Good",
+    description: "Quite used, but well preserved"
+  },
+  {
+    value: "fair",
+    label: "Fair",
+    description: "With evidents signs of use"
+  },
+  {
+    value: "has_given_it_all",
+    label: "Has given it all",
+    description: "May have to be repaired"
+  }
+];
 
 describe('GeneralSuggestionsService', () => {
 
@@ -145,6 +215,22 @@ describe('GeneralSuggestionsService', () => {
 
       expect(req.request.urlWithParams).toEqual(expectedUrl);
       expect(response).toEqual(MOCK_SIZES_RESPONSE);
+      expect(req.request.method).toBe('GET');
+    });
+  });
+
+  describe('getConditions', () => {
+    it('should return the conditions for the selected category', () => {
+      const expectedUrlParams = `language=en`;
+      const expectedUrl = `${environment.baseUrl}${CONDITION_KEYS_API_URL}?${expectedUrlParams}`;
+      let response: IOption[];
+
+      service.getConditions(CATEGORY_IDS.CELL_PHONES_ACCESSORIES).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_CONDITIONS);
+
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(response).toEqual(MOCK_CONDITIONS_RESPONSE);
       expect(req.request.method).toBe('GET');
     });
   });
