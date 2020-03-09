@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { InboxService } from '../core/inbox/inbox.service';
+import { InboxService, InboxConversationService } from './service';
 import { InboxConversation, PhoneMethod } from './model';
 import { UserService } from '../core/user/user.service';
 import { EventService } from '../core/event/event.service';
 import { AdService } from '../core/ad/ad.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ConversationService } from '../core/conversation/conversation.service';
-import { InboxConversationService } from '../core/inbox/inbox-conversation.service';
 import { Observable } from 'rxjs';
 import { isEmpty, isNil } from 'lodash-es';
 

@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { RealTimeService } from '../message/real-time.service';
-import { EventService } from '../event/event.service';
-import { ChatSignal, ChatSignalType } from '../message/chat-signal.interface';
-import { MessageService } from '../message/message.service';
-import { PersistencyService } from '../persistency/persistency.service';
-import { Message } from '../message/message';
+import { RealTimeService } from '../../core/message/real-time.service';
+import { EventService } from '../../core/event/event.service';
+import { ChatSignal, ChatSignalType } from '../../core/message/chat-signal.interface';
+import { MessageService } from '../../core/message/message.service';
+import { PersistencyService } from '../../core/persistency/persistency.service';
+import { Message } from '../../core/message/message';
 import { Observable, of } from 'rxjs';
-import { ConversationResponse } from '../conversation/conversation-response.interface';
-import { InboxConversation } from '../../chat/model/inbox-conversation';
+import { ConversationResponse } from '../../core/conversation/conversation-response.interface';
+import { InboxConversation } from '../model/inbox-conversation';
 import { find, head, isNil, some, isEmpty } from 'lodash-es';
-import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
+import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
-import { InboxConversationApi, InboxMessagesApi } from '../../chat/model/api';
+import { InboxConversationApi, InboxMessagesApi } from '../model/api';
 
 @Injectable({
   providedIn: 'root'
