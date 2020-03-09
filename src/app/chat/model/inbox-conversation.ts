@@ -149,15 +149,3 @@ export class InboxConversation {
         return textMessages;
     }
 }
-
-export class StoredInboxConversation {
-    constructor(private _id: string,
-      private modifiedDate: Date,
-      private user: InboxUser,
-      private item: InboxItem,
-      private phoneShared: boolean,
-      private phoneNumber: string,
-      private unreadCounter: number = 0,
-      private nextPageToken: string,
-      private lastMessage?: InboxMessage) {}
-  }

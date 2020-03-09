@@ -26,7 +26,7 @@ import { RealTimeService } from './message/real-time.service';
 import { BlockUserService, BlockUserXmppService } from './conversation/block-user';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
-import { InboxService } from './inbox/inbox.service';
+import { InboxService } from '../chat/service';
 import { StripeService } from './stripe/stripe.service';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
 import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';

@@ -7,7 +7,7 @@ import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { INBOX_ITEM_STATUSES } from '../../model/inbox-item';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
+import { InboxConversationService } from '../../service';
 import { InboxConversationServiceMock } from '../../../../tests';
 import { of } from 'rxjs';
 import { InboxConversation } from '../../model';

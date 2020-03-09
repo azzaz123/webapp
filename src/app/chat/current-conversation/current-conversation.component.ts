@@ -24,7 +24,7 @@ import { ReportListingComponent } from '../modals/report-listing';
 import { ItemService } from '../../core/item/item.service';
 import { BlockUserComponent } from '../modals/block-user';
 import { UnblockUserComponent } from '../modals/unblock-user';
-import { InboxConversationService } from '../../core/inbox/inbox-conversation.service';
+import { InboxConversationService } from '../service';
 import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conversation';
 import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-conversation';
 import { TextMessageComponent } from '../message/text-message';
