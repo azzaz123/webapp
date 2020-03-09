@@ -1,30 +1,20 @@
 /* tslint:disable:no-unused-variable */
 
-import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/testing';
+import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
-import { Message, messageStatus } from '../message/message';
-import { MOCK_USER, USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
-import {
-  CONVERSATION_ID,
-  MOCKED_CONVERSATIONS,
-  MOCK_CONVERSATION
-} from '../../../tests/conversation.fixtures.spec';
+import { Message } from '../message/message';
+import { MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
+import { CONVERSATION_ID, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { XmppBodyMessage } from './xmpp.interface';
 import { Observable } from 'rxjs';
-import {
-  MOCK_PAYLOAD_KO,
-  MOCK_PAYLOAD_OK,
-  MOCK_MESSAGE,
-  MOCK_MESSAGE_FROM_OTHER
-} from '../../../tests/message.fixtures.spec';
+import { MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER, MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
-import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { ChatSignal, ChatSignalType } from '../message/chat-signal.interface';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
+import { MessageStatus } from '../../chat/model';
 import { CREATE_MOCK_INBOX_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE } from '../../../tests/inbox.fixtures.spec';
-import { MessagePayload, MessageType } from '../../chat/model';
-import { User } from '../user/user';
 
 const mamFirstIndex = '1899';
 const mamCount = 1900;
@@ -339,7 +329,7 @@ describe('Service: Xmpp', () => {
       eventService.emit('message', MOCKED_SERVER_MESSAGE);
       tick();
 
-      expect(msg.status).toBe(messageStatus.SENT);
+      expect(msg.status).toBe(MessageStatus.SENT);
       expect(remoteConsoleService.sendPresentationMessageTimeout).toHaveBeenCalledWith('id');
     }));
 
@@ -703,7 +693,7 @@ describe('Service: Xmpp', () => {
       service.sendMessage(CREATE_MOCK_INBOX_CONVERSATION(), MESSAGE_BODY);
       tick();
 
-      expect(msg.status).toBe(messageStatus.PENDING);
+      expect(msg.status).toBe(MessageStatus.PENDING);
     }));
 
     it('should emit a MESSAGE_SENT event when called', () => {
@@ -770,7 +760,8 @@ describe('Service: Xmpp', () => {
 
   describe('buildMessage', () => {
     it('should set the date of the message using the timestamp if it exists', () => {
-      expect((service as any).buildMessage(MOCKED_SERVER_RECEIVED_RECEIPT).date).toEqual(new Date(MOCKED_SERVER_RECEIVED_RECEIPT.timestamp.body));
+      expect((service as any).buildMessage(MOCKED_SERVER_RECEIVED_RECEIPT).date)
+      .toEqual(new Date(MOCKED_SERVER_RECEIVED_RECEIPT.timestamp.body));
     });
   });
 
@@ -801,7 +792,7 @@ describe('Service: Xmpp', () => {
         id: 'someId',
         receipt: 'receipt'
       };
-      const expectedSignal = new ChatSignal(chatSignalType.RECEIVED, message.thread, new Date(message.date).getTime(), message.receipt);
+      const expectedSignal = new ChatSignal(ChatSignalType.RECEIVED, message.thread, new Date(message.date).getTime(), message.receipt);
 
       service['onNewMessage'](message);
 
@@ -820,7 +811,7 @@ describe('Service: Xmpp', () => {
         id: 'someId',
         sentReceipt: { id: 'someId' }
       };
-      const expectedSignal = new ChatSignal(chatSignalType.SENT, message.thread, new Date(message.date).getTime(), message.sentReceipt.id);
+      const expectedSignal = new ChatSignal(ChatSignalType.SENT, message.thread, new Date(message.date).getTime(), message.sentReceipt.id);
 
       service['onNewMessage'](message);
 
@@ -841,7 +832,7 @@ describe('Service: Xmpp', () => {
         id: 'someId',
         readReceipt: { id: 'someId' }
       };
-      const expectedSignal = new ChatSignal(chatSignalType.READ, message.thread, new Date(message.date).getTime(), null, false);
+      const expectedSignal = new ChatSignal(ChatSignalType.READ, message.thread, new Date(message.date).getTime(), null, false);
 
       service['onNewMessage'](message);
 
@@ -862,7 +853,7 @@ describe('Service: Xmpp', () => {
         id: 'someId',
         readReceipt: { id: 'someId' }
       };
-      const expectedSignal = new ChatSignal(chatSignalType.READ, message.thread, new Date(message.date).getTime(), null, true);
+      const expectedSignal = new ChatSignal(ChatSignalType.READ, message.thread, new Date(message.date).getTime(), null, true);
 
       service['onNewMessage'](message);
 

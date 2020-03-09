@@ -7,7 +7,7 @@ import { EventService } from '../event/event.service';
 import { Message } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
-import { ChatSignal, chatSignalType } from './chat-signal.interface';
+import { ChatSignal, ChatSignalType } from './chat-signal.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { RemoteConsoleService } from '../remote-console';
 import { AnalyticsService } from '../analytics/analytics.service';
@@ -99,7 +99,7 @@ export class RealTimeService {
   public sendRead(to: string, thread: string) {
     this.xmpp.sendConversationStatus(to, thread);
     this.eventService.emit(EventService.CHAT_SIGNAL,
-      new ChatSignal(chatSignalType.READ, thread, new Date().getTime(), null, true));
+      new ChatSignal(ChatSignalType.READ, thread, new Date().getTime(), null, true));
   }
 
   private subscribeEventMessageSent() {
