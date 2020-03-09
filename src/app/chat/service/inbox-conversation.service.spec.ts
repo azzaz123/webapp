@@ -2,26 +2,29 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { InboxConversationService } from './inbox-conversation.service';
-import { MessageService } from '../message/message.service';
-import { RealTimeService } from '../message/real-time.service';
-import { PersistencyService } from '../persistency/persistency.service';
+import { MessageService } from '../../core/message/message.service';
+import { RealTimeService } from '../../core/message/real-time.service';
+import { PersistencyService } from '../../core/persistency/persistency.service';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
-import { EventService } from '../event/event.service';
+import { EventService } from '../../core/event/event.service';
 import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 import { InboxMessage, MessageStatus, MessageType } from '../../chat/model/inbox-message';
+import { ChatSignal, ChatSignalType } from '../../core/message/chat-signal.interface';
+import { Message } from '../../core/message/message';
+import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../model';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
-import { UserService } from '../user/user.service';
+import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs';
-import { ItemService } from '../item/item.service';
+import { ItemService } from '../../core/item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
-import { HttpModuleNew } from '../http/http.module.new';
+import { HttpModuleNew } from '../../core/http/http.module.new';
 import { environment } from '../../../environments/environment';
 import { uniq } from 'lodash-es';
-import { AccessTokenService } from '../http/access-token.service';
+import { AccessTokenService } from '../../core/http/access-token.service';
 import * as moment from 'moment';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 
@@ -84,7 +87,7 @@ describe('InboxConversationService', () => {
 
     it('should call procesNewChatSignal when a CHAT_SIGNAL event is emitted', () => {
       spyOn(service, 'processNewChatSignal');
-      const signal = new ChatSignal(chatSignalType.SENT, 'thread id', null, 'message-id');
+      const signal = new ChatSignal(ChatSignalType.SENT, 'thread id', null, 'message-id');
 
       eventService.emit(EventService.CHAT_SIGNAL, signal);
 
@@ -391,14 +394,14 @@ describe('InboxConversationService', () => {
 
       describe('when processing a READ chat signal NOT fromSelf', () => {
         it('should NOT decrase the unreadMessages counter of the conversation', () => {
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, false);
           service.processNewChatSignal(signal);
 
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
         });
 
         it('should NOT decrease messageService.totalUnreadMessages counter', () => {
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, false);
           service.processNewChatSignal(signal);
 
           expect(messageService.totalUnreadMessages).toBe(unreadCount);
@@ -418,7 +421,7 @@ describe('InboxConversationService', () => {
         it('should decrase the unreadMessages counter of the conversation by the number of messages that are being marked as READ', () => {
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
 
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, true);
           service.processNewChatSignal(signal);
 
           expect(mockedConversation.unreadCounter).toBe(0);
@@ -428,7 +431,7 @@ describe('InboxConversationService', () => {
         than the existing counter (disallow negative values in counter)`, () => {
           mockedConversation.unreadCounter = 1;
 
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, true);
           service.processNewChatSignal(signal);
 
           expect(mockedConversation.unreadCounter).toBe(0);
@@ -437,7 +440,7 @@ describe('InboxConversationService', () => {
         it('should decrase messageService.totalUnreadMessages counter by the number of messages that are being marked as READ', () => {
           expect(mockedConversation.unreadCounter).toBe(unreadCount);
 
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, true);
           service.processNewChatSignal(signal);
 
           expect(messageService.totalUnreadMessages).toBe(0);
@@ -447,7 +450,7 @@ describe('InboxConversationService', () => {
         than the existing counter (disallow negative values in counter)`, () => {
           mockedConversation.unreadCounter = 5;
 
-          const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+          const signal = new ChatSignal(ChatSignalType.READ, mockedConversation.id, Date.now(), null, true);
           service.processNewChatSignal(signal);
 
           expect(messageService.totalUnreadMessages).toBe(0);

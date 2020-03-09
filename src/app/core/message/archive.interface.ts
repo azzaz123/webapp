@@ -1,5 +1,4 @@
 import { Message } from './message';
-import { MetaInfo } from './messages.interface';
 
 export interface MsgArchiveResponse {
   messages: Message[];

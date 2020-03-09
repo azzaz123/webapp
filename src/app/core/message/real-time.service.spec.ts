@@ -8,7 +8,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { of, throwError } from 'rxjs';
-import { Message, messageStatus, phoneRequestState } from './message';
+import { Message } from './message';
 import { ACCESS_TOKEN, MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID, MOCK_CONVERSATION, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';
 import { environment } from '../../../environments/environment.docker';
@@ -30,6 +30,8 @@ import {
   MOCK_INBOX_CONVERSATION
 } from '../../../tests/inbox.fixtures.spec';
 import { InboxConversation, InboxMessage, MessageType } from '../../chat/model';
+import { CREATE_MOCK_INBOX_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE } from '../../../tests/inbox.fixtures.spec';
+import { InboxConversation, InboxMessage, MessageStatus, MessageType, PhoneRequestState } from '../../chat/model';
 
 let service: RealTimeService;
 let persistencyService: PersistencyService;

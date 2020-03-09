@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import { Subject } from 'rxjs/Subject';
 import { Conversation } from '../conversation/conversation';
-import { Message, messageStatus, phoneRequestState } from './message';
+import { Message } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
@@ -14,6 +14,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { RealTimeService } from './real-time.service';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { InboxMessage, MessageType } from '../../chat/model';
+import { MessageStatus, PhoneRequestState } from '../../chat/model';
 
 @Injectable()
 export class MessageService {

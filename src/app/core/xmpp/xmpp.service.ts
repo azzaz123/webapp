@@ -1,6 +1,7 @@
 import { clone, remove, eq } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { messageStatus } from '../message/message';
+import { Message } from '../message/message';
 import { EventService } from '../event/event.service';
 import { JID, XmppBodyMessage, XMPPClient } from './xmpp.interface';
 import { Observable, Observer } from 'rxjs';
@@ -9,10 +10,13 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { Conversation } from '../conversation/conversation';
+import { ChatSignal, ChatSignalType } from '../message/chat-signal.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { InboxUser } from '../../chat/model/inbox-user';
 import { RemoteConsoleService } from '../remote-console';
 import { InboxMessage, MessageType } from '../../chat/model';
+import { InboxMessage, MessageStatus } from '../../chat/model';
 
 @Injectable()
 export class XmppService {
@@ -236,11 +240,11 @@ export class XmppService {
   private buildChatSignal(message: XmppBodyMessage) {
     let signal: ChatSignal;
     if (message.timestamp && message.receipt && message.from.bare !== message.to.bare && !message.carbon) {
-      signal = new ChatSignal(chatSignalType.RECEIVED, message.thread, message.date, message.receipt);
+      signal = new ChatSignal(ChatSignalType.RECEIVED, message.thread, message.date, message.receipt);
     } else if (!message.carbon && message.sentReceipt) {
-      signal = new ChatSignal(chatSignalType.SENT, message.thread, message.date, message.sentReceipt.id);
+      signal = new ChatSignal(ChatSignalType.SENT, message.thread, message.date, message.sentReceipt.id);
     } else if (message.readReceipt) {
-      signal = new ChatSignal(chatSignalType.READ, message.thread, message.date, null, this.isFromSelf(message));
+      signal = new ChatSignal(ChatSignalType.READ, message.thread, message.date, null, this.isFromSelf(message));
     }
 
     if (signal) {
@@ -249,7 +253,7 @@ export class XmppService {
   }
 
   private buildMessage(message: XmppBodyMessage, markAsPending = false): InboxMessage {
-    message.status = markAsPending ? messageStatus.PENDING : messageStatus.SENT;
+    message.status = markAsPending ? MessageStatus.PENDING : MessageStatus.SENT;
     const messageType = message.payload ? message.payload.type as MessageType : MessageType.TEXT;
     return new InboxMessage(message.id, message.thread, message.body, message.from.local, this.isFromSelf(message),
       new Date(message.date), message.status, messageType, message.payload);

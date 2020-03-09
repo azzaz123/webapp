@@ -1,8 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { EventService } from '../../core/event/event.service';
-import { InboxConversation } from '../model/inbox-conversation';
-import { InboxService } from '../../core/inbox/inbox.service';
-import { InboxConversationService } from '../../core/inbox/inbox-conversation.service';
+import { InboxConversation } from '../model';
+import { InboxService, InboxConversationService } from '../service';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { UserService } from '../../core/user/user.service';
 import { AdService } from '../../core/ad/ad.service';
