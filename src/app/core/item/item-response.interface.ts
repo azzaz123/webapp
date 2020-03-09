@@ -368,6 +368,7 @@ export interface ItemExtraInfo {
   size?: {
     id: string;
   };
+  condition?: string;
 }
 
 export interface ItemDataResponse {

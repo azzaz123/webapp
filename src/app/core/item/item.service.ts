@@ -288,7 +288,8 @@ export class ItemService extends ResourceService {
         gender: content.extra_info.gender,
         size: {
           id: content.extra_info.size && content.extra_info.size.id ? content.extra_info.size.id.toString() : null
-        }
+        },
+        condition: content.extra_info.condition || null
       } : undefined
     );
   }
