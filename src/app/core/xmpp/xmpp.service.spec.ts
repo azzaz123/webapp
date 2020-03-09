@@ -3,12 +3,8 @@
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
-import { messageStatus } from '../message/message';
 import { MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
-import { CONVERSATION_ID, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { Message } from '../message/message';
-import { MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
-import { CONVERSATION_ID, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
 import { XmppBodyMessage } from './xmpp.interface';
 import { Observable } from 'rxjs';
 import { MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER, MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
@@ -16,13 +12,8 @@ import { environment } from '../../../environments/environment';
 import { ChatSignal, ChatSignalType } from '../message/chat-signal.interface';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
-import {
-  CREATE_MOCK_INBOX_CONVERSATION,
-  CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE,
-} from '../../../tests/inbox.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE, } from '../../../tests/inbox.fixtures.spec';
 import { InboxMessage, MessageStatus, MessageType } from '../../chat/model';
-import { MessageStatus } from '../../chat/model';
-import { CREATE_MOCK_INBOX_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE } from '../../../tests/inbox.fixtures.spec';
 
 const mamFirstIndex = '1899';
 const mamCount = 1900;

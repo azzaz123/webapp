@@ -9,18 +9,18 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { of, throwError } from 'rxjs';
 import { Message } from './message';
-import { ACCESS_TOKEN, MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
+import { ACCESS_TOKEN, MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID, MOCK_CONVERSATION, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';
 import { environment } from '../../../environments/environment.docker';
 import { RemoteConsoleService } from '../remote-console';
-import { MockRemoteConsoleService, MockConnectionService } from '../../../tests';
+import { MockConnectionService, MockRemoteConsoleService } from '../../../tests';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
   AnalyticsEvent,
+  SCREEN_IDS,
   SendFirstMessage
 } from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
@@ -29,9 +29,7 @@ import {
   CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE,
   MOCK_INBOX_CONVERSATION
 } from '../../../tests/inbox.fixtures.spec';
-import { InboxConversation, InboxMessage, MessageType } from '../../chat/model';
-import { CREATE_MOCK_INBOX_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE } from '../../../tests/inbox.fixtures.spec';
-import { InboxConversation, InboxMessage, MessageStatus, MessageType, PhoneRequestState } from '../../chat/model';
+import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../chat/model';
 
 let service: RealTimeService;
 let persistencyService: PersistencyService;
@@ -269,7 +267,7 @@ describe('RealTimeService', () => {
       spyOn(trackingService, 'addTrackingEvent');
       const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
       const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(),
-        messageStatus.SENT, MessageType.TEXT);
+        MessageStatus.SENT, MessageType.TEXT);
       newConversation.messages.push(inboxMessage);
       const expectedEvent: TrackingEventData = {
         eventData: TrackingService.CONVERSATION_CREATE_NEW,
@@ -289,7 +287,7 @@ describe('RealTimeService', () => {
       spyOn(window, 'fbq');
       const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
       const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(),
-        messageStatus.SENT, MessageType.TEXT);
+        MessageStatus.SENT, MessageType.TEXT);
       newConversation.messages.push(inboxMessage);
 
       const event = {
@@ -306,7 +304,7 @@ describe('RealTimeService', () => {
       spyOn(window, 'pintrk');
       const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
       const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(),
-        messageStatus.SENT, MessageType.TEXT);
+        MessageStatus.SENT, MessageType.TEXT);
       newConversation.messages.push(inboxMessage);
       const event = {
         value: newConversation.item.price.amount,
@@ -343,7 +341,7 @@ describe('RealTimeService', () => {
     it('should call appboy.logCustomEvent if this is the first message message sent', () => {
       spyOn(appboy, 'logCustomEvent');
       const inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(),
-        messageStatus.SENT, MessageType.TEXT);
+        MessageStatus.SENT, MessageType.TEXT);
       const conv = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
       conv.messages.push(inboxMessage);
 
@@ -363,7 +361,8 @@ describe('RealTimeService', () => {
 
     describe('if it`s the first message', () => {
       it('should send the Send First Message event', () => {
-        const inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(), messageStatus.SENT, MessageType.TEXT);
+        const inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(),
+          MessageStatus.SENT, MessageType.TEXT);
         const inboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
         const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
           name: ANALYTICS_EVENT_NAMES.SendFirstMessage,

@@ -1,7 +1,5 @@
-import { clone, remove, eq } from 'lodash-es';
+import { clone, eq, remove } from 'lodash-es';
 import { Injectable } from '@angular/core';
-import { messageStatus } from '../message/message';
-import { Message } from '../message/message';
 import { EventService } from '../event/event.service';
 import { JID, XmppBodyMessage, XMPPClient } from './xmpp.interface';
 import { Observable, Observer } from 'rxjs';
@@ -9,14 +7,9 @@ import 'rxjs/add/observable/from';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
-import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
-import { Conversation } from '../conversation/conversation';
 import { ChatSignal, ChatSignalType } from '../message/chat-signal.interface';
-import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { InboxUser } from '../../chat/model/inbox-user';
+import { InboxConversation, InboxMessage, InboxUser, MessageStatus, MessageType } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
-import { InboxMessage, MessageType } from '../../chat/model';
-import { InboxMessage, MessageStatus } from '../../chat/model';
 
 @Injectable()
 export class XmppService {

@@ -12,9 +12,7 @@ import { EventService } from '../event/event.service';
 import { I18nService } from '../i18n/i18n.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { RealTimeService } from './real-time.service';
-import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { InboxMessage, MessageType } from '../../chat/model';
-import { MessageStatus, PhoneRequestState } from '../../chat/model';
+import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../chat/model';
 
 @Injectable()
 export class MessageService {
@@ -67,7 +65,7 @@ export class MessageService {
       conversation.user.id,
       true,
       new Date(),
-      messageStatus.READ,
+      MessageStatus.READ,
       MessageType.TEXT,
       null);
     conversation.messages.push(message);

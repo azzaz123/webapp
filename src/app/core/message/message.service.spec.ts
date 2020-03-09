@@ -20,9 +20,8 @@ import { I18nService } from '../i18n/i18n.service';
 import { RealTimeService } from './real-time.service';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
-import { InboxConversation, MessageStatus, PhoneRequestState } from '../../chat/model';
+import { InboxConversation, MessageStatus } from '../../chat/model';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
-import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../chat/model';
 
 describe('Service: Message', () => {
 

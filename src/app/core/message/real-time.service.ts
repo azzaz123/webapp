@@ -6,19 +6,18 @@ import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { ChatSignal, ChatSignalType } from './chat-signal.interface';
-import { InboxConversation } from '../../chat/model/inbox-conversation';
+import { InboxConversation, InboxMessage } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
 import { AnalyticsService } from '../analytics/analytics.service';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
   AnalyticsEvent,
+  SCREEN_IDS,
   SendFirstMessage
 } from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
 import { filter } from 'rxjs/operators';
-import { InboxMessage } from '../../chat/model';
 
 @Injectable()
 export class RealTimeService {
@@ -101,7 +100,7 @@ export class RealTimeService {
   }
 
   private subscribeEventMessageSent() {
-    this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: InboxConversation , messageId: string) => {
+    this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: InboxConversation, messageId: string) => {
 
       if (this.isFirstMessage(conversation)) {
         this.trackConversationCreated(conversation, messageId);
@@ -173,5 +172,4 @@ export class RealTimeService {
 
     this.analyticsService.trackEvent(event);
   }
-
 }
