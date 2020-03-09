@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { RealTimeService } from '../message/real-time.service';
-import { EventService } from '../event/event.service';
-import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
-import { MessageService } from '../message/message.service';
-import { Message, messageStatus } from '../message/message';
+import { RealTimeService } from '../../core/message/real-time.service';
+import { EventService } from '../../core/event/event.service';
+import { ChatSignal, ChatSignalType } from '../../core/message/chat-signal.interface';
+import { MessageService } from '../../core/message/message.service';
+import { Message } from '../../core/message/message';
 import { Observable, of } from 'rxjs';
-import { ConversationResponse } from '../conversation/conversation-response.interface';
-import { InboxConversation } from '../../chat/model/inbox-conversation';
+import { ConversationResponse } from '../../core/conversation/conversation-response.interface';
+import { InboxConversation } from '../model/inbox-conversation';
 import { find, head, isNil, some, isEmpty } from 'lodash-es';
-import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../../chat/model';
+import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
-import { InboxConversationApi, InboxMessagesApi } from '../../chat/model/api';
+import { InboxConversationApi, InboxMessagesApi } from '../model/api';
 
 @Injectable({
   providedIn: 'root'
@@ -139,13 +139,13 @@ export class InboxConversationService {
 
   public processNewChatSignal(signal: ChatSignal) {
     switch (signal.type) {
-      case chatSignalType.SENT:
+      case ChatSignalType.SENT:
         this.markAs(MessageStatus.SENT, signal.messageId, signal.thread);
         break;
-      case chatSignalType.RECEIVED:
+      case ChatSignalType.RECEIVED:
         this.markAs(MessageStatus.RECEIVED, signal.messageId, signal.thread);
         break;
-      case chatSignalType.READ:
+      case ChatSignalType.READ:
         /* the last argument passed to markAllAsRead is the reverse of fromSelf, as markAllAsRead method uses it to filter which messages
            it should mark with status 'read'; when receiving a READ signal fromSelf we want to mark as 'read' messages from other */
         this.markAllAsRead(signal.thread, signal.timestamp, !signal.fromSelf);
@@ -171,7 +171,7 @@ export class InboxConversationService {
     }
   }
 
-  private markAs(newStatus: string, messageId: string, thread: string) {
+  private markAs(newStatus: MessageStatus, messageId: string, thread: string) {
     const conversation = this.conversations.find(c => c.id === thread);
     if (!conversation) {
       return;
@@ -330,7 +330,7 @@ export class InboxConversationService {
 
   public resendPendingMessages(conversation: InboxConversation): void {
     conversation.messages
-    .filter((message: InboxMessage) => message.status === messageStatus.PENDING
+    .filter((message: InboxMessage) => message.status === MessageStatus.PENDING
       && moment(message.date).isAfter(moment().subtract(InboxConversationService.RESEND_BEFORE_5_DAYS, 'days')))
     .forEach((message: InboxMessage) => this.realTime.resendMessage(conversation, message));
   }

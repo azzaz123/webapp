@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { InboxConversation } from '../../model';
-import { InboxConversationService } from '../../../core/inbox/inbox-conversation.service';
+import { InboxConversationService } from '../../service';
 
 @Component({
   selector: 'tsl-inbox-conversation',

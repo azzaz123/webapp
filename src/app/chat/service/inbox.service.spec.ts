@@ -1,24 +1,24 @@
 import { TestBed } from '@angular/core/testing';
 import { InboxService } from './inbox.service';
-import { MessageService } from '../message/message.service';
+import { MessageService } from '../../core/message/message.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { of, throwError } from 'rxjs';
 import { createInboxConversationsArray, MOCK_INBOX_API_RESPONSE } from '../../../tests/inbox.fixtures.spec';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
-import { FeatureflagService } from '../user/featureflag.service';
-import { EventService } from '../event/event.service';
-import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../../chat/model/inbox-item';
-import { UserService } from '../user/user.service';
+import { FeatureflagService } from '../../core/user/featureflag.service';
+import { EventService } from '../../core/event/event.service';
+import { InboxConversation } from '../model/inbox-conversation';
+import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../model/inbox-item';
+import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
-import { InboxUserPlaceholder } from '../../chat/model/inbox-user';
+import { InboxUserPlaceholder } from '../model/inbox-user';
 import { InboxConversationService } from './inbox-conversation.service';
 import { FeatureFlagServiceMock } from '../../../tests';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpModuleNew } from '../http/http.module.new';
-import { RealTimeService } from '../message/real-time.service';
+import { HttpModuleNew } from '../../core/http/http.module.new';
+import { RealTimeService } from '../../core/message/real-time.service';
 import { environment } from '../../../environments/environment';
-import { AccessTokenService } from '../http/access-token.service';
+import { AccessTokenService } from '../../core/http/access-token.service';
 import { HttpClient } from '@angular/common/http';
 
 describe('InboxService', () => {

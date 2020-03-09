@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import { Subject } from 'rxjs/Subject';
 import { Conversation } from '../conversation/conversation';
-import { Message, messageStatus, phoneRequestState } from './message';
+import { Message } from './message';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { ConnectionService } from '../connection/connection.service';
@@ -12,6 +12,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { RealTimeService } from './real-time.service';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
+import { MessageStatus, PhoneRequestState } from '../../chat/model';
 
 @Injectable()
 export class MessageService {
@@ -62,9 +63,9 @@ export class MessageService {
       this.i18n.getTranslations('phoneRequestMessage'),
       conversation.user.id,
       new Date(),
-      messageStatus.READ);
+      MessageStatus.READ);
     msg = this.addUserInfo(conversation, msg);
-    msg.phoneRequest = phoneRequestState.pending;
+    msg.phoneRequest = PhoneRequestState.PENDING;
     conversation.messages.push(msg);
     if (withTracking) {
       this.trackingService.track(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
@@ -77,6 +78,6 @@ export class MessageService {
     const message = this.i18n.getTranslations('phoneMessage') + phone;
     this.realTime.sendMessage(conversation, message);
     const phoneRequestMsg = conversation.messages.find(m => m.phoneRequest);
-    phoneRequestMsg.phoneRequest = phoneRequestState.answered;
+    phoneRequestMsg.phoneRequest = PhoneRequestState.ANSWERED;
   }
 }

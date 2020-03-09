@@ -9,24 +9,24 @@ export enum MessageType {
   REVIEW = 'review',
 }
 
-export const MessageStatus = {
-  PENDING: 'pending',
-  SENT: 'sent',
-  RECEIVED: 'received',
-  READ: 'read'
-};
+export enum MessageStatus {
+  PENDING = 'pending',
+  SENT = 'sent',
+  RECEIVED = 'received',
+  READ = 'read'
+}
 
 export const statusOrder = [MessageStatus.PENDING, MessageStatus.SENT, MessageStatus.RECEIVED, MessageStatus.READ];
 
-export const phoneRequestState = {
-  pending: 'pending',
-  answered: 'answered'
-};
+export enum PhoneRequestState {
+  PENDING = 'pending',
+  ANSWERED = 'answered'
+}
 
-export const phoneMethod = {
-  chatMessage: 'bubble',
-  popUp: 'qa'
-};
+export enum PhoneMethod {
+  CHAT_MESSAGE = 'bubble',
+  POP_UP = 'qa'
+}
 
 export class InboxMessage {
   constructor(
@@ -36,7 +36,7 @@ export class InboxMessage {
     private _from: string,
     private _fromSelf: boolean,
     private _date: Date,
-    private _status: string,
+    private _status: MessageStatus,
     private _type: MessageType,
     private _payload?: MessagePayload,
     private _phoneRequest?: string) {
@@ -62,11 +62,11 @@ export class InboxMessage {
     this._date = value;
   }
 
-  get status(): string {
+  get status(): MessageStatus {
     return this._status;
   }
 
-  set status(value: string) {
+  set status(value: MessageStatus) {
     this._status = value;
   }
 
@@ -117,7 +117,7 @@ export class InboxMessage {
   }
 }
 
-export interface MessagePayload {
+export class MessagePayload {
   text: string;
   type: string;
 }

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { InboxConversation } from '../../chat/model';
-import { MessageService } from '../message/message.service';
-import { FeatureflagService } from '../user/featureflag.service';
-import { EventService } from '../event/event.service';
-import { UserService } from '../user/user.service';
+import { InboxConversation } from '../model';
+import { MessageService } from '../../core/message/message.service';
+import { FeatureflagService } from '../../core/user/featureflag.service';
+import { EventService } from '../../core/event/event.service';
+import { UserService } from '../../core/user/user.service';
 import { InboxConversationService } from './inbox-conversation.service';
-import { InboxApi, InboxConversationApi } from '../../chat/model/api';
+import { InboxApi, InboxConversationApi } from '../model/api';
 import { map, tap } from 'rxjs/operators';
 import { uniqBy } from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
