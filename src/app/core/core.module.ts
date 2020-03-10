@@ -13,7 +13,7 @@ import { TutorialService } from './tutorial/tutorial.service';
 import { AccessTokenService } from './http/access-token.service';
 import { HttpService } from './http/http.service';
 import { ConversationModule } from './conversation/conversation.module';
-import { MessageService } from './message/message.service';
+import { MessageService } from '../chat/service/message.service';
 import { NotificationService } from './notification/notification.service';
 import { PaymentService } from './payments/payment.service';
 import { PersistencyService } from './persistency/persistency.service';

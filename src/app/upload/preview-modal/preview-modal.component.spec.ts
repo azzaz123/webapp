@@ -6,7 +6,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UPLOAD_FORM_CAR_VALUES } from '../../../tests/item.fixtures.spec';
 import { Observable } from 'rxjs';
 import { CarKeysService } from '../upload-car/car-keys.service';
-import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 
 describe('PreviewModalComponent', () => {

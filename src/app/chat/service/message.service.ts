@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import { Subject } from 'rxjs/Subject';
-import { Conversation } from '../conversation/conversation';
-import { Message } from './message';
-import { PersistencyService } from '../persistency/persistency.service';
-import { UserService } from '../user/user.service';
-import { User } from '../user/user';
-import { ConnectionService } from '../connection/connection.service';
+import { Conversation } from '../../core/conversation/conversation';
+import { Message } from '../../core/message/message';
+import { PersistencyService } from '../../core/persistency/persistency.service';
+import { UserService } from '../../core/user/user.service';
+import { User } from '../../core/user/user';
+import { ConnectionService } from '../../core/connection/connection.service';
 import 'rxjs/add/operator/first';
-import { EventService } from '../event/event.service';
-import { I18nService } from '../i18n/i18n.service';
-import { TrackingService } from '../tracking/tracking.service';
-import { RealTimeService } from './real-time.service';
-import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../chat/model';
+import { EventService } from '../../core/event/event.service';
+import { I18nService } from '../../core/i18n/i18n.service';
+import { TrackingService } from '../../core/tracking/tracking.service';
+import { RealTimeService } from '../../core/message/real-time.service';
+import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../model';
 
 @Injectable()
 export class MessageService {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { EventService } from '../../core/event/event.service';
-import { ChatSignal, ChatSignalType } from '../../core/message/chat-signal.interface';
-import { MessageService } from '../../core/message/message.service';
+import { ChatSignal, ChatSignalType } from '../model/chat-signal';
+import { MessageService } from './message.service';
 import { PersistencyService } from '../../core/persistency/persistency.service';
 import { Observable, of } from 'rxjs';
 import { ConversationResponse } from '../../core/conversation/conversation-response.interface';
@@ -186,7 +186,7 @@ export class InboxConversationService {
   private fetchOrCreateInboxConversation(message: InboxMessage) {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getConversation(message.thread)
-    .subscribe((conversation) => {
+    .subscribe((conversation: InboxConversation) => {
         this.addNewMessage(conversation, message);
         if (!this.containsConversation(conversation)) {
           this.conversations.unshift(conversation);

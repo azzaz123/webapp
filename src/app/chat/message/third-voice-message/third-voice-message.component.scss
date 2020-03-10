@@ -9,15 +9,11 @@
   }
 
   .message-content {
-    padding-top: 3px;
+    padding-top: $spacing-xs;
     padding-left: 35px;
 
     .message-date {
       color: $softblue-dark;
-      &.third-voice {
-        height: 0;
-        bottom: $spacing-m;
-      }
     }
 
     tsl-third-voice-button {

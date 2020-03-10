@@ -31,6 +31,8 @@ import { TextMessageComponent } from '../message/text-message';
 import { ThirdVoiceMessageComponent } from '../message/third-voice-message';
 import { eq, includes } from 'lodash-es';
 import { InboxConversation, InboxMessage, MessageType } from '../model';
+import { ThirdVoiceDropPriceComponent } from '../message/third-voice-drop-price';
+import { ThirdVoiceReviewComponent } from '../message/third-voice-review';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -263,8 +265,12 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     return includes(TextMessageComponent.ALLOW_MESSAGES_TYPES, messageType);
   }
 
-  public isThirdVoiceMessage(messageType: MessageType): boolean {
-    return includes(ThirdVoiceMessageComponent.ALLOW_MESSAGES_TYPES, messageType);
+  public isThirdVoiceDropPrice(messageType: MessageType): boolean {
+    return includes(ThirdVoiceDropPriceComponent.ALLOW_MESSAGES_TYPES, messageType);
+  }
+
+  public isThirdVoiceReview(messageType: MessageType): boolean {
+    return includes(ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES, messageType);
   }
 
   public scrollToLastMessage(): void {

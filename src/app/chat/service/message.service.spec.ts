@@ -1,26 +1,26 @@
 /* tslint:disable:no-unused-variable */
 import { TestBed } from '@angular/core/testing';
 import { MessageService } from './message.service';
-import { XmppService } from '../xmpp/xmpp.service';
-import { Conversation } from '../conversation/conversation';
-import { Message } from './message';
-import { EventService } from '../event/event.service';
-import { PersistencyService } from '../persistency/persistency.service';
+import { XmppService } from '../../core/xmpp/xmpp.service';
+import { Conversation } from '../../core/conversation/conversation';
+import { Message } from '../../core/message/message';
+import { EventService } from '../../core/event/event.service';
+import { PersistencyService } from '../../core/persistency/persistency.service';
 import { createMessagesArray, MESSAGE_MAIN } from '../../../tests/message.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
-import { UserService } from '../user/user.service';
-import { User } from '../user/user';
+import { UserService } from '../../core/user/user.service';
+import { User } from '../../core/user/user';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { TrackingService } from '../tracking/tracking.service';
-import { ConnectionService } from '../connection/connection.service';
-import { HttpService } from '../http/http.service';
-import { I18nService } from '../i18n/i18n.service';
-import { RealTimeService } from './real-time.service';
-import { RemoteConsoleService } from '../remote-console';
+import { TrackingService } from '../../core/tracking/tracking.service';
+import { ConnectionService } from '../../core/connection/connection.service';
+import { HttpService } from '../../core/http/http.service';
+import { I18nService } from '../../core/i18n/i18n.service';
+import { RealTimeService } from '../../core/message/real-time.service';
+import { RemoteConsoleService } from '../../core/remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
-import { InboxConversation, MessageStatus } from '../../chat/model';
+import { InboxConversation, MessageStatus } from '../model';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 
 describe('Service: Message', () => {

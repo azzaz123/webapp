@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SendPhoneComponent } from './send-phone.component';
-import { MessageService } from '../../../core/message/message.service';
+import { MessageService } from '../../service/message.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';

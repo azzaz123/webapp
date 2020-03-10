@@ -10,7 +10,7 @@ import { CartService } from '../../../shared/catalog/cart/cart.service';
 import { CartPro } from '../../../shared/catalog/cart/cart-pro';
 import { CartChange } from '../../../shared/catalog/cart/cart-item.interface';
 import { ITEM_ID, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
-import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../../shared/pipes';
 import { MOCK_DATE2, MOCK_DATE3 } from '../../../../tests/calendar.fixtures.spec';
 import { MOCK_PROITEM, MOCK_PROITEM3 } from '../../../../tests/pro-item.fixtures.spec';
 

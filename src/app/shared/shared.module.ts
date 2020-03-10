@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { MatIconModule } from '@angular/material';
 import { AdComponent } from './ad/ad.component';
-import { CustomCurrencyPipe } from './custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
