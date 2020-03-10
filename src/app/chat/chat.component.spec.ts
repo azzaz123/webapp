@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
@@ -11,9 +11,8 @@ import { UserService } from '../core/user/user.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../tests/inbox.fixtures.spec';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { InboxConversationService } from '../core/inbox/inbox-conversation.service';
+import { InboxConversationService, InboxService } from './service';
 import { ConversationService } from '../core/conversation/conversation.service';
-import { InboxService } from '../core/inbox/inbox.service';
 import { ConversationServiceMock, InboxConversationServiceMock, InboxServiceMock } from '../../tests';
 import { PhoneMethodResponse } from '../core/user/phone-method.interface';
 import { InboxConversation, MessageStatus } from './model';

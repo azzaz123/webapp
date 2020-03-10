@@ -4,7 +4,6 @@ import { ActivatedRouteSnapshot, RouterModule, Routes } from '@angular/router';
 import { ListComponent } from './list/list.component';
 import { LoggedGuard } from '../core/user/logged.guard';
 import { CatalogComponent } from './catalog.component';
-import { TutorialGuard } from '../shared/guards/tutorial.guard';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
@@ -32,7 +31,7 @@ export function isNormalCheckoutPermissions(rejectedPermissionName: string, rout
 export const routes: Routes = [
   {
     path: '',
-    canActivate: [LoggedGuard, TutorialGuard],
+    canActivate: [LoggedGuard],
     canActivateChild: [NgxPermissionsGuard],
     children: [
       {

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync, flush } from '@angular/core/testing';
 import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
@@ -136,7 +136,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     })
 
     it('should requestNewPayment if card is not attached', fakeAsync(() => {
-      spyOn(stripeService, 'addNewCard').and.returnValue(Observable.of(null));
+      spyOn(stripeService, 'addNewCard').and.returnValue(throwError('bad credit card'));
       spyOn(errorsService, 'i18nError');
 
       component.addSubscription(PAYMENT_METHOD_DATA);
