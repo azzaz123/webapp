@@ -269,9 +269,9 @@
   <msg id="4213947433233162088"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:55</source>Special zones for your product</msg>
   <msg id="2483251316426820393"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:56,57</source>Your featured items will appear exclusively in certain zones and will stand out from the other
                         ads with better visibility.</msg>
-  <msg id="4563965495368336177"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:64</source><source>app/tutorial/tutorial.component.html:67</source>Skip</msg>
-  <msg id="3885497195825665706"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:73</source><source>app/tutorial/tutorial.component.html:78</source><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:37</source>Next</msg>
-  <msg id="7160029661601775341"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:77</source><source>app/tutorial/tutorial.component.html:83</source>Ready!</msg>
+  <msg id="4563965495368336177"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:64</source>Skip</msg>
+  <msg id="3885497195825665706"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:73</source><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:37</source>Next</msg>
+  <msg id="7160029661601775341"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:77</source>Ready!</msg>
   <msg id="1388549121916575785"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.html:6</source><source>app/catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component.html:7</source>Your item has been uploaded and it&apos;s marked as urgent.</msg>
   <msg id="1666676372989024280"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.html:11</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:17</source>and you have <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins left</msg>
   <msg id="3938280541945338173"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.html:12</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:18</source>and you have <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> credit</msg>
@@ -684,21 +684,6 @@
   <msg id="6821183586555063962"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:68</source>This product is Featured</msg>
   <msg id="3879651736105644738"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:69</source>You will get more views, chats and more interested people.</msg>
   <msg id="916352071278248935"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:70</source>Your feature ends on <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amDateFormat:momentConfig}}</ex></ph></msg>
-  <msg id="8775411328776279097"><source>app/tutorial/tutorial.component.html:6</source>Introducing our new webpage!</msg>
-  <msg id="6002580040961562985"><source>app/tutorial/tutorial.component.html:7</source>You&apos;re in the zone to access all of the features of the app.</msg>
-  <msg id="2137505802700728396"><source>app/tutorial/tutorial.component.html:11</source>From here you can view and edit your profile; set your location and the location of your items, change your photo and password and edit your email address.</msg>
-  <msg id="3140417703982763936"><source>app/tutorial/tutorial.component.html:15</source>From here you can view your items, you can choose to upload more or edit and feature the items you have for sale.</msg>
-  <msg id="4486163214005133487"><source>app/tutorial/tutorial.component.html:19</source><source>app/tutorial/tutorial.component.html:56</source>View your conversations and reply via the webpage or from the app. Oh see it works well from the webpage!</msg>
-  <msg id="70240206675549090"><source>app/tutorial/tutorial.component.html:23</source>Wallacoins? Wallacoins are the new wallapop&apos;s currency. You will save money featuring your products. Get one of our packs and we will give you some free wallacoins for your purchases.</msg>
-  <msg id="7478441329490273363"><source>app/tutorial/tutorial.component.html:24</source>What is this? Saving packs for your Featured products. Add credit here and you will get great discounts. </msg>
-  <msg id="5289897176155020957"><source>app/tutorial/tutorial.component.html:28</source>Your favorites can be seen on the big screen which might help make up your mind.</msg>
-  <msg id="8328195571736012184"><source>app/tutorial/tutorial.component.html:32</source>See your profile reviews. Is the community leaving good feedback?</msg>
-  <msg id="1747851890616342359"><source>app/tutorial/tutorial.component.html:39</source>Introducing our new webpage pro!</msg>
-  <msg id="7965763213079559522"><source>app/tutorial/tutorial.component.html:40</source>You&apos;re in the pro zone to access all of the features of the app and protool.</msg>
-  <msg id="5339303196793781359"><source>app/tutorial/tutorial.component.html:44</source>From here you can view and edit your profile, billing info and check your listing car plan and your visibility plan. Also you can set your location and the location of your items, change your photo and password and edit your email address.</msg>
-  <msg id="157339153102985723"><source>app/tutorial/tutorial.component.html:48</source>Here you can see statistics related with visualizations, chats and calls received from your items. Also you can see the impact when you have featured cars in the metrics.</msg>
-  <msg id="9086693090800324810"><source>app/tutorial/tutorial.component.html:52</source>From here you can view your items, you can choose to upload more, active your items or edit and feature the items you have for sale.</msg>
-  <msg id="5119878065843230741"><source>app/tutorial/tutorial.component.html:60</source>Here you can manage and see the information related with your calls.</msg>
   <msg id="3749157863216929849"><source>app/upload/edit/edit.component.html:4</source>Back to catalog</msg>
   <msg id="1526908168288421707"><source>app/upload/category-selector/category-selector.component.html:4</source>What will you list?</msg>
   <msg id="4890891474174650184"><source>app/upload/category-selector/category-selector.component.html:9</source>Set the product type</msg>
