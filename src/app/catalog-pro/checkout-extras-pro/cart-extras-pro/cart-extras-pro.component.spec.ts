@@ -12,7 +12,7 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { CartProExtras } from '../../../shared/catalog/cart/cart-pro-extras';
 import { CartChange } from '../../../shared/catalog/cart/cart-item.interface';
-import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../../shared/pipes';
 import {
   BILLING_INFO_RESPONSE,
   FINANCIAL_CARD, ORDER_CART_EXTRAS_PRO, PACK_ID,

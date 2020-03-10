@@ -68,10 +68,6 @@
   <msg id="3113301792677314615"><source>app/shared/modals/review-modal/review-modal.component.html:12</source>I sold this for:</msg>
   <msg id="8149407802234183277"><source>app/shared/modals/review-modal/review-modal.component.html:17</source>Leave a review...</msg>
   <msg id="7430416142942514215"><source>app/shared/modals/review-modal/review-modal.component.html:23</source>Publish</msg>
-  <msg id="3031881676351306386"><source>app/shared/message/message.component.html:10</source>Leave your number</msg>
-  <msg id="1214570422954613349"><source>app/shared/message/message.component.html:11</source>Phone sent ;)</msg>
-  <msg id="7992914064106893139"><source>app/shared/message/review-button/review-button.component.html:1</source><source>app/chat/message/third-voice-message/third-voice-review/third-voice-review.component.html:1</source>Review now</msg>
-  <msg id="2506703378559967461"><source>app/shared/message/review-button/review-button.component.html:4</source>Thanks for rating</msg>
   <msg id="4284869171317534738"><source>app/shared/profile/edit-email/email-modal/email-modal.component.html:5</source>New email?</msg>
   <msg id="4200745758819613954"><source>app/shared/profile/edit-email/email-modal/email-modal.component.html:6</source>You can update it now</msg>
   <msg id="6357315990612654699"><source>app/shared/profile/edit-email/email-modal/email-modal.component.html:9</source>Current email</msg>
@@ -387,6 +383,9 @@
   <msg id="8847634013548993288"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:17</source>country bump</msg>
   <msg id="6299971173481067869"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:18</source>city bumps</msg>
   <msg id="4849465581526004216"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:19</source>country bumps</msg>
+  <msg id="2060326108457530649"><source>app/chat/message/third-voice-review/third-voice-review.component.html:2</source>Great! You found what you were looking for!</msg>
+  <msg id="7931637164374710264"><source>app/chat/message/third-voice-review/third-voice-review.component.html:6</source>How did it go? Take a moment to leave some feedback to the user to help our community!</msg>
+  <msg id="3734816767204282002"><source>app/chat/message/third-voice-drop-price/third-voice-drop-price.component.html:2</source>The item price has dropped. Close the deal!</msg>
   <msg id="6260849581441982349"><source>app/chat/modals/block-send-link/block-send-link.component.html:3</source>Oh, no!</msg>
   <msg id="3345227992092802987"><source>app/chat/modals/block-send-link/block-send-link.component.html:4</source>You can not send links (unrelated to wallapop) on this chat. That&apos;s how many scams start, so better safe than sorry!</msg>
   <msg id="5601530442010506564"><source>app/chat/modals/block-send-link/block-send-link.component.html:7</source>Got it</msg>
@@ -436,7 +435,7 @@
   <msg id="2247942788262300865"><source>app/chat/inbox/inbox.component.html:8</source><source>app/chat/inbox/inbox.component.html:19</source>Archived Messages</msg>
   <msg id="8032820066123493751"><source>app/chat/inbox/inbox.component.html:32</source>New messages</msg>
   <msg id="7238711418435054042"><source>app/chat/inbox/inbox.component.html:35</source>We found some problems updating your inbox. Try again later.</msg>
-  <msg id="33149636091572968"><source>app/chat/inbox/inbox.component.html:52</source><source>app/chat/inbox/inbox.component.html:76</source><source>app/chat/current-conversation/current-conversation.component.html:107</source>Load more</msg>
+  <msg id="33149636091572968"><source>app/chat/inbox/inbox.component.html:52</source><source>app/chat/inbox/inbox.component.html:76</source><source>app/chat/current-conversation/current-conversation.component.html:110</source>Load more</msg>
   <msg id="265020643835790616"><source>app/chat/inbox/inbox.component.html:59</source>We found some problems updating your archived messages. Try again later.</msg>
   <msg id="8721026914522212662"><source>app/chat/inbox/archived-inbox-conversation/archived-inbox-conversation.component.html:42</source>Archived </msg>
   <msg id="682982254050004818"><source>app/chat/current-conversation/current-conversation.component.html:9,10</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
@@ -459,14 +458,15 @@
   <msg id="3934360921102914601"><source>app/chat/current-conversation/current-conversation.component.html:67</source>You have blocked this user. Unblock it to continue chatting</msg>
   <msg id="5949661737880412802"><source>app/chat/current-conversation/current-conversation.component.html:73</source>This user is not available</msg>
   <msg id="3753612046513951428"><source>app/chat/current-conversation/current-conversation.component.html:80</source>This product is not available</msg>
-  <msg id="2536023333703806770"><source>app/chat/current-conversation/current-conversation.component.html:100</source>Remember not to share private data for security reasons</msg>
+  <msg id="2536023333703806770"><source>app/chat/current-conversation/current-conversation.component.html:103</source>Remember not to share private data for security reasons</msg>
   <msg id="6969584346860248976" desc="The distance between the user and the item"><source>app/chat/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:12,14</source>
         <ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you
       </msg>
   <msg id="7962273932004201523"><source>app/chat/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:24,25</source>Sold
     </msg>
   <msg id="3893097575013115653"><source>app/chat/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component.html:9</source>+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex></ph> More</msg>
-  <msg id="6721544969146753310"><source>app/chat/message/third-voice-message/third-voice-review/third-voice-review.component.html:4</source>Thanks for the valuation</msg>
+  <msg id="4741413716404810905"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:1</source>Do review</msg>
+  <msg id="7305026831182508111"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:4</source>Thanks for rating!</msg>
   <msg id="7368172072093620772"><source>app/dashboard/dashboard.component.html:5</source>Your stats</msg>
   <msg id="4480485533144060831"><source>app/dashboard/dashboard.component.html:8,9</source>Here you can see information related with the visualizations, chats and calls
           generated by your car catalog. You can also see the impact on metrics of the highlights you apply.</msg>

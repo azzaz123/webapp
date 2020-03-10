@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactivateModalComponent } from './reactivate-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
 import { PaymentService } from '../../../../core/payments/payment.service';

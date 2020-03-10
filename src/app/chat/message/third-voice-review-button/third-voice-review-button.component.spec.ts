@@ -2,15 +2,15 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { MatIconModule } from '@angular/material';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ThirdVoiceReviewComponent } from './third-voice-review.component';
-import { ButtonComponent } from '../../../../shared/button/button.component';
-import { ReviewService } from '../../../../core/review/review.service';
+import { ThirdVoiceReviewButtonComponent } from './third-voice-review-button.component';
+import { ButtonComponent } from '../../../shared/button/button.component';
+import { ReviewService } from '../../../core/review/review.service';
 import { Observable } from 'rxjs';
-import { USER_ID } from '../../../../../tests/user.fixtures.spec';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../../tests/inbox.fixtures.spec';
-import { ReviewModalComponent } from '../../../../shared/modals/review-modal/review-modal.component';
-import { SoldModalComponent } from '../../../../shared/modals/sold-modal/sold-modal.component';
-import { InboxConversation } from '../../../model';
+import { USER_ID } from '../../../../tests/user.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
+import { ReviewModalComponent } from '../../../shared/modals/review-modal/review-modal.component';
+import { SoldModalComponent } from '../../../shared/modals/sold-modal/sold-modal.component';
+import { InboxConversation } from '../../model';
 
 const modalRef: any = {
   result: Promise.resolve({
@@ -38,8 +38,8 @@ class ReviewServiceMock {
 }
 
 describe('ThirdVoiceReviewComponent', () => {
-  let component: ThirdVoiceReviewComponent;
-  let fixture: ComponentFixture<ThirdVoiceReviewComponent>;
+  let component: ThirdVoiceReviewButtonComponent;
+  let fixture: ComponentFixture<ThirdVoiceReviewButtonComponent>;
   let reviewService: ReviewService;
   let modalService: NgbModal;
   let mockConversation: InboxConversation;
@@ -50,7 +50,7 @@ describe('ThirdVoiceReviewComponent', () => {
         MatIconModule
       ],
       declarations: [
-        ThirdVoiceReviewComponent,
+        ThirdVoiceReviewButtonComponent,
         ButtonComponent
       ],
       providers: [
@@ -62,7 +62,7 @@ describe('ThirdVoiceReviewComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ThirdVoiceReviewComponent);
+    fixture = TestBed.createComponent(ThirdVoiceReviewButtonComponent);
     component = fixture.componentInstance;
     mockConversation = CREATE_MOCK_INBOX_CONVERSATION();
     component.message = mockConversation.messages[0];

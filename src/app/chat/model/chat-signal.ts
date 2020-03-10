@@ -1,4 +1,4 @@
-import { MessageStatus } from '../../chat/model';
+import { MessageStatus } from './inbox-message';
 
 export enum ChatSignalType {
   SENT = MessageStatus.SENT,

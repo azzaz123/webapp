@@ -18,7 +18,7 @@ import { CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { MatIconRegistry } from '@angular/material';
-import { MessageService } from './core/message/message.service';
+import { MessageService } from './chat/service/message.service';
 import { NotificationService } from './core/notification/notification.service';
 import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';

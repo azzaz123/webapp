@@ -963,7 +963,9 @@
   <translation id="8634562482546031854">Tipo de objeto</translation>
   <translation id="3584751519463738454">Tipo de prenda</translation>
   <translation id="7609145883180181653">¿Tienes más de <ph name="INTERPOLATION"><ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name.toLowerCase()}}</ex></ph>? <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Contáctanos directamente<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
-  <translation id="931255636742351800">Sin límite</translation>
-  <translation id="3953884740420390564">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
-  <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
+  <translation id="2060326108457530649">¡Qué bien que hayas encontrado lo que buscabas!</translation>
+  <translation id="7931637164374710264">¿Como ha ido? ¡Tómate un momento para valorar la experiencia con el usuario y ayudar a la comunidad!</translation>
+  <translation id="4741413716404810905">Valorar</translation>
+  <translation id="7305026831182508111">¡Gracias por tu valoración!</translation>
+  <translation id="3734816767204282002">El producto ha bajado de precio. ¡Cierra el trato!</translation>
 </translationbundle>

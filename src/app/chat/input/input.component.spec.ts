@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { InputComponent } from './input.component';
 import { Conversation } from '../../core/conversation/conversation';
-import { MessageService } from '../../core/message/message.service';
+import { MessageService } from '../service/message.service';
 import { EventService } from '../../core/event/event.service';
 import { MOCK_CONVERSATION, SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';

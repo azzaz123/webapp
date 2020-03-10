@@ -18,10 +18,8 @@ import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
-import { BlockUserXmppService } from '../../core/conversation/block-user';
-import { InboxConversationService } from '../service';
+import { BlockUserService, BlockUserXmppService, InboxConversationService } from '../service';
 import { User } from '../../core/user/user';
-import { BlockUserService } from '../../core/conversation/block-user';
 import { NgxPermissionsModule } from 'ngx-permissions';
 
 class MockUserService {
@@ -490,13 +488,15 @@ describe('CurrentConversationComponent', () => {
     });
 
     it('should show message third voice', () => {
-      expect(component.isThirdVoiceMessage(MessageType.REVIEW)).toBeTruthy();
-      expect(component.isThirdVoiceMessage(MessageType.PRICE_DROP)).toBeTruthy();
+      expect(component.isThirdVoiceReview(MessageType.REVIEW)).toBeTruthy();
+      expect(component.isThirdVoiceDropPrice(MessageType.PRICE_DROP)).toBeTruthy();
     });
 
     it('should not show message third voice', () => {
-      expect(component.isThirdVoiceMessage(null)).toBeFalsy();
-      expect(component.isThirdVoiceMessage(MessageType.TEXT)).toBeFalsy();
+      expect(component.isThirdVoiceDropPrice(null)).toBeFalsy();
+      expect(component.isThirdVoiceDropPrice(MessageType.TEXT)).toBeFalsy();
+      expect(component.isThirdVoiceReview(null)).toBeFalsy();
+      expect(component.isThirdVoiceReview(MessageType.TEXT)).toBeFalsy();
     });
   });
 
