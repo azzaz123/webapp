@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { Lead } from '../../core/conversation/lead';
-import { ConversationService } from '../../core/conversation/conversation.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { Observable } from 'rxjs';
 import { Call } from '../../core/conversation/calls';
@@ -15,8 +14,7 @@ export class UnarchiveButtonComponent {
 
   @Input() lead: Lead;
 
-  constructor(private conversationService: ConversationService,
-              private trackingService: TrackingService,
+  constructor(private trackingService: TrackingService,
               private callService: CallsService) {
   }
 
@@ -25,8 +23,6 @@ export class UnarchiveButtonComponent {
     let observable: Observable<any>;
     if (this.lead instanceof Call) {
       observable = this.callService.unarchive(this.lead.id);
-    } else {
-      observable = this.conversationService.unarchive(this.lead.id);
     }
     observable.subscribe(() => {
       if (this.lead.phone) {

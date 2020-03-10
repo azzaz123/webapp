@@ -23,7 +23,9 @@ export class InboxItem {
         private _mainImage: InboxImage,
         private _itemUrl: string,
         private _status: string,
-        private _isMine: boolean) {
+        private _isMine: boolean,
+        public categoryId: number,
+    ) {
         this.mapStatusToFlags(this.status);
     }
 
@@ -103,4 +105,4 @@ export class InboxItem {
     }
 }
 
-export const InboxItemPlaceholder = new InboxItem(null, null, 'unknown', null, null, INBOX_ITEM_STATUSES.notAvailable, false);
+export const InboxItemPlaceholder = new InboxItem(null, null, 'unknown', null, null, INBOX_ITEM_STATUSES.notAvailable, false, null);

@@ -4,14 +4,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { MatIconModule } from '@angular/material';
 import { AdComponent } from './ad/ad.component';
-import { CustomCurrencyPipe } from './custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from './geolocation/geolocation.module';
 import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
-import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
 import { ButtonComponent } from './button/button.component';
 import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
@@ -28,7 +27,6 @@ import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.co
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { SwitchComponent } from './switch/switch.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
-import { ConversationComponent } from './conversation/conversation.component';
 import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
 import { MomentModule } from 'angular2-moment';
 import { SearchInputComponent } from './search-input/search-input.component';
@@ -113,7 +111,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
-    ConversationComponent,
     ItemAvatarComponent,
     SearchInputComponent,
     SelectComponent,
@@ -167,7 +164,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     SwitchComponent,
     ReviewModalComponent,
     CheckboxComponent,
-    ConversationComponent,
     ItemAvatarComponent,
     SelectComponent,
     SearchInputComponent,
@@ -205,7 +201,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
   providers: [
     DecimalPipe,
     ExitConfirmGuard,
-    TutorialGuard,
     CartService,
     ThousandSuffixesPipe,
     LinkTransformPipe,

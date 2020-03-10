@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutItemComponent } from './checkout-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import {
   CITYBUMP_DURATIONS, ITEM_ID, ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE,
@@ -46,7 +46,7 @@ describe('CheckoutItemComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {

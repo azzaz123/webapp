@@ -6,7 +6,7 @@ import { CategoryResponse } from '../../core/category/category-response.interfac
 import { SuggesterResponse } from './suggester/suggester-response.interface';
 import { User } from '../../core/user/user';
 import { WindowRef } from '../../core/window/window.service';
-import { MessageService } from '../../core/message/message.service';
+import { MessageService } from '../../chat/service/message.service';
 import { PaymentService } from '../../core/payments/payment.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { EventService } from '../../core/event/event.service';

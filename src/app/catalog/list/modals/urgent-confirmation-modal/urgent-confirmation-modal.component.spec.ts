@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { MOCK_USER } from '../../../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';

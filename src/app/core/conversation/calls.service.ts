@@ -4,7 +4,6 @@ import { HttpService } from '../http/http.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { EventService } from '../event/event.service';
-import { ConversationService } from './conversation.service';
 import { LeadService } from './lead.service';
 import { Observable } from 'rxjs';
 import { difference, map, reverse, sortBy } from 'lodash-es';
@@ -14,7 +13,7 @@ import { CallTotals } from './totals.interface';
 import { CallResponse } from './call-response.interface';
 import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
-import { BlockUserXmppService } from './block-user';
+import { BlockUserXmppService } from '../../chat/service';
 
 @Injectable()
 export class CallsService extends LeadService {
@@ -22,7 +21,6 @@ export class CallsService extends LeadService {
   protected API_URL = 'api/v3/protool/calls';
   protected ARCHIVE_URL: string = this.API_URL;
 
-  private lastCall = 0;
   private lastLeadResponse: Call[];
 
   constructor(http: HttpService,
@@ -31,8 +29,7 @@ export class CallsService extends LeadService {
               event: EventService,
               realTime: RealTimeService,
               blockService: BlockUserXmppService,
-              connectionService: ConnectionService,
-              private conversationService: ConversationService ) {
+              connectionService: ConnectionService) {
     super(http, userService, itemService, event, realTime, blockService, connectionService);
   }
 
@@ -121,8 +118,6 @@ export class CallsService extends LeadService {
 
   protected onArchiveAll() {
     this.leads = this.bulkArchive(this.leads);
-    this.conversationService.archiveWithPhones();
     this.stream();
-    this.conversationService.stream();
   }
 }

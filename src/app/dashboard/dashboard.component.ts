@@ -4,11 +4,10 @@ import { Router } from '@angular/router';
 import { EventService } from '../core/event/event.service';
 import { Lead } from '../core/conversation/lead';
 import { TrackingService } from '../core/tracking/tracking.service';
-import { ConversationService } from '../core/conversation/conversation.service';
-import { CallTotals, ConversationTotals } from '../core/conversation/totals.interface';
+import { CallTotals } from '../core/conversation/totals.interface';
 import { CallsService } from '../core/conversation/calls.service';
 import { InboxConversation } from '../chat/model';
-import { InboxConversationService } from '../core/inbox/inbox-conversation.service';
+import { InboxConversationService } from '../chat/service';
 
 @Component({
     selector: 'tsl-dashboard',
@@ -28,7 +27,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     constructor(private callService: CallsService,
                 private trackingService: TrackingService,
-                private conversationService: ConversationService,
                 private router: Router,
                 private inboxConversationService: InboxConversationService,
                 private eventService: EventService) {

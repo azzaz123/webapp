@@ -1,5 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { MessageService } from '../message/message.service';
+import { MessageService } from '../../chat/service/message.service';
 import { ConversationService } from './conversation.service';
 import { CommonModule } from '@angular/common';
 import { ItemModule } from '../item/item.module';

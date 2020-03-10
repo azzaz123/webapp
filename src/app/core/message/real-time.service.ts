@@ -2,25 +2,22 @@ import { now } from 'lodash-es';
 import * as retry from 'retry';
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
-import { Conversation } from '../conversation/conversation';
 import { EventService } from '../event/event.service';
-import { Message } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
-import { ChatSignal, chatSignalType } from './chat-signal.interface';
-import { InboxConversation } from '../../chat/model/inbox-conversation';
+import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
+import { InboxConversation, InboxMessage } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
 import { AnalyticsService } from '../analytics/analytics.service';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
   AnalyticsEvent,
+  SCREEN_IDS,
   SendFirstMessage
 } from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
 import { filter } from 'rxjs/operators';
-import { InboxMessage } from '../../chat/model';
 
 @Injectable()
 export class RealTimeService {
@@ -84,11 +81,11 @@ export class RealTimeService {
     });
   }
 
-  public sendMessage(conversation: Conversation | InboxConversation, body: string) {
+  public sendMessage(conversation: InboxConversation, body: string) {
     this.xmpp.sendMessage(conversation, body);
   }
 
-  public resendMessage(conversation: Conversation | InboxConversation, message: Message | InboxMessage) {
+  public resendMessage(conversation: InboxConversation, message: InboxMessage) {
     this.xmpp.resendMessage(conversation, message);
   }
 
@@ -99,19 +96,16 @@ export class RealTimeService {
   public sendRead(to: string, thread: string) {
     this.xmpp.sendConversationStatus(to, thread);
     this.eventService.emit(EventService.CHAT_SIGNAL,
-      new ChatSignal(chatSignalType.READ, thread, new Date().getTime(), null, true));
+      new ChatSignal(ChatSignalType.READ, thread, new Date().getTime(), null, true));
   }
 
   private subscribeEventMessageSent() {
-    this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: Conversation, messageId: string) => {
+    this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: InboxConversation, messageId: string) => {
+
       if (this.isFirstMessage(conversation)) {
         this.trackConversationCreated(conversation, messageId);
         this.trackSendFirstMessage(conversation);
         appboy.logCustomEvent('FirstMessage', { platform: 'web' });
-        const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
-        if (phoneRequestMsg) {
-          this.eventService.emit(EventService.CONV_WITH_PHONE_CREATED, conversation, phoneRequestMsg);
-        }
       }
       this.trackMessageSent(conversation.id, messageId);
     });
@@ -123,12 +117,8 @@ export class RealTimeService {
     });
   }
 
-  private isFirstMessage(conversation: Conversation): boolean {
-    const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
-    if (conversation.messages.length === 1 || (phoneRequestMsg && conversation.messages.length === 2)) {
-      return true;
-    }
-    return false;
+  private isFirstMessage(conversation: InboxConversation): boolean {
+    return conversation.messages.length === 1;
   }
 
   private trackMessageSent(thread: string, messageId: string) {
@@ -141,7 +131,7 @@ export class RealTimeService {
     }, false);
   }
 
-  private trackConversationCreated(conversation: Conversation, messageId: string) {
+  private trackConversationCreated(conversation: InboxConversation, messageId: string) {
     this.trackingService.addTrackingEvent({
       eventData: TrackingService.CONVERSATION_CREATE_NEW,
       attributes: {
@@ -152,12 +142,23 @@ export class RealTimeService {
     }, false);
 
     fbq('track', 'InitiateCheckout', {
-      value: conversation.item.salePrice,
-      currency: conversation.item.currencyCode,
+      value: conversation.item.price.amount,
+      currency: conversation.item.price.currency,
+    });
+
+    pintrk('track', 'checkout', {
+      value: conversation.item.price.amount,
+      currency: conversation.item.price.currency,
+      line_items: [
+        {
+          product_category: conversation.item.categoryId,
+          product_id: conversation.item.id,
+        }
+      ]
     });
   }
 
-  private trackSendFirstMessage(conversation: Conversation | InboxConversation) {
+  private trackSendFirstMessage(conversation: InboxConversation) {
     const event: AnalyticsEvent<SendFirstMessage> = {
       name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
       eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -171,5 +172,4 @@ export class RealTimeService {
 
     this.analyticsService.trackEvent(event);
   }
-
 }

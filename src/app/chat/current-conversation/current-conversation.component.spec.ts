@@ -4,9 +4,8 @@ import { CurrentConversationComponent } from './current-conversation.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
-import { InboxMessage, MessageType } from '../model/inbox-message';
+import { InboxMessage, MessageStatus, MessageType } from '../model/inbox-message';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
-import { messageStatus } from '../../core/message/message';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { EventService } from '../../core/event/event.service';
 import { Observable, throwError } from 'rxjs';
@@ -19,10 +18,8 @@ import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
-import { BlockUserXmppService } from '../../core/conversation/block-user';
-import { InboxConversationService } from '../../core/inbox/inbox-conversation.service';
+import { BlockUserService, BlockUserXmppService, InboxConversationService } from '../service';
 import { User } from '../../core/user/user';
-import { BlockUserService } from '../../core/conversation/block-user';
 import { NgxPermissionsModule } from 'ngx-permissions';
 
 class MockUserService {
@@ -150,7 +147,7 @@ describe('CurrentConversationComponent', () => {
       it(`should call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message belonging
       to the currentConversation`, fakeAsync(() => {
         const newMessage = new InboxMessage('someId', component.currentConversation.id, 'hola!',
-          component.currentConversation.messages[0].from, false, new Date(), messageStatus.RECEIVED, MessageType.TEXT);
+          component.currentConversation.messages[0].from, false, new Date(), MessageStatus.RECEIVED, MessageType.TEXT);
 
         component.ngOnInit();
         eventService.emit(EventService.MESSAGE_ADDED, newMessage);
@@ -162,7 +159,7 @@ describe('CurrentConversationComponent', () => {
       it(`should NOT call realTime.sendRead when a MESSAGE_ADDED event is triggered with a message NOT belonging
         to the currentConversation`, fakeAsync(() => {
         const newMessage = new InboxMessage('someId', 'other-thread-id', 'hola!',
-          component.currentConversation.messages[0].from, true, new Date(), messageStatus.RECEIVED, MessageType.TEXT);
+          component.currentConversation.messages[0].from, true, new Date(), MessageStatus.RECEIVED, MessageType.TEXT);
 
         component.ngOnInit();
         eventService.emit(EventService.MESSAGE_ADDED, newMessage);
@@ -175,7 +172,7 @@ describe('CurrentConversationComponent', () => {
     it('should  NOT call realTime.sendRead when a MESSAGE_ADDED event AND the browser window is NOT visible', fakeAsync(() => {
       spyOn(Visibility, 'onVisible').and.callFake(() => false);
       const newMessage = new InboxMessage('someId', component.currentConversation.id, 'hola!',
-        component.currentConversation.messages[0].from, true, new Date(), messageStatus.RECEIVED, MessageType.TEXT);
+        component.currentConversation.messages[0].from, true, new Date(), MessageStatus.RECEIVED, MessageType.TEXT);
 
       component.ngOnInit();
       eventService.emit(EventService.MESSAGE_ADDED, newMessage);
@@ -221,7 +218,7 @@ describe('CurrentConversationComponent', () => {
     beforeEach(() => {
       currentMessage = component.currentConversation.messages[0];
       nextMessage = new InboxMessage('123', component.currentConversation.id, 'new msg', USER_ID, true, new Date(),
-        messageStatus.RECEIVED, MessageType.TEXT);
+        MessageStatus.RECEIVED, MessageType.TEXT);
     });
 
     it('should return TRUE if it is called without a nextMessage parameter', () => {
@@ -491,13 +488,15 @@ describe('CurrentConversationComponent', () => {
     });
 
     it('should show message third voice', () => {
-      expect(component.isThirdVoiceMessage(MessageType.REVIEW)).toBeTruthy();
-      expect(component.isThirdVoiceMessage(MessageType.PRICE_DROP)).toBeTruthy();
+      expect(component.isThirdVoiceReview(MessageType.REVIEW)).toBeTruthy();
+      expect(component.isThirdVoiceDropPrice(MessageType.PRICE_DROP)).toBeTruthy();
     });
 
     it('should not show message third voice', () => {
-      expect(component.isThirdVoiceMessage(null)).toBeFalsy();
-      expect(component.isThirdVoiceMessage(MessageType.TEXT)).toBeFalsy();
+      expect(component.isThirdVoiceDropPrice(null)).toBeFalsy();
+      expect(component.isThirdVoiceDropPrice(MessageType.TEXT)).toBeFalsy();
+      expect(component.isThirdVoiceReview(null)).toBeFalsy();
+      expect(component.isThirdVoiceReview(MessageType.TEXT)).toBeFalsy();
     });
   });
 
@@ -540,7 +539,7 @@ describe('CurrentConversationComponent', () => {
       spyOn(Visibility, 'onVisible').and.callFake((callback: Function) => callback());
 
       const inboxMessage = new InboxMessage('123', component.currentConversation.id, 'new msg', USER_ID, false, new Date(),
-        messageStatus.RECEIVED, MessageType.TEXT);
+        MessageStatus.RECEIVED, MessageType.TEXT);
       component['lastInboxMessage'] = inboxMessage;
       spyOn(realTime, 'sendRead');
 

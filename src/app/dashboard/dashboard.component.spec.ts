@@ -7,7 +7,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs';
 import { DashboardComponent } from './dashboard.component';
 import { EventService } from '../core/event/event.service';
-import { ConversationService } from '../core/conversation/conversation.service';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { CallsService } from '../core/conversation/calls.service';
 import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
@@ -18,19 +17,17 @@ import { createCallsArray } from '../../tests/call.fixtures';
 import { FeatureflagService } from '../core/user/featureflag.service';
 import {
   CallsServiceMock,
-  ConversationServiceMock,
   FeatureFlagServiceMock,
   InboxConversationServiceMock,
   InboxServiceMock,
   LoggedGuardServiceMock
 } from '../../tests';
-import { InboxService } from '../core/inbox/inbox.service';
+import { InboxConversationService, InboxService } from '../chat/service';
 import { InboxConversation } from '../chat/model';
 import { createInboxConversationsArray } from '../../tests/inbox.fixtures.spec';
 import { ChatModule } from '../chat/chat.module';
 import { LoggedGuard } from '../core/user/logged.guard';
 import { ChatComponent } from '../chat/chat.component';
-import { InboxConversationService } from '../core/inbox/inbox-conversation.service';
 import { RealTimeService } from '../core/message/real-time.service';
 import { RealTimeServiceMock } from '../../tests/real-time.fixtures.spec';
 
@@ -38,7 +35,6 @@ describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
   let callService: CallsService;
-  let conversationService: ConversationService;
   let trackingService: TrackingService;
   let eventService: EventService;
   let inboxService: InboxService;
@@ -66,7 +62,6 @@ describe('DashboardComponent', () => {
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         { provide: LoggedGuard, useClass: LoggedGuardServiceMock },
         { provide: CallsService, useClass: CallsServiceMock },
-        { provide: ConversationService, useClass: ConversationServiceMock },
         { provide: RealTimeService, useClass: RealTimeServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -78,7 +73,6 @@ describe('DashboardComponent', () => {
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
     callService = TestBed.get(CallsService);
-    conversationService = TestBed.get(ConversationService);
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
     inboxService = TestBed.get(InboxService);
@@ -121,7 +115,6 @@ describe('DashboardComponent', () => {
 
     beforeEach(() => {
       spyOn(callService, 'getPage').and.returnValue(Observable.of(CALLS));
-      spyOn(conversationService, 'getPage').and.returnValue(Observable.of(CONVERSATIONS));
       spyOn(trackingService, 'track');
       inboxConversationService.conversations = CONVERSATIONS;
 
