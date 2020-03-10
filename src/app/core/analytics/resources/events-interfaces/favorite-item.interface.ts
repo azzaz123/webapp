@@ -22,6 +22,10 @@ export interface FavoriteItem {
    */
   screenId: number;
   /**
+   * The unique identifier of the search that the favorite is under
+   */
+  searchId?: string;
+  /**
    * If the item favorited is from a professional user
    */
   isPro?: boolean;

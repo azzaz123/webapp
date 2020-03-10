@@ -166,7 +166,8 @@ export class RealTimeService {
         itemId: conversation.item.id,
         sellerUserId: conversation.user.id,
         conversationId: conversation.id,
-        screenId: SCREEN_IDS.Chat
+        screenId: SCREEN_IDS.Chat,
+        categoryId: conversation.item.categoryId
       }
     };
 

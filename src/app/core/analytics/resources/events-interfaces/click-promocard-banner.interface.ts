@@ -6,11 +6,15 @@
  */
 
 /**
- * Users successfully login with Facebook
+ * User clicks on promocard banner
  */
-export interface LoginFacebookSuccess {
+export interface ClickPromocardBanner {
   /**
-   * Identifier of the screen where the options to login or register appear
+   * Identifier of the campaign that the ad belongs to
    */
-  screenId: 177;
+  lineitem_id: string;
+  /**
+   * Identifier of the category where the ad is shown
+   */
+  category_id?: string;
 }

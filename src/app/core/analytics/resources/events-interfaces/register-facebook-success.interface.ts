@@ -6,9 +6,9 @@
  */
 
 /**
- * Users successfully login with Facebook
+ * Users successfully register with Facebook
  */
-export interface LoginFacebookSuccess {
+export interface RegisterFacebookSuccess {
   /**
    * Identifier of the screen where the options to login or register appear
    */

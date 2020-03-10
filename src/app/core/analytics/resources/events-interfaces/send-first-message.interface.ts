@@ -14,6 +14,10 @@ export interface SendFirstMessage {
    */
   itemId: string;
   /**
+   * Identifier of the category that the item belongs to
+   */
+  categoryId: number;
+  /**
    * Identifier of the user that the item belongs to
    */
   sellerUserId: string;
