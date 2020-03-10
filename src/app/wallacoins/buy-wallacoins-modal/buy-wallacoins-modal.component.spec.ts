@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -124,7 +124,7 @@ describe('BuyWallacoinsModalComponent', () => {
 
       it('should call paymentService orderExtrasProPack method to create a pack order', () => {
         component.checkout();
-        
+
         expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith({
           id: 'UUID',
           packs: ['id'],

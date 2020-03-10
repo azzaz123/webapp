@@ -6,7 +6,7 @@
  */
 
 /**
- * Users successfully register or login with Google
+ * Users successfully login with Google
  */
 export interface LoginGoogleSuccess {
   /**

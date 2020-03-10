@@ -11,7 +11,6 @@ export abstract class MessageComponent implements OnInit {
   @Input() currentConversation: InboxConversation;
 
   ngOnInit() {
-    this.currentConversation = this.message.phoneRequest ? this.currentConversation : null;
   }
 
   public messageContainsHTMLTag(): boolean {

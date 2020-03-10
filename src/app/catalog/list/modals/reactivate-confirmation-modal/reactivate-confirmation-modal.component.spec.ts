@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core
 import { ReactivateConfirmationModalComponent } from './reactivate-confirmation-modal.component';
 import { DecimalPipe } from '@angular/common';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { Observable } from 'rxjs';
 import { CreditInfo } from '../../../../core/payments/payment.interface';

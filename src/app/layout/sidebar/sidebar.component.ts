@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
 import { TutorialService } from '../../core/tutorial/tutorial.service';
 import { User } from '../../core/user/user';
-import { MessageService } from '../../core/message/message.service';
+import { MessageService } from '../../chat/service/message.service';
 
 @Component({
   selector: 'tsl-sidebar',

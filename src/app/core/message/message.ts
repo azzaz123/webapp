@@ -1,25 +1,6 @@
 import { Model } from '../resource/model.interface';
 import { User } from '../user/user';
-import { MessagePayload } from './messages.interface';
-
-export const messageStatus = {
-  PENDING: 'pending',
-  SENT: 'sent',
-  RECEIVED: 'received',
-  READ: 'read'
-};
-
-export const phoneRequestState = {
-  pending: 'pending',
-  answered: 'answered'
-};
-
-export const phoneMethod = {
-  chatMessage: 'bubble',
-  popUp: 'qa'
-};
-
-export const statusOrder = [messageStatus.PENDING, messageStatus.SENT, messageStatus.RECEIVED, messageStatus.READ];
+import { MessagePayload, MessageStatus } from '../../chat/model';
 
 export class Message implements Model {
 
@@ -31,7 +12,7 @@ export class Message implements Model {
               private _message: string,
               private _from: string,
               private _date?: Date,
-              private _status?: string,
+              private _status?: MessageStatus,
               private _payload?: MessagePayload,
               private _phoneRequest?: string) {
   }
@@ -56,11 +37,11 @@ export class Message implements Model {
     this._date = value;
   }
 
-  get status(): string {
+  get status(): MessageStatus {
     return this._status;
   }
 
-  set status(value: string) {
+  set status(value: MessageStatus) {
     this._status = value;
   }
 

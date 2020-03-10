@@ -6,7 +6,7 @@
  */
 
 /**
- * Users successfully register or login with Facebook
+ * Users successfully login with Facebook
  */
 export interface LoginFacebookSuccess {
   /**

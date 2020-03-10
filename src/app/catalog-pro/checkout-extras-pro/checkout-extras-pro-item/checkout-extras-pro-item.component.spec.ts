@@ -4,7 +4,7 @@ import { CheckoutExtrasProItemComponent } from './checkout-extras-pro-item.compo
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CartService } from '../../../shared/catalog/cart/cart.service';
-import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../../shared/pipes';
 import { PREPARED_PACKS } from '../../../../tests/payments.fixtures.spec';
 import { CartProExtras } from '../../../shared/catalog/cart/cart-pro-extras';
 import { CartProExtrasPack } from '../../../shared/catalog/cart/cart-item.interface';

@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BuyProductModalComponent } from './buy-product-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { Observable, throwError, Subject } from 'rxjs';
 import { MOCK_ITEM_V3, ORDER_EVENT } from '../../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../../core/item/item.service';
