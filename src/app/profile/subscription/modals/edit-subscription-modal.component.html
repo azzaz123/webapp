@@ -12,8 +12,8 @@
         (click)="selectListingLimit(subscription.tiers[i])"
         [ngClass]="{'EditSubscription__listing-limit-box--selected': selectedTier.id === subscription?.tiers[i]?.id && currentTier.id !== subscription?.tiers[i]?.id,
         'EditSubscription__listing-limit-box--current': selectedTier.id === subscription?.tiers[i]?.id && currentTier.id === subscription?.tiers[i]?.id}">
-        <span *ngIf="subscription.tiers[i].limit >= 0" i18n>{{subscription?.tiers[i]?.limit}}</span>
-        <span *ngIf="subscription.tiers[i].limit < 0" i18n>Unlimited</span>
+        <span *ngIf="subscription.tiers[i].limit" i18n>{{subscription?.tiers[i]?.limit}}</span>
+        <span *ngIf="!subscription.tiers[i].limit" i18n>Unlimited</span>
       </div>
       </div>
       <div class="row EditSubscription__listing-limit-payment">

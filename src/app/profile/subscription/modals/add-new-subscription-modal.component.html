@@ -7,8 +7,9 @@
     <p class="AddNewSubscription__box--subtitle" i18n>Choose a subscription and take your sales up to the next level.
     </p>
   </div>
-  <ngb-carousel interval="0" *ngIf="loaded" [ngClass]="{ 'extra-info': subscription.category_id === carsCategoryId }">
-    <ng-template ngbSlide>
+  <ngb-carousel interval="0" *ngIf="loaded"
+    [ngClass]="{ 'extra-info': subscription.category_id === carsCategoryId, 'single': subscription.tiers.length === 1 }">
+    <ng-template ngbSlide *ngIf="subscription.tiers.length !== 1">
       <div class="step step-1">
         <div class="box-content">
 
@@ -24,11 +25,12 @@
               <div *ngFor="let tier of subscription.tiers; let i = index"
                 (click)="selectListingLimit(subscription.tiers[i])" class="AddNewSubscription__listing-limit-box"
                 [ngClass]="{'AddNewSubscription__listing-limit-box--selected' : selectedTier.id === subscription.tiers[i].id}">
-                <span *ngIf="subscription.tiers[i].limit >= 0">{{subscription.tiers[i].limit}}</span>
-                <span *ngIf="subscription.tiers[i].limit < 0" i18n>Unlimited</span>
+                <span *ngIf="subscription.tiers[i].limit">{{subscription.tiers[i].limit}}</span>
+                <span *ngIf="!subscription.tiers[i].limit" i18n>Unlimited</span>
               </div>
             </div>
-            <div class="AddNewSubscription__listing-limit-more" *ngIf="subscription.category_id === carsCategoryId" i18n>
+            <div class="AddNewSubscription__listing-limit-more" *ngIf="subscription.category_id === carsCategoryId"
+              i18n>
               Do you have more than
               {{subscription.tiers[subscription.tiers.length - 1].limit}} {{subscription.category_name.toLowerCase()}}?
               <a href="{{carDealerTypeformLink}}" target="_blank">Contact us directly</a>
@@ -37,17 +39,18 @@
           <div>
             <div class="AddNewSubscription__listing-limit-payment AddNewSubscription__listing-limit-payment--line-top">
               <div class="text-left">
-                <span class="AddNewSubscription__listing-limit-quantity">{{selectedTier.limit}}
-                  {{subscription.category_name}}</span>
-                <span class="AddNewSubscription__listing-limit-quantity" *ngIf="selectedTier.limit < 0" i18n>Unlimited
-                  {{subscription.category_name}}</span>
+                <span class="AddNewSubscription__listing-limit-quantity">
+                  <span *ngIf="selectedTier.limit" i18n>{{selectedTier.limit}} {{subscription.category_name}} Plan</span>
+                  <span *ngIf="!selectedTier.limit" i18n>Unlimited {{subscription.category_name}} Plan</span>
+                </span>    
               </div>
               <div class="text-right">
                 <span class="AddNewSubscription__listing-limit-price"
                   i18n>{{selectedTier.price}}{{selectedTier.currency}}/month</span>
               </div>
             </div>
-            <tsl-button [disabled]="!selectedTier" (click)="carousel.next(); onClickContinueToPayment()" i18n>Continue to
+            <tsl-button [disabled]="!selectedTier" (click)="carousel.next(); onClickContinueToPayment()" i18n>Continue
+              to
               payment</tsl-button>
           </div>
         </div>
@@ -57,26 +60,27 @@
       <div class="step step-2">
         <div class="box-content">
           <div>
-            <p class="AddNewSubscription__listing-limit-steps" i18n>Step <span class="bold">2</span> of <span
-                class="bold">2</span></p>
+            <div *ngIf="subscription.tiers.length !== 1">
+              <p class="AddNewSubscription__listing-limit-steps" i18n>Step <span class="bold">2</span> of <span
+                  class="bold">2</span></p>
+            </div>
             <div class="AddNewSubscription__listing-limit-title" i18n>Add payment details</div>
           </div>
           <div class="row AddNewSubscription__listing-limit-payment">
             <div
               class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--left">
-              <span class="AddNewSubscription__listing-limit-quantity--selected">
-                <div>{{subscription.category_name}}</div>
-                <div>{{selectedTier.limit}} <span i18n>products</span></div>
-              </span>
-              <span class="AddNewSubscription__listing-limit-quantity--selected" *ngIf="selectedTier.limit < 0"
-                i18n>Unlimited products</span>
+              <div class="AddNewSubscription__listing-limit-quantity--selected">
+                <span *ngIf="selectedTier.limit" i18n>{{selectedTier.limit}} {{subscription.category_name}} Plan</span>
+                <span *ngIf="!selectedTier.limit" i18n>Unlimited {{subscription.category_name}} Plan</span>
+              </div>
             </div>
             <div
               class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--right">
               <span class="AddNewSubscription__listing-limit-price--selected"
                 i18n>{{selectedTier.price}}{{selectedTier.currency}}/month</span>
               <br />
-              <span class="AddNewSubscription__listing-limit-payment-edit" (click)="carousel.prev()" i18n>Change</span>
+              <span *ngIf="subscription.tiers.length !== 1" class="AddNewSubscription__listing-limit-payment-edit"
+                (click)="carousel.prev()" i18n>Change</span>
             </div>
           </div>
           <div class="h-50">
@@ -86,7 +90,8 @@
                 <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard"
                   (onSelectExistingCard)="setSavedCard($event)" (hasCard)="hasCard($event)"></tsl-stripe-card-selection>
               </div>
-              <div class="AddNewSubscription__payment-add-card" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
+              <div class="AddNewSubscription__payment-add-card" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add
+                another credit card</div>
               <div class="AddNewSubscription__payment-response-message" *ngIf="isPaymentError">
                 <p i18n>The payment failed. Please enter another credit card.</p>
               </div>

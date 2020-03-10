@@ -157,7 +157,8 @@ export class I18nService {
       continueSubscriptionSuccessTitle: 'Success:',
       continueSubscriptionSuccessBody: 'Your subscription is active again',
       continueSubscriptionErrorTitle: 'Error:',
-      continueSubscriptionErrorBody: 'We could not proceed with your request.'
+      continueSubscriptionErrorBody: 'We could not proceed with your request.',
+      consumerGoodsGeneralCategoryTitle: 'Everything else'
     },
     es: {
       daysMomentConfig: {
@@ -314,7 +315,8 @@ export class I18nService {
       continueSubscriptionSuccessTitle: '¡Bien!',
       continueSubscriptionSuccessBody: 'Tu suscripción se ha activado de nuevo.',
       continueSubscriptionErrorTitle: 'Ha habido un error',
-      continueSubscriptionErrorBody: 'Tu suscripción no ha podido ser restablecida.'
+      continueSubscriptionErrorBody: 'Tu suscripción no ha podido ser restablecida.',
+      consumerGoodsGeneralCategoryTitle: 'Todo lo demás'
     }
   };
 
