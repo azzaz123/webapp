@@ -371,7 +371,8 @@ describe('RealTimeService', () => {
             itemId: inboxConversation.item.id,
             sellerUserId: inboxConversation.user.id,
             conversationId: inboxConversation.id,
-            screenId: SCREEN_IDS.Chat
+            screenId: SCREEN_IDS.Chat,
+            categoryId: inboxConversation.item.categoryId
           }
         };
         inboxConversation.messages.push(inboxMessage);
