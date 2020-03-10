@@ -80,7 +80,7 @@ phases:
           TAG_BRANCH=feature-$(echo $BRANCH | cut -d '/' -f 2)
           echo $TAG_BRANCH
           if [ "`echo $BRANCH | grep develop`" != "" ]; then export TAG_BRANCH="latest"; fi
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable npm run builddocker
+          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable npm run buildbeta
           docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$TAG_BRANCH .
           docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$TAG_BRANCH"
         fi
