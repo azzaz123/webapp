@@ -10,7 +10,7 @@ import { UserService } from '../../../../core/user/user.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 import { MOCK_USER, USER_DATA } from '../../../../../tests/user.fixtures.spec';
 import { PaymentService } from '../../../../core/payments/payment.service';
-import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
@@ -88,7 +88,7 @@ describe('BumpConfirmationModalComponent', () => {
 
     it('should send event featured_purchase_error if code != 200', () => {
       component.code = '-1';
-      
+
       component.ngOnInit();
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.FEATURED_PURCHASE_ERROR, { error_code: component.code });

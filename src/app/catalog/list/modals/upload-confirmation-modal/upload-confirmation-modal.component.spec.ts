@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { WindowRef } from '../../../../core/window/window.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
 
