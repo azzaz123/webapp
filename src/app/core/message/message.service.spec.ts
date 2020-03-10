@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { MessageService } from './message.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Conversation } from '../conversation/conversation';
-import { Message, messageStatus, phoneRequestState } from './message';
+import { Message } from './message';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { createMessagesArray, MESSAGE_MAIN } from '../../../tests/message.fixtures.spec';
@@ -20,6 +20,8 @@ import { I18nService } from '../i18n/i18n.service';
 import { RealTimeService } from './real-time.service';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
+import { InboxConversation, MessageStatus, PhoneRequestState } from '../../chat/model';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 
 describe('Service: Message', () => {
 
@@ -141,7 +143,7 @@ describe('Service: Message', () => {
         MESSAGE_MAIN.body,
         USER_ID,
         new Date(),
-        messageStatus.RECEIVED,
+        MessageStatus.RECEIVED,
         { text: 'someText', type: 'someType' }
       );
 
@@ -156,7 +158,7 @@ describe('Service: Message', () => {
   describe('send', () => {
     it('should call the send message', () => {
       spyOn(realTime, 'sendMessage');
-      const conversation: Conversation = MOCK_CONVERSATION();
+      const conversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
       service.send(conversation, 'text');
       expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, 'text');
     });
@@ -174,7 +176,7 @@ describe('Service: Message', () => {
       conversation.messages.push(new Message('123', conversation.id, 'test', USER_ID));
       const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
 
-      expect(requestMessage.phoneRequest).toBe(phoneRequestState.pending);
+      expect(requestMessage.phoneRequest).toBe(PhoneRequestState.PENDING);
     });
 
     it('should add the phone request message to the conversation', () => {
@@ -234,7 +236,7 @@ describe('Service: Message', () => {
 
       service.createPhoneNumberMessage(conversation, phone);
 
-      expect(requestMessage.phoneRequest).toBe(phoneRequestState.answered);
+      expect(requestMessage.phoneRequest).toBe(PhoneRequestState.ANSWERED);
     });
   });
 });

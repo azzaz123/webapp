@@ -34,7 +34,7 @@ import { CallsService } from './core/conversation/calls.service';
 import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
 import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
-import { InboxService } from './core/inbox/inbox.service';
+import { InboxService } from './chat/service';
 import { createInboxConversationsArray } from '../tests/inbox.fixtures.spec';
 import { SplitTestService } from './core/tracking/split-test.service';
 import { StripeService } from './core/stripe/stripe.service';

@@ -7,7 +7,7 @@ import { EventService } from '../event/event.service';
 import { Message } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
-import { ChatSignal, chatSignalType } from './chat-signal.interface';
+import { ChatSignal, ChatSignalType } from './chat-signal.interface';
 import { InboxConversation } from '../../chat/model/inbox-conversation';
 import { RemoteConsoleService } from '../remote-console';
 import { AnalyticsService } from '../analytics/analytics.service';
@@ -84,7 +84,7 @@ export class RealTimeService {
     });
   }
 
-  public sendMessage(conversation: Conversation | InboxConversation, body: string) {
+  public sendMessage(conversation: InboxConversation, body: string) {
     this.xmpp.sendMessage(conversation, body);
   }
 
@@ -99,11 +99,12 @@ export class RealTimeService {
   public sendRead(to: string, thread: string) {
     this.xmpp.sendConversationStatus(to, thread);
     this.eventService.emit(EventService.CHAT_SIGNAL,
-      new ChatSignal(chatSignalType.READ, thread, new Date().getTime(), null, true));
+      new ChatSignal(ChatSignalType.READ, thread, new Date().getTime(), null, true));
   }
 
   private subscribeEventMessageSent() {
-    this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: Conversation, messageId: string) => {
+    this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: InboxConversation , messageId: string) => {
+
       if (this.isFirstMessage(conversation)) {
         this.trackConversationCreated(conversation, messageId);
         this.trackSendFirstMessage(conversation);
@@ -123,7 +124,7 @@ export class RealTimeService {
     });
   }
 
-  private isFirstMessage(conversation: Conversation): boolean {
+  private isFirstMessage(conversation: InboxConversation): boolean {
     const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
     if (conversation.messages.length === 1 || (phoneRequestMsg && conversation.messages.length === 2)) {
       return true;
@@ -141,7 +142,7 @@ export class RealTimeService {
     }, false);
   }
 
-  private trackConversationCreated(conversation: Conversation, messageId: string) {
+  private trackConversationCreated(conversation: InboxConversation, messageId: string) {
     this.trackingService.addTrackingEvent({
       eventData: TrackingService.CONVERSATION_CREATE_NEW,
       attributes: {
@@ -152,8 +153,19 @@ export class RealTimeService {
     }, false);
 
     fbq('track', 'InitiateCheckout', {
-      value: conversation.item.salePrice,
-      currency: conversation.item.currencyCode,
+      value: conversation.item.price.amount,
+      currency: conversation.item.price.currency,
+    });
+
+    pintrk('track', 'checkout', {
+      value: conversation.item.price.amount,
+      currency: conversation.item.price.currency,
+      line_items: [
+        {
+          product_category: conversation.item.categoryId,
+          product_id: conversation.item.id,
+        }
+      ]
     });
   }
 

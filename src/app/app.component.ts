@@ -30,7 +30,7 @@ import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
 import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
-import { InboxService } from './core/inbox/inbox.service';
+import { InboxService } from './chat/service';
 import { Subscription } from 'rxjs';
 import { SplitTestService } from './core/tracking/split-test.service';
 import { StripeService } from './core/stripe/stripe.service';

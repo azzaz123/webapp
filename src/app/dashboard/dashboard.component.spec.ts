@@ -7,7 +7,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs';
 import { DashboardComponent } from './dashboard.component';
 import { EventService } from '../core/event/event.service';
-import { ConversationService } from '../core/conversation/conversation.service';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { CallsService } from '../core/conversation/calls.service';
 import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
@@ -18,19 +17,17 @@ import { createCallsArray } from '../../tests/call.fixtures';
 import { FeatureflagService } from '../core/user/featureflag.service';
 import {
   CallsServiceMock,
-  ConversationServiceMock,
   FeatureFlagServiceMock,
   InboxConversationServiceMock,
   InboxServiceMock,
   LoggedGuardServiceMock
 } from '../../tests';
-import { InboxService } from '../core/inbox/inbox.service';
+import { InboxConversationService, InboxService } from '../chat/service';
 import { InboxConversation } from '../chat/model';
 import { createInboxConversationsArray } from '../../tests/inbox.fixtures.spec';
 import { ChatModule } from '../chat/chat.module';
 import { LoggedGuard } from '../core/user/logged.guard';
 import { ChatComponent } from '../chat/chat.component';
-import { InboxConversationService } from '../core/inbox/inbox-conversation.service';
 import { RealTimeService } from '../core/message/real-time.service';
 import { RealTimeServiceMock } from '../../tests/real-time.fixtures.spec';
 
