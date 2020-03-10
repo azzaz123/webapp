@@ -5,7 +5,7 @@ import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
-import { ChatSignal, ChatSignalType } from './chat-signal';
+import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
 import { InboxConversation, InboxMessage } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
 import { AnalyticsService } from '../analytics/analytics.service';

@@ -9,7 +9,7 @@ import { XmppBodyMessage } from './xmpp.interface';
 import { Observable } from 'rxjs';
 import { MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER, MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
-import { ChatSignal, ChatSignalType } from '../message/chat-signal';
+import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
 import { CREATE_MOCK_INBOX_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE, } from '../../../tests/inbox.fixtures.spec';

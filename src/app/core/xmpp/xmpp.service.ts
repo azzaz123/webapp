@@ -7,7 +7,7 @@ import 'rxjs/add/observable/from';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
-import { ChatSignal, ChatSignalType } from '../message/chat-signal';
+import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
 import { InboxConversation, InboxMessage, InboxUser, MessageStatus, MessageType } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
 
