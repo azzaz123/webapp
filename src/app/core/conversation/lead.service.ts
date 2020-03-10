@@ -8,7 +8,7 @@ import { Item } from '../item/item';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { Lead } from './lead';
-import { findIndex } from 'lodash-es';
+import { findIndex, isEmpty } from 'lodash-es';
 import { EventService } from '../event/event.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
@@ -16,9 +16,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
-import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
-import { BlockUserXmppService } from '../../chat/service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
@@ -39,9 +37,7 @@ export abstract class LeadService {
               protected userService: UserService,
               protected itemService: ItemService,
               protected event: EventService,
-              protected realTime: RealTimeService,
-              protected blockService: BlockUserXmppService,
-              protected connectionService: ConnectionService) {
+              protected realTime: RealTimeService) {
     this.stream$ = new ReplaySubject(1);
     this.archivedStream$ = new ReplaySubject(1);
   }
@@ -72,21 +68,18 @@ export abstract class LeadService {
       }
     })
     .flatMap((res: LeadResponse[]) => {
-      if (res.length > 0) {
+      return isEmpty(res) ? Observable.of([]) : Observable.forkJoin(
+        res.map((conversation: LeadResponse) => this.getUser(conversation))
+      )
+      .flatMap((response: LeadResponse[]) => {
         return Observable.forkJoin(
-          res.map((conversation: LeadResponse) => this.getUser(conversation))
-        )
-        .flatMap((response: LeadResponse[]) => {
-          return Observable.forkJoin(
-            response.map((conversation: LeadResponse) => this.getItem(conversation)
-            .map((convWithItem: Lead) => {
-              convWithItem.archived = archived;
-              return convWithItem;
-            }))
-          );
-        });
-      }
-      return Observable.of([]);
+          response.map((conversation: LeadResponse) => this.getItem(conversation)
+          .map((convWithItem: Lead) => {
+            convWithItem.archived = archived;
+            return convWithItem;
+          }))
+        );
+      });
     })
     .catch((a) => {
       return Observable.of(null);
