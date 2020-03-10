@@ -4,12 +4,10 @@ import { EventService } from '../../core/event/event.service';
 import { ChatSignal, ChatSignalType } from '../../core/message/chat-signal.interface';
 import { MessageService } from '../../core/message/message.service';
 import { PersistencyService } from '../../core/persistency/persistency.service';
-import { Message } from '../../core/message/message';
 import { Observable, of } from 'rxjs';
 import { ConversationResponse } from '../../core/conversation/conversation-response.interface';
-import { InboxConversation } from '../model/inbox-conversation';
-import { find, head, isNil, some, isEmpty } from 'lodash-es';
-import { InboxMessage, MessageStatus, MessageType, statusOrder } from '../model';
+import { InboxConversation, InboxMessage, MessageStatus, MessageType, statusOrder } from '../model';
+import { find, head, isEmpty, isNil, some } from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
@@ -45,18 +43,12 @@ export class InboxConversationService {
   }
 
   public subscribeChatEvents() {
-    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
-      this.processNewMessage(this.buildInboxMessage(message));
+    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
+      this.processNewMessage(message);
     });
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.processNewChatSignal(signal);
     });
-  }
-
-  public buildInboxMessage(message: Message) {
-    const messageType = message.payload ? message.payload.type as MessageType : MessageType.TEXT;
-    return new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf, message.date,
-      message.status, messageType, message.payload, message.phoneRequest);
   }
 
   set selfId(value: string) {
@@ -86,6 +78,9 @@ export class InboxConversationService {
   }
 
   private addNewMessage(conversation: InboxConversation, message: InboxMessage) {
+    if (isEmpty(conversation.messages)) {
+      conversation.messages = [];
+    }
     if (!this.findMessage(conversation, message)) {
       conversation.messages.unshift(message);
       conversation.lastMessage = message;
@@ -192,6 +187,7 @@ export class InboxConversationService {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getConversation(message.thread)
     .subscribe((conversation) => {
+        this.addNewMessage(conversation, message);
         if (!this.containsConversation(conversation)) {
           this.conversations.unshift(conversation);
         }

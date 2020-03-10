@@ -1,11 +1,9 @@
-import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from '../../../core/message/message.service';
-import { Conversation } from '../../../core/conversation/conversation';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
-import { environment } from '../../../../environments/environment';
 import { WindowRef } from '../../../core/window/window.service';
 import { HttpService } from '../../../core/http/http.service';
 import { AsYouType, format, getCountryCallingCode, isValidNumber } from 'libphonenumber-js';
@@ -18,7 +16,7 @@ import { InboxConversation } from '../../model';
 })
 export class SendPhoneComponent implements OnInit {
 
-  @Input() conversation: Conversation | InboxConversation;
+  @Input() conversation: InboxConversation;
   @Input() required: boolean;
   @Input() phone: string;
   @ViewChild('phoneInput') phoneField: ElementRef;
@@ -56,7 +54,6 @@ export class SendPhoneComponent implements OnInit {
     const phoneNumber = this.sendPhoneForm.controls.phone.value;
     if (this.sendPhoneForm.valid) {
       if (this.required) {
-        this.messageService.addPhoneNumberRequestMessage(this.conversation, false);
         this.trackingService.addTrackingEvent({
           eventData: TrackingService.ITEM_SHAREPHONE_SENDPHONE,
           attributes: { item_id: this.conversation.item.id }
@@ -101,10 +98,7 @@ export class SendPhoneComponent implements OnInit {
   dismiss() {
     if (this.required) {
       this.trackingService.track(TrackingService.ITEM_SHAREPHONE_HIDEFORM, { item_id: this.conversation.item.id });
-      this.windowRef.nativeWindow.location.href = this.conversation instanceof Conversation
-        ? `${environment.siteUrl}item/${this.conversation.item.webSlug}`
-        : this.conversation.item.itemUrl;
-
+      this.windowRef.nativeWindow.location.href = this.conversation.item.itemUrl;
     } else {
       this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
       this.activeModal.dismiss();
