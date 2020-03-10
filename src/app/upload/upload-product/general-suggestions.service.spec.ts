@@ -48,7 +48,7 @@ const MOCK_SIZES_RESPONSE = [{
   label: '48'
 }];
 
-const MOCK_CONDITIONS = [
+export const MOCK_CONDITIONS = [
   {
     category_id: "16000",
     conditions: [

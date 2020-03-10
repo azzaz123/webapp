@@ -112,7 +112,7 @@
         <h2><span i18n>The more precise, the better</span></h2>
       </div>
     </div>
-    <div class="row" formGroupName="fashion_extra_fields">
+    <div class="row" formGroupName="extra_info">
       <div class="col">
         <div class="form-group last">
           <label i18n>Choose the gender of the garment</label>
@@ -130,7 +130,7 @@
         </div>
       </div>
     </div>
-    <div class="row" formGroupName="fashion_extra_fields">
+    <div class="row" formGroupName="extra_info">
       <div class="col-12 col-md-4">
         <div class="form-group last" formGroupName="object_type">
           <label for="objectType" i18n>Type of garment</label>
@@ -142,7 +142,7 @@
       <div class="col-12 col-md-4">
         <div class="form-group last">
           <label for="brand" i18n>Brand</label>
-          <tsl-keyword-suggester [form]="uploadForm.controls.fashion_extra_fields" [controlName]="'brand'"
+          <tsl-keyword-suggester [form]="uploadForm.controls.extra_info" [controlName]="'brand'"
             placeholder="fashion_brand_example" [suggestions]="brandSuggestions" (inputChange)="getBrands($event)">
           </tsl-keyword-suggester>
         </div>
@@ -163,7 +163,7 @@
         <h2><span i18n>The more precise, the better</span></h2>
       </div>
     </div>
-    <div class="row" formGroupName="cellphones_extra_fields">
+    <div class="row" formGroupName="extra_info">
       <div class="col-12 col-md-4">
         <div class="form-group last" formGroupName="object_type">
           <label for="objectType" i18n>Type of object</label>
@@ -175,7 +175,7 @@
       <div class="col-12 col-md-4">
         <div class="form-group last">
           <label for="brand" i18n>Brand</label>
-          <tsl-keyword-suggester [form]="uploadForm.controls.cellphones_extra_fields" [controlName]="'brand'"
+          <tsl-keyword-suggester [form]="uploadForm.controls.extra_info" [controlName]="'brand'"
             placeholder="phones_brand_example" [suggestions]="brandSuggestions" (inputChange)="getBrands($event)"
             (onSuggestionSelect)="autoCompleteCellphonesModel($event)">
           </tsl-keyword-suggester>
@@ -184,7 +184,7 @@
       <div class="col-md-4">
         <div class="form-group last">
           <label for="model" i18n>Model</label>
-          <tsl-keyword-suggester [form]="uploadForm.controls.cellphones_extra_fields" [controlName]="'model'"
+          <tsl-keyword-suggester [form]="uploadForm.controls.extra_info" [controlName]="'model'"
             placeholder="model_example" [suggestions]="modelSuggestions" (inputChange)="getModels($event)">
           </tsl-keyword-suggester>
         </div>
