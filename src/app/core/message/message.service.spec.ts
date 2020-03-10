@@ -20,7 +20,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { RealTimeService } from './real-time.service';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
-import { InboxConversation, MessageStatus, PhoneRequestState } from '../../chat/model';
+import { InboxConversation, MessageStatus } from '../../chat/model';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 
 describe('Service: Message', () => {
@@ -165,28 +165,10 @@ describe('Service: Message', () => {
   });
 
   describe('addPhoneNumberRequestMessage', () => {
-    let conversation: Conversation;
+    let conversation: InboxConversation;
 
     beforeEach(() => {
-      conversation = MOCK_CONVERSATION();
-    });
-
-    it('should create a phoneRequest message with the phoneRequestState as PENDING', () => {
-      service.addPhoneNumberRequestMessage(conversation);
-      conversation.messages.push(new Message('123', conversation.id, 'test', USER_ID));
-      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
-
-      expect(requestMessage.phoneRequest).toBe(PhoneRequestState.PENDING);
-    });
-
-    it('should add the phone request message to the conversation', () => {
-      const msgExistsBefore = conversation.messages.find(m => !!m.phoneRequest);
-
-      service.addPhoneNumberRequestMessage(conversation);
-      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
-
-      expect(msgExistsBefore).toBeFalsy();
-      expect(requestMessage instanceof Message).toBe(true);
+      conversation = CREATE_MOCK_INBOX_CONVERSATION();
     });
 
     it('should track the CHAT_SHAREPHONE_OPENSHARING event when no second argument is passed', () => {
@@ -229,14 +211,6 @@ describe('Service: Message', () => {
       service.createPhoneNumberMessage(conversation, phone);
 
       expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, phoneMsg);
-    });
-
-    it('should set phoneRequestState to ANSWERED for the phoneRequest message', () => {
-      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
-
-      service.createPhoneNumberMessage(conversation, phone);
-
-      expect(requestMessage.phoneRequest).toBe(PhoneRequestState.ANSWERED);
     });
   });
 });

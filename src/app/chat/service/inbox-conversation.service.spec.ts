@@ -8,9 +8,8 @@ import { PersistencyService } from '../../core/persistency/persistency.service';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
 import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
+import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../chat/model';
 import { ChatSignal, ChatSignalType } from '../../core/message/chat-signal.interface';
-import { Message } from '../../core/message/message';
-import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../model';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
@@ -74,11 +73,10 @@ describe('InboxConversationService', () => {
   describe('subscribe chat events', () => {
     it('should parse a Message to InboxMessage and call processNewMessages when a NEW_MESSAGE event is emitted', () => {
       spyOn(service, 'processNewMessage');
-      const message = new Message('mockId', 'thread-id', 'hola!', 'mockUserId', new Date(), MessageStatus.SENT);
-      const inboxMessage = new InboxMessage(message.id, message.thread, message.message, message.from, message.fromSelf,
-        message.date, message.status, MessageType.TEXT, message.payload, message.phoneRequest);
+      const inboxMessage = new InboxMessage('mockId', 'thread-id', 'hola!', 'mockUserId', true,
+        new Date(), MessageStatus.SENT, MessageType.TEXT);
 
-      eventService.emit(EventService.NEW_MESSAGE, message);
+      eventService.emit(EventService.NEW_MESSAGE, inboxMessage);
 
       expect(service.processNewMessage).toHaveBeenCalledWith(inboxMessage);
     });

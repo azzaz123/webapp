@@ -180,8 +180,8 @@ export class SubscriptionsService {
       subscription.category_name = category.name;
       subscription.category_icon = category.icon_id;
       subscription.selected_tier = this.getSelectedTier(subscription);
-      return subscription;
     }
+    return subscription;
   }
 
   private getSelectedTier(subscription: SubscriptionsResponse): Tier {

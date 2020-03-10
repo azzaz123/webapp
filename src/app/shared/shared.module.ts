@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from './geolocation/geolocation.module';
 import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
-import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
 import { ButtonComponent } from './button/button.component';
 import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
@@ -202,7 +201,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
   providers: [
     DecimalPipe,
     ExitConfirmGuard,
-    TutorialGuard,
     CartService,
     ThousandSuffixesPipe,
     LinkTransformPipe,
