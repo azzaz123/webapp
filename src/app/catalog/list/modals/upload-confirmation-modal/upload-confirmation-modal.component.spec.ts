@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { WindowRef } from '../../../../core/window/window.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
 
@@ -129,6 +129,25 @@ describe('UploadConfirmationModalComponent', () => {
       component.trackUploaded();
 
       expect(window['fbq']).toHaveBeenCalledWith('track', 'AddToCart', event);
+    });
+
+    it('should send pinterest addtocart tracking', () => {
+      spyOn(window, 'pintrk');
+      component.item = MOCK_ITEM;
+      const event = {
+        value: component.item.salePrice,
+        currency: component.item.currencyCode,
+        line_items: [
+          {
+            product_category: component.item.categoryId,
+            product_id: component.item.id,
+          }
+        ]
+      };
+
+      component.trackUploaded();
+
+      expect(window['pintrk']).toHaveBeenCalledWith('track', 'addtocart', event);
     });
   });
 

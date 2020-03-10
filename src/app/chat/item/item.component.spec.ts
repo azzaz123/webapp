@@ -3,15 +3,12 @@ import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs';
-import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../shared/pipes';
 import { ItemService } from '../../core/item/item.service';
-import {
-  ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, ITEM_WEB_SLUG,
-  MOCK_ITEM, MOCK_ITEM_CAR
-} from '../../../tests/item.fixtures.spec';
+import { ITEM_COUNTERS_DATA, ITEM_WEB_SLUG, MOCK_ITEM, MOCK_ITEM_CAR } from '../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
-import { ItemComponent, showWillisCategories, showMapfreCategories, showVertiCategories, mapfreLinks, vertiLinks } from './item.component';
+import { ItemComponent, mapfreLinks, showMapfreCategories, showVertiCategories, showWillisCategories, vertiLinks } from './item.component';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { environment } from '../../../environments/environment';

@@ -1,9 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { EventService } from '../../core/event/event.service';
-import { InboxConversation } from '../model/inbox-conversation';
-import { InboxService } from '../../core/inbox/inbox.service';
-import { InboxConversationService } from '../../core/inbox/inbox-conversation.service';
-import { Message } from '../../core/message/message';
+import { InboxConversation } from '../model';
+import { InboxService, InboxConversationService } from '../service';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { UserService } from '../../core/user/user.service';
 import { AdService } from '../../core/ad/ad.service';
@@ -11,6 +9,7 @@ import { RemoteConsoleService } from '../../core/remote-console';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { countBy, map, find } from 'lodash-es';
 import { ANALYTICS_EVENT_NAMES, SCREEN_IDS, AnalyticsPageView, ViewChatScreen } from '../../core/analytics/analytics-constants';
+import { InboxMessage } from '../model';
 
 export enum InboxState { Inbox, Archived }
 
@@ -164,7 +163,7 @@ export class InboxComponent implements OnInit, OnDestroy {
   }
 
   private bindNewMessageToast() {
-    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
       if (message.fromSelf && this.conversation.id === message.thread) {
         this.scrollToTop();
       } else {

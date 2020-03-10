@@ -1,6 +1,6 @@
 import { MESSAGE_MAIN } from './message.fixtures.spec';
-import { Message, phoneRequestState } from '../app/core/message/message';
-import { InboxMessage, MessageStatus } from '../app/chat/model/inbox-message';
+import { Message } from '../app/core/message/message';
+import { InboxMessage, MessageStatus, PhoneRequestState } from '../app/chat/model/inbox-message';
 import { Observable } from 'rxjs';
 import { createInboxConversationsArray } from './inbox.fixtures.spec';
 
@@ -38,7 +38,7 @@ export const MOCK_DB_MSG_WITH_PHONEREQUEST: any = [
       'from': MESSAGE_MAIN.from,
       'date': MESSAGE_MAIN.date,
       'status': MessageStatus.READ,
-      'phoneRequest': phoneRequestState.pending
+      'phoneRequest': PhoneRequestState.PENDING
     }
   }
 ];

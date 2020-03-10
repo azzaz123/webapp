@@ -24,7 +24,7 @@ export interface ClickItemCard {
   /**
    * The unique identifier of the search that the click is under
    */
-  searchId: string;
+  searchId?: string;
   /**
    * Identifier of the screen that the item was clicked from
    */
@@ -45,4 +45,12 @@ export interface ClickItemCard {
    * Identifier of the source item for which recommendations have been given
    */
   itemSourceRecommendationId?: string;
+  /**
+   * The distance in km from the location where the search is performed and the location of the item clicked
+   */
+  itemDistance?: number;
+  /**
+   * If the listing has shipping allowed
+   */
+  shippingAllowed?: boolean;
 }

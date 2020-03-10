@@ -13,7 +13,7 @@ import { CallTotals } from './totals.interface';
 import { CallResponse } from './call-response.interface';
 import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
-import { BlockUserXmppService } from './block-user';
+import { BlockUserXmppService } from '../../chat/service';
 
 @Injectable()
 export class CallsService extends LeadService {

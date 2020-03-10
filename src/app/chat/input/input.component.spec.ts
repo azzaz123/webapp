@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { InputComponent } from './input.component';
 import { Conversation } from '../../core/conversation/conversation';
-import { MessageService } from '../../core/message/message.service';
+import { MessageService } from '../service/message.service';
 import { EventService } from '../../core/event/event.service';
 import { MOCK_CONVERSATION, SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
@@ -18,6 +18,12 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { DeviceDetectorServiceMock } from '../../../tests';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
+import { InboxConversation } from '../model';
+import {
+  CREATE_MOCK_INBOX_CONVERSATION,
+  MOCK_INBOX_CONVERSATION,
+  SECOND_MOCK_INBOX_CONVERSATION
+} from '../../../tests/inbox.fixtures.spec';
 
 class MessageServiceMock {
   send(c: Conversation, t: string): void {
@@ -98,7 +104,7 @@ describe('Component: Input', () => {
   describe('sendMessage', () => {
 
     const EVENT = new Event('event');
-    const conversation: Conversation = MOCK_CONVERSATION();
+    const conversation: InboxConversation = MOCK_CONVERSATION();
     const TEXT = 'text';
     let textarea: HTMLTextAreaElement;
 
@@ -265,7 +271,7 @@ describe('Component: Input', () => {
 
     it('should reset the input value when the conversation is changed', fakeAsync(() => {
       component.messageArea.nativeElement.value = 'I typed some some text...';
-      component.currentConversation = SECOND_MOCK_CONVERSATION;
+      component.currentConversation = SECOND_MOCK_INBOX_CONVERSATION;
 
       component.ngOnChanges(component);
       tick(500);
@@ -280,7 +286,7 @@ describe('Component: Input', () => {
     });
 
     it('should disable input if user is blocked', () => {
-      component.currentConversation = MOCK_CONVERSATION();
+      component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
       component.currentConversation.user.blocked = true;
 
       component.ngOnChanges();
@@ -290,7 +296,7 @@ describe('Component: Input', () => {
 
     it('should enable input if user is blocked', () => {
       component.isUserBlocked = true;
-      component.currentConversation = MOCK_CONVERSATION();
+      component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
       component.currentConversation.user.blocked = false;
 
       component.ngOnChanges();

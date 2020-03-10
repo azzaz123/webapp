@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync, flush } from '@angular/core/testing';
 import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
@@ -13,12 +13,12 @@ import {
   SUBSCRIPTION_REQUIRES_PAYMENT,
   SUBSCRIPTION_SUCCESS,
   TIER,
-  MAPPED_SUBSCRIPTIONS
+  MAPPED_SUBSCRIPTIONS,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED
 } from '../../../../tests/subscriptions.fixtures.spec';
 import { STRIPE_CARD, FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
-import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { PAYMENT_METHOD_DATA } from '../../../../tests/payments.fixtures.spec';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
@@ -48,7 +48,6 @@ describe('AddNewSubscriptionModalComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AddNewSubscriptionModalComponent],
       providers: [
-        ...TEST_HTTP_PROVIDERS,
         {
           provide: NgbActiveModal, useValue: {
             close() {
@@ -96,7 +95,8 @@ describe('AddNewSubscriptionModalComponent', () => {
         },
         {
           provide: AnalyticsService, useClass: MockAnalyticsService
-        }
+        },
+        EventService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -136,7 +136,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     })
 
     it('should requestNewPayment if card is not attached', fakeAsync(() => {
-      spyOn(stripeService, 'addNewCard').and.returnValue(Observable.of(null));
+      spyOn(stripeService, 'addNewCard').and.returnValue(throwError('bad credit card'));
       spyOn(errorsService, 'i18nError');
 
       component.addSubscription(PAYMENT_METHOD_DATA);
@@ -351,6 +351,30 @@ describe('AddNewSubscriptionModalComponent', () => {
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
+    });
+  });
+
+  describe('when the selected subscription type has only one tier', () => {
+    it('should set a CSS class that is used for subscriptions with only one tier', () => {
+      component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED;
+      fixture.detectChanges();
+
+      const carousel: HTMLElement = fixture.elementRef.nativeElement.querySelector('ngb-carousel');
+      expect(carousel.className).toBe('single');
+    });
+
+    it('should hide first step, carousel indicators, current step indicator and change button', () => {
+      component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED;
+      fixture.detectChanges();
+
+      const firstStepElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.step-1');
+      const carouselIndicatorsElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.carousel-indicators');
+      const stepsIndicatorElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.AddNewSubscription__listing-limit-steps');
+      const changeButton: HTMLElement = fixture.elementRef.nativeElement.querySelector('.AddNewSubscription__listing-limit-payment-edit');
+      expect(firstStepElement).toBeNull();
+      expect(carouselIndicatorsElement).toBeNull();
+      expect(stepsIndicatorElement).toBeNull();
+      expect(changeButton).toBeNull();
     });
   });
 });

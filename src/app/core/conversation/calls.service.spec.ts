@@ -19,10 +19,10 @@ import { Conversation } from './conversation';
 import { createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { CallTotals } from './totals.interface';
 import { ConnectionService } from '../connection/connection.service';
-import { BlockUserXmppService } from './block-user';
 import { RealTimeService } from '../message/real-time.service';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
+import { BlockUserXmppService } from '../../chat/service';
 
 let service: CallsService;
 let userService: UserService;

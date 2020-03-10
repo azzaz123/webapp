@@ -4,7 +4,7 @@ import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal.comp
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../shared/pipes';
 import { Pack } from '../../core/payments/pack';
 
 describe('WallacoinsConfirmModalComponent', () => {

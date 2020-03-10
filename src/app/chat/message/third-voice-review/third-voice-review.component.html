@@ -1,0 +1,9 @@
+<tsl-third-voice-message [message]="message">
+  <span i18n>Great! You found what you were looking for!</span>
+</tsl-third-voice-message>
+
+<tsl-third-voice-message [message]="message">
+  <span i18n>How did it go? Take a moment to leave some feedback to the user to help our community!</span>
+  <tsl-third-voice-button *ngIf="isReview()" [message]="message" [user]="user" [item]="item"
+                          class="text-center"></tsl-third-voice-button>
+</tsl-third-voice-message>

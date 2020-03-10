@@ -1,10 +1,7 @@
-import { MsgArchiveResponse, ReceivedReceipt, ReadReceipt } from '../app/core/message/archive.interface';
 import { Message } from '../app/core/message/message';
-import { MessagePayload } from '../app/core/message/messages.interface';
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { OTHER_USER_ID, USER_ID } from './user.fixtures.spec';
 import { CONVERSATION_ID } from './conversation.fixtures.spec';
-
 
 export function createMockMessagesArray(count: number): Message[] {
   const messages: Message[] = [];
@@ -22,68 +19,6 @@ export function createMockMessagesArray(count: number): Message[] {
 }
 
 export const MOCK_MESSAGES_ARRAY = createMockMessagesArray(5);
-
-export const MOCK_RECEIVED_RECEIPTS: ReceivedReceipt[] = [{
-  thread: MOCK_MESSAGES_ARRAY[0].thread,
-  messageId: MOCK_MESSAGES_ARRAY[0].id,
-  from: OTHER_USER_ID,
-  to: USER_ID,
-  fromSelf: true,
-  timestamp: new Date(MOCK_MESSAGES_ARRAY[0].date).getTime() + 1000
-},
-{
-  thread: MOCK_MESSAGES_ARRAY[1].thread,
-  messageId: MOCK_MESSAGES_ARRAY[1].id,
-  from: USER_ID,
-  to: OTHER_USER_ID,
-  fromSelf: true,
-  timestamp: new Date(MOCK_MESSAGES_ARRAY[1].date).getTime() + 1000
-},
-{
-  thread: MOCK_MESSAGES_ARRAY[2].thread,
-  messageId: MOCK_MESSAGES_ARRAY[2].id,
-  from: OTHER_USER_ID,
-  to: USER_ID,
-  fromSelf: true,
-  timestamp: new Date(MOCK_MESSAGES_ARRAY[2].date).getTime() + 1000
-}];
-
-export const MOCK_READ_RECEIPTS: ReadReceipt[] = [{
-  thread: MOCK_MESSAGES_ARRAY[0].thread,
-  to: USER_ID,
-  timestamp: new Date(MOCK_MESSAGES_ARRAY[0].date).getTime() + 2000
-},
-{
-  thread: MOCK_MESSAGES_ARRAY[0].thread,
-  to: OTHER_USER_ID,
-  timestamp: new Date(MOCK_MESSAGES_ARRAY[0].date).getTime() + 4000
-},
-{
-  thread: MOCK_MESSAGES_ARRAY[0].thread,
-  to: USER_ID,
-  timestamp: new Date(MOCK_MESSAGES_ARRAY[1].date).getTime() + 6000
-}];
-
-export const MOCK_MSG_ARCHIVE_RESPONSE: MsgArchiveResponse = {
-  messages: MOCK_MESSAGES_ARRAY,
-  receivedReceipts: MOCK_RECEIVED_RECEIPTS,
-  readReceipts: MOCK_READ_RECEIPTS
-};
-
-export class MockArchiveService {
-
-  getEventsSince() {}
-  getAllEvents() {}
-  updateStatuses() {}
-
-  public messageContructor(id: string, thread: string, message: string,
-    from: string, date: Date, status: string, payload: MessagePayload, fromSelf: boolean) {
-
-    const msg = new Message(id, thread, message, from, date, status, payload);
-    msg.fromSelf = fromSelf;
-    return msg;
-  }
-}
 
 export function createMockMessageEvents(count: number) {
   const response = [];
