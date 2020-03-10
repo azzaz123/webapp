@@ -69,17 +69,14 @@ export class AddNewSubscriptionModalComponent implements OnInit {
 
   public addSubscription(paymentMethod: PaymentMethodResponse) {
     this.loading = true;
-    this.stripeService.addNewCard(paymentMethod.id).subscribe((response) => {
-      if (!response) {
-        this.requestNewPayment();
+    this.stripeService.addNewCard(paymentMethod.id).subscribe(() => {
+      if (this.isRetryInvoice) {
+        this.retrySubscription(paymentMethod.id);
       } else {
-        if (this.isRetryInvoice) {
-          this.retrySubscription(paymentMethod.id);
-        } else {
-          this.addSubscriptionFromSavedCard(this.selectedTier.id, paymentMethod.id);
-        }
+        this.addSubscriptionFromSavedCard(this.selectedTier.id, paymentMethod.id);
       }
-    });
+    },
+    () => this.requestNewPayment());
   }
 
   public addSubscriptionFromSavedCard(selectedPlanId: string = this.selectedTier.id, paymentMethodId = this.card.id) {
