@@ -149,7 +149,7 @@ describe('UploadProductComponent', () => {
               });
             },
             getConditions() {
-              return Observable.of({MOCK_CONDITIONS})
+              return Observable.of({ MOCK_CONDITIONS })
             }
           }
         }
@@ -350,8 +350,84 @@ describe('UploadProductComponent', () => {
       expect(component.getObjectTypes).toHaveBeenCalled();
     });
 
+    it('should get condition options for the selected category', () => {
+      spyOn(component, 'getConditions');
+      component.item = MOCK_ITEM_CELLPHONES;
+
+      component.ngOnInit();
+
+      expect(component.getConditions).toHaveBeenCalled();
+    });
+
     afterAll(() => {
       component.item = MOCK_ITEM;
+    });
+  });
+
+  describe('when changing between categories', () => {
+    describe('if the selected category is cellphones', () => {
+      beforeEach(() => {
+        component.uploadForm.patchValue({ category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES });
+      });
+
+      it('should enable the object_type field', () => {
+        expect(component.uploadForm.get('extra_info').get('object_type').disabled).toBe(false);
+      });
+      it('should enable the brand field', () => {
+        expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(false);
+      });
+      it('should disable the model field', () => {
+        expect(component.uploadForm.get('extra_info').get('model').disabled).toBe(false);
+      });
+      it('should disable the size field', () => {
+        expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(true);
+      });
+      it('should disable the gender field', () => {
+        expect(component.uploadForm.get('extra_info').get('gender').disabled).toBe(true);
+      });
+    });
+    describe('if the selected category is fashion', () => {
+      beforeEach(() => {
+        component.uploadForm.patchValue({ category_id: CATEGORY_IDS.FASHION_ACCESSORIES });
+      });
+
+      it('should enable the object_type field', () => {
+        expect(component.uploadForm.get('extra_info').get('object_type').disabled).toBe(false);
+      });
+      it('should enable the brand field', () => {
+        expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(false);
+      });
+      it('should enable the size field', () => {
+        expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(false);
+      });
+      it('should enable the gender field', () => {
+        expect(component.uploadForm.get('extra_info').get('gender').disabled).toBe(false);
+      });
+      it('should disable the model field', () => {
+        expect(component.uploadForm.get('extra_info').get('model').disabled).toBe(true);
+      });
+    });
+
+    describe('if the selected category is a consumer goods category', () => {
+      beforeEach(() => {
+        component.uploadForm.patchValue({ category_id: CATEGORY_IDS.COMPUTERS_ELECTRONICS });
+      });
+
+      it('should disable the object_type field', () => {
+        expect(component.uploadForm.get('extra_info').get('object_type').disabled).toBe(true);
+      });
+      it('should disable the brand field', () => {
+        expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(true);
+      });
+      it('should disable the size field', () => {
+        expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(true);
+      });
+      it('should disable the gender field', () => {
+        expect(component.uploadForm.get('extra_info').get('gender').disabled).toBe(true);
+      });
+      it('should disable the model field', () => {
+        expect(component.uploadForm.get('extra_info').get('model').disabled).toBe(true);
+      });
     });
   });
 

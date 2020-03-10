@@ -242,9 +242,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       } else if (+categoryId === CATEGORY_IDS.FASHION_ACCESSORIES) {
         this.uploadForm.get('extra_info').get('object_type').enable();
         this.uploadForm.get('extra_info').get('brand').enable();
-        this.uploadForm.get('extra_info').get('model').disable();
         this.uploadForm.get('extra_info').get('size').enable();
         this.uploadForm.get('extra_info').get('gender').enable();
+        this.uploadForm.get('extra_info').get('model').disable();
       } else {
         this.uploadForm.get('extra_info').get('object_type').disable();
         this.uploadForm.get('extra_info').get('brand').disable();
