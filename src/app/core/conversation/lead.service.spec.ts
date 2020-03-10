@@ -8,20 +8,22 @@ import { ItemService } from '../item/item.service';
 import { Conversation } from './conversation';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Response, ResponseOptions } from '@angular/http';
-import { MockBackend, MockConnection } from '@angular/http/testing';
 import { User } from '../user/user';
 import { Item } from '../item/item';
 import { ConversationResponse } from './conversation-response.interface';
 import { EventService } from '../event/event.service';
 import { Lead } from './lead';
-import { MockedUserService, USER_ID, USER_ITEM_DISTANCE, MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER, MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
 import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
 import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
 import { BlockUserXmppService } from '../../chat/service';
+import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { environment } from '../../../environments/environment';
+import { TestRequest } from '@angular/common/http/testing/src/request';
 
 @Injectable()
 export class MockService extends LeadService {
@@ -29,14 +31,15 @@ export class MockService extends LeadService {
   protected API_URL = 'api/v3/conversations';
   protected ARCHIVE_URL = 'api/v2/conversations';
 
-  constructor(http: HttpService,
+  constructor(httpClient: HttpClient,
+              http: HttpService,
               userService: UserService,
               itemService: ItemService,
               event: EventService,
               realTime: RealTimeService,
               blockService: BlockUserXmppService,
               connectionService: ConnectionService) {
-    super(http, userService, itemService, event, realTime, blockService, connectionService);
+    super(httpClient, http, userService, itemService, event, realTime, blockService, connectionService);
   }
 
   protected getLeads(since?: number, concat?: boolean, archived?: boolean): Observable<Conversation[]> {
@@ -70,18 +73,28 @@ let userService: UserService;
 let itemService: ItemService;
 let eventService: EventService;
 let connectionService: ConnectionService;
+let httpTestingController: HttpTestingController;
 
 describe('LeadService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule
+      ],
       providers: [
         MockService,
         EventService,
         ...TEST_HTTP_PROVIDERS,
-        {provide: UserService, useClass: MockedUserService},
-        {provide: ItemService, useClass: MockedItemService},
-        {provide: RealTimeService, useValue: {}},
-        {provide: BlockUserXmppService, useValue: { getBlockedUsers() { return ['1', '2', '3']; } }},
+        { provide: UserService, useClass: MockedUserService },
+        { provide: ItemService, useClass: MockedItemService },
+        { provide: RealTimeService, useValue: {} },
+        {
+          provide: BlockUserXmppService, useValue: {
+            getBlockedUsers() {
+              return ['1', '2', '3'];
+            }
+          }
+        },
         {
           provide: ConnectionService, useValue: {}
         }
@@ -93,6 +106,11 @@ describe('LeadService', () => {
     eventService = TestBed.get(EventService);
     http = TestBed.get(HttpService);
     connectionService = TestBed.get(ConnectionService);
+    httpTestingController = TestBed.get(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
   it('should instantiate the service', () => {
@@ -160,25 +178,19 @@ describe('LeadService', () => {
   });
 
   describe('query', () => {
-    const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify(CONVERSATIONS_DATA)}));
     describe('with backend errors', () => {
-      beforeEach(() => {
-        const mockBackend: MockBackend = TestBed.get(MockBackend);
-        mockBackend.connections.subscribe((connection: MockConnection) => {
-          connection.mockError();
-        });
-      });
       it('should return an observable of null', () => {
-        let observableResponse: any;
-        service.query(12345).subscribe((r: any) => {
-          observableResponse = r;
-        });
-        expect(observableResponse).toBe(null);
+        const UNTIL = 12345;
+
+        service.query(UNTIL).subscribe((response: any) => expect(response).toBe(null));
+
+        const req = httpTestingController.expectOne(
+          `${environment.baseUrl}api/v3/conversations?until=${UNTIL}&hidden=${false}`);
+        req.error(new ErrorEvent('connection failed'));
       });
     });
     describe('with data', () => {
       beforeEach(() => {
-        spyOn(http, 'get').and.returnValues(Observable.of(RESPONSE));
         connectionService.isConnected = true;
       });
       describe('with no params', () => {
@@ -195,13 +207,18 @@ describe('LeadService', () => {
           });
         });
         describe('no archive', () => {
+          let req: TestRequest;
           beforeEach(() => {
-            service.query().subscribe((res: Conversation[]) => {
-              conversations = res;
-            });
+            service.query().subscribe((response: Conversation[]) => conversations = response);
+
+            req = httpTestingController.expectOne(
+              `${environment.baseUrl}api/v3/conversations?until=${baseTime}&hidden=${false}`);
+            req.flush(CONVERSATIONS_DATA);
           });
           it('should call the http.get method with hidden false', () => {
-            expect(http.get).toHaveBeenCalledWith('api/v3/conversations', {until: baseTime, hidden: false});
+            expect(req.request.method).toEqual('GET');
+            expect(req.request.params.get('until')).toEqual(baseTime.toString());
+            expect(req.request.params.get('hidden')).toEqual('false');
           });
           it('should return a conversations array', () => {
             expect(conversations instanceof Array).toBeTruthy();
@@ -228,13 +245,22 @@ describe('LeadService', () => {
           });
         });
         describe('archive', () => {
+          let req: TestRequest;
+
           beforeEach(() => {
             service.query(null, true).subscribe((res: Conversation[]) => {
               conversations = res;
             });
+
+            req = httpTestingController.expectOne(
+              `${environment.baseUrl}api/v3/conversations?until=${baseTime}&hidden=${true}`);
+            req.flush(CONVERSATIONS_DATA);
           });
+
           it('should call the http.get method with hidden true', () => {
-            expect(http.get).toHaveBeenCalledWith('api/v3/conversations', {until: baseTime, hidden: true});
+            expect(req.request.method).toEqual('GET');
+            expect(req.request.params.get('until')).toEqual(baseTime.toString());
+            expect(req.request.params.get('hidden')).toEqual('true');
           });
           it('should set archived true', () => {
             expect(conversations[0].archived).toBeTruthy();
@@ -242,8 +268,17 @@ describe('LeadService', () => {
         });
       });
       it('should call the http.get method with the since and hidden param', () => {
-        service.query(12345, true).subscribe();
-        expect(http.get).toHaveBeenCalledWith('api/v3/conversations', {until: 12345, hidden: true});
+        const UNTIL = 12345;
+        const ARCHIVED = true;
+
+        service.query(UNTIL, ARCHIVED).subscribe();
+
+        const req = httpTestingController.expectOne(
+          `${environment.baseUrl}api/v3/conversations?until=${UNTIL}&hidden=${ARCHIVED}`);
+
+        expect(req.request.method).toEqual('GET');
+        expect(req.request.params.get('until')).toEqual(UNTIL.toString());
+        expect(req.request.params.get('hidden')).toEqual(String(ARCHIVED));
       });
     });
   });

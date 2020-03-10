@@ -14,6 +14,7 @@ import { CallResponse } from './call-response.interface';
 import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
 import { BlockUserXmppService } from '../../chat/service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class CallsService extends LeadService {
@@ -23,14 +24,15 @@ export class CallsService extends LeadService {
 
   private lastLeadResponse: Call[];
 
-  constructor(http: HttpService,
+  constructor(httpClient: HttpClient,
+              http: HttpService,
               userService: UserService,
               itemService: ItemService,
               event: EventService,
               realTime: RealTimeService,
               blockService: BlockUserXmppService,
               connectionService: ConnectionService) {
-    super(http, userService, itemService, event, realTime, blockService, connectionService);
+    super(httpClient, http, userService, itemService, event, realTime, blockService, connectionService);
   }
 
   protected getLeads(since?: number, archived?: boolean): Observable<Call[]> {

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { Response } from '@angular/http';
 import { LeadResponse } from './lead-response.interface';
 import { User } from '../user/user';
 import { Item } from '../item/item';
@@ -20,6 +19,8 @@ import 'rxjs/add/operator/do';
 import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
 import { BlockUserXmppService } from '../../chat/service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export abstract class LeadService {
@@ -33,7 +34,8 @@ export abstract class LeadService {
   public archivedStream$: ReplaySubject<Lead[]>;
   public firstLoad: boolean;
 
-  constructor(protected http: HttpService,
+  constructor(protected httpClient: HttpClient,
+              protected http: HttpService,
               protected userService: UserService,
               protected itemService: ItemService,
               protected event: EventService,
@@ -63,35 +65,32 @@ export abstract class LeadService {
   }
 
   public query(until?: number, archived: boolean = false): Observable<Lead[]> {
-    if (!until) {
-      until = new Date().getTime();
-    }
-    if (this.connectionService.isConnected) {
-      return this.http.get(this.API_URL, {until: until, hidden: archived})
-      .map((res: Response) => res.json())
-      .flatMap((res: LeadResponse[]) => {
-        if (res.length > 0) {
+    return this.httpClient.get<LeadResponse[]>(`${environment.baseUrl}${this.API_URL}`, {
+      params: {
+        until: until ? until.toString() : new Date().getTime().toString(),
+        hidden: String(archived)
+      }
+    })
+    .flatMap((res: LeadResponse[]) => {
+      if (res.length > 0) {
+        return Observable.forkJoin(
+          res.map((conversation: LeadResponse) => this.getUser(conversation))
+        )
+        .flatMap((response: LeadResponse[]) => {
           return Observable.forkJoin(
-            res.map((conversation: LeadResponse) => this.getUser(conversation))
-          )
-          .flatMap((response: LeadResponse[]) => {
-            return Observable.forkJoin(
-              response.map((conversation: LeadResponse) => this.getItem(conversation)
-              .map((convWithItem: Lead) => {
-                convWithItem.archived = archived;
-                return convWithItem;
-              }))
-            );
-          });
-        }
-        return Observable.of([]);
-      })
-      .catch((a) => {
-        return Observable.of(null);
-      });
-    } else {
+            response.map((conversation: LeadResponse) => this.getItem(conversation)
+            .map((convWithItem: Lead) => {
+              convWithItem.archived = archived;
+              return convWithItem;
+            }))
+          );
+        });
+      }
+      return Observable.of([]);
+    })
+    .catch((a) => {
       return Observable.of(null);
-    }
+    });
   }
 
   protected getUser(conversation: LeadResponse): Observable<LeadResponse> {
@@ -100,20 +99,20 @@ export abstract class LeadService {
       return Observable.of(conversation);
     }
     return this.userService.get(conversation.user_id)
-      .map((user: User) => {
-        conversation.user = user;
-        return conversation;
-      });
+    .map((user: User) => {
+      conversation.user = user;
+      return conversation;
+    });
   }
 
   protected getItem(conversation: LeadResponse): Observable<Lead> {
     if (!conversation.item_id) {
       return Observable.of(conversation)
-        .map((data: LeadResponse) => this.mapRecordData(data));
+      .map((data: LeadResponse) => this.mapRecordData(data));
     }
     return this.itemService.get(conversation.item_id)
-      .map((item: Item) => this.setItem(conversation, item))
-      .map((data: LeadResponse) => this.mapRecordData(data));
+    .map((item: Item) => this.setItem(conversation, item))
+    .map((data: LeadResponse) => this.mapRecordData(data));
   }
 
   protected setItem(conv: LeadResponse, item: Item): LeadResponse {
@@ -125,7 +124,7 @@ export abstract class LeadService {
   public archive(id: string): Observable<Lead> {
     return this.http.put(`${this.ARCHIVE_URL}/${id}/hide`, {})
     .map(() => {
-      const index: number = findIndex(this.leads, {'id': id});
+      const index: number = findIndex(this.leads, { 'id': id });
       if (index > -1) {
         const deletedLead: Lead = this.leads.splice(index, 1)[0];
         deletedLead.archived = true;
@@ -142,7 +141,7 @@ export abstract class LeadService {
   public unarchive(id: string): Observable<Lead> {
     return this.http.put(`${this.ARCHIVE_URL}/${id}/unhide`, {})
     .map(() => {
-      const index: number = findIndex(this.archivedLeads, {'id': id});
+      const index: number = findIndex(this.archivedLeads, { 'id': id });
       if (index > -1) {
         const lead: Lead = this.archivedLeads.splice(index, 1)[0];
         lead.archived = false;

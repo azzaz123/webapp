@@ -23,15 +23,20 @@ import { RealTimeService } from '../message/real-time.service';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
 import { BlockUserXmppService } from '../../chat/service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 let service: CallsService;
 let userService: UserService;
 let itemService: ItemService;
 let connectionService: ConnectionService;
+let httpTestingController: HttpTestingController;
 
 describe('CallsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule
+      ],
       providers: [
         CallsService,
         XmppService,
@@ -39,11 +44,11 @@ describe('CallsService', () => {
         BlockUserXmppService,
         EventService,
         ...TEST_HTTP_PROVIDERS,
-        {provide: UserService, useClass: MockedUserService},
-        {provide: ItemService, useClass: MockedItemService},
-        {provide: PersistencyService, useClass: MockedPersistencyService},
-        {provide: RemoteConsoleService, useClass: MockRemoteConsoleService},
-        {provide: TrackingService, useValue: {}},
+        { provide: UserService, useClass: MockedUserService },
+        { provide: ItemService, useClass: MockedItemService },
+        { provide: PersistencyService, useClass: MockedPersistencyService },
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
+        { provide: TrackingService, useValue: {} },
         {
           provide: ConnectionService, useValue: {}
         }
@@ -53,6 +58,11 @@ describe('CallsService', () => {
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
     connectionService = TestBed.get(ConnectionService);
+    httpTestingController = TestBed.get(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
   describe('getLeads', () => {
