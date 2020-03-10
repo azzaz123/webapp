@@ -9,7 +9,7 @@ import { MockedPersistencyService } from '../../../tests/persistency.fixtures.sp
 import { EventService } from '../../core/event/event.service';
 import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../chat/model';
-import { ChatSignal, ChatSignalType } from '../../core/message/chat-signal.interface';
+import { ChatSignal, ChatSignalType } from '../../core/message/chat-signal';
 import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
