@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { MessageService } from '../../core/message/message.service';
+import { MessageService } from '../service/message.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { InboxConversation } from '../model/inbox-conversation';

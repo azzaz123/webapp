@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MessageService } from '../../../core/message/message.service';
+import { MessageService } from '../../service/message.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';

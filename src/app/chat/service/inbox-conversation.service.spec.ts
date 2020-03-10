@@ -2,7 +2,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { InboxConversationService } from './inbox-conversation.service';
-import { MessageService } from '../../core/message/message.service';
+import { MessageService } from './message.service';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { PersistencyService } from '../../core/persistency/persistency.service';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
