@@ -56,25 +56,6 @@ export abstract class LeadService {
     });
   }
 
-  public addLead(lead: Lead) {
-    this.leads.unshift(lead);
-    this.stream();
-  }
-
-  // TODO - this method seems to never be used; check if it can be safely removed
-  protected getAllLeads(since?: number, archived?: boolean): Observable<Lead[]> {
-    return this.getLeads(since, archived)
-    .flatMap((conversations: Lead[]) => {
-      if (conversations && conversations.length > 0) {
-        return this.getAllLeads(this.getLastDate(conversations), archived);
-      }
-      return Observable.of(conversations);
-    })
-    .map(() => {
-      return archived ? this.archivedLeads : this.leads;
-    });
-  }
-
   protected getLastDate(conversations: Lead[]): number {
     if (conversations.length > 0 && conversations[conversations.length - 1] && conversations[conversations.length - 1].modifiedDate) {
       return conversations[conversations.length - 1].modifiedDate - 1;
@@ -139,13 +120,6 @@ export abstract class LeadService {
     conv.item = item;
     conv.user.itemDistance = this.userService.calculateDistanceFromItem(conv.user, conv.item);
     return conv;
-  }
-
-  public resetCache() {
-    this.leads = [];
-    this.archivedLeads = [];
-    this.stream$ = new ReplaySubject(1);
-    this.firstLoad = true;
   }
 
   public archive(id: string): Observable<Lead> {

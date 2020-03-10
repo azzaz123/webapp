@@ -104,9 +104,6 @@ describe('LeadService', () => {
     let response: Conversation[];
     let response2: Conversation[];
     beforeEach(() => {
-      spyOn<any>(service, 'getAllLeads').and.callFake(() => {
-        return Observable.of(CONVERSATIONS);
-      });
       response = null;
       response2 = null;
       service.leads = [];
@@ -148,44 +145,6 @@ describe('LeadService', () => {
           service.init(true).subscribe();
           expect(response).toEqual(CONVERSATIONS);
         });
-      });
-    });
-  });
-
-  describe('getAllLeads', () => {
-    const CONVERSATIONS: Conversation[] = createConversationsArray(4);
-    let response: Conversation[];
-    beforeEach(() => {
-      spyOn<any>(service, 'getLeads').and.returnValues(
-        Observable.of(createConversationsArray(4)),
-        Observable.of(createConversationsArray(2)),
-        Observable.of([]));
-    });
-    describe('not archived', () => {
-      it('should call getLeads twice', () => {
-        service['getAllLeads']().subscribe();
-        expect(service['getLeads']).toHaveBeenCalledTimes(3);
-      });
-      it('should return conversations', () => {
-        service.leads = CONVERSATIONS;
-        service['getAllLeads']().subscribe((r: Conversation[]) => {
-          response = r;
-        });
-        expect(response).toEqual(CONVERSATIONS);
-      });
-    });
-    describe('archived', () => {
-      it('should call getLeads twice', () => {
-        service['getAllLeads'](null, true).subscribe();
-        expect(service['getLeads']).toHaveBeenCalledTimes(3);
-      });
-      it('should return archived conversations', () => {
-        service.archivedLeads = CONVERSATIONS;
-        service.leads = null;
-        service['getAllLeads'](null, true).subscribe((r: Conversation[]) => {
-          response = r;
-        });
-        expect(response).toEqual(CONVERSATIONS);
       });
     });
   });
