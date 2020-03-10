@@ -187,6 +187,7 @@ export class InboxConversationService {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getConversation(message.thread)
     .subscribe((conversation) => {
+        this.addNewMessage(conversation, message);
         if (!this.containsConversation(conversation)) {
           this.conversations.unshift(conversation);
         }
