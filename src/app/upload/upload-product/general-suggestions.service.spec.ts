@@ -1,3 +1,4 @@
+import { MOCK_OBJECT_TYPE_ID, MOCK_BRAND_MODEL_RESPONSE, MOCK_MODEL, MOCK_MODELS_RESPONSE, MOCK_BRANDS_RESPONSE, MOCK_GENDER, MOCK_SIZES, MOCK_SIZES_RESPONSE, MOCK_CONDITIONS, MOCK_CONDITIONS_RESPONSE } from './../../../tests/extra-info.fixtures.spec';
 import { TestBed } from '@angular/core/testing';
 
 import { GeneralSuggestionsService, SUGGESTERS_API_URL, FASHION_KEYS_API_URL, CONDITION_KEYS_API_URL } from './general-suggestions.service';
@@ -7,116 +8,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
 import { environment } from '../../../environments/environment';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-
-const MOCK_OBJECT_TYPES = [{
-  id: '1',
-  name: 'object type 1'
-}, {
-  id: '2',
-  name: 'object type 2'
-}];
-const MOCK_OBJECT_TYPES_RESPONSE = [{
-  value: '1',
-  label: 'object type 1'
-}, {
-  value: '2',
-  label: 'object type 2'
-}];
-const MOCK_BRAND_MODEL_RESPONSE = [{
-  brand: 'brand1',
-  model: 'model1'
-}, {
-  brand: 'brand2',
-  model: 'model2'
-}];
-const MOCK_MODELS_RESPONSE = [{ model: 'model1' }, { model: 'model2' }];
-const MOCK_BRANDS_RESPONSE = [{ brand: 'brand1' }, { brand: 'brand2' }];
-const MOCK_BRAND = 'Apple';
-const MOCK_MODEL = 'iPhone';
-const MOCK_OBJECT_TYPE_ID = 130;
-const MOCK_GENDER = 'male';
-const MOCK_SIZES = {
-  female: [{
-    id: 34, text: '35'
-  }],
-  male: [{
-    id: 57, text: '48'
-  }]
-};
-const MOCK_SIZES_RESPONSE = [{
-  value: '57',
-  label: '48'
-}];
-
-export const MOCK_CONDITIONS = [
-  {
-    category_id: "16000",
-    conditions: [
-      {
-        id: "un_opened",
-        title: "Unopened",
-        description: "With its seal"
-      },
-      {
-        id: "new",
-        title: "New",
-        description: "Never been used"
-      },
-      {
-        id: "as_good_as_new",
-        title: "As good as new",
-        description: "In perfect condition"
-      },
-      {
-        id: "good",
-        title: "Good",
-        description: "Quite used, but well preserved"
-      },
-      {
-        id: "fair",
-        title: "Fair",
-        description: "With evidents signs of use"
-      },
-      {
-        id: "has_given_it_all",
-        title: "Has given it all",
-        description: "May have to be repaired"
-      }
-    ]
-  }];
-
-const MOCK_CONDITIONS_RESPONSE = [
-  {
-    value: "un_opened",
-    label: "Unopened",
-    description: "With its seal"
-  },
-  {
-    value: "new",
-    label: "New",
-    description: "Never been used"
-  },
-  {
-    value: "as_good_as_new",
-    label: "As good as new",
-    description: "In perfect condition"
-  },
-  {
-    value: "good",
-    label: "Good",
-    description: "Quite used, but well preserved"
-  },
-  {
-    value: "fair",
-    label: "Fair",
-    description: "With evidents signs of use"
-  },
-  {
-    value: "has_given_it_all",
-    label: "Has given it all",
-    description: "May have to be repaired"
-  }
-];
+import { MOCK_OBJECT_TYPES, MOCK_OBJECT_TYPES_RESPONSE, MOCK_BRAND } from '../../../tests/extra-info.fixtures.spec';
 
 describe('GeneralSuggestionsService', () => {
 

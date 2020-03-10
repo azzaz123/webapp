@@ -1,4 +1,4 @@
-import { MOCK_CONDITIONS } from './general-suggestions.service.spec';
+import { MOCK_CONDITIONS } from './../../../tests/extra-info.fixtures.spec';
 import { MOCK_ITEM_CELLPHONES } from './../../../tests/item.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
