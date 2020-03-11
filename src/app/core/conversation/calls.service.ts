@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Call } from './calls';
-import { HttpService } from '../http/http.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { EventService } from '../event/event.service';
@@ -23,12 +22,11 @@ export class CallsService extends LeadService {
   private lastLeadResponse: Call[];
 
   constructor(httpClient: HttpClient,
-              http: HttpService,
               userService: UserService,
               itemService: ItemService,
               event: EventService,
               realTime: RealTimeService) {
-    super(httpClient, http, userService, itemService, event, realTime);
+    super(httpClient, userService, itemService, event, realTime);
   }
 
   protected getLeads(since?: number, archived?: boolean): Observable<Call[]> {

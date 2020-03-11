@@ -32,12 +32,11 @@ export class MockService extends LeadService {
   protected ARCHIVE_URL = 'api/v2/conversations';
 
   constructor(httpClient: HttpClient,
-              http: HttpService,
               userService: UserService,
               itemService: ItemService,
               event: EventService,
               realTime: RealTimeService) {
-    super(httpClient, http, userService, itemService, event, realTime);
+    super(httpClient, userService, itemService, event, realTime);
   }
 
   protected getLeads(since?: number, concat?: boolean, archived?: boolean): Observable<Conversation[]> {

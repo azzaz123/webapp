@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { LeadResponse } from './lead-response.interface';
@@ -34,7 +33,6 @@ export abstract class LeadService {
   public firstLoad: boolean;
 
   constructor(protected httpClient: HttpClient,
-              protected http: HttpService,
               protected userService: UserService,
               protected itemService: ItemService,
               protected event: EventService,
