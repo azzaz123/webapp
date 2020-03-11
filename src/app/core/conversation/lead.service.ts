@@ -132,7 +132,7 @@ export abstract class LeadService {
   }
 
   public unarchive(id: string): Observable<Lead> {
-    return this.http.put(`${this.ARCHIVE_URL}/${id}/unhide`, {})
+    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/unhide`, {})
     .map(() => {
       const index: number = findIndex(this.archivedLeads, { 'id': id });
       if (index > -1) {

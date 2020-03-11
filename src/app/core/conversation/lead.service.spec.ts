@@ -327,7 +327,7 @@ describe('LeadService', () => {
       let req: TestRequest;
 
       beforeEach(() => {
-        service.archive('10').subscribe((r: Conversation) => response = r );
+        service.archive('10').subscribe((r: Conversation) => response = r);
         req = httpTestingController.expectOne(
           `${environment.baseUrl}api/v2/conversations/${10}/hide`);
         req.flush({});
@@ -350,18 +350,20 @@ describe('LeadService', () => {
     beforeEach(() => {
       service.archivedLeads = createConversationsArray(5);
       unarchivedConv = <Conversation>service.archivedLeads[2];
-      spyOn(http, 'put').and.returnValue(Observable.of({}));
       spyOn(service, 'stream');
       response = null;
     });
     describe('conversation found', () => {
+      let req: TestRequest;
+
       beforeEach(() => {
-        service.unarchive(unarchivedConv.id).subscribe((r: Conversation) => {
-          response = r;
-        });
+        service.unarchive(unarchivedConv.id).subscribe((r: Conversation) => response = r);
+        req = httpTestingController.expectOne(
+          `${environment.baseUrl}api/v2/conversations/${unarchivedConv.id}/unhide`);
+        req.flush({});
       });
       it('return an observable with the put call to the delete conversation endpoint', () => {
-        expect(http.put).toHaveBeenCalledWith(`api/v2/conversations/${unarchivedConv.id}/unhide`, {});
+        expect(req.request.method).toEqual('PUT');
       });
       it('should remove conversation', () => {
         expect(service.archivedLeads).not.toContain(unarchivedConv);
@@ -380,10 +382,13 @@ describe('LeadService', () => {
       });
     });
     describe('conversation NOT found', () => {
+      let req: TestRequest;
+
       beforeEach(() => {
-        service.unarchive('10').subscribe((r: Conversation) => {
-          response = r;
-        });
+        service.unarchive('10').subscribe((r: Conversation) => response = r);
+        req = httpTestingController.expectOne(
+          `${environment.baseUrl}api/v2/conversations/${10}/unhide`);
+        req.flush({});
       });
       it('should NOT remove conversation', () => {
         expect(service.archivedLeads.length).toBe(5);
