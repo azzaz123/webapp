@@ -36,10 +36,8 @@ export class MockService extends LeadService {
               userService: UserService,
               itemService: ItemService,
               event: EventService,
-              realTime: RealTimeService,
-              blockService: BlockUserXmppService,
-              connectionService: ConnectionService) {
-    super(httpClient, http, userService, itemService, event, realTime, blockService, connectionService);
+              realTime: RealTimeService) {
+    super(httpClient, http, userService, itemService, event, realTime);
   }
 
   protected getLeads(since?: number, concat?: boolean, archived?: boolean): Observable<Conversation[]> {
@@ -286,22 +284,25 @@ describe('LeadService', () => {
   describe('archive', () => {
     let archivedConv: Conversation;
     let response: Conversation;
+
     beforeEach(() => {
       service.leads = createConversationsArray(5);
       archivedConv = <Conversation>service.leads[2];
-      spyOn(http, 'put').and.returnValue(Observable.of({}));
       spyOn(eventService, 'emit');
       spyOn<any>(service, 'onArchive');
       response = null;
     });
     describe('conversation found', () => {
+      let req: TestRequest;
+
       beforeEach(() => {
-        service.archive(archivedConv.id).subscribe((r: Conversation) => {
-          response = r;
-        });
+        service.archive(archivedConv.id).subscribe((r: Conversation) => response = r);
+        req = httpTestingController.expectOne(
+          `${environment.baseUrl}api/v2/conversations/${archivedConv.id}/hide`);
+        req.flush({});
       });
       it('return an observable with the put call to the delete conversation endpoint', () => {
-        expect(http.put).toHaveBeenCalledWith(`api/v2/conversations/${archivedConv.id}/hide`, {});
+        expect(req.request.method).toEqual('PUT');
       });
       it('should remove conversation', () => {
         expect(service.leads).not.toContain(archivedConv);
@@ -323,10 +324,13 @@ describe('LeadService', () => {
       });
     });
     describe('conversation NOT found', () => {
+      let req: TestRequest;
+
       beforeEach(() => {
-        service.archive('10').subscribe((r: Conversation) => {
-          response = r;
-        });
+        service.archive('10').subscribe((r: Conversation) => response = r );
+        req = httpTestingController.expectOne(
+          `${environment.baseUrl}api/v2/conversations/${10}/hide`);
+        req.flush({});
       });
       it('should NOT remove conversation', () => {
         expect(service.leads.length).toBe(5);

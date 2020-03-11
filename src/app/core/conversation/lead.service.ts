@@ -115,7 +115,7 @@ export abstract class LeadService {
   }
 
   public archive(id: string): Observable<Lead> {
-    return this.http.put(`${this.ARCHIVE_URL}/${id}/hide`, {})
+    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/hide`, {})
     .map(() => {
       const index: number = findIndex(this.leads, { 'id': id });
       if (index > -1) {
