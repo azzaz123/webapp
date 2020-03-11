@@ -92,9 +92,6 @@
               </div>
               <div class="AddNewSubscription__payment-add-card" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add
                 another credit card</div>
-              <div class="AddNewSubscription__payment-response-message" *ngIf="isPaymentError">
-                <p i18n>The payment failed. Please enter another credit card.</p>
-              </div>
               <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [disabled]="isPaymentError"
                 [type]="'subscription'" [listingLimit]="selectedTier" [spaceBetween]="true" [action]="action"
                 [showUseSavedCard]="hasSavedCard" [isPaymentError]="isPaymentError"
