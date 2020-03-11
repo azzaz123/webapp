@@ -1,5 +1,5 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { ItemService, PUBLISHED_ID, ONHOLD_ID, PAYMENT_PROVIDER, ITEM_STATUSES } from './item.service';
+import { ItemService, PUBLISHED_ID, ONHOLD_ID, PAYMENT_PROVIDER, ITEM_STATUSES, ITEMS_API_URL, WEB_ITEMS_API_URL, USERS_API_URL, PROTOOL_API_URL, V1_API_URL } from './item.service';
 import {
   ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE,
   ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE,
@@ -52,7 +52,7 @@ import {
 import { Realestate } from './realestate';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('Service: Item', () => {
+describe('ItemService', () => {
   const FAKE_ITEM_TITLE = 'No disponible';
   let service: ItemService;
   let eventService: EventService;
@@ -85,7 +85,7 @@ describe('Service: Item', () => {
 
   describe('getCounters', () => {
     it('should return counters value', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/counters`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/counters`;
       let response: ItemCounters;
 
       service.getCounters(ITEM_ID).subscribe(r => response = r);
@@ -100,7 +100,7 @@ describe('Service: Item', () => {
 
     describe('when receiving an error from the server', () => {
       it('should return a fake counter object', () => {
-        const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/counters`
+        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/counters`
         let response: ItemCounters;
 
         service.getCounters(ITEM_ID).subscribe(r => response = r);
@@ -126,7 +126,7 @@ describe('Service: Item', () => {
   describe('bulkDelete', () => {
     it('should delete the selected items', () => {
       const selectedItemIds = ['1', '2', '3'];
-      const expectedUrl = `${environment.baseUrl}api/v3/items/delete`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/delete`;
       const expectedBody = {
         ids: selectedItemIds
       };
@@ -222,7 +222,7 @@ describe('Service: Item', () => {
 
   describe('reportListing', () => {
     it('should report a listing', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/report`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/report`;
 
       service.reportListing(ITEM_ID, 'comments', 2).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -239,8 +239,8 @@ describe('Service: Item', () => {
         let response: ItemsData;
         const INIT = 10;
         const expectedUrlParams = `init=${INIT}&expired=true`;
-        const expectedUrl = `${environment.baseUrl}api/v3/web/items/mine/published?${expectedUrlParams}`;
-        const expectedUrl2 = `${environment.baseUrl}api/v3/web/items/mine/purchases`;
+        const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/published?${expectedUrlParams}`;
+        const expectedUrl2 = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`;
 
         service.mine(10, 'published').subscribe(r => response = r);
         const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -277,8 +277,8 @@ describe('Service: Item', () => {
         let response: ItemsData;
         const INIT = 10;
         const expectedUrlParams = `init=${INIT}&expired=true`;
-        const expectedUrl = `${environment.baseUrl}api/v3/web/items/mine/published?${expectedUrlParams}`;
-        const expectedUrl2 = `${environment.baseUrl}api/v3/web/items/mine/purchases`;
+        const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/published?${expectedUrlParams}`;
+        const expectedUrl2 = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`;
 
         service.mine(10, 'published').subscribe(r => response = r);
         const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -300,8 +300,8 @@ describe('Service: Item', () => {
       let response: ItemsData;
       const INIT = 0;
       const expectedUrlParams = `init=${INIT}&expired=undefined`;
-      const expectedUrl = `${environment.baseUrl}api/v3/users/me/items/favorites?${expectedUrlParams}`;
-      const expectedUrl2 = `${environment.baseUrl}api/v3/web/items/mine/purchases`;
+      const expectedUrl = `${environment.baseUrl}${USERS_API_URL}/me/items/favorites?${expectedUrlParams}`;
+      const expectedUrl2 = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`;
 
       service.myFavorites(0).subscribe(r => response = r);
       const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -336,7 +336,7 @@ describe('Service: Item', () => {
 
   describe('deleteItem', () => {
     it('should delete the selected item', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}`;
 
       service.deleteItem(ITEM_ID).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -349,7 +349,7 @@ describe('Service: Item', () => {
 
   describe('reserveItem', () => {
     it('should mark the selected item as reserved', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/reserve`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/reserve`;
       const RESERVED = false;
       const expectedBody = {
         reserved: RESERVED
@@ -367,7 +367,7 @@ describe('Service: Item', () => {
 
   describe('reactivateItem', () => {
     it('should reactivate the selected item', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/reactivate`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/reactivate`;
 
       service.reactivateItem(ITEM_ID).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -380,7 +380,7 @@ describe('Service: Item', () => {
 
   describe('favoriteItem', () => {
     it('should mark the selected item as favorite', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/favorite`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/favorite`;
       const FAVORITED = false;
       const expectedBody = {
         favorited: FAVORITED
@@ -399,7 +399,7 @@ describe('Service: Item', () => {
   describe('bulkReserve', () => {
     it('should mark the selecteds items as reserved', () => {
       const selectedItemIds = ['1', '2', '3'];
-      const expectedUrl = `${environment.baseUrl}api/v3/items/reserve`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/reserve`;
       const expectedBody = {
         ids: selectedItemIds
       };
@@ -417,7 +417,7 @@ describe('Service: Item', () => {
 
   describe('soldOutside', () => {
     it('should set the selected item as sold', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/sold`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/sold`;
 
       service.soldOutside(ITEM_ID).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -430,7 +430,7 @@ describe('Service: Item', () => {
 
   describe('getConversationUsers', () => {
     it('should get the conversations related with an item', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/conversation-users`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/conversation-users`;
       let response: ConversationUser[];
 
       service.getConversationUsers(ITEM_ID).subscribe(r => response = r);
@@ -445,7 +445,7 @@ describe('Service: Item', () => {
 
   describe('getAvailableReactivationProducts', () => {
     it('should call endpoint', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/web/items/${ITEM_ID}/available-reactivation-products`;
+      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/${ITEM_ID}/available-reactivation-products`;
       let response: Product;
 
       service.getAvailableReactivationProducts(ITEM_ID).subscribe(r => response = r);
@@ -461,7 +461,7 @@ describe('Service: Item', () => {
   describe('purchaseProducts', () => {
     it('should purchase selected products with credit card', () => {
       const orderId = '10061993';
-      const expectedUrl = `${environment.baseUrl}api/v3/web/items/purchase/products/${orderId}`;
+      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/purchase/products/${orderId}`;
 
       service.purchaseProducts([ORDER], orderId).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -477,7 +477,7 @@ describe('Service: Item', () => {
   describe('purchaseProductsWithCredits', () => {
     it('should purchase selected products with wallapop credits', () => {
       const orderId = '10061993';
-      const expectedUrl = `${environment.baseUrl}api/v3/web/items/purchase/products/credit/${orderId}`;
+      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/purchase/products/credit/${orderId}`;
 
       service.purchaseProductsWithCredits([ORDER], orderId).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -493,7 +493,7 @@ describe('Service: Item', () => {
   describe('update', () => {
     describe('when updating a consumer goods item', () => {
       it('should update the item information', () => {
-        const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}`;
+        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}`;
         let response: any;
 
         service.update(ITEM_DATA, ITEM_TYPES.CONSUMER_GOODS).subscribe(r => response = r);
@@ -507,7 +507,7 @@ describe('Service: Item', () => {
       });
 
       it('should emit ITEM_UPDATED event', () => {
-        const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}`;
+        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}`;
         spyOn(eventService, 'emit');
 
         service.update(ITEM_DATA, ITEM_TYPES.CONSUMER_GOODS).subscribe();
@@ -520,7 +520,7 @@ describe('Service: Item', () => {
 
     describe('when updating a car', () => {
       it('should update the car information', () => {
-        const expectedUrl = `${environment.baseUrl}api/v3/items/cars/${CAR_ID}`;
+        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/cars/${CAR_ID}`;
         let response: any;
 
         service.update(CAR_DATA_FORM, ITEM_TYPES.CARS).subscribe((r: any) => {
@@ -538,7 +538,7 @@ describe('Service: Item', () => {
       });
 
       it('should emit ITEM_UPDATED event', () => {
-        const expectedUrl = `${environment.baseUrl}api/v3/items/cars/${CAR_ID}`;
+        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/cars/${CAR_ID}`;
         spyOn(eventService, 'emit');
 
         service.update(CAR_DATA_FORM, ITEM_TYPES.CARS).subscribe();
@@ -551,7 +551,7 @@ describe('Service: Item', () => {
 
     describe('when updating a real estate item', () => {
       it('should update the real estate information', () => {
-        const expectedUrl = `${environment.baseUrl}api/v3/items/real_estate/${ITEM_ID}`;
+        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/real_estate/${ITEM_ID}`;
         let response: any;
 
         service.update(UPLOAD_FORM_REALESTATE_VALUES, ITEM_TYPES.REAL_ESTATE).subscribe((r: any) => {
@@ -567,7 +567,7 @@ describe('Service: Item', () => {
       });
 
       it('should emit ITEM_UPDATED event', () => {
-        const expectedUrl = `${environment.baseUrl}api/v3/items/real_estate/${ITEM_ID}`;
+        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/real_estate/${ITEM_ID}`;
         spyOn(eventService, 'emit');
 
         service.update(UPLOAD_FORM_REALESTATE_VALUES, ITEM_TYPES.REAL_ESTATE).subscribe();
@@ -581,7 +581,7 @@ describe('Service: Item', () => {
 
   describe('updateRealEstateLocation', () => {
     it('should update the real estate item location', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/items/real_estate/${ITEM_ID}/location`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/real_estate/${ITEM_ID}/location`;
       const expectedBody = REALESTATE_CONTENT_DATA.location;
       service.updateRealEstateLocation(ITEM_ID, REALESTATE_CONTENT_DATA.location).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -596,7 +596,7 @@ describe('Service: Item', () => {
   describe('deletePicture', () => {
     it('should delete one picture', () => {
       const PICTURE_ID = '1';
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/picture/${PICTURE_ID}`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/picture/${PICTURE_ID}`;
 
       service.deletePicture(ITEM_ID, PICTURE_ID).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -609,7 +609,7 @@ describe('Service: Item', () => {
 
   describe('get', () => {
     it('should get item information', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}`;
       let response: Item;
 
       service.get(ITEM_ID).subscribe(r => response = r);
@@ -623,7 +623,7 @@ describe('Service: Item', () => {
 
     describe('with backend errors', () => {
       it('should return a fake item', () => {
-        const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}`;
+        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}`;
         let response: Item;
 
         service.get(ITEM_ID).subscribe(r => response = r);
@@ -639,7 +639,7 @@ describe('Service: Item', () => {
       const PICTURES_ORDER = {
         [UPLOAD_FILE_ID]: 0
       };
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/change-picture-order`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/change-picture-order`;
       const expectedBody = {
         pictures_order: PICTURES_ORDER
       };
@@ -657,7 +657,7 @@ describe('Service: Item', () => {
     it('should get items with available products for purchase', () => {
       const ITEM_IDS = ['1', '2'];
       const expectedUrlParams = `itemsIds=${ITEM_IDS.join(',')}`;
-      const expectedUrl = `${environment.baseUrl}api/v3/web/items/available-visibility-products?${expectedUrlParams}`;
+      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products?${expectedUrlParams}`;
       let response: ItemWithProducts[];
 
       service.getItemsWithAvailableProducts(ITEM_IDS).subscribe(r => response = r);
@@ -674,7 +674,7 @@ describe('Service: Item', () => {
     it('should get the cheapest product', () => {
       const ITEM_IDS = ['1', '2'];
       const expectedUrlParams = `itemsIds=${ITEM_IDS.join(',')}`;
-      const expectedUrl = `${environment.baseUrl}api/v3/web/items/available-visibility-products?${expectedUrlParams}`;
+      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products?${expectedUrlParams}`;
       let response: CheapestProducts;
 
       service.getCheapestProductPrice(ITEM_IDS).subscribe(r => response = r);
@@ -689,7 +689,7 @@ describe('Service: Item', () => {
 
   describe('canDoAction', () => {
     it('should return true if action is allowed', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/actions-allowed`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/actions-allowed`;
       let response: boolean;
 
       service.canDoAction('mark_sold', ITEM_ID).subscribe(r => response = r);
@@ -702,7 +702,7 @@ describe('Service: Item', () => {
     });
 
     it('should return false if action is not allowed', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/items/${ITEM_ID}/actions-allowed`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/actions-allowed`;
       let response: boolean;
 
       service.canDoAction('mark_sold', ITEM_ID).subscribe(r => response = r);
@@ -717,7 +717,7 @@ describe('Service: Item', () => {
 
   describe('getUrgentProducts', () => {
     it('should return the urgent product information', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/web/items/${ITEM_ID}/available-urgent-products`;
+      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/${ITEM_ID}/available-urgent-products`;
       let response: Product;
 
       service.getUrgentProducts(ITEM_ID).subscribe(r => response = r);
@@ -733,7 +733,7 @@ describe('Service: Item', () => {
   describe('getUrgentProductByCategoryId', () => {
     it('should return the urgent product information by category', () => {
       const expectedUrlParams = `categoryId=${ITEM_CATEGORY_ID.toString()}`;
-      const expectedUrl = `${environment.baseUrl}api/v3/web/items/available-urgent-products?${expectedUrlParams}`;
+      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-urgent-products?${expectedUrlParams}`;
       let response: Product;
 
       service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID.toString()).subscribe(r => response = r);
@@ -748,7 +748,7 @@ describe('Service: Item', () => {
 
   describe('cancelAutorenew', () => {
     it('should cancel the item bump autorenew', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/protool/autorenew/update`;
+      const expectedUrl = `${environment.baseUrl}${PROTOOL_API_URL}/autorenew/update`;
       const expectedBody = {
         item_id: ITEM_ID,
         autorenew: false
@@ -767,7 +767,7 @@ describe('Service: Item', () => {
   describe('getLatest', () => {
     it('should return the latest item', () => {
       const expectedUrlParams = `userId=${USER_ID}`;
-      const expectedUrl = `${environment.baseUrl}api/v3/items/latest-cars?${expectedUrlParams}`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/latest-cars?${expectedUrlParams}`;
       let response: ItemDataResponse;
 
       service.getLatest(USER_ID).subscribe(r => response = r);
@@ -782,7 +782,7 @@ describe('Service: Item', () => {
 
     it('should return null item', () => {
       const expectedUrlParams = `userId=${USER_ID}`;
-      const expectedUrl = `${environment.baseUrl}api/v3/items/latest-cars?${expectedUrlParams}`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/latest-cars?${expectedUrlParams}`;
       let response: ItemDataResponse;
 
       service.getLatest(USER_ID).subscribe(r => response = r);
@@ -798,7 +798,7 @@ describe('Service: Item', () => {
 
   describe('bumpProItems', () => {
     it('should bump the selected items', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/protool/purchaseItems`;
+      const expectedUrl = `${environment.baseUrl}${PROTOOL_API_URL}/purchaseItems`;
       let response: string[];
 
       service.bumpProItems(CART_ORDER_PRO).subscribe(r => response = r);
@@ -820,7 +820,7 @@ describe('Service: Item', () => {
       const STATUS = 'active';
 
       let expectedUrlParams = `status=${ITEM_STATUSES[STATUS]}&init=${INIT}&end=${END}&newVersion=true`;
-      let expectedUrl = `${environment.baseUrl}api/v3/protool/mines?${expectedUrlParams}`;
+      let expectedUrl = `${environment.baseUrl}${PROTOOL_API_URL}/mines?${expectedUrlParams}`;
 
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       INIT = OFFSET * 1;
@@ -828,7 +828,7 @@ describe('Service: Item', () => {
       req.flush([ITEM_DATA_V4, ITEM_DATA_V5]);
 
       expectedUrlParams = `status=${ITEM_STATUSES[STATUS]}&init=${INIT}&end=${END}&newVersion=true`
-      expectedUrl = `${environment.baseUrl}api/v3/protool/mines?${expectedUrlParams}`;
+      expectedUrl = `${environment.baseUrl}${PROTOOL_API_URL}/mines?${expectedUrlParams}`;
       const req2: TestRequest = httpMock.expectOne(expectedUrl);
       req2.flush([ITEM_DATA_V4, ITEM_DATA_V5]);
 
@@ -836,7 +836,7 @@ describe('Service: Item', () => {
       END = INIT + OFFSET
 
       expectedUrlParams = `status=${ITEM_STATUSES[STATUS]}&init=${INIT}&end=${END}&newVersion=true`
-      expectedUrl = `${environment.baseUrl}api/v3/protool/mines?${expectedUrlParams}`;
+      expectedUrl = `${environment.baseUrl}${PROTOOL_API_URL}/mines?${expectedUrlParams}`;
       const req3: TestRequest = httpMock.expectOne(expectedUrl);
       req3.flush([]);
     }
@@ -856,7 +856,7 @@ describe('Service: Item', () => {
       let END = INIT + OFFSET;
       const STATUS = 'active';
       let expectedUrlParams = `status=${ITEM_STATUSES[STATUS]}&init=${INIT}&end=${END}&newVersion=true`;
-      let expectedUrl = `${environment.baseUrl}api/v3/protool/mines?${expectedUrlParams}`;
+      let expectedUrl = `${environment.baseUrl}${PROTOOL_API_URL}/mines?${expectedUrlParams}`;
 
       service['items'][STATUS] = [ITEM_DATA_V4.content, ITEM_DATA_V5.content] as any;
       service.mines(1, 10, 'date_desc').subscribe();
@@ -933,7 +933,7 @@ describe('Service: Item', () => {
     const TOTAL: number = 5;
     let eventEmitted: boolean;
     let req: TestRequest;
-    const expectedUrl = `${environment.baseUrl}shnm-portlet/api/v1/item.json/${ID}/sold`;
+    const expectedUrl = `${environment.baseUrl}${V1_API_URL}/item.json/${ID}/sold`;
 
     beforeEach(() => {
       service['items']['active'] = createItemsArray(TOTAL);
@@ -983,7 +983,7 @@ describe('Service: Item', () => {
     const TOTAL: number = 5;
     let eventEmitted: boolean;
     let req: TestRequest;
-    const expectedUrl = `${environment.baseUrl}api/v3/protool/changeItemStatus`;
+    const expectedUrl = `${environment.baseUrl}${PROTOOL_API_URL}/changeItemStatus`;
 
     beforeEach(() => {
       spyOn(service, 'deselectItems');
@@ -1032,7 +1032,7 @@ describe('Service: Item', () => {
     const TOTAL: number = 5;
     let eventEmitted: boolean;
     let req: TestRequest;
-    const expectedUrl = `${environment.baseUrl}api/v3/protool/changeItemStatus`;
+    const expectedUrl = `${environment.baseUrl}${PROTOOL_API_URL}/changeItemStatus`;
 
     beforeEach(() => {
       spyOn(service, 'deselectItems');
@@ -1105,7 +1105,7 @@ describe('Service: Item', () => {
       const MODEL = 'model';
       const VERSION = 'version';
       const expectedUrlParams = `brand=${BRAND}&model=${MODEL}&version=${VERSION}`;
-      const expectedUrl = `${environment.baseUrl}api/v3/items/cars/info?${expectedUrlParams}`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/cars/info?${expectedUrlParams}`;
       let response: CarInfo;
 
       service.getCarInfo(BRAND, MODEL, VERSION).subscribe(r => response = r);
@@ -1121,7 +1121,7 @@ describe('Service: Item', () => {
   describe('activate', () => {
     it('should mark the item as active', () => {
       const selectedItemIds = ['1', '2', '3'];
-      const expectedUrl = `${environment.baseUrl}api/v3/items/activate`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/activate`;
       const expectedBody = {
         ids: selectedItemIds
       };
@@ -1140,7 +1140,7 @@ describe('Service: Item', () => {
   describe('deactivate', () => {
     it('should mark the item as inactive', () => {
       const selectedItemIds = ['1', '2', '3'];
-      const expectedUrl = `${environment.baseUrl}api/v3/items/inactivate`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/inactivate`;
       const expectedBody = {
         ids: selectedItemIds
       };
@@ -1158,7 +1158,7 @@ describe('Service: Item', () => {
 
   describe('getListingFeeInfo', () => {
     it('should get the item listing fee information', () => {
-      const expectedUrl = `${environment.baseUrl}api/v3/web/items/${ITEM_ID}/listing-fee-info`;
+      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/${ITEM_ID}/listing-fee-info`;
       let response: Product;
 
       service.getListingFeeInfo(ITEM_ID).subscribe(r => response = r);
