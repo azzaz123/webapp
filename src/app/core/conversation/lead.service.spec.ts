@@ -404,8 +404,8 @@ describe('LeadService', () => {
 
   describe('archiveAll', () => {
     let baseTime: number;
+
     beforeEach(() => {
-      spyOn(http, 'put').and.returnValue(Observable.of({}));
       spyOn<any>(service, 'onArchiveAll');
       baseTime = new Date().getTime();
       spyOn<any>(window, 'Date').and.returnValue({
@@ -416,14 +416,26 @@ describe('LeadService', () => {
     });
     it('should call http.put with current time', () => {
       service.archiveAll().subscribe();
-      expect(http.put).toHaveBeenCalledWith('api/v2/conversations/hide?until=' + baseTime);
+
+      const req = httpTestingController.expectOne(
+        `${environment.baseUrl}api/v2/conversations/hide?until=${baseTime}`);
+      req.flush({});
+      expect(req.request.method).toEqual('PUT');
     });
     it('should call http.put with passed time', () => {
-      service.archiveAll(12345).subscribe();
-      expect(http.put).toHaveBeenCalledWith('api/v2/conversations/hide?until=12345');
+      const UNTIL = 12345;
+      service.archiveAll(UNTIL).subscribe();
+
+      const req = httpTestingController.expectOne(
+        `${environment.baseUrl}api/v2/conversations/hide?until=${UNTIL.toString()}`);
+      expect(req.request.method).toEqual('PUT');
+      req.flush({});
     });
     it('should call onArchiveAll', () => {
       service.archiveAll().subscribe();
+      const req = httpTestingController.expectOne(
+        `${environment.baseUrl}api/v2/conversations/hide?until=${baseTime}`);
+      req.flush({});
       expect(service['onArchiveAll']).toHaveBeenCalled();
     });
   });

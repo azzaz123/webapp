@@ -19,6 +19,7 @@ import 'rxjs/add/operator/do';
 import { RealTimeService } from '../message/real-time.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export abstract class LeadService {
@@ -148,11 +149,9 @@ export abstract class LeadService {
   }
 
   public archiveAll(until?: number): Observable<any> {
-    if (!until) {
-      until = new Date().getTime();
-    }
-    return this.http.put(`${this.ARCHIVE_URL}/hide?until=${until}`)
-    .map(() => this.onArchiveAll());
+    until = until || new Date().getTime();
+    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/hide?until=${until}`, {})
+    .pipe(map(() => this.onArchiveAll()));
   }
 
   protected bulkArchive(leads: Lead[]): Lead[] {
