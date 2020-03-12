@@ -1,6 +1,6 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, OnDestroy } from '@angular/core';
 import { NgbActiveModal, NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
-import { StripeService } from '../../../core/stripe/stripe.service';
+import { StripeService, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from '../../../core/stripe/stripe.service';
 import { FinancialCardOption, PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { EventService } from '../../../core/event/event.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
@@ -27,7 +27,7 @@ export const CAR_DEALER_TYPEFORM_LINK = 'https://wallapop.typeform.com/to/xj3GPt
   templateUrl: './add-new-subscription-modal.component.html',
   styleUrls: ['./add-new-subscription-modal.component.scss']
 })
-export class AddNewSubscriptionModalComponent implements OnInit {
+export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
 
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   public card: any;
@@ -58,9 +58,13 @@ export class AddNewSubscriptionModalComponent implements OnInit {
   ngOnInit() {
     this.loaded = true;
     this.selectedTier = this.subscription.selected_tier;
-    this.eventService.subscribe('paymentActionResponse', (response) => {
+    this.eventService.subscribe(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, (response) => {
       this.managePaymentResponse(response);
     });
+  }
+
+  ngOnDestroy() {
+    this.eventService.unsubscribeAll(STRIPE_PAYMENT_RESPONSE_EVENT_KEY);
   }
 
   public close() {
@@ -190,6 +194,10 @@ export class AddNewSubscriptionModalComponent implements OnInit {
     switch(paymentResponse && paymentResponse.toUpperCase()) {
       case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
         this.paymentSucceeded();
+        break;
+      }
+      case PAYMENT_RESPONSE_STATUS.FAILED: {
+        this.requestNewPayment();
         break;
       }
       default: {

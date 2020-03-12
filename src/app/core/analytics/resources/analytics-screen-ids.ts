@@ -35,6 +35,10 @@ export enum SCREEN_IDS {
 	ProfileSubscription = 206,
 	CarsSubscription = 207,
 	CarsSubscriptionPaymentSuccess = 208,
-	PayScreen = 209,
+	TransactionPayScreen = 209,
 	AcceptOffer = 210,
+	ItemToBumpList = 211,
+	ItemReactivation = 212,
+	BumpItem = 213,
+	MyFavoriteProfilesSection = 214,
 }
