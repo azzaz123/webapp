@@ -158,6 +158,7 @@ export class I18nService {
       continueSubscriptionSuccessBody: 'Your subscription is active again',
       continueSubscriptionErrorTitle: 'Error:',
       continueSubscriptionErrorBody: 'We could not proceed with your request.',
+      paymentFailed: 'The payment could not be done',
       consumerGoodsGeneralCategoryTitle: 'Everything else'
     },
     es: {
@@ -316,6 +317,7 @@ export class I18nService {
       continueSubscriptionSuccessBody: 'Tu suscripción se ha activado de nuevo.',
       continueSubscriptionErrorTitle: 'Ha habido un error',
       continueSubscriptionErrorBody: 'Tu suscripción no ha podido ser restablecida.',
+      paymentFailed: 'No ha podido realizarse el pago',
       consumerGoodsGeneralCategoryTitle: 'Todo lo demás'
     }
   };
