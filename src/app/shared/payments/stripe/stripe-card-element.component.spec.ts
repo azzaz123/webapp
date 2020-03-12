@@ -3,7 +3,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PAYMENT_METHOD_CARD_RESPONSE } from '../../../../tests/payments.fixtures.spec';
 import { StripeCardElementComponent } from './stripe-card-element.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, ElementRef } from '@angular/core';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -93,6 +93,16 @@ describe('StripeCardElementComponent', () => {
       useSavedCardButton.click();
 
       expect(component.onClickUseSavedCard.emit).toHaveBeenCalledWith(true);
+    });
+  });
+
+  describe('when there is a payment error', () => {
+    it('should show an error message', () => {
+      component.isPaymentError = true;
+      fixture.detectChanges();
+
+      const stripeCardInput: HTMLElement = fixture.elementRef.nativeElement.querySelector('.StripeCard__error');
+      expect(stripeCardInput).toBeTruthy();
     });
   });
 });

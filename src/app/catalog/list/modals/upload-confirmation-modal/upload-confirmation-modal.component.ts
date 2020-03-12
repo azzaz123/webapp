@@ -90,6 +90,17 @@ export class UploadConfirmationModalComponent implements OnInit {
       content_ids: this.item.id,
       content_type: this.item.categoryId,
     });
+
+    pintrk('track', 'addtocart', {
+      value: this.item.salePrice,
+      currency: this.item.currencyCode,
+      line_items: [
+        {
+          product_category: this.item.categoryId,
+          product_id: this.item.id,
+        }
+      ]
+    });
   }
 
 }

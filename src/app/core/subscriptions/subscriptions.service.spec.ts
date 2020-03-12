@@ -9,8 +9,8 @@ import { HttpModuleNew } from '../http/http.module.new';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
-import { SubscriptionsResponse, SubscriptionSlot } from './subscriptions.interface';
-import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS, MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE, MOCK_SUBSCRIPTION_SLOTS_RESPONSE, MOCK_SUBSCRIPTION_SLOTS } from '../../../tests/subscriptions.fixtures.spec';
+import { SubscriptionsResponse } from './subscriptions.interface';
+import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { HttpClient } from '@angular/common/http';
@@ -66,7 +66,7 @@ describe('SubscriptionsService', () => {
     categoryService = TestBed.get(CategoryService);
     service.uuid = '1-2-3';
     spyOn(UUID, 'UUID').and.returnValue('1-2-3');
-    spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB))
+    spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
   });
 
   afterEach(() => {
@@ -162,6 +162,25 @@ describe('SubscriptionsService', () => {
       expect(req.request.url).toBe(expectedUrl);
       expect(response).toEqual(SUBSCRIPTIONS);
     });
+
+    it('should map the mock consumer goods category when backend returns a subscription type with category as 0', () => {
+      const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_URL}`;
+      const subscriptionsWithConsumerGoods = [...SUBSCRIPTIONS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED];
+      service.subscriptions = null;
+      let response: SubscriptionsResponse[];
+
+      service.getSubscriptions(false).subscribe((res) => response = res);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(subscriptionsWithConsumerGoods);
+
+      const subscriptionForConsumerGoods = response.find(subscription => subscription.category_id === 0);
+      const consumerGoodsCategory = categoryService.getConsumerGoodsCategory();
+      expect(req.request.url).toBe(expectedUrl);
+      expect(response).toEqual(subscriptionsWithConsumerGoods);
+      expect(subscriptionForConsumerGoods.category_icon).toEqual(consumerGoodsCategory.icon_id);
+      expect(subscriptionForConsumerGoods.category_id).toEqual(consumerGoodsCategory.category_id);
+      expect(subscriptionForConsumerGoods.category_name).toEqual(consumerGoodsCategory.name);
+    })
   });
 
   describe('cancelSubscription', () => {

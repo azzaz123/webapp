@@ -39,6 +39,14 @@ export interface Search {
    */
   screenId: 110 | 111 | 193;
   /**
+   * Latitude of the performed search
+   */
+  latitude: number;
+  /**
+   * Latitude of the performed search
+   */
+  longitude: number;
+  /**
    * The distance in km from the location where the search is performed and the location of the first item returned in the search results
    */
   firstItemDistance?: number;

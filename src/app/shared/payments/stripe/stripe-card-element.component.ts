@@ -43,11 +43,13 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   @Input() disabled: number;
   @Input() spaceBetween = false;
   @Input() showUseSavedCard = false;
+  @Input() isPaymentError: boolean;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
   @Output() onStripeCardCreate: EventEmitter<PaymentMethodResponse> = new EventEmitter();
   @Output() onClickUseSavedCard = new EventEmitter();
+  @Output() onFocusCard = new EventEmitter<boolean>();
 
   cardHandler = this.onChange.bind(this);
   error: string;
@@ -127,6 +129,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
     this.card = elements.create('card', { hidePostalCode: true, style });
     this.card.mount('#checkout-card');
     this.card.addEventListener('change', this.cardHandler);
+    this.card.addEventListener('focus', () => this.onFocusCard.emit(true));
     this.stripeCard.emit(this.card);
   }
 

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileSubscriptionComponent } from './profile-subscription.component';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../shared/pipes';
 import { UserService } from '../../core/user/user.service';
 import { Observable } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';

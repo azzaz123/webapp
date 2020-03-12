@@ -57,6 +57,7 @@ import { FEATURE_FLAGS_ENUM, FeatureflagService } from './featureflag.service';
 import { SplitTestService } from '../tracking/split-test.service';
 import { HttpModuleNew } from '../http/http.module.new';
 import { APP_VERSION } from '../../../environments/version';
+import { PhoneMethod } from '../../chat/model';
 
 describe('Service: User', () => {
 
@@ -557,7 +558,7 @@ describe('Service: User', () => {
 
   describe('getPhoneInfo', () => {
     it('should call endpoint GET phone info and return response', () => {
-      const PHONE_METHOD_RESPONSE = { phone_method: 'bubble' };
+      const PHONE_METHOD_RESPONSE = { phone_method: PhoneMethod.CHAT_MESSAGE };
 
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(PHONE_METHOD_RESPONSE));

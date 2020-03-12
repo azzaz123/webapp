@@ -37,7 +37,7 @@
   width: 100%;
 }
 
-#card-errors {
+#card-errors, .StripeCard__error {
   color: $negative-dark;
   font-size: $font-size-s;
 }

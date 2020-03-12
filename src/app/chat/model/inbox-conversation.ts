@@ -138,7 +138,8 @@ export class InboxConversation {
             return InboxItemPlaceholder;
         }
         const itemUrl = `${environment.siteUrl}item/${item.slug}`;
-        return new InboxItem(item.hash, item.price, item.title, image, itemUrl, item.status, item.is_mine);
+
+        return new InboxItem(item.hash, item.price, item.title, image, itemUrl, item.status, item.is_mine, item.category_id);
     }
 
     private static buildInboxMessages(conversation, id) {
@@ -148,15 +149,3 @@ export class InboxConversation {
         return textMessages;
     }
 }
-
-export class StoredInboxConversation {
-    constructor(private _id: string,
-      private modifiedDate: Date,
-      private user: InboxUser,
-      private item: InboxItem,
-      private phoneShared: boolean,
-      private phoneNumber: string,
-      private unreadCounter: number = 0,
-      private nextPageToken: string,
-      private lastMessage?: InboxMessage) {}
-  }
