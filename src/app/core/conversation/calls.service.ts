@@ -32,8 +32,6 @@ export class CallsService {
 
   public firstLoad: boolean;
 
-  private lastLeadResponse: Call[];
-
   constructor(private httpClient: HttpClient,
               private userService: UserService,
               private itemService: ItemService,
@@ -163,7 +161,6 @@ export class CallsService {
           this.archivedLeads = this.archivedLeads.concat(calls);
         }
       }
-      this.lastLeadResponse = calls;
       return calls;
     });
   }
