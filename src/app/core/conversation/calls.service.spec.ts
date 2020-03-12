@@ -241,7 +241,7 @@ describe('CallsService', () => {
     let baseTime: number;
 
     beforeEach(() => {
-      spyOn<any>(service, 'onArchiveAll');
+      spyOn<any>(service, 'bulkArchive');
       baseTime = new Date().getTime();
       spyOn<any>(window, 'Date').and.returnValue({
         getTime: () => {
@@ -271,7 +271,7 @@ describe('CallsService', () => {
       const req = httpTestingController.expectOne(
         `${environment.baseUrl}${service.ARCHIVE_URL}/hide?until=${baseTime}`);
       req.flush({});
-      expect(service['onArchiveAll']).toHaveBeenCalled();
+      expect(service['bulkArchive']).toHaveBeenCalled();
     });
   });
 
@@ -568,7 +568,6 @@ describe('CallsService', () => {
       service.leads = createCallsArray(5);
       archivedCall = <Call>service.leads[2];
       spyOn(eventService, 'emit');
-      spyOn<any>(service, 'onArchive');
       response = null;
     });
     describe('conversation found', () => {
@@ -597,9 +596,6 @@ describe('CallsService', () => {
       });
       it('should emit event', () => {
         expect(eventService.emit).toHaveBeenCalledWith(EventService.LEAD_ARCHIVED, archivedCall);
-      });
-      it('should call onArchive', () => {
-        expect(service['onArchive']).toHaveBeenCalledWith(archivedCall);
       });
     });
     describe('conversation NOT found', () => {

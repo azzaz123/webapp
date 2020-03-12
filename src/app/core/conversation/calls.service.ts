@@ -118,13 +118,14 @@ export class CallsService {
   public archiveAll(until?: number): Observable<any> {
     until = until || new Date().getTime();
     return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/hide?until=${until}`, {})
-    .map(() => this.onArchiveAll());
+    .map(() => {
+      this.leads = this.bulkArchive(this.leads);
+      this.stream();
+    });
   }
 
   protected bulkArchive(leads: Lead[]): Lead[] {
-    leads.forEach((lead: Lead) => {
-      lead.archived = true;
-    });
+    leads.forEach((lead: Lead) => lead.archived = true);
     this.archivedLeads.push(...leads);
     return [];
   }
@@ -149,7 +150,6 @@ export class CallsService {
 
   protected getLeads(since?: number, archived?: boolean): Observable<Call[]> {
     // do not execute anything unless is more than 30 sec after last call
-
     return this.query(since, archived)
     .map((calls: Call[]) => {
       if (calls && calls.length > 0) {
@@ -190,12 +190,8 @@ export class CallsService {
       }
       return calls;
     })
-    .map((calls: Lead[]) => {
-      return reverse(sortBy(calls, 'modifiedDate'));
-    })
-    .map((calls: Lead[]) => {
-      return calls.slice(0, end);
-    });
+    .map((calls: Lead[]) => reverse(sortBy(calls, 'modifiedDate')))
+    .map((calls: Lead[]) => calls.slice(0, end));
   }
 
   public getTotals(): Observable<CallTotals> {
@@ -228,7 +224,6 @@ export class CallsService {
   }
 
   public archive(id: string): Observable<Lead> {
-    console.log(`ABC ${environment.baseUrl}${this.ARCHIVE_URL}/${id}/hide`);
     return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/hide`, {})
     .map(() => {
       const index: number = findIndex(this.leads, { 'id': id });
@@ -236,7 +231,6 @@ export class CallsService {
         const deletedLead: Lead = this.leads.splice(index, 1)[0];
         deletedLead.archived = true;
         this.archivedLeads.push(deletedLead);
-        this.onArchive(deletedLead);
         this.stream(true);
         this.stream();
         this.event.emit(EventService.LEAD_ARCHIVED, deletedLead);
@@ -259,13 +253,5 @@ export class CallsService {
         return lead;
       }
     });
-  }
-
-  protected onArchive(lead: Lead) {
-  }
-
-  protected onArchiveAll() {
-    this.leads = this.bulkArchive(this.leads);
-    this.stream();
   }
 }
