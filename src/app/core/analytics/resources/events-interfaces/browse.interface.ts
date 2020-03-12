@@ -42,6 +42,14 @@ export interface Browse {
    */
   screenId: 110 | 111 | 193;
   /**
+   * Latitude of the performed browse
+   */
+  latitude: number;
+  /**
+   * Latitude of the performed browse
+   */
+  longitude: number;
+  /**
    * The distance in km from the location where the browsing is performed and the location of the first item returned in the browse results
    */
   firstItemDistance: number;
