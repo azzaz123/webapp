@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
 import { Observable, of } from 'rxjs';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { find } from 'lodash-es';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -50,6 +50,8 @@ import { MOCK_REVIEWS } from '../../../tests/review.fixtures.spec';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { MOCK_USER, USER_INFO_RESPONSE } from '../../../tests/user.fixtures.spec';
 import { SubscriptionsSlotsListComponent } from './subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
+import { By } from '@angular/platform-browser';
+import { SubscriptionsSlotItemComponent } from './subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -81,7 +83,7 @@ describe('ListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ HttpModuleNew ],
-      declarations: [ListComponent, ItemSoldDirective, SubscriptionsSlotsListComponent],
+      declarations: [ListComponent, ItemSoldDirective, SubscriptionsSlotsListComponent, SubscriptionsSlotItemComponent],
       providers: [
         I18nService,
         EventService,
@@ -465,14 +467,14 @@ describe('ListComponent', () => {
       expect(component.userScore).toEqual(USER_INFO_RESPONSE.scoring_stars);
     });
 
-    it('should show one catalog management card for each slot subscription', fakeAsync(() => {
+    it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
       spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
       
       component.ngOnInit();
       tick();
       fixture.detectChanges();
 
-      const slotsCards: HTMLElement[] = fixture.nativeElement.querySelectorAll('tsl-subscriptions-slot-item');
+      const slotsCards = fixture.debugElement.queryAll(By.directive(SubscriptionsSlotItemComponent));
       expect(slotsCards).toBeTruthy();
       expect(slotsCards.length).toEqual(MOCK_SUBSCRIPTION_SLOTS.length);
     }));
