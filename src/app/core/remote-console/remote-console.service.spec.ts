@@ -11,6 +11,7 @@ import { UserService } from '../user/user.service';
 import { MockedUserService, USER_ID } from '../../../tests/user.fixtures.spec';
 import { RemoteConsoleClientService } from './remote-console-client.service';
 import { RemoteConsoleClientServiceMock } from '../../../tests/remote-console-service-client.spec';
+import { of } from 'rxjs';
 
 describe('RemoteConsoleService', () => {
 
@@ -19,6 +20,7 @@ describe('RemoteConsoleService', () => {
   let httpTestingController: HttpTestingController;
   let service: RemoteConsoleService;
   let remoteConsoleClientService: RemoteConsoleClientService;
+  let userService: UserService;
 
   const commonLog = {
     'timestamp': 4000,
@@ -48,6 +50,7 @@ describe('RemoteConsoleService', () => {
     httpTestingController = TestBed.get(HttpTestingController);
     service = TestBed.get(RemoteConsoleService);
     remoteConsoleClientService = TestBed.get(RemoteConsoleClientService);
+    userService = TestBed.get(UserService);
 
     service.deviceId = DEVICE_ID;
   });
@@ -327,6 +330,26 @@ describe('RemoteConsoleService', () => {
         'message_id': 'MESSAGE_ID_2',
         'send_message_time': 2000,
         'metric_type': MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
+        'ping_time_ms': navigator['connection']['rtt']
+      });
+    }));
+  });
+
+  describe('sendXmppConnectionClosedWithError', () => {
+
+    it('should send call with presentation message time', fakeAsync(() => {
+      spyOn(userService, 'me').and.returnValue(of({ id: USER_ID }));
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(4000, 1000);
+      const message = 'MESSAGE';
+
+      service.sendXmppConnectionClosedWithError(message);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(1);
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'metric_type': MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
+        'message': message,
         'ping_time_ms': navigator['connection']['rtt']
       });
     }));
