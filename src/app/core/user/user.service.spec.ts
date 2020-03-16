@@ -4,7 +4,7 @@ import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/te
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { UserService } from './user.service';
+import { UserService, LOGIN_ENDPOINT } from './user.service';
 import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -58,6 +58,7 @@ import { SplitTestService } from '../tracking/split-test.service';
 import { HttpModuleNew } from '../http/http.module.new';
 import { APP_VERSION } from '../../../environments/version';
 import { PhoneMethod } from '../../chat/model';
+import { HttpParams } from '@angular/common/http';
 
 describe('Service: User', () => {
 
@@ -72,7 +73,8 @@ describe('Service: User', () => {
   let permissionService: NgxPermissionsService;
   let featureflagService: FeatureflagService;
   let splitTestService: SplitTestService;
-  let httpTestingController: HttpTestingController;
+  let httpMock: HttpTestingController;
+  let eventService: EventService;
 
   const mockMotorPlan = {
     type: 'motor_plan_pro',
@@ -143,11 +145,12 @@ describe('Service: User', () => {
     permissionService = TestBed.get(NgxPermissionsService);
     featureflagService = TestBed.get(FeatureflagService);
     splitTestService = TestBed.get(SplitTestService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    httpMock = TestBed.get(HttpTestingController);
+    eventService = TestBed.get(EventService);
   });
 
   afterEach(() => {
-    httpTestingController.verify();
+    httpMock.verify();
   });
 
   it('should create an instance', () => {
@@ -327,26 +330,46 @@ describe('Service: User', () => {
 
   describe('login', () => {
     let response: LoginResponse;
-    const DATA: any = {
+    const FORM_INPUT = {
       emailAddress: 'test@test.it',
       installationType: 'ANDROID',
       password: 'test'
     };
-    const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(MOCK_USER_RESPONSE_BODY) });
-    beforeEach(() => {
-      spyOn(http, 'postUrlEncoded').and.returnValue(Observable.of(new Response(res)));
-      spyOn<any>(service, 'storeData').and.callThrough();
-      service.login(DATA).subscribe((r: LoginResponse) => {
-        response = r;
-      });
+
+    it('should send user login request to backend', () => {
+      const expectedBody = new HttpParams()
+        .set('emailAddress', FORM_INPUT.emailAddress)
+        .set('installationType', FORM_INPUT.installationType)
+        .set('password', FORM_INPUT.password)
+        .toString();
+
+      service.login(FORM_INPUT).subscribe(r => response = r);
+      const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
+      req.flush(MOCK_USER_RESPONSE_BODY);
+
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body.toString()).toEqual(expectedBody);
     });
-    it('should call endpoint and return response', () => {
-      expect(http.postUrlEncoded).toHaveBeenCalledWith('shnm-portlet/api/v1/access.json/login3', DATA);
-      expect(response).toEqual(MOCK_USER_RESPONSE_BODY);
+
+    it('should store token when backend has responded', () => {
+      spyOn(accessTokenService, 'storeAccessToken');
+
+      service.login(FORM_INPUT).subscribe();
+      const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
+      req.flush(MOCK_USER_RESPONSE_BODY);
+
+      expect(accessTokenService.storeAccessToken).toHaveBeenCalledWith(MOCK_USER_RESPONSE_BODY.token);
     });
-    it('should call StoreData', () => {
-      expect(service['storeData']).toHaveBeenCalledWith(MOCK_USER_RESPONSE_BODY);
-    });
+
+    it('should emit event when user logged in successfuly', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+
+      service.login(FORM_INPUT).subscribe();
+      const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
+      req.flush(MOCK_USER_RESPONSE_BODY);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.USER_LOGIN, MOCK_USER_RESPONSE_BODY.token);
+    })
   });
 
   describe('logout', () => {
@@ -435,7 +458,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getInfo(USER_ID).subscribe(response => expect(response).toEqual(USER_INFO_RESPONSE));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/extra-info`);
+      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/extra-info`);
 
       expect(req.request.method).toEqual('GET');
       req.flush(USER_INFO_RESPONSE);
@@ -447,7 +470,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getProInfo().subscribe(response => expect(response).toEqual(USER_PRO_INFO_RESPONSE));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/protool/extraInfo`);
+      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/protool/extraInfo`);
 
       expect(req.request.method).toEqual('GET');
       req.flush(USER_PRO_INFO_RESPONSE);
@@ -459,7 +482,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getUserCover().subscribe(response => expect(response).toEqual(IMAGE));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/cover-image`);
+      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/me/cover-image`);
       expect(req.request.method).toEqual('GET');
       req.flush(IMAGE);
     });
@@ -468,7 +491,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getUserCover().subscribe(response => expect(response).toEqual({} as Image));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/cover-image`);
+      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/me/cover-image`);
       expect(req.request.method).toEqual('GET');
       req.error(new ErrorEvent('network error'));
     });
@@ -563,7 +586,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(PHONE_METHOD_RESPONSE));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/phone-method`);
+      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/phone-method`);
       expect(req.request.method).toEqual('GET');
       req.flush(PHONE_METHOD_RESPONSE);
     });
@@ -572,7 +595,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(null));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/phone-method`);
+      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/phone-method`);
       expect(req.request.method).toEqual('GET');
       req.error(new ErrorEvent('network error'));
     });
@@ -785,7 +808,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getMotorPlans().subscribe(response => expect(response).toEqual(PROFILE_SUB_INFO));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/profile-subscription-info`);
+      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/me/profile-subscription-info`);
 
       expect(req.request.method).toEqual('GET');
       req.flush(PROFILE_SUB_INFO);
@@ -801,7 +824,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.reportUser(USER_ID, ITEM_HASH, CONVERSATIONS_HASH, REASON, COMMENT).subscribe();
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/report/user/${USER_ID}`);
+      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/me/report/user/${USER_ID}`);
       expect(req.request.method).toEqual('POST');
       expect(req.request.body).toEqual({
         itemHashId: ITEM_HASH,

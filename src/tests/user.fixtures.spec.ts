@@ -111,7 +111,7 @@ export const USER_DATA: UserResponse = {
   'extra_info': USER_EXTRA_INFO
 };
 
-export const MOCK_USER_RESPONSE_BODY: any = {
+export const MOCK_USER_RESPONSE_BODY = {
   'token': ACCESS_TOKEN,
   'resetToken': 'eZXAqOYOyGK9tI4YbwI8Lsd65hs7rIN2mvQVekZ5euFDBBUMDcgJ7jbhTQ325FUA49W1j4',
   'registerInfo': { 'userId': 500002515, 'userUUID': USER_ID, 'idUser': 500002515 }

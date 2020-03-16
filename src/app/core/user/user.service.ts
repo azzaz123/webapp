@@ -27,8 +27,10 @@ import { SplitTestService } from '../tracking/split-test.service';
 import { InboxItem } from '../../chat/model';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { catchError, tap, map } from 'rxjs/operators';
+
+export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -62,23 +64,14 @@ export class UserService extends ResourceService {
   }
 
   public login(data: any): Observable<LoginResponse> {
-    return this.http.postUrlEncoded(
-      'shnm-portlet/api/v1/access.json/login3',
-      data
-    )
-    .map((r: Response) => r.json())
-    .map((r: LoginResponse) => this.storeData(r));
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    const body = new HttpParams()
+      .set('emailAddress', data.emailAddress)
+      .set('installationType', data.installationType)
+      .set('password', data.password);
 
-    // TODO: Use new HttpService
-    // const headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    // const options: IRequestOptions = { headers };
-    // const body: HttpParams = new HttpParams()
-    //   .set('emailAddress', data.emailAddress)
-    //   .set('installationType', data.installationType)
-    //   .set('password', data.password);
-
-    // return this.httpNew.post<LoginResponse>('shnm-portlet/api/v1/access.json/login3', body.toString(), null, options)
-    //   .map((r: LoginResponse) => this.storeData(r));
+    return this.httpClient.post<LoginResponse>(`${environment.baseUrl}${LOGIN_ENDPOINT}`, body, { headers })
+      .pipe(map(r => this.storeData(r)));
   }
 
   public logout() {
@@ -141,6 +134,7 @@ export class UserService extends ResourceService {
   }
 
   public me(): Observable<User> {
+    console.log('entra per aquí el petit bandarra')
     if (this._user) {
       return Observable.of(this._user);
     } else if (this.meObservable) {
@@ -160,6 +154,7 @@ export class UserService extends ResourceService {
     .catch(error => {
       this.meObservable = null;
       if (!error.ok) {
+        console.log('ups', error)
         this.logoutLocal();
       }
       return Observable.of(null);
