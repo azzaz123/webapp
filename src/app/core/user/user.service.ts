@@ -31,6 +31,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
 
 export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
+export const LOGOUT_ENDPOINT = 'rest/logout';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -75,25 +76,16 @@ export class UserService extends ResourceService {
   }
 
   public logout() {
-    const URL = environment.siteUrl.replace('es', this.subdomain);
-
-    // TODO: Use new HttpService
-    // this.httpNew.postNoBase<string>(URL + 'rest/logout', null, null, { responseType: 'text' as 'json'} ).subscribe(response => {
-    this.http.postNoBase(URL + 'rest/logout', undefined, undefined, true).subscribe((response) => {
-      const redirectUrl: any = response['_body'];
-      const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
-      this.cookieService.remove('publisherId', cookieOptions);
-      this.cookieService.remove('creditName', cookieOptions);
-      this.cookieService.remove('creditQuantity', cookieOptions);
-      this.accessTokenService.deleteAccessToken();
-      this.permissionService.flushPermissions();
-      this.event.emit(EventService.USER_LOGOUT, redirectUrl);
-      this.splitTestService.reset();
-    });
+    const logoutUrl = `${environment.siteUrl.replace('es', this.subdomain)}${LOGOUT_ENDPOINT}`;
+    this.httpClient.post<string>(logoutUrl, null).subscribe(r => this.logoutActions(r));
   }
 
   public logoutLocal() {
-    const redirectUrl = environment.siteUrl.replace('es', this.subdomain);
+    this.logoutActions();
+  }
+
+  private logoutActions(redirect?: string) {
+    const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
     const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.remove('publisherId', cookieOptions);
     this.cookieService.remove('creditName', cookieOptions);
@@ -134,7 +126,6 @@ export class UserService extends ResourceService {
   }
 
   public me(): Observable<User> {
-    console.log('entra per aquí el petit bandarra')
     if (this._user) {
       return Observable.of(this._user);
     } else if (this.meObservable) {
@@ -154,7 +145,6 @@ export class UserService extends ResourceService {
     .catch(error => {
       this.meObservable = null;
       if (!error.ok) {
-        console.log('ups', error)
         this.logoutLocal();
       }
       return Observable.of(null);

@@ -1,10 +1,10 @@
 /* tslint:disable:no-unused-variable */
 
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { UserService, LOGIN_ENDPOINT } from './user.service';
+import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT } from './user.service';
 import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -58,9 +58,9 @@ import { SplitTestService } from '../tracking/split-test.service';
 import { HttpModuleNew } from '../http/http.module.new';
 import { APP_VERSION } from '../../../environments/version';
 import { PhoneMethod } from '../../chat/model';
-import { HttpParams } from '@angular/common/http';
+import { HttpParams, HttpRequest } from '@angular/common/http';
 
-describe('Service: User', () => {
+fdescribe('Service: User', () => {
 
   let service: UserService;
   let mockBackend: MockBackend;
@@ -311,6 +311,8 @@ describe('Service: User', () => {
       service.sendUserPresenceInterval(intervalValue);
       tick(intervalValue * callTimes);
       service.logout();
+      const req = httpMock.expectOne(`${environment.siteUrl.replace('es', 'www')}${LOGOUT_ENDPOINT}`);
+      req.flush({});
       tick(intervalValue * 4);
 
       expect(http.post).toHaveBeenCalledWith('api/v3/users/me/online');
@@ -373,25 +375,28 @@ describe('Service: User', () => {
   });
 
   describe('logout', () => {
-    const res: ResponseOptions = new ResponseOptions({ body: 'redirect_url' });
+    const expectedUrl = `${environment.siteUrl.replace('es', 'www')}${LOGOUT_ENDPOINT}`;
+    const logoutResponse = 'redirect_url';
     let redirectUrl: string;
+    let req: TestRequest;
 
     beforeEach(() => {
-      spyOn(http, 'postNoBase').and.returnValue(Observable.of(new Response(res)));
       spyOn(permissionService, 'flushPermissions').and.returnValue({});
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
       spyOn(splitTestService, 'reset');
+      accessTokenService.storeAccessToken('token')
 
-      event.subscribe(EventService.USER_LOGOUT, (param) => {
-        redirectUrl = param;
-      });
+      event.subscribe(EventService.USER_LOGOUT, param => redirectUrl = param);
       cookieService.put('publisherId', 'someId');
 
       service.logout();
+      req = httpMock.expectOne(expectedUrl);
+      req.flush(logoutResponse);
     });
 
-    it('should call endpoint', () => {
-      expect(http.postNoBase).toHaveBeenCalledWith(environment.siteUrl.replace('es', 'www') + 'rest/logout', undefined, undefined, true);
+    it('should call logout endpoint', () => {
+      expect(req.request.method).toBe('POST');
+      expect(req.request.urlWithParams).toEqual(expectedUrl)
     });
 
     it('should call deleteAccessToken', () => {
