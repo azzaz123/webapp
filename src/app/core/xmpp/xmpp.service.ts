@@ -250,7 +250,6 @@ export class XmppService {
 
   private buildMessage(message: XmppBodyMessage, markAsPending = false): InboxMessage {
     message.status = markAsPending ? MessageStatus.PENDING : MessageStatus.SENT;
-    console.log('STATUS' as MessageType);
     const messageType = message.payload ? message.payload.type as MessageType : MessageType.TEXT;
     return new InboxMessage(message.id, message.thread, message.body, message.from.local, this.isFromSelf(message),
       new Date(message.date), message.status, messageType, message.payload);
