@@ -12,6 +12,7 @@
             <div id="card-errors" role="alert" *ngIf="error">
                 {{ error }}
             </div>
+            <div class="StripeCard__error" *ngIf="isPaymentError" i18n>The payment failed. Please enter another credit card.</div>
         </div>
 
         <tsl-button [hidden]="type === 'new' || type === 'subscription'"

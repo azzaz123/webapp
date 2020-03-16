@@ -4,7 +4,7 @@ import { CatalogCardComponent } from './catalog-card.component';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../pipes';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';

@@ -47,6 +47,12 @@ export interface XmppBodyMessage extends XmppMessage {
   payload?: MessagePayload;
 }
 
+export interface XmppError {
+  name: string;
+  message: string;
+  stack?: string;
+}
+
 export class JID {
   constructor(
     private _userId: string,

@@ -1,19 +1,15 @@
-import { clone, remove } from 'lodash-es';
+import { clone, eq, remove } from 'lodash-es';
 import { Injectable } from '@angular/core';
-import { Message } from '../message/message';
 import { EventService } from '../event/event.service';
-import { XmppBodyMessage, XMPPClient, JID } from './xmpp.interface';
+import { XmppBodyMessage, XMPPClient, JID, XmppError } from './xmpp.interface';
 import { Observable, Observer } from 'rxjs';
 import 'rxjs/add/observable/from';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
-import { Conversation } from '../conversation/conversation';
-import { ChatSignal, ChatSignalType } from '../message/chat-signal.interface';
-import { InboxConversation } from '../../chat/model/inbox-conversation';
-import { InboxUser } from '../../chat/model/inbox-user';
+import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
+import { InboxConversation, InboxMessage, InboxUser, MessageStatus, MessageType } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
-import { InboxMessage, MessageStatus } from '../../chat/model';
 
 @Injectable()
 export class XmppService {
@@ -61,13 +57,12 @@ export class XmppService {
     this.eventService.emit(EventService.MESSAGE_SENT, conversation, message.id);
   }
 
-  public resendMessage(conversation: Conversation | InboxConversation, message: Message | InboxMessage) {
-    const msg: XmppBodyMessage =
-      this.createXmppMessage(conversation, message.id, message instanceof Message ? message.message : message.text);
-    this.client.sendMessage(msg);
+  public resendMessage(conversation: InboxConversation, message: InboxMessage) {
+    const xmppBodyMessage: XmppBodyMessage = this.createXmppMessage(conversation, message.id, message.text);
+    this.client.sendMessage(xmppBodyMessage);
   }
 
-  private createXmppMessage(conversation: Conversation | InboxConversation, id: string, body: string): XmppBodyMessage {
+  private createXmppMessage(conversation: InboxConversation, id: string, body: string): XmppBodyMessage {
     const message: XmppBodyMessage = {
       id: id,
       to: this.createJid(conversation.user.id),
@@ -163,8 +158,9 @@ export class XmppService {
       this.buildChatSignal(message);
     });
 
-    this.client.on('disconnected', () => {
+    this.client.on('disconnected', (error: XmppError) => {
       this.clientConnected = false;
+      this.remoteConsoleService.sendXmppConnectionClosedWithError(JSON.stringify(error) || '');
       console.warn('Client disconnected');
       this.eventService.emit(EventService.CHAT_RT_DISCONNECTED);
     });
@@ -224,8 +220,7 @@ export class XmppService {
       if (!this.isFromSelf(message)) {
         this.remoteConsoleService.sendPresentationMessageTimeout(message.id);
       }
-      const builtMessage: Message = this.buildMessage(message, markAsPending);
-      builtMessage.fromSelf = this.isFromSelf(message);
+      const builtMessage: InboxMessage = this.buildMessage(message, markAsPending);
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
     }
   }
@@ -233,8 +228,7 @@ export class XmppService {
   private isFromSelf(message: XmppBodyMessage): boolean {
     /* The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
     logged in, but they should not be considered messages fromSelf */
-    const fromSelf = (message.from.local === this.self.local) && !message.payload;
-    return fromSelf;
+    return this.self && eq(message.from.local, this.self.local) && !message.payload;
   }
 
   private buildChatSignal(message: XmppBodyMessage) {
@@ -252,10 +246,11 @@ export class XmppService {
     }
   }
 
-  private buildMessage(message: XmppBodyMessage, markAsPending = false) {
+  private buildMessage(message: XmppBodyMessage, markAsPending = false): InboxMessage {
     message.status = markAsPending ? MessageStatus.PENDING : MessageStatus.SENT;
-    return new Message(message.id, message.thread, message.body, message.from.local,
-      new Date(message.date), message.status, message.payload);
+    const messageType = message.payload ? message.payload.type as MessageType : MessageType.TEXT;
+    return new InboxMessage(message.id, message.thread, message.body, message.from.local, this.isFromSelf(message),
+      new Date(message.date), message.status, messageType, message.payload);
   }
 
   public sendMessageDeliveryReceipt(toId: string, id: string, thread: string) {
@@ -521,7 +516,6 @@ export class XmppService {
   }
 
   private createJid(userId: string, withResource = false): JID {
-    const jid = new JID(userId, environment.xmppDomain, withResource ? this.resource : null);
-    return jid;
+    return new JID(userId, environment.xmppDomain, withResource ? this.resource : null);
   }
 }

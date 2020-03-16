@@ -417,10 +417,6 @@ export class UserService extends ResourceService {
     return this.httpClient.get<ProfileSubscriptionInfo>(`${environment.baseUrl}${this.API_URL}/me/profile-subscription-info`);
   }
 
-  public getAvailableSlots(): Observable<AvailableSlots> {
-    return this.httpClient.get<AvailableSlots>(`${environment.baseUrl}${this.API_URL}/me/items/slots-available`);
-  }
-
   public setSubscriptionsFeatureFlag(): Observable<boolean> {
     return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS)
     .map((isActive: boolean) => {

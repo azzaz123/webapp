@@ -5,7 +5,7 @@ import { SubscriptionsService } from "../../core/subscriptions/subscriptions.ser
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { Observable } from "rxjs";
 import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures.spec";
-import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED } from "../../../tests/subscriptions.fixtures.spec";
+import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED } from "../../../tests/subscriptions.fixtures.spec";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from "./modals/add-new-subscription-modal.component";
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component'
@@ -25,6 +25,8 @@ import {
   ClickProfileUnsuscribe,
   ClickUnsuscribeCancelation
 } from '../../core/analytics/analytics-constants';
+import { CancelSubscriptionModalComponent } from "./modals/cancel-subscription-modal.component";
+import { ContinueSubscriptionModalComponent } from "./modals/continue-subscription-modal.component";
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionComponent;
@@ -186,6 +188,26 @@ describe('SubscriptionComponent', () => {
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
+
+      describe('and the subscription has only one tier', () => {
+        it('should open the cancel modal', () => {
+          spyOn(modalService, 'open').and.callThrough();
+
+          component.openSubscriptionModal(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
+          
+          expect(modalService.open).toHaveBeenCalledWith(CancelSubscriptionModalComponent, { windowClass: 'review' });
+        });
+      });
+    });
+
+    describe('when the user has cancelled the subscription', () => {
+      it('should open the continue subscribed modal', () => {
+        spyOn(modalService, 'open').and.callThrough();
+
+        component.openSubscriptionModal(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
+        
+        expect(modalService.open).toHaveBeenCalledWith(ContinueSubscriptionModalComponent, { windowClass: 'review' });
+      })
     });
 
     describe('when the user is NOT subscribed to the selected category and has another subscription', () => {
