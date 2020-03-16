@@ -514,16 +514,6 @@ fdescribe('Service: User', () => {
     });
   });
 
-  describe('updateProInfoNotifications', () => {
-    it('should call endpoint', () => {
-      spyOn(http, 'post').and.callThrough();
-
-      service.updateProInfoNotifications(USER_PRO_INFO_NOTIFICATIONS).subscribe();
-
-      expect(http.post).toHaveBeenCalledWith('api/v3/protool/extraInfo/notifications', USER_PRO_INFO_NOTIFICATIONS);
-    });
-  });
-
   describe('updateLocation', () => {
     it('should call endpoint and return response', () => {
       const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USER_LOCATION) });

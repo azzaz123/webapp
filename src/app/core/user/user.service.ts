@@ -221,10 +221,6 @@ export class UserService extends ResourceService {
     return this.httpClient.post(`${environment.baseUrl}${EXTRA_INFO_ENDPOINT}`, data);
   }
 
-  public updateProInfoNotifications(data: UserProDataNotifications): Observable<any> {
-    return this.http.post(this.API_URL_PROTOOL + '/extraInfo/notifications', data);
-  }
-
   public updateLocation(coordinates: Coordinate): Observable<UserLocation> {
     return this.http.put(this.API_URL + '/me/location', {
       latitude: coordinates.latitude,
