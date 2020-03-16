@@ -2,24 +2,21 @@ import { now } from 'lodash-es';
 import * as retry from 'retry';
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
-import { Conversation } from '../conversation/conversation';
 import { EventService } from '../event/event.service';
-import { Message } from './message';
 import { TrackingService } from '../tracking/tracking.service';
-import { ChatSignal, ChatSignalType } from './chat-signal.interface';
-import { InboxConversation } from '../../chat/model/inbox-conversation';
+import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
+import { InboxConversation, InboxMessage } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
 import { AnalyticsService } from '../analytics/analytics.service';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS,
   AnalyticsEvent,
+  SCREEN_IDS,
   SendFirstMessage
 } from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
 import { filter } from 'rxjs/operators';
-import { InboxMessage } from '../../chat/model';
 
 @Injectable()
 export class RealTimeService {
@@ -86,7 +83,7 @@ export class RealTimeService {
     this.xmpp.sendMessage(conversation, body);
   }
 
-  public resendMessage(conversation: Conversation | InboxConversation, message: Message | InboxMessage) {
+  public resendMessage(conversation: InboxConversation, message: InboxMessage) {
     this.xmpp.resendMessage(conversation, message);
   }
 
@@ -101,16 +98,12 @@ export class RealTimeService {
   }
 
   private subscribeEventMessageSent() {
-    this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: InboxConversation , messageId: string) => {
+    this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: InboxConversation, messageId: string) => {
 
       if (this.isFirstMessage(conversation)) {
         this.trackConversationCreated(conversation, messageId);
         this.trackSendFirstMessage(conversation);
         appboy.logCustomEvent('FirstMessage', { platform: 'web' });
-        const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
-        if (phoneRequestMsg) {
-          this.eventService.emit(EventService.CONV_WITH_PHONE_CREATED, conversation, phoneRequestMsg);
-        }
       }
       this.trackMessageSent(conversation.id, messageId);
     });
@@ -123,11 +116,7 @@ export class RealTimeService {
   }
 
   private isFirstMessage(conversation: InboxConversation): boolean {
-    const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
-    if (conversation.messages.length === 1 || (phoneRequestMsg && conversation.messages.length === 2)) {
-      return true;
-    }
-    return false;
+    return conversation.messages.length === 1;
   }
 
   private trackMessageSent(thread_id: string, message_id: string) {
@@ -158,7 +147,7 @@ export class RealTimeService {
     });
   }
 
-  private trackSendFirstMessage(conversation: Conversation | InboxConversation) {
+  private trackSendFirstMessage(conversation: InboxConversation) {
     const event: AnalyticsEvent<SendFirstMessage> = {
       name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
       eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -166,11 +155,11 @@ export class RealTimeService {
         itemId: conversation.item.id,
         sellerUserId: conversation.user.id,
         conversationId: conversation.id,
-        screenId: SCREEN_IDS.Chat
+        screenId: SCREEN_IDS.Chat,
+        categoryId: conversation.item.categoryId
       }
     };
 
     this.analyticsService.trackEvent(event);
   }
-
 }

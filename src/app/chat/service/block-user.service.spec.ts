@@ -1,9 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { environment } from '../../../../environments/environment';
-
 import { BlockUserService } from './block-user.service';
+import { environment } from '../../../environments/environment';
 
 describe('BlockUserService', () => {
   const USER_ID = '7s6gwr3c54s';

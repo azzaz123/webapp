@@ -20,7 +20,7 @@ import { EventService } from './core/event/event.service';
 import { UserService } from './core/user/user.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { NotificationService } from './core/notification/notification.service';
-import { MessageService } from './core/message/message.service';
+import { MessageService } from './chat/service/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';

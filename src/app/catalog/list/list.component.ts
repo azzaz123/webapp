@@ -120,28 +120,8 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getItems();
     this.getCreditInfo();
 
-    // TODO: New subscriptions will come from this endpoint and eventually drop support for Motor Plan
-    // this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS).subscribe(active => {
-    //   if (!active) {
-    //     return;
-    //   }
-    //   this.subscriptionsService.getSlots().subscribe(subscriptionSlots => {
-    //     this.setSubscriptionSlots(subscriptionSlots);
-    //   });
-    // });
-
-    this.userService.getAvailableSlots().subscribe(slots => {
-      if (slots.user_can_manage && slots.num_max_cars) {
-        this.categoryService.getCategoryById(CATEGORY_IDS.CAR).subscribe(category => {
-          category.icon_id = 'herocat-cars';
-          const mappedSubscriptionSlot: SubscriptionSlot = {
-            category,
-            available: slots.num_slots_cars,
-            limit: slots.num_max_cars
-          };
-          this.setSubscriptionSlots([mappedSubscriptionSlot]);
-        });
-      }
+    this.subscriptionsService.getSlots().subscribe(subscriptionSlots => {
+      this.setSubscriptionSlots(subscriptionSlots);
     });
 
     this.itemService.selectedItems$.takeWhile(() => {

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { TutorialService } from '../../core/tutorial/tutorial.service';
 import { User } from '../../core/user/user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { MessageService } from '../../core/message/message.service';
+import { MessageService } from '../../chat/service/message.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 
 describe('SidebarComponent', () => {

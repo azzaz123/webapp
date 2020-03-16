@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CartComponent } from './cart.component';
-import { CustomCurrencyPipe } from '../../custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../../pipes';
 import { DecimalPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CartService } from './cart.service';
@@ -303,7 +303,7 @@ describe('CartComponent', () => {
         it('should call deselectItems', fakeAsync(() => {
           component.checkout();
           tick(2000);
-          
+
           expect(itemService.deselectItems).toHaveBeenCalled();
           expect(itemService.selectedAction).toBeNull();
         }));

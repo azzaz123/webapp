@@ -29,13 +29,11 @@ import { ArchivedInboxConversationComponent } from './inbox/archived-inbox-conve
 import { InboxUserDetailComponent } from './inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component';
 import { InboxItemDetailComponent } from './inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component';
 import { BlockSendLinkComponent } from './modals/block-send-link';
-import { ThirdVoiceMessageComponent } from './message/third-voice-message';
-import { TextMessageComponent } from './message/text-message';
-import { ThirdVoiceReviewComponent } from './message/third-voice-message/third-voice-review';
 import { ScrollingMessageComponent } from './scrolling-message';
 import { StatusIconComponent } from './inbox/inbox-metadata/status-icon';
 import { InboxItemForSellComponent } from './inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component';
 import { AutosizeModule } from 'ngx-autosize';
+import { MessageModule } from './message/message.module';
 
 @NgModule({
   imports: [
@@ -49,7 +47,8 @@ import { AutosizeModule } from 'ngx-autosize';
     SharedModule,
     ChatRoutingModule,
     TrackingModule,
-    AutosizeModule
+    AutosizeModule,
+    MessageModule
   ],
   declarations: [
     chatRoutedComponents,
@@ -76,9 +75,6 @@ import { AutosizeModule } from 'ngx-autosize';
     InboxItemDetailComponent,
     InboxItemForSellComponent,
     BlockSendLinkComponent,
-    TextMessageComponent,
-    ThirdVoiceMessageComponent,
-    ThirdVoiceReviewComponent,
     ScrollingMessageComponent,
     StatusIconComponent
   ],

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { InboxConversation } from '../model';
-import { MessageService } from '../../core/message/message.service';
+import { MessageService } from './message.service';
 import { FeatureflagService } from '../../core/user/featureflag.service';
 import { EventService } from '../../core/event/event.service';
 import { UserService } from '../../core/user/user.service';

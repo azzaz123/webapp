@@ -3,18 +3,17 @@
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
-import { Message } from '../message/message';
 import { MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
-import { CONVERSATION_ID, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
 import { XmppBodyMessage } from './xmpp.interface';
 import { Observable } from 'rxjs';
 import { MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER, MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
-import { ChatSignal, ChatSignalType } from '../message/chat-signal.interface';
+import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
 import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
-import { MessageStatus } from '../../chat/model';
-import { CREATE_MOCK_INBOX_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE } from '../../../tests/inbox.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE, } from '../../../tests/inbox.fixtures.spec';
+import { InboxMessage, MessageStatus, MessageType } from '../../chat/model';
 
 const mamFirstIndex = '1899';
 const mamCount = 1900;
@@ -302,10 +301,10 @@ describe('Service: Xmpp', () => {
     });
 
     it('should emit a newMessage event on the message xmpp received', fakeAsync(() => {
-      let msg: Message;
+      let msg: InboxMessage;
       eventService.emit('session:started', null);
       eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
         msg = message;
       });
 
@@ -313,16 +312,16 @@ describe('Service: Xmpp', () => {
       tick();
 
       expect(msg.thread).toEqual('thread');
-      expect(msg.message).toEqual('body');
+      expect(msg.text).toEqual('body');
       expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.local);
       expect(remoteConsoleService.sendPresentationMessageTimeout).toHaveBeenCalledWith('id');
     }));
 
     it('should set the message status to SENT when a new xmpp message is received', fakeAsync(() => {
-      let msg: Message;
+      let msg: InboxMessage;
       eventService.emit('session:started', null);
       eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
         msg = message;
       });
 
@@ -338,7 +337,7 @@ describe('Service: Xmpp', () => {
       let expectedVal;
       eventService.emit('session:started', null);
       eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message, updateTimestamp: boolean, withDeliveryReceipt: boolean) => {
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage, updateTimestamp: boolean, withDeliveryReceipt: boolean) => {
         expectedVal = withDeliveryReceipt;
       });
 
@@ -357,7 +356,7 @@ describe('Service: Xmpp', () => {
       msg.requestReceipt = false;
       eventService.emit('session:started', null);
       eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message, updateTimestamp: boolean, withDeliveryReceipt: boolean) => {
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage, updateTimestamp: boolean, withDeliveryReceipt: boolean) => {
         expectedVal = withDeliveryReceipt;
       });
 
@@ -370,7 +369,7 @@ describe('Service: Xmpp', () => {
     }));
 
     it('should NOT emit a newMessage event if there is no body', () => {
-      let msg: Message;
+      let msg: InboxMessage;
       (service as any).bindEvents();
       eventService.subscribe(EventService.NEW_MESSAGE, (message) => {
         msg = message;
@@ -386,7 +385,7 @@ describe('Service: Xmpp', () => {
     });
 
     it('should NOT emit a newMessage event if there is a blacklisted payload', () => {
-      let msg: Message;
+      let msg: InboxMessage;
       (service as any).bindEvents();
       eventService.subscribe(EventService.NEW_MESSAGE, (message) => {
         msg = message;
@@ -403,11 +402,11 @@ describe('Service: Xmpp', () => {
     });
 
     it('should emit a newMessage event if there is a whitelist payload', fakeAsync(() => {
-      let msg: Message;
+      let inboxMessage: InboxMessage;
       eventService.emit('session:started', null);
       eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
-        msg = message;
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
+        inboxMessage = message;
       });
 
       eventService.emit('message', {
@@ -416,18 +415,18 @@ describe('Service: Xmpp', () => {
       });
       tick();
 
-      expect(msg.thread).toEqual('thread');
-      expect(msg.message).toEqual('body');
-      expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.local);
-      expect(msg.payload.type).toEqual('review');
-      expect(msg.payload.text).toEqual('text');
+      expect(inboxMessage.thread).toEqual('thread');
+      expect(inboxMessage.text).toEqual('body');
+      expect(inboxMessage.from).toBe(MOCKED_SERVER_MESSAGE.from.local);
+      expect(inboxMessage.payload.type).toEqual('review');
+      expect(inboxMessage.payload.text).toEqual('text');
     }));
 
     it('should set fromSelf to FALSE for a message with a payload', fakeAsync(() => {
-      let msg: Message;
+      let msg: InboxMessage;
       eventService.emit('session:started', null);
       eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
         msg = message;
       });
 
@@ -468,10 +467,12 @@ describe('Service: Xmpp', () => {
 
     it('should emit a CHAT_RT_DISCONNECTED event and set clientConnected to FALSE when the Xmpp client is disconnected', () => {
       spyOn(eventService, 'emit').and.callThrough();
+      spyOn(remoteConsoleService, 'sendXmppConnectionClosedWithError').and.callThrough();
 
       eventService.emit('disconnected');
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_RT_DISCONNECTED);
+      expect(remoteConsoleService.sendXmppConnectionClosedWithError).toHaveBeenCalledWith('');
       expect(service.clientConnected).toBe(false);
     });
 
@@ -492,10 +493,10 @@ describe('Service: Xmpp', () => {
     });
 
     it('should emit a newMessage event on the message xmpp received if it is a carbon', fakeAsync(() => {
-      let msg: Message;
+      let msg: InboxMessage;
       eventService.emit('session:started', null);
       eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
-      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
         msg = message;
       });
 
@@ -509,7 +510,7 @@ describe('Service: Xmpp', () => {
       tick();
 
       expect(msg.thread).toEqual('thread');
-      expect(msg.message).toEqual('body');
+      expect(msg.text).toEqual('body');
       expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.local);
     }));
 
@@ -684,9 +685,9 @@ describe('Service: Xmpp', () => {
     });
 
     it('should set the message status to PENDING when a new xmpp message is sent', fakeAsync(() => {
-      let msg: Message;
+      let msg: InboxMessage;
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
         msg = message;
       });
 
@@ -734,16 +735,18 @@ describe('Service: Xmpp', () => {
 
   describe('resendMessage', () => {
     it('should call client.sendMessage with an XmppBodyMessage', () => {
+      const conversation = CREATE_MOCK_INBOX_CONVERSATION();
+      const pendingMessage = new InboxMessage('other-id', conversation.id, MOCK_MESSAGE_FROM_OTHER.message,
+        OTHER_USER_ID, true, new Date(), MessageStatus.PENDING, MessageType.TEXT);
+
       spyOn<any>(service, 'createJid').and.returnValues(
         new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
         new XMPP.JID(USER_ID, environment.xmppDomain));
-
-      const pendingMessage = MOCK_MESSAGE_FROM_OTHER;
       const expectedXmppMsg: XmppBodyMessage = {
         id: MOCK_MESSAGE_FROM_OTHER.id,
         to: new XMPP.JID(USER_ID, environment.xmppDomain),
         from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
-        thread: MOCK_CONVERSATION().id,
+        thread: conversation.id,
         type: 'chat',
         request: {
           xmlns: 'urn:xmpp:receipts',
@@ -752,7 +755,7 @@ describe('Service: Xmpp', () => {
       };
 
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      service.resendMessage(MOCK_CONVERSATION(), pendingMessage);
+      service.resendMessage(conversation, pendingMessage);
 
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(expectedXmppMsg);
     });

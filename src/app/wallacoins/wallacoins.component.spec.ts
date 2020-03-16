@@ -3,7 +3,7 @@ import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testi
 import { WallacoinsComponent } from './wallacoins.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '../shared/custom-currency/custom-currency.pipe';
+import { CustomCurrencyPipe } from '../shared/pipes';
 import { PaymentService } from '../core/payments/payment.service';
 import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
