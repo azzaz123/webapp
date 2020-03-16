@@ -11,6 +11,7 @@ import { InboxConversationService } from '../../service';
 import { InboxConversationServiceMock } from '../../../../tests';
 import { of } from 'rxjs';
 import { InboxConversation } from '../../model';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 describe('Component: Conversation', () => {
   let inboxConversationService: InboxConversationService;
@@ -25,6 +26,7 @@ describe('Component: Conversation', () => {
       ],
       declarations: [InboxConversationComponent],
       providers: [
+        I18nService,
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
