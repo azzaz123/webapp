@@ -30,6 +30,8 @@ import { UserReportApi } from './user-report.interface';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
 
+export const USER_ENDPOINT = 'api/v3/users/';
+export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}me/online`;
 export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 export const LOGOUT_ENDPOINT = 'rest/logout';
 
@@ -101,7 +103,7 @@ export class UserService extends ResourceService {
   }
 
   private sendUserPresence() {
-    return this.http.post(this.API_URL + '/me/online').subscribe();
+    return this.httpClient.post(`${environment.baseUrl}${USER_ONLINE_ENDPOINT}`, null).subscribe();
   }
 
   public sendUserPresenceInterval(interval: number) {

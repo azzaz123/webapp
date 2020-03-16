@@ -4,7 +4,7 @@ import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/te
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT } from './user.service';
+import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT } from './user.service';
 import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -289,21 +289,21 @@ fdescribe('Service: User', () => {
   describe('sendUserPresence', () => {
     const intervalValue = 1000;
     const callTimes = 6;
+    const onlineUrl = `${environment.baseUrl}${USER_ONLINE_ENDPOINT}`;
 
     beforeEach(() => {
-      spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
       spyOn(permissionService, 'flushPermissions').and.returnValue({});
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
-      spyOn(http, 'post').and.returnValue(Observable.of({}));
       accessTokenService.storeAccessToken('abc');
     });
 
     it('should call the me/online endpoint ONCE when the client connects and then every <intervalValue> milliseconds', fakeAsync(() => {
       service.sendUserPresenceInterval(intervalValue);
       tick(intervalValue * callTimes);
-
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/online');
-      expect(http.post).toHaveBeenCalledTimes(callTimes + 1);
+      let requests = httpMock.match(onlineUrl);
+      requests.forEach(request => request.flush({}));
+      
+      expect(requests.length).toBe(callTimes + 1);
       discardPeriodicTasks();
     }));
 
@@ -311,12 +311,12 @@ fdescribe('Service: User', () => {
       service.sendUserPresenceInterval(intervalValue);
       tick(intervalValue * callTimes);
       service.logout();
-      const req = httpMock.expectOne(`${environment.siteUrl.replace('es', 'www')}${LOGOUT_ENDPOINT}`);
-      req.flush({});
+      httpMock.expectOne(`${environment.siteUrl.replace('es', 'www')}${LOGOUT_ENDPOINT}`).flush({});
       tick(intervalValue * 4);
+      let requests = httpMock.match(onlineUrl);
+      requests.forEach(request => request.flush({}));
 
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/online');
-      expect(http.post).toHaveBeenCalledTimes(callTimes + 1);
+      expect(requests.length).toBe(callTimes + 1);
       discardPeriodicTasks();
     }));
   });
