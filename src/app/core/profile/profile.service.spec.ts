@@ -17,6 +17,7 @@ import {
 } from '../../../tests/profile.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { environment } from '../../../environments/environment';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('Service: Profile', () => {
 
@@ -25,9 +26,13 @@ describe('Service: Profile', () => {
   let http: HttpService;
   let event: EventService;
   let cookieService: CookieService;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule
+      ],
       providers: [
         ...TEST_HTTP_PROVIDERS,
         EventService,
@@ -44,7 +49,7 @@ describe('Service: Profile', () => {
             put(key, value) {
               this.cookies[key] = value;
             },
-            remove (key) {
+            remove(key) {
               delete this.cookies[key];
             }
           }
@@ -64,6 +69,11 @@ describe('Service: Profile', () => {
     http = TestBed.get(HttpService);
     event = TestBed.get(EventService);
     cookieService = TestBed.get(CookieService);
+    httpTestingController = TestBed.get(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
   it('should return the profile', () => {

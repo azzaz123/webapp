@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Model } from './model.interface';
 import { ApiResponse } from './api-response.interface';
 import { Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export abstract class ResourceService {
@@ -12,7 +13,7 @@ export abstract class ResourceService {
   protected store: any = {};
   private observables: any = {};
 
-  constructor(protected http: HttpService) {
+  constructor(protected http: HttpService, protected httpClient: HttpClient) {
   }
 
   protected abstract mapRecordData(r: ApiResponse): Model;

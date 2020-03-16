@@ -44,7 +44,7 @@ export class UserService extends ResourceService {
   private motorPlanObservable: Observable<MotorPlan>;
 
   constructor(http: HttpService,
-              private httpClient: HttpClient,
+              httpClient: HttpClient,
               protected event: EventService,
               protected i18n: I18nService,
               protected haversineService: HaversineService,
@@ -54,7 +54,7 @@ export class UserService extends ResourceService {
               private featureflagService: FeatureflagService,
               private splitTestService: SplitTestService,
               @Inject('SUBDOMAIN') private subdomain: string) {
-    super(http);
+    super(http, httpClient);
   }
 
   get user(): User {

@@ -97,7 +97,7 @@ export class ItemService extends ResourceService {
     private i18n: I18nService,
     private trackingService: TrackingService,
     private eventService: EventService) {
-    super(http);
+    super(http, httpNew);
   }
 
   public getFakeItem(id: string): Item {

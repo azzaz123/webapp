@@ -9,6 +9,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { chain, partial, split } from 'lodash-es';
 import { ResourceService } from '../resource/resource.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class ProfileService extends ResourceService {
@@ -16,10 +17,11 @@ export class ProfileService extends ResourceService {
   protected _profile: Profile;
 
   constructor(http: HttpService,
+              httpClient: HttpClient,
               protected event: EventService,
               protected i18n: I18nService,
               protected accessTokenService: AccessTokenService) {
-    super(http);
+    super(http, httpClient);
   }
 
   get profile(): Profile {
