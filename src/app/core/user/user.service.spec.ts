@@ -4,7 +4,7 @@ import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/te
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT } from './user.service';
+import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT } from './user.service';
 import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -84,8 +84,7 @@ fdescribe('Service: User', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule,
-        HttpModuleNew
+        HttpClientTestingModule
       ],
       providers: [
         ...TEST_HTTP_PROVIDERS,
@@ -504,11 +503,14 @@ fdescribe('Service: User', () => {
 
   describe('updateProInfo', () => {
     it('should call endpoint', () => {
-      spyOn(http, 'post').and.callThrough();
+      const expectedUrl = `${environment.baseUrl}${EXTRA_INFO_ENDPOINT}`;
 
       service.updateProInfo(USER_PRO_DATA).subscribe();
+      const req = httpMock.expectOne(expectedUrl);
+      req.flush({});
 
-      expect(http.post).toHaveBeenCalledWith('api/v3/protool/extraInfo', USER_PRO_DATA);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(USER_PRO_DATA);
     });
   });
 

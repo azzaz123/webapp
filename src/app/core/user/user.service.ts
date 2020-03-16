@@ -35,6 +35,9 @@ export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}me/online`;
 export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 export const LOGOUT_ENDPOINT = 'rest/logout';
 
+export const PROTOOL_ENDPOINT = 'api/v3/protool';
+export const EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}/extraInfo`;
+
 @Injectable()
 export class UserService extends ResourceService {
 
@@ -215,7 +218,7 @@ export class UserService extends ResourceService {
   }
 
   public updateProInfo(data: UserProData): Observable<any> {
-    return this.http.post(this.API_URL_PROTOOL + '/extraInfo', data);
+    return this.httpClient.post(`${environment.baseUrl}${EXTRA_INFO_ENDPOINT}`, data);
   }
 
   public updateProInfoNotifications(data: UserProDataNotifications): Observable<any> {
