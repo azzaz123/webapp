@@ -39,6 +39,7 @@ export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}online`;
 export const USER_LOCATION_ENDPOINT = `${USER_ENDPOINT}location`;
 export const USER_STORE_LOCATION_ENDPOINT = `${USER_ENDPOINT}bumped-profile/store-location'`;
 export const USER_STATS_ENDPOINT = `${USER_ENDPOINT}stats`;
+export const USER_EMAIL_ENDPOINT = `${USER_ENDPOINT}email`;
 export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/stats`
 
 export const PROTOOL_ENDPOINT = 'api/v3/protool';
@@ -300,10 +301,8 @@ export class UserService extends ResourceService {
       );
   }
 
-  public updateEmail(email: string): Observable<any> {
-    return this.http.post(this.API_URL + '/me/email', {
-      email_address: email
-    });
+  public updateEmail(email_address: string): Observable<any> {
+    return this.httpClient.post(`${environment.baseUrl}${USER_EMAIL_ENDPOINT}`, { email_address });
   }
 
   public updatePassword(oldPassword: string, newPassword: string): Observable<any> {
