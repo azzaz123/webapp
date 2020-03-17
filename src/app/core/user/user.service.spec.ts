@@ -60,7 +60,7 @@ import { APP_VERSION } from '../../../environments/version';
 import { PhoneMethod } from '../../chat/model';
 import { HttpParams, HttpRequest } from '@angular/common/http';
 
-fdescribe('Service: User', () => {
+describe('Service: User', () => {
 
   let service: UserService;
   let mockBackend: MockBackend;
