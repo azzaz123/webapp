@@ -17,7 +17,6 @@ import { UnblockUserComponent } from './modals/unblock-user/unblock-user.compone
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { ItemReservedComponent } from './item/item-reserved/item-reserved.component';
 import { ItemSoldComponent } from './item/item-sold/item-sold.component';
-import { UserCardComponent } from './user-card/user-card.component';
 import { UserResponseRateComponent } from './user-response-rate/user-response-rate.component';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { InboxComponent } from './inbox/inbox.component';
@@ -65,7 +64,6 @@ import { MessageModule } from './message/message.module';
     BlockUserComponent,
     UnblockUserComponent,
     UserDetailComponent,
-    UserCardComponent,
     UserResponseRateComponent,
     InboxComponent,
     InboxConversationComponent,
