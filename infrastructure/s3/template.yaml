@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: |
+  This template contains an unexistent bucket that will be or have been deleted.
+  It will be added here current buckets for webapp en+es (web-es/en.beta.wallapop.com and
+  web.wallapop.com) through cloudformation console. It is the only way to have that infra
+  of vision scripted.
+
+Parameters:
+  EnvName:
+    Description: 'Environment where it has to be deployed'
+    Type: String
+  ProjectName:
+    Description: 'Name of the project'
+    Type: String
+
+Resources:
+  HostingBucketES:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "web-es.to.delete.${EnvName}"
+      AccessControl: BucketOwnerFullControl
+      Tags:
+        - Key: Env
+          Value: !Ref EnvName
+        - Key: Project
+          Value: !Ref ProjectName
+
+  HostingBucketEN:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "web-en.to.delete.${EnvName}"
+      AccessControl: BucketOwnerFullControl
+      Tags:
+        - Key: Env
+          Value: !Ref EnvName
+        - Key: Project
+          Value: !Ref ProjectName
