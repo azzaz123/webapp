@@ -37,24 +37,25 @@ export const USER_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${u
 export const USER_ENDPOINT = `${USER_BASE_ENDPOINT}me/`;
 export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}online`;
 export const USER_LOCATION_ENDPOINT = `${USER_ENDPOINT}location`;
+export const USER_COVER_IMAGE_ENDPOINT = `${USER_ENDPOINT}cover-image`;
+export const USER_PHONE_INFO_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/phone-method`;
 export const USER_STORE_LOCATION_ENDPOINT = `${USER_ENDPOINT}bumped-profile/store-location'`;
 export const USER_STATS_ENDPOINT = `${USER_ENDPOINT}stats`;
+export const USER_EXTRA_INFO_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/extra-info`;
 export const USER_EMAIL_ENDPOINT = `${USER_ENDPOINT}email`;
 export const USER_PASSWORD_ENDPOINT = `${USER_ENDPOINT}password`;
 export const USER_UNSUBSCRIBE_ENDPOINT = `${USER_ENDPOINT}unsubscribe/`;
 export const USER_UNSUBSCRIBE_REASONS_ENDPOINT = `${USER_UNSUBSCRIBE_ENDPOINT}reason`;
+export const USER_REPORT_ENDPOINT = (userId: string) => `${USER_ENDPOINT}report/user/${userId}`;
 export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/stats`;
-export const USER_SUBSCRIPTION_TYPE_ENDPOINT = `${USER_ENDPOINT}profile-subscription-info/type`;
+export const USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT = `${USER_ENDPOINT}profile-subscription-info/`;
+export const USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT = `${USER_ENDPOINT}type`;
 
-export const PROTOOL_ENDPOINT = 'api/v3/protool';
-export const EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}/extraInfo`;
+export const PROTOOL_ENDPOINT = 'api/v3/protool/';
+export const PROTOOL_EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}extraInfo`;
 
 @Injectable()
 export class UserService {
-
-  public queryParams: any = {};
-  protected API_URL = 'api/v3/users';
-  protected API_URL_PROTOOL = 'api/v3/protool';
   private banReasons: BanReason[] = null;
   protected _user: User;
   private meObservable: Observable<User>;
@@ -197,7 +198,7 @@ export class UserService {
 
   public reportUser(userId: string, itemHash: string, conversationHash: string, reason: number, comments: string)
     : Observable<UserReportApi> {
-    return this.http.post<UserReportApi>(`${environment.baseUrl}${this.API_URL}/me/report/user/${userId}`, {
+    return this.http.post<UserReportApi>(`${environment.baseUrl}${USER_REPORT_ENDPOINT(userId)}`, {
         itemHashId: itemHash,
         conversationHash: conversationHash,
         comments: comments,
@@ -208,21 +209,21 @@ export class UserService {
       });
   }
 
-  public getInfo(id: string): Observable<UserInfoResponse> {
-    return this.http.get<UserInfoResponse>(`${environment.baseUrl}${this.API_URL}/${id}/extra-info`);
+  public getInfo(userId: string): Observable<UserInfoResponse> {
+    return this.http.get<UserInfoResponse>(`${environment.baseUrl}${USER_EXTRA_INFO_ENDPOINT(userId)}`);
   }
 
   public getProInfo(): Observable<UserProInfo> {
-    return this.http.get<UserProInfo>(`${environment.baseUrl}${this.API_URL_PROTOOL}/extraInfo`);
+    return this.http.get<UserProInfo>(`${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`);
   }
 
   public getUserCover(): Observable<Image> {
-    return this.http.get<Image>(`${environment.baseUrl}${this.API_URL}/me/cover-image`)
+    return this.http.get<Image>(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`)
     .pipe(catchError(error => of({} as Image)));
   }
 
   public updateProInfo(data: UserProData): Observable<any> {
-    return this.http.post(`${environment.baseUrl}${EXTRA_INFO_ENDPOINT}`, data);
+    return this.http.post(`${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`, data);
   }
 
   public updateLocation(coordinates: Coordinate): Observable<UserLocation> {
@@ -273,7 +274,7 @@ export class UserService {
   }
 
   public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
-    return this.http.get<PhoneMethodResponse>(`${environment.baseUrl}${this.API_URL}/${userId}/phone-method`)
+    return this.http.get<PhoneMethodResponse>(`${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(userId)}`)
     .pipe(catchError(() => of(null)));
   }
 
@@ -381,7 +382,7 @@ export class UserService {
     } else if (this.motorPlanObservable) {
       return this.motorPlanObservable;
     }
-    this.motorPlanObservable = this.http.get<MotorPlan>(`${environment.baseUrl}${USER_SUBSCRIPTION_TYPE_ENDPOINT}`)
+    this.motorPlanObservable = this.http.get<MotorPlan>(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT}`)
     .map((motorPlan: MotorPlan) => {
       this._motorPlan = motorPlan;
       return motorPlan;
@@ -398,7 +399,7 @@ export class UserService {
   }
 
   public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
-    return this.http.get<ProfileSubscriptionInfo>(`${environment.baseUrl}${this.API_URL}/me/profile-subscription-info`);
+    return this.http.get<ProfileSubscriptionInfo>(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT}`);
   }
 
   public setSubscriptionsFeatureFlag(): Observable<boolean> {

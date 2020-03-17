@@ -4,7 +4,7 @@ import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/te
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT, USER_UNSUBSCRIBE_REASONS_ENDPOINT, USER_UNSUBSCRIBE_ENDPOINT, USER_SUBSCRIPTION_TYPE_ENDPOINT, USER_BY_ID_ENDPOINT } from './user.service';
+import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, PROTOOL_EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT, USER_UNSUBSCRIBE_REASONS_ENDPOINT, USER_UNSUBSCRIBE_ENDPOINT, USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT, USER_BY_ID_ENDPOINT, USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT, USER_REPORT_ENDPOINT, USER_COVER_IMAGE_ENDPOINT, USER_PHONE_INFO_ENDPOINT, USER_EXTRA_INFO_ENDPOINT } from './user.service';
 import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -436,7 +436,7 @@ fdescribe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getInfo(USER_ID).subscribe(response => expect(response).toEqual(USER_INFO_RESPONSE));
 
-      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/extra-info`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_EXTRA_INFO_ENDPOINT(USER_ID)}`);
 
       expect(req.request.method).toEqual('GET');
       req.flush(USER_INFO_RESPONSE);
@@ -448,7 +448,7 @@ fdescribe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getProInfo().subscribe(response => expect(response).toEqual(USER_PRO_INFO_RESPONSE));
 
-      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/protool/extraInfo`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`);
 
       expect(req.request.method).toEqual('GET');
       req.flush(USER_PRO_INFO_RESPONSE);
@@ -460,7 +460,7 @@ fdescribe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getUserCover().subscribe(response => expect(response).toEqual(IMAGE));
 
-      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/me/cover-image`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`);
       expect(req.request.method).toEqual('GET');
       req.flush(IMAGE);
     });
@@ -469,7 +469,7 @@ fdescribe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getUserCover().subscribe(response => expect(response).toEqual({} as Image));
 
-      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/me/cover-image`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`);
       expect(req.request.method).toEqual('GET');
       req.error(new ErrorEvent('network error'));
     });
@@ -477,7 +477,7 @@ fdescribe('Service: User', () => {
 
   describe('updateProInfo', () => {
     it('should call endpoint', () => {
-      const expectedUrl = `${environment.baseUrl}${EXTRA_INFO_ENDPOINT}`;
+      const expectedUrl = `${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`;
 
       service.updateProInfo(USER_PRO_DATA).subscribe();
       const req = httpMock.expectOne(expectedUrl);
@@ -558,7 +558,7 @@ fdescribe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(PHONE_METHOD_RESPONSE));
 
-      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/phone-method`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(USER_ID)}`);
       expect(req.request.method).toEqual('GET');
       req.flush(PHONE_METHOD_RESPONSE);
     });
@@ -567,7 +567,7 @@ fdescribe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(null));
 
-      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/phone-method`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(USER_ID)}`);
       expect(req.request.method).toEqual('GET');
       req.error(new ErrorEvent('network error'));
     });
@@ -739,7 +739,7 @@ fdescribe('Service: User', () => {
   });
 
   describe('getMotorPlan', () => {
-    const expectedMotorPlanUrl = `${environment.baseUrl}${USER_SUBSCRIPTION_TYPE_ENDPOINT}`;
+    const expectedMotorPlanUrl = `${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT}`;
 
     it('should retrieve and return the Motor plan object', fakeAsync(() => {
       let response: MotorPlan;
@@ -774,7 +774,7 @@ fdescribe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getMotorPlans().subscribe(response => expect(response).toEqual(PROFILE_SUB_INFO));
 
-      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/me/profile-subscription-info`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT}`);
 
       expect(req.request.method).toEqual('GET');
       req.flush(PROFILE_SUB_INFO);
@@ -790,7 +790,7 @@ fdescribe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.reportUser(USER_ID, ITEM_HASH, CONVERSATIONS_HASH, REASON, COMMENT).subscribe();
 
-      const req = httpMock.expectOne(`${environment.baseUrl}api/v3/users/me/report/user/${USER_ID}`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_REPORT_ENDPOINT(USER_ID)}`);
       expect(req.request.method).toEqual('POST');
       expect(req.request.body).toEqual({
         itemHashId: ITEM_HASH,
