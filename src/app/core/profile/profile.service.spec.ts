@@ -1,10 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { ProfileService } from './profile.service';
-import { HttpService } from '../http/http.service';
-import { MockBackend, MockConnection } from '@angular/http/testing';
-import { Response, ResponseOptions } from '@angular/http';
 import { HaversineService } from 'ng2-haversine';
 import { I18nService } from '../i18n/i18n.service';
 import { EventService } from '../event/event.service';
@@ -18,13 +15,10 @@ import {
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { environment } from '../../../environments/environment';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { FAVORITES_USER_MOCK } from '../../../tests/favorites.fixtures';
 
 describe('Service: Profile', () => {
 
   let service: ProfileService;
-  let mockBackend: MockBackend;
-  let http: HttpService;
   let event: EventService;
   let cookieService: CookieService;
   let httpTestingController: HttpTestingController;
@@ -66,8 +60,6 @@ describe('Service: Profile', () => {
       ]
     });
     service = TestBed.get(ProfileService);
-    mockBackend = TestBed.get(MockBackend);
-    http = TestBed.get(HttpService);
     event = TestBed.get(EventService);
     cookieService = TestBed.get(CookieService);
     httpTestingController = TestBed.get(HttpTestingController);
@@ -86,22 +78,17 @@ describe('Service: Profile', () => {
 
   describe('get', () => {
     describe('without backend error', () => {
-      beforeEach(fakeAsync(() => {
-        mockBackend.connections.subscribe((connection: MockConnection) => {
-          expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/' + PROFILE_ID);
-          const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PROFILE_DATA)});
-          connection.mockRespond(new Response(res));
-        });
-      }));
-
       it('should return the Profile object', fakeAsync(() => {
-        let profile: Profile;
-        service.get(PROFILE_ID).subscribe((r: Profile) => {
-          profile = r;
+        service['_profile'] = null;
+        service.get(PROFILE_ID).subscribe(data => {
+          expect(data instanceof Profile).toBeTruthy();
+          expect(data).toEqual(MOCK_PROFILE);
         });
 
-        expect(profile instanceof Profile).toBeTruthy();
-        expect(profile).toEqual(MOCK_PROFILE);
+        const req = httpTestingController.expectOne(
+          `${environment.baseUrl}api/v3/users/${PROFILE_ID}`);
+        req.flush(PROFILE_DATA);
+        expect(req.request.method).toEqual('GET');
       }));
     });
   });
@@ -129,7 +116,7 @@ describe('Service: Profile', () => {
 
       const req = httpTestingController.expectOne(
         `${environment.baseUrl}api/v3/users/me/users/favorites?init=${INIT}`);
-      req.flush(FAVORITES_USER_MOCK);
+      req.flush(MOCK_PROFILE);
       expect(req.request.method).toEqual('GET');
       expect(req.request.params.get('init')).toEqual(INIT.toString());
     });

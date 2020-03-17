@@ -1,34 +1,56 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '../http/http.service';
 import { Profile } from './profile';
 import { Observable } from 'rxjs';
 import { EventService } from '../event/event.service';
 import { ProfileResponse, ProfilesData } from './profile-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
-import { ResourceService } from '../resource/resource.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment.beta';
+import { Model } from '../resource/model.interface';
 
 @Injectable()
-export class ProfileService extends ResourceService {
+export class ProfileService {
   protected API_URL = 'api/v3/users';
   protected _profile: Profile;
 
-  constructor(http: HttpService,
-              httpClient: HttpClient,
+  protected store: any = {};
+  private observables: any = {};
+
+  constructor(private httpClient: HttpClient,
               protected event: EventService,
               protected i18n: I18nService,
               protected accessTokenService: AccessTokenService) {
-    super(http, httpClient);
   }
 
   get profile(): Profile {
     return this._profile;
   }
 
+  public get(id: string, noCache?: boolean): Observable<Model> {
+    if (this.store[id] && !noCache) {
+      return Observable.of(this.store[id]);
+    } else if (this.observables[id]) {
+      return this.observables[id];
+    } else {
+      this.observables[id] = this.httpClient.get<ProfileResponse>(`${environment.baseUrl}${this.API_URL}/${id}`)
+      .map((resp: ProfileResponse) => resp.id ? this.mapRecordData(resp) : null)
+      .map((model: Model) => this.addToStore(model, id))
+      .share();
+      return this.observables[id];
+    }
+  }
+
+  private addToStore(model: Model, id: string): Model {
+    if (model) {
+      this.store[id] = model;
+    }
+    delete this.observables[id];
+    return model;
+  }
+
   private getPaginationItems(url: string, init: number): Observable<ProfilesData> {
-    return this.httpClient.get(`${url}`, {
+    return this.httpClient.get(url, {
       observe: 'response',
       params: {
         init: init.toString()
