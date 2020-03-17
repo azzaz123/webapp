@@ -38,6 +38,7 @@ export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}me/online`;
 export const USER_LOCATION_ENDPOINT = `${USER_ENDPOINT}me/location`;
 export const USER_STORE_LOCATION_ENDPOINT = `${USER_ENDPOINT}me/bumped-profile/store-location'`;
 export const USER_STATS_ENDPOINT = `${USER_ENDPOINT}me/stats`;
+export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_ENDPOINT}${userId}/stats`
 
 export const PROTOOL_ENDPOINT = 'api/v3/protool';
 export const EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}/extraInfo`;
@@ -261,12 +262,13 @@ export class UserService extends ResourceService {
     });
   }
 
+  // TODO: Remove if not used when public web is in webapp
   public getUserStats(userId: string): Observable<UserStatsResponse> {
-    return this.http.get(this.API_URL + '/' + userId + '/stats')
-    .map((r: Response) => {
+    return this.httpClient.get<any>(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(userId)}`)
+    .map(response => {
       return {
-        ratings: this.toRatingsStats(r.json().ratings),
-        counters: this.toCountersStats(r.json().counters)
+        ratings: this.toRatingsStats(response.ratings),
+        counters: this.toCountersStats(response.counters)
       };
     });
   }
