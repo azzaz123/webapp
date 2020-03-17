@@ -195,13 +195,13 @@ export class UserService {
     return Observable.of(this.banReasons);
   }
 
-  public reportUser(userId: string, itemHash: string, conversationHash: string, reason: number, comments: string)
+  public reportUser(userId: string, itemHashId: string, conversationHash: string, reason: number, comments: string)
     : Observable<UserReportApi> {
     return this.http.post<UserReportApi>(`${environment.baseUrl}${USER_REPORT_ENDPOINT(userId)}`, {
-      itemHashId: itemHash,
-      conversationHash: conversationHash,
-      comments: comments,
-      reason: reason
+      itemHashId,
+      conversationHash,
+      comments,
+      reason
     },
       {
         headers: new HttpHeaders().append('AppBuild', APP_VERSION)
