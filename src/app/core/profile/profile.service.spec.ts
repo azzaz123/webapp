@@ -18,6 +18,7 @@ import {
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { environment } from '../../../environments/environment';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { FAVORITES_USER_MOCK } from '../../../tests/favorites.fixtures';
 
 describe('Service: Profile', () => {
 
@@ -117,6 +118,20 @@ describe('Service: Profile', () => {
 
       expect(req.request.method).toEqual('PUT');
       expect(req.request.body).toEqual({ favorited: FAVOURITE });
+    });
+  });
+
+  describe('myFavorites', () => {
+    it('should GET favourites', () => {
+      const INIT = 0;
+
+      service.myFavorites(INIT).subscribe();
+
+      const req = httpTestingController.expectOne(
+        `${environment.baseUrl}api/v3/users/me/users/favorites?init=${INIT}`);
+      req.flush(FAVORITES_USER_MOCK);
+      expect(req.request.method).toEqual('GET');
+      expect(req.request.params.get('init')).toEqual(INIT.toString());
     });
   });
 
