@@ -4,7 +4,7 @@ import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/te
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT } from './user.service';
+import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT, USER_UNSUBSCRIBE_REASONS_ENDPOINT } from './user.service';
 import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -21,7 +21,7 @@ import {
   MOTORPLAN_DATA,
   ONLINE,
   PROFILE_SUB_INFO,
-  REASONS,
+  UNSUBSCRIBE_REASONS,
   RESPONSE_RATE,
   SCORING_STARS,
   SCORING_STARTS,
@@ -648,17 +648,21 @@ fdescribe('Service: User', () => {
   });
 
   describe('getUnsubscribeReasons', () => {
-    it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(REASONS) });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: UnsubscribeReason[];
+    it('should call endpoint with language as query param and return response', () => {
+      const languageParamKey = 'language';
+      const languageParamValue = 'en';
+      const expectedParams = new HttpParams().set(languageParamKey, languageParamValue);
+      const expectedUrl = `${environment.baseUrl}${USER_UNSUBSCRIBE_REASONS_ENDPOINT}?${expectedParams.toString()}`;
+      let response: UnsubscribeReason[];
 
-      service.getUnsubscribeReasons().subscribe((response: UnsubscribeReason[]) => {
-        resp = response;
-      });
+      service.getUnsubscribeReasons().subscribe(r => response = r);
+      const req = httpMock.expectOne(expectedUrl);
+      req.flush(UNSUBSCRIBE_REASONS);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/unsubscribe/reason', { language: 'en' });
-      expect(resp).toEqual(REASONS);
+      const languageParam = req.request.params.get(languageParamKey)
+      expect(req.request.method).toBe('GET');
+      expect(languageParam).toEqual(languageParamValue);
+      expect(response).toEqual(UNSUBSCRIBE_REASONS);
     });
   });
 

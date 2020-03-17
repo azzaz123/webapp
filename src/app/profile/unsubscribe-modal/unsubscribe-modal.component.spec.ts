@@ -5,7 +5,7 @@ import { UserService } from '../../core/user/user.service';
 import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CUSTOM_REASON, MOCK_USER, REASONS, SELECTED_REASON } from '../../../tests/user.fixtures.spec';
+import { CUSTOM_REASON, MOCK_USER, UNSUBSCRIBE_REASONS, SELECTED_REASON } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../../core/http/access-token.service';
@@ -25,7 +25,7 @@ describe('UnsubscribeModalComponent', () => {
         {
           provide: UserService, useValue: {
           getUnsubscribeReasons() {
-            return Observable.of(REASONS);
+            return Observable.of(UNSUBSCRIBE_REASONS);
           },
           unsubscribe() {
             return Observable.of({});
@@ -79,7 +79,7 @@ describe('UnsubscribeModalComponent', () => {
       component.ngOnInit();
 
       expect(userService.getUnsubscribeReasons).toHaveBeenCalled();
-      expect(component.reasons).toEqual(REASONS);
+      expect(component.reasons).toEqual(UNSUBSCRIBE_REASONS);
     });
 
     it('should call me and set hasSubscription to false', () => {

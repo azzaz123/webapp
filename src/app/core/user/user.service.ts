@@ -41,6 +41,8 @@ export const USER_STORE_LOCATION_ENDPOINT = `${USER_ENDPOINT}bumped-profile/stor
 export const USER_STATS_ENDPOINT = `${USER_ENDPOINT}stats`;
 export const USER_EMAIL_ENDPOINT = `${USER_ENDPOINT}email`;
 export const USER_PASSWORD_ENDPOINT = `${USER_ENDPOINT}password`;
+export const USER_UNSUBSCRIBE_ENDPOINT = `${USER_ENDPOINT}unsubscribe/`;
+export const USER_UNSUBSCRIBE_REASONS_ENDPOINT = `${USER_UNSUBSCRIBE_ENDPOINT}reason`;
 export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/stats`
 
 export const PROTOOL_ENDPOINT = 'api/v3/protool';
@@ -311,8 +313,8 @@ export class UserService extends ResourceService {
   }
 
   public getUnsubscribeReasons(): Observable<UnsubscribeReason[]> {
-    return this.http.get(this.API_URL + '/me/unsubscribe/reason', { language: this.i18n.locale })
-    .map((r: Response) => r.json());
+    const params = { language: this.i18n.locale };
+    return this.httpClient.get<UnsubscribeReason[]>(`${environment.baseUrl}${USER_UNSUBSCRIBE_REASONS_ENDPOINT}`, { params });
   }
 
   public unsubscribe(reasonId: number, otherReason: string): Observable<any> {
