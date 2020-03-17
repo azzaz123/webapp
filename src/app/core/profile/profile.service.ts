@@ -10,6 +10,7 @@ import { AccessTokenService } from '../http/access-token.service';
 import { chain, partial, split } from 'lodash-es';
 import { ResourceService } from '../resource/resource.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment.beta';
 
 @Injectable()
 export class ProfileService extends ResourceService {
@@ -72,7 +73,7 @@ export class ProfileService extends ResourceService {
   }
 
   public favoriteItem(id: string, favorited: boolean): Observable<any> {
-    return this.http.put(this.API_URL + '/' + id + '/favorite', {
+    return this.httpClient.put(`${environment.baseUrl}${this.API_URL}/${id}/favorite`, {
       favorited: favorited
     });
   }

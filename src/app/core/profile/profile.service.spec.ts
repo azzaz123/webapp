@@ -105,4 +105,19 @@ describe('Service: Profile', () => {
     });
   });
 
+  describe('favoriteItem', () => {
+    it('should PUT favourite', () => {
+      const USER_ID = 'user-id';
+      const FAVOURITE = true;
+
+      service.favoriteItem(USER_ID, FAVOURITE).subscribe();
+
+      const req = httpTestingController.expectOne(
+        `${environment.baseUrl}api/v3/users/${USER_ID}/favorite`);
+
+      expect(req.request.method).toEqual('PUT');
+      expect(req.request.body).toEqual({ favorited: FAVOURITE });
+    });
+  });
+
 });
