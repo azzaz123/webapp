@@ -27,8 +27,9 @@ import { SplitTestService } from '../tracking/split-test.service';
 import { InboxItem } from '../../chat/model';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, tap, map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { catchError, tap, map, finalize } from 'rxjs/operators';
+import { isEmpty } from 'lodash-es';
 
 export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 export const LOGOUT_ENDPOINT = 'rest/logout';
@@ -154,29 +155,14 @@ export class UserService extends ResourceService {
 
   public me(): Observable<User> {
     if (this._user) {
-      return Observable.of(this._user);
-    } else if (this.meObservable) {
-      return this.meObservable;
+      return of(this._user);
     }
-    this.meObservable = this.http.get(this.API_URL + '/me')
-    .map((r: Response) => r.json())
-    .map((r: UserResponse) => this.mapRecordData(r))
-    .map((user: User) => {
-      this._user = user;
-      return user;
-    })
-    .share()
-    .do(() => {
-      this.meObservable = null;
-    })
-    .catch(error => {
-      this.meObservable = null;
-      if (!error.ok) {
-        this.logoutLocal();
-      }
-      return Observable.of(null);
-    });
-    return this.meObservable;
+
+    return this.httpClient.get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`)
+      .pipe(
+        map(r => this.mapRecordData(r)),
+        tap(user => this._user = user)
+      )
   }
 
   public checkUserStatus() {
@@ -334,6 +320,10 @@ export class UserService extends ResourceService {
   }
 
   protected mapRecordData(data: UserResponse): User {
+    if (!data || !data.id) {
+      return null;
+    }
+
     return new User(
       data.id,
       data.micro_name,

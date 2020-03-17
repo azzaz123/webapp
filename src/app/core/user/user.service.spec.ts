@@ -216,52 +216,31 @@ fdescribe('Service: User', () => {
   });
 
   describe('me', () => {
+    describe('when there is no user stored', () => {
+      it('should ask backend', () => {
+        let response: User;
 
-    it('should retrieve and return the User object', fakeAsync(() => {
-      spyOn(http, 'get').and.callThrough();
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/me');
-        const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USER_DATA) });
-        connection.mockRespond(new Response(res));
+        service.me().subscribe(r => response = r);
+        const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
+        req.flush(USER_DATA);
+
+        expect(req.request.method).toBe('GET');
+        expect(response).toEqual(MOCK_FULL_USER);
       });
-      let user: User;
-      service.me().subscribe((r: User) => {
-        user = r;
+    })
+
+    describe('when there is user stored', () => {
+      it('should return user from memory', () => {
+        let response: User;
+
+        service.me().subscribe();
+        httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`).flush(USER_DATA);
+        service.me().subscribe(r => response = r);
+        httpMock.expectNone(`${environment.baseUrl}${USER_ENDPOINT}`);
+
+        expect(response).toEqual(MOCK_FULL_USER);
       });
-      expect(user instanceof User).toBeTruthy();
-      expect(user.id).toBe(USER_ID);
-      expect(user.microName).toBe(MICRO_NAME);
-      expect(user.image).toBeDefined();
-      expect(user.location).toEqual(USER_LOCATION);
-      expect(user.stats).toEqual(STATS);
-      expect(user.validations).toEqual(VALIDATIONS);
-      expect(user.verificationLevel).toBe(VERIFICATION_LEVEL);
-      expect(user.scoringStars).toBe(SCORING_STARS);
-      expect(user.scoringStarts).toBe(SCORING_STARTS);
-      expect(user.responseRate).toBe(RESPONSE_RATE);
-      expect(user.online).toBe(ONLINE);
-      expect(http.get).toHaveBeenCalled();
-    }));
-
-    it('should just return the User object if present', fakeAsync(() => {
-      let user: User;
-      spyOn(http, 'get');
-      service['_user'] = new User('123');
-      service.me().subscribe((r: User) => {
-        user = r;
-      });
-      expect(user instanceof User).toBeTruthy();
-      expect(user.id).toBe('123');
-      expect(http.get).not.toHaveBeenCalled();
-    }));
-
-    it('should call http only once', () => {
-      spyOn(http, 'get').and.callThrough();
-      service.me().subscribe();
-      service.me().subscribe();
-      expect(http.get).toHaveBeenCalledTimes(1);
-    });
-
+    })
   });
 
   describe('checkUserStatus', () => {
