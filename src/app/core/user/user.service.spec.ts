@@ -516,29 +516,28 @@ fdescribe('Service: User', () => {
 
   describe('updateLocation', () => {
     it('should call endpoint and return response', () => {
-      const backendResponse = JSON.stringify(USER_LOCATION);
       let response: UserLocation;
       
       service.updateLocation(USER_LOCATION_COORDINATES).subscribe(r => response = r);
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_LOCATION_ENDPOINT}`);
-      req.flush(backendResponse);
+      req.flush(USER_LOCATION);
 
       expect(req.request.method).toBe('PUT');
       expect(req.request.body).toEqual({
         latitude: USER_LOCATION_COORDINATES.latitude,
         longitude: USER_LOCATION_COORDINATES.longitude
       });
+      expect(response).toEqual(USER_LOCATION);
     });
   });
 
   describe('updateStoreLocation', () => {
     it('should call endpoint and return response', () => {
-      const backendResponse = JSON.stringify(USER_LOCATION);
       let response: UserLocation;
 
       service.updateStoreLocation(USER_LOCATION_COORDINATES).subscribe(r => response = r);
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`);
-      req.flush(backendResponse);
+      req.flush(USER_LOCATION);
 
       expect(req.request.method).toBe('POST')
       expect(req.request.body).toEqual({
@@ -546,7 +545,7 @@ fdescribe('Service: User', () => {
         longitude: USER_LOCATION_COORDINATES.longitude,
         address: USER_LOCATION_COORDINATES.name
       });
-      expect(response).toEqual(backendResponse);
+      expect(response).toEqual(USER_LOCATION);
     });
   });
 
