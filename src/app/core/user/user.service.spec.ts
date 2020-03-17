@@ -4,7 +4,7 @@ import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/te
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT, USER_UNSUBSCRIBE_REASONS_ENDPOINT, USER_UNSUBSCRIBE_ENDPOINT } from './user.service';
+import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT, USER_UNSUBSCRIBE_REASONS_ENDPOINT, USER_UNSUBSCRIBE_ENDPOINT, USER_SUBSCRIPTION_TYPE_ENDPOINT } from './user.service';
 import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -765,46 +765,34 @@ fdescribe('Service: User', () => {
   });
 
   describe('getMotorPlan', () => {
+    const expectedMotorPlanUrl = `${environment.baseUrl}${USER_SUBSCRIPTION_TYPE_ENDPOINT}`;
 
     it('should retrieve and return the Motor plan object', fakeAsync(() => {
-      spyOn(http, 'get').and.callThrough();
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/me/profile-subscription-info/type');
-        const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(MOTORPLAN_DATA) });
-        connection.mockRespond(new Response(res));
-      });
-      let motorPlan: MotorPlan;
+      let response: MotorPlan;
 
-      service.getMotorPlan().subscribe((r: MotorPlan) => {
-        motorPlan = r;
-      });
+      service.getMotorPlan().subscribe(r => response = r);
+      const req = httpMock.expectOne(expectedMotorPlanUrl);
+      req.flush(MOTORPLAN_DATA);
 
-      expect(http.get).toHaveBeenCalled();
-      expect(motorPlan.subtype).toEqual('sub_premium');
+      expect(req.request.method).toBe('GET');
+      expect(response.subtype).toEqual(MOTORPLAN_DATA.subtype);
     }));
 
-    it('should return the MotorPlan object if present', fakeAsync(() => {
-      let motorPlan: MotorPlan;
-      spyOn(http, 'get');
+    it('should do only one petition to backend', () => {
+      let response: MotorPlan;
+      let response2: MotorPlan;
 
-      service['_motorPlan'] = mockMotorPlan;
-      service.getMotorPlan().subscribe((r: MotorPlan) => {
-        motorPlan = r;
-      });
+      service.getMotorPlan().subscribe(r => response = r);
+      const req = httpMock.expectOne(expectedMotorPlanUrl);
+      req.flush(MOTORPLAN_DATA);
 
-      expect(motorPlan.subtype).toBe('sub_premium');
-      expect(http.get).not.toHaveBeenCalled();
-    }));
+      service.getMotorPlan().subscribe(r => response2 = r);
+      httpMock.expectNone(expectedMotorPlanUrl);
 
-    it('should call http only once', () => {
-      spyOn(http, 'get').and.callThrough();
-
-      service.getMotorPlan().subscribe();
-      service.getMotorPlan().subscribe();
-
-      expect(http.get).toHaveBeenCalledTimes(1);
+      expect(response).toEqual(MOTORPLAN_DATA);
+      expect(response2).toEqual(MOTORPLAN_DATA);
+      expect(response2).toBe(response);
     });
-
   });
 
   describe('getMotorPlans', () => {

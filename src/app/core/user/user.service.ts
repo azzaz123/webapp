@@ -43,7 +43,8 @@ export const USER_EMAIL_ENDPOINT = `${USER_ENDPOINT}email`;
 export const USER_PASSWORD_ENDPOINT = `${USER_ENDPOINT}password`;
 export const USER_UNSUBSCRIBE_ENDPOINT = `${USER_ENDPOINT}unsubscribe/`;
 export const USER_UNSUBSCRIBE_REASONS_ENDPOINT = `${USER_UNSUBSCRIBE_ENDPOINT}reason`;
-export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/stats`
+export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/stats`;
+export const USER_SUBSCRIPTION_TYPE_ENDPOINT = `${USER_ENDPOINT}profile-subscription-info/type`;
 
 export const PROTOOL_ENDPOINT = 'api/v3/protool';
 export const EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}/extraInfo`;
@@ -383,8 +384,7 @@ export class UserService extends ResourceService {
     } else if (this.motorPlanObservable) {
       return this.motorPlanObservable;
     }
-    this.motorPlanObservable = this.http.get(this.API_URL + '/me/profile-subscription-info/type')
-    .map((r: Response) => r.json())
+    this.motorPlanObservable = this.httpClient.get<MotorPlan>(`${environment.baseUrl}${USER_SUBSCRIPTION_TYPE_ENDPOINT}`)
     .map((motorPlan: MotorPlan) => {
       this._motorPlan = motorPlan;
       return motorPlan;
