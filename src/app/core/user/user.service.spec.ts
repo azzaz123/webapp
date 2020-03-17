@@ -4,7 +4,7 @@ import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/te
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT } from './user.service';
+import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT } from './user.service';
 import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -533,17 +533,20 @@ fdescribe('Service: User', () => {
 
   describe('updateStoreLocation', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USER_LOCATION) });
-      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
-      let resp: UserLocation;
+      const backendResponse = JSON.stringify(USER_LOCATION);
+      let response: UserLocation;
 
-      service.updateStoreLocation(USER_LOCATION_COORDINATES).subscribe();
+      service.updateStoreLocation(USER_LOCATION_COORDINATES).subscribe(r => response = r);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`);
+      req.flush(backendResponse);
 
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/bumped-profile/store-location', {
+      expect(req.request.method).toBe('POST')
+      expect(req.request.body).toEqual({
         latitude: USER_LOCATION_COORDINATES.latitude,
         longitude: USER_LOCATION_COORDINATES.longitude,
         address: USER_LOCATION_COORDINATES.name
       });
+      expect(response).toEqual(backendResponse);
     });
   });
 

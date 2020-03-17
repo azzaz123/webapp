@@ -36,6 +36,7 @@ export const LOGOUT_ENDPOINT = 'rest/logout';
 export const USER_ENDPOINT = 'api/v3/users/';
 export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}me/online`;
 export const USER_LOCATION_ENDPOINT = `${USER_ENDPOINT}me/location`;
+export const USER_STORE_LOCATION_ENDPOINT = `${USER_ENDPOINT}me/bumped-profile/store-location'`
 
 export const PROTOOL_ENDPOINT = 'api/v3/protool';
 export const EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}/extraInfo`;
@@ -240,13 +241,13 @@ export class UserService extends ResourceService {
     this.cookieService.put('searchPosName', location.name, cookieOptions);
   }
 
+  // TODO: This is in the apps but currently not now in web. Not being used but in the future is going to be implemented
   public updateStoreLocation(coordinates: Coordinate): Observable<any> {
-    return this.http.post(this.API_URL + '/me/bumped-profile/store-location', {
+    return this.httpClient.post(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`, {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude,
       address: coordinates.name
-    })
-    .map((r: Response) => r.json());
+    });
   }
 
   public getStats(): Observable<UserStatsResponse> {
