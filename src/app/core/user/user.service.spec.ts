@@ -21,7 +21,7 @@ import {
   MOTORPLAN_DATA,
   ONLINE,
   PROFILE_SUB_INFO,
-  UNSUBSCRIBE_REASONS,
+  MOCK_UNSUBSCRIBE_REASONS,
   RESPONSE_RATE,
   SCORING_STARS,
   SCORING_STARTS,
@@ -631,12 +631,12 @@ describe('Service: User', () => {
 
       service.getUnsubscribeReasons().subscribe(r => response = r);
       const req = httpMock.expectOne(expectedUrl);
-      req.flush(UNSUBSCRIBE_REASONS);
+      req.flush(MOCK_UNSUBSCRIBE_REASONS);
 
       const languageParam = req.request.params.get(languageParamKey)
       expect(req.request.method).toBe('GET');
       expect(languageParam).toEqual(languageParamValue);
-      expect(response).toEqual(UNSUBSCRIBE_REASONS);
+      expect(response).toEqual(MOCK_UNSUBSCRIBE_REASONS);
     });
   });
 

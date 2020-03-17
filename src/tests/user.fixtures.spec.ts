@@ -347,7 +347,7 @@ export const USER_PRO_INFO_RESPONSE: UserProInfo = <UserProInfo>{
   ...USER_PRO_INFO_NOTIFICATIONS
 };
 
-export const UNSUBSCRIBE_REASONS: UnsubscribeReason[] = [{
+export const MOCK_UNSUBSCRIBE_REASONS: UnsubscribeReason[] = [{
   name: 'Test',
   reason_id: 1
 }, {
