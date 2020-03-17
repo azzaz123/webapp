@@ -4,7 +4,7 @@ import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/te
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT } from './user.service';
+import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT } from './user.service';
 import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -551,16 +551,15 @@ fdescribe('Service: User', () => {
 
   describe('getStats', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USERS_STATS) });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      const backendResponse = USERS_STATS;
+      let response: UserStatsResponse;
 
-      let resp: UserStatsResponse;
-      service.getStats().subscribe((response: UserStatsResponse) => {
-        resp = response;
-      });
+      service.getStats().subscribe(r => response = r);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_STATS_ENDPOINT}`);
+      req.flush(backendResponse);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/stats');
-      expect(resp).toEqual(USERS_STATS_RESPONSE);
+      expect(req.request.method).toBe('GET');
+      expect(response).toEqual(USERS_STATS_RESPONSE);
     });
   });
 
