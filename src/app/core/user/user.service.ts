@@ -64,15 +64,15 @@ export class UserService {
   private motorPlanObservable: Observable<MotorPlan>;
 
   constructor(private http: HttpClient,
-              private event: EventService,
-              private i18n: I18nService,
-              private haversineService: HaversineService,
-              private accessTokenService: AccessTokenService,
-              private cookieService: CookieService,
-              private permissionService: NgxPermissionsService,
-              private featureflagService: FeatureflagService,
-              private splitTestService: SplitTestService,
-              @Inject('SUBDOMAIN') private subdomain: string) {
+    private event: EventService,
+    private i18n: I18nService,
+    private haversineService: HaversineService,
+    private accessTokenService: AccessTokenService,
+    private cookieService: CookieService,
+    private permissionService: NgxPermissionsService,
+    private featureflagService: FeatureflagService,
+    private splitTestService: SplitTestService,
+    @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
   get user(): User {
@@ -132,7 +132,7 @@ export class UserService {
 
   public get(id: string, noCache?: boolean): Observable<User> {
     const user = this._users.find(user => user.id === id);
-    
+
     if (user) {
       return of(user);
     }
@@ -198,11 +198,11 @@ export class UserService {
   public reportUser(userId: string, itemHash: string, conversationHash: string, reason: number, comments: string)
     : Observable<UserReportApi> {
     return this.http.post<UserReportApi>(`${environment.baseUrl}${USER_REPORT_ENDPOINT(userId)}`, {
-        itemHashId: itemHash,
-        conversationHash: conversationHash,
-        comments: comments,
-        reason: reason
-      },
+      itemHashId: itemHash,
+      conversationHash: conversationHash,
+      comments: comments,
+      reason: reason
+    },
       {
         headers: new HttpHeaders().append('AppBuild', APP_VERSION)
       });
@@ -218,7 +218,7 @@ export class UserService {
 
   public getUserCover(): Observable<Image> {
     return this.http.get<Image>(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`)
-    .pipe(catchError(error => of({} as Image)));
+      .pipe(catchError(error => of({} as Image)));
   }
 
   public updateProInfo(data: UserProData): Observable<any> {
@@ -253,32 +253,32 @@ export class UserService {
 
   public getStats(): Observable<UserStatsResponse> {
     return this.http.get<any>(`${environment.baseUrl}${USER_STATS_ENDPOINT}`)
-    .map(response => {
-      return {
-        ratings: this.toRatingsStats(response.ratings),
-        counters: this.toCountersStats(response.counters)
-      };
-    });
+      .map(response => {
+        return {
+          ratings: this.toRatingsStats(response.ratings),
+          counters: this.toCountersStats(response.counters)
+        };
+      });
   }
 
   // TODO: Remove if not used when public web is in webapp
   public getUserStats(userId: string): Observable<UserStatsResponse> {
     return this.http.get<any>(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(userId)}`)
-    .map(response => {
-      return {
-        ratings: this.toRatingsStats(response.ratings),
-        counters: this.toCountersStats(response.counters)
-      };
-    });
+      .map(response => {
+        return {
+          ratings: this.toRatingsStats(response.ratings),
+          counters: this.toCountersStats(response.counters)
+        };
+      });
   }
 
   public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
     return this.http.get<PhoneMethodResponse>(`${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(userId)}`)
-    .pipe(catchError(() => of(null)));
+      .pipe(catchError(() => of(null)));
   }
 
   public toRatingsStats(ratings): Ratings {
-    return ratings.reduce(({}, rating) => {
+    return ratings.reduce(({ }, rating) => {
       return { reviews: rating.value };
     }, {});
   }
@@ -355,9 +355,9 @@ export class UserService {
 
   public hasPerm(permission: string): Observable<boolean> {
     return this.me()
-    .flatMap(() => {
-      return Observable.fromPromise(this.permissionService.hasPermission(PERMISSIONS[permission]));
-    });
+      .flatMap(() => {
+        return Observable.fromPromise(this.permissionService.hasPermission(PERMISSIONS[permission]));
+      });
   }
 
   public isProfessional(): Observable<boolean> {
@@ -370,9 +370,9 @@ export class UserService {
       this.getMotorPlan(),
       this.me()
     ])
-    .map((values: any[]) => {
-      return values[0] || !!(values[1] && values[1].type) || values[2].featured;
-    });
+      .map((values: any[]) => {
+        return values[0] || !!(values[1] && values[1].type) || values[2].featured;
+      });
   }
 
   public getMotorPlan(): Observable<MotorPlan> {
@@ -382,18 +382,18 @@ export class UserService {
       return this.motorPlanObservable;
     }
     this.motorPlanObservable = this.http.get<MotorPlan>(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT}`)
-    .map((motorPlan: MotorPlan) => {
-      this._motorPlan = motorPlan;
-      return motorPlan;
-    })
-    .share()
-    .do(() => {
-      this.motorPlanObservable = null;
-    })
-    .catch(() => {
-      this.motorPlanObservable = null;
-      return Observable.of(null);
-    });
+      .map((motorPlan: MotorPlan) => {
+        this._motorPlan = motorPlan;
+        return motorPlan;
+      })
+      .share()
+      .do(() => {
+        this.motorPlanObservable = null;
+      })
+      .catch(() => {
+        this.motorPlanObservable = null;
+        return Observable.of(null);
+      });
     return this.motorPlanObservable;
   }
 
@@ -403,8 +403,8 @@ export class UserService {
 
   public setSubscriptionsFeatureFlag(): Observable<boolean> {
     return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS)
-    .map((isActive: boolean) => {
-      return isActive;
-    });
+      .map((isActive: boolean) => {
+        return isActive;
+      });
   }
 }
