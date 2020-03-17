@@ -30,10 +30,12 @@ import { UserReportApi } from './user-report.interface';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
 
-export const USER_ENDPOINT = 'api/v3/users/';
-export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}me/online`;
 export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 export const LOGOUT_ENDPOINT = 'rest/logout';
+
+export const USER_ENDPOINT = 'api/v3/users/';
+export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}me/online`;
+export const USER_LOCATION_ENDPOINT = `${USER_ENDPOINT}me/location`;
 
 export const PROTOOL_ENDPOINT = 'api/v3/protool';
 export const EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}/extraInfo`;
@@ -82,7 +84,7 @@ export class UserService extends ResourceService {
 
   public logout() {
     const logoutUrl = `${environment.siteUrl.replace('es', this.subdomain)}${LOGOUT_ENDPOINT}`;
-    this.httpClient.post<string>(logoutUrl, null).subscribe(r => this.logoutActions(r));
+    this.httpClient.post<string>(logoutUrl, null, { responseType: 'text' as 'json' }).subscribe(r => this.logoutActions(r));
   }
 
   public logoutLocal() {
@@ -222,11 +224,10 @@ export class UserService extends ResourceService {
   }
 
   public updateLocation(coordinates: Coordinate): Observable<UserLocation> {
-    return this.http.put(this.API_URL + '/me/location', {
+    return this.httpClient.put<UserLocation>(`${environment.baseUrl}${USER_LOCATION_ENDPOINT}`, {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude
-    })
-    .map((r: Response) => r.json());
+    });
   }
 
   public updateSearchLocationCookies(location: Coordinate) {
