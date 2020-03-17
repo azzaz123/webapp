@@ -375,6 +375,7 @@ export class UserService {
       });
   }
 
+  // TODO: This method is going to be deleted :D
   public getMotorPlan(): Observable<MotorPlan> {
     if (this._motorPlan) {
       return Observable.of(this._motorPlan);
