@@ -4,7 +4,7 @@ import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/te
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT } from './user.service';
+import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT } from './user.service';
 import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -601,17 +601,18 @@ fdescribe('Service: User', () => {
 
   describe('edit', () => {
     it('should call endpoint, return user and set it', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: USER_DATA });
-      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
-      spyOn<any>(service, 'mapRecordData').and.returnValue(MOCK_USER);
-      let resp: User;
+      const backendResponse = USER_DATA;
+      let response: User;
 
-      service.edit(USER_EDIT_DATA).subscribe((user: User) => {
-        resp = user;
-      });
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me', USER_EDIT_DATA);
-      expect(resp).toEqual(MOCK_USER);
-      expect(service['_user']).toEqual(MOCK_USER);
+      service.edit(USER_EDIT_DATA).subscribe(r => response = r);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
+      req.flush(backendResponse);
+
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(USER_EDIT_DATA);
+
+      expect(response).toEqual(MOCK_FULL_USER);
+      expect(service.user).toEqual(MOCK_FULL_USER);
     });
   });
 

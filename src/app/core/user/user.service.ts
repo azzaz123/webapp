@@ -33,12 +33,13 @@ import { catchError, tap, map } from 'rxjs/operators';
 export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 export const LOGOUT_ENDPOINT = 'rest/logout';
 
-export const USER_ENDPOINT = 'api/v3/users/';
-export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}me/online`;
-export const USER_LOCATION_ENDPOINT = `${USER_ENDPOINT}me/location`;
-export const USER_STORE_LOCATION_ENDPOINT = `${USER_ENDPOINT}me/bumped-profile/store-location'`;
-export const USER_STATS_ENDPOINT = `${USER_ENDPOINT}me/stats`;
-export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_ENDPOINT}${userId}/stats`
+export const USER_BASE_ENDPOINT = 'api/v3/users/';
+export const USER_ENDPOINT = `${USER_BASE_ENDPOINT}me/`;
+export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}online`;
+export const USER_LOCATION_ENDPOINT = `${USER_ENDPOINT}location`;
+export const USER_STORE_LOCATION_ENDPOINT = `${USER_ENDPOINT}bumped-profile/store-location'`;
+export const USER_STATS_ENDPOINT = `${USER_ENDPOINT}stats`;
+export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/stats`
 
 export const PROTOOL_ENDPOINT = 'api/v3/protool';
 export const EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}/extraInfo`;
@@ -292,12 +293,11 @@ export class UserService extends ResourceService {
   }
 
   public edit(data: UserData): Observable<User> {
-    return this.http.post(this.API_URL + '/me', data)
-    .map((r: Response) => r.json())
-    .map((r: UserResponse) => this.mapRecordData(r))
-    .do((user: User) => {
-      this._user = user;
-    });
+    return this.httpClient.post<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`, data)
+      .pipe(
+        map(response => this.mapRecordData(response)),
+        tap(user => this._user = user)
+      );
   }
 
   public updateEmail(email: string): Observable<any> {
