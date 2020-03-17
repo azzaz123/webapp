@@ -317,11 +317,8 @@ export class UserService extends ResourceService {
     return this.httpClient.get<UnsubscribeReason[]>(`${environment.baseUrl}${USER_UNSUBSCRIBE_REASONS_ENDPOINT}`, { params });
   }
 
-  public unsubscribe(reasonId: number, otherReason: string): Observable<any> {
-    return this.http.post(this.API_URL + '/me/unsubscribe', {
-      reason_id: reasonId,
-      other_reason: otherReason
-    });
+  public unsubscribe(reason_id: number, other_reason: string): Observable<any> {
+    return this.httpClient.post(`${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`, { reason_id, other_reason });
   }
 
   protected mapRecordData(data: UserResponse): User {
