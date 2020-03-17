@@ -56,19 +56,18 @@ export const PROTOOL_EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}extraInfo`;
 
 @Injectable()
 export class UserService {
-  private banReasons: BanReason[] = null;
-  protected _user: User;
-  private meObservable: Observable<User>;
-  private presenceInterval: any;
-  protected _motorPlan: MotorPlan;
-  private motorPlanObservable: Observable<MotorPlan>;
+  private _user: User;
   private _users: User[] = [];
+  private banReasons: BanReason[];
+  private presenceInterval: any;
+  private _motorPlan: MotorPlan;
+  private motorPlanObservable: Observable<MotorPlan>;
 
   constructor(private http: HttpClient,
-              protected event: EventService,
-              protected i18n: I18nService,
-              protected haversineService: HaversineService,
-              protected accessTokenService: AccessTokenService,
+              private event: EventService,
+              private i18n: I18nService,
+              private haversineService: HaversineService,
+              private accessTokenService: AccessTokenService,
               private cookieService: CookieService,
               private permissionService: NgxPermissionsService,
               private featureflagService: FeatureflagService,
@@ -183,7 +182,7 @@ export class UserService {
     return this.haversineService.getDistanceInKilometers(currentUserCoord, userCoord);
   }
 
-  protected storeData(data: LoginResponse): LoginResponse {
+  private storeData(data: LoginResponse): LoginResponse {
     this.accessTokenService.storeAccessToken(data.token);
     this.event.emit(EventService.USER_LOGIN, data.token);
     return data;
@@ -316,7 +315,7 @@ export class UserService {
     return this.http.post(`${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`, { reason_id, other_reason });
   }
 
-  protected mapRecordData(data: UserResponse): User {
+  private mapRecordData(data: UserResponse): User {
     if (!data || !data.id) {
       return null;
     }
