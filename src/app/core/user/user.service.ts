@@ -34,6 +34,7 @@ export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 export const LOGOUT_ENDPOINT = 'rest/logout';
 
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
+export const USER_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}`;
 export const USER_ENDPOINT = `${USER_BASE_ENDPOINT}me/`;
 export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}online`;
 export const USER_LOCATION_ENDPOINT = `${USER_ENDPOINT}location`;
@@ -61,6 +62,7 @@ export class UserService extends ResourceService {
   private presenceInterval: any;
   protected _motorPlan: MotorPlan;
   private motorPlanObservable: Observable<MotorPlan>;
+  private _users: User[] = [];
 
   constructor(http: HttpService,
               private httpClient: HttpClient,
@@ -132,9 +134,18 @@ export class UserService extends ResourceService {
   }
 
   public get(id: string, noCache?: boolean): Observable<User> {
-    return <Observable<User>>super.get(id, noCache).catch(() => {
-      return Observable.of(this.getFakeUser(id));
-    });
+    const user = this._users.find(user => user.id === id);
+    
+    if (user) {
+      return of(user);
+    }
+
+    return this.httpClient.get<UserResponse>(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(id)}`)
+      .pipe(
+        map(user => this.mapRecordData(user)),
+        tap(user => this._users.push(user)),
+        catchError(() => of(this.getFakeUser(id)))
+      );
   }
 
   public getFakeUser(id: string): User {

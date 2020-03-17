@@ -4,7 +4,7 @@ import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/te
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT, USER_UNSUBSCRIBE_REASONS_ENDPOINT, USER_UNSUBSCRIBE_ENDPOINT, USER_SUBSCRIPTION_TYPE_ENDPOINT } from './user.service';
+import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT, USER_UNSUBSCRIBE_REASONS_ENDPOINT, USER_UNSUBSCRIBE_ENDPOINT, USER_SUBSCRIPTION_TYPE_ENDPOINT, USER_BY_ID_ENDPOINT } from './user.service';
 import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -175,47 +175,42 @@ fdescribe('Service: User', () => {
   });
 
   describe('get', () => {
-    describe('without backend error', () => {
-      beforeEach(fakeAsync(() => {
-        mockBackend.connections.subscribe((connection: MockConnection) => {
-          expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/' + USER_ID);
-          const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USER_DATA) });
-          connection.mockRespond(new Response(res));
-        });
-      }));
+    describe('when there are no users stored', () => {
+      it('should ask backend and return user', () => {
+        let response: User;
 
-      it('should return the User object', fakeAsync(() => {
-        let user: User;
-        service.get(USER_ID).subscribe((r: User) => {
-          user = r;
-        });
-        expect(user instanceof User).toBeTruthy();
-        expect(user.id).toBe(USER_ID);
-        expect(user.microName).toBe(MICRO_NAME);
-        // expect(user.image).toEqual(IMAGE);
-        expect(user.location).toEqual(USER_LOCATION);
-        expect(user.stats).toEqual(STATS);
-        expect(user.validations).toEqual(VALIDATIONS);
-        expect(user.verificationLevel).toBe(VERIFICATION_LEVEL);
-        expect(user.scoringStars).toBe(SCORING_STARS);
-        expect(user.scoringStarts).toBe(SCORING_STARTS);
-        expect(user.responseRate).toBe(RESPONSE_RATE);
-        expect(user.online).toBe(ONLINE);
-      }));
+        service.get(USER_ID).subscribe(r => response = r);
+        const req = httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`);
+        req.flush(USER_DATA);
+
+        expect(req.request.method).toBe('GET');
+        expect(response).toEqual(MOCK_FULL_USER);
+      });
     });
-    describe('with backend error', () => {
-      beforeEach(fakeAsync(() => {
-        mockBackend.connections.subscribe((connection: MockConnection) => {
-          connection.mockError();
-        });
-      }));
+
+    describe('when there are users stored', () => {
+      it('should not ask backend and return user from memory', () => {
+        let response: User;
+
+        service.get(USER_ID).subscribe();
+        httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`).flush(USER_DATA);
+        service.get(USER_ID).subscribe(r => response = r);
+        httpMock.expectNone(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`);
+
+        expect(response).toEqual(MOCK_FULL_USER);
+      });
+    })
+
+    describe('when there is an error from backend', () => {
       it('should return a fake User object', () => {
-        let user: User;
-        service.get(USER_ID).subscribe((r: User) => {
-          user = r;
-        });
-        expect(user.id).toBe(USER_ID);
-        expect(user.microName).toBe(FAKE_USER_NAME);
+        let response: User;
+
+        service.get(USER_ID).subscribe(r => response = r);
+        httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`)
+          .flush({}, { status: 500, statusText: 'Server error' });
+
+        expect(response.id).toBe(USER_ID);
+        expect(response.microName).toBe(FAKE_USER_NAME);
       });
     });
   });
