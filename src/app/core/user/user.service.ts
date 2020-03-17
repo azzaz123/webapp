@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { HttpService } from '../http/http.service';
 import { PERMISSIONS, User } from './user';
 import { Observable, of } from 'rxjs';
 import { EventService } from '../event/event.service';
@@ -7,7 +6,6 @@ import { ResourceService } from '../resource/resource.service';
 import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
-import { Response } from '@angular/http';
 import { UserLocation, UserResponse, MotorPlan, ProfileSubscriptionInfo, Image } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
@@ -52,7 +50,7 @@ export const PROTOOL_ENDPOINT = 'api/v3/protool';
 export const EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}/extraInfo`;
 
 @Injectable()
-export class UserService extends ResourceService {
+export class UserService {
 
   public queryParams: any = {};
   protected API_URL = 'api/v3/users';
@@ -65,8 +63,7 @@ export class UserService extends ResourceService {
   private motorPlanObservable: Observable<MotorPlan>;
   private _users: User[] = [];
 
-  constructor(http: HttpService,
-              private httpClient: HttpClient,
+  constructor(private http: HttpClient,
               protected event: EventService,
               protected i18n: I18nService,
               protected haversineService: HaversineService,
@@ -76,7 +73,6 @@ export class UserService extends ResourceService {
               private featureflagService: FeatureflagService,
               private splitTestService: SplitTestService,
               @Inject('SUBDOMAIN') private subdomain: string) {
-    super(http);
   }
 
   get user(): User {
@@ -90,13 +86,13 @@ export class UserService extends ResourceService {
       .set('installationType', data.installationType)
       .set('password', data.password);
 
-    return this.httpClient.post<LoginResponse>(`${environment.baseUrl}${LOGIN_ENDPOINT}`, body, { headers })
+    return this.http.post<LoginResponse>(`${environment.baseUrl}${LOGIN_ENDPOINT}`, body, { headers })
       .pipe(map(r => this.storeData(r)));
   }
 
   public logout() {
     const logoutUrl = `${environment.siteUrl.replace('es', this.subdomain)}${LOGOUT_ENDPOINT}`;
-    this.httpClient.post<string>(logoutUrl, null, { responseType: 'text' as 'json' }).subscribe(r => this.logoutActions(r));
+    this.http.post<string>(logoutUrl, null, { responseType: 'text' as 'json' }).subscribe(r => this.logoutActions(r));
   }
 
   public logoutLocal() {
@@ -120,7 +116,7 @@ export class UserService extends ResourceService {
   }
 
   private sendUserPresence() {
-    return this.httpClient.post(`${environment.baseUrl}${USER_ONLINE_ENDPOINT}`, null).subscribe();
+    return this.http.post(`${environment.baseUrl}${USER_ONLINE_ENDPOINT}`, null).subscribe();
   }
 
   public sendUserPresenceInterval(interval: number) {
@@ -141,7 +137,7 @@ export class UserService extends ResourceService {
       return of(user);
     }
 
-    return this.httpClient.get<UserResponse>(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(id)}`)
+    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(id)}`)
       .pipe(
         map(user => this.mapRecordData(user)),
         tap(user => this._users.push(user)),
@@ -158,7 +154,7 @@ export class UserService extends ResourceService {
       return of(this._user);
     }
 
-    return this.httpClient.get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`)
+    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`)
       .pipe(
         map(r => this.mapRecordData(r)),
         tap(user => this._user = user)
@@ -201,7 +197,7 @@ export class UserService extends ResourceService {
 
   public reportUser(userId: string, itemHash: string, conversationHash: string, reason: number, comments: string)
     : Observable<UserReportApi> {
-    return this.httpClient.post<UserReportApi>(`${environment.baseUrl}${this.API_URL}/me/report/user/${userId}`, {
+    return this.http.post<UserReportApi>(`${environment.baseUrl}${this.API_URL}/me/report/user/${userId}`, {
         itemHashId: itemHash,
         conversationHash: conversationHash,
         comments: comments,
@@ -213,24 +209,24 @@ export class UserService extends ResourceService {
   }
 
   public getInfo(id: string): Observable<UserInfoResponse> {
-    return this.httpClient.get<UserInfoResponse>(`${environment.baseUrl}${this.API_URL}/${id}/extra-info`);
+    return this.http.get<UserInfoResponse>(`${environment.baseUrl}${this.API_URL}/${id}/extra-info`);
   }
 
   public getProInfo(): Observable<UserProInfo> {
-    return this.httpClient.get<UserProInfo>(`${environment.baseUrl}${this.API_URL_PROTOOL}/extraInfo`);
+    return this.http.get<UserProInfo>(`${environment.baseUrl}${this.API_URL_PROTOOL}/extraInfo`);
   }
 
   public getUserCover(): Observable<Image> {
-    return this.httpClient.get<Image>(`${environment.baseUrl}${this.API_URL}/me/cover-image`)
+    return this.http.get<Image>(`${environment.baseUrl}${this.API_URL}/me/cover-image`)
     .pipe(catchError(error => of({} as Image)));
   }
 
   public updateProInfo(data: UserProData): Observable<any> {
-    return this.httpClient.post(`${environment.baseUrl}${EXTRA_INFO_ENDPOINT}`, data);
+    return this.http.post(`${environment.baseUrl}${EXTRA_INFO_ENDPOINT}`, data);
   }
 
   public updateLocation(coordinates: Coordinate): Observable<UserLocation> {
-    return this.httpClient.put<UserLocation>(`${environment.baseUrl}${USER_LOCATION_ENDPOINT}`, {
+    return this.http.put<UserLocation>(`${environment.baseUrl}${USER_LOCATION_ENDPOINT}`, {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude
     });
@@ -248,7 +244,7 @@ export class UserService extends ResourceService {
 
   // TODO: This is in the apps but currently not now in web. Not being used but in the future is going to be implemented
   public updateStoreLocation(coordinates: Coordinate): Observable<any> {
-    return this.httpClient.post(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`, {
+    return this.http.post(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`, {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude,
       address: coordinates.name
@@ -256,7 +252,7 @@ export class UserService extends ResourceService {
   }
 
   public getStats(): Observable<UserStatsResponse> {
-    return this.httpClient.get<any>(`${environment.baseUrl}${USER_STATS_ENDPOINT}`)
+    return this.http.get<any>(`${environment.baseUrl}${USER_STATS_ENDPOINT}`)
     .map(response => {
       return {
         ratings: this.toRatingsStats(response.ratings),
@@ -267,7 +263,7 @@ export class UserService extends ResourceService {
 
   // TODO: Remove if not used when public web is in webapp
   public getUserStats(userId: string): Observable<UserStatsResponse> {
-    return this.httpClient.get<any>(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(userId)}`)
+    return this.http.get<any>(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(userId)}`)
     .map(response => {
       return {
         ratings: this.toRatingsStats(response.ratings),
@@ -277,7 +273,7 @@ export class UserService extends ResourceService {
   }
 
   public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
-    return this.httpClient.get<PhoneMethodResponse>(`${environment.baseUrl}${this.API_URL}/${userId}/phone-method`)
+    return this.http.get<PhoneMethodResponse>(`${environment.baseUrl}${this.API_URL}/${userId}/phone-method`)
     .pipe(catchError(() => of(null)));
   }
 
@@ -295,7 +291,7 @@ export class UserService extends ResourceService {
   }
 
   public edit(data: UserData): Observable<User> {
-    return this.httpClient.post<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`, data)
+    return this.http.post<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`, data)
       .pipe(
         map(response => this.mapRecordData(response)),
         tap(user => this._user = user)
@@ -303,20 +299,20 @@ export class UserService extends ResourceService {
   }
 
   public updateEmail(email_address: string): Observable<any> {
-    return this.httpClient.post(`${environment.baseUrl}${USER_EMAIL_ENDPOINT}`, { email_address });
+    return this.http.post(`${environment.baseUrl}${USER_EMAIL_ENDPOINT}`, { email_address });
   }
 
   public updatePassword(old_password: string, new_password: string): Observable<any> {
-    return this.httpClient.post(`${environment.baseUrl}${USER_PASSWORD_ENDPOINT}`, { old_password, new_password });
+    return this.http.post(`${environment.baseUrl}${USER_PASSWORD_ENDPOINT}`, { old_password, new_password });
   }
 
   public getUnsubscribeReasons(): Observable<UnsubscribeReason[]> {
     const params = { language: this.i18n.locale };
-    return this.httpClient.get<UnsubscribeReason[]>(`${environment.baseUrl}${USER_UNSUBSCRIBE_REASONS_ENDPOINT}`, { params });
+    return this.http.get<UnsubscribeReason[]>(`${environment.baseUrl}${USER_UNSUBSCRIBE_REASONS_ENDPOINT}`, { params });
   }
 
   public unsubscribe(reason_id: number, other_reason: string): Observable<any> {
-    return this.httpClient.post(`${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`, { reason_id, other_reason });
+    return this.http.post(`${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`, { reason_id, other_reason });
   }
 
   protected mapRecordData(data: UserResponse): User {
@@ -385,7 +381,7 @@ export class UserService extends ResourceService {
     } else if (this.motorPlanObservable) {
       return this.motorPlanObservable;
     }
-    this.motorPlanObservable = this.httpClient.get<MotorPlan>(`${environment.baseUrl}${USER_SUBSCRIPTION_TYPE_ENDPOINT}`)
+    this.motorPlanObservable = this.http.get<MotorPlan>(`${environment.baseUrl}${USER_SUBSCRIPTION_TYPE_ENDPOINT}`)
     .map((motorPlan: MotorPlan) => {
       this._motorPlan = motorPlan;
       return motorPlan;
@@ -402,7 +398,7 @@ export class UserService extends ResourceService {
   }
 
   public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
-    return this.httpClient.get<ProfileSubscriptionInfo>(`${environment.baseUrl}${this.API_URL}/me/profile-subscription-info`);
+    return this.http.get<ProfileSubscriptionInfo>(`${environment.baseUrl}${this.API_URL}/me/profile-subscription-info`);
   }
 
   public setSubscriptionsFeatureFlag(): Observable<boolean> {
