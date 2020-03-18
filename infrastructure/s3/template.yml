@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: |
-  This template contains an imported bucket that already exists in AWS.
+  This template contains imported bucket that already exist in AWS.
 
 Parameters:
   BucketNameES:
