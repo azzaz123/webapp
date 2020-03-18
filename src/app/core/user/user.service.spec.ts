@@ -82,6 +82,7 @@ describe('Service: User', () => {
         UserService,
         I18nService,
         HaversineService,
+        AccessTokenService,
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         },
@@ -89,6 +90,9 @@ describe('Service: User', () => {
           provide: CookieService,
           useValue: {
             cookies: {},
+            get(key) {
+              return this.cookies[key];
+            },
             put(key, value) {
               this.cookies[key] = value;
             },
