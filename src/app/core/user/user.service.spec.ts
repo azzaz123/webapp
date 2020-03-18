@@ -1,11 +1,6 @@
-/* tslint:disable:no-unused-variable */
-
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { MockBackend, MockConnection } from '@angular/http/testing';
-import { Response, ResponseOptions } from '@angular/http';
 import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, PROTOOL_EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT, USER_UNSUBSCRIBE_REASONS_ENDPOINT, USER_UNSUBSCRIBE_ENDPOINT, USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT, USER_BY_ID_ENDPOINT, USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT, USER_REPORT_ENDPOINT, USER_COVER_IMAGE_ENDPOINT, USER_PHONE_INFO_ENDPOINT, USER_EXTRA_INFO_ENDPOINT } from './user.service';
-import { HttpService } from '../http/http.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { Item } from '../item/item';
@@ -44,7 +39,6 @@ import {
 } from '../../../tests/user.fixtures.spec';
 import { AvailableSlots, UserStatsResponse } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { AccessTokenService } from '../http/access-token.service';
 import { EventService } from '../event/event.service';
 import { PERMISSIONS, User } from './user';
@@ -55,7 +49,6 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FEATURE_FLAGS_ENUM, FeatureflagService } from './featureflag.service';
 import { SplitTestService } from '../tracking/split-test.service';
-import { HttpModuleNew } from '../http/http.module.new';
 import { APP_VERSION } from '../../../environments/version';
 import { PhoneMethod } from '../../chat/model';
 import { HttpParams, HttpRequest } from '@angular/common/http';
@@ -63,8 +56,6 @@ import { HttpParams, HttpRequest } from '@angular/common/http';
 describe('Service: User', () => {
 
   let service: UserService;
-  let mockBackend: MockBackend;
-  let http: HttpService;
   let haversineService: HaversineService;
   const FAKE_USER_NAME = 'No disponible';
   let accessTokenService: AccessTokenService;
@@ -87,7 +78,6 @@ describe('Service: User', () => {
         HttpClientTestingModule
       ],
       providers: [
-        ...TEST_HTTP_PROVIDERS,
         EventService,
         UserService,
         I18nService,
@@ -134,8 +124,6 @@ describe('Service: User', () => {
       ]
     });
     service = TestBed.get(UserService);
-    mockBackend = TestBed.get(MockBackend);
-    http = TestBed.get(HttpService);
     haversineService = TestBed.get(HaversineService);
     accessTokenService = TestBed.get(AccessTokenService);
     accessTokenService.storeAccessToken(null);
