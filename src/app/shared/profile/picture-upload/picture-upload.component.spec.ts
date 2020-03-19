@@ -1,27 +1,27 @@
+import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME, TokenInterceptor } from './../../../core/http/interceptors/token.interceptor';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PictureUploadComponent } from './picture-upload.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { HttpService } from '../../../core/http/http.service';
 import { UserService } from '../../../core/user/user.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
 import { UPLOAD_FILE, UPLOAD_FILE_ID, UPLOAD_FILE_NAME } from '../../../../tests/upload.fixtures.spec';
 import { environment } from '../../../../environments/environment';
 import { UploadFile, UploadInput } from '../../uploader/upload.interface';
+import { AccessTokenService } from '../../../core/http/access-token.service';
 
 describe('PictureUploadComponent', () => {
   let component: PictureUploadComponent;
   let fixture: ComponentFixture<PictureUploadComponent>;
-  let http: HttpService;
   let userService: UserService;
   let errorsService: ErrorsService;
+  let tokenInterceptor: TokenInterceptor;
+  const TIMESTAMP = 123456789;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PictureUploadComponent ],
       providers: [
-        ...TEST_HTTP_PROVIDERS,
         {
           provide: UserService, useValue: {
           user: MOCK_USER
@@ -32,6 +32,11 @@ describe('PictureUploadComponent', () => {
           i18nError() {
           }
         }
+        },
+        {
+          provide: AccessTokenService, useValue: {
+            accessToken: 'thetoken'
+          }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -43,13 +48,12 @@ describe('PictureUploadComponent', () => {
     fixture = TestBed.createComponent(PictureUploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    http = TestBed.get(HttpService);
     userService = TestBed.get(UserService);
     errorsService = TestBed.get(ErrorsService);
+    tokenInterceptor = fixture.debugElement.injector.get(TokenInterceptor);
   });
 
   describe('onUploadOutput', () => {
-
     let uploadEvent: UploadInput;
 
     beforeEach(() => {
@@ -59,17 +63,13 @@ describe('PictureUploadComponent', () => {
     });
 
     it('should send upload event if event is addedToQueue', () => {
+      spyOn(tokenInterceptor, 'getSignature').and.returnValue('thesignature');
+      spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
       const headers = {
-        'Authorization': 'Bearer thetoken'
+        [TOKEN_AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
+        [TOKEN_SIGNATURE_HEADER_NAME]: 'thesignature',
+        [TOKEN_TIMESTAMP_HEADER_NAME]: `${TIMESTAMP}`,
       };
-      spyOn(http, 'getOptions').and.returnValue({
-        headers: {
-          toJSON() {
-            return headers;
-          }
-        }
-      });
-
       component.onUploadOutput({
         type: 'addedToQueue',
         file: UPLOAD_FILE
@@ -78,13 +78,12 @@ describe('PictureUploadComponent', () => {
       expect(component.file).toEqual(UPLOAD_FILE);
       expect(uploadEvent).toEqual({
         type: 'uploadFile',
-        url: environment.baseUrl + 'api/v3/users/me/image',
+        url: `${environment.baseUrl}api/v3/users/me/image` ,
         method: 'POST',
         fieldName: 'image',
-        headers: headers,
+        headers,
         file: UPLOAD_FILE
       });
-      expect(http.getOptions).toHaveBeenCalledWith(null, 'api/v3/users/me/image', 'POST');
     });
 
     it('should set file if event is uploading', () => {

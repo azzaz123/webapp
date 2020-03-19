@@ -1,15 +1,17 @@
+import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME, TokenInterceptor } from './../../../core/http/interceptors/token.interceptor';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '../../../core/user/user';
-import { HttpService } from '../../../core/http/http.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { UserService } from '../../../core/user/user.service';
 import { environment } from '../../../../environments/environment';
 import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from '../../uploader/upload.interface';
+import { AccessTokenService } from '../../../core/http/access-token.service';
 
 @Component({
   selector: 'tsl-cover-upload',
   templateUrl: './cover-upload.component.html',
-  styleUrls: ['./cover-upload.component.scss']
+  styleUrls: ['./cover-upload.component.scss'],
+  providers: [TokenInterceptor]
 })
 export class CoverUploadComponent implements OnInit {
 
@@ -21,9 +23,10 @@ export class CoverUploadComponent implements OnInit {
   @Input() isPro: boolean;
   @Output() clickNotPro: EventEmitter<any> = new EventEmitter();
 
-  constructor(private http: HttpService,
-              private errorsService: ErrorsService,
-              private userService: UserService) { }
+  constructor(private errorsService: ErrorsService,
+    private userService: UserService,
+    private tokenInterceptor: TokenInterceptor,
+    private accesTokenService: AccessTokenService) { }
 
   ngOnInit() {
     this.options = {
@@ -55,12 +58,20 @@ export class CoverUploadComponent implements OnInit {
 
   private uploadPicture() {
     const url = 'api/v3/users/me/cover-image';
+    const timestamp = new Date().getTime();
+    const signature = this.tokenInterceptor.getSignature(url, 'POST', timestamp);
+    const headers = {
+      [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
+      [TOKEN_SIGNATURE_HEADER_NAME]: signature,
+      [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString()
+    };
+
     const uploadinput: UploadInput = {
       type: 'uploadFile',
       url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',
-      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
+      headers,
       file: this.file
     };
     this.uploadCoverInput.emit(uploadinput);
