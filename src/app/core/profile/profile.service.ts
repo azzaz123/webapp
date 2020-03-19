@@ -6,15 +6,16 @@ import { ProfileResponse, ProfilesData } from './profile-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { environment } from '../../../environments/environment.beta';
 import { Model } from '../resource/model.interface';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ProfileService {
-  protected API_URL = 'api/v3/users';
-  protected _profile: Profile;
+  private readonly API_URL = 'api/v3/users';
 
-  protected store: any = {};
+  private _profile: Profile;
+
+  private store: any = {};
   private observables: any = {};
 
   constructor(private httpClient: HttpClient,
@@ -27,7 +28,7 @@ export class ProfileService {
     return this._profile;
   }
 
-  public get(id: string, noCache?: boolean): Observable<Model> {
+  public get(id: string, noCache?: boolean): Observable<Profile> {
     if (this.store[id] && !noCache) {
       return Observable.of(this.store[id]);
     } else if (this.observables[id]) {

@@ -86,7 +86,7 @@ describe('Service: Profile', () => {
         });
 
         const req = httpTestingController.expectOne(
-          `${environment.baseUrl}api/v3/users/${PROFILE_ID}`);
+          `${environment.baseUrl}${service['API_URL']}/${PROFILE_ID}`);
         req.flush(PROFILE_DATA);
         expect(req.request.method).toEqual('GET');
       }));
@@ -101,7 +101,7 @@ describe('Service: Profile', () => {
       service.favoriteItem(USER_ID, FAVOURITE).subscribe();
 
       const req = httpTestingController.expectOne(
-        `${environment.baseUrl}api/v3/users/${USER_ID}/favorite`);
+        `${environment.baseUrl}${service['API_URL']}/${USER_ID}/favorite`);
 
       expect(req.request.method).toEqual('PUT');
       expect(req.request.body).toEqual({ favorited: FAVOURITE });
@@ -115,7 +115,7 @@ describe('Service: Profile', () => {
       service.myFavorites(INIT).subscribe();
 
       const req = httpTestingController.expectOne(
-        `${environment.baseUrl}api/v3/users/me/users/favorites?init=${INIT}`);
+        `${environment.baseUrl}${service['API_URL']}/me/users/favorites?init=${INIT}`);
       req.flush(MOCK_PROFILE);
       expect(req.request.method).toEqual('GET');
       expect(req.request.params.get('init')).toEqual(INIT.toString());
