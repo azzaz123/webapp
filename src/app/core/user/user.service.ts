@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { HttpService } from '../http/http.service';
 import { PERMISSIONS, User } from './user';
 import { Observable, of } from 'rxjs';
 import { EventService } from '../event/event.service';
@@ -7,7 +6,6 @@ import { ResourceService } from '../resource/resource.service';
 import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
-import { Response } from '@angular/http';
 import { UserLocation, UserResponse, MotorPlan, ProfileSubscriptionInfo, Image } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
@@ -27,34 +25,54 @@ import { SplitTestService } from '../tracking/split-test.service';
 import { InboxItem } from '../../chat/model';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { catchError, tap, map, finalize } from 'rxjs/operators';
+import { isEmpty } from 'lodash-es';
+
+export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
+export const LOGOUT_ENDPOINT = 'rest/logout';
+
+export const USER_BASE_ENDPOINT = 'api/v3/users/';
+export const USER_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}`;
+export const USER_ENDPOINT = `${USER_BASE_ENDPOINT}me/`;
+export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}online`;
+export const USER_LOCATION_ENDPOINT = `${USER_ENDPOINT}location`;
+export const USER_COVER_IMAGE_ENDPOINT = `${USER_ENDPOINT}cover-image`;
+export const USER_PHONE_INFO_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/phone-method`;
+export const USER_STORE_LOCATION_ENDPOINT = `${USER_ENDPOINT}bumped-profile/store-location'`;
+export const USER_STATS_ENDPOINT = `${USER_ENDPOINT}stats`;
+export const USER_EXTRA_INFO_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/extra-info`;
+export const USER_EMAIL_ENDPOINT = `${USER_ENDPOINT}email`;
+export const USER_PASSWORD_ENDPOINT = `${USER_ENDPOINT}password`;
+export const USER_UNSUBSCRIBE_ENDPOINT = `${USER_ENDPOINT}unsubscribe/`;
+export const USER_UNSUBSCRIBE_REASONS_ENDPOINT = `${USER_UNSUBSCRIBE_ENDPOINT}reason`;
+export const USER_REPORT_ENDPOINT = (userId: string) => `${USER_ENDPOINT}report/user/${userId}`;
+export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/stats`;
+export const USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT = `${USER_ENDPOINT}profile-subscription-info/`;
+export const USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT = `${USER_ENDPOINT}type`;
+
+export const PROTOOL_ENDPOINT = 'api/v3/protool/';
+export const PROTOOL_EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}extraInfo`;
 
 @Injectable()
-export class UserService extends ResourceService {
-
-  public queryParams: any = {};
-  protected API_URL = 'api/v3/users';
-  protected API_URL_PROTOOL = 'api/v3/protool';
-  private banReasons: BanReason[] = null;
-  protected _user: User;
-  private meObservable: Observable<User>;
+export class UserService {
+  private _user: User;
+  private _users: User[] = [];
+  private banReasons: BanReason[];
   private presenceInterval: any;
-  protected _motorPlan: MotorPlan;
+  private _motorPlan: MotorPlan;
   private motorPlanObservable: Observable<MotorPlan>;
 
-  constructor(http: HttpService,
-              private httpClient: HttpClient,
-              protected event: EventService,
-              protected i18n: I18nService,
-              protected haversineService: HaversineService,
-              protected accessTokenService: AccessTokenService,
-              private cookieService: CookieService,
-              private permissionService: NgxPermissionsService,
-              private featureflagService: FeatureflagService,
-              private splitTestService: SplitTestService,
-              @Inject('SUBDOMAIN') private subdomain: string) {
-    super(http);
+  constructor(private http: HttpClient,
+    private event: EventService,
+    private i18n: I18nService,
+    private haversineService: HaversineService,
+    private accessTokenService: AccessTokenService,
+    private cookieService: CookieService,
+    private permissionService: NgxPermissionsService,
+    private featureflagService: FeatureflagService,
+    private splitTestService: SplitTestService,
+    @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
   get user(): User {
@@ -62,45 +80,27 @@ export class UserService extends ResourceService {
   }
 
   public login(data: any): Observable<LoginResponse> {
-    return this.http.postUrlEncoded(
-      'shnm-portlet/api/v1/access.json/login3',
-      data
-    )
-    .map((r: Response) => r.json())
-    .map((r: LoginResponse) => this.storeData(r));
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    const body = new HttpParams()
+      .set('emailAddress', data.emailAddress)
+      .set('installationType', data.installationType)
+      .set('password', data.password);
 
-    // TODO: Use new HttpService
-    // const headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    // const options: IRequestOptions = { headers };
-    // const body: HttpParams = new HttpParams()
-    //   .set('emailAddress', data.emailAddress)
-    //   .set('installationType', data.installationType)
-    //   .set('password', data.password);
-
-    // return this.httpNew.post<LoginResponse>('shnm-portlet/api/v1/access.json/login3', body.toString(), null, options)
-    //   .map((r: LoginResponse) => this.storeData(r));
+    return this.http.post<LoginResponse>(`${environment.baseUrl}${LOGIN_ENDPOINT}`, body, { headers })
+      .pipe(map(r => this.storeData(r)));
   }
 
   public logout() {
-    const URL = environment.siteUrl.replace('es', this.subdomain);
-
-    // TODO: Use new HttpService
-    // this.httpNew.postNoBase<string>(URL + 'rest/logout', null, null, { responseType: 'text' as 'json'} ).subscribe(response => {
-    this.http.postNoBase(URL + 'rest/logout', undefined, undefined, true).subscribe((response) => {
-      const redirectUrl: any = response['_body'];
-      const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
-      this.cookieService.remove('publisherId', cookieOptions);
-      this.cookieService.remove('creditName', cookieOptions);
-      this.cookieService.remove('creditQuantity', cookieOptions);
-      this.accessTokenService.deleteAccessToken();
-      this.permissionService.flushPermissions();
-      this.event.emit(EventService.USER_LOGOUT, redirectUrl);
-      this.splitTestService.reset();
-    });
+    const logoutUrl = `${environment.siteUrl.replace('es', this.subdomain)}${LOGOUT_ENDPOINT}`;
+    this.http.post<string>(logoutUrl, null, { responseType: 'text' as 'json' }).subscribe(r => this.logoutActions(r));
   }
 
   public logoutLocal() {
-    const redirectUrl = environment.siteUrl.replace('es', this.subdomain);
+    this.logoutActions();
+  }
+
+  private logoutActions(redirect?: string) {
+    const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
     const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.remove('publisherId', cookieOptions);
     this.cookieService.remove('creditName', cookieOptions);
@@ -116,7 +116,7 @@ export class UserService extends ResourceService {
   }
 
   private sendUserPresence() {
-    return this.http.post(this.API_URL + '/me/online').subscribe();
+    return this.http.post(`${environment.baseUrl}${USER_ONLINE_ENDPOINT}`, null).subscribe();
   }
 
   public sendUserPresenceInterval(interval: number) {
@@ -131,9 +131,18 @@ export class UserService extends ResourceService {
   }
 
   public get(id: string, noCache?: boolean): Observable<User> {
-    return <Observable<User>>super.get(id, noCache).catch(() => {
-      return Observable.of(this.getFakeUser(id));
-    });
+    const user = this._users.find(user => user.id === id);
+
+    if (user) {
+      return of(user);
+    }
+
+    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(id)}`)
+      .pipe(
+        map(user => this.mapRecordData(user)),
+        tap(user => this._users.push(user)),
+        catchError(() => of(this.getFakeUser(id)))
+      );
   }
 
   public getFakeUser(id: string): User {
@@ -142,29 +151,14 @@ export class UserService extends ResourceService {
 
   public me(): Observable<User> {
     if (this._user) {
-      return Observable.of(this._user);
-    } else if (this.meObservable) {
-      return this.meObservable;
+      return of(this._user);
     }
-    this.meObservable = this.http.get(this.API_URL + '/me')
-    .map((r: Response) => r.json())
-    .map((r: UserResponse) => this.mapRecordData(r))
-    .map((user: User) => {
-      this._user = user;
-      return user;
-    })
-    .share()
-    .do(() => {
-      this.meObservable = null;
-    })
-    .catch(error => {
-      this.meObservable = null;
-      if (!error.ok) {
-        this.logoutLocal();
-      }
-      return Observable.of(null);
-    });
-    return this.meObservable;
+
+    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`)
+      .pipe(
+        map(r => this.mapRecordData(r)),
+        tap(user => this._user = user)
+      )
   }
 
   public checkUserStatus() {
@@ -188,7 +182,7 @@ export class UserService extends ResourceService {
     return this.haversineService.getDistanceInKilometers(currentUserCoord, userCoord);
   }
 
-  protected storeData(data: LoginResponse): LoginResponse {
+  private storeData(data: LoginResponse): LoginResponse {
     this.accessTokenService.storeAccessToken(data.token);
     this.event.emit(EventService.USER_LOGIN, data.token);
     return data;
@@ -201,46 +195,41 @@ export class UserService extends ResourceService {
     return Observable.of(this.banReasons);
   }
 
-  public reportUser(userId: string, itemHash: string, conversationHash: string, reason: number, comments: string)
+  public reportUser(userId: string, itemHashId: string, conversationHash: string, reason: number, comments: string)
     : Observable<UserReportApi> {
-    return this.httpClient.post<UserReportApi>(`${environment.baseUrl}${this.API_URL}/me/report/user/${userId}`, {
-        itemHashId: itemHash,
-        conversationHash: conversationHash,
-        comments: comments,
-        reason: reason
-      },
+    return this.http.post<UserReportApi>(`${environment.baseUrl}${USER_REPORT_ENDPOINT(userId)}`, {
+      itemHashId,
+      conversationHash,
+      comments,
+      reason
+    },
       {
         headers: new HttpHeaders().append('AppBuild', APP_VERSION)
       });
   }
 
-  public getInfo(id: string): Observable<UserInfoResponse> {
-    return this.httpClient.get<UserInfoResponse>(`${environment.baseUrl}${this.API_URL}/${id}/extra-info`);
+  public getInfo(userId: string): Observable<UserInfoResponse> {
+    return this.http.get<UserInfoResponse>(`${environment.baseUrl}${USER_EXTRA_INFO_ENDPOINT(userId)}`);
   }
 
   public getProInfo(): Observable<UserProInfo> {
-    return this.httpClient.get<UserProInfo>(`${environment.baseUrl}${this.API_URL_PROTOOL}/extraInfo`);
+    return this.http.get<UserProInfo>(`${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`);
   }
 
   public getUserCover(): Observable<Image> {
-    return this.httpClient.get<Image>(`${environment.baseUrl}${this.API_URL}/me/cover-image`)
-    .pipe(catchError(error => of({} as Image)));
+    return this.http.get<Image>(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`)
+      .pipe(catchError(error => of({} as Image)));
   }
 
   public updateProInfo(data: UserProData): Observable<any> {
-    return this.http.post(this.API_URL_PROTOOL + '/extraInfo', data);
-  }
-
-  public updateProInfoNotifications(data: UserProDataNotifications): Observable<any> {
-    return this.http.post(this.API_URL_PROTOOL + '/extraInfo/notifications', data);
+    return this.http.post(`${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`, data);
   }
 
   public updateLocation(coordinates: Coordinate): Observable<UserLocation> {
-    return this.http.put(this.API_URL + '/me/location', {
+    return this.http.put<UserLocation>(`${environment.baseUrl}${USER_LOCATION_ENDPOINT}`, {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude
-    })
-    .map((r: Response) => r.json());
+    });
   }
 
   public updateSearchLocationCookies(location: Coordinate) {
@@ -253,42 +242,43 @@ export class UserService extends ResourceService {
     this.cookieService.put('searchPosName', location.name, cookieOptions);
   }
 
+  // TODO: This is in the apps but currently not now in web. Not being used but in the future is going to be implemented
   public updateStoreLocation(coordinates: Coordinate): Observable<any> {
-    return this.http.post(this.API_URL + '/me/bumped-profile/store-location', {
+    return this.http.post(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`, {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude,
       address: coordinates.name
-    })
-    .map((r: Response) => r.json());
+    });
   }
 
   public getStats(): Observable<UserStatsResponse> {
-    return this.http.get(this.API_URL + '/me/stats')
-    .map((r: Response) => {
-      return {
-        ratings: this.toRatingsStats(r.json().ratings),
-        counters: this.toCountersStats(r.json().counters)
-      };
-    });
+    return this.http.get<any>(`${environment.baseUrl}${USER_STATS_ENDPOINT}`)
+      .map(response => {
+        return {
+          ratings: this.toRatingsStats(response.ratings),
+          counters: this.toCountersStats(response.counters)
+        };
+      });
   }
 
+  // TODO: Remove if not used when public web is in webapp
   public getUserStats(userId: string): Observable<UserStatsResponse> {
-    return this.http.get(this.API_URL + '/' + userId + '/stats')
-    .map((r: Response) => {
-      return {
-        ratings: this.toRatingsStats(r.json().ratings),
-        counters: this.toCountersStats(r.json().counters)
-      };
-    });
+    return this.http.get<any>(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(userId)}`)
+      .map(response => {
+        return {
+          ratings: this.toRatingsStats(response.ratings),
+          counters: this.toCountersStats(response.counters)
+        };
+      });
   }
 
   public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
-    return this.httpClient.get<PhoneMethodResponse>(`${environment.baseUrl}${this.API_URL}/${userId}/phone-method`)
-    .pipe(catchError(() => of(null)));
+    return this.http.get<PhoneMethodResponse>(`${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(userId)}`)
+      .pipe(catchError(() => of(null)));
   }
 
   public toRatingsStats(ratings): Ratings {
-    return ratings.reduce(({}, rating) => {
+    return ratings.reduce(({ }, rating) => {
       return { reviews: rating.value };
     }, {});
   }
@@ -301,40 +291,35 @@ export class UserService extends ResourceService {
   }
 
   public edit(data: UserData): Observable<User> {
-    return this.http.post(this.API_URL + '/me', data)
-    .map((r: Response) => r.json())
-    .map((r: UserResponse) => this.mapRecordData(r))
-    .do((user: User) => {
-      this._user = user;
-    });
+    return this.http.post<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`, data)
+      .pipe(
+        map(response => this.mapRecordData(response)),
+        tap(user => this._user = user)
+      );
   }
 
-  public updateEmail(email: string): Observable<any> {
-    return this.http.post(this.API_URL + '/me/email', {
-      email_address: email
-    });
+  public updateEmail(email_address: string): Observable<any> {
+    return this.http.post(`${environment.baseUrl}${USER_EMAIL_ENDPOINT}`, { email_address });
   }
 
-  public updatePassword(oldPassword: string, newPassword: string): Observable<any> {
-    return this.http.post(this.API_URL + '/me/password', {
-      old_password: oldPassword,
-      new_password: newPassword
-    });
+  public updatePassword(old_password: string, new_password: string): Observable<any> {
+    return this.http.post(`${environment.baseUrl}${USER_PASSWORD_ENDPOINT}`, { old_password, new_password });
   }
 
   public getUnsubscribeReasons(): Observable<UnsubscribeReason[]> {
-    return this.http.get(this.API_URL + '/me/unsubscribe/reason', { language: this.i18n.locale })
-    .map((r: Response) => r.json());
+    const params = { language: this.i18n.locale };
+    return this.http.get<UnsubscribeReason[]>(`${environment.baseUrl}${USER_UNSUBSCRIBE_REASONS_ENDPOINT}`, { params });
   }
 
-  public unsubscribe(reasonId: number, otherReason: string): Observable<any> {
-    return this.http.post(this.API_URL + '/me/unsubscribe', {
-      reason_id: reasonId,
-      other_reason: otherReason
-    });
+  public unsubscribe(reason_id: number, other_reason: string): Observable<any> {
+    return this.http.post(`${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`, { reason_id, other_reason });
   }
 
-  protected mapRecordData(data: UserResponse): User {
+  private mapRecordData(data: UserResponse): User {
+    if (!data || !data.id) {
+      return null;
+    }
+
     return new User(
       data.id,
       data.micro_name,
@@ -370,9 +355,9 @@ export class UserService extends ResourceService {
 
   public hasPerm(permission: string): Observable<boolean> {
     return this.me()
-    .flatMap(() => {
-      return Observable.fromPromise(this.permissionService.hasPermission(PERMISSIONS[permission]));
-    });
+      .flatMap(() => {
+        return Observable.fromPromise(this.permissionService.hasPermission(PERMISSIONS[permission]));
+      });
   }
 
   public isProfessional(): Observable<boolean> {
@@ -385,42 +370,42 @@ export class UserService extends ResourceService {
       this.getMotorPlan(),
       this.me()
     ])
-    .map((values: any[]) => {
-      return values[0] || !!(values[1] && values[1].type) || values[2].featured;
-    });
+      .map((values: any[]) => {
+        return values[0] || !!(values[1] && values[1].type) || values[2].featured;
+      });
   }
 
+  // TODO: This method is going to be deleted :D
   public getMotorPlan(): Observable<MotorPlan> {
     if (this._motorPlan) {
       return Observable.of(this._motorPlan);
     } else if (this.motorPlanObservable) {
       return this.motorPlanObservable;
     }
-    this.motorPlanObservable = this.http.get(this.API_URL + '/me/profile-subscription-info/type')
-    .map((r: Response) => r.json())
-    .map((motorPlan: MotorPlan) => {
-      this._motorPlan = motorPlan;
-      return motorPlan;
-    })
-    .share()
-    .do(() => {
-      this.motorPlanObservable = null;
-    })
-    .catch(() => {
-      this.motorPlanObservable = null;
-      return Observable.of(null);
-    });
+    this.motorPlanObservable = this.http.get<MotorPlan>(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT}`)
+      .map((motorPlan: MotorPlan) => {
+        this._motorPlan = motorPlan;
+        return motorPlan;
+      })
+      .share()
+      .do(() => {
+        this.motorPlanObservable = null;
+      })
+      .catch(() => {
+        this.motorPlanObservable = null;
+        return Observable.of(null);
+      });
     return this.motorPlanObservable;
   }
 
   public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
-    return this.httpClient.get<ProfileSubscriptionInfo>(`${environment.baseUrl}${this.API_URL}/me/profile-subscription-info`);
+    return this.http.get<ProfileSubscriptionInfo>(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT}`);
   }
 
   public setSubscriptionsFeatureFlag(): Observable<boolean> {
     return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS)
-    .map((isActive: boolean) => {
-      return isActive;
-    });
+      .map((isActive: boolean) => {
+        return isActive;
+      });
   }
 }

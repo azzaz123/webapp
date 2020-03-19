@@ -5,6 +5,7 @@ import * as CryptoJS from 'crypto-js';
 
 import { AccessTokenService } from '../access-token.service';
 import { environment } from '../../../../environments/environment';
+import { LOGIN_ENDPOINT } from '../../user/user.service';
 
 export const TOKEN_AUTHORIZATION_HEADER_NAME = 'Authorization';
 export const TOKEN_TIMESTAMP_HEADER_NAME = 'Timestamp';
@@ -20,10 +21,10 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (this.accessTokenService.accessToken) {
+    if (this.accessTokenService.accessToken || request.url === `${environment.baseUrl}${LOGIN_ENDPOINT}`) {
       const setHeaders: any = {};
 
-      if (!request.headers.has(TOKEN_AUTHORIZATION_HEADER_NAME)) {
+      if (!request.headers.has(TOKEN_AUTHORIZATION_HEADER_NAME) && request.url !== `${environment.baseUrl}${LOGIN_ENDPOINT}`) {
         setHeaders[TOKEN_AUTHORIZATION_HEADER_NAME] = `Bearer ${this.accessTokenService.accessToken}`;
       }
 
