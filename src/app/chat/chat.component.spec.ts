@@ -4,7 +4,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { AdService } from '../core/ad/ad.service';
-import { HttpService } from '../core/http/http.service';
 import { I18nService } from '../core/i18n/i18n.service';
 import { EventService } from '../core/event/event.service';
 import { UserService } from '../core/user/user.service';
@@ -47,7 +46,6 @@ describe('Component: ChatComponent with ItemId', () => {
         { provide: ConversationService, useClass: ConversationServiceMock },
         { provide: InboxService, useClass: InboxServiceMock },
         { provide: UserService, useClass: MockUserService },
-        { provide: HttpService, useValue: {} },
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         {
           provide: ActivatedRoute, useValue: {
@@ -216,7 +214,6 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
         { provide: ConversationService, useClass: ConversationServiceMock },
         { provide: InboxService, useClass: InboxServiceMock },
         { provide: UserService, useClass: MockUserService },
-        { provide: HttpService, useValue: {} },
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         {
           provide: ActivatedRoute, useValue: {
