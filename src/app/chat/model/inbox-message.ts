@@ -16,6 +16,8 @@ export enum MessageStatus {
   READ = 'read'
 }
 
+export const MESSAGES_WHITE_LIST = [MessageType.TEXT, MessageType.REVIEW, MessageType.DROP_PRICE, MessageType.PRICE_DROP];
+
 export const statusOrder = [MessageStatus.PENDING, MessageStatus.SENT, MessageStatus.RECEIVED, MessageStatus.READ];
 
 export enum PhoneRequestState {
@@ -98,7 +100,9 @@ export class InboxMessage {
   }
 
   public static messsagesFromJson(messagesApiModel: InboxMessageApi[], conversationId: string, currentUserId: string, otherUserId: string): InboxMessage[] {
-    return messagesApiModel.map(message => this.buildMessage(message, conversationId, currentUserId, otherUserId));
+    return messagesApiModel
+    .map((message: InboxMessageApi) => this.buildMessage(message, conversationId, currentUserId, otherUserId))
+    .filter((message: InboxMessage) => MESSAGES_WHITE_LIST.includes(message.type));
   }
 
   private static buildMessage(message: InboxMessageApi, conversationId: string, currentUserId: string, otherUserId: string) {

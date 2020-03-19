@@ -1,4 +1,4 @@
-import { clone, eq, remove } from 'lodash-es';
+import { clone, eq, remove, includes } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { EventService } from '../event/event.service';
 import { XmppBodyMessage, XMPPClient, JID, XmppError } from './xmpp.interface';
@@ -7,8 +7,8 @@ import 'rxjs/add/observable/from';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
-import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
-import { InboxConversation, InboxMessage, InboxUser, MessageStatus, MessageType } from '../../chat/model';
+import { ChatSignal, ChatSignalType } from '../../chat/model';
+import { InboxConversation, InboxMessage, InboxUser, MESSAGES_WHITE_LIST, MessageStatus, MessageType } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
 
 @Injectable()
@@ -221,7 +221,9 @@ export class XmppService {
         this.remoteConsoleService.sendPresentationMessageTimeout(message.id);
       }
       const builtMessage: InboxMessage = this.buildMessage(message, markAsPending);
-      this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
+      if (includes(MESSAGES_WHITE_LIST, builtMessage.type)) {
+        this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
+      }
     }
   }
 

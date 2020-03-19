@@ -159,7 +159,10 @@ export class I18nService {
       continueSubscriptionErrorTitle: 'Error:',
       continueSubscriptionErrorBody: 'We could not proceed with your request.',
       paymentFailed: 'The payment could not be done',
-      consumerGoodsGeneralCategoryTitle: 'Everything else'
+      consumerGoodsGeneralCategoryTitle: 'Everything else',
+      review: 'How did it go? Take a moment to leave some feedback to the user to help our community!',
+      price_drop: 'The item price has dropped. Close the deal!',
+      drop_price: 'The item price has dropped. Close the deal!',
     },
     es: {
       daysMomentConfig: {
@@ -318,7 +321,10 @@ export class I18nService {
       continueSubscriptionErrorTitle: 'Ha habido un error',
       continueSubscriptionErrorBody: 'Tu suscripción no ha podido ser restablecida.',
       paymentFailed: 'No ha podido realizarse el pago',
-      consumerGoodsGeneralCategoryTitle: 'Todo lo demás'
+      consumerGoodsGeneralCategoryTitle: 'Todo lo demás',
+      review: '¿Como ha ido? ¡Tómate un momento para valorar la experiencia con el usuario y ayudar a la comunidad!',
+      price_drop: 'El producto ha bajado de precio. ¡Cierra el trato!',
+      drop_price: 'El producto ha bajado de precio. ¡Cierra el trato!',
     }
   };
 
