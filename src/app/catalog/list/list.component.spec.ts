@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
 import { Observable, of } from 'rxjs';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { find } from 'lodash-es';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -40,7 +40,7 @@ import { HttpModuleNew } from '../../core/http/http.module.new';
 import { CategoryService } from '../../core/category/category.service';
 import { HttpService } from '../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { MockSubscriptionService } from '../../../tests/subscriptions.fixtures.spec';
+import { MockSubscriptionService, MOCK_SUBSCRIPTION_SLOTS } from '../../../tests/subscriptions.fixtures.spec';
 import { FeatureflagService } from '../../core/user/featureflag.service';
 import { FeatureFlagServiceMock, DeviceDetectorServiceMock } from '../../../tests';
 import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
@@ -49,12 +49,16 @@ import { UserReviewService } from '../../reviews/user-review.service';
 import { MOCK_REVIEWS } from '../../../tests/review.fixtures.spec';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { MOCK_USER, USER_INFO_RESPONSE } from '../../../tests/user.fixtures.spec';
+import { SubscriptionsSlotsListComponent } from './subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
+import { By } from '@angular/platform-browser';
+import { SubscriptionsSlotItemComponent } from './subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
   let fixture: ComponentFixture<ListComponent>;
   let itemService: ItemService;
   let trackingService: TrackingService;
+  let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
   let toastr: ToastrService;
   let trackingServiceSpy: jasmine.Spy;
@@ -79,7 +83,7 @@ describe('ListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ HttpModuleNew ],
-      declarations: [ListComponent, ItemSoldDirective],
+      declarations: [ListComponent, ItemSoldDirective, SubscriptionsSlotsListComponent, SubscriptionsSlotItemComponent],
       providers: [
         I18nService,
         EventService,
@@ -182,9 +186,6 @@ describe('ListComponent', () => {
                 counters: mockCounters
               });
             },
-            getAvailableSlots() {
-                return Observable.of({});
-            },
             me() {
               return Observable.of(MOCK_USER);
             },
@@ -207,6 +208,7 @@ describe('ListComponent', () => {
     component = fixture.componentInstance;
     itemService = TestBed.get(ItemService);
     trackingService = TestBed.get(TrackingService);
+    subscriptionsService = TestBed.get(SubscriptionsService);
     modalService = TestBed.get(NgbModal);
     toastr = TestBed.get(ToastrService);
     route = TestBed.get(ActivatedRoute);
@@ -464,6 +466,18 @@ describe('ListComponent', () => {
 
       expect(component.userScore).toEqual(USER_INFO_RESPONSE.scoring_stars);
     });
+
+    it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
+      spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
+      
+      component.ngOnInit();
+      tick();
+      fixture.detectChanges();
+
+      const slotsCards = fixture.debugElement.queryAll(By.directive(SubscriptionsSlotItemComponent));
+      expect(slotsCards).toBeTruthy();
+      expect(slotsCards.length).toEqual(MOCK_SUBSCRIPTION_SLOTS.length);
+    }));
   });
 
   describe('getItems', () => {

@@ -223,6 +223,10 @@ ngb-carousel {
       height: 350px;
     }
 
+    .carousel-inner {
+      overflow: unset;
+    }
+
     .box-content {
       max-width: 80%;
       height: 100%;
