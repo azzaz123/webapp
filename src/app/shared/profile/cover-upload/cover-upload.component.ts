@@ -1,4 +1,4 @@
-import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME, TokenInterceptor } from './../../../core/http/interceptors/token.interceptor';
+import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME, getTokenSignature } from './../../../core/http/interceptors/token.interceptor';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '../../../core/user/user';
 import { ErrorsService } from '../../../core/errors/errors.service';
@@ -10,8 +10,7 @@ import { AccessTokenService } from '../../../core/http/access-token.service';
 @Component({
   selector: 'tsl-cover-upload',
   templateUrl: './cover-upload.component.html',
-  styleUrls: ['./cover-upload.component.scss'],
-  providers: [TokenInterceptor]
+  styleUrls: ['./cover-upload.component.scss']
 })
 export class CoverUploadComponent implements OnInit {
 
@@ -25,7 +24,6 @@ export class CoverUploadComponent implements OnInit {
 
   constructor(private errorsService: ErrorsService,
     private userService: UserService,
-    private tokenInterceptor: TokenInterceptor,
     private accesTokenService: AccessTokenService) { }
 
   ngOnInit() {
@@ -59,7 +57,7 @@ export class CoverUploadComponent implements OnInit {
   private uploadPicture() {
     const url = 'api/v3/users/me/cover-image';
     const timestamp = new Date().getTime();
-    const signature = this.tokenInterceptor.getSignature(url, 'POST', timestamp);
+    const signature = getTokenSignature(url, 'POST', timestamp);
     const headers = {
       [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
       [TOKEN_SIGNATURE_HEADER_NAME]: signature,

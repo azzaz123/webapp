@@ -1,4 +1,4 @@
-import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME, TokenInterceptor } from './../../../core/http/interceptors/token.interceptor';
+import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME } from './../../../core/http/interceptors/token.interceptor';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PictureUploadComponent } from './picture-upload.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -9,13 +9,13 @@ import { UPLOAD_FILE, UPLOAD_FILE_ID, UPLOAD_FILE_NAME } from '../../../../tests
 import { environment } from '../../../../environments/environment';
 import { UploadFile, UploadInput } from '../../uploader/upload.interface';
 import { AccessTokenService } from '../../../core/http/access-token.service';
+import * as tokenInterceptor from './../../../core/http/interceptors/token.interceptor';
 
 describe('PictureUploadComponent', () => {
   let component: PictureUploadComponent;
   let fixture: ComponentFixture<PictureUploadComponent>;
   let userService: UserService;
   let errorsService: ErrorsService;
-  let tokenInterceptor: TokenInterceptor;
   const TIMESTAMP = 123456789;
 
   beforeEach(async(() => {
@@ -50,7 +50,6 @@ describe('PictureUploadComponent', () => {
     fixture.detectChanges();
     userService = TestBed.get(UserService);
     errorsService = TestBed.get(ErrorsService);
-    tokenInterceptor = fixture.debugElement.injector.get(TokenInterceptor);
   });
 
   describe('onUploadOutput', () => {
@@ -63,7 +62,7 @@ describe('PictureUploadComponent', () => {
     });
 
     it('should send upload event if event is addedToQueue', () => {
-      spyOn(tokenInterceptor, 'getSignature').and.returnValue('thesignature');
+      spyOn(tokenInterceptor, 'getTokenSignature').and.returnValue('thesignature');
       spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
       const headers = {
         [TOKEN_AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
