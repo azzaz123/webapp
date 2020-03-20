@@ -384,7 +384,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     const suggestions: KeywordSuggestion[] = [];
     let objectTypeId: number;
 
-    objectTypeId = this.uploadForm.value['extra_info'].object_type.id;
+    objectTypeId = this.uploadExtraInfoValue.object_type.id;
 
     this.generalSuggestionsService.
       getBrands(brandKeyword, this.uploadForm.value.category_id, objectTypeId)
@@ -416,8 +416,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       getModels(
         modelKeyword,
         this.uploadForm.value.category_id,
-        this.uploadForm.value['extra_info'].brand,
-        this.uploadForm.value['extra_info'].object_type.id)
+        this.uploadExtraInfoValue.brand,
+        this.uploadExtraInfoValue.object_type.id)
       .subscribe((models: Model[]) => {
         const suggestions: KeywordSuggestion[] = [];
 
@@ -429,8 +429,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getSizes(): void {
-    const objectTypeId = this.uploadForm.value['extra_info'].object_type.id;
-    const gender = this.uploadForm.value['extra_info'].gender;
+    const objectTypeId = this.uploadExtraInfoValue.object_type.id;
+    const gender = this.uploadExtraInfoValue.gender;
 
     if (objectTypeId && gender) {
       this.generalSuggestionsService.getSizes(objectTypeId, gender).subscribe((sizes: IOption[]) => {
@@ -543,6 +543,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.analyticsService.trackEvent(listItemCGEvent);
         }
       }));
+  }
+
+  get uploadExtraInfoValue(): any {
+    return this.uploadForm.value['extra_info'];
   }
 }
 
