@@ -1,66 +1,51 @@
+import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME } from './../../core/http/interceptors/token.interceptor';
 import { TestBed } from '@angular/core/testing';
 import { UploadService } from './upload.service';
 import { environment } from '../../../environments/environment';
 import { CAR_ID, UPLOAD_FILE, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
 import { USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures.spec';
 import { AccessTokenService } from '../../core/http/access-token.service';
-import { HttpService } from '../../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { ITEM_TYPES } from '../../core/item/item';
 import { UploadInput } from '../../shared/uploader/upload.interface';
+import * as tokenInterceptor from './../../core/http/interceptors/token.interceptor';
 
 describe('UploadService', () => {
 
   let service: UploadService;
   let response: UploadInput;
   let accessTokenService: AccessTokenService;
-  let http: HttpService;
+  const TIMESTAMP = 123456789;
+  const headers = {
+    [TOKEN_AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
+    [TOKEN_SIGNATURE_HEADER_NAME]: 'thesignature',
+    [TOKEN_TIMESTAMP_HEADER_NAME]: `${TIMESTAMP}`
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ...TEST_HTTP_PROVIDERS,
         UploadService,
         {
-          provide: HttpService, useValue: {
-          getOptions() {
-            return {};
+          provide: AccessTokenService, useValue: {
+            accessToken: 'thetoken'
           }
-        }
         }
       ]
     });
     service = TestBed.get(UploadService);
     accessTokenService = TestBed.get(AccessTokenService);
-    http = TestBed.get(HttpService);
     response = null;
     service.uploadInput.subscribe((r: UploadInput) => {
       response = r;
     });
-  });
 
-  it('should create', () => {
-    expect(service).toBeTruthy();
+    spyOn(tokenInterceptor, 'getTokenSignature').and.returnValue('thesignature');
+    spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
   });
 
   describe('createItemWithFirstImage', () => {
-    const headers = {
-      'Authorization': 'Bearer thetoken'
-    };
-    const appendSpy = jasmine.createSpy('append');
-    beforeEach(() => {
-      spyOn(http, 'getOptions').and.returnValue({
-        headers: {
-          toJSON() {
-            return headers;
-          },
-          append: appendSpy
-        }
-      });
-      accessTokenService.storeAccessToken('thetoken');
-    });
     describe('car', () => {
       it('should emit uploadFile event', () => {
         const VALUES: any = {
@@ -79,10 +64,12 @@ describe('UploadService', () => {
               type: 'application/json'
             })
           },
-          headers: headers,
+          headers: {
+            ...headers,
+            'X-DeviceOS': '0'
+          },
           file: UPLOAD_FILE
         });
-        expect(appendSpy).not.toHaveBeenCalled();
       });
 
       describe('with user location', () => {
@@ -122,7 +109,10 @@ describe('UploadService', () => {
               type: 'application/json'
             })
           },
-          headers: headers,
+          headers: {
+            ...headers,
+            'X-DeviceOS': '0'
+          },
           file: UPLOAD_FILE
         });
       });
@@ -171,29 +161,17 @@ describe('UploadService', () => {
               type: 'application/json'
             })
           },
-          headers: headers,
+          headers: {
+            ...headers, 
+            'X-DeviceOS': '0'
+          },
           file: UPLOAD_FILE
         });
-        expect(appendSpy).not.toHaveBeenCalled();
       });
     });
   });
 
   describe('uploadOtherImages', () => {
-    const headers = {
-      'Authorization': 'Bearer thetoken'
-    };
-    beforeEach(() => {
-      accessTokenService.storeAccessToken('thetoken');
-      spyOn(http, 'getOptions').and.returnValue({
-        headers: {
-          toJSON() {
-            return headers;
-          }
-        }
-      });
-    });
-
     describe('car', () => {
       it('should emit uploadFile event', () => {
         service.uploadOtherImages(CAR_ID, 'cars');
@@ -206,7 +184,7 @@ describe('UploadService', () => {
           data: {
             order: '$order'
           },
-          headers: headers
+          headers
         });
       });
     });
@@ -223,7 +201,7 @@ describe('UploadService', () => {
           data: {
             order: '$order'
           },
-          headers: headers
+          headers
         });
       });
     });
@@ -240,26 +218,13 @@ describe('UploadService', () => {
           data: {
             order: '$order'
           },
-          headers: headers
+          headers
         });
       });
     });
   });
 
   describe('uploadSingleImage', () => {
-    const headers = {
-      'Authorization': 'Bearer thetoken'
-    };
-    beforeEach(() => {
-      accessTokenService.storeAccessToken('thetoken');
-      spyOn(http, 'getOptions').and.returnValue({
-        headers: {
-          toJSON() {
-            return headers;
-          }
-        }
-      });
-    });
     describe('car', () => {
       it('should emit uploadFile event', () => {
         service.uploadSingleImage(UPLOAD_FILE, CAR_ID, ITEM_TYPES.CARS);
@@ -271,7 +236,7 @@ describe('UploadService', () => {
           data: {
             order: '$order'
           },
-          headers: headers,
+          headers,
           file: UPLOAD_FILE
         });
       });
@@ -287,7 +252,7 @@ describe('UploadService', () => {
           data: {
             order: '$order'
           },
-          headers: headers,
+          headers,
           file: UPLOAD_FILE
         });
       });
