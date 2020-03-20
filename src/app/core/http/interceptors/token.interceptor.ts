@@ -32,7 +32,7 @@ export class TokenInterceptor implements HttpInterceptor {
         const timestamp = new Date().getTime();
         const endpoint = request.url.replace(environment.baseUrl, '');
         setHeaders[TOKEN_TIMESTAMP_HEADER_NAME] = timestamp.toString();
-        setHeaders[TOKEN_SIGNATURE_HEADER_NAME] = this.getSignature(endpoint, request.method, timestamp);
+        setHeaders[TOKEN_SIGNATURE_HEADER_NAME] = getTokenSignature(endpoint, request.method, timestamp);
       }
       request = request.clone({ setHeaders });
       return next.handle(request);
@@ -40,10 +40,10 @@ export class TokenInterceptor implements HttpInterceptor {
       return of(new HttpResponse({ status: 401, statusText: 'Unauthorized', body: {} }));
     }
   }
+}
 
-  public getSignature(url: string, method: string, timestamp: number) {
-    const separator = '+#+';
-    const signature = ['/' + url.split('?')[0], method, timestamp].join(separator) + separator;
-    return CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(signature, CryptoJS.enc.Base64.parse(SECRET)));
-  }
+export const getTokenSignature = (url: string, method: string, timestamp: number) => {
+  const separator = '+#+';
+  const signature = ['/' + url.split('?')[0], method, timestamp].join(separator) + separator;
+  return CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(signature, CryptoJS.enc.Base64.parse(SECRET)));
 }
