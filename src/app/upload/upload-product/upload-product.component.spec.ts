@@ -56,7 +56,7 @@ export const USER_LOCATION: UserLocation = {
 
 MOCK_USER.location = USER_LOCATION;
 
-describe('UploadProductComponent', () => {
+fdescribe('UploadProductComponent', () => {
   let component: UploadProductComponent;
   let fixture: ComponentFixture<UploadProductComponent>;
   let errorService: ErrorsService;
@@ -350,15 +350,6 @@ describe('UploadProductComponent', () => {
       expect(component.getObjectTypes).toHaveBeenCalled();
     });
 
-    it('should get condition options for the selected category', () => {
-      spyOn(component, 'getConditions');
-      component.item = MOCK_ITEM_CELLPHONES;
-
-      component.ngOnInit();
-
-      expect(component.getConditions).toHaveBeenCalled();
-    });
-
     afterAll(() => {
       component.item = MOCK_ITEM;
     });
@@ -376,7 +367,7 @@ describe('UploadProductComponent', () => {
       it('should enable the brand field', () => {
         expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(false);
       });
-      it('should disable the model field', () => {
+      it('should enable the model field', () => {
         expect(component.uploadForm.get('extra_info').get('model').disabled).toBe(false);
       });
       it('should disable the size field', () => {

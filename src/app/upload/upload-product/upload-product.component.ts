@@ -481,7 +481,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.uploadCompletedPercentage = Math.round(percentage);
   }
 
-  public getConditions(): void {
+  private getConditions(): void {
     const currentCategorId: number = +this.uploadForm.get('category_id').value;
     this.conditions = [];
     this.generalSuggestionsService.getConditions(currentCategorId).subscribe((conditions: IOption[]) => {
