@@ -56,7 +56,7 @@ export const USER_LOCATION: UserLocation = {
 
 MOCK_USER.location = USER_LOCATION;
 
-fdescribe('UploadProductComponent', () => {
+describe('UploadProductComponent', () => {
   let component: UploadProductComponent;
   let fixture: ComponentFixture<UploadProductComponent>;
   let errorService: ErrorsService;
