@@ -14,7 +14,7 @@ import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ItemService } from '../../core/item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { HttpModuleNew } from '../../core/http/http.module.new';
@@ -346,6 +346,21 @@ describe('InboxConversationService', () => {
 
         const req = httpTestingController.expectOne(`${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`);
         expect(req.request.method).toEqual('GET');
+      });
+
+      it('should send RECEIVE signal for new  with message', () => {
+        const NEW_INBOX_CONVERSATION_ID = 'new-conversation-id';
+        const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION(NEW_INBOX_CONVERSATION_ID);
+        const newMessage = new InboxMessage('new-message-id', NEW_INBOX_CONVERSATION_ID, 'hola!', 'user-id', false,
+          new Date(), MessageStatus.SENT, MessageType.TEXT);
+        newConversation.messages = [newMessage];
+
+        spyOn<any>(service, 'getConversation').and.returnValue(of(newConversation));
+        spyOn(realTime, 'sendDeliveryReceipt').and.callThrough();
+
+        service.processNewMessage(newMessage);
+
+        expect(realTime.sendDeliveryReceipt).toHaveBeenCalledWith(newConversation.user.id, newMessage.id, NEW_INBOX_CONVERSATION_ID);
       });
 
       it('should add new conversation to the top of the list if fetch succeed', () => {

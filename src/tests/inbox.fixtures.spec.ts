@@ -197,7 +197,7 @@ export const MOCK_NOT_FOUND_INBOX_CONVERSATION: InboxConversation = new InboxCon
   false,
   null);
 
-export function createInboxConversationsArray(total: number, conversationsId?: string) {
+export function createInboxConversationsArray(total: number, conversationsId?: string): InboxConversation[] {
   const conversations: InboxConversation[] = [];
   for (let i = 1; i <= total; i++) {
     conversations.push(CREATE_MOCK_INBOX_CONVERSATION(conversationsId ? i + conversationsId : i.toString(), OTHER_USER_ID));
