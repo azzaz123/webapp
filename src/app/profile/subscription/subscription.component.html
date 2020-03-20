@@ -12,15 +12,20 @@
         <div class="Subscriptions__category-title">{{subscription.category_name}}</div>
         <hr />
         <div [hidden]="subscription.subscribed_from" class="Subscriptions__category-info">
-            <p i18n>Limit without subscription: {{subscription.current_limit}}</p>
-            <p i18n>From: {{subscription.tiers[0].price}}{{subscription.tiers[0].currency}}</p>
+            <p i18n *ngIf="subscription.current_limit">Limit without subscription: {{subscription.current_limit}}</p>
+            <p i18n *ngIf="!subscription.current_limit">No limit</p>
+            <p><span i18n *ngIf="subscription.tiers.length !== 1">From: </span>{{subscription.tiers[0].price}}{{subscription.tiers[0].currency}}</p>
         </div>
         <div *ngIf="subscription.subscribed_from" class="Subscriptions__category-info">
-            <p i18n>{{subscription.selected_tier.limit}} products</p>
+            <p i18n *ngIf="subscription.selected_tier.limit">{{subscription.selected_tier.limit}} products</p>
+            <p i18n *ngIf="!subscription.selected_tier.limit">No limit</p>
             <p class="Subscriptions__category-info--price" i18n>
               {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
             </p>
-            <p class="Subscriptions__category-info--edit" *ngIf="!subscription.subscribed_until" i18n>Edit</p>
+            <p class="Subscriptions__category-info--edit" *ngIf="!subscription.subscribed_until">
+              <span *ngIf="subscription.tiers.length !== 1" i18n>Edit</span>
+              <span *ngIf="subscription.tiers.length === 1" i18n>Cancel</span>
+            </p>
         </div>
         <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from" i18n>Subscribe</tsl-button>
         <span *ngIf="subscription.subscribed_from" [hidden]="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n>

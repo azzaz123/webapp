@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import { CategoryService, CONSUMER_GOODS_ENDPOINT } from './category.service';
 import {
   CATEGORIES_DATA_CONSUMER_GOODS, CATEGORIES_OPTIONS,
@@ -11,25 +11,29 @@ import { I18nService } from '../i18n/i18n.service';
 import { HttpModuleNew } from '../http/http.module.new';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-
-let service: CategoryService;
-let http: HttpClient;
+import { LOCALE_ID } from '@angular/core';
 
 describe('CategoryService', () => {
+  let injector: TestBed;
+  let service: CategoryService;
+  let http: HttpClient;
+  let i18nService: I18nService;
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
+    injector = getTestBed();
+    injector.configureTestingModule({
       imports: [HttpModuleNew],
       providers: [
         CategoryService,
+        I18nService,
         {
-          provide: I18nService, useValue: {
-            locale: 'es'
-          }
+          provide: LOCALE_ID, useValue: 'es'
         }
       ]
     });
-    service = TestBed.get(CategoryService);
-    http = TestBed.get(HttpClient);
+    service = injector.get(CategoryService);
+    http = injector.get(HttpClient);
+    i18nService = injector.get(I18nService);
   });
 
   describe('getCategories', () => {
@@ -83,5 +87,15 @@ describe('CategoryService', () => {
       expect(service.isHeroCategory(5)).toBeFalsy();
     });
   });
+
+  describe('getConsumerGoodsCategory', () => {
+    it('should return a mock consumer goods category', () => {
+      const consumerGoodsCategory = service.getConsumerGoodsCategory();
+
+      expect(consumerGoodsCategory.category_id).toBe(0);
+      expect(consumerGoodsCategory.name).toBe(i18nService.getTranslations('consumerGoodsGeneralCategoryTitle'));
+      expect(consumerGoodsCategory.icon_id).toBe('All');
+    });
+  })
 
 });

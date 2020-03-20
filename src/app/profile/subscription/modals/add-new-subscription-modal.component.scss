@@ -206,7 +206,7 @@ ngb-carousel {
       margin: 0;
       padding: 0;
       z-index: 0;
-      bottom: 20px;
+      bottom: $spacing-ml;
       li {
         background-color: $blue-grey-4;
         @include square(6px);
@@ -221,6 +221,10 @@ ngb-carousel {
     }
     .carousel-item {
       height: 350px;
+    }
+
+    .carousel-inner {
+      overflow: unset;
     }
 
     .box-content {
@@ -238,6 +242,19 @@ ngb-carousel {
     .carousel-item {
       height: 384px;
     };
+  }
+
+  &.single /deep/ {
+    .carousel-item {
+      height: 312px;
+    }
+    .carousel-indicators {
+      display: none;
+    }
+
+    .box-content {
+      padding: $spacing-ml;
+    }
   }
 }
 
