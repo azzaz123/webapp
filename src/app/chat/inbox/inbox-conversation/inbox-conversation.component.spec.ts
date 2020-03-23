@@ -10,7 +10,8 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { InboxConversationService } from '../../service';
 import { InboxConversationServiceMock } from '../../../../tests';
 import { of } from 'rxjs';
-import { InboxConversation } from '../../model';
+import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../model';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 describe('Component: Conversation', () => {
   let inboxConversationService: InboxConversationService;
@@ -25,6 +26,7 @@ describe('Component: Conversation', () => {
       ],
       declarations: [InboxConversationComponent],
       providers: [
+        I18nService,
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -109,6 +111,31 @@ describe('Component: Conversation', () => {
 
       expect(inboxConversationService.archive$).toHaveBeenCalledWith(inboxConversation);
       expect(component.conversation).toEqual(null);
+    });
+  });
+
+  describe('getThirdVoiceTranslation', () => {
+
+    it('should return undefined if translations for message does not exist', () => {
+      const message = new InboxMessage('id-message', 'id-conversation', 'text', 'user-id', false, new Date(),
+        MessageStatus.RECEIVED, MessageType.REVIEW);
+
+      message.type = MessageType.TEXT;
+      expect(component.getThirdVoiceTranslation(message)).toEqual(undefined);
+    });
+
+    it('should NOT return undefined if translations for message does not exist', () => {
+      const message = new InboxMessage('id-message', 'id-conversation', 'text', 'user-id', false, new Date(),
+        MessageStatus.RECEIVED, MessageType.REVIEW);
+
+      message.type = MessageType.REVIEW;
+      expect(component.getThirdVoiceTranslation(message)).not.toEqual(undefined);
+
+      message.type = MessageType.PRICE_DROP;
+      expect(component.getThirdVoiceTranslation(message)).not.toEqual(undefined);
+
+      message.type = MessageType.DROP_PRICE;
+      expect(component.getThirdVoiceTranslation(message)).not.toEqual(undefined);
     });
   });
 });

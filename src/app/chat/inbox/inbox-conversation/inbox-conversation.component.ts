@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { InboxConversation } from '../../model';
+import { InboxConversation, InboxMessage, MessageType } from '../../model';
 import { InboxConversationService } from '../../service';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-inbox-conversation',
@@ -22,7 +23,7 @@ export class InboxConversationComponent {
     sameElse: 'D MMM.'
   };
 
-  constructor(private inboxConversationService: InboxConversationService) {
+  constructor(private inboxConversationService: InboxConversationService, private i18n: I18nService) {
   }
 
   public dateIsThisYear(): boolean {
@@ -33,5 +34,13 @@ export class InboxConversationComponent {
   public onClickArchiveConversation(): void {
     this.inboxConversationService.sendReadSignal(this.conversation);
     this.inboxConversationService.archive$(this.conversation).subscribe(() => this.conversation = null);
+  }
+
+  public isText(inboxMessage: InboxMessage): boolean {
+    return inboxMessage.type === MessageType.TEXT;
+  }
+
+  public getThirdVoiceTranslation(inboxMessage: InboxMessage): string {
+    return this.i18n.getTranslations(inboxMessage.type);
   }
 }
