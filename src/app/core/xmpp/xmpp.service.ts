@@ -146,6 +146,9 @@ export class XmppService {
       interval: 30
     });
     this.client.on('message', (message: XmppBodyMessage) => {
+      if (!this.isFromSelf(message) && message.sentReceipt && message.sentReceipt.id) {
+        this.remoteConsoleService.sendAcceptTimeout(message.sentReceipt.id);
+      }
       this.canProcessRealtime ? this.onNewMessage(message) : this.realtimeQ.push(message);
     });
     this.client.on('message:sent', (message: XmppBodyMessage) => {
@@ -230,7 +233,7 @@ export class XmppService {
   private isFromSelf(message: XmppBodyMessage): boolean {
     /* The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
     logged in, but they should not be considered messages fromSelf */
-    return this.self && eq(message.from.local, this.self.local) && !message.payload;
+    return this.self && message.from && eq(message.from.local, this.self.local) && !message.payload;
   }
 
   private buildChatSignal(message: XmppBodyMessage) {
