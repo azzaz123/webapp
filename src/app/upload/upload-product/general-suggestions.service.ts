@@ -6,9 +6,11 @@ import { Brand, BrandModel, Model, SizesResponse, Size, ObjectType } from '../br
 import { I18nService } from '../../core/i18n/i18n.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { ConditionsResponse, Condition } from '../condition.interface';
 
 export const SUGGESTERS_API_URL = 'api/v3/suggesters/general';
 export const FASHION_KEYS_API_URL = 'api/v3/fashion/keys';
+export const CONDITION_KEYS_API_URL = 'api/v3/consumergoods/keys/condition';
 
 @Injectable()
 export class GeneralSuggestionsService {
@@ -76,6 +78,26 @@ export class GeneralSuggestionsService {
           label: size.text
         }));
     }))
+  }
+
+  getConditions(category_id?: number): Observable<IOption[]> {
+    return this.http.get<ConditionsResponse[]>(`${environment.baseUrl}${CONDITION_KEYS_API_URL}`, {
+      params: {
+        language: this.i18n.locale
+      }
+    })
+      .pipe(
+        map(r => r.filter(r => +r.category_id === category_id)[0].conditions),
+        map((conditions) => {
+          return conditions
+            .map((condition: Condition) => ({
+              value: condition.id,
+              label: condition.title,
+              description: condition.description
+            }));
+        })
+      )
+
   }
 
 }
