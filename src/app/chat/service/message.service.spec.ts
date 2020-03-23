@@ -13,7 +13,6 @@ import { User } from '../../core/user/user';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ConnectionService } from '../../core/connection/connection.service';
-import { HttpService } from '../../core/http/http.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { RemoteConsoleService } from '../../core/remote-console';
@@ -28,7 +27,6 @@ describe('Service: Message', () => {
   let userService: UserService;
   let connectionService: ConnectionService;
   let trackingService: TrackingService;
-  let httpService: HttpService;
   let i18n: I18nService;
   let eventService: EventService;
 
@@ -40,12 +38,6 @@ describe('Service: Message', () => {
         EventService,
         I18nService,
         RealTimeService,
-        {
-          provide: HttpService, useValue: {
-            get() {
-            }
-          }
-        },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: ConnectionService, useValue: {} },
         { provide: UserService, useValue: { user: new User(USER_ID) } },
@@ -58,7 +50,6 @@ describe('Service: Message', () => {
     connectionService = TestBed.get(ConnectionService);
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
-    httpService = TestBed.get(HttpService);
     i18n = TestBed.get(I18nService);
   });
 
