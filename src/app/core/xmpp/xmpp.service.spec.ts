@@ -472,7 +472,7 @@ describe('Service: Xmpp', () => {
       eventService.emit('disconnected');
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_RT_DISCONNECTED);
-      expect(remoteConsoleService.sendXmppConnectionClosedWithError).toHaveBeenCalledWith('');
+      expect(remoteConsoleService.sendXmppConnectionClosedWithError).toHaveBeenCalled();
       expect(service.clientConnected).toBe(false);
     });
 

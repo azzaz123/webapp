@@ -158,9 +158,9 @@ export class XmppService {
       this.buildChatSignal(message);
     });
 
-    this.client.on('disconnected', (error: XmppError) => {
+    this.client.on('disconnected', () => {
       this.clientConnected = false;
-      this.remoteConsoleService.sendXmppConnectionClosedWithError(JSON.stringify(error) || '');
+      this.remoteConsoleService.sendXmppConnectionClosedWithError();
       console.warn('Client disconnected');
       this.eventService.emit(EventService.CHAT_RT_DISCONNECTED);
     });
