@@ -10,7 +10,6 @@ import { USER_DATA, USER_ID } from '../../../tests/user.fixtures.spec';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 class User {
@@ -22,8 +21,8 @@ class User {
 class UserService extends ResourceService {
   protected API_URL = 'api/v3/users';
 
-  constructor(http: HttpService, httpClient: HttpClient) {
-    super(http, httpClient);
+  constructor(http: HttpService) {
+    super(http);
   }
 
   protected mapRecordData(data: any): any {

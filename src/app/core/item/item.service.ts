@@ -97,7 +97,7 @@ export class ItemService extends ResourceService {
     private i18n: I18nService,
     private trackingService: TrackingService,
     private eventService: EventService) {
-    super(http, httpNew);
+    super(http);
   }
 
   public getFakeItem(id: string): Item {
@@ -518,7 +518,7 @@ export class ItemService extends ResourceService {
   public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
     let options: RequestOptions = null;
     options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
-    
+
     return this.http.post(this.API_URL_WEB + '/purchase/products/' + orderId, orderParams, options)
     .map((r: Response) => r.json());
   }
@@ -526,7 +526,7 @@ export class ItemService extends ResourceService {
   public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
     let options: RequestOptions = null;
     options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
-    
+
     return this.http.post(this.API_URL_WEB + '/purchase/products/credit/' + orderId, orderParams, options)
       .map((r: Response) => r.json());
   }
@@ -534,7 +534,7 @@ export class ItemService extends ResourceService {
   public update(item: any, itemType: string): Observable<any> {
     let url: string = this.API_URL + '/';
     let options = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
-    
+
     if (itemType === ITEM_TYPES.CARS) {
       url += 'cars/';
       options.headers.append('X-PaymentProvider', PAYMENT_PROVIDER);
@@ -547,7 +547,7 @@ export class ItemService extends ResourceService {
       .map((r: Response) => r.json())
       .do(() => this.eventService.emit(EventService.ITEM_UPDATED, item))
   }
-  
+
   public updateRealEstateLocation(itemId: string, location: ItemLocation): Observable<any> {
     return this.http.put(this.API_URL + '/real_estate/' + itemId + '/location', location);
   }
