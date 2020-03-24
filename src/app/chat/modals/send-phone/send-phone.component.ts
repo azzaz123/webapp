@@ -8,6 +8,7 @@ import { WindowRef } from '../../../core/window/window.service';
 import { HttpService } from '../../../core/http/http.service';
 import { AsYouType, format, getCountryCallingCode, isValidNumber } from 'libphonenumber-js';
 import { InboxConversation } from '../../model';
+import { InboxConversationService } from '../../service';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -26,6 +27,7 @@ export class SendPhoneComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
+    private inboxConversationService: InboxConversationService,
     private http: HttpService,
     private errorsService: ErrorsService,
     private trackingService: TrackingService,
@@ -61,9 +63,7 @@ export class SendPhoneComponent implements OnInit {
       } else {
         this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
       }
-      this.http.put(`${this.API_URL}/${this.conversation.id}/buyer-phone-number`, {
-        phone_number: phoneNumber
-      }).subscribe();
+      this.inboxConversationService.addPhoneNumberToConversation$(this.conversation, phoneNumber).subscribe();
       this.messageService.createPhoneNumberMessage(this.conversation, phoneNumber);
       this.activeModal.close();
     } else if (!this.sendPhoneForm.controls.phone.valid) {

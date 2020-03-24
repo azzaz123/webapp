@@ -16,11 +16,14 @@ import { By } from '@angular/platform-browser';
 import { format } from 'libphonenumber-js';
 import { Observable } from 'rxjs';
 import { MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
+import { InboxConversationService } from '../../service';
+import { InboxConversationServiceMock } from '../../../../tests';
 
 describe('SendPhoneComponent', () => {
   let component: SendPhoneComponent;
   let fixture: ComponentFixture<SendPhoneComponent>;
   let messageService: MessageService;
+  let inboxConversationService: InboxConversationService;
   let trackingService: TrackingService;
   let errorsService: ErrorsService;
   let http: HttpService;
@@ -35,6 +38,7 @@ describe('SendPhoneComponent', () => {
       providers: [NgbActiveModal,
         FormBuilder,
         ...TEST_HTTP_PROVIDERS,
+        { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         {
           provide: MessageService, useValue: {
             createPhoneNumberMessage() {
@@ -58,7 +62,7 @@ describe('SendPhoneComponent', () => {
               }
             }
           }
-        },
+        }
       ],
       declarations: [SendPhoneComponent],
       schemas: [NO_ERRORS_SCHEMA]
@@ -72,6 +76,7 @@ describe('SendPhoneComponent', () => {
     component = fixture.componentInstance;
     component.phone = phoneNumber;
     messageService = TestBed.get(MessageService);
+    inboxConversationService = TestBed.get(InboxConversationService);
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
     http = TestBed.get(HttpService);
@@ -142,14 +147,12 @@ describe('SendPhoneComponent', () => {
       });
 
       it('should PUT the phone numberto the relevant API', () => {
-        spyOn(http, 'put').and.returnValue(Observable.of(true));
+        spyOn(inboxConversationService, 'addPhoneNumberToConversation$').and.returnValue(Observable.empty());
         component.conversation = MOCK_CONVERSATION();
 
         component.createPhoneNumberMessage();
 
-        expect(http.put).toHaveBeenCalledWith(`${API_URL}/${component.conversation.id}/buyer-phone-number`, {
-          phone_number: phoneNumber
-        });
+        expect(inboxConversationService.addPhoneNumberToConversation$).toHaveBeenCalledWith(component.conversation, phoneNumber);
       });
 
       it('should call messageService.createPhoneNumberMessage with the conversation and phoneNumber', () => {

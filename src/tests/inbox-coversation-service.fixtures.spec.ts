@@ -26,4 +26,8 @@ export class InboxConversationServiceMock {
 
   resendPendingMessages(conversation: InboxConversation): void {
   }
+
+  addPhoneNumberToConversation$(inboxConversation: InboxConversation, phoneNumber: string): Observable<any> {
+    return Observable.empty();
+  }
 }
