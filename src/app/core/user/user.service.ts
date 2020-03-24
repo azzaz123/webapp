@@ -161,7 +161,7 @@ export class UserService {
         // TODO: Parse error status when permission factory is refactored
         catchError(error => { 
           this.logoutLocal();
-          throw of(error);
+          return of(error);
         })
       )
   }
