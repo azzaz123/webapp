@@ -24,7 +24,7 @@ import { SplitTestService } from '../tracking/split-test.service';
 import { InboxItem } from '../../chat/model';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpResponse, HttpRequest } from '@angular/common/http';
 import { catchError, tap, map, finalize } from 'rxjs/operators';
 import { isEmpty } from 'lodash-es';
 
@@ -153,10 +153,15 @@ export class UserService {
       return of(this._user);
     }
 
-    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`)
+    return this.http.get<HttpResponse<UserResponse>>(`${environment.baseUrl}${USER_ENDPOINT}`, { observe: 'response' as 'body' })
       .pipe(
-        map(r => this.mapRecordData(r)),
-        tap(user => this._user = user)
+        map(r => this.mapRecordData(r.body)),
+        tap(user => this._user = user),
+        // TODO: Parse error status when permission factory is refactored
+        catchError(error => { 
+          this.logoutLocal();
+          return of(error);
+        })
       )
   }
 
