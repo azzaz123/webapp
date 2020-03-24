@@ -219,6 +219,19 @@ describe('Service: User', () => {
         expect(req.request.method).toBe('GET');
         expect(response).toEqual(MOCK_FULL_USER);
       });
+
+      // TODO: This should change when parsing error status from backend (once permission factory is migrated)
+      describe('and there is error from backend', () => {
+        it('should logout user', () => {
+          spyOn(service, 'logoutLocal');
+
+          service.me().subscribe();
+          const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
+          req.flush({}, { status: 401, statusText: 'Unauthorized' });
+  
+          expect(service.logoutLocal).toHaveBeenCalledTimes(1);
+        });
+      })
     })
 
     describe('when there is user stored', () => {
