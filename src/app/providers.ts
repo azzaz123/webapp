@@ -1,13 +1,8 @@
 import { APP_INITIALIZER, Provider } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
-import { AccessTokenService } from './core/http/access-token.service';
-import { RequestOptions, XHRBackend } from '@angular/http';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { UserService } from './core/user/user.service';
 import { User, PERMISSIONS } from './core/user/user';
-import { Observable } from 'rxjs';
-import { EventService } from './core/event/event.service';
-
 export const PROVIDERS: Provider[] = [
   {
     provide: 'SUBDOMAIN',

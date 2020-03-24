@@ -2,7 +2,6 @@ import './rxjs-extensions';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app.routing';
 import { CoreModule } from './core/core.module';
 import { CookieModule } from 'ngx-cookie';
@@ -26,7 +25,6 @@ import { HttpModuleNew } from './core/http/http.module.new';
     DndModule.forRoot(),
     ToastrModule.forRoot(),
     BrowserModule,
-    HttpModule,
     HttpModuleNew,
     HttpClientModule,
     AppRoutingModule,
