@@ -6,7 +6,6 @@ import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MOCK_USER, MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
 import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
@@ -46,7 +45,6 @@ describe('CallsService', () => {
         RealTimeService,
         BlockUserXmppService,
         EventService,
-        ...TEST_HTTP_PROVIDERS,
         { provide: UserService, useClass: MockedUserService },
         { provide: ItemService, useClass: MockedItemService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },

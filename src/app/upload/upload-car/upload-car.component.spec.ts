@@ -19,7 +19,6 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { User } from '../../core/user/user';
 import { IMAGE, USER_ID } from '../../../tests/user.fixtures.spec';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Car } from '../../core/item/car';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
@@ -60,7 +59,6 @@ describe('UploadCarComponent', () => {
       imports: [NgbPopoverModule],
       providers: [
         FormBuilder,
-        TEST_HTTP_PROVIDERS,
         NgbPopoverConfig,
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },

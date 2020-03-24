@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { InboxService } from './inbox.service';
 import { MessageService } from './message.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { of, throwError } from 'rxjs';
 import { createInboxConversationsArray, MOCK_INBOX_API_RESPONSE } from '../../../tests/inbox.fixtures.spec';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
@@ -41,7 +40,6 @@ describe('InboxService', () => {
       ],
       providers: [
         InboxService,
-        ...TEST_HTTP_PROVIDERS,
         EventService,
         { provide: MessageService, useClass: MockMessageService },
         { provide: UserService, useClass: MockedUserService },

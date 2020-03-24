@@ -12,7 +12,6 @@ import { User } from '../../core/user/user';
 import { USER_DATA } from '../../../tests/user.fixtures.spec';
 import { WindowRef } from '../../core/window/window.service';
 import { MessageService } from '../../chat/service/message.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { PaymentService } from '../../core/payments/payment.service';
 import { CustomCurrencyPipe } from '../../shared/pipes';
@@ -95,7 +94,7 @@ describe('TopbarComponent', () => {
             }
           }
         },
-        EventService, ...TEST_HTTP_PROVIDERS],
+        EventService],
       declarations: [TopbarComponent, CustomCurrencyPipe],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })

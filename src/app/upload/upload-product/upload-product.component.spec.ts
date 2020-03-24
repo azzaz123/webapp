@@ -15,7 +15,6 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { User } from '../../core/user/user';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { ITEM_CATEGORY_ID, ITEM_DATA, ITEM_DELIVERY_INFO, MOCK_ITEM, MOCK_ITEM_FASHION } from '../../../tests/item.fixtures.spec';
 import { Item } from '../../core/item/item';
@@ -76,7 +75,6 @@ describe('UploadProductComponent', () => {
       providers: [
         FormBuilder,
         NgbPopoverConfig,
-        TEST_HTTP_PROVIDERS,
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },

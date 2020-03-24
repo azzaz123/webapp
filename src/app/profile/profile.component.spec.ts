@@ -8,7 +8,6 @@ import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
-import { HttpService } from '../core/http/http.service';
 import { FeatureflagService } from '../core/user/featureflag.service';
 import { SUBSCRIPTIONS, SUBSCRIPTIONS_NOT_SUB } from '../../tests/subscriptions.fixtures.spec';
 import { EventService } from '../core/event/event.service';
@@ -32,7 +31,6 @@ describe('ProfileComponent', () => {
       providers: [
         I18nService,
         EventService,
-        {provide: HttpService, useValue: {}},
         {
           provide: UserService, useValue: {
             me() {
