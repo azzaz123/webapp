@@ -1,11 +1,6 @@
-/* tslint:disable:no-unused-variable */
-
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { MockBackend, MockConnection } from '@angular/http/testing';
-import { Response, ResponseOptions } from '@angular/http';
-import { UserService } from './user.service';
-import { HttpService } from '../http/http.service';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, PROTOOL_EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT, USER_UNSUBSCRIBE_REASONS_ENDPOINT, USER_UNSUBSCRIBE_ENDPOINT, USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT, USER_BY_ID_ENDPOINT, USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT, USER_REPORT_ENDPOINT, USER_COVER_IMAGE_ENDPOINT, USER_PHONE_INFO_ENDPOINT, USER_EXTRA_INFO_ENDPOINT } from './user.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { Item } from '../item/item';
@@ -21,7 +16,7 @@ import {
   MOTORPLAN_DATA,
   ONLINE,
   PROFILE_SUB_INFO,
-  REASONS,
+  MOCK_UNSUBSCRIBE_REASONS,
   RESPONSE_RATE,
   SCORING_STARS,
   SCORING_STARTS,
@@ -44,7 +39,6 @@ import {
 } from '../../../tests/user.fixtures.spec';
 import { AvailableSlots, UserStatsResponse } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { AccessTokenService } from '../http/access-token.service';
 import { EventService } from '../event/event.service';
 import { PERMISSIONS, User } from './user';
@@ -55,15 +49,13 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FEATURE_FLAGS_ENUM, FeatureflagService } from './featureflag.service';
 import { SplitTestService } from '../tracking/split-test.service';
-import { HttpModuleNew } from '../http/http.module.new';
 import { APP_VERSION } from '../../../environments/version';
 import { PhoneMethod } from '../../chat/model';
+import { HttpParams, HttpRequest } from '@angular/common/http';
 
 describe('Service: User', () => {
 
   let service: UserService;
-  let mockBackend: MockBackend;
-  let http: HttpService;
   let haversineService: HaversineService;
   const FAKE_USER_NAME = 'No disponible';
   let accessTokenService: AccessTokenService;
@@ -72,7 +64,8 @@ describe('Service: User', () => {
   let permissionService: NgxPermissionsService;
   let featureflagService: FeatureflagService;
   let splitTestService: SplitTestService;
-  let httpTestingController: HttpTestingController;
+  let httpMock: HttpTestingController;
+  let eventService: EventService;
 
   const mockMotorPlan = {
     type: 'motor_plan_pro',
@@ -82,15 +75,14 @@ describe('Service: User', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule,
-        HttpModuleNew
+        HttpClientTestingModule
       ],
       providers: [
-        ...TEST_HTTP_PROVIDERS,
         EventService,
         UserService,
         I18nService,
         HaversineService,
+        AccessTokenService,
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         },
@@ -98,6 +90,9 @@ describe('Service: User', () => {
           provide: CookieService,
           useValue: {
             cookies: {},
+            get(key) {
+              return this.cookies[key];
+            },
             put(key, value) {
               this.cookies[key] = value;
             },
@@ -133,8 +128,6 @@ describe('Service: User', () => {
       ]
     });
     service = TestBed.get(UserService);
-    mockBackend = TestBed.get(MockBackend);
-    http = TestBed.get(HttpService);
     haversineService = TestBed.get(HaversineService);
     accessTokenService = TestBed.get(AccessTokenService);
     accessTokenService.storeAccessToken(null);
@@ -143,11 +136,12 @@ describe('Service: User', () => {
     permissionService = TestBed.get(NgxPermissionsService);
     featureflagService = TestBed.get(FeatureflagService);
     splitTestService = TestBed.get(SplitTestService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    httpMock = TestBed.get(HttpTestingController);
+    eventService = TestBed.get(EventService);
   });
 
   afterEach(() => {
-    httpTestingController.verify();
+    httpMock.verify();
   });
 
   it('should create an instance', () => {
@@ -173,98 +167,72 @@ describe('Service: User', () => {
   });
 
   describe('get', () => {
-    describe('without backend error', () => {
-      beforeEach(fakeAsync(() => {
-        mockBackend.connections.subscribe((connection: MockConnection) => {
-          expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/' + USER_ID);
-          const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USER_DATA) });
-          connection.mockRespond(new Response(res));
-        });
-      }));
+    describe('when there are no users stored', () => {
+      it('should ask backend and return user', () => {
+        let response: User;
 
-      it('should return the User object', fakeAsync(() => {
-        let user: User;
-        service.get(USER_ID).subscribe((r: User) => {
-          user = r;
-        });
-        expect(user instanceof User).toBeTruthy();
-        expect(user.id).toBe(USER_ID);
-        expect(user.microName).toBe(MICRO_NAME);
-        // expect(user.image).toEqual(IMAGE);
-        expect(user.location).toEqual(USER_LOCATION);
-        expect(user.stats).toEqual(STATS);
-        expect(user.validations).toEqual(VALIDATIONS);
-        expect(user.verificationLevel).toBe(VERIFICATION_LEVEL);
-        expect(user.scoringStars).toBe(SCORING_STARS);
-        expect(user.scoringStarts).toBe(SCORING_STARTS);
-        expect(user.responseRate).toBe(RESPONSE_RATE);
-        expect(user.online).toBe(ONLINE);
-      }));
+        service.get(USER_ID).subscribe(r => response = r);
+        const req = httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`);
+        req.flush(USER_DATA);
+
+        expect(req.request.method).toBe('GET');
+        expect(response).toEqual(MOCK_FULL_USER);
+      });
     });
-    describe('with backend error', () => {
-      beforeEach(fakeAsync(() => {
-        mockBackend.connections.subscribe((connection: MockConnection) => {
-          connection.mockError();
-        });
-      }));
+
+    describe('when there are users stored', () => {
+      it('should not ask backend and return user from memory', () => {
+        let response: User;
+
+        service.get(USER_ID).subscribe();
+        httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`).flush(USER_DATA);
+        service.get(USER_ID).subscribe(r => response = r);
+        httpMock.expectNone(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`);
+
+        expect(response).toEqual(MOCK_FULL_USER);
+      });
+    })
+
+    describe('when there is an error from backend', () => {
       it('should return a fake User object', () => {
-        let user: User;
-        service.get(USER_ID).subscribe((r: User) => {
-          user = r;
-        });
-        expect(user.id).toBe(USER_ID);
-        expect(user.microName).toBe(FAKE_USER_NAME);
+        let response: User;
+
+        service.get(USER_ID).subscribe(r => response = r);
+        httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`)
+          .flush({}, { status: 500, statusText: 'Server error' });
+
+        expect(response.id).toBe(USER_ID);
+        expect(response.microName).toBe(FAKE_USER_NAME);
       });
     });
   });
 
   describe('me', () => {
+    describe('when there is no user stored', () => {
+      it('should ask backend', () => {
+        let response: User;
 
-    it('should retrieve and return the User object', fakeAsync(() => {
-      spyOn(http, 'get').and.callThrough();
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/me');
-        const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USER_DATA) });
-        connection.mockRespond(new Response(res));
+        service.me().subscribe(r => response = r);
+        const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
+        req.flush(USER_DATA);
+
+        expect(req.request.method).toBe('GET');
+        expect(response).toEqual(MOCK_FULL_USER);
       });
-      let user: User;
-      service.me().subscribe((r: User) => {
-        user = r;
+    })
+
+    describe('when there is user stored', () => {
+      it('should return user from memory', () => {
+        let response: User;
+
+        service.me().subscribe();
+        httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`).flush(USER_DATA);
+        service.me().subscribe(r => response = r);
+        httpMock.expectNone(`${environment.baseUrl}${USER_ENDPOINT}`);
+
+        expect(response).toEqual(MOCK_FULL_USER);
       });
-      expect(user instanceof User).toBeTruthy();
-      expect(user.id).toBe(USER_ID);
-      expect(user.microName).toBe(MICRO_NAME);
-      expect(user.image).toBeDefined();
-      expect(user.location).toEqual(USER_LOCATION);
-      expect(user.stats).toEqual(STATS);
-      expect(user.validations).toEqual(VALIDATIONS);
-      expect(user.verificationLevel).toBe(VERIFICATION_LEVEL);
-      expect(user.scoringStars).toBe(SCORING_STARS);
-      expect(user.scoringStarts).toBe(SCORING_STARTS);
-      expect(user.responseRate).toBe(RESPONSE_RATE);
-      expect(user.online).toBe(ONLINE);
-      expect(http.get).toHaveBeenCalled();
-    }));
-
-    it('should just return the User object if present', fakeAsync(() => {
-      let user: User;
-      spyOn(http, 'get');
-      service['_user'] = new User('123');
-      service.me().subscribe((r: User) => {
-        user = r;
-      });
-      expect(user instanceof User).toBeTruthy();
-      expect(user.id).toBe('123');
-      expect(http.get).not.toHaveBeenCalled();
-    }));
-
-    it('should call http only once', () => {
-      spyOn(http, 'get').and.callThrough();
-      service.me().subscribe();
-      service.me().subscribe();
-      expect(http.get).toHaveBeenCalledTimes(1);
-    });
-
+    })
   });
 
   describe('checkUserStatus', () => {
@@ -286,21 +254,21 @@ describe('Service: User', () => {
   describe('sendUserPresence', () => {
     const intervalValue = 1000;
     const callTimes = 6;
+    const onlineUrl = `${environment.baseUrl}${USER_ONLINE_ENDPOINT}`;
 
     beforeEach(() => {
-      spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
       spyOn(permissionService, 'flushPermissions').and.returnValue({});
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
-      spyOn(http, 'post').and.returnValue(Observable.of({}));
       accessTokenService.storeAccessToken('abc');
     });
 
     it('should call the me/online endpoint ONCE when the client connects and then every <intervalValue> milliseconds', fakeAsync(() => {
       service.sendUserPresenceInterval(intervalValue);
       tick(intervalValue * callTimes);
-
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/online');
-      expect(http.post).toHaveBeenCalledTimes(callTimes + 1);
+      let requests = httpMock.match(onlineUrl);
+      requests.forEach(request => request.flush({}));
+      
+      expect(requests.length).toBe(callTimes + 1);
       discardPeriodicTasks();
     }));
 
@@ -308,10 +276,12 @@ describe('Service: User', () => {
       service.sendUserPresenceInterval(intervalValue);
       tick(intervalValue * callTimes);
       service.logout();
+      httpMock.expectOne(`${environment.siteUrl.replace('es', 'www')}${LOGOUT_ENDPOINT}`).flush({});
       tick(intervalValue * 4);
+      let requests = httpMock.match(onlineUrl);
+      requests.forEach(request => request.flush({}));
 
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/online');
-      expect(http.post).toHaveBeenCalledTimes(callTimes + 1);
+      expect(requests.length).toBe(callTimes + 1);
       discardPeriodicTasks();
     }));
   });
@@ -327,48 +297,71 @@ describe('Service: User', () => {
 
   describe('login', () => {
     let response: LoginResponse;
-    const DATA: any = {
+    const FORM_INPUT = {
       emailAddress: 'test@test.it',
       installationType: 'ANDROID',
       password: 'test'
     };
-    const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(MOCK_USER_RESPONSE_BODY) });
-    beforeEach(() => {
-      spyOn(http, 'postUrlEncoded').and.returnValue(Observable.of(new Response(res)));
-      spyOn<any>(service, 'storeData').and.callThrough();
-      service.login(DATA).subscribe((r: LoginResponse) => {
-        response = r;
-      });
+
+    it('should send user login request to backend', () => {
+      const expectedBody = new HttpParams()
+        .set('emailAddress', FORM_INPUT.emailAddress)
+        .set('installationType', FORM_INPUT.installationType)
+        .set('password', FORM_INPUT.password)
+        .toString();
+
+      service.login(FORM_INPUT).subscribe(r => response = r);
+      const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
+      req.flush(MOCK_USER_RESPONSE_BODY);
+
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body.toString()).toEqual(expectedBody);
     });
-    it('should call endpoint and return response', () => {
-      expect(http.postUrlEncoded).toHaveBeenCalledWith('shnm-portlet/api/v1/access.json/login3', DATA);
-      expect(response).toEqual(MOCK_USER_RESPONSE_BODY);
+
+    it('should store token when backend has responded', () => {
+      spyOn(accessTokenService, 'storeAccessToken');
+
+      service.login(FORM_INPUT).subscribe();
+      const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
+      req.flush(MOCK_USER_RESPONSE_BODY);
+
+      expect(accessTokenService.storeAccessToken).toHaveBeenCalledWith(MOCK_USER_RESPONSE_BODY.token);
     });
-    it('should call StoreData', () => {
-      expect(service['storeData']).toHaveBeenCalledWith(MOCK_USER_RESPONSE_BODY);
-    });
+
+    it('should emit event when user logged in successfuly', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+
+      service.login(FORM_INPUT).subscribe();
+      const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
+      req.flush(MOCK_USER_RESPONSE_BODY);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.USER_LOGIN, MOCK_USER_RESPONSE_BODY.token);
+    })
   });
 
   describe('logout', () => {
-    const res: ResponseOptions = new ResponseOptions({ body: 'redirect_url' });
+    const expectedUrl = `${environment.siteUrl.replace('es', 'www')}${LOGOUT_ENDPOINT}`;
+    const logoutResponse = 'redirect_url';
     let redirectUrl: string;
+    let req: TestRequest;
 
     beforeEach(() => {
-      spyOn(http, 'postNoBase').and.returnValue(Observable.of(new Response(res)));
       spyOn(permissionService, 'flushPermissions').and.returnValue({});
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
       spyOn(splitTestService, 'reset');
+      accessTokenService.storeAccessToken('token')
 
-      event.subscribe(EventService.USER_LOGOUT, (param) => {
-        redirectUrl = param;
-      });
+      event.subscribe(EventService.USER_LOGOUT, param => redirectUrl = param);
       cookieService.put('publisherId', 'someId');
 
       service.logout();
+      req = httpMock.expectOne(expectedUrl);
+      req.flush(logoutResponse);
     });
 
-    it('should call endpoint', () => {
-      expect(http.postNoBase).toHaveBeenCalledWith(environment.siteUrl.replace('es', 'www') + 'rest/logout', undefined, undefined, true);
+    it('should call logout endpoint', () => {
+      expect(req.request.method).toBe('POST');
+      expect(req.request.urlWithParams).toEqual(expectedUrl)
     });
 
     it('should call deleteAccessToken', () => {
@@ -435,7 +428,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getInfo(USER_ID).subscribe(response => expect(response).toEqual(USER_INFO_RESPONSE));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/extra-info`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_EXTRA_INFO_ENDPOINT(USER_ID)}`);
 
       expect(req.request.method).toEqual('GET');
       req.flush(USER_INFO_RESPONSE);
@@ -447,7 +440,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getProInfo().subscribe(response => expect(response).toEqual(USER_PRO_INFO_RESPONSE));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/protool/extraInfo`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`);
 
       expect(req.request.method).toEqual('GET');
       req.flush(USER_PRO_INFO_RESPONSE);
@@ -459,7 +452,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getUserCover().subscribe(response => expect(response).toEqual(IMAGE));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/cover-image`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`);
       expect(req.request.method).toEqual('GET');
       req.flush(IMAGE);
     });
@@ -468,7 +461,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getUserCover().subscribe(response => expect(response).toEqual({} as Image));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/cover-image`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`);
       expect(req.request.method).toEqual('GET');
       req.error(new ErrorEvent('network error'));
     });
@@ -476,83 +469,77 @@ describe('Service: User', () => {
 
   describe('updateProInfo', () => {
     it('should call endpoint', () => {
-      spyOn(http, 'post').and.callThrough();
+      const expectedUrl = `${environment.baseUrl}${PROTOOL_EXTRA_INFO_ENDPOINT}`;
 
       service.updateProInfo(USER_PRO_DATA).subscribe();
+      const req = httpMock.expectOne(expectedUrl);
+      req.flush({});
 
-      expect(http.post).toHaveBeenCalledWith('api/v3/protool/extraInfo', USER_PRO_DATA);
-    });
-  });
-
-  describe('updateProInfoNotifications', () => {
-    it('should call endpoint', () => {
-      spyOn(http, 'post').and.callThrough();
-
-      service.updateProInfoNotifications(USER_PRO_INFO_NOTIFICATIONS).subscribe();
-
-      expect(http.post).toHaveBeenCalledWith('api/v3/protool/extraInfo/notifications', USER_PRO_INFO_NOTIFICATIONS);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(USER_PRO_DATA);
     });
   });
 
   describe('updateLocation', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USER_LOCATION) });
-      spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
-      let resp: UserLocation;
-      service.updateLocation(USER_LOCATION_COORDINATES).subscribe((response: UserLocation) => {
-        resp = response;
-      });
-      expect(http.put).toHaveBeenCalledWith('api/v3/users/me/location', {
+      let response: UserLocation;
+      
+      service.updateLocation(USER_LOCATION_COORDINATES).subscribe(r => response = r);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_LOCATION_ENDPOINT}`);
+      req.flush(USER_LOCATION);
+
+      expect(req.request.method).toBe('PUT');
+      expect(req.request.body).toEqual({
         latitude: USER_LOCATION_COORDINATES.latitude,
         longitude: USER_LOCATION_COORDINATES.longitude
       });
-      expect(resp).toEqual(USER_LOCATION);
+      expect(response).toEqual(USER_LOCATION);
     });
   });
 
   describe('updateStoreLocation', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USER_LOCATION) });
-      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
-      let resp: UserLocation;
+      let response: UserLocation;
 
-      service.updateStoreLocation(USER_LOCATION_COORDINATES).subscribe();
+      service.updateStoreLocation(USER_LOCATION_COORDINATES).subscribe(r => response = r);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`);
+      req.flush(USER_LOCATION);
 
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/bumped-profile/store-location', {
+      expect(req.request.method).toBe('POST')
+      expect(req.request.body).toEqual({
         latitude: USER_LOCATION_COORDINATES.latitude,
         longitude: USER_LOCATION_COORDINATES.longitude,
         address: USER_LOCATION_COORDINATES.name
       });
+      expect(response).toEqual(USER_LOCATION);
     });
   });
 
   describe('getStats', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USERS_STATS) });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      const backendResponse = USERS_STATS;
+      let response: UserStatsResponse;
 
-      let resp: UserStatsResponse;
-      service.getStats().subscribe((response: UserStatsResponse) => {
-        resp = response;
-      });
+      service.getStats().subscribe(r => response = r);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_STATS_ENDPOINT}`);
+      req.flush(backendResponse);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/stats');
-      expect(resp).toEqual(USERS_STATS_RESPONSE);
+      expect(req.request.method).toBe('GET');
+      expect(response).toEqual(USERS_STATS_RESPONSE);
     });
   });
 
   describe('getUserStats', () => {
     it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(USERS_STATS) });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      const backendResponse = USERS_STATS;
+      let response: UserStatsResponse;
 
-      let resp: UserStatsResponse;
-      service.getUserStats(USER_ID).subscribe((response: UserStatsResponse) => {
-        resp = response;
-      });
+      service.getUserStats(USER_ID).subscribe(r => response = r);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(USER_ID)}`);
+      req.flush(backendResponse);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/stats');
-      expect(resp).toEqual(USERS_STATS_RESPONSE);
+      expect(req.request.method).toBe('GET');
+      expect(response).toEqual(USERS_STATS_RESPONSE);
     });
   });
 
@@ -563,7 +550,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(PHONE_METHOD_RESPONSE));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/phone-method`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(USER_ID)}`);
       expect(req.request.method).toEqual('GET');
       req.flush(PHONE_METHOD_RESPONSE);
     });
@@ -572,7 +559,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getPhoneInfo(USER_ID).subscribe(response => expect(response).toEqual(null));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/${USER_ID}/phone-method`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_PHONE_INFO_ENDPOINT(USER_ID)}`);
       expect(req.request.method).toEqual('GET');
       req.error(new ErrorEvent('network error'));
     });
@@ -580,75 +567,81 @@ describe('Service: User', () => {
 
   describe('edit', () => {
     it('should call endpoint, return user and set it', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: USER_DATA });
-      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
-      spyOn<any>(service, 'mapRecordData').and.returnValue(MOCK_USER);
-      let resp: User;
+      const backendResponse = USER_DATA;
+      let response: User;
 
-      service.edit(USER_EDIT_DATA).subscribe((user: User) => {
-        resp = user;
-      });
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me', USER_EDIT_DATA);
-      expect(resp).toEqual(MOCK_USER);
-      expect(service['_user']).toEqual(MOCK_USER);
+      service.edit(USER_EDIT_DATA).subscribe(r => response = r);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
+      req.flush(backendResponse);
+
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(USER_EDIT_DATA);
+
+      expect(response).toEqual(MOCK_FULL_USER);
+      expect(service.user).toEqual(MOCK_FULL_USER);
     });
   });
 
   describe('updateEmail', () => {
     it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: '' });
-      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      const expectedBody = { email_address: USER_EMAIL };
 
       service.updateEmail(USER_EMAIL).subscribe();
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_EMAIL_ENDPOINT}`);
+      req.flush({});
 
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/email', {
-        email_address: USER_EMAIL
-      });
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(expectedBody);
     });
   });
 
   describe('updatePassword', () => {
     it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: '' });
-      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
-      const OLD_PASSWORD = 'old';
-      const NEW_PASSWORD = 'new';
-
-      service.updatePassword(OLD_PASSWORD, NEW_PASSWORD).subscribe();
-
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/password', {
+      const OLD_PASSWORD = 'outwiththeold';
+      const NEW_PASSWORD = 'inwiththenew';
+      const expectedBody = {
         old_password: OLD_PASSWORD,
         new_password: NEW_PASSWORD
-      });
+      }
+
+      service.updatePassword(OLD_PASSWORD, NEW_PASSWORD).subscribe();
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_PASSWORD_ENDPOINT}`)
+      req.flush({});
+
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(expectedBody);
     });
   });
 
   describe('getUnsubscribeReasons', () => {
-    it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(REASONS) });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: UnsubscribeReason[];
+    it('should call endpoint with language as query param and return response', () => {
+      const languageParamKey = 'language';
+      const languageParamValue = 'en';
+      const expectedParams = new HttpParams().set(languageParamKey, languageParamValue);
+      const expectedUrl = `${environment.baseUrl}${USER_UNSUBSCRIBE_REASONS_ENDPOINT}?${expectedParams.toString()}`;
+      let response: UnsubscribeReason[];
 
-      service.getUnsubscribeReasons().subscribe((response: UnsubscribeReason[]) => {
-        resp = response;
-      });
+      service.getUnsubscribeReasons().subscribe(r => response = r);
+      const req = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_UNSUBSCRIBE_REASONS);
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/unsubscribe/reason', { language: 'en' });
-      expect(resp).toEqual(REASONS);
+      const languageParam = req.request.params.get(languageParamKey)
+      expect(req.request.method).toBe('GET');
+      expect(languageParam).toEqual(languageParamValue);
+      expect(response).toEqual(MOCK_UNSUBSCRIBE_REASONS);
     });
   });
 
   describe('unsubscribe', () => {
     it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({ body: '' });
-      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      const expectedBody = { reason_id: SELECTED_REASON, other_reason: CUSTOM_REASON };
 
       service.unsubscribe(SELECTED_REASON, CUSTOM_REASON).subscribe();
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`)
+      req.flush({});
 
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/unsubscribe', {
-        reason_id: SELECTED_REASON,
-        other_reason: CUSTOM_REASON
-      });
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(expectedBody);
     });
   });
 
@@ -738,46 +731,34 @@ describe('Service: User', () => {
   });
 
   describe('getMotorPlan', () => {
+    const expectedMotorPlanUrl = `${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT}`;
 
     it('should retrieve and return the Motor plan object', fakeAsync(() => {
-      spyOn(http, 'get').and.callThrough();
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/me/profile-subscription-info/type');
-        const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(MOTORPLAN_DATA) });
-        connection.mockRespond(new Response(res));
-      });
-      let motorPlan: MotorPlan;
+      let response: MotorPlan;
 
-      service.getMotorPlan().subscribe((r: MotorPlan) => {
-        motorPlan = r;
-      });
+      service.getMotorPlan().subscribe(r => response = r);
+      const req = httpMock.expectOne(expectedMotorPlanUrl);
+      req.flush(MOTORPLAN_DATA);
 
-      expect(http.get).toHaveBeenCalled();
-      expect(motorPlan.subtype).toEqual('sub_premium');
+      expect(req.request.method).toBe('GET');
+      expect(response.subtype).toEqual(MOTORPLAN_DATA.subtype);
     }));
 
-    it('should return the MotorPlan object if present', fakeAsync(() => {
-      let motorPlan: MotorPlan;
-      spyOn(http, 'get');
+    it('should do only one petition to backend', () => {
+      let response: MotorPlan;
+      let response2: MotorPlan;
 
-      service['_motorPlan'] = mockMotorPlan;
-      service.getMotorPlan().subscribe((r: MotorPlan) => {
-        motorPlan = r;
-      });
+      service.getMotorPlan().subscribe(r => response = r);
+      const req = httpMock.expectOne(expectedMotorPlanUrl);
+      req.flush(MOTORPLAN_DATA);
 
-      expect(motorPlan.subtype).toBe('sub_premium');
-      expect(http.get).not.toHaveBeenCalled();
-    }));
+      service.getMotorPlan().subscribe(r => response2 = r);
+      httpMock.expectNone(expectedMotorPlanUrl);
 
-    it('should call http only once', () => {
-      spyOn(http, 'get').and.callThrough();
-
-      service.getMotorPlan().subscribe();
-      service.getMotorPlan().subscribe();
-
-      expect(http.get).toHaveBeenCalledTimes(1);
+      expect(response).toEqual(MOTORPLAN_DATA);
+      expect(response2).toEqual(MOTORPLAN_DATA);
+      expect(response2).toBe(response);
     });
-
   });
 
   describe('getMotorPlans', () => {
@@ -785,26 +766,10 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.getMotorPlans().subscribe(response => expect(response).toEqual(PROFILE_SUB_INFO));
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/profile-subscription-info`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT}`);
 
       expect(req.request.method).toEqual('GET');
       req.flush(PROFILE_SUB_INFO);
-    });
-  });
-
-  describe('getAvailableSlots', () => {
-    it('should call endpoint GET available slots and return response', () => {
-      const SLOTS: AvailableSlots = {
-        num_slots_cars: 3,
-        user_can_manage: true
-      };
-      accessTokenService.storeAccessToken('ACCESS_TOKEN');
-      service.getAvailableSlots().subscribe(response => expect(response).toEqual(SLOTS));
-
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/items/slots-available`);
-
-      expect(req.request.method).toEqual('GET');
-      req.flush(SLOTS);
     });
   });
 
@@ -817,7 +782,7 @@ describe('Service: User', () => {
       accessTokenService.storeAccessToken('ACCESS_TOKEN');
       service.reportUser(USER_ID, ITEM_HASH, CONVERSATIONS_HASH, REASON, COMMENT).subscribe();
 
-      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/users/me/report/user/${USER_ID}`);
+      const req = httpMock.expectOne(`${environment.baseUrl}${USER_REPORT_ENDPOINT(USER_ID)}`);
       expect(req.request.method).toEqual('POST');
       expect(req.request.body).toEqual({
         itemHashId: ITEM_HASH,

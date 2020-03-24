@@ -5,6 +5,7 @@ import * as CryptoJS from 'crypto-js';
 
 import { AccessTokenService } from '../access-token.service';
 import { environment } from '../../../../environments/environment';
+import { LOGIN_ENDPOINT } from '../../user/user.service';
 
 export const TOKEN_AUTHORIZATION_HEADER_NAME = 'Authorization';
 export const TOKEN_TIMESTAMP_HEADER_NAME = 'Timestamp';
@@ -20,10 +21,10 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (this.accessTokenService.accessToken) {
+    if (this.accessTokenService.accessToken || request.url === `${environment.baseUrl}${LOGIN_ENDPOINT}`) {
       const setHeaders: any = {};
 
-      if (!request.headers.has(TOKEN_AUTHORIZATION_HEADER_NAME)) {
+      if (!request.headers.has(TOKEN_AUTHORIZATION_HEADER_NAME) && request.url !== `${environment.baseUrl}${LOGIN_ENDPOINT}`) {
         setHeaders[TOKEN_AUTHORIZATION_HEADER_NAME] = `Bearer ${this.accessTokenService.accessToken}`;
       }
 
@@ -31,7 +32,7 @@ export class TokenInterceptor implements HttpInterceptor {
         const timestamp = new Date().getTime();
         const endpoint = request.url.replace(environment.baseUrl, '');
         setHeaders[TOKEN_TIMESTAMP_HEADER_NAME] = timestamp.toString();
-        setHeaders[TOKEN_SIGNATURE_HEADER_NAME] = this.getSignature(endpoint, request.method, timestamp);
+        setHeaders[TOKEN_SIGNATURE_HEADER_NAME] = getTokenSignature(endpoint, request.method, timestamp);
       }
       request = request.clone({ setHeaders });
       return next.handle(request);
@@ -39,10 +40,10 @@ export class TokenInterceptor implements HttpInterceptor {
       return of(new HttpResponse({ status: 401, statusText: 'Unauthorized', body: {} }));
     }
   }
+}
 
-  public getSignature(url: string, method: string, timestamp: number) {
-    const separator = '+#+';
-    const signature = ['/' + url.split('?')[0], method, timestamp].join(separator) + separator;
-    return CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(signature, CryptoJS.enc.Base64.parse(SECRET)));
-  }
+export const getTokenSignature = (url: string, method: string, timestamp: number) => {
+  const separator = '+#+';
+  const signature = ['/' + url.split('?')[0], method, timestamp].join(separator) + separator;
+  return CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(signature, CryptoJS.enc.Base64.parse(SECRET)));
 }

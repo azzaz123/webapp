@@ -1,55 +1,58 @@
+import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME } from './../../../core/http/interceptors/token.interceptor';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoverUploadComponent } from './cover-upload.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { HttpService } from '../../../core/http/http.service';
 import { UserService } from '../../../core/user/user.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
 import { UPLOAD_FILE, UPLOAD_FILE_ID, UPLOAD_FILE_NAME } from '../../../../tests/upload.fixtures.spec';
 import { environment } from '../../../../environments/environment';
 import { UploadFile, UploadInput } from '../../uploader/upload.interface';
+import { AccessTokenService } from '../../../core/http/access-token.service';
+import * as tokenInterceptor from './../../../core/http/interceptors/token.interceptor';
 
 describe('CoverUploadComponent', () => {
   let component: CoverUploadComponent;
   let fixture: ComponentFixture<CoverUploadComponent>;
-  let http: HttpService;
   let userService: UserService;
   let errorsService: ErrorsService;
+  const TIMESTAMP = 123456789;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoverUploadComponent ],
+      declarations: [CoverUploadComponent],
       providers: [
-        ...TEST_HTTP_PROVIDERS,
         {
           provide: UserService, useValue: {
-          user: MOCK_USER
-        }
+            user: MOCK_USER
+          }
         },
         {
           provide: ErrorsService, useValue: {
-          i18nError() {
+            i18nError() {
+            }
           }
-        }
+        },
+        {
+          provide: AccessTokenService, useValue: {
+            accessToken: 'thetoken'
+          }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CoverUploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    http = TestBed.get(HttpService);
     userService = TestBed.get(UserService);
     errorsService = TestBed.get(ErrorsService);
   });
 
   describe('onUploadOutput', () => {
-
     let uploadEvent: UploadInput;
 
     beforeEach(() => {
@@ -59,16 +62,13 @@ describe('CoverUploadComponent', () => {
     });
 
     it('should send upload event if event is addedToQueue', () => {
+      spyOn(tokenInterceptor, 'getTokenSignature').and.returnValue('thesignature');
+      spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
       const headers = {
-        'Authorization': 'Bearer thetoken'
+        [TOKEN_AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
+        [TOKEN_SIGNATURE_HEADER_NAME]: 'thesignature',
+        [TOKEN_TIMESTAMP_HEADER_NAME]: `${TIMESTAMP}`,
       };
-      spyOn(http, 'getOptions').and.returnValue({
-        headers: {
-          toJSON() {
-            return headers;
-          }
-        }
-      });
 
       component.onUploadOutput({
         type: 'addedToQueue',
@@ -78,13 +78,12 @@ describe('CoverUploadComponent', () => {
       expect(component.file).toEqual(UPLOAD_FILE);
       expect(uploadEvent).toEqual({
         type: 'uploadFile',
-        url: environment.baseUrl + 'api/v3/users/me/cover-image',
+        url: `${environment.baseUrl}api/v3/users/me/cover-image` ,
         method: 'POST',
         fieldName: 'image',
-        headers: headers,
+        headers,
         file: UPLOAD_FILE
       });
-      expect(http.getOptions).toHaveBeenCalledWith(null, 'api/v3/users/me/cover-image', 'POST');
     });
 
     it('should set file if event is uploading', () => {
@@ -97,7 +96,7 @@ describe('CoverUploadComponent', () => {
     });
 
     it('should send remove event and set image if event is done and status 204', () => {
-      const file = {...UPLOAD_FILE};
+      const file = { ...UPLOAD_FILE };
       file.progress.data.responseStatus = 204;
 
       component.onUploadOutput({
@@ -114,7 +113,7 @@ describe('CoverUploadComponent', () => {
 
     it('should show error if event is done and status not 204', () => {
       spyOn(errorsService, 'i18nError');
-      const file = <UploadFile>{...UPLOAD_FILE};
+      const file = <UploadFile>{ ...UPLOAD_FILE };
       const ERROR = 'error';
       file.progress.data.responseStatus = 0;
       file.response = {

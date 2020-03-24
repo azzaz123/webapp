@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { SubscriptionsService, SUBSCRIPTIONS_URL } from './subscriptions.service';
+import { SubscriptionsService, SUBSCRIPTIONS_URL, SUBSCRIPTIONS_SLOTS_ENDPOINT } from './subscriptions.service';
 import { Observable, of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
@@ -9,8 +9,8 @@ import { HttpModuleNew } from '../http/http.module.new';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
-import { SubscriptionsResponse } from './subscriptions.interface';
-import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED } from '../../../tests/subscriptions.fixtures.spec';
+import { SubscriptionsResponse, SubscriptionSlot } from './subscriptions.interface';
+import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE, MOCK_SUBSCRIPTION_SLOTS } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { HttpClient } from '@angular/common/http';
@@ -222,6 +222,21 @@ describe('SubscriptionsService', () => {
 
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.method).toBe('PUT');
+    });
+  });
+
+  describe('getSlots', () => {
+    it('should map slots from backend response', () => {
+      let mappedSlots: SubscriptionSlot[];
+      const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`;
+
+      service.getSlots().subscribe(response => mappedSlots = response);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE);
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      expect(mappedSlots).toEqual(MOCK_SUBSCRIPTION_SLOTS);
     });
   });
 
