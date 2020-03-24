@@ -1,41 +1,153 @@
 import { Injectable } from '@angular/core';
 import { Call } from './calls';
-import { HttpService } from '../http/http.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { EventService } from '../event/event.service';
-import { LeadService } from './lead.service';
 import { Observable } from 'rxjs';
-import { difference, map, reverse, sortBy } from 'lodash-es';
+import { difference, findIndex, isEmpty, map, reverse, sortBy } from 'lodash-es';
 import { Lead } from './lead';
 import { Conversation } from './conversation';
 import { CallTotals } from './totals.interface';
 import { CallResponse } from './call-response.interface';
-import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
-import { BlockUserXmppService } from '../../chat/service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { LeadResponse } from './lead-response.interface';
+import { User } from '../user/user';
+import { Item } from '../item/item';
 
 @Injectable()
-export class CallsService extends LeadService {
+export class CallsService {
 
-  protected API_URL = 'api/v3/protool/calls';
-  protected ARCHIVE_URL: string = this.API_URL;
+  public PAGE_SIZE = 30;
+  public API_URL = 'api/v3/protool/calls';
+  public ARCHIVE_URL = 'api/v3/protool/calls';
 
-  private lastLeadResponse: Call[];
+  public leads: Lead[] = [];
+  public archivedLeads: Lead[] = [];
 
-  constructor(http: HttpService,
-              userService: UserService,
-              itemService: ItemService,
-              event: EventService,
-              realTime: RealTimeService,
-              blockService: BlockUserXmppService,
-              connectionService: ConnectionService) {
-    super(http, userService, itemService, event, realTime, blockService, connectionService);
+  public stream$: ReplaySubject<Lead[]>;
+  public archivedStream$: ReplaySubject<Lead[]>;
+
+  public firstLoad: boolean;
+
+  constructor(private httpClient: HttpClient,
+              private userService: UserService,
+              private itemService: ItemService,
+              private event: EventService,
+              private realTime: RealTimeService) {
+    this.stream$ = new ReplaySubject(1);
+    this.archivedStream$ = new ReplaySubject(1);
+  }
+
+  public init(archived?: boolean): Observable<Lead[]> {
+    return this.getLeads(null, archived)
+    .do((conversations: Lead[]) => {
+      if (!archived) {
+        this.stream$.next(conversations);
+      } else {
+        this.archivedStream$.next(conversations);
+      }
+      this.firstLoad = false;
+    });
+  }
+
+  protected getLastDate(conversations: Lead[]): number {
+    if (conversations.length > 0 && conversations[conversations.length - 1] && conversations[conversations.length - 1].modifiedDate) {
+      return conversations[conversations.length - 1].modifiedDate - 1;
+    }
+  }
+
+  public query(until?: number, archived: boolean = false): Observable<Lead[]> {
+    return this.httpClient.get<LeadResponse[]>(`${environment.baseUrl}${this.API_URL}`, {
+      params: {
+        until: until ? until.toString() : new Date().getTime().toString(),
+        hidden: String(archived)
+      }
+    })
+    .flatMap((res: LeadResponse[]) => {
+      return isEmpty(res) ? Observable.of([]) : Observable.forkJoin(
+        res.map((conversation: LeadResponse) => this.getUser(conversation))
+      )
+      .flatMap((response: LeadResponse[]) => {
+        return Observable.forkJoin(
+          response.map((conversation: LeadResponse) => this.getItem(conversation)
+          .map((convWithItem: Lead) => {
+            convWithItem.archived = archived;
+            return convWithItem;
+          }))
+        );
+      });
+    })
+    .catch((a) => {
+      return Observable.of(null);
+    });
+  }
+
+  protected getUser(conversation: LeadResponse): Observable<LeadResponse> {
+    if (!conversation.user_id) {
+      conversation.user = new User(null);
+      return Observable.of(conversation);
+    }
+    return this.userService.get(conversation.user_id)
+    .map((user: User) => {
+      conversation.user = user;
+      return conversation;
+    });
+  }
+
+  protected getItem(conversation: LeadResponse): Observable<Lead> {
+    if (!conversation.item_id) {
+      return Observable.of(conversation)
+      .map((data: CallResponse) => this.mapRecordData(data));
+    }
+    return this.itemService.get(conversation.item_id)
+    .map((item: Item) => this.setItem(conversation, item))
+    .map((data: CallResponse) => this.mapRecordData(data));
+  }
+
+  protected setItem(conv: LeadResponse, item: Item): LeadResponse {
+    conv.item = item;
+    conv.user.itemDistance = this.userService.calculateDistanceFromItem(conv.user, conv.item);
+    return conv;
+  }
+
+  public archiveAll(until?: number): Observable<any> {
+    until = until || new Date().getTime();
+    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/hide?until=${until}`, {})
+    .map(() => {
+      this.leads = this.bulkArchive(this.leads);
+      this.stream();
+    });
+  }
+
+  protected bulkArchive(leads: Lead[]): Lead[] {
+    leads.forEach((lead: Lead) => lead.archived = true);
+    this.archivedLeads.push(...leads);
+    return [];
+  }
+
+  public stream(archive?: boolean) {
+    if (archive) {
+      this.archivedStream$.next(this.archivedLeads);
+    } else {
+      this.stream$.next(this.leads);
+    }
+  }
+
+  public syncItem(item: Item) {
+    const replaceItem = (lead: Lead) => {
+      if (lead.item.id === item.id) {
+        lead.item = item;
+      }
+    };
+    this.leads.forEach(replaceItem);
+    this.archivedLeads.forEach(replaceItem);
   }
 
   protected getLeads(since?: number, archived?: boolean): Observable<Call[]> {
     // do not execute anything unless is more than 30 sec after last call
-
     return this.query(since, archived)
     .map((calls: Call[]) => {
       if (calls && calls.length > 0) {
@@ -49,7 +161,6 @@ export class CallsService extends LeadService {
           this.archivedLeads = this.archivedLeads.concat(calls);
         }
       }
-      this.lastLeadResponse = calls;
       return calls;
     });
   }
@@ -76,12 +187,8 @@ export class CallsService extends LeadService {
       }
       return calls;
     })
-    .map((calls: Lead[]) => {
-      return reverse(sortBy(calls, 'modifiedDate'));
-    })
-    .map((calls: Lead[]) => {
-      return calls.slice(0, end);
-    });
+    .map((calls: Lead[]) => reverse(sortBy(calls, 'modifiedDate')))
+    .map((calls: Lead[]) => calls.slice(0, end));
   }
 
   public getTotals(): Observable<CallTotals> {
@@ -113,11 +220,35 @@ export class CallsService extends LeadService {
     );
   }
 
-  protected onArchive(lead: Lead) {
+  public archive(id: string): Observable<Lead> {
+    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/hide`, {})
+    .map(() => {
+      const index: number = findIndex(this.leads, { 'id': id });
+      if (index > -1) {
+        const deletedLead: Lead = this.leads.splice(index, 1)[0];
+        deletedLead.archived = true;
+        this.archivedLeads.push(deletedLead);
+        this.stream(true);
+        this.stream();
+        this.event.emit(EventService.LEAD_ARCHIVED, deletedLead);
+        return deletedLead;
+      }
+    });
   }
 
-  protected onArchiveAll() {
-    this.leads = this.bulkArchive(this.leads);
-    this.stream();
+  public unarchive(id: string): Observable<Lead> {
+    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/unhide`, {})
+    .map(() => {
+      const index: number = findIndex(this.archivedLeads, { 'id': id });
+      if (index > -1) {
+        const lead: Lead = this.archivedLeads.splice(index, 1)[0];
+        lead.archived = false;
+        this.leads.push(lead);
+        this.stream(true);
+        this.stream();
+        this.event.emit(EventService.CONVERSATION_UNARCHIVED);
+        return lead;
+      }
+    });
   }
 }
