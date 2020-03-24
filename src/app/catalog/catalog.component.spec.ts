@@ -7,7 +7,7 @@ import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
 import { UserService } from '../core/user/user.service';
 import { MOCK_USER } from '../../tests/user.fixtures.spec';
 
-fdescribe('CatalogComponent', () => {
+describe('CatalogComponent', () => {
   let component: CatalogComponent;
   let fixture: ComponentFixture<CatalogComponent>;
   let trackingService: TrackingService;

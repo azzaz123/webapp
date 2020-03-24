@@ -1,5 +1,5 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
-import { Response } from '@angular/http';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { BUMP_TYPES, CartBase } from '../../../shared/catalog/cart/cart-base';
@@ -38,13 +38,13 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
 
 
   constructor(private cartService: CartService,
-              private paymentService: PaymentService,
-              private errorService: ErrorsService,
-              private trackingService: TrackingService,
-              private router: Router,
-              private errorsService: ErrorsService,
-              private stripeService: StripeService,
-              private eventService: EventService) { }
+    private paymentService: PaymentService,
+    private errorService: ErrorsService,
+    private trackingService: TrackingService,
+    private router: Router,
+    private errorsService: ErrorsService,
+    private stripeService: StripeService,
+    private eventService: EventService) { }
 
   ngOnInit() {
     this.eventService.subscribe('paymentResponse', (response) => {
@@ -85,8 +85,8 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
       this.paymentService.updateBillingInfo(this.billingInfoForm.value).subscribe(() => {
         this.processCheckout();
         this.loading = false;
-      }, (response: any) => {
-        this.errorsService.show(response);
+      }, (e: HttpErrorResponse) => {
+        this.errorsService.show(e);
         this.loading = false;
       });
     }
@@ -99,10 +99,10 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
       this.track(order);
       this.stripeService.buy(order.id, paymentId, this.hasSavedCard, this.savedCard, this.card);
-    }, (error: Response) => {
+    }, (e: HttpErrorResponse) => {
       this.loading = false;
-      if (error.text()) {
-        this.errorService.show(error);
+      if (e.error) {
+        this.errorService.show(e);
       } else {
         this.errorService.i18nError('bumpError');
       }
@@ -130,13 +130,13 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   }
 
   private managePaymentResponse(paymentResponse: string): void {
-    switch(paymentResponse && paymentResponse.toUpperCase()) {
+    switch (paymentResponse && paymentResponse.toUpperCase()) {
       case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-        this.router.navigate(['pro/catalog/list', {code: '200', extras: true}]);
+        this.router.navigate(['pro/catalog/list', { code: '200', extras: true }]);
         break;
       }
       default: {
-        this.router.navigate(['pro/catalog/list', {code: -1}]);
+        this.router.navigate(['pro/catalog/list', { code: -1 }]);
         break;
       }
     }
