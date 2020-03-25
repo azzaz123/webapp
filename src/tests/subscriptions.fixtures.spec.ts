@@ -21,7 +21,7 @@ export class MockSubscriptionService {
   }
 
   public getUserSubscriptionType() {
-    return of(SUBSCRIPTION_TYPES.web);
+    return of(SUBSCRIPTION_TYPES.stripe);
   }
 }
 

@@ -28,8 +28,8 @@ export const SUBSCRIPTIONS_CATEGORY_ICON_MAP = {
 export enum SUBSCRIPTION_TYPES {
   notSubscribed = 1,
   carDealer = 2,
-  motorPlan = 3,
-  web = 4
+  inApp = 3,
+  stripe = 4
 }
 
 @Injectable()
@@ -89,11 +89,11 @@ export class SubscriptionsService {
 
       if (carsSubscription) {
         if (values[2].type === 'motor_plan_pro' && !carsSubscription.selected_tier_id) {
-          return SUBSCRIPTION_TYPES.motorPlan;
+          return SUBSCRIPTION_TYPES.inApp;
         }
 
         if (carsSubscription.selected_tier_id) {
-          return SUBSCRIPTION_TYPES.web;
+          return SUBSCRIPTION_TYPES.stripe;
         }
       }
 
