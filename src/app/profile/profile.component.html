@@ -37,7 +37,10 @@
       <div class="col-3 d-none d-md-block">
         <div class="rating" *ngIf="userStats">
           <tsl-stars class="review-rating" [stars]="userStats?.ratings?.reviews" [normalized]="false"></tsl-stars>
-          ({{userStats?.counters?.reviews}} <span i18n>reviews</span>)
+          <span>
+            <span>(<span class="reviews-rating-value">{{userStats?.counters?.reviews}}</span>&nbsp;</span>
+            <span i18n>reviews</span>)
+          </span>
         </div>
       </div>
     </div>
