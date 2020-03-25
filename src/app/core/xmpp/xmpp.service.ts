@@ -1,5 +1,5 @@
 
-import {from as observableFrom, of as observableOf,  Observable, Observer ,  ReplaySubject } from 'rxjs';
+import {from as observableFrom, of as observableOf,  Observable, Observer ,  ReplaySubject, throwError } from 'rxjs';
 
 import {map, tap, mergeMap} from 'rxjs/operators';
 import { clone, eq, remove, includes } from 'lodash-es';
@@ -95,7 +95,7 @@ export class XmppService {
 
   public disconnectError(): Observable<boolean> {
     if (!this.clientConnected) {
-      return Observable.throwError(this.xmppError);
+      return throwError(this.xmppError);
     }
     return observableOf(true);
   }

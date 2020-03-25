@@ -5,7 +5,7 @@ import { RealTimeService } from '../../core/message/real-time.service';
 import { EventService } from '../../core/event/event.service';
 import { ChatSignal, ChatSignalType } from '../model/chat-signal';
 import { MessageService } from './message.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { ConversationResponse } from '../../core/conversation/conversation-response.interface';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType, statusOrder } from '../model';
 import { find, head, isEmpty, isNil, some } from 'lodash-es';
@@ -223,9 +223,9 @@ export class InboxConversationService {
     return this.archiveConversation(conversation.id).pipe(
     catchError((err) => {
       if (err.status === 409) {
-        return observableOf(conversation);
+        return of(conversation);
       } else {
-        return Observable.throwError(err);
+        return throwError(err);
       }
     }),
     map(() => {
@@ -238,9 +238,9 @@ export class InboxConversationService {
     return this.unarchiveConversation(conversation.id).pipe(
     catchError((err) => {
       if (err.status === 409) {
-        return observableOf(conversation);
+        return of(conversation);
       } else {
-        return Observable.throwError(err);
+        return throwError(err);
       }
     }),
     map(() => {
@@ -309,7 +309,7 @@ export class InboxConversationService {
 
       if (localConversation) {
         this.openConversation(localConversation);
-        return observableOf(localConversation);
+        return of(localConversation);
       }
 
       return this.fetchConversationByItem$(itemId).pipe(
@@ -321,7 +321,7 @@ export class InboxConversationService {
         return inboxConversation;
       }));
     }
-    return Observable.throwError(new Error('Not found'));
+    return throwError(new Error('Not found'));
   }
 
   private fetchConversationByItem$(itemId: string): Observable<InboxConversation> {

@@ -7,7 +7,7 @@ import { Call } from './calls';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { EventService } from '../event/event.service';
-import { difference, findIndex, isEmpty, map, reverse, sortBy } from 'lodash-es';
+import { difference, findIndex, isEmpty, map as lodashMap, reverse, sortBy } from 'lodash-es';
 import { Lead } from './lead';
 import { Conversation } from './conversation';
 import { CallTotals } from './totals.interface';
@@ -154,7 +154,7 @@ export class CallsService {
     map((calls: Call[]) => {
       if (calls && calls.length > 0) {
         if (!archived) {
-          const diff: any[] = difference(map(calls, 'id'), map(this.leads, 'id'));
+          const diff: any[] = difference(lodashMap(calls, 'id'), lodashMap(this.leads, 'id'));
           const result: Call[] = calls.filter((call: Call) => {
             return diff.indexOf(call.id) >= 0;
           });

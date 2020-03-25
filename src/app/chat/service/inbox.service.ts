@@ -89,7 +89,7 @@ export class InboxService {
     this.getNextPage$().pipe(
     catchError(() => {
       this.errorRetrievingInbox = true;
-      return observableOf([]);
+      return of([]);
     }))
     .subscribe((conversations: InboxConversation[]) => {
       this.eventService.emit(EventService.INBOX_LOADED, conversations, 'LOAD_MORE_PAGES');
@@ -106,7 +106,7 @@ export class InboxService {
     this.getNextArchivedPage$().pipe(
     catchError(() => {
       this.errorRetrievingArchived = true;
-      return observableOf([]);
+      return of([]);
     }))
     .subscribe((conversations: InboxConversation[]) => {
       this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);

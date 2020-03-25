@@ -5,7 +5,7 @@ import { SubscriptionsResponse } from '../../core/subscriptions/subscriptions.in
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { isEqual } from 'lodash-es';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs/operators';
+import { finalize, repeatWhen, take, takeWhile, delay } from 'rxjs/operators';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import {
   SCREEN_IDS,
@@ -33,9 +33,9 @@ export class SubscriptionComponent implements OnInit {
   public loading = false;
 
   constructor(private modalService: NgbModal,
-              private subscriptionsService: SubscriptionsService,
-              private router: Router,
-              private analyticsService: AnalyticsService) {
+    private subscriptionsService: SubscriptionsService,
+    private router: Router,
+    private analyticsService: AnalyticsService) {
   }
 
   ngOnInit() {
@@ -49,7 +49,7 @@ export class SubscriptionComponent implements OnInit {
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
     const modal = this.getModalTypeDependingOnSubscription(subscription);
-    let modalRef: NgbModalRef = this.modalService.open(modal, {windowClass: 'review'});
+    let modalRef: NgbModalRef = this.modalService.open(modal, { windowClass: 'review' });
     modalRef.componentInstance.subscription = subscription;
     modalRef.result.then((action: string) => {
       if (action) {
@@ -67,14 +67,17 @@ export class SubscriptionComponent implements OnInit {
 
   private isSubscriptionUpdated() {
     this.subscriptionsService.getSubscriptions(false)
-    .repeatWhen(completed => completed.delay(1000).takeWhile(() => this.loading)).take(5)
-    .pipe(finalize(() => this.router.navigate(['profile/info'])))
-    .subscribe(
-      (updatedSubscriptions) => {
-      if (!isEqual(this.subscriptions, updatedSubscriptions)) {
-        this.loading = false;
-      }
-    });
+      .pipe(
+        repeatWhen(completed => completed.pipe(delay(1000), takeWhile(() => this.loading))),
+        take(5),
+        finalize(() => this.router.navigate(['profile/info']))
+      )
+      .subscribe(
+        (updatedSubscriptions) => {
+          if (!isEqual(this.subscriptions, updatedSubscriptions)) {
+            this.loading = false;
+          }
+        });
   }
 
   private trackPageView() {
@@ -139,7 +142,7 @@ export class SubscriptionComponent implements OnInit {
     if (subscription.subscribed_from && !subscription.subscribed_until && subscription.tiers.length === 1 && !subscription.tiers[0].limit) {
       return CancelSubscriptionModalComponent;
     }
-    
+
     // Subscription was previously canceled
     if (subscription.subscribed_until) {
       return ContinueSubscriptionModalComponent;

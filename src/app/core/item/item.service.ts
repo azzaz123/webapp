@@ -30,7 +30,7 @@ import {
   ListingFeeProductInfo,
   ItemByCategoryResponse
 } from './item-response.interface';
-import { find, findIndex, reverse, without, map, filter, sortBy } from 'lodash-es';
+import { find, findIndex, reverse, without, map as lodashMap, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
@@ -100,7 +100,7 @@ export class ItemService {
 
   public getCounters(id: string): Observable<ItemCounters> {
     return this.http.get<ItemCounters>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/counters`)
-      .pipe(catchError(() => observableOf({ views: 0, favorites: 0 })));
+      .pipe(catchError(() => of({ views: 0, favorites: 0 })));
   }
 
   public bulkDelete(type: string): Observable<ItemBulkResponse> {
@@ -149,7 +149,7 @@ export class ItemService {
     if (!this.banReasons) {
       this.banReasons = this.i18n.getTranslations('reportListingReasons');
     }
-    return observableOf(this.banReasons);
+    return of(this.banReasons);
   }
 
   public deselectItem(id: string) {
@@ -542,7 +542,7 @@ export class ItemService {
   public get(id: string): Observable<Item> {
     return this.http.get<Item>(`${environment.baseUrl}${ITEMS_API_URL}/${id}`).pipe(
       mapRx.map((r) => this.mapRecordData(r)),
-      catchError(() => observableOf(this.getFakeItem(id))
+      catchError(() => of(this.getFakeItem(id))
       ));
   }
 
@@ -599,8 +599,8 @@ export class ItemService {
   }
 
   private getProductDurations(productList: Product[]): ProductDurations {
-    const durations: number[] = map(productList[0].durations, 'duration');
-    const types: string[] = map(productList, 'name');
+    const durations: number[] = lodashMap(productList[0].durations, 'duration');
+    const types: string[] = lodashMap(productList, 'name');
     const productDurations = {};
     durations.forEach((duration: number) => {
       productDurations[duration] = {};
@@ -636,7 +636,7 @@ export class ItemService {
     let observable: Observable<Item[]>;
 
     if (this.items[status].length && cache) {
-      observable = observableOf(this.items[status]);
+      observable = of(this.items[status]);
     } else {
       observable = this.recursiveMines(0, 300, endStatus).pipe(
         map((res: ItemProResponse[]) => {
@@ -698,7 +698,7 @@ export class ItemService {
               return res.concat(res2);
             }));
         } else {
-          return observableOf([]);
+          return of([]);
         }
       }));
   }
@@ -766,7 +766,7 @@ export class ItemService {
           return this.recursiveMinesByCategory(init + offset, offset, categoryId, status).pipe(
             map(recursiveResult => res.concat(recursiveResult)));
         } else {
-          return observableOf([]);
+          return of([]);
         }
       }));
   }
@@ -807,7 +807,7 @@ export class ItemService {
         this.deselectItems();
       }),
       catchError((errorResponse) => {
-        return observableOf(errorResponse);
+        return of(errorResponse);
       })
     );
   }

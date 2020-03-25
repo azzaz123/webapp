@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Key } from './key.interface';
 import { IOption } from 'ng-select';
 import { environment } from '../../../environments/environment';
@@ -46,7 +46,7 @@ export class RealestateKeysService {
   getExtras(type: string): Observable<Key[]> {
     const params = { language: this.i18n.locale, type };
 
-    return type ? this.http.get<Key[]>(`${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/extra`, { params }) : Observable.of([]);
+    return type ? this.http.get<Key[]>(`${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/extra`, { params }) : of([]);
   }
 
 }

@@ -1,5 +1,5 @@
 
-import {tap,  map } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
@@ -27,19 +27,19 @@ export class CategoryService {
 
   public getCategories(): Observable<CategoryResponse[]> {
     if (this.categories) {
-      return observableOf(this.categories);
+      return of(this.categories);
     }
-    return this.http.get<CategoryResponse[]>(`${environment.baseUrl}${CATEGORIES_ENDPOINT}`, { params: { language: this.lang }});
+    return this.http.get<CategoryResponse[]>(`${environment.baseUrl}${CATEGORIES_ENDPOINT}`, { params: { language: this.lang } });
   }
 
   public getUploadCategories(): Observable<CategoryOption[]> {
     if (this.uploadCategories) {
-      return observableOf(this.uploadCategories);
+      return of(this.uploadCategories);
     }
     return this.http
-      .get(`${environment.baseUrl}${CONSUMER_GOODS_ENDPOINT}`, { params: { language: this.lang }}).pipe(
-      map((categories: CategoryResponse[]) => this.toSelectOptions(categories)),
-      tap((categories: CategoryOption[]) => this.uploadCategories = categories),);
+      .get(`${environment.baseUrl}${CONSUMER_GOODS_ENDPOINT}`, { params: { language: this.lang } }).pipe(
+        map((categories: CategoryResponse[]) => this.toSelectOptions(categories)),
+        tap((categories: CategoryOption[]) => this.uploadCategories = categories));
   }
 
   public isHeroCategory(categoryId: number) {

@@ -198,7 +198,7 @@ export class UserService {
     if (!this.banReasons) {
       this.banReasons = this.i18n.getTranslations('reportUserReasons');
     }
-    return observableOf(this.banReasons);
+    return of(this.banReasons);
   }
 
   public reportUser(userId: string, itemHashId: string, conversationHash: string, reason: number, comments: string)
@@ -384,7 +384,7 @@ export class UserService {
   // TODO: This method is going to be deleted :D
   public getMotorPlan(): Observable<MotorPlan> {
     if (this._motorPlan) {
-      return observableOf(this._motorPlan);
+      return of(this._motorPlan);
     } else if (this.motorPlanObservable) {
       return this.motorPlanObservable;
     }
@@ -399,7 +399,7 @@ export class UserService {
       }),
       catchError(() => {
         this.motorPlanObservable = null;
-        return observableOf(null);
+        return of(null);
       }),);
     return this.motorPlanObservable;
   }

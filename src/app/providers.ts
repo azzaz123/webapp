@@ -3,6 +3,7 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { UserService } from './core/user/user.service';
 import { User, PERMISSIONS } from './core/user/user';
+import { map } from 'rxjs/operators';
 export const PROVIDERS: Provider[] = [
   {
     provide: 'SUBDOMAIN',
@@ -25,7 +26,7 @@ export function subdomainFactory(cookieService: CookieService) {
 export function permissionFactory(userService: UserService, permissionService: NgxPermissionsService) {
   return () => {
     return userService.me()
-      .map((user: User) => {
+      .pipe(map((user: User) => {
         if (user) {
           userService.setPermission(user.type);
           userService.setSubscriptionsFeatureFlag().subscribe((isActive => {
@@ -35,7 +36,7 @@ export function permissionFactory(userService: UserService, permissionService: N
           }));
         }
         return user;
-      })
+      }))
       .toPromise();
   };
 }
