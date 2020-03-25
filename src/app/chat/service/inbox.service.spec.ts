@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { InboxService } from './inbox.service';
 import { MessageService } from './message.service';
 import { of, throwError } from 'rxjs';
-import { createInboxConversationsArray, MOCK_INBOX_API_RESPONSE } from '../../../tests/inbox.fixtures.spec';
+import { MOCK_INBOX_API_RESPONSE } from '../../../tests/inbox.fixtures.spec';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
 import { FeatureflagService } from '../../core/user/featureflag.service';
 import { EventService } from '../../core/event/event.service';
@@ -12,13 +12,14 @@ import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { InboxUserPlaceholder } from '../model/inbox-user';
 import { InboxConversationService } from './inbox-conversation.service';
-import { FeatureFlagServiceMock } from '../../../tests';
+import { DeviceDetectorServiceMock, FeatureFlagServiceMock } from '../../../tests';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpModuleNew } from '../../core/http/http.module.new';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../../core/http/access-token.service';
 import { HttpClient } from '@angular/common/http';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 describe('InboxService', () => {
 
@@ -44,6 +45,7 @@ describe('InboxService', () => {
         { provide: MessageService, useClass: MockMessageService },
         { provide: UserService, useClass: MockedUserService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
           provide: AccessTokenService, useValue: {
             accessToken: 'ACCESS_TOKEN'

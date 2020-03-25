@@ -21,12 +21,15 @@ import { uniq } from 'lodash-es';
 import { AccessTokenService } from '../../core/http/access-token.service';
 import * as moment from 'moment';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
+import { RemoteConsoleService } from '../../core/remote-console';
+import { RemoteConsoleClientServiceMock } from '../../../tests/remote-console-service-client.spec';
 
 describe('InboxConversationService', () => {
 
   let service: InboxConversationService;
   let eventService: EventService;
   let realTime: RealTimeService;
+  let remoteConsoleService: RemoteConsoleService;
   let messageService: MessageService;
   let userService: UserService;
   let itemService: ItemService;
@@ -47,6 +50,7 @@ describe('InboxConversationService', () => {
             accessToken: 'ACCESS_TOKEN'
           }
         },
+        { provide: RemoteConsoleService, useClass: RemoteConsoleClientServiceMock },
         { provide: MessageService, useValue: { totalUnreadMessages: 0 } },
         { provide: UserService, useClass: MockedUserService },
         { provide: ItemService, useClass: MockedItemService }
@@ -55,6 +59,7 @@ describe('InboxConversationService', () => {
     service = TestBed.get(InboxConversationService);
     eventService = TestBed.get(EventService);
     realTime = TestBed.get(RealTimeService);
+    remoteConsoleService = TestBed.get(RemoteConsoleService);
     messageService = TestBed.get(MessageService);
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
