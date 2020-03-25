@@ -4,10 +4,10 @@ import { PaymentService, PAYMENT_RESPONSE_STATUS, PAYMENT_METHOD } from '../../c
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UUID } from 'angular2-uuid';
 import { OrderProExtras, FinancialCardOption } from '../../core/payments/payment.interface';
-import { Response } from '@angular/http';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../core/stripe/stripe.service';
 import { EventService } from '../../core/event/event.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'tsl-buy-wallacoins-modal',
@@ -63,10 +63,10 @@ export class BuyWallacoinsModalComponent implements OnInit {
     this.loading = true;
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
     this.stripeService.buy(order.id, paymentId, this.hasSavedCard, this.savedCard, this.card);
-    }, (error: Response) => {
+    }, (e: HttpErrorResponse) => {
       this.loading = false;
-      if (error.text()) {
-        this.errorService.show(error);
+      if (e.error) {
+        this.errorService.show(e);
       } else {
         this.errorService.i18nError('packError');
       }

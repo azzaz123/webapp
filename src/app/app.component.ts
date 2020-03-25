@@ -161,7 +161,7 @@ export class AppComponent implements OnInit {
         },
         (error: any) => {
           this.userService.logout();
-          this.errorsService.show(error, true);
+          this.errorsService.show(error);
         });
     });
   }

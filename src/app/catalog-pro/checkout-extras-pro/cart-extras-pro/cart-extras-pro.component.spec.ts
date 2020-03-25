@@ -1,7 +1,7 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CartExtrasProComponent } from './cart-extras-pro.component';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { CartChange } from '../../../shared/catalog/cart/cart-item.interface';
 import { CustomCurrencyPipe } from '../../../shared/pipes';
 import {
   BILLING_INFO_RESPONSE,
-  FINANCIAL_CARD, ORDER_CART_EXTRAS_PRO, PACK_ID,
+  ORDER_CART_EXTRAS_PRO, PACK_ID,
   PREPARED_PACKS
 } from '../../../../tests/payments.fixtures.spec';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
@@ -235,31 +235,21 @@ describe('CartExtrasProComponent', () => {
 
     describe('already has billing info', () => {
       beforeEach(() => {
-        spyOn(paymentService, 'orderExtrasProPack').and.callThrough();
         spyOn(component.cart, 'prepareOrder').and.returnValue(ORDER_CART_EXTRAS_PRO);
         eventId = null;
       });
 
       it('should call paymentService orderExtrasProPack method to create a pack order', () => {
+        spyOn(paymentService, 'orderExtrasProPack').and.callThrough();
+        
         component.checkout();
 
         expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith(ORDER_CART_EXTRAS_PRO);
       });
 
-      describe('if paymentService OrderExtrasProPack is successful', () => {
-        beforeEach(() => {
-          spyOn(trackingService, 'track');
-        });
-
-      });
-
-      describe('error', () => {
-        it('should call toastr', () => {
-          paymentService.orderExtrasProPack = jasmine.createSpy().and.returnValue(Observable.throw({
-            text() {
-              return '';
-            }
-          }));
+      describe('when unkown error', () => {
+        it('should call toastr with bump error', () => {
+          spyOn(paymentService, 'orderExtrasProPack').and.returnValue(throwError('Unknown'));
           spyOn(errorsService, 'i18nError');
 
           component.checkout();

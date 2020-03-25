@@ -4,8 +4,6 @@ import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testi
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ToastrModule } from 'ngx-toastr';
-import { MockBackend, MockConnection } from '@angular/http/testing';
-import { Response, ResponseOptions } from '@angular/http';
 import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
@@ -27,7 +25,6 @@ import { MOCK_FULL_USER, MOCK_USER, USER_DATA, USER_ID } from '../tests/user.fix
 import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
-import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
@@ -106,7 +103,6 @@ describe('App', () => {
           }
         },
         ErrorsService,
-        MockBackend,
         {
           provide: UserService, useValue: {
           checkUserStatus() {
@@ -216,9 +212,7 @@ describe('App', () => {
             init() {}
           }
         },
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-        ...
-          TEST_HTTP_PROVIDERS
+        { provide: AnalyticsService, useClass: MockAnalyticsService }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -277,18 +271,12 @@ describe('App', () => {
     }
 
     describe('success case', () => {
-      const mockedInboxConversations = createInboxConversationsArray(3);
       function emitSuccessChatEvents() {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
         eventService.emit(EventService.DB_READY);
         eventService.emit(EventService.CHAT_RT_CONNECTED);
       }
       beforeEach(fakeAsync(() => {
-        const mockBackend: MockBackend = TestBed.get(MockBackend);
-        mockBackend.connections.subscribe((connection: MockConnection) => {
-          const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
-          connection.mockRespond(new Response(res));
-        });
         spyOn(callsService, 'init').and.returnValue(Observable.of({}));
         spyOn(inboxService, 'init');
       }));

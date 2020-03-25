@@ -20,8 +20,7 @@ export class ProfileService {
 
   constructor(private httpClient: HttpClient,
               protected event: EventService,
-              protected i18n: I18nService,
-              protected accessTokenService: AccessTokenService) {
+              protected i18n: I18nService) {
   }
 
   get profile(): Profile {

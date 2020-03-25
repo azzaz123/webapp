@@ -4,7 +4,6 @@ import { AccountComponent } from './account.component';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnsubscribeModalComponent } from '../unsubscribe-modal/unsubscribe-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_FULL_USER } from '../../../tests/user.fixtures.spec';
 import { Observable } from 'rxjs/Rx';
@@ -34,7 +33,6 @@ describe('AccountComponent', () => {
         NgbButtonsModule
       ],
       providers: [
-        ...TEST_HTTP_PROVIDERS,
         {
           provide: UserService, useValue: {
           user: MOCK_FULL_USER,

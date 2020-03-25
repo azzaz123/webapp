@@ -7,13 +7,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
-import { createFinancialCardFixture, STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
-import { delay, finalize } from 'rxjs/operators';
-import { PaymentService } from '../../../core/payments/payment.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpService } from '../../../core/http/http.service';
-import { UserService } from '../../../core/user/user.service';
-
+import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
+import { delay } from 'rxjs/operators';
 describe('CreditCardInfoComponent', () => {
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;
@@ -89,7 +84,7 @@ describe('CreditCardInfoComponent', () => {
     it('should show a loading component while waiting backend response', fakeAsync(() => {
       const backendResponseTimeMs = 3000;
       spyOn(stripeService, 'deleteCard').and.returnValue(of().pipe(delay(backendResponseTimeMs)));
-      
+
       deleteStripeCardButton.click();
       tick();
       fixture.detectChanges();
@@ -103,7 +98,7 @@ describe('CreditCardInfoComponent', () => {
     it('should hide the loading component when backend answered', fakeAsync(() => {
       const backendResponseTimeMs = 3000;
       spyOn(stripeService, 'deleteCard').and.returnValue(of().pipe(delay(backendResponseTimeMs)));
-      
+
       deleteStripeCardButton.click();
       tick(backendResponseTimeMs + 1);
 

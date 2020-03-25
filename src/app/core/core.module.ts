@@ -11,7 +11,6 @@ import { AdService } from './ad/ad.service';
 import { ErrorsService } from './errors/errors.service';
 import { TutorialService } from './tutorial/tutorial.service';
 import { AccessTokenService } from './http/access-token.service';
-import { HttpService } from './http/http.service';
 import { ConversationModule } from './conversation/conversation.module';
 import { MessageService } from '../chat/service/message.service';
 import { NotificationService } from './notification/notification.service';
@@ -62,7 +61,6 @@ export class CoreModule {
         ErrorsService,
         TutorialService,
         AccessTokenService,
-        HttpService,
         MessageService,
         NotificationService,
         PaymentService,

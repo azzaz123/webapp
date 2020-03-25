@@ -5,7 +5,6 @@ import { CartChange, CartItem } from './cart-item.interface';
 import { Order, PurchaseProductsWithCreditsResponse } from '../../../core/item/item-response.interface';
 import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { Response } from '@angular/http';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { CreditInfo, FinancialCardOption } from '../../../core/payments/payment.interface';
@@ -14,6 +13,7 @@ import { BUMP_TYPES, CartBase } from './cart-base';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { UUID } from 'angular2-uuid/index';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'tsl-cart',
@@ -89,10 +89,10 @@ export class CartComponent implements OnInit, OnDestroy {
         } else {
           this.success();
         }
-      }, (error: Response) => {
+      }, (e: HttpErrorResponse) => {
         this.loading = false;
-        if (error.text()) {
-          this.errorService.show(error);
+        if (e.error) {
+          this.errorService.show(e);
         } else {
           this.errorService.i18nError('bumpError');
         }

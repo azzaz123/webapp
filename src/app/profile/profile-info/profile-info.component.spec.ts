@@ -2,12 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { competitorLinks, ProfileInfoComponent } from './profile-info.component';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { HttpService } from '../../core/http/http.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { MockBackend } from '@angular/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { Observable } from 'rxjs';
 import {
   IMAGE,
@@ -25,8 +22,6 @@ describe('ProfileInfoComponent', () => {
   let fixture: ComponentFixture<ProfileInfoComponent>;
   let userService: UserService;
   let errorsService: ErrorsService;
-  let http: HttpService;
-  let mockBackend: MockBackend;
   let modalService: NgbModal;
   const modalInstance: any = null;
 
@@ -38,7 +33,6 @@ describe('ProfileInfoComponent', () => {
         NgbButtonsModule
       ],
       providers: [
-        ...TEST_HTTP_PROVIDERS,
         {
           provide: NgbModal, useValue: {
           open() {
@@ -108,8 +102,6 @@ describe('ProfileInfoComponent', () => {
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
     errorsService = TestBed.get(ErrorsService);
-    http = TestBed.get(HttpService);
-    mockBackend = TestBed.get(MockBackend);
     modalService = TestBed.get(NgbModal);
     spyOn(userService, 'me').and.callThrough();
     spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
