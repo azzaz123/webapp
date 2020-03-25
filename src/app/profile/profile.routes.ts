@@ -6,7 +6,6 @@ import { ProfileComponent } from './profile.component';
 import { ExitConfirmGuard } from '../shared/guards/exit-confirm.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
-import { ProfileSubscriptionComponent } from './profile-subscription/profile-subscription.component';
 import { ProfileInfoComponent } from './profile-info/profile-info.component';
 import { AccountComponent } from './account/account.component';
 import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
@@ -57,18 +56,6 @@ const routes: Routes = [
         }
       },
       {
-        path: 'subscription',
-        component: ProfileSubscriptionComponent,
-        data: {
-          isMyZone: true,
-          isProfile: true,
-          permissions: {
-            only: PERMISSIONS.normal,
-            redirectTo: '/profile'
-          }
-        }
-      },
-      {
         path: 'billing',
         component: ProfileProBillingComponent,
         canDeactivate: [ExitConfirmGuard],
@@ -109,7 +96,6 @@ export const profileRoutedComponents = [
   ProfileInfoComponent,
   AccountComponent,
   SubscriptionComponent,
-  ProfileSubscriptionComponent,
   ProfileProBillingComponent,
   ProfileProSubscriptionComponent
 ];
