@@ -25,12 +25,7 @@ export abstract class ResourceService {
     } else {
       this.observables[id] = this.http.get(this.API_URL + `/${id}`)
       .map((r: Response) => r.json())
-      .map((r: ApiResponse) => {
-        if (r.id) {
-          return this.mapRecordData(r);
-        }
-        return null;
-      })
+      .map((r: ApiResponse) => r.id ? this.mapRecordData(r) : null)
       .map((model: Model) => this.addToStore(model, id))
       .share();
       return this.observables[id];

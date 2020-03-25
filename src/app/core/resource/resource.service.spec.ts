@@ -10,6 +10,7 @@ import { USER_DATA, USER_ID } from '../../../tests/user.fixtures.spec';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 class User {
   constructor(public id: string, public microName: string) {
@@ -34,9 +35,13 @@ describe('Service: Resource', () => {
   let service: UserService;
   let mockBackend: MockBackend;
   let http: HttpService;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule
+      ],
       providers: [
         ...TEST_HTTP_PROVIDERS,
         UserService
@@ -45,6 +50,7 @@ describe('Service: Resource', () => {
     service = TestBed.get(UserService);
     mockBackend = TestBed.get(MockBackend);
     http = TestBed.get(HttpService);
+    httpTestingController = TestBed.get(HttpTestingController);
   });
 
   it('should create the instance', () => {
