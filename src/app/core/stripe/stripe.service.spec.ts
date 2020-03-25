@@ -33,7 +33,7 @@ describe('StripeService', () => {
         {
           provide: UserService, useValue: {
             hasPerm() {
-              return observableOf(true);
+              return of(true);
             }
           }
         },
@@ -47,19 +47,19 @@ describe('StripeService', () => {
         {
           provide: UserService, useValue: {
             me() {
-              return observableOf(USER_DATA);
+              return of(USER_DATA);
             }
           }
         },
         {
           provide: PaymentService, useValue: {
             paymentIntents() {
-              return observableOf({
+              return of({
                 token: 'a1-b2-c3-d4'
               })
             },
             paymentIntentsConfirm() {
-              return observableOf({
+              return of({
                 token: 'a1-b2-c3-d4',
                 status: 'SUCCEEDED'
               })
@@ -69,7 +69,7 @@ describe('StripeService', () => {
         {
           provide: FeatureflagService, useValue: {
             getFlag() {
-              return observableOf(false);
+              return of(false);
             }
           }
         }
@@ -93,7 +93,7 @@ describe('StripeService', () => {
       };
       let response: PaymentIntents;
 
-      userService.me = jasmine.createSpy().and.returnValue(observableOf(USER_DATA));
+      userService.me = jasmine.createSpy().and.returnValue(of(USER_DATA));
       paymentService.paymentIntents(orderId, paymentId).subscribe((data: PaymentIntents) => {
         response = data;
       });

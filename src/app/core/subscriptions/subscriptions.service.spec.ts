@@ -40,17 +40,17 @@ describe('SubscriptionsService', () => {
         {
           provide: UserService, useValue: {
             hasPerm() {
-              return observableOf(true);
+              return of(true);
             },
             me() {
-              return observableOf(MOCK_USER);
+              return of(MOCK_USER);
             }
           }
         },
         {
           provide: FeatureflagService, useValue: {
             getFlag() {
-              return observableOf(false);
+              return of(false);
             }
           }
         },
