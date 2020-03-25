@@ -302,7 +302,7 @@ describe('BuyProductModalComponent', () => {
 
       describe('error', () => {
         beforeEach(() => {
-          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(Observable.throwError(''));
+          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(throwError(''));
 
           component.checkout();
         });

@@ -334,7 +334,7 @@ describe('CurrentConversationComponent', () => {
 
     describe('error', () => {
       it('should open toastr if error 403', fakeAsync(() => {
-        spyOn(itemService, 'reportListing').and.returnValue(Observable.throwError({
+        spyOn(itemService, 'reportListing').and.returnValue(throwError({
           status: 403
         }));
         spyOn(toastr, 'success').and.callThrough();

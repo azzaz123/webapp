@@ -5,7 +5,7 @@ import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import {
   IMAGE,
   MOCK_FULL_USER,
@@ -134,7 +134,7 @@ describe('ProfileInfoComponent', () => {
     });
 
     it('should set profileForm with basic user data if userInfo throws error', () => {
-      spyOn(userService, 'getProInfo').and.returnValue(Observable.throwError(''));
+      spyOn(userService, 'getProInfo').and.returnValue(throwError(''));
 
       component.initForm();
 
