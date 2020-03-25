@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import {throwError as observableThrowError,  Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CartComponent } from './cart.component';
@@ -58,7 +58,7 @@ describe('CartComponent', () => {
         },
         {
           provide: CartService, useValue: {
-          cart$: Observable.of(CART_CHANGE),
+          cart$: of(CART_CHANGE),
           createInstance() {
           },
           remove() {
@@ -70,12 +70,12 @@ describe('CartComponent', () => {
         {
           provide: ItemService, useValue: {
           purchaseProducts() {
-            return Observable.of({});
+            return of({});
           },
           deselectItems() {
           },
           purchaseProductsWithCredits() {
-            return Observable.of({
+            return of({
               payment_needed: true
             });
           }
@@ -285,7 +285,7 @@ describe('CartComponent', () => {
 
       describe('with payment_needed false', () => {
         beforeEach(() => {
-          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(Observable.of({
+          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(of({
             payment_needed: false,
             items_failed: []
           }));

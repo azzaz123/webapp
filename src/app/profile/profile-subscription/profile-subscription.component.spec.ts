@@ -4,7 +4,7 @@ import { ProfileSubscriptionComponent } from './profile-subscription.component';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../../shared/pipes';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { PROFILE_SUB_INFO } from '../../../tests/user.fixtures.spec';
 
@@ -22,7 +22,7 @@ describe('ProfileSubscriptionComponent', () => {
         {
           provide: UserService, useValue: {
           getMotorPlans() {
-            return Observable.of(PROFILE_SUB_INFO);
+            return of(PROFILE_SUB_INFO);
           }
         }
         }

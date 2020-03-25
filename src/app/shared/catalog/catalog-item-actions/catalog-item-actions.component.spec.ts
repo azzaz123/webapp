@@ -1,7 +1,7 @@
 import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CatalogItemActionsComponent } from './catalog-item-actions.component';
 import { ItemService } from '../../../core/item/item.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   createItemsArray, ITEMS_BULK_RESPONSE,
@@ -126,7 +126,7 @@ describe('CatalogItemActionsComponent', () => {
 
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE));
+        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE));
 
         component.delete(modal);
         tick();
@@ -147,7 +147,7 @@ describe('CatalogItemActionsComponent', () => {
 
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE_FAILED));
+        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE_FAILED));
 
         component.delete(modal);
         tick();
@@ -182,7 +182,7 @@ describe('CatalogItemActionsComponent', () => {
 
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkSetActivate').and.returnValue(Observable.of('200'));
+        spyOn(itemService, 'bulkSetActivate').and.returnValue(of('200'));
 
         component.activate();
         tick();
@@ -208,7 +208,7 @@ describe('CatalogItemActionsComponent', () => {
     describe('success', () => {
       beforeEach(fakeAsync(() => {
         spyOn(trackingService, 'track').and.callThrough();
-        spyOn(itemService, 'bulkSetDeactivate').and.returnValue(Observable.of('200'));
+        spyOn(itemService, 'bulkSetDeactivate').and.returnValue(of('200'));
 
         component.deactivate();
         tick();

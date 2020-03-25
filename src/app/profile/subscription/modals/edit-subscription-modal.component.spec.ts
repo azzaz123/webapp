@@ -7,7 +7,7 @@ import { MAPPED_SUBSCRIPTIONS, TIER } from '../../../../tests/subscriptions.fixt
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
@@ -64,7 +64,7 @@ describe('EditSubscriptionModalComponent', () => {
         {
           provide: SubscriptionsService, useValue: {
             editSubscription() {
-              return Observable.of(202);
+              return of(202);
             }
           }
         },

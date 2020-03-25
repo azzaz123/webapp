@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable, throwError } from 'rxjs';
+import {of as observableOf, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CartExtrasProComponent } from './cart-extras-pro.component';
@@ -262,7 +262,7 @@ describe('CartExtrasProComponent', () => {
 
     describe('no billing info', () => {
       it('should emit a event', () => {
-        spyOn(paymentService, 'getBillingInfo').and.returnValue(observableThrowError({}));
+        spyOn(paymentService, 'getBillingInfo').and.returnValue(throwError({}));
         spyOn(component.billingInfoMissing, 'emit').and.callThrough();
 
         component.checkout();
@@ -286,7 +286,7 @@ describe('CartExtrasProComponent', () => {
 
           it('should show error if call fails', () => {
             spyOn(errorsService, 'show');
-            spyOn(paymentService, 'updateBillingInfo').and.returnValue(observableThrowError('error'));
+            spyOn(paymentService, 'updateBillingInfo').and.returnValue(throwError('error'));
 
             component.saveAndCheckout();
 

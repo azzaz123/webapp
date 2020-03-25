@@ -41,10 +41,10 @@ describe('StripeCardsComponent', () => {
           {
             provide: StripeService, useValue: {
             getCards() {
-              return Observable.of([FINANCIAL_STRIPE_CARD]);
+              return of([FINANCIAL_STRIPE_CARD]);
             },
             addNewCard() {
-              return Observable.of({})
+              return of({})
             }
           }
           },
@@ -74,7 +74,7 @@ describe('StripeCardsComponent', () => {
 
   describe('ngOnInit', () => {
     it('should get and set financial card', () => {
-      spyOn(stripeService, 'getCards').and.returnValue(Observable.of([FINANCIAL_STRIPE_CARD]));
+      spyOn(stripeService, 'getCards').and.returnValue(of([FINANCIAL_STRIPE_CARD]));
 
       component.ngOnInit();
 

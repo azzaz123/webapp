@@ -6,7 +6,7 @@ import { UnsubscribeModalComponent } from '../unsubscribe-modal/unsubscribe-moda
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_FULL_USER } from '../../../tests/user.fixtures.spec';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -37,10 +37,10 @@ describe('AccountComponent', () => {
           provide: UserService, useValue: {
           user: MOCK_FULL_USER,
           me() {
-            return Observable.of(MOCK_FULL_USER);
+            return of(MOCK_FULL_USER);
           },
           edit() {
-            return Observable.of({});
+            return of({});
           }
         }
         },

@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import {throwError as observableThrowError,  Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { ProfileProBillingComponent } from './profile-pro-billing.component';
@@ -29,13 +29,13 @@ describe('ProfileProBillingComponent', () => {
         {
           provide: PaymentService, useValue: {
             updateBillingInfo() {
-              return Observable.of({});
+              return of({});
             },
             getBillingInfo() {
-              return Observable.of(BILLING_INFO_RESPONSE);
+              return of(BILLING_INFO_RESPONSE);
             },
             deleteBillingInfo() {
-              return Observable.of({});
+              return of({});
             }
           }
         },

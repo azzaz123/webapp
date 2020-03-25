@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import {throwError as observableThrowError,  Observable, of } from 'rxjs';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DropAreaComponent } from './drop-area.component';
@@ -63,13 +63,13 @@ describe('DropAreaComponent', () => {
         {
           provide: ItemService, useValue: {
           update() {
-            return Observable.of({});
+            return of({});
           },
           updatePicturesOrder() {
-            return Observable.of({});
+            return of({});
           },
           deletePicture() {
-            return Observable.of({});
+            return of({});
           }
         }
         },
@@ -137,7 +137,7 @@ describe('DropAreaComponent', () => {
       };
       const response = 'a response';
       component.type = ITEM_TYPES.CARS;
-      spyOn(itemService, 'update').and.returnValue(Observable.of(response));
+      spyOn(itemService, 'update').and.returnValue(of(response));
       component.onUploaded.subscribe((value: UploadedEvent) => {
         event = value;
       });

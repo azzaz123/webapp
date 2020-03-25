@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import {throwError as observableThrowError,  Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
@@ -28,7 +28,7 @@ describe('StripeCardSelectionComponent', () => {
         {
         provide: StripeService, useValue: {
           getCards() {
-            return Observable.of([FINANCIAL_CARD]);
+            return of([FINANCIAL_CARD]);
           }
         }
       }],
@@ -49,7 +49,7 @@ describe('StripeCardSelectionComponent', () => {
   describe('ngOnInit', () => {
 
     it('should get and set financial card and emit true if present', () => {
-      spyOn(stripeService, 'getCards').and.returnValue(Observable.of([FINANCIAL_STRIPE_CARD]));
+      spyOn(stripeService, 'getCards').and.returnValue(of([FINANCIAL_STRIPE_CARD]));
       spyOn(component.hasCard, 'emit');
 
       component.ngOnInit();

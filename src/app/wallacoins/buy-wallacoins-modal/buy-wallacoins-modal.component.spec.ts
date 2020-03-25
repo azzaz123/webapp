@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import {throwError as observableThrowError,  Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal.component';
@@ -41,7 +41,7 @@ describe('BuyWallacoinsModalComponent', () => {
         {
           provide: PaymentService, useValue: {
             orderExtrasProPack() {
-              return Observable.of({});
+              return of({});
             }
           }
         },
@@ -54,7 +54,7 @@ describe('BuyWallacoinsModalComponent', () => {
         {
           provide: StripeService, useValue: {
             getCards() {
-              return Observable.of([]);
+              return of([]);
             },
             buy() {}
           }

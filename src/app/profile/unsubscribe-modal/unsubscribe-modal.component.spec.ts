@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnsubscribeModalComponent } from './unsubscribe-modal.component';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CUSTOM_REASON, MOCK_USER, MOCK_UNSUBSCRIBE_REASONS, SELECTED_REASON } from '../../../tests/user.fixtures.spec';
@@ -25,16 +25,16 @@ describe('UnsubscribeModalComponent', () => {
         {
           provide: UserService, useValue: {
           getUnsubscribeReasons() {
-            return Observable.of(MOCK_UNSUBSCRIBE_REASONS);
+            return of(MOCK_UNSUBSCRIBE_REASONS);
           },
           unsubscribe() {
-            return Observable.of({});
+            return of({});
           },
           me() {
-            return Observable.of(MOCK_USER);
+            return of(MOCK_USER);
           },
           getMotorPlan() {
-            return Observable.of();
+            return of();
           }
         }
         },
@@ -92,7 +92,7 @@ describe('UnsubscribeModalComponent', () => {
     });
 
     it('should call getMotorPlan and set hasSubscription to true', () => {
-      spyOn(userService, 'getMotorPlan').and.returnValue(Observable.of({
+      spyOn(userService, 'getMotorPlan').and.returnValue(of({
         type: 'type',
         subtype: 'subtype'
       }));
