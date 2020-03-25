@@ -13,7 +13,7 @@ import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '../../../environments/environment';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
-import { AvailableSlots, Counters, Ratings, UserStats } from './user-stats.interface';
+import { AvailableSlots, Counters, Ratings, UserStats, UserStatsResponse } from './user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
@@ -257,7 +257,7 @@ export class UserService {
   }
 
   public getStats(): Observable<UserStats> {
-    return this.http.get<any>(`${environment.baseUrl}${USER_STATS_ENDPOINT}`)
+    return this.http.get<UserStatsResponse>(`${environment.baseUrl}${USER_STATS_ENDPOINT}`)
       .map(response => {
         return {
           ratings: this.toRatingsStats(response.ratings),

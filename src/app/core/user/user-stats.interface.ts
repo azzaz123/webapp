@@ -3,6 +3,11 @@ export interface UserStats {
   counters: Counters;
 }
 
+export interface UserStatsResponse {
+  ratings: [{ type: string, value: number }],
+  counters: [{ type: string, value: number }]
+}
+
 export interface Ratings {
   reviews: number;
 }
