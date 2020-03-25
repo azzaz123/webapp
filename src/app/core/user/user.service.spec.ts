@@ -33,7 +33,7 @@ import {
   USER_PRO_INFO_NOTIFICATIONS,
   USER_PRO_INFO_RESPONSE,
   USERS_STATS,
-  USERS_STATS_RESPONSE,
+  MOCK_USER_STATS,
   VALIDATIONS,
   VERIFICATION_LEVEL
 } from '../../../tests/user.fixtures.spec';
@@ -538,7 +538,7 @@ describe('Service: User', () => {
       req.flush(backendResponse);
 
       expect(req.request.method).toBe('GET');
-      expect(response).toEqual(USERS_STATS_RESPONSE);
+      expect(response).toEqual(MOCK_USER_STATS);
     });
   });
 
@@ -552,7 +552,7 @@ describe('Service: User', () => {
       req.flush(backendResponse);
 
       expect(req.request.method).toBe('GET');
-      expect(response).toEqual(USERS_STATS_RESPONSE);
+      expect(response).toEqual(MOCK_USER_STATS);
     });
   });
 
