@@ -4,7 +4,7 @@ import { UserReviewService } from './user-review.service';
 import { UserService } from '../core/user/user.service';
 import { UserInfoResponse } from '../core/user/user-info.interface';
 import { ReviewsData } from './review-response.interface';
-import { UserStatsResponse } from '../core/user/user-stats.interface';
+import { UserStats } from '../core/user/user-stats.interface';
 import { User } from '../core/user/user';
 
 @Component({
@@ -51,7 +51,7 @@ export class ReviewsComponent implements OnInit {
   }
 
   public getNumberOfReviews() {
-    this.userService.getStats().subscribe((stats: UserStatsResponse) => {
+    this.userService.getStats().subscribe((stats: UserStats) => {
       this.numberOfReviews = stats.counters.reviews;
     });
   }

@@ -1,4 +1,4 @@
-export interface UserStatsResponse {
+export interface UserStats {
   ratings: Ratings;
   counters: Counters;
 }

@@ -37,7 +37,7 @@ import {
   VALIDATIONS,
   VERIFICATION_LEVEL
 } from '../../../tests/user.fixtures.spec';
-import { AvailableSlots, UserStatsResponse } from './user-stats.interface';
+import { AvailableSlots, UserStats } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { AccessTokenService } from '../http/access-token.service';
 import { EventService } from '../event/event.service';
@@ -531,7 +531,7 @@ describe('Service: User', () => {
   describe('getStats', () => {
     it('should call endpoint and return response', () => {
       const backendResponse = USERS_STATS;
-      let response: UserStatsResponse;
+      let response: UserStats;
 
       service.getStats().subscribe(r => response = r);
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_STATS_ENDPOINT}`);
@@ -545,7 +545,7 @@ describe('Service: User', () => {
   describe('getUserStats', () => {
     it('should call endpoint and return response', () => {
       const backendResponse = USERS_STATS;
-      let response: UserStatsResponse;
+      let response: UserStats;
 
       service.getUserStats(USER_ID).subscribe(r => response = r);
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(USER_ID)}`);

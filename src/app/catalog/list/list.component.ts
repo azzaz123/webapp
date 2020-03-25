@@ -15,7 +15,7 @@ import { UploadConfirmationModalComponent } from './modals/upload-confirmation-m
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { Counters, UserStatsResponse, AvailableSlots } from '../../core/user/user-stats.interface';
+import { Counters, UserStats, AvailableSlots } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -441,7 +441,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public getNumberOfProducts() {
-    this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+    this.userService.getStats().subscribe((userStats: UserStats) => {
       this.counters = userStats.counters;
       this.setNumberOfProducts();
     });
