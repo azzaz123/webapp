@@ -1,3 +1,5 @@
+
+import {takeWhile} from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
 import { Cart } from './cart';
@@ -42,7 +44,7 @@ export class CartComponent implements OnInit, OnDestroy {
               private eventService: EventService,
               private router: Router,
               private stripeService: StripeService) {
-      this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
+      this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
         this.cart = cartChange.cart;
       });
   }

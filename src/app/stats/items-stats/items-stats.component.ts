@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CheapestProducts, ItemsData } from '../../core/item/item-response.interface';
 import { ItemService } from '../../core/item/item.service';
 import { Item } from '../../core/item/item';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'tsl-items-stats',

@@ -1,5 +1,6 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import {
   BillingInfoResponse, CreditInfo,
   OrderProExtras,
@@ -114,7 +115,7 @@ export class PaymentService {
 
   public getPerks(cache: boolean = true): Observable<PerksModel> {
     if (cache && this.perksModel) {
-      return Observable.of(this.perksModel);
+      return observableOf(this.perksModel);
     }
     const response = new PerksModel();
 
@@ -151,7 +152,7 @@ export class PaymentService {
             this.perksModel = response;
             return response;
           }),
-            catchError(() => Observable.of(response)));
+            catchError(() => observableOf(response)));
       }));
   }
 
@@ -175,7 +176,7 @@ export class PaymentService {
       wallacoins: [],
       wallacredits: []
     };
-    return (product ? Observable.of(product) : this.getProducts())
+    return (product ? observableOf(product) : this.getProducts())
       .pipe(map((products: Products) => {
         const valuesVar = groupBy(sortedPacks, (pack) => {
           return Object.keys(pack.benefits)[0];
@@ -231,7 +232,7 @@ export class PaymentService {
 
   private getProducts(): Observable<Products> {
     if (this.products) {
-      return Observable.of(this.products);
+      return observableOf(this.products);
     }
     return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/products`)
       .pipe(map((products: ProductResponse[]) => {

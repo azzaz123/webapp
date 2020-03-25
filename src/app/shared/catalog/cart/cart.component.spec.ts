@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CartComponent } from './cart.component';
@@ -5,7 +7,6 @@ import { CustomCurrencyPipe } from '../../pipes';
 import { DecimalPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CartService } from './cart.service';
-import { Observable } from 'rxjs';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
 import {
@@ -323,7 +324,7 @@ describe('CartComponent', () => {
 
     describe('error', () => {
       it('should call toastr', fakeAsync(() => {
-        spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(Observable.throw({
+        spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(observableThrowError({
           text() {
             return '';
           }

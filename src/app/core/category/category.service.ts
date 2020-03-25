@@ -1,10 +1,11 @@
+
+import {tap,  map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { CategoryOption, CategoryResponse } from './category-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { environment } from '../../../environments/environment';
-import { map } from 'rxjs/operators';
 
 export const CATEGORIES_ENDPOINT = 'api/v3/categories/keys/';
 export const CONSUMER_GOODS_ENDPOINT = `${CATEGORIES_ENDPOINT}consumer_goods`;
@@ -21,24 +22,24 @@ export class CategoryService {
   }
 
   public getCategoryById(id: number): Observable<CategoryResponse> {
-    return this.getCategories().map(categories => categories.find(category => category.category_id === id));
+    return this.getCategories().pipe(map(categories => categories.find(category => category.category_id === id)));
   }
 
   public getCategories(): Observable<CategoryResponse[]> {
     if (this.categories) {
-      return Observable.of(this.categories);
+      return observableOf(this.categories);
     }
     return this.http.get<CategoryResponse[]>(`${environment.baseUrl}${CATEGORIES_ENDPOINT}`, { params: { language: this.lang }});
   }
 
   public getUploadCategories(): Observable<CategoryOption[]> {
     if (this.uploadCategories) {
-      return Observable.of(this.uploadCategories);
+      return observableOf(this.uploadCategories);
     }
     return this.http
-      .get(`${environment.baseUrl}${CONSUMER_GOODS_ENDPOINT}`, { params: { language: this.lang }})
-      .map((categories: CategoryResponse[]) => this.toSelectOptions(categories))
-      .do((categories: CategoryOption[]) => this.uploadCategories = categories);
+      .get(`${environment.baseUrl}${CONSUMER_GOODS_ENDPOINT}`, { params: { language: this.lang }}).pipe(
+      map((categories: CategoryResponse[]) => this.toSelectOptions(categories)),
+      tap((categories: CategoryOption[]) => this.uploadCategories = categories),);
   }
 
   public isHeroCategory(categoryId: number) {

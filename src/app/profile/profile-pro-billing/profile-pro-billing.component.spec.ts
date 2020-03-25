@@ -1,7 +1,8 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { ProfileProBillingComponent } from './profile-pro-billing.component';
-import { Observable } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -114,7 +115,7 @@ describe('ProfileProBillingComponent', () => {
 
       it('should show error if call fails', () => {
         spyOn(errorsService, 'show');
-        spyOn(paymentService, 'updateBillingInfo').and.returnValue(Observable.throw('error'));
+        spyOn(paymentService, 'updateBillingInfo').and.returnValue(observableThrowError('error'));
 
         component.onSubmit();
 
@@ -203,7 +204,7 @@ describe('ProfileProBillingComponent', () => {
         }));
 
         it('should show an 18n error message if the action has an error', fakeAsync(() => {
-          spyOn(paymentService, 'deleteBillingInfo').and.returnValue(Observable.throw(''));
+          spyOn(paymentService, 'deleteBillingInfo').and.returnValue(observableThrowError(''));
           spyOn(errorsService, 'i18nError');
 
           component.deleteBillingInfo();

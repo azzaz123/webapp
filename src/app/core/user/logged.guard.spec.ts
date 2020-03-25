@@ -1,3 +1,7 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {map} from 'rxjs/operators';
 import { TestBed } from '@angular/core/testing';
 import { LoggedGuard } from './logged.guard';
 import { environment } from '../../../environments/environment';
@@ -7,7 +11,6 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { UserService } from './user.service';
 import { User, PERMISSIONS } from './user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { Observable } from 'rxjs';
 
 class MockWindow {
   public nativeWindow = {
@@ -49,11 +52,11 @@ describe('LoggedGuard', (): void => {
           provide: UserService,
           useValue: {
             me(): Observable<User> {
-              return Observable.of(MOCK_USER);
+              return observableOf(MOCK_USER);
             },
             setPermission(userType: string): void { },
             setSubscriptionsFeatureFlag() {
-              return Observable.of(true);
+              return observableOf(true);
             }
           },
         }
@@ -107,9 +110,9 @@ describe('LoggedGuard', (): void => {
       accessTokenService.storeAccessToken('abc');
       const result = loggedGuard.canActivate();
 
-      userService.me().map((u: User) => {
+      userService.me().pipe(map((u: User) => {
         expect(userService.setPermission).toHaveBeenCalledWith(u.type);
-      });
+      }));
 
       expect(userService.me).toHaveBeenCalled();
       expect(result).toBeTruthy();
@@ -121,10 +124,10 @@ describe('LoggedGuard', (): void => {
       
       accessTokenService.storeAccessToken('abc');
 
-      userService.me().map((u: User) => {
+      userService.me().pipe(map((u: User) => {
         expect(userService.setPermission).toHaveBeenCalledWith(u.type);
         expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS.subscriptions);
-      });
+      }));
     });
   });
 });

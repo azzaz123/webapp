@@ -1,9 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CheckoutProComponent } from './checkout-pro.component';
 import { ItemService } from '../../core/item/item.service';
 import { ITEMS_WITH_PRODUCTS, ITEM_ID } from '../../../tests/item.fixtures.spec';
-import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MOCK_PROITEM } from '../../../tests/pro-item.fixtures.spec';
 import { MOCK_SELECTED_DATES } from '../../../tests/calendar.fixtures.spec';
@@ -30,7 +31,7 @@ describe('CheckoutProComponent', () => {
           provide: ItemService, useValue: {
             selectedItems: SELECTED_ITEMS,
             getItemsWithAvailableProducts() {
-              return Observable.of(ITEMS_WITH_PRODUCTS);
+              return observableOf(ITEMS_WITH_PRODUCTS);
             }
           }
         },
@@ -50,7 +51,7 @@ describe('CheckoutProComponent', () => {
         },
         {
           provide: ActivatedRoute, useValue: {
-          params: Observable.of({})
+          params: observableOf({})
         }
         }
       ],
@@ -100,7 +101,7 @@ describe('CheckoutProComponent', () => {
     describe('with params', () => {
 
       beforeEach(() => {
-        route.params = Observable.of({
+        route.params = observableOf({
           itemId: ITEM_ID
         });
       });
@@ -113,7 +114,7 @@ describe('CheckoutProComponent', () => {
       });
 
       it('should redirect if no products available', () => {
-        spyCall.and.returnValue(Observable.of([]));
+        spyCall.and.returnValue(observableOf([]));
         spyOn(router, 'navigate');
 
         component.ngOnInit();

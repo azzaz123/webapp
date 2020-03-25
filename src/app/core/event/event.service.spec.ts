@@ -1,9 +1,10 @@
 /* tslint:disable:no-unused-variable */
 
+
+import {share} from 'rxjs/operators';
 import { TestBed } from '@angular/core/testing';
 import { EventService } from './event.service';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject ,  Subscription } from 'rxjs';
 import createSpy = jasmine.createSpy;
 
 const EVENT_NAME = 'MockEventName';
@@ -27,7 +28,7 @@ describe('Service: Event', () => {
     it('should call eventEmitter.emit with the provided params', () => {
       const subject = new Subject();
       service['subjects'][EVENT_NAME] = {
-        observable: subject.asObservable().share(),
+        observable: subject.asObservable().pipe(share()),
         subject: subject
       };
       spyOn(service['subjects'][EVENT_NAME].subject, 'next');

@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CallsComponent } from './calls.component';
@@ -5,7 +7,6 @@ import { CallsService } from '../core/conversation/calls.service';
 import { ActivatedRoute } from '@angular/router';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
-import { Observable } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { createCallsArray } from '../../tests/call.fixtures';
 import { Call } from '../core/conversation/calls';
@@ -25,13 +26,13 @@ describe('CallsComponent', () => {
         {
           provide: CallsService, useValue: {
           getPage() {
-            return Observable.of([]);
+            return observableOf([]);
           }
         }
         },
         {
           provide: ActivatedRoute, useValue: {
-          queryParams: Observable.of({})
+          queryParams: observableOf({})
         }
         }
       ],
@@ -65,7 +66,7 @@ describe('CallsComponent', () => {
     });
 
     it('should set status', () => {
-      route.queryParams = Observable.of({
+      route.queryParams = observableOf({
         status: 'test'
       });
       
@@ -97,7 +98,7 @@ describe('CallsComponent', () => {
       const CALLS: Call[] = createCallsArray(4);
       
       beforeEach(() => {
-        spyOn(callService, 'getPage').and.returnValue(Observable.of(CALLS));
+        spyOn(callService, 'getPage').and.returnValue(observableOf(CALLS));
         component['page'] = 1;
       });
       

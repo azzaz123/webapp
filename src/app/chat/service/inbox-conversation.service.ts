@@ -1,3 +1,5 @@
+
+import {mergeMap, map, catchError, delay} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { EventService } from '../../core/event/event.service';
@@ -205,8 +207,8 @@ export class InboxConversationService {
   }
 
   private getConversation(id: String): Observable<InboxConversation> {
-    return this.httpClient.get<InboxConversationApi>(`${environment.baseUrl}${this.API_URL}${id}`)
-    .map((conversationResponse: InboxConversationApi) => InboxConversation.fromJSON(conversationResponse, this._selfId));
+    return this.httpClient.get<InboxConversationApi>(`${environment.baseUrl}${this.API_URL}${id}`).pipe(
+    map((conversationResponse: InboxConversationApi) => InboxConversation.fromJSON(conversationResponse, this._selfId)));
   }
 
   public containsConversation(conversation: InboxConversation): boolean {
@@ -218,33 +220,33 @@ export class InboxConversationService {
   }
 
   public archive$(conversation: InboxConversation): Observable<InboxConversation> {
-    return this.archiveConversation(conversation.id)
-    .catch((err) => {
+    return this.archiveConversation(conversation.id).pipe(
+    catchError((err) => {
       if (err.status === 409) {
-        return Observable.of(conversation);
+        return observableOf(conversation);
       } else {
         return Observable.throwError(err);
       }
-    })
-    .map(() => {
+    }),
+    map(() => {
       this.eventService.emit(EventService.CONVERSATION_ARCHIVED, conversation);
       return conversation;
-    });
+    }),);
   }
 
   public unarchive(conversation: InboxConversation): Observable<InboxConversation> {
-    return this.unarchiveConversation(conversation.id)
-    .catch((err) => {
+    return this.unarchiveConversation(conversation.id).pipe(
+    catchError((err) => {
       if (err.status === 409) {
-        return Observable.of(conversation);
+        return observableOf(conversation);
       } else {
         return Observable.throwError(err);
       }
-    })
-    .map(() => {
+    }),
+    map(() => {
       this.eventService.emit(EventService.CONVERSATION_UNARCHIVED, conversation);
       return conversation;
-    });
+    }),);
   }
 
   private archiveConversation(conversationId: string): Observable<any> {
@@ -274,13 +276,13 @@ export class InboxConversationService {
   }
 
   private loadMoreMessagesFor$(conversation: InboxConversation): Observable<InboxConversation> {
-    return this.getMoreMessages$(conversation.id, conversation.nextPageToken).delay(1000)
-    .map((messagesResponse: InboxMessagesApi) => {
+    return this.getMoreMessages$(conversation.id, conversation.nextPageToken).pipe(delay(1000),
+    map((messagesResponse: InboxMessagesApi) => {
       const inboxMessages = InboxMessage.messsagesFromJson(messagesResponse.messages, conversation.id, this.selfId, conversation.user.id);
       inboxMessages.forEach((mess) => conversation.messages.push(mess));
       conversation.nextPageToken = messagesResponse.next_from;
       return conversation;
-    });
+    }),);
   }
 
   private getMoreMessages$(conversationId: string, nextPageToken: string): Observable<InboxMessagesApi> {
@@ -307,24 +309,24 @@ export class InboxConversationService {
 
       if (localConversation) {
         this.openConversation(localConversation);
-        return Observable.of(localConversation);
+        return observableOf(localConversation);
       }
 
-      return this.fetchConversationByItem$(itemId)
-      .map((inboxConversation: InboxConversation) => {
+      return this.fetchConversationByItem$(itemId).pipe(
+      map((inboxConversation: InboxConversation) => {
         if (!this.containsConversation(inboxConversation)) {
           this.conversations.unshift(inboxConversation);
         }
         this.openConversation(inboxConversation);
         return inboxConversation;
-      });
+      }));
     }
     return Observable.throwError(new Error('Not found'));
   }
 
   private fetchConversationByItem$(itemId: string): Observable<InboxConversation> {
-    return this.httpClient.post<ConversationResponse>(`${environment.baseUrl}api/v3/conversations`, { item_id: itemId })
-    .flatMap((response: ConversationResponse) => this.getConversation(response.conversation_id));
+    return this.httpClient.post<ConversationResponse>(`${environment.baseUrl}api/v3/conversations`, { item_id: itemId }).pipe(
+    mergeMap((response: ConversationResponse) => this.getConversation(response.conversation_id)));
   }
 
   public resendPendingMessages(conversation: InboxConversation): void {

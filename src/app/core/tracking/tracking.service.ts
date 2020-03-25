@@ -10,9 +10,7 @@ import { CookieService } from 'ngx-cookie';
 import { NavigatorService } from './navigator.service';
 import { WindowRef } from '../window/window.service';
 import { EventService } from '../event/event.service';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/bufferTime';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject ,  Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 const maxBatchSize = 1000;

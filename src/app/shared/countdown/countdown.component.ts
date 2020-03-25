@@ -1,10 +1,10 @@
+
+import {map, startWith} from 'rxjs/operators';
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
-import { interval } from 'rxjs/observable/interval';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  interval ,  Subscription } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
-import 'rxjs/add/operator/startWith';
+
 
 @Component({
   selector: 'tsl-countdown',
@@ -37,12 +37,12 @@ export class CountdownComponent implements OnInit, OnDestroy {
         }
     }
 
-    this.counter$ = interval(refreshRate)
-      .startWith(0)
-      .map(() => {
+    this.counter$ = interval(refreshRate).pipe(
+      startWith(0),
+      map(() => {
         const currentTime = moment();
         return lastTime.diff(currentTime);
-      });
+      }),);
 
     this.counterSubscription = this.counter$.subscribe((diffTime) => {
       switch (this.format) {

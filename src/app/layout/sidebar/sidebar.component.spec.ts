@@ -1,9 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SidebarComponent } from './sidebar.component';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs';
 import { TutorialService } from '../../core/tutorial/tutorial.service';
 import { User } from '../../core/user/user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
@@ -28,19 +29,19 @@ describe('SidebarComponent', () => {
           logout() {
           },
           me(): Observable<User> {
-            return Observable.of(MOCK_USER);
+            return observableOf(MOCK_USER);
           },
           isProfessional() {
-            return Observable.of(true);
+            return observableOf(true);
           },
           hasPerm() {
-            return Observable.of(true);
+            return observableOf(true);
           }
         },
         },
         {
           provide: MessageService, useValue: {
-          totalUnreadMessages$: Observable.of(1)
+          totalUnreadMessages$: observableOf(1)
         }
         }
       ],

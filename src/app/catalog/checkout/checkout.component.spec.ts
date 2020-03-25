@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutComponent } from './checkout.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
-import { Observable } from 'rxjs';
 import { ITEM_ID, ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE } from '../../../tests/item.fixtures.spec';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -28,7 +29,7 @@ describe('CheckoutComponent', () => {
           provide: ItemService, useValue: {
           selectedItems: SELECTED_ITEMS,
           getItemsWithAvailableProducts() {
-            return Observable.of(ITEMS_WITH_PRODUCTS);
+            return observableOf(ITEMS_WITH_PRODUCTS);
           }
         }
         },
@@ -41,13 +42,13 @@ describe('CheckoutComponent', () => {
         {
           provide: PaymentService, useValue: {
           getCreditInfo() {
-            return Observable.of({});
+            return observableOf({});
           }
         }
         },
         {
           provide: ActivatedRoute, useValue: {
-            params: Observable.of({})
+            params: observableOf({})
         }
         }
       ],
@@ -94,7 +95,7 @@ describe('CheckoutComponent', () => {
       });
 
       it('should set provincialBump to true if no citybump', () => {
-        spyCall.and.returnValue(Observable.of(ITEMS_WITH_PRODUCTS_PROVINCE));
+        spyCall.and.returnValue(observableOf(ITEMS_WITH_PRODUCTS_PROVINCE));
 
         component.ngOnInit();
 
@@ -105,7 +106,7 @@ describe('CheckoutComponent', () => {
     describe('with params', () => {
 
       beforeEach(() => {
-        route.params = Observable.of({
+        route.params = observableOf({
           itemId: ITEM_ID
         });
       });
@@ -118,7 +119,7 @@ describe('CheckoutComponent', () => {
       });
 
       it('should set provincialBump to true if no citybump', () => {
-        spyCall.and.returnValue(Observable.of(ITEMS_WITH_PRODUCTS_PROVINCE));
+        spyCall.and.returnValue(observableOf(ITEMS_WITH_PRODUCTS_PROVINCE));
 
         component.ngOnInit();
 
@@ -126,7 +127,7 @@ describe('CheckoutComponent', () => {
       });
 
       it('should redirect if no products available', () => {
-        spyCall.and.returnValue(Observable.of([]));
+        spyCall.and.returnValue(observableOf([]));
         spyOn(router, 'navigate');
 
         component.ngOnInit();
@@ -142,7 +143,7 @@ describe('CheckoutComponent', () => {
         credit: 2000,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
 
       component.ngOnInit();
 
@@ -155,7 +156,7 @@ describe('CheckoutComponent', () => {
         credit: 0,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
 
       component.ngOnInit();
 

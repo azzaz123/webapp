@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
-import { Observable } from 'rxjs';
 import { MOCK_USER, MOTORPLAN_DATA, USER_WEB_SLUG, USERS_STATS_RESPONSE, PROFILE_SUB_INFO, PROFILE_NOT_SUB_INFO, PROFILE_ELIGIBLE_INFO, PROFILE_ACTIVE_INFO } from '../../tests/user.fixtures.spec';
 import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
@@ -34,42 +35,42 @@ describe('ProfileComponent', () => {
         {
           provide: UserService, useValue: {
             me() {
-              return Observable.of(MOCK_USER);
+              return observableOf(MOCK_USER);
             },
             getMotorPlan() {
-              return Observable.of({
+              return observableOf({
                 motorPlan: mockMotorPlan
               });
             },
             isProUser() {
-              return Observable.of({});
+              return observableOf({});
             },
             getStats() {
-              return Observable.of(USERS_STATS_RESPONSE);
+              return observableOf(USERS_STATS_RESPONSE);
             },
             logout() {},
             getMotorPlans() {
-              return Observable.of(PROFILE_SUB_INFO);
+              return observableOf(PROFILE_SUB_INFO);
             },
             isProfessional() {
-              return Observable.of(false);
+              return observableOf(false);
             }
           }
         },
         {
           provide: SubscriptionsService, useValue: {
             isSubscriptionsActive$() {
-              return Observable.of(true);
+              return observableOf(true);
             },
             getSubscriptions() {
-              return Observable.of(SUBSCRIPTIONS);
+              return observableOf(SUBSCRIPTIONS);
             }
           }
         },
         {
           provide: FeatureflagService, useValue: {
             getFlag() {
-              return Observable.of(true);
+              return observableOf(true);
             }
           }
         },
@@ -89,7 +90,7 @@ describe('ProfileComponent', () => {
     subscriptionsService = TestBed.get(SubscriptionsService);
     eventService = TestBed.get(EventService);
     spyOn(userService, 'me').and.callThrough();
-    spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
+    spyOn(userService, 'isProUser').and.returnValue(observableOf(true));
     spyOn(userService, 'getStats').and.callThrough();
     fixture.detectChanges();
   });
@@ -117,7 +118,7 @@ describe('ProfileComponent', () => {
     });
 
     it('should set the translated user motor plan', () => {
-      spyOn(userService, 'getMotorPlan').and.returnValue(Observable.of(MOTORPLAN_DATA));
+      spyOn(userService, 'getMotorPlan').and.returnValue(observableOf(MOTORPLAN_DATA));
 
       component.ngOnInit();
 
@@ -136,8 +137,8 @@ describe('ProfileComponent', () => {
 
     it('should set isNewSubscription to true if the user is subscribed with stripe and not a Cardealer and inapp purchase is not_eligible', () => {
       component.isNewSubscription = false;
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(SUBSCRIPTIONS));
-      spyOn(userService, 'getMotorPlans').and.returnValue(Observable.of(PROFILE_NOT_SUB_INFO));
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(observableOf(SUBSCRIPTIONS));
+      spyOn(userService, 'getMotorPlans').and.returnValue(observableOf(PROFILE_NOT_SUB_INFO));
 
       component.ngOnInit();
 
@@ -146,8 +147,8 @@ describe('ProfileComponent', () => {
 
     it('should set isNewSubscription to true if the user is subscribed with stripe and not a Cardealer and inapp purchase is eligible', () => {
       component.isNewSubscription = false;
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(SUBSCRIPTIONS));
-      spyOn(userService, 'getMotorPlans').and.returnValue(Observable.of(PROFILE_ELIGIBLE_INFO));
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(observableOf(SUBSCRIPTIONS));
+      spyOn(userService, 'getMotorPlans').and.returnValue(observableOf(PROFILE_ELIGIBLE_INFO));
 
       component.ngOnInit();
 
@@ -156,8 +157,8 @@ describe('ProfileComponent', () => {
 
     it('should not set isNewSubscription to true if the user is subscribed with stripe and not a Cardealer and inapp purchase is purchase_active', () => {
       component.isNewSubscription = false;
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(SUBSCRIPTIONS_NOT_SUB));
-      spyOn(userService, 'getMotorPlans').and.returnValue(Observable.of(PROFILE_ACTIVE_INFO));
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(observableOf(SUBSCRIPTIONS_NOT_SUB));
+      spyOn(userService, 'getMotorPlans').and.returnValue(observableOf(PROFILE_ACTIVE_INFO));
 
       component.ngOnInit();
 

@@ -59,21 +59,21 @@ describe('CatalogItemComponent', () => {
             deselectItem() {
             },
             deleteItem() {
-              return Observable.of({});
+              return observableOf({});
             },
             reserveItem() {
-              return Observable.of({});
+              return observableOf({});
             },
             reactivateItem() {
-              return Observable.of({});
+              return observableOf({});
             },
             getAvailableReactivationProducts() {
             },
             canDoAction() {
-              return Observable.of(true);
+              return observableOf(true);
             },
             getListingFeeInfo() {
-              return Observable.of(PRODUCT_RESPONSE);
+              return observableOf(PRODUCT_RESPONSE);
             }
           }
         },
@@ -215,7 +215,7 @@ describe('CatalogItemComponent', () => {
   describe('reactivate', () => {
 
     beforeEach(() => {
-      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(observableOf(PRODUCT_RESPONSE));
     });
 
     it('should call getAvailableReactivationProducts', () => {
@@ -428,7 +428,7 @@ describe('CatalogItemComponent', () => {
     const item: Item = MOCK_ITEM;
 
     it('should get the listing fee information related to the item', () => {
-      spyOn(itemService, 'getListingFeeInfo').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getListingFeeInfo').and.returnValue(observableOf(PRODUCT_RESPONSE));
 
       component.publishItem();
 

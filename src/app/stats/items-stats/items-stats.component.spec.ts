@@ -2,12 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemsStatsComponent } from './items-stats.component';
 import { ItemService } from '../../core/item/item.service';
-import { Observable } from 'rxjs';
+import { Observable ,  Subject } from 'rxjs';
 import { MomentModule } from 'angular2-moment';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { CheapestProducts } from '../../core/item/item-response.interface';
-import { Subject } from 'rxjs/Subject';
 
 describe('ItemsStatsComponent', () => {
   let component: ItemsStatsComponent;

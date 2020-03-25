@@ -1,9 +1,12 @@
+
+import {forkJoin as observableForkJoin, of as observableOf,  Observable ,  ReplaySubject } from 'rxjs';
+
+import {map, tap, catchError, mergeMap} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Call } from './calls';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { EventService } from '../event/event.service';
-import { Observable } from 'rxjs';
 import { difference, findIndex, isEmpty, map, reverse, sortBy } from 'lodash-es';
 import { Lead } from './lead';
 import { Conversation } from './conversation';
@@ -12,7 +15,6 @@ import { CallResponse } from './call-response.interface';
 import { RealTimeService } from '../message/real-time.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { LeadResponse } from './lead-response.interface';
 import { User } from '../user/user';
 import { Item } from '../item/item';
@@ -42,15 +44,15 @@ export class CallsService {
   }
 
   public init(archived?: boolean): Observable<Lead[]> {
-    return this.getLeads(null, archived)
-    .do((conversations: Lead[]) => {
+    return this.getLeads(null, archived).pipe(
+    tap((conversations: Lead[]) => {
       if (!archived) {
         this.stream$.next(conversations);
       } else {
         this.archivedStream$.next(conversations);
       }
       this.firstLoad = false;
-    });
+    }));
   }
 
   protected getLastDate(conversations: Lead[]): number {
@@ -65,46 +67,46 @@ export class CallsService {
         until: until ? until.toString() : new Date().getTime().toString(),
         hidden: String(archived)
       }
-    })
-    .flatMap((res: LeadResponse[]) => {
-      return isEmpty(res) ? Observable.of([]) : Observable.forkJoin(
+    }).pipe(
+    mergeMap((res: LeadResponse[]) => {
+      return isEmpty(res) ? observableOf([]) : observableForkJoin(
         res.map((conversation: LeadResponse) => this.getUser(conversation))
-      )
-      .flatMap((response: LeadResponse[]) => {
-        return Observable.forkJoin(
-          response.map((conversation: LeadResponse) => this.getItem(conversation)
-          .map((convWithItem: Lead) => {
+      ).pipe(
+      mergeMap((response: LeadResponse[]) => {
+        return observableForkJoin(
+          response.map((conversation: LeadResponse) => this.getItem(conversation).pipe(
+          map((convWithItem: Lead) => {
             convWithItem.archived = archived;
             return convWithItem;
-          }))
+          })))
         );
-      });
-    })
-    .catch((a) => {
-      return Observable.of(null);
-    });
+      }));
+    }),
+    catchError((a) => {
+      return observableOf(null);
+    }),);
   }
 
   protected getUser(conversation: LeadResponse): Observable<LeadResponse> {
     if (!conversation.user_id) {
       conversation.user = new User(null);
-      return Observable.of(conversation);
+      return observableOf(conversation);
     }
-    return this.userService.get(conversation.user_id)
-    .map((user: User) => {
+    return this.userService.get(conversation.user_id).pipe(
+    map((user: User) => {
       conversation.user = user;
       return conversation;
-    });
+    }));
   }
 
   protected getItem(conversation: LeadResponse): Observable<Lead> {
     if (!conversation.item_id) {
-      return Observable.of(conversation)
-      .map((data: CallResponse) => this.mapRecordData(data));
+      return observableOf(conversation).pipe(
+      map((data: CallResponse) => this.mapRecordData(data)));
     }
-    return this.itemService.get(conversation.item_id)
-    .map((item: Item) => this.setItem(conversation, item))
-    .map((data: CallResponse) => this.mapRecordData(data));
+    return this.itemService.get(conversation.item_id).pipe(
+    map((item: Item) => this.setItem(conversation, item)),
+    map((data: CallResponse) => this.mapRecordData(data)),);
   }
 
   protected setItem(conv: LeadResponse, item: Item): LeadResponse {
@@ -115,11 +117,11 @@ export class CallsService {
 
   public archiveAll(until?: number): Observable<any> {
     until = until || new Date().getTime();
-    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/hide?until=${until}`, {})
-    .map(() => {
+    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/hide?until=${until}`, {}).pipe(
+    map(() => {
       this.leads = this.bulkArchive(this.leads);
       this.stream();
-    });
+    }));
   }
 
   protected bulkArchive(leads: Lead[]): Lead[] {
@@ -148,8 +150,8 @@ export class CallsService {
 
   protected getLeads(since?: number, archived?: boolean): Observable<Call[]> {
     // do not execute anything unless is more than 30 sec after last call
-    return this.query(since, archived)
-    .map((calls: Call[]) => {
+    return this.query(since, archived).pipe(
+    map((calls: Call[]) => {
       if (calls && calls.length > 0) {
         if (!archived) {
           const diff: any[] = difference(map(calls, 'id'), map(this.leads, 'id'));
@@ -162,14 +164,14 @@ export class CallsService {
         }
       }
       return calls;
-    });
+    }));
   }
 
   public getPage(page: number, archive?: boolean, status?: string, pageSize: number = this.PAGE_SIZE): Observable<Lead[]> {
     const init: number = (page - 1) * pageSize;
     const end: number = init + pageSize;
-    return (archive ? this.archivedStream$ : this.stream$).asObservable()
-    .map((calls: Lead[]) => {
+    return (archive ? this.archivedStream$ : this.stream$).asObservable().pipe(
+    map((calls: Lead[]) => {
       if (status) {
         const statuses: string[] = status.split(',');
         let bool: boolean;
@@ -186,22 +188,22 @@ export class CallsService {
         });
       }
       return calls;
-    })
-    .map((calls: Lead[]) => reverse(sortBy(calls, 'modifiedDate')))
-    .map((calls: Lead[]) => calls.slice(0, end));
+    }),
+    map((calls: Lead[]) => reverse(sortBy(calls, 'modifiedDate'))),
+    map((calls: Lead[]) => calls.slice(0, end)),);
   }
 
   public getTotals(): Observable<CallTotals> {
-    return this.stream$
-    .flatMap((calls: Call[]) => {
-      return this.archivedStream$
-      .map((archivedCalls: Call[]) => {
+    return this.stream$.pipe(
+    mergeMap((calls: Call[]) => {
+      return this.archivedStream$.pipe(
+      map((archivedCalls: Call[]) => {
         return {
           calls: calls.length,
           archived: archivedCalls.length
         };
-      });
-    });
+      }));
+    }));
   }
 
   protected mapRecordData(data: CallResponse): Call {
@@ -221,8 +223,8 @@ export class CallsService {
   }
 
   public archive(id: string): Observable<Lead> {
-    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/hide`, {})
-    .map(() => {
+    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/hide`, {}).pipe(
+    map(() => {
       const index: number = findIndex(this.leads, { 'id': id });
       if (index > -1) {
         const deletedLead: Lead = this.leads.splice(index, 1)[0];
@@ -233,12 +235,12 @@ export class CallsService {
         this.event.emit(EventService.LEAD_ARCHIVED, deletedLead);
         return deletedLead;
       }
-    });
+    }));
   }
 
   public unarchive(id: string): Observable<Lead> {
-    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/unhide`, {})
-    .map(() => {
+    return this.httpClient.put(`${environment.baseUrl}${this.ARCHIVE_URL}/${id}/unhide`, {}).pipe(
+    map(() => {
       const index: number = findIndex(this.archivedLeads, { 'id': id });
       if (index > -1) {
         const lead: Lead = this.archivedLeads.splice(index, 1)[0];
@@ -249,6 +251,6 @@ export class CallsService {
         this.event.emit(EventService.CONVERSATION_UNARCHIVED);
         return lead;
       }
-    });
+    }));
   }
 }

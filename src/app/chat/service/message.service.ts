@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { Conversation } from '../../core/conversation/conversation';
 import { Message } from '../../core/message/message';
 import { UserService } from '../../core/user/user.service';
 import { User } from '../../core/user/user';
 import { ConnectionService } from '../../core/connection/connection.service';
-import 'rxjs/add/operator/first';
+
 import { EventService } from '../../core/event/event.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { TrackingService } from '../../core/tracking/tracking.service';

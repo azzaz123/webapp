@@ -1,5 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
+
+import {of as observableOf, throwError as observableThrowError,  Observable ,  Subject } from 'rxjs';
 import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -7,9 +9,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/observable/throw';
+
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
@@ -108,13 +108,13 @@ describe('App', () => {
           checkUserStatus() {
           },
           me() {
-            return Observable.of(MOCK_USER);
+            return observableOf(MOCK_USER);
           },
           logout() {
           },
           sendUserPresenceInterval() {},
           isProfessional() {
-            return Observable.of(false);
+            return observableOf(false);
           }
         }
         },
@@ -155,7 +155,7 @@ describe('App', () => {
         {
           provide: ConversationService, useValue: {
           init() {
-            return Observable.of();
+            return observableOf();
           },
           handleNewMessages() {},
           resetCache() {},
@@ -166,20 +166,20 @@ describe('App', () => {
         {
           provide: CallsService, useValue: {
             init() {
-              return Observable.of();
+              return observableOf();
             },
           syncItem() {}
           }
         },
         {
           provide: Router, useValue: {
-          events: Observable.of(new NavigationEnd(1, 'test', 'test'))
+          events: observableOf(new NavigationEnd(1, 'test', 'test'))
         }
         },
         {
           provide: ActivatedRoute, useValue: {
           outlet: 'primary',
-          data: Observable.of({
+          data: observableOf({
             title: 'Chat',
             hideSidebar: true
           })
@@ -277,7 +277,7 @@ describe('App', () => {
         eventService.emit(EventService.CHAT_RT_CONNECTED);
       }
       beforeEach(fakeAsync(() => {
-        spyOn(callsService, 'init').and.returnValue(Observable.of({}));
+        spyOn(callsService, 'init').and.returnValue(observableOf({}));
         spyOn(inboxService, 'init');
       }));
 
@@ -318,7 +318,7 @@ describe('App', () => {
       });
 
       it('should call callsService.init twice if user is professional', () => {
-        spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+        spyOn(userService, 'isProfessional').and.returnValue(observableOf(true));
 
         component.ngOnInit();
         emitSuccessChatEvents();
@@ -334,7 +334,7 @@ describe('App', () => {
       });
 
       it('should NOT unsubscribe from the RT_CONNECTED_EVENT', () => {
-        spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+        spyOn(userService, 'isProfessional').and.returnValue(observableOf(true));
 
         component.ngOnInit();
         emitSuccessChatEvents();
@@ -393,7 +393,7 @@ describe('App', () => {
     });
 
     it('should NOT call userService.sendUserPresenceInterval is the user has not successfully logged in', () => {
-      spyOn(userService, 'me').and.returnValue(Observable.throw({}));
+      spyOn(userService, 'me').and.returnValue(observableThrowError({}));
       spyOn(errorsService, 'show');
       spyOn(userService, 'sendUserPresenceInterval');
 
@@ -411,7 +411,7 @@ describe('App', () => {
       };
       spyOn(userService, 'logout');
       spyOn(errorsService, 'show');
-      spyOn(userService, 'me').and.returnValue(Observable.throw(ERROR));
+      spyOn(userService, 'me').and.returnValue(observableThrowError(ERROR));
 
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
@@ -554,7 +554,7 @@ describe('App', () => {
     });
 
     it('should identify the user', () => {
-      spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_FULL_USER));
+      spyOn(userService, 'me').and.returnValue(observableOf(MOCK_FULL_USER));
       spyOn(splitTestService, 'identify');
 
       component.ngOnInit();

@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { InboxItemDetailComponent } from './inbox-item-detail.component';
 import { ItemService } from '../../../../core/item/item.service';
@@ -33,10 +34,10 @@ describe('Component: Item', () => {
         {
           provide: ItemService, useValue: {
           getCounters() {
-            return Observable.of(ITEM_COUNTERS_DATA);
+            return observableOf(ITEM_COUNTERS_DATA);
           },
           reserveItem() {
-            return Observable.of({});
+            return observableOf({});
           },
         }
         },

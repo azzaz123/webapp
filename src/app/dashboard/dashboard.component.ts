@@ -1,3 +1,5 @@
+
+import {takeWhile} from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -45,8 +47,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     private getData() {
-        this.callService.getPage(1, false, null, 5)
-        .takeWhile(() => this.active)
+        this.callService.getPage(1, false, null, 5).pipe(
+        takeWhile(() => this.active))
         .subscribe((calls: Lead[]) => {
             this.trackingService.track(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
             this.calls = calls;
@@ -58,8 +60,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     private getTotals() {
-      this.callService.getTotals()
-      .takeWhile(() => this.active)
+      this.callService.getTotals().pipe(
+      takeWhile(() => this.active))
       .subscribe((callsTotals: CallTotals) => {
         this.phonesTotal = callsTotals.calls;
         this.messagesTotal = this.countTotalMessages();

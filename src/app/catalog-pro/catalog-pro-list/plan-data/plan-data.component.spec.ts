@@ -1,7 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PlanDataComponent } from './plan-data.component';
-import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { ItemService } from '../../../core/item/item.service';
@@ -32,10 +33,10 @@ describe('PlanDataComponent', () => {
         {
           provide: PaymentService, useValue: {
             getPerks() {
-              return Observable.of({});
+              return observableOf({});
             },
             getStatus() {
-              return Observable.of({MOCK_STATUS});
+              return observableOf({MOCK_STATUS});
             }
           }
         },
@@ -68,8 +69,8 @@ describe('PlanDataComponent', () => {
   describe('ngChanges', () => {
     beforeEach(() => {
       component.loading = true;
-      spyOn(paymentService, 'getPerks').and.returnValue(Observable.of(createPerksModelFixture()));
-      spyOn(paymentService, 'getStatus').and.returnValue(Observable.of(MOCK_STATUS));
+      spyOn(paymentService, 'getPerks').and.returnValue(observableOf(createPerksModelFixture()));
+      spyOn(paymentService, 'getStatus').and.returnValue(observableOf(MOCK_STATUS));
       component.ngOnChanges();
     });
 

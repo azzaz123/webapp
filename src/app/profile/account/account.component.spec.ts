@@ -6,7 +6,7 @@ import { UnsubscribeModalComponent } from '../unsubscribe-modal/unsubscribe-moda
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_FULL_USER } from '../../../tests/user.fixtures.spec';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

@@ -1,8 +1,9 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs';
 import { FINANCIAL_CARD, FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
 import { StripeCardSelectionComponent } from './stripe-card-selection.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
@@ -59,7 +60,7 @@ describe('StripeCardSelectionComponent', () => {
 
     it('should get financial card and emit false if not present', () => {
       component.financialCards = undefined;
-      spyOn(stripeService, 'getCards').and.returnValue(Observable.throw({}));
+      spyOn(stripeService, 'getCards').and.returnValue(observableThrowError({}));
       spyOn(component.hasCard, 'emit');
 
       component.ngOnInit();
