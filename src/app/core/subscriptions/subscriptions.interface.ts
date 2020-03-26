@@ -16,6 +16,13 @@ export interface Tier {
     currency: string
 }
 
+export enum SUBSCRIPTION_MARKETS {
+  NO_MARKET = null,
+  STRIPE = 0,
+  GOOGLE_PLAY = 1,
+  APPLE_STORE = 2,
+} 
+
 export interface SubscriptionsResponse {
   id: string,
   category_id: number,
@@ -27,7 +34,8 @@ export interface SubscriptionsResponse {
   category_name?: string,
   category_icon?: string,
   selected_tier?: Tier,
-  subscribed_until?: number
+  subscribed_until?: number,
+  market: SUBSCRIPTION_MARKETS
 }
 
 export interface SubscriptionSlotGeneralResponse {

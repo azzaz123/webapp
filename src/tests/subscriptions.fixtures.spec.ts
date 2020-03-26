@@ -6,7 +6,8 @@ import {
   Tier,
   SubscriptionSlotResponse,
   SubscriptionSlot,
-  SubscriptionSlotGeneralResponse
+  SubscriptionSlotGeneralResponse,
+  SUBSCRIPTION_MARKETS
 } from '../app/core/subscriptions/subscriptions.interface';
 import { CATEGORY_DATA_WEB } from './category.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
@@ -90,7 +91,8 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED: SubscriptionsRespo
       price: 39.99,
       currency: '€'
     }   
-  ]
+  ],
+  market: SUBSCRIPTION_MARKETS.NO_MARKET
 };
 
 export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED: SubscriptionsResponse = {
@@ -108,7 +110,8 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED: Subscriptio
       price: 39.99,
       currency: '€'
     }   
-  ]
+  ],
+  market: SUBSCRIPTION_MARKETS.NO_MARKET
 }
 
 export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED: SubscriptionsResponse = {
@@ -126,7 +129,8 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED: SubscriptionsRe
       price: 39.99,
       currency: '€'
     }   
-  ]
+  ],
+  market: SUBSCRIPTION_MARKETS.STRIPE
 }
 
 export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED: SubscriptionsResponse = {
@@ -145,7 +149,8 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED: SubscriptionsRes
       price: 39.99,
       currency: '€'
     }   
-  ]
+  ],
+  market: SUBSCRIPTION_MARKETS.STRIPE
 }
 
 export const SUBSCRIPTIONS: SubscriptionsResponse[] = 
@@ -183,7 +188,8 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
         price: 129.99,
         currency: '€'
       }
-    ]
+    ],
+    market: SUBSCRIPTION_MARKETS.STRIPE
   },
   {
     id: 'efgh-1234-abcd-5678',
@@ -218,7 +224,8 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
         price: 199.99,
         currency: '€'
       }
-    ]
+    ],
+    market: SUBSCRIPTION_MARKETS.NO_MARKET
   },
   {
     id: 'abcd-5678-efgh-1234',
@@ -253,7 +260,8 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
         price: 69.99,
         currency: '€'
       }
-    ]
+    ],
+    market: SUBSCRIPTION_MARKETS.STRIPE
   },
   {
     id: '1234-abcd-5678-efgh',
@@ -289,7 +297,8 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
         price: 69.99,
         currency: '€'
       }
-    ]
+    ],
+    market: SUBSCRIPTION_MARKETS.STRIPE
   }
 ];
 
@@ -328,7 +337,8 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
         price: 129.99,
         currency: '€'
       }
-    ]
+    ],
+    market: SUBSCRIPTION_MARKETS.NO_MARKET
   },
   {
     id: '1234-abcd-5678-efgh',
@@ -363,7 +373,8 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
         price: 199.99,
         currency: '€'
       }
-    ]
+    ],
+    market: SUBSCRIPTION_MARKETS.NO_MARKET
   },
   {
     id: 'abcd-4321-efgh-5678',
@@ -398,7 +409,8 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
         price: 69.99,
         currency: '€'
       }
-    ]
+    ],
+    market: SUBSCRIPTION_MARKETS.NO_MARKET
   },
   {
     id: 'abcd-1234-efgh-8765',
@@ -434,7 +446,8 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
         price: 69.99,
         currency: '€'
       }
-    ]
+    ],
+    market: SUBSCRIPTION_MARKETS.NO_MARKET
   }
 ];
 
@@ -476,7 +489,8 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
     ],
     category_name: 'Motor & Accessories',
     category_icon: 'category_MotorAccessories',
-    selected_tier: null
+    selected_tier: null,
+    market: SUBSCRIPTION_MARKETS.NO_MARKET
   },
   {
     id: 'abcd-4321-efgh-8765',
@@ -514,7 +528,8 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
     ],
     category_name: 'Cars',
     category_icon: 'category_Cars',
-    selected_tier: null
+    selected_tier: null,
+    market: SUBSCRIPTION_MARKETS.NO_MARKET
   },
   {
     id: 'dcba-1234-hgfe-5678',
@@ -557,7 +572,8 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
       limit: 30,
       price: 19.99,
       currency: '€'
-    }
+    },
+    market: SUBSCRIPTION_MARKETS.STRIPE
   }
 ];
 
@@ -599,7 +615,8 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] =
     ],
     category_name: 'Motor & Accessories',
     category_icon: 'category_MotorAccessories',
-    selected_tier: null
+    selected_tier: null,
+    market: SUBSCRIPTION_MARKETS.STRIPE
   },
   {
     id: '1234-abcd-efgh-5678',
@@ -637,7 +654,8 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] =
     ],
     category_name: 'Cars',
     category_icon: 'category_Cars',
-    selected_tier: null
+    selected_tier: null,
+    market: SUBSCRIPTION_MARKETS.NO_MARKET
   },
   {
     id: 'abcd-1234-5678-efgh',
@@ -680,7 +698,8 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] =
       limit: 30,
       price: 19.99,
       currency: '€'
-    }
+    },
+    market: SUBSCRIPTION_MARKETS.STRIPE
   }
 ];
 
