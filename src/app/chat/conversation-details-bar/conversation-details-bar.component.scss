@@ -24,12 +24,12 @@
     }
   }
 
-  span {
-    color: $blue-grey-2;
-  }
-
   .user-avatar {
     display: inline-flex;
+  }
+
+  span {
+    color: $blue-grey-2;
   }
 
   tsl-user-avatar {
@@ -73,7 +73,19 @@
   span {
     font-size: $font-size-s;
   }
+
   @include media-breakpoint-down(md) {
     height: 66px;
   }
+}
+
+.faded {
+  tsl-user-avatar,
+  .conversation-header-user-info {
+    opacity: 0.5;
+  }
+}
+
+.back-arrow {
+  margin-right: $spacing-m;
 }

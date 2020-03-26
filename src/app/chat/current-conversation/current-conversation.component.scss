@@ -119,10 +119,6 @@
   }
 }
 
-.back-arrow {
-  margin-right: $spacing-m;
-}
-
 #conversation-meta {
   overflow-y: auto;
   height: calc(100vh - #{$topbar-height});
@@ -179,13 +175,6 @@
     position: absolute;
     top: 0;
     left: -#{$spacing-ml + 5px};
-  }
-}
-
-.faded {
-  tsl-user-avatar,
-  .conversation-header-user-info {
-    opacity: 0.5;
   }
 }
 
