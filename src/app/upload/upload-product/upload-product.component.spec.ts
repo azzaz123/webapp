@@ -23,7 +23,6 @@ import { UserLocation } from '../../core/user/user-response.interface';
 import { environment } from '../../../environments/environment';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { GeneralSuggestionsService } from './general-suggestions.service';
-import { SplitTestService } from '../../core/tracking/split-test.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
@@ -65,7 +64,6 @@ describe('UploadProductComponent', () => {
   let categoryService: CategoryService;
   let modalService: NgbModal;
   let trackingService: TrackingService;
-  let splitTestService: SplitTestService;
   let analyticsService: AnalyticsService;
   let deviceService: DeviceDetectorService;
   const componentInstance: any = {};
@@ -121,14 +119,6 @@ describe('UploadProductComponent', () => {
           }
         },
         {
-          provide: SplitTestService, useValue: {
-            getVariable() {
-              return Observable.of(true);
-            },
-            track() { }
-          }
-        },
-        {
           provide: GeneralSuggestionsService, useValue: {
             getObjectTypes() {
               return Observable.of({});
@@ -170,7 +160,6 @@ describe('UploadProductComponent', () => {
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
-    splitTestService = TestBed.get(SplitTestService);
     analyticsService = TestBed.get(AnalyticsService);
     deviceService = TestBed.get(DeviceDetectorService);
     fixture.detectChanges();
