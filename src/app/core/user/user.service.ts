@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@angular/core';
 import { PERMISSIONS, User } from './user';
 import { Observable, of } from 'rxjs';
 import { EventService } from '../event/event.service';
-import { ResourceService } from '../resource/resource.service';
 import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';

@@ -3,7 +3,6 @@ import { RealTimeService } from '../../core/message/real-time.service';
 import { EventService } from '../../core/event/event.service';
 import { ChatSignal, ChatSignalType } from '../model/chat-signal';
 import { MessageService } from './message.service';
-import { PersistencyService } from '../../core/persistency/persistency.service';
 import { Observable, of } from 'rxjs';
 import { ConversationResponse } from '../../core/conversation/conversation-response.interface';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType, statusOrder } from '../model';
@@ -36,7 +35,6 @@ export class InboxConversationService {
     private httpClient: HttpClient,
     private realTime: RealTimeService,
     private messageService: MessageService,
-    private persistencyService: PersistencyService,
     private remoteConsoleService: RemoteConsoleService,
     private eventService: EventService) {
     this.conversations = [];

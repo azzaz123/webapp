@@ -3,7 +3,6 @@ import { UUID } from 'angular2-uuid';
 import { Subject } from 'rxjs/Subject';
 import { Conversation } from '../../core/conversation/conversation';
 import { Message } from '../../core/message/message';
-import { PersistencyService } from '../../core/persistency/persistency.service';
 import { UserService } from '../../core/user/user.service';
 import { User } from '../../core/user/user';
 import { ConnectionService } from '../../core/connection/connection.service';
@@ -21,7 +20,6 @@ export class MessageService {
   private _totalUnreadMessages = 0;
 
   constructor(private realTime: RealTimeService,
-              private persistencyService: PersistencyService,
               private userService: UserService,
               private connectionService: ConnectionService,
               private i18n: I18nService,
@@ -70,7 +68,7 @@ export class MessageService {
       null);
     conversation.messages.push(message);
     if (withTracking) {
-      this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+      this.trackingService.track(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
     }
     conversation.modifiedDate = new Date();
     return conversation;

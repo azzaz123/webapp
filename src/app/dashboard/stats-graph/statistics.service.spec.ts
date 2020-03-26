@@ -1,45 +1,43 @@
-/* tslint:disable:no-unused-variable */
+import { HttpTestingController, TestRequest, HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 
-import { TestBed, inject } from '@angular/core/testing';
-import { StatisticsService } from './statistics.service';
-import { MockBackend, MockConnection } from '@angular/http/testing';
-import { ResponseOptions, Response } from '@angular/http';
-import { HttpService } from '../../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { environment } from '../../../environments/environment';
+
+import { StatisticsService, STATISTICS_ENDPOINT } from './statistics.service';
+import { StatisticFullResponse } from './statistic-response.interface';
 import { STATISTICS_RESPONSE } from '../../../tests/statistics.fixtures.spec';
-const STATISTIC_API_URL: string = 'api/v3/protool/dashboard/statistics';
-let service: StatisticsService;
-let http: HttpService;
-let mockBackend: MockBackend;
 
 describe('StatisticsService', () => {
+  let service: StatisticsService;
+  let httpMock: HttpTestingController;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [...TEST_HTTP_PROVIDERS, StatisticsService]
+      imports: [HttpClientTestingModule],
+      providers: [StatisticsService]
     });
     service = TestBed.get(StatisticsService);
-    http = TestBed.get(HttpService);
-    mockBackend = TestBed.get(MockBackend);
+    httpMock = TestBed.get(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   describe('getStatistics', () => {
+    it('should get statistics from backend', () => {
+      const durationInDays = 60;
+      const expectedUrlParams = `durationInDays=${durationInDays}`;
+      const expectedUrl = `${environment.baseUrl}${STATISTICS_ENDPOINT}?${expectedUrlParams}`;
+      let response: StatisticFullResponse;
+    
+      service.getStatistics(durationInDays.toString()).subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(STATISTICS_RESPONSE);
 
-    beforeEach(() => {
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(STATISTICS_RESPONSE)})));
-      });
-    });
-
-    it('should call the get with the statistics api url', () => {
-      spyOn(http, 'get').and.callThrough();
-      let response;
-
-      service.getStatistics('60').subscribe((r) => {
-        response = r;
-      });
-
-      expect(http.get).toHaveBeenCalledWith(STATISTIC_API_URL + '?durationInDays=60');
       expect(response).toEqual(STATISTICS_RESPONSE);
+      expect(req.request.urlWithParams).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
   });
 });

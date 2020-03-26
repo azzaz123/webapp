@@ -54,7 +54,7 @@ describe('WallacoinsComponent', () => {
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: PaymentService, useValue: {
-          getCoinsCreditsPacks() {
+          getCreditsPacks() {
             return Observable.of(CREDITS_PACKS);
           },
           getPerks() {
@@ -115,8 +115,8 @@ describe('WallacoinsComponent', () => {
 
   describe('ngOnInit', () => {
 
-    it('should call getCoinsCreditsPacks and set packs', () => {
-      spyOn(paymentService, 'getCoinsCreditsPacks').and.callThrough();
+    it('should call getCreditsPacks and set packs', () => {
+      spyOn(paymentService, 'getCreditsPacks').and.callThrough();
 
       component.ngOnInit();
 

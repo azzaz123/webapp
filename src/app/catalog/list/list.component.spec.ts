@@ -38,8 +38,6 @@ import { CreditInfo } from '../../core/payments/payment.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { HttpModuleNew } from '../../core/http/http.module.new';
 import { CategoryService } from '../../core/category/category.service';
-import { HttpService } from '../../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockSubscriptionService, MOCK_SUBSCRIPTION_SLOTS } from '../../../tests/subscriptions.fixtures.spec';
 import { FeatureflagService } from '../../core/user/featureflag.service';
 import { FeatureFlagServiceMock, DeviceDetectorServiceMock } from '../../../tests';
@@ -96,8 +94,6 @@ describe('ListComponent', () => {
             }
           }
         },
-        HttpService,
-        ...TEST_HTTP_PROVIDERS,
         { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: ItemService, useValue: {

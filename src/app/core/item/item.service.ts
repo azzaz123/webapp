@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '../http/http.service';
 import { FAKE_ITEM_IMAGE_BASE_PATH, Item, ITEM_TYPES } from './item';
-import { ResourceService } from '../resource/resource.service';
 import {
   AllowedActionResponse,
   AvailableProductsResponse,
@@ -30,7 +28,6 @@ import {
   ListingFeeProductInfo,
   ItemByCategoryResponse
 } from './item-response.interface';
-import { Headers, RequestOptions, Response } from '@angular/http';
 import { find, findIndex, reverse, without, map, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
@@ -48,8 +45,10 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { catchError, tap } from 'rxjs/operators';
+import * as mapRx from 'rxjs/operators/map';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -70,14 +69,14 @@ export enum ITEM_STATUS {
   PUBLISHED = 'published'
 }
 
-@Injectable()
-export class ItemService extends ResourceService {
+export const ITEMS_API_URL = 'api/v3/items';
+export const WEB_ITEMS_API_URL = 'api/v3/web/items';
+export const USERS_API_URL = 'api/v3/users';
+export const PROTOOL_API_URL = 'api/v3/protool';
+export const V1_API_URL = 'shnm-portlet/api/v1';
 
-  protected API_URL = 'api/v3/items';
-  private API_URL_WEB = 'api/v3/web/items';
-  private API_URL_USER = 'api/v3/users';
-  private API_URL_PROTOOL = 'api/v3/protool';
-  private API_URL_V1 = 'shnm-portlet/api/v1';
+@Injectable()
+export class ItemService {
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
   private banReasons: BanReason[] = null;
@@ -92,12 +91,10 @@ export class ItemService extends ResourceService {
   private lastCategoryIdSearched: number;
 
   constructor(
-    http: HttpService,
-    private httpNew: HttpClient,
+    private http: HttpClient,
     private i18n: I18nService,
     private trackingService: TrackingService,
     private eventService: EventService) {
-    super(http);
   }
 
   public getFakeItem(id: string): Item {
@@ -107,27 +104,35 @@ export class ItemService extends ResourceService {
   }
 
   public getCounters(id: string): Observable<ItemCounters> {
-    return this.http.get(this.API_URL + '/' + id + '/counters')
-    .map((r: Response) => r.json())
-    .catch(() => Observable.of({views: 0, favorites: 0}));
+    return this.http.get<ItemCounters>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/counters`)
+      .pipe(catchError(() => Observable.of({ views: 0, favorites: 0 })));
   }
 
   public bulkDelete(type: string): Observable<ItemBulkResponse> {
-    return this.http.put(this.API_URL + '/delete', {
+    return this.http.put<ItemBulkResponse>(`${environment.baseUrl}${ITEMS_API_URL}/delete`, {
       ids: this.selectedItems
     })
-    .map((r: Response) => r.json())
-    .do((response: ItemBulkResponse) => {
-      response.updatedIds.forEach((id: string) => {
-        const index: number = findIndex(this.items[type], {'id': id});
-        this.items[type].splice(index, 1);
-      });
-      this.deselectItems();
+      .pipe(tap(
+        (response: ItemBulkResponse) => {
+          response.updatedIds.forEach((id: string) => {
+            const index: number = findIndex(this.items[type], { 'id': id });
+            this.items[type].splice(index, 1);
+          });
+          this.deselectItems();
+        }
+      ));
+  }
+
+  public selectItem(id: string) {
+    this.selectedItems.push(id);
+    this.selectedItems$.next({
+      id: id,
+      action: 'selected'
     });
   }
 
   public deselectItems() {
-    this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_UNSELECTED, {product_ids: this.selectedItems.join(', ')});
+    this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_UNSELECTED, { product_ids: this.selectedItems.join(', ') });
     this.selectedItems = [];
     this.selectedItems$.next();
     this.items.active.map((item: Item) => {
@@ -150,14 +155,6 @@ export class ItemService extends ResourceService {
       this.banReasons = this.i18n.getTranslations('reportListingReasons');
     }
     return Observable.of(this.banReasons);
-  }
-
-  public selectItem(id: string) {
-    this.selectedItems.push(id);
-    this.selectedItems$.next({
-      id: id,
-      action: 'selected'
-    });
   }
 
   public deselectItem(id: string) {
@@ -315,7 +312,7 @@ export class ItemService extends ResourceService {
         original_width: content.image ? content.image.original_width : null,
         original_height: content.image ? content.image.original_height : null,
         average_hex_color: '',
-        urls_by_size:  {
+        urls_by_size: {
           original: content.image.original,
           small: content.image.small,
           large: content.image.large,
@@ -332,18 +329,18 @@ export class ItemService extends ResourceService {
 
   private mapItemByCategory(response: ItemByCategoryResponse, categoryId: number) {
     const item = new Item(
-     response.id,
-     null,
-     null,
-     response.title,
-     null,
-     categoryId,
-     null,
-     response.sale_price,
-     response.currency_code,
-     response.modified_date,
-     null,
-     response.flags,
+      response.id,
+      null,
+      null,
+      response.title,
+      null,
+      categoryId,
+      null,
+      response.sale_price,
+      response.currency_code,
+      response.modified_date,
+      null,
+      response.flags,
       null,
       null,
       response.main_image,
@@ -370,23 +367,23 @@ export class ItemService extends ResourceService {
     return item;
   }
 
-  public reportListing(itemId: number | string,
-                       comments: string,
-                       reason: number,
-                       thread: number | string): Observable<any> {
-    return this.http.post(this.API_URL + '/' + itemId + '/report', {
+  public reportListing(itemId: number | string, comments: string, reason: number): Observable<any> {
+    return this.http.post(`${environment.baseUrl}${ITEMS_API_URL}/${itemId}/report`, {
       comments: comments,
       reason: ITEM_BAN_REASONS[reason]
     });
   }
 
   public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
-    return this.http.get(url, {
-      init: init,
-      expired: status
+    return this.http.get<HttpResponse<ItemResponse[]>>(`${environment.baseUrl}${url}`, {
+      params: {
+        init: init,
+        expired: status
+      },
+      observe: 'response' as 'body'
     })
-    .map((r: Response) => {
-        const res: ItemResponse[] = r.json();
+      .map(r => {
+        const res: ItemResponse[] = r.body;
         const nextPage: string = r.headers.get('x-nextpage');
 
         let params = {};
@@ -412,209 +409,198 @@ export class ItemService extends ResourceService {
           init: nextInit
         };
       }
-    )
-    .flatMap((itemsData: ItemsData) => {
-      return this.getPurchases()
-      .map((purchases: Purchase[]) => {
-        purchases.forEach((purchase: Purchase) => {
-          const index: number = findIndex(itemsData.data, {id: purchase.item_id});
+      )
+      .flatMap((itemsData: ItemsData) => {
+        return this.getPurchases()
+          .map((purchases: Purchase[]) => {
+            purchases.forEach((purchase: Purchase) => {
+              const index: number = findIndex(itemsData.data, { id: purchase.item_id });
+              if (index !== -1) {
+                if (purchase.purchase_name === 'listingfee') {
+                  itemsData.data[index].listingFeeExpiringDate = purchase.expiration_date;
+                }
+                if (this.bumpTypes.includes(purchase.purchase_name)) {
+                  itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
+                }
+                if (purchase.visibility_flags) {
+                  itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
+                  itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
+                  itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
+                }
+              }
+            });
+            return itemsData;
+          });
+      })
+      .map((itemsData: ItemsData) => {
+        this.selectedItems.forEach((selectedItemId: string) => {
+          const index: number = findIndex(itemsData.data, { id: selectedItemId });
           if (index !== -1) {
-            if (purchase.purchase_name === 'listingfee') {
-              itemsData.data[index].listingFeeExpiringDate = purchase.expiration_date;
-            }
-            if (this.bumpTypes.includes(purchase.purchase_name)) {
-              itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
-            }
-            if ( purchase.visibility_flags ) {
-              itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
-              itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
-              itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
-            }
+            itemsData.data[index].selected = true;
           }
         });
         return itemsData;
       });
-    })
-    .map((itemsData: ItemsData) => {
-      this.selectedItems.forEach((selectedItemId: string) => {
-        const index: number = findIndex(itemsData.data, {id: selectedItemId});
-        if (index !== -1) {
-          itemsData.data[index].selected = true;
-        }
-      });
-      return itemsData;
-    });
   }
 
   public mine(init: number, status?: string): Observable<ItemsData> {
     this.lastCategoryIdSearched = null;
-    return this.getPaginationItems(this.API_URL_WEB + '/mine/' + status, init, true);
+    return this.getPaginationItems(WEB_ITEMS_API_URL + '/mine/' + status, init, true);
   }
 
   public myFavorites(init: number): Observable<ItemsData> {
-    return this.getPaginationItems(this.API_URL_USER + '/me/items/favorites', init)
-    .map((itemsData: ItemsData) => {
-      itemsData.data = itemsData.data.map((item: Item) => {
-        item.favorited = true;
-        return item;
+    return this.getPaginationItems(USERS_API_URL + '/me/items/favorites', init)
+      .map((itemsData: ItemsData) => {
+        itemsData.data = itemsData.data.map((item: Item) => {
+          item.favorited = true;
+          return item;
+        });
+        return itemsData;
       });
-      return itemsData;
-    });
   }
 
   public deleteItem(id: string): Observable<any> {
-    return this.http.delete(this.API_URL + '/' + id);
+    return this.http.delete(`${environment.baseUrl}${ITEMS_API_URL}/${id}`);
   }
 
-  public reserveItem(id: string, reserve: boolean): Observable<any> {
-    return this.http.put(this.API_URL + '/' + id + '/reserve', {
-      reserved: reserve
+  public reserveItem(id: string, reserved: boolean): Observable<any> {
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/${id}/reserve`, {
+      reserved
     });
   }
 
   public reactivateItem(id: string): Observable<any> {
-    return this.http.put(this.API_URL + '/' + id + '/reactivate');
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/${id}/reactivate`, {});
   }
 
   public favoriteItem(id: string, favorited: boolean): Observable<any> {
-    return this.http.put(this.API_URL + '/' + id + '/favorite', {
-      favorited: favorited
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/${id}/favorite`, {
+      favorited
     });
   }
 
   public bulkReserve(): Observable<ItemBulkResponse> {
-    return this.http.put(this.API_URL + '/reserve', {
+    return this.http.put<ItemBulkResponse>(`${environment.baseUrl}${ITEMS_API_URL}/reserve`, {
       ids: this.selectedItems
-    })
-    .map((r: Response) => r.json());
-  }
-
-  public soldOutside(id: string): Observable<any> {
-    return this.http.put(this.API_URL + '/' + id + '/sold');
-  }
-
-  public getConversationUsers(id: string): Observable<ConversationUser[]> {
-    return this.http.get(this.API_URL + '/' + id + '/conversation-users')
-    .map((r: Response) => r.json());
-  }
-
-  public getAvailableProducts(id: string): Observable<Product> {
-    return this.http.get(this.API_URL_WEB + '/' + id + '/available-visibility-products')
-    .map((r: Response) => r.json())
-    .map((response: AvailableProductsResponse) => response.products[0]);
-  }
-
-  public getAvailableReactivationProducts(id: string): Observable<Product> {
-    return this.http.get(this.API_URL_WEB + '/' + id + '/available-reactivation-products')
-    .map((r: Response) => r.json())
-    .map((response: AvailableProductsResponse) => response.products[0]);
-  }
-
-  private getPurchases(): Observable<Purchase[]> {
-    return this.http.get(this.API_URL_WEB + '/mine/purchases')
-    .map((r: Response) => r.json());
-  }
-
-  public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
-    let options: RequestOptions = null;
-    options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
-
-    return this.http.post(this.API_URL_WEB + '/purchase/products/' + orderId, orderParams, options)
-    .map((r: Response) => r.json());
-  }
-
-  public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
-    let options: RequestOptions = null;
-    options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
-
-    return this.http.post(this.API_URL_WEB + '/purchase/products/credit/' + orderId, orderParams, options)
-      .map((r: Response) => r.json());
-  }
-
-  public update(item: any, itemType: string): Observable<any> {
-    let url: string = this.API_URL + '/';
-    let options = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
-
-    if (itemType === ITEM_TYPES.CARS) {
-      url += 'cars/';
-      options.headers.append('X-PaymentProvider', PAYMENT_PROVIDER);
-      options.headers.append('Accept', 'application/vnd.edit-car-v2+json');
-    } else if (itemType === ITEM_TYPES.REAL_ESTATE) {
-      url += 'real_estate/';
-    }
-
-    return this.http.put(url + item.id, item, options)
-      .map((r: Response) => r.json())
-      .do(() => this.eventService.emit(EventService.ITEM_UPDATED, item))
-  }
-
-  public updateRealEstateLocation(itemId: string, location: ItemLocation): Observable<any> {
-    return this.http.put(this.API_URL + '/real_estate/' + itemId + '/location', location);
-  }
-
-  public deletePicture(itemId: string, pictureId: string): Observable<any> {
-    return this.http.delete(this.API_URL + '/' + itemId + '/picture/' + pictureId);
-  }
-
-  public get(id: string): Observable<Item> {
-    return this.http.get(this.API_URL + `/${id}`)
-    .map((r: Response) => r.json())
-    // .map(_ => REALESTATE_DATA) // TODO: remove it when api works
-    .map((r: any) => this.mapRecordData(r))
-    .catch(() => {
-      return Observable.of(this.getFakeItem(id));
     });
   }
 
-  public updatePicturesOrder(itemId: string, picturesOrder: { [fileId: string]: number }): Observable<any> {
-    return this.http.put(this.API_URL + '/' + itemId + '/change-picture-order', {
-      pictures_order: picturesOrder
+  public soldOutside(id: string): Observable<any> {
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/${id}/sold`, {});
+  }
+
+  public getConversationUsers(id: string): Observable<ConversationUser[]> {
+    return this.http.get<ConversationUser[]>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/conversation-users`);
+  }
+
+  public getAvailableReactivationProducts(id: string): Observable<Product> {
+    return this.http.get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/${id}/available-reactivation-products`)
+      .pipe(
+        mapRx.map((response: AvailableProductsResponse) => response.products[0])
+      );
+  }
+
+  private getPurchases(): Observable<Purchase[]> {
+    return this.http.get<Purchase[]>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`);
+  }
+
+  public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
+    const headers: HttpHeaders = new HttpHeaders({ 'X-PaymentProvider': PAYMENT_PROVIDER });
+
+    return this.http.post<string[]>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/purchase/products/${orderId}`, orderParams, {
+      headers
+    });
+  }
+
+  public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
+    const headers = new HttpHeaders({ 'X-PaymentProvider': PAYMENT_PROVIDER });
+
+    return this.http.post<PurchaseProductsWithCreditsResponse>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/purchase/products/credit/${orderId}`, orderParams, { headers });
+  }
+
+  public update(item: any, itemType: string): Observable<any> {
+    let url: string = ITEMS_API_URL + '/';
+    let headers: HttpHeaders = new HttpHeaders({ 'X-DeviceOS': '0' });
+
+    if (itemType === ITEM_TYPES.CARS) {
+      url += 'cars/';
+      headers = headers.append('X-PaymentProvider', PAYMENT_PROVIDER);
+      headers = headers.append('Accept', 'application/vnd.edit-car-v2+json');
+    }
+    if (itemType === ITEM_TYPES.REAL_ESTATE) {
+      url += 'real_estate/';
+    }
+
+    return this.http.put(`${environment.baseUrl}${url}${item.id}`, item, { headers }).pipe(
+      tap(() => this.eventService.emit(EventService.ITEM_UPDATED, item))
+    );
+  }
+
+  public updateRealEstateLocation(itemId: string, location: ItemLocation): Observable<any> {
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/real_estate/${itemId}/location`, location);
+  }
+
+  public deletePicture(itemId: string, pictureId: string): Observable<any> {
+    return this.http.delete(`${environment.baseUrl}${ITEMS_API_URL}/${itemId}/picture/${pictureId}`);
+  }
+
+  public get(id: string): Observable<Item> {
+    return this.http.get<Item>(`${environment.baseUrl}${ITEMS_API_URL}/${id}`).pipe(
+      mapRx.map((r) => this.mapRecordData(r)),
+      catchError(() => Observable.of(this.getFakeItem(id))
+      ));
+  }
+
+  public updatePicturesOrder(itemId: string, pictures_order: { [fileId: string]: number }): Observable<any> {
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/${itemId}/change-picture-order`, {
+      pictures_order
     });
   }
 
   public getItemsWithAvailableProducts(ids: string[]): Observable<ItemWithProducts[]> {
-    return this.http.get(this.API_URL_WEB + '/available-visibility-products', {
-      itemsIds: ids.join(',')
-    })
-    .map((r: Response) => r.json())
-    .map((res: ItemsWithAvailableProductsResponse[]) => {
-      return res.map((i: ItemsWithAvailableProductsResponse) => {
-        return {
-          item: this.mapRecordData(i),
-          products: this.getProductDurations(i.productList)
-        };
-      });
-    });
+    return this.http.get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products`, {
+      params: {
+        itemsIds: ids.join(',')
+      }
+    }).pipe(
+      mapRx.map((res: ItemsWithAvailableProductsResponse[]) => {
+        return res.map((i: ItemsWithAvailableProductsResponse) => {
+          return {
+            item: this.mapRecordData(i),
+            products: this.getProductDurations(i.productList)
+          };
+        })
+      }));
   }
 
   public getCheapestProductPrice(ids: string[]): Observable<CheapestProducts> {
-    return this.http.get(this.API_URL_WEB + '/available-visibility-products', {
-      itemsIds: ids.join(',')
-    })
-      .map((r: Response) => r.json())
-      .map((res: ItemsWithAvailableProductsResponse[]) => {
+    return this.http.get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products`, {
+      params: {
+        itemsIds: ids.join(',')
+      }
+    }).pipe(
+      mapRx.map((res: ItemsWithAvailableProductsResponse[]) => {
         let returnObj = {};
         res.forEach((i: ItemsWithAvailableProductsResponse) => {
           returnObj[i.content.id] = i.productList[0].durations[0].market_code;
         });
         return returnObj;
-      });
+      })
+    );
   }
 
   private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {
-    return this.http.get(this.API_URL + `/${id}/actions-allowed`)
-    .map((r: Response) => r.json());
+    return this.http.get<AllowedActionResponse[]>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/actions-allowed`);
   }
 
   public canDoAction(action: string, id: string): Observable<boolean> {
-    return this.getActionsAllowed(id)
-    .map((actions: AllowedActionResponse[]) => {
-      const canDo: AllowedActionResponse = find(actions, {type: action});
+    return this.getActionsAllowed(id).pipe(mapRx.map((actions: AllowedActionResponse[]) => {
+      const canDo: AllowedActionResponse = find(actions, { type: action });
       if (canDo) {
         return canDo.allowed;
       }
       return false;
-    });
+    }));
   }
 
   private getProductDurations(productList: Product[]): ProductDurations {
@@ -631,26 +617,21 @@ export class ItemService extends ResourceService {
   }
 
   private findDuration(productList: Product[], duration: number, type: string): Duration {
-    const product: Product = find(productList, {name: type});
-    return find(product.durations, {duration: duration});
+    const product: Product = find(productList, { name: type });
+    return find(product.durations, { duration: duration });
   }
 
   public getUrgentProducts(itemId: string): Observable<Product> {
-    return this.http.get(this.API_URL_WEB + '/' + itemId + '/available-urgent-products')
-    .map((r: Response) => r.json())
-    .map((response: AvailableProductsResponse) => response.products[0]);
+    return this.http.get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/${itemId}/available-urgent-products`)
+      .pipe((mapRx.map((response: AvailableProductsResponse) => response.products[0])));
   }
 
   public getUrgentProductByCategoryId(categoryId: string): Observable<Product> {
-    return this.http.get(this.API_URL_WEB + '/available-urgent-products', {
-      categoryId: categoryId
-    })
-      .map((r: Response) => r.json())
-      .map((response: AvailableProductsResponse) => response.products[0]);
-  }
-
-  public cancelFeature(item: Item): Observable<any> {
-    return this.http.put(this.API_URL + '/purchases/cancelItemPurchase', { itemIds: item.id });
+    return this.http.get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/available-urgent-products`, {
+      params: {
+        categoryId
+      }
+    }).pipe((mapRx.map((response: AvailableProductsResponse) => response.products[0])));
   }
 
   public mines(pageNumber: number, pageSize: number, sortByParam: string, status: string = 'active', term?: string, cache: boolean = true): Observable<Item[]> {
@@ -674,7 +655,7 @@ export class ItemService extends ResourceService {
                 item.conversations = i.content.conversations;
                 item.purchases = i.content.purchases ? i.content.purchases : null;
                 return item;
-            });
+              });
             this.items[status] = items;
             this.lastCategoryIdSearched = null;
             return items;
@@ -707,14 +688,15 @@ export class ItemService extends ResourceService {
   }
 
   private recursiveMines(init: number, offset: number, status?: string): Observable<ItemProResponse[]> {
-    return this.http.get(this.API_URL_PROTOOL + '/mines', {
+    return this.http.get<any>(`${environment.baseUrl}${PROTOOL_API_URL}/mines`, {
+      params: {
         status: ITEM_STATUSES[status],
-        init: init,
+        init,
         end: init + offset,
         newVersion: true
-      })
-      .map((r: Response) => r.json())
-      .flatMap((res: ItemProResponse[]) => {
+      } as any
+    })
+      .flatMap((res) => {
         if (res.length > 0) {
           return this.recursiveMines(init + offset, offset, status)
             .map((res2: ItemProResponse[]) => {
@@ -776,7 +758,7 @@ export class ItemService extends ResourceService {
   }
 
   public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemByCategoryResponse[]> {
-    return this.httpNew.get<any>(`${environment.baseUrl}${MINES_BY_CATEGORY_ENDPOINT}`, {
+    return this.http.get<any>(`${environment.baseUrl}${MINES_BY_CATEGORY_ENDPOINT}`, {
       params: {
         status,
         init: init.toString(),
@@ -784,18 +766,18 @@ export class ItemService extends ResourceService {
         category_id: categoryId.toString()
       }
     })
-    .flatMap(res => {
-      if (res.length > 0) {
-        return this.recursiveMinesByCategory(init + offset, offset, categoryId, status)
-          .map(recursiveResult => res.concat(recursiveResult));
-      } else {
-        return Observable.of([]);
-      }
-    });
+      .flatMap(res => {
+        if (res.length > 0) {
+          return this.recursiveMinesByCategory(init + offset, offset, categoryId, status)
+            .map(recursiveResult => res.concat(recursiveResult));
+        } else {
+          return Observable.of([]);
+        }
+      });
   }
 
   public getItemAndSetPurchaseInfo(id: string, purchase: Purchase): Item {
-    const index: number = findIndex(this.items.active, {id: id});
+    const index: number = findIndex(this.items.active, { id: id });
     if (index !== -1) {
       this.items.active[index].bumpExpiringDate = purchase.expiration_date;
       return this.items.active[index];
@@ -812,13 +794,13 @@ export class ItemService extends ResourceService {
   }
 
   public bulkSetActivate(): Observable<any> {
-    return this.http.post(this.API_URL_PROTOOL + '/changeItemStatus', {
-        itemIds: this.selectedItems,
-        publishStatus: PUBLISHED_ID
-      })
-      .do(() => {
+    return this.http.post(`${environment.baseUrl}${PROTOOL_API_URL}/changeItemStatus`, {
+      itemIds: this.selectedItems,
+      publishStatus: PUBLISHED_ID
+    }).pipe(
+      tap(() => {
         this.selectedItems.forEach((id: string) => {
-          let index: number = findIndex(this.items.pending, {'id': id});
+          let index: number = findIndex(this.items.pending, { 'id': id });
           let deletedItem: Item = this.items.pending.splice(index, 1)[0];
           deletedItem.flags['onhold'] = false;
           deletedItem.selected = false;
@@ -828,93 +810,92 @@ export class ItemService extends ResourceService {
         });
         this.eventService.emit('itemChangeStatus', this.selectedItems);
         this.deselectItems();
-      }).catch((errorResponse: Response) => {
+      }),
+      catchError((errorResponse) => {
         return Observable.of(errorResponse);
-      });
+      })
+    );
   }
 
   public activate(): Observable<any> {
-    return this.http.put(this.API_URL + '/activate', {
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/activate`, {
       ids: this.selectedItems
-    })
-      .do(() => this.deselectItems());
-  }
-
-  public bulkSetDeactivate(): Observable<any> {
-    return this.http.post(this.API_URL_PROTOOL + '/changeItemStatus', {
-        itemIds: this.selectedItems,
-        publishStatus: ONHOLD_ID
-      })
-      .do(() => {
-        this.selectedItems.forEach((id: string) => {
-          let index: number = findIndex(this.items.active, {'id': id});
-          let deletedItem: Item = this.items.active.splice(index, 1)[0];
-          deletedItem.flags['onhold'] = true;
-          deletedItem.selected = false;
-          if (this.items.pending.length) {
-            this.items.pending.push(deletedItem);
-          }
-        });
-        this.eventService.emit('itemChangeStatus', this.selectedItems);
-        this.deselectItems();
-      });
+    }).pipe(tap(() => this.deselectItems()))
   }
 
   public deactivate(): Observable<any> {
-    return this.http.put(this.API_URL + '/inactivate', {
+    return this.http.put(`${environment.baseUrl}${ITEMS_API_URL}/inactivate`, {
       ids: this.selectedItems
-    })
-      .do(() => this.deselectItems());
+    }).pipe(tap(() => this.deselectItems()))
+  }
+
+  public bulkSetDeactivate(): Observable<any> {
+    return this.http.post(`${environment.baseUrl}${PROTOOL_API_URL}/changeItemStatus`, {
+      itemIds: this.selectedItems,
+      publishStatus: ONHOLD_ID
+    }).pipe(tap(() => {
+      this.selectedItems.forEach((id: string) => {
+        let index: number = findIndex(this.items.active, { 'id': id });
+        let deletedItem: Item = this.items.active.splice(index, 1)[0];
+        deletedItem.flags['onhold'] = true;
+        deletedItem.selected = false;
+        if (this.items.pending.length) {
+          this.items.pending.push(deletedItem);
+        }
+      });
+      this.eventService.emit('itemChangeStatus', this.selectedItems);
+      this.deselectItems();
+    }));
   }
 
   public setSold(id: number): Observable<any> {
-    return this.http.post(this.API_URL_V1 + '/item.json/' + id + '/sold')
-      .do(() => {
-        let index: number = findIndex(this.items.active, {'legacyId': id});
+    return this.http.post(`${environment.baseUrl}${V1_API_URL}/item.json/${id}/sold`, {})
+      .pipe(tap(() => {
+        let index: number = findIndex(this.items.active, { 'legacyId': id });
         let deletedItem: Item = this.items.active.splice(index, 1)[0];
         if (this.items.sold.length) {
           this.items.sold.push(deletedItem);
         }
         this.eventService.emit(EventService.ITEM_SOLD, deletedItem);
-      });
+      }));
   }
 
   public cancelAutorenew(itemId: string): Observable<any> {
-    return this.http.put(this.API_URL_PROTOOL + '/autorenew/update', [{
+    return this.http.put(`${environment.baseUrl}${PROTOOL_API_URL}/autorenew/update`, {
       item_id: itemId,
       autorenew: false
-    }]);
+    });
   }
 
   public getLatest(userId: string): Observable<ItemDataResponse> {
-    return this.http.get(this.API_URL + '/latest-cars', {userId: userId})
-      .map((r: Response) => r.json())
-      .map((resp: LatestItemResponse) => {
+    return this.http.get(`${environment.baseUrl}${ITEMS_API_URL}/latest-cars`, {
+      params: { userId }
+    })
+      .pipe(mapRx.map((resp: LatestItemResponse) => {
         return {
           count: resp.count - 1,
           data: resp.items[0] ? this.mapRecordData(resp.items[0]) : null
         };
-      });
+      }));
   }
 
   public bumpProItems(orderParams: OrderPro[]): Observable<string[]> {
-    return this.http.post(this.API_URL_PROTOOL + '/purchaseItems', orderParams)
-    .map((r: Response) => r.json());
+    return this.http.post<string[]>(`${environment.baseUrl}${PROTOOL_API_URL}/purchaseItems`, orderParams);
   }
 
   public getCarInfo(brand: string, model: string, version: string): Observable<CarInfo> {
-    return this.http.get(this.API_URL + '/cars/info', {
-      brand: brand,
-      model: model,
-      version: version
+    return this.http.get<CarInfo>(`${environment.baseUrl}${ITEMS_API_URL}/cars/info`, {
+      params: {
+        brand,
+        model,
+        version
+      }
     })
-      .map((r: Response) => r.json());
   }
 
   public getListingFeeInfo(itemId: string): Observable<Product> {
-    return this.http.get(this.API_URL_WEB + '/' + itemId + '/listing-fee-info')
-      .map((r: Response) => r.json())
-      .map((response: ListingFeeProductInfo) => response.product_group.products[0]);
+    return this.http.get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/${itemId}/listing-fee-info`)
+      .pipe(mapRx.map((response: ListingFeeProductInfo) => response.product_group.products[0]));
   }
 
 }

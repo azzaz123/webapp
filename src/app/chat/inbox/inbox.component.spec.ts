@@ -5,7 +5,6 @@ import { MomentModule } from 'angular2-moment';
 import { InboxComponent, InboxState } from './inbox.component';
 import { InboxConversationComponent } from './inbox-conversation/inbox-conversation.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { InboxService, InboxConversationService } from '../service';
 import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
@@ -50,7 +49,6 @@ describe('Component: InboxComponent', () => {
       declarations: [InboxComponent, InboxConversationComponent],
       providers: [
         EventService,
-        ...TEST_HTTP_PROVIDERS,
         { provide: AdService, useClass: AdServiceMock },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },

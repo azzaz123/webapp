@@ -4,8 +4,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { InboxConversationService } from './inbox-conversation.service';
 import { MessageService } from './message.service';
 import { RealTimeService } from '../../core/message/real-time.service';
-import { PersistencyService } from '../../core/persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
 import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../chat/model';
@@ -32,7 +30,6 @@ describe('InboxConversationService', () => {
   let eventService: EventService;
   let realTime: RealTimeService;
   let remoteConsoleService: RemoteConsoleService;
-  let persistencyService: PersistencyService;
   let messageService: MessageService;
   let userService: UserService;
   let itemService: ItemService;
@@ -53,7 +50,6 @@ describe('InboxConversationService', () => {
             accessToken: 'ACCESS_TOKEN'
           }
         },
-        { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: RemoteConsoleService, useClass: RemoteConsoleClientServiceMock },
         { provide: MessageService, useValue: { totalUnreadMessages: 0 } },
         { provide: UserService, useClass: MockedUserService },
@@ -63,7 +59,6 @@ describe('InboxConversationService', () => {
     service = TestBed.get(InboxConversationService);
     eventService = TestBed.get(EventService);
     realTime = TestBed.get(RealTimeService);
-    persistencyService = TestBed.get(PersistencyService);
     remoteConsoleService = TestBed.get(RemoteConsoleService);
     messageService = TestBed.get(MessageService);
     userService = TestBed.get(UserService);

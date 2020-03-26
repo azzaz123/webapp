@@ -38,16 +38,17 @@ describe(`NullQueryParamsInterceptor`, () => {
 
   describe('when doing a request to the backend with query params and some of them are null', () => {
     it('should remove only the null params', () => {
-      const expectedParams = 'param1=asap&param2=123';
+      const expectedParams = 'param1=asap&param2=123&param3=0';
       const expectedUrl = `${environment.baseUrl}?${expectedParams}`;
 
-      httpClient.get(environment.baseUrl, { params: { param1: 'asap', param2: 123, param3: null } as any }).subscribe();
+      httpClient.get(environment.baseUrl, { params: { param1: 'asap', param2: 123, param3: 0, param4: null } as any }).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
       expect(req.request.params.has('param1')).toEqual(true);
       expect(req.request.params.has('param2')).toEqual(true);
-      expect(req.request.params.has('param3')).toEqual(false);
+      expect(req.request.params.has('param3')).toEqual(true);
+      expect(req.request.params.has('param4')).toEqual(false);
     });
   });
 

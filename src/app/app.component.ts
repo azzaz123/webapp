@@ -96,7 +96,6 @@ export class AppComponent implements OnInit {
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
-    this.trackingService.trackAccumulatedEvents();
 
     __cmp('init', quancastOptions[this.i18n.locale]);
   }
@@ -154,7 +153,7 @@ export class AppComponent implements OnInit {
         },
         (error: any) => {
           this.userService.logout();
-          this.errorsService.show(error, true);
+          this.errorsService.show(error);
         });
     });
   }

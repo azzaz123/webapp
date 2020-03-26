@@ -18,7 +18,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "svgo": "svgo -f ./src/assets/icons --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}; svgo -f ./src/assets/images --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}",
-    "mparticle": "node mparticle.js"
+    "mparticle": "node mparticle.js",
+    "analyze-bundle": "yarn buildprod --statsJson=true && yarn webpack-bundle-analyzer dist/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -29,7 +30,6 @@
     "@angular/compiler": "^6.0.9",
     "@angular/core": "^6.0.9",
     "@angular/forms": "^6.0.9",
-    "@angular/http": "^6.0.9",
     "@angular/material": "6.4.1",
     "@angular/platform-browser": "^6.0.9",
     "@angular/platform-browser-dynamic": "^6.0.9",
@@ -66,7 +66,6 @@
     "ngx-infinite-scroll": "^6.0.1",
     "ngx-permissions": "^5.0.0",
     "ngx-toastr": "8.1.1",
-    "pouchdb": "7.0.0",
     "rxjs": "^6.3.2",
     "rxjs-compat": "^6.2.2",
     "shelving-mock-indexeddb": "^1.1.0",
@@ -102,7 +101,8 @@
     "retry": "^0.12.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "2.7.2"
+    "typescript": "2.7.2",
+    "webpack-bundle-analyzer": "^3.6.0"
   },
   "resolutions": {
     "**/rxjs": "6.3.2"

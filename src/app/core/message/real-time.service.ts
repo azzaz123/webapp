@@ -3,7 +3,6 @@ import * as retry from 'retry';
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
-import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
 import { InboxConversation, InboxMessage } from '../../chat/model';
@@ -24,7 +23,6 @@ export class RealTimeService {
 
   constructor(private xmpp: XmppService,
               private eventService: EventService,
-              private persistencyService: PersistencyService,
               private trackingService: TrackingService,
               private remoteConsoleService: RemoteConsoleService,
               private analyticsService: AnalyticsService,
@@ -121,25 +119,16 @@ export class RealTimeService {
     return conversation.messages.length === 1;
   }
 
-  private trackMessageSent(thread: string, messageId: string) {
-    this.trackingService.addTrackingEvent({
-      eventData: TrackingService.MESSAGE_SENT,
-      attributes: {
-        thread_id: thread,
-        message_id: messageId
-      }
-    }, false);
+  private trackMessageSent(thread_id: string, message_id: string) {
+    this.trackingService.track(TrackingService.MESSAGE_SENT, { thread_id, message_id });
   }
 
   private trackConversationCreated(conversation: InboxConversation, messageId: string) {
-    this.trackingService.addTrackingEvent({
-      eventData: TrackingService.CONVERSATION_CREATE_NEW,
-      attributes: {
-        item_id: conversation.item.id,
-        thread_id: conversation.id,
-        message_id: messageId
-      }
-    }, false);
+    this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
+      item_id: conversation.item.id,
+      thread_id: conversation.id,
+      message_id: messageId
+    });
 
     fbq('track', 'InitiateCheckout', {
       value: conversation.item.price.amount,

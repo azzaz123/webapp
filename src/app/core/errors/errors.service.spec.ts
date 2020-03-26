@@ -1,13 +1,10 @@
-/* tslint:disable:no-unused-variable */
-
 import { TestBed } from '@angular/core/testing';
 import { ErrorsService, DEFAULT_ERROR_MESSAGE } from './errors.service';
 import { ToastrService } from 'ngx-toastr';
-import { Response, ResponseOptions } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { I18nService } from '../i18n/i18n.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 class MockedToastr {
   error(message: string, title?: string, optionsOverride?: any): any {
@@ -34,7 +31,6 @@ let service: ErrorsService;
 let i18n: I18nService;
 
 const ERROR_MESSAGE = 'Usuario o contraseña incorrectos';
-const ERROR_DATA: any = {'code': 1, 'type': 'error', 'message': ERROR_MESSAGE};
 
 describe('Service: Errors', () => {
   beforeEach(() => {
@@ -73,42 +69,43 @@ describe('Service: Errors', () => {
 
   describe('show', () => {
     it('should call the toastr.error method if there are errors in array', () => {
-      const res: Response = createResponse([{message: ERROR_MESSAGE}]);
+      const res = new HttpErrorResponse({ error: [{message: ERROR_MESSAGE }]});
+
       service.show(res);
+
       expect(toasts.error).toHaveBeenCalledWith(ERROR_MESSAGE, 'Oops!');
     });
 
     it('should call the toastr.error method if there are errors', () => {
-      const res: Response = createResponse(ERROR_DATA);
+      const res = new HttpErrorResponse({ error: { message: ERROR_MESSAGE }});
+
       service.show(res);
+
       expect(toasts.error).toHaveBeenCalledWith(ERROR_MESSAGE, 'Oops!');
     });
 
     it('should call the toastr.error with default message method if no error message', () => {
-      const res: Response = createResponse({type: 'error'});
-      service.show(res);
-      expect(toasts.error).toHaveBeenCalledWith(DEFAULT_ERROR_MESSAGE, 'Oops!');
-    });
+      const res = new HttpErrorResponse({ error: {} });
 
-    it('should redirect to login if asked to', () => {
-      const res: Response = createResponse(ERROR_DATA);
-      const location: Location = TestBed.get(Location);
-      service.show(res, true);
-      location.subscribe((loc) => {
-        expect(loc.url).toBe('/login');
-      });
+      service.show(res);
+
+      expect(toasts.error).toHaveBeenCalledWith(DEFAULT_ERROR_MESSAGE, 'Oops!');
     });
   });
 
   describe('i18nError', () => {
     it('should call toastr.error with i18n message', () => {
       spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
+
       service.i18nError('key');
+
       expect(toasts.error).toHaveBeenCalledWith('message', 'title');
     });
     it('should call toastr.error with i18n message, concatenting text', () => {
       spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
+
       service.i18nError('key', 'text');
+
       expect(toasts.error).toHaveBeenCalledWith('messagetext', 'title');
     });
   });
@@ -116,20 +113,17 @@ describe('Service: Errors', () => {
   describe('i18nSuccess', () => {
     it('should call toastr.success with i18n message', () => {
       spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
+
       service.i18nSuccess('key');
+
       expect(toasts.success).toHaveBeenCalledWith('message', 'title');
     });
     it('should call toastr.success with i18n message, concatenting text', () => {
       spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
+
       service.i18nSuccess('key', 'text');
+
       expect(toasts.success).toHaveBeenCalledWith('messagetext', 'title');
     });
   });
-
-
 });
-
-function createResponse(data: any): Response {
-  const resOptions: ResponseOptions = new ResponseOptions({body: JSON.stringify(data)});
-  return new Response(resOptions);
-}
