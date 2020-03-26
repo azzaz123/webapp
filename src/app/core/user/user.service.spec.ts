@@ -49,7 +49,6 @@ import { Image, MotorPlan, UserLocation } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FEATURE_FLAGS_ENUM, FeatureflagService } from './featureflag.service';
-import { SplitTestService } from '../tracking/split-test.service';
 import { APP_VERSION } from '../../../environments/version';
 import { PhoneMethod } from '../../chat/model';
 import { HttpParams, HttpRequest } from '@angular/common/http';
@@ -64,7 +63,6 @@ describe('Service: User', () => {
   let cookieService: CookieService;
   let permissionService: NgxPermissionsService;
   let featureflagService: FeatureflagService;
-  let splitTestService: SplitTestService;
   let httpMock: HttpTestingController;
   let eventService: EventService;
 
@@ -119,12 +117,6 @@ describe('Service: User', () => {
               return observableOf(true);
             }
           }
-        },
-        {
-          provide: SplitTestService, useValue: {
-            reset() {
-            }
-          }
         }
       ]
     });
@@ -136,7 +128,6 @@ describe('Service: User', () => {
     cookieService = TestBed.get(CookieService);
     permissionService = TestBed.get(NgxPermissionsService);
     featureflagService = TestBed.get(FeatureflagService);
-    splitTestService = TestBed.get(SplitTestService);
     httpMock = TestBed.get(HttpTestingController);
     eventService = TestBed.get(EventService);
   });
@@ -362,7 +353,6 @@ describe('Service: User', () => {
     beforeEach(() => {
       spyOn(permissionService, 'flushPermissions').and.returnValue({});
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
-      spyOn(splitTestService, 'reset');
       accessTokenService.storeAccessToken('token')
 
       event.subscribe(EventService.USER_LOGOUT, param => redirectUrl = param);
@@ -392,10 +382,6 @@ describe('Service: User', () => {
 
     it('should call flush permissions', () => {
       expect(permissionService.flushPermissions).toHaveBeenCalled();
-    });
-
-    it('should reset the split test service session', () => {
-      expect(splitTestService.reset).toHaveBeenCalled();
     });
   });
 

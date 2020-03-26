@@ -34,7 +34,6 @@ import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
 import { InboxService } from './chat/service';
 import { Subscription } from 'rxjs';
-import { SplitTestService } from './core/tracking/split-test.service';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 
@@ -78,7 +77,6 @@ export class AppComponent implements OnInit {
               private connectionService: ConnectionService,
               private paymentService: PaymentService,
               private callService: CallsService,
-              private splitTestService: SplitTestService,
               private stripeService: StripeService,
               private analyticsService: AnalyticsService) {
     this.config();
@@ -90,7 +88,6 @@ export class AppComponent implements OnInit {
     appboy.initialize(environment.appboy, { enableHtmlInAppMessages: true });
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
-    this.splitTestService.init();
     this.subscribeEventUserLogin();
     this.subscribeEventUserLogout();
     this.subscribeChatEvents();
@@ -151,11 +148,6 @@ export class AppComponent implements OnInit {
           this.initRealTimeChat(user, accessToken);
           appboy.changeUser(user.id);
           appboy.openSession();
-          this.splitTestService.identify({
-            user_id: user.id || null,
-            email: user.email || null,
-            gender: user.gender || null
-          });
           if (!this.cookieService.get('app_session_id')) {
             this.trackAppOpen();
             this.updateSessionCookie();

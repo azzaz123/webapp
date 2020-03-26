@@ -33,7 +33,6 @@ import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
 import { InboxService } from './chat/service';
 import { createInboxConversationsArray } from '../tests/inbox.fixtures.spec';
-import { SplitTestService } from './core/tracking/split-test.service';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
@@ -56,7 +55,6 @@ let cookieService: CookieService;
 let modalService: NgbModal;
 let connectionService: ConnectionService;
 let paymentService: PaymentService;
-let splitTestService: SplitTestService;
 let stripeService: StripeService;
 let analyticsService: AnalyticsService;
 
@@ -196,12 +194,6 @@ describe('App', () => {
           }
         },
         {
-          provide: SplitTestService, useValue: {
-            init() {},
-            identify() {}
-          }
-        },
-        {
           provide: PaymentService, useValue: {
             deleteCache() {
             }
@@ -234,7 +226,6 @@ describe('App', () => {
     modalService = TestBed.get(NgbModal);
     connectionService = TestBed.get(ConnectionService);
     paymentService = TestBed.get(PaymentService);
-    splitTestService = TestBed.get(SplitTestService);
     stripeService = TestBed.get(StripeService);
     analyticsService = TestBed.get(AnalyticsService);
     spyOn(notificationService, 'init');
@@ -541,30 +532,6 @@ describe('App', () => {
       component['setTitle']();
 
       expect(component.hideSidebar).toBeTruthy();
-    });
-  });
-
-  describe('Split test service', () => {
-    it('should initialize the library when creating the app', () => {
-      spyOn(splitTestService, 'init');
-
-      component.ngOnInit();
-
-      expect(splitTestService.init).toHaveBeenCalled();
-    });
-
-    it('should identify the user', () => {
-      spyOn(userService, 'me').and.returnValue(observableOf(MOCK_FULL_USER));
-      spyOn(splitTestService, 'identify');
-
-      component.ngOnInit();
-      eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-      expect(splitTestService.identify).toHaveBeenCalledWith({
-        user_id: MOCK_FULL_USER.id,
-        email: MOCK_FULL_USER.email,
-        gender: MOCK_FULL_USER.gender
-      });
     });
   });
 
