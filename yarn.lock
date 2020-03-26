@@ -246,9 +246,11 @@
   version "2.9.9-rc.1"
   resolved "https://registry.yarnpkg.com/@mparticle/web-sdk/-/web-sdk-2.9.9-rc.1.tgz#23424ce279945ac79b285e624e769db43ffe4528"
 
-"@ng-bootstrap/ng-bootstrap@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-1.0.0.tgz#8f2ae70db2fe1dcbf5e0acb49dc2b1bbba2be8d2"
+"@ng-bootstrap/ng-bootstrap@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-4.2.2.tgz#a1c3a9576656cb4f793bbc3df56dfbdeb098f2fb"
+  dependencies:
+    tslib "^1.9.0"
 
 "@ngtools/webpack@6.0.8":
   version "6.0.8"
@@ -1069,12 +1071,9 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bootstrap@4.0.0-alpha.6:
-  version "4.0.0-alpha.6"
-  resolved "http://registry.npmjs.org/bootstrap/-/bootstrap-4.0.0-alpha.6.tgz#4f54dd33ac0deac3b28407bc2df7ec608869c9c8"
-  dependencies:
-    jquery ">=1.9.1"
-    tether "^1.4.0"
+bootstrap@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.0.0.tgz#ceb03842c145fcc1b9b4e15da2a05656ba68469a"
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -4113,10 +4112,6 @@ jingle@^2.0.0:
     jingle-session "^2.0.0"
     webrtcsupport "^1.1.0"
     wildemitter "^1.0.1"
-
-jquery@>=1.9.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 js-base64@^2.1.8:
   version "2.4.8"
@@ -7699,10 +7694,6 @@ tar@^4:
     mkdirp "^0.5.0"
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
-
-tether@^1.4.0:
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/tether/-/tether-1.4.5.tgz#8efd7b35572767ba502259ba9b1cc167fcf6f2c1"
 
 thenify-all@^1.0.0:
   version "1.6.0"
