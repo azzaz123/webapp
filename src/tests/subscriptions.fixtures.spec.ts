@@ -131,7 +131,45 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED: SubscriptionsRe
     }   
   ],
   market: SUBSCRIPTION_MARKETS.STRIPE
-}
+};
+
+export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED: SubscriptionsResponse = {
+  id: 'abcd-1234-efgh-5678',
+  category_id: 0,
+  category_icon: 'All',
+  category_name: 'Everything else',
+  subscribed_from: 1567675698,
+  selected_tier_id: 'plan_Fsf0Htv8L6Ox92',
+  default_tier_id: 'plan_Fsf0Htv8L6Ox92',
+  tiers:
+  [
+    {
+      id: 'plan_Fsf0Htv8L6Ox92',
+      price: 39.99,
+      currency: '€'
+    }   
+  ],
+  market: SUBSCRIPTION_MARKETS.GOOGLE_PLAY
+};
+
+export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED: SubscriptionsResponse = {
+  id: 'abcd-1234-efgh-5678',
+  category_id: 0,
+  category_icon: 'All',
+  category_name: 'Everything else',
+  subscribed_from: 1567675698,
+  selected_tier_id: 'plan_Fsf0Htv8L6Ox92',
+  default_tier_id: 'plan_Fsf0Htv8L6Ox92',
+  tiers:
+  [
+    {
+      id: 'plan_Fsf0Htv8L6Ox92',
+      price: 39.99,
+      currency: '€'
+    }   
+  ],
+  market: SUBSCRIPTION_MARKETS.APPLE_STORE
+};
 
 export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED: SubscriptionsResponse = {
   id: 'abcd-1234-efgh-5678',
