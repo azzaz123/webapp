@@ -21,7 +21,6 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
 import { InboxUser } from '../../chat/model/inbox-user';
-import { SplitTestService } from '../tracking/split-test.service';
 import { InboxItem } from '../../chat/model';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
@@ -71,7 +70,6 @@ export class UserService {
     private cookieService: CookieService,
     private permissionService: NgxPermissionsService,
     private featureflagService: FeatureflagService,
-    private splitTestService: SplitTestService,
     @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -108,7 +106,6 @@ export class UserService {
     this.accessTokenService.deleteAccessToken();
     this.permissionService.flushPermissions();
     this.event.emit(EventService.USER_LOGOUT, redirectUrl);
-    this.splitTestService.reset();
   }
 
   public get isLogged(): boolean {
