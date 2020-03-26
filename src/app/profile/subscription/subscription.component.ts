@@ -21,6 +21,7 @@ import {
 import { ContinueSubscriptionModalComponent } from './modals/continue-subscription-modal.component';
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component';
 import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-modal.component';
+import { CheckSubscriptionInAppModalComponent } from './modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 
 @Component({
   selector: 'tsl-subscription',
@@ -135,6 +136,11 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse) {
+    // User is trying to edit subscription that is from inapp
+    if (this.subscriptionsService.isSubscriptionInApp(subscription)) {
+      return CheckSubscriptionInAppModalComponent;
+    }
+    
     // Subscription is active, not cancelled, with only one tier and no limits (Consumer Goods)
     if (subscription.subscribed_from && !subscription.subscribed_until && subscription.tiers.length === 1 && !subscription.tiers[0].limit) {
       return CancelSubscriptionModalComponent;

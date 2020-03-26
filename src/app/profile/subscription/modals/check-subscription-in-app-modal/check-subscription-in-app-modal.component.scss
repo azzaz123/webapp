@@ -1,0 +1,63 @@
+@import "~style/common";
+
+.CheckSubscriptionInAppModal {
+  height: 335px;
+  width: 100%;
+  padding: 32px 50px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  text-align: center;
+}
+
+.CheckSubscriptionInAppModal__close {
+  @include square($spacing-ms);
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  mat-icon {
+    @include square($spacing-ms);
+    line-height: initial; 
+
+    svg {
+      path {
+        fill: $blue-grey-4;
+      }
+    }
+  }
+}
+
+.CheckSubscriptionInAppModal__content {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 26px;
+}
+
+.CheckSubscriptionInAppModal__content-description {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
+}
+
+.CheckSubscriptionInAppModal__content-title {
+  font-size: 20px;
+  line-height: 27px;
+  text-align: center;
+  padding-bottom: 12px;
+  color: #253238;
+}
+
+.CheckSubscriptionInAppModal__actions-ok {
+  width: 400px;
+  text-align: center;
+
+  /deep/ button {
+    width: 100%;
+  }
+}
