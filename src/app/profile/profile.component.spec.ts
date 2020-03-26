@@ -64,25 +64,25 @@ describe('ProfileComponent', () => {
 
   afterAll(() => httpMock.verify());
 
-  describe('when the component loads', () => {
+  const mockBeforeEachInit = (isFeaturedUser?: boolean) => {
+    component.ngOnInit();
 
-    const mockBeforeEach = (isFeaturedUser?: boolean) => {
-      component.ngOnInit();
-
-      const userMeReq = httpMock.match(req => req.urlWithParams === `${environment.baseUrl}${USER_ENDPOINT}`)[0];
-      if (isFeaturedUser) {
-        userMeReq.flush(USER_DATA);
-      } else {
-        userMeReq.flush(MOCK_NON_FEATURED_USER_RESPONSE)
-      }
-
-      httpMock.match(req => req.urlWithParams === `${environment.baseUrl}${USER_STATS_ENDPOINT}`)[0].flush(MOCK_USER_STATS_RESPONSE);
-
-      fixture.detectChanges();
+    const userMeReq = httpMock.match(req => req.urlWithParams === `${environment.baseUrl}${USER_ENDPOINT}`)[0];
+    if (isFeaturedUser) {
+      userMeReq.flush(USER_DATA);
+    } else {
+      userMeReq.flush(MOCK_NON_FEATURED_USER_RESPONSE)
     }
 
+    httpMock.match(req => req.urlWithParams === `${environment.baseUrl}${USER_STATS_ENDPOINT}`)[0].flush(MOCK_USER_STATS_RESPONSE);
+
+    fixture.detectChanges();
+  }
+
+  describe('when the component loads', () => {
+
     it('should set correctly the public url link', () => {
-      mockBeforeEach();
+      mockBeforeEachInit();
       const expectedPublicProfileUrl = `${environment.siteUrl.replace('es', 'www')}user/${USER_DATA.web_slug}`;
       const publicProfileUrlHTML: HTMLElement = fixture.debugElement.query(By.css('.header-row > .header-link')).nativeElement;
 
@@ -91,7 +91,7 @@ describe('ProfileComponent', () => {
     });
 
     it('should show user review numbers and stars', () => {
-      mockBeforeEach();
+      mockBeforeEachInit();
       const expectedUserReviewsText = MOCK_USER_STATS_RESPONSE.counters.find(r => r.type === 'reviews').value.toString();
       const expectedUserStars = userService.toRatingsStats(MOCK_USER_STATS_RESPONSE.ratings).reviews;
       const userReviewsText: string = fixture.debugElement.query(By.css('.reviews-rating-value')).nativeElement.innerHTML;
@@ -104,7 +104,7 @@ describe('ProfileComponent', () => {
 
     describe('and the user is not a pro user', () => {
       it('should not show a PRO badge', () => {
-        mockBeforeEach();
+        mockBeforeEachInit();
 
         // TODO: Would be nice to refactor this badge into a component
         const proBadgeParentRef = fixture.debugElement.query(By.css('.badge-pro'));
@@ -116,7 +116,7 @@ describe('ProfileComponent', () => {
 
     describe('and the user is featured', () => {
       it('should show a PRO badge', () => {
-        mockBeforeEach(true);
+        mockBeforeEachInit(true);
 
         // TODO: Would be nice to refactor this badge into a component
         const proBadgeParentRef = fixture.debugElement.query(By.css('.badge-pro'));
@@ -129,6 +129,7 @@ describe('ProfileComponent', () => {
 
   describe('when clicking on logout button', () => {
     it('should perform logout logic', () => {
+      mockBeforeEachInit();
       spyOn(userService, 'logout');
       const logoutButton: HTMLElement = fixture.debugElement.query(By.css('.btn-logout')).nativeElement;
 
