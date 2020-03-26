@@ -39,7 +39,7 @@ export class UploaderService {
             speedHuman: null
           }
         },
-        lastModifiedDate: file.lastModifiedDate
+        lastModifiedDate: new Date(file.lastModified)
       };
       if (this.checkExtension(uploadFile, imageType) &&
         this.checkMaxUploads(uploadFile, imageType) &&

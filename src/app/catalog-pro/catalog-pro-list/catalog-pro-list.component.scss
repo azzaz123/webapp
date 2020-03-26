@@ -183,7 +183,7 @@ tsl-select {
   display: flex;
   flex-direction: row;
   align-self: center;
-  justify-content: start;
+  justify-content: flex-start;
   margin: 0 0 $spacing-m;
   a {
     color: $walla-main;
