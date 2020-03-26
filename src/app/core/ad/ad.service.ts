@@ -1,15 +1,12 @@
+
+import {tap, filter, mergeMap} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { merge } from 'rxjs/observable/merge';
-import 'rxjs/add/observable/timer';
-import 'rxjs/add/observable/zip';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  merge ,  Subscription ,  BehaviorSubject } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { AdKeyWords } from './ad.interface';
 import * as moment from 'moment';
 import { User } from '../user/user';;
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class AdService {
@@ -123,7 +120,7 @@ export class AdService {
 
   public adsRefresh(): void {
     if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) { return ; }
-    this.adsRefreshSubscription = this.userService.me().do((user: User) => {
+    this.adsRefreshSubscription = this.userService.me().pipe(tap((user: User) => {
       this.adKeyWords.gender = user.gender;
       this.adKeyWords.userId = user.id;
       if (user.birthDate) {
@@ -135,9 +132,9 @@ export class AdService {
       if (!this.adKeyWords.longitude && user.location) {
         this.adKeyWords.longitude = user.location.approximated_longitude.toString();
       }
-    }).flatMap(() => {
-      return this.allowSegmentation$.filter((value) =>  value !== null);
-    }).subscribe((allowSegmentation: boolean) => {
+    }),mergeMap(() => {
+      return this.allowSegmentation$.pipe(filter((value) =>  value !== null));
+    }),).subscribe((allowSegmentation: boolean) => {
       this.refreshAdWithKeyWords(allowSegmentation);
     });
   }

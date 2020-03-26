@@ -3,7 +3,7 @@ import { SelectedItemsComponent } from './selected-items.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ReplaySubject } from 'rxjs';
 import { createItemsArray } from '../../../../tests/item.fixtures.spec';
 
 describe('SelectedItemsComponent', () => {

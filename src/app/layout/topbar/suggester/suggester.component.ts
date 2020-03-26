@@ -1,7 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {distinctUntilChanged, catchError, switchMap} from 'rxjs/operators';
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { SuggesterResponse } from './suggester-response.interface';
-import { Observable } from 'rxjs';
-import 'rxjs/add/operator/switchMap';
+
 import { SuggesterService } from './suggester.service';
 
 @Component({
@@ -25,13 +28,13 @@ export class SuggesterComponent implements OnInit {
   }
 
   public suggest = (text$: Observable<string>) =>
-    text$
-      .distinctUntilChanged()
-      .switchMap(term => term.length < this.MIN_LENGTH ? [] :
-        this.suggesterService.getSuggestions(term)
-          .catch(() => {
-            return Observable.of([]);
-          }))
+    text$.pipe(
+      distinctUntilChanged(),
+      switchMap(term => term.length < this.MIN_LENGTH ? [] :
+        this.suggesterService.getSuggestions(term).pipe(
+          catchError(() => {
+            return observableOf([]);
+          }))),)
 
   public formatter = (x: any) => x.suggestion;
 

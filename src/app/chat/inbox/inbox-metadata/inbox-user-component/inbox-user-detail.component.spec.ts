@@ -1,6 +1,7 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
-import { Observable } from 'rxjs';
 import { UserService } from '../../../../core/user/user.service';
 import { MOCKED_INBOX_CONVERSATIONS } from '../../../../../tests/inbox.fixtures.spec';
 import { InboxUserDetailComponent } from './inbox-user-detail.component';
@@ -13,7 +14,7 @@ import { InboxItem } from '../../../model/inbox-item';
 class MockUserService {
 
   getInfo() {
-    return Observable.of(USER_INFO_RESPONSE);
+    return observableOf(USER_INFO_RESPONSE);
   }
 
   calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {

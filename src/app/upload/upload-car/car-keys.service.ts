@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { IOption } from 'ng-select';
 import { filter } from 'lodash-es';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -35,7 +35,7 @@ export class CarKeysService {
 
   private getTypesData(): Observable<any[]> {
     if (this.cache) {
-      return Observable.of(this.cache);
+      return of(this.cache);
     }
 
     const params = { language: this.i18n.locale };

@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
-import { Observable } from 'rxjs';
 import { ItemCartFavoriteComponent } from './item-cart-favorite.component';
 import { MatIconModule } from '@angular/material';
 import { ItemService } from '../../core/item/item.service';
@@ -48,7 +49,7 @@ describe('ItemCartFavoriteComponent', () => {
         },
         { provide: ItemService, useValue: {
             favoriteItem () {
-              return Observable.of({});
+              return observableOf({});
             }
           }
         },

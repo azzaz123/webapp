@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed, async, fakeAsync, tick, flush } from "@angul
 import { CategoryService } from "../../core/category/category.service";
 import { SubscriptionsService } from "../../core/subscriptions/subscriptions.service";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures.spec";
 import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED } from "../../../tests/subscriptions.fixtures.spec";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -46,14 +46,14 @@ describe('SubscriptionComponent', () => {
         {
           provide: SubscriptionsService, useValue: {
             getSubscriptions() {
-              return Observable.of(MAPPED_SUBSCRIPTIONS);
+              return of(MAPPED_SUBSCRIPTIONS);
             }
           }
         },
         {
           provide: CategoryService, useValue: {
             getCategories() {
-                return Observable.of(CATEGORY_DATA_WEB);
+                return of(CATEGORY_DATA_WEB);
               }
             }
         },
@@ -94,7 +94,7 @@ describe('SubscriptionComponent', () => {
   describe('OnInit', () => {
     it('should get the mapped subscriptions', () => {
       spyOn(categoryService, 'getCategories').and.callThrough();
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(MAPPED_SUBSCRIPTIONS));
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS));
       
       component.ngOnInit();
       
@@ -160,7 +160,7 @@ describe('SubscriptionComponent', () => {
         result: Promise.resolve('add'),
         componentInstance: componentInstance
       });
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(MAPPED_SUBSCRIPTIONS_ADDED));
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
       spyOn(router, 'navigate');
 
       component.subscriptions = MAPPED_SUBSCRIPTIONS;

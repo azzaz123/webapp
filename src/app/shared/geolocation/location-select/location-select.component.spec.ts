@@ -5,7 +5,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MOCK_USER, USER_LOCATION, USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
 import { UserService } from '../../../core/user/user.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 describe('LocationSelectComponent', () => {
   let component: LocationSelectComponent;
@@ -37,7 +37,7 @@ describe('LocationSelectComponent', () => {
           provide: UserService, useValue: {
           user: MOCK_USER,
           updateLocation() {
-            return Observable.of(USER_LOCATION);
+            return of(USER_LOCATION);
           }
         }
         }

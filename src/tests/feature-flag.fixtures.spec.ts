@@ -1,4 +1,5 @@
-import { Observable } from 'rxjs';
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { FEATURE_FLAGS_ENUM } from '../app/core/user/featureflag.service';
 
 export const mockFeatureFlagsResponses = [
@@ -15,6 +16,6 @@ export enum mockFeatureFlagsEnum {
 
 export class FeatureFlagServiceMock {
   getFlag(_flag: FEATURE_FLAGS_ENUM): Observable<boolean> {
-    return Observable.of(true);
+    return observableOf(true);
   }
 }

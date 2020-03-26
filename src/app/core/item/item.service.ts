@@ -1,3 +1,5 @@
+
+import {mergeMap, map,  catchError, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { FAKE_ITEM_IMAGE_BASE_PATH, Item, ITEM_TYPES } from './item';
 import {
@@ -28,18 +30,12 @@ import {
   ListingFeeProductInfo,
   ItemByCategoryResponse
 } from './item-response.interface';
-import { find, findIndex, reverse, without, map, filter, sortBy } from 'lodash-es';
+import { find, findIndex, reverse, without, map as lodashMap, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { EventService } from '../event/event.service';
-import { Observable, of } from 'rxjs';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/do';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Observable, of ,  ReplaySubject } from 'rxjs';
 import { Car } from './car';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
@@ -47,8 +43,7 @@ import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { catchError, tap } from 'rxjs/operators';
-import * as mapRx from 'rxjs/operators/map';
+import * as mapRx from 'rxjs/operators';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -105,7 +100,7 @@ export class ItemService {
 
   public getCounters(id: string): Observable<ItemCounters> {
     return this.http.get<ItemCounters>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/counters`)
-      .pipe(catchError(() => Observable.of({ views: 0, favorites: 0 })));
+      .pipe(catchError(() => of({ views: 0, favorites: 0 })));
   }
 
   public bulkDelete(type: string): Observable<ItemBulkResponse> {
@@ -154,7 +149,7 @@ export class ItemService {
     if (!this.banReasons) {
       this.banReasons = this.i18n.getTranslations('reportListingReasons');
     }
-    return Observable.of(this.banReasons);
+    return of(this.banReasons);
   }
 
   public deselectItem(id: string) {
@@ -381,8 +376,8 @@ export class ItemService {
         expired: status
       },
       observe: 'response' as 'body'
-    })
-      .map(r => {
+    }).pipe(
+      map(r => {
         const res: ItemResponse[] = r.body;
         const nextPage: string = r.headers.get('x-nextpage');
 
@@ -409,10 +404,10 @@ export class ItemService {
           init: nextInit
         };
       }
-      )
-      .flatMap((itemsData: ItemsData) => {
-        return this.getPurchases()
-          .map((purchases: Purchase[]) => {
+      ),
+      mergeMap((itemsData: ItemsData) => {
+        return this.getPurchases().pipe(
+          map((purchases: Purchase[]) => {
             purchases.forEach((purchase: Purchase) => {
               const index: number = findIndex(itemsData.data, { id: purchase.item_id });
               if (index !== -1) {
@@ -430,9 +425,9 @@ export class ItemService {
               }
             });
             return itemsData;
-          });
-      })
-      .map((itemsData: ItemsData) => {
+          }));
+      }),
+      map((itemsData: ItemsData) => {
         this.selectedItems.forEach((selectedItemId: string) => {
           const index: number = findIndex(itemsData.data, { id: selectedItemId });
           if (index !== -1) {
@@ -440,7 +435,7 @@ export class ItemService {
           }
         });
         return itemsData;
-      });
+      }),);
   }
 
   public mine(init: number, status?: string): Observable<ItemsData> {
@@ -449,14 +444,14 @@ export class ItemService {
   }
 
   public myFavorites(init: number): Observable<ItemsData> {
-    return this.getPaginationItems(USERS_API_URL + '/me/items/favorites', init)
-      .map((itemsData: ItemsData) => {
+    return this.getPaginationItems(USERS_API_URL + '/me/items/favorites', init).pipe(
+      map((itemsData: ItemsData) => {
         itemsData.data = itemsData.data.map((item: Item) => {
           item.favorited = true;
           return item;
         });
         return itemsData;
-      });
+      }));
   }
 
   public deleteItem(id: string): Observable<any> {
@@ -547,7 +542,7 @@ export class ItemService {
   public get(id: string): Observable<Item> {
     return this.http.get<Item>(`${environment.baseUrl}${ITEMS_API_URL}/${id}`).pipe(
       mapRx.map((r) => this.mapRecordData(r)),
-      catchError(() => Observable.of(this.getFakeItem(id))
+      catchError(() => of(this.getFakeItem(id))
       ));
   }
 
@@ -604,8 +599,8 @@ export class ItemService {
   }
 
   private getProductDurations(productList: Product[]): ProductDurations {
-    const durations: number[] = map(productList[0].durations, 'duration');
-    const types: string[] = map(productList, 'name');
+    const durations: number[] = lodashMap(productList[0].durations, 'duration');
+    const types: string[] = lodashMap(productList, 'name');
     const productDurations = {};
     durations.forEach((duration: number) => {
       productDurations[duration] = {};
@@ -641,10 +636,10 @@ export class ItemService {
     let observable: Observable<Item[]>;
 
     if (this.items[status].length && cache) {
-      observable = Observable.of(this.items[status]);
+      observable = of(this.items[status]);
     } else {
-      observable = this.recursiveMines(0, 300, endStatus)
-        .map((res: ItemProResponse[]) => {
+      observable = this.recursiveMines(0, 300, endStatus).pipe(
+        map((res: ItemProResponse[]) => {
           if (res.length > 0) {
             let items: Item[] = res
               .filter(res => (res.content.purchases && status === 'featured') || status !== 'featured')
@@ -661,10 +656,10 @@ export class ItemService {
             return items;
           }
           return [];
-        });
+        }));
     }
-    return observable
-      .map((res: Item[]) => {
+    return observable.pipe(
+      map((res: Item[]) => {
         term = term ? term.trim().toLowerCase() : '';
         if (term !== '') {
           return filter(res, (item: Item) => {
@@ -672,8 +667,8 @@ export class ItemService {
           });
         }
         return res;
-      })
-      .map((res: Item[]) => {
+      }),
+      map((res: Item[]) => {
         let sort: string[] = sortByParam.split('_');
         let field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
         let sorted: Item[] = sortBy(res, [field]);
@@ -681,10 +676,10 @@ export class ItemService {
           return reverse(sorted);
         }
         return sorted;
-      })
-      .map((res: Item[]) => {
+      }),
+      map((res: Item[]) => {
         return res.slice(init, end);
-      });
+      }),);
   }
 
   private recursiveMines(init: number, offset: number, status?: string): Observable<ItemProResponse[]> {
@@ -695,17 +690,17 @@ export class ItemService {
         end: init + offset,
         newVersion: true
       } as any
-    })
-      .flatMap((res) => {
+    }).pipe(
+      mergeMap((res) => {
         if (res.length > 0) {
-          return this.recursiveMines(init + offset, offset, status)
-            .map((res2: ItemProResponse[]) => {
+          return this.recursiveMines(init + offset, offset, status).pipe(
+            map((res2: ItemProResponse[]) => {
               return res.concat(res2);
-            });
+            }));
         } else {
-          return Observable.of([]);
+          return of([]);
         }
-      });
+      }));
   }
 
   public minesByCategory(
@@ -725,8 +720,8 @@ export class ItemService {
       cache) {
       return of(this.items[status]);
     } else {
-      return this.recursiveMinesByCategory(0, 20, categoryId, status)
-        .map(responseArray => {
+      return this.recursiveMinesByCategory(0, 20, categoryId, status).pipe(
+        map(responseArray => {
           if (responseArray.length > 0) {
             const items = responseArray.map(i => this.mapItemByCategory(i, categoryId));
             this.items[status] = items;
@@ -734,8 +729,8 @@ export class ItemService {
             return items;
           }
           return [];
-        })
-        .map(res => {
+        }),
+        map(res => {
           term = term ? term.trim().toLowerCase() : '';
           if (term !== '') {
             return filter(res, (item: Item) => {
@@ -743,8 +738,8 @@ export class ItemService {
             });
           }
           return res;
-        })
-        .map(res => {
+        }),
+        map(res => {
           const sort = sortByParam.split('_');
           const field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
           const sorted: Item[] = sortBy(res, [field]);
@@ -752,8 +747,8 @@ export class ItemService {
             return reverse(sorted);
           }
           return sorted;
-        })
-        .map(res => res.slice(init, end));
+        }),
+        map(res => res.slice(init, end)),);
     }
   }
 
@@ -765,15 +760,15 @@ export class ItemService {
         end: (init + offset).toString(),
         category_id: categoryId.toString()
       }
-    })
-      .flatMap(res => {
+    }).pipe(
+      mergeMap(res => {
         if (res.length > 0) {
-          return this.recursiveMinesByCategory(init + offset, offset, categoryId, status)
-            .map(recursiveResult => res.concat(recursiveResult));
+          return this.recursiveMinesByCategory(init + offset, offset, categoryId, status).pipe(
+            map(recursiveResult => res.concat(recursiveResult)));
         } else {
-          return Observable.of([]);
+          return of([]);
         }
-      });
+      }));
   }
 
   public getItemAndSetPurchaseInfo(id: string, purchase: Purchase): Item {
@@ -812,7 +807,7 @@ export class ItemService {
         this.deselectItems();
       }),
       catchError((errorResponse) => {
-        return Observable.of(errorResponse);
+        return of(errorResponse);
       })
     );
   }

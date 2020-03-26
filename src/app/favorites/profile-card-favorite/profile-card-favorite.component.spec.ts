@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../shared/pipes';
@@ -9,7 +11,6 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { ProfileService } from '../../core/profile/profile.service';
 import { MOCK_PROFILE } from '../../../tests/profile.fixtures.spec';
@@ -54,7 +55,7 @@ describe('ProfileCardFavoriteComponent', () => {
         },
         { provide: ProfileService, useValue: {
             favoriteItem () {
-              return Observable.of({});
+              return observableOf({});
             }
           }
         },

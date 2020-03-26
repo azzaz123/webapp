@@ -1,5 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { InboxComponent, InboxState } from './inbox.component';
@@ -11,7 +13,6 @@ import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '.
 import { EventService } from '../../core/event/event.service';
 import { InboxConversation } from '../model/inbox-conversation';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs';
 import { AdService } from '../../core/ad/ad.service';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
@@ -67,10 +68,10 @@ describe('Component: InboxComponent', () => {
         {
           provide: UserService, useValue: {
             isProfessional(): Observable<boolean> {
-              return Observable.of(false);
+              return observableOf(false);
             },
             me(): Observable<User> {
-              return Observable.of(MOCK_USER);
+              return observableOf(MOCK_USER);
             },
             calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
               return 5.5;

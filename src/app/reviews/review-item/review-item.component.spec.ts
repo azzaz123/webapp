@@ -6,7 +6,7 @@ import { SanitizedBackgroundDirective } from '../../shared/sanitized-background/
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { CategoryService } from '../../core/category/category.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 describe('ReviewItemComponent', () => {
   let component: ReviewItemComponent;
@@ -21,7 +21,7 @@ describe('ReviewItemComponent', () => {
         { provide: CategoryService,
           useValue: {
             getCategoryById: () => {
-              return Observable.of(CATEGORY_DATA_WEB[0]);
+              return of(CATEGORY_DATA_WEB[0]);
             }
           }
         },

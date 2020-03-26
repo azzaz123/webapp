@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { TutorialService } from './tutorial.service';
 import { UserService } from '../user/user.service';
-import { Observable } from 'rxjs';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 
 describe('TutorialService', () => {
@@ -17,10 +18,10 @@ describe('TutorialService', () => {
           provide: UserService, useValue: {
           user: MOCK_USER,
           me() {
-            return Observable.of(MOCK_USER);
+            return observableOf(MOCK_USER);
           },
           isProfessional() {
-            return Observable.of(true);
+            return observableOf(true);
           }
         }
         }

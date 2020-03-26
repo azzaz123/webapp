@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeolocationComponent } from './geolocation.component';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures.spec';
 import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
@@ -25,10 +25,10 @@ describe('GeolocationComponent', () => {
         {
           provide: GeolocationService, useValue: {
             search: () => {
-              return Observable.of(GEOLOCATION_DATA_WEB);
+              return of(GEOLOCATION_DATA_WEB);
             },
             geocode: () => {
-              return Observable.of(COORDINATE_DATA_WEB);
+              return of(COORDINATE_DATA_WEB);
             }
           }
         },
@@ -78,13 +78,13 @@ describe('GeolocationComponent', () => {
     });
     it('should search for locations from input text', () => {
       const input = 'Barcelona';
-      component.search(Observable.of(input)).subscribe();
+      component.search(of(input)).subscribe();
       expect(geolocationService.search).toHaveBeenCalled();
     });
 
     it('should NOT search for locations from input < 3', () => {
       const input = 'Ba';
-      component.search(Observable.of(input)).subscribe();
+      component.search(of(input)).subscribe();
       expect(geolocationService.search).not.toHaveBeenCalled();
     });
   });

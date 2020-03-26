@@ -1,7 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CatalogComponent } from './catalog.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
 import { UserService } from '../core/user/user.service';
@@ -20,7 +21,7 @@ describe('CatalogComponent', () => {
         {
           provide: UserService, useValue: {
             me() {
-              return Observable.of(MOCK_USER);
+              return observableOf(MOCK_USER);
             }
           }
         },

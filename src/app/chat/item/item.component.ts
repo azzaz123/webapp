@@ -1,3 +1,5 @@
+
+import {takeWhile} from 'rxjs/operators';
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Item } from '../../core/item/item';
 import { ItemService } from '../../core/item/item.service';
@@ -66,9 +68,9 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes?: any) {
     if (this.item.salePrice !== undefined && (this.item.views === undefined || this.item.favorites === undefined)) {
-      this.itemService.getCounters(this.item.id).takeWhile(() => {
+      this.itemService.getCounters(this.item.id).pipe(takeWhile(() => {
         return this.active;
-      }).subscribe((counters: ItemCounters) => {
+      })).subscribe((counters: ItemCounters) => {
         this.item.views = counters.views;
         this.item.favorites = counters.favorites;
       });

@@ -4,7 +4,7 @@ import { REVIEW_DATA_BUYER, REVIEW_DATA_SELLER } from '../../../tests/review.fix
 import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { environment } from '../../../environments/environment';
-import 'rxjs/add/observable/throw';
+
 
 let service: ReviewService;
 let httpMock: HttpTestingController;

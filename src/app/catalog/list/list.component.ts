@@ -1,3 +1,5 @@
+
+import {takeWhile} from 'rxjs/operators';
 import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
@@ -124,16 +126,16 @@ export class ListComponent implements OnInit, OnDestroy {
       this.setSubscriptionSlots(subscriptionSlots);
     });
 
-    this.itemService.selectedItems$.takeWhile(() => {
+    this.itemService.selectedItems$.pipe(takeWhile(() => {
       return this.active;
-    }).subscribe((action: SelectedItemsAction) => {
+    })).subscribe((action: SelectedItemsAction) => {
       this.selectedItems = this.itemService.selectedItems.map((id: string) => {
         return <Item>find(this.items, {id: id});
       });
     });
 
     setTimeout(() => {
-      this.router.events.takeWhile(() => this.active).subscribe((evt) => {
+      this.router.events.pipe(takeWhile(() => this.active)).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
           return;
         }

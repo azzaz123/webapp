@@ -1,3 +1,5 @@
+
+import {catchError,  map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { InboxConversation } from '../model';
@@ -7,7 +9,6 @@ import { EventService } from '../../core/event/event.service';
 import { UserService } from '../../core/user/user.service';
 import { InboxConversationService } from './inbox-conversation.service';
 import { InboxApi, InboxConversationApi } from '../model/api';
-import { map, tap } from 'rxjs/operators';
 import { uniqBy } from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -41,11 +42,11 @@ export class InboxService {
     this.subscribeArchiveEvents();
     this.subscribeUnarchiveEvents();
 
-    this.getInbox$()
-    .catch(() => {
+    this.getInbox$().pipe(
+    catchError(() => {
       this.errorRetrievingInbox = true;
       return of([]);
-    })
+    }))
     .subscribe((conversations: InboxConversation[]) => {
       this.inboxConversationService.conversations = conversations;
       this.inboxReady = true;
@@ -54,11 +55,11 @@ export class InboxService {
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
 
-    this.getArchivedInbox$()
-    .catch(() => {
+    this.getArchivedInbox$().pipe(
+    catchError(() => {
       this.errorRetrievingArchived = true;
       return of([]);
-    }).subscribe((conversations: InboxConversation[]) => {
+    })).subscribe((conversations: InboxConversation[]) => {
       this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
       this.archivedInboxReady = true;
       this.eventService.emit(EventService.ARCHIVED_INBOX_READY, true);
@@ -85,11 +86,11 @@ export class InboxService {
 
   public loadMorePages() {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
-    this.getNextPage$()
-    .catch(() => {
+    this.getNextPage$().pipe(
+    catchError(() => {
       this.errorRetrievingInbox = true;
-      return Observable.of([]);
-    })
+      return of([]);
+    }))
     .subscribe((conversations: InboxConversation[]) => {
       this.eventService.emit(EventService.INBOX_LOADED, conversations, 'LOAD_MORE_PAGES');
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
@@ -102,11 +103,11 @@ export class InboxService {
 
   public loadMoreArchivedPages() {
     this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
-    this.getNextArchivedPage$()
-    .catch(() => {
+    this.getNextArchivedPage$().pipe(
+    catchError(() => {
       this.errorRetrievingArchived = true;
-      return Observable.of([]);
-    })
+      return of([]);
+    }))
     .subscribe((conversations: InboxConversation[]) => {
       this.eventService.emit(EventService.ARCHIVED_INBOX_LOADED, conversations);
       this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);

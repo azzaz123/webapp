@@ -1,3 +1,5 @@
+
+import {takeWhile} from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
 import { Router } from '@angular/router';
@@ -51,7 +53,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
       this.managePaymentResponse(response);
     });
     this.cartService.createInstance(new CartProExtras());
-    this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
+    this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
     });
   }

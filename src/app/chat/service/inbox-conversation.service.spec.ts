@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
@@ -12,7 +14,6 @@ import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { Observable } from 'rxjs';
 import { ItemService } from '../../core/item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { HttpModuleNew } from '../../core/http/http.module.new';
@@ -294,7 +295,7 @@ describe('InboxConversationService', () => {
         const message = new InboxMessage('10', 'thread_123456', 'hola!', 'mockUserId', false, new Date(),
           MessageStatus.SENT, MessageType.TEXT);
         spyOn(eventService, 'emit').and.callThrough();
-        spyOn<any>(service, 'getConversation').and.returnValue(Observable.of(message));
+        spyOn<any>(service, 'getConversation').and.returnValue(observableOf(message));
 
         service.processNewMessage(message);
         service.processNewMessage(message);

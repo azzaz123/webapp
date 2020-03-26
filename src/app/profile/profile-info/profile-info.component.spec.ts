@@ -5,7 +5,7 @@ import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import {
   IMAGE,
   MOCK_FULL_USER,
@@ -43,25 +43,25 @@ describe('ProfileInfoComponent', () => {
           provide: UserService, useValue: {
           user: MOCK_FULL_USER,
           me() {
-            return Observable.of(MOCK_FULL_USER);
+            return of(MOCK_FULL_USER);
           },
           isProUser() {
-            return Observable.of({});
+            return of({});
           },
           getProInfo() {
-            return Observable.of({});
+            return of({});
           },
           getUserCover() {
-            return Observable.of({});
+            return of({});
           },
           updateProInfo() {
-            return Observable.of({});
+            return of({});
           },
           edit() {
-            return Observable.of({});
+            return of({});
           },
           updateLocation() {
-            return Observable.of({});
+            return of({});
           },
           updateSearchLocationCookies() {
           }
@@ -104,8 +104,8 @@ describe('ProfileInfoComponent', () => {
     errorsService = TestBed.get(ErrorsService);
     modalService = TestBed.get(NgbModal);
     spyOn(userService, 'me').and.callThrough();
-    spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
-    spyOn(userService, 'getUserCover').and.returnValue(Observable.of(IMAGE));
+    spyOn(userService, 'isProUser').and.returnValue(of(true));
+    spyOn(userService, 'getUserCover').and.returnValue(of(IMAGE));
     component.formComponent = TestBed.get(ProfileFormComponent);
     fixture.detectChanges();
   });
@@ -134,7 +134,7 @@ describe('ProfileInfoComponent', () => {
     });
 
     it('should set profileForm with basic user data if userInfo throws error', () => {
-      spyOn(userService, 'getProInfo').and.returnValue(Observable.throwError(''));
+      spyOn(userService, 'getProInfo').and.returnValue(throwError(''));
 
       component.initForm();
 

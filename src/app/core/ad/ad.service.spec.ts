@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AdService } from './ad.service';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
-import { Observable } from 'rxjs';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 
 let service: AdService;
@@ -70,7 +71,7 @@ describe('AdService', () => {
           provide: UserService,
           useValue: {
             me() {
-              return Observable.of(MOCK_USER)
+              return observableOf(MOCK_USER)
             }
           }
         },

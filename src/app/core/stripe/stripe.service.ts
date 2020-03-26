@@ -1,3 +1,7 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {tap, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../payments/payment.service';
 import { User } from '../user/user';
@@ -7,7 +11,6 @@ import { EventService } from '../event/event.service';
 import {
   PaymentIntents, PaymentMethodResponse, PaymentMethodCardResponse
 } from '../payments/payment.interface';
-import { Observable } from 'rxjs';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
 import { FeatureflagService } from '../user/featureflag.service';
 import { environment } from '../../../environments/environment';
@@ -75,11 +78,11 @@ export class StripeService {
 
   public getCards(): Observable<FinancialCard[]> {
     if (this.financialCards) {
-      return Observable.of(this.financialCards);
+      return observableOf(this.financialCards);
     }
-    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/cards`)
-      .map((financialCards: PaymentMethodCardResponse[]) => this.mapPaymentMethodCard(financialCards))
-      .do((financialCards: FinancialCard[]) => this.financialCards = financialCards);
+    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/cards`).pipe(
+      map((financialCards: PaymentMethodCardResponse[]) => this.mapPaymentMethodCard(financialCards)),
+      tap((financialCards: FinancialCard[]) => this.financialCards = financialCards),);
   }
 
   public deleteCard(paymentMethodId: string) {

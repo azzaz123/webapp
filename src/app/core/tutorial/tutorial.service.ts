@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { Observable } from 'rxjs';
@@ -43,7 +45,7 @@ export class TutorialService {
   }
 
   public isAlreadyDisplayed(): Observable<boolean> {
-    return this.userService.me()
-      .map((user: User) => user.type === 'professional' ? true : !!localStorage.getItem(user.id + this.localStorageName));
+    return this.userService.me().pipe(
+      map((user: User) => user.type === 'professional' ? true : !!localStorage.getItem(user.id + this.localStorageName)));
   }
 }
