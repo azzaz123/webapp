@@ -202,4 +202,8 @@ export class SubscriptionsService {
     }
     return subscription.market === SUBSCRIPTION_MARKETS.GOOGLE_PLAY || subscription.market === SUBSCRIPTION_MARKETS.APPLE_STORE;
   }
+
+  public isOneSubscriptionInApp(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.isSubscriptionInApp(subscription));
+  }
 }

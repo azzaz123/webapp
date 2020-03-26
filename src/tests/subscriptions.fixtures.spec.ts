@@ -340,6 +340,230 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
   }
 ];
 
+export const MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY: SubscriptionsResponse[] = 
+[
+  {
+    id: 'abcd-1234-efgh-5678',
+    category_id: 12800, 
+    current_limit: 2,
+    subscribed_from: null,
+    selected_tier_id: null,
+    default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+    tiers:
+    [
+      {
+        id: 'plan_Fsf0Htv8L6Ox91',
+        limit: 9,
+        price: 9.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_Fsf0cCjrcaSCLx',
+        limit: 50,
+        price: 39.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_Fsf1jU8y7A9gh4',
+        limit: 200,
+        price: 69.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_Fsf2JK1vCkSx6g',
+        limit: -1,
+        price: 129.99,
+        currency: '€'
+      }
+    ],
+    market: SUBSCRIPTION_MARKETS.NO_MARKET
+  },
+  {
+    id: 'efgh-1234-abcd-5678',
+    category_id: 100, 
+    current_limit: 1,
+    subscribed_from: null,
+    selected_tier_id: null,
+    default_tier_id: 'plan_FsewICdAYXBUY0',
+    tiers:
+    [
+      {
+        id: 'plan_FsevTLryG1uX1w',
+        limit: 9,
+        price: 39.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_FsewICdAYXBUY0',
+        limit: 30,
+        price: 69.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FsewaztmR8E0pC',
+        limit: 50,
+        price: 149.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_Fsew7d8gFnVD9V',
+        limit: -1,
+        price: 199.99,
+        currency: '€'
+      }
+    ],
+    market: SUBSCRIPTION_MARKETS.NO_MARKET
+  },
+  {
+    id: 'abcd-5678-efgh-1234',
+    category_id: 14000, 
+    current_limit: 3,
+    subscribed_from: 1567675697,
+    selected_tier_id: 'plan_FWuGNucr7WgWUc',
+		default_tier_id: 'plan_FWuFVeTHEDyECa',
+    tiers:
+    [
+      {
+        id: 'plan_FWuFVeTHEDyECa',
+        limit: 9,
+        price: 9.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_FWuGNucr7WgWUc',
+        limit: 30,
+        price: 19.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FWuGwiERYLvlC6',
+        limit: 50,
+        price: 39.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FWuHrLv9WislLd',
+        limit: -1,
+        price: 69.99,
+        currency: '€'
+      }
+    ],
+    market: SUBSCRIPTION_MARKETS.GOOGLE_PLAY
+  }
+];
+
+export const MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE: SubscriptionsResponse[] = 
+[
+  {
+    id: 'abcd-1234-efgh-5678',
+    category_id: 12800, 
+    current_limit: 2,
+    subscribed_from: null,
+    selected_tier_id: null,
+    default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+    tiers:
+    [
+      {
+        id: 'plan_Fsf0Htv8L6Ox91',
+        limit: 9,
+        price: 9.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_Fsf0cCjrcaSCLx',
+        limit: 50,
+        price: 39.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_Fsf1jU8y7A9gh4',
+        limit: 200,
+        price: 69.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_Fsf2JK1vCkSx6g',
+        limit: -1,
+        price: 129.99,
+        currency: '€'
+      }
+    ],
+    market: SUBSCRIPTION_MARKETS.NO_MARKET
+  },
+  {
+    id: 'efgh-1234-abcd-5678',
+    category_id: 100, 
+    current_limit: 1,
+    subscribed_from: null,
+    selected_tier_id: null,
+    default_tier_id: 'plan_FsewICdAYXBUY0',
+    tiers:
+    [
+      {
+        id: 'plan_FsevTLryG1uX1w',
+        limit: 9,
+        price: 39.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_FsewICdAYXBUY0',
+        limit: 30,
+        price: 69.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FsewaztmR8E0pC',
+        limit: 50,
+        price: 149.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_Fsew7d8gFnVD9V',
+        limit: -1,
+        price: 199.99,
+        currency: '€'
+      }
+    ],
+    market: SUBSCRIPTION_MARKETS.NO_MARKET
+  },
+  {
+    id: 'abcd-5678-efgh-1234',
+    category_id: 14000, 
+    current_limit: 3,
+    subscribed_from: 1567675697,
+    selected_tier_id: 'plan_FWuGNucr7WgWUc',
+		default_tier_id: 'plan_FWuFVeTHEDyECa',
+    tiers:
+    [
+      {
+        id: 'plan_FWuFVeTHEDyECa',
+        limit: 9,
+        price: 9.99,
+        currency: '€'
+      }, 
+      {
+        id: 'plan_FWuGNucr7WgWUc',
+        limit: 30,
+        price: 19.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FWuGwiERYLvlC6',
+        limit: 50,
+        price: 39.99,
+        currency: '€'
+      },
+      {
+        id: 'plan_FWuHrLv9WislLd',
+        limit: -1,
+        price: 69.99,
+        currency: '€'
+      }
+    ],
+    market: SUBSCRIPTION_MARKETS.APPLE_STORE
+  }
+];
+
 export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] = 
 [
   {
