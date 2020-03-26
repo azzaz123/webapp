@@ -15,62 +15,6 @@
       display: flex;
       flex-direction: column;
 
-      .top-bar {
-        height: 80px;
-        padding: 0 $spacing-ml;
-        border-bottom: 1px solid $blue-grey-5;
-        z-index: 99;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        position: sticky;
-        top: 0;
-        width: 100%;
-
-        &.professional {
-          height: 103px;
-
-          tsl-user-avatar {
-            display: none;
-          }
-
-          h5 {
-            margin-top: -25px;
-          }
-        }
-
-        span {
-          color: $blue-grey-2;
-        }
-
-        .user-avatar {
-          display: inline-flex;
-        }
-
-        tsl-user-avatar {
-          margin-right: $spacing-ms;
-        }
-
-        .conversation-header-user-info {
-          display: inline-block;
-          flex-grow: 1;
-
-          h5 {
-            color: $blue-grey-1;
-            font-size: $font-size-m;
-            font-weight: normal;
-            margin-bottom: 0;
-          }
-        }
-
-        span {
-          font-size: $font-size-s;
-        }
-        @include media-breakpoint-down(md) {
-          height: 66px;
-        }
-      }
-
       .messages-panel-container {
         overflow-y: scroll;
         padding: $spacing-ms $spacing-ml;
@@ -177,28 +121,6 @@
 
 .back-arrow {
   margin-right: $spacing-m;
-}
-
-.conversation-header-menu {
-  height: 24px;
-
-  mat-icon {
-    cursor: pointer;
-    padding: 0 3px;
-
-    /deep/ #MVP {
-      fill: $blue-grey-2;
-    }
-  }
-
-  .dropdown-item {
-    padding: ($spacing-ml / 2) $spacing-ml;
-    cursor: pointer;
-
-    &.warn {
-      color: $warn;
-    }
-  }
 }
 
 #conversation-meta {

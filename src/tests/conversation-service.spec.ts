@@ -8,4 +8,7 @@ export class ConversationServiceMock {
   getTotals() {
     return Observable.of({});
   }
+
+  public loadMoreMessages() {
+  }
 }

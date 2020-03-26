@@ -10,25 +10,12 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../core/event/event.service';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { Subscription } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { ReportUserComponent } from '../modals/report-user';
-import { UserService } from '../../core/user/user.service';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { ReportListingComponent } from '../modals/report-listing';
-import { ItemService } from '../../core/item/item.service';
-import { BlockUserComponent } from '../modals/block-user';
-import { UnblockUserComponent } from '../modals/unblock-user';
-import { BlockUserService, BlockUserXmppService, InboxConversationService } from '../service';
-import { ArchiveInboxConversationComponent } from '../modals/archive-inbox-conversation';
-import { UnarchiveInboxConversationComponent } from '../modals/unarchive-inbox-conversation';
+import { InboxConversationService } from '../service';
 import { TextMessageComponent } from '../message/text-message';
-import { ThirdVoiceMessageComponent } from '../message/third-voice-message';
 import { eq, includes } from 'lodash-es';
 import { InboxConversation, InboxMessage, MessageType } from '../model';
 import { ThirdVoiceDropPriceComponent } from '../message/third-voice-drop-price';
@@ -62,13 +49,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public isConversationChanged: boolean;
 
   constructor(private eventService: EventService,
-              private modalService: NgbModal,
-              private toastr: ToastrService,
-              private trackingService: TrackingService,
-              private userService: UserService,
-              private itemService: ItemService,
-              private blockUserService: BlockUserService,
-              private blockUserXmppService: BlockUserXmppService,
               private i18n: I18nService,
               private realTime: RealTimeService,
               private inboxConversationService: InboxConversationService) {
@@ -159,92 +139,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
         }, 1000);
       });
     }
-  }
-
-  public reportUserAction(): void {
-    this.modalService.open(ReportUserComponent, { windowClass: 'report' }).result.then((result: any) => {
-      this.userService.reportUser(
-        this.currentConversation.user.id,
-        this.currentConversation.item.id,
-        this.currentConversation.id,
-        result.reason,
-        result.message
-      ).subscribe(() => {
-        this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
-          { user_id: this.currentConversation.user.id, reason_id: result.reason });
-        this.toastr.success(this.i18n.getTranslations('reportUserSuccess'));
-      });
-    });
-  }
-
-  public reportListingAction(): void {
-    this.modalService.open(ReportListingComponent, { windowClass: 'report' }).result.then((result: any) => {
-      this.itemService.reportListing(
-        this.currentConversation.item.id,
-        result.message,
-        result.reason,
-        this.currentConversation.id
-      ).subscribe(() => {
-        this.trackingService.track(TrackingService.PRODUCT_REPPORTED,
-          { product_id: this.currentConversation.item.id, reason_id: result.reason });
-        this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
-      }, (error: any) => {
-        if (error.status === 403) {
-          this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
-        } else {
-          this.toastr.error(this.i18n.getTranslations('serverError') + ' ' + error.json().message);
-        }
-      });
-    });
-  }
-
-  public blockUserAction() {
-    this.modalService.open(BlockUserComponent).result.then(() => {
-      this.blockUserService.blockUser(this.currentConversation.user.id).subscribe(() => {
-        this.blockUserXmppService.blockUser(this.currentConversation.user).subscribe(() => {
-          this.scrollToLastMessage();
-          this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
-        });
-      }, () => {
-      });
-    });
-  }
-
-  public unblockUserAction() {
-    this.modalService.open(UnblockUserComponent).result.then(() => {
-      this.blockUserService.unblockUser(this.currentConversation.user.id).subscribe(() => {
-        this.blockUserXmppService.unblockUser(this.currentConversation.user).subscribe(() => {
-          this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
-        });
-      }, () => {
-      });
-    });
-  }
-
-  public archiveConversation(): void {
-    this.modalService.open(ArchiveInboxConversationComponent).result.then(() => {
-      this.inboxConversationService.archive$(this.currentConversation).subscribe(() => {
-        this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
-        this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, null);
-      });
-    });
-  }
-
-  public unarchiveConversation() {
-    this.modalService.open(UnarchiveInboxConversationComponent).result.then(() => {
-      this.inboxConversationService.unarchive(this.currentConversation).subscribe(() => {
-        this.toastr.success(this.i18n.getTranslations('unarchiveConversationSuccess'));
-        this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, null);
-      });
-    });
-  }
-
-  get itemIsMine(): boolean {
-    return this.currentConversation.item.isMine;
-  }
-
-  get currentConversationisArchived(): boolean {
-    return this.inboxConversationService.containsArchivedConversation(this.currentConversation);
   }
 
   public hasMoreMessages(): boolean {

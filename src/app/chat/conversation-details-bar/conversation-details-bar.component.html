@@ -1,0 +1,40 @@
+<div class="top-bar" [ngClass]="{'faded': !currentConversation.user.available}">
+  <mat-icon svgIcon="back-arrow" class="d-lg-none back-arrow" (click)="navigationBack()"></mat-icon>
+  <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
+     target="_blank" class="user-avatar">
+    <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
+  </a>
+  <tsl-user-avatar *ngIf="!currentConversation?.user.profileUrl" [user]="this.currentConversation.user" size="40">
+  </tsl-user-avatar>
+  <div class="conversation-header-user-info">
+    <h5>{{currentConversation?.user.microName}}</h5>
+  </div>
+
+  <mat-icon class="menu-icon" svgIcon="menu"></mat-icon>
+
+  <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
+    <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
+    <div ngbDropdownMenu>
+      <button class="dropdown-item" (click)="archiveConversation()" i18n
+              [hidden]="currentConversationisArchived">Archive conversation
+      </button>
+      <button class="dropdown-item" (click)="unarchiveConversation()" i18n
+              [hidden]="!currentConversationisArchived">Unarchive conversation
+      </button>
+      <button class="dropdown-item" (click)="reportListingAction()"
+              *ngIf="!itemIsMine && !currentConversation.item.notAvailable" i18n>Report this Listing
+      </button>
+      <button *ngIf="currentConversation.user.available"
+              class="dropdown-item" (click)="reportUserAction()" i18n>Report this User
+      </button>
+      <button [hidden]="!currentConversation.user.id || currentConversation.user.blocked"
+              class="dropdown-item warn"
+              (click)="blockUserAction()" i18n>Block this User
+      </button>
+      <button [hidden]="!currentConversation.user.id || !currentConversation.user.blocked"
+              class="dropdown-item warn"
+              (click)="unblockUserAction()" i18n>Unblock this User
+      </button>
+    </div>
+  </div>
+</div>
