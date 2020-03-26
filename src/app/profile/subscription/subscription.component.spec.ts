@@ -5,7 +5,7 @@ import { SubscriptionsService } from "../../core/subscriptions/subscriptions.ser
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { Observable } from "rxjs";
 import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures.spec";
-import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED } from "../../../tests/subscriptions.fixtures.spec";
+import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED, MAPPED_SUBSCRIPTIONS_WITH_INAPP } from "../../../tests/subscriptions.fixtures.spec";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from "./modals/add-new-subscription-modal.component";
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component'
@@ -27,6 +27,8 @@ import {
 } from '../../core/analytics/analytics-constants';
 import { CancelSubscriptionModalComponent } from "./modals/cancel-subscription-modal.component";
 import { ContinueSubscriptionModalComponent } from "./modals/continue-subscription-modal.component";
+import { CheckSubscriptionInAppModalComponent } from "./modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component";
+import { UnsubscribeInAppFirstModal } from "./modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component";
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionsComponent;
@@ -47,6 +49,12 @@ describe('SubscriptionComponent', () => {
           provide: SubscriptionsService, useValue: {
             getSubscriptions() {
               return Observable.of(MAPPED_SUBSCRIPTIONS);
+            },
+            isSubscriptionInApp() {
+              return false;
+            },
+            isOneSubscriptionInApp() {
+              return false;
             }
           }
         },
@@ -189,6 +197,17 @@ describe('SubscriptionComponent', () => {
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
 
+      describe('and the subscription is from Android or iOS', () => {
+        it('should open a modal that says to modify subscription in app', () => {
+          spyOn(subscriptionsService, 'isSubscriptionInApp').and.returnValue(true);
+          spyOn(modalService, 'open').and.callThrough();
+
+          component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS_WITH_INAPP[0]);
+
+          expect(modalService.open).toHaveBeenCalledWith(CheckSubscriptionInAppModalComponent, { windowClass: 'review' });
+        });
+      });
+
       describe('and the subscription has only one tier', () => {
         it('should open the cancel modal', () => {
           spyOn(modalService, 'open').and.callThrough();
@@ -227,6 +246,15 @@ describe('SubscriptionComponent', () => {
 
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+
+      it('should open a unsubscribe inapp first modal if one subscription is inapp', () => {
+        spyOn(subscriptionsService, 'isOneSubscriptionInApp').and.returnValue(true);
+        spyOn(modalService, 'open').and.callThrough();
+
+        component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS_WITH_INAPP[1]);
+
+        expect(modalService.open).toHaveBeenCalledWith(UnsubscribeInAppFirstModal, { windowClass: 'review' });
       });
     });
 
