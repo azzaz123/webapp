@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CheckSubscriptionInAppModalComponent } from './check-subscription-in-app-modal.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('CheckSubscriptionInAppModalComponent', () => {
   let component: CheckSubscriptionInAppModalComponent;
@@ -8,7 +10,11 @@ describe('CheckSubscriptionInAppModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckSubscriptionInAppModalComponent ]
+      declarations: [ CheckSubscriptionInAppModalComponent ],
+      providers: [
+        NgbActiveModal
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
