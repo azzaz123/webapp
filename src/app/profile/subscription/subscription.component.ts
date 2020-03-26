@@ -27,7 +27,7 @@ import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-m
   templateUrl: './subscription.component.html',
   styleUrls: ['./subscription.component.scss'],
 })
-export class SubscriptionComponent implements OnInit {
+export class SubscriptionsComponent implements OnInit {
   public action: string;
   public subscriptions: SubscriptionsResponse[];
   public loading = false;

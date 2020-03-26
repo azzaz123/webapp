@@ -1,4 +1,4 @@
-import { SubscriptionComponent } from "./subscription.component";
+import { SubscriptionsComponent } from "./subscription.component";
 import { ComponentFixture, TestBed, async, fakeAsync, tick, flush } from "@angular/core/testing";
 import { CategoryService } from "../../core/category/category.service";
 import { SubscriptionsService } from "../../core/subscriptions/subscriptions.service";
@@ -29,8 +29,8 @@ import { CancelSubscriptionModalComponent } from "./modals/cancel-subscription-m
 import { ContinueSubscriptionModalComponent } from "./modals/continue-subscription-modal.component";
 
 describe('SubscriptionComponent', () => {
-  let component: SubscriptionComponent;
-  let fixture: ComponentFixture<SubscriptionComponent>;
+  let component: SubscriptionsComponent;
+  let fixture: ComponentFixture<SubscriptionsComponent>;
   let categoryService: CategoryService;
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
@@ -40,7 +40,7 @@ describe('SubscriptionComponent', () => {
   
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SubscriptionComponent ],
+      declarations: [ SubscriptionsComponent ],
       providers: [
         EventService,
         {
@@ -82,7 +82,7 @@ describe('SubscriptionComponent', () => {
   
   beforeEach(() => {
     modalService = TestBed.get(NgbModal);
-    fixture = TestBed.createComponent(SubscriptionComponent);
+    fixture = TestBed.createComponent(SubscriptionsComponent);
     component = fixture.componentInstance;
     subscriptionsService = TestBed.get(SubscriptionsService);
     categoryService = TestBed.get(CategoryService);
