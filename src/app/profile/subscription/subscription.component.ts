@@ -166,4 +166,15 @@ export class SubscriptionsComponent implements OnInit {
     return AddNewSubscriptionModalComponent;
   }
 
+  public showEdit(subscription: SubscriptionsResponse): boolean {
+    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
+  }
+
+  public showCancel(subscription: SubscriptionsResponse): boolean {
+    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length === 1;
+  }
+
+  public showManageInApp(subscription: SubscriptionsResponse): boolean {
+    return this.subscriptionsService.isSubscriptionInApp(subscription);
+  }
 }
