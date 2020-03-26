@@ -1,0 +1,23 @@
+<div class="UnsubscribeInAppFirstModal">
+
+  <div class="UnsubscribeInAppFirstModal__close" (click)="activeModal.close()">
+    <mat-icon svgIcon="cross"></mat-icon>
+  </div>
+
+  <div class="UnsubscribeInAppFirstModal__content">
+
+    <div class="UnsubscribeInAppFirstModal__content-title">
+      <span i18n><b>You have to unsubscribe all your inapp subscriptions first</b></span>
+    </div>
+
+    <div class="UnsubscribeInAppFirstModal__content-description">
+      <div i18n>If you want to subscribe, first you need to go to the app store and cancel any active inapp subscription.</div>  
+      <div i18n>If you have any doubts, <a href="mailto:{{supportMail}}" target="_blank">contact us</a>.</div>  
+    </div>
+  </div>
+
+  <div class="UnsubscribeInAppFirstModal__actions">
+    <tsl-button [class]="'UnsubscribeInAppFirstModal__actions-ok'" (click)="activeModal.close()" i18n>Understood</tsl-button>
+  </div>
+
+</div>
