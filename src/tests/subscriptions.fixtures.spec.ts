@@ -92,7 +92,7 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED: SubscriptionsRespo
       currency: '€'
     }   
   ],
-  market: SUBSCRIPTION_MARKETS.NO_MARKET
+  market: null
 };
 
 export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED: SubscriptionsResponse = {
@@ -111,7 +111,7 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED: Subscriptio
       currency: '€'
     }   
   ],
-  market: SUBSCRIPTION_MARKETS.NO_MARKET
+  market: null
 }
 
 export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED: SubscriptionsResponse = {
@@ -263,7 +263,7 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
         currency: '€'
       }
     ],
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   },
   {
     id: 'abcd-5678-efgh-1234',
@@ -376,7 +376,7 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY: SubscriptionsResponse[] =
         currency: '€'
       }
     ],
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   },
   {
     id: 'efgh-1234-abcd-5678',
@@ -412,7 +412,7 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY: SubscriptionsResponse[] =
         currency: '€'
       }
     ],
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   },
   {
     id: 'abcd-5678-efgh-1234',
@@ -488,7 +488,7 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE: SubscriptionsResponse[] =
         currency: '€'
       }
     ],
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   },
   {
     id: 'efgh-1234-abcd-5678',
@@ -524,7 +524,7 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE: SubscriptionsResponse[] =
         currency: '€'
       }
     ],
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   },
   {
     id: 'abcd-5678-efgh-1234',
@@ -600,7 +600,7 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
         currency: '€'
       }
     ],
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   },
   {
     id: '1234-abcd-5678-efgh',
@@ -636,7 +636,7 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
         currency: '€'
       }
     ],
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   },
   {
     id: 'abcd-4321-efgh-5678',
@@ -672,7 +672,7 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
         currency: '€'
       }
     ],
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   },
   {
     id: 'abcd-1234-efgh-8765',
@@ -709,7 +709,7 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
         currency: '€'
       }
     ],
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   }
 ];
 
@@ -752,7 +752,7 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
     category_name: 'Motor & Accessories',
     category_icon: 'category_MotorAccessories',
     selected_tier: null,
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   },
   {
     id: 'abcd-4321-efgh-8765',
@@ -791,7 +791,7 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
     category_name: 'Cars',
     category_icon: 'category_Cars',
     selected_tier: null,
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   },
   {
     id: 'dcba-1234-hgfe-5678',
@@ -917,7 +917,7 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] =
     category_name: 'Cars',
     category_icon: 'category_Cars',
     selected_tier: null,
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   },
   {
     id: 'abcd-1234-5678-efgh',
@@ -1043,7 +1043,7 @@ export const MAPPED_SUBSCRIPTIONS_WITH_INAPP =
     category_name: 'Cars',
     category_icon: 'category_Cars',
     selected_tier: null,
-    market: SUBSCRIPTION_MARKETS.NO_MARKET
+    market: null
   }
 ];
 
