@@ -6,7 +6,7 @@ import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface
 
 import {
   Image, UserExtrainfo, UserLocation, UserResponse, UserStatsOld, UserValidations,
-  MotorPlan, ProfileSubscriptionInfo
+  ProfileSubscriptionInfo
 } from '../app/core/user/user-response.interface';
 import { Observable, of } from 'rxjs';
 import { Item } from '../app/core/item/item';
@@ -401,12 +401,6 @@ export const MOCK_UNSUBSCRIBE_REASONS: UnsubscribeReason[] = [{
 
 export const SELECTED_REASON = 1;
 export const CUSTOM_REASON = 'bye';
-
-export const MOTORPLAN_DATA: MotorPlan = {
-  'type': 'motor_plan_pro',
-  'subtype': 'sub_premium',
-  'limit': 5
-};
 
 export const PROFILE_SUB_INFO: ProfileSubscriptionInfo = {
   'status': 'PURCHASE_ACTIVE',

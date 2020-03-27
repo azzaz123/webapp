@@ -13,7 +13,6 @@ import {
   MOCK_FULL_USER,
   MOCK_USER,
   MOCK_USER_RESPONSE_BODY,
-  MOTORPLAN_DATA,
   ONLINE,
   PROFILE_SUB_INFO,
   MOCK_UNSUBSCRIBE_REASONS,
@@ -44,7 +43,7 @@ import { EventService } from '../event/event.service';
 import { PERMISSIONS, User } from './user';
 import { environment } from '../../../environments/environment';
 import { LoginResponse } from './login-response.interface';
-import { Image, MotorPlan, UserLocation } from './user-response.interface';
+import { Image, UserLocation } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FEATURE_FLAGS_ENUM, FeatureflagService } from './featureflag.service';
@@ -64,11 +63,6 @@ describe('Service: User', () => {
   let featureflagService: FeatureflagService;
   let httpMock: HttpTestingController;
   let eventService: EventService;
-
-  const mockMotorPlan = {
-    type: 'motor_plan_pro',
-    subtype: 'sub_premium'
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({

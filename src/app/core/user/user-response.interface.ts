@@ -76,18 +76,6 @@ export interface UserValidations {
   birthday: boolean;
 }
 
-export interface MotorPlan {
-  type: string;
-  subtype: string;
-  limit?: number;
-}
-
-export interface MotorPlanType {
-  subtype: string;
-  label: string;
-  shortLabel?: string;
-}
-
 export interface ProfileSubscriptionInfo {
   status: string;
   product_group: {

@@ -6,7 +6,6 @@ import { EventService } from '../../core/event/event.service';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../../core/http/access-token.service';
 import { User } from '../../core/user/user';
-import { MotorPlan, MotorPlanType } from '../../core/user/user-response.interface';
 
 @Component({
   selector: 'tsl-unsubscribe-modal',
