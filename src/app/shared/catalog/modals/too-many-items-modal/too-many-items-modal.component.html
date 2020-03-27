@@ -29,7 +29,7 @@
 
   <div class="TooManyItemsModal__actions">
     <tsl-button *ngIf="type === inAppType || type === carDealerType" (click)="activeModal.close()" i18n>Understood</tsl-button>
-    <tsl-button *ngIf="type === notSubscribedType || type === stripeType" (click)="activeModal.close()" [routerLink]="'/profile/manage-subscription'" i18n>Go to subscriptions</tsl-button>
+    <tsl-button *ngIf="type === notSubscribedType || type === stripeType" (click)="activeModal.close()" [routerLink]="'/profile/subscriptions'" i18n>Go to subscriptions</tsl-button>
     <div class="TooManyItemsModal__actions-optional"
       *ngIf="type === notSubscribedType || type === stripeType"
       (click)="activeModal.close()" i18n
