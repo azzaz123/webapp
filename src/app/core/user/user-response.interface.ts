@@ -4,7 +4,7 @@ export interface UserResponse extends ApiResponse {
   micro_name: string;
   image: Image;
   location: UserLocation;
-  stats: UserStats;
+  stats: UserStatsOld;
   validations: UserValidations;
   verification_level: number;
   scoring_stars: number;
@@ -53,7 +53,7 @@ export interface UserLocation {
   address?: string;
 }
 
-export interface UserStats {
+export interface UserStatsOld {
   published: number;
   sold: number;
   favorites: number;

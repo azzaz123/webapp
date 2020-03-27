@@ -1,0 +1,1 @@
+export const SUPPORT_MAIL = 'support.es@wallapop.com';

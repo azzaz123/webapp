@@ -26,10 +26,8 @@
         <nav class="nav filters-nav d-flex d-md-inline-block">
           <a class="nav-link" [routerLink]="['info']" routerLinkActive="active" i18n>Profile</a>
           <a class="nav-link" [routerLink]="['account']" routerLinkActive="active" i18n>Account</a>
-          <a class="nav-link" [routerLink]="['manage-subscription']" routerLinkActive="active"
-            *ngIf="isSubscriptionsActive && isNewSubscription" i18n>Subscriptions</a>
-          <a class="nav-link" [routerLink]="['subscription']" routerLinkActive="active"
-            *ngIf="showSubscriptionTab && !isNewSubscription" i18n>Subscription</a>
+          <a class="nav-link" [routerLink]="['subscriptions']" routerLinkActive="active"
+            *ngxPermissionsExcept="['isProfessional']" i18n>Subscriptions</a>
           <a class="nav-link" [routerLink]="['billing']" routerLinkActive="active"
             *ngxPermissionsOnly="['isProfessional']" i18n>Billing information</a>
           <a class="nav-link" [routerLink]="['subscription-pro']" routerLinkActive="active"
@@ -39,7 +37,10 @@
       <div class="d-none col-md-3 d-md-block">
         <div class="rating" *ngIf="userStats">
           <tsl-stars class="review-rating" [stars]="userStats?.ratings?.reviews" [normalized]="false"></tsl-stars>
-          ({{userStats?.counters?.reviews}} <span i18n>reviews</span>)
+          <span>
+            <span>(<span class="reviews-rating-value">{{userStats?.counters?.reviews}}</span>&nbsp;</span>
+            <span i18n>reviews</span>)
+          </span>
         </div>
       </div>
     </div>

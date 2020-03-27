@@ -1,11 +1,11 @@
 import { UserInfoResponse, UserProInfo } from '../app/core/user/user-info.interface';
 import { Coordinate } from '../app/core/geolocation/address-response.interface';
-import { Counters, Ratings, UserStatsResponse } from '../app/core/user/user-stats.interface';
+import { Counters, Ratings, UserStats } from '../app/core/user/user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from '../app/core/user/user-data.interface';
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
 
 import {
-  Image, UserExtrainfo, UserLocation, UserResponse, UserStats, UserValidations,
+  Image, UserExtrainfo, UserLocation, UserResponse, UserStatsOld, UserValidations,
   MotorPlan, ProfileSubscriptionInfo
 } from '../app/core/user/user-response.interface';
 import { Observable, of } from 'rxjs';
@@ -43,7 +43,7 @@ export const USER_LOCATION: UserLocation = {
   'title': '08009, Barcelona'
 };
 
-export const STATS: UserStats = {
+export const STATS: UserStatsOld = {
   'published': 10,
   'sold': 2,
   'favorites': 0,
@@ -109,6 +109,31 @@ export const USER_DATA: UserResponse = {
   'email': USER_EMAIL,
   'featured': true,
   'extra_info': USER_EXTRA_INFO
+};
+
+export const MOCK_NON_FEATURED_USER_RESPONSE: UserResponse = {
+  legacy_id: 101,
+  id: USER_ID,
+  micro_name: MICRO_NAME,
+  image: IMAGE,
+  location: USER_LOCATION,
+  stats: STATS,
+  validations: VALIDATIONS,
+  verification_level: VERIFICATION_LEVEL,
+  scoring_stars: SCORING_STARS,
+  scoring_starts: SCORING_STARTS,
+  response_rate: RESPONSE_RATE,
+  online: ONLINE,
+  received_reports: RECEIVED_REPORTS,
+  type: USER_TYPE,
+  web_slug: USER_WEB_SLUG,
+  first_name: USER_FIRST_NAME,
+  last_name: USER_LAST_NAME,
+  birth_date: USER_BIRTH_DATE,
+  gender: USER_GENDER,
+  email: USER_EMAIL,
+  featured: false,
+  extra_info: USER_EXTRA_INFO
 };
 
 export const MOCK_USER_RESPONSE_BODY = {
@@ -257,10 +282,29 @@ export const COUNTERS_RESPONSE: Counters = {
   onHold: 0
 };
 
-export const USERS_STATS_RESPONSE: UserStatsResponse = {
+export const MOCK_USER_STATS: UserStats = {
   ratings: RATINGS_RESPONSE,
   counters: COUNTERS_RESPONSE
 };
+
+export const MOCK_USER_STATS_RESPONSE = {
+  ratings: [
+    { type: 'reviews', value: 60 }
+  ],
+  counters: [
+    { type: 'publish', value: 1 },
+    { type: 'buys', value: 0 },
+    { type: 'sells', value: 5 },
+    { type: 'favorites', value: 2 },
+    { type: 'views', value: 1 },
+    { type: 'profile_favorited_received', value: 1 },
+    { type: 'profile_favorited', value: 1 },
+    { type: 'onHold', value: 10 },
+    { type: 'reviews', value: 2 },
+    { type: 'sold', value: 4 },
+    { type: 'reports_received', value: 1 }
+  ]
+}
 
 export const RATINGS = [
   {

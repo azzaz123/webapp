@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse } from './subscriptions.interface';
+import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse, SUBSCRIPTION_MARKETS } from './subscriptions.interface';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
@@ -28,8 +28,8 @@ export const SUBSCRIPTIONS_CATEGORY_ICON_MAP = {
 export enum SUBSCRIPTION_TYPES {
   notSubscribed = 1,
   carDealer = 2,
-  motorPlan = 3,
-  web = 4
+  inApp = 3,
+  stripe = 4
 }
 
 @Injectable()
@@ -89,11 +89,11 @@ export class SubscriptionsService {
 
       if (carsSubscription) {
         if (values[2].type === 'motor_plan_pro' && !carsSubscription.selected_tier_id) {
-          return SUBSCRIPTION_TYPES.motorPlan;
+          return SUBSCRIPTION_TYPES.inApp;
         }
 
         if (carsSubscription.selected_tier_id) {
-          return SUBSCRIPTION_TYPES.web;
+          return SUBSCRIPTION_TYPES.stripe;
         }
       }
 
@@ -194,5 +194,16 @@ export class SubscriptionsService {
   private getSelectedTier(subscription: SubscriptionsResponse): Tier {
     const selectedTier = subscription.selected_tier_id ? subscription.tiers.filter(tier => tier.id === subscription.selected_tier_id) : subscription.tiers.filter(tier => tier.id === subscription.default_tier_id);
     return selectedTier[0];
+  }
+
+  public isSubscriptionInApp(subscription: SubscriptionsResponse): boolean {
+    if (!subscription.market) {
+      return false;
+    }
+    return subscription.market === SUBSCRIPTION_MARKETS.GOOGLE_PLAY || subscription.market === SUBSCRIPTION_MARKETS.APPLE_STORE;
+  }
+
+  public isOneSubscriptionInApp(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.isSubscriptionInApp(subscription));
   }
 }
