@@ -1,17 +1,20 @@
 <div class="top-bar" [ngClass]="{'faded': !currentConversation.user.available}">
   <mat-icon svgIcon="back-arrow" class="d-lg-none back-arrow" (click)="navigationBack()"></mat-icon>
 
-  <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
-     target="_blank" class="user-avatar">
-    <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
-  </a>
-  <tsl-user-avatar *ngIf="!currentConversation?.user.profileUrl" [user]="this.currentConversation.user" size="40">
-  </tsl-user-avatar>
-  <div class="conversation-header-user-info">
+  <div class="lg-device-container hidden-lg-down">
+    <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
+       target="_blank" class="user-avatar">
+      <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
+    </a>
+    <tsl-user-avatar *ngIf="!currentConversation?.user.profileUrl" [user]="this.currentConversation.user" size="40">
+    </tsl-user-avatar>
+
     <h5>{{currentConversation?.user.microName}}</h5>
   </div>
 
-  <mat-icon class="menu-icon" svgIcon="menu"></mat-icon>
+  <div class="sm-device-container hidden-xl-up">
+    On small devices
+  </div>
 
   <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
     <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
