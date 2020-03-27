@@ -242,31 +242,31 @@ describe('SubscriptionsService', () => {
 
   describe('isSubscriptionInApp', () => {
     it('should be false when subscription is not subscribed', () => {
-      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED)).toBeFalsy();
+      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED)).toBe(false);
     });
 
     it('should be false when subscription is from Stripe', () => {
-      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED)).toBeFalsy();
+      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED)).toBe(false);
     });
 
     it('should be true when subscription was bought in Android or iOS', () => {
-      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED)).toBeTruthy();
-      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED)).toBeTruthy();
+      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED)).toBe(true);
+      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED)).toBe(true);
     });
   })
 
   describe('isOneSubscriptionInApp', () => {
     it('should be false when all subscriptions are not subscribed', () => {
-      expect(service.isOneSubscriptionInApp(SUBSCRIPTIONS_NOT_SUB)).toBeFalsy();
+      expect(service.isOneSubscriptionInApp(SUBSCRIPTIONS_NOT_SUB)).toBe(false);
     });
 
     it('should be false when some subscriptions are from Stripe', () => {
-      expect(service.isOneSubscriptionInApp(SUBSCRIPTIONS)).toBeFalsy();
+      expect(service.isOneSubscriptionInApp(SUBSCRIPTIONS)).toBe(false);
     });
 
     it('should be true when some subscription were bought in Android or iOS', () => {
-      expect(service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY)).toBeTruthy();
-      expect(service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE)).toBeTruthy();
+      expect(service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY)).toBe(true);
+      expect(service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE)).toBe(true);
     });
   })
 
