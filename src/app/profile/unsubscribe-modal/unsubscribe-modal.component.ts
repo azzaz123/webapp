@@ -31,11 +31,7 @@ export class UnsubscribeModalComponent implements OnInit {
     this.userService.getUnsubscribeReasons().subscribe((reasons: UnsubscribeReason[]) => {
       this.reasons = reasons;
     });
-    this.userService.me().subscribe((user: User) => {
-      this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
-        this.hasSubscription = user.featured || !!motorPlan.subtype;
-      });
-    });
+    this.userService.isProUser().subscribe(isPro => this.hasSubscription = isPro);
   }
 
   public send() {
