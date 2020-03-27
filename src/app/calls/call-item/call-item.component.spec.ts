@@ -2,20 +2,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CallItemComponent } from './call-item.component';
-import { EventService } from '../../core/event/event.service';
 import { ActivatedRoute } from '@angular/router';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { CallsService } from '../../core/conversation/calls.service';
-import { ConversationService } from '../../core/conversation/conversation.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MomentModule } from 'angular2-moment';
-import { CallStatusLabelPipe } from '../../core/conversation/call-status-label.pipe';
+import { CallStatusLabelPipe } from '../../shared/pipes';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Observable } from 'rxjs';
-import { MOCK_CALL, CALL_ID } from '../../../tests/call.fixtures';
+import { MOCK_CALL } from '../../../tests/call.fixtures';
 import { createMessagesArray } from '../../../tests/message.fixtures.spec';
-import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 
 describe('CallItemComponent', () => {
   let component: CallItemComponent;
@@ -32,17 +29,17 @@ describe('CallItemComponent', () => {
       declarations: [CallItemComponent, CallStatusLabelPipe],
       providers: [
         I18nService,
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: ActivatedRoute, useValue: {
-          queryParams: Observable.of({})
-        }
+            queryParams: Observable.of({})
+          }
         },
         {
           provide: CallsService, useValue: {
-          stream() {
+            stream() {
+            }
           }
-        }
         },
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -85,7 +82,7 @@ describe('CallItemComponent', () => {
       component.archived = false;
 
       component.onAnimationDone(new Event(''));
-      
+
       expect(callService.stream).not.toHaveBeenCalled();
     });
   });

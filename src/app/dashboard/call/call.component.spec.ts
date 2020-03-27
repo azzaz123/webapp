@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CallComponent } from './call.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
-import { CallStatusLabelPipe } from '../../core/conversation/call-status-label.pipe';
+import { CallStatusLabelPipe } from '../../shared/pipes';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CallsService } from '../../core/conversation/calls.service';
 import { MOCK_CALL } from '../../../tests/call.fixtures';

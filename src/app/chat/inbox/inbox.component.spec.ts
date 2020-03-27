@@ -5,7 +5,6 @@ import { MomentModule } from 'angular2-moment';
 import { InboxComponent, InboxState } from './inbox.component';
 import { InboxConversationComponent } from './inbox-conversation/inbox-conversation.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { HttpService } from '../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { InboxService, InboxConversationService } from '../service';
@@ -34,7 +33,6 @@ class AdServiceMock {
 describe('Component: InboxComponent', () => {
   let component: InboxComponent;
   let inboxService: InboxService;
-  let http: HttpService;
   let eventService: EventService;
   let userService: UserService;
   let conversationService: InboxConversationService;
@@ -91,7 +89,6 @@ describe('Component: InboxComponent', () => {
       schemas: [NO_ERRORS_SCHEMA]
     });
     component = TestBed.createComponent(InboxComponent).componentInstance;
-    http = TestBed.get(HttpService);
     inboxService = TestBed.get(InboxService);
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);

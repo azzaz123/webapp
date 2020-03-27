@@ -1,0 +1,14 @@
+{
+  "Parameters": {
+    "BucketNameES": "web-es.wallapop.com",
+    "BucketNameEN": "web-en.wallapop.com"
+  },
+  "Tags": {
+    "Project": "webapp",
+    "Team": "frontend",
+    "Contact": "frontend@wallapop.com",
+    "Env": "prod",
+    "Name": "webapp",
+    "Repo": "webapp"
+  }
+}

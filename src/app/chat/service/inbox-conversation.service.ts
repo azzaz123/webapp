@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
 import { InboxConversationApi, InboxMessagesApi } from '../model/api';
+import { RemoteConsoleClientService, RemoteConsoleService } from '../../core/remote-console';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,7 @@ export class InboxConversationService {
     private realTime: RealTimeService,
     private messageService: MessageService,
     private persistencyService: PersistencyService,
+    private remoteConsoleService: RemoteConsoleService,
     private eventService: EventService) {
     this.conversations = [];
     this.archivedConversations = [];
@@ -96,6 +98,7 @@ export class InboxConversationService {
       this.eventService.emit(EventService.MESSAGE_ADDED, message);
       if (!message.fromSelf) {
         this.incrementUnreadCounter(conversation);
+        this.remoteConsoleService.sendPresentationMessageTimeout(message.id);
       }
 
       if (!message.fromSelf) {

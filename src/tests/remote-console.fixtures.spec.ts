@@ -15,6 +15,9 @@ export class MockRemoteConsoleService {
 
   sendPresentationMessageTimeout(messageId: string): void {
   }
+
+  sendXmppConnectionClosedWithError(message: string): void {
+  }
 }
 
 export const BROWSER = 'CHROME';

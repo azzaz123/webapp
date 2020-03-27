@@ -1,4 +1,4 @@
-import { InboxMessage } from './inbox-message';
+import { InboxMessage, MESSAGES_WHITE_LIST } from './inbox-message';
 import { InboxUser, InboxUserPlaceholder } from './inbox-user';
 import { InboxImage, InboxItem, InboxItemPlaceholder } from './inbox-item';
 import { environment } from '../../../environments/environment';
@@ -143,9 +143,7 @@ export class InboxConversation {
     }
 
     private static buildInboxMessages(conversation, id) {
-        // TODO - handle third voice type message (type === '? TBD');
-        const textMessages = InboxMessage.messsagesFromJson(conversation.messages.messages,
-            conversation.hash, id, conversation.with_user ? conversation.with_user.id : null);
-        return textMessages;
+      return InboxMessage.messsagesFromJson(conversation.messages.messages,
+        conversation.hash, id, conversation.with_user ? conversation.with_user.id : null);
     }
 }

@@ -1,14 +1,14 @@
-import { clone, eq, remove } from 'lodash-es';
+import { clone, eq, remove, includes } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { EventService } from '../event/event.service';
-import { JID, XmppBodyMessage, XMPPClient } from './xmpp.interface';
+import { XmppBodyMessage, XMPPClient, JID, XmppError } from './xmpp.interface';
 import { Observable, Observer } from 'rxjs';
 import 'rxjs/add/observable/from';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
-import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
-import { InboxConversation, InboxMessage, InboxUser, MessageStatus, MessageType } from '../../chat/model';
+import { ChatSignal, ChatSignalType } from '../../chat/model';
+import { InboxConversation, InboxMessage, InboxUser, MESSAGES_WHITE_LIST, MessageStatus, MessageType } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
 
 @Injectable()
@@ -146,6 +146,9 @@ export class XmppService {
       interval: 30
     });
     this.client.on('message', (message: XmppBodyMessage) => {
+      if (!this.isFromSelf(message) && message.sentReceipt && message.sentReceipt.id) {
+        this.remoteConsoleService.sendAcceptTimeout(message.sentReceipt.id);
+      }
       this.canProcessRealtime ? this.onNewMessage(message) : this.realtimeQ.push(message);
     });
     this.client.on('message:sent', (message: XmppBodyMessage) => {
@@ -160,6 +163,7 @@ export class XmppService {
 
     this.client.on('disconnected', () => {
       this.clientConnected = false;
+      this.remoteConsoleService.sendXmppConnectionClosedWithError();
       console.warn('Client disconnected');
       this.eventService.emit(EventService.CHAT_RT_DISCONNECTED);
     });
@@ -220,14 +224,16 @@ export class XmppService {
         this.remoteConsoleService.sendPresentationMessageTimeout(message.id);
       }
       const builtMessage: InboxMessage = this.buildMessage(message, markAsPending);
-      this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
+      if (includes(MESSAGES_WHITE_LIST, builtMessage.type)) {
+        this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
+      }
     }
   }
 
   private isFromSelf(message: XmppBodyMessage): boolean {
     /* The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
     logged in, but they should not be considered messages fromSelf */
-    return this.self && eq(message.from.local, this.self.local) && !message.payload;
+    return this.self && message.from && eq(message.from.local, this.self.local) && !message.payload;
   }
 
   private buildChatSignal(message: XmppBodyMessage) {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SubscriptionSlot, SubscriptionSlotResponse } from './subscriptions.interface';
+import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse } from './subscriptions.interface';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
@@ -17,7 +17,7 @@ export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
 export const SUBSCRIPTIONS_URL = 'bff/subscriptions';
 
-export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'subscriptions/slots/';
+export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'api/v3/users/me/slots-info';
 
 export const SUBSCRIPTIONS_CATEGORY_ICON_MAP = {
   'car': 'cat_car',
@@ -50,26 +50,28 @@ export class SubscriptionsService {
   }
 
   public getSlots(): Observable<SubscriptionSlot[]> {
-    return this.http.get<any>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`)
-      .flatMap(slots => {
+    return this.http.get<SubscriptionSlotGeneralResponse>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`)
+      .flatMap(response => {
         return Observable.forkJoin(
-          slots.map(s => this.mapSlotResponseToSlot(s))
+          response.slots.map(slot => this.mapSlotResponseToSlot(slot))
         );
       });
   }
 
   private mapSlotResponseToSlot(slot: SubscriptionSlotResponse): Observable<SubscriptionSlot> {
     return this.categoryService.getCategoryById(slot.category_id)
-      .map(category => {
-        category.icon_id = SUBSCRIPTIONS_CATEGORY_ICON_MAP[category.icon_id];
-        const mappedSlot: SubscriptionSlot = {
-          category,
-          available: slot.available,
-          limit: slot.limit
-        };
+      .pipe(
+        map(category => {
+          category.icon_id = SUBSCRIPTIONS_CATEGORY_ICON_MAP[category.icon_id];
+          const mappedSlot: SubscriptionSlot = {
+            category,
+            available: slot.available,
+            limit: slot.limit
+          };
 
-        return mappedSlot;
-      });
+          return mappedSlot;
+        })
+      );
   }
 
   public getUserSubscriptionType(): Observable<number> {

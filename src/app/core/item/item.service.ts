@@ -288,7 +288,8 @@ export class ItemService extends ResourceService {
         gender: content.extra_info.gender,
         size: {
           id: content.extra_info.size && content.extra_info.size.id ? content.extra_info.size.id.toString() : null
-        }
+        },
+        condition: content.extra_info.condition || null
       } : undefined
     );
   }
@@ -517,7 +518,7 @@ export class ItemService extends ResourceService {
   public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
     let options: RequestOptions = null;
     options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
-    
+
     return this.http.post(this.API_URL_WEB + '/purchase/products/' + orderId, orderParams, options)
     .map((r: Response) => r.json());
   }
@@ -525,7 +526,7 @@ export class ItemService extends ResourceService {
   public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
     let options: RequestOptions = null;
     options = new RequestOptions({headers: new Headers({'X-PaymentProvider': PAYMENT_PROVIDER})});
-    
+
     return this.http.post(this.API_URL_WEB + '/purchase/products/credit/' + orderId, orderParams, options)
       .map((r: Response) => r.json());
   }
@@ -533,7 +534,7 @@ export class ItemService extends ResourceService {
   public update(item: any, itemType: string): Observable<any> {
     let url: string = this.API_URL + '/';
     let options = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
-    
+
     if (itemType === ITEM_TYPES.CARS) {
       url += 'cars/';
       options.headers.append('X-PaymentProvider', PAYMENT_PROVIDER);
@@ -546,7 +547,7 @@ export class ItemService extends ResourceService {
       .map((r: Response) => r.json())
       .do(() => this.eventService.emit(EventService.ITEM_UPDATED, item))
   }
-  
+
   public updateRealEstateLocation(itemId: string, location: ItemLocation): Observable<any> {
     return this.http.put(this.API_URL + '/real_estate/' + itemId + '/location', location);
   }
