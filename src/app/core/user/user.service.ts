@@ -400,10 +400,6 @@ export class UserService {
     return this.motorPlanObservable;
   }
 
-  public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
-    return this.http.get<ProfileSubscriptionInfo>(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT}`);
-  }
-
   public setSubscriptionsFeatureFlag(): Observable<boolean> {
     return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS)
       .map((isActive: boolean) => {

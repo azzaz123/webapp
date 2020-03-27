@@ -760,18 +760,6 @@ describe('Service: User', () => {
     });
   });
 
-  describe('getMotorPlans', () => {
-    it('should call endpoint GET motor plans and return response', () => {
-      accessTokenService.storeAccessToken('ACCESS_TOKEN');
-      service.getMotorPlans().subscribe(response => expect(response).toEqual(PROFILE_SUB_INFO));
-
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT}`);
-
-      expect(req.request.method).toEqual('GET');
-      req.flush(PROFILE_SUB_INFO);
-    });
-  });
-
   describe('reportUser', () => {
     it('should check parameters of request to report user', () => {
       const CONVERSATIONS_HASH = 'vdqjwyk1kzon';
