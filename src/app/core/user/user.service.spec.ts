@@ -680,83 +680,22 @@ describe('Service: User', () => {
   });
 
   describe('isProUser', () => {
-    it('should return true if user is professional', () => {
-      spyOn(service, 'isProfessional').and.returnValue(Observable.of(true));
-      spyOn(service, 'getMotorPlan').and.returnValue(Observable.of({}));
-      spyOn(service, 'me').and.returnValue(Observable.of(MOCK_USER));
-
-      let resp: boolean;
-
-      service.isProUser().subscribe(response => resp = response);
-
-      expect(resp).toBe(true);
-    });
-
-    it('should return true if there is a motor plan', () => {
-      spyOn(service, 'isProfessional').and.returnValue(Observable.of(false));
-      spyOn(service, 'getMotorPlan').and.returnValue(Observable.of(mockMotorPlan));
-      spyOn(service, 'me').and.returnValue(Observable.of(MOCK_USER));
-
-      let resp: boolean;
-
-      service.isProUser().subscribe(response => resp = response);
-
-      expect(resp).toBe(true);
-    });
-
     it('should return true if user is featured', () => {
-      spyOn(service, 'isProfessional').and.returnValue(Observable.of(false));
-      spyOn(service, 'getMotorPlan').and.returnValue(Observable.of({}));
       spyOn(service, 'me').and.returnValue(Observable.of(MOCK_FULL_USER));
 
       let resp: boolean;
-
       service.isProUser().subscribe(response => resp = response);
 
       expect(resp).toBe(true);
     });
 
-    it('should return false if there is not a motor plan and user is not professional', () => {
-      spyOn(service, 'isProfessional').and.returnValue(Observable.of(false));
-      spyOn(service, 'getMotorPlan').and.returnValue(Observable.of({}));
+    it('should return false if user is not featured', () => {
       spyOn(service, 'me').and.returnValue(Observable.of(MOCK_USER));
 
       let resp: boolean;
-
       service.isProUser().subscribe(response => resp = response);
 
       expect(resp).toBe(false);
-    });
-  });
-
-  describe('getMotorPlan', () => {
-    const expectedMotorPlanUrl = `${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT}`;
-
-    it('should retrieve and return the Motor plan object', fakeAsync(() => {
-      let response: MotorPlan;
-
-      service.getMotorPlan().subscribe(r => response = r);
-      const req = httpMock.expectOne(expectedMotorPlanUrl);
-      req.flush(MOTORPLAN_DATA);
-
-      expect(req.request.method).toBe('GET');
-      expect(response.subtype).toEqual(MOTORPLAN_DATA.subtype);
-    }));
-
-    it('should do only one petition to backend', () => {
-      let response: MotorPlan;
-      let response2: MotorPlan;
-
-      service.getMotorPlan().subscribe(r => response = r);
-      const req = httpMock.expectOne(expectedMotorPlanUrl);
-      req.flush(MOTORPLAN_DATA);
-
-      service.getMotorPlan().subscribe(r => response2 = r);
-      httpMock.expectNone(expectedMotorPlanUrl);
-
-      expect(response).toEqual(MOTORPLAN_DATA);
-      expect(response2).toEqual(MOTORPLAN_DATA);
-      expect(response2).toBe(response);
     });
   });
 

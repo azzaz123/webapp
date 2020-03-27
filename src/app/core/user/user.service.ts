@@ -59,8 +59,6 @@ export class UserService {
   private _users: User[] = [];
   private banReasons: BanReason[];
   private presenceInterval: any;
-  private _motorPlan: MotorPlan;
-  private motorPlanObservable: Observable<MotorPlan>;
 
   constructor(private http: HttpClient,
     private event: EventService,
@@ -362,42 +360,14 @@ export class UserService {
       });
   }
 
+  // TODO: This is if user is car dealer, should be `isCarDealer`
   public isProfessional(): Observable<boolean> {
     return this.hasPerm('professional');
   }
 
+  // TODO: This logic is correct for now, but should be checked using the subscriptions BFF
   public isProUser(): Observable<boolean> {
-    return Observable.forkJoin([
-      this.isProfessional(),
-      this.getMotorPlan(),
-      this.me()
-    ])
-      .map((values: any[]) => {
-        return values[0] || !!(values[1] && values[1].type) || values[2].featured;
-      });
-  }
-
-  // TODO: This method is going to be deleted :D
-  public getMotorPlan(): Observable<MotorPlan> {
-    if (this._motorPlan) {
-      return Observable.of(this._motorPlan);
-    } else if (this.motorPlanObservable) {
-      return this.motorPlanObservable;
-    }
-    this.motorPlanObservable = this.http.get<MotorPlan>(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT}`)
-      .map((motorPlan: MotorPlan) => {
-        this._motorPlan = motorPlan;
-        return motorPlan;
-      })
-      .share()
-      .do(() => {
-        this.motorPlanObservable = null;
-      })
-      .catch(() => {
-        this.motorPlanObservable = null;
-        return Observable.of(null);
-      });
-    return this.motorPlanObservable;
+    return this.me().pipe(map(user => user.featured));
   }
 
   public setSubscriptionsFeatureFlag(): Observable<boolean> {
