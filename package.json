@@ -37,7 +37,7 @@
     "@mparticle/web-mixpanel-kit": "^2.0.1",
     "@mparticle/web-sdk": "^2.9.9-rc.1",
     "@ng-bootstrap/ng-bootstrap": "4.2.2",
-    "@ngu/carousel": "^1.4.8",
+    "@ngu/carousel": "^1.5.5",
     "@types/hammerjs": "^2.0.35",
     "@types/heremaps": "3.0.12",
     "angular2-moment": "https://github.com/Wallapop/angular2-moment#2.2.0",

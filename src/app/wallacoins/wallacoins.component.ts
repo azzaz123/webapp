@@ -7,7 +7,7 @@ import { PerksModel } from '../core/payments/payment.model';
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../core/event/event.service';
-import { NguCarousel } from '@ngu/carousel';
+import { NguCarousel, NguCarouselConfig } from '@ngu/carousel';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { UserService } from '../core/user/user.service';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
@@ -24,7 +24,7 @@ export class WallacoinsComponent implements OnInit {
 
   public packs: Pack[];
   public wallacoins: number = 0;
-  public carouselOptions: NguCarousel;
+  public carouselOptions: NguCarouselConfig;
   public currencyName: string;
   public factor: number;
   public loading = true;
@@ -51,7 +51,6 @@ export class WallacoinsComponent implements OnInit {
       grid: { xs: 3, sm: 3, md: 3, lg: 3, all: 0 },
       slide: 1,
       speed: 400,
-      interval: 0,
       point: {
         visible: false
       },
