@@ -244,9 +244,11 @@
     tree-kill "1.2.1"
     webpack-sources "1.3.0"
 
-"@ngu/carousel@^1.4.8":
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/@ngu/carousel/-/carousel-1.4.8.tgz#102a2472e319fa2c048d59b5c1c347f2ef60f922"
+"@ngu/carousel@1.5.5":
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/@ngu/carousel/-/carousel-1.5.5.tgz#285001d54020fbfa74d07da7df68d802175f92e2"
+  dependencies:
+    tslib "^1.9.0"
 
 "@schematics/angular@7.3.9":
   version "7.3.9"
