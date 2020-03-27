@@ -29,7 +29,6 @@
             ],
             "styles": [
               "node_modules/ngx-toastr/toastr.css",
-              "node_modules/@beyerleinf/ngx-dnd/styles.css",
               "src/style/styles.scss"
             ],
             "scripts": [
@@ -124,7 +123,6 @@
             ],
             "styles": [
               "node_modules/ngx-toastr/toastr.css",
-              "node_modules/@beyerleinf/ngx-dnd/styles.css",
               "src/style/styles.scss"
             ],
             "assets": [

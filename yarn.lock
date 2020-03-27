@@ -204,12 +204,6 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@beyerleinf/ngx-dnd@^6.0.0-preview3":
-  version "6.0.0-preview3"
-  resolved "https://registry.yarnpkg.com/@beyerleinf/ngx-dnd/-/ngx-dnd-6.0.0-preview3.tgz#15a0e594a4d0d9fecc80e9fe1e3ba3fea9a1bcca"
-  dependencies:
-    tslib "^1.9.0"
-
 "@mparticle/web-mixpanel-kit@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@mparticle/web-mixpanel-kit/-/web-mixpanel-kit-2.0.1.tgz#761cc3261fe5fc571f36cd5110aff4de1a6ef2d2"
@@ -3194,10 +3188,6 @@ globule@^1.0.0:
     lodash "~4.17.10"
     minimatch "~3.0.2"
 
-google-libphonenumber@^3.1.15:
-  version "3.1.15"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.1.15.tgz#534d923bc7dcaf0235d4320f631229c1c78de2c8"
-
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
@@ -5231,10 +5221,6 @@ next-tick@1, next-tick@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
 
-ng-elastic@1.0.0-beta.5:
-  version "1.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/ng-elastic/-/ng-elastic-1.0.0-beta.5.tgz#143183920d518820f0d3517ce2b4bdd1baaff133"
-
 ng-push@0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/ng-push/-/ng-push-0.2.2.tgz#61c16c3ef8590947d3bef8e19d84682017c05127"
@@ -5279,9 +5265,11 @@ ngx-permissions@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/ngx-permissions/-/ngx-permissions-5.0.0.tgz#a5ad8752a5fb3eddd992129c80362da779033d87"
 
-ngx-toastr@8.1.1:
-  version "8.1.1"
-  resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-8.1.1.tgz#f34a57c8dfadf49392978bfb37019247700458b1"
+ngx-toastr@10.2.0:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-10.2.0.tgz#8a79008de0b1c013f90120a53e0355af5762e969"
+  dependencies:
+    tslib "^1.9.0"
 
 nice-try@^1.0.4:
   version "1.0.5"
