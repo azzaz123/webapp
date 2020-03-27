@@ -6811,10 +6811,6 @@ rx@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/rx/-/rx-4.1.0.tgz#a5f13ff79ef3b740fe30aa803fb09f98805d4782"
 
-rxjs-compat@^6.2.2:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/rxjs-compat/-/rxjs-compat-6.3.0.tgz#f07f32a55748377294ce5cfc0289b05f67d15721"
-
 rxjs@6.3.3:
   version "6.3.3"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.3.3.tgz#3c6a7fa420e844a81390fb1158a9ec614f4bad55"
