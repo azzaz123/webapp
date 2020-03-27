@@ -16,7 +16,7 @@ export class MobileBlockerComponent {
     private deviceDetector: DeviceDetectorService,
     private userService: UserService
   ) {
-    this.userService.isProUser().subscribe(val => this.isPro = val);
+    this.userService.isProfessional().subscribe(val => this.isPro = val);
     this.isMobile = this.deviceDetector.isMobile();
   }
 
