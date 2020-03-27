@@ -3,21 +3,15 @@
 .UnsubscribeInAppFirstModal {
   height: 335px;
   width: 100%;
-  padding: 32px 50px 26px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-
-  text-align: center;
+  padding: $spacing-xl 50px $spacing-l;
 }
 
 .UnsubscribeInAppFirstModal__close {
   @include square($spacing-ms);
   cursor: pointer;
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: $spacing-ml;
+  right: $spacing-ml;
   mat-icon {
     @include square($spacing-ms);
     line-height: initial; 
@@ -32,30 +26,22 @@
 
 .UnsubscribeInAppFirstModal__content {
   height: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  padding-bottom: 26px;
+  padding-bottom: $spacing-l;
 }
 
 .UnsubscribeInAppFirstModal__content-description {
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: column;
   height: 100%;
+  justify-content: space-evenly;
 }
 
 .UnsubscribeInAppFirstModal__content-title {
-  font-size: 20px;
-  line-height: 27px;
-  text-align: center;
-  padding-bottom: 12px;
-  color: #253238;
+  color: $blue-grey-1;
+  font-size: $spacing-ml;
+  padding-bottom: $spacing-ms;
 }
 
 .UnsubscribeInAppFirstModal__actions-ok {
   width: 400px;
-  text-align: center;
 
   /deep/ button {
     width: 100%;
