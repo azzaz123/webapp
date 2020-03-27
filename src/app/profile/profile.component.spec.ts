@@ -3,7 +3,7 @@ import { ProfileComponent } from './profile.component';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { UserService, USER_ENDPOINT, USER_STATS_ENDPOINT } from '../core/user/user.service';
 import { Observable } from 'rxjs';
-import { MOCK_USER, USER_WEB_SLUG, MOCK_USER_STATS, PROFILE_SUB_INFO, PROFILE_NOT_SUB_INFO, PROFILE_ELIGIBLE_INFO, PROFILE_ACTIVE_INFO, MOCK_FULL_USER, USER_DATA, MOCK_NON_FEATURED_USER_RESPONSE, MOCK_USER_STATS_RESPONSE } from '../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_WEB_SLUG, MOCK_USER_STATS, MOCK_FULL_USER, USER_DATA, MOCK_NON_FEATURED_USER_RESPONSE, MOCK_USER_STATS_RESPONSE } from '../../tests/user.fixtures.spec';
 import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';

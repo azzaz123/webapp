@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { User } from '../core/user/user';
-import { ProfileSubscriptionInfo } from '../core/user/user-response.interface';
 import { I18nService } from '../core/i18n/i18n.service';
 import { UserStats } from '../core/user/user-stats.interface';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
