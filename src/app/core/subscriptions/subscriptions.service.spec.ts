@@ -16,7 +16,7 @@ import { AccessTokenService } from '../http/access-token.service';
 import { HttpClient } from '@angular/common/http';
 import { I18nService } from '../i18n/i18n.service';
 
-describe('SubscriptionsService', () => {
+fdescribe('SubscriptionsService', () => {
 
   let service: SubscriptionsService;
   let http: HttpClient;
@@ -253,7 +253,7 @@ describe('SubscriptionsService', () => {
       expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED)).toBe(true);
       expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED)).toBe(true);
     });
-  })
+  });
 
   describe('isOneSubscriptionInApp', () => {
     it('should be false when all subscriptions are not subscribed', () => {
@@ -268,7 +268,37 @@ describe('SubscriptionsService', () => {
       expect(service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY)).toBe(true);
       expect(service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE)).toBe(true);
     });
-  })
+  });
+
+  describe('isStripeSubscription', () => {
+    it('should be false when subscription is not subscribed', () => {
+      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED)).toBe(false);
+    });
+
+    it('should be false when subscription was bought in Android or iOS', () => {
+      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED)).toBe(false);
+      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED)).toBe(false);
+    });
+    
+    it('should be true when subscription is from Stripe', () => {
+      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED)).toBe(true);
+    });
+  });
+
+  describe('hasOneStripeSubscription', () => {
+    it('should be false when all subscriptions are not subscribed', () => {
+      expect(service.hasOneStripeSubscription(SUBSCRIPTIONS_NOT_SUB)).toBe(false);
+    });
+    
+    it('should be false when some subscription were bought in Android or iOS', () => {
+      expect(service.hasOneStripeSubscription(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY)).toBe(false);
+      expect(service.hasOneStripeSubscription(MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE)).toBe(false);
+    });
+
+    it('should be true when some subscription are from Stripe' , () => {
+      expect(service.hasOneStripeSubscription(SUBSCRIPTIONS)).toBe(true);
+    });
+  });
 
   afterAll(() => {
     TestBed.resetTestingModule();
