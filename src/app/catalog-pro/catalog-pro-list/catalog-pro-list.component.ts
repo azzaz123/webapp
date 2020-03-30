@@ -6,7 +6,7 @@ import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { Item } from '../../core/item/item';
-import { Counters, UserStatsResponse } from '../../core/user/user-stats.interface';
+import { Counters, UserStats } from '../../core/user/user-stats.interface';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
@@ -290,7 +290,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public getNumberOfProducts() {
-    this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+    this.userService.getStats().subscribe((userStats: UserStats) => {
       this.counters = userStats.counters;
       this.setNumberOfProducts();
     });
@@ -305,7 +305,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public getCounters() {
-    this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+    this.userService.getStats().subscribe((userStats: UserStats) => {
       this.counters = userStats.counters;
     });
   }

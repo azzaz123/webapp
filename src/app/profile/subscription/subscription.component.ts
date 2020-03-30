@@ -21,13 +21,15 @@ import {
 import { ContinueSubscriptionModalComponent } from './modals/continue-subscription-modal.component';
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component';
 import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-modal.component';
+import { CheckSubscriptionInAppModalComponent } from './modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
+import { UnsubscribeInAppFirstModal } from './modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 
 @Component({
   selector: 'tsl-subscription',
   templateUrl: './subscription.component.html',
   styleUrls: ['./subscription.component.scss'],
 })
-export class SubscriptionComponent implements OnInit {
+export class SubscriptionsComponent implements OnInit {
   public action: string;
   public subscriptions: SubscriptionsResponse[];
   public loading = false;
@@ -135,6 +137,16 @@ export class SubscriptionComponent implements OnInit {
   }
 
   private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse) {
+    // User is trying to edit subscription that is from inapp
+    if (this.subscriptionsService.isSubscriptionInApp(subscription)) {
+      return CheckSubscriptionInAppModalComponent;
+    }
+
+    // User is trying to subscribe but there is an active inapp subscription
+    if (this.subscriptionsService.isOneSubscriptionInApp(this.subscriptions)) {
+      return UnsubscribeInAppFirstModal;
+    }
+    
     // Subscription is active, not cancelled, with only one tier and no limits (Consumer Goods)
     if (subscription.subscribed_from && !subscription.subscribed_until && subscription.tiers.length === 1 && !subscription.tiers[0].limit) {
       return CancelSubscriptionModalComponent;
@@ -154,4 +166,15 @@ export class SubscriptionComponent implements OnInit {
     return AddNewSubscriptionModalComponent;
   }
 
+  public showEdit(subscription: SubscriptionsResponse): boolean {
+    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
+  }
+
+  public showCancel(subscription: SubscriptionsResponse): boolean {
+    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length === 1;
+  }
+
+  public showManageInApp(subscription: SubscriptionsResponse): boolean {
+    return this.subscriptionsService.isSubscriptionInApp(subscription);
+  }
 }

@@ -1,5 +1,5 @@
 import { Model } from '../resource/model.interface';
-import { UserExtrainfo, UserLocation, UserStats, UserValidations, Image } from './user-response.interface';
+import { UserExtrainfo, UserLocation, UserStatsOld, UserValidations, Image } from './user-response.interface';
 import { Item } from '../item/item';
 import { environment } from '../../../environments/environment';
 
@@ -26,7 +26,7 @@ export class User implements Model {
               private _microName?: string,
               private _image?: any,
               private _location?: UserLocation,
-              private _stats?: UserStats,
+              private _stats?: UserStatsOld,
               private _validations?: UserValidations,
               private _verificationLevel?: number,
               private _scoringStars?: number,
@@ -44,7 +44,6 @@ export class User implements Model {
               private _featured = false,
               private _extraInfo?: UserExtrainfo,
               private _coverImage?: Image) {
-
     this._webLink = webSlug ? USER_BASE_PATH + webSlug : null;
     this._type = this.mapType(this._type);
   }
@@ -73,7 +72,7 @@ export class User implements Model {
     this._location = value;
   }
 
-  get stats(): UserStats {
+  get stats(): UserStatsOld {
     return this._stats;
   }
 
