@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnsubscribeModalComponent } from './unsubscribe-modal.component';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CUSTOM_REASON, MOCK_USER, MOCK_UNSUBSCRIBE_REASONS, SELECTED_REASON } from '../../../tests/user.fixtures.spec';
@@ -24,19 +24,16 @@ describe('UnsubscribeModalComponent', () => {
       providers: [
         {
           provide: UserService, useValue: {
-          getUnsubscribeReasons() {
-            return Observable.of(MOCK_UNSUBSCRIBE_REASONS);
-          },
-          unsubscribe() {
-            return Observable.of({});
-          },
-          me() {
-            return Observable.of(MOCK_USER);
-          },
-          getMotorPlan() {
-            return Observable.of();
+            getUnsubscribeReasons() {
+              return Observable.of(MOCK_UNSUBSCRIBE_REASONS);
+            },
+            unsubscribe() {
+              return Observable.of({});
+            },
+            isProUser() {
+              return Observable.of(false);
+            }
           }
-        }
         },
         {
           provide: NgbActiveModal, useValue: {
@@ -82,26 +79,24 @@ describe('UnsubscribeModalComponent', () => {
       expect(component.reasons).toEqual(MOCK_UNSUBSCRIBE_REASONS);
     });
 
-    it('should call me and set hasSubscription to false', () => {
-      spyOn(userService, 'me').and.callThrough();
+    it('should show warning if user is pro', () => {
+      spyOn(userService, 'isProUser').and.returnValue(of(true));
 
       component.ngOnInit();
 
-      expect(userService.me).toHaveBeenCalled();
-      expect(component.hasSubscription).toBe(false);
-    });
-
-    it('should call getMotorPlan and set hasSubscription to true', () => {
-      spyOn(userService, 'getMotorPlan').and.returnValue(Observable.of({
-        type: 'type',
-        subtype: 'subtype'
-      }));
-
-      component.ngOnInit();
-
-      expect(userService.getMotorPlan).toHaveBeenCalled();
+      expect(userService.isProUser).toHaveBeenCalled();
       expect(component.hasSubscription).toBe(true);
     });
+
+    it('should show normal message if user is not pro', () => {
+      spyOn(userService, 'isProUser').and.returnValue(of(false));
+
+      component.ngOnInit();
+
+      expect(userService.isProUser).toHaveBeenCalled();
+      expect(component.hasSubscription).toBe(false);
+
+    })
   });
 
   describe('send', () => {

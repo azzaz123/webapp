@@ -76,50 +76,6 @@ export interface UserValidations {
   birthday: boolean;
 }
 
-export interface MotorPlan {
-  type: string;
-  subtype: string;
-  limit?: number;
-}
-
-export interface MotorPlanType {
-  subtype: string;
-  label: string;
-  shortLabel?: string;
-}
-
-export interface ProfileSubscriptionInfo {
-  status: string;
-  product_group: {
-    default_user_product_id: string;
-    user_products: UserProduct[];
-    type: string;
-  };
-}
-
-export interface UserProduct {
-  id: string;
-  name: string;
-  active: boolean;
-  default_duration_index: number;
-  durations: UserProductDuration[];
-  label?: string;
-}
-
-export interface UserProductDuration {
-  id: string;
-  duration: number;
-  market_code: string;
-  features: UserProductFeature[];
-  original_market_code?: string;
-}
-
-export interface UserProductFeature {
-  name: string;
-  enable: boolean;
-  label?: string;
-}
-
 export interface UserExtrainfo {
   description: string;
   address?: string;

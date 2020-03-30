@@ -114,16 +114,6 @@ export class I18nService {
       alreadyFeatured: 'You are trying to feature an item that is already planned.',
       phoneRequestMessage: 'Please contact us or leave us your phone number and we will contact you',
       phoneMessage: 'My phone number is ',
-      motorPlanTypes: [
-        { subtype: 'sub_pro_basic', label: 'Pro' },
-        { subtype: 'cars_3_to_5', label: '3 to 5 cars Plan' },
-        { subtype: 'cars_6_to_7', label: '6 to 7 cars Plan' },
-        { subtype: 'cars_8_to_10', label: '8 to 10 cars Plan' },
-        { subtype: 'cars_11_to_15', label: '11 to 15 cars Plan' },
-        { subtype: 'sub_basic', label: 'Basic Motor Plan', shortLabel: 'Basic' },
-        { subtype: 'sub_pro', label: 'Medium Motor Plan', shortLabel: 'Medium' },
-        { subtype: 'sub_premium', label: 'Super Motor Plan', shortLabel: 'Super' }
-      ],
       cars_subscription_tutorial_listinglimit5: 'Upload 5 cars.',
       cars_subscription_tutorial_listinglimit9: 'Upload 9 cars.',
       cars_subscription_tutorial_listinglimit15: 'Upload 15 cars.',
@@ -276,16 +266,6 @@ export class I18nService {
       alreadyFeatured: '¡Ups! Estás intentando destacar un item que ya tiene planificados',
       phoneRequestMessage: 'Por favor contáctanos o deja tu número de teléfono y te contactaremos',
       phoneMessage: 'Mi número de teléfono es ',
-      motorPlanTypes: [
-        { subtype: 'sub_pro_basic', label: 'Pro' },
-        { subtype: 'cars_3_to_5', label: 'Plan de 3 a 5 coches' },
-        { subtype: 'cars_6_to_7', label: 'Plan de 6 a 7 coches' },
-        { subtype: 'cars_8_to_10', label: 'Plan de 8 a 10 coches' },
-        { subtype: 'cars_11_to_15', label: 'Plan de 11 a 15 coches' },
-        { subtype: 'sub_basic', label: 'Plan Motor Básico', shortLabel: 'Básico' },
-        { subtype: 'sub_pro', label: 'Plan Motor Medio', shortLabel: 'Medio' },
-        { subtype: 'sub_premium', label: 'Plan Motor Super', shortLabel: 'Super' }
-      ],
       cars_subscription_tutorial_listinglimit5: 'Publica hasta 5 coches.',
       cars_subscription_tutorial_listinglimit9: 'Publica hasta 9 coches.',
       cars_subscription_tutorial_listinglimit15: 'Publica hasta 15 coches.',

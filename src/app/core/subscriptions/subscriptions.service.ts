@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse, SUBSCRIPTION_MARKETS } from './subscriptions.interface';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
@@ -7,7 +7,7 @@ import { UUID } from 'angular2-uuid';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
-import { mergeMap, map } from 'rxjs/operators';
+import { mergeMap, map, tap } from 'rxjs/operators';
 import { CARS_CATEGORY } from '../item/item-categories';
 import { CategoryService } from '../category/category.service';
 import { HttpClient } from '@angular/common/http';
@@ -39,6 +39,7 @@ export class SubscriptionsService {
   public fullName: string;
   public PAYMENT_PROVIDER_STRIPE = false;
   public subscriptions: SubscriptionsResponse[];
+  private _userSubscriptionType: SUBSCRIPTION_TYPES;
 
   constructor(private userService: UserService,
               private featureflagService: FeatureflagService,
@@ -74,31 +75,36 @@ export class SubscriptionsService {
       );
   }
 
-  public getUserSubscriptionType(): Observable<number> {
+  public getUserSubscriptionType(useCache = true): Observable<SUBSCRIPTION_TYPES> {
+    if (useCache && this._userSubscriptionType) {
+      return of(this._userSubscriptionType);
+    }
+
     return Observable.forkJoin([
       this.userService.isProfessional(),
-      this.getSubscriptions(false),
-      this.userService.getMotorPlan()
+      this.getSubscriptions(false)
     ])
-    .map(values => {
-      if (values[0]) {
-        return SUBSCRIPTION_TYPES.carDealer;
-      }
-
-      const carsSubscription = values[1].find(subscription => subscription.category_id === parseInt(CARS_CATEGORY, 10));
-
-      if (carsSubscription) {
-        if (values[2].type === 'motor_plan_pro' && !carsSubscription.selected_tier_id) {
+    .pipe(
+      map(values => {
+        const isCarDealer = values[0];
+        const subscriptions = values[1];
+  
+        if (isCarDealer) {
+          return SUBSCRIPTION_TYPES.carDealer;
+        }
+        
+        if (this.isOneSubscriptionInApp(subscriptions)) {
           return SUBSCRIPTION_TYPES.inApp;
         }
-
-        if (carsSubscription.selected_tier_id) {
+  
+        if (this.hasOneStripeSubscription(subscriptions)) {
           return SUBSCRIPTION_TYPES.stripe;
         }
-      }
-
-      return SUBSCRIPTION_TYPES.notSubscribed;
-    });
+  
+        return SUBSCRIPTION_TYPES.notSubscribed;
+      }),
+      tap(subscriptionType => this._userSubscriptionType = subscriptionType)
+    );
   }
 
   public newSubscription(subscriptionId: string, paymentId: string): Observable<any> {
@@ -205,5 +211,16 @@ export class SubscriptionsService {
 
   public isOneSubscriptionInApp(subscriptions: SubscriptionsResponse[]): boolean {
     return subscriptions.some(subscription => this.isSubscriptionInApp(subscription));
+  }
+
+  public isStripeSubscription(subscription: SubscriptionsResponse) {
+    if (!subscription.market) {
+      return false;
+    }
+    return subscription.market === SUBSCRIPTION_MARKETS.STRIPE;
+  }
+
+  public hasOneStripeSubscription(subscriptions: SubscriptionsResponse[]) {
+    return subscriptions.some(subscription => this.isStripeSubscription(subscription));
   }
 }
