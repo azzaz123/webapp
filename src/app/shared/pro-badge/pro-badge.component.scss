@@ -4,8 +4,6 @@
   width: $spacing-xxxl;
   height: $spacing-ml;
   padding: $spacing-xs $spacing-s;
-  margin-left: $spacing-ms;
-
   border-radius: 25px;
 
   color: $blue-grey-1;
@@ -13,6 +11,12 @@
 
   font-size: $font-size-xs;
   line-height: $line-height-ms;
+}
+
+.ProBadge-icon {
+  @include square(14px);
+
+  margin-right: 3.65px;
 
   mat-icon {
     @include square(14px);
