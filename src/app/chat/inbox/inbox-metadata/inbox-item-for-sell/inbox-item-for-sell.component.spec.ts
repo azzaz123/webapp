@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InboxItemForSellComponent } from './inbox-item-for-sell.component';
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
-import { MOCK_USER, USER_ID, USER_INFO_RESPONSE, USERS_STATS_RESPONSE } from '../../../../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_ID, USER_INFO_RESPONSE, MOCK_USER_STATS } from '../../../../../tests/user.fixtures.spec';
 import { LATEST_ITEM_COUNT, MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../../core/item/item.service';
 import { UserService } from '../../../../core/user/user.service';
@@ -35,7 +35,7 @@ describe('InboxItemForSellComponent', () => {
               return observableOf(USER_INFO_RESPONSE);
             },
             getUserStats() {
-              return observableOf(USERS_STATS_RESPONSE);
+              return observableOf(MOCK_USER_STATS);
             }
           }
         },

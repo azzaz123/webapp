@@ -59,11 +59,6 @@ export class UploadCarComponent implements OnInit {
   private settingItem: boolean;
   public uploadCompletedPercentage = 0;
 
-  private isNormal = true;
-  private isMotorPlan = false;
-  private isCardealer = false;
-  private isWebSubscription = false;
-
   constructor(private fb: FormBuilder,
     private carSuggestionsService: CarSuggestionsService,
     private carKeysService: CarKeysService,

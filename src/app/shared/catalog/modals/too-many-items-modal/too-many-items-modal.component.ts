@@ -12,9 +12,9 @@ export class TooManyItemsModalComponent implements OnInit {
 
   public type = SUBSCRIPTION_TYPES.notSubscribed;
   public notSubscribedType = SUBSCRIPTION_TYPES.notSubscribed;
-  public motorPlanType = SUBSCRIPTION_TYPES.motorPlan;
+  public inAppType = SUBSCRIPTION_TYPES.inApp;
   public carDealerType = SUBSCRIPTION_TYPES.carDealer;
-  public webSubscriptionType = SUBSCRIPTION_TYPES.web;
+  public stripeType = SUBSCRIPTION_TYPES.stripe;
 
   public categoryName: string;
   public categoryIconName: string;

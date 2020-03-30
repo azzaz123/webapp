@@ -5,7 +5,7 @@ import { ItemService } from '../core/item/item.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
 import { UserService } from '../core/user/user.service';
-import { USERS_STATS_RESPONSE } from '../../tests/user.fixtures.spec';
+import { MOCK_USER_STATS } from '../../tests/user.fixtures.spec';
 import { MOCK_ITEM } from '../../tests/item.fixtures.spec';
 import { ProfileService } from '../core/profile/profile.service';
 import { MOCK_PROFILE } from '../../tests/profile.fixtures.spec';
@@ -38,7 +38,7 @@ describe('FavoritesComponent', () => {
         {
           provide: UserService, useValue: {
             getStats() {
-              return observableOf(USERS_STATS_RESPONSE);
+              return observableOf(MOCK_USER_STATS);
             }
           }
         },
@@ -285,7 +285,7 @@ describe('FavoritesComponent', () => {
       component.getNumberOfFavorites();
 
       expect(userService.getStats).toHaveBeenCalled();
-      expect(component.numberOfFavorites).toEqual(USERS_STATS_RESPONSE.counters.favorites);
+      expect(component.numberOfFavorites).toEqual(MOCK_USER_STATS.counters.favorites);
     });
   });
 });

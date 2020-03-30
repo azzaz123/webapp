@@ -24,19 +24,16 @@ describe('UnsubscribeModalComponent', () => {
       providers: [
         {
           provide: UserService, useValue: {
-          getUnsubscribeReasons() {
-            return of(MOCK_UNSUBSCRIBE_REASONS);
-          },
-          unsubscribe() {
-            return of({});
-          },
-          me() {
-            return of(MOCK_USER);
-          },
-          getMotorPlan() {
-            return of();
+            getUnsubscribeReasons() {
+              return of(MOCK_UNSUBSCRIBE_REASONS);
+            },
+            unsubscribe() {
+              return of({});
+            },
+            isProUser() {
+              return of(false);
+            }
           }
-        }
         },
         {
           provide: NgbActiveModal, useValue: {
@@ -82,26 +79,24 @@ describe('UnsubscribeModalComponent', () => {
       expect(component.reasons).toEqual(MOCK_UNSUBSCRIBE_REASONS);
     });
 
-    it('should call me and set hasSubscription to false', () => {
-      spyOn(userService, 'me').and.callThrough();
+    it('should show warning if user is pro', () => {
+      spyOn(userService, 'isProUser').and.returnValue(of(true));
 
       component.ngOnInit();
 
-      expect(userService.me).toHaveBeenCalled();
-      expect(component.hasSubscription).toBe(false);
-    });
-
-    it('should call getMotorPlan and set hasSubscription to true', () => {
-      spyOn(userService, 'getMotorPlan').and.returnValue(of({
-        type: 'type',
-        subtype: 'subtype'
-      }));
-
-      component.ngOnInit();
-
-      expect(userService.getMotorPlan).toHaveBeenCalled();
+      expect(userService.isProUser).toHaveBeenCalled();
       expect(component.hasSubscription).toBe(true);
     });
+
+    it('should show normal message if user is not pro', () => {
+      spyOn(userService, 'isProUser').and.returnValue(of(false));
+
+      component.ngOnInit();
+
+      expect(userService.isProUser).toHaveBeenCalled();
+      expect(component.hasSubscription).toBe(false);
+
+    })
   });
 
   describe('send', () => {

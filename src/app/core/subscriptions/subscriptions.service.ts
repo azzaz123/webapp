@@ -1,9 +1,9 @@
 
 import {of as observableOf, throwError as observableThrowError, forkJoin as observableForkJoin,  Observable } from 'rxjs';
 
-import {catchError, retryWhen, delay, take,  mergeMap, map } from 'rxjs/operators';
+import {catchError, retryWhen, delay, take,  mergeMap, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse } from './subscriptions.interface';
+import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse, SUBSCRIPTION_MARKETS } from './subscriptions.interface';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
@@ -30,8 +30,8 @@ export const SUBSCRIPTIONS_CATEGORY_ICON_MAP = {
 export enum SUBSCRIPTION_TYPES {
   notSubscribed = 1,
   carDealer = 2,
-  motorPlan = 3,
-  web = 4
+  inApp = 3,
+  stripe = 4
 }
 
 @Injectable()
@@ -41,6 +41,7 @@ export class SubscriptionsService {
   public fullName: string;
   public PAYMENT_PROVIDER_STRIPE = false;
   public subscriptions: SubscriptionsResponse[];
+  private _userSubscriptionType: SUBSCRIPTION_TYPES;
 
   constructor(private userService: UserService,
               private featureflagService: FeatureflagService,
@@ -76,31 +77,36 @@ export class SubscriptionsService {
       );
   }
 
-  public getUserSubscriptionType(): Observable<number> {
+  public getUserSubscriptionType(useCache = true): Observable<SUBSCRIPTION_TYPES> {
+    if (useCache && this._userSubscriptionType) {
+      return observableOf(this._userSubscriptionType);
+    }
+
     return observableForkJoin([
       this.userService.isProfessional(),
-      this.getSubscriptions(false),
-      this.userService.getMotorPlan()
-    ]).pipe(
-    map(values => {
-      if (values[0]) {
-        return SUBSCRIPTION_TYPES.carDealer;
-      }
-
-      const carsSubscription = values[1].find(subscription => subscription.category_id === parseInt(CARS_CATEGORY, 10));
-
-      if (carsSubscription) {
-        if (values[2].type === 'motor_plan_pro' && !carsSubscription.selected_tier_id) {
-          return SUBSCRIPTION_TYPES.motorPlan;
+      this.getSubscriptions(false)
+    ])
+    .pipe(
+      map(values => {
+        const isCarDealer = values[0];
+        const subscriptions = values[1];
+  
+        if (isCarDealer) {
+          return SUBSCRIPTION_TYPES.carDealer;
         }
-
-        if (carsSubscription.selected_tier_id) {
-          return SUBSCRIPTION_TYPES.web;
+        
+        if (this.isOneSubscriptionInApp(subscriptions)) {
+          return SUBSCRIPTION_TYPES.inApp;
         }
-      }
-
-      return SUBSCRIPTION_TYPES.notSubscribed;
-    }));
+  
+        if (this.hasOneStripeSubscription(subscriptions)) {
+          return SUBSCRIPTION_TYPES.stripe;
+        }
+  
+        return SUBSCRIPTION_TYPES.notSubscribed;
+      }),
+      tap(subscriptionType => this._userSubscriptionType = subscriptionType)
+    );
   }
 
   public newSubscription(subscriptionId: string, paymentId: string): Observable<any> {
@@ -196,5 +202,27 @@ export class SubscriptionsService {
   private getSelectedTier(subscription: SubscriptionsResponse): Tier {
     const selectedTier = subscription.selected_tier_id ? subscription.tiers.filter(tier => tier.id === subscription.selected_tier_id) : subscription.tiers.filter(tier => tier.id === subscription.default_tier_id);
     return selectedTier[0];
+  }
+
+  public isSubscriptionInApp(subscription: SubscriptionsResponse): boolean {
+    if (!subscription.market) {
+      return false;
+    }
+    return subscription.market === SUBSCRIPTION_MARKETS.GOOGLE_PLAY || subscription.market === SUBSCRIPTION_MARKETS.APPLE_STORE;
+  }
+
+  public isOneSubscriptionInApp(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.isSubscriptionInApp(subscription));
+  }
+
+  public isStripeSubscription(subscription: SubscriptionsResponse) {
+    if (!subscription.market) {
+      return false;
+    }
+    return subscription.market === SUBSCRIPTION_MARKETS.STRIPE;
+  }
+
+  public hasOneStripeSubscription(subscriptions: SubscriptionsResponse[]) {
+    return subscriptions.some(subscription => this.isStripeSubscription(subscription));
   }
 }

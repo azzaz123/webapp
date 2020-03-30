@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { SubscriptionsService, SUBSCRIPTIONS_URL, SUBSCRIPTIONS_SLOTS_ENDPOINT } from './subscriptions.service';
+import { SubscriptionsService, SUBSCRIPTIONS_URL, SUBSCRIPTIONS_SLOTS_ENDPOINT, SUBSCRIPTION_TYPES } from './subscriptions.service';
 import { Observable, of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
@@ -10,7 +10,7 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { SubscriptionsResponse, SubscriptionSlot } from './subscriptions.interface';
-import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE, MOCK_SUBSCRIPTION_SLOTS } from '../../../tests/subscriptions.fixtures.spec';
+import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE, MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED, SUBSCRIPTIONS_NOT_SUB, MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY, MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { HttpClient } from '@angular/common/http';
@@ -44,6 +44,9 @@ describe('SubscriptionsService', () => {
             },
             me() {
               return of(MOCK_USER);
+            },
+            isProfessional() {
+              return of(true);
             }
           }
         },
@@ -237,6 +240,144 @@ describe('SubscriptionsService', () => {
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.method).toBe('GET');
       expect(mappedSlots).toEqual(MOCK_SUBSCRIPTION_SLOTS);
+    });
+  });
+
+  describe('isSubscriptionInApp', () => {
+    it('should be false when subscription is not subscribed', () => {
+      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED)).toBe(false);
+    });
+
+    it('should be false when subscription is from Stripe', () => {
+      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED)).toBe(false);
+    });
+
+    it('should be true when subscription was bought in Android or iOS', () => {
+      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED)).toBe(true);
+      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED)).toBe(true);
+    });
+  });
+
+  describe('isOneSubscriptionInApp', () => {
+    it('should be false when all subscriptions are not subscribed', () => {
+      expect(service.isOneSubscriptionInApp(SUBSCRIPTIONS_NOT_SUB)).toBe(false);
+    });
+
+    it('should be false when some subscriptions are from Stripe', () => {
+      expect(service.isOneSubscriptionInApp(SUBSCRIPTIONS)).toBe(false);
+    });
+
+    it('should be true when some subscription were bought in Android or iOS', () => {
+      expect(service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY)).toBe(true);
+      expect(service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE)).toBe(true);
+    });
+  });
+
+  describe('isStripeSubscription', () => {
+    it('should be false when subscription is not subscribed', () => {
+      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED)).toBe(false);
+    });
+
+    it('should be false when subscription was bought in Android or iOS', () => {
+      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED)).toBe(false);
+      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED)).toBe(false);
+    });
+    
+    it('should be true when subscription is from Stripe', () => {
+      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED)).toBe(true);
+    });
+  });
+
+  describe('hasOneStripeSubscription', () => {
+    it('should be false when all subscriptions are not subscribed', () => {
+      expect(service.hasOneStripeSubscription(SUBSCRIPTIONS_NOT_SUB)).toBe(false);
+    });
+    
+    it('should be false when some subscription were bought in Android or iOS', () => {
+      expect(service.hasOneStripeSubscription(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY)).toBe(false);
+      expect(service.hasOneStripeSubscription(MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE)).toBe(false);
+    });
+
+    it('should be true when some subscription are from Stripe' , () => {
+      expect(service.hasOneStripeSubscription(SUBSCRIPTIONS)).toBe(true);
+    });
+  });
+
+
+  describe('getUserSubscriptionType', () => {
+
+    describe('when user is a car dealer', () => {
+      it('should say that user subscription type is car dealer', () => {
+        spyOn(userService, 'isProfessional').and.returnValue(of(true));
+        let result: SUBSCRIPTION_TYPES;
+
+        service.getUserSubscriptionType().subscribe(response => result = response);
+        httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush({});
+
+        expect(result).toEqual(SUBSCRIPTION_TYPES.carDealer);
+      });
+    });
+
+    describe('when user has inapp subscriptions', () => {
+      it('should say that user subscription type is inapp', () => {
+        spyOn(userService, 'isProfessional').and.returnValue(of(false));
+        let result: SUBSCRIPTION_TYPES;
+
+        service.getUserSubscriptionType().subscribe(response => result = response);
+        httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY);
+
+        expect(result).toEqual(SUBSCRIPTION_TYPES.inApp);
+      });
+    });
+
+    describe('when user has Stripe subscriptions', () => {
+      it('should say that user subscription type Stripe', () => {
+        spyOn(userService, 'isProfessional').and.returnValue(of(false));
+        let result: SUBSCRIPTION_TYPES;
+
+        service.getUserSubscriptionType().subscribe(response => result = response);
+        httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS);
+
+        expect(result).toEqual(SUBSCRIPTION_TYPES.stripe);
+      });
+    });
+
+    describe('when user has no subscriptions', () => {
+      it('should say that user subscription type not subscribed', () => {
+        spyOn(userService, 'isProfessional').and.returnValue(of(false));
+        let result: SUBSCRIPTION_TYPES;
+
+        service.getUserSubscriptionType().subscribe(response => result = response);
+        httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS_NOT_SUB);
+
+        expect(result).toEqual(SUBSCRIPTION_TYPES.notSubscribed);
+      });
+    });
+
+    it('should cache the result by default', () => {
+      spyOn(userService, 'isProfessional').and.returnValue(of(false));
+      let result: SUBSCRIPTION_TYPES;
+      let result2: SUBSCRIPTION_TYPES;
+
+      service.getUserSubscriptionType().subscribe(response => result = response);
+      httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS_NOT_SUB);
+      service.getUserSubscriptionType().subscribe(response => result2 = response);
+      httpMock.expectNone(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`);
+
+      expect(result).toBe(result2);
+    });
+
+    it('should bypass cache if not using cache', () => {
+      spyOn(userService, 'isProfessional').and.returnValue(of(false));
+      let result: SUBSCRIPTION_TYPES;
+      let result2: SUBSCRIPTION_TYPES;
+
+      service.getUserSubscriptionType().subscribe(response => result = response);
+      httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS_NOT_SUB);
+      service.getUserSubscriptionType(false).subscribe(response => result2 = response);
+      httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS);
+
+      expect(result).not.toBe(result2);
     });
   });
 

@@ -1,0 +1,24 @@
+<div class="CheckSubscriptionInAppModal d-flex flex-column justify-content-between align-items-center text-center">
+
+  <div class="CheckSubscriptionInAppModal__close" (click)="activeModal.close()">
+    <mat-icon svgIcon="cross"></mat-icon>
+  </div>
+
+  <div class="CheckSubscriptionInAppModal__content d-flex flex-column justify-content-between">
+
+    <div class="CheckSubscriptionInAppModal__content-title text-center">
+      <span i18n><b>It seems that you are trying to change something in your subscription</b></span>
+    </div>
+
+    <div class="CheckSubscriptionInAppModal__content-description d-flex flex-column justify-content-between ">
+      <div i18n>If you want to unsubscribe, go to the app store and cancel it.</div>  
+      <div i18n>To edit your subscription, go to the app store and cancel it. Then, you can subscribe the new subscription in your wallapop profile.</div>  
+      <div i18n>If you have any doubts, <a href="mailto:{{supportMail}}" target="_blank">contact us</a>.</div>  
+    </div>
+  </div>
+
+  <div class="CheckSubscriptionInAppModal__actions">
+    <tsl-button [class]="'CheckSubscriptionInAppModal__actions-ok text-center'" (click)="activeModal.close()" i18n>Understood</tsl-button>
+  </div>
+
+</div>
