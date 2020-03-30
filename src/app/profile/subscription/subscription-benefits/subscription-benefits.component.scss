@@ -15,21 +15,11 @@
   }
 }
 
-.Subscriptions__benefits {
+.SubscriptionBenefitCard {
   margin: 0 0 $spacing-xxl;
 }
 
-.Subscriptions__benefits-content {
-  display: flex;
-  flex-direction: row;
-}
-
-.Subscriptions__benefits-box {
-  display: flex;
-  flex-direction: column;
-}
-
-.Subscriptions__benefits-icon {
+.SubscriptionBenefitCard-icon {
   border-radius: 50%;
   width: 56px;
   height: 56px;
@@ -43,7 +33,7 @@
   }
 }
 
-.Subscriptions__benefits--title {
+.SubscriptionBenefitCard-title {
   font-weight: bold;
   color: $walla-main;
   margin: $spacing-ml 0 $spacing-s;
