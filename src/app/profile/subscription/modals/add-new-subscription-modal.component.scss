@@ -274,3 +274,13 @@ ngb-carousel {
 .bold {
   font-weight: bold;
 }
+
+@include media-breakpoint-down(sm) {
+  .AddNewSubscription__listing-limit-more {
+    font-size: $font-size-xs;
+  }
+
+  .AddNewSubscription__listing-limit-quantity, .AddNewSubscription__listing-limit-price {
+    font-size: $font-size-m;
+  }
+}
