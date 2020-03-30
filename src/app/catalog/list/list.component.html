@@ -14,15 +14,12 @@
         <h1 class="header-title">
           <span class="d-none d-md-block" i18n>Your products</span>
           <div class="d-md-none flex-column">
-            <div class="mb-2">{{user.microName}}</div>
+            <div class="mb-2 d-flex">{{user?.microName}}<tsl-pro-badge></tsl-pro-badge></div>
             <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
             <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n>Edit</button>
             <button (click)="userService.logout()" class="edit-profile-btn" i18n>Logout</button>
           </div>
-          <span class="badge badge-pro" *ngIf="userService?.user?.featured || subscriptionSlots.length !== 0">
-            <mat-icon svgIcon="pro-seal"></mat-icon>
-            Pro
-          </span>
+          <tsl-pro-badge class="d-none d-md-block"></tsl-pro-badge>
         </h1>
       </div>
       <div class="header-row d-none d-md-block">
@@ -50,6 +47,7 @@
   </tsl-header>
 
     <tsl-subscriptions-slots-list
+      class="d-none d-md-block"
       [subscriptionsSlots]="subscriptionSlots"
       [selectedSubscriptionSlot]="selectedSubscriptionSlot"
       (subscriptionSlotSelected)="onSelectSubscriptionSlot($event)"
