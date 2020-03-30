@@ -148,8 +148,8 @@ export class UserService {
     return new User(id, 'No disponible');
   }
 
-  public me(): Observable<User> {
-    if (this._user) {
+  public me(useCache = true): Observable<User> {
+    if (useCache && this._user) {
       return of(this._user);
     }
 
