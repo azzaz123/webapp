@@ -22,7 +22,7 @@ import {
   ITEM_ID, MOCK_ITEM, MOCK_ITEM_V3, ORDER, ORDER_EVENT,
   PRODUCT_RESPONSE
 } from '../../../tests/item.fixtures.spec';
-import { USERS_STATS_RESPONSE } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER_STATS } from '../../../tests/user.fixtures.spec';
 import { FINANCIAL_CARD } from '../../../tests/payments.fixtures.spec';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 
@@ -99,7 +99,7 @@ describe('CatalogProListComponent', () => {
         {
           provide: UserService, useValue: {
             getStats() {
-              return Observable.of(USERS_STATS_RESPONSE);
+              return Observable.of(MOCK_USER_STATS);
             },
             me() {
               return Observable.of({});
@@ -404,7 +404,7 @@ describe('CatalogProListComponent', () => {
       component.getCounters();
 
       expect(userService.getStats).toHaveBeenCalled();
-      expect(component.counters).toEqual(USERS_STATS_RESPONSE.counters);
+      expect(component.counters).toEqual(MOCK_USER_STATS.counters);
     });
   });
 

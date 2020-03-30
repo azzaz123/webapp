@@ -1,0 +1,48 @@
+@import "~style/common";
+
+.CheckSubscriptionInAppModal {
+  height: 335px;
+  width: 100%;
+  padding: $spacing-xl 50px $spacing-l;
+}
+
+.CheckSubscriptionInAppModal__close {
+  @include square($spacing-ms);
+  cursor: pointer;
+  position: fixed;
+  top: $spacing-ml;
+  right: $spacing-ml;
+  mat-icon {
+    @include square($spacing-ms);
+    line-height: initial; 
+
+    svg {
+      path {
+        fill: $blue-grey-4;
+      }
+    }
+  }
+}
+
+.CheckSubscriptionInAppModal__content {
+  height: 100%;
+  padding-bottom: $spacing-l;
+}
+
+.CheckSubscriptionInAppModal__content-description {
+  height: 100%;
+}
+
+.CheckSubscriptionInAppModal__content-title {
+  color: $blue-grey-1;
+  padding-bottom: $spacing-ms;
+  font-size: $spacing-ml;
+}
+
+.CheckSubscriptionInAppModal__actions-ok {
+  width: 400px;
+
+  /deep/ button {
+    width: 100%;
+  }
+}

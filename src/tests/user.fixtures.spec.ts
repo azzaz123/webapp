@@ -1,12 +1,11 @@
 import { UserInfoResponse, UserProInfo } from '../app/core/user/user-info.interface';
 import { Coordinate } from '../app/core/geolocation/address-response.interface';
-import { Counters, Ratings, UserStatsResponse } from '../app/core/user/user-stats.interface';
+import { Counters, Ratings, UserStats } from '../app/core/user/user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from '../app/core/user/user-data.interface';
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
 
 import {
-  Image, UserExtrainfo, UserLocation, UserResponse, UserStats, UserValidations,
-  MotorPlan, ProfileSubscriptionInfo
+  Image, UserExtrainfo, UserLocation, UserResponse, UserStatsOld, UserValidations
 } from '../app/core/user/user-response.interface';
 import { Observable, of } from 'rxjs';
 import { Item } from '../app/core/item/item';
@@ -43,7 +42,7 @@ export const USER_LOCATION: UserLocation = {
   'title': '08009, Barcelona'
 };
 
-export const STATS: UserStats = {
+export const STATS: UserStatsOld = {
   'published': 10,
   'sold': 2,
   'favorites': 0,
@@ -109,6 +108,31 @@ export const USER_DATA: UserResponse = {
   'email': USER_EMAIL,
   'featured': true,
   'extra_info': USER_EXTRA_INFO
+};
+
+export const MOCK_NON_FEATURED_USER_RESPONSE: UserResponse = {
+  legacy_id: 101,
+  id: USER_ID,
+  micro_name: MICRO_NAME,
+  image: IMAGE,
+  location: USER_LOCATION,
+  stats: STATS,
+  validations: VALIDATIONS,
+  verification_level: VERIFICATION_LEVEL,
+  scoring_stars: SCORING_STARS,
+  scoring_starts: SCORING_STARTS,
+  response_rate: RESPONSE_RATE,
+  online: ONLINE,
+  received_reports: RECEIVED_REPORTS,
+  type: USER_TYPE,
+  web_slug: USER_WEB_SLUG,
+  first_name: USER_FIRST_NAME,
+  last_name: USER_LAST_NAME,
+  birth_date: USER_BIRTH_DATE,
+  gender: USER_GENDER,
+  email: USER_EMAIL,
+  featured: false,
+  extra_info: USER_EXTRA_INFO
 };
 
 export const MOCK_USER_RESPONSE_BODY = {
@@ -257,10 +281,29 @@ export const COUNTERS_RESPONSE: Counters = {
   onHold: 0
 };
 
-export const USERS_STATS_RESPONSE: UserStatsResponse = {
+export const MOCK_USER_STATS: UserStats = {
   ratings: RATINGS_RESPONSE,
   counters: COUNTERS_RESPONSE
 };
+
+export const MOCK_USER_STATS_RESPONSE = {
+  ratings: [
+    { type: 'reviews', value: 60 }
+  ],
+  counters: [
+    { type: 'publish', value: 1 },
+    { type: 'buys', value: 0 },
+    { type: 'sells', value: 5 },
+    { type: 'favorites', value: 2 },
+    { type: 'views', value: 1 },
+    { type: 'profile_favorited_received', value: 1 },
+    { type: 'profile_favorited', value: 1 },
+    { type: 'onHold', value: 10 },
+    { type: 'reviews', value: 2 },
+    { type: 'sold', value: 4 },
+    { type: 'reports_received', value: 1 }
+  ]
+}
 
 export const RATINGS = [
   {
@@ -357,381 +400,3 @@ export const MOCK_UNSUBSCRIBE_REASONS: UnsubscribeReason[] = [{
 
 export const SELECTED_REASON = 1;
 export const CUSTOM_REASON = 'bye';
-
-export const MOTORPLAN_DATA: MotorPlan = {
-  'type': 'motor_plan_pro',
-  'subtype': 'sub_premium',
-  'limit': 5
-};
-
-export const PROFILE_SUB_INFO: ProfileSubscriptionInfo = {
-  'status': 'PURCHASE_ACTIVE',
-  'product_group': {
-    'default_user_product_id': 'g9kp615z5l32',
-    'user_products': [{
-      'id': 'g9kp615z5l32',
-      'name': 'sub_basic',
-      'active': true,
-      'default_duration_index': 0,
-      'durations': [{
-        'id': 'g9kp615z5l32',
-        'duration': 720,
-        'market_code': '10',
-        'features': [{
-          'name': 'cars_subscription_tutorial_listinglimit5',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description2',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description3',
-          'enable': true
-        }, { 'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true }]
-      }]
-    }, {
-      'id': 'dwlqzmo6vm94',
-      'name': 'sub_pro',
-      'active': false,
-      'default_duration_index': 0,
-      'durations': [{
-        'id': 'dwlqzmo6vm94',
-        'duration': 720,
-        'market_code': '15',
-        'features': [{
-          'name': 'cars_subscription_tutorial_listinglimit9',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description2',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description3',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_items_no_expire',
-          'enable': true
-        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
-      }]
-    }, {
-      'id': 'd1mxzo7j9yq2',
-      'name': 'sub_premium',
-      'active': false,
-      'default_duration_index': 0,
-      'durations': [{
-        'id': 'd1mxzo7j9yq2',
-        'duration': 720,
-        'market_code': '20',
-        'features': [{
-          'name': 'cars_subscription_tutorial_listinglimit15',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description2',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description3',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_items_no_expire',
-          'enable': true
-        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
-      }]
-    }],
-    'type': 'motor_plan_pro'
-  }
-};
-
-export const PROFILE_NOT_SUB_INFO: ProfileSubscriptionInfo = {
-  'status': 'NOT_ELIGIBLE',
-  'product_group': {
-    'default_user_product_id': 'g9kp615z5l32',
-    'user_products': [{
-      'id': 'g9kp615z5l32',
-      'name': 'sub_basic',
-      'active': true,
-      'default_duration_index': 0,
-      'durations': [{
-        'id': 'g9kp615z5l32',
-        'duration': 720,
-        'market_code': '10',
-        'features': [{
-          'name': 'cars_subscription_tutorial_listinglimit5',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description2',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description3',
-          'enable': true
-        }, { 'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true }]
-      }]
-    }, {
-      'id': 'dwlqzmo6vm94',
-      'name': 'sub_pro',
-      'active': false,
-      'default_duration_index': 0,
-      'durations': [{
-        'id': 'dwlqzmo6vm94',
-        'duration': 720,
-        'market_code': '15',
-        'features': [{
-          'name': 'cars_subscription_tutorial_listinglimit9',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description2',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description3',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_items_no_expire',
-          'enable': true
-        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
-      }]
-    }, {
-      'id': 'd1mxzo7j9yq2',
-      'name': 'sub_premium',
-      'active': false,
-      'default_duration_index': 0,
-      'durations': [{
-        'id': 'd1mxzo7j9yq2',
-        'duration': 720,
-        'market_code': '20',
-        'features': [{
-          'name': 'cars_subscription_tutorial_listinglimit15',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description2',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description3',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_items_no_expire',
-          'enable': true
-        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
-      }]
-    }],
-    'type': 'motor_plan_pro'
-  }
-};
-
-export const PROFILE_ELIGIBLE_INFO: ProfileSubscriptionInfo = {
-  'status': 'ELIGIBLE',
-  'product_group': {
-    'default_user_product_id': 'g9kp615z5l32',
-    'user_products': [{
-      'id': 'g9kp615z5l32',
-      'name': 'sub_basic',
-      'active': true,
-      'default_duration_index': 0,
-      'durations': [{
-        'id': 'g9kp615z5l32',
-        'duration': 720,
-        'market_code': '10',
-        'features': [{
-          'name': 'cars_subscription_tutorial_listinglimit5',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description2',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description3',
-          'enable': true
-        }, { 'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true }]
-      }]
-    }, {
-      'id': 'dwlqzmo6vm94',
-      'name': 'sub_pro',
-      'active': false,
-      'default_duration_index': 0,
-      'durations': [{
-        'id': 'dwlqzmo6vm94',
-        'duration': 720,
-        'market_code': '15',
-        'features': [{
-          'name': 'cars_subscription_tutorial_listinglimit9',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description2',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description3',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_items_no_expire',
-          'enable': true
-        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
-      }]
-    }, {
-      'id': 'd1mxzo7j9yq2',
-      'name': 'sub_premium',
-      'active': false,
-      'default_duration_index': 0,
-      'durations': [{
-        'id': 'd1mxzo7j9yq2',
-        'duration': 720,
-        'market_code': '20',
-        'features': [{
-          'name': 'cars_subscription_tutorial_listinglimit15',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description2',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description3',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_items_no_expire',
-          'enable': true
-        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
-      }]
-    }],
-    'type': 'motor_plan_pro'
-  }
-};
-
-export const PROFILE_ACTIVE_INFO: ProfileSubscriptionInfo = {
-  'status': 'PURCHASE_ACTIVE',
-  'product_group': {
-    'default_user_product_id': 'g9kp615z5l32',
-    'user_products': [{
-      'id': 'g9kp615z5l32',
-      'name': 'sub_basic',
-      'active': true,
-      'default_duration_index': 0,
-      'durations': [{
-        'id': 'g9kp615z5l32',
-        'duration': 720,
-        'market_code': '10',
-        'features': [{
-          'name': 'cars_subscription_tutorial_listinglimit5',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description2',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description3',
-          'enable': true
-        }, { 'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true }]
-      }]
-    }, {
-      'id': 'dwlqzmo6vm94',
-      'name': 'sub_pro',
-      'active': false,
-      'default_duration_index': 0,
-      'durations': [{
-        'id': 'dwlqzmo6vm94',
-        'duration': 720,
-        'market_code': '15',
-        'features': [{
-          'name': 'cars_subscription_tutorial_listinglimit9',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description2',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description3',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_items_no_expire',
-          'enable': true
-        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
-      }]
-    }, {
-      'id': 'd1mxzo7j9yq2',
-      'name': 'sub_premium',
-      'active': false,
-      'default_duration_index': 0,
-      'durations': [{
-        'id': 'd1mxzo7j9yq2',
-        'duration': 720,
-        'market_code': '20',
-        'features': [{
-          'name': 'cars_subscription_tutorial_listinglimit15',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description2',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
-          'enable': true
-        }, {
-          'name': 'cars_subscription_tutorial_description3',
-          'enable': true
-        }, {
-          'name': 'pro_subscription_tutorial_items_no_expire',
-          'enable': true
-        }, { 'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true }]
-      }]
-    }],
-    'type': 'motor_plan_pro'
-  }
-};
