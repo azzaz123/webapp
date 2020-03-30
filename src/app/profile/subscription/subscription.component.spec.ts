@@ -55,6 +55,9 @@ describe('SubscriptionComponent', () => {
             },
             isOneSubscriptionInApp() {
               return false;
+            },
+            isStripeSubscription() {
+              return true;
             }
           }
         },
@@ -130,8 +133,9 @@ describe('SubscriptionComponent', () => {
   });
 
   describe('openSubscriptionModal', () => {
-    it('should open the addNewSubscription modal', () => {
+    it('should open the addNewSubscription modal when subscription is not active', () => {
       spyOn(modalService, 'open').and.callThrough();
+      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
 
       component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
 
@@ -140,8 +144,9 @@ describe('SubscriptionComponent', () => {
       });
     });
 
-    it('should not open the EditSubscription modal', () => {
+    it('should not open the EditSubscription modal when subscription is not active', () => {
       spyOn(modalService, 'open').and.callThrough();
+      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
 
       component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[1]);
 
@@ -248,8 +253,9 @@ describe('SubscriptionComponent', () => {
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
 
-      it('should open a unsubscribe inapp first modal if one subscription is inapp', () => {
+      it('should open a unsubscribe inapp first modal if one subscription is inapp and selected sub is not active', () => {
         spyOn(subscriptionsService, 'isOneSubscriptionInApp').and.returnValue(true);
+        spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
         spyOn(modalService, 'open').and.callThrough();
 
         component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS_WITH_INAPP[1]);
