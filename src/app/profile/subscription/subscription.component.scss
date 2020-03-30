@@ -16,10 +16,9 @@
 }
 
 .Subscriptions {
-  display: flex;
-  flex-direction: row;
   justify-content: center;
 }
+
 .Subscriptions__category {
   border: 1px solid $blue-grey-5;
   border-radius: 10px;
@@ -154,4 +153,18 @@
 .loading-center {
   display: block;
   margin: 0 auto;
+}
+
+@include media-breakpoint-down(sm) {
+  .box-content {
+    padding: $spacing-m;
+  }
+
+  .Subscriptions__category {
+    margin: 0px;
+
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
 }

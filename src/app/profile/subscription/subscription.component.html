@@ -2,7 +2,7 @@
   <div class="box-content" [hidden]="loading">
     <h4 class="section-title" i18n>wallapop PRO</h4>
     <p class="section-subtitle" i18n>Manage your subscriptions to wallapop PRO to increase your sales.</p>
-    <div class="Subscriptions">
+    <div class="Subscriptions d-flex flex-column flex-content-justify flex-md-row">
       <div class="Subscriptions__category" [ngClass]="{'Subscriptions__category--subscribed': subscription.subscribed_from }"
       (click)="openSubscriptionModal(subscription)" *ngFor="let subscription of subscriptions">
         <div class="Subscriptions__category-icon">
