@@ -1,0 +1,50 @@
+@import "~style/common";
+
+.box-content {
+  color: $blue-grey-3;
+  padding: $spacing-xxl $spacing-xxxl*1.93;
+  h4 {
+    color: $blue-grey-1;
+    text-align: center;
+    font-size: $font-size-l;
+    font-weight: bold;
+    margin: 0 0 $spacing-ms;
+  }
+  .section-subtitle {
+    text-align: center;
+  }
+}
+
+.Subscriptions__benefits {
+  margin: 0 0 $spacing-xxl;
+}
+
+.Subscriptions__benefits-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.Subscriptions__benefits-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.Subscriptions__benefits-icon {
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  background-color: $blue-grey-3;
+  mat-icon {
+    width: 56px;
+    height: 56px;
+    /deep/ svg path {
+      fill: $white;
+    }
+  }
+}
+
+.Subscriptions__benefits--title {
+  font-weight: bold;
+  color: $walla-main;
+  margin: $spacing-ml 0 $spacing-s;
+}

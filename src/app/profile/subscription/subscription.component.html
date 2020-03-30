@@ -2,7 +2,7 @@
   <div class="box-content" [hidden]="loading">
     <h4 class="section-title" i18n>wallapop PRO</h4>
     <p class="section-subtitle" i18n>Manage your subscriptions to wallapop PRO to increase your sales.</p>
-    <div class="Subscriptions d-flex flex-column flex-content-justify flex-md-row">
+    <div class="Subscriptions d-flex flex-column flex-content-justify align-items-center flex-md-row">
       <div class="Subscriptions__category" [ngClass]="{'Subscriptions__category--subscribed': subscription.subscribed_from }"
       (click)="openSubscriptionModal(subscription)" *ngFor="let subscription of subscriptions">
         <div class="Subscriptions__category-icon">
@@ -45,67 +45,5 @@
     <tsl-spinner [hidden]="!loading"></tsl-spinner>
   </div>
 </div>
-<div class="box">
-  <div class="box-content" [hidden]="loading">
-    <h4 class="section-title" i18n>Boost your sales</h4>
-    <p class="section-subtitle" i18n>Take your sales to the next level with the advantages of the PRO subscription.</p>
-    <div class="row">
-      <div class="Subscriptions__benefits col-4">
-        <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="rocket" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title" i18n>Upload all of your cars</p>
-          <p i18n>Publish up to 5/9/15 cars at a time and make yourself a PRO agent.</p>
-        </div>
-      </div>
-      <div class="Subscriptions__benefits col-4">
-        <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="paintbrush" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title" i18n>Professionalize your profile</p>
-          <p i18n>Add a photo and fill in the extra fields. Stand out over the rest!</p>
-        </div>
-      </div>
-      <div class="Subscriptions__benefits col-4">
-        <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="megaphone" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title" i18n>Introduce your business</p>
-          <p i18n>Include a description of what you offer and share your location.</p>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-4">
-        <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="magnet" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title"i18n>Win more clients</p>
-          <p i18n>Millions of customers can call you or visit your website from your profile.</p>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="watch" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title" i18n>Without time limit</p>
-          <p i18n>Your items won’t expire ever; they will always be available.</p>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="unlocked" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title" i18n>Without compromise</p>
-          <p i18n>Cancel your subscription whenever you want, without any penalisation.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
+<tsl-subscription-benefits [hidden]="loading"></tsl-subscription-benefits>
