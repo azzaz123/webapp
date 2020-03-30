@@ -13,7 +13,17 @@
   </div>
 
   <div class="sm-device-container hidden-xl-up">
-    On small devices
+    <tsl-item-avatar [item]="currentConversation.item" size="40"></tsl-item-avatar>
+
+    <div class="item-details">
+      <div>{{currentConversation.item.title}}</div>
+      <div *ngIf="currentConversation.item.price">
+        {{currentConversation.item.price.amount | customCurrency:currentConversation.item.price.currency}}</div>
+    </div>
+  </div>
+
+  <div class="user-detail hidden-xl-up">
+    <tsl-inbox-user-detail [item]="currentConversation.item" [user]="currentConversation.user"></tsl-inbox-user-detail>
   </div>
 
   <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
