@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
+import { SubscriptionBenefit } from '../../../core/subscriptions/subscriptions.interface';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-subscription-benefits',
@@ -7,9 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SubscriptionBenefitsComponent implements OnInit {
 
-  constructor() { }
+  public loading = true;
+  public benefits: SubscriptionBenefit[];
+
+  constructor(private subscriptionService: SubscriptionsService) { }
 
   ngOnInit() {
+    this.subscriptionService.getSubscriptionBenefits()
+      .pipe(
+        finalize(() => this.loading = false) 
+      )
+      .subscribe(response => this.benefits = response);
   }
 
 }
