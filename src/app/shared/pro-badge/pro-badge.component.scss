@@ -1,18 +1,21 @@
 @import "~style/common";
 
 .ProBadge {
-  display: flex;
-  align-items: center;
-  color: $blue-grey-1;
-  background-color: $white;
-  font-size: $font-size-xs;
-  line-height: $line-height-ms;
+  width: $spacing-xxxl;
+  height: $spacing-ml;
   padding: $spacing-xs $spacing-s;
   margin-left: $spacing-ms;
-  height: $spacing-ml;
-  
+
+  border-radius: 25px;
+
+  color: $blue-grey-1;
+  background-color: $white;
+
+  font-size: $font-size-xs;
+  line-height: $line-height-ms;
+
   mat-icon {
     @include square(14px);
-    margin-right: 2px;
+    margin-right: 4px;
   }
 }
