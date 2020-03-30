@@ -212,6 +212,7 @@ ngb-carousel {
         @include square(6px);
         max-width: 6px;
         margin: 0 $spacing-xs;
+        flex-shrink: 0;
         &:hover, &.active {
           @include square(6px);
           max-width: 6px;
