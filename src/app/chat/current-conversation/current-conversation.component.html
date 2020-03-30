@@ -125,7 +125,7 @@
     </div>
   </div>
 
-  <div id="conversation-meta" class="hidden-lg-down">
+  <div id="conversation-meta" class="d-none d-lg-block">
     <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item"
                            [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
     <tsl-inbox-item-for-sell *ngxPermissionsOnly="['isProfessional']"
