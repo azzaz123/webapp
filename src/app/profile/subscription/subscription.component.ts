@@ -177,4 +177,8 @@ export class SubscriptionsComponent implements OnInit {
   public showManageInApp(subscription: SubscriptionsResponse): boolean {
     return this.subscriptionsService.isSubscriptionInApp(subscription);
   }
+
+  public showDiscount(subscription: SubscriptionsResponse) {
+    return !!subscription.tiers[0].discount_available;
+  }
 }

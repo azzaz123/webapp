@@ -52,6 +52,9 @@
     &--price {
       font-weight: bold;
     }
+    &--discounted {
+      text-decoration: line-through;
+    }
   }
   .Subscriptions__category-title {
     font-size: $font-size-l;
@@ -91,6 +94,11 @@
     .Subscriptions__category-info {
       margin: 0;
     }
+  }
+
+  &--with-discount {
+    height: 355px;
+    min-height: 355px;
   }
 }
 
@@ -154,4 +162,13 @@
 .loading-center {
   display: block;
   margin: 0 auto;
+}
+
+.Subscriptions__category-info-discount {
+  color: $blue-grey-1;
+  background-color: rgba($yellow-main, 0.3);
+  padding: $spacing-xxs $spacing-ms;
+  margin: $spacing-ms;
+  border-radius: $spacing-xxs;
+  line-height: 22px;
 }
