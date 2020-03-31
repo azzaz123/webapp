@@ -1,8 +1,8 @@
+import { AccessTokenService } from './../../core/http/access-token.service';
+import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME, TokenInterceptor, getTokenSignature } from './../../core/http/interceptors/token.interceptor';
 import { EventEmitter, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Headers, RequestOptions } from '@angular/http';
-import { HttpService } from '../../core/http/http.service';
-import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../../core/item/item-categories';
+import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { ITEM_TYPES } from '../../core/item/item';
 import { UploadFile, UploadInput } from '../../shared/uploader/upload.interface';
 
@@ -12,7 +12,7 @@ export class UploadService {
   private API_URL = 'api/v3/items';
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
 
-  constructor(private http: HttpService) {
+  constructor(private accesTokenService: AccessTokenService) {
   }
 
   public createItemWithFirstImage(values: any, file: UploadFile, itemType: string) {
@@ -20,7 +20,7 @@ export class UploadService {
     if (itemType === ITEM_TYPES.CARS) {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL + '/cars', 'item_car');
     } else if (itemType === ITEM_TYPES.REAL_ESTATE) {
-        inputEvent = this.buildUploadEvent(values, file, this.API_URL + '/real_estate', 'item_real_estate');
+      inputEvent = this.buildUploadEvent(values, file, this.API_URL + '/real_estate', 'item_real_estate');
     } else {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL, 'item');
     }
@@ -34,7 +34,7 @@ export class UploadService {
       delete values.id;
       delete values.category_id;
     }
-    const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
+
     return {
       type: 'uploadFile',
       url: environment.baseUrl + url,
@@ -45,7 +45,7 @@ export class UploadService {
           type: 'application/json'
         })
       },
-      headers: this.http.getOptions(options, url, 'POST').headers.toJSON(),
+      headers: this.getUploadHeaders(url, { 'X-DeviceOS': '0' }),
       file: file
     };
   }
@@ -62,7 +62,7 @@ export class UploadService {
       data: {
         order: '$order'
       },
-      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
+      headers: this.getUploadHeaders(url),
     };
     this.uploadInput.emit(inputEvent);
   }
@@ -79,7 +79,7 @@ export class UploadService {
       data: {
         order: '$order'
       },
-      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
+      headers: this.getUploadHeaders(url),
       file: file
     };
     this.uploadInput.emit(inputEvent);
@@ -107,6 +107,18 @@ export class UploadService {
       files: [...files]
     };
     this.uploadInput.emit(inputEvent);
+  }
+
+  private getUploadHeaders(url: string, additionalHeaders?: any): any {
+    const timestamp = new Date().getTime();
+    const signature = getTokenSignature(url, 'POST', timestamp);
+
+    return {
+      ...additionalHeaders,
+      [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
+      [TOKEN_SIGNATURE_HEADER_NAME]: signature,
+      [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString()
+    }
   }
 
 }

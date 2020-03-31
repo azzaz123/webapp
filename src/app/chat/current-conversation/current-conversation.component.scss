@@ -2,9 +2,10 @@
 
 .messaging-container {
   height: 100%;
+  display: flex;
 
   .messaging {
-    width: calc(100% - #{$right-panel-width});
+    flex-grow: 1;
     height: 100%;
     float: left;
 

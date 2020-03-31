@@ -13,9 +13,7 @@ import {
   MOCK_FULL_USER,
   MOCK_USER,
   MOCK_USER_RESPONSE_BODY,
-  MOTORPLAN_DATA,
   ONLINE,
-  PROFILE_SUB_INFO,
   MOCK_UNSUBSCRIBE_REASONS,
   RESPONSE_RATE,
   SCORING_STARS,
@@ -33,22 +31,21 @@ import {
   USER_PRO_INFO_NOTIFICATIONS,
   USER_PRO_INFO_RESPONSE,
   USERS_STATS,
-  USERS_STATS_RESPONSE,
+  MOCK_USER_STATS,
   VALIDATIONS,
   VERIFICATION_LEVEL
 } from '../../../tests/user.fixtures.spec';
-import { AvailableSlots, UserStatsResponse } from './user-stats.interface';
+import { AvailableSlots, UserStats } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { AccessTokenService } from '../http/access-token.service';
 import { EventService } from '../event/event.service';
 import { PERMISSIONS, User } from './user';
 import { environment } from '../../../environments/environment';
 import { LoginResponse } from './login-response.interface';
-import { Image, MotorPlan, UserLocation } from './user-response.interface';
+import { Image, UserLocation } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FEATURE_FLAGS_ENUM, FeatureflagService } from './featureflag.service';
-import { SplitTestService } from '../tracking/split-test.service';
 import { APP_VERSION } from '../../../environments/version';
 import { PhoneMethod } from '../../chat/model';
 import { HttpParams, HttpRequest } from '@angular/common/http';
@@ -63,14 +60,8 @@ describe('Service: User', () => {
   let cookieService: CookieService;
   let permissionService: NgxPermissionsService;
   let featureflagService: FeatureflagService;
-  let splitTestService: SplitTestService;
   let httpMock: HttpTestingController;
   let eventService: EventService;
-
-  const mockMotorPlan = {
-    type: 'motor_plan_pro',
-    subtype: 'sub_premium'
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -118,12 +109,6 @@ describe('Service: User', () => {
               return Observable.of(true);
             }
           }
-        },
-        {
-          provide: SplitTestService, useValue: {
-            reset() {
-            }
-          }
         }
       ]
     });
@@ -135,7 +120,6 @@ describe('Service: User', () => {
     cookieService = TestBed.get(CookieService);
     permissionService = TestBed.get(NgxPermissionsService);
     featureflagService = TestBed.get(FeatureflagService);
-    splitTestService = TestBed.get(SplitTestService);
     httpMock = TestBed.get(HttpTestingController);
     eventService = TestBed.get(EventService);
   });
@@ -219,6 +203,19 @@ describe('Service: User', () => {
         expect(req.request.method).toBe('GET');
         expect(response).toEqual(MOCK_FULL_USER);
       });
+
+      // TODO: This should change when parsing error status from backend (once permission factory is migrated)
+      describe('and there is error from backend', () => {
+        it('should logout user', () => {
+          spyOn(service, 'logoutLocal');
+
+          service.me().subscribe();
+          const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
+          req.flush({}, { status: 401, statusText: 'Unauthorized' });
+  
+          expect(service.logoutLocal).toHaveBeenCalledTimes(1);
+        });
+      })
     })
 
     describe('when there is user stored', () => {
@@ -348,7 +345,6 @@ describe('Service: User', () => {
     beforeEach(() => {
       spyOn(permissionService, 'flushPermissions').and.returnValue({});
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
-      spyOn(splitTestService, 'reset');
       accessTokenService.storeAccessToken('token')
 
       event.subscribe(EventService.USER_LOGOUT, param => redirectUrl = param);
@@ -378,10 +374,6 @@ describe('Service: User', () => {
 
     it('should call flush permissions', () => {
       expect(permissionService.flushPermissions).toHaveBeenCalled();
-    });
-
-    it('should reset the split test service session', () => {
-      expect(splitTestService.reset).toHaveBeenCalled();
     });
   });
 
@@ -518,28 +510,28 @@ describe('Service: User', () => {
   describe('getStats', () => {
     it('should call endpoint and return response', () => {
       const backendResponse = USERS_STATS;
-      let response: UserStatsResponse;
+      let response: UserStats;
 
       service.getStats().subscribe(r => response = r);
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_STATS_ENDPOINT}`);
       req.flush(backendResponse);
 
       expect(req.request.method).toBe('GET');
-      expect(response).toEqual(USERS_STATS_RESPONSE);
+      expect(response).toEqual(MOCK_USER_STATS);
     });
   });
 
   describe('getUserStats', () => {
     it('should call endpoint and return response', () => {
       const backendResponse = USERS_STATS;
-      let response: UserStatsResponse;
+      let response: UserStats;
 
       service.getUserStats(USER_ID).subscribe(r => response = r);
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(USER_ID)}`);
       req.flush(backendResponse);
 
       expect(req.request.method).toBe('GET');
-      expect(response).toEqual(USERS_STATS_RESPONSE);
+      expect(response).toEqual(MOCK_USER_STATS);
     });
   });
 
@@ -681,95 +673,22 @@ describe('Service: User', () => {
   });
 
   describe('isProUser', () => {
-    it('should return true if user is professional', () => {
-      spyOn(service, 'isProfessional').and.returnValue(Observable.of(true));
-      spyOn(service, 'getMotorPlan').and.returnValue(Observable.of({}));
-      spyOn(service, 'me').and.returnValue(Observable.of(MOCK_USER));
-
-      let resp: boolean;
-
-      service.isProUser().subscribe(response => resp = response);
-
-      expect(resp).toBe(true);
-    });
-
-    it('should return true if there is a motor plan', () => {
-      spyOn(service, 'isProfessional').and.returnValue(Observable.of(false));
-      spyOn(service, 'getMotorPlan').and.returnValue(Observable.of(mockMotorPlan));
-      spyOn(service, 'me').and.returnValue(Observable.of(MOCK_USER));
-
-      let resp: boolean;
-
-      service.isProUser().subscribe(response => resp = response);
-
-      expect(resp).toBe(true);
-    });
-
     it('should return true if user is featured', () => {
-      spyOn(service, 'isProfessional').and.returnValue(Observable.of(false));
-      spyOn(service, 'getMotorPlan').and.returnValue(Observable.of({}));
       spyOn(service, 'me').and.returnValue(Observable.of(MOCK_FULL_USER));
 
       let resp: boolean;
-
       service.isProUser().subscribe(response => resp = response);
 
       expect(resp).toBe(true);
     });
 
-    it('should return false if there is not a motor plan and user is not professional', () => {
-      spyOn(service, 'isProfessional').and.returnValue(Observable.of(false));
-      spyOn(service, 'getMotorPlan').and.returnValue(Observable.of({}));
+    it('should return false if user is not featured', () => {
       spyOn(service, 'me').and.returnValue(Observable.of(MOCK_USER));
 
       let resp: boolean;
-
       service.isProUser().subscribe(response => resp = response);
 
       expect(resp).toBe(false);
-    });
-  });
-
-  describe('getMotorPlan', () => {
-    const expectedMotorPlanUrl = `${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT}`;
-
-    it('should retrieve and return the Motor plan object', fakeAsync(() => {
-      let response: MotorPlan;
-
-      service.getMotorPlan().subscribe(r => response = r);
-      const req = httpMock.expectOne(expectedMotorPlanUrl);
-      req.flush(MOTORPLAN_DATA);
-
-      expect(req.request.method).toBe('GET');
-      expect(response.subtype).toEqual(MOTORPLAN_DATA.subtype);
-    }));
-
-    it('should do only one petition to backend', () => {
-      let response: MotorPlan;
-      let response2: MotorPlan;
-
-      service.getMotorPlan().subscribe(r => response = r);
-      const req = httpMock.expectOne(expectedMotorPlanUrl);
-      req.flush(MOTORPLAN_DATA);
-
-      service.getMotorPlan().subscribe(r => response2 = r);
-      httpMock.expectNone(expectedMotorPlanUrl);
-
-      expect(response).toEqual(MOTORPLAN_DATA);
-      expect(response2).toEqual(MOTORPLAN_DATA);
-      expect(response2).toBe(response);
-    });
-  });
-
-  describe('getMotorPlans', () => {
-    it('should call endpoint GET motor plans and return response', () => {
-      accessTokenService.storeAccessToken('ACCESS_TOKEN');
-      service.getMotorPlans().subscribe(response => expect(response).toEqual(PROFILE_SUB_INFO));
-
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT}`);
-
-      expect(req.request.method).toEqual('GET');
-      req.flush(PROFILE_SUB_INFO);
     });
   });
 

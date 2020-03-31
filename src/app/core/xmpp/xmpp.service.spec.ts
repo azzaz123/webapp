@@ -226,6 +226,7 @@ describe('Service: Xmpp', () => {
   describe('bindEvents', () => {
 
     beforeEach(() => {
+      spyOn(remoteConsoleService, 'sendAcceptTimeout');
       spyOn(remoteConsoleService, 'sendPresentationMessageTimeout');
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD).subscribe();
     });
@@ -472,7 +473,7 @@ describe('Service: Xmpp', () => {
       eventService.emit('disconnected');
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_RT_DISCONNECTED);
-      expect(remoteConsoleService.sendXmppConnectionClosedWithError).toHaveBeenCalledWith('');
+      expect(remoteConsoleService.sendXmppConnectionClosedWithError).toHaveBeenCalled();
       expect(service.clientConnected).toBe(false);
     });
 

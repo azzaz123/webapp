@@ -1,76 +1,100 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '../http/http.service';
 import { Profile } from './profile';
 import { Observable } from 'rxjs';
 import { EventService } from '../event/event.service';
-import { Response } from '@angular/http';
-import { ProfilesData, ProfileResponse } from './profile-response.interface';
+import { ProfileResponse, ProfilesData } from './profile-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
-import { chain, partial, split } from 'lodash-es';
-import { ResourceService } from '../resource/resource.service';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Model } from '../resource/model.interface';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
-export class ProfileService extends ResourceService {
-  protected API_URL = 'api/v3/users';
-  protected _profile: Profile;
+export class ProfileService {
+  private readonly API_URL = 'api/v3/users';
 
-  constructor(http: HttpService,
+  private _profile: Profile;
+
+  private store: any = {};
+  private observables: any = {};
+
+  constructor(private httpClient: HttpClient,
               protected event: EventService,
               protected i18n: I18nService,
               protected accessTokenService: AccessTokenService) {
-    super(http);
   }
 
   get profile(): Profile {
     return this._profile;
   }
 
-  private getPaginationItems(url: string, init, status?): Observable<ProfilesData> {
-    return this.http.get(url, {
-        init: init,
-        expired: status
-      })
-      .map((r: Response) => {
-          const res: any[] = r.json();
-          const nextPage: string = r.headers.get('x-nextpage');
+  public get(id: string, noCache?: boolean): Observable<Profile> {
+    if (this.store[id] && !noCache) {
+      return Observable.of(this.store[id]);
+    } else if (this.observables[id]) {
+      return this.observables[id];
+    } else {
+      this.observables[id] = this.httpClient.get<ProfileResponse>(`${environment.baseUrl}${this.API_URL}/${id}`)
+      .map((resp: ProfileResponse) => resp.id ? this.mapRecordData(resp) : null)
+      .map((model: Model) => this.addToStore(model, id))
+      .share();
+      return this.observables[id];
+    }
+  }
 
-          let params = {};
-          if (nextPage) {
-            nextPage.split('&').forEach(paramSplit => {
-              const paramValues = paramSplit.split('=');
-              params[paramValues[0]] = paramValues[1];
-            });
-          }
+  private addToStore(model: Model, id: string): Model {
+    if (model) {
+      this.store[id] = model;
+    }
+    delete this.observables[id];
+    return model;
+  }
 
-          const nextInit = params && params['init'] ? +params['init'] : null;
-          let data: Profile[] = [];
-          if (res.length > 0) {
-            data = res.map((i: any) => {
-              return i;
-            });
-          }
-          return {
-            data: data,
-            init: nextInit
-          };
+  private getPaginationItems(url: string, init: number): Observable<ProfilesData> {
+    return this.httpClient.get(url, {
+      observe: 'response',
+      params: {
+        init: init.toString()
+      }
+    })
+    .map((resp: HttpResponse<any[]>) => {
+        const nextPage: string = resp.headers.get('x-nextpage');
+        const params = {};
+        if (nextPage) {
+          nextPage.split('&').forEach(paramSplit => {
+            const paramValues = paramSplit.split('=');
+            params[paramValues[0]] = paramValues[1];
+          });
         }
-      );
+
+        const nextInit = params && params['init'] ? +params['init'] : null;
+        let data: Profile[] = [];
+        if (resp.body.length > 0) {
+          data = resp.body.map((i: any) => {
+            return i;
+          });
+        }
+        return {
+          data: data,
+          init: nextInit
+        };
+      }
+    );
   }
 
   public myFavorites(init: number): Observable<ProfilesData> {
-    return this.getPaginationItems(this.API_URL + '/me/users/favorites', init)
-      .map((profilesData: ProfilesData) => {
-        profilesData.data = profilesData.data.map((profile: Profile) => {
-          profile.favorited = true;
-          return profile;
-        });
-        return profilesData;
+    return this.getPaginationItems(`${environment.baseUrl}${this.API_URL}/me/users/favorites`, init)
+    .map((profilesData: ProfilesData) => {
+      profilesData.data = profilesData.data.map((profile: Profile) => {
+        profile.favorited = true;
+        return profile;
       });
+      return profilesData;
+    });
   }
 
   public favoriteItem(id: string, favorited: boolean): Observable<any> {
-    return this.http.put(this.API_URL + '/' + id + '/favorite', {
+    return this.httpClient.put(`${environment.baseUrl}${this.API_URL}/${id}/favorite`, {
       favorited: favorited
     });
   }

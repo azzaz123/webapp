@@ -6,14 +6,14 @@ import { ResourceService } from '../resource/resource.service';
 import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
-import { UserLocation, UserResponse, MotorPlan, ProfileSubscriptionInfo, Image } from './user-response.interface';
+import { UserLocation, UserResponse, Image } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '../../../environments/environment';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
-import { AvailableSlots, Counters, Ratings, UserStatsResponse } from './user-stats.interface';
+import { AvailableSlots, Counters, Ratings, UserStats, UserStatsResponse } from './user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
@@ -21,11 +21,10 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
 import { InboxUser } from '../../chat/model/inbox-user';
-import { SplitTestService } from '../tracking/split-test.service';
 import { InboxItem } from '../../chat/model';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpResponse, HttpRequest } from '@angular/common/http';
 import { catchError, tap, map, finalize } from 'rxjs/operators';
 import { isEmpty } from 'lodash-es';
 
@@ -60,8 +59,6 @@ export class UserService {
   private _users: User[] = [];
   private banReasons: BanReason[];
   private presenceInterval: any;
-  private _motorPlan: MotorPlan;
-  private motorPlanObservable: Observable<MotorPlan>;
 
   constructor(private http: HttpClient,
     private event: EventService,
@@ -71,7 +68,6 @@ export class UserService {
     private cookieService: CookieService,
     private permissionService: NgxPermissionsService,
     private featureflagService: FeatureflagService,
-    private splitTestService: SplitTestService,
     @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -108,7 +104,6 @@ export class UserService {
     this.accessTokenService.deleteAccessToken();
     this.permissionService.flushPermissions();
     this.event.emit(EventService.USER_LOGOUT, redirectUrl);
-    this.splitTestService.reset();
   }
 
   public get isLogged(): boolean {
@@ -154,10 +149,15 @@ export class UserService {
       return of(this._user);
     }
 
-    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`)
+    return this.http.get<HttpResponse<UserResponse>>(`${environment.baseUrl}${USER_ENDPOINT}`, { observe: 'response' as 'body' })
       .pipe(
-        map(r => this.mapRecordData(r)),
-        tap(user => this._user = user)
+        map(r => this.mapRecordData(r.body)),
+        tap(user => this._user = user),
+        // TODO: Parse error status when permission factory is refactored
+        catchError(error => { 
+          this.logoutLocal();
+          return of(error);
+        })
       )
   }
 
@@ -251,8 +251,8 @@ export class UserService {
     });
   }
 
-  public getStats(): Observable<UserStatsResponse> {
-    return this.http.get<any>(`${environment.baseUrl}${USER_STATS_ENDPOINT}`)
+  public getStats(): Observable<UserStats> {
+    return this.http.get<UserStatsResponse>(`${environment.baseUrl}${USER_STATS_ENDPOINT}`)
       .map(response => {
         return {
           ratings: this.toRatingsStats(response.ratings),
@@ -262,7 +262,7 @@ export class UserService {
   }
 
   // TODO: Remove if not used when public web is in webapp
-  public getUserStats(userId: string): Observable<UserStatsResponse> {
+  public getUserStats(userId: string): Observable<UserStats> {
     return this.http.get<any>(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(userId)}`)
       .map(response => {
         return {
@@ -360,46 +360,14 @@ export class UserService {
       });
   }
 
+  // TODO: This is if user is car dealer, should be `isCarDealer`
   public isProfessional(): Observable<boolean> {
     return this.hasPerm('professional');
   }
 
+  // TODO: This logic is correct for now, but should be checked using the subscriptions BFF
   public isProUser(): Observable<boolean> {
-    return Observable.forkJoin([
-      this.isProfessional(),
-      this.getMotorPlan(),
-      this.me()
-    ])
-      .map((values: any[]) => {
-        return values[0] || !!(values[1] && values[1].type) || values[2].featured;
-      });
-  }
-
-  // TODO: This method is going to be deleted :D
-  public getMotorPlan(): Observable<MotorPlan> {
-    if (this._motorPlan) {
-      return Observable.of(this._motorPlan);
-    } else if (this.motorPlanObservable) {
-      return this.motorPlanObservable;
-    }
-    this.motorPlanObservable = this.http.get<MotorPlan>(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT}`)
-      .map((motorPlan: MotorPlan) => {
-        this._motorPlan = motorPlan;
-        return motorPlan;
-      })
-      .share()
-      .do(() => {
-        this.motorPlanObservable = null;
-      })
-      .catch(() => {
-        this.motorPlanObservable = null;
-        return Observable.of(null);
-      });
-    return this.motorPlanObservable;
-  }
-
-  public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
-    return this.http.get<ProfileSubscriptionInfo>(`${environment.baseUrl}${USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT}`);
+    return this.me().pipe(map(user => user.featured));
   }
 
   public setSubscriptionsFeatureFlag(): Observable<boolean> {
