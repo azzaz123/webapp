@@ -5,6 +5,9 @@ div {
   margin-right: $item-avatar-margin;
   display: flex;
   position: relative;
+  &.transition {
+    transition: height 2s, width 2s
+  }
   &.small {
     @include square-avatar($item-avatar-size-small);
   }

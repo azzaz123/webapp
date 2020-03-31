@@ -13,7 +13,7 @@ export class ItemAvatarComponent implements OnChanges {
   public fallback: string;
   @Input() fallbackLight: boolean;
   @Input() item: Item;
-  @Input() size: string;
+  @Input() size: 'small' | 'medium' | 'big' | 'bigger' | 'full';
   @Input() showAvailableStatus = true;
 
   constructor() {
