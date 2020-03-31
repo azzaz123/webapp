@@ -213,14 +213,42 @@ export class SubscriptionsService {
     return subscriptions.some(subscription => this.isSubscriptionInApp(subscription));
   }
 
-  public isStripeSubscription(subscription: SubscriptionsResponse) {
+  public isStripeSubscription(subscription: SubscriptionsResponse): boolean {
     if (!subscription.market) {
       return false;
     }
     return subscription.market === SUBSCRIPTION_MARKETS.STRIPE;
   }
 
-  public hasOneStripeSubscription(subscriptions: SubscriptionsResponse[]) {
+  public hasOneStripeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
     return subscriptions.some(subscription => this.isStripeSubscription(subscription));
+  }
+
+  public hasOneFreeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.hasOneFreeTier(subscription));
+  }
+
+  public hasOneDiscountedSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.hasOneTierDiscount(subscription));
+  }
+
+  public hasOneTierDiscount(subscription: SubscriptionsResponse): boolean {
+    return subscription.tiers.some(tier => this.isDiscountedTier(tier));
+  }
+
+  public hasOneFreeTier(subscription: SubscriptionsResponse): boolean {
+    return subscription.tiers.some(tier => this.isFreeTier(tier));
+  }
+
+  public isDiscountedTier(tier: Tier): boolean {
+    return !!tier.discount_available;
+  }
+
+  public isFreeTier(tier: Tier): boolean {
+    if (!this.isDiscountedTier(tier)) {
+      return false;
+    }
+
+    return tier.discount_available.discounted_price === 0;
   }
 }

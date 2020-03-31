@@ -4,7 +4,10 @@
     <p class="section-subtitle" i18n>Manage your subscriptions to wallapop PRO to increase your sales.</p>
     <div class="Subscriptions">
       <div class="Subscriptions__category"
-        [ngClass]="{'Subscriptions__category--subscribed': subscription.subscribed_from, 'Subscriptions__category--with-discount': showDiscount(subscription) }"
+        [ngClass]="{
+          'Subscriptions__category--subscribed': subscription.subscribed_from,
+          'Subscriptions__category--with-one-free': hasOneFreeSubscription(subscription)
+        }"
       (click)="openSubscriptionModal(subscription)" *ngFor="let subscription of subscriptions">
         <div class="Subscriptions__category-icon">
           <mat-icon *ngIf="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}"class="image"></mat-icon>
@@ -15,11 +18,11 @@
         <div [hidden]="subscription.subscribed_from" class="Subscriptions__category-info">
             <p i18n *ngIf="subscription.current_limit">Limit without subscription: {{subscription.current_limit}}</p>
             <p i18n *ngIf="!subscription.current_limit">No limit</p>
-            <p [ngClass]="{ 'Subscriptions__category-info--discounted': showDiscount(subscription) }">
+            <p [ngClass]="{ 'Subscriptions__category-info--discounted': hasOneTierDiscount(subscription) }">
               <span i18n *ngIf="subscription.tiers.length !== 1">From: </span>
               {{subscription.tiers[0].price}}{{subscription.tiers[0].currency}}
             </p>
-            <div *ngIf="showDiscount(subscription)" class="Subscriptions__category-info-discount" i18n>
+            <div *ngIf="hasOneFreeTier(subscription)" class="Subscriptions__category-info-discount" i18n>
               <div *ngIf="subscription.tiers[0].discount_available.months === 1">1 month free</div>
               <div *ngIf="subscription.tiers[0].discount_available.months > 1">{{subscription.tiers[0].discount_available.months}} months free</div>
             </div>
