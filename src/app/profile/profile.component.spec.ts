@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { UserService } from '../core/user/user.service';
+import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { UserService, USER_ENDPOINT, USER_STATS_ENDPOINT } from '../core/user/user.service';
 import { Observable } from 'rxjs';
-import { MOCK_USER, MOTORPLAN_DATA, USER_WEB_SLUG, USERS_STATS_RESPONSE, PROFILE_SUB_INFO, PROFILE_NOT_SUB_INFO, PROFILE_ELIGIBLE_INFO, PROFILE_ACTIVE_INFO } from '../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_WEB_SLUG, MOCK_USER_STATS, MOCK_FULL_USER, USER_DATA, MOCK_NON_FEATURED_USER_RESPONSE, MOCK_USER_STATS_RESPONSE } from '../../tests/user.fixtures.spec';
 import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -12,176 +12,129 @@ import { HttpService } from '../core/http/http.service';
 import { FeatureflagService } from '../core/user/featureflag.service';
 import { SUBSCRIPTIONS, SUBSCRIPTIONS_NOT_SUB } from '../../tests/subscriptions.fixtures.spec';
 import { EventService } from '../core/event/event.service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HaversineService } from 'ng2-haversine';
+import { AccessTokenService } from '../core/http/access-token.service';
+import { CookieService, CookieOptionsProvider } from 'ngx-cookie';
+import { SplitTestService } from '../core/tracking/split-test.service';
+import { By } from '@angular/platform-browser';
+import { StarsComponent } from '../shared/stars/stars.component';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let userService: UserService;
-  let subscriptionsService: SubscriptionsService;
-  let eventService: EventService;
-  const mockMotorPlan = {
-    type: 'motor_plan_pro',
-    subtype: 'sub_premium'
-  };
-
+  let httpMock: HttpTestingController;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgxPermissionsModule.forRoot()],
-      declarations: [ ProfileComponent ],
+      imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule],
+      declarations: [ ProfileComponent, StarsComponent ],
       providers: [
-        I18nService,
-        EventService,
         {provide: HttpService, useValue: {}},
+        EventService,
+        I18nService,
+        HaversineService,
+        AccessTokenService,
         {
-          provide: UserService, useValue: {
-            me() {
-              return Observable.of(MOCK_USER);
+          provide: CookieService, useValue: {
+          value: null,
+            put() {
             },
-            getMotorPlan() {
-              return Observable.of({
-                motorPlan: mockMotorPlan
-              });
-            },
-            isProUser() {
-              return Observable.of({});
-            },
-            getStats() {
-              return Observable.of(USERS_STATS_RESPONSE);
-            },
-            logout() {},
-            getMotorPlans() {
-              return Observable.of(PROFILE_SUB_INFO);
-            },
-            isProfessional() {
-              return Observable.of(false);
+            get () {
+              return this.value;
             }
           }
         },
-        {
-          provide: SubscriptionsService, useValue: {
-            isSubscriptionsActive$() {
-              return Observable.of(true);
-            },
-            getSubscriptions() {
-              return Observable.of(SUBSCRIPTIONS);
-            }
-          }
-        },
-        {
-          provide: FeatureflagService, useValue: {
-            getFlag() {
-              return Observable.of(true);
-            }
-          }
-        },
+        FeatureflagService,
+        SplitTestService,
+        UserService,
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
-  }));
-
-  beforeEach(() => {
+    }).compileComponents();
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
-    subscriptionsService = TestBed.get(SubscriptionsService);
-    eventService = TestBed.get(EventService);
-    spyOn(userService, 'me').and.callThrough();
-    spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
-    spyOn(userService, 'getStats').and.callThrough();
+    httpMock = TestBed.get(HttpTestingController);
     fixture.detectChanges();
+  }));
+
+  afterAll(() => httpMock.verify());
+
+  const mockBeforeEachInit = (isFeaturedUser?: boolean) => {
+    component.ngOnInit();
+
+    const userMeReq = httpMock.match(req => req.urlWithParams === `${environment.baseUrl}${USER_ENDPOINT}`)[0];
+    if (isFeaturedUser) {
+      userMeReq.flush(USER_DATA);
+    } else {
+      userMeReq.flush(MOCK_NON_FEATURED_USER_RESPONSE)
+    }
+
+    httpMock.match(req => req.urlWithParams === `${environment.baseUrl}${USER_STATS_ENDPOINT}`)[0].flush(MOCK_USER_STATS_RESPONSE);
+
+    fixture.detectChanges();
+  }
+
+  describe('when the component loads', () => {
+
+    it('should set correctly the public url link', () => {
+      mockBeforeEachInit();
+      const expectedPublicProfileUrl = `${environment.siteUrl.replace('es', 'www')}user/${USER_DATA.web_slug}`;
+      const publicProfileUrlHTML: HTMLElement = fixture.debugElement.query(By.css('.header-row > .header-link')).nativeElement;
+
+      expect(publicProfileUrlHTML.getAttribute('href')).toEqual(expectedPublicProfileUrl);
+      expect(component.userUrl).toEqual(expectedPublicProfileUrl);
+    });
+
+    it('should show user review numbers and stars', () => {
+      mockBeforeEachInit();
+      const expectedUserReviewsText = MOCK_USER_STATS_RESPONSE.counters.find(r => r.type === 'reviews').value.toString();
+      const expectedUserStars = userService.toRatingsStats(MOCK_USER_STATS_RESPONSE.ratings).reviews;
+      const userReviewsText: string = fixture.debugElement.query(By.css('.reviews-rating-value')).nativeElement.innerHTML;
+      const userStars: number = fixture.debugElement.query(By.directive(StarsComponent)).componentInstance.stars;
+      const userStarsCondition = userStars >= 0 && userStars <= 5;
+
+      expect(userReviewsText).toEqual(expectedUserReviewsText);
+      expect(userStarsCondition).toBe(true);
+    });
+
+    describe('and the user is not a pro user', () => {
+      it('should not show a PRO badge', () => {
+        mockBeforeEachInit();
+
+        // TODO: Would be nice to refactor this badge into a component
+        const proBadgeParentRef = fixture.debugElement.query(By.css('.badge-pro'));
+
+        expect(proBadgeParentRef).toBeFalsy();
+        expect(component.isPro).toBe(false);
+      })
+    });
+
+    describe('and the user is featured', () => {
+      it('should show a PRO badge', () => {
+        mockBeforeEachInit(true);
+
+        // TODO: Would be nice to refactor this badge into a component
+        const proBadgeParentRef = fixture.debugElement.query(By.css('.badge-pro'));
+
+        expect(proBadgeParentRef).toBeTruthy();
+        expect(component.isPro).toBe(true);
+      })
+    });
   });
 
-  describe('ngOnInit', () => {
-
-    it('should call userService.me', () => {
-      component.ngOnInit();
-
-      expect(userService.me).toHaveBeenCalled();
-    });
-
-    it('should set userUrl', () => {
-      component.ngOnInit();
-
-      expect(component.userUrl).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + USER_WEB_SLUG);
-    });
-
-    it('should subscribe to getMotorPlan', () => {
-      spyOn(userService, 'getMotorPlan').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(userService.getMotorPlan).toHaveBeenCalled();
-    });
-
-    it('should set the translated user motor plan', () => {
-      spyOn(userService, 'getMotorPlan').and.returnValue(Observable.of(MOTORPLAN_DATA));
-
-      component.ngOnInit();
-
-      expect(component.motorPlan).toEqual({subtype: 'sub_premium', label: 'Super Motor Plan', shortLabel: 'Super'});
-    });
-
-    it('should call userService.isProUser and set isPro', () => {
-      expect(userService.isProUser).toHaveBeenCalled();
-      expect(component.isPro).toBe(true);
-    });
-
-    it('should call userService.getStats and set stats', () => {
-      expect(userService.getStats).toHaveBeenCalled();
-      expect(component.userStats).toBe(USERS_STATS_RESPONSE);
-    });
-
-    it('should set isNewSubscription to true if the user is subscribed with stripe and not a Cardealer and inapp purchase is not_eligible', () => {
-      component.isNewSubscription = false;
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(SUBSCRIPTIONS));
-      spyOn(userService, 'getMotorPlans').and.returnValue(Observable.of(PROFILE_NOT_SUB_INFO));
-
-      component.ngOnInit();
-
-      expect(component.isNewSubscription).toBe(true);
-    });
-
-    it('should set isNewSubscription to true if the user is subscribed with stripe and not a Cardealer and inapp purchase is eligible', () => {
-      component.isNewSubscription = false;
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(SUBSCRIPTIONS));
-      spyOn(userService, 'getMotorPlans').and.returnValue(Observable.of(PROFILE_ELIGIBLE_INFO));
-
-      component.ngOnInit();
-
-      expect(component.isNewSubscription).toBe(true);
-    });
-
-    it('should not set isNewSubscription to true if the user is subscribed with stripe and not a Cardealer and inapp purchase is purchase_active', () => {
-      component.isNewSubscription = false;
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(SUBSCRIPTIONS_NOT_SUB));
-      spyOn(userService, 'getMotorPlans').and.returnValue(Observable.of(PROFILE_ACTIVE_INFO));
-
-      component.ngOnInit();
-
-      expect(component.isNewSubscription).toBe(false);
-    });
-
-  });
-
-  describe('logout', () => {
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {preventDefault: preventDefault};
-
-    beforeEach(() => {
+  describe('when clicking on logout button', () => {
+    it('should perform logout logic', () => {
+      mockBeforeEachInit();
       spyOn(userService, 'logout');
-      component.logout(event);
-    });
+      const logoutButton: HTMLElement = fixture.debugElement.query(By.css('.btn-logout')).nativeElement;
 
-    it('should prevent event', () => {
-      expect(preventDefault).toHaveBeenCalled();
-    });
+      logoutButton.click();
 
-    it('should logout', () => {
       expect(userService.logout).toHaveBeenCalled();
     });
   });
