@@ -256,4 +256,12 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     this.analyticsService.trackEvent(event);
   }
 
+  public isDiscountedTier(tier: Tier): boolean {
+    return this.subscriptionsService.isDiscountedTier(tier);
+  }
+
+  public isFreeTier(tier: Tier): boolean {
+    return this.subscriptionsService.isFreeTier(tier);
+  }
+
 }
