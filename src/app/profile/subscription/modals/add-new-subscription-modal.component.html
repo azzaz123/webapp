@@ -121,7 +121,9 @@
             </div>
               <tsl-button [hidden]="!savedCard" [disabled]="!selectedCard || loading" [loading]="loading"
                 (click)="addSubscriptionFromSavedCard(); onClickPay(false);" id="qa-checkout-subscription"
-                className="btn-primary btn-medium stripe" i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}
+                className="btn-primary btn-medium stripe">
+                  <span *ngIf="!isDiscountedTier(selectedTier)" i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}</span>
+                  <span *ngIf="isDiscountedTier(selectedTier)" i18n>Pay {{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}</span>
               </tsl-button>
             </div>
           </div>
