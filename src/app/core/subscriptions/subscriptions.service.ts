@@ -8,11 +8,11 @@ import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.serv
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
 import { mergeMap, map, tap } from 'rxjs/operators';
-import { CARS_CATEGORY } from '../item/item-categories';
 import { CategoryService } from '../category/category.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { I18nService } from '../i18n/i18n.service';
+import { CURRENCY_SYMBOLS } from '../constants';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -197,7 +197,19 @@ export class SubscriptionsService {
       subscription.category_icon = category.icon_id;
       subscription.selected_tier = this.getSelectedTier(subscription);
     }
+
+    this.mapCurrenciesForTiers(subscription);
+
     return subscription;
+  }
+
+  private mapCurrenciesForTiers(subscription: SubscriptionsResponse) {
+    subscription.tiers.forEach(tier => {
+      const mappedCurrencyCharacter = CURRENCY_SYMBOLS[tier.currency];
+      if (mappedCurrencyCharacter) {
+        tier.currency = mappedCurrencyCharacter;
+      }
+    });
   }
 
   private getSelectedTier(subscription: SubscriptionsResponse): Tier {
