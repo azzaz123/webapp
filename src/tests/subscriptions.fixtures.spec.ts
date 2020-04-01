@@ -7,7 +7,8 @@ import {
   SubscriptionSlotResponse,
   SubscriptionSlot,
   SubscriptionSlotGeneralResponse,
-  SUBSCRIPTION_MARKETS
+  SUBSCRIPTION_MARKETS,
+  SubscriptionBenefit
 } from '../app/core/subscriptions/subscriptions.interface';
 import { CATEGORY_DATA_WEB } from './category.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
@@ -24,7 +25,34 @@ export class MockSubscriptionService {
   public getUserSubscriptionType() {
     return of(SUBSCRIPTION_TYPES.stripe);
   }
+
+  public getSubscriptionBenefits() {
+    return of(MOCK_SUBSCRIPTION_BENEFITS);
+  }
 }
+
+export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [
+  {
+    iconId: 'paintbrush',
+    title: 'Professionalize your profile',
+    description: 'Stand out above the rest with a cover photo and a description of what you offer'
+  },
+  {
+    iconId: 'magnet',
+    title: 'Connect with more clients',
+    description: 'Share with millions of potential buyers your phone and website'
+  },
+  {
+    iconId: 'watch',
+    title: 'Without time limit',
+    description: 'Your items will never expire, they will be always ready for a quick sell'
+  },
+  {
+    iconId: 'unlocked',
+    title: 'Without compromise',
+    description: 'You can cancel your subscription whenever you want, without penalties'
+  }
+];
 
 export const MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE: SubscriptionSlotResponse = {
   category_id: 100,

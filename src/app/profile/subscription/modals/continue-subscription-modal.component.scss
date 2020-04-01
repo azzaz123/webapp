@@ -38,3 +38,9 @@
     }
   }
 }
+
+@include media-breakpoint-down(sm) {
+  .ContinueSubscription__box {
+    padding: 0px $spacing-m;
+  }
+}

@@ -58,3 +58,9 @@ export interface SubscriptionSlot {
   available: number;
   limit: number;
 }
+
+export interface SubscriptionBenefit {
+  iconId: string;
+  title: string;
+  description: string;
+}
