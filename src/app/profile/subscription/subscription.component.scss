@@ -151,5 +151,10 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
     &:last-child {
       margin-bottom: 0px;
     }
+
+    &--with-one-free {
+      height: $subscription-mobile-card-height + 40px;
+      min-height: $subscription-mobile-card-height + 40px;
+    }
   }
 }
