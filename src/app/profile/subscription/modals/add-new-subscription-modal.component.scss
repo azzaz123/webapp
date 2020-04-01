@@ -276,6 +276,20 @@ ngb-carousel {
 }
 
 @include media-breakpoint-down(sm) {
+  ngb-carousel {
+    /deep/ {
+      .box-content {
+        padding: $spacing-ml 0 $spacing-xxl;
+      }
+    }
+
+    &.single /deep/ {
+      .box-content {
+        padding: $spacing-ml 0;
+      }
+    }
+  }
+
   .AddNewSubscription__listing-limit-more {
     font-size: $font-size-xs;
   }
