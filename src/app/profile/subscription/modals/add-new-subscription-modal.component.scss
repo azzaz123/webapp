@@ -297,4 +297,10 @@ ngb-carousel {
   .AddNewSubscription__listing-limit-quantity, .AddNewSubscription__listing-limit-price {
     font-size: $font-size-m;
   }
+
+  .AddNewSubscription__box--subtitle {
+    width: 80%;
+    margin: 0 auto;
+    padding-bottom: $spacing-m
+  }
 }
