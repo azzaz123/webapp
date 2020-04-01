@@ -121,7 +121,7 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
 
 @include media-breakpoint-down(sm) {
   .box-content {
-    padding: $spacing-m;
+    padding: $spacing-l $spacing-m $spacing-m;
   }
 
   .Subscriptions__category {
