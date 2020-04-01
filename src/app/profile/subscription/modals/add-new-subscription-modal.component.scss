@@ -303,4 +303,18 @@ ngb-carousel {
     margin: 0 auto;
     padding-bottom: $spacing-m
   }
+
+  tsl-button /deep/ {
+    button {
+      width: 210px;
+    }
+  }
+
+  tsl-stripe-card-element /deep/ {
+    tsl-button /deep/ {
+      button {
+        width: 210px;
+      }
+    }
+  }
 }
