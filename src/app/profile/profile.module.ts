@@ -18,6 +18,7 @@ import { CancelSubscriptionModalComponent } from './subscription/modals/cancel-s
 import { ContinueSubscriptionModalComponent } from './subscription/modals/continue-subscription-modal.component';
 import { CheckSubscriptionInAppModalComponent } from './subscription/modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { UnsubscribeInAppFirstModal } from './subscription/modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { SubscriptionBenefitsComponent } from './subscription/subscription-benefits/subscription-benefits.component';
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { UnsubscribeInAppFirstModal } from './subscription/modals/unsubscribe-in
   ],
   declarations: [
     profileRoutedComponents,
+    SubscriptionBenefitsComponent,
     BecomeProModalComponent,
     UnsubscribeModalComponent,
     DeleteInfoConfirmationModalComponent,

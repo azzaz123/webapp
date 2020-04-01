@@ -25,7 +25,16 @@
   }
 }
 
-.SubscribedSuccessfully__box-image {
-  background-image: url(/assets/images/subscription-success.svg);
-  background-repeat: no-repeat;
+@include media-breakpoint-down(sm) {
+  .SubscribedSuccessfully__box {
+    padding: $spacing-m;
+  }
+
+  .SubscribedSuccessfully__box-content {
+    padding-left: 0;
+  }
+
+  .SubscribedSuccessfully__box-image {
+    min-height: 133px;
+  }
 }

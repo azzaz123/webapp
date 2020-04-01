@@ -1,5 +1,8 @@
 @import "~style/common";
 
+$subscription-card-height: 282px;
+$subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
+
 .box-content {
   color: $blue-grey-3;
   padding: $spacing-xxl $spacing-xxxl*1.93;
@@ -16,10 +19,9 @@
 }
 
 .Subscriptions {
-  display: flex;
-  flex-direction: row;
   justify-content: center;
 }
+
 .Subscriptions__category {
   border: 1px solid $blue-grey-5;
   border-radius: 10px;
@@ -34,7 +36,8 @@
   margin: 0 $spacing-xs;
   flex: 1 1 0px;
   max-width: 308px;
-  height: 282px;
+  height: $subscription-card-height;
+  min-height: $subscription-card-height;
   cursor: pointer;
   p {
     margin: $spacing-xxs;
@@ -94,46 +97,6 @@
   }
 }
 
-.Subscriptions__benefits {
-  margin: 0 0 $spacing-xxl;
-}
-
-.Subscriptions__benefits-content {
-  display: flex;
-  flex-direction: row;
-}
-
-.Subscriptions__benefits-box {
-  display: flex;
-  flex-direction: column;
-}
-
-.Subscriptions__benefits-icon {
-  border-radius: 50%;
-  width: 56px;
-  height: 56px;
-  background-color: $blue-grey-3;
-  mat-icon {
-    width: 56px;
-    height: 56px;
-    /deep/ svg path {
-      fill: $white;
-    }
-  }
-}
-
-.Subscriptions__benefits-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.Subscriptions__benefits--title {
-  font-weight: bold;
-  color: $walla-main;
-  margin: $spacing-ml 0 $spacing-s;
-}
-
 .Subscriptions__subscribed-from {
   color: $walla-main;
   font-weight: bold;
@@ -154,4 +117,22 @@
 .loading-center {
   display: block;
   margin: 0 auto;
+}
+
+@include media-breakpoint-down(sm) {
+  .box-content {
+    padding: $spacing-l $spacing-m $spacing-m;
+  }
+
+  .Subscriptions__category {
+    width: 100%;
+    margin: 0px $spacing-m $spacing-m;
+    padding: $spacing-l $spacing-m;
+    height: $subscription-mobile-card-height;
+    min-height: $subscription-mobile-card-height;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
+  }
 }

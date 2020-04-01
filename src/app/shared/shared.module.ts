@@ -69,6 +69,7 @@ import { NavLinksComponent } from './nav-links/nav-links.component';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { ProBadgeModule } from './pro-badge/pro-badge.module';
 
 @NgModule({
   imports: [
@@ -86,7 +87,8 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     RouterModule,
     UploaderModule,
     SelectModule,
-    DeviceDetectorModule.forRoot()
+    DeviceDetectorModule.forRoot(),
+    ProBadgeModule
   ],
   exports: [
     CardModule,
@@ -140,7 +142,8 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     SelectModule,
     NavLinksComponent,
     LinkTransformPipe,
-    PreventDoubleClickDirective
+    PreventDoubleClickDirective,
+    ProBadgeModule
   ],
   declarations: [
     AdComponent,

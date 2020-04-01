@@ -1,0 +1,28 @@
+@import "~style/common";
+
+.ProBadge {
+  width: $spacing-xxxl;
+  height: $spacing-ml;
+  padding: $spacing-xs $spacing-s;
+  border-radius: 25px;
+
+  display: flex;
+  align-items: center;
+
+  color: $blue-grey-1;
+  background-color: $white;
+
+  font-size: $font-size-xs;
+  line-height: $line-height-ms;
+}
+
+.ProBadge-icon {
+  @include square(14px);
+
+  margin-right: $spacing-xs;
+
+  mat-icon {
+    @include square(14px);
+    margin-right: $spacing-xs;
+  }
+}

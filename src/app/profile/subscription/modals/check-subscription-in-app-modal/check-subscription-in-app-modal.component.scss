@@ -3,7 +3,7 @@
 .CheckSubscriptionInAppModal {
   height: 335px;
   width: 100%;
-  padding: $spacing-xl 50px $spacing-l;
+  padding: $spacing-xl 50px 0px;
 }
 
 .CheckSubscriptionInAppModal__close {
@@ -39,10 +39,34 @@
   font-size: $spacing-ml;
 }
 
+.CheckSubscriptionInAppModal__actions {
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+  padding: $spacing-m 0;
+  background-color: rgba($white, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .CheckSubscriptionInAppModal__actions-ok {
   width: 400px;
 
   /deep/ button {
     width: 100%;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .CheckSubscriptionInAppModal {
+    height: calc(100% + #{$spacing-xl}/2);
+    padding: $spacing-xl $spacing-ms 0;
+  }
+
+  .CheckSubscriptionInAppModal__actions-ok {
+    /deep/ button {
+      width: 200px;
+    }
   }
 }
