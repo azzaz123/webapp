@@ -92,3 +92,11 @@
     }
   }
 }
+
+@include media-breakpoint-down(sm) {
+  .EditSubscription__box--subtitle {
+    width: 80%;
+    margin: 0 auto;
+    padding-bottom: $spacing-m
+  }
+}
