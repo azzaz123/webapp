@@ -36,7 +36,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   public hasFinancialCard: boolean;
   public card: any;
   public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
-  public policyAndPrivacyURL = PRIVACY_POLICY_URL;
+  public policyPrivacyURL = PRIVACY_POLICY_URL;
   @Input() type: string;
   @Input() cart: CartBase;
   @Input() loading: boolean;
