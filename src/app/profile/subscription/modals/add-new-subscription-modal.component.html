@@ -47,10 +47,8 @@
               </div>
               <div class="text-right">
                 <div *ngIf="isFreeTier(selectedTier)" class="AddNewSubscription__free-months">
-                  <b *ngIf="selectedTier.discount_available.months === 1">1 month free</b>
-                  <b *ngIf="selectedTier.discount_available.months > 1">
-                    {{selectedTier.discount_available.months}} months free
-                  </b>
+                  <b *ngIf="selectedTier.discount_available.months === 1" i18n>One month free</b>
+                  <b *ngIf="selectedTier.discount_available.months > 1" i18n>{{selectedTier.discount_available.months}} months free</b>
                 </div>
                 <div *ngIf="isDiscountedTier(selectedTier)" class="AddNewSubscription__price-after-discount" i18n>
                   Then {{selectedTier.price}}{{selectedTier.currency}}/month
@@ -92,7 +90,7 @@
               <div *ngIf="isDiscountedTier(selectedTier) && !isFreeTier(selectedTier)" class="AddNewSubscription__listing-limit-price--selected"
                 i18n>{{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}/month</div>
               <div class="AddNewSubscription__free-months" *ngIf="isFreeTier(selectedTier)">
-                <b *ngIf="selectedTier.discount_available?.months === 1" i18n>1 month free</b>
+                <b *ngIf="selectedTier.discount_available?.months === 1" i18n>One month free</b>
                 <b *ngIf="selectedTier.discount_available?.months > 1" i18n>{{selectedTier.discount_available.months}} months free</b>
               </div>
               <div *ngIf="isDiscountedTier(selectedTier) || isFreeTier(selectedTier)"
