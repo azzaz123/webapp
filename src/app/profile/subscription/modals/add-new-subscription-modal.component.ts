@@ -19,8 +19,7 @@ import {
 } from '../../../core/analytics/analytics-constants';
 import { PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
-
-export const CAR_DEALER_TYPEFORM_LINK = 'https://wallapop.typeform.com/to/xj3GPt';
+import { CAR_DEALER_TYPEFORM_URL } from '../../../core/constants';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -44,7 +43,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   public loaded: boolean;
   public hasSavedCard = true;
   public carsCategoryId = CATEGORY_IDS.CAR;
-  public carDealerTypeformLink = CAR_DEALER_TYPEFORM_LINK;
+  public carDealerTypeformLink = CAR_DEALER_TYPEFORM_URL;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
