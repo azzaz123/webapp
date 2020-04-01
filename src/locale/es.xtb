@@ -982,12 +982,13 @@
   <translation id="8945513634555081527">¿Por qué suscribirte a wallapop PRO?</translation>
   <translation id="6468756919468494280">Ventajas para quienes quieran vender más y mejor</translation>
   <translation id="3088405909522546815">Un mes gratis</translation>
-  <translation id="778538042004330732"><ph name="INTERPOLATION"><ex>{{subscription.tiers[0].discount_available.months}}</ex></ph> meses gratis</msg>
-  <translation id="3502404552821595095"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.months}}</ex></ph> meses gratis</msg>
+  <translation id="778538042004330732"><ph name="INTERPOLATION"><ex>{{subscription.tiers[0].discount_available.months}}</ex></ph> meses gratis</translation>
+  <translation id="3502404552821595095"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.months}}</ex></ph> meses gratis</translation>
   <translation id="8259937392031044504">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
   <translation id="8474946978308732893"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
-  <translation id="2568045788105949140"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</msg>
+  <translation id="2568045788105949140"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
   <translation id="2404822514067336938">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph>y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
+  <translation id="7145885217817968593">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph>y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
   <translation id="43721607585443490">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
-
+  <translation id="3953884740420390564">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
 </translationbundle>
