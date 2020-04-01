@@ -275,3 +275,47 @@ ngb-carousel {
 .bold {
   font-weight: bold;
 }
+
+@include media-breakpoint-down(sm) {
+  ngb-carousel {
+    /deep/ {
+      .box-content {
+        padding: $spacing-ml 0 $spacing-xxl;
+      }
+    }
+
+    &.single /deep/ {
+      .box-content {
+        padding: $spacing-ml 0;
+      }
+    }
+  }
+
+  .AddNewSubscription__listing-limit-more {
+    font-size: $font-size-xs;
+  }
+
+  .AddNewSubscription__listing-limit-quantity, .AddNewSubscription__listing-limit-price {
+    font-size: $font-size-m;
+  }
+
+  .AddNewSubscription__box--subtitle {
+    width: 80%;
+    margin: 0 auto;
+    padding-bottom: $spacing-m
+  }
+
+  tsl-button /deep/ {
+    button {
+      width: 210px;
+    }
+  }
+
+  tsl-stripe-card-element /deep/ {
+    tsl-button /deep/ {
+      button {
+        width: 210px;
+      }
+    }
+  }
+}

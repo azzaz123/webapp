@@ -2,12 +2,14 @@
   <div class="modal-close" (click)="activeModal.dismiss()">
       <mat-icon svgIcon="cross"></mat-icon>
   </div>
-  <div class="row">
-    <div class="SubscribedSuccessfully__box-image col-4"></div>
-    <div class="SubscribedSuccessfully__box-content col-8">
+  <div class="d-flex flex-column flex-md-row justify-content-center">
+    <div class="d-flex justify-content-center">
+      <img src="/assets/images/subscription-success.svg" alt="success!" />
+    </div>
+    <div class="SubscribedSuccessfully__box-content text-center text-md-left">
       <h3 i18n>Perfect!</h3>
       <p i18n>The subscription has been correctly created. Everything is prepared to boost your sales!</p>
-      <tsl-button className="btn btn-primary" (click)="close()" i18n>Go to my profile</tsl-button>
+      <div class="d-flex justify-content-center"><tsl-button className="btn btn-primary" (click)="close()" i18n>Go to my profile</tsl-button></div>
     </div>
   </div>
 </div>

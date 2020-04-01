@@ -230,6 +230,15 @@ describe('Service: User', () => {
 
         expect(response).toEqual(MOCK_FULL_USER);
       });
+
+      it('should ignore cached user if specified', () => {
+        let response: User;
+
+        service.me().subscribe();
+        httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`).flush(USER_DATA);
+        service.me(false).subscribe(r => response = r);
+        httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`).flush(USER_DATA);
+      });
     })
   });
 

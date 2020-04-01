@@ -76,6 +76,10 @@ export class UserService {
     return this._user;
   }
 
+  get isPro(): boolean {
+    return this._user && this._user.featured;
+  }
+
   public login(data: any): Observable<LoginResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
     const body = new HttpParams()
@@ -145,8 +149,8 @@ export class UserService {
     return new User(id, 'No disponible');
   }
 
-  public me(): Observable<User> {
-    if (this._user) {
+  public me(useCache = true): Observable<User> {
+    if (useCache && this._user) {
       return of(this._user);
     }
 

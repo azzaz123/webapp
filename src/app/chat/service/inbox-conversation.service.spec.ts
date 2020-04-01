@@ -349,6 +349,21 @@ describe('InboxConversationService', () => {
         expect(req.request.method).toEqual('GET');
       });
 
+      it('should send RECEIVE signal for new  with message', () => {
+        const NEW_INBOX_CONVERSATION_ID = 'new-conversation-id';
+        const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION(NEW_INBOX_CONVERSATION_ID);
+        const newMessage = new InboxMessage('new-message-id', NEW_INBOX_CONVERSATION_ID, 'hola!', 'user-id', false,
+          new Date(), MessageStatus.SENT, MessageType.TEXT);
+        newConversation.messages = [newMessage];
+
+        spyOn<any>(service, 'getConversation').and.returnValue(observableOf(newConversation));
+        spyOn(realTime, 'sendDeliveryReceipt').and.callThrough();
+
+        service.processNewMessage(newMessage);
+
+        expect(realTime.sendDeliveryReceipt).toHaveBeenCalledWith(newConversation.user.id, newMessage.id, NEW_INBOX_CONVERSATION_ID);
+      });
+
       it('should add new conversation to the top of the list if fetch succeed', () => {
         service.processNewMessage(newInboxMessage);
 

@@ -19,6 +19,7 @@ import { CookieService, CookieOptionsProvider } from 'ngx-cookie';
 import { SplitTestService } from '../core/tracking/split-test.service';
 import { By } from '@angular/platform-browser';
 import { StarsComponent } from '../shared/stars/stars.component';
+import { ProBadgeComponent } from '../shared/pro-badge/pro-badge.component';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -29,7 +30,7 @@ describe('ProfileComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule],
-      declarations: [ ProfileComponent, StarsComponent ],
+      declarations: [ ProfileComponent, StarsComponent, ProBadgeComponent ],
       providers: [
         EventService,
         I18nService,
@@ -105,24 +106,20 @@ describe('ProfileComponent', () => {
       it('should not show a PRO badge', () => {
         mockBeforeEachInit();
 
-        // TODO: Would be nice to refactor this badge into a component
-        const proBadgeParentRef = fixture.debugElement.query(By.css('.badge-pro'));
-
-        expect(proBadgeParentRef).toBeFalsy();
+        const proBadgeHTML = fixture.debugElement.query(By.directive(ProBadgeComponent)).childNodes[0].nativeNode;
+        expect(proBadgeHTML.hasAttribute('hidden')).toBe(true);
         expect(component.isPro).toBe(false);
-      })
+      });
     });
 
-    describe('and the user is featured', () => {
+    describe('and the user is a pro user', () => {
       it('should show a PRO badge', () => {
         mockBeforeEachInit(true);
 
-        // TODO: Would be nice to refactor this badge into a component
-        const proBadgeParentRef = fixture.debugElement.query(By.css('.badge-pro'));
-
-        expect(proBadgeParentRef).toBeTruthy();
+        const proBadgeHTML = fixture.debugElement.query(By.directive(ProBadgeComponent)).childNodes[0].nativeNode;
+        expect(proBadgeHTML.hasAttribute('hidden')).toBe(false);
         expect(component.isPro).toBe(true);
-      })
+      });
     });
   });
 

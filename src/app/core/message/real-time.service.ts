@@ -34,18 +34,13 @@ export class RealTimeService {
   private ongoingRetry: boolean;
 
   public connect(userId: string, accessToken: string) {
-    this.xmpp.isConnected$()
-    .pipe(filter((isConnectedWithXMPP: boolean) => !isConnectedWithXMPP))
-    .subscribe(() => {
-        if (this.connectionService.isConnected) {
-          let startTimestamp = now();
-          this.xmpp.connect$(userId, accessToken).subscribe(() => {
-            this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp);
-            startTimestamp = null;
-          });
-        }
-      }
-    );
+    if (this.connectionService.isConnected && !this.xmpp.clientConnected) {
+      let startTimestamp = now();
+      this.xmpp.connect$(userId, accessToken).subscribe(() => {
+        this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp);
+        startTimestamp = null;
+      });
+    }
   }
 
   public disconnect() {

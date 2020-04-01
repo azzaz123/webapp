@@ -144,25 +144,25 @@ export class SubscriptionsComponent implements OnInit {
     if (this.subscriptionsService.isSubscriptionInApp(subscription)) {
       return CheckSubscriptionInAppModalComponent;
     }
-
-    // User is trying to subscribe but there is an active inapp subscription
-    if (this.subscriptionsService.isOneSubscriptionInApp(this.subscriptions)) {
-      return UnsubscribeInAppFirstModal;
-    }
     
-    // Subscription is active, not cancelled, with only one tier and no limits (Consumer Goods)
-    if (subscription.subscribed_from && !subscription.subscribed_until && subscription.tiers.length === 1 && !subscription.tiers[0].limit) {
+    // Subscription is active, from Stripe, not cancelled, with only one tier and no limits
+    if (this.subscriptionsService.isStripeSubscription(subscription) && !subscription.subscribed_until && subscription.tiers.length === 1 && !subscription.tiers[0].limit) {
       return CancelSubscriptionModalComponent;
     }
 
     // Subscription was previously canceled
-    if (subscription.subscribed_until) {
+    if (this.subscriptionsService.isStripeSubscription(subscription) && subscription.subscribed_until) {
       return ContinueSubscriptionModalComponent;
     }
-
+    
     // Subscription is active
-    if (subscription.subscribed_from) {
+    if (this.subscriptionsService.isStripeSubscription(subscription)) {
       return EditSubscriptionModalComponent;
+    }
+    
+    // User is trying to subscribe but there is an active inapp subscription
+    if (this.subscriptionsService.isOneSubscriptionInApp(this.subscriptions)) {
+      return UnsubscribeInAppFirstModal;
     }
 
     // Subscription is inactive

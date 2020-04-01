@@ -28,6 +28,7 @@ describe('ThirdVoiceReviewComponent', () => {
     fixture = TestBed.createComponent(ThirdVoiceReviewComponent);
     component = fixture.componentInstance;
     component.message = component.message = CREATE_MOCK_INBOX_CONVERSATION().messages[0];
+    component.item = CREATE_MOCK_INBOX_CONVERSATION().item;
     fixture.detectChanges();
   });
 
