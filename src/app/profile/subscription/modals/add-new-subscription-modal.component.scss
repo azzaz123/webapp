@@ -275,6 +275,15 @@ ngb-carousel {
   font-weight: bold;
 }
 
+.AddNewSubscription__free-months {
+  color: $walla-main;
+}
+
+.AddNewSubscription__price-after-discount {
+  color: $blue-grey-2;
+  font-size: $font-size-s;
+}
+
 @include media-breakpoint-down(sm) {
   ngb-carousel {
     /deep/ {

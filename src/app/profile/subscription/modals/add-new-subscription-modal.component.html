@@ -87,11 +87,16 @@
             </div>
             <div
               class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--right">
-              <span *ngIf="!isDiscountedTier(selectedTier)" class="AddNewSubscription__listing-limit-price--selected"
+              <span *ngIf="!isDiscountedTier(selectedTier) && !isFreeTier(selectedTier)" class="AddNewSubscription__listing-limit-price--selected"
                 i18n>{{selectedTier.price}}{{selectedTier.currency}}/month</span>
-              <div *ngIf="isDiscountedTier(selectedTier)" class="AddNewSubscription__listing-limit-price--selected"
+              <div *ngIf="isDiscountedTier(selectedTier) && !isFreeTier(selectedTier)" class="AddNewSubscription__listing-limit-price--selected"
                 i18n>{{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}/month</div>
-              <div *ngIf="isDiscountedTier(selectedTier)">Then {{selectedTier.price}}{{selectedTier.currency}}/month</div>
+              <div class="AddNewSubscription__free-months" *ngIf="isFreeTier(selectedTier)">
+                <b *ngIf="selectedTier.discount_available?.months === 1" i18n>1 month free</b>
+                <b *ngIf="selectedTier.discount_available?.months > 1" i18n>{{selectedTier.discount_available.months}} months free</b>
+              </div>
+              <div *ngIf="isDiscountedTier(selectedTier) || isFreeTier(selectedTier)"
+                class="AddNewSubscription__price-after-discount">Then {{selectedTier.price}}{{selectedTier.currency}}/month</div>
               <div *ngIf="subscription.tiers.length !== 1" class="AddNewSubscription__listing-limit-payment-edit"
                 (click)="carousel.prev()" i18n>Change</div>
             </div>
