@@ -153,6 +153,28 @@ export class I18nService {
       review: 'How did it go? Take a moment to leave some feedback to the user to help our community!',
       price_drop: 'The item price has dropped. Close the deal!',
       drop_price: 'The item price has dropped. Close the deal!',
+      subscriptionBenefits: [
+        {
+          iconId: 'paintbrush',
+          title: 'Professionalize your profile',
+          description: 'Stand out above the rest with a cover photo and a description of what you offer'
+        },
+        {
+          iconId: 'magnet',
+          title: 'Connect with more clients',
+          description: 'Share with millions of potential buyers your phone and website'
+        },
+        {
+          iconId: 'watch',
+          title: 'Without time limit',
+          description: 'Your items will never expire, they will be always ready for a quick sell'
+        },
+        {
+          iconId: 'unlocked',
+          title: 'Without compromise',
+          description: 'You can cancel your subscription whenever you want, without penalties'
+        }
+      ]
     },
     es: {
       daysMomentConfig: {
@@ -305,6 +327,28 @@ export class I18nService {
       review: '¿Como ha ido? ¡Tómate un momento para valorar la experiencia con el usuario y ayudar a la comunidad!',
       price_drop: 'El producto ha bajado de precio. ¡Cierra el trato!',
       drop_price: 'El producto ha bajado de precio. ¡Cierra el trato!',
+      subscriptionBenefits: [
+        {
+          iconId: 'paintbrush',
+          title: 'Profesionaliza tu perfil',
+          description: 'Destaca sobre el resto con una foto portada y una descripción de lo que ofreces'
+        },
+        {
+          iconId: 'magnet',
+          title: 'Conecta con más clientes',
+          description: 'Comparte con millones de potenciales compradores tu teléfono y tu página web'
+        },
+        {
+          iconId: 'watch',
+          title: 'Sin límite de tiempo',
+          description: 'Tus artículos no expiran nunca, siempre están disponibles para una venta rápida'
+        },
+        {
+          iconId: 'unlocked',
+          title: 'Sin compromiso',
+          description: 'Puedes cancelar la suscripción cuando quieras, sin penalizaciones de ningún tipo'
+        }
+      ]
     }
   };
 

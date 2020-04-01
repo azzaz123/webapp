@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse, SUBSCRIPTION_MARKETS } from './subscriptions.interface';
+import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse, SUBSCRIPTION_MARKETS, SubscriptionBenefit } from './subscriptions.interface';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
@@ -12,6 +12,7 @@ import { CARS_CATEGORY } from '../item/item-categories';
 import { CategoryService } from '../category/category.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { I18nService } from '../i18n/i18n.service';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -40,11 +41,13 @@ export class SubscriptionsService {
   public PAYMENT_PROVIDER_STRIPE = false;
   public subscriptions: SubscriptionsResponse[];
   private _userSubscriptionType: SUBSCRIPTION_TYPES;
+  private _subscriptionBenefits: SubscriptionBenefit[];
 
   constructor(private userService: UserService,
               private featureflagService: FeatureflagService,
               private http: HttpClient,
-              private categoryService: CategoryService) {
+              private categoryService: CategoryService,
+              private i18nService: I18nService) {
     this.userService.me().subscribe((user: User) => {
       this.fullName = user ? `${user.firstName} ${user.lastName}` : '';
     });
@@ -222,5 +225,15 @@ export class SubscriptionsService {
 
   public hasOneStripeSubscription(subscriptions: SubscriptionsResponse[]) {
     return subscriptions.some(subscription => this.isStripeSubscription(subscription));
+  }
+
+  public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]>{
+    if (useCache && this._subscriptionBenefits) {
+      return of(this._subscriptionBenefits);
+    }
+    return of(this.i18nService.getTranslations('subscriptionBenefits'))
+      .pipe(
+        tap(response => this._subscriptionBenefits = response)
+      );
   }
 }

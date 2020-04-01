@@ -3,7 +3,7 @@
 .UnsubscribeInAppFirstModal {
   height: 335px;
   width: 100%;
-  padding: $spacing-xl 50px $spacing-l;
+  padding: $spacing-xl 50px 0px;
 }
 
 .UnsubscribeInAppFirstModal__close {
@@ -26,7 +26,6 @@
 
 .UnsubscribeInAppFirstModal__content {
   height: 100%;
-  padding-bottom: $spacing-l;
 }
 
 .UnsubscribeInAppFirstModal__content-description {
@@ -45,5 +44,37 @@
 
   /deep/ button {
     width: 100%;
+  }
+}
+
+.UnsubscribeInAppFirstModal__actions {
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+  padding: $spacing-m 0;
+  background-color: rgba($white, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.UnsubscribeInAppFirstModal__actions-ok {
+  width: 400px;
+
+  /deep/ button {
+    width: 100%;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .UnsubscribeInAppFirstModal {
+    height: 300px;
+    padding: $spacing-xl $spacing-ms 0;
+  }
+
+  .UnsubscribeInAppFirstModal__actions-ok {
+    /deep/ button {
+      width: 200px;
+    }
   }
 }
