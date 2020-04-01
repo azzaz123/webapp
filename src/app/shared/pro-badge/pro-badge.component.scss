@@ -19,10 +19,10 @@
 .ProBadge-icon {
   @include square(14px);
 
-  margin-right: 3.65px;
+  margin-right: $spacing-xs;
 
   mat-icon {
     @include square(14px);
-    margin-right: 4px;
+    margin-right: $spacing-xs;
   }
 }
