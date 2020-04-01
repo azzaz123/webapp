@@ -73,6 +73,7 @@ describe('RealTimeService', () => {
 
     it('should not call xmpp.connect if user is connected', () => {
       connectionService.isConnected = true;
+      xmppService['clientConnected'] = true;
       spyOn(xmppService, 'connect$').and.returnValue(of({}));
       spyOn(xmppService, 'isConnected$').and.returnValue(of(true));
 
