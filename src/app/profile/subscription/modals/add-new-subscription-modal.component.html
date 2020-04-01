@@ -101,7 +101,7 @@
                 (click)="carousel.prev()" i18n>Change</div>
             </div>
           </div>
-          <div class="h-50">
+          <div>
             <div class="w-100 h-100 align-items-center"
               [ngClass]="{'AddNewSubscription__selection-container--with-saved-card': savedCard}">
               <div>
@@ -116,6 +116,11 @@
                 (onClickUseSavedCard)="removeNewCard()" (onFocusCard)="isPaymentError = false"
                 (onStripeCardCreate)="addSubscription($event); onClickPay(true);" (stripeCard)="setCardInfo($event)">
               </tsl-stripe-card-element>
+
+              <div [hidden]="!savedCard" class="AddNewSubscription__legal-info" i18n>
+                By subscribing, you are accepting the <a href="{{termsAndConditionsURL}}" target="_blank">terms & conditions</a>
+                and the <a href="{{privacyPolicyURL}}" target="_blank">privacy policy</a> of Wallapop S.L. and Stripe Ltd
+            </div>
               <tsl-button [hidden]="!savedCard" [disabled]="!selectedCard || loading" [loading]="loading"
                 (click)="addSubscriptionFromSavedCard(); onClickPay(false);" id="qa-checkout-subscription"
                 className="btn-primary btn-medium stripe" i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}

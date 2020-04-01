@@ -15,6 +15,7 @@ import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { ToastrService } from 'ngx-toastr';
 import { Tier } from '../../../core/subscriptions/subscriptions.interface';
+import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -34,6 +35,8 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   public financialCard: FinancialCard;
   public hasFinancialCard: boolean;
   public card: any;
+  public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
+  public policyAndPrivacyURL = PRIVACY_POLICY_URL;
   @Input() type: string;
   @Input() cart: CartBase;
   @Input() loading: boolean;
