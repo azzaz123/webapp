@@ -46,8 +46,10 @@
   }
 
   .SubscriptionBenefitCard {
-    margin-bottom: $spacing-m;
-
+    &:first-child {
+      margin-top: $spacing-xxl;
+    }
+    
     &:last-child {
       margin: 0px;
     }
