@@ -1,5 +1,8 @@
 @import "~style/common";
 
+$subscription-card-height: 282px;
+$subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
+
 .box-content {
   color: $blue-grey-3;
   padding: $spacing-xxl $spacing-xxxl*1.93;
@@ -33,8 +36,8 @@
   margin: 0 $spacing-xs;
   flex: 1 1 0px;
   max-width: 308px;
-  height: 282px;
-  min-height: 282px;
+  height: $subscription-card-height;
+  min-height: $subscription-card-height;
   cursor: pointer;
   p {
     margin: $spacing-xxs;
@@ -123,7 +126,10 @@
 
   .Subscriptions__category {
     width: 100%;
-    margin: 0px 16px 16px;
+    margin: 0px $spacing-m $spacing-m;
+    padding: $spacing-l $spacing-m;
+    height: $subscription-mobile-card-height;
+    min-height: $subscription-mobile-card-height;
 
     &:last-child {
       margin-bottom: 0px;
