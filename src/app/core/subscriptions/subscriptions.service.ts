@@ -276,4 +276,22 @@ export class SubscriptionsService {
         tap(response => this._subscriptionBenefits = response)
       );
   }
+
+  public getDiscountPercentatge(tier: Tier): number {
+    let discountPercentatge = 0;
+
+    if (!tier.discount_available) {
+      return discountPercentatge;
+    }
+
+    try {
+      discountPercentatge = tier.discount_available.discounted_price / tier.price * 100;
+    } catch {}
+
+    if (discountPercentatge > 100) {
+      discountPercentatge = 100;
+    }
+
+    return discountPercentatge;
+  }
 }
