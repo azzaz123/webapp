@@ -80,6 +80,9 @@ describe('AddNewSubscriptionModalComponent', () => {
             },
             checkRetrySubscriptionStatus() {
               return Observable.of('');
+            },
+            getDiscountPercentatge() {
+              return 0;
             }
           }
         },
@@ -325,7 +328,8 @@ describe('AddNewSubscriptionModalComponent', () => {
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.ProfileSubscription,
-        isNewVisa: true
+        isNewVisa: true,
+        discountPercent: 0
       }
     };
 

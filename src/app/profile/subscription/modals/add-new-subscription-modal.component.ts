@@ -245,12 +245,14 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   }
 
   public onClickPay(isNewVisa: boolean) {
+    const discountPercent = this.subscriptionsService.getDiscountPercentatge(this.selectedTier);
     const event: AnalyticsEvent<ClickPaySubscription> = {
       name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.ProfileSubscription,
-        isNewVisa
+        isNewVisa,
+        discountPercent
       }
     };
 
