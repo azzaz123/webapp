@@ -158,6 +158,10 @@ export class ItemService {
       id: id,
       action: 'deselected'
     });
+
+    if (this.selectedItems.length === 0) {
+      this.selectedAction = null;
+    }
   }
 
   protected mapRecordData(response: any): Item {

@@ -53,5 +53,9 @@ tsl-here-maps {
     right: 20px;
     height: 38px;
     width: $btn-width;
+    background-color: $white;
+    color: $blue-grey-1;
+    border: 1px solid $blue-grey-4;
+    font-size: $font-size-s;
   }
 }

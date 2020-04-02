@@ -100,10 +100,11 @@ body {
   }
 }
 
-button {
+button, .btn {
   cursor: pointer;
   &:focus {
     outline: none;
+    box-shadow: none;
   }
 }
 
@@ -128,4 +129,10 @@ button, input, optgroup, select, textarea {
 
 tsl-topbar {
   position: sticky;
+}
+
+nav {
+  a:hover {
+    text-decoration: none;
+  }
 }
