@@ -17,4 +17,8 @@ export interface ClickPaySubscription {
    * The users introduce a new card
    */
   isNewVisa: boolean;
+  /**
+   * Discount applied to the subscritpion in percent
+   */
+  discountPercent: number;
 }
