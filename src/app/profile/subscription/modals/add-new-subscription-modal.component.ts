@@ -93,6 +93,9 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
       this.subscriptionsService.newSubscription(selectedPlanId, paymentMethodId).subscribe((response) => {
         if (response.status === 202) {
           this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: SubscriptionResponse) => {
+            if (!response.payment_status) {
+              this.paymentSucceeded();
+            }
             switch(response.payment_status.toUpperCase() ) {
               case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
                 this.isRetryInvoice = true;
