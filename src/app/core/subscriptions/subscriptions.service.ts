@@ -277,7 +277,7 @@ export class SubscriptionsService {
       );
   }
 
-  public getDiscountPercentatge(tier: Tier): number {
+  public getTierDiscountPercentatge(tier: Tier): number {
     let discountPercentatge = 0;
 
     if (!tier.discount_available) {
@@ -285,7 +285,7 @@ export class SubscriptionsService {
     }
 
     try {
-      discountPercentatge = tier.discount_available.discounted_price / tier.price * 100;
+      discountPercentatge = (tier.price - tier.discount_available.discounted_price) / tier.price * 100;
     } catch {}
 
     if (discountPercentatge > 100) {
