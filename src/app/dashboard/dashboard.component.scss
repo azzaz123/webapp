@@ -4,19 +4,6 @@ $stats-sidebar-width: 340px;
 $h-container-spacing: 80px;
 $v-container-spacing: 40px;
 
-.container {
-  position: static;
-  padding: $v-container-spacing $h-container-spacing;
-  overflow: auto;
-  width: calc(100% - #{$sidebar-width} - #{$stats-sidebar-width} - (2 * #{$h-container-spacing}));
-  box-sizing: content-box;
-  height: calc(100vh - #{$topbar-height} - #{$v-container-spacing * 2});
-  background-color: $blue-grey-5;
-  margin: 0;
-  margin-left: $sidebar-width;
-  margin-top: $topbar-height;
-}
-
 h2 {
   font-size: $font-size-xxl;
   font-weight: $font-weight-chunky;
@@ -34,22 +21,32 @@ h2 {
   text-transform: none;
 }
 
+.dashboard-container {
+  max-height: calc(100vh - #{$topbar-height});
+}
+
+.dashboard-graphs {
+  padding: $spacing-xl $spacing-l;
+  overflow: auto;
+  flex: 1;
+}
+
 $sidebar-title: 64px;
 .stats-sidebar {
   h2 {
     font-size: $font-size-l;
     margin-bottom: $spacing-ml;
   }
-  h2, h3 {
+  h2,
+  h3 {
     padding: 0 $spacing-ml;
   }
-  height: calc(100vh - #{$topbar-height});
   background-color: $white;
   width: $stats-sidebar-width;
-  position: absolute;
   top: $topbar-height;
   right: 0;
   padding: $spacing-ml 0;
+  overflow: auto;
   .stats-sidebar-container {
     position: relative;
     .check-corporate {
@@ -63,7 +60,6 @@ $sidebar-title: 64px;
   }
   .scroll-panel {
     overflow-y: auto;
-    height: calc(100vh - #{$sidebar-title} - #{$topbar-height});
     position: relative;
     .spinner {
       position: absolute;
@@ -87,7 +83,7 @@ $sidebar-title: 64px;
       text-decoration: none;
       text-transform: uppercase;
       &:hover {
-        opacity: .8;
+        opacity: 0.8;
       }
     }
   }
