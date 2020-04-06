@@ -19,6 +19,7 @@ import { ContinueSubscriptionModalComponent } from './subscription/modals/contin
 import { CheckSubscriptionInAppModalComponent } from './subscription/modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { UnsubscribeInAppFirstModal } from './subscription/modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { SubscriptionBenefitsComponent } from './subscription/subscription-benefits/subscription-benefits.component';
+import { DiscountAvailableUnsubscribeInAppModalComponent } from './subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { SubscriptionBenefitsComponent } from './subscription/subscription-benef
     CancelSubscriptionModalComponent,
     ContinueSubscriptionModalComponent,
     CheckSubscriptionInAppModalComponent,
-    UnsubscribeInAppFirstModal
+    UnsubscribeInAppFirstModal,
+    DiscountAvailableUnsubscribeInAppModalComponent
   ],
   entryComponents: [
     UnsubscribeModalComponent,
@@ -58,7 +60,8 @@ import { SubscriptionBenefitsComponent } from './subscription/subscription-benef
     CancelSubscriptionModalComponent,
     ContinueSubscriptionModalComponent,
     CheckSubscriptionInAppModalComponent,
-    UnsubscribeInAppFirstModal
+    UnsubscribeInAppFirstModal,
+    DiscountAvailableUnsubscribeInAppModalComponent
   ]
 })
 export class ProfileModule { }

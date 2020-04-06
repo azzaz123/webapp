@@ -1,0 +1,79 @@
+@import "~style/common";
+
+.DiscountAvailableUnsubscribeInAppModal {
+  width: 100%;
+  padding: $spacing-xl 50px 0px;
+}
+
+.DiscountAvailableUnsubscribeInAppModal__close {
+  @include square($spacing-ms);
+  cursor: pointer;
+  position: fixed;
+  top: $spacing-ml;
+  right: $spacing-ml;
+  mat-icon {
+    @include square($spacing-ms);
+    line-height: initial; 
+
+    svg {
+      path {
+        fill: $blue-grey-4;
+      }
+    }
+  }
+}
+
+.DiscountAvailableUnsubscribeInAppModal__content {
+  height: 100%;
+  padding-bottom: $spacing-l;
+}
+
+.DiscountAvailableUnsubscribeInAppModal__content-description {
+  height: 100%;
+}
+
+.DiscountAvailableUnsubscribeInAppModal__content-title {
+  color: $blue-grey-1;
+  padding-bottom: $spacing-ms;
+  font-size: $spacing-ml;
+}
+
+.DiscountAvailableUnsubscribeInAppModal__actions {
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+  padding: $spacing-m 0;
+  background-color: rgba($white, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.DiscountAvailableUnsubscribeInAppModal__actions-ok {
+  width: 400px;
+
+  /deep/ button {
+    width: 100%;
+  }
+}
+
+.DiscountAvailableUnsubscribeInAppModal__steps {
+  margin: $spacing-m 0px;
+
+  div {
+    margin: $spacing-s 0px;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .DiscountAvailableUnsubscribeInAppModal {
+    height: calc(100% + #{$spacing-xl}/2);
+    padding: $spacing-xl $spacing-ms 0;
+  }
+
+  .DiscountAvailableUnsubscribeInAppModal__actions-ok {
+    /deep/ button {
+      width: 200px;
+    }
+  }
+}
