@@ -181,7 +181,11 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public showManageInApp(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription);
+    return this.subscriptionsService.isSubscriptionInApp(subscription) && !this.subscriptionsService.hasOneFreeTier(subscription);
+  }
+
+  public showUnsubscribeFirst(subscription: SubscriptionsResponse): boolean {
+    return this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneFreeTier(subscription);
   }
 
   public hasOneTierDiscount(subscription: SubscriptionsResponse) {

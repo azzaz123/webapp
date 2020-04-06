@@ -37,6 +37,7 @@
               <span *ngIf="showEdit(subscription)" i18n>Edit</span>
               <span *ngIf="showCancel(subscription)" i18n>Cancel</span>
               <span *ngIf="showManageInApp(subscription)" i18n>Manage in app</span>
+              <span *ngIf="showUnsubscribeFirst(subscription)" i18n>Unsubscribe first from app for your free month</span>
             </p>
         </div>
         <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from" i18n>Subscribe</tsl-button>

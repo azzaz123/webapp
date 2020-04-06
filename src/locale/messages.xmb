@@ -637,14 +637,15 @@
               <ph name="INTERPOLATION"><ex>{{subscription.selected_tier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscription.selected_tier.currency}}</ex></ph>/month
             </msg>
   <msg id="949044872815747177"><source>app/profile/subscription/subscription.component.html:39</source>Manage in app</msg>
-  <msg id="1144407473317535723"><source>app/profile/subscription/subscription.component.html:42</source><source>app/profile/profile-pro-subscription/profile-pro-subscription.component.html:20</source><source>app/profile/profile-pro-subscription/profile-pro-subscription.component.html:27</source><source>app/profile/profile-pro-subscription/profile-pro-subscription.component.html:60</source><source>app/profile/profile-pro-subscription/profile-pro-subscription.component.html:88</source>Subscribe</msg>
-  <msg id="457741553886180613"><source>app/profile/subscription/subscription.component.html:43,45</source>
+  <msg id="5188534013459638497"><source>app/profile/subscription/subscription.component.html:40</source>Unsubscribe first from app for your free month</msg>
+  <msg id="1144407473317535723"><source>app/profile/subscription/subscription.component.html:43</source><source>app/profile/profile-pro-subscription/profile-pro-subscription.component.html:20</source><source>app/profile/profile-pro-subscription/profile-pro-subscription.component.html:27</source><source>app/profile/profile-pro-subscription/profile-pro-subscription.component.html:60</source><source>app/profile/profile-pro-subscription/profile-pro-subscription.component.html:88</source>Subscribe</msg>
+  <msg id="457741553886180613"><source>app/profile/subscription/subscription.component.html:44,46</source>
           Subscribed from <ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph>
         </msg>
-  <msg id="8079107042901096560"><source>app/profile/subscription/subscription.component.html:46,48</source>
+  <msg id="8079107042901096560"><source>app/profile/subscription/subscription.component.html:47,49</source>
           Subscription ends on <ph name="INTERPOLATION"><ex>{{subscription.subscribed_until | date:&apos;dd/MM/yy&apos; }}</ex></ph>
         </msg>
-  <msg id="6512533568413132940"><source>app/profile/subscription/subscription.component.html:49,51</source>
+  <msg id="6512533568413132940"><source>app/profile/subscription/subscription.component.html:50,52</source>
           Stay subscribed
         </msg>
   <msg id="8458658926966860767"><source>app/profile/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:2</source>Are you sure you want to delete billing information?</msg>
