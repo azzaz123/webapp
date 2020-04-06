@@ -91,6 +91,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('cat_building', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/construction.svg'));
   matIconRegistry.addSvgIcon('cat_farming', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/agriculture.svg'));
   matIconRegistry.addSvgIcon('cat_jobs', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/job.svg'));
+  matIconRegistry.addSvgIcon('cat_help', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/help.svg'));
   matIconRegistry.addSvgIcon('send', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/send.svg'));
   matIconRegistry.addSvgIcon('wall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wall.svg'));
   matIconRegistry.addSvgIcon('check', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/check.svg'));
