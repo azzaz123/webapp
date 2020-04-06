@@ -403,7 +403,7 @@ describe('SubscriptionsService', () => {
 
     describe('when tier has no discount', () => {
       it('should return 0', () => {
-        const freeTier: Tier = {
+        const tierWithoutDiscount: Tier = {
           id: 'abcd',
           limit: 288,
           price: 100,
@@ -411,7 +411,7 @@ describe('SubscriptionsService', () => {
           discount_available: null
         }
         
-        const result = service.getTierDiscountPercentatge(freeTier);
+        const result = service.getTierDiscountPercentatge(tierWithoutDiscount);
 
         expect(result).toBe(0);
       });

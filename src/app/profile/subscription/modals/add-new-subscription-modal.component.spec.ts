@@ -81,7 +81,7 @@ describe('AddNewSubscriptionModalComponent', () => {
             checkRetrySubscriptionStatus() {
               return Observable.of('');
             },
-            getDiscountPercentatge() {
+            getTierDiscountPercentatge() {
               return 0;
             }
           }
