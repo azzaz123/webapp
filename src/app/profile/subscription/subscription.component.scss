@@ -48,12 +48,17 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
     align-items: center;
     font-size: $font-size-s;
     margin: 0;
+    white-space: nowrap;
     &--edit {
       color: $walla-main;
       text-align: center;
+      white-space: pre-wrap;
     }
     &--price {
       font-weight: bold;
+    }
+    &--discounted {
+      text-decoration: line-through;
     }
   }
   .Subscriptions__category-title {
@@ -61,6 +66,7 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
     font-weight: bold;
     color: $blue-grey-2;
     margin: $spacing-s 0 0;
+    white-space: nowrap;
   }
   hr {
     display: block;
@@ -95,6 +101,11 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
       margin: 0;
     }
   }
+
+  &--with-one-free {
+    height: 355px;
+    min-height: 355px;
+  }
 }
 
 .Subscriptions__subscribed-from {
@@ -119,7 +130,16 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
   margin: 0 auto;
 }
 
-@include media-breakpoint-down(sm) {
+.Subscriptions__category-info-discount {
+  color: $blue-grey-1;
+  background-color: rgba($yellow-main, 0.3);
+  padding: $spacing-xxs $spacing-ms;
+  margin: $spacing-ms;
+  border-radius: $spacing-xxs;
+  line-height: 22px;
+}
+
+@include media-breakpoint-down(md) {
   .box-content {
     padding: $spacing-l $spacing-m $spacing-m;
   }
@@ -133,6 +153,11 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
 
     &:last-child {
       margin-bottom: 0px;
+    }
+
+    &--with-one-free {
+      height: $subscription-mobile-card-height + 40px;
+      min-height: $subscription-mobile-card-height + 40px;
     }
   }
 }

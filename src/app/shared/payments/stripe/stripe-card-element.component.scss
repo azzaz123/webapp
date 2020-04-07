@@ -92,3 +92,15 @@ tsl-button {
   text-align: left;
   cursor: pointer;
 }
+
+.StripeCardElement__legal-info {
+  color: $blue-grey-3;
+  font-size: $font-size-xs;
+  margin: $spacing-ml 0;
+
+  a {
+    color: $blue-grey-3;
+    text-decoration: none;
+    font-weight: bold;
+  }
+}
