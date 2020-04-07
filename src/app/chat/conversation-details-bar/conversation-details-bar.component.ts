@@ -27,6 +27,8 @@ export class ConversationDetailsBarComponent {
   @Input() currentConversation: InboxConversation;
   @Output() blockUserEvent = new EventEmitter();
 
+  public isExpanded = false;
+
   constructor(private eventService: EventService,
               private modalService: NgbModal,
               private toastr: ToastrService,
@@ -39,12 +41,16 @@ export class ConversationDetailsBarComponent {
               private inboxConversationService: InboxConversationService) {
   }
 
-  get itemIsMine(): boolean {
+  public itemIsMine(): boolean {
     return this.currentConversation.item.isMine;
   }
 
-  get currentConversationisArchived(): boolean {
+  public currentConversationisArchived(): boolean {
     return this.inboxConversationService.containsArchivedConversation(this.currentConversation);
+  }
+
+  public expand(): void {
+    this.isExpanded = !this.isExpanded;
   }
 
   public navigationBack(): void {

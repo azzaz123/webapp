@@ -70,6 +70,14 @@
   font-weight: $font-weight-skinny;
 }
 
+a.card.user-info,  {
+  .card-block, .card-block.expanded {
+    padding: 12px 0;
+    margin: 0;
+  }
+}
+
+
 tsl-user-avatar {
   margin-top: $spacing-s;
   margin-right: $spacing-ms;

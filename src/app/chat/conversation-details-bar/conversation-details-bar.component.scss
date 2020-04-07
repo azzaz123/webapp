@@ -23,7 +23,8 @@
 
 
     .item-details {
-      padding: 10px 0;
+      padding: 5px 0;
+      width: 100%;
       line-height: $spacing-ml;
       height: $spacing-ml;
     }
@@ -38,17 +39,21 @@
     }
   }
 
-  .user-detail{
+  .user-detail {
     width: 100%;
   }
 
   .conversation-header-menu {
-    height: 24px;
-    margin-top: $spacing-s;
+    margin-top: $spacing-xs;
+
+    .user-avatar {
+      float: left;
+    }
 
     mat-icon {
       cursor: pointer;
       padding: 0 3px;
+      margin: 8px;
 
       /deep/ #MVP {
         fill: $blue-grey-2;
@@ -79,8 +84,48 @@
   }
 }
 
+.sm-device-container {
+  width: calc(100% - 100px);
+  display: flex;
+  position: relative;
+  padding: 12px 20px;
+  transition: 0.2s ease;
+  transform: translate(40px, -75px);
+
+
+  &.expanded {
+    width: 100%;
+    transform: translate(0, 0);
+  }
+}
+
+
+tsl-inbox-user-detail {
+  .user-info {
+    background-color: darkred !important;
+
+    .card-block {
+      background-color: darkred;
+      margin-left: 0;
+    }
+  }
+
+}
+
+.collapsed {
+  .sm-device-container {
+    width: 80%;
+    tsl-item-avatar {
+      div {
+        //transition: width 2s, height 4s;
+      }
+    }
+  }
+}
+
 .back-arrow {
-  height: 40px;
+  height: 50px;
+  //width: 24px;
   margin-right: $spacing-m;
 }
 
@@ -119,6 +164,15 @@
         display: inline-flex;
         vertical-align: sub;
       }
+    }
+  }
+}
+
+.item-details {
+  width: 100%;
+  div {
+    hr {
+      margin: 2px 0;
     }
   }
 }
