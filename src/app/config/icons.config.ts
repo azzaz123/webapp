@@ -236,6 +236,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('cat_house-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/realstate.svg'));
   matIconRegistry.addSvgIcon('cat_toolbox-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/services.svg'));
   matIconRegistry.addSvgIcon('cat_ghost-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/others.svg'));
+  matIconRegistry.addSvgIcon('cat_help-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/help.svg'));
   matIconRegistry.addSvgIcon('cat_All-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/allcategories.svg'));
   matIconRegistry.addSvgIcon('cat_Motorbike-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/motos.svg'));
   matIconRegistry.addSvgIcon('cat_car-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/cars.svg'));
@@ -258,6 +259,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('cat_house-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/realstate.svg'));
   matIconRegistry.addSvgIcon('cat_toolbox-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/services.svg'));
   matIconRegistry.addSvgIcon('cat_ghost-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/others.svg'));
+  matIconRegistry.addSvgIcon('cat_help-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/help.svg'));
   matIconRegistry.addSvgIcon('buy', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/buy.svg'));
   matIconRegistry.addSvgIcon('rent', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/rent.svg'));
   matIconRegistry.addSvgIcon('apartment', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/apartment.svg'));
