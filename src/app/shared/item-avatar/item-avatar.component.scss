@@ -20,6 +20,9 @@ div {
   &.bigger {
     @include square-avatar($item-avatar-size-bigger);
   }
+  &.xl {
+    @include square-avatar($item-avatar-size-xl);
+  }
   &.rectangle-xl {
     @include rectangle-avatar($item-avatar-size-big, $item-avatar-size-xl);
   }
