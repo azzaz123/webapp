@@ -6,7 +6,7 @@
  */
 
 /**
- * Buyer clicks on the Chat button to start a conversation
+ * Buyer clicks on the chat button to start a conversation
  */
 export interface ClickChatButton {
   /**
@@ -26,7 +26,11 @@ export interface ClickChatButton {
    */
   isPro?: boolean;
   /**
+   * If the chat button item is a bumped item
+   */
+  isBumped?: boolean;
+  /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: 110 | 111 | 115 | 188 | 29;
+  screenId: 110 | 111 | 115 | 188 | 29 | 194;
 }
