@@ -14,7 +14,7 @@ export class InboxUserDetailComponent implements OnChanges {
   @Input() user: InboxUser;
   @Input() item: InboxItem;
   @Input() phoneNumber: string;
-  @Input() avatarSize = 60;
+  @Input() avatarSize = 50;
 
   constructor(private userService: UserService) {
   }

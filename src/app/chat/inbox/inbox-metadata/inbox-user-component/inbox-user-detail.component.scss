@@ -16,22 +16,24 @@ a.user-info {
   flex-direction: row;
   width: 100%;
   text-decoration: none;
+
   &.calls-panel {
     padding: 0;
     margin: 0;
     background: transparent;
   }
+
   .card-block {
     text-align: left;
-    padding-right: 0;
-    padding-left: 0;
-    margin-left: 0;
-    margin-right: 0;
+    padding: $spacing-ms 0;
+    margin: 0;
+
     h5 {
       font-family: $wallie;
       font-weight: 500;
       font-size: $font-size-m;
     }
+
     .card-title {
       margin-bottom: $spacing-s;
       line-height: $line-height-m;
@@ -71,7 +73,7 @@ a.user-info {
   font-weight: $font-weight-skinny;
 }
 
-a.card.user-info,  {
+a.card.user-info, {
   .card-block, .card-block.expanded {
     padding: 12px 0;
     margin: 0;
