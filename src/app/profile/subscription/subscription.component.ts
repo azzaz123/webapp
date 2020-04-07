@@ -23,6 +23,7 @@ import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal
 import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-modal.component';
 import { CheckSubscriptionInAppModalComponent } from './modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { UnsubscribeInAppFirstModal } from './modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { DiscountAvailableUnsubscribeInAppModalComponent } from './modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 
 @Component({
   selector: 'tsl-subscription',
@@ -137,6 +138,11 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse) {
+    // User is trying to edit subscription that is from inapp and has discount
+    if (this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneTierDiscount(subscription)) {
+      return DiscountAvailableUnsubscribeInAppModalComponent;
+    }
+
     // User is trying to edit subscription that is from inapp
     if (this.subscriptionsService.isSubscriptionInApp(subscription)) {
       return CheckSubscriptionInAppModalComponent;
@@ -175,7 +181,11 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public showManageInApp(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription);
+    return this.subscriptionsService.isSubscriptionInApp(subscription) && !this.subscriptionsService.hasOneFreeTier(subscription);
+  }
+
+  public showUnsubscribeFirst(subscription: SubscriptionsResponse): boolean {
+    return this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneFreeTier(subscription);
   }
 
   public hasOneTierDiscount(subscription: SubscriptionsResponse) {

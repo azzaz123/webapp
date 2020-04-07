@@ -992,4 +992,10 @@
   <translation id="43721607585443490">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
   <translation id="3953884740420390564">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
   <translation id="8217404428211350288">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="3388771596034096026"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Dispones de un mes gratuito<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="1863181759969059894">El COVID-19 nos está afectando a todos. Para paliar esta situación, queremos informarte de que, como usuario de wallapop PRO, te ofrecemos un mes de suscripción gratis. ¿Qué tienes que hacer?</translation>
+  <translation id="214415473377752678">1. Cancela tu plan de suscripción actual. Para ello, accede a la aplicación de <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Apple Store<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> o <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>Google Play<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> (depende del móvil que uses).</translation>
+  <translation id="2347321246651029433">2. Espera a que expire la vigencia del plan al que te habías suscrito. Consulta la fecha de expiración en el correo que te enviamos cuando te das de baja.</translation>
+  <translation id="7589681963132617331">3. Una vez expirado, escoge tu suscripción gratuita aquí en la web.</translation>
+  <translation id="5188534013459638497">Date de baja primero desde la app para tu mes gratis</translation>
 </translationbundle>

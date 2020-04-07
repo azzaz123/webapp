@@ -52,6 +52,7 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
     &--edit {
       color: $walla-main;
       text-align: center;
+      white-space: pre-wrap;
     }
     &--price {
       font-weight: bold;

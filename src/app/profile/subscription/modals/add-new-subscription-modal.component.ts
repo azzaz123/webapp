@@ -94,7 +94,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
         if (response.status === 202) {
           this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: SubscriptionResponse) => {
             if (!response.payment_status) {
-              this.paymentSucceeded();
+              return this.paymentSucceeded();
             }
             switch(response.payment_status.toUpperCase() ) {
               case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
