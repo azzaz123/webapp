@@ -112,4 +112,8 @@ export interface Search {
   brandModel?: string;
   size?: string;
   gender?: "female" | "male";
+  /**
+   * Item condition set as a filter in the search
+   */
+  itemCondition?: string;
 }

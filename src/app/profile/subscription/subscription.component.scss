@@ -139,7 +139,7 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
   line-height: 22px;
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .box-content {
     padding: $spacing-l $spacing-m $spacing-m;
   }

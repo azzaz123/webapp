@@ -37,4 +37,8 @@ export interface FavoriteItem {
    * Item title
    */
   title: string;
+  /**
+   * Identifier of the user that the item belongs to
+   */
+  sellerUserId?: string;
 }

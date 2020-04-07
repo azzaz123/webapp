@@ -225,6 +225,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
     modalRef.result.then(() => {
       modalRef = null;
+      this.reloadPage();
     }, () => {});
   }
 
@@ -248,16 +249,23 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   }
 
   public onClickPay(isNewVisa: boolean) {
+    const discountPercent = this.subscriptionsService.getTierDiscountPercentatge(this.selectedTier);
     const event: AnalyticsEvent<ClickPaySubscription> = {
       name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.ProfileSubscription,
-        isNewVisa
+        isNewVisa,
+        discountPercent
       }
     };
 
     this.analyticsService.trackEvent(event);
+  }
+
+  // TODO: This must be refactored
+  public reloadPage() {
+    window.location.reload();
   }
 
   public isDiscountedTier(tier: Tier): boolean {
