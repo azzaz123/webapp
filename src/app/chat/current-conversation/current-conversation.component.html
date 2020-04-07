@@ -90,9 +90,11 @@
     </div>
   </div>
 
-  <div id="conversation-meta" class="hidden-lg-down">
-    <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item"
-                           [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
+  <div id="conversation-meta" class="conversation-meta hidden-lg-down">
+    <div class="card">
+      <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item"
+                             [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
+    </div>
     <tsl-inbox-item-for-sell *ngxPermissionsOnly="['isProfessional']"
                              [user]="currentConversation.user"></tsl-inbox-item-for-sell>
     <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
