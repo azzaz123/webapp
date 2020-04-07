@@ -31,7 +31,7 @@ import {
   ClickPaySubscription
 } from '../../../core/analytics/analytics-constants';
 
-fdescribe('AddNewSubscriptionModalComponent', () => {
+describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
   let fixture: ComponentFixture<AddNewSubscriptionModalComponent>;
   let activeModal: NgbActiveModal;
