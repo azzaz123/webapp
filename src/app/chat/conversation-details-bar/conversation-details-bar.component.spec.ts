@@ -20,6 +20,7 @@ import { BlockUserService, BlockUserXmppService, InboxConversationService } from
 import { I18nService } from '../../core/i18n/i18n.service';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 import { User } from '../../core/user/user';
+import { SharedModule } from '../../shared/shared.module';
 
 class MockUserService {
 
@@ -66,7 +67,7 @@ class BlockUserServiceMock {
   }
 }
 
-xdescribe('ConversationDetailsBarComponent', () => {
+describe('ConversationDetailsBarComponent', () => {
   let component: ConversationDetailsBarComponent;
   let fixture: ComponentFixture<ConversationDetailsBarComponent>;
 
@@ -84,6 +85,7 @@ xdescribe('ConversationDetailsBarComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
+        SharedModule,
         NgbModule.forRoot(),
         MomentModule,
         NgxPermissionsModule.forRoot()
@@ -119,6 +121,7 @@ xdescribe('ConversationDetailsBarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ConversationDetailsBarComponent);
     component = fixture.componentInstance;
+    component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
     realTime = TestBed.get(RealTimeService);
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);
