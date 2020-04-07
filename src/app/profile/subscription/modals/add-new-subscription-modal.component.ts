@@ -225,6 +225,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
     modalRef.result.then(() => {
       modalRef = null;
+      window.location.reload();
     }, () => {});
   }
 
