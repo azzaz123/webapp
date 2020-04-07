@@ -47,6 +47,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public scrollLocalPosition = 0;
   public noMessages = 0;
   public isConversationChanged: boolean;
+  public isTopBarExpanded = false;
 
   constructor(private eventService: EventService,
               private i18n: I18nService,
@@ -98,6 +99,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   ngOnDestroy() {
     this.currentConversation = null;
+    this.isTopBarExpanded = false;
     if (this.newMessageSubscription) {
       this.newMessageSubscription.unsubscribe();
     }
@@ -182,5 +184,9 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   public navigationBack(): void {
     this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, null);
+  }
+
+  public expandTopBar(isTopBarExpanded: boolean): void {
+    this.isTopBarExpanded = isTopBarExpanded;
   }
 }

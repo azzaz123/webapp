@@ -26,6 +26,7 @@ export class ConversationDetailsBarComponent {
 
   @Input() currentConversation: InboxConversation;
   @Output() blockUserEvent = new EventEmitter();
+  @Output() expandContainer = new EventEmitter();
 
   public isExpanded = false;
 
@@ -51,6 +52,7 @@ export class ConversationDetailsBarComponent {
 
   public expand(): void {
     this.isExpanded = !this.isExpanded;
+    this.expandContainer.emit(this.isExpanded);
   }
 
   public navigationBack(): void {

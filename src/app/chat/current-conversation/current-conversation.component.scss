@@ -15,6 +15,14 @@
       display: flex;
       flex-direction: column;
 
+      tsl-conversation-details-bar {
+        height: 74px;
+
+        &.expanded {
+          height: 250px;
+        }
+      }
+
       .messages-panel-container {
         overflow-y: scroll;
         padding: $spacing-ms $spacing-ml;
@@ -92,6 +100,7 @@
         border-top: 1px solid $color-inbox-background;
       }
     }
+
     @include media-breakpoint-down(md) {
       width: 100%;
     }

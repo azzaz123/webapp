@@ -19,7 +19,9 @@
     <div class="chat">
 
       <tsl-conversation-details-bar [currentConversation]="currentConversation"
-                                    (blockUserEvent)="scrollToLastMessage()"></tsl-conversation-details-bar>
+                                    (blockUserEvent)="scrollToLastMessage()"
+                                    (expandContainer)="expandTopBar($event)"
+                                    [ngClass]="{expanded: isTopBarExpanded}"></tsl-conversation-details-bar>
 
       <div class="messages-panel-container" #scrollElement (scroll)="onScrollMessages($event)">
 
