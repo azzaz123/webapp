@@ -31,7 +31,7 @@ import {
   ClickPaySubscription
 } from '../../../core/analytics/analytics-constants';
 
-describe('AddNewSubscriptionModalComponent', () => {
+fdescribe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
   let fixture: ComponentFixture<AddNewSubscriptionModalComponent>;
   let activeModal: NgbActiveModal;
@@ -119,6 +119,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     component.card = STRIPE_CARD;
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     fixture.detectChanges();
+    spyOn(component, 'reloadPage').and.returnValue(() => {});
   });
 
   describe('close', () => {

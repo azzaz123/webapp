@@ -225,7 +225,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
     modalRef.result.then(() => {
       modalRef = null;
-      window.location.reload();
+      this.reloadPage();
     }, () => {});
   }
 
@@ -261,6 +261,11 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     };
 
     this.analyticsService.trackEvent(event);
+  }
+
+  // TODO: This must be refactored
+  public reloadPage() {
+    window.location.reload();
   }
 
   public isDiscountedTier(tier: Tier): boolean {
