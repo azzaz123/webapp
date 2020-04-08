@@ -7,12 +7,17 @@ import {
   SubscriptionSlotResponse,
   SubscriptionSlot,
   SubscriptionSlotGeneralResponse,
-  SUBSCRIPTION_MARKETS
+  SUBSCRIPTION_MARKETS,
+  SubscriptionBenefit
 } from '../app/core/subscriptions/subscriptions.interface';
 import { CATEGORY_DATA_WEB } from './category.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
 
 export class MockSubscriptionService {
+  getSubscriptions() {
+    return of(MAPPED_SUBSCRIPTIONS);
+  }
+
   public getSlots() {
     return of([]);
   }
@@ -24,7 +29,84 @@ export class MockSubscriptionService {
   public getUserSubscriptionType() {
     return of(SUBSCRIPTION_TYPES.stripe);
   }
+
+  public getSubscriptionBenefits() {
+    return of(MOCK_SUBSCRIPTION_BENEFITS);
+  }
+
+  public isSubscriptionInApp(subscription: SubscriptionsResponse): boolean {
+    if (!subscription.market) {
+      return false;
+    }
+    return subscription.market === SUBSCRIPTION_MARKETS.GOOGLE_PLAY || subscription.market === SUBSCRIPTION_MARKETS.APPLE_STORE;
+  }
+
+  public isOneSubscriptionInApp(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.isSubscriptionInApp(subscription));
+  }
+
+  public isStripeSubscription(subscription: SubscriptionsResponse): boolean {
+    if (!subscription.market) {
+      return false;
+    }
+    return subscription.market === SUBSCRIPTION_MARKETS.STRIPE;
+  }
+
+  public hasOneStripeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.isStripeSubscription(subscription));
+  }
+
+  public hasOneFreeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.hasOneFreeTier(subscription));
+  }
+
+  public hasOneDiscountedSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.hasOneTierDiscount(subscription));
+  }
+
+  public hasOneTierDiscount(subscription: SubscriptionsResponse): boolean {
+    return subscription.tiers.some(tier => this.isDiscountedTier(tier));
+  }
+
+  public hasOneFreeTier(subscription: SubscriptionsResponse): boolean {
+    return subscription.tiers.some(tier => this.isFreeTier(tier));
+  }
+
+  public isDiscountedTier(tier: Tier): boolean {
+    return !!tier.discount_available;
+  }
+
+  public isFreeTier(tier: Tier): boolean {
+    if (!this.isDiscountedTier(tier)) {
+      return false;
+    }
+
+    return tier.discount_available.discounted_price === 0;
+  }
 }
+
+export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [
+  {
+    iconId: 'paintbrush',
+    title: 'Professionalize your profile',
+    description: 'Stand out above the rest with a cover photo and a description of what you offer'
+  },
+  {
+    iconId: 'magnet',
+    title: 'Connect with more clients',
+    description: 'Share with millions of potential buyers your phone and website'
+  },
+  {
+    iconId: 'watch',
+    title: 'Without time limit',
+    description: 'Your items will never expire, they will be always ready for a quick sell'
+  },
+  {
+    iconId: 'unlocked',
+    title: 'Without compromise',
+    description: 'You can cancel your subscription whenever you want, without penalties'
+  }
+];
 
 export const MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE: SubscriptionSlotResponse = {
   category_id: 100,

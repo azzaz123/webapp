@@ -19,8 +19,7 @@ import {
 } from '../../../core/analytics/analytics-constants';
 import { PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
-
-export const CAR_DEALER_TYPEFORM_LINK = 'https://wallapop.typeform.com/to/xj3GPt';
+import { CAR_DEALER_TYPEFORM_URL, TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -44,7 +43,9 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   public loaded: boolean;
   public hasSavedCard = true;
   public carsCategoryId = CATEGORY_IDS.CAR;
-  public carDealerTypeformLink = CAR_DEALER_TYPEFORM_LINK;
+  public carDealerTypeformLink = CAR_DEALER_TYPEFORM_URL;
+  public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
+  public privacyPolicyURL = PRIVACY_POLICY_URL;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -92,6 +93,9 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
       this.subscriptionsService.newSubscription(selectedPlanId, paymentMethodId).subscribe((response) => {
         if (response.status === 202) {
           this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: SubscriptionResponse) => {
+            if (!response.payment_status) {
+              return this.paymentSucceeded();
+            }
             switch(response.payment_status.toUpperCase() ) {
               case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
                 this.isRetryInvoice = true;
@@ -221,6 +225,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
     modalRef.result.then(() => {
       modalRef = null;
+      this.reloadPage();
     }, () => {});
   }
 
@@ -244,16 +249,31 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   }
 
   public onClickPay(isNewVisa: boolean) {
+    const discountPercent = this.subscriptionsService.getTierDiscountPercentatge(this.selectedTier);
     const event: AnalyticsEvent<ClickPaySubscription> = {
       name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.ProfileSubscription,
-        isNewVisa
+        isNewVisa,
+        discountPercent
       }
     };
 
     this.analyticsService.trackEvent(event);
+  }
+
+  // TODO: This must be refactored
+  public reloadPage() {
+    window.location.reload();
+  }
+
+  public isDiscountedTier(tier: Tier): boolean {
+    return this.subscriptionsService.isDiscountedTier(tier);
+  }
+
+  public isFreeTier(tier: Tier): boolean {
+    return this.subscriptionsService.isFreeTier(tier);
   }
 
 }

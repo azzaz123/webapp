@@ -40,13 +40,22 @@
             <div class="AddNewSubscription__listing-limit-payment AddNewSubscription__listing-limit-payment--line-top">
               <div class="text-left">
                 <span class="AddNewSubscription__listing-limit-quantity">
-                  <span *ngIf="selectedTier.limit" i18n>{{selectedTier.limit}} {{subscription.category_name}} Plan</span>
+                  <span *ngIf="selectedTier.limit" i18n>{{selectedTier.limit}} {{subscription.category_name}}
+                    Plan</span>
                   <span *ngIf="!selectedTier.limit" i18n>Unlimited {{subscription.category_name}} Plan</span>
-                </span>    
+                </span>
               </div>
               <div class="text-right">
-                <span class="AddNewSubscription__listing-limit-price"
-                  i18n>{{selectedTier.price}}{{selectedTier.currency}}/month</span>
+                <div *ngIf="isFreeTier(selectedTier)" class="AddNewSubscription__free-months">
+                  <b *ngIf="selectedTier.discount_available.months === 1" i18n>One month free</b>
+                  <b *ngIf="selectedTier.discount_available.months > 1" i18n>{{selectedTier.discount_available.months}} months free</b>
+                </div>
+                <div *ngIf="isDiscountedTier(selectedTier)" class="AddNewSubscription__price-after-discount" i18n>
+                  Then {{selectedTier.price}}{{selectedTier.currency}}/month
+                </div>
+                <div *ngIf="!isDiscountedTier(selectedTier)" class="AddNewSubscription__listing-limit-price" i18n>
+                  {{selectedTier.price}}{{selectedTier.currency}}/month
+                </div>
               </div>
             </div>
             <tsl-button [disabled]="!selectedTier" (click)="carousel.next(); onClickContinueToPayment()" i18n>Continue
@@ -76,14 +85,21 @@
             </div>
             <div
               class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--right">
-              <span class="AddNewSubscription__listing-limit-price--selected"
+              <span *ngIf="!isDiscountedTier(selectedTier) && !isFreeTier(selectedTier)" class="AddNewSubscription__listing-limit-price--selected"
                 i18n>{{selectedTier.price}}{{selectedTier.currency}}/month</span>
-              <br />
-              <span *ngIf="subscription.tiers.length !== 1" class="AddNewSubscription__listing-limit-payment-edit"
-                (click)="carousel.prev()" i18n>Change</span>
+              <div *ngIf="isDiscountedTier(selectedTier) && !isFreeTier(selectedTier)" class="AddNewSubscription__listing-limit-price--selected"
+                i18n>{{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}/month</div>
+              <div class="AddNewSubscription__free-months" *ngIf="isFreeTier(selectedTier)">
+                <b *ngIf="selectedTier.discount_available?.months === 1" i18n>One month free</b>
+                <b *ngIf="selectedTier.discount_available?.months > 1" i18n>{{selectedTier.discount_available.months}} months free</b>
+              </div>
+              <div *ngIf="isDiscountedTier(selectedTier) || isFreeTier(selectedTier)"
+                class="AddNewSubscription__price-after-discount" i18n>Then {{selectedTier.price}}{{selectedTier.currency}}/month</div>
+              <div *ngIf="subscription.tiers.length !== 1" class="AddNewSubscription__listing-limit-payment-edit"
+                (click)="carousel.prev()" i18n>Change</div>
             </div>
           </div>
-          <div class="h-50">
+          <div>
             <div class="w-100 h-100 align-items-center"
               [ngClass]="{'AddNewSubscription__selection-container--with-saved-card': savedCard}">
               <div>
@@ -98,9 +114,16 @@
                 (onClickUseSavedCard)="removeNewCard()" (onFocusCard)="isPaymentError = false"
                 (onStripeCardCreate)="addSubscription($event); onClickPay(true);" (stripeCard)="setCardInfo($event)">
               </tsl-stripe-card-element>
+
+              <div [hidden]="!savedCard" class="AddNewSubscription__legal-info" i18n>
+                By subscribing, you are accepting the <a href="{{termsAndConditionsURL}}" target="_blank">terms & conditions</a>
+                and the <a href="{{privacyPolicyURL}}" target="_blank">privacy policy</a> of Wallapop S.L. and Stripe Ltd
+            </div>
               <tsl-button [hidden]="!savedCard" [disabled]="!selectedCard || loading" [loading]="loading"
                 (click)="addSubscriptionFromSavedCard(); onClickPay(false);" id="qa-checkout-subscription"
-                className="btn-primary btn-medium stripe" i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}
+                className="btn-primary btn-medium stripe">
+                  <span *ngIf="!isDiscountedTier(selectedTier)" i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}</span>
+                  <span *ngIf="isDiscountedTier(selectedTier)" i18n>Pay {{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}</span>
               </tsl-button>
             </div>
           </div>

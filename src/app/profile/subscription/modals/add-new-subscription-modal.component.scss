@@ -1,5 +1,7 @@
 @import "~style/common";
 
+$add-subscription-modal-content-default-height: 382px;
+
 .AddNewSubscription__box {
   text-align: center;
   .AddNewSubscription__box-header {
@@ -220,7 +222,7 @@ ngb-carousel {
       }
     }
     .carousel-item {
-      height: 350px;
+      height: $add-subscription-modal-content-default-height;
     }
 
     .carousel-inner {
@@ -240,13 +242,13 @@ ngb-carousel {
 
   &.extra-info /deep/ {
     .carousel-item {
-      height: 384px;
+      height: $add-subscription-modal-content-default-height + 34px;
     };
   }
 
   &.single /deep/ {
     .carousel-item {
-      height: 312px;
+      height: $add-subscription-modal-content-default-height - 38px;
     }
     .carousel-indicators {
       display: none;
@@ -273,4 +275,69 @@ ngb-carousel {
 
 .bold {
   font-weight: bold;
+}
+
+.AddNewSubscription__free-months {
+  color: $walla-main;
+}
+
+.AddNewSubscription__price-after-discount {
+  color: $blue-grey-2;
+  font-size: $font-size-s;
+}
+
+.AddNewSubscription__legal-info {
+  color: $blue-grey-3;
+  font-size: $font-size-xs;
+  margin: $spacing-ml 0;
+
+  a {
+    color: $blue-grey-3;
+    text-decoration: none;
+    font-weight: bold;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  ngb-carousel {
+    /deep/ {
+      .box-content {
+        padding: $spacing-ml 0 $spacing-xxl;
+      }
+    }
+
+    &.single /deep/ {
+      .box-content {
+        padding: $spacing-ml 0;
+      }
+    }
+  }
+
+  .AddNewSubscription__listing-limit-more {
+    font-size: $font-size-xs;
+  }
+
+  .AddNewSubscription__listing-limit-quantity, .AddNewSubscription__listing-limit-price {
+    font-size: $font-size-m;
+  }
+
+  .AddNewSubscription__box--subtitle {
+    width: 80%;
+    margin: 0 auto;
+    padding-bottom: $spacing-m
+  }
+
+  tsl-button /deep/ {
+    button {
+      width: 210px;
+    }
+  }
+
+  tsl-stripe-card-element /deep/ {
+    tsl-button /deep/ {
+      button {
+        width: 210px;
+      }
+    }
+  }
 }

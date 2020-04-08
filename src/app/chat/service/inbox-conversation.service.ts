@@ -108,7 +108,7 @@ export class InboxConversationService {
   }
 
   public sendReceiveSignalByConversations(conversations: InboxConversation[]): void {
-    conversations.forEach(conversation => conversation.messages
+    conversations.forEach(conversation => (conversation.messages || [])
     .filter(message => message.type === MessageType.TEXT && message.status === MessageStatus.SENT && !message.fromSelf)
     .forEach(message => {
       this.realTime.sendDeliveryReceipt(conversation.user.id, message.id, conversation.id);
@@ -187,14 +187,12 @@ export class InboxConversationService {
   }
 
   private fetchOrCreateInboxConversation(message: InboxMessage) {
-    this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
     this.getConversation(message.thread)
     .subscribe((conversation: InboxConversation) => {
-        this.addNewMessage(conversation, message);
         if (!this.containsConversation(conversation)) {
+          this.sendReceiveSignalByConversations([conversation]);
           this.conversations.unshift(conversation);
         }
-        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       },
       (err) => {
         // This is to display incoming messages if for some reason fetching the conversation fails.
@@ -202,11 +200,10 @@ export class InboxConversationService {
         if (!this.containsConversation(conversation)) {
           this.conversations.unshift(conversation);
         }
-        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       });
   }
 
-  private getConversation(id: String): Observable<InboxConversation> {
+  public getConversation(id: String): Observable<InboxConversation> {
     return this.httpClient.get<InboxConversationApi>(`${environment.baseUrl}${this.API_URL}${id}`)
     .map((conversationResponse: InboxConversationApi) => InboxConversation.fromJSON(conversationResponse, this._selfId));
   }

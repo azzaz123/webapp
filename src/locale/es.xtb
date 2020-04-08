@@ -866,7 +866,7 @@
   <translation id="4264336981703427297">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="1230154438678955604">Cambiar</translation>
   <translation id="4121630926102377372">El pago ha fallado. Por favor introduce otra tarjeta de crédito.</translation>
-  <translation id="6490560397798880387">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
+  <translation id="5703774512613913053">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
   <translation id="6660970336602075267">Cambia el límite de la suscripción</translation>
   <translation id="3072739349487522347"><ph name="INTERPOLATION"><ex>{{subscription?.tiers[i]?.limit}}</ex></ph></translation>
   <translation id="5135045952459940132">Nuevo precio:</translation>
@@ -965,7 +965,7 @@
   <translation id="4006216918341440943">Estado del producto</translation>
   <translation id="8657848090104321234">Escoge un estado</translation>
   <translation id="931255636742351800">Sin límite</translation>
-  <translation id="3953884740420390564">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
+  <translation id="5813721227215884251">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
   <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
   <translation id="2060326108457530649">¡Qué bien que hayas encontrado lo que buscabas!</translation>
   <translation id="7931637164374710264">¿Como ha ido? ¡Tómate un momento para valorar la experiencia con el usuario y ayudar a la comunidad!</translation>
@@ -979,4 +979,23 @@
   <translation id="8438681505217357359">Si tienes dudas, <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>contacta con nosotros<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph>.</translation>
   <translation id="5500835400289213295"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Tienes que darte de baja primero de tus subscripciones en la app<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
   <translation id="3261431386963936058">Si quieres darte de alta, primero debes ir a la app store y cancelar cualquier suscripción activa.</translation>
+  <translation id="8945513634555081527">¿Por qué suscribirte a wallapop PRO?</translation>
+  <translation id="6468756919468494280">Ventajas para quienes quieran vender más y mejor</translation>
+  <translation id="3088405909522546815">Un mes gratis</translation>
+  <translation id="778538042004330732"><ph name="INTERPOLATION"><ex>{{subscription.tiers[0].discount_available.months}}</ex></ph> meses gratis</translation>
+  <translation id="3502404552821595095"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.months}}</ex></ph> meses gratis</translation>
+  <translation id="8259937392031044504">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="8474946978308732893"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="2568045788105949140"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="2404822514067336938">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
+  <translation id="7145885217817968593">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
+  <translation id="43721607585443490">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
+  <translation id="3953884740420390564">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
+  <translation id="8217404428211350288">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="3388771596034096026"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Dispones de un mes gratuito<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="1863181759969059894">El COVID-19 nos está afectando a todos. Para paliar esta situación, queremos informarte de que, como usuario de wallapop PRO, te ofrecemos un mes de suscripción gratis. ¿Qué tienes que hacer?</translation>
+  <translation id="214415473377752678">1. Cancela tu plan de suscripción actual. Para ello, accede a la aplicación de <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Apple Store<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> o <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>Google Play<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> (depende del móvil que uses).</translation>
+  <translation id="2347321246651029433">2. Espera a que expire la vigencia del plan al que te habías suscrito. Consulta la fecha de expiración en el correo que te enviamos cuando te das de baja.</translation>
+  <translation id="7589681963132617331">3. Una vez expirado, escoge tu suscripción gratuita aquí en la web.</translation>
+  <translation id="5188534013459638497">Date de baja primero desde la app para tu mes gratis</translation>
 </translationbundle>

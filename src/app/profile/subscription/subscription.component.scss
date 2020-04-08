@@ -1,5 +1,8 @@
 @import "~style/common";
 
+$subscription-card-height: 282px;
+$subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
+
 .box-content {
   color: $blue-grey-3;
   padding: $spacing-xxl $spacing-xxxl*1.93;
@@ -16,10 +19,9 @@
 }
 
 .Subscriptions {
-  display: flex;
-  flex-direction: row;
   justify-content: center;
 }
+
 .Subscriptions__category {
   border: 1px solid $blue-grey-5;
   border-radius: 10px;
@@ -34,7 +36,8 @@
   margin: 0 $spacing-xs;
   flex: 1 1 0px;
   max-width: 308px;
-  height: 282px;
+  height: $subscription-card-height;
+  min-height: $subscription-card-height;
   cursor: pointer;
   p {
     margin: $spacing-xxs;
@@ -45,12 +48,17 @@
     align-items: center;
     font-size: $font-size-s;
     margin: 0;
+    white-space: nowrap;
     &--edit {
       color: $walla-main;
       text-align: center;
+      white-space: pre-wrap;
     }
     &--price {
       font-weight: bold;
+    }
+    &--discounted {
+      text-decoration: line-through;
     }
   }
   .Subscriptions__category-title {
@@ -58,6 +66,7 @@
     font-weight: bold;
     color: $blue-grey-2;
     margin: $spacing-s 0 0;
+    white-space: nowrap;
   }
   hr {
     display: block;
@@ -92,46 +101,11 @@
       margin: 0;
     }
   }
-}
 
-.Subscriptions__benefits {
-  margin: 0 0 $spacing-xxl;
-}
-
-.Subscriptions__benefits-content {
-  display: flex;
-  flex-direction: row;
-}
-
-.Subscriptions__benefits-box {
-  display: flex;
-  flex-direction: column;
-}
-
-.Subscriptions__benefits-icon {
-  border-radius: 50%;
-  width: 56px;
-  height: 56px;
-  background-color: $blue-grey-3;
-  mat-icon {
-    width: 56px;
-    height: 56px;
-    /deep/ svg path {
-      fill: $white;
-    }
+  &--with-one-free {
+    height: 355px;
+    min-height: 355px;
   }
-}
-
-.Subscriptions__benefits-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.Subscriptions__benefits--title {
-  font-weight: bold;
-  color: $walla-main;
-  margin: $spacing-ml 0 $spacing-s;
 }
 
 .Subscriptions__subscribed-from {
@@ -154,4 +128,36 @@
 .loading-center {
   display: block;
   margin: 0 auto;
+}
+
+.Subscriptions__category-info-discount {
+  color: $blue-grey-1;
+  background-color: rgba($yellow-main, 0.3);
+  padding: $spacing-xxs $spacing-ms;
+  margin: $spacing-ms;
+  border-radius: $spacing-xxs;
+  line-height: 22px;
+}
+
+@include media-breakpoint-down(md) {
+  .box-content {
+    padding: $spacing-l $spacing-m $spacing-m;
+  }
+
+  .Subscriptions__category {
+    width: 100%;
+    margin: 0px $spacing-m $spacing-m;
+    padding: $spacing-l $spacing-m;
+    height: $subscription-mobile-card-height;
+    min-height: $subscription-mobile-card-height;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
+
+    &--with-one-free {
+      height: $subscription-mobile-card-height + 40px;
+      min-height: $subscription-mobile-card-height + 40px;
+    }
+  }
 }

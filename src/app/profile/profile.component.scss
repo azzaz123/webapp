@@ -30,3 +30,11 @@
     display: inline-block;
   }
 }
+
+.nav-link:last-child {
+  margin-right: 0px;
+} 
+
+.Profile__title {
+  margin-right: $spacing-ms;
+}

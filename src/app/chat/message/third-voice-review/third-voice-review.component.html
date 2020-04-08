@@ -1,4 +1,4 @@
-<tsl-third-voice-message [message]="message">
+<tsl-third-voice-message *ngIf="!item.isMine" [message]="message">
   <span i18n>Great! You found what you were looking for!</span>
 </tsl-third-voice-message>
 

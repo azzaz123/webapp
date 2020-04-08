@@ -2,6 +2,11 @@
 
 .NewCardModal {
   padding: $spacing-xxl $spacing-xxxl;
+
+  @include media-breakpoint-down(md) {
+    padding: $spacing-l $spacing-m;
+  }
+
   .NewCardModal__header {
     h1 {
       font-size: $font-size-l;

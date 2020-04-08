@@ -10,10 +10,16 @@ export interface SubscriptionResponse {
 }
 
 export interface Tier {
-    id: string,
-    limit?: number,
-    price: number,
-    currency: string
+    id: string;
+    limit?: number;
+    price: number;
+    currency: string;
+    discount_available?: TierDiscount
+}
+
+export interface TierDiscount {
+  months: number;
+  discounted_price: number;
 }
 
 export enum SUBSCRIPTION_MARKETS {
@@ -51,4 +57,10 @@ export interface SubscriptionSlot {
   category: CategoryResponse;
   available: number;
   limit: number;
+}
+
+export interface SubscriptionBenefit {
+  iconId: string;
+  title: string;
+  description: string;
 }
