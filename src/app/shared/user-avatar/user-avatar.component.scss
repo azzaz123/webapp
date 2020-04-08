@@ -28,6 +28,16 @@ div {
   @include square(50px);
 }
 
+div {
+  position: relative;
+
+  tsl-status-icon {
+    position: absolute;
+    right: 20px;
+    bottom: 16px;
+  }
+}
+
 .avatar-rounded {
   background-size: cover;
   border-radius: 50%;

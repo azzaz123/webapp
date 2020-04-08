@@ -31,7 +31,6 @@ import { ArchivedInboxConversationComponent } from './inbox/archived-inbox-conve
 import { InboxUserDetailComponent } from './inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component';
 import { InboxItemDetailComponent } from './inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component';
 import { ScrollingMessageComponent } from './scrolling-message';
-import { StatusIconComponent } from './inbox/inbox-metadata/status-icon';
 import { InboxItemForSellComponent } from './inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component';
 import { AutosizeModule } from 'ngx-autosize';
 import { MessageModule } from './message/message.module';
@@ -77,7 +76,6 @@ import { ConversationDetailsBarComponent } from './conversation-details-bar';
     InboxItemForSellComponent,
     BlockSendLinkComponent,
     ScrollingMessageComponent,
-    StatusIconComponent,
     ConversationDetailsBarComponent
   ],
   exports: [

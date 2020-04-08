@@ -69,6 +69,7 @@ import { NavLinksComponent } from './nav-links/nav-links.component';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { StatusIconComponent } from './status-icon';
 
 @NgModule({
   imports: [
@@ -104,6 +105,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
+    StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
     ArchiveButtonComponent,
@@ -156,6 +158,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
+    StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
     ArchiveButtonComponent,
