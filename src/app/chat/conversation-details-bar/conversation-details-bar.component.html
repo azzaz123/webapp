@@ -16,7 +16,10 @@
   <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
 
     <div *ngIf="!isExpanded" class="user-avatar hidden-xl-up">
-      <tsl-user-avatar [user]="currentConversation.user"></tsl-user-avatar>
+      <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
+         target="_blank" class="user-avatar">
+        <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
+      </a>
     </div>
 
     <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
@@ -45,7 +48,8 @@
   </div>
 </div>
 
-<div class="sm-device-container hidden-xl-up" [ngClass]="{'expanded': isExpanded, 'faded': !currentConversation.user.available}">
+<div class="sm-device-container hidden-xl-up"
+     [ngClass]="{'expanded': isExpanded, 'faded': !currentConversation.user.available}">
   <tsl-item-avatar [item]="currentConversation.item" class="hidden-sm-down"
                    size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
   <tsl-item-avatar [item]="currentConversation.item" class="hidden-md-up"
