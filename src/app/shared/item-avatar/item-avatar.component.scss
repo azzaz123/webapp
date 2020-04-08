@@ -25,6 +25,9 @@ div {
   }
   &.rectangle-xl {
     @include rectangle-avatar($item-avatar-size-big, $item-avatar-size-xl);
+    &.transition {
+      transition: height .5s, width 0s
+    }
   }
   &.full {
     width: 100%;
