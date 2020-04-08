@@ -45,7 +45,7 @@
   </div>
 </div>
 
-<div class="sm-device-container hidden-xl-up" [ngClass]="{'expanded': isExpanded}">
+<div class="sm-device-container hidden-xl-up" [ngClass]="{'expanded': isExpanded, 'faded': !currentConversation.user.available}">
   <tsl-item-avatar [item]="currentConversation.item" class="hidden-sm-down"
                    size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
   <tsl-item-avatar [item]="currentConversation.item" class="hidden-md-up"

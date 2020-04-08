@@ -82,6 +82,12 @@
       opacity: 0.5;
     }
   }
+
+  tsl-item-avatar,
+  .item-details,
+  .conversation-header-menu .user-avatar {
+    opacity: 0.5;
+  }
 }
 
 .sm-device-container {
@@ -115,6 +121,7 @@ tsl-inbox-user-detail {
 .collapsed {
   .sm-device-container {
     width: 80%;
+
     tsl-item-avatar {
       div {
         //transition: width 2s, height 4s;
@@ -125,7 +132,6 @@ tsl-inbox-user-detail {
 
 .back-arrow {
   height: 50px;
-  //width: 24px;
   margin-right: $spacing-m;
 }
 
@@ -170,6 +176,7 @@ tsl-inbox-user-detail {
 
 .item-details {
   width: 100%;
+
   div {
     hr {
       margin: 2px 0;
