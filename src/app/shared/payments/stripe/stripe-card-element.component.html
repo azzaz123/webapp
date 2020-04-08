@@ -15,6 +15,11 @@
             <div class="StripeCard__error" *ngIf="isPaymentError" i18n>The payment failed. Please enter another credit card.</div>
         </div>
 
+        <div [hidden]="type !== 'subscription'" class="StripeCardElement__legal-info" i18n>
+            By subscribing, you are accepting the <a href="{{termsAndConditionsURL}}" target="_blank">terms & conditions</a>
+            and the <a href="{{policyPrivacyURL}}" target="_blank">privacy policy</a> of Wallapop S.L. and Stripe Ltd
+        </div>
+
         <tsl-button [hidden]="type === 'new' || type === 'subscription'"
                     id="checkout-card-button"
                     className="btn-primary btn-medium stripe"

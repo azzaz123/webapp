@@ -80,6 +80,9 @@ describe('AddNewSubscriptionModalComponent', () => {
             },
             checkRetrySubscriptionStatus() {
               return of('');
+            },
+            getTierDiscountPercentatge() {
+              return 0;
             }
           }
         },
@@ -116,6 +119,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     component.card = STRIPE_CARD;
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     fixture.detectChanges();
+    spyOn(component, 'reloadPage').and.returnValue(() => {});
   });
 
   describe('close', () => {
@@ -325,7 +329,8 @@ describe('AddNewSubscriptionModalComponent', () => {
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.ProfileSubscription,
-        isNewVisa: true
+        isNewVisa: true,
+        discountPercent: 0
       }
     };
 

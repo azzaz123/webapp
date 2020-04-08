@@ -15,6 +15,7 @@ import { CategoryService } from '../category/category.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { I18nService } from '../i18n/i18n.service';
+import { CURRENCY_SYMBOLS } from '../constants';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -199,7 +200,19 @@ export class SubscriptionsService {
       subscription.category_icon = category.icon_id;
       subscription.selected_tier = this.getSelectedTier(subscription);
     }
+
+    this.mapCurrenciesForTiers(subscription);
+
     return subscription;
+  }
+
+  private mapCurrenciesForTiers(subscription: SubscriptionsResponse) {
+    subscription.tiers.forEach(tier => {
+      const mappedCurrencyCharacter = CURRENCY_SYMBOLS[tier.currency];
+      if (mappedCurrencyCharacter) {
+        tier.currency = mappedCurrencyCharacter;
+      }
+    });
   }
 
   private getSelectedTier(subscription: SubscriptionsResponse): Tier {
@@ -218,15 +231,43 @@ export class SubscriptionsService {
     return subscriptions.some(subscription => this.isSubscriptionInApp(subscription));
   }
 
-  public isStripeSubscription(subscription: SubscriptionsResponse) {
+  public isStripeSubscription(subscription: SubscriptionsResponse): boolean {
     if (!subscription.market) {
       return false;
     }
     return subscription.market === SUBSCRIPTION_MARKETS.STRIPE;
   }
 
-  public hasOneStripeSubscription(subscriptions: SubscriptionsResponse[]) {
+  public hasOneStripeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
     return subscriptions.some(subscription => this.isStripeSubscription(subscription));
+  }
+
+  public hasOneFreeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.hasOneFreeTier(subscription));
+  }
+
+  public hasOneDiscountedSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.hasOneTierDiscount(subscription));
+  }
+
+  public hasOneTierDiscount(subscription: SubscriptionsResponse): boolean {
+    return subscription.tiers.some(tier => this.isDiscountedTier(tier));
+  }
+
+  public hasOneFreeTier(subscription: SubscriptionsResponse): boolean {
+    return subscription.tiers.some(tier => this.isFreeTier(tier));
+  }
+
+  public isDiscountedTier(tier: Tier): boolean {
+    return !!tier.discount_available;
+  }
+
+  public isFreeTier(tier: Tier): boolean {
+    if (!this.isDiscountedTier(tier)) {
+      return false;
+    }
+
+    return tier.discount_available.discounted_price === 0;
   }
 
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]>{
@@ -237,5 +278,23 @@ export class SubscriptionsService {
       .pipe(
         tap(response => this._subscriptionBenefits = response)
       );
+  }
+
+  public getTierDiscountPercentatge(tier: Tier): number {
+    let discountPercentatge = 0;
+
+    if (!tier.discount_available) {
+      return discountPercentatge;
+    }
+
+    try {
+      discountPercentatge = (tier.price - tier.discount_available.discounted_price) / tier.price * 100;
+    } catch {}
+
+    if (discountPercentatge > 100) {
+      discountPercentatge = 100;
+    }
+
+    return discountPercentatge;
   }
 }

@@ -236,7 +236,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('cat_toolbox-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/services.svg'));
   matIconRegistry.addSvgIcon('cat_ghost-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/others.svg'));
   matIconRegistry.addSvgIcon('cat_All-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/allcategories.svg'));
-  matIconRegistry.addSvgIcon('cat_Motorbike-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/motos.svg'));
+  matIconRegistry.addSvgIcon('cat_motorbike-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/motos.svg'));
   matIconRegistry.addSvgIcon('cat_car-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/cars.svg'));
   matIconRegistry.addSvgIcon('cat_helmet-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/motoraccesories.svg'));
   matIconRegistry.addSvgIcon('cat_tv-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/tv.svg'));

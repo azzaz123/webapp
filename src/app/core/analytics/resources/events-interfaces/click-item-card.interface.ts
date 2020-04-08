@@ -53,4 +53,8 @@ export interface ClickItemCard {
    * If the listing has shipping allowed
    */
   shippingAllowed?: boolean;
+  /**
+   * Identifier of the user that the item belongs to
+   */
+  sellerUserId?: string;
 }
