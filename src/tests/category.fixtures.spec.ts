@@ -48,6 +48,15 @@ export const CATEGORY_DATA_WEB: Array<CategoryResponse> = [
     icon_id: 'helmet',
     name: 'Motor parts',
     vertical_id: 'consumer_goods'
+  },
+  {
+    category_id: 23000,
+    has_brand: false,
+    has_model: false,
+    has_object_type: false,
+    icon_id: 'help',
+    name: 'Help',
+    vertical_id: 'consumer_goods'
   }
 ];
 
@@ -87,6 +96,16 @@ export const CATEGORIES_DATA_CONSUMER_GOODS: CategoryResponse[] = [{
   has_object_type: true,
   has_brand: true,
   has_model: true,
+  object_type_title: 'title'
+},
+{
+  category_id: 23000,
+  name: 'Help',
+  icon_id: 'help',
+  vertical_id: 'help',
+  has_object_type: false,
+  has_brand: false,
+  has_model: false,
   object_type_title: 'title'
 },
 {
@@ -133,14 +152,21 @@ export const CATEGORIES_OPTIONS_CONSUMER_GOODS: CategoryOption[] = [{
   has_brand: false,
   has_model: false,
   object_type_title: 'title'
-},
-{
+}, {
   value: '16000',
   label: 'Phones',
   icon_id: 'smartphone',
   has_object_type: true,
   has_brand: true,
   has_model: true,
+  object_type_title: 'title'
+}, {
+  value: '23000',
+  label: 'Help',
+  icon_id: 'help',
+  has_object_type: false,
+  has_brand: false,
+  has_model: false,
   object_type_title: 'title'
 }];
 
