@@ -6,7 +6,6 @@ $coachmark-left-margin: $spacing-xl;
   border: none;
   font-size: $font-size-xs;
   line-height: $line-height-m;
-  color: $blue-grey-2;
   z-index: 99 !important;
   font-family: $wallie;
   &.popover-right {
@@ -19,6 +18,7 @@ $coachmark-left-margin: $spacing-xl;
     width: 220px;
     display: flex;
     padding: $spacing-m;
+    color: $blue-grey-2;
     mat-icon {
       @include square(26px);
       margin-right: $spacing-ms;
