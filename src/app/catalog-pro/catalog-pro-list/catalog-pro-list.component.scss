@@ -94,16 +94,6 @@ tsl-spinner {
   }
 }
 
-#top-buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 1%;
-  .upload {
-    font-weight: $font-weight-chunky;
-  }
-}
-
 #catalog-empty-state {
   display: flex;
   align-items: center;
