@@ -15,16 +15,9 @@ $feature-button-width: 170px;
     padding: $spacing-ms $spacing-m;
     border-radius: $border-radius / 2;
     font-size: $font-size-s;
-    &:after {
-      content: " ";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      margin-left: -$spacing-xs;
-      border-width: 5px;
-      border-style: solid;
-      border-color: $blue-grey-2 transparent transparent transparent;
-    }
+  }
+  .arrow:before {
+    border-top-color: $blue-grey-1;
   }
 }
 
