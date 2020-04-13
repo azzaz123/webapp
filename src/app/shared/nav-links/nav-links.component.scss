@@ -33,10 +33,8 @@
   }
 
   .NavLinks__sort-select {
-    position: absolute;
-    right: 0px;
-    margin-top: 1px;
-
+    margin-left: auto;
+    margin-right: 0;
     tsl-select {
       font-size: $font-size-xs;
       font-weight: $font-weight-chunky;
