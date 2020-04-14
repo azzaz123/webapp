@@ -1,17 +1,26 @@
 @import "~style/common";
 
+
+
+
 .top-bar {
+
+  .expanded {
+    .sm-device-container {
+      padding-top: $spacing-xxl;
+    }
+  }
+
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: $spacing-ms $spacing-ml;
+  padding: $spacing-ms $spacing-ml 6px $spacing-ml;
   border-bottom: 1px solid $blue-grey-5;
   z-index: 99;
   top: 0;
+  background-color: white;
 
   .lg-device-container, .sm-device-container {
-    display: flex;
-    flex-grow: 1;
+    display: inline-flex;
+    background-color: transparent;
 
     .user-avatar {
       height: 40px;
@@ -24,7 +33,6 @@
 
     .item-details {
       padding: 5px 0;
-      width: 100%;
       line-height: $spacing-ml;
       height: $spacing-ml;
     }
@@ -39,21 +47,15 @@
     }
   }
 
-  .user-detail {
-    width: 100%;
-  }
-
   .conversation-header-menu {
     margin-top: $spacing-xs;
-
-    .user-avatar {
-      float: left;
-    }
+    display: flex;
+    float: right;
 
     mat-icon {
       cursor: pointer;
       padding: 0 3px;
-      margin: 8px;
+      margin: $spacing-s 0 $spacing-s $spacing-s;
 
       /deep/ #MVP {
         fill: $blue-grey-2;
@@ -91,17 +93,38 @@
 }
 
 .sm-device-container {
-  width: calc(100% - 150px);
-  display: flex;
-  position: relative;
-  padding: 12px 20px;
-  transition: 0.2s ease;
-  transform: translate(40px, -75px);
-
-
   &.expanded {
+    width: calc(100% - 36px);
+    padding-top: $spacing-xxxl;
+
+  }
+  width: calc(100% - 72px);
+  transition: padding-top 1s ease;
+  background-color: white;
+  display: inline-block;
+
+  .avatar-container {
+    display: inline;
+    min-width: 99px;
+
+    .avatar {
+      display: inline-block;
+      min-width: 99px;
+
+      tsl-item-avatar {
+        float: right;
+      }
+    }
+  }
+
+  .item-details {
     width: 100%;
-    transform: translate(0, 0);
+    float: right;
+    div {
+      hr {
+        margin: $spacing-xxs 0;
+      }
+    }
   }
 }
 
@@ -115,24 +138,18 @@ tsl-inbox-user-detail {
       margin-left: 0;
     }
   }
-
 }
 
 .collapsed {
   .sm-device-container {
     width: 80%;
-
-    tsl-item-avatar {
-      div {
-        //transition: width 2s, height 4s;
-      }
-    }
   }
 }
 
 .back-arrow {
+  position: absolute;
   height: 50px;
-  margin-right: $spacing-m;
+  z-index: 999;
 }
 
 .card-block {
@@ -147,39 +164,34 @@ tsl-inbox-user-detail {
   }
 
   .card-item-info {
-    display: flex;
     flex-direction: row;
 
     .price {
       font-size: $font-size-m;
       color: $blue-grey-1;
-      flex-grow: 1;
     }
 
     .stats {
       font-size: $font-size-xs;
       color: $blue-grey-2;
       line-height: $line-height-l;
-      flex-grow: 0;
 
       mat-icon {
         height: 14px;
         width: 17px;
-        margin: 0 $spacing-s;
-        margin-right: $spacing-xxs;
-        display: inline-flex;
+        margin: 0 $spacing-xxs 0 $spacing-s;
         vertical-align: sub;
       }
     }
   }
 }
 
-.item-details {
-  width: 100%;
+.user-detail {
+  opacity: 0;
+  transition: opacity .1s ease-in;
 
-  div {
-    hr {
-      margin: 2px 0;
-    }
+  &.user-detail-dropdown {
+    opacity: 1;
+    transition: opacity 1s ease-in;
   }
 }

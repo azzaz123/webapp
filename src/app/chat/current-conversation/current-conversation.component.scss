@@ -17,10 +17,7 @@
 
       tsl-conversation-details-bar {
         height: 74px;
-
-        &.expanded {
-          height: 250px;
-        }
+        z-index: 999;
       }
 
       .messages-panel-container {
