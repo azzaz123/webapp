@@ -81,7 +81,7 @@
   <translation id="5371960677736303052">¿Dónde?</translation>
   <translation id="958176169457402389">Tus productos se verán en:</translation>
   <translation id="4163236016169197783">Este es el punto donde está ubicado tu perfil de wallapop y en él aparecerán todos tus productos.</translation>
-  <translation id="7840802104684576719">Sitúa el punto en una zona donde suelas estar. Esto facilitará que te encuentren usuarios cercanos y que mejore tu experiencia de uso.</translation>
+  <translation id="8931167307338687444">Sitúa el punto en una zona donde suelas estar. Esto facilitará que te encuentren usuarios cercanos y que mejore tu experiencia de uso.</translation>
   <translation id="1902100407096396858">Categorías</translation>
   <translation id="3734434835434478522">Muro</translation>
   <translation id="3825726981798982045">Mi Catálogo</translation>
@@ -165,7 +165,7 @@
   <translation id="7026441111090698984">Precio no negociable</translation>
   <translation id="1292901362619782619">Acepto intercambios</translation>
   <translation id="2224879576270143088">Cosas que suelen preguntar los compradores...</translation>
-  <translation id="3535134560822959404">Subir coche</translation>
+  <translation id="4770496043619864687">Subir coche</translation>
   <translation id="3088723279740360142">Submit Ad</translation>
   <translation id="4138346261331244869">¿Cómo quedará?</translation>
   <translation id="4918814479561513634">¿Estas seguro que quieres abandonar esta página?</translation>
@@ -525,8 +525,8 @@
   <translation id="428164738594731840">Cancelar</translation>
   <translation id="7166295046269696440">Desde <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> a <ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
   <translation id="7291421467944217279">Activar coches</translation>
-  <translation id="4937564264919515438">Puedes subir <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
-  <translation id="7783294297217449801">Puedes activar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="1968377313585576070">Puedes subir <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="4624651686544699977">Puedes activar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
   <translation id="4862629622121675984"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> plan</translation>
   <translation id="3780659623990720220"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> plan</translation>
   <translation id="1290608591542945444">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
@@ -580,7 +580,7 @@
   <translation id="4551195994779724664">Mostrar dirección apróximada de tu inmueble</translation>
   <translation id="87397333944060990">¿Tu inmueble es para alquilar o para vender?</translation>
   <translation id="4222698529756167847">¿Qué tipo de inmueble es?</translation>
-  <translation id="2304052952512211620">Añade un precio justo y la superficie en m2. Dínos también en qué estado se encuentra la propiedad.</translation>
+  <translation id="8792574244784521102">Añade un precio justo y la superficie en m2. Dínos también en qué estado se encuentra la propiedad.</translation>
   <translation id="2249392835431463782">¿Cuántas habitaciones y baños tiene?</translation>
   <translation id="6916262870833373718">Cosas que le gusta saber a nuestros usuarios...</translation>
   <translation id="8983162191434268514">Escribe bien (y sin faltas de ortografía) para que te encuentren más fácilmente.</translation>
@@ -680,7 +680,7 @@
   <translation id="3879651736105644738">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
   <translation id="916352071278248935">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amCalendar:momentConfig}}</ex></ph></translation>
   <translation id="8413861205232330672">Todavía no disponemos de datos para este producto</translation>
-  <translation id="8742069867763156698">
+  <translation id="8167775963255607742">
     Por sólo
     <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
     <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
@@ -775,7 +775,7 @@
   <translation id="5342432350421167093">Nombre</translation>
   <translation id="3586674587150281199">Apellidos</translation>
   <translation id="4644971093370005279">Web:</translation>
-  <translation id="2959266806536471647">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="2322741539330475902">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="792930787826735850">Tu perfil</translation>
   <translation id="4086606389696938932">Cuenta</translation>
   <translation id="5722353260643724736">Método de pago</translation>
@@ -808,13 +808,13 @@
   <translation id="8776614783712961708">¡Oh, no!</translation>
   <translation id="3345227992092802987">¡No puedes mandar enlaces (no relacionados a wallapop) en esta conversación!</translation>
   <translation id="6158688416374751486">Añade un precio justo y el area en metros cuadrados. Cuéntanos también el estado de la propiedad</translation>
-  <translation id="791299080994199797">Presta atención a los errores ortográficos, así nuestros usuarios podrán encontrar tu propiedad más facilmente.</translation>
+  <translation id="6854882443364631275">Presta atención a los errores ortográficos, así nuestros usuarios podrán encontrar tu propiedad más facilmente.</translation>
   <translation id="6419236949160000852">Este es el lugar donde se encuentra tu espacio. Esta ubicación podría ser diferente de la ubicación de tu perfil.</translation>
   <translation id="1554463637849211201">Fotos</translation>
   <translation id="591481955696105417">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 4MB.</translation>
   <translation id="2852614655612881023">¿Que aspecto tiene?</translation>
-  <translation id="9023062354327973338">No hagas errores, ya que así la gente te encontrará más facilmente.</translation>
-  <translation id="2462425780160875270">Añade un precio justo y la categoria que encaja mejor con tu item</translation>
+  <translation id="9201389463111383663">No hagas errores, ya que así la gente te encontrará más facilmente.</translation>
+  <translation id="101333005612370054">Añade un precio justo y la categoria que encaja mejor con tu item</translation>
   <translation id="1663822447043824807">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 10MB. Sólo aceptamos imágenes .jpg</translation>
   <translation id="518944399314816423">Puedes enviar (casi) todo por wallapop. ¡Y es gratis!</translation>
   <translation id="3784792223212622760">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
