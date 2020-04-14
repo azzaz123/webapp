@@ -5,7 +5,7 @@ tsl-card {
   border-radius: $border-radius;
   box-shadow: 0 0 2px 0 rgba($black, 0.1);
   transition: all 0.15s ease;
-  & /deep/ tsl-card-image {
+  & ::ng-deep tsl-card-image {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -17,7 +17,7 @@ tsl-card {
       top: 8px;
     }
   }
-  & /deep/ tsl-profile-images {
+  & ::ng-deep tsl-profile-images {
     width: 50%;
     padding: $spacing-xs;
     .profile {
@@ -26,7 +26,7 @@ tsl-card {
       background-position: center;
     }
   }
-  & /deep/ tsl-card-content {
+  & ::ng-deep tsl-card-content {
     display: flex;
     padding-top: $spacing-ms;
     position: relative;
@@ -53,7 +53,7 @@ tsl-card {
     }
   }
 
-  & /deep/ tsl-user-avatar {
+  & ::ng-deep tsl-user-avatar {
     width: 25%;
     min-width: 40px;
     display: flex;
@@ -61,11 +61,11 @@ tsl-card {
     justify-content: center;
   }
 
-  & /deep/ tsl-stars {
+  & ::ng-deep tsl-stars {
     display: flex;
   }
 
-  & /deep/ tsl-card-footer {
+  & ::ng-deep tsl-card-footer {
     position: relative;
     .cart-footer-icon {
       position: absolute;

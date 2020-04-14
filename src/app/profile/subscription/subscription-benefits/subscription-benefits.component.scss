@@ -27,7 +27,7 @@
   mat-icon {
     width: 56px;
     height: 56px;
-    /deep/ svg path {
+    ::ng-deep svg path {
       fill: $white;
     }
   }

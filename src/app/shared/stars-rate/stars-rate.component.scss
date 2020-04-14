@@ -9,7 +9,7 @@ mat-icon {
   width: 23px;
   margin-right: $spacing-s;
   display: inline-flex;
-  /deep/ #images {
+  ::ng-deep #images {
     &:not(:root:root) {
       fill: #FFD300;
     }
