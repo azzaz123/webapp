@@ -1,22 +1,7 @@
+import { Environment } from './environment.interface';
 import { dockNum } from './docknum';
 
-export interface ENVIRONMENT {
-  production: boolean;
-  profeatures: boolean;
-  name: string;
-  baseUrl: string;
-  xmppDomain: string;
-  wsUrl: string;
-  siteUrl: string;
-  appboy: string;
-  cookieSuffix: string;
-  clickStreamURL: string;
-  stripeKey: string;
-  mParticleKey: string;
-  remoteConsoleUrl: string;
-}
-
-export const environment: ENVIRONMENT = {
+export const environment: Environment = {
   production: false,
   profeatures: true,
   name: 'local',
