@@ -42,37 +42,41 @@ phases:
       - if [ "`echo $BRANCH | grep hotfix/`" != "" ]; then export IMAGE_TAG="release"; fi
       - echo $IMAGE_TAG
 
+      # VARIABLE DEFINITIONS
+      - export AMAZON_REPO_URL="745640521341.dkr.ecr.eu-west-1.amazonaws.com/"
+      - export NODE_IMAGE="nodejs12"
+
       # LOAD YARN DEPENDENCIES
-      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name nodejs12 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs12:stable yarn
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable yarn
 
       # LAUNCH TEST
-      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name nodejs12 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs12:stable yarn run test --watch=false --no-progress
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable yarn run test --watch=false --no-progress
 
       # INSTALL ENV
       - >
         if [ "`echo $ENV | grep prod`" != "" ]; then
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs12 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs12:stable npm run buildprod
+          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable npm run buildprod
           aws s3 sync dist s3://web-es.wallapop.com --delete
           aws s3 cp dist/index.html s3://web-es.wallapop.com/index.html --cache-control max-age=0
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs12 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs12:stable npm run buildprod-en
+          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable npm run buildprod-en
           aws s3 sync dist s3://web-en.wallapop.com --delete
           aws s3 cp dist/index.html s3://web-en.wallapop.com/index.html --cache-control max-age=0
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs12 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs12:stable npm run builddocker
-          docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:stable .
-          docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:stable"
+          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable npm run builddocker
+          docker build -f docker/Dockerfile -t ${AMAZON_REPO_URL}devel/webapp:stable .
+          docker push "${AMAZON_REPO_URL}devel/webapp:stable"
         fi
 
       - >
         if [ "`echo $ENV | grep beta`" != "" ]; then
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs12 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs12:stable npm run buildbeta
+          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable npm run buildbeta
           aws s3 sync dist s3://web-es.beta.wallapop.com --delete
           aws s3 cp dist/index.html s3://web-es.beta.wallapop.com/index.html --cache-control max-age=0
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs12 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs12:stable npm run buildbeta-en
+          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable npm run buildbeta-en
           aws s3 sync dist s3://web-en.beta.wallapop.com --delete
           aws s3 cp dist/index.html s3://web-en.beta.wallapop.com/index.html --cache-control max-age=0
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs12 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs12:stable npm run builddocker
-          docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:release .
-          docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:release"
+          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable npm run builddocker
+          docker build -f docker/Dockerfile -t ${AMAZON_REPO_URL}devel/webapp:release .
+          docker push "${AMAZON_REPO_URL}devel/webapp:release"
         fi
 
       - >
@@ -80,9 +84,9 @@ phases:
           TAG_BRANCH=feature-$(echo $BRANCH | cut -d '/' -f 2)
           echo $TAG_BRANCH
           if [ "`echo $BRANCH | grep develop`" != "" ]; then export TAG_BRANCH="latest"; fi
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs12 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs12:stable npm run builddocker
-          docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$TAG_BRANCH .
-          docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$TAG_BRANCH"
+          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable npm run builddocker
+          docker build -f docker/Dockerfile -t ${AMAZON_REPO_URL}devel/webapp:$TAG_BRANCH .
+          docker push "${AMAZON_REPO_URL}devel/webapp:$TAG_BRANCH"
         fi
 
       # TRIGGER BETA/PROD INFRASTRUCTURE PIPELINES
