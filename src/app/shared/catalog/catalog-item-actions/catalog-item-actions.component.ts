@@ -1,3 +1,5 @@
+
+import {takeWhile} from 'rxjs/operators';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
@@ -43,19 +45,19 @@ export class CatalogItemActionsComponent implements OnInit {
 
   public deactivate() {
     this.modalService.open(DeactivateItemsModalComponent).result.then(() => {
-      this.itemService.bulkSetDeactivate().takeWhile(() => {
+      this.itemService.bulkSetDeactivate().pipe(takeWhile(() => {
         this.trackingService.track(TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE);
         this.eventService.emit('itemChanged');
         return this.active;
-      }).subscribe(() => this.getCounters.emit());
+      })).subscribe(() => this.getCounters.emit());
     });
   }
 
   public activate() {
     this.modalService.open(ActivateItemsModalComponent).result.then(() => {
-      this.itemService.bulkSetActivate().takeWhile(() => {
+      this.itemService.bulkSetActivate().pipe(takeWhile(() => {
         return this.active;
-      }).subscribe((resp: any) => {
+      })).subscribe((resp: any) => {
         this.getCounters.emit();
         this.eventService.emit('itemChanged');
         if (resp.status === 406) {
@@ -72,9 +74,9 @@ export class CatalogItemActionsComponent implements OnInit {
 
   public delete(deleteItemsModal: any) {
     this.modalService.open(deleteItemsModal).result.then(() => {
-      this.itemService.bulkDelete(this.selectedStatus).takeWhile(() => {
+      this.itemService.bulkDelete(this.selectedStatus).pipe(takeWhile(() => {
         return this.active;
-      }).subscribe((response: ItemBulkResponse) => {
+      })).subscribe((response: ItemBulkResponse) => {
         this.getCounters.emit();
         this.eventService.emit('itemChanged');
         response.updatedIds.forEach((id: string) => {

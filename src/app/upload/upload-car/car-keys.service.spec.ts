@@ -1,66 +1,62 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
-import { CarKeysService } from './car-keys.service';
-import { Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+
+import { CarKeysService, CARS_KEYS_ENDPOINT } from './car-keys.service';
 import { IOption } from 'ng-select';
 import { CAR_BODY_TYPES, CAR_BODY_TYPES_RESPONSE } from '../../../tests/car.fixtures.spec';
-import { HttpService } from '../../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { I18nService } from '../../core/i18n/i18n.service';
 
 describe('CarKeysService', () => {
-
   let service: CarKeysService;
-  let http: HttpService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         CarKeysService,
-        TEST_HTTP_PROVIDERS,
         I18nService
-      ]
+      ],
+      imports: [HttpClientTestingModule]
     });
     service = TestBed.get(CarKeysService);
-    http = TestBed.get(HttpService);
+    httpMock = TestBed.get(HttpTestingController);
   });
 
-  it('should instantiate', () => {
-    expect(service).toBeTruthy();
+  afterEach(() => {
+    httpMock.verify();
   });
 
   describe('getTypes', () => {
-    let response: IOption[];
-    beforeEach(fakeAsync(() => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_BODY_TYPES_RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      service.getTypes().subscribe((r: IOption[]) => {
-        response = r;
-      });
-    }));
-    it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/cars/keys/bodytype', {language: 'en'});
-    });
-    it('should return options', () => {
+    it('should get cars body types options', () => {
+      let response: IOption[];
+      const expectedUrlParams = `language=en`;
+      const expectedUrl = `${environment.baseUrl}${CARS_KEYS_ENDPOINT}/bodytype?${expectedUrlParams}`;
+
+      service.getTypes().subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(CAR_BODY_TYPES_RESPONSE);
+
       expect(response).toEqual(CAR_BODY_TYPES);
+      expect(req.request.urlWithParams).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
   });
 
   describe('getTypeName', () => {
-    let response: string;
-    beforeEach(fakeAsync(() => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_BODY_TYPES_RESPONSE)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      service.getTypeName('small_car').subscribe((r: string) => {
-        response = r;
-      });
-    }));
-    it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/cars/keys/bodytype', {language: 'en'});
-    });
-    it('should return the filtered text', () => {
+    it('should get the body type name that matches with the provided id', () => {
+      let response: string;
+      const expectedUrlParams = `language=en`;
+      const expectedUrl = `${environment.baseUrl}${CARS_KEYS_ENDPOINT}/bodytype?${expectedUrlParams}`;
+
+      service.getTypeName('small_car').subscribe(r => response = r);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(CAR_BODY_TYPES_RESPONSE);
+
       expect(response).toEqual('Small');
+      expect(req.request.urlWithParams).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
   });
 });

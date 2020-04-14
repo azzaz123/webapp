@@ -5,9 +5,12 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { WindowRef } from '../../../core/window/window.service';
-import { HttpService } from '../../../core/http/http.service';
 import { AsYouType, format, getCountryCallingCode, isValidNumber } from 'libphonenumber-js';
 import { InboxConversation } from '../../model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
+
+export const SEND_PHONE_ENDPOINT = 'api/v3/conversations';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -21,17 +24,15 @@ export class SendPhoneComponent implements OnInit {
   @Input() phone: string;
   @ViewChild('phoneInput') phoneField: ElementRef;
   public sendPhoneForm: FormGroup;
-  protected API_URL = 'api/v3/conversations';
 
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
-    private http: HttpService,
+    private http: HttpClient,
     private errorsService: ErrorsService,
     private trackingService: TrackingService,
     private windowRef: WindowRef,
     public activeModal: NgbActiveModal) {
-    this.trackingService.trackAccumulatedEvents();
     this.sendPhoneForm = this.fb.group({
       phone: ['', [Validators.required, this.phoneNumberFormatValidator]]
     });
@@ -54,23 +55,18 @@ export class SendPhoneComponent implements OnInit {
     const phoneNumber = this.sendPhoneForm.controls.phone.value;
     if (this.sendPhoneForm.valid) {
       if (this.required) {
-        this.trackingService.addTrackingEvent({
-          eventData: TrackingService.ITEM_SHAREPHONE_SENDPHONE,
-          attributes: { item_id: this.conversation.item.id }
-        });
+        this.messageService.addPhoneNumberRequestMessage(this.conversation, false);
+        this.trackingService.track(TrackingService.ITEM_SHAREPHONE_SENDPHONE, { item_id: this.conversation.item.id });
       } else {
-        this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
+        this.trackingService.track(TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING);
       }
-      this.http.put(`${this.API_URL}/${this.conversation.id}/buyer-phone-number`, {
+      this.http.put(`${environment.baseUrl}${SEND_PHONE_ENDPOINT}/${this.conversation.id}/buyer-phone-number`, {
         phone_number: phoneNumber
       }).subscribe();
       this.messageService.createPhoneNumberMessage(this.conversation, phoneNumber);
       this.activeModal.close();
     } else if (!this.sendPhoneForm.controls.phone.valid) {
-      this.trackingService.addTrackingEvent({
-        eventData: TrackingService.ITEM_SHAREPHONE_WRONGPHONE,
-        attributes: { item_id: this.conversation.item.id, phone_number: phoneNumber }
-      });
+      this.trackingService.track(TrackingService.ITEM_SHAREPHONE_WRONGPHONE, { item_id: this.conversation.item.id, phone_number: phoneNumber });
       this.sendPhoneForm.controls.phone.markAsDirty();
       this.errorsService.i18nError('formErrors');
     }
@@ -100,7 +96,7 @@ export class SendPhoneComponent implements OnInit {
       this.trackingService.track(TrackingService.ITEM_SHAREPHONE_HIDEFORM, { item_id: this.conversation.item.id });
       this.windowRef.nativeWindow.location.href = this.conversation.item.itemUrl;
     } else {
-      this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
+      this.trackingService.track(TrackingService.CHAT_SHAREPHONE_CANCELSHARING);
       this.activeModal.dismiss();
     }
   }

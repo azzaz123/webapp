@@ -7,7 +7,7 @@ import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.s
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import {
@@ -61,7 +61,7 @@ describe('CancelSubscriptionModalComponent', () => {
         {
           provide: SubscriptionsService, useValue: {
             cancelSubscription() {
-              return Observable.of(202);
+              return of(202);
             }
           }
         },
@@ -90,7 +90,7 @@ describe('CancelSubscriptionModalComponent', () => {
     const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
 
     it('should call the cancelsubscription service', () => {
-      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(Observable.of({status: 202}));
+      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({status: 202}));
 
       component.cancelSubscription();
       
@@ -99,7 +99,7 @@ describe('CancelSubscriptionModalComponent', () => {
     });
 
     it('should send the event', () => {
-      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(Observable.of({status: 202}));
+      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({status: 202}));
       spyOn(analyticsService, 'trackEvent');
       const expectedEvent: AnalyticsEvent<ClickUnsuscribeConfirmation> = {
         name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeConfirmation,

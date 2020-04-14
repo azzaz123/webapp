@@ -49,10 +49,14 @@ p {
 }
 
 ngu-carousel {
-  width: 794px;
   margin: $spacing-xxxl auto 86px;
   /deep/ {
-    ngu-item {
+    .ngu-touch-container {
+      width: 794px;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+    .item {
       width: $pack-width;
     }
     .left-arrow, .right-arrow {
@@ -68,10 +72,10 @@ ngu-carousel {
       }
     }
     .left-arrow {
-      left: -50px;
+      left: 50px;
     }
     .right-arrow {
-      right: -50px;
+      right: 50px;
       transform: rotate(180deg);
     }
   }

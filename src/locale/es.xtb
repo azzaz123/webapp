@@ -295,7 +295,7 @@
   <translation id="1747851890616342359">¡Te presentamos nuestra nueva web profesional!</translation>
   <translation id="7965763213079559522">Esta es "Tu zona Pro". Desde aquí podrás utilizar todas las funcionalidades que ya tenías en la app de wallapop y en la admin de profesionales.</translation>
   <translation id="5339303196793781359">Aquí puedes ver y editar los datos de tu perfil, información de facturación y ver tu plan de coches y de visibilidad. Podrás marcar tu ubicación (y la de todos tus productos), cambiar tu foto, modificar la contraseña o el email...</translation>
-  <translation id="157339153102985723">Aquí podrás ver estadísticas de visualizaciones de tus productos, número de chats y llamas recibidas. Además podrás ver que impacto tienen los destacados en tus métricas.</translation>
+  <translation id="8735125837670622187">Aquí podrás ver estadísticas de visualizaciones de tus productos, número de chats y llamas recibidas. Además podrás ver que impacto tienen los destacados en tus métricas.</translation>
   <translation id="9086693090800324810">En este punto tendrás acceso a todos tus productos. Además, podrás subir nuevos, editarlos, activarlos o destacarlos.</translation>
   <translation id="5119878065843230741">Aquí verás y podrás gestionar las llamadas recibidas, las perdidas y los teléfonos que te han compartido.</translation>
   <translation id="4563965495368336177">Saltar explicación</translation>
@@ -981,6 +981,37 @@
   <translation id="3261431386963936058">Si quieres darte de alta, primero debes ir a la app store y cancelar cualquier suscripción activa.</translation>
   <translation id="8945513634555081527">¿Por qué suscribirte a wallapop PRO?</translation>
   <translation id="6468756919468494280">Ventajas para quienes quieran vender más y mejor</translation>
+
+  <translation id="ngb.alert.close">Cerrar</translation>
+  <translation id="ngb.carousel.previous">Anterior</translation>
+  <translation id="ngb.carousel.next">Siguiente</translation>
+  <translation id="ngb.datepicker.previous-month">Mes anterior</translation>
+  <translation id="ngb.datepicker.next-month">Mes siguiente</translation>
+  <translation id="ngb.datepicker.select-month">Seleccionar mes</translation>
+  <translation id="ngb.datepicker.select-year">Seleccionar año</translation>
+  <translation id="ngb.pagination.first">««</translation>
+  <translation id="ngb.pagination.previous">«</translation>
+  <translation id="ngb.pagination.next">»</translation>
+  <translation id="ngb.pagination.last">»»</translation>
+  <translation id="ngb.pagination.first-aria">Primero</translation>
+  <translation id="ngb.pagination.previous-aria">Anterior</translation>
+  <translation id="ngb.pagination.next-aria">Siguiente</translation>
+  <translation id="ngb.pagination.last-aria">Último</translation>
+  <translation id="ngb.timepicker.increment-hours">Incrementar horas</translation>
+  <translation id="ngb.timepicker.HH">HH</translation>
+  <translation id="ngb.timepicker.hours">Horas</translation>
+  <translation id="ngb.timepicker.decrement-hours">Disminuir horas</translation>
+  <translation id="ngb.timepicker.increment-minutes">Incrementar minutos</translation>
+  <translation id="ngb.timepicker.MM">MM</translation>
+  <translation id="ngb.timepicker.minutes">Minutos</translation>
+  <translation id="ngb.timepicker.decrement-minutes">Disminuir minutos</translation>
+  <translation id="ngb.timepicker.increment-seconds">Incrementar segundos</translation>
+  <translation id="ngb.timepicker.SS">SS</translation>
+  <translation id="ngb.timepicker.seconds">Segundos</translation>
+  <translation id="ngb.timepicker.decrement-seconds">Disminuir segundos</translation>
+  <translation id="ngb.timepicker.PM">PM</translation>
+  <translation id="ngb.timepicker.AM">AM</translation>
+  <translation id="ngb.progressbar.value"><ph name="INTERPOLATION"><ex>{{getPercentValue()}}</ex>{{getPercentValue()}}</ph>%</translation>
   <translation id="3088405909522546815">Un mes gratis</translation>
   <translation id="778538042004330732"><ph name="INTERPOLATION"><ex>{{subscription.tiers[0].discount_available.months}}</ex></ph> meses gratis</translation>
   <translation id="3502404552821595095"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.months}}</ex></ph> meses gratis</translation>

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReviewModalComponent } from './review-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CONVERSATION_USERS, ITEM_ID, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 import { ReviewService } from '../../../core/review/review.service';
@@ -24,10 +24,10 @@ describe('ReviewModalComponent', () => {
         {
           provide: ItemService, useValue: {
             getConversationUsers() {
-              return Observable.of(CONVERSATION_USERS);
+              return of(CONVERSATION_USERS);
             },
             soldOutside() {
-              return Observable.of({});
+              return of({});
             }
           }
         },
@@ -40,10 +40,10 @@ describe('ReviewModalComponent', () => {
         {
           provide: ReviewService, useValue: {
             createAsSeller() {
-              return Observable.of([]);
+              return of([]);
             },
             createAsBuyer() {
-              return Observable.of([]);
+              return of([]);
             }
           }
         }

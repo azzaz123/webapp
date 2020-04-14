@@ -1,13 +1,12 @@
-import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import {of as observableOf,  Observable } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CatalogComponent } from './catalog.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MockBackend, MockConnection } from '@angular/http/testing';
-import { Observable } from 'rxjs';
-import { Response, ResponseOptions} from '@angular/http';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
 import { UserService } from '../core/user/user.service';
-import { MOCK_USER, USER_DATA } from '../../tests/user.fixtures.spec';
+import { MOCK_USER } from '../../tests/user.fixtures.spec';
 
 describe('CatalogComponent', () => {
   let component: CatalogComponent;
@@ -18,14 +17,13 @@ describe('CatalogComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CatalogComponent],
       providers: [
-        {provide: TrackingService, useClass: MockTrackingService},
-        MockBackend,
+        { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: UserService, useValue: {
-          me() {
-            return Observable.of(MOCK_USER);
+            me() {
+              return observableOf(MOCK_USER);
+            }
           }
-        }
         },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -41,16 +39,11 @@ describe('CatalogComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    beforeEach(fakeAsync(() => {
-      const mockBackend = TestBed.get(MockBackend);
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
-        connection.mockRespond(new Response(res));
-      });
-    }));
     it('should send event catalog_view_items on page load', () => {
       spyOn(trackingService, 'track');
+
       component.ngOnInit();
+
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CATALOG_VIEW_ITEMS);
     });
   });

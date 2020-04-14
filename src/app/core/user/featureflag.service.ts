@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
@@ -28,20 +30,20 @@ export class FeatureflagService {
     const storedFeatureFlag = this.storedFeatureFlags.find(sff => sff.name === name);
 
     if (storedFeatureFlag && cache) {
-      return of(storedFeatureFlag).map(sff => sff.isActive);
+      return of(storedFeatureFlag).pipe(map(sff => sff.isActive));
     } else {
       return this.http.get(`${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`, { params: {
         featureFlags: name.toString(),
         timestamp: new Date().getTime().toString() // Prevent browser cache with timestamp parameter
-      }})
-      .map(response => {
+      }}).pipe(
+      map(response => {
         const featureFlag = response[0] ? { name, isActive: response[0].active } : { name, isActive: false };
         const alreadyStored = this.storedFeatureFlags.find(sff => sff.name === name);
         if (!alreadyStored) {
           this.storedFeatureFlags.push(featureFlag);
         }
         return featureFlag.isActive;
-      });
+      }));
     }
 
   }

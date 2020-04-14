@@ -1,7 +1,7 @@
-<div ngbDropdown class="d-inline-block dropdown">
-  <a ngbDropdownToggle>{{selected?.label}} <mat-icon svgIcon="caret"></mat-icon></a>
-  <div class="dropdown-menu dropdown-menu-right">
-    <button class="dropdown-item" *ngFor="let item of items" (click)="selectItem(item)" [hidden]="item.label == selected?.label">{{item.label}}</button>
+<div ngbDropdown class="d-inline-block dropdown" placement="bottom-right">
+  <a ngbDropdownToggle class="dropdown-header">{{selected?.label}} <mat-icon svgIcon="caret"></mat-icon></a>
+  <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
+    <button class="dropdown-item" *ngFor="let item of items" (click)="selectItem(item)"
+      [hidden]="item.label == selected?.label">{{item.label}}</button>
   </div>
 </div>
-

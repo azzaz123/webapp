@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
 import { Brand, BrandModel, Model, SizesResponse, Size, ObjectType } from '../brand-model.interface';
 import { I18nService } from '../../core/i18n/i18n.service';

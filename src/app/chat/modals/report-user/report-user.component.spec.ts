@@ -1,10 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportUserComponent } from './report-user.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
 import { UserService } from '../../../core/user/user.service';
 import { BanReason } from '../../../core/item/ban-reason.interface';
 
@@ -27,7 +28,7 @@ describe('ReportUserComponent', () => {
         {
           provide: UserService, useValue: {
           getBanReasons() {
-            return Observable.of(BAN_REASONS);
+            return observableOf(BAN_REASONS);
           }
         }
         }

@@ -2,24 +2,23 @@ $coachmark-left-margin: $spacing-xl;
 
 .popover {
   border-radius: 6px;
-  background-color: rgba($walla-soft, .5);
+  background-color: rgba($walla-soft, 0.5);
   border: none;
   font-size: $font-size-xs;
   line-height: $line-height-m;
-  color: $blue-grey-2;
-  left: calc((100vw - #{$upload-form-width} + #{$sidebar-width}) / 2 + #{$upload-form-width}) !important;
   z-index: 99 !important;
   font-family: $wallie;
   &.popover-right {
     margin-left: $spacing-xxl;
   }
-  &::before, &::after {
-    content: none;
+  .arrow {
+    display: none;
   }
-  .popover-body{
+  .popover-body {
     width: 220px;
     display: flex;
     padding: $spacing-m;
+    color: $blue-grey-2;
     mat-icon {
       @include square(26px);
       margin-right: $spacing-ms;

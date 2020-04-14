@@ -1,8 +1,10 @@
+
+import {forkJoin as observableForkJoin, from as observableFrom,  Observable, of } from 'rxjs';
+
+import {share, mergeMap,  catchError, tap, map, finalize } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { PERMISSIONS, User } from './user';
-import { Observable, of } from 'rxjs';
 import { EventService } from '../event/event.service';
-import { ResourceService } from '../resource/resource.service';
 import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
@@ -25,7 +27,6 @@ import { InboxItem } from '../../chat/model';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpResponse, HttpRequest } from '@angular/common/http';
-import { catchError, tap, map, finalize } from 'rxjs/operators';
 import { isEmpty } from 'lodash-es';
 
 export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
@@ -196,7 +197,7 @@ export class UserService {
     if (!this.banReasons) {
       this.banReasons = this.i18n.getTranslations('reportUserReasons');
     }
-    return Observable.of(this.banReasons);
+    return of(this.banReasons);
   }
 
   public reportUser(userId: string, itemHashId: string, conversationHash: string, reason: number, comments: string)
@@ -257,23 +258,27 @@ export class UserService {
 
   public getStats(): Observable<UserStats> {
     return this.http.get<UserStatsResponse>(`${environment.baseUrl}${USER_STATS_ENDPOINT}`)
-      .map(response => {
+    .pipe(
+      map(response => {
         return {
           ratings: this.toRatingsStats(response.ratings),
           counters: this.toCountersStats(response.counters)
         };
-      });
+      })
+    );
   }
 
   // TODO: Remove if not used when public web is in webapp
   public getUserStats(userId: string): Observable<UserStats> {
     return this.http.get<any>(`${environment.baseUrl}${USER_STATS_BY_ID_ENDPOINT(userId)}`)
-      .map(response => {
+    .pipe(
+      map(response => {
         return {
           ratings: this.toRatingsStats(response.ratings),
           counters: this.toCountersStats(response.counters)
         };
-      });
+      })
+    );
   }
 
   public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
@@ -358,10 +363,10 @@ export class UserService {
   }
 
   public hasPerm(permission: string): Observable<boolean> {
-    return this.me()
-      .flatMap(() => {
-        return Observable.fromPromise(this.permissionService.hasPermission(PERMISSIONS[permission]));
-      });
+    return this.me().pipe(
+      mergeMap(() => {
+        return observableFrom(this.permissionService.hasPermission(PERMISSIONS[permission]));
+      }));
   }
 
   // TODO: This is if user is car dealer, should be `isCarDealer`
@@ -375,9 +380,9 @@ export class UserService {
   }
 
   public setSubscriptionsFeatureFlag(): Observable<boolean> {
-    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS)
-      .map((isActive: boolean) => {
+    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS).pipe(
+      map((isActive: boolean) => {
         return isActive;
-      });
+      }));
   }
 }

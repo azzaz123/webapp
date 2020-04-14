@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ProcessAllButtonComponent } from './process-all-button.component';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
@@ -32,7 +32,7 @@ describe('ProcessAllButtonComponent', () => {
         {
           provide: CallsService, useValue: {
             archiveAll() {
-              return Observable.of({});
+              return of({});
             }
           }
         }
