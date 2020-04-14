@@ -63,7 +63,7 @@ $menu-width-and-spacing: 10px;
   }
 
 
-  & /deep/ tsl-item-avatar div {
+  & ::ng-deep tsl-item-avatar div {
     float: left;
     border-radius: 10px;
     .overlay {

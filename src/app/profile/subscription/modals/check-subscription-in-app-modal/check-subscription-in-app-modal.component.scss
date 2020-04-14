@@ -53,7 +53,7 @@
 .CheckSubscriptionInAppModal__actions-ok {
   width: 400px;
 
-  /deep/ button {
+  ::ng-deep button {
     width: 100%;
   }
 }
@@ -65,7 +65,7 @@
   }
 
   .CheckSubscriptionInAppModal__actions-ok {
-    /deep/ button {
+    ::ng-deep button {
       width: 200px;
     }
   }

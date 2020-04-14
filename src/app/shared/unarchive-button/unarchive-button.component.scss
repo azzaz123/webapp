@@ -13,7 +13,7 @@ button {
   mat-icon {
     height: 14px;
     width: 15px;
-    /deep/ g g {
+    ::ng-deep g g {
       fill: $blue-grey-3;
     }
   }
@@ -21,7 +21,7 @@ button {
     background-color: $walla-main;
     border-color: $walla-main;
     mat-icon {
-      /deep/ g g {
+      ::ng-deep g g {
         fill: $white;
       }
     }

@@ -29,7 +29,7 @@ tsl-spinner {
   justify-content: center;
   font-size: $font-size-s;
   mat-icon {
-    /deep/ svg path {
+    ::ng-deep svg path {
       fill: $walla-main;
     }
     margin-right: $spacing-ms;

@@ -94,7 +94,7 @@
             height: 30px;
             margin-right: $spacing-s;
             &.citybump {
-                /deep/ svg g {
+                ::ng-deep svg g {
                     fill: $walla-main
                 }
             }
@@ -155,7 +155,7 @@
         margin-right: $spacing-s;
         }
         tsl-item-avatar {
-            /deep/ div {
+            ::ng-deep div {
                 @include square(32px);
             }
         }
@@ -196,7 +196,7 @@
     background-color: $white;
     tsl-button {
         display: block;
-        /deep/ .btn {
+        ::ng-deep .btn {
             width: 100%;
         }
     }
