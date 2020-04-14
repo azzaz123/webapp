@@ -2,7 +2,7 @@ import { Component, DebugElement, EventEmitter, NO_ERRORS_SCHEMA } from '@angula
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { ItemService } from '../../../core/item/item.service';
@@ -50,18 +50,18 @@ describe('ItemSoldDirective', () => {
             deselectItem() {
             },
             deleteItem() {
-              return Observable.of({});
+              return of({});
             },
             reserveItem() {
-              return Observable.of({});
+              return of({});
             },
             reactivateItem() {
-              return Observable.of({});
+              return of({});
             },
             getAvailableReactivationProducts() {
             },
             canDoAction() {
-              return Observable.of(true);
+              return of(true);
             }
           }
         },
@@ -143,7 +143,7 @@ describe('ItemSoldDirective', () => {
   describe('cannot mark as sold', () => {
     beforeEach(fakeAsync(() => {
       fixture.componentInstance.item = MOCK_ITEM;
-      spyOn(itemService, 'canDoAction').and.returnValue(Observable.of(false));
+      spyOn(itemService, 'canDoAction').and.returnValue(of(false));
       spyOn(errorsService, 'i18nError');
       fixture.detectChanges();
       element.triggerEventHandler('click', {});

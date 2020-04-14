@@ -1,9 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { InboxService } from './inbox.service';
 import { MessageService } from './message.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { PersistencyService } from '../../core/persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { of, throwError } from 'rxjs';
 import { MOCK_INBOX_API_RESPONSE } from '../../../tests/inbox.fixtures.spec';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
@@ -29,7 +26,6 @@ describe('InboxService', () => {
   let inboxService: InboxService;
   let http: HttpClient;
   let realTime: RealTimeService;
-  let persistencyService: PersistencyService;
   let messageService: MessageService;
   let inboxConversationService: InboxConversationService;
   let featureflagService: FeatureflagService;
@@ -45,9 +41,7 @@ describe('InboxService', () => {
       ],
       providers: [
         InboxService,
-        ...TEST_HTTP_PROVIDERS,
         EventService,
-        { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: MessageService, useClass: MockMessageService },
         { provide: UserService, useClass: MockedUserService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
@@ -69,7 +63,6 @@ describe('InboxService', () => {
     inboxService = TestBed.get(InboxService);
     http = TestBed.get(HttpClient);
     realTime = TestBed.get(RealTimeService);
-    persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
     inboxConversationService = TestBed.get(InboxConversationService);
     featureflagService = TestBed.get(FeatureflagService);

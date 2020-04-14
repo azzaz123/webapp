@@ -1,11 +1,12 @@
+
+import { of as observableOf, Subscription } from 'rxjs';
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CallsComponent } from './calls.component';
 import { CallsService } from '../core/conversation/calls.service';
 import { ActivatedRoute } from '@angular/router';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
-import { Observable } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { createCallsArray } from '../../tests/call.fixtures';
 import { Call } from '../core/conversation/calls';
@@ -21,23 +22,23 @@ describe('CallsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CallsComponent],
       providers: [
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: CallsService, useValue: {
-          getPage() {
-            return Observable.of([]);
+            getPage() {
+              return observableOf([]);
+            }
           }
-        }
         },
         {
           provide: ActivatedRoute, useValue: {
-          queryParams: Observable.of({})
-        }
+            queryParams: observableOf({})
+          }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -65,10 +66,10 @@ describe('CallsComponent', () => {
     });
 
     it('should set status', () => {
-      route.queryParams = Observable.of({
+      route.queryParams = observableOf({
         status: 'test'
       });
-      
+
       component.ngOnInit();
 
       expect(component.status).toBe('test');
@@ -79,10 +80,10 @@ describe('CallsComponent', () => {
     beforeEach(() => {
       spyOn(component, 'getCalls');
       component['page'] = 1;
-      
+
       component.loadMore();
     });
-    
+
     it('should increment page', () => {
       expect(component['page']).toBe(2);
     });
@@ -95,17 +96,17 @@ describe('CallsComponent', () => {
   describe('getCalls', () => {
     describe('starting with no calls', () => {
       const CALLS: Call[] = createCallsArray(4);
-      
+
       beforeEach(() => {
-        spyOn(callService, 'getPage').and.returnValue(Observable.of(CALLS));
+        spyOn(callService, 'getPage').and.returnValue(observableOf(CALLS));
         component['page'] = 1;
       });
-      
+
       describe('no archive', () => {
         beforeEach(() => {
           component.status = 'SHARED';
           spyOn(trackingService, 'track');
-          
+
           component['getCalls']();
         });
 
@@ -130,7 +131,7 @@ describe('CallsComponent', () => {
         beforeEach(() => {
           component.archive = true;
           spyOn(trackingService, 'track');
-          
+
           component['getCalls']();
         });
 
@@ -153,26 +154,19 @@ describe('CallsComponent', () => {
     });
 
     describe('if a subscription already exists', () => {
-      it('should unsubscribe', () => {
-        const SUBSCRIPTION: any = {
-          unsubscribe() {}
-        };
-        spyOn(callService, 'getPage').and.returnValue({
-          takeWhile() {
-            return {
-              subscribe() {
-                return SUBSCRIPTION;
-              }
-            };
-          }
-        });
-        
+      it('should unsubscribe', fakeAsync(() => {
+        const SUBSCRIPTION = new Subscription();
+
+        component['callsSubscription'] = SUBSCRIPTION;
+        spyOn(callService, 'getPage').and.returnValue(observableOf(SUBSCRIPTION));
+        spyOn(component['callsSubscription'], 'unsubscribe');
+
         component.getCalls();
-        spyOn(SUBSCRIPTION, 'unsubscribe');
+        tick();
         component.getCalls();
 
-        expect(component['callsSubscription'].unsubscribe).toHaveBeenCalled();
-      });
+        expect(SUBSCRIPTION.unsubscribe).toHaveBeenCalled();
+      }));
     });
   });
 
@@ -185,7 +179,7 @@ describe('CallsComponent', () => {
 
     it('should set archive true', () => {
       component.filterByArchived(true);
-      
+
       expect(component.archive).toBeTruthy();
       expect(component['page']).toBe(1);
       expect(component['getCalls']).toHaveBeenCalled();
@@ -193,7 +187,7 @@ describe('CallsComponent', () => {
 
     it('should set archive false', () => {
       component.filterByArchived(false);
-      
+
       expect(component.archive).toBeFalsy();
       expect(component['page']).toBe(1);
       expect(component['getCalls']).toHaveBeenCalled();

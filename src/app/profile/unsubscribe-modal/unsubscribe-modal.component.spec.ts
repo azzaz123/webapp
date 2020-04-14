@@ -25,13 +25,13 @@ describe('UnsubscribeModalComponent', () => {
         {
           provide: UserService, useValue: {
             getUnsubscribeReasons() {
-              return Observable.of(MOCK_UNSUBSCRIBE_REASONS);
+              return of(MOCK_UNSUBSCRIBE_REASONS);
             },
             unsubscribe() {
-              return Observable.of({});
+              return of({});
             },
             isProUser() {
-              return Observable.of(false);
+              return of(false);
             }
           }
         },

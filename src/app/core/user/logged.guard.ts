@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
@@ -24,7 +26,7 @@ export class LoggedGuard implements CanActivate {
       return false;
     }
     if (isEmpty(this.permissionService.getPermissions())) {
-      return this.userService.me().map((user: User) => {
+      return this.userService.me().pipe(map((user: User) => {
         this.userService.setPermission(user.type);
         this.userService.setSubscriptionsFeatureFlag().subscribe((isActive => {
           if (isActive) {
@@ -32,7 +34,7 @@ export class LoggedGuard implements CanActivate {
           }
         }));
         return true;
-      });
+      }));
     } else {
       return true;
     }

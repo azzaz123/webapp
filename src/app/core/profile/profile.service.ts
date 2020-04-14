@@ -1,6 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {map, share} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Profile } from './profile';
-import { Observable } from 'rxjs';
 import { EventService } from '../event/event.service';
 import { ProfileResponse, ProfilesData } from './profile-response.interface';
 import { I18nService } from '../i18n/i18n.service';
@@ -20,8 +23,7 @@ export class ProfileService {
 
   constructor(private httpClient: HttpClient,
               protected event: EventService,
-              protected i18n: I18nService,
-              protected accessTokenService: AccessTokenService) {
+              protected i18n: I18nService) {
   }
 
   get profile(): Profile {
@@ -30,14 +32,14 @@ export class ProfileService {
 
   public get(id: string, noCache?: boolean): Observable<Profile> {
     if (this.store[id] && !noCache) {
-      return Observable.of(this.store[id]);
+      return observableOf(this.store[id]);
     } else if (this.observables[id]) {
       return this.observables[id];
     } else {
-      this.observables[id] = this.httpClient.get<ProfileResponse>(`${environment.baseUrl}${this.API_URL}/${id}`)
-      .map((resp: ProfileResponse) => resp.id ? this.mapRecordData(resp) : null)
-      .map((model: Model) => this.addToStore(model, id))
-      .share();
+      this.observables[id] = this.httpClient.get<ProfileResponse>(`${environment.baseUrl}${this.API_URL}/${id}`).pipe(
+      map((resp: ProfileResponse) => resp.id ? this.mapRecordData(resp) : null),
+      map((model: Model) => this.addToStore(model, id)),
+      share(),);
       return this.observables[id];
     }
   }
@@ -56,8 +58,8 @@ export class ProfileService {
       params: {
         init: init.toString()
       }
-    })
-    .map((resp: HttpResponse<any[]>) => {
+    }).pipe(
+    map((resp: HttpResponse<any[]>) => {
         const nextPage: string = resp.headers.get('x-nextpage');
         const params = {};
         if (nextPage) {
@@ -79,18 +81,18 @@ export class ProfileService {
           init: nextInit
         };
       }
-    );
+    ));
   }
 
   public myFavorites(init: number): Observable<ProfilesData> {
-    return this.getPaginationItems(`${environment.baseUrl}${this.API_URL}/me/users/favorites`, init)
-    .map((profilesData: ProfilesData) => {
+    return this.getPaginationItems(`${environment.baseUrl}${this.API_URL}/me/users/favorites`, init).pipe(
+    map((profilesData: ProfilesData) => {
       profilesData.data = profilesData.data.map((profile: Profile) => {
         profile.favorited = true;
         return profile;
       });
       return profilesData;
-    });
+    }));
   }
 
   public favoriteItem(id: string, favorited: boolean): Observable<any> {

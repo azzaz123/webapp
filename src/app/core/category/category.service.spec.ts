@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { CategoryService, CONSUMER_GOODS_ENDPOINT } from './category.service';
 import {
@@ -5,7 +7,6 @@ import {
   CATEGORY_DATA_WEB
 } from '../../../tests/category.fixtures.spec';
 import { CategoryResponse } from './category-response.interface';
-import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
 import { I18nService } from '../i18n/i18n.service';
 import { HttpModuleNew } from '../http/http.module.new';
@@ -39,7 +40,7 @@ describe('CategoryService', () => {
   describe('getCategories', () => {
     it('should return the json from the categories', () => {
       let response: CategoryResponse[];
-      spyOn(http, 'get').and.returnValue(Observable.of(CATEGORY_DATA_WEB));
+      spyOn(http, 'get').and.returnValue(observableOf(CATEGORY_DATA_WEB));
 
       service.getCategories().subscribe((data: CategoryResponse[]) => {
         response = data;
@@ -53,7 +54,7 @@ describe('CategoryService', () => {
     let response: IOption[];
     beforeEach(() => {
       response = null;
-      spyOn(http, 'get').and.returnValue(Observable.of(CATEGORIES_DATA_CONSUMER_GOODS));
+      spyOn(http, 'get').and.returnValue(observableOf(CATEGORIES_DATA_CONSUMER_GOODS));
     });
 
     it('should return the json from the categories and convert it into options', () => {

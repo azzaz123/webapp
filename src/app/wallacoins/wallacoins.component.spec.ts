@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../shared/pipes';
 import { PaymentService } from '../core/payments/payment.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PerksModel } from '../core/payments/payment.model';
@@ -54,11 +54,11 @@ describe('WallacoinsComponent', () => {
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: PaymentService, useValue: {
-          getCoinsCreditsPacks() {
-            return Observable.of(CREDITS_PACKS);
+          getCreditsPacks() {
+            return of(CREDITS_PACKS);
           },
           getPerks() {
-            return Observable.of(PERKS);
+            return of(PERKS);
           }
         }
         },
@@ -80,7 +80,7 @@ describe('WallacoinsComponent', () => {
         },
         {
           provide: ActivatedRoute, useValue: {
-            params: Observable.of({
+            params: of({
               code: '-1'
             })
         }
@@ -89,10 +89,10 @@ describe('WallacoinsComponent', () => {
           provide: UserService, useValue: {
             user: MOCK_USER,
             isProfessional() {
-              return Observable.of('')
+              return of('')
             },
             me() {
-              return Observable.of({})
+              return of({})
             }
         }
         },
@@ -115,8 +115,8 @@ describe('WallacoinsComponent', () => {
 
   describe('ngOnInit', () => {
 
-    it('should call getCoinsCreditsPacks and set packs', () => {
-      spyOn(paymentService, 'getCoinsCreditsPacks').and.callThrough();
+    it('should call getCreditsPacks and set packs', () => {
+      spyOn(paymentService, 'getCreditsPacks').and.callThrough();
 
       component.ngOnInit();
 

@@ -1,3 +1,5 @@
+
+import {share} from 'rxjs/operators';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
@@ -74,7 +76,7 @@ export class UploadConfirmationModalComponent implements OnInit {
   }
 
   public urgentPrice(): void {
-    this.getUrgentProductsObservable = this.itemService.getUrgentProducts(this.item.id).share();
+    this.getUrgentProductsObservable = this.itemService.getUrgentProducts(this.item.id).pipe(share());
     this.getUrgentProductsObservable.subscribe((product: Product) => {
       this.getUrgentProductsObservable = null;
       this.productPrice = +product.durations[0].market_code;

@@ -12,6 +12,7 @@ import { PaymentService } from '../../../core/payments/payment.service';
 import { CartChange, CartProItem } from '../../../shared/catalog/cart/cart-item.interface';
 import { OrderPro } from '../../../core/item/item-response.interface';
 import { some } from 'lodash-es';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface Balance {
   citybump: number;
@@ -111,9 +112,9 @@ export class CartProComponent implements OnInit {
         }
         this.router.navigate(['/pro/catalog/list', { code:  code }]);
       }
-    }, (error) => {
-      if (error.text()) {
-        this.errorService.show(error);
+    }, (e: HttpErrorResponse) => {
+      if (e.error) {
+        this.errorService.show(e);
       } else {
         this.errorService.i18nError('bumpError');
       }

@@ -2,7 +2,7 @@ import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testi
 
 import { CatalogStatusNavbarComponent } from './catalog-status-navbar.component';
 import { PaymentService } from '../../../core/payments/payment.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ScheduledStatus } from '../../../core/payments/payment.interface';
 import { EventService } from '../../../core/event/event.service';
 
@@ -33,7 +33,7 @@ describe('CatalogStatusNavbarComponent', () => {
         {
           provide: PaymentService, useValue: {
           getStatus() {
-            return Observable.of({MOCK_STATUS});
+            return of({MOCK_STATUS});
           }
         }
         },
@@ -52,7 +52,7 @@ describe('CatalogStatusNavbarComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set the bumps counter for all bump types', () => {
-      spyOn(paymentService, 'getStatus').and.returnValue(Observable.of(MOCK_STATUS));
+      spyOn(paymentService, 'getStatus').and.returnValue(of(MOCK_STATUS));
 
       component.ngOnInit();
 
@@ -61,7 +61,7 @@ describe('CatalogStatusNavbarComponent', () => {
     });
 
     it('should set the bumps counter when only 1 bump type is present', () => {
-      spyOn(paymentService, 'getStatus').and.returnValue(Observable.of(MOCK_STATUS_CITY));
+      spyOn(paymentService, 'getStatus').and.returnValue(of(MOCK_STATUS_CITY));
 
       component.ngOnInit();
 

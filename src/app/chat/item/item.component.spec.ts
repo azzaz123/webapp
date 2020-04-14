@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs';
 import { CustomCurrencyPipe } from '../../shared/pipes';
 import { ItemService } from '../../core/item/item.service';
 import { ITEM_COUNTERS_DATA, ITEM_WEB_SLUG, MOCK_ITEM, MOCK_ITEM_CAR } from '../../../tests/item.fixtures.spec';
@@ -37,17 +38,17 @@ describe('Component: Item', () => {
         {
           provide: ItemService, useValue: {
           getCounters() {
-            return Observable.of(ITEM_COUNTERS_DATA);
+            return observableOf(ITEM_COUNTERS_DATA);
           },
           reserveItem() {
-            return Observable.of({});
+            return observableOf({});
           },
         }
         },
         {
           provide: UserService, useValue: {
           me() {
-            return Observable.of(MOCK_USER);
+            return observableOf(MOCK_USER);
           }
         }
         },

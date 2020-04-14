@@ -2,8 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { RealTimeService } from './real-time.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
-import { PersistencyService } from '../persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
@@ -32,7 +30,6 @@ import {
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../chat/model';
 
 let service: RealTimeService;
-let persistencyService: PersistencyService;
 let eventService: EventService;
 let xmppService: XmppService;
 let trackingService: TrackingService;
@@ -47,7 +44,6 @@ describe('RealTimeService', () => {
         RealTimeService,
         XmppService,
         EventService,
-        { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
@@ -57,7 +53,6 @@ describe('RealTimeService', () => {
 
     service = TestBed.get(RealTimeService);
     eventService = TestBed.get(EventService);
-    persistencyService = TestBed.get(PersistencyService);
     xmppService = TestBed.get(XmppService);
     trackingService = TestBed.get(TrackingService);
     remoteConsoleService = TestBed.get(RemoteConsoleService);
@@ -251,7 +246,7 @@ describe('RealTimeService', () => {
       expect(service.sendDeliveryReceipt).not.toHaveBeenCalled();
     });
 
-    it('should NOT call sendDeliveryReceipt if the message already exists (persistencyService.findMessage returns a value)', () => {
+    it('should NOT call sendDeliveryReceipt if the message already exists', () => {
       spyOn(service, 'sendDeliveryReceipt');
       const msg = new Message('someId', CONVERSATION_ID, 'from myself!', USER_ID);
       msg.fromSelf = false;
@@ -264,27 +259,23 @@ describe('RealTimeService', () => {
 
   describe('subscribeEventChatMessageSent', () => {
 
-    it('should call addTrackingEvent with the conversationCreateNew event when the MESSAGE_SENT event is triggered', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+    it('should call track with the conversationCreateNew event when the MESSAGE_SENT event is triggered', () => {
+      spyOn(trackingService, 'track');
       const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
       const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(),
         MessageStatus.SENT, MessageType.TEXT);
       newConversation.messages.push(inboxMessage);
-      const expectedEvent: TrackingEventData = {
-        eventData: TrackingService.CONVERSATION_CREATE_NEW,
-        attributes: {
-          thread_id: newConversation.id,
-          message_id: inboxMessage.id,
-          item_id: newConversation.item.id
-        }
-      };
 
       eventService.emit(EventService.MESSAGE_SENT, newConversation, inboxMessage.id);
 
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(expectedEvent, false);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW, {
+          thread_id: newConversation.id,
+          message_id: inboxMessage.id,
+          item_id: newConversation.item.id
+        });
     });
 
-    it('should call addTrackingEvent with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
+    it('should call track with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
       spyOn(window, 'fbq');
       const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
       const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(),
@@ -324,19 +315,15 @@ describe('RealTimeService', () => {
     });
 
     it('should add MessageSent event in the pendingTrackingEvents queue when the MESSAGE_SENT event is triggered', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+      spyOn(trackingService, 'track');
       const conv = CREATE_MOCK_INBOX_CONVERSATION('newId');
-      const expectedEvent: TrackingEventData = {
-        eventData: TrackingService.MESSAGE_SENT,
-        attributes: {
-          thread_id: conv.id,
-          message_id: MOCK_INBOX_CONVERSATION.id
-        }
-      };
 
       eventService.emit(EventService.MESSAGE_SENT, conv, MOCK_INBOX_CONVERSATION.id);
 
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(expectedEvent, false);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT, {
+        thread_id: conv.id,
+        message_id: MOCK_INBOX_CONVERSATION.id
+      });
     });
 
     it('should call appboy.logCustomEvent if this is the first message message sent', () => {

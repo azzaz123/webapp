@@ -209,6 +209,7 @@
   padding: $spacing-ml;
   background-color: $blue-grey-5;
   border-left: 1px solid $blue-grey-4;
+  flex-shrink: 0;
 
   tsl-user {
     margin-bottom: $spacing-ml;

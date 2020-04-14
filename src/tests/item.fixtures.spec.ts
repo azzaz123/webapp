@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import {
   AllowedActionResponse,
   AvailableProductsResponse,
@@ -25,7 +27,6 @@ import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
 import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
 import { clone } from 'lodash-es';
-import { Observable } from 'rxjs';
 import { Item, ITEM_TYPES } from '../app/core/item/item';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../app/core/item/item-categories';
 import * as moment from 'moment';
@@ -374,7 +375,7 @@ export const ITEMS_BULK_RESPONSE_FAILED: ItemBulkResponse = {
 export class MockedItemService {
   public get(url: string): Observable<Item> {
     const data: any = ITEM_DATA;
-    return Observable.of(new Item(
+    return observableOf(new Item(
       data.id,
       data.legacyId,
       data.owner,

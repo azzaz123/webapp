@@ -1,10 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, PROTOOL_EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT, USER_UNSUBSCRIBE_REASONS_ENDPOINT, USER_UNSUBSCRIBE_ENDPOINT, USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT, USER_BY_ID_ENDPOINT, USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT, USER_REPORT_ENDPOINT, USER_COVER_IMAGE_ENDPOINT, USER_PHONE_INFO_ENDPOINT, USER_EXTRA_INFO_ENDPOINT } from './user.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { Item } from '../item/item';
-import { Observable } from 'rxjs';
 import { I18nService } from '../i18n/i18n.service';
 import {
   CUSTOM_REASON,
@@ -106,7 +107,7 @@ describe('Service: User', () => {
         {
           provide: FeatureflagService, useValue: {
             getFlag() {
-              return Observable.of(true);
+              return observableOf(true);
             }
           }
         }
@@ -660,7 +661,7 @@ describe('Service: User', () => {
     let val: boolean;
 
     beforeEach(() => {
-      spyOn(service, 'me').and.returnValue(Observable.of({}));
+      spyOn(service, 'me').and.returnValue(observableOf({}));
       spyOn(permissionService, 'hasPermission').and.returnValue(Promise.resolve(true));
 
       service.isProfessional().subscribe((v) => {
@@ -683,7 +684,7 @@ describe('Service: User', () => {
 
   describe('isProUser', () => {
     it('should return true if user is featured', () => {
-      spyOn(service, 'me').and.returnValue(Observable.of(MOCK_FULL_USER));
+      spyOn(service, 'me').and.returnValue(observableOf(MOCK_FULL_USER));
 
       let resp: boolean;
       service.isProUser().subscribe(response => resp = response);
@@ -692,7 +693,7 @@ describe('Service: User', () => {
     });
 
     it('should return false if user is not featured', () => {
-      spyOn(service, 'me').and.returnValue(Observable.of(MOCK_USER));
+      spyOn(service, 'me').and.returnValue(observableOf(MOCK_USER));
 
       let resp: boolean;
       service.isProUser().subscribe(response => resp = response);

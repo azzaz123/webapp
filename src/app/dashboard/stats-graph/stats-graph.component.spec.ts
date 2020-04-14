@@ -1,9 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatsGraphComponent } from './stats-graph.component';
 import { AmChartsService } from '@amcharts/amcharts3-angular';
 import { StatisticsService } from './statistics.service';
-import { Observable } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { STATISTICS_RESPONSE } from '../../../tests/statistics.fixtures.spec';
@@ -26,7 +27,7 @@ describe('StatsGraphComponent', () => {
         {
           provide: StatisticsService, useValue: {
           getStatistics() {
-            return Observable.of(STATISTICS_RESPONSE);
+            return observableOf(STATISTICS_RESPONSE);
           }
         }
         },

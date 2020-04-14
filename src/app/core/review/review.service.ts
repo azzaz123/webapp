@@ -1,5 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {catchError, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { ReviewDataBuyer, ReviewDataSeller } from './review.interface';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -13,13 +16,13 @@ export class ReviewService {
   }
 
   public check(itemId: string): Observable<boolean> {
-    return this.http.head(`${environment.baseUrl}${REVIEWS_API_URL}/${itemId}`)
-      .map(() => {
+    return this.http.head(`${environment.baseUrl}${REVIEWS_API_URL}/${itemId}`).pipe(
+      map(() => {
         return true;
-      })
-      .catch(() => {
-        return Observable.of(false);
-      });
+      }),
+      catchError(() => {
+        return observableOf(false);
+      }),);
   }
 
   public createAsBuyer(reviewData: ReviewDataBuyer): Observable<any> {

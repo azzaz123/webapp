@@ -1,5 +1,9 @@
 @import "~style/common";
 
+:host {
+  display: flex;
+}
+
 .card {
   &.faded {
     .image-overlay, .actions-block, .card-block {

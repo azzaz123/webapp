@@ -1,53 +1,51 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { Observable } from 'rxjs';
 
 import { HelpService } from './help.service';
-import { HttpService } from '../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../tests/utils.spec';
-import { Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs';
-import { FAQ_FEATURES, FAQS } from '../../tests/faq.fixtures.spec';
-
-let service: HelpService;
-let http: HttpService;
+import { FAQS, FAQ_FEATURES } from '../../tests/faq.fixtures.spec';
 
 describe('HelpService', () => {
+  let service: HelpService;
+  let httpMock: HttpTestingController;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ...TEST_HTTP_PROVIDERS,
-        HelpService
-      ]
+      imports: [HttpClientTestingModule],
+      providers: [HelpService]
     });
     service = TestBed.get(HelpService);
-    http = TestBed.get(HttpService);
+    httpMock = TestBed.get(HttpTestingController);
   });
 
+  afterEach(() => {
+    httpMock.verify();
+  })
+
   describe('getFaqs', () => {
-    it('should call endpoint', () => {
+    it('should get localized faqs from web resources', () => {
       let response: any;
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(FAQS)});
-      spyOn(http, 'getNoBase').and.returnValue(Observable.of(new Response(res)));
+      let localId = 'es';
 
-      service.getFaqs('es').subscribe((res) => {
-        response = res
-      });
+      service.getFaqs(localId).subscribe(res => response = res);
+      const req: TestRequest = httpMock.expectOne(`assets/json/faq.${localId}.json`);
+      req.flush(FAQS);
 
-      expect(http.getNoBase).toHaveBeenCalledWith('assets/json/faq.es.json');
+      expect(req.request.method).toBe('GET');
       expect(response).toEqual(FAQS);
     });
   });
 
   describe('getFeatures', () => {
-    it('should call endpoint', () => {
+    it('should get localized faq features from web resources', () => {
       let response: any;
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(FAQ_FEATURES)});
-      spyOn(http, 'getNoBase').and.returnValue(Observable.of(new Response(res)));
+      let localId = 'es';
 
-      service.getFeatures('es').subscribe((res) => {
-        response = res
-      });
+      service.getFeatures(localId).subscribe(res => response = res);
+      const req: TestRequest = httpMock.expectOne(`assets/json/faq-features.${localId}.json`);
+      req.flush(FAQ_FEATURES);
 
-      expect(http.getNoBase).toHaveBeenCalledWith('assets/json/faq-features.es.json');
+      expect(req.request.method).toBe('GET');
       expect(response).toEqual(FAQ_FEATURES);
     });
   });

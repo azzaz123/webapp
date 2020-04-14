@@ -4,7 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CONVERSATION_USERS, ITEM_ID, ITEM_SALE_PRICE, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 
 
@@ -22,10 +22,10 @@ describe('SoldModalComponent', () => {
         {
           provide: ItemService, useValue: {
           getConversationUsers() {
-            return Observable.of(CONVERSATION_USERS);
+            return of(CONVERSATION_USERS);
           },
           soldOutside() {
-            return Observable.of({});
+            return of({});
           }
         }
         }

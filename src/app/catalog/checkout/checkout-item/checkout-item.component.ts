@@ -1,3 +1,5 @@
+
+import {takeWhile} from 'rxjs/operators';
 import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { ItemWithProducts } from '../../../core/item/item-response.interface';
 import { keys } from 'lodash-es';
@@ -44,7 +46,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
     this.cartService.createInstance(new Cart());
     this.durations = keys(this.itemWithProducts.products);
     this.duration = this.durations[1];
-    this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
+    this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
       this.onRemoveOrClean(cartChange);
     });
     this.provincialBump = !this.itemWithProducts.products['168'].citybump;

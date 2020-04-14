@@ -1,9 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutProItemComponent } from './checkout-pro-item.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { CalendarDates } from '../range-datepicker/calendar-dates';
 import { CartService } from '../../../shared/catalog/cart/cart.service';
@@ -45,7 +46,7 @@ describe('CheckoutProItemComponent', () => {
             },
             remove() {
             },
-            cart$: Observable.of(CART_CHANGE)
+            cart$: observableOf(CART_CHANGE)
           },
         }, {
           provide: NgbCalendar, useValue: {
@@ -138,7 +139,7 @@ describe('CheckoutProItemComponent', () => {
         itemId: MOCK_ITEM_V3.id,
         cart: CART
       };
-      cartService.cart$ = Observable.of(cartChange);
+      cartService.cart$ = observableOf(cartChange);
 
       component.onRemoveOrClean(cartChange);
     });
@@ -148,7 +149,7 @@ describe('CheckoutProItemComponent', () => {
         action: 'clean',
         cart: CART
       };
-      cartService.cart$ = Observable.of(cartChange);
+      cartService.cart$ = observableOf(cartChange);
 
       component.onRemoveOrClean(cartChange);
     });

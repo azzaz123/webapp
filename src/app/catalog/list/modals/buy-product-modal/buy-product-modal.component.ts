@@ -8,7 +8,6 @@ import { PurchaseProductsWithCreditsResponse } from '../../../../core/item/item-
 import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo, FinancialCardOption } from '../../../../core/payments/payment.interface';
-import { Response } from '@angular/http';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 
@@ -111,7 +110,7 @@ export class BuyProductModalComponent implements OnInit {
           this.activeModal.close('success');
         }
       }
-    }, (error: Response) => {
+    }, () => {
       this.activeModal.close('error');
     });
   }

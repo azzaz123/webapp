@@ -6,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { RealestateKeysService } from './realestate-keys.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Router } from '@angular/router';
 import { Key } from './key.interface';
@@ -56,23 +56,23 @@ describe('UploadRealestateComponent', () => {
         {
           provide: UserService, useValue: {
             isProUser() {
-              return Observable.of(false);
+              return of(false);
             }
           }
         },
         {
           provide: RealestateKeysService, useValue: {
             getOperations() {
-              return Observable.of(RESPONSE);
+              return of(RESPONSE);
             },
             getConditions() {
-              return Observable.of(RESPONSE_OPTION);
+              return of(RESPONSE_OPTION);
             },
             getExtras() {
-              return Observable.of(RESPONSE);
+              return of(RESPONSE);
             },
             getTypes() {
-              return Observable.of(RESPONSE);
+              return of(RESPONSE);
             }
           }
         },
@@ -103,7 +103,7 @@ describe('UploadRealestateComponent', () => {
         {
           provide: ItemService, useValue: {
             updateRealEstateLocation() {
-              return Observable.of({});
+              return of({});
             }
           }
         }

@@ -1,5 +1,8 @@
+
+import {of as observableOf, throwError as observableThrowError, forkJoin as observableForkJoin,  Observable } from 'rxjs';
+
+import {catchError, retryWhen, delay, take,  mergeMap, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
 import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse, SUBSCRIPTION_MARKETS, SubscriptionBenefit } from './subscriptions.interface';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
@@ -7,7 +10,7 @@ import { UUID } from 'angular2-uuid';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
-import { mergeMap, map, tap } from 'rxjs/operators';
+import { CARS_CATEGORY } from '../item/item-categories';
 import { CategoryService } from '../category/category.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -54,12 +57,12 @@ export class SubscriptionsService {
   }
 
   public getSlots(): Observable<SubscriptionSlot[]> {
-    return this.http.get<SubscriptionSlotGeneralResponse>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`)
-      .flatMap(response => {
-        return Observable.forkJoin(
+    return this.http.get<SubscriptionSlotGeneralResponse>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`).pipe(
+      mergeMap(response => {
+        return observableForkJoin(
           response.slots.map(slot => this.mapSlotResponseToSlot(slot))
         );
-      });
+      }));
   }
 
   private mapSlotResponseToSlot(slot: SubscriptionSlotResponse): Observable<SubscriptionSlot> {
@@ -80,10 +83,10 @@ export class SubscriptionsService {
 
   public getUserSubscriptionType(useCache = true): Observable<SUBSCRIPTION_TYPES> {
     if (useCache && this._userSubscriptionType) {
-      return of(this._userSubscriptionType);
+      return observableOf(this._userSubscriptionType);
     }
 
-    return Observable.forkJoin([
+    return observableForkJoin([
       this.userService.isProfessional(),
       this.getSubscriptions(false)
     ])
@@ -123,13 +126,13 @@ export class SubscriptionsService {
   }
 
   public checkNewSubscriptionStatus(): Observable<SubscriptionResponse> {
-    return this.http.get<any>(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`)
-      .retryWhen((errors) => {
-        return errors
-          .mergeMap((error) => (error.status !== 404) ? Observable.throw(error) : Observable.of(error))
-          .delay(1000)
-          .take(10);
-      });
+    return this.http.get<any>(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`).pipe(
+      retryWhen((errors) => {
+        return errors.pipe(
+          mergeMap((error) => (error.status !== 404) ? observableThrowError(error) : observableOf(error)),
+          delay(1000),
+          take(10),);
+      }));
   }
 
   public retrySubscription(invoiceId: string, paymentId: string): Observable<any> {
@@ -150,16 +153,16 @@ export class SubscriptionsService {
 
   public getSubscriptions(cache: boolean = true): Observable<SubscriptionsResponse[]> {
     if (this.subscriptions && cache) {
-      return Observable.of(this.subscriptions);
+      return observableOf(this.subscriptions);
     }
 
     return this.categoryService.getCategories()
     .pipe(
       mergeMap((categories) => {
-        return this.http.get(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`)
-        .catch((error) => {
-          return Observable.of(error);
-        })
+        return this.http.get(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).pipe(
+        catchError((error) => {
+          return observableOf(error);
+        }))
         .pipe(
           map((subscriptions: SubscriptionsResponse[]) => {
             if (subscriptions.length > 0) {
@@ -269,9 +272,9 @@ export class SubscriptionsService {
 
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]>{
     if (useCache && this._subscriptionBenefits) {
-      return of(this._subscriptionBenefits);
+      return observableOf(this._subscriptionBenefits);
     }
-    return of(this.i18nService.getTranslations('subscriptionBenefits'))
+    return observableOf(this.i18nService.getTranslations('subscriptionBenefits'))
       .pipe(
         tap(response => this._subscriptionBenefits = response)
       );

@@ -33,7 +33,7 @@ export const FINANCIAL_STRIPE_CARD: FinancialCard = {
     funding: null,
     generated_from: null,
     last4: '4242',
-    three_d_secure_usage: { supported : null },
+    three_d_secure_usage: { supported: null },
     wallet: null
   }
 };
@@ -46,7 +46,7 @@ export const PURCHASES_RESPONSE: Purchase[] = [{
   'national': true,
   'bump': false,
   'autorenew': false,
-  'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
+  'visibility_flags': { 'bumped': true, 'highlighted': false, 'urgent': false }
 }, {
   'item_id': '2',
   'expiration_date': 1496215651120,
@@ -55,7 +55,7 @@ export const PURCHASES_RESPONSE: Purchase[] = [{
   'national': false,
   'bump': true,
   'autorenew': true,
-  'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
+  'visibility_flags': { 'bumped': true, 'highlighted': false, 'urgent': false }
 }, {
   'item_id': '3',
   'expiration_date': 1495870049678,
@@ -64,7 +64,7 @@ export const PURCHASES_RESPONSE: Purchase[] = [{
   'national': true,
   'bump': false,
   'autorenew': true,
-  'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
+  'visibility_flags': { 'bumped': true, 'highlighted': false, 'urgent': false }
 }];
 
 export const PURCHASES: Purchase[] = <Purchase[]>[{
@@ -206,37 +206,37 @@ export function createPacksFixture(): Packs {
 
 export const WALLACOINS_PACKS_RESPONSE: PackResponse[] = [{
   'id': '05265bfc-423d-4e38-989b-7079c83ca4d7',
-  'benefits': {[COINS_PACK_ID]: 5500.00},
+  'benefits': { [COINS_PACK_ID]: 5500.00 },
   'price': '50.00',
   'original_price': '55.00',
   'currency': 'EUR'
 }, {
   'id': '2756ccaf-d59b-4fab-9758-163cc52f5246',
-  'benefits': {[COINS_PACK_ID]: 29000.00},
+  'benefits': { [COINS_PACK_ID]: 29000.00 },
   'price': '250.00',
   'original_price': '290.00',
   'currency': 'EUR'
 }, {
   'id': '8913678e-b1a2-47c4-a954-5257dfc1df85',
-  'benefits': {[COINS_PACK_ID]: 125000.00},
+  'benefits': { [COINS_PACK_ID]: 125000.00 },
   'price': '1000.00',
   'original_price': '1250.00',
   'currency': 'EUR'
 }, {
   'id': '994a1c68-c3dd-4e85-824e-8d1ae9d1a95a',
-  'benefits': {[COINS_PACK_ID]: 11500.00},
+  'benefits': { [COINS_PACK_ID]: 11500.00 },
   'price': '100.00',
   'original_price': '115.00',
   'currency': 'EUR'
 }, {
   'id': 'e631c995-a9cb-4db3-a746-435b63dddc02',
-  'benefits': {[COINS_PACK_ID]: 3000.00},
+  'benefits': { [COINS_PACK_ID]: 3000.00 },
   'price': '30.00',
   'original_price': '30.00',
   'currency': 'EUR'
 }, {
   'id': 'eaa7e591-6d86-4b62-94de-7ab8013a280b',
-  'benefits': {[COINS_PACK_ID]: 60000.00},
+  'benefits': { [COINS_PACK_ID]: 60000.00 },
   'price': '500.00',
   'original_price': '600.00',
   'currency': 'EUR'
@@ -244,37 +244,37 @@ export const WALLACOINS_PACKS_RESPONSE: PackResponse[] = [{
 
 export const WALLACREDITS_PACKS_RESPONSE: PackResponse[] = [{
   'id': '05265bfc-423d-4e38-989b-7079c83ca4d7',
-  'benefits': {[CREDITS_PACK_ID]: 5500.00},
+  'benefits': { [CREDITS_PACK_ID]: 5500.00 },
   'price': '50.00',
   'original_price': '55.00',
   'currency': 'EUR'
 }, {
   'id': '2756ccaf-d59b-4fab-9758-163cc52f5246',
-  'benefits': {[CREDITS_PACK_ID]: 29000.00},
+  'benefits': { [CREDITS_PACK_ID]: 29000.00 },
   'price': '250.00',
   'original_price': '290.00',
   'currency': 'EUR'
 }, {
   'id': '8913678e-b1a2-47c4-a954-5257dfc1df85',
-  'benefits': {[CREDITS_PACK_ID]: 125000.00},
+  'benefits': { [CREDITS_PACK_ID]: 125000.00 },
   'price': '1000.00',
   'original_price': '1250.00',
   'currency': 'EUR'
 }, {
   'id': '994a1c68-c3dd-4e85-824e-8d1ae9d1a95a',
-  'benefits': {[CREDITS_PACK_ID]: 11500.00},
+  'benefits': { [CREDITS_PACK_ID]: 11500.00 },
   'price': '100.00',
   'original_price': '115.00',
   'currency': 'EUR'
 }, {
   'id': 'e631c995-a9cb-4db3-a746-435b63dddc02',
-  'benefits': {[CREDITS_PACK_ID]: 3000.00},
+  'benefits': { [CREDITS_PACK_ID]: 3000.00 },
   'price': '30.00',
   'original_price': '30.00',
   'currency': 'EUR'
 }, {
   'id': 'eaa7e591-6d86-4b62-94de-7ab8013a280b',
-  'benefits': {[CREDITS_PACK_ID]: 60000.00},
+  'benefits': { [CREDITS_PACK_ID]: 60000.00 },
   'price': '500.00',
   'original_price': '600.00',
   'currency': 'EUR'
@@ -354,92 +354,95 @@ export function createWallacreditsPacksFixture(): Packs {
     wallacoins: [],
     wallacredits: []
   };
-  const packWallacredits = new Pack(
-    WALLACREDITS_PACKS_RESPONSE[4].id,
-    WALLACREDITS_PACKS_RESPONSE[4].benefits[CREDITS_PACK_ID],
-    +WALLACREDITS_PACKS_RESPONSE[4].price,
-    'EUR',
-    'wallacredits'
-  );
-  packWallacredits.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[4].price, +WALLACREDITS_PACKS_RESPONSE[4].original_price);
-  const packWallacredits2 = new Pack(
+
+  const pack1 = new Pack(
     WALLACREDITS_PACKS_RESPONSE[0].id,
     WALLACREDITS_PACKS_RESPONSE[0].benefits[CREDITS_PACK_ID],
     +WALLACREDITS_PACKS_RESPONSE[0].price,
     'EUR',
     'wallacredits'
   );
-  packWallacredits2.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[0].price, +WALLACREDITS_PACKS_RESPONSE[0].original_price);
-  const packWallacredits3 = new Pack(
-    WALLACREDITS_PACKS_RESPONSE[3].id,
-    WALLACREDITS_PACKS_RESPONSE[3].benefits[CREDITS_PACK_ID],
-    +WALLACREDITS_PACKS_RESPONSE[3].price,
-    'EUR',
-    'wallacredits'
-  );
-  packWallacredits3.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[3].price, +WALLACREDITS_PACKS_RESPONSE[3].original_price);
-  const packWallacredits4 = new Pack(
+  pack1.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[0].price, +WALLACREDITS_PACKS_RESPONSE[0].original_price);
+
+  const pack2 = new Pack(
     WALLACREDITS_PACKS_RESPONSE[1].id,
     WALLACREDITS_PACKS_RESPONSE[1].benefits[CREDITS_PACK_ID],
     +WALLACREDITS_PACKS_RESPONSE[1].price,
     'EUR',
     'wallacredits'
   );
-  packWallacredits4.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[1].price, +WALLACREDITS_PACKS_RESPONSE[1].original_price);
-  const packWallacredits5 = new Pack(
-    WALLACREDITS_PACKS_RESPONSE[5].id,
-    WALLACREDITS_PACKS_RESPONSE[5].benefits[CREDITS_PACK_ID],
-    +WALLACREDITS_PACKS_RESPONSE[5].price,
-    'EUR',
-    'wallacredits'
-  );
-  packWallacredits5.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[5].price, +WALLACREDITS_PACKS_RESPONSE[5].original_price);
-  const packWallacredits6 = new Pack(
+  pack2.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[1].price, +WALLACREDITS_PACKS_RESPONSE[1].original_price);
+
+  const pack3 = new Pack(
     WALLACREDITS_PACKS_RESPONSE[2].id,
     WALLACREDITS_PACKS_RESPONSE[2].benefits[CREDITS_PACK_ID],
     +WALLACREDITS_PACKS_RESPONSE[2].price,
     'EUR',
     'wallacredits'
   );
-  packWallacredits6.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[2].price, +WALLACREDITS_PACKS_RESPONSE[2].original_price);
-  PACKS.wallacredits.push(packWallacredits);
-  PACKS.wallacredits.push(packWallacredits2);
-  PACKS.wallacredits.push(packWallacredits3);
-  PACKS.wallacredits.push(packWallacredits4);
-  PACKS.wallacredits.push(packWallacredits5);
-  PACKS.wallacredits.push(packWallacredits6);
+  pack3.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[2].price, +WALLACREDITS_PACKS_RESPONSE[2].original_price);
+
+  const pack4 = new Pack(
+    WALLACREDITS_PACKS_RESPONSE[3].id,
+    WALLACREDITS_PACKS_RESPONSE[3].benefits[CREDITS_PACK_ID],
+    +WALLACREDITS_PACKS_RESPONSE[3].price,
+    'EUR',
+    'wallacredits'
+  );
+  pack4.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[3].price, +WALLACREDITS_PACKS_RESPONSE[3].original_price);
+
+  const pack5 = new Pack(
+    WALLACREDITS_PACKS_RESPONSE[4].id,
+    WALLACREDITS_PACKS_RESPONSE[4].benefits[CREDITS_PACK_ID],
+    +WALLACREDITS_PACKS_RESPONSE[4].price,
+    'EUR',
+    'wallacredits'
+  );
+  pack5.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[4].price, +WALLACREDITS_PACKS_RESPONSE[4].original_price);
+
+  const pack6 = new Pack(
+    WALLACREDITS_PACKS_RESPONSE[5].id,
+    WALLACREDITS_PACKS_RESPONSE[5].benefits[CREDITS_PACK_ID],
+    +WALLACREDITS_PACKS_RESPONSE[5].price,
+    'EUR',
+    'wallacredits'
+  );
+  pack6.calculateDiscountWithOriginalPrice(+WALLACREDITS_PACKS_RESPONSE[5].price, +WALLACREDITS_PACKS_RESPONSE[5].original_price);
+
+  PACKS.wallacredits.push(pack1, pack2, pack3, pack4, pack5, pack6);
+
   return PACKS;
 }
 
 
 export const PACK_RESPONSE: PackResponse[] = [{
   'id': '1',
-  'benefits': {[BUMP_ID]: 1},
+  'benefits': { [BUMP_ID]: 1 },
   'price': '5.99',
   'currency': 'EUR'
 }, {
   'id': '2',
-  'benefits': {[BUMP_ID]: 5},
+  'benefits': { [BUMP_ID]: 5 },
   'price': '15.99',
   'currency': 'EUR'
 }, {
   'id': '3',
-  'benefits': {[BUMP_ID]: 15},
+  'benefits': { [BUMP_ID]: 15 },
   'price': '25.99',
   'currency': 'EUR'
 }, {
   'id': '4',
-  'benefits': {[NATIONAL_BUMP_ID]: 1},
+  'benefits': { [NATIONAL_BUMP_ID]: 1 },
   'price': '8.99',
   'currency': 'EUR'
 }, {
   'id': '5',
-  'benefits': {[NATIONAL_BUMP_ID]: 5},
+  'benefits': { [NATIONAL_BUMP_ID]: 5 },
   'price': '18.99',
   'currency': 'EUR'
 }, {
   'id': '6',
-  'benefits': {[NATIONAL_BUMP_ID]: 15},
+  'benefits': { [NATIONAL_BUMP_ID]: 15 },
   'price': '28.99',
   'currency': 'EUR'
 }];
