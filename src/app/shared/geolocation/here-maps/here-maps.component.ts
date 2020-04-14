@@ -1,6 +1,5 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
-import { makeAnimationEvent } from '@angular/animations/browser/src/render/shared';
 
 export const MAP_ZOOM_GENERAL = 5;
 export const MAP_ZOOM_MARKER = 15;
@@ -22,7 +21,7 @@ export class HereMapsComponent implements OnInit, OnChanges {
   @Input() zoom = MAP_ZOOM_GENERAL;
   @Input() size = 'normal';
   @Input() isApproximateLocation = false;
-  @ViewChild('map') mapEl: ElementRef;
+  @ViewChild('map', { static: true }) mapEl: ElementRef;
   public platform: any;
   private map: any;
   private marker: any;

@@ -22,7 +22,7 @@ export class SendPhoneComponent implements OnInit {
   @Input() conversation: InboxConversation;
   @Input() required: boolean;
   @Input() phone: string;
-  @ViewChild('phoneInput') phoneField: ElementRef;
+  @ViewChild('phoneInput', { static: true }) phoneField: ElementRef;
   public sendPhoneForm: FormGroup;
 
   constructor(

@@ -37,7 +37,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public isPro: boolean;
   public updateLocationWhenSearching = false;
   public loading = false;
-  @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
+  @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
 
 
   constructor(private userService: UserService,
