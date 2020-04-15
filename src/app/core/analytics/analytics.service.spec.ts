@@ -1,4 +1,5 @@
-import { Observable } from 'rxjs';
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
@@ -14,7 +15,7 @@ describe('AnalyticsService', () => {
         {
           provide: UserService, useValue: {
             me() {
-              return Observable.of(MOCK_USER);
+              return observableOf(MOCK_USER);
             },
           },
         }

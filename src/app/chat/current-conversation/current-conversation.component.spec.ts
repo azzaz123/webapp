@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable, throwError } from 'rxjs';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { CurrentConversationComponent } from './current-conversation.component';

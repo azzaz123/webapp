@@ -2,13 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { competitorLinks, ProfileInfoComponent } from './profile-info.component';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { HttpService } from '../../core/http/http.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { MockBackend } from '@angular/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import {
   IMAGE,
   MOCK_FULL_USER,
@@ -25,8 +22,6 @@ describe('ProfileInfoComponent', () => {
   let fixture: ComponentFixture<ProfileInfoComponent>;
   let userService: UserService;
   let errorsService: ErrorsService;
-  let http: HttpService;
-  let mockBackend: MockBackend;
   let modalService: NgbModal;
   const modalInstance: any = null;
 
@@ -38,7 +33,6 @@ describe('ProfileInfoComponent', () => {
         NgbButtonsModule
       ],
       providers: [
-        ...TEST_HTTP_PROVIDERS,
         {
           provide: NgbModal, useValue: {
           open() {
@@ -49,25 +43,25 @@ describe('ProfileInfoComponent', () => {
           provide: UserService, useValue: {
           user: MOCK_FULL_USER,
           me() {
-            return Observable.of(MOCK_FULL_USER);
+            return of(MOCK_FULL_USER);
           },
           isProUser() {
-            return Observable.of({});
+            return of({});
           },
           getProInfo() {
-            return Observable.of({});
+            return of({});
           },
           getUserCover() {
-            return Observable.of({});
+            return of({});
           },
           updateProInfo() {
-            return Observable.of({});
+            return of({});
           },
           edit() {
-            return Observable.of({});
+            return of({});
           },
           updateLocation() {
-            return Observable.of({});
+            return of({});
           },
           updateSearchLocationCookies() {
           }
@@ -108,12 +102,10 @@ describe('ProfileInfoComponent', () => {
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
     errorsService = TestBed.get(ErrorsService);
-    http = TestBed.get(HttpService);
-    mockBackend = TestBed.get(MockBackend);
     modalService = TestBed.get(NgbModal);
     spyOn(userService, 'me').and.callThrough();
-    spyOn(userService, 'isProUser').and.returnValue(Observable.of(true));
-    spyOn(userService, 'getUserCover').and.returnValue(Observable.of(IMAGE));
+    spyOn(userService, 'isProUser').and.returnValue(of(true));
+    spyOn(userService, 'getUserCover').and.returnValue(of(IMAGE));
     component.formComponent = TestBed.get(ProfileFormComponent);
     fixture.detectChanges();
   });
@@ -142,7 +134,7 @@ describe('ProfileInfoComponent', () => {
     });
 
     it('should set profileForm with basic user data if userInfo throws error', () => {
-      spyOn(userService, 'getProInfo').and.returnValue(Observable.throwError(''));
+      spyOn(userService, 'getProInfo').and.returnValue(throwError(''));
 
       component.initForm();
 

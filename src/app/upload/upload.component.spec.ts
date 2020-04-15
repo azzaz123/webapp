@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UploadComponent } from './upload.component';
 import { ItemService } from '../core/item/item.service';
 import { PRODUCT_RESPONSE, ITEM_DATA_V3 } from '../../tests/item.fixtures.spec';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { UserService } from '../core/user/user.service';
 import { CARS_CATEGORY } from '../core/item/item-categories';
@@ -28,7 +28,7 @@ describe('UploadComponent', () => {
         {
           provide: UserService, useValue: {
             isProfessional() {
-              return Observable.of(false);
+              return of(false);
             }
           }
         }
@@ -50,7 +50,7 @@ describe('UploadComponent', () => {
     });
 
     it('should set category cars if user is professional', () => {
-      spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+      spyOn(userService, 'isProfessional').and.returnValue(of(true));
 
       component.ngOnInit();
 
@@ -58,7 +58,7 @@ describe('UploadComponent', () => {
     });
 
     it('should not set any category if user is not professional', () => {
-      spyOn(userService, 'isProfessional').and.returnValue(Observable.of(false));
+      spyOn(userService, 'isProfessional').and.returnValue(of(false));
 
       component.ngOnInit();
 
@@ -108,7 +108,7 @@ describe('UploadComponent', () => {
 
   describe('get urgent price', () => {
     it('should set the urgent price', () => {
-      spyOn(itemService, 'getUrgentProductByCategoryId').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getUrgentProductByCategoryId').and.returnValue(of(PRODUCT_RESPONSE));
 
       const categoryId = ITEM_DATA_V3.content.category_id;
 

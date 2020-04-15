@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 
 import { ReactivateConfirmationModalComponent } from './reactivate-confirmation-modal.component';
@@ -5,7 +7,6 @@ import { DecimalPipe } from '@angular/common';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { PaymentService } from '../../../../core/payments/payment.service';
-import { Observable } from 'rxjs';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
 import { EventService } from '../../../../core/event/event.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -23,7 +24,7 @@ describe('ReactivateConfirmationModalComponent', () => {
         {
           provide: PaymentService, useValue: {
           getCreditInfo() {
-            return Observable.of({});
+            return observableOf({});
           }
         }
         }
@@ -47,7 +48,7 @@ describe('ReactivateConfirmationModalComponent', () => {
         credit: 2000,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
 
       component.ngOnInit();
       tick(1000);
@@ -61,7 +62,7 @@ describe('ReactivateConfirmationModalComponent', () => {
         credit: 0,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
 
       component.ngOnInit();
       tick(1000);

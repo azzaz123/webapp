@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { HelpComponent } from './help.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs';
 import { HelpService } from './help.service';
 import { FAQ_FEATURES, FAQS } from '../../tests/faq.fixtures.spec';
 import { I18nService } from '../core/i18n/i18n.service';
@@ -23,10 +24,10 @@ describe('HelpComponent', () => {
       providers: [{
         provide: HelpService, useValue: {
           getFaqs() {
-            return Observable.of(FAQS)
+            return observableOf(FAQS)
           },
           getFeatures() {
-            return Observable.of(FAQ_FEATURES)
+            return observableOf(FAQ_FEATURES)
           }
         }
         },
@@ -38,7 +39,7 @@ describe('HelpComponent', () => {
         },
         {
           provide: ActivatedRoute, useValue: {
-          params: Observable.of({
+          params: observableOf({
             section: 'Perfil-6'
           })
         }
@@ -83,7 +84,7 @@ describe('HelpComponent', () => {
 
     it('should call scrollToElement if there is a param', fakeAsync(() => {
       spyOn(component, 'scrollToElement');
-      route.params = Observable.of({
+      route.params = observableOf({
         section: 'Perfil-6'
       });
 

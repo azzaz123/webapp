@@ -1,4 +1,6 @@
-export const environment: any = {
+import { Environment } from './environment.interface';
+
+export const environment: Environment = {
   production: false,
   profeatures: true,
   name: 'docker',

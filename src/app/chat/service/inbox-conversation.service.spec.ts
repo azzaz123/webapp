@@ -1,11 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { InboxConversationService } from './inbox-conversation.service';
 import { MessageService } from './message.service';
 import { RealTimeService } from '../../core/message/real-time.service';
-import { PersistencyService } from '../../core/persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
 import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../chat/model';
@@ -14,7 +14,6 @@ import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { Observable, of } from 'rxjs';
 import { ItemService } from '../../core/item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { HttpModuleNew } from '../../core/http/http.module.new';
@@ -32,7 +31,6 @@ describe('InboxConversationService', () => {
   let eventService: EventService;
   let realTime: RealTimeService;
   let remoteConsoleService: RemoteConsoleService;
-  let persistencyService: PersistencyService;
   let messageService: MessageService;
   let userService: UserService;
   let itemService: ItemService;
@@ -53,7 +51,6 @@ describe('InboxConversationService', () => {
             accessToken: 'ACCESS_TOKEN'
           }
         },
-        { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: RemoteConsoleService, useClass: RemoteConsoleClientServiceMock },
         { provide: MessageService, useValue: { totalUnreadMessages: 0 } },
         { provide: UserService, useClass: MockedUserService },
@@ -63,7 +60,6 @@ describe('InboxConversationService', () => {
     service = TestBed.get(InboxConversationService);
     eventService = TestBed.get(EventService);
     realTime = TestBed.get(RealTimeService);
-    persistencyService = TestBed.get(PersistencyService);
     remoteConsoleService = TestBed.get(RemoteConsoleService);
     messageService = TestBed.get(MessageService);
     userService = TestBed.get(UserService);
@@ -299,7 +295,7 @@ describe('InboxConversationService', () => {
         const message = new InboxMessage('10', 'thread_123456', 'hola!', 'mockUserId', false, new Date(),
           MessageStatus.SENT, MessageType.TEXT);
         spyOn(eventService, 'emit').and.callThrough();
-        spyOn<any>(service, 'getConversation').and.returnValue(Observable.of(message));
+        spyOn<any>(service, 'getConversation').and.returnValue(observableOf(message));
 
         service.processNewMessage(message);
         service.processNewMessage(message);
@@ -360,7 +356,7 @@ describe('InboxConversationService', () => {
           new Date(), MessageStatus.SENT, MessageType.TEXT);
         newConversation.messages = [newMessage];
 
-        spyOn<any>(service, 'getConversation').and.returnValue(of(newConversation));
+        spyOn<any>(service, 'getConversation').and.returnValue(observableOf(newConversation));
         spyOn(realTime, 'sendDeliveryReceipt').and.callThrough();
 
         service.processNewMessage(newMessage);

@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material';
 
@@ -5,7 +7,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ThirdVoiceReviewButtonComponent } from './third-voice-review-button.component';
 import { ButtonComponent } from '../../../shared/button/button.component';
 import { ReviewService } from '../../../core/review/review.service';
-import { Observable } from 'rxjs';
 import { USER_ID } from '../../../../tests/user.fixtures.spec';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { ReviewModalComponent } from '../../../shared/modals/review-modal/review-modal.component';
@@ -29,11 +30,11 @@ class NgbModalMock {
 
 class ReviewServiceMock {
   check() {
-    return Observable.of(true);
+    return observableOf(true);
   }
 
   createAsBuyer() {
-    return Observable.of({});
+    return observableOf({});
   }
 }
 
@@ -109,7 +110,7 @@ describe('ThirdVoiceReviewComponent', () => {
     it('should set show button false and call check', () => {
       spyOn(localStorage, 'getItem').and.returnValue(undefined);
       spyOn(localStorage, 'setItem');
-      spyOn(reviewService, 'check').and.returnValue(Observable.of(true));
+      spyOn(reviewService, 'check').and.returnValue(observableOf(true));
 
       component.ngOnInit();
 
@@ -120,7 +121,7 @@ describe('ThirdVoiceReviewComponent', () => {
 
     it('should set show button true and call check', () => {
       spyOn(localStorage, 'getItem').and.returnValue(undefined);
-      spyOn(reviewService, 'check').and.returnValue(Observable.of(false));
+      spyOn(reviewService, 'check').and.returnValue(observableOf(false));
 
       component.ngOnInit();
 

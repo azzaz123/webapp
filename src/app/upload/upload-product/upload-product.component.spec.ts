@@ -5,7 +5,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { UploadProductComponent } from './upload-product.component';
 import { CategoryService } from '../../core/category/category.service';
@@ -15,7 +15,6 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { User } from '../../core/user/user';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { ITEM_CATEGORY_ID, ITEM_DATA, ITEM_DELIVERY_INFO, MOCK_ITEM, MOCK_ITEM_FASHION } from '../../../tests/item.fixtures.spec';
 import { Item } from '../../core/item/item';
@@ -66,6 +65,7 @@ describe('UploadProductComponent', () => {
   let trackingService: TrackingService;
   let analyticsService: AnalyticsService;
   let deviceService: DeviceDetectorService;
+  let userService: UserService;
   const componentInstance: any = {};
 
   beforeEach(async(() => {
@@ -74,15 +74,15 @@ describe('UploadProductComponent', () => {
       providers: [
         FormBuilder,
         NgbPopoverConfig,
-        TEST_HTTP_PROVIDERS,
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
           provide: UserService, useValue: {
             isProUser() {
-              return Observable.of(false);
-            }
+              return of(false);
+            },
+            isPro: false
           }
         },
         {
@@ -102,7 +102,7 @@ describe('UploadProductComponent', () => {
         {
           provide: CategoryService, useValue: {
             getUploadCategories() {
-              return Observable.of(CATEGORIES_OPTIONS);
+              return of(CATEGORIES_OPTIONS);
             },
             isHeroCategory() {
             },
@@ -121,25 +121,25 @@ describe('UploadProductComponent', () => {
         {
           provide: GeneralSuggestionsService, useValue: {
             getObjectTypes() {
-              return Observable.of({});
+              return of({});
             },
             getBrands() {
-              return Observable.of({});
+              return of({});
             },
             getModels() {
-              return Observable.of(['iPhone 2G', 'iPhone 3G', 'iPhone 4']);
+              return of(['iPhone 2G', 'iPhone 3G', 'iPhone 4']);
             },
             getBrandsAndModels() {
-              return Observable.of([{ brand: 'Apple', model: 'iPhone XSX' }, { brand: 'Samsung', model: 'Galaxy S20' }]);
+              return of([{ brand: 'Apple', model: 'iPhone XSX' }, { brand: 'Samsung', model: 'Galaxy S20' }]);
             },
             getSizes() {
-              return Observable.of({
+              return of({
                 male: [{ id: 1, text: 'XXXS / 30 / 2' }],
                 female: [{ id: 18, text: 'XS / 30-32 / 40-42' }]
               });
             },
             getConditions() {
-              return Observable.of({ MOCK_CONDITIONS })
+              return of({ MOCK_CONDITIONS })
             }
           }
         }
@@ -162,6 +162,7 @@ describe('UploadProductComponent', () => {
     trackingService = TestBed.get(TrackingService);
     analyticsService = TestBed.get(AnalyticsService);
     deviceService = TestBed.get(DeviceDetectorService);
+    userService = TestBed.get(UserService);
     fixture.detectChanges();
     appboy.initialize(environment.appboy);
   });
@@ -194,12 +195,27 @@ describe('UploadProductComponent', () => {
     });
 
     it('should get and set categories', () => {
-      spyOn(categoryService, 'isHeroCategory').and.returnValues(false, false, false, false, true, true);
+      const EXPECTED_CATEGORIES = CATEGORIES_OPTIONS_CONSUMER_GOODS.filter((category) => {
+        return +category.value !== CATEGORY_IDS.HELP;
+      });
+      spyOn(categoryService, 'isHeroCategory').and.returnValues(false, false, false, false, false, true, true);
 
       component.ngOnInit();
 
       expect(categoryService.getUploadCategories).toHaveBeenCalled();
-      expect(component.categories).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS);
+      expect(component.categories).toEqual(EXPECTED_CATEGORIES);
+    });
+
+    describe('when the user has a PRO subscription', () => {
+      it('should show the Help category', () => {
+        spyOn(categoryService, 'isHeroCategory').and.returnValues(false, false, false, false, false, true, true);
+        spyOn(userService, 'isPro').and.returnValue(true);
+
+        component.ngOnInit();
+
+        expect(categoryService.getUploadCategories).toHaveBeenCalled();
+        expect(component.categories).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS);
+      });
     });
 
     describe('with preselected category', () => {
@@ -557,7 +573,7 @@ describe('UploadProductComponent', () => {
 
     it('should get brands and models if the brand endpoint doesn`t return any result', () => {
       spyOn(generalSuggestionsService, 'getBrandsAndModels').and.callThrough();
-      spyOn(generalSuggestionsService, 'getBrands').and.returnValue(Observable.of([]));
+      spyOn(generalSuggestionsService, 'getBrands').and.returnValue(of([]));
 
       component.getBrands('iPhone');
 

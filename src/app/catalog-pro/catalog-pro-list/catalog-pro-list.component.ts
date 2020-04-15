@@ -1,3 +1,5 @@
+
+import {takeWhile} from 'rxjs/operators';
 import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { findIndex } from 'lodash-es';
@@ -77,7 +79,7 @@ export class CatalogProListComponent implements OnInit {
     });
 
     setTimeout(() => {
-      this.router.events.takeWhile(() => this.active).subscribe((evt) => {
+      this.router.events.pipe(takeWhile(() => this.active)).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
           return;
         }
@@ -178,10 +180,10 @@ export class CatalogProListComponent implements OnInit {
     if (!append) {
       this.items = [];
     }
-    this.itemService.mines(this.page, this.pageSize, this.sortBy, this.selectedStatus, this.term, this.cache).takeWhile(() => {
+    this.itemService.mines(this.page, this.pageSize, this.sortBy, this.selectedStatus, this.term, this.cache).pipe(takeWhile(() => {
       this.cache = true;
       return this.active;
-    }).subscribe((items: Item[]) => {
+    })).subscribe((items: Item[]) => {
       if (this.selectedStatus === ITEM_STATUS.SOLD) {
         this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {total_products: items.length});
       } else {

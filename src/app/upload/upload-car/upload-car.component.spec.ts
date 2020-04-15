@@ -5,7 +5,7 @@ import { UploadCarComponent } from './upload-car.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
 import {
@@ -19,7 +19,6 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { User } from '../../core/user/user';
 import { IMAGE, USER_ID } from '../../../tests/user.fixtures.spec';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Car } from '../../core/item/car';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
@@ -60,40 +59,39 @@ describe('UploadCarComponent', () => {
       imports: [NgbPopoverModule],
       providers: [
         FormBuilder,
-        TEST_HTTP_PROVIDERS,
         NgbPopoverConfig,
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         {
           provide: UserService, useValue: {
             isProfessional() {
-              return Observable.of(false);
+              return of(false);
             },
             isProUser() {
-              return Observable.of(false);
+              return of(false);
             }
           }
         },
         {
           provide: CarSuggestionsService, useValue: {
             getBrands() {
-              return Observable.of({});
+              return of({});
             },
             getYears() {
-              return Observable.of({});
+              return of({});
             },
             getModels() {
-              return Observable.of({});
+              return of({});
             },
             getVersions() {
-              return Observable.of({});
+              return of({});
             }
           }
         },
         {
           provide: CarKeysService, useValue: {
             getTypes() {
-              return Observable.of({});
+              return of({});
             }
           }
         },
@@ -124,7 +122,7 @@ describe('UploadCarComponent', () => {
         {
           provide: ItemService, useValue: {
             getCarInfo() {
-              return Observable.of(CAR_INFO);
+              return of(CAR_INFO);
             }
           }
         },
@@ -233,7 +231,7 @@ describe('UploadCarComponent', () => {
 
   describe('getBrands', () => {
     it('should get and set brands', () => {
-      spyOn(carSuggestionsService, 'getBrands').and.returnValue(Observable.of(CAR_BRANDS));
+      spyOn(carSuggestionsService, 'getBrands').and.returnValue(of(CAR_BRANDS));
 
       component['getBrands']();
 
@@ -245,7 +243,7 @@ describe('UploadCarComponent', () => {
 
   describe('getCarTypes', () => {
     it('should get and set types', () => {
-      spyOn(carKeysService, 'getTypes').and.returnValue(Observable.of(CAR_BODY_TYPES));
+      spyOn(carKeysService, 'getTypes').and.returnValue(of(CAR_BODY_TYPES));
 
       component['getCarTypes']();
 
@@ -257,7 +255,7 @@ describe('UploadCarComponent', () => {
 
   describe('getModels', () => {
     it('should get and set models', () => {
-      spyOn(carSuggestionsService, 'getModels').and.returnValue(Observable.of(CAR_MODELS));
+      spyOn(carSuggestionsService, 'getModels').and.returnValue(of(CAR_MODELS));
 
       component.getModels('Abarth');
 
@@ -277,7 +275,7 @@ describe('UploadCarComponent', () => {
     });
 
     it('should set the car as custom if there are no models returned', () => {
-      spyOn(carSuggestionsService, 'getModels').and.returnValue(Observable.of([]));
+      spyOn(carSuggestionsService, 'getModels').and.returnValue(of([]));
 
       component.getModels('Gaudi');
 
@@ -297,7 +295,7 @@ describe('UploadCarComponent', () => {
 
   describe('getYears', () => {
     it('should get and set years', () => {
-      spyOn(carSuggestionsService, 'getYears').and.returnValue(Observable.of(CAR_YEARS));
+      spyOn(carSuggestionsService, 'getYears').and.returnValue(of(CAR_YEARS));
       component.uploadForm.get('brand').patchValue('Abarth');
 
       component.getYears('Spider');
@@ -326,7 +324,7 @@ describe('UploadCarComponent', () => {
 
   describe('getVersions', () => {
     it('should get and set versions', () => {
-      spyOn(carSuggestionsService, 'getVersions').and.returnValue(Observable.of(CAR_VERSIONS));
+      spyOn(carSuggestionsService, 'getVersions').and.returnValue(of(CAR_VERSIONS));
       component.uploadForm.get('brand').patchValue('Abarth');
       component.uploadForm.get('model').patchValue('Spider');
       component.uploadForm.get('year').patchValue('2017');

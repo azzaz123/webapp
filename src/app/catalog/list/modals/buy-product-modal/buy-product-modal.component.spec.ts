@@ -1,10 +1,11 @@
+
+import {of as observableOf,  Observable, throwError, Subject } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BuyProductModalComponent } from './buy-product-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../../../../shared/pipes';
-import { Observable, throwError, Subject } from 'rxjs';
 import { MOCK_ITEM_V3, ORDER_EVENT } from '../../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../../core/item/item.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -54,10 +55,10 @@ describe('BuyProductModalComponent', () => {
         {
           provide: ItemService, useValue: {
             get() {
-              return Observable.of(MOCK_ITEM_V3);
+              return observableOf(MOCK_ITEM_V3);
             },
             purchaseProductsWithCredits() {
-              return Observable.of({
+              return observableOf({
                 payment_needed: true
               });
             }
@@ -74,7 +75,7 @@ describe('BuyProductModalComponent', () => {
         {
           provide: PaymentService, useValue: {
             getCreditInfo() {
-              return Observable.of({});
+              return observableOf({});
             }
           }
         },
@@ -82,7 +83,7 @@ describe('BuyProductModalComponent', () => {
           provide: StripeService, useValue: {
             buy() {},
             getCards() {
-              return Observable.of([]);
+              return observableOf([]);
             }
           }
         },
@@ -126,7 +127,7 @@ describe('BuyProductModalComponent', () => {
         credit: 2000,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
 
       component.ngOnInit();
 
@@ -139,7 +140,7 @@ describe('BuyProductModalComponent', () => {
         credit: 0,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
 
       component.ngOnInit();
 
@@ -301,7 +302,7 @@ describe('BuyProductModalComponent', () => {
 
       describe('error', () => {
         beforeEach(() => {
-          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(Observable.throwError(''));
+          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(throwError(''));
 
           component.checkout();
         });

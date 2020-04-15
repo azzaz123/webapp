@@ -4,7 +4,7 @@ import { PreviewModalComponent } from './preview-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UPLOAD_FORM_CAR_VALUES } from '../../../tests/item.fixtures.spec';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CarKeysService } from '../upload-car/car-keys.service';
 import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
@@ -22,7 +22,7 @@ describe('PreviewModalComponent', () => {
         {
           provide: CarKeysService, useValue: {
           getTypeName() {
-            return Observable.of({});
+            return of({});
           }
         }
         },
@@ -85,7 +85,7 @@ describe('PreviewModalComponent', () => {
 
   describe('getBodyType', () => {
     it('should set bodyType', () => {
-      spyOn(carKeysService, 'getTypeName').and.returnValue(Observable.of('test'));
+      spyOn(carKeysService, 'getTypeName').and.returnValue(of('test'));
       component.itemPreview = {
         ...UPLOAD_FORM_CAR_VALUES,
         body_type: 'body'

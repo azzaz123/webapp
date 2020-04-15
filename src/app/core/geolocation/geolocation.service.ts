@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -26,13 +28,13 @@ export class GeolocationService {
   public geocode(placeId: string): Observable<Coordinate> {
     const params: any = { placeId };
 
-    return this.http.get<Coordinate>(`${environment.siteUrl}${MAPS_PLACE_API}`, { params })
-      .map(res => {
+    return this.http.get<Coordinate>(`${environment.siteUrl}${MAPS_PLACE_API}`, { params }).pipe(
+      map(res => {
         return {
           ...res,
           name: placeId
         };
-      });
+      }));
   }
 
 }

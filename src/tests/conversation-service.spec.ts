@@ -1,12 +1,13 @@
-import { Observable } from 'rxjs';
+
+import {of as observableOf,  Observable } from 'rxjs';
 
 export class ConversationServiceMock {
   getPage() {
-    return Observable.of([]);
+    return observableOf([]);
   }
 
   getTotals() {
-    return Observable.of({});
+    return observableOf({});
   }
 
   public loadMoreMessages() {

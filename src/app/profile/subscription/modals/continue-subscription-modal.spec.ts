@@ -7,7 +7,7 @@ import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.s
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 describe('ContinueSubscriptionModalComponent', () => {
   let component: ContinueSubscriptionModalComponent;
@@ -51,7 +51,7 @@ describe('ContinueSubscriptionModalComponent', () => {
         {
           provide: SubscriptionsService, useValue: {
             continueSubscription() {
-              return Observable.of(202);
+              return of(202);
             }
           }
         },

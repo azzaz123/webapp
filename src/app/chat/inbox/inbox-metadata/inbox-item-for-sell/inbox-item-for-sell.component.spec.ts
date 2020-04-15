@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InboxItemForSellComponent } from './inbox-item-for-sell.component';
@@ -6,7 +8,6 @@ import { MOCK_USER, USER_ID, USER_INFO_RESPONSE, MOCK_USER_STATS } from '../../.
 import { LATEST_ITEM_COUNT, MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../../core/item/item.service';
 import { UserService } from '../../../../core/user/user.service';
-import { Observable } from 'rxjs';
 import { InboxUser } from '../../../model/inbox-user';
 
 describe('InboxItemForSellComponent', () => {
@@ -31,10 +32,10 @@ describe('InboxItemForSellComponent', () => {
         {
           provide: UserService, useValue: {
             getInfo() {
-              return Observable.of(USER_INFO_RESPONSE);
+              return observableOf(USER_INFO_RESPONSE);
             },
             getUserStats() {
-              return Observable.of(MOCK_USER_STATS);
+              return observableOf(MOCK_USER_STATS);
             }
           }
         },
@@ -50,7 +51,7 @@ describe('InboxItemForSellComponent', () => {
     itemService = TestBed.get(ItemService);
     userService = TestBed.get(UserService);
     component.user = { id: USER_ID } as InboxUser;
-    spyOn(itemService, 'getLatest').and.returnValue(Observable.of({
+    spyOn(itemService, 'getLatest').and.returnValue(observableOf({
       data: MOCK_ITEM,
       count: LATEST_ITEM_COUNT
     }));

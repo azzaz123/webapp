@@ -11,7 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { isValidNumber } from 'libphonenumber-js';
-import { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 export const competitorLinks = [
@@ -60,7 +60,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   }
 
   initForm() {
-    Observable.forkJoin([
+    forkJoin([
       this.userService.me(),
       this.userService.isProUser(),
       this.userService.getUserCover()
@@ -157,25 +157,27 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
           last_name: profileFormValue.last_name,
           birth_date: this.user.birthDate ? moment(this.user.birthDate).format('YYYY-MM-DD') : null,
           gender: this.user.gender ? this.user.gender.toUpperCase().substr(0, 1) : null
-        }).finally(() => {
-          this.loading = false;
-          this.formComponent.initFormControl();
-          this.errorsService.i18nSuccess('userEdited');
-        }).subscribe(() => {
-          if (!this.user.location ||
-            this.user.location.approximated_latitude !== profileFormLocation.latitude ||
-            this.user.location.approximated_longitude !== profileFormLocation.longitude) {
-            const newLocation: Coordinate = {
-              latitude: profileFormLocation.latitude,
-              longitude: profileFormLocation.longitude,
-              name: profileFormLocation.address
-            };
-            this.userService.updateLocation(newLocation).subscribe(newUserLocation => {
-              this.userService.user.location = newUserLocation;
-              this.userService.updateSearchLocationCookies(newLocation);
-            });
-          }
-        });
+        })
+          .pipe(finalize(() => {
+            this.loading = false;
+            this.formComponent.initFormControl();
+            this.errorsService.i18nSuccess('userEdited');
+          }))
+          .subscribe(() => {
+            if (!this.user.location ||
+              this.user.location.approximated_latitude !== profileFormLocation.latitude ||
+              this.user.location.approximated_longitude !== profileFormLocation.longitude) {
+              const newLocation: Coordinate = {
+                latitude: profileFormLocation.latitude,
+                longitude: profileFormLocation.longitude,
+                name: profileFormLocation.address
+              };
+              this.userService.updateLocation(newLocation).subscribe(newUserLocation => {
+                this.userService.user.location = newUserLocation;
+                this.userService.updateSearchLocationCookies(newLocation);
+              });
+            }
+          });
       });
     } else {
       if (!this.profileForm.get('location.address').valid) {

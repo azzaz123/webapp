@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Item } from '../../../core/item/item';
 import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
@@ -74,15 +75,10 @@ export class CatalogCardComponent implements OnInit {
 
   public cancelAutorenew(item: Item, cancelAutorenewModal: any) {
     this.modalService.open(cancelAutorenewModal).result.then(() => {
-      this.itemService.cancelAutorenew(item.id).subscribe((resp: any) => {
-        if (resp.status >= 500) {
-          this.errorService.show(resp);
-        } else {
-          this.bumpCancel.emit({
-            item: item
-          });
-        }
-      });
+      this.itemService.cancelAutorenew(item.id).subscribe(
+        () => this.bumpCancel.emit({ item }),
+        (error: HttpErrorResponse) => this.errorService.show(error)
+      );
     });
   }
 

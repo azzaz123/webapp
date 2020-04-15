@@ -1,6 +1,18 @@
 @import "~style/common";
+
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/grid';
+@import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/utilities';
+@import '~bootstrap/scss/modal';
+@import '~bootstrap/scss/forms';
+@import '~bootstrap/scss/dropdown';
+@import '~bootstrap/scss/tooltip';
+@import '~bootstrap/scss/popover';
+@import '~bootstrap/scss/badge';
+@import '~bootstrap/scss/carousel';
+
 @import './animations';
-@import '~bootstrap/scss/bootstrap';
 @import './components/components';
 @import '~web-styleguide/scss/fonts';
 
@@ -88,10 +100,11 @@ body {
   }
 }
 
-button {
+button, .btn {
   cursor: pointer;
   &:focus {
     outline: none;
+    box-shadow: none;
   }
 }
 
@@ -116,4 +129,10 @@ button, input, optgroup, select, textarea {
 
 tsl-topbar {
   position: sticky;
+}
+
+nav {
+  a:hover {
+    text-decoration: none;
+  }
 }

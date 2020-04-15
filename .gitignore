@@ -39,6 +39,7 @@ yarn-error.log*
 npm-debug.log
 testem.log
 /typings
+docknum.ts
 
 # e2e
 /e2e/*.js

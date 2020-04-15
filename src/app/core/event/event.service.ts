@@ -1,6 +1,7 @@
+
+import {share} from 'rxjs/operators';
 import { Injectable, NgZone } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject ,  Subscription } from 'rxjs';
 
 @Injectable()
 export class EventService {
@@ -68,7 +69,7 @@ export class EventService {
     if (!this.subjects[eventName]) {
       const subject = new Subject();
       this.subjects[eventName] = {
-        observable: subject.asObservable().share(),
+        observable: subject.asObservable().pipe(share()),
         subject: subject
       };
     }

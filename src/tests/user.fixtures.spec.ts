@@ -219,7 +219,7 @@ export const USER_ITEM_DISTANCE = 10;
 export class MockedUserService {
   public get(url: string): Observable<User> {
     const data: any = USER_DATA;
-    return Observable.of(new User(
+    return of(new User(
       data.id,
       data.micro_name,
       data.image,

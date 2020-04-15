@@ -18,6 +18,7 @@ ngb-carousel {
         background-color: $blue-grey-4;
         @include square(10px);
         max-width: 10px;
+        flex-shrink: 0;
         &:hover, &.active {
           background-color: $walla-main;
         }

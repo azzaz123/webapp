@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReactivateModalComponent } from './reactivate-modal.component';
@@ -7,7 +9,6 @@ import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
 import { PaymentService } from '../../../../core/payments/payment.service';
-import { Observable } from 'rxjs';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
 
 describe('ReactivateModalComponent', () => {
@@ -22,7 +23,7 @@ describe('ReactivateModalComponent', () => {
         {
           provide: PaymentService, useValue: {
           getCreditInfo() {
-            return Observable.of({});
+            return observableOf({});
           }
         }
         }
@@ -47,7 +48,7 @@ describe('ReactivateModalComponent', () => {
         credit: 2000,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
 
       component.ngOnInit();
 
@@ -60,7 +61,7 @@ describe('ReactivateModalComponent', () => {
         credit: 0,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
 
       component.ngOnInit();
 

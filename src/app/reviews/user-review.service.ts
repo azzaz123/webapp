@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ReviewResponse, ReviewsData } from './review-response.interface';
@@ -22,8 +24,8 @@ export class UserReviewService {
         init
       } as any,
       observe: 'response' as 'body'
-    })
-      .map(r => {
+    }).pipe(
+      map(r => {
         const res: ReviewResponse[] = r.body;
         const nextPage: string = r.headers.get('x-nextpage');
         const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
@@ -33,7 +35,7 @@ export class UserReviewService {
           data,
           init: nextInit
         };
-      });
+      }));
   }
 
   private mapResponse(res: ReviewResponse[]): Review[] {

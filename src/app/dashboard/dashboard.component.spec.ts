@@ -1,10 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { Observable } from 'rxjs';
 import { DashboardComponent } from './dashboard.component';
 import { EventService } from '../core/event/event.service';
 import { TrackingService } from '../core/tracking/tracking.service';
@@ -114,7 +114,7 @@ describe('DashboardComponent', () => {
     const CONVERSATIONS: InboxConversation[] = createInboxConversationsArray(4);
 
     beforeEach(() => {
-      spyOn(callService, 'getPage').and.returnValue(Observable.of(CALLS));
+      spyOn(callService, 'getPage').and.returnValue(observableOf(CALLS));
       spyOn(trackingService, 'track');
       inboxConversationService.conversations = CONVERSATIONS;
 
@@ -142,7 +142,7 @@ describe('DashboardComponent', () => {
   describe('getTotals', () => {
 
     beforeEach(() => {
-      spyOn(callService, 'getTotals').and.returnValue(Observable.of({
+      spyOn(callService, 'getTotals').and.returnValue(observableOf({
         calls: 6,
         archived: 9
       }));

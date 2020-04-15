@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
@@ -423,7 +423,7 @@ export class UploadCarComponent implements OnInit {
   }
 
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {
-    return Observable.forkJoin([
+    return forkJoin([
       this.userService.isProfessional(),
       this.userService.isProUser(),
     ]).pipe(tap((values: any[]) => {

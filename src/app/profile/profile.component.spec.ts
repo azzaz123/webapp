@@ -1,14 +1,14 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { UserService, USER_ENDPOINT, USER_STATS_ENDPOINT } from '../core/user/user.service';
-import { Observable } from 'rxjs';
 import { MOCK_USER, USER_WEB_SLUG, MOCK_USER_STATS, MOCK_FULL_USER, USER_DATA, MOCK_NON_FEATURED_USER_RESPONSE, MOCK_USER_STATS_RESPONSE } from '../../tests/user.fixtures.spec';
 import { I18nService } from '../core/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { SubscriptionsService } from '../core/subscriptions/subscriptions.service';
-import { HttpService } from '../core/http/http.service';
 import { FeatureflagService } from '../core/user/featureflag.service';
 import { SUBSCRIPTIONS, SUBSCRIPTIONS_NOT_SUB } from '../../tests/subscriptions.fixtures.spec';
 import { EventService } from '../core/event/event.service';
@@ -32,7 +32,6 @@ describe('ProfileComponent', () => {
       imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule],
       declarations: [ ProfileComponent, StarsComponent, ProBadgeComponent ],
       providers: [
-        {provide: HttpService, useValue: {}},
         EventService,
         I18nService,
         HaversineService,

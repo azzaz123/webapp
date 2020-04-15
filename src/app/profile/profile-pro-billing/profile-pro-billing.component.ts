@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
@@ -63,8 +64,8 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
         this.errorsService.i18nSuccess('userEdited');
         this.formComponent.initFormControl();
         this.isNewBillingInfoForm = false;
-      }, (response: any) => {
-        this.errorsService.show(response);
+      }, (error: HttpErrorResponse) => {
+        this.errorsService.show(error);
       });
     } else {
       this.errorsService.i18nError('formErrors');

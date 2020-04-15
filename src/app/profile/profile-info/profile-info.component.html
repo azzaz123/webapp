@@ -71,7 +71,7 @@
           <div class="form-group row align-items-center">
             <label for="link" class="col-12 col-md-3 text-md-right">Web</label>
             <div class="col-12 col-md-6 offset-md-1">
-              <input (click)="openBecomeProModal()" class="form-control" id="link" formControlName="link"
+              <input type="text" (click)="openBecomeProModal()" class="form-control" id="link" formControlName="link"
                 pattern="^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
                 [readonly]="!isPro" />
             </div>

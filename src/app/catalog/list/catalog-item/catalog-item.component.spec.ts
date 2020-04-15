@@ -59,21 +59,21 @@ describe('CatalogItemComponent', () => {
             deselectItem() {
             },
             deleteItem() {
-              return Observable.of({});
+              return of({});
             },
             reserveItem() {
-              return Observable.of({});
+              return of({});
             },
             reactivateItem() {
-              return Observable.of({});
+              return of({});
             },
             getAvailableReactivationProducts() {
             },
             canDoAction() {
-              return Observable.of(true);
+              return of(true);
             },
             getListingFeeInfo() {
-              return Observable.of(PRODUCT_RESPONSE);
+              return of(PRODUCT_RESPONSE);
             }
           }
         },
@@ -215,7 +215,7 @@ describe('CatalogItemComponent', () => {
   describe('reactivate', () => {
 
     beforeEach(() => {
-      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(of(PRODUCT_RESPONSE));
     });
 
     it('should call getAvailableReactivationProducts', () => {
@@ -389,7 +389,7 @@ describe('CatalogItemComponent', () => {
       });
 
       it('should emit facebook ITEM_SOLD event', () => {
-        const facebookEvent = { value: MOCK_ITEM.salePrice, currency: MOCK_ITEM.currencyCode};
+        const facebookEvent = { value: MOCK_ITEM.salePrice, currency: MOCK_ITEM.currencyCode };
 
         expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', facebookEvent);
       });
@@ -428,7 +428,7 @@ describe('CatalogItemComponent', () => {
     const item: Item = MOCK_ITEM;
 
     it('should get the listing fee information related to the item', () => {
-      spyOn(itemService, 'getListingFeeInfo').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getListingFeeInfo').and.returnValue(of(PRODUCT_RESPONSE));
 
       component.publishItem();
 
@@ -449,7 +449,7 @@ describe('CatalogItemComponent', () => {
   });
 
   describe('onClickInfoElement', () => {
-    it ('should send PRODUCT_VIEWED to tracking service', () => {
+    it('should send PRODUCT_VIEWED to tracking service', () => {
       spyOn(trackingService, 'track');
 
       component.openItem();

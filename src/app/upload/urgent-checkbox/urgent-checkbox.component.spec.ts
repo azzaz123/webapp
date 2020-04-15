@@ -3,7 +3,7 @@ import { UrgentCheckboxComponent } from './urgent-checkbox.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { PaymentService } from '../../core/payments/payment.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
 
@@ -20,7 +20,7 @@ describe('UrgentCheckboxComponent', () => {
           {
             provide: PaymentService, useValue: {
             getCreditInfo() {
-              return Observable.of({});
+              return of({});
             }
           }
           }
@@ -43,7 +43,7 @@ describe('UrgentCheckboxComponent', () => {
         credit: 2000,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
       component.ngOnInit();
 

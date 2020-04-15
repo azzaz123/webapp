@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { NgUploaderOptions, UploadOutput } from './upload.interface';
 import { isPlatformServer } from '@angular/common';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UploaderService } from './uploader.service';
 

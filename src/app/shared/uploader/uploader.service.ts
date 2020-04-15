@@ -1,6 +1,9 @@
+
+import {from as observableFrom,  Observable, Subscriber, Subscription } from 'rxjs';
+
+import {combineLatest, mergeAll} from 'rxjs/operators';
 import { EventEmitter, Injectable } from '@angular/core';
 import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput, UploadStatus } from './upload.interface';
-import { Observable, Subscriber, Subscription } from 'rxjs/Rx';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
@@ -36,7 +39,7 @@ export class UploaderService {
             speedHuman: null
           }
         },
-        lastModifiedDate: file.lastModifiedDate
+        lastModifiedDate: new Date(file.lastModified)
       };
       if (this.checkExtension(uploadFile, imageType) &&
         this.checkMaxUploads(uploadFile, imageType) &&
@@ -109,11 +112,11 @@ export class UploaderService {
             return { file: file, sub: null };
           }));
 
-          const subscription = Observable.from(this.files
+          const subscription = observableFrom(this.files
             .filter(file => file.progress.status !== UploadStatus.Done)
-            .map(file => this.uploadFile(file, event)))
-            .mergeAll(concurrency)
-            .combineLatest(data => data)
+            .map(file => this.uploadFile(file, event))).pipe(
+            mergeAll(concurrency),
+            combineLatest(data => data),)
             .subscribe(subscriber);
           break;
         case 'cancel':
