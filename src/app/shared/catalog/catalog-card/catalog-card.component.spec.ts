@@ -10,7 +10,7 @@ import { DecimalPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { MOCK_ITEM, ITEM_ID, ITEM_DATA3, getMockItemWithPurchases } from '../../../../tests/item.fixtures.spec';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { MomentModule } from 'angular2-moment';
 import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
 import { Item } from '../../../core/item/item';
@@ -49,13 +49,13 @@ describe('CatalogCardComponent', () => {
             deselectItem() {
             },
             reserveItem() {
-              return Observable.of({});
+              return of({});
             },
             setSold() {
-              return Observable.of({});
+              return of({});
             },
             cancelAutorenew() {
-              return Observable.of({});
+              return of({});
             }
           }
         },
@@ -220,7 +220,7 @@ describe('CatalogCardComponent', () => {
 
   describe('cancel Autorenew', () => {
     beforeEach(fakeAsync(() => {
-      spyOn(itemService, 'cancelAutorenew').and.returnValue(Observable.of({'status': 200}));
+      spyOn(itemService, 'cancelAutorenew').and.returnValue(of({'status': 200}));
       spyOn(modalService, 'open').and.callThrough();
       component.cancelAutorenew(MOCK_ITEM, modal);
       tick();

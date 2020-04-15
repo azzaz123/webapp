@@ -1,4 +1,5 @@
-import { Observable, of } from 'rxjs';
+
+import {empty as observableEmpty,  Observable, of } from 'rxjs';
 import { InboxConversation } from '../app/chat/model';
 
 export class InboxConversationServiceMock {
@@ -7,11 +8,11 @@ export class InboxConversationServiceMock {
   public archivedConversations: InboxConversation[] = [];
 
   openConversationByItemId$(itemId: string): Observable<InboxConversation> {
-    return Observable.empty();
+    return observableEmpty();
   }
 
   openConversationByConversationId$(conversation: string): Observable<InboxConversation> {
-    return Observable.empty();
+    return observableEmpty();
   }
 
   public openConversation(conversation: InboxConversation): void {

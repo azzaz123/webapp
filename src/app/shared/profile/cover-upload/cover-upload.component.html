@@ -6,7 +6,7 @@
     <tsl-user-cover (click)="clickNotPro.emit()" [user]="user" [imageCoverUrl]="user?.coverImage?.urls_by_size?.medium"
       size="80"></tsl-user-cover>
     <div class="upload-button" *ngIf="isPro">
-      <label class="btn btn-upload"
+      <label class="btn btn-upload d-flex"
         [ngClass]="{disabled: file?.progress?.status === 0 || file?.progress?.status === 1}">
         <input type="file" imageType="cover" tslFileSelect (uploadOutput)="onUploadOutput($event)"
           [uploadCoverInput]="uploadCoverInput" [options]="options"
@@ -14,8 +14,8 @@
         <span class="loader" *ngIf="file?.progress?.status === 0 || file?.progress?.status === 1">
           <mat-icon svgIcon="spinner" class="spinner"></mat-icon>
         </span>
-        <span i18n *ngIf="user?.coverImage">Update picture</span>
-        <span i18n *ngIf="!user?.coverImage">Upload picture</span>
+        <span i18n *ngIf="user?.coverImage" class="d-none d-md-block">Update picture</span>
+        <span i18n *ngIf="!user?.coverImage" class="d-none d-md-block">Upload picture</span>
       </label>
       <div>
         <p i18n>JPG format and a minimum size of 400 x 400px are accepted.</p>

@@ -114,16 +114,6 @@ export class I18nService {
       alreadyFeatured: 'You are trying to feature an item that is already planned.',
       phoneRequestMessage: 'Please contact us or leave us your phone number and we will contact you',
       phoneMessage: 'My phone number is ',
-      motorPlanTypes: [
-        { subtype: 'sub_pro_basic', label: 'Pro' },
-        { subtype: 'cars_3_to_5', label: '3 to 5 cars Plan' },
-        { subtype: 'cars_6_to_7', label: '6 to 7 cars Plan' },
-        { subtype: 'cars_8_to_10', label: '8 to 10 cars Plan' },
-        { subtype: 'cars_11_to_15', label: '11 to 15 cars Plan' },
-        { subtype: 'sub_basic', label: 'Basic Motor Plan', shortLabel: 'Basic' },
-        { subtype: 'sub_pro', label: 'Medium Motor Plan', shortLabel: 'Medium' },
-        { subtype: 'sub_premium', label: 'Super Motor Plan', shortLabel: 'Super' }
-      ],
       cars_subscription_tutorial_listinglimit5: 'Upload 5 cars.',
       cars_subscription_tutorial_listinglimit9: 'Upload 9 cars.',
       cars_subscription_tutorial_listinglimit15: 'Upload 15 cars.',
@@ -163,6 +153,28 @@ export class I18nService {
       review: 'How did it go? Take a moment to leave some feedback to the user to help our community!',
       price_drop: 'The item price has dropped. Close the deal!',
       drop_price: 'The item price has dropped. Close the deal!',
+      subscriptionBenefits: [
+        {
+          iconId: 'paintbrush',
+          title: 'Professionalize your profile',
+          description: 'Stand out above the rest with a cover photo and a description of what you offer'
+        },
+        {
+          iconId: 'magnet',
+          title: 'Connect with more clients',
+          description: 'Share with millions of potential buyers your phone and website'
+        },
+        {
+          iconId: 'watch',
+          title: 'Without time limit',
+          description: 'Your items will never expire, they will be always ready for a quick sell'
+        },
+        {
+          iconId: 'unlocked',
+          title: 'Without compromise',
+          description: 'You can cancel your subscription whenever you want, without penalties'
+        }
+      ]
     },
     es: {
       daysMomentConfig: {
@@ -276,16 +288,6 @@ export class I18nService {
       alreadyFeatured: '¡Ups! Estás intentando destacar un item que ya tiene planificados',
       phoneRequestMessage: 'Por favor contáctanos o deja tu número de teléfono y te contactaremos',
       phoneMessage: 'Mi número de teléfono es ',
-      motorPlanTypes: [
-        { subtype: 'sub_pro_basic', label: 'Pro' },
-        { subtype: 'cars_3_to_5', label: 'Plan de 3 a 5 coches' },
-        { subtype: 'cars_6_to_7', label: 'Plan de 6 a 7 coches' },
-        { subtype: 'cars_8_to_10', label: 'Plan de 8 a 10 coches' },
-        { subtype: 'cars_11_to_15', label: 'Plan de 11 a 15 coches' },
-        { subtype: 'sub_basic', label: 'Plan Motor Básico', shortLabel: 'Básico' },
-        { subtype: 'sub_pro', label: 'Plan Motor Medio', shortLabel: 'Medio' },
-        { subtype: 'sub_premium', label: 'Plan Motor Super', shortLabel: 'Super' }
-      ],
       cars_subscription_tutorial_listinglimit5: 'Publica hasta 5 coches.',
       cars_subscription_tutorial_listinglimit9: 'Publica hasta 9 coches.',
       cars_subscription_tutorial_listinglimit15: 'Publica hasta 15 coches.',
@@ -325,6 +327,28 @@ export class I18nService {
       review: '¿Como ha ido? ¡Tómate un momento para valorar la experiencia con el usuario y ayudar a la comunidad!',
       price_drop: 'El producto ha bajado de precio. ¡Cierra el trato!',
       drop_price: 'El producto ha bajado de precio. ¡Cierra el trato!',
+      subscriptionBenefits: [
+        {
+          iconId: 'paintbrush',
+          title: 'Profesionaliza tu perfil',
+          description: 'Destaca sobre el resto con una foto portada y una descripción de lo que ofreces'
+        },
+        {
+          iconId: 'magnet',
+          title: 'Conecta con más clientes',
+          description: 'Comparte con millones de potenciales compradores tu teléfono y tu página web'
+        },
+        {
+          iconId: 'watch',
+          title: 'Sin límite de tiempo',
+          description: 'Tus artículos no expiran nunca, siempre están disponibles para una venta rápida'
+        },
+        {
+          iconId: 'unlocked',
+          title: 'Sin compromiso',
+          description: 'Puedes cancelar la suscripción cuando quieras, sin penalizaciones de ningún tipo'
+        }
+      ]
     }
   };
 

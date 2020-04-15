@@ -1,11 +1,11 @@
-import { SubscriptionComponent } from "./subscription.component";
+import { SubscriptionsComponent } from "./subscription.component";
 import { ComponentFixture, TestBed, async, fakeAsync, tick, flush } from "@angular/core/testing";
 import { CategoryService } from "../../core/category/category.service";
 import { SubscriptionsService } from "../../core/subscriptions/subscriptions.service";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures.spec";
-import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED } from "../../../tests/subscriptions.fixtures.spec";
+import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED, MAPPED_SUBSCRIPTIONS_WITH_INAPP, MockSubscriptionService } from "../../../tests/subscriptions.fixtures.spec";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from "./modals/add-new-subscription-modal.component";
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component'
@@ -27,10 +27,12 @@ import {
 } from '../../core/analytics/analytics-constants';
 import { CancelSubscriptionModalComponent } from "./modals/cancel-subscription-modal.component";
 import { ContinueSubscriptionModalComponent } from "./modals/continue-subscription-modal.component";
+import { CheckSubscriptionInAppModalComponent } from "./modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component";
+import { UnsubscribeInAppFirstModal } from "./modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component";
 
 describe('SubscriptionComponent', () => {
-  let component: SubscriptionComponent;
-  let fixture: ComponentFixture<SubscriptionComponent>;
+  let component: SubscriptionsComponent;
+  let fixture: ComponentFixture<SubscriptionsComponent>;
   let categoryService: CategoryService;
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
@@ -40,20 +42,14 @@ describe('SubscriptionComponent', () => {
   
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SubscriptionComponent ],
+      declarations: [ SubscriptionsComponent ],
       providers: [
         EventService,
-        {
-          provide: SubscriptionsService, useValue: {
-            getSubscriptions() {
-              return Observable.of(MAPPED_SUBSCRIPTIONS);
-            }
-          }
-        },
+        { provide: SubscriptionsService, useClass: MockSubscriptionService },
         {
           provide: CategoryService, useValue: {
             getCategories() {
-                return Observable.of(CATEGORY_DATA_WEB);
+                return of(CATEGORY_DATA_WEB);
               }
             }
         },
@@ -82,7 +78,7 @@ describe('SubscriptionComponent', () => {
   
   beforeEach(() => {
     modalService = TestBed.get(NgbModal);
-    fixture = TestBed.createComponent(SubscriptionComponent);
+    fixture = TestBed.createComponent(SubscriptionsComponent);
     component = fixture.componentInstance;
     subscriptionsService = TestBed.get(SubscriptionsService);
     categoryService = TestBed.get(CategoryService);
@@ -94,7 +90,7 @@ describe('SubscriptionComponent', () => {
   describe('OnInit', () => {
     it('should get the mapped subscriptions', () => {
       spyOn(categoryService, 'getCategories').and.callThrough();
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(MAPPED_SUBSCRIPTIONS));
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS));
       
       component.ngOnInit();
       
@@ -122,8 +118,9 @@ describe('SubscriptionComponent', () => {
   });
 
   describe('openSubscriptionModal', () => {
-    it('should open the addNewSubscription modal', () => {
+    it('should open the addNewSubscription modal when subscription is not active', () => {
       spyOn(modalService, 'open').and.callThrough();
+      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
 
       component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
 
@@ -132,8 +129,9 @@ describe('SubscriptionComponent', () => {
       });
     });
 
-    it('should not open the EditSubscription modal', () => {
+    it('should not open the EditSubscription modal when subscription is not active', () => {
       spyOn(modalService, 'open').and.callThrough();
+      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
 
       component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[1]);
 
@@ -160,7 +158,7 @@ describe('SubscriptionComponent', () => {
         result: Promise.resolve('add'),
         componentInstance: componentInstance
       });
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(Observable.of(MAPPED_SUBSCRIPTIONS_ADDED));
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
       spyOn(router, 'navigate');
 
       component.subscriptions = MAPPED_SUBSCRIPTIONS;
@@ -187,6 +185,17 @@ describe('SubscriptionComponent', () => {
 
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+
+      describe('and the subscription is from Android or iOS', () => {
+        it('should open a modal that says to modify subscription in app', () => {
+          spyOn(subscriptionsService, 'isSubscriptionInApp').and.returnValue(true);
+          spyOn(modalService, 'open').and.callThrough();
+
+          component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS_WITH_INAPP[0]);
+
+          expect(modalService.open).toHaveBeenCalledWith(CheckSubscriptionInAppModalComponent, { windowClass: 'review' });
+        });
       });
 
       describe('and the subscription has only one tier', () => {
@@ -227,6 +236,16 @@ describe('SubscriptionComponent', () => {
 
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+
+      it('should open a unsubscribe inapp first modal if one subscription is inapp and selected sub is not active', () => {
+        spyOn(subscriptionsService, 'isOneSubscriptionInApp').and.returnValue(true);
+        spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
+        spyOn(modalService, 'open').and.callThrough();
+
+        component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS_WITH_INAPP[1]);
+
+        expect(modalService.open).toHaveBeenCalledWith(UnsubscribeInAppFirstModal, { windowClass: 'review' });
       });
     });
 

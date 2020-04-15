@@ -1,3 +1,5 @@
+
+import {takeWhile} from 'rxjs/operators';
 import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { findIndex } from 'lodash-es';
@@ -6,7 +8,7 @@ import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { Item } from '../../core/item/item';
-import { Counters, UserStatsResponse } from '../../core/user/user-stats.interface';
+import { Counters, UserStats } from '../../core/user/user-stats.interface';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
@@ -77,7 +79,7 @@ export class CatalogProListComponent implements OnInit {
     });
 
     setTimeout(() => {
-      this.router.events.takeWhile(() => this.active).subscribe((evt) => {
+      this.router.events.pipe(takeWhile(() => this.active)).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
           return;
         }
@@ -178,10 +180,10 @@ export class CatalogProListComponent implements OnInit {
     if (!append) {
       this.items = [];
     }
-    this.itemService.mines(this.page, this.pageSize, this.sortBy, this.selectedStatus, this.term, this.cache).takeWhile(() => {
+    this.itemService.mines(this.page, this.pageSize, this.sortBy, this.selectedStatus, this.term, this.cache).pipe(takeWhile(() => {
       this.cache = true;
       return this.active;
-    }).subscribe((items: Item[]) => {
+    })).subscribe((items: Item[]) => {
       if (this.selectedStatus === ITEM_STATUS.SOLD) {
         this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {total_products: items.length});
       } else {
@@ -290,7 +292,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public getNumberOfProducts() {
-    this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+    this.userService.getStats().subscribe((userStats: UserStats) => {
       this.counters = userStats.counters;
       this.setNumberOfProducts();
     });
@@ -305,7 +307,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public getCounters() {
-    this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+    this.userService.getStats().subscribe((userStats: UserStats) => {
       this.counters = userStats.counters;
     });
   }

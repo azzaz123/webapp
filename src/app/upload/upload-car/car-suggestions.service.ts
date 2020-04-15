@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
 import { environment } from '../../../environments/environment';
-import { map } from 'rxjs/operators/map';
+import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 export const CARS_SUGGESTER_API_URL = 'api/v3/suggesters/cars';

@@ -2,8 +2,12 @@
   <div class="box-content" [hidden]="loading">
     <h4 class="section-title" i18n>wallapop PRO</h4>
     <p class="section-subtitle" i18n>Manage your subscriptions to wallapop PRO to increase your sales.</p>
-    <div class="Subscriptions">
-      <div class="Subscriptions__category" [ngClass]="{'Subscriptions__category--subscribed': subscription.subscribed_from }"
+    <div class="Subscriptions d-flex flex-column flex-content-justify align-items-center flex-lg-row">
+      <div class="Subscriptions__category"
+        [ngClass]="{
+          'Subscriptions__category--subscribed': subscription.subscribed_from,
+          'Subscriptions__category--with-one-free': hasOneFreeSubscription(subscription)
+        }"
       (click)="openSubscriptionModal(subscription)" *ngFor="let subscription of subscriptions">
         <div class="Subscriptions__category-icon">
           <mat-icon *ngIf="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}"class="image"></mat-icon>
@@ -14,7 +18,14 @@
         <div [hidden]="subscription.subscribed_from" class="Subscriptions__category-info">
             <p i18n *ngIf="subscription.current_limit">Limit without subscription: {{subscription.current_limit}}</p>
             <p i18n *ngIf="!subscription.current_limit">No limit</p>
-            <p><span i18n *ngIf="subscription.tiers.length !== 1">From: </span>{{subscription.tiers[0].price}}{{subscription.tiers[0].currency}}</p>
+            <p [ngClass]="{ 'Subscriptions__category-info--discounted': hasOneTierDiscount(subscription) }">
+              <span i18n *ngIf="subscription.tiers.length !== 1">From: </span>
+              {{subscription.tiers[0].price}}{{subscription.tiers[0].currency}}
+            </p>
+            <div *ngIf="hasOneFreeTier(subscription)" class="Subscriptions__category-info-discount">
+              <div *ngIf="subscription.tiers[0].discount_available.months === 1" i18n>One month free</div>
+              <div *ngIf="subscription.tiers[0].discount_available.months > 1" i18n>{{subscription.tiers[0].discount_available.months}} months free</div>
+            </div>
         </div>
         <div *ngIf="subscription.subscribed_from" class="Subscriptions__category-info">
             <p i18n *ngIf="subscription.selected_tier.limit">{{subscription.selected_tier.limit}} products</p>
@@ -23,8 +34,10 @@
               {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
             </p>
             <p class="Subscriptions__category-info--edit" *ngIf="!subscription.subscribed_until">
-              <span *ngIf="subscription.tiers.length !== 1" i18n>Edit</span>
-              <span *ngIf="subscription.tiers.length === 1" i18n>Cancel</span>
+              <span *ngIf="showEdit(subscription)" i18n>Edit</span>
+              <span *ngIf="showCancel(subscription)" i18n>Cancel</span>
+              <span *ngIf="showManageInApp(subscription)" i18n>Manage in app</span>
+              <span *ngIf="showUnsubscribeFirst(subscription)" i18n>Unsubscribe first from app for your free month</span>
             </p>
         </div>
         <tsl-button className="btn-primary" [hidden]="subscription.subscribed_from" i18n>Subscribe</tsl-button>
@@ -44,67 +57,5 @@
     <tsl-spinner [hidden]="!loading"></tsl-spinner>
   </div>
 </div>
-<div class="box">
-  <div class="box-content" [hidden]="loading">
-    <h4 class="section-title" i18n>Boost your sales</h4>
-    <p class="section-subtitle" i18n>Take your sales to the next level with the advantages of the PRO subscription.</p>
-    <div class="row">
-      <div class="Subscriptions__benefits col-4">
-        <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="rocket" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title" i18n>Upload all of your cars</p>
-          <p i18n>Publish up to 5/9/15 cars at a time and make yourself a PRO agent.</p>
-        </div>
-      </div>
-      <div class="Subscriptions__benefits col-4">
-        <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="paintbrush" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title" i18n>Professionalize your profile</p>
-          <p i18n>Add a photo and fill in the extra fields. Stand out over the rest!</p>
-        </div>
-      </div>
-      <div class="Subscriptions__benefits col-4">
-        <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="megaphone" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title" i18n>Introduce your business</p>
-          <p i18n>Include a description of what you offer and share your location.</p>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-4">
-        <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="magnet" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title"i18n>Win more clients</p>
-          <p i18n>Millions of customers can call you or visit your website from your profile.</p>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="watch" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title" i18n>Without time limit</p>
-          <p i18n>Your items won’t expire ever; they will always be available.</p>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="Subscriptions__benefits-icon">
-          <mat-icon svgIcon="unlocked" class="image"></mat-icon>
-        </div>
-        <div class="Subscriptions__benefits-info">
-          <p class="Subscriptions__benefits--title" i18n>Without compromise</p>
-          <p i18n>Cancel your subscription whenever you want, without any penalisation.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
+<tsl-subscription-benefits [hidden]="loading"></tsl-subscription-benefits>

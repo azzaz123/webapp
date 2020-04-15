@@ -1,51 +1,58 @@
-<div class="page-content"
-     infiniteScroll
-     [infiniteScrollDistance]="5"
-     [infiniteScrollThrottle]="100"
-     [infiniteScrollDisabled]="end || loading"
-     (scrolled)="loadMore()">
+<div class="page-content" infiniteScroll [infiniteScrollDistance]="5" [infiniteScrollThrottle]="100"
+  [infiniteScrollDisabled]="end || loading" (scrolled)="loadMore()">
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent"></tsl-spinner>
   <div class="container">
     <div class="header">
       <div class="left-col">
-        <h2 i18n>Catalog <span class="badge badge-pro"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span></h2>
-        <div class="intro"><span i18n>Big packages with all your items and stuff</span> <div class="border"></div>
-          <span><a href="" tslTrackEvent="MYCATALOG_PRO_MANAGE_SUBSCRIPTION" [routerLink]="['/profile/subscription-pro']"
-                   class="corporate" i18n>Manage my subscription</a></span>
+        <h2 i18n>Catalog <span class="badge badge-pro">
+            <mat-icon svgIcon="pro-seal"></mat-icon>Pro
+          </span></h2>
+        <div class="intro"><span i18n>Big packages with all your items and stuff</span>
+          <div class="border"></div>
+          <span><a href="" tslTrackEvent="MYCATALOG_PRO_MANAGE_SUBSCRIPTION"
+              [routerLink]="['/profile/subscription-pro']" class="corporate" i18n>Manage my subscription</a></span>
         </div>
       </div>
-      <tsl-button className="btn btn-logout" [routerLink]="['/pro/catalog/checkout-extras']" tslTrackEvent="MYCATALOG_PRO_PURCHASE_EXTRAS"
-                  i18n>Purchase extras</tsl-button>
+      <tsl-button className="btn btn-logout" [routerLink]="['/pro/catalog/checkout-extras']"
+        tslTrackEvent="MYCATALOG_PRO_PURCHASE_EXTRAS" i18n>Purchase extras</tsl-button>
     </div>
-    <tsl-plan-data [counters]="counters" (subscriptionPlan)="getSubscriptionPlan($event)">
-    </tsl-plan-data>
-    <tsl-search-input (term)="search($event)"></tsl-search-input>
-    <tsl-catalog-status-navbar (filterByStatus)="filterByStatus($event)" [selectedStatus]="selectedStatus"
-                               [counters]="counters" [subscriptionPlan]="subscriptionPlan"></tsl-catalog-status-navbar>
-    <tsl-select [items]="orderBy" (valueChanges)="sort($event)" [value]="sortBy" class="float-right"></tsl-select>
-    <div id="top-buttons">
+    <div class="row">
+      <tsl-plan-data [counters]="counters" (subscriptionPlan)="getSubscriptionPlan($event)">
+      </tsl-plan-data>
+    </div>
+    <div class="row">
+      <tsl-search-input (term)="search($event)"></tsl-search-input>
+      <tsl-catalog-status-navbar (filterByStatus)="filterByStatus($event)" [selectedStatus]="selectedStatus"
+        [counters]="counters" [subscriptionPlan]="subscriptionPlan"></tsl-catalog-status-navbar>
+      <tsl-select [items]="orderBy" (valueChanges)="sort($event)" [value]="sortBy" class="ml-auto"></tsl-select>
+    </div>
+    <div class="row mt-2">
       <tsl-catalog-item-actions (getCounters)="getCounters()" [active]="active" [items]="items"
-                                [selectedStatus]="selectedStatus"></tsl-catalog-item-actions>
-      <tsl-button className="btn-primary" [routerLink]="['/catalog/upload']" tslTrackEvent="MYCATALOG_PRO_UPLOAD"
-                  i18n>List a car</tsl-button>
+        [selectedStatus]="selectedStatus"></tsl-catalog-item-actions>
+      <tsl-button className="btn-primary" class="ml-auto" [routerLink]="['/catalog/upload']" tslTrackEvent="MYCATALOG_PRO_UPLOAD" i18n>
+        List a car</tsl-button>
     </div>
     <div class="row items">
-      <a class="add-item col-md-12"
-         [routerLink]="['/catalog/upload']"
-         *ngIf="(!loading || (loading && items.length)) && selectedStatus === 'published'">
+      <a class="add-item col-md-12" [routerLink]="['/catalog/upload']"
+        *ngIf="(!loading || (loading && items.length)) && selectedStatus === 'published'">
       </a>
-      <div id="catalog-empty-state" *ngIf="!items.length && !loading || subscriptionPlan - counters?.publish > 0 && selectedStatus === 'active'">
-        <mat-icon svgIcon="pro-items-empty-state" class="image"></mat-icon>
-        <div class="empty-text" *ngIf="subscriptionPlan - counters?.publish > 0 && counters?.onHold <= 0 && selectedStatus === 'active'">
-          <span i18n>You can upload <b>{{subscriptionPlan - counters?.publish}} more cars</b> with your current plan.</span>
+      <div id="catalog-empty-state"
+        *ngIf="!items.length && !loading || subscriptionPlan - counters?.publish > 0 && selectedStatus === 'active'">
+        <div class="empty-text"
+          *ngIf="subscriptionPlan - counters?.publish > 0 && counters?.onHold <= 0 && selectedStatus === 'active'">
+          <span i18n>You can upload <b>{{subscriptionPlan - counters?.publish}} more cars</b> with your current
+            plan.</span>
           <tsl-button className="simple" [routerLink]="['/catalog/upload']" i18n>List a car</tsl-button>
         </div>
-        <div class="empty-text" *ngIf="subscriptionPlan - counters?.publish > 0 && counters?.onHold > 0 && selectedStatus === 'active'">
-          <span i18n>You can activate <b>{{subscriptionPlan - counters?.publish}} more cars</b> with your current plan.</span>
+        <div class="empty-text"
+          *ngIf="subscriptionPlan - counters?.publish > 0 && counters?.onHold > 0 && selectedStatus === 'active'">
+          <span i18n>You can activate <b>{{subscriptionPlan - counters?.publish}} more cars</b> with your current
+            plan.</span>
           <span><a class="link" (click)="filterByStatus('pending')" i18n>Activate cars</a></span>
         </div>
       </div>
-      <tsl-catalog-card *ngFor="let item of items" class="col-md-12" [item]="item" (bumpCancel)="bumpCancelled($event)" (itemChange)="itemChanged($event)">
+      <tsl-catalog-card *ngFor="let item of items" class="col-md-12" [item]="item" (bumpCancel)="bumpCancelled($event)"
+        (itemChange)="itemChanged($event)">
       </tsl-catalog-card>
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>

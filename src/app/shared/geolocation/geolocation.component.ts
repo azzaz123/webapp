@@ -1,5 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {debounceTime, switchMap, distinctUntilChanged, catchError} from 'rxjs/operators';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { GeolocationService } from '../../core/geolocation/geolocation.service';
 import { GeolocationResponse } from '../../core/geolocation/geolocation-response.interface';
@@ -43,14 +46,14 @@ export class GeolocationComponent implements OnInit, OnChanges {
   }
 
   public search = (text$: Observable<string>) =>
-    text$
-      .debounceTime(500)
-      .distinctUntilChanged()
-      .switchMap(term => term.length < this.MIN_LENGTH ? [] :
-        this.geolocationService.search(term)
-          .catch(() => {
-            return Observable.of([]);
-          }))
+    text$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(term => term.length < this.MIN_LENGTH ? [] :
+        this.geolocationService.search(term).pipe(
+          catchError(() => {
+            return observableOf([]);
+          }))),)
 
   public formatter = (x: any) => x.description;
 

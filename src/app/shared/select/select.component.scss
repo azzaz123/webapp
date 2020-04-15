@@ -6,24 +6,12 @@ mat-icon {
   width: 10px;
   margin-left: $spacing-xs;
 }
-.dropdown {
-  color: $blue-grey-2;
-  &.open .dropdown-toggle {
-    color: $walla-main;
-  }
-  .dropdown-menu {
-    margin: 0;
-    .dropdown-item:focus {
-      color: $white;
-    }
-  }
-  .dropdown-toggle {
-    @include default-transition(color);
-    a {
-      color: $walla-main;
-    }
-  }
+
+.dropdown-header {
+  padding: 0;
+  font-size: $font-size-xs;
 }
-.dropdown .dropdown-menu {
+
+.dropdown-menu {
   margin: 0;
 }

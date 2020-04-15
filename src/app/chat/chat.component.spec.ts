@@ -1,7 +1,8 @@
+
+import {from as observableFrom, empty as observableEmpty,  Observable, of } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { AdService } from '../core/ad/ad.service';
 import { I18nService } from '../core/i18n/i18n.service';
@@ -23,7 +24,7 @@ class MockUserService {
   }
 
   public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
-    return Observable.empty();
+    return observableEmpty();
   }
 }
 
@@ -49,8 +50,8 @@ describe('Component: ChatComponent with ItemId', () => {
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         {
           provide: ActivatedRoute, useValue: {
-            params: Observable.from([{}]),
-            queryParams: Observable.from([{ itemId: 'itemId' }])
+            params: observableFrom([{}]),
+            queryParams: observableFrom([{ itemId: 'itemId' }])
           }
         },
         I18nService,
@@ -217,8 +218,8 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         {
           provide: ActivatedRoute, useValue: {
-            params: Observable.from([{}]),
-            queryParams: Observable.from([{ conversationId: 'itemId' }])
+            params: observableFrom([{}]),
+            queryParams: observableFrom([{ conversationId: 'itemId' }])
           }
         },
         I18nService,

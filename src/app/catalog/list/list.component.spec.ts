@@ -1,7 +1,7 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject, ReplaySubject } from 'rxjs';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { find } from 'lodash-es';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
@@ -19,7 +19,6 @@ import {
   PRODUCT_RESPONSE,
   MOCK_LISTING_FEE_ORDER
 } from '../../../tests/item.fixtures.spec';
-import { Subject } from 'rxjs/Subject';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -31,15 +30,12 @@ import { Item } from '../../core/item/item';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { HttpModuleNew } from '../../core/http/http.module.new';
 import { CategoryService } from '../../core/category/category.service';
-import { HttpService } from '../../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockSubscriptionService, MOCK_SUBSCRIPTION_SLOTS } from '../../../tests/subscriptions.fixtures.spec';
 import { FeatureflagService } from '../../core/user/featureflag.service';
 import { FeatureFlagServiceMock, DeviceDetectorServiceMock } from '../../../tests';
@@ -82,7 +78,7 @@ describe('ListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpModuleNew ],
+      imports: [HttpModuleNew],
       declarations: [ListComponent, ItemSoldDirective, SubscriptionsSlotsListComponent, SubscriptionsSlotItemComponent],
       providers: [
         I18nService,
@@ -90,44 +86,44 @@ describe('ListComponent', () => {
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
-        { provide: CategoryService, useValue: {
+        {
+          provide: CategoryService, useValue: {
             getCategoryById() {
-              return Observable.of(CATEGORY_DATA_WEB);
+              return of(CATEGORY_DATA_WEB);
             }
           }
         },
-        HttpService,
-        ...TEST_HTTP_PROVIDERS,
         { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: ItemService, useValue: {
 
-          mine() {
-            return Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: 20});
-          },
-          deselectItems() {
-          },
-          bulkDelete() {
-          },
-          bulkReserve() {
-          },
-          purchaseProducts() {
-          },
-          selectItem() {
-          },
-          getUrgentProducts() {
-          },
-          get() {
-            return Observable.of(MOCK_ITEM_V3);
-          },
-          bulkSetActivate() {
-          },
-          bulkSetDeactivate() {
-          },
-          activate() {},
-          deactivate() {},
-          selectedItems$: new ReplaySubject(1),
-          selectedItems: []}
+            mine() {
+              return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 20 });
+            },
+            deselectItems() {
+            },
+            bulkDelete() {
+            },
+            bulkReserve() {
+            },
+            purchaseProducts() {
+            },
+            selectItem() {
+            },
+            getUrgentProducts() {
+            },
+            get() {
+              return of(MOCK_ITEM_V3);
+            },
+            bulkSetActivate() {
+            },
+            bulkSetDeactivate() {
+            },
+            activate() { },
+            deactivate() { },
+            selectedItems$: new ReplaySubject(1),
+            selectedItems: []
+          }
         },
         {
           provide: NgbModal, useValue: {
@@ -149,7 +145,7 @@ describe('ListComponent', () => {
         },
         {
           provide: ActivatedRoute, useValue: {
-            params: Observable.of({
+            params: of({
               code: 200
             })
           }
@@ -157,7 +153,7 @@ describe('ListComponent', () => {
         {
           provide: PaymentService, useValue: {
             getCreditInfo() {
-              return Observable.of({
+              return of({
                 currencyName: CURRENCY,
                 credit: CREDITS
               });
@@ -182,15 +178,15 @@ describe('ListComponent', () => {
         {
           provide: UserService, useValue: {
             getStats() {
-              return Observable.of({
+              return of({
                 counters: mockCounters
               });
             },
             me() {
-              return Observable.of(MOCK_USER);
+              return of(MOCK_USER);
             },
             getInfo() {
-              return Observable.of(USER_INFO_RESPONSE);
+              return of(USER_INFO_RESPONSE);
             }
           }
         },
@@ -233,7 +229,7 @@ describe('ListComponent', () => {
           credit: 2000,
           factor: 100
         };
-        spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+        spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
         component.ngOnInit();
 
@@ -271,7 +267,7 @@ describe('ListComponent', () => {
     it('should open upload confirmation modal', fakeAsync(() => {
       spyOn(component, 'feature');
       spyOn(localStorage, 'getItem').and.returnValue('false');
-      route.params = Observable.of({
+      route.params = of({
         created: true
       });
 
@@ -296,7 +292,7 @@ describe('ListComponent', () => {
 
     it('should open toastr', fakeAsync(() => {
       spyOn(errorService, 'i18nSuccess');
-      route.params = Observable.of({
+      route.params = of({
         updated: true
       });
       component.ngOnInit();
@@ -305,10 +301,10 @@ describe('ListComponent', () => {
     }));
 
     it('should feature order', fakeAsync(() => {
-      spyOn(itemService, 'getUrgentProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getUrgentProducts').and.returnValue(of(PRODUCT_RESPONSE));
       spyOn(localStorage, 'getItem').and.returnValue('false');
       spyOn(component, 'feature');
-      route.params = Observable.of({
+      route.params = of({
         urgent: true,
         itemId: MOCK_ITEM.id
       });
@@ -323,7 +319,7 @@ describe('ListComponent', () => {
     it('should open the urgent modal if transaction is set as urgent', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('urgent');
       spyOn(localStorage, 'removeItem');
-      route.params = Observable.of({
+      route.params = of({
         code: 200
       });
 
@@ -341,7 +337,7 @@ describe('ListComponent', () => {
     it('should open the listing fee modal if transaction is set as purchaseListingFee', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFee');
       spyOn(localStorage, 'removeItem');
-      route.params = Observable.of({
+      route.params = of({
         code: 200
       });
 
@@ -359,7 +355,7 @@ describe('ListComponent', () => {
     it('should open the listing fee modal if transaction is set as purchaseListingFeeWithCredits', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFeeWithCredits');
       spyOn(localStorage, 'removeItem');
-      route.params = Observable.of({
+      route.params = of({
         code: 200
       });
 
@@ -375,7 +371,7 @@ describe('ListComponent', () => {
     }));
 
     it('should open the too many items modal if create is on hold', fakeAsync(() => {
-      route.params = Observable.of({
+      route.params = of({
         createdOnHold: true
       });
 
@@ -390,7 +386,7 @@ describe('ListComponent', () => {
     it('should open the bump modal if transaction is set as bump', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('bump');
       spyOn(localStorage, 'removeItem');
-      route.params = Observable.of({
+      route.params = of({
         code: 200
       });
 
@@ -408,7 +404,7 @@ describe('ListComponent', () => {
     it('should redirect to wallacoins if transaction is wallapack', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('wallapack');
       spyOn(router, 'navigate');
-      route.params = Observable.of({
+      route.params = of({
         code: 200
       });
 
@@ -422,7 +418,7 @@ describe('ListComponent', () => {
     it('should open the bump modal if transaction is set as bumpWithCredits', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('bumpWithCredits');
       spyOn(localStorage, 'removeItem');
-      route.params = Observable.of({
+      route.params = of({
         code: 200
       });
 
@@ -469,7 +465,7 @@ describe('ListComponent', () => {
 
     it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
       spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
-      
+
       component.ngOnInit();
       tick();
       fixture.detectChanges();
@@ -505,7 +501,7 @@ describe('ListComponent', () => {
       expect(component['init']).toBe(20);
     });
     it('should set end true if no init', () => {
-      itemerviceSpy.and.returnValue(Observable.of({ data: [MOCK_ITEM, MOCK_ITEM], init: null }));
+      itemerviceSpy.and.returnValue(of({ data: [MOCK_ITEM, MOCK_ITEM], init: null }));
       component.ngOnInit();
       expect(component['end']).toBeTruthy();
     });
@@ -631,7 +627,7 @@ describe('ListComponent', () => {
     });
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE));
+        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE));
         spyOn(component, 'getNumberOfProducts');
         component.delete();
         tick();
@@ -655,7 +651,7 @@ describe('ListComponent', () => {
     });
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkDelete').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE_FAILED));
+        spyOn(itemService, 'bulkDelete').and.returnValue(of(ITEMS_BULK_RESPONSE_FAILED));
         component.delete();
         tick();
       }));
@@ -669,7 +665,7 @@ describe('ListComponent', () => {
     const TOTAL = 5;
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkReserve').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE));
+        spyOn(itemService, 'bulkReserve').and.returnValue(of(ITEMS_BULK_RESPONSE));
         spyOn(eventService, 'emit');
         component.items = [];
         for (let i = 1; i <= TOTAL; i++) {
@@ -715,7 +711,7 @@ describe('ListComponent', () => {
 
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkReserve').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE_FAILED));
+        spyOn(itemService, 'bulkReserve').and.returnValue(of(ITEMS_BULK_RESPONSE_FAILED));
         component.reserve();
         tick();
       }));
@@ -829,7 +825,7 @@ describe('ListComponent', () => {
 
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'activate').and.returnValue(Observable.of('200'));
+        spyOn(itemService, 'activate').and.returnValue(of('200'));
 
         component.activate();
         tick();
@@ -861,7 +857,7 @@ describe('ListComponent', () => {
 
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'deactivate').and.returnValue(Observable.of('200'));
+        spyOn(itemService, 'deactivate').and.returnValue(of('200'));
 
         component.deactivate();
         tick();

@@ -2,19 +2,20 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { format } from 'libphonenumber-js';
+import { By } from '@angular/platform-browser';
+
+import { environment } from '../../../../environments/environment';
 import { SendPhoneComponent } from './send-phone.component';
 import { MessageService } from '../../service/message.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { WindowRef } from '../../../core/window/window.service';
+
+import { SEND_PHONE_ENDPOINT } from './send-phone.component';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
-import { WindowRef } from '../../../core/window/window.service';
-import { environment } from '../../../../environments/environment';
-import { HttpService } from '../../../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
-import { By } from '@angular/platform-browser';
-import { format } from 'libphonenumber-js';
-import { Observable } from 'rxjs';
 import { MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { InboxConversationService } from '../../service';
 import { InboxConversationServiceMock } from '../../../../tests';
@@ -26,15 +27,14 @@ describe('SendPhoneComponent', () => {
   let inboxConversationService: InboxConversationService;
   let trackingService: TrackingService;
   let errorsService: ErrorsService;
-  let http: HttpService;
+  let httpMock: HttpTestingController;
   let windowRef: WindowRef;
   let element: DebugElement;
   const phoneNumber = format('+34912345678', 'ES', 'International');
-  const API_URL = 'api/v3/conversations';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [NgbActiveModal,
         FormBuilder,
         ...TEST_HTTP_PROVIDERS,
@@ -67,7 +67,7 @@ describe('SendPhoneComponent', () => {
       declarations: [SendPhoneComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -79,7 +79,7 @@ describe('SendPhoneComponent', () => {
     inboxConversationService = TestBed.get(InboxConversationService);
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
-    http = TestBed.get(HttpService);
+    httpMock = TestBed.get(HttpTestingController);
     windowRef = TestBed.get(WindowRef);
     fixture.detectChanges();
   });
@@ -116,16 +116,20 @@ describe('SendPhoneComponent', () => {
           fixture.detectChanges();
         });
 
-        it('should call trackingService.addTrackingEvent with ITEM_SHAREPHONE_SENDPHONE', () => {
-          spyOn(trackingService, 'addTrackingEvent');
-          const event = {
-            eventData: TrackingService.ITEM_SHAREPHONE_SENDPHONE,
-            attributes: { item_id: component.conversation.item.id }
-          };
+        it('should call messageService.addPhoneNumberRequestMessage with the conversation and FALSE', () => {
+          spyOn(messageService, 'addPhoneNumberRequestMessage');
 
           component.createPhoneNumberMessage();
 
-          expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(event);
+          expect(messageService.addPhoneNumberRequestMessage).toHaveBeenCalledWith(component.conversation, false);
+        });
+
+        it('should call trackingService.track with ITEM_SHAREPHONE_SENDPHONE', () => {
+          spyOn(trackingService, 'track');
+
+          component.createPhoneNumberMessage();
+
+          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_SENDPHONE, { item_id: component.conversation.item.id });
         });
 
       });
@@ -137,20 +141,23 @@ describe('SendPhoneComponent', () => {
           fixture.detectChanges();
         });
 
-        it('should call trackingService.addTrackingEvent with CHAT_SHAREPHONE_ACCEPTSHARING', () => {
-          spyOn(trackingService, 'addTrackingEvent');
+        it('should call trackingService.track with CHAT_SHAREPHONE_ACCEPTSHARING', () => {
+          spyOn(trackingService, 'track');
 
           component.createPhoneNumberMessage();
 
-          expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
+          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING);
         });
       });
 
       it('should PUT the phone numberto the relevant API', () => {
         spyOn(inboxConversationService, 'addPhoneNumberToConversation$').and.returnValue(Observable.empty());
         component.conversation = MOCK_CONVERSATION();
+        const expectedUrl = `${environment.baseUrl}${SEND_PHONE_ENDPOINT}/${component.conversation.id}/buyer-phone-number`;
 
         component.createPhoneNumberMessage();
+        const req: TestRequest = httpMock.expectOne(expectedUrl);
+        req.flush({});
 
         expect(inboxConversationService.addPhoneNumberToConversation$).toHaveBeenCalledWith(component.conversation, phoneNumber);
       });
@@ -180,16 +187,12 @@ describe('SendPhoneComponent', () => {
         component.conversation = MOCK_CONVERSATION();
       });
 
-      it('should call trackingService.addTrackingEvent with ITEM_SHAREPHONE_WRONGPHONE', () => {
-        spyOn(trackingService, 'addTrackingEvent');
-        const event = {
-          eventData: TrackingService.ITEM_SHAREPHONE_WRONGPHONE,
-          attributes: { item_id: component.conversation.item.id, phone_number: component.sendPhoneForm.controls.phone.value }
-        };
+      it('should call trackingService.track with ITEM_SHAREPHONE_WRONGPHONE', () => {
+        spyOn(trackingService, 'track');
 
         component.createPhoneNumberMessage();
 
-        expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(event);
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_WRONGPHONE, { item_id: component.conversation.item.id, phone_number: component.sendPhoneForm.controls.phone.value });
       });
 
       it('should call markAsDirty', () => {
@@ -291,12 +294,12 @@ describe('SendPhoneComponent', () => {
         fixture.detectChanges();
       });
 
-      it('should call trackingService.addTrackingEvent with CHAT_SHAREPHONE_CANCELSHARING', () => {
-        spyOn(trackingService, 'addTrackingEvent');
+      it('should call trackingService.track with CHAT_SHAREPHONE_CANCELSHARING', () => {
+        spyOn(trackingService, 'track');
 
         component.dismiss();
 
-        expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_SHAREPHONE_CANCELSHARING);
       });
 
       it('should call dismiss() on the active modal', () => {

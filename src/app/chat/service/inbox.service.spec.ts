@@ -1,11 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { InboxService } from './inbox.service';
 import { MessageService } from './message.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { PersistencyService } from '../../core/persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { of, throwError } from 'rxjs';
-import { createInboxConversationsArray, MOCK_INBOX_API_RESPONSE } from '../../../tests/inbox.fixtures.spec';
+import { MOCK_INBOX_API_RESPONSE } from '../../../tests/inbox.fixtures.spec';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
 import { FeatureflagService } from '../../core/user/featureflag.service';
 import { EventService } from '../../core/event/event.service';
@@ -15,20 +12,20 @@ import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { InboxUserPlaceholder } from '../model/inbox-user';
 import { InboxConversationService } from './inbox-conversation.service';
-import { FeatureFlagServiceMock } from '../../../tests';
+import { DeviceDetectorServiceMock, FeatureFlagServiceMock } from '../../../tests';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpModuleNew } from '../../core/http/http.module.new';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../../core/http/access-token.service';
 import { HttpClient } from '@angular/common/http';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 describe('InboxService', () => {
 
   let inboxService: InboxService;
   let http: HttpClient;
   let realTime: RealTimeService;
-  let persistencyService: PersistencyService;
   let messageService: MessageService;
   let inboxConversationService: InboxConversationService;
   let featureflagService: FeatureflagService;
@@ -44,12 +41,11 @@ describe('InboxService', () => {
       ],
       providers: [
         InboxService,
-        ...TEST_HTTP_PROVIDERS,
         EventService,
-        { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: MessageService, useClass: MockMessageService },
         { provide: UserService, useClass: MockedUserService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         {
           provide: AccessTokenService, useValue: {
             accessToken: 'ACCESS_TOKEN'
@@ -67,7 +63,6 @@ describe('InboxService', () => {
     inboxService = TestBed.get(InboxService);
     http = TestBed.get(HttpClient);
     realTime = TestBed.get(RealTimeService);
-    persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
     inboxConversationService = TestBed.get(InboxConversationService);
     featureflagService = TestBed.get(FeatureflagService);

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileProSubscriptionComponent } from './profile-pro-subscription.component';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionIconPipe } from './subscription-icon.pipe';
@@ -27,10 +27,10 @@ describe('ProfileProSubscriptionComponent', () => {
         {
           provide: PaymentService, useValue: {
           getPerks() {
-            return Observable.of(perksModel);
+            return of(perksModel);
           },
           getSubscriptionPacks() {
-            return Observable.of(packs);
+            return of(packs);
           }
         }
         },

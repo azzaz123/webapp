@@ -1,15 +1,17 @@
+
+import {mergeMap, map, filter, distinctUntilChanged} from 'rxjs/operators';
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { DOCUMENT, DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
 import { configIcons } from './config/icons.config';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/takeWhile';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/operator/filter';
+
+
+
+
+
+
+
+
 import { MatIconRegistry } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
@@ -32,7 +34,6 @@ import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
 import { InboxService } from './chat/service';
 import { Subscription } from 'rxjs';
-import { SplitTestService } from './core/tracking/split-test.service';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 
@@ -76,7 +77,6 @@ export class AppComponent implements OnInit {
               private connectionService: ConnectionService,
               private paymentService: PaymentService,
               private callService: CallsService,
-              private splitTestService: SplitTestService,
               private stripeService: StripeService,
               private analyticsService: AnalyticsService) {
     this.config();
@@ -88,7 +88,6 @@ export class AppComponent implements OnInit {
     appboy.initialize(environment.appboy, { enableHtmlInAppMessages: true });
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
-    this.splitTestService.init();
     this.subscribeEventUserLogin();
     this.subscribeEventUserLogout();
     this.subscribeChatEvents();
@@ -99,20 +98,19 @@ export class AppComponent implements OnInit {
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
-    this.trackingService.trackAccumulatedEvents();
 
     __cmp('init', quancastOptions[this.i18n.locale]);
   }
 
   private updateUrlAndSendAnalytics() {
-    this.router.events.distinctUntilChanged((previous: any, current: any) => {
+    this.router.events.pipe(distinctUntilChanged((previous: any, current: any) => {
       if (current instanceof NavigationEnd) {
         this.previousUrl = previous.url;
         this.currentUrl = current.url;
         return previous.url === current.url;
       }
       return true;
-    }).subscribe((x: any) => {
+    })).subscribe((x: any) => {
       ga('set', 'page', x.url);
       ga('send', 'pageview');
     });
@@ -150,11 +148,6 @@ export class AppComponent implements OnInit {
           this.initRealTimeChat(user, accessToken);
           appboy.changeUser(user.id);
           appboy.openSession();
-          this.splitTestService.identify({
-            user_id: user.id || null,
-            email: user.email || null,
-            gender: user.gender || null
-          });
           if (!this.cookieService.get('app_session_id')) {
             this.trackAppOpen();
             this.updateSessionCookie();
@@ -162,7 +155,7 @@ export class AppComponent implements OnInit {
         },
         (error: any) => {
           this.userService.logout();
-          this.errorsService.show(error, true);
+          this.errorsService.show(error);
         });
     });
   }
@@ -231,17 +224,17 @@ export class AppComponent implements OnInit {
   }
 
   private setTitle() {
-    this.router.events
-    .filter(event => event instanceof NavigationEnd)
-    .map(() => this.activatedRoute)
-    .map(route => {
+    this.router.events.pipe(
+    filter(event => event instanceof NavigationEnd),
+    map(() => this.activatedRoute),
+    map(route => {
       while (route.firstChild) {
         route = route.firstChild;
       }
       return route;
-    })
-    .filter(route => route.outlet === 'primary')
-    .mergeMap(route => route.data)
+    }),
+    filter(route => route.outlet === 'primary'),
+    mergeMap(route => route.data),)
     .subscribe((event) => {
       let notifications = '';
       const split: string[] = this.titleService.getTitle().split(' ');

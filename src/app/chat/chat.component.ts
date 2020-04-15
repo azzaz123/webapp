@@ -1,3 +1,7 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {catchError} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { InboxService, InboxConversationService } from './service';
 import { InboxConversation, PhoneMethod } from './model';
@@ -6,7 +10,6 @@ import { EventService } from '../core/event/event.service';
 import { AdService } from '../core/ad/ad.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ConversationService } from '../core/conversation/conversation.service';
-import { Observable } from 'rxjs';
 import { isEmpty, isNil } from 'lodash-es';
 
 @Component({
@@ -117,8 +120,8 @@ export class ChatComponent implements OnInit {
 
     // Try to find the conversation within the downloaded ones
     this.conversationsLoading = true;
-    this.inboxConversationService.openConversationByItemId$(itemId)
-    .catch(() => Observable.of(null))
+    this.inboxConversationService.openConversationByItemId$(itemId).pipe(
+    catchError(() => observableOf(null)))
     .subscribe((conversation: InboxConversation) => {
       if (conversation) {
         this.inboxConversationService.currentConversation = conversation;

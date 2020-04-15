@@ -1,12 +1,13 @@
 /* tslint:disable:no-unused-variable */
 
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
 import { MOCK_USER, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
 import { XmppBodyMessage } from './xmpp.interface';
-import { Observable } from 'rxjs';
 import { MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER, MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { ChatSignal, ChatSignalType } from '../../chat/model/chat-signal';
@@ -207,7 +208,7 @@ describe('Service: Xmpp', () => {
 
     it('should set blockedListAvailable and emit an CHAT_RT_CONNECTED event when getBlockedUsers returns', () => {
       spyOn(eventService, 'emit').and.callThrough();
-      spyOn<any>(service, 'getBlockedUsers').and.returnValue(Observable.of(true));
+      spyOn<any>(service, 'getBlockedUsers').and.returnValue(observableOf(true));
 
       eventService.emit('session:started', null);
 
@@ -226,6 +227,7 @@ describe('Service: Xmpp', () => {
   describe('bindEvents', () => {
 
     beforeEach(() => {
+      spyOn(remoteConsoleService, 'sendAcceptTimeout');
       spyOn(remoteConsoleService, 'sendPresentationMessageTimeout');
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD).subscribe();
     });
@@ -256,7 +258,7 @@ describe('Service: Xmpp', () => {
       });
       it('should emit USER_BLOCKED event if there are new users in list', () => {
         const expectedValue = service['blockedUsers'].concat('3');
-        spyOn<any>(service, 'getPrivacyList').and.returnValue(Observable.of(expectedValue));
+        spyOn<any>(service, 'getPrivacyList').and.returnValue(observableOf(expectedValue));
         spyOn(eventService, 'emit').and.callThrough();
 
         eventService.emit('iq', iq);
@@ -265,7 +267,7 @@ describe('Service: Xmpp', () => {
         expect(eventService.emit).toHaveBeenCalledWith(EventService.PRIVACY_LIST_UPDATED, expectedValue);
       });
       it('should set blockedUsers with the new list', () => {
-        spyOn<any>(service, 'getPrivacyList').and.returnValue(Observable.of(['1@wallapop.com']));
+        spyOn<any>(service, 'getPrivacyList').and.returnValue(observableOf(['1@wallapop.com']));
 
         eventService.emit('iq', iq);
 
@@ -472,7 +474,7 @@ describe('Service: Xmpp', () => {
       eventService.emit('disconnected');
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_RT_DISCONNECTED);
-      expect(remoteConsoleService.sendXmppConnectionClosedWithError).toHaveBeenCalledWith('');
+      expect(remoteConsoleService.sendXmppConnectionClosedWithError).toHaveBeenCalled();
       expect(service.clientConnected).toBe(false);
     });
 

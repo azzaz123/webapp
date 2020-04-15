@@ -1,6 +1,11 @@
-export interface UserStatsResponse {
+export interface UserStats {
   ratings: Ratings;
   counters: Counters;
+}
+
+export interface UserStatsResponse {
+  ratings: [{ type: string, value: number }],
+  counters: [{ type: string, value: number }]
 }
 
 export interface Ratings {

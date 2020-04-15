@@ -1,3 +1,5 @@
+
+import {takeWhile} from 'rxjs/operators';
 import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
@@ -15,7 +17,7 @@ import { UploadConfirmationModalComponent } from './modals/upload-confirmation-m
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { Counters, UserStatsResponse, AvailableSlots } from '../../core/user/user-stats.interface';
+import { Counters, UserStats, AvailableSlots } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -124,16 +126,16 @@ export class ListComponent implements OnInit, OnDestroy {
       this.setSubscriptionSlots(subscriptionSlots);
     });
 
-    this.itemService.selectedItems$.takeWhile(() => {
+    this.itemService.selectedItems$.pipe(takeWhile(() => {
       return this.active;
-    }).subscribe((action: SelectedItemsAction) => {
+    })).subscribe((action: SelectedItemsAction) => {
       this.selectedItems = this.itemService.selectedItems.map((id: string) => {
         return <Item>find(this.items, {id: id});
       });
     });
 
     setTimeout(() => {
-      this.router.events.takeWhile(() => this.active).subscribe((evt) => {
+      this.router.events.pipe(takeWhile(() => this.active)).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
           return;
         }
@@ -224,7 +226,7 @@ export class ListComponent implements OnInit, OnDestroy {
           this.tooManyItemsModalRef = this.modalService.open(TooManyItemsModalComponent, {
             windowClass: 'modal-standard',
           });
-          this.tooManyItemsModalRef.componentInstance.type = params.onHoldType ? parseInt(params.onHoldType, 10) : SUBSCRIPTION_TYPES.web;
+          this.tooManyItemsModalRef.componentInstance.type = params.onHoldType ? parseInt(params.onHoldType, 10) : SUBSCRIPTION_TYPES.stripe;
           this.tooManyItemsModalRef.result.then((orderEvent: OrderEvent) => {
             if (orderEvent) {
               this.purchaseListingFee(orderEvent);
@@ -441,7 +443,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public getNumberOfProducts() {
-    this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+    this.userService.getStats().subscribe((userStats: UserStats) => {
       this.counters = userStats.counters;
       this.setNumberOfProducts();
     });
@@ -508,7 +510,7 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public activate(subscriptionType = SUBSCRIPTION_TYPES.web) {
+  public activate(subscriptionType = SUBSCRIPTION_TYPES.stripe) {
     const items = this.itemService.selectedItems;
     this.modalService.open(ActivateItemsModalComponent).result.then(() => {
       this.itemService.activate().subscribe((resp: any) => {

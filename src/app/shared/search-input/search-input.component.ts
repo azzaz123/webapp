@@ -1,5 +1,7 @@
+
+import {distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, EventEmitter, Output, Input } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { I18nService } from '../../core/i18n/i18n.service';
 
@@ -18,9 +20,9 @@ export class SearchInputComponent {
     if (!this.placeholder) {
       this.placeholder = i18nService.getTranslations('searchDefault');
     }
-    this.term$ = <any>this.term.asObservable()
-      .debounceTime(400)
-      .distinctUntilChanged();
+    this.term$ = <any>this.term.asObservable().pipe(
+      debounceTime(400),
+      distinctUntilChanged(),);
   }
 
   public search(term: string) {

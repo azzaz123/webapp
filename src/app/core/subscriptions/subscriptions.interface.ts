@@ -10,11 +10,23 @@ export interface SubscriptionResponse {
 }
 
 export interface Tier {
-    id: string,
-    limit?: number,
-    price: number,
-    currency: string
+    id: string;
+    limit?: number;
+    price: number;
+    currency: string;
+    discount_available?: TierDiscount
 }
+
+export interface TierDiscount {
+  months: number;
+  discounted_price: number;
+}
+
+export enum SUBSCRIPTION_MARKETS {
+  STRIPE = 'STRIPE',
+  GOOGLE_PLAY = 'GOOGLE_PLAY',
+  APPLE_STORE = 'APPLE_STORE',
+} 
 
 export interface SubscriptionsResponse {
   id: string,
@@ -27,7 +39,8 @@ export interface SubscriptionsResponse {
   category_name?: string,
   category_icon?: string,
   selected_tier?: Tier,
-  subscribed_until?: number
+  subscribed_until?: number,
+  market?: SUBSCRIPTION_MARKETS
 }
 
 export interface SubscriptionSlotGeneralResponse {
@@ -44,4 +57,10 @@ export interface SubscriptionSlot {
   category: CategoryResponse;
   available: number;
   limit: number;
+}
+
+export interface SubscriptionBenefit {
+  iconId: string;
+  title: string;
+  description: string;
 }

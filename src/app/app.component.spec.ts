@@ -1,17 +1,15 @@
 /* tslint:disable:no-unused-variable */
 
+
+import {of as observableOf, throwError as observableThrowError,  Observable ,  Subject } from 'rxjs';
 import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ToastrModule } from 'ngx-toastr';
-import { MockBackend, MockConnection } from '@angular/http/testing';
-import { Response, ResponseOptions } from '@angular/http';
 import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/observable/throw';
+
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
@@ -27,7 +25,6 @@ import { MOCK_FULL_USER, MOCK_USER, USER_DATA, USER_ID } from '../tests/user.fix
 import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
-import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
@@ -36,7 +33,6 @@ import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
 import { InboxService } from './chat/service';
 import { createInboxConversationsArray } from '../tests/inbox.fixtures.spec';
-import { SplitTestService } from './core/tracking/split-test.service';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
@@ -59,7 +55,6 @@ let cookieService: CookieService;
 let modalService: NgbModal;
 let connectionService: ConnectionService;
 let paymentService: PaymentService;
-let splitTestService: SplitTestService;
 let stripeService: StripeService;
 let analyticsService: AnalyticsService;
 
@@ -106,19 +101,18 @@ describe('App', () => {
           }
         },
         ErrorsService,
-        MockBackend,
         {
           provide: UserService, useValue: {
           checkUserStatus() {
           },
           me() {
-            return Observable.of(MOCK_USER);
+            return observableOf(MOCK_USER);
           },
           logout() {
           },
           sendUserPresenceInterval() {},
           isProfessional() {
-            return Observable.of(false);
+            return observableOf(false);
           }
         }
         },
@@ -159,7 +153,7 @@ describe('App', () => {
         {
           provide: ConversationService, useValue: {
           init() {
-            return Observable.of();
+            return observableOf();
           },
           handleNewMessages() {},
           resetCache() {},
@@ -170,20 +164,20 @@ describe('App', () => {
         {
           provide: CallsService, useValue: {
             init() {
-              return Observable.of();
+              return observableOf();
             },
           syncItem() {}
           }
         },
         {
           provide: Router, useValue: {
-          events: Observable.of(new NavigationEnd(1, 'test', 'test'))
+          events: observableOf(new NavigationEnd(1, 'test', 'test'))
         }
         },
         {
           provide: ActivatedRoute, useValue: {
           outlet: 'primary',
-          data: Observable.of({
+          data: observableOf({
             title: 'Chat',
             hideSidebar: true
           })
@@ -200,12 +194,6 @@ describe('App', () => {
           }
         },
         {
-          provide: SplitTestService, useValue: {
-            init() {},
-            identify() {}
-          }
-        },
-        {
           provide: PaymentService, useValue: {
             deleteCache() {
             }
@@ -216,9 +204,7 @@ describe('App', () => {
             init() {}
           }
         },
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-        ...
-          TEST_HTTP_PROVIDERS
+        { provide: AnalyticsService, useClass: MockAnalyticsService }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -240,7 +226,6 @@ describe('App', () => {
     modalService = TestBed.get(NgbModal);
     connectionService = TestBed.get(ConnectionService);
     paymentService = TestBed.get(PaymentService);
-    splitTestService = TestBed.get(SplitTestService);
     stripeService = TestBed.get(StripeService);
     analyticsService = TestBed.get(AnalyticsService);
     spyOn(notificationService, 'init');
@@ -277,19 +262,13 @@ describe('App', () => {
     }
 
     describe('success case', () => {
-      const mockedInboxConversations = createInboxConversationsArray(3);
       function emitSuccessChatEvents() {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
         eventService.emit(EventService.DB_READY);
         eventService.emit(EventService.CHAT_RT_CONNECTED);
       }
       beforeEach(fakeAsync(() => {
-        const mockBackend: MockBackend = TestBed.get(MockBackend);
-        mockBackend.connections.subscribe((connection: MockConnection) => {
-          const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
-          connection.mockRespond(new Response(res));
-        });
-        spyOn(callsService, 'init').and.returnValue(Observable.of({}));
+        spyOn(callsService, 'init').and.returnValue(observableOf({}));
         spyOn(inboxService, 'init');
       }));
 
@@ -330,7 +309,7 @@ describe('App', () => {
       });
 
       it('should call callsService.init twice if user is professional', () => {
-        spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+        spyOn(userService, 'isProfessional').and.returnValue(observableOf(true));
 
         component.ngOnInit();
         emitSuccessChatEvents();
@@ -346,7 +325,7 @@ describe('App', () => {
       });
 
       it('should NOT unsubscribe from the RT_CONNECTED_EVENT', () => {
-        spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+        spyOn(userService, 'isProfessional').and.returnValue(observableOf(true));
 
         component.ngOnInit();
         emitSuccessChatEvents();
@@ -405,7 +384,7 @@ describe('App', () => {
     });
 
     it('should NOT call userService.sendUserPresenceInterval is the user has not successfully logged in', () => {
-      spyOn(userService, 'me').and.returnValue(Observable.throw({}));
+      spyOn(userService, 'me').and.returnValue(observableThrowError({}));
       spyOn(errorsService, 'show');
       spyOn(userService, 'sendUserPresenceInterval');
 
@@ -423,7 +402,7 @@ describe('App', () => {
       };
       spyOn(userService, 'logout');
       spyOn(errorsService, 'show');
-      spyOn(userService, 'me').and.returnValue(Observable.throw(ERROR));
+      spyOn(userService, 'me').and.returnValue(observableThrowError(ERROR));
 
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
@@ -553,30 +532,6 @@ describe('App', () => {
       component['setTitle']();
 
       expect(component.hideSidebar).toBeTruthy();
-    });
-  });
-
-  describe('Split test service', () => {
-    it('should initialize the library when creating the app', () => {
-      spyOn(splitTestService, 'init');
-
-      component.ngOnInit();
-
-      expect(splitTestService.init).toHaveBeenCalled();
-    });
-
-    it('should identify the user', () => {
-      spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_FULL_USER));
-      spyOn(splitTestService, 'identify');
-
-      component.ngOnInit();
-      eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-      expect(splitTestService.identify).toHaveBeenCalledWith({
-        user_id: MOCK_FULL_USER.id,
-        email: MOCK_FULL_USER.email,
-        gender: MOCK_FULL_USER.gender
-      });
     });
   });
 

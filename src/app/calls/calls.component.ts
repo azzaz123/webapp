@@ -1,6 +1,8 @@
+
+import {takeWhile} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Call } from '../core/conversation/calls';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { CallsService } from '../core/conversation/calls.service';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { ActivatedRoute } from '@angular/router';
@@ -27,9 +29,9 @@ export class CallsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    this.route.queryParams.takeWhile(() => {
+    this.route.queryParams.pipe(takeWhile(() => {
       return this.active;
-    }).subscribe((params: any) => {
+    })).subscribe((params: any) => {
       this.status = params.status;
       this.getCalls();
     });
@@ -48,9 +50,9 @@ export class CallsComponent implements OnInit, OnDestroy {
     if (this.callsSubscription) {
       this.callsSubscription.unsubscribe();
     }
-    this.callsSubscription = this.callService.getPage(this.page, this.archive, this.status).takeWhile(() => {
+    this.callsSubscription = this.callService.getPage(this.page, this.archive, this.status).pipe(takeWhile(() => {
       return this.active;
-    }).subscribe((calls: Call[]) => {
+    })).subscribe((calls: Call[]) => {
       this.calls = calls;
       this.loading = false;
       if (this.archive) {

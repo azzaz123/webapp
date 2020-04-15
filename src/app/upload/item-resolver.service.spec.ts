@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ItemResolverService } from './item-resolver.service';
 import { ItemService } from '../core/item/item.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { ITEM_ID, MOCK_ITEM } from '../../tests/item.fixtures.spec';
 import { Item } from '../core/item/item';
@@ -19,7 +19,7 @@ describe('ItemResolverService', () => {
         {
           provide: ItemService, useValue: {
           get() {
-            return Observable.of(MOCK_ITEM);
+            return of(MOCK_ITEM);
           }
         }
         }

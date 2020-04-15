@@ -1,17 +1,21 @@
+
+import {of as observableOf, throwError as observableThrowError, forkJoin as observableForkJoin,  Observable } from 'rxjs';
+
+import {catchError, retryWhen, delay, take,  mergeMap, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse } from './subscriptions.interface';
+import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResponse, SUBSCRIPTION_MARKETS, SubscriptionBenefit } from './subscriptions.interface';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
 import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
-import { mergeMap, map } from 'rxjs/operators';
 import { CARS_CATEGORY } from '../item/item-categories';
 import { CategoryService } from '../category/category.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { I18nService } from '../i18n/i18n.service';
+import { CURRENCY_SYMBOLS } from '../constants';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -28,8 +32,8 @@ export const SUBSCRIPTIONS_CATEGORY_ICON_MAP = {
 export enum SUBSCRIPTION_TYPES {
   notSubscribed = 1,
   carDealer = 2,
-  motorPlan = 3,
-  web = 4
+  inApp = 3,
+  stripe = 4
 }
 
 @Injectable()
@@ -39,23 +43,26 @@ export class SubscriptionsService {
   public fullName: string;
   public PAYMENT_PROVIDER_STRIPE = false;
   public subscriptions: SubscriptionsResponse[];
+  private _userSubscriptionType: SUBSCRIPTION_TYPES;
+  private _subscriptionBenefits: SubscriptionBenefit[];
 
   constructor(private userService: UserService,
               private featureflagService: FeatureflagService,
               private http: HttpClient,
-              private categoryService: CategoryService) {
+              private categoryService: CategoryService,
+              private i18nService: I18nService) {
     this.userService.me().subscribe((user: User) => {
       this.fullName = user ? `${user.firstName} ${user.lastName}` : '';
     });
   }
 
   public getSlots(): Observable<SubscriptionSlot[]> {
-    return this.http.get<SubscriptionSlotGeneralResponse>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`)
-      .flatMap(response => {
-        return Observable.forkJoin(
+    return this.http.get<SubscriptionSlotGeneralResponse>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`).pipe(
+      mergeMap(response => {
+        return observableForkJoin(
           response.slots.map(slot => this.mapSlotResponseToSlot(slot))
         );
-      });
+      }));
   }
 
   private mapSlotResponseToSlot(slot: SubscriptionSlotResponse): Observable<SubscriptionSlot> {
@@ -74,31 +81,36 @@ export class SubscriptionsService {
       );
   }
 
-  public getUserSubscriptionType(): Observable<number> {
-    return Observable.forkJoin([
+  public getUserSubscriptionType(useCache = true): Observable<SUBSCRIPTION_TYPES> {
+    if (useCache && this._userSubscriptionType) {
+      return observableOf(this._userSubscriptionType);
+    }
+
+    return observableForkJoin([
       this.userService.isProfessional(),
-      this.getSubscriptions(false),
-      this.userService.getMotorPlan()
+      this.getSubscriptions(false)
     ])
-    .map(values => {
-      if (values[0]) {
-        return SUBSCRIPTION_TYPES.carDealer;
-      }
-
-      const carsSubscription = values[1].find(subscription => subscription.category_id === parseInt(CARS_CATEGORY, 10));
-
-      if (carsSubscription) {
-        if (values[2].type === 'motor_plan_pro' && !carsSubscription.selected_tier_id) {
-          return SUBSCRIPTION_TYPES.motorPlan;
+    .pipe(
+      map(values => {
+        const isCarDealer = values[0];
+        const subscriptions = values[1];
+  
+        if (isCarDealer) {
+          return SUBSCRIPTION_TYPES.carDealer;
         }
-
-        if (carsSubscription.selected_tier_id) {
-          return SUBSCRIPTION_TYPES.web;
+        
+        if (this.isOneSubscriptionInApp(subscriptions)) {
+          return SUBSCRIPTION_TYPES.inApp;
         }
-      }
-
-      return SUBSCRIPTION_TYPES.notSubscribed;
-    });
+  
+        if (this.hasOneStripeSubscription(subscriptions)) {
+          return SUBSCRIPTION_TYPES.stripe;
+        }
+  
+        return SUBSCRIPTION_TYPES.notSubscribed;
+      }),
+      tap(subscriptionType => this._userSubscriptionType = subscriptionType)
+    );
   }
 
   public newSubscription(subscriptionId: string, paymentId: string): Observable<any> {
@@ -114,13 +126,13 @@ export class SubscriptionsService {
   }
 
   public checkNewSubscriptionStatus(): Observable<SubscriptionResponse> {
-    return this.http.get<any>(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`)
-      .retryWhen((errors) => {
-        return errors
-          .mergeMap((error) => (error.status !== 404) ? Observable.throw(error) : Observable.of(error))
-          .delay(1000)
-          .take(10);
-      });
+    return this.http.get<any>(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`).pipe(
+      retryWhen((errors) => {
+        return errors.pipe(
+          mergeMap((error) => (error.status !== 404) ? observableThrowError(error) : observableOf(error)),
+          delay(1000),
+          take(10),);
+      }));
   }
 
   public retrySubscription(invoiceId: string, paymentId: string): Observable<any> {
@@ -141,16 +153,16 @@ export class SubscriptionsService {
 
   public getSubscriptions(cache: boolean = true): Observable<SubscriptionsResponse[]> {
     if (this.subscriptions && cache) {
-      return Observable.of(this.subscriptions);
+      return observableOf(this.subscriptions);
     }
 
     return this.categoryService.getCategories()
     .pipe(
       mergeMap((categories) => {
-        return this.http.get(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`)
-        .catch((error) => {
-          return Observable.of(error);
-        })
+        return this.http.get(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).pipe(
+        catchError((error) => {
+          return observableOf(error);
+        }))
         .pipe(
           map((subscriptions: SubscriptionsResponse[]) => {
             if (subscriptions.length > 0) {
@@ -188,11 +200,101 @@ export class SubscriptionsService {
       subscription.category_icon = category.icon_id;
       subscription.selected_tier = this.getSelectedTier(subscription);
     }
+
+    this.mapCurrenciesForTiers(subscription);
+
     return subscription;
+  }
+
+  private mapCurrenciesForTiers(subscription: SubscriptionsResponse) {
+    subscription.tiers.forEach(tier => {
+      const mappedCurrencyCharacter = CURRENCY_SYMBOLS[tier.currency];
+      if (mappedCurrencyCharacter) {
+        tier.currency = mappedCurrencyCharacter;
+      }
+    });
   }
 
   private getSelectedTier(subscription: SubscriptionsResponse): Tier {
     const selectedTier = subscription.selected_tier_id ? subscription.tiers.filter(tier => tier.id === subscription.selected_tier_id) : subscription.tiers.filter(tier => tier.id === subscription.default_tier_id);
     return selectedTier[0];
+  }
+
+  public isSubscriptionInApp(subscription: SubscriptionsResponse): boolean {
+    if (!subscription.market) {
+      return false;
+    }
+    return subscription.market === SUBSCRIPTION_MARKETS.GOOGLE_PLAY || subscription.market === SUBSCRIPTION_MARKETS.APPLE_STORE;
+  }
+
+  public isOneSubscriptionInApp(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.isSubscriptionInApp(subscription));
+  }
+
+  public isStripeSubscription(subscription: SubscriptionsResponse): boolean {
+    if (!subscription.market) {
+      return false;
+    }
+    return subscription.market === SUBSCRIPTION_MARKETS.STRIPE;
+  }
+
+  public hasOneStripeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.isStripeSubscription(subscription));
+  }
+
+  public hasOneFreeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.hasOneFreeTier(subscription));
+  }
+
+  public hasOneDiscountedSubscription(subscriptions: SubscriptionsResponse[]): boolean {
+    return subscriptions.some(subscription => this.hasOneTierDiscount(subscription));
+  }
+
+  public hasOneTierDiscount(subscription: SubscriptionsResponse): boolean {
+    return subscription.tiers.some(tier => this.isDiscountedTier(tier));
+  }
+
+  public hasOneFreeTier(subscription: SubscriptionsResponse): boolean {
+    return subscription.tiers.some(tier => this.isFreeTier(tier));
+  }
+
+  public isDiscountedTier(tier: Tier): boolean {
+    return !!tier.discount_available;
+  }
+
+  public isFreeTier(tier: Tier): boolean {
+    if (!this.isDiscountedTier(tier)) {
+      return false;
+    }
+
+    return tier.discount_available.discounted_price === 0;
+  }
+
+  public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]>{
+    if (useCache && this._subscriptionBenefits) {
+      return observableOf(this._subscriptionBenefits);
+    }
+    return observableOf(this.i18nService.getTranslations('subscriptionBenefits'))
+      .pipe(
+        tap(response => this._subscriptionBenefits = response)
+      );
+  }
+
+  public getTierDiscountPercentatge(tier: Tier): number {
+    let discountPercentatge = 0;
+
+    if (!tier.discount_available) {
+      return discountPercentatge;
+    }
+
+    try {
+      discountPercentatge = (tier.price - tier.discount_available.discounted_price) / tier.price * 100;
+    } catch {}
+
+    if (discountPercentatge > 100) {
+      discountPercentatge = 100;
+    }
+
+    return discountPercentatge;
   }
 }

@@ -1,10 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { ItemService } from '../core/item/item.service';
-import { Observable } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
 import { UserService } from '../core/user/user.service';
-import { USERS_STATS_RESPONSE } from '../../tests/user.fixtures.spec';
+import { MOCK_USER_STATS } from '../../tests/user.fixtures.spec';
 import { MOCK_ITEM } from '../../tests/item.fixtures.spec';
 import { ProfileService } from '../core/profile/profile.service';
 import { MOCK_PROFILE } from '../../tests/profile.fixtures.spec';
@@ -24,20 +25,20 @@ describe('FavoritesComponent', () => {
       providers: [
         { provide: ItemService, useValue: {
             myFavorites () {
-              return Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: 2});
+              return observableOf({data: [MOCK_ITEM, MOCK_ITEM], init: 2});
             }
           }
         },
         { provide: ProfileService, useValue: {
             myFavorites () {
-              return Observable.of({data: [MOCK_PROFILE, MOCK_PROFILE], init: 2});
+              return observableOf({data: [MOCK_PROFILE, MOCK_PROFILE], init: 2});
             }
           }
         },
         {
           provide: UserService, useValue: {
             getStats() {
-              return Observable.of(USERS_STATS_RESPONSE);
+              return observableOf(MOCK_USER_STATS);
             }
           }
         },
@@ -111,7 +112,7 @@ describe('FavoritesComponent', () => {
     });
 
     it('should set end true if no init', () => {
-      itemServiceSpy.and.returnValue(Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: null}));
+      itemServiceSpy.and.returnValue(observableOf({data: [MOCK_ITEM, MOCK_ITEM], init: null}));
       component.getItems();
 
       expect(component['end']).toBeTruthy();
@@ -190,7 +191,7 @@ describe('FavoritesComponent', () => {
     });
 
     it('should set end true if no init', () => {
-      profileServiceSpy.and.returnValue(Observable.of({data: [MOCK_PROFILE, MOCK_PROFILE], init: null}));
+      profileServiceSpy.and.returnValue(observableOf({data: [MOCK_PROFILE, MOCK_PROFILE], init: null}));
       component.getProfiles();
 
       expect(component['end']).toBeTruthy();
@@ -284,7 +285,7 @@ describe('FavoritesComponent', () => {
       component.getNumberOfFavorites();
 
       expect(userService.getStats).toHaveBeenCalled();
-      expect(component.numberOfFavorites).toEqual(USERS_STATS_RESPONSE.counters.favorites);
+      expect(component.numberOfFavorites).toEqual(MOCK_USER_STATS.counters.favorites);
     });
   });
 });

@@ -81,7 +81,7 @@
   <translation id="5371960677736303052">¿Dónde?</translation>
   <translation id="958176169457402389">Tus productos se verán en:</translation>
   <translation id="4163236016169197783">Este es el punto donde está ubicado tu perfil de wallapop y en él aparecerán todos tus productos.</translation>
-  <translation id="7840802104684576719">Sitúa el punto en una zona donde suelas estar. Esto facilitará que te encuentren usuarios cercanos y que mejore tu experiencia de uso.</translation>
+  <translation id="8931167307338687444">Sitúa el punto en una zona donde suelas estar. Esto facilitará que te encuentren usuarios cercanos y que mejore tu experiencia de uso.</translation>
   <translation id="1902100407096396858">Categorías</translation>
   <translation id="3734434835434478522">Muro</translation>
   <translation id="3825726981798982045">Mi Catálogo</translation>
@@ -165,7 +165,7 @@
   <translation id="7026441111090698984">Precio no negociable</translation>
   <translation id="1292901362619782619">Acepto intercambios</translation>
   <translation id="2224879576270143088">Cosas que suelen preguntar los compradores...</translation>
-  <translation id="3535134560822959404">Subir coche</translation>
+  <translation id="4770496043619864687">Subir coche</translation>
   <translation id="3088723279740360142">Submit Ad</translation>
   <translation id="4138346261331244869">¿Cómo quedará?</translation>
   <translation id="4918814479561513634">¿Estas seguro que quieres abandonar esta página?</translation>
@@ -295,7 +295,7 @@
   <translation id="1747851890616342359">¡Te presentamos nuestra nueva web profesional!</translation>
   <translation id="7965763213079559522">Esta es "Tu zona Pro". Desde aquí podrás utilizar todas las funcionalidades que ya tenías en la app de wallapop y en la admin de profesionales.</translation>
   <translation id="5339303196793781359">Aquí puedes ver y editar los datos de tu perfil, información de facturación y ver tu plan de coches y de visibilidad. Podrás marcar tu ubicación (y la de todos tus productos), cambiar tu foto, modificar la contraseña o el email...</translation>
-  <translation id="157339153102985723">Aquí podrás ver estadísticas de visualizaciones de tus productos, número de chats y llamas recibidas. Además podrás ver que impacto tienen los destacados en tus métricas.</translation>
+  <translation id="8735125837670622187">Aquí podrás ver estadísticas de visualizaciones de tus productos, número de chats y llamas recibidas. Además podrás ver que impacto tienen los destacados en tus métricas.</translation>
   <translation id="9086693090800324810">En este punto tendrás acceso a todos tus productos. Además, podrás subir nuevos, editarlos, activarlos o destacarlos.</translation>
   <translation id="5119878065843230741">Aquí verás y podrás gestionar las llamadas recibidas, las perdidas y los teléfonos que te han compartido.</translation>
   <translation id="4563965495368336177">Saltar explicación</translation>
@@ -525,8 +525,8 @@
   <translation id="428164738594731840">Cancelar</translation>
   <translation id="7166295046269696440">Desde <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> a <ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
   <translation id="7291421467944217279">Activar coches</translation>
-  <translation id="4937564264919515438">Puedes subir <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
-  <translation id="7783294297217449801">Puedes activar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="1968377313585576070">Puedes subir <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="4624651686544699977">Puedes activar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
   <translation id="4862629622121675984"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> plan</translation>
   <translation id="3780659623990720220"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> plan</translation>
   <translation id="1290608591542945444">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
@@ -580,7 +580,7 @@
   <translation id="4551195994779724664">Mostrar dirección apróximada de tu inmueble</translation>
   <translation id="87397333944060990">¿Tu inmueble es para alquilar o para vender?</translation>
   <translation id="4222698529756167847">¿Qué tipo de inmueble es?</translation>
-  <translation id="2304052952512211620">Añade un precio justo y la superficie en m2. Dínos también en qué estado se encuentra la propiedad.</translation>
+  <translation id="8792574244784521102">Añade un precio justo y la superficie en m2. Dínos también en qué estado se encuentra la propiedad.</translation>
   <translation id="2249392835431463782">¿Cuántas habitaciones y baños tiene?</translation>
   <translation id="6916262870833373718">Cosas que le gusta saber a nuestros usuarios...</translation>
   <translation id="8983162191434268514">Escribe bien (y sin faltas de ortografía) para que te encuentren más fácilmente.</translation>
@@ -680,7 +680,7 @@
   <translation id="3879651736105644738">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
   <translation id="916352071278248935">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amCalendar:momentConfig}}</ex></ph></translation>
   <translation id="8413861205232330672">Todavía no disponemos de datos para este producto</translation>
-  <translation id="8742069867763156698">
+  <translation id="8167775963255607742">
     Por sólo
     <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
     <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
@@ -693,7 +693,6 @@
   <translation id="305827802561975907">Lo que debes saber:</translation>
   <translation id="807686572653733419">El hecho de facilitar tu número de teléfono a través del formulario web implica que aceptas el tratamiento de dicho dato en los términos que a continuación se detallan. </translation>
   <translation id="430278916884204896">Wallapop, S.L, (en adelante, Wallapop), en condición de responsable del tratamiento, tratará el número de teléfono proporcionado con el fin de comunicarlo a un usuario profesional ajeno a la plataforma wallapop (un concesionario), el cual, posteriormente, contactará por teléfono contigo a efectos de informarte sobre sus productos/servicios.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>La base legal para el tratamiento del mencionado dato es el consentimiento que has prestado vinculado al hecho de haber proporcionado, libremente, tu número de teléfono a través del formulario web.  El dato personal se conservará mientras no solicites su supresión. Una vez solicitada la supresión, el dato se conservará bloqueado impidiendo su tratamiento, excepto para la puesta a disposición del dato a los jueces y tribunales, el Ministerio Fiscal o las Administraciones Públicas competentes, para la exigencia de posibles responsabilidades derivadas del tratamiento y solo por el plazo de prescripción de las mismas (generalmente, 5 años). Una vez transcurrido el indicado periodo de tiempo, el dato se eliminará.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Podrás ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos, así como la revocación, en cualquier momento, del consentimiento prestado, ante Wallapop, CIF nº B-66.04.9057, en la Calle Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Podrás también ejercer tus derechos mediante comunicación dirigida a: privacidad@wallapop.com. Finalmente, te recordamos que puedes dirigir una reclamación ante la Agencia Española de Protección de Datos, si consideras que Wallapop ha vulnerado tus derechos en materia de protección de datos.</translation>
-  <translation id="548531554532991134">Tu perfil <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="5784720522096888528">Estos campos son para los usuarios PROS</translation>
   <translation id="8414210615079813336">Conviertete desde la app</translation>
   <translation id="976362268569732073">Tus productos se verán más porque estarán en las primeras posiciones de las búsquedas</translation>
@@ -776,7 +775,7 @@
   <translation id="5342432350421167093">Nombre</translation>
   <translation id="3586674587150281199">Apellidos</translation>
   <translation id="4644971093370005279">Web:</translation>
-  <translation id="2959266806536471647">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="2322741539330475902">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="792930787826735850">Tu perfil</translation>
   <translation id="4086606389696938932">Cuenta</translation>
   <translation id="5722353260643724736">Método de pago</translation>
@@ -809,13 +808,13 @@
   <translation id="8776614783712961708">¡Oh, no!</translation>
   <translation id="3345227992092802987">¡No puedes mandar enlaces (no relacionados a wallapop) en esta conversación!</translation>
   <translation id="6158688416374751486">Añade un precio justo y el area en metros cuadrados. Cuéntanos también el estado de la propiedad</translation>
-  <translation id="791299080994199797">Presta atención a los errores ortográficos, así nuestros usuarios podrán encontrar tu propiedad más facilmente.</translation>
+  <translation id="6854882443364631275">Presta atención a los errores ortográficos, así nuestros usuarios podrán encontrar tu propiedad más facilmente.</translation>
   <translation id="6419236949160000852">Este es el lugar donde se encuentra tu espacio. Esta ubicación podría ser diferente de la ubicación de tu perfil.</translation>
   <translation id="1554463637849211201">Fotos</translation>
   <translation id="591481955696105417">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 4MB.</translation>
   <translation id="2852614655612881023">¿Que aspecto tiene?</translation>
-  <translation id="9023062354327973338">No hagas errores, ya que así la gente te encontrará más facilmente.</translation>
-  <translation id="2462425780160875270">Añade un precio justo y la categoria que encaja mejor con tu item</translation>
+  <translation id="9201389463111383663">No hagas errores, ya que así la gente te encontrará más facilmente.</translation>
+  <translation id="101333005612370054">Añade un precio justo y la categoria que encaja mejor con tu item</translation>
   <translation id="1663822447043824807">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 10MB. Sólo aceptamos imágenes .jpg</translation>
   <translation id="518944399314816423">Puedes enviar (casi) todo por wallapop. ¡Y es gratis!</translation>
   <translation id="3784792223212622760">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
@@ -867,7 +866,7 @@
   <translation id="4264336981703427297">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="1230154438678955604">Cambiar</translation>
   <translation id="4121630926102377372">El pago ha fallado. Por favor introduce otra tarjeta de crédito.</translation>
-  <translation id="6490560397798880387">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
+  <translation id="5703774512613913053">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
   <translation id="6660970336602075267">Cambia el límite de la suscripción</translation>
   <translation id="3072739349487522347"><ph name="INTERPOLATION"><ex>{{subscription?.tiers[i]?.limit}}</ex></ph></translation>
   <translation id="5135045952459940132">Nuevo precio:</translation>
@@ -966,11 +965,68 @@
   <translation id="4006216918341440943">Estado del producto</translation>
   <translation id="8657848090104321234">Escoge un estado</translation>
   <translation id="931255636742351800">Sin límite</translation>
-  <translation id="3953884740420390564">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
+  <translation id="5813721227215884251">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
   <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
   <translation id="2060326108457530649">¡Qué bien que hayas encontrado lo que buscabas!</translation>
   <translation id="7931637164374710264">¿Como ha ido? ¡Tómate un momento para valorar la experiencia con el usuario y ayudar a la comunidad!</translation>
   <translation id="4741413716404810905">Valorar</translation>
   <translation id="7305026831182508111">¡Gracias por tu valoración!</translation>
   <translation id="3734816767204282002">El producto ha bajado de precio. ¡Cierra el trato!</translation>
+  <translation id="949044872815747177">Gestionar desde la app</translation>
+  <translation id="6488767812620715130"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Parece que quieres cambiar algo en tu suscripción<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="6830193087899555637">Si quieres dar de baja tu suscripción actual, accede a la app store y cancélala.</translation>
+  <translation id="2881743164290660474">Para cambiar la suscripción, accede a la app store y cancela la suscripción actual. Luego, contrata la nueva suscripción desde tu perfil de wallapop.</translation>
+  <translation id="8438681505217357359">Si tienes dudas, <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>contacta con nosotros<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph>.</translation>
+  <translation id="5500835400289213295"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Tienes que darte de baja primero de tus subscripciones en la app<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="3261431386963936058">Si quieres darte de alta, primero debes ir a la app store y cancelar cualquier suscripción activa.</translation>
+  <translation id="8945513634555081527">¿Por qué suscribirte a wallapop PRO?</translation>
+  <translation id="6468756919468494280">Ventajas para quienes quieran vender más y mejor</translation>
+
+  <translation id="ngb.alert.close">Cerrar</translation>
+  <translation id="ngb.carousel.previous">Anterior</translation>
+  <translation id="ngb.carousel.next">Siguiente</translation>
+  <translation id="ngb.datepicker.previous-month">Mes anterior</translation>
+  <translation id="ngb.datepicker.next-month">Mes siguiente</translation>
+  <translation id="ngb.datepicker.select-month">Seleccionar mes</translation>
+  <translation id="ngb.datepicker.select-year">Seleccionar año</translation>
+  <translation id="ngb.pagination.first">««</translation>
+  <translation id="ngb.pagination.previous">«</translation>
+  <translation id="ngb.pagination.next">»</translation>
+  <translation id="ngb.pagination.last">»»</translation>
+  <translation id="ngb.pagination.first-aria">Primero</translation>
+  <translation id="ngb.pagination.previous-aria">Anterior</translation>
+  <translation id="ngb.pagination.next-aria">Siguiente</translation>
+  <translation id="ngb.pagination.last-aria">Último</translation>
+  <translation id="ngb.timepicker.increment-hours">Incrementar horas</translation>
+  <translation id="ngb.timepicker.HH">HH</translation>
+  <translation id="ngb.timepicker.hours">Horas</translation>
+  <translation id="ngb.timepicker.decrement-hours">Disminuir horas</translation>
+  <translation id="ngb.timepicker.increment-minutes">Incrementar minutos</translation>
+  <translation id="ngb.timepicker.MM">MM</translation>
+  <translation id="ngb.timepicker.minutes">Minutos</translation>
+  <translation id="ngb.timepicker.decrement-minutes">Disminuir minutos</translation>
+  <translation id="ngb.timepicker.increment-seconds">Incrementar segundos</translation>
+  <translation id="ngb.timepicker.SS">SS</translation>
+  <translation id="ngb.timepicker.seconds">Segundos</translation>
+  <translation id="ngb.timepicker.decrement-seconds">Disminuir segundos</translation>
+  <translation id="ngb.timepicker.PM">PM</translation>
+  <translation id="ngb.timepicker.AM">AM</translation>
+  <translation id="ngb.progressbar.value"><ph name="INTERPOLATION"><ex>{{getPercentValue()}}</ex>{{getPercentValue()}}</ph>%</translation>
+  <translation id="3088405909522546815">Un mes gratis</translation>
+  <translation id="778538042004330732"><ph name="INTERPOLATION"><ex>{{subscription.tiers[0].discount_available.months}}</ex></ph> meses gratis</translation>
+  <translation id="3502404552821595095"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.months}}</ex></ph> meses gratis</translation>
+  <translation id="8259937392031044504">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="8474946978308732893"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="2568045788105949140"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="2404822514067336938">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
+  <translation id="7145885217817968593">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
+  <translation id="43721607585443490">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
+  <translation id="3953884740420390564">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
+  <translation id="8217404428211350288">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="3388771596034096026"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Dispones de un mes gratuito<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="1863181759969059894">El COVID-19 nos está afectando a todos. Para paliar esta situación, queremos informarte de que, como usuario de wallapop PRO, te ofrecemos un mes de suscripción gratis. ¿Qué tienes que hacer?</translation>
+  <translation id="214415473377752678">1. Cancela tu plan de suscripción actual. Para ello, accede a la aplicación de <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Apple Store<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> o <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>Google Play<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> (depende del móvil que uses).</translation>
+  <translation id="2347321246651029433">2. Espera a que expire la vigencia del plan al que te habías suscrito. Consulta la fecha de expiración en el correo que te enviamos cuando te das de baja.</translation>
+  <translation id="7589681963132617331">3. Una vez expirado, escoge tu suscripción gratuita aquí en la web.</translation>
+  <translation id="5188534013459638497">Date de baja primero desde la app para tu mes gratis</translation>
 </translationbundle>

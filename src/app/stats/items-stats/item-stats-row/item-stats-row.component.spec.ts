@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemStatsRowComponent } from './item-stats-row.component';
 import { ItemStatsService } from './item-stats-graph/item-stats.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
@@ -37,14 +37,14 @@ describe('ItemStatsRowComponent', () => {
         {
           provide: ItemStatsService, useValue: {
           getStatistics() {
-            return Observable.of(ITEM_STATISTIC_RESPONSE);
+            return of(ITEM_STATISTIC_RESPONSE);
           }
         }
         },
         {
           provide: ItemService, useValue: {
           getCounters() {
-            return Observable.of(ITEM_COUNTERS_DATA);
+            return of(ITEM_COUNTERS_DATA);
           }
         }
         }
@@ -97,7 +97,7 @@ describe('ItemStatsRowComponent', () => {
         'date': today.toString(),
         'values': {'favs': 95, 'views': 37, 'chats': 63}
       })
-      spyOn(itemStatsService, 'getStatistics').and.returnValue(Observable.of(ITEM_STATISTIC_RESPONSE_V2));
+      spyOn(itemStatsService, 'getStatistics').and.returnValue(of(ITEM_STATISTIC_RESPONSE_V2));
 
       component.ngOnInit();
 

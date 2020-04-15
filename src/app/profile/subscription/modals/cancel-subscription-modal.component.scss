@@ -34,3 +34,9 @@
     }
   }
 }
+
+@include media-breakpoint-down(sm) {
+  .CancelSubscription__box {
+    padding: $spacing-m $spacing-ms;
+  }
+}

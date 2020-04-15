@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError,  Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal.component';
@@ -6,7 +8,6 @@ import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { PaymentService } from '../../core/payments/payment.service';
-import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pack } from '../../core/payments/pack';
 import { UUID } from 'angular2-uuid';
@@ -40,7 +41,7 @@ describe('BuyWallacoinsModalComponent', () => {
         {
           provide: PaymentService, useValue: {
             orderExtrasProPack() {
-              return Observable.of({});
+              return of({});
             }
           }
         },
@@ -53,7 +54,7 @@ describe('BuyWallacoinsModalComponent', () => {
         {
           provide: StripeService, useValue: {
             getCards() {
-              return Observable.of([]);
+              return of([]);
             },
             buy() {}
           }
@@ -135,7 +136,7 @@ describe('BuyWallacoinsModalComponent', () => {
 
       describe('error', () => {
         it('should call toastr', () => {
-          paymentService.orderExtrasProPack = jasmine.createSpy().and.returnValue(Observable.throw({
+          paymentService.orderExtrasProPack = jasmine.createSpy().and.returnValue(observableThrowError({
             text() {
               return '';
             }

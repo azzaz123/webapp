@@ -62,7 +62,7 @@ describe('AddNewSubscriptionModalComponent', () => {
         {
           provide: StripeService, useValue: {
             addNewCard() {
-              return Observable.of(200);
+              return of(200);
             },
             actionPayment() {}
           }
@@ -70,16 +70,19 @@ describe('AddNewSubscriptionModalComponent', () => {
         {
           provide: SubscriptionsService, useValue: {
             newSubscription() {
-              return Observable.of({});
+              return of({});
             },
             checkNewSubscriptionStatus() {
-              return Observable.of(SUBSCRIPTION_SUCCESS);
+              return of(SUBSCRIPTION_SUCCESS);
             },
             retrySubscription() {
-              return Observable.of('');
+              return of('');
             },
             checkRetrySubscriptionStatus() {
-              return Observable.of('');
+              return of('');
+            },
+            getTierDiscountPercentatge() {
+              return 0;
             }
           }
         },
@@ -116,6 +119,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     component.card = STRIPE_CARD;
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     fixture.detectChanges();
+    spyOn(component, 'reloadPage').and.returnValue(() => {});
   });
 
   describe('close', () => {
@@ -151,7 +155,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       component.isRetryInvoice = false;
       component.card = STRIPE_CARD;
 
-      spyOn(stripeService, 'addNewCard').and.returnValue(Observable.of(200));
+      spyOn(stripeService, 'addNewCard').and.returnValue(of(200));
       spyOn(component, 'addSubscriptionFromSavedCard').and.callThrough();
 
       component.addSubscription(PAYMENT_METHOD_DATA);
@@ -161,13 +165,13 @@ describe('AddNewSubscriptionModalComponent', () => {
 
   describe('addSubscriptionFromSavedCard', () => {
     beforeEach(fakeAsync(() => {
-      spyOn(subscriptionsService, 'newSubscription').and.returnValue(Observable.of({status: 202}));
+      spyOn(subscriptionsService, 'newSubscription').and.returnValue(of({status: 202}));
       
       component.isRetryInvoice = false;
     }));
 
     it('should update loading to false', fakeAsync(() => {
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_SUCCESS));
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
@@ -183,7 +187,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     }));
 
     it('should call checkNewSubscriptionStatus if response is 202', fakeAsync(() => {
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_SUCCESS));
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
@@ -193,7 +197,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     it('should close the actual modal if response status is succeeded', fakeAsync(() => {
       spyOn(component, 'close');
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_SUCCESS));
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
@@ -204,7 +208,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     it('should show success modal if response status is succeeded', fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_SUCCESS));
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_SUCCESS));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
@@ -215,7 +219,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     it('should call actionPayment if response status is requires_action', fakeAsync(() => {
       spyOn(stripeService, 'actionPayment').and.callThrough();
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_REQUIRES_ACTION));
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_REQUIRES_ACTION));
 
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
@@ -225,7 +229,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     it('should call requestNewPayment if response status is requires_payment_method', fakeAsync(() => {
       spyOn(errorsService, 'i18nError');
-      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(Observable.of(SUBSCRIPTION_REQUIRES_PAYMENT));
+      spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_REQUIRES_PAYMENT));
       
       component.addSubscriptionFromSavedCard(PAYMENT_METHOD_DATA.id);
       tick();
@@ -325,7 +329,8 @@ describe('AddNewSubscriptionModalComponent', () => {
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.ProfileSubscription,
-        isNewVisa: true
+        isNewVisa: true,
+        discountPercent: 0
       }
     };
 

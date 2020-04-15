@@ -1,3 +1,5 @@
+
+import {mergeMap} from 'rxjs/operators';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
@@ -60,9 +62,9 @@ describe('FeatureflagService', () => {
       const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
       const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-      service.getFlag(featureFlagName as any).flatMap(() => {
+      service.getFlag(featureFlagName as any).pipe(mergeMap(() => {
         return service.getFlag(featureFlagName as any);
-      }).subscribe();
+      })).subscribe();
 
       const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
       req.flush([]);

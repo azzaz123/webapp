@@ -1,20 +1,18 @@
 /* tslint:disable:no-unused-variable */
 
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { CallsService } from './calls.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MOCK_USER, MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
 import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
-import { PersistencyService } from '../persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
 import { Call } from './calls';
 import { CALLS_DATA, createCallsArray } from '../../../tests/call.fixtures';
-import { Observable } from 'rxjs';
 import { Conversation } from './conversation';
 import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { CallTotals } from './totals.interface';
@@ -48,10 +46,8 @@ describe('CallsService', () => {
         RealTimeService,
         BlockUserXmppService,
         EventService,
-        ...TEST_HTTP_PROVIDERS,
         { provide: UserService, useClass: MockedUserService },
         { provide: ItemService, useClass: MockedItemService },
-        { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: TrackingService, useValue: {} },
         {
@@ -83,7 +79,7 @@ describe('CallsService', () => {
     describe('do NOT cacheAllConversations', () => {
       beforeEach(() => {
         spyOn<any>(service, 'getLeads').and.callFake(() => {
-          return Observable.of(CONVERSATIONS);
+          return observableOf(CONVERSATIONS);
         });
       });
       describe('not archived', () => {
@@ -336,7 +332,7 @@ describe('CallsService', () => {
 
     describe('with results', () => {
       beforeEach(() => {
-        spyOn(service, 'query').and.returnValue(Observable.of(QUERY_RESULT));
+        spyOn(service, 'query').and.returnValue(observableOf(QUERY_RESULT));
         result = null;
       });
 
@@ -407,7 +403,7 @@ describe('CallsService', () => {
 
     describe('with no results', () => {
       beforeEach(() => {
-        spyOn(service, 'query').and.returnValue(Observable.of([]));
+        spyOn(service, 'query').and.returnValue(observableOf([]));
         result = null;
         service.archivedLeads = createCallsArray(EXISTNG_TOTAL);
         service.leads = createCallsArray(EXISTNG_TOTAL);

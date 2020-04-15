@@ -29,11 +29,9 @@
         </div>
         <div class="form-group row align-items-center" *ngIf="isPro">
           <label for="name" class="col-12 col-md-3 text-md-right" i18n>Name</label>
-          <div class="col-3">
-            <input type="text" class="form-control" id="name" formControlName="first_name" tslRestrictInput
+          <div class="col-12 col-md-6 offset-md-1 d-flex">
+            <input type="text" class="form-control ProfileInfo__first-name" id="name" formControlName="first_name" tslRestrictInput
               maxlength="50" />
-          </div>
-          <div class="col-3">
             <input type="text" class="form-control" formControlName="last_name" tslRestrictInput maxlength="50" />
           </div>
         </div>
@@ -73,7 +71,7 @@
           <div class="form-group row align-items-center">
             <label for="link" class="col-12 col-md-3 text-md-right">Web</label>
             <div class="col-12 col-md-6 offset-md-1">
-              <input (click)="openBecomeProModal()" class="form-control" id="link" formControlName="link"
+              <input type="text" (click)="openBecomeProModal()" class="form-control" id="link" formControlName="link"
                 pattern="^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
                 [readonly]="!isPro" />
             </div>

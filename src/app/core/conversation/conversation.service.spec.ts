@@ -63,16 +63,12 @@ describe('Service: Conversation', () => {
       expect(service['modalRef'].componentInstance.conversation).toBe(conversation);
     });
 
-    it('should call trackingService.addTrackingEvent with ITEM_SHAREPHONE_SHOWFORM when called with required TRUE', () => {
-      spyOn(trackingService, 'addTrackingEvent');
-      const event = {
-        eventData: TrackingService.ITEM_SHAREPHONE_SHOWFORM,
-        attributes: { item_id: conversation.item.id }
-      };
+    it('should call trackingService.track with ITEM_SHAREPHONE_SHOWFORM when called with required TRUE', () => {
+      spyOn(trackingService, 'track');
 
       service.openPhonePopup(conversation, true);
 
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(event);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_SHOWFORM, { item_id: conversation.item.id });
     });
   });
 });

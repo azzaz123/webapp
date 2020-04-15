@@ -4,7 +4,7 @@ export interface UserResponse extends ApiResponse {
   micro_name: string;
   image: Image;
   location: UserLocation;
-  stats: UserStats;
+  stats: UserStatsOld;
   validations: UserValidations;
   verification_level: number;
   scoring_stars: number;
@@ -53,7 +53,7 @@ export interface UserLocation {
   address?: string;
 }
 
-export interface UserStats {
+export interface UserStatsOld {
   published: number;
   sold: number;
   favorites: number;
@@ -74,50 +74,6 @@ export interface UserValidations {
   scoring_stars: number;
   level: number;
   birthday: boolean;
-}
-
-export interface MotorPlan {
-  type: string;
-  subtype: string;
-  limit?: number;
-}
-
-export interface MotorPlanType {
-  subtype: string;
-  label: string;
-  shortLabel?: string;
-}
-
-export interface ProfileSubscriptionInfo {
-  status: string;
-  product_group: {
-    default_user_product_id: string;
-    user_products: UserProduct[];
-    type: string;
-  };
-}
-
-export interface UserProduct {
-  id: string;
-  name: string;
-  active: boolean;
-  default_duration_index: number;
-  durations: UserProductDuration[];
-  label?: string;
-}
-
-export interface UserProductDuration {
-  id: string;
-  duration: number;
-  market_code: string;
-  features: UserProductFeature[];
-  original_market_code?: string;
-}
-
-export interface UserProductFeature {
-  name: string;
-  enable: boolean;
-  label?: string;
 }
 
 export interface UserExtrainfo {

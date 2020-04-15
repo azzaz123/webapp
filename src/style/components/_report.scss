@@ -1,6 +1,6 @@
 .modal.report {
   .scroll {
-    height: 400px;
+    height: 280px;
     overflow-y: auto;
     padding: $spacing-ms;
   }
@@ -14,7 +14,8 @@
   .report-ban-reason {
     position: relative;
     cursor: pointer;
-    margin-bottom: $spacing-ml;
+    margin: 0 0 $spacing-ml;
+    width: 100%;
     .ban-reason-icon-container {
       @include square(60px);
       position: relative;

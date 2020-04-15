@@ -1,7 +1,7 @@
 import {async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import { CountdownComponent } from './countdown.component';
-import { interval } from 'rxjs/observable/interval';
+import { interval } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
 import * as moment from 'moment';
 

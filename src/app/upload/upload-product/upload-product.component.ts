@@ -171,6 +171,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.categories = categories.filter((category: CategoryOption) => {
         return !this.categoryService.isHeroCategory(+category.value);
       });
+      if (!this.userService.isPro) {
+        this.categories = this.categories.filter((category: CategoryOption) => {
+          return +category.value !== CATEGORY_IDS.HELP
+        });
+      }
       this.detectCategoryChanges();
       if (!this.item) {
         if (this.categoryId && this.categoryId !== '-1') {
@@ -239,8 +244,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }
       if (+categoryId === CATEGORY_IDS.FASHION_ACCESSORIES) {
         this.enableFashionExtraFields();
-      } 
-      if(+categoryId !== CATEGORY_IDS.FASHION_ACCESSORIES && +categoryId !== CATEGORY_IDS.CELL_PHONES_ACCESSORIES){
+      }
+      if (+categoryId !== CATEGORY_IDS.FASHION_ACCESSORIES && +categoryId !== CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
         this.disableExtraFields();
       }
 

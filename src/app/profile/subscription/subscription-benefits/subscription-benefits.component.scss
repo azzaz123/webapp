@@ -1,0 +1,56 @@
+@import "~style/common";
+
+.box-content {
+  color: $blue-grey-3;
+  padding: $spacing-xxl $spacing-xxxl*1.93;
+  h4 {
+    color: $blue-grey-1;
+    text-align: center;
+    font-size: $font-size-l;
+    font-weight: bold;
+    margin: 0 0 $spacing-ms;
+  }
+  .section-subtitle {
+    text-align: center;
+  }
+}
+
+.SubscriptionBenefitCard {
+  margin: 0 0 $spacing-xxl;
+}
+
+.SubscriptionBenefitCard-icon {
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  background-color: $blue-grey-3;
+  mat-icon {
+    width: 56px;
+    height: 56px;
+    /deep/ svg path {
+      fill: $white;
+    }
+  }
+}
+
+.SubscriptionBenefitCard-title {
+  font-weight: bold;
+  color: $walla-main;
+  margin: $spacing-ml 0 $spacing-s;
+}
+
+@include media-breakpoint-down(sm) {
+  .box-content {
+    padding: $spacing-l $spacing-m $spacing-m;
+  }
+
+  .SubscriptionBenefitCard {
+    &:first-child {
+      margin-top: $spacing-xxl;
+    }
+    
+    &:last-child {
+      margin: 0px;
+    }
+  }
+}

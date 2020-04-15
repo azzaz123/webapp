@@ -12,7 +12,6 @@ import {
   PROFILE_DATA, PROFILE_ID, PROFILE_IMAGE, NUM_TOTAL_ITEMS,
   FAVORITED, MICRO_NAME, SCORING_STARS, MOCK_PROFILE, IS_PROFESSIONAL, SCREEN_NAME
 } from '../../../tests/profile.fixtures.spec';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { environment } from '../../../environments/environment';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
@@ -29,7 +28,6 @@ describe('Service: Profile', () => {
         HttpClientTestingModule
       ],
       providers: [
-        ...TEST_HTTP_PROVIDERS,
         EventService,
         I18nService,
         HaversineService,

@@ -16,6 +16,10 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditSubscriptionModalComponent } from './subscription/modals/edit-subscription-modal.component';
 import { CancelSubscriptionModalComponent } from './subscription/modals/cancel-subscription-modal.component';
 import { ContinueSubscriptionModalComponent } from './subscription/modals/continue-subscription-modal.component';
+import { CheckSubscriptionInAppModalComponent } from './subscription/modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
+import { UnsubscribeInAppFirstModal } from './subscription/modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { SubscriptionBenefitsComponent } from './subscription/subscription-benefits/subscription-benefits.component';
+import { DiscountAvailableUnsubscribeInAppModalComponent } from './subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 
 @NgModule({
   imports: [
@@ -30,6 +34,7 @@ import { ContinueSubscriptionModalComponent } from './subscription/modals/contin
   ],
   declarations: [
     profileRoutedComponents,
+    SubscriptionBenefitsComponent,
     BecomeProModalComponent,
     UnsubscribeModalComponent,
     DeleteInfoConfirmationModalComponent,
@@ -39,7 +44,10 @@ import { ContinueSubscriptionModalComponent } from './subscription/modals/contin
     AddNewSubscriptionModalComponent,
     EditSubscriptionModalComponent,
     CancelSubscriptionModalComponent,
-    ContinueSubscriptionModalComponent
+    ContinueSubscriptionModalComponent,
+    CheckSubscriptionInAppModalComponent,
+    UnsubscribeInAppFirstModal,
+    DiscountAvailableUnsubscribeInAppModalComponent
   ],
   entryComponents: [
     UnsubscribeModalComponent,
@@ -50,7 +58,10 @@ import { ContinueSubscriptionModalComponent } from './subscription/modals/contin
     AddNewSubscriptionModalComponent,
     EditSubscriptionModalComponent,
     CancelSubscriptionModalComponent,
-    ContinueSubscriptionModalComponent
+    ContinueSubscriptionModalComponent,
+    CheckSubscriptionInAppModalComponent,
+    UnsubscribeInAppFirstModal,
+    DiscountAvailableUnsubscribeInAppModalComponent
   ]
 })
 export class ProfileModule { }

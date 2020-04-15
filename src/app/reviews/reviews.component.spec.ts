@@ -2,10 +2,10 @@ import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testi
 import { ReviewsComponent } from './reviews.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserReviewService } from './user-review.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { MOCK_REVIEWS } from '../../tests/review.fixtures.spec';
 import { UserService } from '../core/user/user.service';
-import { MOCK_USER, USER_INFO_RESPONSE, USERS_STATS, USERS_STATS_RESPONSE } from '../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_INFO_RESPONSE, USERS_STATS, MOCK_USER_STATS } from '../../tests/user.fixtures.spec';
 
 describe('ReviewsComponent', () => {
   let component: ReviewsComponent;
@@ -21,20 +21,20 @@ describe('ReviewsComponent', () => {
           {
             provide: UserService, useValue: {
               me() {
-                return Observable.of(MOCK_USER);
+                return of(MOCK_USER);
               },
               getInfo() {
-                return Observable.of(USER_INFO_RESPONSE);
+                return of(USER_INFO_RESPONSE);
               },
               getStats() {
-                return Observable.of(USERS_STATS_RESPONSE);
+                return of(MOCK_USER_STATS);
               }
             }
           },
           {
             provide: UserReviewService, useValue: {
               getPaginationReviews () {
-                return Observable.of({data: MOCK_REVIEWS, init: 2});
+                return of({data: MOCK_REVIEWS, init: 2});
               }
             }
           },
@@ -89,7 +89,7 @@ describe('ReviewsComponent', () => {
     });
 
     it('should set end true if no init', () => {
-      myReviewsServiceSpy.and.returnValue(Observable.of({data: MOCK_REVIEWS, init: null}));
+      myReviewsServiceSpy.and.returnValue(of({data: MOCK_REVIEWS, init: null}));
 
       component.getReviews();
 
@@ -135,7 +135,7 @@ describe('ReviewsComponent', () => {
       component.getNumberOfReviews();
 
       expect(userService.getStats).toHaveBeenCalled();
-      expect(component.numberOfReviews).toEqual(USERS_STATS_RESPONSE.counters.reviews);
+      expect(component.numberOfReviews).toEqual(MOCK_USER_STATS.counters.reviews);
     });
   });
 });

@@ -1,18 +1,13 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AdService } from './ad.service';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
-import { Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs';
-import { MockBackend, MockConnection } from '@angular/http/testing';
-import { HttpService } from '../http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 
 let service: AdService;
-let http: HttpService;
 let userService: UserService;
-let mockBackend: MockBackend;
 let cookieService: CookieService;
 
 const cookiesAdKeyWord = {
@@ -72,12 +67,11 @@ describe('AdService', () => {
     TestBed.configureTestingModule({
       providers: [
         AdService,
-        ...TEST_HTTP_PROVIDERS,
         {
           provide: UserService,
           useValue: {
             me() {
-              return Observable.of(MOCK_USER)
+              return observableOf(MOCK_USER)
             }
           }
         },
@@ -98,9 +92,7 @@ describe('AdService', () => {
         }
       ],
     });
-    http = TestBed.get(HttpService);
     userService = TestBed.get(UserService);
-    mockBackend = TestBed.get(MockBackend);
     cookieService = TestBed.get(CookieService);
     spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
       callback(position);

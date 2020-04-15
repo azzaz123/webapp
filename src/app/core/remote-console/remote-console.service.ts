@@ -43,8 +43,8 @@ export class RemoteConsoleService implements OnDestroy {
       message: 'xmpp connection time',
       connection_time: connectionTime,
       call_no: this.connectionTimeCallNo,
-      connection_type: toUpper(navigator['connection']['type']),
-      ping_time_ms: navigator['connection']['rtt']
+      connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
+      ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : ''
     });
   }
 
@@ -71,7 +71,7 @@ export class RemoteConsoleService implements OnDestroy {
         message_id: messageId,
         send_message_time: new Date().getTime() - this.acceptMessageTime.get(messageId),
         metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-        ping_time_ms: navigator['connection']['rtt']
+        ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : ''
       });
       this.acceptMessageTime.delete(messageId);
     }
@@ -86,7 +86,7 @@ export class RemoteConsoleService implements OnDestroy {
         message_id: messageId,
         send_message_time: new Date().getTime() - this.presentationMessageTimeout.get(messageId),
         metric_type: MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
-        ping_time_ms: navigator['connection']['rtt']
+        ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : ''
       });
       this.presentationMessageTimeout.delete(messageId);
     }
@@ -102,12 +102,12 @@ export class RemoteConsoleService implements OnDestroy {
     });
   }
 
-  sendXmppConnectionClosedWithError(message: string): void {
+  sendXmppConnectionClosedWithError(): void {
     this.userService.me().subscribe((user: User) => this.remoteConsoleClientService.info({
         ...this.getCommonLog(user.id),
         metric_type: MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
-        message: message,
-        ping_time_ms: navigator['connection']['rtt']
+        message: '',
+        ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : ''
       })
     );
   }

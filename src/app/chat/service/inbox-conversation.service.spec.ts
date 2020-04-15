@@ -1,11 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { InboxConversationService } from './inbox-conversation.service';
 import { MessageService } from './message.service';
 import { RealTimeService } from '../../core/message/real-time.service';
-import { PersistencyService } from '../../core/persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
 import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../chat/model';
@@ -14,7 +14,6 @@ import { createInboxMessagesArray } from '../../../tests/message.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { MOCK_API_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { Observable } from 'rxjs';
 import { ItemService } from '../../core/item/item.service';
 import { MockedItemService } from '../../../tests/item.fixtures.spec';
 import { HttpModuleNew } from '../../core/http/http.module.new';
@@ -23,13 +22,15 @@ import { uniq } from 'lodash-es';
 import { AccessTokenService } from '../../core/http/access-token.service';
 import * as moment from 'moment';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
+import { RemoteConsoleService } from '../../core/remote-console';
+import { RemoteConsoleClientServiceMock } from '../../../tests/remote-console-service-client.spec';
 
 describe('InboxConversationService', () => {
 
   let service: InboxConversationService;
   let eventService: EventService;
   let realTime: RealTimeService;
-  let persistencyService: PersistencyService;
+  let remoteConsoleService: RemoteConsoleService;
   let messageService: MessageService;
   let userService: UserService;
   let itemService: ItemService;
@@ -50,7 +51,7 @@ describe('InboxConversationService', () => {
             accessToken: 'ACCESS_TOKEN'
           }
         },
-        { provide: PersistencyService, useClass: MockedPersistencyService },
+        { provide: RemoteConsoleService, useClass: RemoteConsoleClientServiceMock },
         { provide: MessageService, useValue: { totalUnreadMessages: 0 } },
         { provide: UserService, useClass: MockedUserService },
         { provide: ItemService, useClass: MockedItemService }
@@ -59,7 +60,7 @@ describe('InboxConversationService', () => {
     service = TestBed.get(InboxConversationService);
     eventService = TestBed.get(EventService);
     realTime = TestBed.get(RealTimeService);
-    persistencyService = TestBed.get(PersistencyService);
+    remoteConsoleService = TestBed.get(RemoteConsoleService);
     messageService = TestBed.get(MessageService);
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
@@ -294,7 +295,7 @@ describe('InboxConversationService', () => {
         const message = new InboxMessage('10', 'thread_123456', 'hola!', 'mockUserId', false, new Date(),
           MessageStatus.SENT, MessageType.TEXT);
         spyOn(eventService, 'emit').and.callThrough();
-        spyOn<any>(service, 'getConversation').and.returnValue(Observable.of(message));
+        spyOn<any>(service, 'getConversation').and.returnValue(observableOf(message));
 
         service.processNewMessage(message);
         service.processNewMessage(message);
@@ -346,6 +347,21 @@ describe('InboxConversationService', () => {
 
         const req = httpTestingController.expectOne(`${environment.baseUrl}bff/messaging/conversation/${newInboxMessage.thread}`);
         expect(req.request.method).toEqual('GET');
+      });
+
+      it('should send RECEIVE signal for new  with message', () => {
+        const NEW_INBOX_CONVERSATION_ID = 'new-conversation-id';
+        const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION(NEW_INBOX_CONVERSATION_ID);
+        const newMessage = new InboxMessage('new-message-id', NEW_INBOX_CONVERSATION_ID, 'hola!', 'user-id', false,
+          new Date(), MessageStatus.SENT, MessageType.TEXT);
+        newConversation.messages = [newMessage];
+
+        spyOn<any>(service, 'getConversation').and.returnValue(observableOf(newConversation));
+        spyOn(realTime, 'sendDeliveryReceipt').and.callThrough();
+
+        service.processNewMessage(newMessage);
+
+        expect(realTime.sendDeliveryReceipt).toHaveBeenCalledWith(newConversation.user.id, newMessage.id, NEW_INBOX_CONVERSATION_ID);
       });
 
       it('should add new conversation to the top of the list if fetch succeed', () => {

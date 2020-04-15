@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { TrackingService } from './tracking.service';
 import { TrackEventDirective } from './track-event.directive';
 import { NavigatorService } from './navigator.service';
-import { SplitTestService } from './split-test.service';
 
 @NgModule({
   imports: [],
@@ -14,8 +13,7 @@ import { SplitTestService } from './split-test.service';
   ],
   providers: [
     TrackingService,
-    NavigatorService,
-    SplitTestService
+    NavigatorService
   ],
 })
 export class TrackingModule {

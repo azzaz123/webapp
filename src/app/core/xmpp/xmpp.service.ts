@@ -1,10 +1,11 @@
+
+import {from as observableFrom, of as observableOf,  Observable, Observer ,  ReplaySubject, throwError } from 'rxjs';
+
+import {map, tap, mergeMap} from 'rxjs/operators';
 import { clone, eq, remove, includes } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { EventService } from '../event/event.service';
 import { XmppBodyMessage, XMPPClient, JID, XmppError } from './xmpp.interface';
-import { Observable, Observer } from 'rxjs';
-import 'rxjs/add/observable/from';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { ChatSignal, ChatSignalType } from '../../chat/model';
@@ -94,9 +95,9 @@ export class XmppService {
 
   public disconnectError(): Observable<boolean> {
     if (!this.clientConnected) {
-      return Observable.throwError(this.xmppError);
+      return throwError(this.xmppError);
     }
-    return Observable.of(true);
+    return observableOf(true);
   }
 
   get clientConnected(): boolean {
@@ -146,6 +147,9 @@ export class XmppService {
       interval: 30
     });
     this.client.on('message', (message: XmppBodyMessage) => {
+      if (!this.isFromSelf(message) && message.sentReceipt && message.sentReceipt.id) {
+        this.remoteConsoleService.sendAcceptTimeout(message.sentReceipt.id);
+      }
       this.canProcessRealtime ? this.onNewMessage(message) : this.realtimeQ.push(message);
     });
     this.client.on('message:sent', (message: XmppBodyMessage) => {
@@ -158,9 +162,9 @@ export class XmppService {
       this.buildChatSignal(message);
     });
 
-    this.client.on('disconnected', (error: XmppError) => {
+    this.client.on('disconnected', () => {
       this.clientConnected = false;
-      this.remoteConsoleService.sendXmppConnectionClosedWithError(JSON.stringify(error) || '');
+      this.remoteConsoleService.sendXmppConnectionClosedWithError();
       console.warn('Client disconnected');
       this.eventService.emit(EventService.CHAT_RT_DISCONNECTED);
     });
@@ -230,7 +234,7 @@ export class XmppService {
   private isFromSelf(message: XmppBodyMessage): boolean {
     /* The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
     logged in, but they should not be considered messages fromSelf */
-    return this.self && eq(message.from.local, this.self.local) && !message.payload;
+    return this.self && message.from && eq(message.from.local, this.self.local) && !message.payload;
   }
 
   private buildChatSignal(message: XmppBodyMessage) {
@@ -268,7 +272,7 @@ export class XmppService {
   }
 
   private setDefaultPrivacyList(): Observable<any> {
-    return Observable.from(this.client.sendIq({
+    return observableFrom(this.client.sendIq({
       type: 'set',
       privacy: {
         default: {
@@ -281,7 +285,7 @@ export class XmppService {
   }
 
   private getPrivacyList(): Observable<any> {
-    return Observable.from(this.client.sendIq({
+    return observableFrom(this.client.sendIq({
       type: 'get',
       privacy: {
         list: {
@@ -290,38 +294,38 @@ export class XmppService {
       }
     })
     .catch(() => {
-    }))
-    .map((response: any) => {
+    })).pipe(
+    map((response: any) => {
       const blockedIds = [];
       if (response && response.privacy && response.privacy.jids) {
         response.privacy.jids.map((jid: string) => blockedIds.push(jid.split('@')[0]));
       }
       return blockedIds;
-    });
+    }));
   }
 
   public blockUser(user: User | InboxUser): Observable<any> {
     this.blockedUsers.push(user.id);
-    return this.setPrivacyList(this.blockedUsers)
-    .flatMap(() => {
+    return this.setPrivacyList(this.blockedUsers).pipe(
+    mergeMap(() => {
       if (this.blockedUsers.length === 1) {
         return this.setDefaultPrivacyList();
       }
-      return Observable.of({});
-    })
-    .do(() => {
+      return observableOf({});
+    }),
+    tap(() => {
       user.blocked = true;
       this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
-    });
+    }),);
   }
 
   public unblockUser(user: User | InboxUser): Observable<any> {
     remove(this.blockedUsers, (userId) => userId === user.id);
-    return this.setPrivacyList(this.blockedUsers)
-    .do(() => {
+    return this.setPrivacyList(this.blockedUsers).pipe(
+    tap(() => {
       user.blocked = false;
       this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
-    });
+    }));
   }
 
   private onPrivacyListChange(iq: any) {
@@ -336,7 +340,7 @@ export class XmppService {
   private setPrivacyList(ids: string[]): Observable<any> {
     const jids = [];
     ids.map(id => jids.push(this.createJid(id).bare));
-    return Observable.from(this.client.sendIq({
+    return observableFrom(this.client.sendIq({
       type: 'set',
       privacy: {
         list: {

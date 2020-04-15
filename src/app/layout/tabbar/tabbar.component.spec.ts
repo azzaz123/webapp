@@ -1,9 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TabbarComponent } from './tabbar.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { User } from '../../core/user/user';
-import { Observable } from 'rxjs';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -24,7 +25,7 @@ describe('TabbarComponent', () => {
         {
           provide: UserService, useValue: {
             me(): Observable<User> {
-              return Observable.of(MOCK_USER);
+              return observableOf(MOCK_USER);
             }
           },
         },

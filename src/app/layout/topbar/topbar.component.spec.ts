@@ -1,9 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopbarComponent } from './topbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs';
 import { EventService } from '../../core/event/event.service';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { environment } from '../../../environments/environment';
@@ -12,7 +13,6 @@ import { User } from '../../core/user/user';
 import { USER_DATA } from '../../../tests/user.fixtures.spec';
 import { WindowRef } from '../../core/window/window.service';
 import { MessageService } from '../../chat/service/message.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { PaymentService } from '../../core/payments/payment.service';
 import { CustomCurrencyPipe } from '../../shared/pipes';
@@ -55,17 +55,17 @@ describe('TopbarComponent', () => {
         {
           provide: UserService, useValue: {
             me(): Observable<User> {
-              return Observable.of(MOCK_USER);
+              return observableOf(MOCK_USER);
             },
             isProfessional() {
-              return Observable.of(true);
+              return observableOf(true);
             }
           },
         },
         {
           provide: PaymentService, useValue: {
             getCreditInfo() {
-              return Observable.of({
+              return observableOf({
                 currencyName: CURRENCY,
                 credit: CREDITS
               });
@@ -83,7 +83,7 @@ describe('TopbarComponent', () => {
         },
         {
           provide: MessageService, useValue: {
-            totalUnreadMessages$: Observable.of(1)
+            totalUnreadMessages$: observableOf(1)
           }
         },
         {
@@ -95,7 +95,7 @@ describe('TopbarComponent', () => {
             }
           }
         },
-        EventService, ...TEST_HTTP_PROVIDERS],
+        EventService],
       declarations: [TopbarComponent, CustomCurrencyPipe],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })

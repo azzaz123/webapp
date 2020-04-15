@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuggesterComponent } from './suggester.component';
 import { SuggesterService } from './suggester.service';
 import { SUGGESTER_DATA_WEB } from '../../../../tests/suggester.fixtures.spec';
-import { Observable } from 'rxjs';
 import { EventService } from '../../../core/event/event.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
@@ -20,7 +21,7 @@ describe('SuggesterComponent', () => {
         {
           provide: SuggesterService, useValue: {
             getSuggestions: () => {
-              return Observable.of(SUGGESTER_DATA_WEB);
+              return observableOf(SUGGESTER_DATA_WEB);
             }
           }
         }, EventService]
@@ -43,14 +44,14 @@ describe('SuggesterComponent', () => {
     it('should search for suggestions from input text', () => {
       const input = 'mesa';
 
-      component.suggest(Observable.of(input)).subscribe();
+      component.suggest(observableOf(input)).subscribe();
 
       expect(suggesterService.getSuggestions).toHaveBeenCalled();
     });
     it('should search for suggestions from input < 3', () => {
       const input = 'me';
 
-      component.suggest(Observable.of(input)).subscribe();
+      component.suggest(observableOf(input)).subscribe();
 
       expect(suggesterService.getSuggestions).toHaveBeenCalled();
     });

@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
@@ -25,7 +25,7 @@ describe('WallacoinsTutorialComponent', () => {
         {
           provide: UserService, useValue: {
           hasPerm() {
-            return Observable.of(true);
+            return of(true);
           }
         }
         },

@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError,  Observable, of } from 'rxjs';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DropAreaComponent } from './drop-area.component';
@@ -13,7 +15,6 @@ import {
   UPLOADED_FILE_OTHER, UPLOADED_RESPONSE
 } from '../../../tests/upload.fixtures.spec';
 import { ItemService } from '../../core/item/item.service';
-import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
 import { ITEM_ID, PICTURE_ID } from '../../../tests/item.fixtures.spec';
@@ -62,13 +63,13 @@ describe('DropAreaComponent', () => {
         {
           provide: ItemService, useValue: {
           update() {
-            return Observable.of({});
+            return of({});
           },
           updatePicturesOrder() {
-            return Observable.of({});
+            return of({});
           },
           deletePicture() {
-            return Observable.of({});
+            return of({});
           }
         }
         },
@@ -136,7 +137,7 @@ describe('DropAreaComponent', () => {
       };
       const response = 'a response';
       component.type = ITEM_TYPES.CARS;
-      spyOn(itemService, 'update').and.returnValue(Observable.of(response));
+      spyOn(itemService, 'update').and.returnValue(of(response));
       component.onUploaded.subscribe((value: UploadedEvent) => {
         event = value;
       });
@@ -160,7 +161,7 @@ describe('DropAreaComponent', () => {
         message: 'error'
       };
       component.type = ITEM_TYPES.CARS;
-      spyOn(itemService, 'update').and.returnValue(Observable.throw(ERROR));
+      spyOn(itemService, 'update').and.returnValue(observableThrowError(ERROR));
       spyOn(errorsService, 'i18nError');
       component.onError.subscribe((value: any) => {
         event = value;
