@@ -46,7 +46,7 @@ phases:
       - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable yarn
 
       # ADD DOCKNUM TO ENVIRONMENT FOR TESTS
-      - docker run ./scripts/docknum/update.sh 111
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable yarn run update-docknum
  
       # LAUNCH TEST
       - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable yarn run test --watch=false --no-progress

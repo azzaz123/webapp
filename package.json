@@ -13,6 +13,7 @@
     "buildbeta-en": "ng build --configuration=beta --output-hashing all --aot --no-progress",
     "buildprod": "ng build --prod --aot --i18n-locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "buildprod-en": "ng build --prod --aot --no-progress",
+    "update-docknum": "./scripts/docknum/update.sh",
     "i18n": "ng xi18n --i18n-format=xmb --output-path=locale",
     "serve": "ng serve --aot --configuration=es",
     "test": "ng test --watch=false --no-progress --browsers HeadlessChrome",
