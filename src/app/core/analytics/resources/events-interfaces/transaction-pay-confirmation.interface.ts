@@ -6,7 +6,7 @@
  */
 
 /**
- * Users have clicked on the pay button to buy an item through shipping and once the external form (about the banc info) is validated, the event is sent. This is equivalent to a shipping request
+ * User have clicked on the pay button to buy an item through shipping and once the external form (about the banck info) is validated, the event is sent. This is equivalent to a shipping request
  */
 export interface TransactionPayConfirmation {
   /**
@@ -41,4 +41,12 @@ export interface TransactionPayConfirmation {
    * Item price without fees
    */
   itemPrice: number;
+  /**
+   * If the item is a bumped item
+   */
+  isBumped?: boolean;
+  /**
+   * If the item is from a professional user
+   */
+  isPro?: boolean;
 }
