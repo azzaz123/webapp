@@ -6,9 +6,9 @@
  */
 
 /**
- * Users favorites product
+ * User clicks one of the shipping info drop downs in item detail
  */
-export interface FavoriteItem {
+export interface ClickShippingInfoItem {
   /**
    * The unique identifier for an item
    */
@@ -16,33 +16,29 @@ export interface FavoriteItem {
   /**
    * Identifier of the category that the item belongs to
    */
-  categoryId?: number;
+  categoryId: number;
   /**
-   * Identifier of the screen that the item was favorited from
-   */
-  screenId: number;
-  /**
-   * The unique identifier of the search that the favorite is under
+   * The unique identifier of the search that the click is under
    */
   searchId?: string;
   /**
-   * If the item favorited is from a professional user
+   * If the item clicked is from a professional user
    */
-  isPro: boolean;
+  isPro?: boolean;
   /**
-   * Item price
+   * Item price without fees
    */
-  salePrice: number;
+  itemPrice: number;
   /**
    * Item title
    */
   title: string;
   /**
-   * Identifier of the user that the item belongs to
+   * Identifier of the drop down item the user has clicked
    */
-  sellerUserId?: string;
+  dropDownId: 1 | 2 | 3;
   /**
-   * If the item favorited is a bumped item
+   * Identifier of the screen that the item was clicked from
    */
-  isBumped: boolean;
+  screenId: 115;
 }
