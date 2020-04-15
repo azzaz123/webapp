@@ -401,15 +401,11 @@
   <translation id="5736913742704520146">Destacado ciudad</translation>
   <translation id="1387231030668423981">Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.bump.total}}</ex></ph> ciudad</translation>
   <translation id="1906307008278702045">El plan de ciudad te permite destacar tus coches en tu ciudad y aparecer en las primeras posiciones del muro de la web y de la app. La ficha de tu producto tendrá una visualización diferente y aparecerás en la zona de destacados en toda tu ciudad.</translation>
-  <translation id="8986611533240831380">Para suscribirte a un plan de ciudad contacta con 674 726 372</translation>
-  <translation id="6427098227437270446">Para cambiar tu plan de ciudad contacta con 674 726 372</translation>
   <translation id="6703947649972852818">Destacados</translation>
   <translation id="5540010184241331088">Ahorra un <ph name="INTERPOLATION"><ex>{{bump.discount}}</ex></ph>%</translation>
   <translation id="2126069250654725782">Destacado país</translation>
   <translation id="251613711454912353">Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.national.total}}</ex></ph> país</translation>
   <translation id="7589031160907418094">El plan de país te permite destacar tus coches a nivel nacional y aparecer en las primeras posiciones del muro de la web y de la app. La ficha de tu producto tendrá una visualización diferente y aparecerás en la zona de destacados en todo el país.</translation>
-  <translation id="2336946299666449576">Para suscribirte a un plan de país contacta con 674 726 372</translation>
-  <translation id="4472212851057229290">Para cambiar tu plan de país contacta con 674 726 372</translation>
   <translation id="1144407473317535723">Suscríbete</translation>
   <translation id="5868024112393513368">Cuéntame más sobre las opciones de visibilidad</translation>
   <translation id="2303735769987845467">Productos de visibilidad</translation>
@@ -507,7 +503,6 @@
   <translation id="6299971173481067869">destacados de ciudad</translation>
   <translation id="4849465581526004216">destacados de país</translation>
   <translation id="8847634013548993288">destacado de país</translation>
-  <translation id="5491649508975206315">Para cambiar tu plan llámanos al 674 726 372</translation>
   <translation id="8108541630841000132">Información de facturación</translation>
   <translation id="6028371114637047813">Nombre</translation>
   <translation id="4407559560004943843">Apellidos</translation>
