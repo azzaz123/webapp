@@ -206,11 +206,13 @@ tsl-inbox-user-detail {
 
 .user-detail {
   opacity: 0;
-  transition: opacity .1s ease-in;
+  transition: opacity .1s ease;
+  transition-delay: 0s;
 
   &.user-detail-dropdown {
     opacity: 1;
-    transition: opacity 1s ease-in;
+    transition: opacity 1s ease;
+    transition-delay: .5s;
   }
 }
 
