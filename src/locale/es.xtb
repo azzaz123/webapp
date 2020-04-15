@@ -535,8 +535,6 @@
   <translation id="53603691019051493">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
   <translation id="5681895899318476927">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
   <translation id="6348395677948023023">Subir coche</translation>
-  <translation id="1658274921433299016">Para subscribirte a un plan de país, llámanos al 674 726 372 o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
-  <translation id="5559193479269599693">Para cambiar tu plan de país, llámanos al 674 726 372 o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
   <translation id="8458658926966860767">¿Estás seguro que quieres eliminar la información de facturación? </translation>
   <translation id="7092318893814699678">Sí, estoy seguro/a</translation>
   <translation id="1250063669755603957">Eliminar información</translation>
@@ -1031,5 +1029,7 @@
   <translation id="cardealerUpgradePlanContact">Para actualizar tu plan, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>{{email}}<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
   <translation id="cardelaerSubsribeCityPlan">Para subscribirte a un plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
   <translation id="cardealerChangeCityPlan">Para cambiar tu plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="cardelaerSubsribeCountryPlan">Para subscribirte a un plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="cardealerChangeCountryPlan">Para cambiar tu plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
 
 </translationbundle>
