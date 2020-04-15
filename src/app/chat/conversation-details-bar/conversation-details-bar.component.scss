@@ -35,7 +35,8 @@
       height: $spacing-ml;
       position: absolute;
       left: 120px;
-      transition: width .5s ease;
+      transition: width .2s ease;
+      transition-delay: .2s;
       width: calc(100% - 230px);
     }
 
