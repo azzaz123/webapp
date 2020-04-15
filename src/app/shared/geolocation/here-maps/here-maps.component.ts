@@ -27,19 +27,12 @@ export class HereMapsComponent implements OnInit, OnChanges {
   private marker: any;
   private circle: any;
 
-  constructor() {
-    this.platform = new H.service.Platform({
-      app_id: 'RgPrXX1bXt123UgUFc7B',
-      app_code: 'HtfX0DsqZ2Y0x-44GfujFA',
-      useCIT: true,
-      useHTTPS: true
-    });
-  }
-
   ngOnInit() {
+    this.initializePlatform();
+
     setTimeout(() => {
       const defaultLayers = this.platform.createDefaultLayers();
-      this.map = new H.Map(this.mapEl.nativeElement, defaultLayers.normal.map);
+      this.map = this.createMap(defaultLayers);
       const coordinates = this.getCenter();
       this.map.setCenter(coordinates);
       this.map.setZoom(this.zoom);
@@ -68,20 +61,15 @@ export class HereMapsComponent implements OnInit, OnChanges {
 
   private addMarker(coordinates: any) {
     const icon = this.size === 'small' ? USER_MARKER_SMALL : USER_MARKER;
-    const markerIcon = new H.map.Icon(icon);
+    const markerIcon = this.createIcon(icon);
     this.removeObjects();
-    this.marker = new H.map.Marker(coordinates, {icon: markerIcon});
+    this.marker = this.createMarker(coordinates, markerIcon);
     this.map.addObject(this.marker);
   }
 
   private addCircle(coordinates: any) {
     this.removeObjects();
-    this.circle = new H.map.Circle(coordinates, 650, {
-      style: {
-        fillColor: 'rgba(51, 51, 51, 0.15)',
-        lineWidth: 0
-      }
-    });
+    this.circle = this.createCircle(coordinates);
     this.map.addObject(this.circle);
   }
 
@@ -103,4 +91,35 @@ export class HereMapsComponent implements OnInit, OnChanges {
     };
   }
 
+  public initializePlatform() {
+    console.log('not mocked')
+
+    this.platform = new H.service.Platform({
+      app_id: 'RgPrXX1bXt123UgUFc7B',
+      app_code: 'HtfX0DsqZ2Y0x-44GfujFA',
+      useCIT: true,
+      useHTTPS: true
+    });
+  }
+
+  public createMap(defaultLayers) {
+    return new H.Map(this.mapEl.nativeElement, defaultLayers.normal.map);
+  }
+
+  public createIcon(icon: string) {
+    return new H.map.Icon(icon);
+  }
+
+  public createCircle(coordinates: any) {
+    return new H.map.Circle(coordinates, 650, {
+      style: {
+        fillColor: 'rgba(51, 51, 51, 0.15)',
+        lineWidth: 0
+      }
+    });
+  }
+
+  public createMarker(coordinates: any, icon: H.map.Icon) {
+    return new H.map.Marker(coordinates, { icon });
+  }
 }
