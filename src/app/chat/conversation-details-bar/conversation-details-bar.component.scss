@@ -35,7 +35,7 @@
       height: $spacing-ml;
       position: absolute;
       left: 120px;
-      transition: width .2s ease;
+      transition: width .2s ease-in-out;
       transition-delay: .2s;
       width: calc(100% - 230px);
     }
@@ -60,7 +60,7 @@
     float: right;
 
     .user-avatar {
-      transition: opacity 1s ease;
+      transition: opacity 1s ease-in-out;
       opacity: 1;
     }
 
@@ -206,12 +206,12 @@ tsl-inbox-user-detail {
 
 .user-detail {
   opacity: 0;
-  transition: opacity .1s ease;
+  transition: opacity .1s ease-in-out;
   transition-delay: 0s;
 
   &.user-detail-dropdown {
     opacity: 1;
-    transition: opacity 1s ease;
+    transition: opacity 1s ease-in-out;
     transition-delay: .5s;
   }
 }
