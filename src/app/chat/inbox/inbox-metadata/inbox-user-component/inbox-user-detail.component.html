@@ -1,21 +1,21 @@
 <a class="user-info" href="{{user.profileUrl}}" target="_blank" tslTrackEvent="USER_PROFILE_VIEWED"
    [params]="{user_id: user.id}" [ngClass]="{'faded': !user.available }">
 
-  <div class="card-block">
-    <h5 class="card-title">{{user.microName}}</h5>
+  <div class="card-block ellipsis">
+    <h5 class="card-title ellipsis">{{user.microName}}</h5>
     <tsl-stars *ngIf="user.score > -1" [stars]="user.score" [normalized]="false"></tsl-stars>
     <div *ngIf="phoneNumber && !!item.isMine" class="call-wrapper">
       <span class="call-shared"><mat-icon svgIcon="call-shared"></mat-icon></span>
       <span class="phone-number">{{phoneNumber}}</span>
     </div>
-    <div class="user-location-distance">
+    <div class="user-location-distance ellipsis">
       <span [hidden]="!user.distanceInKm" i18n="The distance between the user and the item">
         {{user.distanceInKm | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you
       </span>
       <span [hidden]="user.distanceInKm" i18n>No location</span>
     </div>
 
-    <div class="user-response-rate">
+    <div class="user-response-rate ellipsis">
       <tsl-user-response-rate [responseRate]="user.responseRate" [showIcon]="false"
                               class="font-light"></tsl-user-response-rate>
     </div>

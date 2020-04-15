@@ -27,7 +27,7 @@
     <div (click)="expand()" class="item-details">
       <div *ngIf="currentConversation.item.price">
         {{currentConversation.item.price.amount | customCurrency:currentConversation.item.price.currency}}</div>
-      <div>{{currentConversation.item.title}}</div>
+      <div class="ellipsis">{{currentConversation.item.title}}</div>
 
       <div [ngClass]="{'user-detail-dropdown': isExpanded}"
            class="user-detail hidden-xl-up">
@@ -39,9 +39,9 @@
     </div>
   </div>
 
-  <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
+  <div ngbDropdown placement="bottom-right" class="conversation-header-menu" [ngClass]="{'expanded': isExpanded}">
 
-    <div *ngIf="!isExpanded" class="user-avatar hidden-xl-up">
+    <div class="user-avatar hidden-xl-up">
       <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
          target="_blank" class="user-avatar">
         <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>

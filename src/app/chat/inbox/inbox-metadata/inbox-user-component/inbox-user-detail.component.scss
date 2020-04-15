@@ -85,3 +85,9 @@ tsl-user-avatar {
   margin-top: $spacing-s;
   margin-right: $spacing-ms;
 }
+
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
