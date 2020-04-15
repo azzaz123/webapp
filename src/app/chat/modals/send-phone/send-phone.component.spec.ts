@@ -13,12 +13,12 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { WindowRef } from '../../../core/window/window.service';
 
-import { SEND_PHONE_ENDPOINT } from './send-phone.component';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
 import { MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { InboxConversationService } from '../../service';
 import { InboxConversationServiceMock } from '../../../../tests';
+import { empty } from 'rxjs';
 
 describe('SendPhoneComponent', () => {
   let component: SendPhoneComponent;
@@ -37,7 +37,6 @@ describe('SendPhoneComponent', () => {
       imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [NgbActiveModal,
         FormBuilder,
-        ...TEST_HTTP_PROVIDERS,
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         {
           provide: MessageService, useValue: {
@@ -67,7 +66,7 @@ describe('SendPhoneComponent', () => {
       declarations: [SendPhoneComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
@@ -129,7 +128,8 @@ describe('SendPhoneComponent', () => {
 
           component.createPhoneNumberMessage();
 
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_SENDPHONE, { item_id: component.conversation.item.id });
+          expect(trackingService.track)
+          .toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_SENDPHONE, { item_id: component.conversation.item.id });
         });
 
       });
@@ -151,13 +151,10 @@ describe('SendPhoneComponent', () => {
       });
 
       it('should PUT the phone numberto the relevant API', () => {
-        spyOn(inboxConversationService, 'addPhoneNumberToConversation$').and.returnValue(Observable.empty());
+        spyOn(inboxConversationService, 'addPhoneNumberToConversation$').and.returnValue(empty());
         component.conversation = MOCK_CONVERSATION();
-        const expectedUrl = `${environment.baseUrl}${SEND_PHONE_ENDPOINT}/${component.conversation.id}/buyer-phone-number`;
 
         component.createPhoneNumberMessage();
-        const req: TestRequest = httpMock.expectOne(expectedUrl);
-        req.flush({});
 
         expect(inboxConversationService.addPhoneNumberToConversation$).toHaveBeenCalledWith(component.conversation, phoneNumber);
       });
@@ -192,7 +189,10 @@ describe('SendPhoneComponent', () => {
 
         component.createPhoneNumberMessage();
 
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_WRONGPHONE, { item_id: component.conversation.item.id, phone_number: component.sendPhoneForm.controls.phone.value });
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_WRONGPHONE, {
+          item_id: component.conversation.item.id,
+          phone_number: component.sendPhoneForm.controls.phone.value
+        });
       });
 
       it('should call markAsDirty', () => {
