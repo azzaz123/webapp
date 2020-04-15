@@ -1,7 +1,8 @@
 
 import {mergeMap, map, filter, distinctUntilChanged} from 'rxjs/operators';
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
-import { DomSanitizer, Title } from '@angular/platform-browser';import { DOCUMENT } from "@angular/common";
+import { DomSanitizer, Title } from '@angular/platform-browser';
+import { DOCUMENT } from "@angular/common";
 import { configMoment } from './config/moment.config';
 import { configIcons } from './config/icons.config';
 
