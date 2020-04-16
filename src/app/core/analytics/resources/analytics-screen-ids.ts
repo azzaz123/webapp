@@ -41,4 +41,6 @@ export enum SCREEN_IDS {
 	ItemReactivation = 212,
 	BumpItem = 213,
 	MyFavoriteProfilesSection = 214,
+	ReviewsSection = 215,
+	WebHome = 216,
 }
