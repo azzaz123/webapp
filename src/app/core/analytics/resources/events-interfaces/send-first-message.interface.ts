@@ -33,4 +33,12 @@ export interface SendFirstMessage {
    * Identifier of the screen from which the message was sent from
    */
   screenId: 27;
+  /**
+   * If the item is a bumped item
+   */
+  isBumped?: boolean;
+  /**
+   * If the item is from a professional user
+   */
+  isPro?: boolean;
 }

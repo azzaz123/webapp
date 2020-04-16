@@ -22,7 +22,7 @@ To do a clean installation after downloading the repo, follow this steps:
 ### Local development server
 In order to instantiate a local sever, run one of the following commands:
 
-- Run `yarn start` for a standard dev server.  **(recommended)**
+- Run `yarn start XXX` where `XXX` is the docker you are using. If not specified, will be `111`. Example: `yarn start 123`. **(recommended)**
 - Run `yarn serve` for a complete dev server build. (using AOT, i18n with Spanish translations, etc, but much slower)
 
 Now you can navigate to `http://localhost:4200/login`.You should see the app running. If you change any of the source files, the app will automatically build again and reload the page.
@@ -101,7 +101,6 @@ The analytics team provide us with a series of JSON's files with which we must v
 ### When opening a PR
 - Make sure your branch name has a JIRA associated ticket. E.g.: `feature/PQP-XYZ`
 - Make sure your commits have the JIRA associated ticket. E.g.: `[PQP-XYZ]: Commit message`
-- Make sure you don't commit any unnecessary changes in `src/environments/environment.ts` file.
 - Make sure you follow the template given in the `PULL_REQUEST_TEMPLATE.md` file. (automatically filled)
 - Make sure the unit tests don't have one of the following Jasmine syntaxes: `fdescribe`, `fit`, `xdescribe`, `xit`.
 

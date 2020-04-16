@@ -1,16 +1,14 @@
-// The file contents for the current environment will overwrite these during build.
-// The build system defaults to the dev environment which uses `environment.ts`, but if you do
-// `ng build --env=prod` then `environment.prod.ts` will be used instead.
-// The list of which env maps to which file can be found in `.angular-cli.json`.
+import { Environment } from './environment.interface';
+import { dockNum } from './docknum';
 
-export const environment: any = {
+export const environment: Environment = {
   production: false,
   profeatures: true,
   name: 'local',
-  baseUrl: 'https://apigw.dock117.wallapop.com/',
-  xmppDomain: 'dock117.wallapop.com',
-  wsUrl: 'wss://dock117.wallapop.com:5282/ws-xmpp',
-  siteUrl: 'https://es.dock117.wallapop.com/',
+  baseUrl: `https://apigw.dock${dockNum}.wallapop.com/`,
+  xmppDomain: `dock${dockNum}.wallapop.com`,
+  wsUrl: `wss://dock${dockNum}.wallapop.com:5282/ws-xmpp`,
+  siteUrl: `https://es.dock${dockNum}.wallapop.com/`,
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
   cookieSuffix: 'Local',
   clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents',

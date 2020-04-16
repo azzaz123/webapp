@@ -1,4 +1,6 @@
-export const environment: any = {
+import { Environment } from './environment.interface';
+
+export const environment: Environment = {
   production: false,
   profeatures: true,
   name: 'beta',
@@ -13,4 +15,3 @@ export const environment: any = {
   mParticleKey: 'us1-04eb03d316b54f4f99265340abe886e6',
   remoteConsoleUrl: 'https://client-metrics.beta.wallapop.com/metrics/chat'
 };
-
