@@ -37,7 +37,7 @@
       left: 120px;
       transition: width .2s ease-in-out;
       transition-delay: .2s;
-      width: calc(100% - 230px);
+      width: calc(100% - 170px);
     }
 
     &.expanded .item-details {
@@ -141,6 +141,9 @@
     div {
       hr {
         margin: $spacing-xxs 0;
+        background-color: $blue-grey-5;
+        height: 1px;
+        border: 0;
       }
     }
   }

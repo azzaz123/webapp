@@ -1,14 +1,13 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { ConversationDetailsBarComponent } from './conversation-details-bar.component';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MomentModule } from 'angular2-moment';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { CurrentConversationComponent } from '../current-conversation';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EventService } from '../../core/event/event.service';
 import { RealTimeService } from '../../core/message/real-time.service';
@@ -30,18 +29,18 @@ class MockUserService {
     null, null, null, null, null, null, null);
 
   public reportUser(): Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
   public isProfessional() {
-    return Observable.of(true);
+    return of(true);
   }
 }
 
 class MockItemService {
 
   public reportListing(): Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 }
 
@@ -59,11 +58,11 @@ class MockConversationService {
 class BlockUserServiceMock {
 
   blockUser(userHash: string) {
-    return Observable.of();
+    return of();
   }
 
   unblockUser(userHash: string) {
-    return Observable.of();
+    return of();
   }
 }
 
@@ -224,7 +223,7 @@ describe('ConversationDetailsBarComponent', () => {
 
     describe('error', () => {
       it('should open toastr if error 403', fakeAsync(() => {
-        spyOn(itemService, 'reportListing').and.returnValue(Observable.throwError({
+        spyOn(itemService, 'reportListing').and.returnValue(throwError({
           status: 403
         }));
         spyOn(toastr, 'success').and.callThrough();
@@ -248,8 +247,8 @@ describe('ConversationDetailsBarComponent', () => {
     it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
       spyOn(toastr, 'success').and.callThrough();
-      spyOn(blockUserService, 'blockUser').and.returnValue(Observable.of({}));
-      spyOn(blockUserXmppService, 'blockUser').and.returnValue(Observable.of({}));
+      spyOn(blockUserService, 'blockUser').and.returnValue(of({}));
+      spyOn(blockUserXmppService, 'blockUser').and.returnValue(of({}));
 
       component.blockUserAction();
       tick();
@@ -270,7 +269,7 @@ describe('ConversationDetailsBarComponent', () => {
     it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
       spyOn(blockUserService, 'blockUser').and.returnValue(throwError(400));
-      spyOn(blockUserXmppService, 'blockUser').and.returnValue(Observable.of({}));
+      spyOn(blockUserXmppService, 'blockUser').and.returnValue(of({}));
       spyOn(toastr, 'success').and.callThrough();
 
       component.blockUserAction();
@@ -291,8 +290,8 @@ describe('ConversationDetailsBarComponent', () => {
 
     it('should close the modal, call unblockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
-      spyOn(blockUserXmppService, 'unblockUser').and.returnValue(Observable.of({}));
-      spyOn(blockUserService, 'unblockUser').and.returnValue(Observable.of({}));
+      spyOn(blockUserXmppService, 'unblockUser').and.returnValue(of({}));
+      spyOn(blockUserService, 'unblockUser').and.returnValue(of({}));
       spyOn(toastr, 'success').and.callThrough();
 
       component.unblockUserAction();
@@ -314,7 +313,7 @@ describe('ConversationDetailsBarComponent', () => {
     it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
       spyOn(blockUserService, 'unblockUser').and.returnValue(throwError(400));
-      spyOn(blockUserXmppService, 'unblockUser').and.returnValue(Observable.of({}));
+      spyOn(blockUserXmppService, 'unblockUser').and.returnValue(of({}));
       spyOn(toastr, 'success').and.callThrough();
 
       component.unblockUserAction();

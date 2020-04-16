@@ -1,7 +1,7 @@
 <div class="top-bar" [ngClass]="{'faded': !currentConversation.user.available, 'expanded': isExpanded}">
-  <mat-icon svgIcon="back-arrow" class="hidden-xl-up back-arrow" (click)="navigationBack()"></mat-icon>
+  <mat-icon svgIcon="back-arrow" class="d-xl-none d-lg-none back-arrow" (click)="navigationBack()"></mat-icon>
 
-  <div class="lg-device-container hidden-lg-down">
+  <div class="lg-device-container d-none d-lg-inline-flex">
     <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
        target="_blank" class="user-avatar">
       <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
@@ -12,13 +12,11 @@
     <h5>{{currentConversation?.user.microName}}</h5>
   </div>
 
-  <div class="sm-device-container hidden-xl-up"
+  <div class="sm-device-container d-xl-none d-lg-none"
        [ngClass]="{'expanded': isExpanded, 'faded': !currentConversation.user.available}">
 
     <div class="avatar-container">
       <div class="avatar">
-        <tsl-item-avatar [item]="currentConversation.item" class="hidden-sm-down"
-                         size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
         <tsl-item-avatar [item]="currentConversation.item" class="hidden-md-up"
                          size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
       </div>
@@ -41,7 +39,7 @@
 
   <div ngbDropdown placement="bottom-right" class="conversation-header-menu" [ngClass]="{'expanded': isExpanded}">
 
-    <div class="user-avatar hidden-xl-up">
+    <div class="d-none d-lg-none d-xl-none d-md-block">
       <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
          target="_blank" class="user-avatar">
         <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>

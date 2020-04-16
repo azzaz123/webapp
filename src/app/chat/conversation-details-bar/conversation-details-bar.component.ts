@@ -14,8 +14,6 @@ import { UserService } from '../../core/user/user.service';
 import { ItemService } from '../../core/item/item.service';
 import { BlockUserService, BlockUserXmppService, InboxConversationService } from '../service';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { RealTimeService } from '../../core/message/real-time.service';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 
 @Component({
   selector: 'tsl-conversation-details-bar',
@@ -98,8 +96,7 @@ export class ConversationDetailsBarComponent {
       this.itemService.reportListing(
         this.currentConversation.item.id,
         result.message,
-        result.reason,
-        this.currentConversation.id
+        result.reason
       ).subscribe(() => {
         this.trackingService.track(TrackingService.PRODUCT_REPPORTED,
           { product_id: this.currentConversation.item.id, reason_id: result.reason });
