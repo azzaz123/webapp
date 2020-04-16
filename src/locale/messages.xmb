@@ -532,9 +532,9 @@
   <msg id="606929755258304715"><source>app/help/help.component.html:53</source>Contact details</msg>
   <msg id="8232450894993705823"><source>app/help/help.component.html:54</source>Here you can find the details to contact our sales and support department</msg>
   <msg id="4907869765185411377"><source>app/help/help.component.html:56</source>To manage your suscription:</msg>
-  <msg id="5871405940994162095"><source>app/help/help.component.html:60</source>For any support:</msg>
-  <msg id="4039809737462883261"><source>app/help/help.component.html:64</source>Mon to Thurs from 10:00 to 18:00</msg>
-  <msg id="4911360466860911169"><source>app/help/help.component.html:65</source>Fri from 09:00 to 15:00</msg>
+  <msg id="5871405940994162095"><source>app/help/help.component.html:61</source>For any support:</msg>
+  <msg id="4039809737462883261"><source>app/help/help.component.html:65</source>Mon to Thurs from 10:00 to 18:00</msg>
+  <msg id="4911360466860911169"><source>app/help/help.component.html:66</source>Fri from 09:00 to 15:00</msg>
   <msg id="792930787826735850"><source>app/profile/profile.component.html:7</source>Your profile</msg>
   <msg id="4532380494593950343"><source>app/profile/profile.component.html:12</source>From here you can view and edit your profile</msg>
   <msg id="7022993325750262876"><source>app/profile/profile.component.html:14</source>View my public profile</msg>
