@@ -10,11 +10,19 @@
  */
 export interface ClickContinuePaymentSubscription {
   /**
+   * Subscription category type
+   */
+  subscription: 0 | 100 | 14000 | 12800;
+  /**
+   * Tier of the subscription
+   */
+  tier: string;
+  /**
+   * If the user is a new or recurrent subscriber
+   */
+  isNewSubscriber: boolean;
+  /**
    * Identifier of the screen
    */
-  screenId: 206;
-  /**
-   * Stripe id of the tier of the subscription
-   */
-  tier?: string;
+  screenId: 207;
 }

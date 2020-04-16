@@ -6,15 +6,11 @@
  */
 
 /**
- * Button in subscription profile to unsuscribe
+ * user clicks subscription button on the limit reached screen
  */
-export interface ClickProfileUnsuscribe {
+export interface ClickSubscriptionLimitReached {
   /**
    * Identifier of the screen
    */
-  screenId: 206;
-  /**
-   * Subscription type
-   */
-  subscription?: 0 | 100 | 14000 | 12800;
+  screenId: 112;
 }

@@ -6,11 +6,27 @@
  */
 
 /**
- * View modal after payment success
+ * User views the success subscription payment screen
  */
 export interface ViewSuccessSubscriptionPayment {
   /**
-   * Identifier of the screen from which the message was sent from
+   * Subscription category type
    */
-  screenId: 206;
+  subscription: 0 | 100 | 14000 | 12800;
+  /**
+   * Tier of the subscription
+   */
+  tier: string;
+  /**
+   * If the user is a new or recurrent subscriber
+   */
+  isNewSubscriber: boolean;
+  /**
+   * The users introduce a new card
+   */
+  isNewCard: boolean;
+  /**
+   * Identifier of the screen
+   */
+  screenId: 208;
 }

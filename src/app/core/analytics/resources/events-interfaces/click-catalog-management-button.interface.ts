@@ -6,9 +6,9 @@
  */
 
 /**
- * User clicks on the Catalog Managment
+ * User clicks on the catalog management button
  */
-export interface ClickCatalogManagmentButton {
+export interface ClickCatalogManagementButton {
   /**
    * Identifier of the screen
    */

@@ -6,19 +6,31 @@
  */
 
 /**
- * User clicks subscribe button or card on the subcription page
+ * User clicks the confirmation payment on the subcription web flow
  */
-export interface ClickProfileSubscribeButton {
+export interface SubscriptionPayConfirmation {
   /**
    * Subscription category type
    */
   subscription: 0 | 100 | 14000 | 12800;
   /**
+   * Tier of the subscription
+   */
+  tier: string;
+  /**
    * If the user is a new or recurrent subscriber
    */
   isNewSubscriber: boolean;
   /**
-   * Identifier of the subscription page screen
+   * The users introduce a new card
    */
-  screenId: 206;
+  isNewCard: boolean;
+  /**
+   * Discount applied to the subscritpion in percent
+   */
+  discountPercent?: number;
+  /**
+   * Identifier of the screen
+   */
+  screenId: 207;
 }

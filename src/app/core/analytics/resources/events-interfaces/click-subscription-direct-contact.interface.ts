@@ -6,9 +6,9 @@
  */
 
 /**
- * User clicks subscribe button or card on the subcription page
+ * User clicks the direct contact button on the subscription web flow
  */
-export interface ClickProfileSubscribeButton {
+export interface ClickSubscriptionDirectContact {
   /**
    * Subscription category type
    */
@@ -20,5 +20,5 @@ export interface ClickProfileSubscribeButton {
   /**
    * Identifier of the subscription page screen
    */
-  screenId: 206;
+  screenId: 207;
 }
