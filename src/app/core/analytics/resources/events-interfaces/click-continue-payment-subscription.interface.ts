@@ -24,5 +24,5 @@ export interface ClickContinuePaymentSubscription {
   /**
    * Identifier of the screen
    */
-  screenId: 207;
+  screenId: 206;
 }
