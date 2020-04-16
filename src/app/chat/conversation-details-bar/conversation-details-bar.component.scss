@@ -37,7 +37,7 @@
       left: 120px;
       transition: width .2s ease-in-out;
       transition-delay: .2s;
-      width: calc(100% - 170px);
+      width: calc(100% - 220px);
     }
 
     &.expanded .item-details {
@@ -55,7 +55,7 @@
   }
 
   .conversation-header-menu {
-    margin-top: $spacing-xs;
+    margin-top: $spacing-xxs;
     display: flex;
     float: right;
 
