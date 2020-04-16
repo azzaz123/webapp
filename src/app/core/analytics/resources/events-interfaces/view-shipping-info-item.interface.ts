@@ -6,9 +6,9 @@
  */
 
 /**
- * User click trasaction pay confirmation button after filling transaction pay form
+ * Users views item detail screen with or without shipping info item dropdowns
  */
-export interface ClickTransactionPay {
+export interface ViewShippingInfoItem {
   /**
    * The unique identifier for an item
    */
@@ -22,19 +22,23 @@ export interface ClickTransactionPay {
    */
   searchId?: string;
   /**
-   * If the transacion is Buy Now or not
+   * If the item clicked is from a professional user
    */
-  isBuyNow: boolean;
+  isPro?: boolean;
   /**
    * Item price without fees
    */
   itemPrice: number;
   /**
-   * Identifier of the user that the item belongs to
+   * Item title
    */
-  sellerUserId: string;
+  title: string;
   /**
-   * Identifier of the screen where the click is done
+   * If the user is in the experiment shipping info item, the value is shipping_info_experiment or baseline. If it's not, the value is empty string
    */
-  screenId: 209;
+  experiment: string;
+  /**
+   * Identifier of the item detail screen
+   */
+  screenId: 115;
 }

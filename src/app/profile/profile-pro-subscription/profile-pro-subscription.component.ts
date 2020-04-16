@@ -4,6 +4,7 @@ import { Packs } from '../../core/payments/payment.interface';
 import { PerksModel } from '../../core/payments/payment.model';
 import { PaymentService } from '../../core/payments/payment.service';
 import { Pack } from '../../core/payments/pack';
+import { SELLBYTEL_PHONE, CARDEALER_COMMERCIAL_CONTACT_MAIL } from '../../core/constants';
 
 @Component({
   selector: 'tsl-profile-pro-subscription',
@@ -14,7 +15,8 @@ export class ProfileProSubscriptionComponent implements OnInit {
 
   public packs: Packs;
   public perks: PerksModel;
-  public email = 'ventas.motor@wallapop.com';
+  public email = CARDEALER_COMMERCIAL_CONTACT_MAIL;
+  public sellbytelPhone = SELLBYTEL_PHONE;
   public loading = true;
 
   constructor(private paymentsService: PaymentService,

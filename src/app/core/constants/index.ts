@@ -1,5 +1,9 @@
 // MAILS
 export const SUPPORT_MAIL = 'support.es@wallapop.com';
+export const CARDEALER_COMMERCIAL_CONTACT_MAIL = 'ventas.motor@wallapop.com';
+
+// PHONES
+export const SELLBYTEL_PHONE = '+34 935 500 996';
 
 // URLS
 export const PRIVACY_POLICY_URL = 'https://about.wallapop.com/politica-privacidad/';
