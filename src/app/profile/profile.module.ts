@@ -20,6 +20,7 @@ import { CheckSubscriptionInAppModalComponent } from './subscription/modals/chec
 import { UnsubscribeInAppFirstModal } from './subscription/modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { SubscriptionBenefitsComponent } from './subscription/subscription-benefits/subscription-benefits.component';
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
+import { SubscriptionPriceDiscountComponent } from './subscription/subscription-price-discount/subscription-price-discount.component';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { DiscountAvailableUnsubscribeInAppModalComponent } from './subscription/
     ContinueSubscriptionModalComponent,
     CheckSubscriptionInAppModalComponent,
     UnsubscribeInAppFirstModal,
-    DiscountAvailableUnsubscribeInAppModalComponent
+    DiscountAvailableUnsubscribeInAppModalComponent,
+    SubscriptionPriceDiscountComponent
   ],
   entryComponents: [
     UnsubscribeModalComponent,

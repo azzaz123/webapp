@@ -130,7 +130,7 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
   margin: 0 auto;
 }
 
-.Subscriptions__category-info-discount {
+.Subscriptions__category-info-discount, .Subscriptions__category-info-trial {
   color: $blue-grey-1;
   background-color: rgba($yellow-main, 0.3);
   padding: $spacing-xxs $spacing-ms;
@@ -148,16 +148,20 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
     width: 100%;
     margin: 0px $spacing-m $spacing-m;
     padding: $spacing-l $spacing-m;
-    height: $subscription-mobile-card-height;
-    min-height: $subscription-mobile-card-height;
+    /*height: $subscription-mobile-card-height;
+    min-height: $subscription-mobile-card-height;*/
+    height: unset;
+    min-height: unset;
 
     &:last-child {
       margin-bottom: 0px;
     }
 
     &--with-one-free {
-      height: $subscription-mobile-card-height + 40px;
-      min-height: $subscription-mobile-card-height + 40px;
+      /*height: $subscription-mobile-card-height + 40px;
+      min-height: $subscription-mobile-card-height + 40px;*/
+      height: unset;
+      min-height: unset;
     }
   }
 }

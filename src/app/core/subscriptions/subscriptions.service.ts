@@ -270,6 +270,10 @@ export class SubscriptionsService {
     return tier.discount_available.discounted_price === 0;
   }
 
+  public hasTrial(subscription: SubscriptionsResponse): boolean {
+    return subscription.trial_available;
+  }
+
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]>{
     if (useCache && this._subscriptionBenefits) {
       return observableOf(this._subscriptionBenefits);

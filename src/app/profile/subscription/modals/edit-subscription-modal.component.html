@@ -27,6 +27,9 @@
             <span class="EditSubscription__listing-limit-price" i18n>
               {{selectedTier.price}}{{selectedTier.currency}}/month
             </span>
+            <span *ngIf="subscription.trial_days" i18n="@@subscriptionEditModalUntilDate">
+                Starting on {{subscription.trial_days | dateUntilDay}}
+            </span>
         </div>
       </div>
     </div>

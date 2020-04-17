@@ -202,4 +202,8 @@ export class SubscriptionsComponent implements OnInit {
   public hasOneFreeTier(subscription: SubscriptionsResponse): boolean {
     return this.subscriptionsService.hasOneFreeTier(subscription);
   }
+
+  public hasTrial(subscription: SubscriptionsResponse): boolean {
+    return this.subscriptionsService.hasTrial(subscription);
+  }
 }

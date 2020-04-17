@@ -276,4 +276,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     return this.subscriptionsService.isFreeTier(tier);
   }
 
+  public hasTrial(subscription: SubscriptionsResponse): boolean {
+    return this.subscriptionsService.hasTrial(subscription);
+  }
 }

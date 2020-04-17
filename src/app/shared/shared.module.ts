@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { MatIconModule } from '@angular/material';
 import { AdComponent } from './ad/ad.component';
-import { CustomCurrencyPipe } from './pipes';
+import { CustomCurrencyPipe, DateUntilDayPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -143,7 +143,8 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
     NavLinksComponent,
     LinkTransformPipe,
     PreventDoubleClickDirective,
-    ProBadgeModule
+    ProBadgeModule,
+    DateUntilDayPipe
   ],
   declarations: [
     AdComponent,
@@ -199,7 +200,8 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
     StripeCardSelectionComponent,
     NavLinksComponent,
     LinkTransformPipe,
-    PreventDoubleClickDirective
+    PreventDoubleClickDirective,
+    DateUntilDayPipe
   ],
   providers: [
     DecimalPipe,
