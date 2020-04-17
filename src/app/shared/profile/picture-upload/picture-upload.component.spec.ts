@@ -62,7 +62,8 @@ describe('PictureUploadComponent', () => {
     });
 
     it('should send upload event if event is addedToQueue', () => {
-      spyOn(tokenInterceptor, 'getTokenSignature').and.returnValue('thesignature');
+      const tokenSpy = jasmine.createSpy('getTokenSignature').and.returnValue('thesignature');
+      spyOnProperty(tokenInterceptor, 'getTokenSignature', 'get').and.returnValue(tokenSpy);
       spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
       const headers = {
         [TOKEN_AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
