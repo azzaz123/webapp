@@ -1,4 +1,6 @@
-export const environment: any = {
+import { Environment } from './environment.interface';
+
+export const environment: Environment = {
   production: true,
   profeatures: true,
   name: 'prod',

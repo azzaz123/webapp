@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "./scripts/docknum/start.sh",
+    "start-beta": "ng serve -c=beta",
     "builddev": "ng build --aot --i18n-locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "builddocker": "ng build --configuration=docker --aot --i18n-locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "builddocker-en": "ng build --configuration=docker --aot --no-progress",
@@ -18,7 +19,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "svgo": "svgo -f ./src/assets/icons --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}; svgo -f ./src/assets/images --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}",
-    "mparticle": "node mparticle.js",
+    "mparticle": "node scripts/mparticle.js",
     "analyze-bundle": "yarn buildprod --statsJson=true && yarn webpack-bundle-analyzer dist/stats.json"
   },
   "private": true,
@@ -91,7 +92,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-spec-reporter": "^0.0.32",
-    "mparticle_json_validation": "git+ssh://git@github.com:Wallapop/mparticle_json_validation#master",
+    "mparticle_json_validation": "git+ssh://git@github.com:Wallapop/mparticle_json_validation#0.12.0",
     "protractor": "~5.4.0",
     "puppeteer": "^1.8.0",
     "retry": "^0.12.0",

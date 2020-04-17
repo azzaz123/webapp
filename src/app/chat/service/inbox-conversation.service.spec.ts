@@ -604,4 +604,17 @@ describe('InboxConversationService', () => {
       expect(realTime.resendMessage).not.toHaveBeenCalled();
     });
   });
+
+  describe('addPhoneNumberToConversation', () => {
+    it('should PUT phone number in conversation', () => {
+      const PHONE_NUMBER = '+34547896321';
+      const conversation = CREATE_MOCK_INBOX_CONVERSATION();
+
+      service.addPhoneNumberToConversation$(conversation, PHONE_NUMBER).subscribe();
+
+      const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/conversations/${conversation.id}/buyer-phone-number`);
+      expect(req.request.method).toEqual('PUT');
+      expect(req.request.body).toEqual({ phone_number: PHONE_NUMBER });
+    });
+  });
 });

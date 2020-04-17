@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HelpService } from './help.service';
 import { I18nService } from '../core/i18n/i18n.service';
 import { DOCUMENT } from '@angular/common';
+import { SELLBYTEL_PHONE, CARDEALER_COMMERCIAL_CONTACT_MAIL } from '../core/constants';
 
 @Component({
   selector: 'tsl-help',
@@ -16,6 +17,8 @@ export class HelpComponent implements OnInit {
   public active: string;
   public showScrollTop: boolean;
   public scrollTop: number;
+  public sellbytelPhone = SELLBYTEL_PHONE;
+  public cardealerCommercialContactMail = CARDEALER_COMMERCIAL_CONTACT_MAIL;
 
   constructor(private i18n: I18nService,
               private helpService: HelpService,

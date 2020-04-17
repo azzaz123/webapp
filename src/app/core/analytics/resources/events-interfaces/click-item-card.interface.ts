@@ -28,7 +28,7 @@ export interface ClickItemCard {
   /**
    * Identifier of the screen that the item was clicked from
    */
-  screenId: 110 | 111 | 29 | 187 | 188 | 140 | 190 | 194;
+  screenId: 110 | 111 | 29 | 187 | 188 | 140 | 190 | 194 | 214;
   /**
    * If the item clicked is from a professional user
    */
@@ -57,4 +57,8 @@ export interface ClickItemCard {
    * Identifier of the user that the item belongs to
    */
   sellerUserId?: string;
+  /**
+   * If the item clicked is a bumped item
+   */
+  isBumped: boolean;
 }

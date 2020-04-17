@@ -7,10 +7,7 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { WindowRef } from '../../../core/window/window.service';
 import { AsYouType, format, getCountryCallingCode, isValidNumber } from 'libphonenumber-js';
 import { InboxConversation } from '../../model';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
-
-export const SEND_PHONE_ENDPOINT = 'api/v3/conversations';
+import { InboxConversationService } from '../../service';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -28,7 +25,7 @@ export class SendPhoneComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
-    private http: HttpClient,
+    private inboxConversationService: InboxConversationService,
     private errorsService: ErrorsService,
     private trackingService: TrackingService,
     private windowRef: WindowRef,
@@ -60,9 +57,7 @@ export class SendPhoneComponent implements OnInit {
       } else {
         this.trackingService.track(TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING);
       }
-      this.http.put(`${environment.baseUrl}${SEND_PHONE_ENDPOINT}/${this.conversation.id}/buyer-phone-number`, {
-        phone_number: phoneNumber
-      }).subscribe();
+      this.inboxConversationService.addPhoneNumberToConversation$(this.conversation, phoneNumber).subscribe();
       this.messageService.createPhoneNumberMessage(this.conversation, phoneNumber);
       this.activeModal.close();
     } else if (!this.sendPhoneForm.controls.phone.valid) {
