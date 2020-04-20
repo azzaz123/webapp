@@ -21,17 +21,7 @@ describe('RemoteConsoleService', () => {
   let service: RemoteConsoleService;
   let remoteConsoleClientService: RemoteConsoleClientService;
   let userService: UserService;
-
-  const commonLog = {
-    'timestamp': 4000,
-    'client': 'WEB',
-    'device_id': DEVICE_ID,
-    'browser': BROWSER,
-    'browser_version': BROWSER_VERSION,
-    'user_id': USER_ID,
-    'feature_flag': true,
-    'app_version': APP_VERSION,
-  };
+  let commonLog = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -53,6 +43,20 @@ describe('RemoteConsoleService', () => {
     userService = TestBed.get(UserService);
 
     service.deviceId = DEVICE_ID;
+  });
+
+  beforeEach(() => {
+    commonLog = {
+      'timestamp': 4000,
+      'client': 'WEB',
+      'device_id': DEVICE_ID,
+      'browser': BROWSER,
+      'browser_version': BROWSER_VERSION,
+      'user_id': USER_ID,
+      'feature_flag': true,
+      'app_version': APP_VERSION,
+      'release_version': service.getReleaseVersion(APP_VERSION),
+    };
   });
 
   afterEach(() => {
@@ -81,6 +85,7 @@ describe('RemoteConsoleService', () => {
         'user_id': LOCAL_USER_ID,
         'feature_flag': true,
         'app_version': APP_VERSION,
+        'release_version': service.getReleaseVersion(APP_VERSION),
         'metric_type': MetricTypeEnum.XMPP_CONNECTION_TIME,
         'message': 'xmpp connection time',
         'connection_time': CONNECTION_TIME,
@@ -109,6 +114,7 @@ describe('RemoteConsoleService', () => {
         'user_id': LOCAL_USER_ID,
         'feature_flag': true,
         'app_version': APP_VERSION,
+        'release_version': service.getReleaseVersion(APP_VERSION),
         'metric_type': MetricTypeEnum.XMPP_CONNECTION_TIME,
         'message': 'xmpp connection time',
         'connection_time': CONNECTION_TIME,
@@ -141,6 +147,7 @@ describe('RemoteConsoleService', () => {
         'user_id': LOCAL_USER_ID,
         'feature_flag': true,
         'app_version': APP_VERSION,
+        'release_version': service.getReleaseVersion(APP_VERSION),
         'metric_type': MetricTypeEnum.DUPLICATE_CONVERSATION,
         'message': 'send log when user see duplicate conversation in inbox',
         'call_method_client': LOAD_MORE_CONVERSATIONS,

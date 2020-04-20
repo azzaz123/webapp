@@ -9,7 +9,6 @@ import { APP_VERSION } from '../../../environments/version';
 import { UserService } from '../user/user.service';
 import { RemoteConsoleClientService } from './remote-console-client.service';
 import { User } from '../user/user';
-import { version } from 'punycode';
 
 @Injectable({
   providedIn: 'root'
@@ -129,7 +128,8 @@ export class RemoteConsoleService implements OnDestroy {
       browser_version: device.browser_version,
       user_id: userId,
       feature_flag: true,
-      app_version: APP_VERSION
+      app_version: APP_VERSION,
+      release_version: this.getReleaseVersion(APP_VERSION)
     };
   }
 }
