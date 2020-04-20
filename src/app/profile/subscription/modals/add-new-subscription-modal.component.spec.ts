@@ -340,7 +340,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     describe('when isNewVisa is true', () => {
       it('should send valid event', () => {
-        component.onClickPay(true);
+        component.trackClickPay(true);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
@@ -351,7 +351,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       it('should send valid event', () => {
         expectedEvent.attributes.isNewVisa = false;
 
-        component.onClickPay(false);
+        component.trackClickPay(false);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);

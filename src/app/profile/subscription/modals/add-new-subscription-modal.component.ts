@@ -252,14 +252,17 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     this.analyticsService.trackEvent(event);
   }
 
-  public onClickPay(isNewVisa: boolean) {
+  public trackClickPay(isNewCard: boolean) {
     const discountPercent = this.subscriptionsService.getTierDiscountPercentatge(this.selectedTier);
     const event: AnalyticsEvent<SubscriptionPayConfirmation> = {
       name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        tier: this.selectedTier.id,
         screenId: SCREEN_IDS.ProfileSubscription,
-        isNewVisa,
+        isNewCard,
+        isNewSubscriber: !this.hasOneSubscription,
         discountPercent
       }
     };
