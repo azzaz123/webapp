@@ -15,7 +15,8 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
-  ClickPaySubscription
+  SubscriptionPayConfirmation,
+  ClickSubscriptionDirectContact
 } from '../../../core/analytics/analytics-constants';
 import { PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
@@ -39,6 +40,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   public isPaymentError = false;
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
+  public hasOneSubscription = false;
   private invoiceId: string;
   public loaded: boolean;
   public hasSavedCard = true;
@@ -250,8 +252,8 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
 
   public onClickPay(isNewVisa: boolean) {
     const discountPercent = this.subscriptionsService.getTierDiscountPercentatge(this.selectedTier);
-    const event: AnalyticsEvent<ClickPaySubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
+    const event: AnalyticsEvent<SubscriptionPayConfirmation> = {
+      name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.ProfileSubscription,
@@ -274,6 +276,20 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
 
   public isFreeTier(tier: Tier): boolean {
     return this.subscriptionsService.isFreeTier(tier);
+  }
+
+  public trackClickCardealerTypeform() {
+    const event: AnalyticsEvent<ClickSubscriptionDirectContact> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionDirectContact,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        subscription: CATEGORY_IDS.CAR as 100,
+        screenId: SCREEN_IDS.CarsSubscription,
+        isNewSubscriber: this.hasOneSubscription
+      }
+    };
+
+    this.analyticsService.trackEvent(event);
   }
 
 }

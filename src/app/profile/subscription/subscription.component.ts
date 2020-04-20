@@ -54,6 +54,7 @@ export class SubscriptionsComponent implements OnInit {
     const modal = this.getModalTypeDependingOnSubscription(subscription);
     let modalRef: NgbModalRef = this.modalService.open(modal, { windowClass: 'review' });
     modalRef.componentInstance.subscription = subscription;
+    modalRef.componentInstance.hasOneSubscription = this.subscriptionsService.hasOneStripeSubscription(this.subscriptions);
     modalRef.result.then((action: string) => {
       if (action) {
         this.loading = true;
