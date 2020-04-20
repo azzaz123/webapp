@@ -13,7 +13,7 @@ export class UploadComponent implements OnInit {
 
   public categoryId: string;
   public urgentPrice: string = null;
-  @ViewChild('scrollPanel') scrollPanel: ElementRef;
+  @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
 
   constructor(private itemService: ItemService, private userService: UserService) {
   }

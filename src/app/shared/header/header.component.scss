@@ -1,6 +1,6 @@
 @import "~style/common";
 
-/deep/ {
+::ng-deep {
     .header-title {
         font-size: $font-size-ll;
         color: $blue-grey-1;

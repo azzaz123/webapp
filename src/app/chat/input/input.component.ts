@@ -19,7 +19,7 @@ import { RemoteConsoleService } from '../../core/remote-console';
 export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   @Input() currentConversation: InboxConversation;
-  @ViewChild('messageTextarea') messageArea: ElementRef;
+  @ViewChild('messageTextarea', { static: true }) messageArea: ElementRef;
 
   public message: string;
   public isUserBlocked: boolean;

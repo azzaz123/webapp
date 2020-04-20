@@ -59,7 +59,7 @@ h3 {
   .title {
     color: $blue-grey-4;
   }
-  tsl-user-cover /deep/ {
+  tsl-user-cover ::ng-deep {
     .avatar-rounded {
       background: $white !important;
       border: 1px solid $blue-grey-5;

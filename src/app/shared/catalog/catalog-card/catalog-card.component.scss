@@ -4,7 +4,7 @@ $checkbox-width: 24px;
 $transition: all .5s ease;
 $feature-button-width: 170px;
 
-:host /deep/ ngb-tooltip-window {
+:host ::ng-deep ngb-tooltip-window {
   margin-top: -$spacing-ms;
   &.show {
     opacity: 1;
@@ -51,7 +51,7 @@ $feature-button-width: 170px;
       border-color: transparent;
       mat-icon {
         display: flex;
-        /deep/ svg g g {
+        ::ng-deep svg g g {
           fill: $white;
         }
       }
@@ -134,7 +134,7 @@ $feature-button-width: 170px;
       text-decoration: none;
     }
   }
-  button, tsl-button /deep/ .btn-feature  {
+  button, tsl-button ::ng-deep .btn-feature  {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -232,13 +232,13 @@ $feature-button-width: 170px;
       @include square(40px);
       border-radius: 8px;
       transition: all .2s ease;
-      mat-icon /deep/ {
+      mat-icon ::ng-deep {
         svg g g, svg path {
           fill: $blue-grey-2;
         }
       }
       &:hover, &.active {
-        mat-icon /deep/ {
+        mat-icon ::ng-deep {
           svg g g, svg path {
             fill: $white;
           }
@@ -272,7 +272,7 @@ $feature-button-width: 170px;
       }
     }
     tsl-button {
-      /deep/ .btn-feature {
+      ::ng-deep .btn-feature {
         width: $feature-button-width;
         height: 40px;
         padding: 0 $spacing-ml;

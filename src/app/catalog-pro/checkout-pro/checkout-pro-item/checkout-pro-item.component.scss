@@ -79,7 +79,7 @@
       &:hover, &.selected {
         background-color: $walla-main;
         mat-icon {
-          /deep/ svg path {
+          ::ng-deep svg path {
             fill: $white;
           }        
         }
@@ -92,7 +92,7 @@
       &:hover, &.selected {
         background-color: $country-bump;
         mat-icon {
-          /deep/ svg path {
+          ::ng-deep svg path {
             fill: $white;
           }        
         }

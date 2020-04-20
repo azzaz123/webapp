@@ -160,9 +160,9 @@ $add-subscription-modal-content-default-height: 382px;
   cursor: pointer;
 }
 
-tsl-button, tsl-stripe-card-element /deep/ tsl-button {
+tsl-button, tsl-stripe-card-element ::ng-deep tsl-button {
   width: 100%;
-  /deep/ {
+  ::ng-deep {
     .btn-text {
       font-size: $spacing-m;
       padding: $spacing-ms $spacing-ml;
@@ -197,7 +197,7 @@ hr {
 
 ngb-carousel {
   height: 100%;
-  /deep/ {
+  ::ng-deep {
     .step {
       height: 100%;
     }
@@ -241,13 +241,13 @@ ngb-carousel {
     }
   }
 
-  &.extra-info /deep/ {
+  &.extra-info ::ng-deep {
     .carousel-item {
       height: $add-subscription-modal-content-default-height + 34px;
     };
   }
 
-  &.single /deep/ {
+  &.single ::ng-deep {
     .carousel-item {
       height: $add-subscription-modal-content-default-height - 38px;
     }
@@ -268,7 +268,7 @@ ngb-carousel {
     width: $spacing-ms;
     height: $spacing-ms;
     line-height: $spacing-ms;
-    /deep/ svg path {
+    ::ng-deep svg path {
       fill: $white;
     }
   }
@@ -301,13 +301,13 @@ ngb-carousel {
 
 @include media-breakpoint-down(sm) {
   ngb-carousel {
-    /deep/ {
+    ::ng-deep {
       .box-content {
         padding: $spacing-ml 0 $spacing-xxl;
       }
     }
 
-    &.single /deep/ {
+    &.single ::ng-deep {
       .box-content {
         padding: $spacing-ml 0;
       }
@@ -328,14 +328,14 @@ ngb-carousel {
     padding-bottom: $spacing-m
   }
 
-  tsl-button /deep/ {
+  tsl-button ::ng-deep {
     button {
       width: 210px;
     }
   }
 
-  tsl-stripe-card-element /deep/ {
-    tsl-button /deep/ {
+  tsl-stripe-card-element ::ng-deep {
+    tsl-button ::ng-deep {
       button {
         width: 210px;
       }

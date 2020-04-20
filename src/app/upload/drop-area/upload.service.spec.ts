@@ -41,7 +41,8 @@ describe('UploadService', () => {
       response = r;
     });
 
-    spyOn(tokenInterceptor, 'getTokenSignature').and.returnValue('thesignature');
+    const tokenSpy = jasmine.createSpy('getTokenSignature').and.returnValue('thesignature');
+    spyOnProperty(tokenInterceptor, 'getTokenSignature', 'get').and.returnValue(tokenSpy);
     spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
   });
 

@@ -43,14 +43,14 @@ $height: 40px;
         background: $negative-main;
         border-color: transparent;
         color: $white;
-        mat-icon /deep/ {
+        mat-icon ::ng-deep {
           svg g g, svg path {
             fill: $white;
           }
         }
       }
       &:disabled {
-        mat-icon /deep/ {
+        mat-icon ::ng-deep {
           svg g g, svg path {
             fill: $blue-grey-2;
           }
@@ -79,7 +79,7 @@ $height: 40px;
     }
   }
 
-  tsl-button /deep/ .btn-feat  {
+  tsl-button ::ng-deep .btn-feat  {
     &:disabled {
       cursor: default;
     }
