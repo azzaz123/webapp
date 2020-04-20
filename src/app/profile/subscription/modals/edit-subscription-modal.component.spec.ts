@@ -18,6 +18,7 @@ import {
   SCREEN_IDS,
   AnalyticsPageView
 } from '../../../core/analytics/analytics-constants';
+import { DateUntilDayPipe } from '../../../shared/pipes';
 
 describe('EditSubscriptionModalComponent', () => {
   let component: EditSubscriptionModalComponent;
@@ -31,7 +32,7 @@ describe('EditSubscriptionModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditSubscriptionModalComponent ],
+      declarations: [ EditSubscriptionModalComponent, DateUntilDayPipe ],
       providers: [
         {
           provide: NgbActiveModal, useValue: {

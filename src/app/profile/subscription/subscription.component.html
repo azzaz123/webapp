@@ -18,7 +18,7 @@
         <div [hidden]="subscription.subscribed_from" class="Subscriptions__category-info">
             <p i18n *ngIf="subscription.current_limit">Limit without subscription: {{subscription.current_limit}}</p>
             <p i18n *ngIf="!subscription.current_limit">No limit</p>
-            <tsl-subscription-price-discount></tsl-subscription-price-discount>
+            <!--<tsl-subscription-price-discount></tsl-subscription-price-discount>-->
             <p *ngIf="!hasTrial(subscription)" [ngClass]="{ 'Subscriptions__category-info--discounted': hasOneTierDiscount(subscription) }">
               <span i18n *ngIf="subscription.tiers.length !== 1">From: </span>
               {{subscription.tiers[0].price}}{{subscription.tiers[0].currency}}

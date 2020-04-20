@@ -7,7 +7,7 @@ import { Item } from '../../../../core/item/item';
 import { ItemService } from '../../../../core/item/item.service';
 import { SubscriptionsService } from '../../../../core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse } from '../../../../core/subscriptions/subscriptions.interface';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-too-many-items-modal',
@@ -56,7 +56,7 @@ export class TooManyItemsModalComponent implements OnInit {
     );
   }
 
-  public hasTrial(subscription: SubscriptionsResponse): boolean {
+  private hasTrial(subscription: SubscriptionsResponse): boolean {
     return this.subscriptionsService.hasTrial(subscription);
   }
 }

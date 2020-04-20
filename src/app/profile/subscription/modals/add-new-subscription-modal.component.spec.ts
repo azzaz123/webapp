@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync, flush } from '@angular/core/testing';
 import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
@@ -18,7 +18,6 @@ import {
 } from '../../../../tests/subscriptions.fixtures.spec';
 import { STRIPE_CARD, FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
-import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 import { PAYMENT_METHOD_DATA } from '../../../../tests/payments.fixtures.spec';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
@@ -30,6 +29,8 @@ import {
   SCREEN_IDS,
   ClickPaySubscription
 } from '../../../core/analytics/analytics-constants';
+import { CustomCurrencyPipe, DateUntilDayPipe } from '../../../shared/pipes';
+import { DecimalPipe } from '@angular/common';
 
 describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
@@ -46,8 +47,9 @@ describe('AddNewSubscriptionModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddNewSubscriptionModalComponent],
+      declarations: [AddNewSubscriptionModalComponent, CustomCurrencyPipe, DateUntilDayPipe],
       providers: [
+        DecimalPipe,
         {
           provide: NgbActiveModal, useValue: {
             close() {

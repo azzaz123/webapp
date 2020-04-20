@@ -17,7 +17,6 @@ import {
   SCREEN_IDS,
   ANALYTICS_EVENT_NAMES,
   AnalyticsEvent,
-  ClickSuscribeOnTheBenefitsScreen,
   ANALYTIC_EVENT_TYPES,
   AnalyticsPageView,
   ViewProfileSubscription,
@@ -301,6 +300,16 @@ describe('SubscriptionComponent', () => {
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedOpenModalEvent);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedCloseModalEvent);
       }));
+    });
+
+    describe('hasTrial', () => {
+      it('should return if the subscription has a trial available', () => {
+        spyOn(subscriptionsService, 'hasTrial').and.returnValue(MAPPED_SUBSCRIPTIONS_ADDED[2].trial_available);
+
+        component.hasTrial(MAPPED_SUBSCRIPTIONS_ADDED[2]);
+        
+        expect(subscriptionsService.hasTrial).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS_ADDED[2]);
+      });
     });
 
     afterEach(() => {

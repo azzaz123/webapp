@@ -83,6 +83,10 @@ export class MockSubscriptionService {
 
     return tier.discount_available.discounted_price === 0;
   }
+
+  public hasTrial(subscription: SubscriptionsResponse): boolean {
+    return subscription.trial_available;
+  }
 }
 
 export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [
@@ -1058,8 +1062,8 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] =
     subscribed_from: 1567675697,
     selected_tier_id: 'plan_FWuGNucr7WgWUc',
     default_tier_id: 'plan_FWuFVeTHEDyECa',
-    trial_available: false,
-    trial_days: 0,
+    trial_available: true,
+    trial_days: 30,
     tiers:
     [
       {
