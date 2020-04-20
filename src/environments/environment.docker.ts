@@ -1,6 +1,6 @@
 import { Environment } from './environment.interface';
 
-export const tryGetDockNum = (): string => {
+export const getDockNum = (): string => {
   let result = 'XXX';
 
   const dockPrefix = 'dock';
@@ -15,7 +15,7 @@ export const tryGetDockNum = (): string => {
   return `dock${result}`;
 };
 
-export const docknum = tryGetDockNum();
+export const docknum = getDockNum();
 
 export const environment: Environment = {
   production: false,
