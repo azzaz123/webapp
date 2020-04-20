@@ -39,8 +39,7 @@
     <span i18n>New messages</span>
   </button>
   <div id="conversations" [hidden]="loading">
-    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We found some problems updating your inbox. Try again
-      later.
+    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We found some problems updating your inbox. Try again later.
     </div>
     <div *ngIf="hasConversations()" id="inbox-data">
       <tsl-inbox-conversation *ngFor="let conversation of conversations"
@@ -66,8 +65,7 @@
 
 <div *ngIf="isArchived" class="scroll-panel" [ngClass]="{professional: isProfessional}">
   <div id="conversations" [hidden]="loading">
-    <div *ngIf="errorRetrievingArchived" class="inboxError" i18n>We found some problems updating your archived messages.
-      Try again later.
+    <div *ngIf="errorRetrievingArchived" class="inboxError" i18n>We found some problems updating your archived messages. Try again later.
     </div>
     <div *ngIf="hasArchivedConversations()" id="inbox-data">
       <tsl-archived-inbox-conversation *ngFor="let conversation of archivedConversations"
