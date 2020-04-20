@@ -444,10 +444,8 @@
         Finance your purchase
       </msg>
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.html:3</source>Reserved</msg>
-  <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:2</source>Delete conversation</msg>
-  <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:3</source>This will delete the conversation.</msg>
-  <msg id="8886737317292020570"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source>Archive conversation</msg>
-  <msg id="5298644184637702922"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:3</source>This will archive the conversation.</msg>
+  <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:2</source><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source>Delete conversation</msg>
+  <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:3</source><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:3</source>This will delete the conversation.</msg>
   <msg id="1055686627716339120"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:7</source>Archive</msg>
   <msg id="7913053333994057167"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:2</source>Unarchive conversation</msg>
   <msg id="3205414127595653303"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:3</source>This will unarchive the conversation.</msg>
@@ -468,19 +466,19 @@
   <msg id="5927748278732131263"><source>app/chat/user-response-rate/user-response-rate.component.html:9</source><source>app/chat/user-response-rate/user-response-rate.component.html:10</source>Typically responds within a day</msg>
   <msg id="6807057680918467236"><source>app/chat/user-response-rate/user-response-rate.component.html:11</source><source>app/chat/user-response-rate/user-response-rate.component.html:12</source>Responds in more than 24 hours</msg>
   <msg id="6146618115870222180"><source>app/chat/inbox/inbox.component.html:2</source>Your Messages</msg>
-  <msg id="799485662157076328"><source>app/chat/inbox/inbox.component.html:7</source><source>app/chat/inbox/inbox.component.html:14</source>Inbox</msg>
-  <msg id="2247942788262300865"><source>app/chat/inbox/inbox.component.html:8</source><source>app/chat/inbox/inbox.component.html:19</source>Archived Messages</msg>
-  <msg id="8032820066123493751"><source>app/chat/inbox/inbox.component.html:32</source>New messages</msg>
-  <msg id="7238711418435054042"><source>app/chat/inbox/inbox.component.html:35</source>We found some problems updating your inbox. Try again later.</msg>
-  <msg id="33149636091572968"><source>app/chat/inbox/inbox.component.html:52</source><source>app/chat/inbox/inbox.component.html:76</source><source>app/chat/current-conversation/current-conversation.component.html:110</source>Load more</msg>
-  <msg id="265020643835790616"><source>app/chat/inbox/inbox.component.html:59</source>We found some problems updating your archived messages. Try again later.</msg>
+  <msg id="799485662157076328"><source>app/chat/inbox/inbox.component.html:10</source><source>app/chat/inbox/inbox.component.html:18</source>Inbox</msg>
+  <msg id="2247942788262300865"><source>app/chat/inbox/inbox.component.html:23</source>Archived Messages</msg>
+  <msg id="8032820066123493751"><source>app/chat/inbox/inbox.component.html:36</source>New messages</msg>
+  <msg id="7238711418435054042"><source>app/chat/inbox/inbox.component.html:39</source>We found some problems updating your inbox. Try again later.</msg>
+  <msg id="33149636091572968"><source>app/chat/inbox/inbox.component.html:56</source><source>app/chat/inbox/inbox.component.html:80</source><source>app/chat/current-conversation/current-conversation.component.html:110</source>Load more</msg>
+  <msg id="265020643835790616"><source>app/chat/inbox/inbox.component.html:63</source>We found some problems updating your archived messages. Try again later.</msg>
   <msg id="8721026914522212662"><source>app/chat/inbox/archived-inbox-conversation/archived-inbox-conversation.component.html:42</source>Archived </msg>
   <msg id="682982254050004818"><source>app/chat/current-conversation/current-conversation.component.html:9,10</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       from the list on the left</msg>
   <msg id="3325766019344626759"><source>app/chat/current-conversation/current-conversation.component.html:11</source>There are no messages</msg>
   <msg id="177886998911393770"><source>app/chat/current-conversation/current-conversation.component.html:12,13</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       Try again later.</msg>
-  <msg id="3520858718490550964"><source>app/chat/current-conversation/current-conversation.component.html:36,37</source>Archive conversation
+  <msg id="92908556516111993"><source>app/chat/current-conversation/current-conversation.component.html:36,37</source>Delete conversation
             </msg>
   <msg id="603154656968324663"><source>app/chat/current-conversation/current-conversation.component.html:39,40</source>Unarchive conversation
             </msg>

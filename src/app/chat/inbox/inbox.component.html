@@ -1,24 +1,29 @@
 <div *ngxPermissionsOnly="['isProfessional']" class="header">
-  <h2><span i18n>Your Messages</span> <span class="badge badge-pro"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span></h2>
+  <h2><span i18n>Your Messages</span> <span class="badge badge-pro"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span>
+  </h2>
 </div>
 
-<div ngbDropdown placement="bottom-left" class="inbox-header-menu" *ngIf="shouldDisplayHeader()">
-  <div ngbDropdownToggle class="dropdown-header">
+<div class="inbox-header-menu" *ngIf="shouldDisplayHeader()">
+  //TODO uncomment when section archived conversation can be removed
+  <!--<div ngbDropdown placement="bottom-left" class="inbox-header-menu" *ngIf="shouldDisplayHeader()">-->
+  <div class="dropdown-header">
+    <!--  <div ngbDropdownToggle class="dropdown-header">-->
     <div *ngIf="isInbox" class="header-title" i18n>Inbox</div>
-    <div *ngIf="isArchived" class="header-title" i18n>Archived Messages</div>
-    <mat-icon class="header-icon" svgIcon="arrow-waterfall"></mat-icon>
+    <!--    <div *ngIf="isArchived" class="header-title" i18n>Archived Messages</div>-->
+    <!--    <mat-icon class="header-icon" svgIcon="arrow-waterfall"></mat-icon>-->
   </div>
-  <ul ngbDropdownMenu class="dropdown-menu">
-      <li class="dropdown-item" [ngClass]="{'active': isInbox}" (click)="showInbox()">
-        <a>
-          <span i18n>Inbox</span>
-        </a>
-      </li>
-      <li class="dropdown-item" [ngClass]="{'active': isArchived}" (click)="showArchive()">
-          <a>
-            <span i18n>Archived Messages</span>
-          </a>
-      </li>
+  <ul class="dropdown-menu">
+    <!--  <ul ngbDropdownMenu class="dropdown-menu">-->
+    <li class="dropdown-item" [ngClass]="{'active': isInbox}" (click)="showInbox()">
+      <a>
+        <span i18n>Inbox</span>
+      </a>
+    </li>
+    <li class="dropdown-item" [ngClass]="{'active': isArchived}" (click)="showArchive()">
+      <a>
+        <span i18n>Archived Messages</span>
+      </a>
+    </li>
   </ul>
 </div>
 
@@ -26,17 +31,22 @@
   <mat-icon svgIcon="empty-header-inbox-placeholder"></mat-icon>
 </div>
 
-<div *ngIf="isInbox" class="scroll-panel" #scrollPanel [ngClass]="{professional: isProfessional}" (scroll)="showNewMessagesToast ? handleScroll() : null">
-  <button class="btn btn-primary new-messages-toast" *ngIf="showNewMessagesToast" (click)="scrollToTop()" [@appearInOut]>
+<div *ngIf="isInbox" class="scroll-panel" #scrollPanel [ngClass]="{professional: isProfessional}"
+     (scroll)="showNewMessagesToast ? handleScroll() : null">
+  <button class="btn btn-primary new-messages-toast" *ngIf="showNewMessagesToast" (click)="scrollToTop()"
+          [@appearInOut]>
     <mat-icon svgIcon="up-arrow-white"></mat-icon>
     <span i18n>New messages</span>
   </button>
   <div id="conversations" [hidden]="loading">
-    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We found some problems updating your inbox. Try again later.</div>
+    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We found some problems updating your inbox. Try again
+      later.
+    </div>
     <div *ngIf="hasConversations()" id="inbox-data">
       <tsl-inbox-conversation *ngFor="let conversation of conversations"
-        [conversation]="conversation"
-        [ngClass]="{'active': conversation?.active}" (click)="setCurrentConversation(conversation)">
+                              [conversation]="conversation"
+                              [ngClass]="{'active': conversation?.active}"
+                              (click)="setCurrentConversation(conversation)">
       </tsl-inbox-conversation>
     </div>
     <div *ngIf="!hasConversations()" id="inbox-empty">
@@ -56,11 +66,14 @@
 
 <div *ngIf="isArchived" class="scroll-panel" [ngClass]="{professional: isProfessional}">
   <div id="conversations" [hidden]="loading">
-    <div *ngIf="errorRetrievingArchived" class="inboxError" i18n>We found some problems updating your archived messages. Try again later.</div>
+    <div *ngIf="errorRetrievingArchived" class="inboxError" i18n>We found some problems updating your archived messages.
+      Try again later.
+    </div>
     <div *ngIf="hasArchivedConversations()" id="inbox-data">
       <tsl-archived-inbox-conversation *ngFor="let conversation of archivedConversations"
-        [conversation]="conversation"
-        [ngClass]="{'active': conversation?.active}" (click)="setCurrentConversation(conversation)">
+                                       [conversation]="conversation"
+                                       [ngClass]="{'active': conversation?.active}"
+                                       (click)="setCurrentConversation(conversation)">
       </tsl-archived-inbox-conversation>
     </div>
     <div *ngIf="!hasArchivedConversations()" id="inbox-empty">
