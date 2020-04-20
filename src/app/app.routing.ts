@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { PERMISSIONS } from './core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
+import { DevelopmentGuard } from './core/user/development.guard';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'chat' },
@@ -97,6 +98,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
+    canLoad: [DevelopmentGuard],
     loadChildren: () => import('app/login/login.module').then(m => m.LoginModule)
   },
   {
