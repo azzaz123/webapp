@@ -12,7 +12,7 @@ export const tryGetDockNum = (): string => {
     } catch { }
   }
 
-  return result;
+  return `dock${result}`;
 };
 
 export const docknum = tryGetDockNum();
