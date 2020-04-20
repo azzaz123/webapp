@@ -40,7 +40,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   public isPaymentError = false;
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
-  public hasOneSubscription = false;
+  public isNewSubscriber = false;
   private invoiceId: string;
   public loaded: boolean;
   public hasSavedCard = true;
@@ -224,7 +224,17 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     this.loading = false;
     this.isRetryInvoice = false;
     this.close();
+    this.openPaymentSuccessModal();
+  }
+
+  private openPaymentSuccessModal() {
     let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
+    const modalComponent: PaymentSuccessModalComponent = modalRef.componentInstance;
+    modalComponent.tier = this.selectedTier.id;
+    modalComponent.isNewSubscriber = this.isNewSubscriber;
+    modalComponent.isNewCard = !this.hasSavedCard;
+    modalComponent.subscriptionCategoryId = this.subscription.category_id as SUBSCRIPTION_CATEGORIES;
+
     modalRef.result.then(() => {
       modalRef = null;
       this.reloadPage();
@@ -243,7 +253,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-        isNewSubscriber: !this.hasOneSubscription,
+        isNewSubscriber: this.isNewSubscriber,
         screenId: SCREEN_IDS.ProfileSubscription,
         tier: this.selectedTier.id
       }
@@ -262,7 +272,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
         tier: this.selectedTier.id,
         screenId: SCREEN_IDS.ProfileSubscription,
         isNewCard,
-        isNewSubscriber: !this.hasOneSubscription,
+        isNewSubscriber: this.isNewSubscriber,
         discountPercent
       }
     };
@@ -290,7 +300,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
       attributes: {
         subscription: CATEGORY_IDS.CAR as 100,
         screenId: SCREEN_IDS.CarsSubscription,
-        isNewSubscriber: !this.hasOneSubscription
+        isNewSubscriber: !this.isNewSubscriber
       }
     };
 
