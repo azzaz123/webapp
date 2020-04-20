@@ -28,5 +28,5 @@ export interface ViewSuccessSubscriptionPayment {
   /**
    * Identifier of the screen
    */
-  screenId: 208;
+  screenId: 206;
 }

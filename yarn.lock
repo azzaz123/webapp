@@ -5129,7 +5129,7 @@ move-concurrently@^1.0.1:
 
 "mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#feature/subscription_web_events":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#6dd84904cfa59d2e8c998915f61e15dfda19c609"
+  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#4aad931938694e56ac96d7a7c14972070088b6ea"
 
 ms@0.7.1:
   version "0.7.1"
