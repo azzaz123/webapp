@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { SubscriptionBenefit } from '../../../core/subscriptions/subscriptions.interface';
+import { SubscriptionBenefit, SubscriptionsResponse } from '../../../core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-subscription-price-discount',
@@ -11,10 +11,23 @@ export class SubscriptionPriceDiscountComponent implements OnInit {
 
   public loading = true;
   public priceDiscount: SubscriptionBenefit[];
+  @Input() subscription: SubscriptionsResponse;
 
-  constructor(private subscriptionService: SubscriptionsService) { }
+  constructor(private subscriptionsService: SubscriptionsService) { }
 
   ngOnInit() {
   }
 
+  public hasTrial(subscription: SubscriptionsResponse): boolean {
+    return this.subscriptionsService.hasTrial(subscription);
+  }
+
+  public hasOneTierDiscount(subscription: SubscriptionsResponse) {
+    return this.subscriptionsService.hasOneTierDiscount(subscription);
+  }
+
+  public hasOneFreeTier(subscription: SubscriptionsResponse): boolean {
+    return this.subscriptionsService.hasOneFreeTier(subscription);
+  }
+  
 }

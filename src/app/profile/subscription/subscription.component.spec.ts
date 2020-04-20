@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed, async, fakeAsync, tick, flush } from "@angul
 import { CategoryService } from "../../core/category/category.service";
 import { SubscriptionsService } from "../../core/subscriptions/subscriptions.service";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { of } from "rxjs";
 import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures.spec";
 import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED, MAPPED_SUBSCRIPTIONS_WITH_INAPP, MockSubscriptionService } from "../../../tests/subscriptions.fixtures.spec";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -300,16 +300,6 @@ describe('SubscriptionComponent', () => {
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedOpenModalEvent);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedCloseModalEvent);
       }));
-    });
-
-    describe('hasTrial', () => {
-      it('should return if the subscription has a trial available', () => {
-        spyOn(subscriptionsService, 'hasTrial').and.returnValue(MAPPED_SUBSCRIPTIONS_ADDED[2].trial_available);
-
-        component.hasTrial(MAPPED_SUBSCRIPTIONS_ADDED[2]);
-        
-        expect(subscriptionsService.hasTrial).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS_ADDED[2]);
-      });
     });
 
     afterEach(() => {
