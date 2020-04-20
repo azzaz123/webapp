@@ -28,7 +28,7 @@ import { CAR_DEALER_TYPEFORM_URL, TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL }
 })
 export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
 
-  @ViewChild(NgbCarousel, { static: false }) public carousel: NgbCarousel;
+  @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   public card: any;
   public action: string;
   public showCard = false;

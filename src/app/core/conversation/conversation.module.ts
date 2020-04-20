@@ -29,7 +29,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 })
 export class ConversationModule {
 
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<ConversationModule> {
     return {
       ngModule: ConversationModule,
       providers: [

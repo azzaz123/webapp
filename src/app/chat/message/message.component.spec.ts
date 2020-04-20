@@ -1,6 +1,8 @@
 import { MessageComponent } from './message.component';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
+import { Directive } from "@angular/core";
 
+@Directive()
 class MessageComponentMock extends MessageComponent {
 }
 

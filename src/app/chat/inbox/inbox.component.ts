@@ -55,7 +55,7 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   @Output() public loadingEvent = new EventEmitter<any>();
   @Output() public loadingError = new EventEmitter<any>();
-  @ViewChild('scrollPanel', { static: false }) scrollPanel: ElementRef;
+  @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
   public conversations: InboxConversation[] = [];
   public archivedConversations: InboxConversation[] = [];

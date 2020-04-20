@@ -4,6 +4,14 @@
   "newProjectRoot": "projects",
   "projects": {
     "webapp": {
+      "i18n": {
+        "locales": {
+          "es": {
+            "translation": "src/locale/es.xtb",
+            "baseHref": ""
+          }
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -11,6 +19,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -42,6 +51,12 @@
           },
           "configurations": {
             "docker": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -50,6 +65,12 @@
               ]
             },
             "beta": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -58,6 +79,12 @@
               ]
             },
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -75,10 +102,12 @@
               ]
             },
             "es": {
-              "i18nFile": "src/locale/es.xtb",
-              "i18nFormat": "xtb",
-              "i18nLocale": "es"
-            }
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ]}
           }
         },
         "serve": {
@@ -177,7 +206,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "tsl",
-      "styleext": "scss"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "tsl"
