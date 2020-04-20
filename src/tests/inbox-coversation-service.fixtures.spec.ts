@@ -1,5 +1,6 @@
 
 import {empty as observableEmpty,  Observable, of } from 'rxjs';
+
 import { InboxConversation } from '../app/chat/model';
 
 export class InboxConversationServiceMock {
@@ -26,5 +27,9 @@ export class InboxConversationServiceMock {
   }
 
   resendPendingMessages(conversation: InboxConversation): void {
+  }
+
+  addPhoneNumberToConversation$(inboxConversation: InboxConversation, phoneNumber: string): Observable<any> {
+    return observableEmpty();
   }
 }

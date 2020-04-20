@@ -181,8 +181,14 @@ Resources:
 
   ArtifactBucket:
     Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
     Properties:
+      LifecycleConfiguration:
+        Rules:
+          - Id: MoreThan90DaysOldItemsToGlacier
+            Status: Enabled
+            Transitions:
+              - TransitionInDays: 90
+                StorageClass: GLACIER
       Tags:
         - Key: Env
           Value: !Ref EnvName
