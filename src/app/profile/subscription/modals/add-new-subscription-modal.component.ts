@@ -7,7 +7,7 @@ import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
+import { SubscriptionResponse, SubscriptionsResponse, Tier, SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import {
   AnalyticsEvent,
@@ -242,6 +242,8 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
       name: ANALYTICS_EVENT_NAMES.ClickContinuePaymentSubscription,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        isNewSubscriber: !this.hasOneSubscription,
         screenId: SCREEN_IDS.ProfileSubscription,
         tier: this.selectedTier.id
       }
@@ -285,7 +287,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
       attributes: {
         subscription: CATEGORY_IDS.CAR as 100,
         screenId: SCREEN_IDS.CarsSubscription,
-        isNewSubscriber: this.hasOneSubscription
+        isNewSubscriber: !this.hasOneSubscription
       }
     };
 
