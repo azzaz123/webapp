@@ -16,7 +16,8 @@ import {
   AnalyticsPageView,
   ClickProfileSubscribeButton,
   ClickProfileUnsuscribe,
-  ClickUnsuscribeCancelation
+  ClickUnsuscribeCancelation,
+  ClickProfileEditCurrentSubscription
 } from '../../core/analytics/analytics-constants';
 import { ContinueSubscriptionModalComponent } from './modals/continue-subscription-modal.component';
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component';
@@ -117,23 +118,18 @@ export class SubscriptionsComponent implements OnInit {
       return this.analyticsService.trackEvent(event);
     }
 
-    if (subscription.subscribed_until) {
-      // TODO: Add tracking for Continue subscription
-    } else {
-      if (subscription.subscribed_from) {
-        const event: AnalyticsEvent<ClickProfileUnsuscribe> = {
-          name: ANALYTICS_EVENT_NAMES.ClickProfileUnsuscribe,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            screenId: SCREEN_IDS.ProfileSubscription,
-            subscription: subscription.category_id as any
-          }
-        };
+    if (modalType === EditSubscriptionModalComponent) {
+      const event: AnalyticsEvent<ClickProfileEditCurrentSubscription> = {
+        name: ANALYTICS_EVENT_NAMES.ClickProfileEditCurrentSubscription,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          subscription: subscription.category_id as any,
+          tier: subscription.selected_tier_id,
+          screenId: SCREEN_IDS.ProfileSubscription
+        }
+      };
 
-        this.analyticsService.trackEvent(event);
-      } else {
-
-      }
+      return this.analyticsService.trackEvent(event);
     }
   }
 
