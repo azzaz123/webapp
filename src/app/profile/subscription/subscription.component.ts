@@ -25,6 +25,13 @@ import { CheckSubscriptionInAppModalComponent } from './modals/check-subscriptio
 import { UnsubscribeInAppFirstModal } from './modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 
+export type SubscriptionModal =
+  typeof CheckSubscriptionInAppModalComponent |
+  typeof CancelSubscriptionModalComponent |
+  typeof ContinueSubscriptionModalComponent |
+  typeof EditSubscriptionModalComponent |
+  typeof AddNewSubscriptionModalComponent;
+
 @Component({
   selector: 'tsl-subscription',
   templateUrl: './subscription.component.html',
@@ -62,11 +69,11 @@ export class SubscriptionsComponent implements OnInit {
       }
       modalRef = null;
     }, () => {
-      this.trackCloseModalEvent();
+      this.trackCloseModalEvent(modal);
       modalRef = null;
     });
 
-    this.trackOpenModalEvent(subscription);
+    this.trackOpenModalEvent(subscription, modal);
   }
 
   private isSubscriptionUpdated() {
@@ -95,7 +102,21 @@ export class SubscriptionsComponent implements OnInit {
     this.analyticsService.trackPageView(pageView);
   }
 
-  private trackOpenModalEvent(subscription: SubscriptionsResponse) {
+  private trackOpenModalEvent(subscription: SubscriptionsResponse, modalType: SubscriptionModal) {
+    if (modalType === AddNewSubscriptionModalComponent) {
+      const event: AnalyticsEvent<ClickProfileSubscribeButton> = {
+        name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          screenId: SCREEN_IDS.ProfileSubscription,
+          subscription: subscription.category_id as any,
+          isNewSubscriber: !this.subscriptionsService.hasOneStripeSubscription(this.subscriptions)
+        }
+      };
+
+      return this.analyticsService.trackEvent(event);
+    }
+
     if (subscription.subscribed_until) {
       // TODO: Add tracking for Continue subscription
     } else {
@@ -111,37 +132,27 @@ export class SubscriptionsComponent implements OnInit {
 
         this.analyticsService.trackEvent(event);
       } else {
-        const isNewSubscriber =
-          this.subscriptions.filter(s => s.category_id !== subscription.category_id && s.subscribed_from).length === 0;
 
-        const event: AnalyticsEvent<ClickProfileSubscribeButton> = {
-          name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            screenId: SCREEN_IDS.ProfileSubscription,
-            subscription: subscription.category_id as any,
-            isNewSubscriber
-          }
-        };
-
-        this.analyticsService.trackEvent(event);
       }
     }
   }
 
-  private trackCloseModalEvent() {
-    // TODO: This event type needs to be changed
-    const event: AnalyticsEvent<ClickUnsuscribeCancelation> = {
-      name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeCancelation,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
-      attributes: {
-        screenId: SCREEN_IDS.ProfileSubscription
-      }
-    };
-    this.analyticsService.trackEvent(event);
+  private trackCloseModalEvent(modalType: SubscriptionModal) {
+    if (modalType === CancelSubscriptionModalComponent) {
+      const event: AnalyticsEvent<ClickUnsuscribeCancelation> = {
+        name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeCancelation,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          screenId: SCREEN_IDS.ProfileSubscription
+        }
+      };
+      this.analyticsService.trackEvent(event);
+
+      return this.analyticsService.trackEvent(event);
+    }
   }
 
-  private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse) {
+  private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse): SubscriptionModal {
     // User is trying to edit subscription that is from inapp and has discount
     if (this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneTierDiscount(subscription)) {
       return DiscountAvailableUnsubscribeInAppModalComponent;
