@@ -9,6 +9,7 @@ import { APP_VERSION } from '../../../environments/version';
 import { UserService } from '../user/user.service';
 import { RemoteConsoleClientService } from './remote-console-client.service';
 import { User } from '../user/user';
+import { version } from 'punycode';
 
 @Injectable({
   providedIn: 'root'
@@ -110,6 +111,12 @@ export class RemoteConsoleService implements OnDestroy {
         ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : ''
       })
     );
+  }
+
+  getReleaseVersion(appVersion: string): number {
+    return +appVersion.split('.')
+    .map((subVersion: string) => ('00' + subVersion).slice(-3))
+    .reduce((a: string, b: string) => a + b);
   }
 
   private getCommonLog(userId: string): {} {
