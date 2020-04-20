@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from './modals/add-new-subscription-modal.component';
-import { SubscriptionsResponse } from '../../core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
 import { isEqual } from 'lodash-es';
 import { Router } from '@angular/router';
@@ -15,9 +15,8 @@ import {
   ViewProfileSubscription,
   AnalyticsPageView,
   ClickProfileSubscribeButton,
-  ClickProfileUnsuscribe,
-  ClickUnsuscribeCancelation,
-  ClickProfileEditCurrentSubscription
+  ClickProfileEditCurrentSubscription,
+  ClickKeepCurrentSubscription
 } from '../../core/analytics/analytics-constants';
 import { ContinueSubscriptionModalComponent } from './modals/continue-subscription-modal.component';
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component';
@@ -70,7 +69,7 @@ export class SubscriptionsComponent implements OnInit {
       }
       modalRef = null;
     }, () => {
-      this.trackCloseModalEvent(modal);
+      this.trackCloseModalEvent(subscription, modal);
       modalRef = null;
     });
 
@@ -133,19 +132,21 @@ export class SubscriptionsComponent implements OnInit {
     }
   }
 
-  private trackCloseModalEvent(modalType: SubscriptionModal) {
-    // if (modalType === CancelSubscriptionModalComponent) {
-    //   const event: AnalyticsEvent<ClickUnsuscribeCancelation> = {
-    //     name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeCancelation,
-    //     eventType: ANALYTIC_EVENT_TYPES.Other,
-    //     attributes: {
-    //       screenId: SCREEN_IDS.ProfileSubscription
-    //     }
-    //   };
-    //   this.analyticsService.trackEvent(event);
+  private trackCloseModalEvent(subscription: SubscriptionsResponse, modalType: SubscriptionModal) {
+    if (modalType === ContinueSubscriptionModalComponent) {
+      const event: AnalyticsEvent<ClickKeepCurrentSubscription> = {
+        name: ANALYTICS_EVENT_NAMES.ClickKeepCurrentSubscription,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
+          tier: subscription.selected_tier_id,
+          screenId: SCREEN_IDS.ProfileSubscription
+        }
+      };
+      this.analyticsService.trackEvent(event);
 
-    //   return this.analyticsService.trackEvent(event);
-    // }
+      return this.analyticsService.trackEvent(event);
+    }
   }
 
   private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse): SubscriptionModal {
