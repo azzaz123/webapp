@@ -128,8 +128,7 @@ export class RemoteConsoleService implements OnDestroy {
       browser_version: device.browser_version,
       user_id: userId,
       feature_flag: true,
-      app_version: APP_VERSION,
-      release_version: this.getReleaseVersion(APP_VERSION)
+      app_version: this.getReleaseVersion(APP_VERSION)
     };
   }
 }

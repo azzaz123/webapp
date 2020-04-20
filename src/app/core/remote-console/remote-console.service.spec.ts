@@ -54,8 +54,7 @@ describe('RemoteConsoleService', () => {
       'browser_version': BROWSER_VERSION,
       'user_id': USER_ID,
       'feature_flag': true,
-      'app_version': APP_VERSION,
-      'release_version': service.getReleaseVersion(APP_VERSION),
+      'app_version': service.getReleaseVersion(APP_VERSION)
     };
   });
 
@@ -84,8 +83,7 @@ describe('RemoteConsoleService', () => {
         'browser_version': BROWSER_VERSION,
         'user_id': LOCAL_USER_ID,
         'feature_flag': true,
-        'app_version': APP_VERSION,
-        'release_version': service.getReleaseVersion(APP_VERSION),
+        'app_version': service.getReleaseVersion(APP_VERSION),
         'metric_type': MetricTypeEnum.XMPP_CONNECTION_TIME,
         'message': 'xmpp connection time',
         'connection_time': CONNECTION_TIME,
@@ -113,8 +111,7 @@ describe('RemoteConsoleService', () => {
         'browser_version': BROWSER_VERSION,
         'user_id': LOCAL_USER_ID,
         'feature_flag': true,
-        'app_version': APP_VERSION,
-        'release_version': service.getReleaseVersion(APP_VERSION),
+        'app_version': service.getReleaseVersion(APP_VERSION),
         'metric_type': MetricTypeEnum.XMPP_CONNECTION_TIME,
         'message': 'xmpp connection time',
         'connection_time': CONNECTION_TIME,
@@ -146,8 +143,7 @@ describe('RemoteConsoleService', () => {
         'browser_version': BROWSER_VERSION,
         'user_id': LOCAL_USER_ID,
         'feature_flag': true,
-        'app_version': APP_VERSION,
-        'release_version': service.getReleaseVersion(APP_VERSION),
+        'app_version': service.getReleaseVersion(APP_VERSION),
         'metric_type': MetricTypeEnum.DUPLICATE_CONVERSATION,
         'message': 'send log when user see duplicate conversation in inbox',
         'call_method_client': LOAD_MORE_CONVERSATIONS,
