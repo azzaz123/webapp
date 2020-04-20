@@ -134,18 +134,18 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private trackCloseModalEvent(modalType: SubscriptionModal) {
-    if (modalType === CancelSubscriptionModalComponent) {
-      const event: AnalyticsEvent<ClickUnsuscribeCancelation> = {
-        name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeCancelation,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          screenId: SCREEN_IDS.ProfileSubscription
-        }
-      };
-      this.analyticsService.trackEvent(event);
+    // if (modalType === CancelSubscriptionModalComponent) {
+    //   const event: AnalyticsEvent<ClickUnsuscribeCancelation> = {
+    //     name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeCancelation,
+    //     eventType: ANALYTIC_EVENT_TYPES.Other,
+    //     attributes: {
+    //       screenId: SCREEN_IDS.ProfileSubscription
+    //     }
+    //   };
+    //   this.analyticsService.trackEvent(event);
 
-      return this.analyticsService.trackEvent(event);
-    }
+    //   return this.analyticsService.trackEvent(event);
+    // }
   }
 
   private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse): SubscriptionModal {
