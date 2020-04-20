@@ -61,7 +61,7 @@
     "ngx-cookie": "4.0.2",
     "ngx-device-detector": "1.3.11",
     "ngx-infinite-scroll": "^6.0.1",
-    "ngx-permissions": "^5.0.0",
+    "ngx-permissions": "^7.0.3",
     "ngx-toastr": "10.2.0",
     "rxjs": "^6.5.5",
     "shelving-mock-indexeddb": "^1.1.0",

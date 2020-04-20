@@ -6816,9 +6816,12 @@ ngx-infinite-scroll@^6.0.1:
   dependencies:
     opencollective "^1.0.3"
 
-ngx-permissions@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/ngx-permissions/-/ngx-permissions-5.0.0.tgz#a5ad8752a5fb3eddd992129c80362da779033d87"
+ngx-permissions@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/ngx-permissions/-/ngx-permissions-7.0.3.tgz#aefc58a14d5a71042277cbdb322560cb6e9b6535"
+  integrity sha512-WwmUcO2IuE5gSgsR+wf23XkJDJzUzQ9iVNOGGfHq7tavdQK1VBY7C0oJOq7+H5vLDSfc+pEDsBwc03lXhq7J1g==
+  dependencies:
+    tslib "^1.9.0"
 
 ngx-toastr@10.2.0:
   version "10.2.0"
