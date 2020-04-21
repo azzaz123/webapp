@@ -474,7 +474,6 @@
   <translation id="7803839229714588038">Mensaje de error</translation>
   <translation id="1531212547408073567">contacta con nosotros</translation>
   <translation id="5849506438355710291">para administrar tu plan.</translation>
-  <translation id="7851668152562197014">Estás intentando activar más coches de los que te permite tu plan.</translation>
   <translation id="8898651038129346696">Por favor deselecciona algunos productos, llama al o</translation>
   <translation id="8497824097226681583">Inactivos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="8771233863417316687">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
@@ -866,16 +865,11 @@
   <translation id="5691966639616932851">Tarjeta de crédito</translation>
   <translation id="6969584346860248976" desc="La distancia entre el usuario y el producto a"><ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km de ti</translation>
   <translation id="7490117399669169777"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Estás intentando activar más items de los que permite tu plan<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
-  <translation id="8210978350459895677"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Has llegado al límite de coches que puedes publicar con una cuenta gratuita<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
   <translation id="6991105239065793562">Por favor, deselecciona algunos productos o</translation>
   <translation id="2513950439336286072">De acuerdo</translation>
   <translation id="3553216189604488439">Modificado</translation>
   <translation id="3897348120591552265">Gestionar</translation>
-  <translation id="957195517515723291"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>¡Has llegado al límite de items que puedes publicar con tu cuenta!<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
-  <translation id="1168925957252341106"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>¡Has llegado al límite de items con tu actual subscripción!<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
   <translation id="8677966578884278103">Conviértete en PRO para publicar más</translation>
-  <translation id="3413192670828382562">Debes actualizar tu suscripción <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>mediante la app de wallapop<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> si quieres publicar más</translation>
-  <translation id="3579719947907220872">Debes actualizar tu suscripción si quieres publicar más</translation>
   <translation id="6654183600047871533">Ir a suscripciones</translation>
   <translation id="9101913686114523660">No, gracias (el item quedará inactivo)</translation>
   <translation id="5035242975964860075">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> más</translation>
@@ -971,7 +965,6 @@
   <translation id="3261431386963936058">Si quieres darte de alta, primero debes ir a la app store y cancelar cualquier suscripción activa.</translation>
   <translation id="8945513634555081527">¿Por qué suscribirte a wallapop PRO?</translation>
   <translation id="6468756919468494280">Ventajas para quienes quieran vender más y mejor</translation>
-
   <translation id="ngb.alert.close">Cerrar</translation>
   <translation id="ngb.carousel.previous">Anterior</translation>
   <translation id="ngb.carousel.next">Siguiente</translation>
@@ -1019,12 +1012,24 @@
   <translation id="2347321246651029433">2. Espera a que expire la vigencia del plan al que te habías suscrito. Consulta la fecha de expiración en el correo que te enviamos cuando te das de baja.</translation>
   <translation id="7589681963132617331">3. Una vez expirado, escoge tu suscripción gratuita aquí en la web.</translation>
   <translation id="5188534013459638497">Date de baja primero desde la app para tu mes gratis</translation>
-
+  <translation id="7157419316905545367"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>¡Has alcanzado el límite de publicación de <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph>!<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
+  <translation id="1534537351372361307"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Estás intentando activar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph> de los que te permite tu plan.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
+  <translation id="7360959010817146974">Debes actualizar tu suscripción <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>mediante la app de wallapop<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> si quieres publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph></translation>
+  <translation id="3575157423161267350">Debes actualizar tu suscripción si quieres publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph></translation>
+  <translation id="2475529887887098318"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Ya has llegado al límite de <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph> que puedes publicar con una cuenta gratuita.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
   <!--Translations using keys-->
   <translation id="cardealerUpgradePlanContact">Para actualizar tu plan, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>{{email}}<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
   <translation id="cardealerSubscribeCityPlan">Para subscribirte a un plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
   <translation id="cardealerChangeCityPlan">Para cambiar tu plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
   <translation id="cardealerSubscribeCountryPlan">Para subscribirte a un plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
   <translation id="cardealerChangeCountryPlan">Para cambiar tu plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
-
+  <translation id="TooManyItemsModalButtonGoToSubscriptions">Elige una suscripción PRO</translation>
+  <translation id="TooManyItemsModalButtonGoToTrial">Comenzar prueba gratuita</translation>
+  <translation id="subscriptionNewModalUntilDate"><ph name="INTERPOLATION"><ex>{{0 | customCurrency}}</ex>{{0 | customCurrency}}</ph> hasta <ph name="INTERPOLATION_1"><ex>{{subscription.trial_days | dateUntilDay}}</ex>{{subscription.trial_days | dateUntilDay}}</ph></translation>
+  <translation id="subscriptionEditModalUntilDate">Empieza en <ph name="INTERPOLATION"><ex>{{subscription.trial_days | dateUntilDay}}</ex>{{subscription.trial_days | dateUntilDay}}</ph></translation>
+  <translation id="SubscriptionPriceDiscountFromPrice">Desde: </translation>
+  <translation id="SubscriptionPriceDiscountMonthFree">Un mes gratis</translation>
+  <translation id="SubscriptionPriceDiscountMonthsFree"><ph name="INTERPOLATION"><ex>{{subscription?.tiers[0]?.discount_available.months}}</ex>{{subscription?.tiers[0]?.discount_available.months}}</ph> meses gratis</translation>
+  <translation id="SubscriptionPriceDiscountDaysTrialFree">Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph>días!</translation>
+  <translation id="TooManyItemsModalTryTrial">Para publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph>, prueba gratis wallapop PRO durante <ph name="INTERPOLATION_1"><ex>{{categorySubscription?.trial_days}}</ex>{{categorySubscription?.trial_days}}</ph> días.</translation>
 </translationbundle>

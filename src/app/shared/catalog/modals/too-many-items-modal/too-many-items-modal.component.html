@@ -16,7 +16,7 @@
         <div *ngIf="type === notSubscribedType">
           <span [hidden]="isFreeTrial">Subscribe to a PRO account to publish more</span>
           <span *ngIf="isFreeTrial" i18n="@@TooManyItemsModalTryTrial">
-            To publish more {{item.categoryId}}, try wallapop PRO with a free {{categorySubscription?.trial_days}}-day trial.
+            To publish more {{categorySubscription?.category_name}}, try wallapop PRO with a free {{categorySubscription?.trial_days}}-day trial.
           </span>
         </div>
         <span i18n *ngIf="type === inAppType">You must upgrade your subscription <b>through the wallapop app</b> if you want to publish more {{categorySubscription?.category_name}}</span>
