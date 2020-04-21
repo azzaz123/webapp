@@ -3,7 +3,7 @@ import { SubscriptionSlot } from '../../../../core/subscriptions/subscriptions.i
 import { AnalyticsService } from '../../../../core/analytics/analytics.service';
 import {
   AnalyticsEvent,
-  ClickCatalogManagementButton,
+  ClickCatalogManagement,
   SCREEN_IDS,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES} from '../../../../core/analytics/analytics-constants';
@@ -38,8 +38,8 @@ export class SubscriptionsSlotItemComponent implements OnInit {
     } else {
       this.selected.emit(subscriptionSlot);
 
-      const event: AnalyticsEvent<ClickCatalogManagementButton> = {
-        name: ANALYTICS_EVENT_NAMES.ClickCatalogManagementButton,
+      const event: AnalyticsEvent<ClickCatalogManagement> = {
+        name: ANALYTICS_EVENT_NAMES.ClickCatalogManagement,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           screenId: SCREEN_IDS.MyProfile

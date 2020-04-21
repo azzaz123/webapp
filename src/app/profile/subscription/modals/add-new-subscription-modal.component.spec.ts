@@ -24,7 +24,7 @@ import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import {
   AnalyticsEvent,
-  ClickContinuePaymentSubscription,
+  ClickSubscriptionContinuePayment,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
@@ -307,8 +307,8 @@ describe('AddNewSubscriptionModalComponent', () => {
   describe('onClickContinueToPayment', () => {
     it('should send event to analytics', () => {
       spyOn(analyticsService, 'trackEvent');
-      const expectedEvent: AnalyticsEvent<ClickContinuePaymentSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ClickContinuePaymentSubscription,
+      const expectedEvent: AnalyticsEvent<ClickSubscriptionContinuePayment> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionContinuePayment,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           screenId: SCREEN_IDS.ProfileSubscription,

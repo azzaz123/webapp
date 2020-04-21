@@ -11,7 +11,7 @@ import { SubscriptionResponse, SubscriptionsResponse, Tier, SUBSCRIPTION_CATEGOR
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import {
   AnalyticsEvent,
-  ClickContinuePaymentSubscription,
+  ClickSubscriptionContinuePayment,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
@@ -248,8 +248,8 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   }
 
   public onClickContinueToPayment() {
-    const event: AnalyticsEvent<ClickContinuePaymentSubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ClickContinuePaymentSubscription,
+    const event: AnalyticsEvent<ClickSubscriptionContinuePayment> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionContinuePayment,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
