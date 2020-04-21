@@ -37,6 +37,9 @@ describe('LoggedGuard', (): void => {
             accessToken: null,
             storeAccessToken(value) {
               this.accessToken = value;
+            },
+            getTokenSignature() {
+              return 'thesignature';
             }
           }
         },

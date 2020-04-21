@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import * as CryptoJS from 'crypto-js';
 
 import { AccessTokenService } from '../access-token.service';
 import { environment } from '../../../../environments/environment';
@@ -10,8 +9,6 @@ import { LOGIN_ENDPOINT } from '../../user/user.service';
 export const TOKEN_AUTHORIZATION_HEADER_NAME = 'Authorization';
 export const TOKEN_TIMESTAMP_HEADER_NAME = 'Timestamp';
 export const TOKEN_SIGNATURE_HEADER_NAME = 'X-Signature';
-export const SECRET =
-  'UTI5dVozSmhkSE1zSUhsdmRTZDJaU0JtYjNWdVpDQnBkQ0VnUVhKbElIbHZkU0J5WldGa2VTQjBieUJxYjJsdUlIVnpQeUJxYjJKelFIZGhiR3hoY0c5d0xtTnZiUT09';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -32,7 +29,7 @@ export class TokenInterceptor implements HttpInterceptor {
         const timestamp = new Date().getTime();
         const endpoint = request.url.replace(environment.baseUrl, '');
         setHeaders[TOKEN_TIMESTAMP_HEADER_NAME] = timestamp.toString();
-        setHeaders[TOKEN_SIGNATURE_HEADER_NAME] = getTokenSignature(endpoint, request.method, timestamp);
+        setHeaders[TOKEN_SIGNATURE_HEADER_NAME] = this.accessTokenService.getTokenSignature(endpoint, request.method, timestamp);
       }
       request = request.clone({ setHeaders });
       return next.handle(request);
@@ -40,10 +37,4 @@ export class TokenInterceptor implements HttpInterceptor {
       return of(new HttpResponse({ status: 401, statusText: 'Unauthorized', body: {} }));
     }
   }
-}
-
-export const getTokenSignature = (url: string, method: string, timestamp: number) => {
-  const separator = '+#+';
-  const signature = ['/' + url.split('?')[0], method, timestamp].join(separator) + separator;
-  return CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(signature, CryptoJS.enc.Base64.parse(SECRET)));
 }

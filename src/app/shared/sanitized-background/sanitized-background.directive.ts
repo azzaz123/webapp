@@ -13,9 +13,9 @@ export class SanitizedBackgroundDirective implements OnChanges {
 
   ngOnChanges(changes?: any) {
     if (this.fallback) {
-      this.renderer.setStyle(this.el.nativeElement, 'backgroundImage', `url(${this.image}), url('${this.fallback}')`);
+      this.renderer.setStyle(this.el.nativeElement, 'backgroundImage', `url("${this.image}"), url("${this.fallback}")`);
     } else {
-      this.renderer.setStyle(this.el.nativeElement, 'backgroundImage', `url(${this.image})`);
+      this.renderer.setStyle(this.el.nativeElement, 'backgroundImage', `url("${this.image}")`);
     }
 
   }
