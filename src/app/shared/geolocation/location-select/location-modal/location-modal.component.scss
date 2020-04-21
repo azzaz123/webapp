@@ -31,7 +31,7 @@ tsl-here-maps {
             .location {
               width: 100%;
               span {
-                width: calc(100% - $spacing-ml);
+                width: calc(100% - #{$spacing-ml});
                 text-overflow: ellipsis;
                 overflow: hidden;
               }
