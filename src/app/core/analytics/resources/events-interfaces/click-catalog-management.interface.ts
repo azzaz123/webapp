@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks on the catalog management button
+ * User clicks on the Catalog Management button
  */
-export interface ClickCatalogManagementButton {
+export interface ClickCatalogManagement {
   /**
-   * Identifier of the screen
+   * Identifier of the User Profile screen
    */
   screenId: 112;
 }

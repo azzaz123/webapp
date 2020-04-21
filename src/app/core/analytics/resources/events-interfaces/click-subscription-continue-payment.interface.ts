@@ -6,15 +6,15 @@
  */
 
 /**
- * Button continue with the payment after selecting tier
+ * User clicks continue payment button after selecting subscription
  */
-export interface ClickContinuePaymentSubscription {
+export interface ClickSubscriptionContinuePayment {
   /**
    * Subscription category type
    */
   subscription: 0 | 100 | 14000 | 12800;
   /**
-   * Tier of the subscription
+   * Identifier of the subscription tier
    */
   tier: string;
   /**
@@ -22,7 +22,7 @@ export interface ClickContinuePaymentSubscription {
    */
   isNewSubscriber: boolean;
   /**
-   * Identifier of the screen
+   * Identifier of the Profile Subscription screen
    */
   screenId: 206;
 }
