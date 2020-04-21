@@ -1,27 +1,23 @@
 <div *ngxPermissionsOnly="['isProfessional']" class="header">
-  <h2><span i18n>Your Messages</span> <span class="badge badge-pro"><mat-icon svgIcon="pro-seal"></mat-icon>Pro</span>
+  <h2>
+    <span i18n="@@yourMessages">Your Messages</span>
+    <tsl-pro-badge></tsl-pro-badge>
   </h2>
 </div>
 
 <div class="inbox-header-menu" *ngIf="shouldDisplayHeader()">
-  //TODO uncomment when section archived conversation can be removed
-  <!--<div ngbDropdown placement="bottom-left" class="inbox-header-menu" *ngIf="shouldDisplayHeader()">-->
   <div class="dropdown-header">
-    <!--  <div ngbDropdownToggle class="dropdown-header">-->
-    <div *ngIf="isInbox" class="header-title" i18n>Inbox</div>
-    <!--    <div *ngIf="isArchived" class="header-title" i18n>Archived Messages</div>-->
-    <!--    <mat-icon class="header-icon" svgIcon="arrow-waterfall"></mat-icon>-->
+    <div *ngIf="isInbox" class="header-title" i18n="@@inboxTitle">Inbox</div>
   </div>
   <ul class="dropdown-menu">
-    <!--  <ul ngbDropdownMenu class="dropdown-menu">-->
     <li class="dropdown-item" [ngClass]="{'active': isInbox}" (click)="showInbox()">
       <a>
-        <span i18n>Inbox</span>
+        <span i18n="@@inboxBox">Inbox</span>
       </a>
     </li>
     <li class="dropdown-item" [ngClass]="{'active': isArchived}" (click)="showArchive()">
       <a>
-        <span i18n>Archived Messages</span>
+        <span i18n="@@inboxArchivedBox">Archived Messages</span>
       </a>
     </li>
   </ul>

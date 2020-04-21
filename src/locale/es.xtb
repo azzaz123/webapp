@@ -17,7 +17,9 @@
 <translationbundle lang="es">
   <translation id="33149636091572968">Cargar más</translation>
   <translation id="7579940623714391431">Borrar conversación</translation>
+  <translation id="deleteConversation">Borrar conversación</translation>
   <translation id="5762515103229902547">Se procederá a borrar la conversación.</translation>
+  <translation id="deleteConversationWarring">Se procederá a borrar la conversación.</translation>
   <translation id="2159130950882492111">Cancelar</translation>
   <translation id="7022070615528435141">Borrar</translation>
   <translation id="7008439939460403347">Reportar</translation>
@@ -346,7 +348,7 @@
   <translation id="124288245683167765">¡Márcalo como urgente!</translation>
   <translation id="1388549121916575785">Tu producto ya se ha subido y está marcado como urgente</translation>
   <translation id="6771710083447673223">Marcado como urgente</translation>
-  <translation id="6146618115870222180">Tus Mensajes</translation>
+  <translation id="yourMessages">Tus Mensajes</translation>
   <translation id="8848709900682152607">Marcar todo como Procesado</translation>
   <translation id="4749295647449765550">Procesado</translation>
   <translation id="1798778629973365531">Sin denuncias</translation>
@@ -781,8 +783,9 @@
   <translation id="6105231501608810838">Servicio no disponible por el momento.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
             Inténtelo de nuevo más tarde.</translation>
   <translation id="7913053333994057167">Desarchivar conversación</translation>
-  <translation id="799485662157076328">Bandeja de Entrada</translation>
-  <translation id="2247942788262300865">Mensajes Archivados</translation>
+  <translation id="inboxTitle">Bandeja de Entrada</translation>
+  <translation id="inboxBox">Bandeja de Entrada</translation>
+  <translation id="inboxArchivedBox">Mensajes Archivados</translation>
   <translation id="8721026914522212662">Archivado</translation>
   <translation id="3644199581629588381">Escoge el género de la prenda</translation>
   <translation id="45739481977493163">Talla</translation>
@@ -816,8 +819,8 @@
   <translation id="6184998176074927571" desc="La distancia entre el usuario y el item">
       <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km de ti
   </translation>
-  <translation id="7238711418435054042">Hemos encontrado algún problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
-  <translation id="265020643835790616">Hemos encontrado algún problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
+  <translation id="6874509246509696354">Hemos encontrado un problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
+  <translation id="584537771740074660">Hemos encontrado un problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
   <translation id="6721544969146753310">Gracias por la valoración</translation>
   <translation id="2094431645371030704">Precio financiado (opcional)</translation>
   <translation id="8147495527699050606">Precio final financiado</translation>
