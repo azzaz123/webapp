@@ -1047,11 +1047,10 @@
   version "2.9.9-rc.1"
   resolved "https://registry.yarnpkg.com/@mparticle/web-sdk/-/web-sdk-2.9.9-rc.1.tgz#23424ce279945ac79b285e624e769db43ffe4528"
 
-"@ng-bootstrap/ng-bootstrap@4.2.2":
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-4.2.2.tgz#a1c3a9576656cb4f793bbc3df56dfbdeb098f2fb"
-  dependencies:
-    tslib "^1.9.0"
+"@ng-bootstrap/ng-bootstrap@6.0.3":
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-6.0.3.tgz#cac484944434b9171dd90e49bb5175a2d9939dcf"
+  integrity sha512-l3uD8Zxee5ezrlQUo5+OUibBXM/29WinQR/55Ec09neymjurnjzLdfjKKK3QHsZpgleUIRZ5eR6ENTOtPXn36g==
 
 "@ngtools/webpack@9.1.1":
   version "9.1.1"
@@ -9455,9 +9454,9 @@ stable@^0.1.8:
   resolved "https://registry.yarnpkg.com/stable/-/stable-0.1.8.tgz#836eb3c8382fe2936feaf544631017ce7d47a3cf"
   integrity sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w==
 
-"stanza.io@https://github.com/Wallapop/stanza.io#v8.0.4":
+"stanza.io@https://github.com/Wallapop/stanza.io#v8.0.5":
   version "8.0.4"
-  resolved "https://github.com/Wallapop/stanza.io#352a7615aef432e6b6efe1a618c7caf8e41830a9"
+  resolved "https://github.com/Wallapop/stanza.io#d087158818951926afde5e8c05921da177402b34"
   dependencies:
     alt-sasl-digest-md5 "^1.0.0"
     async "^1.4.0"
