@@ -8,7 +8,7 @@
 /**
  * User views the section of favorite profiles
  */
-export interface ViewFavoriteProfilesSection {
+export interface ViewFavoriteProfiles {
   /**
    * Identifier of the my favorite profiles section screen
    */
