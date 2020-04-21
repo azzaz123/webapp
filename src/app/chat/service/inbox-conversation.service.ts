@@ -25,6 +25,7 @@ export class InboxConversationService {
   private API_URL = 'bff/messaging/conversation/';
   private ARCHIVE_URL = 'api/v3/instant-messaging/conversations/archive';
   private UNARCHIVE_URL = 'api/v3/instant-messaging/conversations/unarchive';
+  private CONVERSATION_V3_URL = 'api/v3/conversations';
 
   private _selfId: string;
 
@@ -331,5 +332,11 @@ export class InboxConversationService {
     .filter((message: InboxMessage) => message.status === MessageStatus.PENDING
       && moment(message.date).isAfter(moment().subtract(InboxConversationService.RESEND_BEFORE_5_DAYS, 'days')))
     .forEach((message: InboxMessage) => this.realTime.resendMessage(conversation, message));
+  }
+
+  public addPhoneNumberToConversation$(inboxConversation: InboxConversation, phoneNumber: string): Observable<any> {
+    return this.httpClient.put(`${environment.baseUrl}${this.CONVERSATION_V3_URL}/${inboxConversation.id}/buyer-phone-number`, {
+      phone_number: phoneNumber
+    });
   }
 }
