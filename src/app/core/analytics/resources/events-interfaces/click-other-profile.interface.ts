@@ -8,7 +8,7 @@
 /**
  * Users click on user profile of another user displayed in different screens
  */
-export interface ClickOtherProfileCard {
+export interface ClickOtherProfile {
   /**
    * Identifier of the screen that the user profile was clicked from
    */
