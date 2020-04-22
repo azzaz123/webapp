@@ -300,7 +300,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
       attributes: {
         subscription: CATEGORY_IDS.CAR as 100,
         screenId: SCREEN_IDS.CarsSubscription,
-        isNewSubscriber: !this.isNewSubscriber
+        isNewSubscriber: this.isNewSubscriber
       }
     };
 

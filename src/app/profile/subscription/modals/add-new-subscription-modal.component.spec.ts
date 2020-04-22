@@ -14,7 +14,8 @@ import {
   SUBSCRIPTION_SUCCESS,
   TIER,
   MAPPED_SUBSCRIPTIONS,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+  SUBSCRIPTIONS_NOT_SUB
 } from '../../../../tests/subscriptions.fixtures.spec';
 import { STRIPE_CARD, FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
@@ -28,8 +29,10 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
-  ClickPaySubscription
+  ClickSubscriptionDirectContact
 } from '../../../core/analytics/analytics-constants';
+import { By } from '@angular/platform-browser';
+import { CATEGORY_IDS } from '../../../core/category/category-ids';
 
 describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
@@ -118,6 +121,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     analyticsService = TestBed.get(AnalyticsService);
     component.card = STRIPE_CARD;
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
+    component.isNewSubscriber = false;
     fixture.detectChanges();
     spyOn(component, 'reloadPage').and.returnValue(() => {});
   });
@@ -380,6 +384,31 @@ describe('AddNewSubscriptionModalComponent', () => {
       expect(carouselIndicatorsElement).toBeNull();
       expect(stepsIndicatorElement).toBeNull();
       expect(changeButton).toBeNull();
+    });
+  });
+
+  describe('tracking', () => {
+    describe('when the user clicks on the contact us directly on the car dealer link', () => {
+      it('should send event to analytics', () => {
+        const carDealerLinkElement = fixture.debugElement.query(By.css('AddNewSubscription__listing-limit-more > a')).nativeElement;
+        const expectedEvent: AnalyticsEvent<ClickSubscriptionDirectContact> = {
+          name: ANALYTICS_EVENT_NAMES.ClickSubscriptionDirectContact,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            subscription: CATEGORY_IDS.CAR as 100,
+            screenId: SCREEN_IDS.CarsSubscription,
+            isNewSubscriber: !component.isNewSubscriber
+          }
+        };
+        spyOn(analyticsService, 'trackEvent');
+        component.subscription = SUBSCRIPTIONS_NOT_SUB[0];
+        fixture.detectChanges();
+
+        carDealerLinkElement.click();
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
     });
   });
 });
