@@ -149,18 +149,6 @@
   }
 }
 
-
-tsl-inbox-user-detail {
-  .user-info {
-    background-color: darkred !important;
-
-    .card-block {
-      background-color: darkred;
-      margin-left: 0;
-    }
-  }
-}
-
 .collapsed {
   .sm-device-container {
     width: 80%;
@@ -217,10 +205,4 @@ tsl-inbox-user-detail {
     transition: opacity 1s ease-in-out;
     transition-delay: .5s;
   }
-}
-
-.ellipsis {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
 }

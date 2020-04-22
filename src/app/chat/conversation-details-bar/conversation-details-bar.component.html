@@ -1,5 +1,5 @@
 <div class="top-bar" [ngClass]="{'faded': !currentConversation.user.available, 'expanded': isExpanded}">
-  <mat-icon svgIcon="back-arrow" class="d-xl-none d-lg-none back-arrow" (click)="navigationBack()"></mat-icon>
+  <mat-icon svgIcon="back-arrow" class="d-lg-none back-arrow" (click)="navigationBack()"></mat-icon>
 
   <div class="lg-device-container d-none d-lg-inline-flex">
     <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
@@ -12,12 +12,12 @@
     <h5>{{currentConversation?.user.microName}}</h5>
   </div>
 
-  <div class="sm-device-container d-xl-none d-lg-none"
+  <div class="sm-device-container d-lg-none"
        [ngClass]="{'expanded': isExpanded, 'faded': !currentConversation.user.available}">
 
     <div class="avatar-container">
       <div class="avatar">
-        <tsl-item-avatar [item]="currentConversation.item" class="hidden-md-up"
+        <tsl-item-avatar [item]="currentConversation.item"
                          size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
       </div>
     </div>
@@ -25,10 +25,9 @@
     <div (click)="expand()" class="item-details">
       <div *ngIf="currentConversation.item.price">
         {{currentConversation.item.price.amount | customCurrency:currentConversation.item.price.currency}}</div>
-      <div class="ellipsis">{{currentConversation.item.title}}</div>
+      <div class="text-truncate">{{currentConversation.item.title}}</div>
 
-      <div [ngClass]="{'user-detail-dropdown': isExpanded}"
-           class="user-detail hidden-xl-up">
+      <div [ngClass]="{'user-detail-dropdown': isExpanded}" class="user-detail">
         <hr *ngIf="isExpanded">
         <tsl-inbox-user-detail [item]="currentConversation.item"
                                [user]="currentConversation.user"
