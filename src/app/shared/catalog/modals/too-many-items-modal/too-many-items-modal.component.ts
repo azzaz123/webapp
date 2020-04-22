@@ -27,7 +27,7 @@ export class TooManyItemsModalComponent implements OnInit {
   ngOnInit() {
   }
 
-  public trackClickGoToSubscriptionsCTA() {
+  public trackClickGoToSubscriptions() {
     const event: AnalyticsEvent<ClickSubscriptionLimitReached> = {
       name: ANALYTICS_EVENT_NAMES.ClickSubscriptionLimitReached,
       eventType: ANALYTIC_EVENT_TYPES.Other,
