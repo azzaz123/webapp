@@ -10,7 +10,7 @@
  */
 export interface ClickCatalogManagement {
   /**
-   * Identifier of the User Profile screen
+   * Identifier of the User Catalog screen
    */
-  screenId: 112;
+  screenId: 217;
 }
