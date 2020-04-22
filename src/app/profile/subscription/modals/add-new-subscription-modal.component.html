@@ -46,10 +46,13 @@
                 </span>
               </div>
               <div class="text-right">
-                <div *ngIf="isFreeTier(selectedTier)" class="AddNewSubscription__free-months">
+                <div *ngIf="isFreeTier(selectedTier) && !hasTrial(subscription)" class="AddNewSubscription__free-months">
                   <b *ngIf="selectedTier.discount_available.months === 1" i18n>One month free</b>
                   <b *ngIf="selectedTier.discount_available.months > 1" i18n>{{selectedTier.discount_available.months}} months free</b>
                 </div>
+                <div *ngIf="hasTrial(subscription)" class="AddNewSubscription__free-months">
+                    <b i18n="@@AddNewSubscriptionDaysFree">{{subscription.trial_days}} days free</b>
+                  </div>
                 <div *ngIf="isDiscountedTier(selectedTier)" class="AddNewSubscription__price-after-discount" i18n>
                   Then {{selectedTier.price}}{{selectedTier.currency}}/month
                 </div>

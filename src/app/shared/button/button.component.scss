@@ -84,7 +84,11 @@ $vertical-padding: $spacing-ms;
     font-size: $font-size-s;
     padding: $spacing-ms $spacing-ml;
   }
-  &.stripe, &.payment {
+  &.stripe {
+    padding: $spacing-s $spacing-ml;
+  }
+
+  &.payment {
     padding: 0 $spacing-ml;
   }
 }
