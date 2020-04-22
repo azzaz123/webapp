@@ -6,7 +6,13 @@ import { MOCK_SUBSCRIPTION_SLOT_CARS } from '../../../../../tests/subscriptions.
 import { CATEGORY_DATA_WEB } from '../../../../../tests/category.fixtures.spec';
 import { AnalyticsService } from '../../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../../tests/analytics.fixtures.spec';
-import { AnalyticsEvent, ClickCatalogManagmentButton, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS } from '../../../../core/analytics/analytics-constants';
+import {
+  AnalyticsEvent,
+  ClickCatalogManagement,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  SCREEN_IDS
+} from '../../../../core/analytics/analytics-constants';
 
 describe('SubscriptionsSlotItemComponent', () => {
   let component: SubscriptionsSlotItemComponent;
@@ -83,8 +89,8 @@ describe('SubscriptionsSlotItemComponent', () => {
 
     it('should send event to analytics', () => {
       component.selectedSubscriptionSlot = null;
-      const expectedEvent: AnalyticsEvent<ClickCatalogManagmentButton> = {
-        name: ANALYTICS_EVENT_NAMES.ClickCatalogManagmentButton,
+      const expectedEvent: AnalyticsEvent<ClickCatalogManagement> = {
+        name: ANALYTICS_EVENT_NAMES.ClickCatalogManagement,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           screenId: SCREEN_IDS.MyProfile
