@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { SUBSCRIPTION_TYPES } from '../../../../core/subscriptions/subscriptions.service';
+import { AnalyticsEvent, ClickSubscriptionLimitReached, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS } from '../../../../core/analytics/analytics-constants';
+import { AnalyticsService } from '../../../../core/analytics/analytics.service';
 
 @Component({
   selector: 'tsl-too-many-items-modal',
@@ -19,8 +21,21 @@ export class TooManyItemsModalComponent implements OnInit {
   public categoryName: string;
   public categoryIconName: string;
 
-  constructor(public activeModal: NgbActiveModal) { }
+  constructor(public activeModal: NgbActiveModal,
+    private analyticsService: AnalyticsService) { }
 
   ngOnInit() {
+  }
+
+  public trackClickGoToSubscriptionsCTA() {
+    const event: AnalyticsEvent<ClickSubscriptionLimitReached> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionLimitReached,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        screenId: SCREEN_IDS.MyProfile,
+      }
+    };
+
+    this.analyticsService.trackEvent(event);
   }
 }
