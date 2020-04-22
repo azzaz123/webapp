@@ -93,7 +93,7 @@ describe('SubscriptionsSlotItemComponent', () => {
         name: ANALYTICS_EVENT_NAMES.ClickCatalogManagement,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: SCREEN_IDS.MyProfile
+          screenId: SCREEN_IDS.MyCatalog
         }
       };
       spyOn(analyticsService, 'trackEvent');
