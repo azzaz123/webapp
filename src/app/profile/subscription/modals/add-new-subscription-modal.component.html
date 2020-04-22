@@ -88,7 +88,7 @@
             </div>
             <div
               class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--right">
-              <span *ngIf="!isDiscountedTier(selectedTier) && !isFreeTier(selectedTier)" class="AddNewSubscription__listing-limit-price--selected"
+              <span *ngIf="!isDiscountedTier(selectedTier) && !isFreeTier(selectedTier) && !hasTrial(subscription)" class="AddNewSubscription__listing-limit-price--selected"
                 i18n>{{selectedTier.price}}{{selectedTier.currency}}/month</span>
               <div *ngIf="isDiscountedTier(selectedTier) && !isFreeTier(selectedTier) && !hasTrial(subscription)" class="AddNewSubscription__listing-limit-price--selected"
                 i18n>{{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}/month</div>
@@ -128,8 +128,13 @@
               <tsl-button [hidden]="!savedCard" [disabled]="!selectedCard || loading" [loading]="loading"
                 (click)="addSubscriptionFromSavedCard(); onClickPay(false);" id="qa-checkout-subscription"
                 className="btn-primary btn-medium stripe">
-                  <span *ngIf="!isDiscountedTier(selectedTier)" i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}</span>
-                  <span *ngIf="isDiscountedTier(selectedTier)" i18n>Pay {{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}</span>
+                  <div *ngIf="!hasTrial(subscription)">
+                    <span *ngIf="!isDiscountedTier(selectedTier)" i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}</span>
+                    <span *ngIf="isDiscountedTier(selectedTier)" i18n>Pay {{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}</span>
+                  </div>
+                  <div *ngIf="hasTrial(subscription)">
+                    <span i18n="@@AddNewModalSubscribeNow">Try the {{subscription?.trial_days}}-day trial for free!</span>
+                  </div>
               </tsl-button>
             </div>
           </div>
