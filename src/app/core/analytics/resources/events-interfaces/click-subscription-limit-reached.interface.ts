@@ -6,11 +6,11 @@
  */
 
 /**
- * user clicks subscription button on the limit reached screen
+ * User clicks subscription button on the limit reached screen
  */
 export interface ClickSubscriptionLimitReached {
   /**
-   * Identifier of the screen
+   * Identifier of the My Catalog screen
    */
-  screenId: 112;
+  screenId: 217;
 }
