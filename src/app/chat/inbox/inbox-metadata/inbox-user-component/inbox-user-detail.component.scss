@@ -61,10 +61,22 @@ a.user-info {
   }
 
   .avatar-block {
-    tsl-status-icon {
+    position: relative;
+
+    .status-block {
       position: absolute;
-      top: $line-height-xxl;
-      right: 36px;
+      height: $font-size-m;
+      width: $font-size-m;
+
+      &.status-block-40 {
+        top: $spacing-xl;
+        right: $spacing-ms;
+      }
+
+      &.status-block-50 {
+        top: 40px;
+        right: $spacing-ms;
+      }
     }
   }
 }

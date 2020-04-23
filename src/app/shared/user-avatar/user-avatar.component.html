@@ -3,11 +3,9 @@
   [tslsanitizedBackground]="avatar"
   [fallback]="fallback"
   class="avatar-rounded"
-  [ngClass]="'avatar-' + size">
-  <tsl-status-icon [blocked]="user.blocked" [unavailable]="!user.available"></tsl-status-icon>
-</div>
+  [ngClass]="'avatar-' + size"></div>
 
 <img *ngIf="uploadedAvatar"
      [src]="uploadedAvatar"
      class="avatar-rounded"
-     [ngClass]="'avatar-' + size"/>
+     [ngClass]="'avatar-' + size" />

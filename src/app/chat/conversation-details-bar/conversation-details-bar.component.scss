@@ -28,6 +28,11 @@
       opacity: 0.9;
     }
 
+    tsl-status-icon {
+      position: absolute;
+      top: 36px;
+      left: $spacing-xxl;
+    }
 
     .item-details {
       padding: 5px 0;
@@ -62,6 +67,12 @@
     .user-avatar {
       transition: opacity 1s ease-in-out;
       opacity: 1;
+
+      tsl-status-icon {
+        position: absolute;
+        top: $spacing-l;
+        left: $spacing-l;
+      }
     }
 
     &.expanded .user-avatar {
@@ -146,12 +157,6 @@
         border: 0;
       }
     }
-  }
-}
-
-.collapsed {
-  .sm-device-container {
-    width: 80%;
   }
 }
 

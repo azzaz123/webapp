@@ -5,6 +5,8 @@
     <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
        target="_blank" class="user-avatar">
       <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
+      <tsl-status-icon [blocked]="this.currentConversation.user.blocked"
+                       [unavailable]="!this.currentConversation.user.available"></tsl-status-icon>
     </a>
     <tsl-user-avatar *ngIf="!currentConversation?.user.profileUrl" [user]="this.currentConversation.user" size="40">
     </tsl-user-avatar>
@@ -42,6 +44,8 @@
       <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
          target="_blank" class="user-avatar">
         <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
+        <tsl-status-icon [blocked]="this.currentConversation.user.blocked"
+                         [unavailable]="!this.currentConversation.user.available"></tsl-status-icon>
       </a>
     </div>
 

@@ -29,14 +29,7 @@ div {
 }
 
 .avatar-rounded {
-  position: relative;
   background-size: cover;
   border-radius: 50%;
   background-position: center;
-
-  tsl-status-icon {
-    position: absolute;
-    right: 20px;
-    bottom: 16px;
-  }
 }
