@@ -21,17 +21,7 @@ describe('RemoteConsoleService', () => {
   let service: RemoteConsoleService;
   let remoteConsoleClientService: RemoteConsoleClientService;
   let userService: UserService;
-
-  const commonLog = {
-    'timestamp': 4000,
-    'client': 'WEB',
-    'device_id': DEVICE_ID,
-    'browser': BROWSER,
-    'browser_version': BROWSER_VERSION,
-    'user_id': USER_ID,
-    'feature_flag': true,
-    'app_version': APP_VERSION,
-  };
+  let commonLog = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -53,6 +43,19 @@ describe('RemoteConsoleService', () => {
     userService = TestBed.get(UserService);
 
     service.deviceId = DEVICE_ID;
+  });
+
+  beforeEach(() => {
+    commonLog = {
+      'timestamp': 4000,
+      'client': 'WEB',
+      'device_id': DEVICE_ID,
+      'browser': BROWSER,
+      'browser_version': BROWSER_VERSION,
+      'user_id': USER_ID,
+      'feature_flag': true,
+      'app_version': service.getReleaseVersion(APP_VERSION)
+    };
   });
 
   afterEach(() => {
@@ -80,7 +83,7 @@ describe('RemoteConsoleService', () => {
         'browser_version': BROWSER_VERSION,
         'user_id': LOCAL_USER_ID,
         'feature_flag': true,
-        'app_version': APP_VERSION,
+        'app_version': service.getReleaseVersion(APP_VERSION),
         'metric_type': MetricTypeEnum.XMPP_CONNECTION_TIME,
         'message': 'xmpp connection time',
         'connection_time': CONNECTION_TIME,
@@ -108,7 +111,7 @@ describe('RemoteConsoleService', () => {
         'browser_version': BROWSER_VERSION,
         'user_id': LOCAL_USER_ID,
         'feature_flag': true,
-        'app_version': APP_VERSION,
+        'app_version': service.getReleaseVersion(APP_VERSION),
         'metric_type': MetricTypeEnum.XMPP_CONNECTION_TIME,
         'message': 'xmpp connection time',
         'connection_time': CONNECTION_TIME,
@@ -140,7 +143,7 @@ describe('RemoteConsoleService', () => {
         'browser_version': BROWSER_VERSION,
         'user_id': LOCAL_USER_ID,
         'feature_flag': true,
-        'app_version': APP_VERSION,
+        'app_version': service.getReleaseVersion(APP_VERSION),
         'metric_type': MetricTypeEnum.DUPLICATE_CONVERSATION,
         'message': 'send log when user see duplicate conversation in inbox',
         'call_method_client': LOAD_MORE_CONVERSATIONS,
@@ -351,6 +354,19 @@ describe('RemoteConsoleService', () => {
         'message': '',
         'ping_time_ms': navigator['connection']['rtt']
       });
+    }));
+  });
+
+  describe('getReleaseVersion', () => {
+
+    it('should return release version', fakeAsync(() => {
+      expect(service.getReleaseVersion('1')).toEqual(1);
+      expect(service.getReleaseVersion('1.9')).toEqual(1009);
+      expect(service.getReleaseVersion('1.2.5')).toEqual(1002005);
+      expect(service.getReleaseVersion('1.20.5')).toEqual(1020005);
+      expect(service.getReleaseVersion('1.320.512')).toEqual(1320512);
+      expect(service.getReleaseVersion('23.320.512')).toEqual(23320512);
+      expect(service.getReleaseVersion('157.320.512')).toEqual(157320512);
     }));
   });
 });
