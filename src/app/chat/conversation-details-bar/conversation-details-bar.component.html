@@ -18,10 +18,10 @@
        [ngClass]="{'expanded': isExpanded, 'faded': !currentConversation.user.available}">
 
     <div class="avatar-container">
-      <div class="avatar">
+      <a href="{{ currentConversation?.item.itemUrl }}" target="_blank" class="avatar">
         <tsl-item-avatar [item]="currentConversation.item"
                          size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
-      </div>
+      </a>
     </div>
 
     <div (click)="expand()" class="item-details">
