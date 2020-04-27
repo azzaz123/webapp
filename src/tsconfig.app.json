@@ -5,11 +5,18 @@
     "baseUrl": "./",
     "types": ["heremaps"]
   },
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
   "include": [
     "./"
   ],
   "exclude": [
     "test.ts",
     "**/*.spec.ts",
-  ]
+  ],
+  "angularCompilerOptions": {
+    "enableIvy": false
+ }
 }

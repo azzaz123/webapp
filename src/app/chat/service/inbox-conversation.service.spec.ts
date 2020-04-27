@@ -48,7 +48,10 @@ describe('InboxConversationService', () => {
         { provide: RealTimeService, useClass: RealTimeServiceMock },
         {
           provide: AccessTokenService, useValue: {
-            accessToken: 'ACCESS_TOKEN'
+            accessToken: 'ACCESS_TOKEN',
+            getTokenSignature() {
+              return 'thesignature';
+            }
           }
         },
         { provide: RemoteConsoleService, useClass: RemoteConsoleClientServiceMock },

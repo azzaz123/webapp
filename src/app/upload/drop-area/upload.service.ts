@@ -1,5 +1,5 @@
 import { AccessTokenService } from './../../core/http/access-token.service';
-import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME, TokenInterceptor, getTokenSignature } from './../../core/http/interceptors/token.interceptor';
+import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME } from './../../core/http/interceptors/token.interceptor';
 import { EventEmitter, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
@@ -111,7 +111,7 @@ export class UploadService {
 
   private getUploadHeaders(url: string, additionalHeaders?: any): any {
     const timestamp = new Date().getTime();
-    const signature = getTokenSignature(url, 'POST', timestamp);
+    const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
 
     return {
       ...additionalHeaders,

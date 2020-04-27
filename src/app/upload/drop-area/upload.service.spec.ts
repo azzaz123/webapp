@@ -9,7 +9,6 @@ import { ITEM_ID } from '../../../tests/item.fixtures.spec';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { ITEM_TYPES } from '../../core/item/item';
 import { UploadInput } from '../../shared/uploader/upload.interface';
-import * as tokenInterceptor from './../../core/http/interceptors/token.interceptor';
 
 describe('UploadService', () => {
 
@@ -29,7 +28,10 @@ describe('UploadService', () => {
         UploadService,
         {
           provide: AccessTokenService, useValue: {
-            accessToken: 'thetoken'
+            accessToken: 'thetoken',
+            getTokenSignature() {
+              return 'thesignature';
+            }
           }
         }
       ]
@@ -41,8 +43,6 @@ describe('UploadService', () => {
       response = r;
     });
 
-    const tokenSpy = jasmine.createSpy('getTokenSignature').and.returnValue('thesignature');
-    spyOnProperty(tokenInterceptor, 'getTokenSignature', 'get').and.returnValue(tokenSpy);
     spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
   });
 
@@ -163,7 +163,7 @@ describe('UploadService', () => {
             })
           },
           headers: {
-            ...headers, 
+            ...headers,
             'X-DeviceOS': '0'
           },
           file: UPLOAD_FILE

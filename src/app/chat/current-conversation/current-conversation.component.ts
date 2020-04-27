@@ -48,8 +48,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   @Input() conversationsTotal: number;
   @Input() connectionError: boolean;
   @Input() loadingError: boolean;
-  @ViewChild('scrollElement', { static: false }) private scrollElement: ElementRef;
-  @ViewChild('userWarringNotification', { static: false }) private userWarringNotification: ElementRef;
+  @ViewChild('scrollElement') private scrollElement: ElementRef;
+  @ViewChild('userWarringNotification') private userWarringNotification: ElementRef;
 
   public momentConfig: any;
   private newMessageSubscription: Subscription;

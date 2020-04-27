@@ -28,8 +28,8 @@ export class TopbarComponent implements OnInit {
   public homeUrl: string;
   public model: any;
   @Input() isMyZone: boolean;
-  @ViewChild('categoryEl', { static: false }) categoryEl: ElementRef;
-  @ViewChild('kwsEl', { static: false }) kwsEl: ElementRef;
+  @ViewChild('categoryEl') categoryEl: ElementRef;
+  @ViewChild('kwsEl') kwsEl: ElementRef;
   public isProfessional: boolean;
   public wallacoins: number = 0;
   public currencyName: string;
