@@ -14,7 +14,7 @@ a.user-info {
   &.device-small .card-block {
     .card-title {
       margin-bottom: $spacing-xs;
-      font-weight: lighter;
+      font-weight: normal;
     }
 
     tsl-stars {
@@ -22,7 +22,9 @@ a.user-info {
     }
 
     .user-location-distance, .user-response-rate {
-      margin-bottom: 2px;
+      margin-bottom: $spacing-xs;
+      color: $blue-grey-2;
+      font-weight: normal;
       mat-icon {
         float: left;
         fill: #B0BEC5;
