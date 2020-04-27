@@ -282,7 +282,7 @@
   <msg id="4418606013051113523"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.html:15,16</source>Feature it as ASAP for <ph name="INTERPOLATION"><ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ph>
     <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
   <msg id="2091018015289565203"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.html:19</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.html:16</source><source>app/catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component.html:16</source>Share it with your friends:</msg>
-  <msg id="5411836089142777830"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:4</source><source>app/catalog/list/list.component.html:37</source><source>app/catalog/checkout/checkout.component.html:9</source>What can features do for you?</msg>
+  <msg id="5411836089142777830"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:4</source><source>app/catalog/list/list.component.html:38</source><source>app/catalog/checkout/checkout.component.html:9</source>What can features do for you?</msg>
   <msg id="6763447295092579753"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:5,7</source>By featuring your item you will make it more visible to the restof the community thanks to its special
                 features. What will that give to you? Basically, that more people will contact you and you&apos;ll sell your
                 items quicker. Take a look at which of the following suits you best. </msg>
@@ -320,10 +320,11 @@
   <msg id="7588966777090643410"><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:6</source>Your car is published for 60 days. You can find it in your catalog.</msg>
   <msg id="3797778920049399855"><source>app/catalog/list/list.component.html:22</source><source>app/profile/profile.component.html:20</source>Logout</msg>
   <msg id="5433688037539750263"><source>app/catalog/list/list.component.html:25</source>Your products</msg>
-  <msg id="140771848071043686"><source>app/catalog/list/list.component.html:31,32</source>Here you can list items, manage the ones you already have and featured to
-          sell them faster</msg>
-  <msg id="442085080206895883"><source>app/catalog/list/list.component.html:45</source>products</msg>
-  <msg id="776785241867401546"><source>app/catalog/list/list.component.html:46</source>product</msg>
+  <msg id="ListComponentHeaderSubtitle"><source>app/catalog/list/list.component.html:31,33</source>
+          Here you can list items, manage the ones you already have and activate featured to sell them faster
+        </msg>
+  <msg id="442085080206895883"><source>app/catalog/list/list.component.html:46</source>products</msg>
+  <msg id="776785241867401546"><source>app/catalog/list/list.component.html:47</source>product</msg>
   <msg id="8890553633144307762"><source>app/catalog/checkout/checkout.component.html:3</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:8</source><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:3</source><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:4</source>Back</msg>
   <msg id="833919813165214228"><source>app/catalog/checkout/checkout.component.html:14</source>Feature it locally</msg>
   <msg id="4721342773618175343"><source>app/catalog/checkout/checkout.component.html:15</source>Feature it provincially</msg>
@@ -344,7 +345,7 @@
   <msg id="8061241481597934094"><source>app/catalog/list/selected-items/selected-items.component.html:15,16</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ph> items selected
                 </msg>
   <msg id="3897348120591552265"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:15</source>Manage</msg>
-  <msg id="5035242975964860075"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:17</source>You can publish <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> more</msg>
+  <msg id="SubscriptionsSlotItemPublishMore"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:17</source>You can list <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> more <ph name="INTERPOLATION_1"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></msg>
   <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.html:23</source>Not Available</msg>
   <msg id="5653113390991708232"><source>app/reviews/review-item/review-item.component.html:22</source>Sold:</msg>
   <msg id="4179349933130995178"><source>app/reviews/review-item/review-item.component.html:23</source>Bought:</msg>
