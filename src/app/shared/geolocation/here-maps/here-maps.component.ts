@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 
 export const MAP_ZOOM_GENERAL = 5;
@@ -15,7 +15,7 @@ export const DEFAULT_COORDINATES: Coordinate = {
   templateUrl: './here-maps.component.html',
   styleUrls: ['./here-maps.component.scss']
 })
-export class HereMapsComponent implements OnInit, OnChanges {
+export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() coordinates: Coordinate;
   @Input() zoom = MAP_ZOOM_GENERAL;
@@ -29,21 +29,21 @@ export class HereMapsComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.initializePlatform();
+  }
 
-    setTimeout(() => {
-      const defaultLayers = this.platform.createDefaultLayers();
-      this.map = this.createMap(defaultLayers);
-      const coordinates = this.getCenter();
-      this.map.setCenter(coordinates);
-      this.map.setZoom(this.zoom);
-      if (+this.zoom === MAP_ZOOM_MARKER) {
-        if (!this.isApproximateLocation) {
-          this.addMarker(coordinates);
-        } else {
-          this.addCircle(coordinates);
-        }
+  ngAfterViewInit() {
+    const defaultLayers = this.platform.createDefaultLayers();
+    this.map = this.createMap(defaultLayers);
+    const coordinates = this.getCenter();
+    this.map.setCenter(coordinates);
+    this.map.setZoom(this.zoom);
+    if (+this.zoom === MAP_ZOOM_MARKER) {
+      if (!this.isApproximateLocation) {
+        this.addMarker(coordinates);
+      } else {
+        this.addCircle(coordinates);
       }
-    });
+    }
   }
 
   ngOnChanges() {

@@ -1,8 +1,8 @@
 // TODO: These tests need to be redone (fixed poorly to let Angular update work)
 
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HereMapsComponent, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER, USER_MARKER } from './here-maps.component';
+import { HereMapsComponent, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER } from './here-maps.component';
 import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
 
 const ICON = { url: 'icon' };
@@ -10,10 +10,10 @@ const MARKER = { marker: 'marker' };
 const CIRCLE = { circle: 'circle' };
 
 const MockedMap = {
-  setZoom: () => {},
-  setCenter: () => {},
-  addObject: () => {},
-  removeObject: () => {}
+  setZoom: () => { },
+  setCenter: () => { },
+  addObject: () => { },
+  removeObject: () => { }
 };
 
 const MOCKED_PLATFORM = {
@@ -56,15 +56,14 @@ describe('HereMapsComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should initiliaze platform from Here Maps', fakeAsync(() => {
-      tick();
-
+    it('should initiliaze platform from Here Maps', () => {
       expect(component.initializePlatform).toHaveBeenCalledTimes(1);
-    }));
+    });
+  });
 
-    it('should prepare map', fakeAsync(() => {
+  describe('ngAfterViewInit', () => {
+    it('should prepare map', () => {
       component.ngOnInit();
-      tick();
 
       expect(component.createMap).toHaveBeenCalledTimes(1);
       expect(MockedMap.setZoom).toHaveBeenCalledWith(MAP_ZOOM_GENERAL);
@@ -72,38 +71,33 @@ describe('HereMapsComponent', () => {
         lat: USER_LOCATION_COORDINATES.latitude,
         lng: USER_LOCATION_COORDINATES.longitude
       });
-    }));
+    });
 
-    it('should add marker if zoom is the marker zoom', fakeAsync(() => {
+    it('should add marker if zoom is the marker zoom', () => {
       component.zoom = MAP_ZOOM_MARKER;
 
-      component.ngOnInit();
-      tick();
+      component.ngAfterViewInit();
 
       expect(component.createMarker).toHaveBeenCalledTimes(1);
       expect(MockedMap.addObject).toHaveBeenCalledWith(MARKER);
-    }));
+    });
 
-    it('should add circle if zoom is the marker zoom and isApproximateLocation', fakeAsync(() => {
+    it('should add circle if zoom is the marker zoom and isApproximateLocation', () => {
       component.zoom = MAP_ZOOM_MARKER;
       component.isApproximateLocation = true;
 
-      component.ngOnInit();
-      tick();
+      component.ngAfterViewInit();
 
       expect(component.createCircle).toHaveBeenCalledTimes(1);
       expect(MockedMap.addObject).toHaveBeenCalledWith(CIRCLE);
-    }));
-  });
+    });
+  })
 
   describe('ngOnChanges', () => {
-
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       component.ngOnInit();
       component.zoom = MAP_ZOOM_MARKER;
-
-      tick();
-    }));
+    });
 
     describe('not isApproximateLocation', () => {
       beforeEach(() => {
