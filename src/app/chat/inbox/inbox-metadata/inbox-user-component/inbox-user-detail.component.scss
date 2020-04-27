@@ -11,6 +11,28 @@ a.user-info {
     }
   }
 
+  &.device-small .card-block {
+    .card-title {
+      margin-bottom: $spacing-xs;
+      font-weight: lighter;
+    }
+
+    tsl-stars {
+      margin-bottom: $spacing-xxs;
+    }
+
+    .user-location-distance, .user-response-rate {
+      margin-bottom: 2px;
+      mat-icon {
+        float: left;
+        fill: #B0BEC5;
+        margin: 1px $spacing-xs 0 0;
+        height: $font-size-m;
+        width: $font-size-m;
+      }
+    }
+  }
+
   color: $blue-grey-1;
   display: flex;
   flex-direction: row;

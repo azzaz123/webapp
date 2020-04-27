@@ -25,7 +25,7 @@
     </div>
 
     <div (click)="expand()" class="item-details">
-      <div *ngIf="currentConversation.item.price">
+      <div *ngIf="currentConversation.item.price" class="font-weight-bold">
         {{currentConversation.item.price.amount | customCurrency:currentConversation.item.price.currency}}</div>
       <div class="text-truncate">{{currentConversation.item.title}}</div>
 
@@ -33,6 +33,7 @@
         <hr *ngIf="isExpanded">
         <tsl-inbox-user-detail [item]="currentConversation.item"
                                [user]="currentConversation.user"
+                               [deviceType]="'small'"
                                [avatarSize]="40"></tsl-inbox-user-detail>
       </div>
     </div>

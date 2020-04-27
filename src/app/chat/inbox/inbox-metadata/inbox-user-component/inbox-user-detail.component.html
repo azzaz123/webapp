@@ -1,5 +1,5 @@
 <a class="user-info" href="{{user.profileUrl}}" target="_blank" tslTrackEvent="USER_PROFILE_VIEWED"
-   [params]="{user_id: user.id}" [ngClass]="{'faded': !user.available }">
+   [params]="{user_id: user.id}" [ngClass]="{'faded': !user.available }" class="device-{{deviceType}}">
 
   <div class="card-block text-truncate">
     <h5 class="card-title text-truncate">{{user.microName}}</h5>
@@ -9,13 +9,15 @@
       <span class="phone-number">{{phoneNumber}}</span>
     </div>
     <div class="user-location-distance text-truncate">
-      <span [hidden]="!user.distanceInKm" i18n="The distance between the user and the item">
+      <mat-icon *ngIf="isDeviceSmall()" svgIcon="location" class="d-lg-none"></mat-icon>
+      <div [hidden]="!user.distanceInKm" class="text-truncate" i18n="The distance between the user and the item">
         {{user.distanceInKm | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you
-      </span>
+      </div>
       <span [hidden]="user.distanceInKm" i18n>No location</span>
     </div>
 
     <div class="user-response-rate text-truncate">
+      <mat-icon *ngIf="isDeviceSmall()" svgIcon="ico-message" class="d-lg-none"></mat-icon>
       <tsl-user-response-rate [responseRate]="user.responseRate" [showIcon]="false"
                               class="font-light"></tsl-user-response-rate>
     </div>
