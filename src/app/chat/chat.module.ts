@@ -9,7 +9,6 @@ import { MomentModule } from 'angular2-moment';
 import { ItemComponent } from './item/item.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
 import { ReportListingComponent } from './modals/report-listing/report-listing.component';
 import { ReportUserComponent } from './modals/report-user/report-user.component';
 import { BlockUserComponent } from './modals/block-user/block-user.component';
@@ -55,7 +54,6 @@ import { MessageModule } from './message/message.module';
     ItemComponent,
     ItemReservedComponent,
     ItemSoldComponent,
-    ArchiveConversationComponent,
     ArchiveInboxConversationComponent,
     UnarchiveInboxConversationComponent,
     ReportListingComponent,
@@ -78,7 +76,6 @@ import { MessageModule } from './message/message.module';
     InboxConversationComponent
   ],
   entryComponents: [
-    ArchiveConversationComponent,
     ArchiveInboxConversationComponent,
     UnarchiveInboxConversationComponent,
     ReportListingComponent,
