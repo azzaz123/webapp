@@ -27,7 +27,6 @@ import { UnarchiveInboxConversationComponent } from './modals/unarchive-inbox-co
 import { ArchivedInboxConversationComponent } from './inbox/archived-inbox-conversation/archived-inbox-conversation.component';
 import { InboxUserDetailComponent } from './inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component';
 import { InboxItemDetailComponent } from './inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component';
-import { BlockSendLinkComponent } from './modals/block-send-link';
 import { ScrollingMessageComponent } from './scrolling-message';
 import { StatusIconComponent } from './inbox/inbox-metadata/status-icon';
 import { InboxItemForSellComponent } from './inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component';
@@ -72,7 +71,6 @@ import { MessageModule } from './message/message.module';
     InboxUserDetailComponent,
     InboxItemDetailComponent,
     InboxItemForSellComponent,
-    BlockSendLinkComponent,
     ScrollingMessageComponent,
     StatusIconComponent
   ],
@@ -87,7 +85,6 @@ import { MessageModule } from './message/message.module';
     ReportUserComponent,
     BlockUserComponent,
     UnblockUserComponent,
-    BlockSendLinkComponent
   ]
 })
 export class ChatModule {
