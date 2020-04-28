@@ -1,5 +1,6 @@
-<a class="user-info" href="{{user.profileUrl}}" target="_blank" tslTrackEvent="USER_PROFILE_VIEWED"
-   [params]="{user_id: user.id}" [ngClass]="{'faded': !user.available }" class="device-{{deviceType}}">
+<a class="user-info" [attr.href]="isNavigable ? user.profileUrl : null" target="_blank"
+   tslTrackEvent="USER_PROFILE_VIEWED" [params]="{user_id: user.id}" [ngClass]="{'faded': !user.available }"
+   class="device-{{deviceType}}">
 
   <div class="card-block text-truncate">
     <h5 class="card-title text-truncate">{{user.microName}}</h5>

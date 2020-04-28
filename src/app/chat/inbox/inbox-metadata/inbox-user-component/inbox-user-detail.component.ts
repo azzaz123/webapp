@@ -16,6 +16,7 @@ export class InboxUserDetailComponent implements OnChanges {
   @Input() phoneNumber: string;
   @Input() avatarSize = 50;
   @Input() deviceType: 'small' | 'large';
+  @Input() isNavigable = true;
 
   constructor(private userService: UserService) {
   }
