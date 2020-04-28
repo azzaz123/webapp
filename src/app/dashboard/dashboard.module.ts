@@ -13,6 +13,7 @@ import { StatisticsService } from './stats-graph/statistics.service';
 import { SelectModule } from 'ng-select';
 import { FormsModule } from '@angular/forms';
 import { ChatModule } from '../chat/chat.module';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { ChatModule } from '../chat/chat.module';
     ConversationModule,
     NgbTooltipModule,
     AmChartsModule,
+    NgxEchartsModule,
     SelectModule,
     FormsModule,
     ChatModule
