@@ -47,18 +47,12 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
     this.message = this.message.trim();
     if (!this.isUserBlocked) {
       if (!this.isEmpty()) {
-        if (this.hasLinkInMessage(this.message)) {
-          this.modalService.open(BlockSendLinkComponent, { windowClass: 'modal-transparent' });
-        } else {
-          this.trackingService.track(TrackingService.SEND_BUTTON, {
-            thread_id: this.currentConversation.id,
-          });
-          this.messageService.send(this.currentConversation, this.message);
-          this.message = '';
-        }
-      } else {
-        this.message = '';
+        this.trackingService.track(TrackingService.SEND_BUTTON, {
+          thread_id: this.currentConversation.id,
+        });
+        this.messageService.send(this.currentConversation, this.message);
       }
+      this.message = '';
     }
   }
 

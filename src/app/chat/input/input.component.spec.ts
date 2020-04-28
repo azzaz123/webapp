@@ -111,7 +111,6 @@ describe('Component: Input', () => {
     beforeEach(() => {
       spyOn(EVENT, 'preventDefault');
       spyOn(trackingService, 'track');
-      spyOn(modalService, 'open');
       spyOn(remoteConsoleService, 'sendMessageTimeout');
       spyOn(remoteConsoleService, 'sendAcceptTimeout');
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
@@ -126,7 +125,6 @@ describe('Component: Input', () => {
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(component.message).toBe('');
-      expect(modalService.open).not.toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id
       });
@@ -141,7 +139,6 @@ describe('Component: Input', () => {
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(component.currentConversation, TEXT);
       expect(component.message).toBe('');
-      expect(modalService.open).not.toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id
       });
@@ -154,7 +151,6 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
@@ -168,7 +164,6 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
@@ -183,7 +178,6 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(trackingService.track).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
@@ -196,11 +190,8 @@ describe('Component: Input', () => {
 
       component.sendMessage(EVENT);
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(modalService.open).toHaveBeenCalled();
-      expect(messageService.send).not.toHaveBeenCalled();
-      expect(trackingService.track).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
+      expect(messageService.send).toHaveBeenCalled();
+      expect(trackingService.track).toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time',
@@ -210,11 +201,8 @@ describe('Component: Input', () => {
 
         component.sendMessage(EVENT);
         expect(EVENT.preventDefault).toHaveBeenCalled();
-        expect(modalService.open).toHaveBeenCalled();
-        expect(messageService.send).not.toHaveBeenCalled();
-        expect(trackingService.track).not.toHaveBeenCalled();
-        expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
-        expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
+        expect(messageService.send).toHaveBeenCalled();
+        expect(trackingService.track).toHaveBeenCalled();
       });
   });
 
