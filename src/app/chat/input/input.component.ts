@@ -3,7 +3,6 @@ import { MessageService } from '../service/message.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { InboxConversation } from '../model/inbox-conversation';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { find, includes, isEmpty } from 'lodash-es';
@@ -28,7 +27,6 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
               private eventService: EventService,
               private trackingService: TrackingService,
               private remoteConsoleService: RemoteConsoleService,
-              private modalService: NgbModal,
               private i18n: I18nService,
               private deviceService: DeviceDetectorService) {
   }
