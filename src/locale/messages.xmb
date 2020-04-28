@@ -91,7 +91,7 @@
   <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.html:39</source>Continue</msg>
   <msg id="8753092784115704500"><source>app/shared/process-all-button/process-all-button.component.html:7</source><source>app/shared/process-all-button/process-all-button.component.html:12</source><source>app/calls/calls.component.html:27</source>Process all</msg>
   <msg id="4965764680155209445"><source>app/shared/process-all-button/process-all-button.component.html:8</source>This will process all the elements in this page.</msg>
-  <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.html:11</source><source>app/shared/confirmation-modal/confirmation-modal.component.html:32</source><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:6</source><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:6</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:34</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:6</source><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:6</source><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:6</source><source>app/chat/modals/block-user/block-user.component.html:6</source><source>app/chat/modals/unblock-user/unblock-user.component.html:6</source><source>app/profile/subscription/subscription.component.html:38</source><source>app/profile/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:5</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:6</source>Cancel</msg>
+  <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.html:11</source><source>app/shared/confirmation-modal/confirmation-modal.component.html:32</source><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:6</source><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:6</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:34</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:6</source><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:6</source><source>app/chat/modals/block-user/block-user.component.html:6</source><source>app/chat/modals/unblock-user/unblock-user.component.html:6</source><source>app/profile/subscription/subscription.component.html:38</source><source>app/profile/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:5</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:6</source>Cancel</msg>
   <msg id="4749295647449765550"><source>app/shared/archivable/archivable.component.html:6</source><source>app/calls/calls.component.html:23</source><source>app/calls/calls.component.html:43</source>Processed</msg>
   <msg id="5847549463396300276"><source>app/shared/modals/review-modal/review-modal.component.html:8</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex>&lt;strong&gt;</ph><ph name="INTERPOLATION"><ex>{{userName}}</ex>{{userName}}</ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex>&lt;/strong&gt;</ph></msg>
   <msg id="4650730844441578299"><source>app/shared/modals/review-modal/review-modal.component.html:9</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
@@ -444,11 +444,13 @@
         Finance your purchase
       </msg>
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.html:3</source>Reserved</msg>
-  <msg id="deleteConversation"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:2</source>Delete conversation</msg>
-  <msg id="deleteConversationWarring"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:3</source>This will delete the conversation.</msg>
-  <msg id="7579940623714391431"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source>Delete conversation</msg>
-  <msg id="5762515103229902547"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:3</source>This will delete the conversation.</msg>
-  <msg id="1055686627716339120"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:7</source>Archive</msg>
+  <msg id="deleteConversation"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:2</source><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source><source>app/chat/current-conversation/current-conversation.component.html:36,37</source>Delete conversation</msg>
+  <msg id="deleteConversationWarring"><source>app/chat/modals/archive-conversation/archive-conversation.component.html:3</source><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:3</source>This will delete the conversation.</msg>
+  <msg id="archiveConversation"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:4</source><source>app/chat/current-conversation/current-conversation.component.html:39,40</source>Archive conversation</msg>
+  <msg id="archiveConversationWarring"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:5</source>This will archive the conversation.</msg>
+  <msg id="cancelButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:8</source>Cancel</msg>
+  <msg id="archiveButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:9</source>Archive</msg>
+  <msg id="deleteButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:10</source>Delete</msg>
   <msg id="7913053333994057167"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:2</source>Unarchive conversation</msg>
   <msg id="3205414127595653303"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:3</source>This will unarchive the conversation.</msg>
   <msg id="1121513541518618634"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:7</source>Unarchive</msg>
@@ -468,14 +470,13 @@
   <msg id="5927748278732131263"><source>app/chat/user-response-rate/user-response-rate.component.html:9</source><source>app/chat/user-response-rate/user-response-rate.component.html:10</source>Typically responds within a day</msg>
   <msg id="6807057680918467236"><source>app/chat/user-response-rate/user-response-rate.component.html:11</source><source>app/chat/user-response-rate/user-response-rate.component.html:12</source>Responds in more than 24 hours</msg>
   <msg id="yourMessages"><source>app/chat/inbox/inbox.component.html:3</source>Your Messages</msg>
-  <msg id="inboxTitle"><source>app/chat/inbox/inbox.component.html:10</source>Inbox</msg>
-  <msg id="inboxBox"><source>app/chat/inbox/inbox.component.html:15</source>Inbox</msg>
-  <msg id="inboxArchivedBox"><source>app/chat/inbox/inbox.component.html:20</source>Archived Messages</msg>
-  <msg id="8032820066123493751"><source>app/chat/inbox/inbox.component.html:35</source>New messages</msg>
-  <msg id="584537771740074660"><source>app/chat/inbox/inbox.component.html:38,39</source>We found some problems updating your inbox. Try again later.
+  <msg id="inboxBox"><source>app/chat/inbox/inbox.component.html:11</source><source>app/chat/inbox/inbox.component.html:18</source><source>app/chat/inbox/inbox.component.html:33</source>Inbox</msg>
+  <msg id="inboxArchivedBox"><source>app/chat/inbox/inbox.component.html:12</source><source>app/chat/inbox/inbox.component.html:23</source>Archived Messages</msg>
+  <msg id="8032820066123493751"><source>app/chat/inbox/inbox.component.html:47</source>New messages</msg>
+  <msg id="584537771740074660"><source>app/chat/inbox/inbox.component.html:50,51</source>We found some problems updating your inbox. Try again later.
     </msg>
-  <msg id="33149636091572968"><source>app/chat/inbox/inbox.component.html:57</source><source>app/chat/inbox/inbox.component.html:83</source><source>app/chat/current-conversation/current-conversation.component.html:110</source>Load more</msg>
-  <msg id="6874509246509696354"><source>app/chat/inbox/inbox.component.html:64,65</source>We found some problems updating your archived messages. Try again later.
+  <msg id="33149636091572968"><source>app/chat/inbox/inbox.component.html:69</source><source>app/chat/inbox/inbox.component.html:95</source><source>app/chat/current-conversation/current-conversation.component.html:115</source>Load more</msg>
+  <msg id="6874509246509696354"><source>app/chat/inbox/inbox.component.html:76,77</source>We found some problems updating your archived messages. Try again later.
     </msg>
   <msg id="8721026914522212662"><source>app/chat/inbox/archived-inbox-conversation/archived-inbox-conversation.component.html:42</source>Archived </msg>
   <msg id="682982254050004818"><source>app/chat/current-conversation/current-conversation.component.html:9,10</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
@@ -483,22 +484,20 @@
   <msg id="3325766019344626759"><source>app/chat/current-conversation/current-conversation.component.html:11</source>There are no messages</msg>
   <msg id="177886998911393770"><source>app/chat/current-conversation/current-conversation.component.html:12,13</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       Try again later.</msg>
-  <msg id="92908556516111993"><source>app/chat/current-conversation/current-conversation.component.html:36,37</source>Delete conversation
+  <msg id="unarchiveConversation"><source>app/chat/current-conversation/current-conversation.component.html:42,43</source>Unarchive conversation
             </msg>
-  <msg id="603154656968324663"><source>app/chat/current-conversation/current-conversation.component.html:39,40</source>Unarchive conversation
+  <msg id="reportListing"><source>app/chat/current-conversation/current-conversation.component.html:46,47</source>Report this Listing
             </msg>
-  <msg id="511133215426042486"><source>app/chat/current-conversation/current-conversation.component.html:42,43</source>Report this Listing
+  <msg id="reportUser"><source>app/chat/current-conversation/current-conversation.component.html:50,51</source>Report this User
             </msg>
-  <msg id="2311423194575383733"><source>app/chat/current-conversation/current-conversation.component.html:45,46</source>Report this User
+  <msg id="blockUser"><source>app/chat/current-conversation/current-conversation.component.html:54,55</source>Block this User
             </msg>
-  <msg id="8621433484657846443"><source>app/chat/current-conversation/current-conversation.component.html:49,50</source>Block this User
+  <msg id="unblockUser"><source>app/chat/current-conversation/current-conversation.component.html:58,59</source>Unblock this User
             </msg>
-  <msg id="7895174555296226408"><source>app/chat/current-conversation/current-conversation.component.html:53,54</source>Unblock this User
-            </msg>
-  <msg id="3934360921102914601"><source>app/chat/current-conversation/current-conversation.component.html:67</source>You have blocked this user. Unblock it to continue chatting</msg>
-  <msg id="5949661737880412802"><source>app/chat/current-conversation/current-conversation.component.html:73</source>This user is not available</msg>
-  <msg id="3753612046513951428"><source>app/chat/current-conversation/current-conversation.component.html:80</source>This product is not available</msg>
-  <msg id="2536023333703806770"><source>app/chat/current-conversation/current-conversation.component.html:103</source>Remember not to share private data for security reasons</msg>
+  <msg id="3934360921102914601"><source>app/chat/current-conversation/current-conversation.component.html:72</source>You have blocked this user. Unblock it to continue chatting</msg>
+  <msg id="5949661737880412802"><source>app/chat/current-conversation/current-conversation.component.html:78</source>This user is not available</msg>
+  <msg id="3753612046513951428"><source>app/chat/current-conversation/current-conversation.component.html:85</source>This product is not available</msg>
+  <msg id="2536023333703806770"><source>app/chat/current-conversation/current-conversation.component.html:108</source>Remember not to share private data for security reasons</msg>
   <msg id="6969584346860248976" desc="The distance between the user and the item"><source>app/chat/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:12,14</source>
         <ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ph>km from you
       </msg>

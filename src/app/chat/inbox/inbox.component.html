@@ -4,23 +4,35 @@
     <tsl-pro-badge></tsl-pro-badge>
   </h2>
 </div>
-
-<div class="inbox-header-menu" *ngIf="shouldDisplayHeader()">
-  <div class="dropdown-header">
-    <div *ngIf="isInbox" class="header-title" i18n="@@inboxTitle">Inbox</div>
+<div *ngxPermissionsOnly="['isProfessional']">
+  <div ngbDropdown placement="bottom-left" class="inbox-header-menu"
+       *ngIf="shouldDisplayHeader()">
+    <div ngbDropdownToggle class="dropdown-header">
+      <div *ngIf="isInbox" class="header-title" i18n="@@inboxBox">Inbox</div>
+      <div *ngIf="isArchived" class="header-title" i18n="@@inboxArchivedBox">Archived Messages</div>
+      <mat-icon class="header-icon" svgIcon="arrow-waterfall"></mat-icon>
+    </div>
+    <ul ngbDropdownMenu class="dropdown-menu">
+      <li class="dropdown-item" [ngClass]="{'active': isInbox}" (click)="showInbox()">
+        <a>
+          <span i18n="@@inboxBox">Inbox</span>
+        </a>
+      </li>
+      <li class="dropdown-item" [ngClass]="{'active': isArchived}" (click)="showArchive()">
+        <a>
+          <span i18n="@@inboxArchivedBox">Archived Messages</span>
+        </a>
+      </li>
+    </ul>
   </div>
-  <ul class="dropdown-menu">
-    <li class="dropdown-item" [ngClass]="{'active': isInbox}" (click)="showInbox()">
-      <a>
-        <span i18n="@@inboxBox">Inbox</span>
-      </a>
-    </li>
-    <li class="dropdown-item" [ngClass]="{'active': isArchived}" (click)="showArchive()">
-      <a>
-        <span i18n="@@inboxArchivedBox">Archived Messages</span>
-      </a>
-    </li>
-  </ul>
+</div>
+
+<div *ngxPermissionsOnly="['isNormal']">
+  <div class="inbox-header-menu" *ngIf="shouldDisplayHeader()">
+    <div class="dropdown-header">
+      <div *ngIf="isInbox" class="header-title" i18n="@@inboxBox">Inbox</div>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="!shouldDisplayHeader()" id="header-empty" [class]="loading ? 'isLoading' : ''">

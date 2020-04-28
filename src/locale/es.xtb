@@ -20,7 +20,10 @@
   <translation id="deleteConversation">Borrar conversación</translation>
   <translation id="5762515103229902547">Se procederá a borrar la conversación.</translation>
   <translation id="deleteConversationWarring">Se procederá a borrar la conversación.</translation>
+  <translation id="archiveConversationWarring">Se procederá a archivar la conversación.</translation>
   <translation id="2159130950882492111">Cancelar</translation>
+  <translation id="cancelButton">Cancelar</translation>
+  <translation id="deleteButton">Borrar</translation>
   <translation id="7022070615528435141">Borrar</translation>
   <translation id="7008439939460403347">Reportar</translation>
   <translation id="568597304214607466">Estoy reportando a este usuario porque...</translation>
@@ -774,7 +777,7 @@
   <translation id="3339021787040924237">Buscar en Todas las categorías</translation>
   <translation id="8886737317292020570">Archivar conversación</translation>
   <translation id="5298644184637702922">Esto archivará la conversación.</translation>
-  <translation id="1055686627716339120">Archivar</translation>
+  <translation id="archiveButton">Archivar</translation>
   <translation id="6288847433566396172">Desarchivar conversación</translation>
   <translation id="3205414127595653303">Esto desarchivará la cconversación.</translation>
   <translation id="1121513541518618634">Desarchivar</translation>
@@ -783,7 +786,6 @@
   <translation id="6105231501608810838">Servicio no disponible por el momento.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
             Inténtelo de nuevo más tarde.</translation>
   <translation id="7913053333994057167">Desarchivar conversación</translation>
-  <translation id="inboxTitle">Bandeja de Entrada</translation>
   <translation id="inboxBox">Bandeja de Entrada</translation>
   <translation id="inboxArchivedBox">Mensajes Archivados</translation>
   <translation id="8721026914522212662">Archivado</translation>
@@ -915,12 +917,12 @@
   <translation id="6044974118925437441">Actualiza tu suscripción en función de los productos que quieras subir</translation>
   <translation id="1487803193155715207">Suscripciones PRO</translation>
   <translation id="1698114086921246480">Cancelar la suscripción</translation>
-  <translation id="3520858718490550964">Archivar conversación</translation>
-  <translation id="603154656968324663">Desarchivar conversación</translation>
-  <translation id="511133215426042486">Denunciar producto</translation>
-  <translation id="2311423194575383733">Reportar usuario</translation>
-  <translation id="8621433484657846443">Bloquear usuario</translation>
-  <translation id="7895174555296226408">Desbloquear usuario</translation>
+  <translation id="archiveConversation">Archivar conversación</translation>
+  <translation id="unarchiveConversation">Desarchivar conversación</translation>
+  <translation id="reportListing">Denunciar producto</translation>
+  <translation id="reportUser">Reportar usuario</translation>
+  <translation id="blockUser">Bloquear usuario</translation>
+  <translation id="unblockUser">Desbloquear usuario</translation>
   <translation id="5189929163900690785">Sí, quiero mantener mi suscripción</translation>
   <translation id="1355341408067809538">No, quiero cancelarla</translation>
   <translation id="6307606007112781268">Mantener suscripción</translation>

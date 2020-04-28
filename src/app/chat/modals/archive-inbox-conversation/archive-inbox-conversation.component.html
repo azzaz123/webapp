@@ -1,8 +1,11 @@
 <div class="modal-body">
-  <h2 i18n>Delete conversation</h2>
-  <p i18n>This will delete the conversation.</p>
+  <h2 *ngxPermissionsOnly="['isNormal']" i18n="@@deleteConversation">Delete conversation</h2>
+  <p *ngxPermissionsOnly="['isNormal']" i18n="@@deleteConversationWarring">This will delete the conversation.</p>
+  <h2 *ngxPermissionsOnly="['isProfessional']" i18n="@@archiveConversation">Archive conversation</h2>
+  <p *ngxPermissionsOnly="['isProfessional']" i18n="@@archiveConversationWarring">This will archive the conversation.</p>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn" i18n (click)="activeModal.dismiss()">Cancel</button>
-  <button type="button" class="btn btn-warn" i18n (click)="activeModal.close()">Archive</button>
+  <button type="button" class="btn" i18n="@@cancelButton" (click)="activeModal.dismiss()">Cancel</button>
+  <button type="button" class="btn btn-warn" i18n="@@archiveButton" (click)="activeModal.close()">Archive</button>
+  <button type="button" class="btn btn-warn"  i18n="@@deleteButton" (click)="activeModal.close()">Delete</button>
 </div>
