@@ -101,11 +101,9 @@
         .selector-icon {
           background-color: $walla-main;
           mat-icon {
-            ::ng-deep {
-              svg g,
-              svg path {
-                fill: $white;
-              }
+            svg g,
+            svg path {
+              fill: $white !important;
             }
           }
         }
