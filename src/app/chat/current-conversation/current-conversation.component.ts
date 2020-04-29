@@ -189,4 +189,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public expandTopBar(isTopBarExpanded: boolean): void {
     this.isTopBarExpanded = isTopBarExpanded;
   }
+
+  public typing() {
+    this.isTopBarExpanded = false;
+  }
 }

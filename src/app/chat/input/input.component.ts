@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MessageService } from '../service/message.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
@@ -19,6 +19,7 @@ import { RemoteConsoleService } from '../../core/remote-console';
 export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   @Input() currentConversation: InboxConversation;
+  @Output() typing = new EventEmitter();
   @ViewChild('messageTextarea') messageArea: ElementRef;
 
   public message: string;
@@ -102,6 +103,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   public onFocusElement() {
     this.isFocus = !this.isFocus;
+    this.typing.emit();
   }
 
   private hasLinkInMessage(message: string): boolean {

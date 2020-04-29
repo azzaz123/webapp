@@ -23,10 +23,9 @@ import { I18nService } from '../../core/i18n/i18n.service';
 export class ConversationDetailsBarComponent {
 
   @Input() currentConversation: InboxConversation;
+  @Input() isExpanded = false;
   @Output() blockUserEvent = new EventEmitter();
   @Output() expandContainer = new EventEmitter();
-
-  public isExpanded = false;
 
   constructor(private eventService: EventService,
               private modalService: NgbModal,
