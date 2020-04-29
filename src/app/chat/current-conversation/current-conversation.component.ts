@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { InboxConversationService } from '../service';
 import { TextMessageComponent } from '../message/text-message';
-import { eq, includes } from 'lodash-es';
+import { eq, includes, isEmpty } from 'lodash-es';
 import { InboxConversation, InboxMessage, MessageType } from '../model';
 import { ThirdVoiceDropPriceComponent } from '../message/third-voice-drop-price';
 import { ThirdVoiceReviewComponent } from '../message/third-voice-review';
@@ -88,6 +88,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.scrollLocalPosition = 0;
     if (changes['currentConversation']) {
       this.isConversationChanged = true;
+      this.isTopBarExpanded = this.currentConversation && isEmpty(this.currentConversation.messages);
     }
   }
 
