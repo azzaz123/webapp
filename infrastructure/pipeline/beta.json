@@ -12,6 +12,6 @@
     "Contact": "frontend@wallapop.com",
     "Env": "beta",
     "Repo": "https://github.com/Wallapop/webapp",
-    "Role": "cd"
+    "Role": "deployment"
   }
 }
