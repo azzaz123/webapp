@@ -109,7 +109,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public loading: boolean;
   public fixedCategory: string;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
-  @ViewChild('title') titleField: ElementRef;
+  @ViewChild('title', { static: true }) titleField: ElementRef;
   private focused: boolean;
   private oldFormValue: any;
   private oldDeliveryValue: any;

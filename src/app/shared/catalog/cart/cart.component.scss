@@ -226,7 +226,7 @@ ul, li {
       margin-right: $spacing-s;
     }
     tsl-item-avatar {
-      /deep/ div {
+      ::ng-deep div {
         @include square(32px);
       }
     }
@@ -246,7 +246,7 @@ ul, li {
 
 tsl-button {
   display: block;
-  /deep/ .btn {
+  ::ng-deep .btn {
     width: 100%;
     margin-top: 0;
   }

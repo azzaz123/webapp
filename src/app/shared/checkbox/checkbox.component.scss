@@ -17,7 +17,7 @@ $feature-button-width: 170px;
     }
     span {
       color: $blue-grey-2;
-      /deep/ > * {
+      ::ng-deep > * {
         cursor: pointer;
       }
       &.selected {
@@ -46,7 +46,7 @@ $feature-button-width: 170px;
         border-color: transparent;
         mat-icon {
           display: flex;
-          /deep/ path {
+          ::ng-deep path {
             fill: $white;
           }
         }

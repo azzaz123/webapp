@@ -20,7 +20,7 @@
     z-index: 1;
     width: 28px;
     height: 28px;
-    /deep/ {
+    ::ng-deep {
       svg {
         path {
           fill: $blue-grey-3;
@@ -59,7 +59,7 @@
         z-index: 1;
         width: 28px;
         height: 28px;
-        /deep/ {
+        ::ng-deep {
           svg {
             path {
               fill: $walla-main;
@@ -71,7 +71,7 @@
   }
 }
 
-:host /deep/ .dropdown-menu {
+:host ::ng-deep .dropdown-menu {
   padding: 0;
   overflow: hidden;
   margin: $spacing-xs 0 0;
@@ -81,7 +81,7 @@
     width: 100%;
   }
 }
-:host /deep/ .dropdown-item {
+:host ::ng-deep .dropdown-item {
   background-color: transparent;
   cursor: pointer;
   color: $blue-grey-1;
@@ -100,6 +100,6 @@
     }
   }
 }
-:host /deep/ .dropdown-item.active {
+:host ::ng-deep .dropdown-item.active {
   background-color: $blue-grey-5;
 }

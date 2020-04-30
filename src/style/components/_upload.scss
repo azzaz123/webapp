@@ -84,7 +84,7 @@
         height: 48px;
         width: 48px;
         @include in-the-middle;
-        /deep/ svg {
+        ::ng-deep svg {
           g,
           path {
             fill: $blue-grey-3;
@@ -101,11 +101,9 @@
         .selector-icon {
           background-color: $walla-main;
           mat-icon {
-            /deep/ {
-              svg g,
-              svg path {
-                fill: $white;
-              }
+            svg g,
+            svg path {
+              fill: $white !important;
             }
           }
         }
@@ -119,7 +117,7 @@
           color: $blue-grey-2;
         }
         mat-icon {
-          /deep/ {
+          ::ng-deep {
             svg g,
             svg path {
               fill: $blue-grey-2;
@@ -145,7 +143,7 @@
             .selector-icon {
               background-color: $white;
               mat-icon {
-                /deep/ {
+                ::ng-deep {
                   svg g,
                   svg path {
                     fill: $walla-main;
@@ -214,7 +212,7 @@
         border-color: transparent;
         mat-icon {
           display: flex;
-          /deep/ path {
+          ::ng-deep path {
             fill: $white;
           }
         }

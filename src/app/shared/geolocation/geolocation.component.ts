@@ -24,7 +24,7 @@ export class GeolocationComponent implements OnInit, OnChanges {
   @Input() updateLocation = true;
   @Input() fromCookie = true;
   public model: any = {description: ''};
-  @ViewChild('pacInputHeader') searchInputEl: ElementRef;
+  @ViewChild('pacInputHeader', { static: true }) searchInputEl: ElementRef;
 
   constructor(
     private geolocationService: GeolocationService,

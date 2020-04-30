@@ -76,7 +76,7 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
     CardModule,
     CommonModule,
     MatIconModule,
-    NgbModule.forRoot(),
+    NgbModule,
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,

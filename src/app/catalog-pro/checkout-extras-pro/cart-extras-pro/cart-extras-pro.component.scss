@@ -110,7 +110,7 @@ ul, li {
   .citybump {
     color: $walla-main;
     .wing-icon {
-      /deep/ path {
+      ::ng-deep path {
         fill: $walla-main;
       }
     }
@@ -167,7 +167,7 @@ ul, li {
 
 tsl-button {
   display: block;
-  /deep/ .btn {
+  ::ng-deep .btn {
     width: calc(100% - #{$button-margin * 2});
     margin: $button-margin;
     margin-top: 0;

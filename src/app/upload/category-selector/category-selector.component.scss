@@ -61,7 +61,7 @@
         background-color: $walla-main;
         mat-icon {
           opacity: 1;
-          /deep/ {
+          ::ng-deep {
             .black {
               fill: $white;
             }

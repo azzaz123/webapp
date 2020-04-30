@@ -3,14 +3,20 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
-    "module": "es2015",
-    "types": []
+    "types": ["heremaps"]
   },
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
   "include": [
     "./"
   ],
   "exclude": [
     "test.ts",
     "**/*.spec.ts",
-  ]
+  ],
+  "angularCompilerOptions": {
+    "enableIvy": false
+ }
 }
