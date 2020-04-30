@@ -103,6 +103,9 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   public onFocusElement() {
     this.isFocus = !this.isFocus;
+  }
+
+  public writing(): void {
     this.typing.emit();
   }
 
