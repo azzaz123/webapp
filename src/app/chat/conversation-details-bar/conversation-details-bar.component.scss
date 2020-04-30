@@ -38,15 +38,11 @@
       padding: 5px 0;
       line-height: $spacing-ml;
       height: $spacing-ml;
-      position: absolute;
-      left: 120px;
-      transition: width .2s ease-in-out;
-      transition-delay: .2s;
-      width: calc(100% - 220px);
+      width: calc(100% - 99px);
     }
 
     &.expanded .item-details {
-      width: calc(100% - 140px);
+      width: calc(100% - 160px);
     }
 
     h5 {
@@ -79,10 +75,17 @@
       opacity: 0;
     }
 
+    .conversation-header-avatar {
+      position: absolute;
+      right: $spacing-xl;
+    }
+
     mat-icon {
+      position: absolute;
+      right: -$spacing-s;
       cursor: pointer;
       padding: 0 3px;
-      margin: $spacing-s 0 $spacing-s $spacing-s;
+      margin: $spacing-s;
 
       /deep/ #MVP {
         fill: $blue-grey-2;
@@ -121,9 +124,16 @@
 
 .sm-device-container {
   &.expanded {
-    width: calc(100% - 72px);
+    width: 100%;
     padding-top: $spacing-xxxl;
 
+    .avatar-container.d-sm-block .avatar {
+      min-width: 160px;
+    }
+
+    .avatar-container.d-sm-none .avatar {
+      min-width: 140px;
+    }
   }
 
   width: calc(100% - 72px);
@@ -133,10 +143,10 @@
 
   .avatar-container {
     display: inline;
-    min-width: 99px;
 
     .avatar {
       display: inline-block;
+      transition: min-width 1s ease;
       min-width: 99px;
 
       tsl-item-avatar {
@@ -202,8 +212,6 @@
 
 .user-detail {
   opacity: 0;
-  transition: opacity .1s ease-in-out;
-  transition-delay: 0s;
 
   &.user-detail-dropdown {
     opacity: 1;

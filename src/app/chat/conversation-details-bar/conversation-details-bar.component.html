@@ -17,7 +17,13 @@
   <div class="sm-device-container d-xl-none"
        [ngClass]="{'expanded': isExpanded, 'faded': !currentConversation.user.available}">
 
-    <div class="avatar-container">
+    <div class="avatar-container d-none d-sm-block">
+      <a href="{{ currentConversation?.item.itemUrl }}" target="_blank" class="avatar">
+        <tsl-item-avatar [item]="currentConversation.item" size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
+      </a>
+    </div>
+
+    <div class="avatar-container d-block d-sm-none">
       <a href="{{ currentConversation?.item.itemUrl }}" target="_blank" class="avatar">
         <tsl-item-avatar [item]="currentConversation.item"
                          size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
@@ -42,7 +48,7 @@
 
   <div ngbDropdown placement="bottom-right" class="conversation-header-menu" [ngClass]="{'expanded': isExpanded}">
 
-    <div class="d-xl-none">
+    <div class="conversation-header-avatar d-xl-none">
       <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
          target="_blank" class="user-avatar">
         <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
