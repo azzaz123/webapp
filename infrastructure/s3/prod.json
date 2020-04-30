@@ -8,7 +8,7 @@
     "Team": "frontend",
     "Contact": "frontend@wallapop.com",
     "Env": "prod",
-    "Name": "webapp",
-    "Repo": "webapp"
+    "Repo": "https://github.com/Wallapop/webapp",
+    "Role": "cdn"
   }
 }
