@@ -49,7 +49,7 @@
   }
 }
 
-:host /deep/ .header-rating {
+:host ::ng-deep .header-rating {
   mat-icon {
     width: 22px;
     height: 21px;

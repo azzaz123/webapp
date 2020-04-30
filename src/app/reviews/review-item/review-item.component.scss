@@ -62,13 +62,13 @@
         right: -12px;
         border-radius: 50%;
         background-color: $white;
-        /deep/ .avatar-rounded {
+        ::ng-deep .avatar-rounded {
           border: 4px solid $white;
         }
       }
       &:hover {
         tsl-user-avatar {
-          /deep/ .avatar-rounded {
+          ::ng-deep .avatar-rounded {
             opacity: 0.5;
           }
         }

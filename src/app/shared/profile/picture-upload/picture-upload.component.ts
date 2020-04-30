@@ -1,4 +1,4 @@
-import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME, getTokenSignature } from './../../../core/http/interceptors/token.interceptor';
+import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME } from './../../../core/http/interceptors/token.interceptor';
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { User } from '../../../core/user/user';
 import { ErrorsService } from '../../../core/errors/errors.service';
@@ -54,7 +54,7 @@ export class PictureUploadComponent implements OnInit {
   private uploadPicture() {
     const url = 'api/v3/users/me/image';
     const timestamp = new Date().getTime();
-    const signature = getTokenSignature(url, 'POST', timestamp);
+    const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
     const headers = {
       [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
       [TOKEN_SIGNATURE_HEADER_NAME]: signature,

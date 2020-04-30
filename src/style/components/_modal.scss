@@ -33,21 +33,21 @@ $modal-border-radius: 0.3rem;
     mat-icon {
       height: 15px;
       line-height: $line-height-xl;
-      /deep/ path {
+      ::ng-deep path {
         fill: $blue-grey-4;
       }
     }
-    &:hover mat-icon /deep/ path {
+    &:hover mat-icon ::ng-deep path {
       fill: $blue-grey-1;
     }
     &.light {
-      mat-icon /deep/ path {
+      mat-icon ::ng-deep path {
         fill: $white;
         opacity: .5;
       }
     }
     &.grey {
-      mat-icon /deep/ path {
+      mat-icon ::ng-deep path {
         fill: $blue-grey-4;
       }
     }
@@ -325,7 +325,7 @@ $modal-border-radius: 0.3rem;
     width: $modal-standard-width !important;
     max-width: unset;
     .modal-close:not(.light) {
-      mat-icon /deep/ path {
+      mat-icon ::ng-deep path {
         fill: $blue-grey-3;
       }
     }
@@ -383,13 +383,13 @@ $modal-border-radius: 0.3rem;
           cursor: pointer;
           mat-icon {
             @include square(18px);
-            /deep/ path {
+            ::ng-deep path {
               fill: $blue-grey-3;
             }
           }
           &:hover {
             background-color: $color-social-background;
-            mat-icon /deep/ path {
+            mat-icon ::ng-deep path {
               fill: $color-social-fill;
             }
           }

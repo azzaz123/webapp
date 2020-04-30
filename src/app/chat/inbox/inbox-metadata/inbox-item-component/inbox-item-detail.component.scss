@@ -43,7 +43,7 @@
       background-color: white;
       padding: $spacing-xxs $spacing-s $spacing-xxs;
 
-      mat-icon /deep/ {
+      mat-icon ::ng-deep {
         float: left;
 
         svg g g, svg path {
@@ -55,7 +55,7 @@
         background: $blue-grey-2;
         border-color: transparent;
 
-        mat-icon /deep/ {
+        mat-icon ::ng-deep {
           svg g g, svg path {
             fill: $white;
           }
@@ -88,7 +88,7 @@
       width: calc(50% - 10px);
     }
 
-    /deep/
+    ::ng-deep
     .btn-reserve {
       font-size: $font-size-xs;
       padding-top: $spacing-xs;
@@ -96,7 +96,7 @@
       width: 100%;
     }
 
-    /deep/
+    ::ng-deep
     .btn-sold {
       font-size: $font-size-xs;
       padding-top: $spacing-xs;

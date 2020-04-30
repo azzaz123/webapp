@@ -22,7 +22,7 @@ import { RemoteConsoleService } from '../remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
 import { BlockUserXmppService } from '../../chat/service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestRequest } from '@angular/common/http/testing/src/request';
+import { TestRequest } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
 import { Item } from '../item/item';

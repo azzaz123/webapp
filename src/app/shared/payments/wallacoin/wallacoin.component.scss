@@ -16,26 +16,26 @@
 mat-icon {
   @include square(10px);
   margin-left: $spacing-xxs;
-  /deep/ svg path {
+  ::ng-deep svg path {
     transition: all 0.2s ease-in-out;
   }
   &.strike {
-    /deep/ svg path {
+    ::ng-deep svg path {
       fill: $blue-grey-3;
     }
   }
   &.grey {
-    /deep/ svg path {
+    ::ng-deep svg path {
       fill: $blue-grey-2;
     }
   }
   &.corporate {
-    /deep/ svg path {
+    ::ng-deep svg path {
       fill: $walla-main;
     }
   }
   &.black {
-    /deep/ svg path {
+    ::ng-deep svg path {
       fill: $blue-grey-1;
     }
   }

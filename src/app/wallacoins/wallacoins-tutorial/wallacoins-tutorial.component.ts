@@ -10,7 +10,7 @@ import { UserService } from '../../core/user/user.service';
 })
 export class WallacoinsTutorialComponent implements OnInit {
 
-  @ViewChild(NgbCarousel) public carousel: NgbCarousel;
+  @ViewChild(NgbCarousel, { static: true }) public carousel: NgbCarousel;
   public isLast: boolean;
   public withCoins: boolean;
 

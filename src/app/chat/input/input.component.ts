@@ -20,7 +20,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   @Input() currentConversation: InboxConversation;
   @Output() typing = new EventEmitter();
-  @ViewChild('messageTextarea') messageArea: ElementRef;
+  @ViewChild('messageTextarea', { static: true }) messageArea: ElementRef;
 
   public message: string;
   public isUserBlocked: boolean;

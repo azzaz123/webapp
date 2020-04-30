@@ -16,7 +16,7 @@ import { UserService } from '../../core/user/user.service';
 export class EditComponent implements OnInit, CanComponentDeactivate {
 
   public item: Item;
-  @ViewChild('scrollPanel') scrollPanel: ElementRef;
+  @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
   private hasNotSavedChanges: boolean;
   public urgentPrice: string = null;
   public itemTypes: any = ITEM_TYPES;

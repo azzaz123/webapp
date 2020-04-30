@@ -77,7 +77,7 @@ import { StatusIconComponent } from './status-icon';
     CardModule,
     CommonModule,
     MatIconModule,
-    NgbModule.forRoot(),
+    NgbModule,
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,

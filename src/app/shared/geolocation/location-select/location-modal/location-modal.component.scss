@@ -18,7 +18,7 @@ tsl-here-maps {
     width: calc(100% + #{-$spacing-ml * 2 - $btn-width - $spacing-ms});
     display: block;
     padding: 0;
-    & /deep/ {
+    & ::ng-deep {
       .header-location {
         input {
           width: 100%;
@@ -31,7 +31,7 @@ tsl-here-maps {
             .location {
               width: 100%;
               span {
-                width: calc(100% - $spacing-ml);
+                width: calc(100% - #{$spacing-ml});
                 text-overflow: ellipsis;
                 overflow: hidden;
               }
