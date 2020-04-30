@@ -9,7 +9,6 @@ import { UPLOAD_FILE, UPLOAD_FILE_ID, UPLOAD_FILE_NAME } from '../../../../tests
 import { environment } from '../../../../environments/environment';
 import { UploadFile, UploadInput } from '../../uploader/upload.interface';
 import { AccessTokenService } from '../../../core/http/access-token.service';
-import * as tokenInterceptor from './../../../core/http/interceptors/token.interceptor';
 
 describe('PictureUploadComponent', () => {
   let component: PictureUploadComponent;
@@ -35,7 +34,10 @@ describe('PictureUploadComponent', () => {
         },
         {
           provide: AccessTokenService, useValue: {
-            accessToken: 'thetoken'
+            accessToken: 'thetoken',
+            getTokenSignature() {
+              return 'thesignature';
+            }
           }
         }
       ],
@@ -62,7 +64,6 @@ describe('PictureUploadComponent', () => {
     });
 
     it('should send upload event if event is addedToQueue', () => {
-      spyOn(tokenInterceptor, 'getTokenSignature').and.returnValue('thesignature');
       spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
       const headers = {
         [TOKEN_AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',

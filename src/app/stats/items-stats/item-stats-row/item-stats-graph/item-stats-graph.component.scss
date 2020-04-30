@@ -6,7 +6,7 @@
 }
 
 .chart {
-  /deep/ {
+  ::ng-deep {
     a {
       display: none !important;
     }

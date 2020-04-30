@@ -32,7 +32,7 @@ $feature-button-width: 170px;
     border-color: transparent;
     mat-icon {
       display: flex;
-      /deep/ svg g g {
+      ::ng-deep svg g g {
         fill: $white;
       }
     }
@@ -93,7 +93,7 @@ $feature-button-width: 170px;
   }
 
   button,
-  tsl-button /deep/ .btn-feature {
+  tsl-button ::ng-deep .btn-feature {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -135,7 +135,7 @@ $feature-button-width: 170px;
       background-color: $white;
       margin-right: $spacing-s;
       padding: 0;
-      mat-icon /deep/ {
+      mat-icon ::ng-deep {
         svg g g,
         svg path {
           fill: $blue-grey-2;
@@ -143,7 +143,7 @@ $feature-button-width: 170px;
       }
       &:hover,
       &.active {
-        mat-icon /deep/ {
+        mat-icon ::ng-deep {
           svg g g,
           svg path {
             fill: $white;
@@ -226,7 +226,7 @@ $feature-button-width: 170px;
     font-weight: $font-weight-chunky;
     border-radius: 20px;
     color: $white;
-    mat-icon /deep/ {
+    mat-icon ::ng-deep {
       svg g g,
       svg path {
         fill: $white;
@@ -237,7 +237,7 @@ $feature-button-width: 170px;
       border-color: $blue-grey-1;
       color: $blue-grey-1;
       border: solid 1px rgba(207, 216, 220, 0.5);
-      mat-icon /deep/ {
+      mat-icon ::ng-deep {
         svg g g,
         svg path {
           fill: $blue-grey-1;
@@ -269,7 +269,7 @@ $feature-button-width: 170px;
 
 .feature-action {
   tsl-button {
-    /deep/ .btn-feature {
+    ::ng-deep .btn-feature {
       width: $feature-button-width;
       height: 40px;
       padding: 0 $spacing-ml;
@@ -321,7 +321,7 @@ $feature-button-width: 170px;
   border-radius: $border-radius;
 }
 
-:host /deep/ ngb-tooltip-window {
+:host ::ng-deep ngb-tooltip-window {
   margin-top: -8px;
   &.show {
     opacity: 1;
@@ -352,7 +352,7 @@ $feature-button-width: 170px;
 
 .item-image {
   flex: 0 0 80px;
-  /deep/ tsl-item-avatar {
+  ::ng-deep tsl-item-avatar {
     padding: $spacing-xs;
     .big {
       margin: 0;

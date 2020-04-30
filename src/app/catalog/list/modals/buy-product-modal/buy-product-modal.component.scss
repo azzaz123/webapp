@@ -29,7 +29,7 @@
     tsl-item-avatar {
       width: 160px;
       margin-bottom: $spacing-ms;
-      /deep/ {
+      ::ng-deep {
         .urgent {
           @include square(50px);
           top: 55px;

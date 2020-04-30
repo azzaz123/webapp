@@ -41,7 +41,7 @@ h2 {
   justify-content: space-between;
 }
 
-tsl-button /deep/ .btn-logout  {
+tsl-button ::ng-deep .btn-logout  {
   padding: $spacing-ms $spacing-ml;
   background-color: transparent;
   border: solid 1px $blue-grey-4;
@@ -55,7 +55,7 @@ tsl-button /deep/ .btn-logout  {
   }
 }
 
-tsl-button /deep/ .simple  {
+tsl-button ::ng-deep .simple  {
   background-color: transparent;
   color: $walla-main;
   font-size: $font-size-m;
@@ -79,7 +79,7 @@ tsl-spinner {
   justify-content: center;
   font-size: $font-size-s;
   mat-icon {
-    /deep/ svg path {
+    ::ng-deep svg path {
       fill: $walla-main;
     }
     margin-right: $spacing-ms;
@@ -124,7 +124,7 @@ tsl-spinner {
     }
     tsl-button {
       margin-left: $spacing-xs;
-      /deep/ button {
+      ::ng-deep button {
         color: $walla-main;
         text-decoration: underline;
         cursor: pointer;

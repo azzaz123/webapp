@@ -78,14 +78,14 @@
       &:hover, &.selected {
         color: $white;
         tsl-wallacoin {
-          /deep/ svg path {
+          ::ng-deep svg path {
             fill: $white;
           }
         }
         s {
           color: $blue-grey-4;
           tsl-wallacoin {
-            /deep/ svg path {
+            ::ng-deep svg path {
               fill: $blue-grey-4;
             }
           }

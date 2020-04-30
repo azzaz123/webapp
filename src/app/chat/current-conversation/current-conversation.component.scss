@@ -186,7 +186,7 @@
     cursor: pointer;
     padding: 0 3px;
 
-    /deep/ #MVP {
+    ::ng-deep #MVP {
       fill: $blue-grey-2;
     }
   }

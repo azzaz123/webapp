@@ -90,7 +90,7 @@ describe('CurrentConversationComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        NgbModule.forRoot(),
+        NgbModule,
         MomentModule,
         NgxPermissionsModule.forRoot()
       ],

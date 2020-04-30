@@ -1,5 +1,5 @@
 #map {
-  & > /deep/ div {
+  & > ::ng-deep div {
     border-radius: 0.3rem;
   }
   &.normal {

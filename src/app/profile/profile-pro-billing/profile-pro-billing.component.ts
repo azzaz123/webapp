@@ -21,7 +21,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
   public billingForm: FormGroup;
   public isNewBillingInfoForm = true;
   public loading = false;
-  @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
+  @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
 
   constructor(private fb: FormBuilder,
               private paymentService: PaymentService,
