@@ -6,6 +6,10 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn" i18n="@@cancelButton" (click)="activeModal.dismiss()">Cancel</button>
-  <button type="button" class="btn btn-warn" i18n="@@archiveButton" (click)="activeModal.close()">Archive</button>
-  <button type="button" class="btn btn-warn"  i18n="@@deleteButton" (click)="activeModal.close()">Delete</button>
+  <button *ngxPermissionsOnly="['isProfessional']" type="button" class="btn btn-warn" i18n="@@archiveButton"
+          (click)="activeModal.close()">Archive
+  </button>
+  <button *ngxPermissionsOnly="['isNormal']" type="button" class="btn btn-warn" i18n="@@deleteButton"
+          (click)="activeModal.close()">Delete
+  </button>
 </div>

@@ -449,8 +449,10 @@
   <msg id="archiveConversation"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:4</source><source>app/chat/current-conversation/current-conversation.component.html:39,40</source>Archive conversation</msg>
   <msg id="archiveConversationWarring"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:5</source>This will archive the conversation.</msg>
   <msg id="cancelButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:8</source>Cancel</msg>
-  <msg id="archiveButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:9</source>Archive</msg>
-  <msg id="deleteButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:10</source>Delete</msg>
+  <msg id="archiveButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:10,11</source>Archive
+  </msg>
+  <msg id="deleteButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:13,14</source>Delete
+  </msg>
   <msg id="7913053333994057167"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:2</source>Unarchive conversation</msg>
   <msg id="3205414127595653303"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:3</source>This will unarchive the conversation.</msg>
   <msg id="1121513541518618634"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:7</source>Unarchive</msg>
