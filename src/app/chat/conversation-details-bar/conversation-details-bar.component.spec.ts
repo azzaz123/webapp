@@ -85,7 +85,7 @@ describe('ConversationDetailsBarComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule,
-        NgbModule.forRoot(),
+        NgbModule,
         MomentModule,
         NgxPermissionsModule.forRoot()
       ],
