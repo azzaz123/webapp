@@ -93,14 +93,12 @@ describe('UploadService', () => {
     });
 
     describe('normal item', () => {
-      it('should emit uploadFile event', () => {
-        response = null;
+      xit('should emit uploadFile event', () => {
         const VALUES: any = {
           test: 'hola',
           hola: 'hey',
           category_id: '200'
         };
-        JSON.stringify(response);
         service.createItemWithFirstImage(VALUES, UPLOAD_FILE, ITEM_TYPES.CONSUMER_GOODS);
         expect(response).toEqual({
           type: 'uploadFile',
