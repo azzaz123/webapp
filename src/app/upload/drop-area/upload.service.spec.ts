@@ -100,6 +100,7 @@ describe('UploadService', () => {
           hola: 'hey',
           category_id: '200'
         };
+        JSON.stringify(response);
         service.createItemWithFirstImage(VALUES, UPLOAD_FILE, ITEM_TYPES.CONSUMER_GOODS);
         expect(response).toEqual({
           type: 'uploadFile',
