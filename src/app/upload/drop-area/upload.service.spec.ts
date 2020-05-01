@@ -94,6 +94,7 @@ describe('UploadService', () => {
 
     describe('normal item', () => {
       it('should emit uploadFile event', () => {
+        response = null;
         const VALUES: any = {
           test: 'hola',
           hola: 'hey',
