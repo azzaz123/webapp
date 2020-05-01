@@ -4,7 +4,7 @@ import { SuggesterResponse } from './suggester-response.interface';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
-export const SUGGESTER_ENDPOINT = 'api/v3/suggesters/search/';
+export const SUGGESTER_ENDPOINT = 'api/v3/suggesters/search';
 
 @Injectable()
 export class SuggesterService {
