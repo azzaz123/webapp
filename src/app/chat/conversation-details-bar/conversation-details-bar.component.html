@@ -60,13 +60,13 @@
     <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
     <div ngbDropdownMenu>
       <button *ngxPermissionsOnly="['isNormal']" class="dropdown-item" (click)="archiveConversation()"
-              i18n="@@deleteConversation" [hidden]="currentConversationisArchived">Delete conversation
+              i18n="@@deleteConversation" [hidden]="!currentConversationisArchived">Delete conversation
       </button>
       <button *ngxPermissionsOnly="['isProfessional']" class="dropdown-item" (click)="archiveConversation()"
-              i18n="@@archiveConversation" [hidden]="currentConversationisArchived">Archive conversation
+              i18n="@@archiveConversation" [hidden]="!currentConversationisArchived">Archive conversation
       </button>
-      <button class="dropdown-item" (click)="unarchiveConversation()"
-              i18n="@@unarchiveConversation" [hidden]="!currentConversationisArchived">Unarchive conversation
+      <button *ngxPermissionsOnly="['isProfessional']" class="dropdown-item" (click)="unarchiveConversation()"
+              i18n="@@unarchiveConversation" [hidden]="currentConversationisArchived">Unarchive conversation
       </button>
       <button class="dropdown-item" (click)="reportListingAction()"
               *ngIf="!itemIsMine && !currentConversation.item.notAvailable"
