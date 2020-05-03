@@ -10,14 +10,12 @@ import { ItemComponent } from './item/item.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import {
-  ArchiveConversationComponent,
   ReportListingComponent,
   ReportUserComponent,
   BlockUserComponent,
   UnblockUserComponent,
   ArchiveInboxConversationComponent,
   UnarchiveInboxConversationComponent,
-  BlockSendLinkComponent
 } from './modals';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { ItemReservedComponent } from './item/item-reserved/item-reserved.component';
@@ -58,7 +56,6 @@ import { ConversationDetailsBarComponent } from './conversation-details-bar';
     ItemComponent,
     ItemReservedComponent,
     ItemSoldComponent,
-    ArchiveConversationComponent,
     ArchiveInboxConversationComponent,
     UnarchiveInboxConversationComponent,
     ReportListingComponent,
@@ -74,7 +71,6 @@ import { ConversationDetailsBarComponent } from './conversation-details-bar';
     InboxUserDetailComponent,
     InboxItemDetailComponent,
     InboxItemForSellComponent,
-    BlockSendLinkComponent,
     ScrollingMessageComponent,
     ConversationDetailsBarComponent
   ],
@@ -82,14 +78,12 @@ import { ConversationDetailsBarComponent } from './conversation-details-bar';
     InboxConversationComponent
   ],
   entryComponents: [
-    ArchiveConversationComponent,
     ArchiveInboxConversationComponent,
     UnarchiveInboxConversationComponent,
     ReportListingComponent,
     ReportUserComponent,
     BlockUserComponent,
     UnblockUserComponent,
-    BlockSendLinkComponent
   ]
 })
 export class ChatModule {

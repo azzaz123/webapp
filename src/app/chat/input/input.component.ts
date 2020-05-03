@@ -3,8 +3,6 @@ import { MessageService } from '../service/message.service';
 import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { InboxConversation } from '../model/inbox-conversation';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BlockSendLinkComponent } from '../modals/block-send-link';
 import { LinkTransformPipe } from '../../shared/pipes/link-transform';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { find, includes, isEmpty } from 'lodash-es';
@@ -30,7 +28,6 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
               private eventService: EventService,
               private trackingService: TrackingService,
               private remoteConsoleService: RemoteConsoleService,
-              private modalService: NgbModal,
               private i18n: I18nService,
               private deviceService: DeviceDetectorService) {
   }
@@ -48,18 +45,12 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
     this.message = this.message.trim();
     if (!this.isUserBlocked) {
       if (!this.isEmpty()) {
-        if (this.hasLinkInMessage(this.message)) {
-          this.modalService.open(BlockSendLinkComponent, { windowClass: 'modal-transparent' });
-        } else {
-          this.trackingService.track(TrackingService.SEND_BUTTON, {
-            thread_id: this.currentConversation.id,
-          });
-          this.messageService.send(this.currentConversation, this.message);
-          this.message = '';
-        }
-      } else {
-        this.message = '';
+        this.trackingService.track(TrackingService.SEND_BUTTON, {
+          thread_id: this.currentConversation.id,
+        });
+        this.messageService.send(this.currentConversation, this.message);
       }
+      this.message = '';
     }
   }
 
