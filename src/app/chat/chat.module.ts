@@ -9,7 +9,6 @@ import { MomentModule } from 'angular2-moment';
 import { ItemComponent } from './item/item.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
 import { ReportListingComponent } from './modals/report-listing/report-listing.component';
 import { ReportUserComponent } from './modals/report-user/report-user.component';
 import { BlockUserComponent } from './modals/block-user/block-user.component';
@@ -27,7 +26,6 @@ import { UnarchiveInboxConversationComponent } from './modals/unarchive-inbox-co
 import { ArchivedInboxConversationComponent } from './inbox/archived-inbox-conversation/archived-inbox-conversation.component';
 import { InboxUserDetailComponent } from './inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component';
 import { InboxItemDetailComponent } from './inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component';
-import { BlockSendLinkComponent } from './modals/block-send-link';
 import { ScrollingMessageComponent } from './scrolling-message';
 import { StatusIconComponent } from './inbox/inbox-metadata/status-icon';
 import { InboxItemForSellComponent } from './inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component';
@@ -56,7 +54,6 @@ import { MessageModule } from './message/message.module';
     ItemComponent,
     ItemReservedComponent,
     ItemSoldComponent,
-    ArchiveConversationComponent,
     ArchiveInboxConversationComponent,
     UnarchiveInboxConversationComponent,
     ReportListingComponent,
@@ -72,7 +69,6 @@ import { MessageModule } from './message/message.module';
     InboxUserDetailComponent,
     InboxItemDetailComponent,
     InboxItemForSellComponent,
-    BlockSendLinkComponent,
     ScrollingMessageComponent,
     StatusIconComponent
   ],
@@ -80,14 +76,12 @@ import { MessageModule } from './message/message.module';
     InboxConversationComponent
   ],
   entryComponents: [
-    ArchiveConversationComponent,
     ArchiveInboxConversationComponent,
     UnarchiveInboxConversationComponent,
     ReportListingComponent,
     ReportUserComponent,
     BlockUserComponent,
     UnblockUserComponent,
-    BlockSendLinkComponent
   ]
 })
 export class ChatModule {

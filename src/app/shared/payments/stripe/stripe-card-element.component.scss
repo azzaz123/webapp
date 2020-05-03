@@ -44,7 +44,7 @@
 
 tsl-button {
   width: 100%;
-  /deep/ button {
+  ::ng-deep button {
     width: 100%;
     appearance: none;
   }

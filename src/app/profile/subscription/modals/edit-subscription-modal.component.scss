@@ -87,7 +87,7 @@
     width: $spacing-ms;
     height: $spacing-ms;
     line-height: $spacing-ms;
-    /deep/ svg path {
+    ::ng-deep svg path {
       fill: $white;
     }
   }

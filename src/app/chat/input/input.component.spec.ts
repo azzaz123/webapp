@@ -8,31 +8,19 @@ import { InputComponent } from './input.component';
 import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../service/message.service';
 import { EventService } from '../../core/event/event.service';
-import { MOCK_CONVERSATION, SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { AutosizeModule } from 'ngx-autosize';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { DeviceDetectorServiceMock } from '../../../tests';
+import { DeviceDetectorServiceMock, MockRemoteConsoleService } from '../../../tests';
 import { RemoteConsoleService } from '../../core/remote-console';
-import { MockRemoteConsoleService } from '../../../tests';
 import { InboxConversation } from '../model';
-import {
-  CREATE_MOCK_INBOX_CONVERSATION,
-  MOCK_INBOX_CONVERSATION,
-  SECOND_MOCK_INBOX_CONVERSATION
-} from '../../../tests/inbox.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION, SECOND_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 
 class MessageServiceMock {
   send(c: Conversation, t: string): void {
-  }
-}
-
-class NgbModalMock {
-  open(content: any, options?: NgbModalOptions): NgbModalRef {
-    return null;
   }
 }
 
@@ -44,7 +32,6 @@ describe('Component: Input', () => {
   let eventService: EventService;
   let trackingService: TrackingService;
   let remoteConsoleService: RemoteConsoleService;
-  let modalService: NgbModal;
   let deviceService: DeviceDetectorService;
 
   beforeEach(() => {
@@ -57,7 +44,6 @@ describe('Component: Input', () => {
       providers: [
         I18nService,
         { provide: MessageService, useClass: MessageServiceMock },
-        { provide: NgbModal, useClass: NgbModalMock },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         EventService,
@@ -76,7 +62,6 @@ describe('Component: Input', () => {
     messageService = TestBed.get(MessageService);
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
-    modalService = TestBed.get(NgbModal);
     remoteConsoleService = TestBed.get(RemoteConsoleService);
     deviceService = TestBed.get(DeviceDetectorService);
     spyOn(messageService, 'send');
@@ -111,7 +96,6 @@ describe('Component: Input', () => {
     beforeEach(() => {
       spyOn(EVENT, 'preventDefault');
       spyOn(trackingService, 'track');
-      spyOn(modalService, 'open');
       spyOn(remoteConsoleService, 'sendMessageTimeout');
       spyOn(remoteConsoleService, 'sendAcceptTimeout');
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
@@ -126,7 +110,6 @@ describe('Component: Input', () => {
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(component.message).toBe('');
-      expect(modalService.open).not.toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id
       });
@@ -141,7 +124,6 @@ describe('Component: Input', () => {
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(component.currentConversation, TEXT);
       expect(component.message).toBe('');
-      expect(modalService.open).not.toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
         thread_id: conversation.id
       });
@@ -154,7 +136,6 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
@@ -168,7 +149,6 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
@@ -183,7 +163,6 @@ describe('Component: Input', () => {
       component.sendMessage(EVENT);
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(modalService.open).not.toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(trackingService.track).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
@@ -196,11 +175,8 @@ describe('Component: Input', () => {
 
       component.sendMessage(EVENT);
       expect(EVENT.preventDefault).toHaveBeenCalled();
-      expect(modalService.open).toHaveBeenCalled();
-      expect(messageService.send).not.toHaveBeenCalled();
-      expect(trackingService.track).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
+      expect(messageService.send).toHaveBeenCalled();
+      expect(trackingService.track).toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time',
@@ -210,11 +186,8 @@ describe('Component: Input', () => {
 
         component.sendMessage(EVENT);
         expect(EVENT.preventDefault).toHaveBeenCalled();
-        expect(modalService.open).toHaveBeenCalled();
-        expect(messageService.send).not.toHaveBeenCalled();
-        expect(trackingService.track).not.toHaveBeenCalled();
-        expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
-        expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
+        expect(messageService.send).toHaveBeenCalled();
+        expect(trackingService.track).toHaveBeenCalled();
       });
   });
 
