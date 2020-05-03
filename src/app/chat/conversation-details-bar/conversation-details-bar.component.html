@@ -59,25 +59,30 @@
 
     <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
     <div ngbDropdownMenu>
-      <button class="dropdown-item" (click)="archiveConversation()" i18n
-              [hidden]="currentConversationisArchived">Archive conversation
+      <button *ngxPermissionsOnly="['isNormal']" class="dropdown-item" (click)="archiveConversation()"
+              i18n="@@deleteConversation" [hidden]="currentConversationisArchived">Delete conversation
       </button>
-      <button class="dropdown-item" (click)="unarchiveConversation()" i18n
-              [hidden]="!currentConversationisArchived">Unarchive conversation
+      <button *ngxPermissionsOnly="['isProfessional']" class="dropdown-item" (click)="archiveConversation()"
+              i18n="@@archiveConversation" [hidden]="currentConversationisArchived">Archive conversation
+      </button>
+      <button class="dropdown-item" (click)="unarchiveConversation()"
+              i18n="@@unarchiveConversation" [hidden]="!currentConversationisArchived">Unarchive conversation
       </button>
       <button class="dropdown-item" (click)="reportListingAction()"
-              *ngIf="!itemIsMine && !currentConversation.item.notAvailable" i18n>Report this Listing
+              *ngIf="!itemIsMine && !currentConversation.item.notAvailable"
+              i18n="@@reportListing">Report this Listing
       </button>
       <button *ngIf="currentConversation.user.available"
-              class="dropdown-item" (click)="reportUserAction()" i18n>Report this User
+              class="dropdown-item" (click)="reportUserAction()"
+              i18n="@@reportUser">Report this User
       </button>
       <button [hidden]="!currentConversation.user.id || currentConversation.user.blocked"
               class="dropdown-item warn"
-              (click)="blockUserAction()" i18n>Block this User
+              (click)="blockUserAction()" i18n="@@blockUser">Block this User
       </button>
       <button [hidden]="!currentConversation.user.id || !currentConversation.user.blocked"
               class="dropdown-item warn"
-              (click)="unblockUserAction()" i18n>Unblock this User
+              (click)="unblockUserAction()" i18n="@@unblockUser">Unblock this User
       </button>
     </div>
   </div>
