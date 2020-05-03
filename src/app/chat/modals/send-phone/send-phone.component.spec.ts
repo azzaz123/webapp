@@ -19,6 +19,7 @@ import { MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { InboxConversationService } from '../../service';
 import { InboxConversationServiceMock } from '../../../../tests';
 import { empty } from 'rxjs';
+import { SharedModule } from '../../../shared/shared.module';
 
 describe('SendPhoneComponent', () => {
   let component: SendPhoneComponent;
@@ -34,7 +35,7 @@ describe('SendPhoneComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, HttpClientTestingModule],
+      imports: [SharedModule, ReactiveFormsModule, HttpClientTestingModule],
       providers: [NgbActiveModal,
         FormBuilder,
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
@@ -231,13 +232,11 @@ describe('SendPhoneComponent', () => {
       });
 
       it('should set controls.phone.valid as FALSE when an invalid input is provided', () => {
-        const invalidEntries = ['+349-has-letters-223', '(349123)45678', '123456789'];
+        const invalidEntries = ['', '+349-has-letters-223', '(456456)456', '456456456', '123456789'];
 
-        invalidEntries.map(input => {
+        invalidEntries.forEach(input => {
           component.sendPhoneForm.get('phone').patchValue(input);
-
           component.createPhoneNumberMessage();
-
           expect(component.sendPhoneForm.controls.phone.valid).toBe(false);
         });
       });

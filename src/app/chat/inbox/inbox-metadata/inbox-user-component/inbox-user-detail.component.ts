@@ -14,8 +14,15 @@ export class InboxUserDetailComponent implements OnChanges {
   @Input() user: InboxUser;
   @Input() item: InboxItem;
   @Input() phoneNumber: string;
+  @Input() avatarSize = 50;
+  @Input() deviceType: 'small' | 'large';
+  @Input() isNavigable = true;
 
   constructor(private userService: UserService) {
+  }
+
+  public isDeviceSmall(): boolean {
+    return this.deviceType === 'small';
   }
 
   ngOnChanges(changes?: SimpleChanges) {

@@ -110,7 +110,7 @@ export class UploadService {
   }
 
   private getUploadHeaders(url: string, additionalHeaders?: any): any {
-    const timestamp = new Date().getTime();
+    const timestamp = Date.now();
     const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
 
     return {
