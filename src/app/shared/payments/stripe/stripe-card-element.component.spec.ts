@@ -32,7 +32,9 @@ describe('StripeCardElementComponent', () => {
                     create: () => {
                       return {
                         mount: () => {},
-                        addEventListener: () => {}
+                        addEventListener: () => {},
+                        removeEventListener: (type: string, listener: any) => {},
+                        destroy: () => {}
                       };
                     }
                   };

@@ -15,60 +15,9 @@
       display: flex;
       flex-direction: column;
 
-      .top-bar {
-        height: 80px;
-        padding: 0 $spacing-ml;
-        border-bottom: 1px solid $blue-grey-5;
-        z-index: 99;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        position: sticky;
-        top: 0;
-        width: 100%;
-
-        &.professional {
-          height: 103px;
-
-          tsl-user-avatar {
-            display: none;
-          }
-
-          h5 {
-            margin-top: -25px;
-          }
-        }
-
-        span {
-          color: $blue-grey-2;
-        }
-
-        .user-avatar {
-          display: inline-flex;
-        }
-
-        tsl-user-avatar {
-          margin-right: $spacing-ms;
-        }
-
-        .conversation-header-user-info {
-          display: inline-block;
-          flex-grow: 1;
-
-          h5 {
-            color: $blue-grey-1;
-            font-size: $font-size-m;
-            font-weight: normal;
-            margin-bottom: 0;
-          }
-        }
-
-        span {
-          font-size: $font-size-s;
-        }
-        @include media-breakpoint-down(md) {
-          height: 66px;
-        }
+      tsl-conversation-details-bar {
+        height: 74px;
+        z-index: 999;
       }
 
       .messages-panel-container {
@@ -148,6 +97,7 @@
         border-top: 1px solid $color-inbox-background;
       }
     }
+
     @include media-breakpoint-down(md) {
       width: 100%;
     }
@@ -175,33 +125,7 @@
   }
 }
 
-.back-arrow {
-  margin-right: $spacing-m;
-}
-
-.conversation-header-menu {
-  height: 24px;
-
-  mat-icon {
-    cursor: pointer;
-    padding: 0 3px;
-
-    ::ng-deep #MVP {
-      fill: $blue-grey-2;
-    }
-  }
-
-  .dropdown-item {
-    padding: ($spacing-ml / 2) $spacing-ml;
-    cursor: pointer;
-
-    &.warn {
-      color: $warn;
-    }
-  }
-}
-
-#conversation-meta {
+.conversation-meta {
   overflow-y: auto;
   height: calc(100vh - #{$topbar-height});
   float: right;
@@ -210,6 +134,11 @@
   background-color: $blue-grey-5;
   border-left: 1px solid $blue-grey-4;
   flex-shrink: 0;
+
+  .card {
+    padding-top: $spacing-s;
+    padding-left: $spacing-ms;
+  }
 
   tsl-user {
     margin-bottom: $spacing-ml;
@@ -258,13 +187,6 @@
     position: absolute;
     top: 0;
     left: -#{$spacing-ml + 5px};
-  }
-}
-
-.faded {
-  tsl-user-avatar,
-  .conversation-header-user-info {
-    opacity: 0.5;
   }
 }
 
