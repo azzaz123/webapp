@@ -978,6 +978,7 @@
   <translation id="6468756919468494280">Ventajas para quienes quieran vender más y mejor</translation>
 
   <translation id="ngb.alert.close">Cerrar</translation>
+  <translation id="ngb.toast.close-aria">Cerrar</translation>
   <translation id="ngb.carousel.previous">Anterior</translation>
   <translation id="ngb.carousel.next">Siguiente</translation>
   <translation id="ngb.datepicker.previous-month">Mes anterior</translation>
