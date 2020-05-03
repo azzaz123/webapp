@@ -1,4 +1,8 @@
-import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME } from './../../core/http/interceptors/token.interceptor';
+import {
+  TOKEN_AUTHORIZATION_HEADER_NAME,
+  TOKEN_SIGNATURE_HEADER_NAME,
+  TOKEN_TIMESTAMP_HEADER_NAME
+} from './../../core/http/interceptors/token.interceptor';
 import { TestBed } from '@angular/core/testing';
 import { UploadService } from './upload.service';
 import { environment } from '../../../environments/environment';
@@ -43,7 +47,7 @@ describe('UploadService', () => {
       response = r;
     });
 
-    spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
+    spyOn(Date, 'now').and.returnValues(TIMESTAMP);
   });
 
   describe('createItemWithFirstImage', () => {
@@ -93,7 +97,7 @@ describe('UploadService', () => {
     });
 
     describe('normal item', () => {
-      xit('should emit uploadFile event', () => {
+      it('should emit uploadFile event', () => {
         const VALUES: any = {
           test: 'hola',
           hola: 'hey',
