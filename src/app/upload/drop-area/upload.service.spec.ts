@@ -43,7 +43,7 @@ describe('UploadService', () => {
       response = r;
     });
 
-    spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
+    spyOn(Date, 'now').and.returnValues(TIMESTAMP);
   });
 
   describe('createItemWithFirstImage', () => {
