@@ -247,7 +247,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onClickContinueToPayment() {
+  public trackClickContinueToPayment() {
     const event: AnalyticsEvent<ClickSubscriptionContinuePayment> = {
       name: ANALYTICS_EVENT_NAMES.ClickSubscriptionContinuePayment,
       eventType: ANALYTIC_EVENT_TYPES.Other,
