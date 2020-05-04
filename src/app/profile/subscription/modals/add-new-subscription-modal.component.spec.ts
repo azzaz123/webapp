@@ -392,7 +392,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       fixture.detectChanges();
 
       const carousel: HTMLElement = fixture.elementRef.nativeElement.querySelector('ngb-carousel');
-      expect(carousel.className).toBe('single');
+      expect(carousel.className.includes('single')).toBe(true);
     });
 
     it('should hide first step, carousel indicators, current step indicator and change button', () => {
@@ -401,10 +401,11 @@ describe('AddNewSubscriptionModalComponent', () => {
 
       const firstStepElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.step-1');
       const carouselIndicatorsElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.carousel-indicators');
+      const carouselIndicatorsElementStyle = getComputedStyle(carouselIndicatorsElement);
       const stepsIndicatorElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.AddNewSubscription__listing-limit-steps');
       const changeButton: HTMLElement = fixture.elementRef.nativeElement.querySelector('.AddNewSubscription__listing-limit-payment-edit');
       expect(firstStepElement).toBeNull();
-      expect(carouselIndicatorsElement).toBeNull();
+      expect(carouselIndicatorsElementStyle.display).toBe('none');
       expect(stepsIndicatorElement).toBeNull();
       expect(changeButton).toBeNull();
     });
