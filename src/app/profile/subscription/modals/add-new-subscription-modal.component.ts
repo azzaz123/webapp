@@ -299,7 +299,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         subscription: CATEGORY_IDS.CAR as 100,
-        screenId: SCREEN_IDS.CarsSubscription,
+        screenId: SCREEN_IDS.Subscription,
         isNewSubscriber: this.isNewSubscriber
       }
     };
