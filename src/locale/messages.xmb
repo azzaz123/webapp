@@ -472,7 +472,7 @@
   <msg id="2247942788262300865"><source>app/chat/inbox/inbox.component.html:8</source><source>app/chat/inbox/inbox.component.html:19</source>Archived Messages</msg>
   <msg id="8032820066123493751"><source>app/chat/inbox/inbox.component.html:32</source>New messages</msg>
   <msg id="7238711418435054042"><source>app/chat/inbox/inbox.component.html:35</source>We found some problems updating your inbox. Try again later.</msg>
-  <msg id="33149636091572968"><source>app/chat/inbox/inbox.component.html:52</source><source>app/chat/inbox/inbox.component.html:76</source><source>app/chat/current-conversation/current-conversation.component.html:110</source>Load more</msg>
+  <msg id="33149636091572968"><source>app/chat/inbox/inbox.component.html:52</source><source>app/chat/inbox/inbox.component.html:76</source><source>app/chat/current-conversation/current-conversation.component.html:77</source>Load more</msg>
   <msg id="265020643835790616"><source>app/chat/inbox/inbox.component.html:59</source>We found some problems updating your archived messages. Try again later.</msg>
   <msg id="8721026914522212662"><source>app/chat/inbox/archived-inbox-conversation/archived-inbox-conversation.component.html:42</source>Archived </msg>
   <msg id="682982254050004818"><source>app/chat/current-conversation/current-conversation.component.html:9,10</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
@@ -480,22 +480,10 @@
   <msg id="3325766019344626759"><source>app/chat/current-conversation/current-conversation.component.html:11</source>There are no messages</msg>
   <msg id="177886998911393770"><source>app/chat/current-conversation/current-conversation.component.html:12,13</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       Try again later.</msg>
-  <msg id="3520858718490550964"><source>app/chat/current-conversation/current-conversation.component.html:36,37</source>Archive conversation
-            </msg>
-  <msg id="603154656968324663"><source>app/chat/current-conversation/current-conversation.component.html:39,40</source>Unarchive conversation
-            </msg>
-  <msg id="511133215426042486"><source>app/chat/current-conversation/current-conversation.component.html:42,43</source>Report this Listing
-            </msg>
-  <msg id="2311423194575383733"><source>app/chat/current-conversation/current-conversation.component.html:45,46</source>Report this User
-            </msg>
-  <msg id="8621433484657846443"><source>app/chat/current-conversation/current-conversation.component.html:49,50</source>Block this User
-            </msg>
-  <msg id="7895174555296226408"><source>app/chat/current-conversation/current-conversation.component.html:53,54</source>Unblock this User
-            </msg>
-  <msg id="3934360921102914601"><source>app/chat/current-conversation/current-conversation.component.html:67</source>You have blocked this user. Unblock it to continue chatting</msg>
-  <msg id="5949661737880412802"><source>app/chat/current-conversation/current-conversation.component.html:73</source>This user is not available</msg>
-  <msg id="3753612046513951428"><source>app/chat/current-conversation/current-conversation.component.html:80</source>This product is not available</msg>
-  <msg id="2536023333703806770"><source>app/chat/current-conversation/current-conversation.component.html:103</source>Remember not to share private data for security reasons</msg>
+  <msg id="3934360921102914601"><source>app/chat/current-conversation/current-conversation.component.html:34</source>You have blocked this user. Unblock it to continue chatting</msg>
+  <msg id="5949661737880412802"><source>app/chat/current-conversation/current-conversation.component.html:40</source>This user is not available</msg>
+  <msg id="3753612046513951428"><source>app/chat/current-conversation/current-conversation.component.html:47</source>This product is not available</msg>
+  <msg id="2536023333703806770"><source>app/chat/current-conversation/current-conversation.component.html:70</source>Remember not to share private data for security reasons</msg>
   <msg id="6969584346860248976" desc="The distance between the user and the item"><source>app/chat/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:12,14</source>
         <ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ph>km from you
       </msg>
@@ -503,6 +491,18 @@
     </msg>
   <msg id="2020278898288143668"><source>app/chat/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component.html:8</source>Selling</msg>
   <msg id="3893097575013115653"><source>app/chat/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component.html:9</source>+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex>{{user?.sellingItemCount}}</ph> More</msg>
+  <msg id="1275264267936980927"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:52,53</source>Archive conversation
+      </msg>
+  <msg id="6744583700854319987"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:55,56</source>Unarchive conversation
+      </msg>
+  <msg id="7181016097805690972"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:58,59</source>Report this Listing
+      </msg>
+  <msg id="7184510579643662120"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:61,62</source>Report this User
+      </msg>
+  <msg id="5709935930083786813"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:65,66</source>Block this User
+      </msg>
+  <msg id="4100915642762454461"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:69,70</source>Unblock this User
+      </msg>
   <msg id="4741413716404810905"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:1</source>Do review</msg>
   <msg id="7305026831182508111"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:4</source>Thanks for rating!</msg>
   <msg id="7368172072093620772"><source>app/dashboard/dashboard.component.html:8</source>Your stats</msg>

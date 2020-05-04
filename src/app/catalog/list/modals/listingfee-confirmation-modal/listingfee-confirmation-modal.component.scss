@@ -7,7 +7,7 @@
   p {
     margin: 0 auto $spacing-l auto;
   }
-  tsl-button /deep/ button {
+  tsl-button ::ng-deep button {
     width: 200px;
   }
 }

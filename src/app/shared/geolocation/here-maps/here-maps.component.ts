@@ -1,6 +1,5 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
-import { makeAnimationEvent } from '@angular/animations/browser/src/render/shared';
 
 export const MAP_ZOOM_GENERAL = 5;
 export const MAP_ZOOM_MARKER = 15;
@@ -16,42 +15,35 @@ export const DEFAULT_COORDINATES: Coordinate = {
   templateUrl: './here-maps.component.html',
   styleUrls: ['./here-maps.component.scss']
 })
-export class HereMapsComponent implements OnInit, OnChanges {
+export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() coordinates: Coordinate;
   @Input() zoom = MAP_ZOOM_GENERAL;
   @Input() size = 'normal';
   @Input() isApproximateLocation = false;
-  @ViewChild('map') mapEl: ElementRef;
+  @ViewChild('map', { static: true }) mapEl: ElementRef;
   public platform: any;
   private map: any;
   private marker: any;
   private circle: any;
 
-  constructor() {
-    this.platform = new H.service.Platform({
-      app_id: 'RgPrXX1bXt123UgUFc7B',
-      app_code: 'HtfX0DsqZ2Y0x-44GfujFA',
-      useCIT: true,
-      useHTTPS: true
-    });
+  ngOnInit() {
+    this.initializePlatform();
   }
 
-  ngOnInit() {
-    setTimeout(() => {
-      const defaultLayers = this.platform.createDefaultLayers();
-      this.map = new H.Map(this.mapEl.nativeElement, defaultLayers.normal.map);
-      const coordinates = this.getCenter();
-      this.map.setCenter(coordinates);
-      this.map.setZoom(this.zoom);
-      if (+this.zoom === MAP_ZOOM_MARKER) {
-        if (!this.isApproximateLocation) {
-          this.addMarker(coordinates);
-        } else {
-          this.addCircle(coordinates);
-        }
+  ngAfterViewInit() {
+    const defaultLayers = this.platform.createDefaultLayers();
+    this.map = this.createMap(defaultLayers);
+    const coordinates = this.getCenter();
+    this.map.setCenter(coordinates);
+    this.map.setZoom(this.zoom);
+    if (+this.zoom === MAP_ZOOM_MARKER) {
+      if (!this.isApproximateLocation) {
+        this.addMarker(coordinates);
+      } else {
+        this.addCircle(coordinates);
       }
-    });
+    }
   }
 
   ngOnChanges() {
@@ -69,20 +61,15 @@ export class HereMapsComponent implements OnInit, OnChanges {
 
   private addMarker(coordinates: any) {
     const icon = this.size === 'small' ? USER_MARKER_SMALL : USER_MARKER;
-    const markerIcon = new H.map.Icon(icon);
+    const markerIcon = this.createIcon(icon);
     this.removeObjects();
-    this.marker = new H.map.Marker(coordinates, {icon: markerIcon});
+    this.marker = this.createMarker(coordinates, markerIcon);
     this.map.addObject(this.marker);
   }
 
   private addCircle(coordinates: any) {
     this.removeObjects();
-    this.circle = new H.map.Circle(coordinates, 650, {
-      style: {
-        fillColor: 'rgba(51, 51, 51, 0.15)',
-        lineWidth: 0
-      }
-    });
+    this.circle = this.createCircle(coordinates);
     this.map.addObject(this.circle);
   }
 
@@ -104,4 +91,33 @@ export class HereMapsComponent implements OnInit, OnChanges {
     };
   }
 
+  public initializePlatform() {
+    this.platform = new H.service.Platform({
+      app_id: 'RgPrXX1bXt123UgUFc7B',
+      app_code: 'HtfX0DsqZ2Y0x-44GfujFA',
+      useCIT: true,
+      useHTTPS: true
+    });
+  }
+
+  public createMap(defaultLayers) {
+    return new H.Map(this.mapEl.nativeElement, defaultLayers.normal.map);
+  }
+
+  public createIcon(icon: string) {
+    return new H.map.Icon(icon);
+  }
+
+  public createCircle(coordinates: any) {
+    return new H.map.Circle(coordinates, 650, {
+      style: {
+        fillColor: 'rgba(51, 51, 51, 0.15)',
+        lineWidth: 0
+      }
+    });
+  }
+
+  public createMarker(coordinates: any, icon: H.map.Icon) {
+    return new H.map.Marker(coordinates, { icon });
+  }
 }

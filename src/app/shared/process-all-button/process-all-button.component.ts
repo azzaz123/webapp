@@ -19,13 +19,11 @@ export class ProcessAllButtonComponent {
   }
 
   public open(targetModal: string) {
-    let observable: Observable<any>;
     this.modalService.open(targetModal).result.then(() => {
       if (this.type === 'calls') {
         this.trackingService.track(TrackingService.PHONE_LEAD_LIST_ALL_PROCESSED);
-        observable = this.callsService.archiveAll();
+        this.callsService.archiveAll().subscribe();
       }
-      observable.subscribe();
     });
   }
 }

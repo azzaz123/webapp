@@ -9,4 +9,7 @@ export class ConversationServiceMock {
   getTotals() {
     return observableOf({});
   }
+
+  public loadMoreMessages() {
+  }
 }
