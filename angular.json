@@ -136,36 +136,6 @@
             "browserTarget": "webapp:build"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [
-              "node_modules/stanza.io/build/stanzaio.bundle.js",
-              "node_modules/visibilityjs/lib/visibility.core.js",
-              "node_modules/appboy-web-sdk/appboy.min.js",
-              "src/assets/js/adsConfig.js",
-              "src/assets/js/quantcast.js"
-            ],
-            "styles": [
-              "node_modules/ngx-toastr/toastr.css",
-              "src/style/styles.scss"
-            ],
-            "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/manifest.json",
-              "src/service-worker.js",
-              "src/doubleclick",
-              "src/eyeblaster",
-              "src/flashtalking",
-              "src/ftlocal"
-            ]
-          }
-        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
