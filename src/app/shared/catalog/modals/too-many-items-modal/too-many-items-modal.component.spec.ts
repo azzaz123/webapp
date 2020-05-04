@@ -56,25 +56,13 @@ describe('TooManyItemsModalComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when user clicks on go to subscriptions', () => {
-    it('should delegate tracking to component', () => {
-      spyOn(component, 'trackClickGoToSubscriptions');
-      const buttonWithCTA = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
-
-      buttonWithCTA.click();
-
-      expect(component.trackClickGoToSubscriptions).toHaveBeenCalledTimes(1);
-    });
-
-  });
-
   describe('trackClickGoToSubscriptions', () => {
     it('should send event to analytics', () => {
       const expectedEvent: AnalyticsEvent<ClickSubscriptionLimitReached> = {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionLimitReached,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          screenId: SCREEN_IDS.MyCatalog
+          screenId: SCREEN_IDS.MyCatalog,
         }
       };
 
