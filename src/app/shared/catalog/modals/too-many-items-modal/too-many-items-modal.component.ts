@@ -32,7 +32,7 @@ export class TooManyItemsModalComponent implements OnInit {
       name: ANALYTICS_EVENT_NAMES.ClickSubscriptionLimitReached,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
-        screenId: SCREEN_IDS.MyCatalog as 217, // TODO: This is going to be removed when event definition is ok
+        screenId: SCREEN_IDS.MyCatalog
       }
     };
 
