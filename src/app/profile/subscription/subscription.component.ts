@@ -69,7 +69,6 @@ export class SubscriptionsComponent implements OnInit {
       }
       modalRef = null;
     }, () => {
-      this.trackCloseModalEvent(subscription, modal);
       modalRef = null;
     });
 
