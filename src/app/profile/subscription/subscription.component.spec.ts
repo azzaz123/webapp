@@ -21,6 +21,7 @@ import {
   AnalyticsPageView,
   ViewProfileSubscription,
   ClickProfileSubscribeButton,
+  ClickProfileEditCurrentSubscription,
 } from '../../core/analytics/analytics-constants';
 import { CancelSubscriptionModalComponent } from "./modals/cancel-subscription-modal.component";
 import { ContinueSubscriptionModalComponent } from "./modals/continue-subscription-modal.component";
@@ -168,13 +169,14 @@ describe('SubscriptionComponent', () => {
     }));
 
     describe('when the user is subscribed to the selected category', () => {
-      it('should send click profile unsubscribe event', () => {
+      it('should send the edit subscription click event', () => {
         spyOn(analyticsService, 'trackEvent');
-        const expectedEvent: AnalyticsEvent<ClickProfileUnsuscribe> = {
-          name: ANALYTICS_EVENT_NAMES.ClickProfileUnsuscribe,
+        const expectedEvent: AnalyticsEvent<ClickProfileEditCurrentSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProfileEditCurrentSubscription,
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
             screenId: SCREEN_IDS.ProfileSubscription,
+            tier: MAPPED_SUBSCRIPTIONS_ADDED[0].selected_tier_id,
             subscription: MAPPED_SUBSCRIPTIONS_ADDED[0].category_id as SUBSCRIPTION_CATEGORIES
           }
         };
