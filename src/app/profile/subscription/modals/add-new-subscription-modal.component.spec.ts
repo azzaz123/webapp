@@ -332,25 +332,23 @@ describe('AddNewSubscriptionModalComponent', () => {
   });
 
   describe('trackClickPay', () => {
-    const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
-      name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
-      attributes: {
-        subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-        tier: component.selectedTier.id,
-        screenId: SCREEN_IDS.ProfileSubscription,
-        isNewCard: true,
-        isNewSubscriber: component.isNewSubscriber,
-        discountPercent: 0
-      }
-    };
-
-    beforeEach(() => {
-      spyOn(analyticsService, 'trackEvent');
-    });
+    beforeEach(() => spyOn(analyticsService, 'trackEvent'));
 
     describe('when isNewVisa is true', () => {
       it('should send valid event', () => {
+        const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+          name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+            tier: component.selectedTier.id,
+            screenId: SCREEN_IDS.ProfileSubscription,
+            isNewCard: true,
+            isNewSubscriber: component.isNewSubscriber,
+            discountPercent: 0
+          }
+        };
+
         component.trackClickPay(true);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
@@ -360,6 +358,18 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     describe('when isNewVisa is false', () => {
       it('should send valid event', () => {
+        const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+          name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+            tier: component.selectedTier.id,
+            screenId: SCREEN_IDS.ProfileSubscription,
+            isNewCard: true,
+            isNewSubscriber: component.isNewSubscriber,
+            discountPercent: 0
+          }
+        };
         expectedEvent.attributes.isNewCard = false;
 
         component.trackClickPay(false);
