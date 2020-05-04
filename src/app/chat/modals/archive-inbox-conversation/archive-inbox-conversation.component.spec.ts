@@ -11,7 +11,6 @@ describe('ArchiveInboxConversationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        NgxPermissionsModule,
         NgxPermissionsModule.forRoot()
       ],
       providers: [NgbActiveModal],

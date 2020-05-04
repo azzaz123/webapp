@@ -247,7 +247,7 @@ describe('UploadService', () => {
       });
     });
     describe('normal item', () => {
-      xit('should emit uploadFile event', () => {
+      it('should emit uploadFile event', () => {
         service.uploadSingleImage(UPLOAD_FILE, ITEM_ID, ITEM_TYPES.CONSUMER_GOODS);
         expect(response).toEqual({
           type: 'uploadFile',
