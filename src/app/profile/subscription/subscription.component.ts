@@ -130,9 +130,7 @@ export class SubscriptionsComponent implements OnInit {
 
       return this.analyticsService.trackEvent(event);
     }
-  }
 
-  private trackCloseModalEvent(subscription: SubscriptionsResponse, modalType: SubscriptionModal) {
     if (modalType === ContinueSubscriptionModalComponent) {
       const event: AnalyticsEvent<ClickKeepCurrentSubscription> = {
         name: ANALYTICS_EVENT_NAMES.ClickKeepCurrentSubscription,
