@@ -410,11 +410,13 @@ describe('AddNewSubscriptionModalComponent', () => {
     });
   });
 
-  describe('when the user clicks on the contact us directly on the car dealer link', () => {
+  describe('trackClickCardealerTypeform', () => {
     it('should send event to analytics', () => {
       spyOn(analyticsService, 'trackEvent');
       spyOn(component, 'trackClickCardealerTypeform').and.callThrough();
       const isNewSubscriber = true;
+      component.subscription = MAPPED_SUBSCRIPTIONS[1];
+      component.isNewSubscriber = isNewSubscriber;
       const expectedEvent: AnalyticsEvent<ClickSubscriptionDirectContact> = {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionDirectContact,
         eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -424,14 +426,9 @@ describe('AddNewSubscriptionModalComponent', () => {
           isNewSubscriber
         }
       };
-      component.subscription = MAPPED_SUBSCRIPTIONS[1];
-      component.isNewSubscriber = isNewSubscriber;
-      fixture.detectChanges();
-      const carDealerLinkElement = fixture.debugElement.query(By.css('.AddNewSubscription__listing-limit-more > a')).nativeElement;
 
-      carDealerLinkElement.click();
+      component.trackClickCardealerTypeform();
 
-      expect(component.trackClickCardealerTypeform).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
