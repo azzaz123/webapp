@@ -7,7 +7,7 @@ $pack-width: 234px;
 }
 
 tsl-header {
-  /deep/ {
+  ::ng-deep {
     .header-title {
       text-transform: capitalize;
     }
@@ -50,7 +50,7 @@ p {
 
 ngu-carousel {
   margin: $spacing-xxxl auto 86px;
-  /deep/ {
+  ::ng-deep {
     .ngu-touch-container {
       width: 794px;
       overflow: hidden;
@@ -64,7 +64,7 @@ ngu-carousel {
       top: 50%;
       cursor: pointer;
       &:hover {
-        /deep/ {
+        ::ng-deep {
           path {
             fill: $walla-main;
           }

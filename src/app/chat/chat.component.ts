@@ -128,7 +128,7 @@ export class ChatComponent implements OnInit {
       } else {
         this.conversationsLoading = false;
       }
-      if (isEmpty(conversation.messages)) {
+      if (conversation && isEmpty(conversation.messages)) {
         this.getPhoneInfo(conversation);
       }
     });

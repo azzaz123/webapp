@@ -51,7 +51,10 @@ describe('SubscriptionsService', () => {
         SubscriptionsService,
         {
           provide: AccessTokenService, useValue: {
-            accessToken: 'ACCESS_TOKEN'
+            accessToken: 'ACCESS_TOKEN',
+            getTokenSignature() {
+              return 'thesignature';
+            }
           }
         },
         {

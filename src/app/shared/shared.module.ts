@@ -70,13 +70,14 @@ import { SubscriptionsService } from '../core/subscriptions/subscriptions.servic
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
+import { StatusIconComponent } from './status-icon';
 
 @NgModule({
   imports: [
     CardModule,
     CommonModule,
     MatIconModule,
-    NgbModule.forRoot(),
+    NgbModule,
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,
@@ -106,6 +107,7 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
+    StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
     ArchiveButtonComponent,
@@ -160,6 +162,7 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
+    StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
     ArchiveButtonComponent,

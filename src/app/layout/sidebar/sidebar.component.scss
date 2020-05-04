@@ -54,12 +54,12 @@ $sidebar-section-circle-size-small: 32px;
       transition: .15s fill ease;
     }
   }
-  & /deep/ path {
+  & ::ng-deep path {
     fill: rgba($white, .5);
   }
   &.active, &:hover {
     mat-icon {
-      & /deep/ path {
+      & ::ng-deep path {
         fill: $white;
       }
     }
@@ -134,7 +134,7 @@ h2 {
     }
     &.profile-item {
       tsl-user-avatar {
-        /deep/ .avatar-rounded {
+        ::ng-deep .avatar-rounded {
           transition: width .75s, height 0.75s;
           width: $sidebar-section-circle-size-small;
           height: $sidebar-section-circle-size-small;

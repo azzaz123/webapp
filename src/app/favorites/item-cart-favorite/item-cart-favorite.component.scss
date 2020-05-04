@@ -5,11 +5,11 @@ tsl-card {
   border-radius: $border-radius;
   box-shadow: 0 0 2px 0 rgba($black, .1);
   transition: all .15s ease;
-  & /deep/ tsl-card-image {
+  & ::ng-deep tsl-card-image {
     display: block;
     padding: $spacing-xs;
   }
-  & /deep/ tsl-card-content {
+  & ::ng-deep tsl-card-content {
     padding-top: $spacing-ms;
     span {
       overflow: hidden;
@@ -20,7 +20,7 @@ tsl-card {
     }
   }
 
-  & /deep/ tsl-card-footer {
+  & ::ng-deep tsl-card-footer {
     position: relative;
     .cart-footer-icon {
       position: absolute;

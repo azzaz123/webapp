@@ -39,5 +39,8 @@
     <ng-template #nonCurrentButton>
       <tsl-button [loading]="loading" (click)="editSubscription()" i18n>Confirm change</tsl-button>
     </ng-template>
-    <div class="EditSubscription__cancel-link" (click)="cancelSubscription()" i18n>I want to cancel my subscription</div>
+    <div class="EditSubscription__cancel-link" (click)="cancelSubscription()">
+      <span *ngIf="!subscription.trial_days" i18n="@@EditSubscriptionModalCancelSubscription">I want to cancel my subscription</span>
+      <span *ngIf="subscription.trial_days" i18n="@@EditSubscriptionModalCancelFreeTrial">Cancel free trial</span>
+    </div>
 </div>

@@ -20,7 +20,7 @@ export class AccountComponent implements CanComponentDeactivate {
   public profileForm: FormGroup;
   public user: User;
   public loading = false;
-  @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
+  @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
 
   constructor(private modalService: NgbModal,
     private fb: FormBuilder,

@@ -4,3 +4,10 @@
   background-size: cover;
   border-radius: 4px;
 }
+
+@mixin rectangle-avatar($width, $height) {
+  width: $width;
+  height: $height;
+  background-size: cover;
+  border-radius: 4px;
+}

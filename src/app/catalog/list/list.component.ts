@@ -81,8 +81,8 @@ export class ListComponent implements OnInit, OnDestroy {
   public user: User;
   public userScore: number;
 
-  @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
-  @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
+  @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
+  @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
     private trackingService: TrackingService,

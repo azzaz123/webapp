@@ -1,7 +1,7 @@
 <div
   tslsanitizedBackground="{{avatar}}"
   [fallback]="fallback"
-  [ngClass]="size">
+  [ngClass]="size" class="transition">
   <span class="overlay" *ngIf="item?.featured || item?.sold || item?.reserved || item?.purchases || item?.notAvailable"></span>
   <span class="not-available" *ngIf="item?.notAvailable && showAvailableStatus">
     <mat-icon svgIcon="not-available"></mat-icon>

@@ -20,7 +20,7 @@ export class SuggesterComponent implements OnInit {
   @Output() public newSearch = new EventEmitter<SuggesterResponse>();
   @Output() public newSearchSubmit = new EventEmitter<SuggesterResponse>();
   @Output() public newKeyword = new EventEmitter<string>();
-  @ViewChild('kwsEl') kwsEl: ElementRef;
+  @ViewChild('kwsEl', { static: true }) kwsEl: ElementRef;
 
   constructor(private suggesterService: SuggesterService) { }
 

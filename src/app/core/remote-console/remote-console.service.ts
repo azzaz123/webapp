@@ -44,7 +44,7 @@ export class RemoteConsoleService implements OnDestroy {
       connection_time: connectionTime,
       call_no: this.connectionTimeCallNo,
       connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
-      ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : ''
+      ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1
     });
   }
 
@@ -112,6 +112,12 @@ export class RemoteConsoleService implements OnDestroy {
     );
   }
 
+  getReleaseVersion(appVersion: string): number {
+    return +appVersion.split('.')
+    .map((subVersion: string) => ('00' + subVersion).slice(-3))
+    .reduce((a: string, b: string) => a + b);
+  }
+
   private getCommonLog(userId: string): {} {
     const device = this.deviceService.getDeviceInfo();
     return {
@@ -122,7 +128,7 @@ export class RemoteConsoleService implements OnDestroy {
       browser_version: device.browser_version,
       user_id: userId,
       feature_flag: true,
-      app_version: APP_VERSION
+      app_version: this.getReleaseVersion(APP_VERSION)
     };
   }
 }
