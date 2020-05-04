@@ -6,11 +6,19 @@
  */
 
 /**
- * User views Edit Subscription Plan screen
+ * User clicks on the Subscription Management Plus button
  */
-export interface ViewEditSubscriptionPlan {
+export interface ClickSubscriptionManagementPlus {
   /**
    * Identifier of the Subscription Management screen
    */
   screenId: 191;
+  /**
+   * Subscription type
+   */
+  subscription: 0 | 100 | 14000 | 12800;
+  /**
+   * If the user is a new subscriber
+   */
+  isNewSubscriber: boolean;
 }

@@ -6,15 +6,15 @@
  */
 
 /**
- * Button in subscription profile to unsuscribe
+ * User views Subscription Payment Success screen
  */
-export interface ClickProfileUnsuscribe {
+export interface ViewSubscriptionPaymentSuccess {
   /**
-   * Identifier of the screen
+   * Identifier of the subscription plan chosen by user
    */
-  screenId: 206;
+  planId: string;
   /**
-   * Subscription type
+   * Identifier of the Subscription Payment Success screen
    */
-  subscription?: 0 | 100 | 14000 | 12800;
+  screenId: 208;
 }

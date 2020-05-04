@@ -6,19 +6,23 @@
  */
 
 /**
- * User clicks subscribe button or card on the subcription page
+ * User clicks continue payment button after selecting subscription
  */
-export interface ClickProfileSubscribeButton {
+export interface ClickSubscriptionContinuePayment {
   /**
    * Subscription category type
    */
   subscription: 0 | 100 | 14000 | 12800;
   /**
+   * Identifier of the subscription tier
+   */
+  tier: string;
+  /**
    * If the user is a new or recurrent subscriber
    */
   isNewSubscriber: boolean;
   /**
-   * Identifier of the subscription page screen
+   * Identifier of the Profile Subscription screen
    */
   screenId: 206;
 }

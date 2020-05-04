@@ -6,19 +6,19 @@
  */
 
 /**
- * User clicks subscribe button or card on the subcription page
+ * User clicks cancel close current subscription button
  */
-export interface ClickProfileSubscribeButton {
+export interface ClickCancelCloseSubscription {
   /**
    * Subscription category type
    */
   subscription: 0 | 100 | 14000 | 12800;
   /**
-   * If the user is a new or recurrent subscriber
+   * Tier of the subscription
    */
-  isNewSubscriber: boolean;
+  tier: string;
   /**
-   * Identifier of the subscription page screen
+   * Identifier of the screen
    */
   screenId: 206;
 }

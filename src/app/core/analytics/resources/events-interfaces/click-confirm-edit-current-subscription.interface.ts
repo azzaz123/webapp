@@ -6,19 +6,23 @@
  */
 
 /**
- * User clicks subscribe button or card on the subcription page
+ * User clicks confirm edit current subscription button
  */
-export interface ClickProfileSubscribeButton {
+export interface ClickConfirmEditCurrentSubscription {
   /**
    * Subscription category type
    */
   subscription: 0 | 100 | 14000 | 12800;
   /**
-   * If the user is a new or recurrent subscriber
+   * Tier of the subscription before the edit
    */
-  isNewSubscriber: boolean;
+  previousTier: string;
   /**
-   * Identifier of the subscription page screen
+   * Tier of the subscription after the edit
+   */
+  newTier: string;
+  /**
+   * Identifier of the screen
    */
   screenId: 206;
 }
