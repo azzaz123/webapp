@@ -4,6 +4,9 @@ import 'jest-preset-angular';
 // Import global mocks defined by us
 import './global-mocks';
 
+// TODO: Investigate why we can not load polyfill file passing the tsconfig.json to Jest
+import '@angular/localize/init';
+
 // Extra definitons for mocking DOM interactions
 Object.defineProperty(window, 'CSS', { value: null });
 
