@@ -1,16 +1,9 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../out-tsc/spec",
-    "baseUrl": "./",
-    "types": [
-      "jasmine",
-      "node",
-      "heremaps"
-    ]
+    "outDir": "../out-tsc/spec"
   },
   "files": [
-    "test.ts",
     "polyfills.ts"
   ],
   "include": [
