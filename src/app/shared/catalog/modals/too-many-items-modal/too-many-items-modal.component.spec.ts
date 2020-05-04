@@ -34,7 +34,9 @@ describe('TooManyItemsModalComponent', () => {
       ],
       providers: [
         NgbActiveModal,
-        MockAnalyticsService
+        {
+          provide: AnalyticsService, useClass: MockAnalyticsService
+        }
       ]
     })
     .compileComponents();
@@ -55,17 +57,28 @@ describe('TooManyItemsModalComponent', () => {
   });
 
   describe('when user clicks on go to subscriptions', () => {
-    it('should send event to analytics', () => {
+    it('should delegate tracking to component', () => {
+      spyOn(component, 'trackClickGoToSubscriptions');
       const buttonWithCTA = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+
+      buttonWithCTA.click();
+
+      expect(component.trackClickGoToSubscriptions).toHaveBeenCalledTimes(1);
+    });
+
+  });
+
+  describe('trackClickGoToSubscriptions', () => {
+    it('should send event to analytics', () => {
       const expectedEvent: AnalyticsEvent<ClickSubscriptionLimitReached> = {
-        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionContinuePayment,
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionLimitReached,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           screenId: SCREEN_IDS.MyCatalog,
         }
       };
 
-      buttonWithCTA.click();
+      component.trackClickGoToSubscriptions();
 
       expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
