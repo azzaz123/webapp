@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed, async, fakeAsync, tick, flush } from "@angul
 import { CategoryService } from "../../core/category/category.service";
 import { SubscriptionsService } from "../../core/subscriptions/subscriptions.service";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { of } from "rxjs";
 import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures.spec";
 import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED, MAPPED_SUBSCRIPTIONS_WITH_INAPP, MockSubscriptionService } from "../../../tests/subscriptions.fixtures.spec";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,18 +17,16 @@ import {
   SCREEN_IDS,
   ANALYTICS_EVENT_NAMES,
   AnalyticsEvent,
-  ClickSuscribeOnTheBenefitsScreen,
   ANALYTIC_EVENT_TYPES,
   AnalyticsPageView,
   ViewProfileSubscription,
   ClickProfileSubscribeButton,
-  ClickProfileUnsuscribe,
-  ClickUnsuscribeCancelation
 } from '../../core/analytics/analytics-constants';
 import { CancelSubscriptionModalComponent } from "./modals/cancel-subscription-modal.component";
 import { ContinueSubscriptionModalComponent } from "./modals/continue-subscription-modal.component";
 import { CheckSubscriptionInAppModalComponent } from "./modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component";
 import { UnsubscribeInAppFirstModal } from "./modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component";
+import { SUBSCRIPTION_CATEGORIES } from '../../core/subscriptions/subscriptions.interface';
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionsComponent;
@@ -177,7 +175,7 @@ describe('SubscriptionComponent', () => {
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
             screenId: SCREEN_IDS.ProfileSubscription,
-            subscription: MAPPED_SUBSCRIPTIONS_ADDED[0].category_id as any
+            subscription: MAPPED_SUBSCRIPTIONS_ADDED[0].category_id as SUBSCRIPTION_CATEGORIES
           }
         };
 
@@ -227,7 +225,7 @@ describe('SubscriptionComponent', () => {
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
             screenId: SCREEN_IDS.ProfileSubscription,
-            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any,
+            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as SUBSCRIPTION_CATEGORIES,
             isNewSubscriber: false
           }
         };
@@ -257,7 +255,7 @@ describe('SubscriptionComponent', () => {
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
             screenId: SCREEN_IDS.ProfileSubscription,
-            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any,
+            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as SUBSCRIPTION_CATEGORIES,
             isNewSubscriber: true
           }
         };
@@ -282,7 +280,7 @@ describe('SubscriptionComponent', () => {
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
             screenId: SCREEN_IDS.ProfileSubscription,
-            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any,
+            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as SUBSCRIPTION_CATEGORIES,
             isNewSubscriber: true
           }
         };

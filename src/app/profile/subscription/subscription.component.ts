@@ -109,7 +109,7 @@ export class SubscriptionsComponent implements OnInit {
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           screenId: SCREEN_IDS.ProfileSubscription,
-          subscription: subscription.category_id as any,
+          subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
           isNewSubscriber: !this.subscriptionsService.hasOneStripeSubscription(this.subscriptions)
         }
       };
@@ -122,7 +122,7 @@ export class SubscriptionsComponent implements OnInit {
         name: ANALYTICS_EVENT_NAMES.ClickProfileEditCurrentSubscription,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          subscription: subscription.category_id as any,
+          subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
           tier: subscription.selected_tier_id,
           screenId: SCREEN_IDS.ProfileSubscription
         }
