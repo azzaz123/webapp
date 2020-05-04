@@ -8,11 +8,15 @@ import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { Observable, of } from 'rxjs';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS, ClickCancelCloseSubscription } from '../../../core/analytics/analytics-constants';
+import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 
 describe('ContinueSubscriptionModalComponent', () => {
   let component: ContinueSubscriptionModalComponent;
   let fixture: ComponentFixture<ContinueSubscriptionModalComponent>;
   let activeModal: NgbActiveModal;
+  let analyticsService: AnalyticsService;
   let subscriptionsService: SubscriptionsService;
   let toastrService: ToastrService;
 
@@ -56,6 +60,7 @@ describe('ContinueSubscriptionModalComponent', () => {
           }
         },
         I18nService,
+        AnalyticsService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -68,6 +73,7 @@ describe('ContinueSubscriptionModalComponent', () => {
     activeModal = TestBed.get(NgbActiveModal);
     toastrService = TestBed.get(ToastrService);
     subscriptionsService = TestBed.get(SubscriptionsService);
+    analyticsService = TestBed.get(AnalyticsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     fixture.detectChanges();
   });
@@ -83,16 +89,38 @@ describe('ContinueSubscriptionModalComponent', () => {
   })
 
   describe('continueSubscription', () => {
+    beforeEach(() => {
+      spyOn(subscriptionsService, 'continueSubscription').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+    });
+
     const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
 
     it('should call the cancelsubscription service', () => {
-      spyOn(subscriptionsService, 'continueSubscription').and.callThrough();
 
       component.continueSubscription();
       
       expect(component.subscriptionsService.continueSubscription).toHaveBeenCalledWith(tier.id);
       expect(component.loading).toBe(false);
     });
+
+    it('should send event to analytics', () => {
+      const expectedEvent: AnalyticsEvent<ClickCancelCloseSubscription> = {
+        name: ANALYTICS_EVENT_NAMES.ClickCancelCloseSubscription,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+          tier: this.subscription.selected_tier_id,
+          screenId: SCREEN_IDS.ProfileSubscription
+        }
+      };
+
+      component.continueSubscription();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+    });
+    
   });
 
 });
