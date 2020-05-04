@@ -1,5 +1,9 @@
 @import "~style/common";
 
+$checkbox-width: 12px;
+$transition: all .5s ease;
+$feature-button-width: 170px;
+
 .back {
   position: absolute;
   top: 50%;
@@ -52,38 +56,73 @@
   }
   .type {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     flex-direction: column;
     margin-bottom: -$spacing-xs;
-    align-self: flex-end;
-    border-top-right-radius: 20px;
-    border-top-left-radius: 20px;
-    box-shadow: 3px 6px 10px 0 rgba($black, 0.2);
-    border: solid 1px $blue-grey-5;
-    border-bottom: 0;
+    align-self: flex-start;
     color: $white;
     font-weight: $font-weight-chunky;
-    text-align: center;
+    text-align: left;
     padding: $spacing-m;
     font-size: $font-size-s;
     line-height: $line-height-m;
+    background-color: $white;
     &.city {
-      background-image: linear-gradient(206deg, #2be2d6, #2be2d6, #2ae1d5, #2ae0d4 1%, $walla-main);
-      z-index: 3;  
+      color: $walla-main;
+      border-top-left-radius: 18px;
       width: 50%;
     }
     &.country {
-      background-image: linear-gradient(208deg, #8fd6ff, $country-bump);
-      z-index: 2;
+      color: $payblue-main;
       width: 50%;
     }
     &.planning {
-      background-color: $white;
       color: $blue-grey-1;
       box-shadow: none;
-      z-index: 1;
       width: 40%;
+    }
+  }
+
+  .content {
+    display: flex;
+    font-size: $font-size-xs;
+    font-weight: lighter;
+  }
+
+  .checkbox {
+    transition: $transition;
+    width: $checkbox-width;
+    margin: 0 $spacing-xs;
+    .select {
+      @include square($checkbox-width);
+      border: 2px solid $blue-grey-4;
+      border-radius: 4px;
+      padding: 0;
+      background: transparent;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      mat-icon {
+        display: none;
+        height: 9px;
+        width: 12px;
+      }
+      &.selected {
+        background: $walla-main;
+        border-color: transparent;
+        mat-icon {
+          display: flex;
+          ::ng-deep svg g g {
+            fill: $white;
+          }
+        }
+      }
+      &:hover {
+        border-color: $walla-main;
+      }
     }
   }
 }

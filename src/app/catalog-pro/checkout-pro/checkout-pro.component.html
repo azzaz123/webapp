@@ -12,14 +12,38 @@
             <div class="bump-types">
               <div class="type city">
                 <div i18n>City</div>
+                <div class="content">
+                  <div class="checkbox">
+                    <button class="select" (click)="selectAll(City)">
+                      <mat-icon svgIcon="check"></mat-icon>
+                    </button>
+                  </div>
+                  <div class="select-all" i18n="@@CheckoutProCityApplyAll">Apply to all</div>
+                </div>
               </div>
               <div class="type country">
                 <div i18n>Country</div>
+                <div class="content">
+                  <div class="checkbox">
+                    <button class="select" (click)="selectAll(country)">
+                      <mat-icon svgIcon="check"></mat-icon>
+                    </button>
+                  </div>
+                  <div class="select-all" i18n="@@CheckoutProCountryApplyAll">Apply to all</div>
+                </div>
               </div>
             </div>
           </div>
           <div class="type planning">
             <div i18n>Planning</div>
+            <div class="content">
+                <div class="checkbox">
+                  <button class="select" (click)="selectAll(planning)">
+                    <mat-icon svgIcon="check"></mat-icon>
+                  </button>
+                </div>
+                <div class="select-all" i18n="@@CheckoutProPlanningApplyAll">Apply to all</div>
+              </div>
           </div>
         </div>
         <div class="bumps-table">
