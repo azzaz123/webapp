@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync, flush } from '@angular/core/testing';
 import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
 import { Observable, of, throwError } from 'rxjs';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -19,7 +19,6 @@ import {
 } from '../../../../tests/subscriptions.fixtures.spec';
 import { STRIPE_CARD, FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
-import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 import { PAYMENT_METHOD_DATA } from '../../../../tests/payments.fixtures.spec';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
@@ -51,6 +50,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [NgbCarouselModule],
       declarations: [AddNewSubscriptionModalComponent],
       providers: [
         {
@@ -88,6 +88,12 @@ describe('AddNewSubscriptionModalComponent', () => {
             },
             getTierDiscountPercentatge() {
               return 0;
+            },
+            isFreeTier() {
+              return false;
+            },
+            isDiscountedTier() {
+              return false;
             }
           }
         },
@@ -404,28 +410,30 @@ describe('AddNewSubscriptionModalComponent', () => {
     });
   });
 
-  describe('tracking', () => {
-    describe('when the user clicks on the contact us directly on the car dealer link', () => {
-      it('should send event to analytics', () => {
-        const carDealerLinkElement = fixture.debugElement.query(By.css('AddNewSubscription__listing-limit-more > a')).nativeElement;
-        const expectedEvent: AnalyticsEvent<ClickSubscriptionDirectContact> = {
-          name: ANALYTICS_EVENT_NAMES.ClickSubscriptionDirectContact,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            subscription: CATEGORY_IDS.CAR as 100,
-            screenId: SCREEN_IDS.CarsSubscription,
-            isNewSubscriber: !component.isNewSubscriber
-          }
-        };
-        spyOn(analyticsService, 'trackEvent');
-        component.subscription = SUBSCRIPTIONS_NOT_SUB[0];
-        fixture.detectChanges();
+  describe('when the user clicks on the contact us directly on the car dealer link', () => {
+    it('should send event to analytics', () => {
+      spyOn(analyticsService, 'trackEvent');
+      spyOn(component, 'trackClickCardealerTypeform').and.callThrough();
+      const isNewSubscriber = true;
+      const expectedEvent: AnalyticsEvent<ClickSubscriptionDirectContact> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionDirectContact,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          subscription: CATEGORY_IDS.CAR as 100,
+          screenId: SCREEN_IDS.CarsSubscription,
+          isNewSubscriber
+        }
+      };
+      component.subscription = MAPPED_SUBSCRIPTIONS[1];
+      component.isNewSubscriber = isNewSubscriber;
+      fixture.detectChanges();
+      const carDealerLinkElement = fixture.debugElement.query(By.css('.AddNewSubscription__listing-limit-more > a')).nativeElement;
 
-        carDealerLinkElement.click();
+      carDealerLinkElement.click();
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-      });
+      expect(component.trackClickCardealerTypeform).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
 });
