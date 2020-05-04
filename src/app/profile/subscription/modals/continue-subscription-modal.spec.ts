@@ -7,10 +7,11 @@ import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.s
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS, ClickCancelCloseSubscription } from '../../../core/analytics/analytics-constants';
 import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
+import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 
 describe('ContinueSubscriptionModalComponent', () => {
   let component: ContinueSubscriptionModalComponent;
@@ -60,7 +61,9 @@ describe('ContinueSubscriptionModalComponent', () => {
           }
         },
         I18nService,
-        AnalyticsService
+        {
+          provide: AnalyticsService, useClass: MockAnalyticsService
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -85,8 +88,8 @@ describe('ContinueSubscriptionModalComponent', () => {
       component.close();
 
       expect(activeModal.close).toHaveBeenCalledWith('continue');
-    })
-  })
+    });
+  });
 
   describe('continueSubscription', () => {
     beforeEach(() => {
@@ -99,7 +102,7 @@ describe('ContinueSubscriptionModalComponent', () => {
     it('should call the cancelsubscription service', () => {
 
       component.continueSubscription();
-      
+
       expect(component.subscriptionsService.continueSubscription).toHaveBeenCalledWith(tier.id);
       expect(component.loading).toBe(false);
     });
@@ -109,8 +112,8 @@ describe('ContinueSubscriptionModalComponent', () => {
         name: ANALYTICS_EVENT_NAMES.ClickCancelCloseSubscription,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
-          subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-          tier: this.subscription.selected_tier_id,
+          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+          tier: component.subscription.selected_tier_id,
           screenId: SCREEN_IDS.ProfileSubscription
         }
       };
@@ -120,7 +123,5 @@ describe('ContinueSubscriptionModalComponent', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
-    
   });
-
 });
