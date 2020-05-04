@@ -9,14 +9,14 @@ module.exports = {
   ],
   globals: {
     "ts-jest": {
-        "tsConfig": "<rootDir>/src/tsconfig.spec.json"
+      "tsConfig": "<rootDir>/src/tsconfig.spec.json"
     }
   },
   moduleNameMapper: {
     "^lodash-es$": "lodash"
   },
   testPathIgnorePatterns: [
-    "/node-modules/",
-    "\w*fixtures.spec\w*"
+    "node_modules/",
+    "fixtures\.spec\.ts",
   ]
 };
