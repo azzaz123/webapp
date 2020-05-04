@@ -7,6 +7,7 @@
                 placeholder="{{getPlaceholder()}}"
                 (keydown.enter)="sendMessage($event)"
                 [disabled]="!isMessagingAvailable()"
+                (keydown)="writing()"
                 (focus)="onFocusElement()"
                 (focusout)="onFocusElement()"
                 rows="1"

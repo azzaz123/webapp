@@ -1,28 +1,33 @@
-<a class="card user-info" href="{{user.profileUrl}}" target="_blank" tslTrackEvent="USER_PROFILE_VIEWED"
-   [params]="{user_id: user.id}" [ngClass]="{'faded': !user.available }">
+<a class="user-info" [attr.href]="isNavigable ? user.profileUrl : null" target="_blank"
+   tslTrackEvent="USER_PROFILE_VIEWED" [params]="{user_id: user.id}" [ngClass]="{'faded': !user.available }"
+   class="device-{{deviceType}}">
 
-  <div class="card-block">
-    <h5 class="card-title">{{user.microName}}</h5>
+  <div class="card-block text-truncate">
+    <h5 class="card-title text-truncate">{{user.microName}}</h5>
     <tsl-stars *ngIf="user.score > -1" [stars]="user.score" [normalized]="false"></tsl-stars>
     <div *ngIf="phoneNumber && !!item.isMine" class="call-wrapper">
       <span class="call-shared"><mat-icon svgIcon="call-shared"></mat-icon></span>
       <span class="phone-number">{{phoneNumber}}</span>
     </div>
-    <div class="user-location-distance">
-      <span [hidden]="!user.distanceInKm" i18n="The distance between the user and the item">
+    <div class="user-location-distance text-truncate">
+      <mat-icon *ngIf="isDeviceSmall()" svgIcon="location" class="d-lg-none"></mat-icon>
+      <div [hidden]="!user.distanceInKm" class="text-truncate" i18n="The distance between the user and the item">
         {{user.distanceInKm | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you
-      </span>
+      </div>
       <span [hidden]="user.distanceInKm" i18n>No location</span>
     </div>
 
-    <div class="user-response-rate">
+    <div class="user-response-rate text-truncate">
+      <mat-icon *ngIf="isDeviceSmall()" svgIcon="ico-message" class="d-lg-none"></mat-icon>
       <tsl-user-response-rate [responseRate]="user.responseRate" [showIcon]="false"
-                              class="font-light"></tsl-user-response-rate>
+                              [ngClass]="{'font-weight-normal': isDeviceSmall(), 'font-weight-light': !isDeviceSmall()}"></tsl-user-response-rate>
     </div>
   </div>
 
   <div class="avatar-block">
-    <tsl-status-icon [blocked]="user.blocked" [unavailable]="!user.available"></tsl-status-icon>
-    <tsl-user-avatar [user]="user" size="60"></tsl-user-avatar>
+    <tsl-user-avatar [user]="user" size="{{avatarSize}}"></tsl-user-avatar>
+    <div class="status-block status-block-{{avatarSize}}">
+      <tsl-status-icon [blocked]="user.blocked" [unavailable]="!user.available"></tsl-status-icon>
+    </div>
   </div>
 </a>

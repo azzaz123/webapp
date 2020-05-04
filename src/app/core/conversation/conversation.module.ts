@@ -10,19 +10,21 @@ import { CallsService } from './calls.service';
 import { CallStatusLabelPipe } from '../../shared/pipes';
 import { SendPhoneComponent } from '../../chat/modals/send-phone';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ItemModule,
-    MomentModule,
-    MatIconModule,
-    NgbTooltipModule,
-    NgbDropdownModule,
-    NgbModalModule,
-    ReactiveFormsModule,
-    FormsModule
-  ],
+    imports: [
+        CommonModule,
+        ItemModule,
+        MomentModule,
+        MatIconModule,
+        NgbTooltipModule,
+        NgbDropdownModule,
+        NgbModalModule,
+        ReactiveFormsModule,
+        FormsModule,
+        SharedModule
+    ],
   declarations: [CallStatusLabelPipe, SendPhoneComponent],
   exports: [CallStatusLabelPipe, SendPhoneComponent],
   entryComponents: [SendPhoneComponent]

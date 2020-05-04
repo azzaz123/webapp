@@ -5,7 +5,7 @@ import {
   Output,
   Input,
   ChangeDetectorRef,
-  SimpleChanges
+  SimpleChanges, AfterViewInit, OnChanges, OnDestroy
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CartBase } from '../../catalog/cart/cart-base';
@@ -29,9 +29,9 @@ import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/cons
     },
   ],
 })
-export class StripeCardElementComponent implements ControlValueAccessor {
+export class StripeCardElementComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnDestroy {
 
-  private _model: boolean = false;
+  private _model = false;
   public financialCard: FinancialCard;
   public hasFinancialCard: boolean;
   public card: any;

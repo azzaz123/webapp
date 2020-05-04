@@ -44,7 +44,7 @@ export class RemoteConsoleService implements OnDestroy {
       connection_time: connectionTime,
       call_no: this.connectionTimeCallNo,
       connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
-      ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : ''
+      ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1
     });
   }
 

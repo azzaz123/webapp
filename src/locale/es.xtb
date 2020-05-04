@@ -1019,6 +1019,12 @@
   <translation id="2347321246651029433">2. Espera a que expire la vigencia del plan al que te habías suscrito. Consulta la fecha de expiración en el correo que te enviamos cuando te das de baja.</translation>
   <translation id="7589681963132617331">3. Una vez expirado, escoge tu suscripción gratuita aquí en la web.</translation>
   <translation id="5188534013459638497">Date de baja primero desde la app para tu mes gratis</translation>
+  <translation id="1275264267936980927">Archivar conversación</translation>
+  <translation id="6744583700854319987">Desarchivar conversación</translation>
+  <translation id="7181016097805690972">Denunciar producto</translation>
+  <translation id="7184510579643662120">Reportar usuario</translation>
+  <translation id="5709935930083786813">Bloquear usuario</translation>
+  <translation id="4100915642762454461">Desbloquear usuario</translation>
 
   <!--Translations using keys-->
   <translation id="cardealerUpgradePlanContact">Para actualizar tu plan, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>{{email}}<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
