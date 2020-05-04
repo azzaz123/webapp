@@ -6,7 +6,7 @@
  */
 
 /**
- * Users view the preview profile of a Pro user after clicking on the Top Seller card
+ * Users view the preview profile of a Pro user after clicking on the Top Seller card (from the slider shown in the wall or search results page)
  */
 export interface ViewProPreviewProfile {
   /**

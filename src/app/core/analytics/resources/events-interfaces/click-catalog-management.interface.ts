@@ -6,11 +6,11 @@
  */
 
 /**
- * Users views Subscription Managment screen
+ * User clicks on the Catalog Management button
  */
-export interface ViewSubscriptionManagment {
+export interface ClickCatalogManagement {
   /**
-   * Identifier of the screen from which the message was sent from
+   * Identifier of the User Catalog screen
    */
-  screenId: 191;
+  screenId: 219;
 }
