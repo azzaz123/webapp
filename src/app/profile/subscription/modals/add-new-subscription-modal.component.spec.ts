@@ -29,10 +29,12 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
-  ClickSubscriptionDirectContact
+  ClickSubscriptionDirectContact,
+  SubscriptionPayConfirmation
 } from '../../../core/analytics/analytics-constants';
 import { By } from '@angular/platform-browser';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
+import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 
 describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
@@ -308,32 +310,37 @@ describe('AddNewSubscriptionModalComponent', () => {
     });
   });
 
-  describe('onClickContinueToPayment', () => {
+  describe('trackClickContinueToPayment', () => {
     it('should send event to analytics', () => {
       spyOn(analyticsService, 'trackEvent');
       const expectedEvent: AnalyticsEvent<ClickSubscriptionContinuePayment> = {
         name: ANALYTICS_EVENT_NAMES.ClickSubscriptionContinuePayment,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
+          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+          isNewSubscriber: component.isNewSubscriber,
           screenId: SCREEN_IDS.ProfileSubscription,
-          tier: component.selectedTier.id as any
+          tier: component.selectedTier.id
         }
       };
 
-      component.onClickContinueToPayment();
+      component.trackClickContinueToPayment();
 
       expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
 
-  describe('onClickPay', () => {
-    const expectedEvent: AnalyticsEvent<ClickPaySubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
+  describe('trackClickPay', () => {
+    const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+      name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
+        subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        tier: component.selectedTier.id,
         screenId: SCREEN_IDS.ProfileSubscription,
-        isNewVisa: true,
+        isNewCard: true,
+        isNewSubscriber: component.isNewSubscriber,
         discountPercent: 0
       }
     };
@@ -353,7 +360,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     describe('when isNewVisa is false', () => {
       it('should send valid event', () => {
-        expectedEvent.attributes.isNewVisa = false;
+        expectedEvent.attributes.isNewCard = false;
 
         component.trackClickPay(false);
 
