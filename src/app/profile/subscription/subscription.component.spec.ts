@@ -220,8 +220,8 @@ describe('SubscriptionComponent', () => {
       });
 
       it('should send event to analytics', () => {
-        spyOn(modalService, 'open').and.callThrough();
         spyOn(analyticsService, 'trackEvent');
+        spyOn(modalService, 'open').and.callThrough();
         const expectedEvent: AnalyticsEvent<ClickKeepCurrentSubscription> = {
           name: ANALYTICS_EVENT_NAMES.ClickKeepCurrentSubscription,
           eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -231,7 +231,6 @@ describe('SubscriptionComponent', () => {
             screenId: SCREEN_IDS.ProfileSubscription
           }
         };
-        this.analyticsService.trackEvent(event);
 
         component.openSubscriptionModal(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
 
@@ -241,7 +240,7 @@ describe('SubscriptionComponent', () => {
     });
 
     describe('when the user is NOT subscribed to the selected category and has another subscription', () => {
-      it('should send click profile subscribe event with isNewSubscriber false', () => {
+      it('should send event to analytics', () => {
         spyOn(analyticsService, 'trackEvent');
         const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
           name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
@@ -249,7 +248,7 @@ describe('SubscriptionComponent', () => {
           attributes: {
             screenId: SCREEN_IDS.ProfileSubscription,
             subscription: SUBSCRIPTIONS_NOT_SUB[0].category_id as SUBSCRIPTION_CATEGORIES,
-            isNewSubscriber: true
+            isNewSubscriber: false
           }
         };
 
@@ -271,8 +270,9 @@ describe('SubscriptionComponent', () => {
     });
 
     describe('when the user is NOT subscribed to the selected category and no other category', () => {
-      it('should send click profile subscribe event with isNewSubscriber true', () => {
+      it('should send event to analytics', () => {
         spyOn(analyticsService, 'trackEvent');
+        spyOn(subscriptionsService, 'hasOneStripeSubscription').and.returnValue(false);
         const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
           name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
           eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -282,7 +282,6 @@ describe('SubscriptionComponent', () => {
             isNewSubscriber: true
           }
         };
-        component.subscriptions.forEach(s => { s.subscribed_from = null; s.subscribed_until = null; });
 
         component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
 

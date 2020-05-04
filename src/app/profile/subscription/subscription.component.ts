@@ -140,7 +140,6 @@ export class SubscriptionsComponent implements OnInit {
           screenId: SCREEN_IDS.ProfileSubscription
         }
       };
-      this.analyticsService.trackEvent(event);
 
       return this.analyticsService.trackEvent(event);
     }
