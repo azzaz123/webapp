@@ -6,19 +6,15 @@
  */
 
 /**
- * User clicks on the Subscription Managment Plus
+ * User clicks on done button after subscription selection
  */
-export interface ClickSubscriptionManagementPlusButton {
+export interface ClickSubscriptionPlanDone {
   /**
-   * Identifier of the screen
+   * Identifier of the Subscription Management screen
    */
   screenId: 191;
   /**
-   * Subscription type
+   * Identifier of the subscription tier
    */
-  subscription: 0 | 100 | 14000 | 12800;
-  /**
-   * If the user is a new subscriber
-   */
-  isNewSubscriber: boolean;
+  tier?: number;
 }

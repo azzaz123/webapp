@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks on the suscribe button
+ * User clicks the subscribe button on the Subscription Benefits screen
  */
-export interface ClickSuscribeOnTheBenefitsScreen {
+export interface ClickSubscriptionBenefits {
   /**
-   * Identifier of the screen
+   * Identifier of the Subscription Benefits Screen
    */
   screenId: 192;
 }

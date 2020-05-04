@@ -6,11 +6,11 @@
  */
 
 /**
- * User views Cars Subscription screen
+ * User views Subscription screen
  */
-export interface ViewCarsSubscription {
+export interface ViewSubscription {
   /**
-   * Identifier of the Cars subscription screen
+   * Identifier of the Subscription screen
    */
   screenId: 207;
 }

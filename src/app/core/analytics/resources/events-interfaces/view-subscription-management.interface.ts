@@ -6,11 +6,11 @@
  */
 
 /**
- * Users views Subscription Managment screen
+ * User views Subscription Management screen
  */
-export interface ViewSubscriptionManagment {
+export interface ViewSubscriptionManagement {
   /**
-   * Identifier of the screen from which the message was sent from
+   * Identifier of the Subscription Management screen
    */
   screenId: 191;
 }

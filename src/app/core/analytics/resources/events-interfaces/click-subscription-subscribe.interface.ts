@@ -6,15 +6,15 @@
  */
 
 /**
- * After subscription selection click in the done button
+ * User clicks on Subscribe button after selecting a subscription plan
  */
-export interface ClickDoneSubscriptionPlan {
+export interface ClickSubscriptionSubscribe {
   /**
-   * Identifier of the screen
+   * Identifier of the subscription plan chosen by user
    */
-  screenId: 191;
+  planId: string;
   /**
-   * Stripe id of the tier of the subscription
+   * Identifier of the Subscription screen
    */
-  tier?: number;
+  screenId: 207;
 }

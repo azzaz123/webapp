@@ -6,15 +6,15 @@
  */
 
 /**
- * Potential Cars PRO clicks on Subscribe Button after selecting a car subscription plan
+ * User views Subscription Payment Success screen
  */
-export interface ClickCarsSubscriptionSubscribeButton {
+export interface ViewSubscriptionPaymentSuccess {
   /**
-   * Identifier of the Car subscription plan chosen by user
+   * Identifier of the subscription plan chosen by user
    */
   planId: string;
   /**
-   * Identifier of the Cars subscription screen
+   * Identifier of the Subscription Payment Success screen
    */
-  screenId: 207;
+  screenId: 208;
 }
