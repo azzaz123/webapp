@@ -12,5 +12,5 @@ export interface ClickSubscriptionLimitReached {
   /**
    * Identifier of the My Catalog screen
    */
-  screenId: 217;
+  screenId: 219;
 }
