@@ -307,7 +307,7 @@
   <msg id="3934360921102914601"><source>app/chat/current-conversation/current-conversation.component.html:35</source>You have blocked this user. Unblock it to continue chatting</msg>
   <msg id="5949661737880412802"><source>app/chat/current-conversation/current-conversation.component.html:41</source>This user is not available</msg>
   <msg id="3753612046513951428"><source>app/chat/current-conversation/current-conversation.component.html:48</source>This product is not available</msg>
-  <msg id="2536023333703806770"><source>app/chat/current-conversation/current-conversation.component.html:71</source>Remember not to share private data for security reasons</msg>
+  <msg id="securityWarring"><source>app/chat/current-conversation/current-conversation.component.html:71</source>Remember not to share private data for security reasons</msg>
   <msg id="6969584346860248976" desc="The distance between the user and the item"><source>app/chat/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:14,16</source>
         <ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ph>km from you
       </msg>
@@ -687,7 +687,7 @@
   <msg id="2477437471140226346"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:7</source>What limit do you want to put on your subscription?</msg>
   <msg id="3072739349487522347"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:15</source><ph name="INTERPOLATION"><ex>{{subscription?.tiers[i]?.limit}}</ex>{{subscription?.tiers[i]?.limit}}</ph></msg>
   <msg id="1583909574923079873"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:21,23</source>
-              Price: 
+              Price:
             </msg>
   <msg id="930351548904901118"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:25</source>New price: </msg>
   <msg id="3744004942164134121"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:27,29</source>
@@ -709,8 +709,8 @@
       COVID-19 is affecting all of us. To alleviate this situation, we want to inform you that as a wallapop PRO user, we are offering you a free subscription month. What do you need to do?
     </msg>
   <msg id="214415473377752678"><source>app/profile/subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component.html:18,22</source>
-        1. Unsubscribe your current subscription plan through the 
-        <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>Apple Store<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph> or 
+        1. Unsubscribe your current subscription plan through the
+        <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>Apple Store<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph> or
         <ph name="START_LINK_1"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>Google Play<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph>.
       </msg>
   <msg id="2347321246651029433"><source>app/profile/subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component.html:23</source>2. Wait for the plan to expire. Check and be aware of the expiration date of your subscription.</msg>
