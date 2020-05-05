@@ -1,5 +1,5 @@
 <tsl-third-voice-message *ngIf="!shortMessage" [message]="message">
-  <span i18n>The item price has dropped. Close the deal!</span>
+  <span i18n="@@thirdVoiceDropPrice">The product has dropped in price. Do you want to cut a deal?</span>
 </tsl-third-voice-message>
 
-<span *ngIf="shortMessage" i18n>The item price has dropped. Close the deal!</span>
+<span *ngIf="shortMessage" i18n="@@thirdVoiceDropPrice">The product has dropped in price. Do you want to cut a deal?</span>
