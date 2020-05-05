@@ -82,6 +82,10 @@
               margin: 0 $spacing-xxs;
             }
 
+            span {
+              font-size: $font-size-s;
+            }
+
             .not-available {
               height: $spacing-m;
               width: $spacing-ms;
