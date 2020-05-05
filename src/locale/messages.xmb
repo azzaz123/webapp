@@ -247,6 +247,9 @@
   <msg id="5871405940994162095"><source>app/help/help.component.html:61</source>For any support:</msg>
   <msg id="4039809737462883261"><source>app/help/help.component.html:65</source>Mon to Thurs from 10:00 to 18:00</msg>
   <msg id="4911360466860911169"><source>app/help/help.component.html:66</source>Fri from 09:00 to 15:00</msg>
+  <msg id="thirdVoiceDropPrice"><source>app/chat/message/third-voice-drop-price/third-voice-drop-price.component.html:2</source><source>app/chat/message/third-voice-drop-price/third-voice-drop-price.component.html:5</source>The product has dropped in price. Do you want to cut a deal?</msg>
+  <msg id="thirdVoiceReviewFirstMessage"><source>app/chat/message/third-voice-review/third-voice-review.component.html:2</source>It&apos;s great that you have found what you were looking for </msg>
+  <msg id="thirdVoiceReviewSecondMessage"><source>app/chat/message/third-voice-review/third-voice-review.component.html:7</source><source>app/chat/message/third-voice-review/third-voice-review.component.html:12</source>How did it go? Take a minute to review the user, your opinion helps to improve our community!</msg>
   <msg id="7368172072093620772"><source>app/dashboard/dashboard.component.html:8</source>Your stats</msg>
   <msg id="8735125837670622187"><source>app/dashboard/dashboard.component.html:11,13</source>Here you can see information related with the visualizations, chats and
               calls
@@ -254,9 +257,6 @@
   <msg id="2734780694152757859"><source>app/dashboard/dashboard.component.html:34</source><source>app/dashboard/dashboard.component.html:43</source>View all</msg>
   <msg id="8778531687214591857"><source>app/dashboard/dashboard.component.html:55</source>You have processed all the pending leads. Good job!</msg>
   <msg id="5554592740021607017"><source>app/dashboard/stats-graph/stats-graph.component.html:2</source>Last 12 months</msg>
-  <msg id="thirdVoiceReviewFirstMessage"><source>app/chat/message/third-voice-review/third-voice-review.component.html:2</source>Great! You found what you were looking for!</msg>
-  <msg id="thirdVoiceReviewSecondMessage"><source>app/chat/message/third-voice-review/third-voice-review.component.html:6</source>How did it go? Take a moment to leave some feedback to the user to help our community!</msg>
-  <msg id="3734816767204282002"><source>app/chat/message/third-voice-drop-price/third-voice-drop-price.component.html:2</source>The item price has dropped. Close the deal!</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.html:2</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.html:3</source>Connected</msg>
   <msg id="8016649850785953911"><source>app/chat/item/item.component.html:18</source><source>app/chat/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:21</source>Unreserve</msg>
@@ -327,8 +327,8 @@
       </msg>
   <msg id="4100915642762454461"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:80,81</source>Unblock this User
       </msg>
-  <msg id="thirdVoiceDoReview"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:1</source>Do review</msg>
-  <msg id="thirdVoiceThanksForRating"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:4</source>Thanks for rating!</msg>
+  <msg id="thirdVoiceDoReview"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:1</source>Review</msg>
+  <msg id="thirdVoiceThanksForRating"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:4</source>Thanks for your review!</msg>
   <msg id="4662529977781351630"><source>app/calls/calls.component.html:11</source>Calls</msg>
   <msg id="4812531333997465"><source>app/calls/calls.component.html:14</source>Here you can manage and see the information related with your calls</msg>
   <msg id="3973931101896534797"><source>app/calls/calls.component.html:34</source>Date</msg>

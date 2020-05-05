@@ -961,7 +961,7 @@
   <translation id="thirdVoiceReviewSecondMessage">¿Cómo ha ido? Dedica un segundo a valorar al usuario, ¡tu opinión mejora nuestra comunidad!</translation>
   <translation id="thirdVoiceDoReview">Valorar</translation>
   <translation id="thirdVoiceThanksForRating">¡Gracias por tu valoración!</translation>
-  <translation id="3734816767204282002">El producto ha bajado de precio. ¡Cierra el trato!</translation>
+  <translation id="thirdVoiceDropPrice">El producto ha bajado de precio. ¿Quieres cerrar un trato?</translation>
   <translation id="949044872815747177">Gestionar desde la app</translation>
   <translation id="6488767812620715130"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Parece que quieres cambiar algo en tu suscripción<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
   <translation id="6830193087899555637">Si quieres dar de baja tu suscripción actual, accede a la app store y cancélala.</translation>
