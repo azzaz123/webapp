@@ -307,7 +307,7 @@
   <msg id="3934360921102914601"><source>app/chat/current-conversation/current-conversation.component.html:35</source>You have blocked this user. Unblock it to continue chatting</msg>
   <msg id="5949661737880412802"><source>app/chat/current-conversation/current-conversation.component.html:41</source>This user is not available</msg>
   <msg id="3753612046513951428"><source>app/chat/current-conversation/current-conversation.component.html:48</source>This product is not available</msg>
-  <msg id="securityWarring"><source>app/chat/current-conversation/current-conversation.component.html:71</source>Remember not to share private data for security reasons</msg>
+  <msg id="securityWarning"><source>app/chat/current-conversation/current-conversation.component.html:71</source>Remember not to share private data for security reasons</msg>
   <msg id="6969584346860248976" desc="The distance between the user and the item"><source>app/chat/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:14,16</source>
         <ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ph>km from you
       </msg>
