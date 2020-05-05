@@ -1,5 +1,4 @@
-window['ga'] = function() {};
-window['googletag'] = {
+googletag = {
   cmd: {
     push (callback) { callback(); }
   },
@@ -23,17 +22,19 @@ window['googletag'] = {
   },
   display: (slotid: string) => {}
 };
-window['gtag'] = function() {};
-window['fbq'] = function() {};
-window['pintrk'] = function() {};
-window['twq'] = function() {};
 
-window['apstag'] = {
+ ga = function() {};
+ gtag = function() {};
+ fbq = function() {};
+ pintrk = function() {};
+ twq = function() {};
+
+ apstag = {
   fetchBids ({slots, timeout}, callback) { callback(); },
   setDisplayBids() {}
 };
 
-window['Criteo'] = {
+ Criteo = {
   events: {
     push (callback) { callback(); }
   },
@@ -42,5 +43,7 @@ window['Criteo'] = {
   SetDFPKeyValueTargeting() {},
 };
 
-window['__cmp'] = function(arg1, arg2, callback) {};
-window['quancastOptions'] =  {es: {}, en: {}};
+ __cmp = function(arg1, arg2, callback) {};
+ quancastOptions =  {es: {}, en: {}};
+
+ appboy = function() {}
