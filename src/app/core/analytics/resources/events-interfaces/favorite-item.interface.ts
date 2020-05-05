@@ -20,7 +20,7 @@ export interface FavoriteItem {
   /**
    * Identifier of the screen that the item was favorited from
    */
-  screenId: number;
+  screenId: 110 | 111 | 29 | 188 | 190 | 194 | 115;
   /**
    * The unique identifier of the search that the favorite is under
    */

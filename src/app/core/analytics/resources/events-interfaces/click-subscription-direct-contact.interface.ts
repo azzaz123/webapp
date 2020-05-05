@@ -6,19 +6,19 @@
  */
 
 /**
- * User clicks on the Subscription Managment Plus
+ * User clicks the direct contact button on the subscription web flow
  */
-export interface ClickSubscriptionManagementPlusButton {
+export interface ClickSubscriptionDirectContact {
   /**
-   * Identifier of the screen
-   */
-  screenId: 191;
-  /**
-   * Subscription type
+   * Subscription category type
    */
   subscription: 0 | 100 | 14000 | 12800;
   /**
-   * If the user is a new subscriber
+   * If the user is a new or recurrent subscriber
    */
   isNewSubscriber: boolean;
+  /**
+   * Identifier of the subscription page screen
+   */
+  screenId: 207;
 }

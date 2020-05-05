@@ -22,6 +22,10 @@ export interface ClickItemCard {
    */
   position: number;
   /**
+   * Name of the experiment or A/B testing applied to the user who click the item. The default value would be 'baseline'
+   */
+  experiment?: string;
+  /**
    * The unique identifier of the search that the click is under
    */
   searchId?: string;

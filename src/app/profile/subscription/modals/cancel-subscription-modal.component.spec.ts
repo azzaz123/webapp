@@ -12,11 +12,12 @@ import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import {
   AnalyticsEvent,
-  ClickUnsuscribeConfirmation,
+  ClickConfirmCloseSubscription,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS
 } from '../../../core/analytics/analytics-constants';
+import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 
 describe('CancelSubscriptionModalComponent', () => {
   let component: CancelSubscriptionModalComponent;
@@ -101,10 +102,12 @@ describe('CancelSubscriptionModalComponent', () => {
     it('should send the event', () => {
       spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({status: 202}));
       spyOn(analyticsService, 'trackEvent');
-      const expectedEvent: AnalyticsEvent<ClickUnsuscribeConfirmation> = {
-        name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeConfirmation,
+      const expectedEvent: AnalyticsEvent<ClickConfirmCloseSubscription> = {
+        name: ANALYTICS_EVENT_NAMES.ClickConfirmCloseSubscription,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
+          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+          tier: component.subscription.selected_tier_id,
           screenId: SCREEN_IDS.ProfileSubscription
         }
       };

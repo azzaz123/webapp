@@ -8,6 +8,8 @@ import { ItemService } from '../../../../core/item/item.service';
 import { SubscriptionsService } from '../../../../core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse } from '../../../../core/subscriptions/subscriptions.interface';
 import { map } from 'rxjs/operators';
+import { AnalyticsEvent, ClickSubscriptionLimitReached, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS } from '../../../../core/analytics/analytics-constants';
+import { AnalyticsService } from '../../../../core/analytics/analytics.service';
 
 @Component({
   selector: 'tsl-too-many-items-modal',
@@ -30,7 +32,8 @@ export class TooManyItemsModalComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private itemService: ItemService,
-              private subscriptionsService: SubscriptionsService) { }
+              private subscriptionsService: SubscriptionsService,
+              private analyticsService: AnalyticsService) { }
 
   ngOnInit() {
     this.hasFreeOption(this.itemId).subscribe( result => {
@@ -58,5 +61,17 @@ export class TooManyItemsModalComponent implements OnInit {
 
   private hasTrial(subscription: SubscriptionsResponse): boolean {
     return this.subscriptionsService.hasTrial(subscription);
+  }
+
+  public trackClickGoToSubscriptions() {
+    const event: AnalyticsEvent<ClickSubscriptionLimitReached> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionLimitReached,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        screenId: SCREEN_IDS.MyCatalog
+      }
+    };
+
+    this.analyticsService.trackEvent(event);
   }
 }

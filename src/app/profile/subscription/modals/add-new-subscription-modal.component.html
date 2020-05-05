@@ -33,7 +33,7 @@
               i18n>
               Do you have more than
               {{subscription.tiers[subscription.tiers.length - 1].limit}} {{subscription.category_name.toLowerCase()}}?
-              <a href="{{carDealerTypeformLink}}" target="_blank">Contact us directly</a>
+              <a href="{{carDealerTypeformLink}}" target="_blank" (click)="trackClickCardealerTypeform()">Contact us directly</a>
             </div>
           </div>
           <div>
@@ -61,9 +61,9 @@
                 </div>
               </div>
             </div>
-            <tsl-button className="btn-primary btn-medium payment" [disabled]="!selectedTier" (click)="carousel.next(); onClickContinueToPayment()" i18n>Continue
-              to
-              payment</tsl-button>
+            <tsl-button className="btn-primary btn-medium payment" [disabled]="!selectedTier" (click)="carousel.next(); trackClickContinueToPayment()" i18n>
+              Continue to payment
+            </tsl-button>
           </div>
         </div>
       </div>
@@ -118,7 +118,7 @@
                 [type]="'subscription'" [listingLimit]="selectedTier" [spaceBetween]="true" [action]="action"
                 [showUseSavedCard]="hasSavedCard" [isPaymentError]="isPaymentError"
                 (onClickUseSavedCard)="removeNewCard()" (onFocusCard)="isPaymentError = false"
-                (onStripeCardCreate)="addSubscription($event); onClickPay(true);" (stripeCard)="setCardInfo($event)">
+                (onStripeCardCreate)="addSubscription($event); trackClickPay(true);" (stripeCard)="setCardInfo($event)">
               </tsl-stripe-card-element>
 
               <div [hidden]="!savedCard" class="AddNewSubscription__legal-info" i18n>
@@ -126,7 +126,7 @@
                 and the <a href="{{privacyPolicyURL}}" target="_blank">privacy policy</a> of Wallapop S.L. and Stripe Ltd
             </div>
               <tsl-button [hidden]="!savedCard" [disabled]="!selectedCard || loading" [loading]="loading"
-                (click)="addSubscriptionFromSavedCard(); onClickPay(false);" id="qa-checkout-subscription"
+                (click)="addSubscriptionFromSavedCard(); trackClickPay(false);" id="qa-checkout-subscription"
                 className="btn-primary btn-medium stripe">
                   <div *ngIf="!hasTrial(subscription)">
                     <span *ngIf="!isDiscountedTier(selectedTier)" i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}</span>

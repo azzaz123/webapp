@@ -7,15 +7,16 @@ import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { SubscriptionResponse, SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
+import { SubscriptionResponse, SubscriptionsResponse, Tier, SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import {
   AnalyticsEvent,
-  ClickContinuePaymentSubscription,
+  ClickSubscriptionContinuePayment,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
-  ClickPaySubscription
+  SubscriptionPayConfirmation,
+  ClickSubscriptionDirectContact
 } from '../../../core/analytics/analytics-constants';
 import { PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
@@ -39,6 +40,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   public isPaymentError = false;
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
+  public isNewSubscriber = false;
   private invoiceId: string;
   public loaded: boolean;
   public hasSavedCard = true;
@@ -222,7 +224,17 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     this.loading = false;
     this.isRetryInvoice = false;
     this.close();
+    this.openPaymentSuccessModal();
+  }
+
+  private openPaymentSuccessModal() {
     let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
+    const modalComponent: PaymentSuccessModalComponent = modalRef.componentInstance;
+    modalComponent.tier = this.selectedTier.id;
+    modalComponent.isNewSubscriber = this.isNewSubscriber;
+    modalComponent.isNewCard = !this.hasSavedCard;
+    modalComponent.subscriptionCategoryId = this.subscription.category_id as SUBSCRIPTION_CATEGORIES;
+
     modalRef.result.then(() => {
       modalRef = null;
       this.reloadPage();
@@ -235,11 +247,13 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onClickContinueToPayment() {
-    const event: AnalyticsEvent<ClickContinuePaymentSubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ClickContinuePaymentSubscription,
+  public trackClickContinueToPayment() {
+    const event: AnalyticsEvent<ClickSubscriptionContinuePayment> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionContinuePayment,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        isNewSubscriber: this.isNewSubscriber,
         screenId: SCREEN_IDS.ProfileSubscription,
         tier: this.selectedTier.id
       }
@@ -248,14 +262,17 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     this.analyticsService.trackEvent(event);
   }
 
-  public onClickPay(isNewVisa: boolean) {
+  public trackClickPay(isNewCard: boolean) {
     const discountPercent = this.subscriptionsService.getTierDiscountPercentatge(this.selectedTier);
-    const event: AnalyticsEvent<ClickPaySubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
+    const event: AnalyticsEvent<SubscriptionPayConfirmation> = {
+      name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        tier: this.selectedTier.id,
         screenId: SCREEN_IDS.ProfileSubscription,
-        isNewVisa,
+        isNewCard,
+        isNewSubscriber: this.isNewSubscriber,
         discountPercent
       }
     };
@@ -279,4 +296,19 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   public hasTrial(subscription: SubscriptionsResponse): boolean {
     return this.subscriptionsService.hasTrial(subscription);
   }
+  
+  public trackClickCardealerTypeform() {
+    const event: AnalyticsEvent<ClickSubscriptionDirectContact> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionDirectContact,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        subscription: CATEGORY_IDS.CAR as 100,
+        screenId: SCREEN_IDS.Subscription,
+        isNewSubscriber: this.isNewSubscriber
+      }
+    };
+
+    this.analyticsService.trackEvent(event);
+  }
+
 }

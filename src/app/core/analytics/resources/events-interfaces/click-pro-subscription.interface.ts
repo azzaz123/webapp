@@ -12,5 +12,5 @@ export interface ClickProSubscription {
   /**
    * Identifier of the screen in which the user has clicked
    */
-  screenId: 112 | 186;
+  screenId: 111 | 112;
 }

@@ -6,11 +6,11 @@
  */
 
 /**
- * Popup of confirmation subscription
+ * User clicks on popup of subscription confirmation
  */
-export interface ClickConfirmationSubscriptionButton {
+export interface ClickSubscriptionConfirmation {
   /**
-   * Identifier of the screen
+   * Identifier of the Subscription Management screen
    */
   screenId: 191;
 }

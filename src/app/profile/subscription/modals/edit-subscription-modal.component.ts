@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, Tier, SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
@@ -10,7 +10,10 @@ import {
   AnalyticsPageView,
   ViewEditSubscriptionPlan,
   ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS
+  SCREEN_IDS,
+  AnalyticsEvent,
+  ClickConfirmEditCurrentSubscription,
+  ANALYTIC_EVENT_TYPES
 } from '../../../core/analytics/analytics-constants';
 
 @Component({
@@ -49,7 +52,7 @@ export class EditSubscriptionModalComponent implements OnInit {
     const pageView: AnalyticsPageView<ViewEditSubscriptionPlan> = {
       name: ANALYTICS_EVENT_NAMES.ViewEditSubscriptionPlan,
       attributes: {
-        screenId: SCREEN_IDS.SubscriptionManagment
+        screenId: SCREEN_IDS.SubscriptionManagement
       }
     };
 
@@ -61,6 +64,7 @@ export class EditSubscriptionModalComponent implements OnInit {
   }
 
   public editSubscription() {
+    this.trackClickConfirmEdit();
     this.loading = true;
     this.subscriptionsService.editSubscription(this.subscription, this.selectedTier.id).subscribe((response) => {
       if (response.status === 202) {
@@ -94,4 +98,17 @@ export class EditSubscriptionModalComponent implements OnInit {
     return this.subscriptionsService.hasTrial(subscription);
   }
 
+  private trackClickConfirmEdit() {
+    const event: AnalyticsEvent<ClickConfirmEditCurrentSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickConfirmEditCurrentSubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        previousTier: this.currentTier.id,
+        newTier: this.selectedTier.id,
+        screenId: SCREEN_IDS.ProfileSubscription
+      }
+    };
+    this.analyticsService.trackEvent(event);
+  }
 }

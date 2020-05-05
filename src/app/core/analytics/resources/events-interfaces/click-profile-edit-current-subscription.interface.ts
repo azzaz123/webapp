@@ -6,9 +6,17 @@
  */
 
 /**
- * Button to confirm the unsuscribe
+ * User clicks edit button or current subscription card on the subscription page on the web
  */
-export interface ClickUnsuscribeConfirmation {
+export interface ClickProfileEditCurrentSubscription {
+  /**
+   * Subscription category type
+   */
+  subscription: 0 | 100 | 14000 | 12800;
+  /**
+   * Tier of the subscription
+   */
+  tier: string;
   /**
    * Identifier of the screen
    */
