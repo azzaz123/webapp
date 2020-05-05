@@ -3,9 +3,9 @@ import { ComponentFixture, TestBed, async, fakeAsync, tick, flush } from "@angul
 import { CategoryService } from "../../core/category/category.service";
 import { SubscriptionsService } from "../../core/subscriptions/subscriptions.service";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { of } from "rxjs";
 import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures.spec";
-import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED, MAPPED_SUBSCRIPTIONS_WITH_INAPP, MockSubscriptionService } from "../../../tests/subscriptions.fixtures.spec";
+import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED, MAPPED_SUBSCRIPTIONS_WITH_INAPP, MockSubscriptionService, SUBSCRIPTIONS_NOT_SUB } from "../../../tests/subscriptions.fixtures.spec";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewSubscriptionModalComponent } from "./modals/add-new-subscription-modal.component";
 import { EditSubscriptionModalComponent } from './modals/edit-subscription-modal.component'
@@ -17,18 +17,18 @@ import {
   SCREEN_IDS,
   ANALYTICS_EVENT_NAMES,
   AnalyticsEvent,
-  ClickSuscribeOnTheBenefitsScreen,
   ANALYTIC_EVENT_TYPES,
   AnalyticsPageView,
   ViewProfileSubscription,
   ClickProfileSubscribeButton,
-  ClickProfileUnsuscribe,
-  ClickUnsuscribeCancelation
+  ClickProfileEditCurrentSubscription,
+  ClickKeepCurrentSubscription,
 } from '../../core/analytics/analytics-constants';
 import { CancelSubscriptionModalComponent } from "./modals/cancel-subscription-modal.component";
 import { ContinueSubscriptionModalComponent } from "./modals/continue-subscription-modal.component";
 import { CheckSubscriptionInAppModalComponent } from "./modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component";
 import { UnsubscribeInAppFirstModal } from "./modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component";
+import { SUBSCRIPTION_CATEGORIES } from '../../core/subscriptions/subscriptions.interface';
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionsComponent;
@@ -170,14 +170,15 @@ describe('SubscriptionComponent', () => {
     }));
 
     describe('when the user is subscribed to the selected category', () => {
-      it('should send click profile unsubscribe event', () => {
+      it('should send the edit subscription click event', () => {
         spyOn(analyticsService, 'trackEvent');
-        const expectedEvent: AnalyticsEvent<ClickProfileUnsuscribe> = {
-          name: ANALYTICS_EVENT_NAMES.ClickProfileUnsuscribe,
+        const expectedEvent: AnalyticsEvent<ClickProfileEditCurrentSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ClickProfileEditCurrentSubscription,
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
             screenId: SCREEN_IDS.ProfileSubscription,
-            subscription: MAPPED_SUBSCRIPTIONS_ADDED[0].category_id as any
+            tier: MAPPED_SUBSCRIPTIONS_ADDED[0].selected_tier_id,
+            subscription: MAPPED_SUBSCRIPTIONS_ADDED[0].category_id as SUBSCRIPTION_CATEGORIES
           }
         };
 
@@ -216,18 +217,37 @@ describe('SubscriptionComponent', () => {
         component.openSubscriptionModal(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
         
         expect(modalService.open).toHaveBeenCalledWith(ContinueSubscriptionModalComponent, { windowClass: 'review' });
-      })
+      });
+
+      it('should send event to analytics', () => {
+        spyOn(analyticsService, 'trackEvent');
+        spyOn(modalService, 'open').and.callThrough();
+        const expectedEvent: AnalyticsEvent<ClickKeepCurrentSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ClickKeepCurrentSubscription,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            subscription: MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED.category_id as SUBSCRIPTION_CATEGORIES,
+            tier: MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED.selected_tier_id,
+            screenId: SCREEN_IDS.ProfileSubscription
+          }
+        };
+
+        component.openSubscriptionModal(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
     });
 
     describe('when the user is NOT subscribed to the selected category and has another subscription', () => {
-      it('should send click profile subscribe event with isNewSubscriber false', () => {
+      it('should send event to analytics', () => {
         spyOn(analyticsService, 'trackEvent');
         const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
           name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
             screenId: SCREEN_IDS.ProfileSubscription,
-            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any,
+            subscription: SUBSCRIPTIONS_NOT_SUB[0].category_id as SUBSCRIPTION_CATEGORIES,
             isNewSubscriber: false
           }
         };
@@ -250,57 +270,24 @@ describe('SubscriptionComponent', () => {
     });
 
     describe('when the user is NOT subscribed to the selected category and no other category', () => {
-      it('should send click profile subscribe event with isNewSubscriber true', () => {
+      it('should send event to analytics', () => {
         spyOn(analyticsService, 'trackEvent');
+        spyOn(subscriptionsService, 'hasOneStripeSubscription').and.returnValue(false);
         const expectedEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
           name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
           eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
             screenId: SCREEN_IDS.ProfileSubscription,
-            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any,
+            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as SUBSCRIPTION_CATEGORIES,
             isNewSubscriber: true
           }
         };
-        component.subscriptions.forEach(s => { s.subscribed_from = null; s.subscribed_until = null; });
 
         component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
-    });
-
-    describe('when the modal dismisses', () => {
-      it('should send close event with the open one', fakeAsync(() => {
-        spyOn(analyticsService, 'trackEvent');
-        spyOn(modalService, 'open').and.returnValue({
-          result: Promise.reject({}),
-          componentInstance
-        });
-        const expectedOpenModalEvent: AnalyticsEvent<ClickProfileSubscribeButton> = {
-          name: ANALYTICS_EVENT_NAMES.ClickProfileSubscribeButton,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            screenId: SCREEN_IDS.ProfileSubscription,
-            subscription: MAPPED_SUBSCRIPTIONS[0].category_id as any,
-            isNewSubscriber: true
-          }
-        };
-        const expectedCloseModalEvent: AnalyticsEvent<ClickUnsuscribeCancelation> = {
-          name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeCancelation,
-          eventType: ANALYTIC_EVENT_TYPES.Other,
-          attributes: {
-            screenId: SCREEN_IDS.ProfileSubscription
-          }
-        };
-
-        component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
-        tick();
-
-        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(2);
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedOpenModalEvent);
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedCloseModalEvent);
-      }));
     });
 
     afterEach(() => {

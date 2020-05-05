@@ -6,9 +6,17 @@
  */
 
 /**
- * Button to cancel or exit the unsuscribe popup
+ * User clicks keep current subscription on a previously canceled subscription
  */
-export interface ClickUnsuscribeCancelation {
+export interface ClickKeepCurrentSubscription {
+  /**
+   * Subscription category type
+   */
+  subscription: 0 | 100 | 14000 | 12800;
+  /**
+   * Tier of the subscription canceled
+   */
+  tier: string;
   /**
    * Identifier of the screen
    */

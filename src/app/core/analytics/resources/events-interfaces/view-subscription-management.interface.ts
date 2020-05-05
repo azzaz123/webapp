@@ -6,15 +6,11 @@
  */
 
 /**
- * After subscription selection click in the done button
+ * User views Subscription Management screen
  */
-export interface ClickDoneSubscriptionPlan {
+export interface ViewSubscriptionManagement {
   /**
-   * Identifier of the screen
+   * Identifier of the Subscription Management screen
    */
   screenId: 191;
-  /**
-   * Stripe id of the tier of the subscription
-   */
-  tier?: number;
 }

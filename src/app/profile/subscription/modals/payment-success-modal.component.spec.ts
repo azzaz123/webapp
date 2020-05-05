@@ -11,6 +11,8 @@ import {
   SCREEN_IDS
 } from '../../../core/analytics/analytics-constants';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
+import { SUBSCRIPTIONS_NOT_SUB } from '../../../../tests/subscriptions.fixtures.spec';
+import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 
 describe('PaymentSuccessModalComponent', () => {
   let component: PaymentSuccessModalComponent;
@@ -48,9 +50,22 @@ describe('PaymentSuccessModalComponent', () => {
   describe('ngOnInit', () => {
     it('should send view page event', () => {
       spyOn(analyticsService, 'trackPageView');
+      const subscription = SUBSCRIPTIONS_NOT_SUB[0];
+      const subscriptionCategoryId = subscription.category_id as SUBSCRIPTION_CATEGORIES;
+      const isNewSubscriber = true;
+      const isNewCard = true;
+      const tier = subscription.tiers[0].id;
+      component.tier = tier;
+      component.subscriptionCategoryId = subscriptionCategoryId;
+      component.isNewCard = isNewCard;
+      component.isNewSubscriber = isNewSubscriber;
       const expectedPageView: AnalyticsPageView<ViewSuccessSubscriptionPayment> = {
         name: ANALYTICS_EVENT_NAMES.ViewSuccessSubscriptionPayment,
         attributes: {
+          subscription: subscriptionCategoryId,
+          isNewSubscriber,
+          isNewCard,
+          tier,
           screenId: SCREEN_IDS.ProfileSubscription
         }
       };
