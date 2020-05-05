@@ -77,9 +77,9 @@
             }
 
             .padlock {
-              height: 9px;
-              width: $spacing-ms;
-              margin: 0 $spacing-xxs;
+              height: $font-size-s;
+              width: $font-size-s;
+              margin: $spacing-xxs;
             }
 
             span {
