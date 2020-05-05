@@ -10,7 +10,7 @@ import { APP_VERSION } from '../../../environments/version';
 import { UserService } from '../user/user.service';
 import { MockedUserService, USER_ID } from '../../../tests/user.fixtures.spec';
 import { RemoteConsoleClientService } from './remote-console-client.service';
-import { RemoteConsoleClientServiceMock } from '../../../tests/remote-console-service-client.spec';
+import { RemoteConsoleClientServiceMock } from '../../../tests/remote-console-service-client.fixtures.spec';
 import { of } from 'rxjs';
 
 describe('RemoteConsoleService', () => {
