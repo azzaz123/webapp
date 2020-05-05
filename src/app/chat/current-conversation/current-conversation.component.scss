@@ -71,6 +71,11 @@
             color: $blue-grey-3;
             padding: $spacing-xs $spacing-ml;
 
+            &.date-marker-warning-blue {
+              background-color: $softblue-light;
+              color: $softblue-dark;
+            }
+
             .padlock {
               height: 9px;
               width: $spacing-ms;
