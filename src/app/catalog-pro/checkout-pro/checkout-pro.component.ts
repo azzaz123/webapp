@@ -6,6 +6,7 @@ import { CalendarDates } from './range-datepicker/calendar-dates';
 import { CartProItem } from '../../shared/catalog/cart/cart-item.interface';
 import { CartService } from '../../shared/catalog/cart/cart.service';
 import { CartPro } from '../../shared/catalog/cart/cart-pro';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'tsl-checkout-pro',
@@ -17,7 +18,10 @@ export class CheckoutProComponent implements OnInit {
   itemsWithProducts: ItemWithProducts[];
   itemSelected: CartProItem;
   calendarHidden = true;
-
+  eventsSubject: Subject<string> = new Subject<string>();
+  allSelectedCityBump: boolean;
+  allSelectedCountryBump: boolean;
+  
   constructor(private itemService: ItemService,
               private router: Router,
               private cartService: CartService,
@@ -33,6 +37,38 @@ export class CheckoutProComponent implements OnInit {
         this.getProductsFromSelectedItems();
       }
     });
+  }
+
+  onDateFocus(item: CartProItem) {
+    this.itemSelected = item;
+    this.toggleCalendar();
+  }
+
+  onApplyCalendar(datesFromCalendar: CalendarDates) {
+    this.itemSelected.selectedDates = datesFromCalendar;
+    this.addToCart();
+  }
+
+  addToCart() {
+    this.cartService.add(this.itemSelected, this.itemSelected.bumpType);
+    this.toggleCalendar();
+  }
+
+  selectAll(type: string): void {
+    if (type === 'citybump') {
+      this.allSelectedCityBump = !this.allSelectedCityBump;
+      if (this.allSelectedCountryBump === true) {
+        this.allSelectedCountryBump = false;
+      }
+    }
+    if (type === 'countrybump') {
+      this.allSelectedCountryBump = !this.allSelectedCountryBump;
+      if (this.allSelectedCityBump === true) {
+        this.allSelectedCityBump = false;
+      }
+    }
+
+    this.eventsSubject.next(type);
   }
 
   private getProductsFromSelectedItems() {
@@ -57,22 +93,8 @@ export class CheckoutProComponent implements OnInit {
       });
   }
 
-  onDateFocus(item: CartProItem) {
-    this.itemSelected = item;
-    this.toggleCalendar();
-  }
-
-  onApplyCalendar(datesFromCalendar: CalendarDates) {
-    this.itemSelected.selectedDates = datesFromCalendar;
-    this.addToCart();
-  }
-
-  addToCart() {
-    this.cartService.add(this.itemSelected, this.itemSelected.bumpType);
-    this.toggleCalendar();
-  }
-
   private toggleCalendar() {
     this.calendarHidden = !this.calendarHidden;
   }
+
 }

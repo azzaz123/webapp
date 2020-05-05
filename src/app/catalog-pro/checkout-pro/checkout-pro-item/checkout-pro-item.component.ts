@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date';
 import { CalendarDates } from '../range-datepicker/calendar-dates';
 import { CartChange, CartProItem } from '../../../shared/catalog/cart/cart-item.interface';
 import { CartService } from '../../../shared/catalog/cart/cart.service';
 import { CartPro } from '../../../shared/catalog/cart/cart-pro';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'tsl-checkout-pro-item',
@@ -16,8 +17,10 @@ export class CheckoutProItemComponent implements OnInit {
 
   todayDate: NgbDate;
   tomorrowDate: NgbDate;
+  private eventsSubscription: Subscription;
 
   @Input() cartProItem: CartProItem;
+  @Input() events: Observable<string>;
   @Output() dateFocus: EventEmitter<CartProItem> = new EventEmitter();
 
   constructor(private cartService: CartService, private calendar: NgbCalendar) {
@@ -31,6 +34,7 @@ export class CheckoutProItemComponent implements OnInit {
   ngOnInit() {
     this.cartService.createInstance(new CartPro());
     this.cartProItem.selectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
+    this.eventsSubscription = this.events.subscribe((data) => this.selectAll(data));
   }
 
   onDateFocus() {
@@ -43,6 +47,10 @@ export class CheckoutProItemComponent implements OnInit {
       this.cartProItem.selectedDates.fromDate = this.todayDate;
       this.cartProItem.selectedDates.toDate = this.tomorrowDate;
     }
+  }
+
+  private selectAll(type: string): void {
+    this.selectBump(type)
   }
 
   selectBump(type: string) {

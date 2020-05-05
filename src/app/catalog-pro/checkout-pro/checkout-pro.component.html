@@ -9,45 +9,53 @@
           </a>
           <div class="header-first-section">
             <a class="info"></a>
-            <div class="bump-types">
-              <div class="type city">
+          </div>
+          <div class="bump-types">
+            <div class="type city">
+              <div class="content-header">
                 <div i18n>City</div>
-                <div class="content">
+                <div class="content-select">
                   <div class="checkbox">
-                    <button class="select" (click)="selectAll(City)">
+                    <button class="select" [ngClass]="{selected: allSelectedCityBump}" (click)="selectAll('citybump')">
                       <mat-icon svgIcon="check"></mat-icon>
                     </button>
                   </div>
                   <div class="select-all" i18n="@@CheckoutProCityApplyAll">Apply to all</div>
                 </div>
               </div>
-              <div class="type country">
+              <div class="item-separator"></div>
+            </div>
+            <div class="type country">
+              <div class="content-header">
                 <div i18n>Country</div>
-                <div class="content">
+                <div class="content-select">
                   <div class="checkbox">
-                    <button class="select" (click)="selectAll(country)">
+                    <button class="select" [ngClass]="{selected: allSelectedCountryBump}" (click)="selectAll('countrybump')">
                       <mat-icon svgIcon="check"></mat-icon>
                     </button>
                   </div>
                   <div class="select-all" i18n="@@CheckoutProCountryApplyAll">Apply to all</div>
                 </div>
               </div>
+              <div class="item-separator"></div>
             </div>
-          </div>
-          <div class="type planning">
-            <div i18n>Planning</div>
-            <div class="content">
-                <div class="checkbox">
-                  <button class="select" (click)="selectAll(planning)">
-                    <mat-icon svgIcon="check"></mat-icon>
-                  </button>
+            <div class="type planning">
+              <div class="content-header last">
+                <div i18n>Planning</div>
+                <div class="content-select">
+                  <div class="checkbox">
+                    <button class="select" (click)="selectAll('planning')">
+                      <mat-icon svgIcon="check"></mat-icon>
+                    </button>
+                  </div>
+                  <div class="select-all" i18n="@@CheckoutProPlanningApplyAll">Apply to all</div>
                 </div>
-                <div class="select-all" i18n="@@CheckoutProPlanningApplyAll">Apply to all</div>
               </div>
+            </div>
           </div>
         </div>
         <div class="bumps-table">
-          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts" [cartProItem]="item" (dateFocus)="onDateFocus($event)"></tsl-checkout-pro-item>
+          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts" [events]="eventsSubject.asObservable()" [cartProItem]="item" (dateFocus)="onDateFocus($event)"></tsl-checkout-pro-item>
         </div>
       </div>
       <div class="col-md-3">

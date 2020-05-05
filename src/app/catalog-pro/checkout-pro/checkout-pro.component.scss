@@ -39,11 +39,11 @@ $feature-button-width: 170px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 60%;
+    width: 50%;
   }
   .bump-types {
     display: flex; 
-    width: 50%;
+    width: 100%;
   }
   .info {
     font-size: $font-size-s;
@@ -58,7 +58,6 @@ $feature-button-width: 170px;
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    flex-direction: column;
     margin-bottom: -$spacing-xs;
     align-self: flex-start;
     color: $white;
@@ -68,36 +67,59 @@ $feature-button-width: 170px;
     font-size: $font-size-s;
     line-height: $line-height-m;
     background-color: $white;
+    flex-direction: row;
+    align-items: center;
     &.city {
       color: $walla-main;
       border-top-left-radius: 18px;
-      width: 50%;
+      width: 28%;
     }
     &.country {
       color: $payblue-main;
-      width: 50%;
+      width: 28%;
     }
     &.planning {
       color: $blue-grey-1;
       box-shadow: none;
-      width: 40%;
+      width: 72%;
+      display: flex;
+      justify-content: flex-start;
     }
   }
 
-  .content {
+  .content-select {
     display: flex;
     font-size: $font-size-xs;
     font-weight: lighter;
+    margin: $spacing-xs 0 0;
+    color: $blue-grey-3;
+  }
+
+  .content-header {
+    display: flex;
+    flex-direction: column;
+    //border-right: 1px solid $blue-grey-5;
+    //padding-right: $spacing-m;
+    &.last {
+      border-right: none;
+    }
+  }
+
+  .item-separator {
+    background-color: $blue-grey-5;
+    width: 1px;
+    height: 32px;
+    margin: 0px 0 0 8px;
   }
 
   .checkbox {
     transition: $transition;
     width: $checkbox-width;
-    margin: 0 $spacing-xs;
+    margin: $spacing-xxs $spacing-xs 0 0;
     .select {
       @include square($checkbox-width);
-      border: 2px solid $blue-grey-4;
-      border-radius: 4px;
+      border: 1px solid $blue-grey-4;
+      border-radius: 2px;
       padding: 0;
       background: transparent;
       display: flex;
@@ -121,7 +143,7 @@ $feature-button-width: 170px;
         }
       }
       &:hover {
-        border-color: $walla-main;
+        border: 1px solid $blue-grey-3;
       }
     }
   }
