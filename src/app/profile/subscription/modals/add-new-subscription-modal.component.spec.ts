@@ -43,6 +43,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   let errorsService: ErrorsService;
   let stripeService: StripeService;
   let subscriptionsService: SubscriptionsService;
+  let eventService: EventService;
   let analyticsService: AnalyticsService;
   const componentInstance = {
     subscription: MAPPED_SUBSCRIPTIONS[2]
@@ -125,7 +126,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     stripeService = TestBed.get(StripeService);
     subscriptionsService = TestBed.get(SubscriptionsService);
     errorsService = TestBed.get(ErrorsService);
-    event = TestBed.get(EventService);
+    eventService = TestBed.get(EventService);
     analyticsService = TestBed.get(AnalyticsService);
     component.card = STRIPE_CARD;
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
