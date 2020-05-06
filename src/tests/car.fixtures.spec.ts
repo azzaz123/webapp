@@ -96,7 +96,6 @@ export const CAR_CONTENT_DATA = {
   'model': 'Ibiza',
   'year': 2015,
   'sale_price': 10000.0,
-  'km': 100000,
   'gearbox': 'manual',
   'engine': 'gasoil',
   'color': 'red',
@@ -113,6 +112,9 @@ export const CAR_CONTENT_DATA = {
   'web_slug': 'seat-ibiza-9-seats-514',
   'version': 'version',
   'financed_price': 10000.0,
+  'published_date': undefined,
+  'image': undefined,
+  'km': 1000
 };
 
 export const CAR_DATA_FORM = {
@@ -142,7 +144,6 @@ export const MOCK_CAR: Car = new Car(
   CAR_DATA.content.brand,
   CAR_DATA.content.model,
   CAR_DATA.content.year,
-  CAR_DATA.content.km,
   CAR_DATA.content.gearbox,
   CAR_DATA.content.engine,
   CAR_DATA.content.color,
@@ -154,7 +155,10 @@ export const MOCK_CAR: Car = new Car(
   CAR_DATA.content.num_seats,
   CAR_DATA.content.condition,
   CAR_DATA.content.version,
-  CAR_DATA.content.sale_price
+  CAR_DATA.content.sale_price,
+  undefined,
+  undefined,
+  CAR_DATA.content.km
 );
 
 export const CAR_INFO: CarInfo = {
