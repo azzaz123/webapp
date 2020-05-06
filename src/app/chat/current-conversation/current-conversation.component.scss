@@ -76,6 +76,12 @@
               color: $softblue-dark;
             }
 
+            .emoticon-padlock  {
+              content: "\01F512";
+              font-size: $font-size-xs;
+              margin-right: $spacing-xs;
+            }
+
             .padlock {
               height: $font-size-xs;
               width: $font-size-xs;
