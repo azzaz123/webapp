@@ -363,7 +363,7 @@ describe('CatalogItemComponent', () => {
         item = MOCK_ITEM;
         spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
-        spyOn(window, 'fbq');
+        spyOn(window as any, 'fbq');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
