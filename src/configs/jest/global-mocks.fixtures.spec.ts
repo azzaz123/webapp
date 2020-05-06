@@ -4,7 +4,9 @@ export const MOCK_APPBOY = {
   display: {
     automaticallyShowNewInAppMessages: () => {}
   },
-  registerAppboyPushMessages: () => {}
+  registerAppboyPushMessages: () => {},
+  changeUser: _userId => {},
+  openSession: () => {}
 };
 
 export const MOCK_GA = () => {};
