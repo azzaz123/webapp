@@ -1,6 +1,10 @@
 export const MOCK_APPBOY = {
   initialize: () => {},
-  logCustomEvent: () => {}
+  logCustomEvent: () => {},
+  display: {
+    automaticallyShowNewInAppMessages: () => {}
+  },
+  registerAppboyPushMessages: () => {}
 };
 
 export const MOCK_GA = () => {};
