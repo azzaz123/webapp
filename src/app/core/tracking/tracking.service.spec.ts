@@ -103,8 +103,8 @@ describe('Service: Tracking', () => {
 
     it('should send professional flag when user is professional', () => {
       const expectedAttributes = JSON.stringify({ conversation_id: 'conversation', professional: true });
-      spyOnProperty(userService, 'user').and.returnValue({ type: 'professional' });
-
+      jest.spyOn(userService, 'user', 'get').mockReturnValue({ type: 'professional' } as any);
+      
       service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
       const req = httpMock.expectOne(environment.clickStreamURL);
       req.flush({});
@@ -115,7 +115,7 @@ describe('Service: Tracking', () => {
 
     it('should not send professional flag when user is not professional', () => {
       const expectedAttributes = JSON.stringify({ conversation_id: 'conversation' });
-      spyOnProperty(userService, 'user').and.returnValue({ type: 'normal' });
+      jest.spyOn(userService, 'user', 'get').mockReturnValue({ type: 'normal' } as any);
 
       service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
       const req = httpMock.expectOne(environment.clickStreamURL);

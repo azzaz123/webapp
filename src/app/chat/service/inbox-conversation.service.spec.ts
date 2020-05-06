@@ -68,7 +68,7 @@ describe('InboxConversationService', () => {
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
     httpTestingController = TestBed.get(HttpTestingController);
-    spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
+    jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_USER);
     service.subscribeChatEvents();
     service.conversations = [];
     service.archivedConversations = [];
