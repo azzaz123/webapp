@@ -1,5 +1,6 @@
 export const MOCK_APPBOY = {
-  initialize: () => {}
+  initialize: () => {},
+  logCustomEvent: () => {}
 };
 
 export const MOCK_GA = () => {};
@@ -35,7 +36,8 @@ export const MOCK_GOOGLE_TAG = {
 
 export const MOCK_VISIBILITY = {
   change: () => {},
-  hidden: () => {}
+  hidden: () => {},
+  onVisible: () => {}
 };
 
 export const MOCK_APSTAG = {
