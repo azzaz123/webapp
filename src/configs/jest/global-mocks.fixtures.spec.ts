@@ -1,4 +1,3 @@
-// Definitions of libraries mocks
 export const MOCK_APPBOY = {
   initialize: () => {}
 };
@@ -79,19 +78,3 @@ export const MOCK_LOCALSTORAGE = (function() {
     removeItem: key => delete store[key]
   };
 })();
-
-// Assignments
-Object.defineProperty(window, '__cmp', { value: MOCK___CMP });
-Object.defineProperty(window, 'appboy', { value: MOCK_APPBOY });
-Object.defineProperty(window, 'apstag', { value: MOCK_APSTAG });
-Object.defineProperty(window, 'Criteo', { value: MOCK_CRITEO });
-Object.defineProperty(window, 'fbq', { value: MOCK_FBQ });
-Object.defineProperty(window, 'ga', { value: MOCK_GA });
-Object.defineProperty(window, 'gtag', { value: MOCK_GTAG });
-Object.defineProperty(window, 'googletag', { value: MOCK_GOOGLE_TAG });
-Object.defineProperty(window, 'localStorage', { value: MOCK_LOCALSTORAGE });
-Object.defineProperty(window, 'pintrk', { value: MOCK_PINTRK });
-Object.defineProperty(window, 'quancastOptions', { value: MOCK_QUANCASTOPTIONS });
-Object.defineProperty(window, 'twq', { value: MOCK_TWQ });
-Object.defineProperty(window, 'Visibility', { value: MOCK_VISIBILITY });
-Object.defineProperty(window, 'XMPP', { value: MOCK_XMPP });

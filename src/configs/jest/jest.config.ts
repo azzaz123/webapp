@@ -34,4 +34,19 @@ Object.defineProperty(document.body.style, 'transform', {
 import '@angular/localize/init';
 
 // Mock global variables in window manually
-import './global-mocks.fixtures.spec';
+import * as GLOBAL_MOCKS from './global-mocks.fixtures.spec';
+
+Object.defineProperty(window, '__cmp', { value: GLOBAL_MOCKS.MOCK___CMP });
+Object.defineProperty(window, 'appboy', { value: GLOBAL_MOCKS.MOCK_APPBOY });
+Object.defineProperty(window, 'apstag', { value: GLOBAL_MOCKS.MOCK_APSTAG });
+Object.defineProperty(window, 'Criteo', { value: GLOBAL_MOCKS.MOCK_CRITEO });
+Object.defineProperty(window, 'fbq', { value: GLOBAL_MOCKS.MOCK_FBQ });
+Object.defineProperty(window, 'ga', { value: GLOBAL_MOCKS.MOCK_GA });
+Object.defineProperty(window, 'gtag', { value: GLOBAL_MOCKS.MOCK_GTAG });
+Object.defineProperty(window, 'googletag', { value: GLOBAL_MOCKS.MOCK_GOOGLE_TAG });
+Object.defineProperty(window, 'localStorage', { value: GLOBAL_MOCKS.MOCK_LOCALSTORAGE });
+Object.defineProperty(window, 'pintrk', { value: GLOBAL_MOCKS.MOCK_PINTRK });
+Object.defineProperty(window, 'quancastOptions', { value: GLOBAL_MOCKS.MOCK_QUANCASTOPTIONS });
+Object.defineProperty(window, 'twq', { value: GLOBAL_MOCKS.MOCK_TWQ });
+Object.defineProperty(window, 'Visibility', { value: GLOBAL_MOCKS.MOCK_VISIBILITY });
+Object.defineProperty(window, 'XMPP', { value: GLOBAL_MOCKS.MOCK_XMPP });
