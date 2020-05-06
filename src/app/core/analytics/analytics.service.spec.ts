@@ -5,6 +5,17 @@ import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
+import mParticle from '@mparticle/web-sdk';
+
+jest.mock('@mparticle/web-sdk', () => ({
+  __esModule: true,
+  default: {
+    init: () => {},
+    logEvent: (_eventName, _eventType, _eventAttributes) => {},
+    logPageView: (_pageName, _pageAttributes, _pageFlags) => {}
+  },
+  namedExport: 'mParticle'
+}));
 
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
