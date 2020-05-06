@@ -81,17 +81,17 @@ export const MOCK_LOCALSTORAGE = (function() {
 })();
 
 // Assignments
-window['appboy'] = MOCK_APPBOY;
-window['googletag'] = MOCK_GOOGLE_TAG;
-window['Visibility'] = MOCK_VISIBILITY;
-window['ga'] = MOCK_GA;
-window['gtag'] = MOCK_GTAG;
-window['fbq'] = MOCK_FBQ;
-window['pintrk'] = MOCK_PINTRK;
-window['twq'] = MOCK_TWQ;
-window['apstag'] = MOCK_APSTAG;
-window['Criteo'] = MOCK_CRITEO;
-window['__cmp'] = MOCK___CMP;
-window['quantcastOptions'] = MOCK_QUANCASTOPTIONS;
-window['XMPP'] = MOCK_XMPP;
+Object.defineProperty(window, '__cmp', { value: MOCK___CMP });
+Object.defineProperty(window, 'appboy', { value: MOCK_APPBOY });
+Object.defineProperty(window, 'apstag', { value: MOCK_APSTAG });
+Object.defineProperty(window, 'Criteo', { value: MOCK_CRITEO });
+Object.defineProperty(window, 'fbq', { value: MOCK_FBQ });
+Object.defineProperty(window, 'ga', { value: MOCK_GA });
+Object.defineProperty(window, 'gtag', { value: MOCK_GTAG });
+Object.defineProperty(window, 'googletag', { value: MOCK_GOOGLE_TAG });
 Object.defineProperty(window, 'localStorage', { value: MOCK_LOCALSTORAGE });
+Object.defineProperty(window, 'pintrk', { value: MOCK_PINTRK });
+Object.defineProperty(window, 'quancastOptions', { value: MOCK_QUANCASTOPTIONS });
+Object.defineProperty(window, 'twq', { value: MOCK_TWQ });
+Object.defineProperty(window, 'Visibility', { value: MOCK_VISIBILITY });
+Object.defineProperty(window, 'XMPP', { value: MOCK_XMPP });
