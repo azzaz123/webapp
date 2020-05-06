@@ -128,8 +128,12 @@
     margin-right: $spacing-xxs;
   }
 
-  .emoticon-woman-gesturing-no {
+  .emoticon-woman-gesturing-no::before {
     content: '\01F645';
+  }
+
+  .emoticon-dashing-away::before {
+    content: '\01F4A8';
   }
 }
 

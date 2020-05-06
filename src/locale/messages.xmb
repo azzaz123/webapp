@@ -305,7 +305,7 @@
   <msg id="177886998911393770"><source>app/chat/current-conversation/current-conversation.component.html:12,13</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       Try again later.</msg>
   <msg id="blockedPersonError"><source>app/chat/current-conversation/current-conversation.component.html:35</source>You have blocked this user. Unblock it to continue chatting</msg>
-  <msg id="5949661737880412802"><source>app/chat/current-conversation/current-conversation.component.html:41</source>This user is not available</msg>
+  <msg id="userIsNotAvailableWarning"><source>app/chat/current-conversation/current-conversation.component.html:41</source>This user is not available</msg>
   <msg id="3753612046513951428"><source>app/chat/current-conversation/current-conversation.component.html:48</source>This product is not available</msg>
   <msg id="2536023333703806770"><source>app/chat/current-conversation/current-conversation.component.html:71</source>Remember not to share private data for security reasons</msg>
   <msg id="6969584346860248976" desc="The distance between the user and the item"><source>app/chat/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:14,16</source>

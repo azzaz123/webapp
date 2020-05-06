@@ -37,8 +37,8 @@
 
             <div *ngIf="!currentConversation.user.blocked && !currentConversation.user.available"
                  class="date-marker date-marker-error">
-              <mat-icon svgIcon="not-available-error"></mat-icon>
-              <span i18n>This user is not available</span>
+              <span class="emoticon emoticon-dashing-away"></span>
+              <span i18n="@@userIsNotAvailableWarning">This user is not available</span>
             </div>
 
             <div
