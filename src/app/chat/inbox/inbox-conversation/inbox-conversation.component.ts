@@ -2,6 +2,9 @@ import { Component, Input } from '@angular/core';
 import { InboxConversation, InboxMessage, MessageType } from '../../model';
 import { InboxConversationService } from '../../service';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { ThirdVoiceDropPriceComponent } from '../../message/third-voice-drop-price';
+import { ThirdVoiceReviewComponent } from '../../message/third-voice-review';
+import { includes } from 'lodash-es';
 
 @Component({
   selector: 'tsl-inbox-conversation',
@@ -38,6 +41,14 @@ export class InboxConversationComponent {
 
   public isText(inboxMessage: InboxMessage): boolean {
     return inboxMessage.type === MessageType.TEXT;
+  }
+
+  public isThirdVoiceDropPrice(messageType: MessageType): boolean {
+    return includes(ThirdVoiceDropPriceComponent.ALLOW_MESSAGES_TYPES, messageType);
+  }
+
+  public isThirdVoiceReview(messageType: MessageType): boolean {
+    return includes(ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES, messageType);
   }
 
   public getThirdVoiceTranslation(inboxMessage: InboxMessage): string {

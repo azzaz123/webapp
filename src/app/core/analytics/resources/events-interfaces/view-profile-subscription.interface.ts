@@ -6,11 +6,11 @@
  */
 
 /**
- * View profile subscription screen
+ * User navigates the subscription page on the web
  */
 export interface ViewProfileSubscription {
   /**
-   * Identifier of the screen from which the message was sent from
+   * Identifier of the profile subscription screen
    */
   screenId: 206;
 }

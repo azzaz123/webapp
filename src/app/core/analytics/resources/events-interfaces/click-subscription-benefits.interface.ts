@@ -6,11 +6,11 @@
  */
 
 /**
- * User views Cars Subscription screen
+ * User clicks the subscribe button on the Subscription Benefits screen
  */
-export interface ViewCarsSubscription {
+export interface ClickSubscriptionBenefits {
   /**
-   * Identifier of the Cars subscription screen
+   * Identifier of the Subscription Benefits Screen
    */
-  screenId: 207;
+  screenId: 192;
 }

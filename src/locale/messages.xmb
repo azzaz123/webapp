@@ -247,6 +247,9 @@
   <msg id="5871405940994162095"><source>app/help/help.component.html:61</source>For any support:</msg>
   <msg id="4039809737462883261"><source>app/help/help.component.html:65</source>Mon to Thurs from 10:00 to 18:00</msg>
   <msg id="4911360466860911169"><source>app/help/help.component.html:66</source>Fri from 09:00 to 15:00</msg>
+  <msg id="thirdVoiceDropPrice"><source>app/chat/message/third-voice-drop-price/third-voice-drop-price.component.html:2</source><source>app/chat/message/third-voice-drop-price/third-voice-drop-price.component.html:5</source>The product has dropped in price. Do you want to cut a deal?</msg>
+  <msg id="thirdVoiceReviewFirstMessage"><source>app/chat/message/third-voice-review/third-voice-review.component.html:2</source>It&apos;s great that you have found what you were looking for </msg>
+  <msg id="thirdVoiceReviewSecondMessage"><source>app/chat/message/third-voice-review/third-voice-review.component.html:7</source><source>app/chat/message/third-voice-review/third-voice-review.component.html:12</source>How did it go? Take a minute to review the user, your opinion helps to improve our community!</msg>
   <msg id="7368172072093620772"><source>app/dashboard/dashboard.component.html:8</source>Your stats</msg>
   <msg id="8735125837670622187"><source>app/dashboard/dashboard.component.html:11,13</source>Here you can see information related with the visualizations, chats and
               calls
@@ -254,9 +257,6 @@
   <msg id="2734780694152757859"><source>app/dashboard/dashboard.component.html:34</source><source>app/dashboard/dashboard.component.html:43</source>View all</msg>
   <msg id="8778531687214591857"><source>app/dashboard/dashboard.component.html:55</source>You have processed all the pending leads. Good job!</msg>
   <msg id="5554592740021607017"><source>app/dashboard/stats-graph/stats-graph.component.html:2</source>Last 12 months</msg>
-  <msg id="2060326108457530649"><source>app/chat/message/third-voice-review/third-voice-review.component.html:2</source>Great! You found what you were looking for!</msg>
-  <msg id="7931637164374710264"><source>app/chat/message/third-voice-review/third-voice-review.component.html:6</source>How did it go? Take a moment to leave some feedback to the user to help our community!</msg>
-  <msg id="3734816767204282002"><source>app/chat/message/third-voice-drop-price/third-voice-drop-price.component.html:2</source>The item price has dropped. Close the deal!</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.html:2</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.html:3</source>Connected</msg>
   <msg id="8016649850785953911"><source>app/chat/item/item.component.html:18</source><source>app/chat/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:21</source>Unreserve</msg>
@@ -270,15 +270,9 @@
         Finance your purchase
       </msg>
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.html:3</source>Reserved</msg>
-  <msg id="deleteConversation"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:63,64</source>Delete conversation</msg>
-  <msg id="deleteConversationWarring"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:3</source>This will delete the conversation.</msg>
-  <msg id="archiveConversation"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:4</source><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:66,67</source>Archive conversation</msg>
-  <msg id="archiveConversationWarring"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:5</source>This will archive the conversation.</msg>
-  <msg id="cancelButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:8</source>Cancel</msg>
-  <msg id="archiveButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:10,11</source>Archive
-  </msg>
-  <msg id="deleteButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:13,14</source>Delete
-  </msg>
+  <msg id="8886737317292020570"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source>Archive conversation</msg>
+  <msg id="5298644184637702922"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:3</source>This will archive the conversation.</msg>
+  <msg id="1055686627716339120"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:7</source>Archive</msg>
   <msg id="7913053333994057167"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:2</source>Unarchive conversation</msg>
   <msg id="3205414127595653303"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:3</source>This will unarchive the conversation.</msg>
   <msg id="1121513541518618634"><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:7</source>Unarchive</msg>
@@ -297,15 +291,13 @@
   <msg id="1404539941798522798"><source>app/chat/user-response-rate/user-response-rate.component.html:7</source><source>app/chat/user-response-rate/user-response-rate.component.html:8</source>Typically responds within 3 hours</msg>
   <msg id="5927748278732131263"><source>app/chat/user-response-rate/user-response-rate.component.html:9</source><source>app/chat/user-response-rate/user-response-rate.component.html:10</source>Typically responds within a day</msg>
   <msg id="6807057680918467236"><source>app/chat/user-response-rate/user-response-rate.component.html:11</source><source>app/chat/user-response-rate/user-response-rate.component.html:12</source>Responds in more than 24 hours</msg>
-  <msg id="yourMessages"><source>app/chat/inbox/inbox.component.html:3</source>Your Messages</msg>
-  <msg id="inboxBox"><source>app/chat/inbox/inbox.component.html:11</source><source>app/chat/inbox/inbox.component.html:18</source><source>app/chat/inbox/inbox.component.html:33</source>Inbox</msg>
-  <msg id="inboxArchivedBox"><source>app/chat/inbox/inbox.component.html:12</source><source>app/chat/inbox/inbox.component.html:23</source>Archived Messages</msg>
-  <msg id="8032820066123493751"><source>app/chat/inbox/inbox.component.html:47</source>New messages</msg>
-  <msg id="584537771740074660"><source>app/chat/inbox/inbox.component.html:50,51</source>We found some problems updating your inbox. Try again later.
-    </msg>
-  <msg id="33149636091572968"><source>app/chat/inbox/inbox.component.html:69</source><source>app/chat/inbox/inbox.component.html:95</source><source>app/chat/current-conversation/current-conversation.component.html:78</source>Load more</msg>
-  <msg id="6874509246509696354"><source>app/chat/inbox/inbox.component.html:76,77</source>We found some problems updating your archived messages. Try again later.
-    </msg>
+  <msg id="6146618115870222180"><source>app/chat/inbox/inbox.component.html:2</source>Your Messages</msg>
+  <msg id="799485662157076328"><source>app/chat/inbox/inbox.component.html:7</source><source>app/chat/inbox/inbox.component.html:14</source>Inbox</msg>
+  <msg id="2247942788262300865"><source>app/chat/inbox/inbox.component.html:8</source><source>app/chat/inbox/inbox.component.html:19</source>Archived Messages</msg>
+  <msg id="8032820066123493751"><source>app/chat/inbox/inbox.component.html:32</source>New messages</msg>
+  <msg id="7238711418435054042"><source>app/chat/inbox/inbox.component.html:35</source>We found some problems updating your inbox. Try again later.</msg>
+  <msg id="33149636091572968"><source>app/chat/inbox/inbox.component.html:52</source><source>app/chat/inbox/inbox.component.html:76</source><source>app/chat/current-conversation/current-conversation.component.html:78</source>Load more</msg>
+  <msg id="265020643835790616"><source>app/chat/inbox/inbox.component.html:59</source>We found some problems updating your archived messages. Try again later.</msg>
   <msg id="8721026914522212662"><source>app/chat/inbox/archived-inbox-conversation/archived-inbox-conversation.component.html:42</source>Archived </msg>
   <msg id="682982254050004818"><source>app/chat/current-conversation/current-conversation.component.html:9,10</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       from the list on the left</msg>
@@ -323,18 +315,20 @@
     </msg>
   <msg id="2020278898288143668"><source>app/chat/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component.html:8</source>Selling</msg>
   <msg id="3893097575013115653"><source>app/chat/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component.html:9</source>+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex>{{user?.sellingItemCount}}</ph> More</msg>
-  <msg id="unarchiveConversation"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:69,70</source>Unarchive conversation
+  <msg id="1275264267936980927"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:63,64</source>Archive conversation
       </msg>
-  <msg id="reportListing"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:73,74</source>Report this Listing
+  <msg id="6744583700854319987"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:66,67</source>Unarchive conversation
       </msg>
-  <msg id="reportUser"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:77,78</source>Report this User
+  <msg id="7181016097805690972"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:69,70</source>Report this Listing
       </msg>
-  <msg id="blockUser"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:81,82</source>Block this User
+  <msg id="7184510579643662120"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:72,73</source>Report this User
       </msg>
-  <msg id="unblockUser"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:85,86</source>Unblock this User
+  <msg id="5709935930083786813"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:76,77</source>Block this User
       </msg>
-  <msg id="4741413716404810905"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:1</source>Do review</msg>
-  <msg id="7305026831182508111"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:4</source>Thanks for rating!</msg>
+  <msg id="4100915642762454461"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:80,81</source>Unblock this User
+      </msg>
+  <msg id="thirdVoiceDoReview"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:1</source>Review</msg>
+  <msg id="thirdVoiceThanksForRating"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:4</source>Thanks for your review!</msg>
   <msg id="4662529977781351630"><source>app/calls/calls.component.html:11</source>Calls</msg>
   <msg id="4812531333997465"><source>app/calls/calls.component.html:14</source>Here you can manage and see the information related with your calls</msg>
   <msg id="3973931101896534797"><source>app/calls/calls.component.html:34</source>Date</msg>
@@ -693,7 +687,7 @@
   <msg id="2477437471140226346"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:7</source>What limit do you want to put on your subscription?</msg>
   <msg id="3072739349487522347"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:15</source><ph name="INTERPOLATION"><ex>{{subscription?.tiers[i]?.limit}}</ex>{{subscription?.tiers[i]?.limit}}</ph></msg>
   <msg id="1583909574923079873"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:21,23</source>
-              Price: 
+              Price:
             </msg>
   <msg id="930351548904901118"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:25</source>New price: </msg>
   <msg id="3744004942164134121"><source>app/profile/subscription/modals/edit-subscription-modal.component.html:27,29</source>
@@ -715,8 +709,8 @@
       COVID-19 is affecting all of us. To alleviate this situation, we want to inform you that as a wallapop PRO user, we are offering you a free subscription month. What do you need to do?
     </msg>
   <msg id="214415473377752678"><source>app/profile/subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component.html:18,22</source>
-        1. Unsubscribe your current subscription plan through the 
-        <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>Apple Store<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph> or 
+        1. Unsubscribe your current subscription plan through the
+        <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>Apple Store<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph> or
         <ph name="START_LINK_1"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>Google Play<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph>.
       </msg>
   <msg id="2347321246651029433"><source>app/profile/subscription/modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component.html:23</source>2. Wait for the plan to expire. Check and be aware of the expiration date of your subscription.</msg>

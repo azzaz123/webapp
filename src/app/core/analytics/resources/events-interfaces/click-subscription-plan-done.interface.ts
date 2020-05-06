@@ -6,11 +6,15 @@
  */
 
 /**
- * User clicks on the Catalog Managment
+ * User clicks on done button after subscription selection
  */
-export interface ClickCatalogManagmentButton {
+export interface ClickSubscriptionPlanDone {
   /**
-   * Identifier of the screen
+   * Identifier of the Subscription Management screen
    */
-  screenId: 112;
+  screenId: 191;
+  /**
+   * Identifier of the subscription tier
+   */
+  tier?: number;
 }

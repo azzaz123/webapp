@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync, flush } from '@angular/core/testing';
 import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
 import { Observable, of, throwError } from 'rxjs';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,22 +14,26 @@ import {
   SUBSCRIPTION_SUCCESS,
   TIER,
   MAPPED_SUBSCRIPTIONS,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+  SUBSCRIPTIONS_NOT_SUB
 } from '../../../../tests/subscriptions.fixtures.spec';
 import { STRIPE_CARD, FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
-import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 import { PAYMENT_METHOD_DATA } from '../../../../tests/payments.fixtures.spec';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import {
   AnalyticsEvent,
-  ClickContinuePaymentSubscription,
+  ClickSubscriptionContinuePayment,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
-  ClickPaySubscription
+  ClickSubscriptionDirectContact,
+  SubscriptionPayConfirmation
 } from '../../../core/analytics/analytics-constants';
+import { By } from '@angular/platform-browser';
+import { CATEGORY_IDS } from '../../../core/category/category-ids';
+import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 
 describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
@@ -46,6 +50,7 @@ describe('AddNewSubscriptionModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [NgbCarouselModule],
       declarations: [AddNewSubscriptionModalComponent],
       providers: [
         {
@@ -83,6 +88,12 @@ describe('AddNewSubscriptionModalComponent', () => {
             },
             getTierDiscountPercentatge() {
               return 0;
+            },
+            isFreeTier() {
+              return false;
+            },
+            isDiscountedTier() {
+              return false;
             }
           }
         },
@@ -118,6 +129,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     analyticsService = TestBed.get(AnalyticsService);
     component.card = STRIPE_CARD;
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
+    component.isNewSubscriber = false;
     fixture.detectChanges();
     spyOn(component, 'reloadPage').and.returnValue(() => {});
   });
@@ -304,43 +316,46 @@ describe('AddNewSubscriptionModalComponent', () => {
     });
   });
 
-  describe('onClickContinueToPayment', () => {
+  describe('trackClickContinueToPayment', () => {
     it('should send event to analytics', () => {
       spyOn(analyticsService, 'trackEvent');
-      const expectedEvent: AnalyticsEvent<ClickContinuePaymentSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ClickContinuePaymentSubscription,
+      const expectedEvent: AnalyticsEvent<ClickSubscriptionContinuePayment> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionContinuePayment,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
+          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+          isNewSubscriber: component.isNewSubscriber,
           screenId: SCREEN_IDS.ProfileSubscription,
-          tier: component.selectedTier.id as any
+          tier: component.selectedTier.id
         }
       };
 
-      component.onClickContinueToPayment();
+      component.trackClickContinueToPayment();
 
       expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
 
-  describe('onClickPay', () => {
-    const expectedEvent: AnalyticsEvent<ClickPaySubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ClickPaysubscription,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
-      attributes: {
-        screenId: SCREEN_IDS.ProfileSubscription,
-        isNewVisa: true,
-        discountPercent: 0
-      }
-    };
-
-    beforeEach(() => {
-      spyOn(analyticsService, 'trackEvent');
-    });
+  describe('trackClickPay', () => {
+    beforeEach(() => spyOn(analyticsService, 'trackEvent'));
 
     describe('when isNewVisa is true', () => {
       it('should send valid event', () => {
-        component.onClickPay(true);
+        const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+          name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+            tier: component.selectedTier.id,
+            screenId: SCREEN_IDS.ProfileSubscription,
+            isNewCard: true,
+            isNewSubscriber: component.isNewSubscriber,
+            discountPercent: 0
+          }
+        };
+
+        component.trackClickPay(true);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
@@ -349,9 +364,21 @@ describe('AddNewSubscriptionModalComponent', () => {
 
     describe('when isNewVisa is false', () => {
       it('should send valid event', () => {
-        expectedEvent.attributes.isNewVisa = false;
+        const expectedEvent: AnalyticsEvent<SubscriptionPayConfirmation> = {
+          name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+            tier: component.selectedTier.id,
+            screenId: SCREEN_IDS.ProfileSubscription,
+            isNewCard: true,
+            isNewSubscriber: component.isNewSubscriber,
+            discountPercent: 0
+          }
+        };
+        expectedEvent.attributes.isNewCard = false;
 
-        component.onClickPay(false);
+        component.trackClickPay(false);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
@@ -365,7 +392,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       fixture.detectChanges();
 
       const carousel: HTMLElement = fixture.elementRef.nativeElement.querySelector('ngb-carousel');
-      expect(carousel.className).toBe('single');
+      expect(carousel.className.includes('single')).toBe(true);
     });
 
     it('should hide first step, carousel indicators, current step indicator and change button', () => {
@@ -374,12 +401,37 @@ describe('AddNewSubscriptionModalComponent', () => {
 
       const firstStepElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.step-1');
       const carouselIndicatorsElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.carousel-indicators');
+      const carouselIndicatorsElementStyle = getComputedStyle(carouselIndicatorsElement);
       const stepsIndicatorElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.AddNewSubscription__listing-limit-steps');
       const changeButton: HTMLElement = fixture.elementRef.nativeElement.querySelector('.AddNewSubscription__listing-limit-payment-edit');
       expect(firstStepElement).toBeNull();
-      expect(carouselIndicatorsElement).toBeNull();
+      expect(carouselIndicatorsElementStyle.display).toBe('none');
       expect(stepsIndicatorElement).toBeNull();
       expect(changeButton).toBeNull();
+    });
+  });
+
+  describe('trackClickCardealerTypeform', () => {
+    it('should send event to analytics', () => {
+      spyOn(analyticsService, 'trackEvent');
+      spyOn(component, 'trackClickCardealerTypeform').and.callThrough();
+      const isNewSubscriber = true;
+      component.subscription = MAPPED_SUBSCRIPTIONS[1];
+      component.isNewSubscriber = isNewSubscriber;
+      const expectedEvent: AnalyticsEvent<ClickSubscriptionDirectContact> = {
+        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionDirectContact,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          subscription: CATEGORY_IDS.CAR as 100,
+          screenId: SCREEN_IDS.Subscription,
+          isNewSubscriber
+        }
+      };
+
+      component.trackClickCardealerTypeform();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
 });

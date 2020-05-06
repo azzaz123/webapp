@@ -37,8 +37,15 @@
                *ngIf="conversation.lastMessage && conversation.lastMessage.fromSelf && conversation.lastMessage.status"></div>
           <p *ngIf="conversation.lastMessage && isText(conversation.lastMessage)"
              class="message">{{conversation.lastMessage.text}}</p>
-          <p *ngIf="conversation.lastMessage && !isText(conversation.lastMessage)"
-             class="message">{{getThirdVoiceTranslation(conversation.lastMessage)}}</p>
+          <p *ngIf="conversation.lastMessage && isThirdVoiceDropPrice(conversation.lastMessage.type)" class="message">
+            <tsl-third-voice-drop-price [message]="conversation.lastMessage"
+                                        [shortMessage]="true"></tsl-third-voice-drop-price>
+          </p>
+          <p *ngIf="conversation.lastMessage && isThirdVoiceReview(conversation.lastMessage.type)" class="message">
+            <tsl-third-voice-review [message]="conversation.lastMessage" [user]="conversation.user"
+                                    [item]="conversation.item"
+                                    [shortMessage]="true"></tsl-third-voice-review>
+          </p>
         </div>
       </div>
       <div class="unread-counter-column">

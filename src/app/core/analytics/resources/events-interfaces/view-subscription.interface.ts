@@ -6,15 +6,11 @@
  */
 
 /**
- * Button continue with the payment after selecting tier
+ * User views Subscription screen
  */
-export interface ClickContinuePaymentSubscription {
+export interface ViewSubscription {
   /**
-   * Identifier of the screen
+   * Identifier of the Subscription screen
    */
-  screenId: 206;
-  /**
-   * Stripe id of the tier of the subscription
-   */
-  tier?: string;
+  screenId: 207;
 }
