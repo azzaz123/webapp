@@ -70,7 +70,15 @@ export const MOCK_XMPP = {
   createClient: () => {}
 };
 
-export const MOCK_LOCAlSTORAGE = {};
+export const MOCK_LOCALSTORAGE = (function() {
+  let store = {};
+  return {
+    getItem: key => store[key],
+    setItem: (key, value) => store[key] = value.toString(),
+    clear: () => store = {},
+    removeItem: key => delete store[key]
+  };
+})();
 
 // Assignments
 window['appboy'] = MOCK_APPBOY;
@@ -86,5 +94,4 @@ window['Criteo'] = MOCK_CRITEO;
 window['__cmp'] = MOCK___CMP;
 window['quantcastOptions'] = MOCK_QUANCASTOPTIONS;
 window['XMPP'] = MOCK_XMPP;
-
-document.head.appendChild(document.createElement('script'));
+Object.defineProperty(window, 'localStorage', { value: MOCK_LOCALSTORAGE });
