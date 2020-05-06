@@ -31,8 +31,8 @@
         <div class="message-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}">
           <div class="notification-container" #userWarringNotification>
             <div *ngIf="currentConversation.user.blocked" class="date-marker date-marker-error">
-              <span class="emoticon-woman-gesturing-no"></span>
-              <span i18n="@@blockedPersonError">You have blocked this user. Unblock it to continue chatting</span>
+              <span class="emoticon emoticon-woman-gesturing-no"></span>
+              <span i18n="@@blockedPersonError">You have blocked this person. To continue chatting, unblock them</span>
             </div>
 
             <div *ngIf="!currentConversation.user.blocked && !currentConversation.user.available"
