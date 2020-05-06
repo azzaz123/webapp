@@ -1,4 +1,15 @@
-googletag = {
+// Definitions of libraries mocks
+export const MOCK_APPBOY = {
+  initialize: () => {}
+};
+
+export const MOCK_GA = () => {};
+export const MOCK_GTAG = () => {};
+export const MOCK_FBQ = () => {};
+export const MOCK_PINTRK = () => {};
+export const MOCK_TWQ = () => {};
+
+export const MOCK_GOOGLE_TAG = {
   cmd: {
     push (callback) { callback(); }
   },
@@ -20,22 +31,21 @@ googletag = {
       refresh () {}
     };
   },
-  display: (slotid: string) => {}
+  display: (_slotid: string) => {}
 };
 
- ga = function() {};
- gtag = function() {};
- fbq = function() {};
- pintrk = function() {};
- twq = function() {};
+export const MOCK_VISIBILITY = {
+  change: () => {},
+  hidden: () => {}
+};
 
- apstag = {
+export const MOCK_APSTAG = {
   fetchBids ({slots, timeout}, callback) { callback(); },
   setDisplayBids() {},
   init() {}
 };
 
- Criteo = {
+export const MOCK_CRITEO = {
   events: {
     push (callback) { callback(); }
   },
@@ -44,33 +54,37 @@ googletag = {
   SetDFPKeyValueTargeting() {},
 };
 
- __cmp = function(arg1, arg2, callback) {};
- quancastOptions =  {es: {}, en: {}};
+export const MOCK___CMP = (arg1, arg2, callback) => {};
 
+export const MOCK_QUANCASTOPTIONS = {
+  es: {},
+  en: {}
+};
 
- document.head.appendChild(document.createElement('script'));
-
-// Below you will find definitions given by `jest-preset-angular` to mock DOM interactions
-Object.defineProperty(window, 'CSS', { value: null });
-
-Object.defineProperty(document, 'doctype', {
-  value: '<!DOCTYPE html>'
-});
-
-Object.defineProperty(window, 'getComputedStyle', {
-  value: () => {
-    return {
-      display: 'none',
-      appearance: ['-webkit-appearance']
-    };
-  }
-});
-
-Object.defineProperty(document.body.style, 'transform', {
-  value: () => {
-    return {
-      enumerable: true,
-      configurable: true,
-    };
+export const MOCK_XMPP = {
+  JID: class {
+    constructor(_other_user_id, _domain) {
+      return _other_user_id;
+    }
   },
-});
+  createClient: () => {}
+};
+
+export const MOCK_LOCAlSTORAGE = {};
+
+// Assignments
+window['appboy'] = MOCK_APPBOY;
+window['googletag'] = MOCK_GOOGLE_TAG;
+window['Visibility'] = MOCK_VISIBILITY;
+window['ga'] = MOCK_GA;
+window['gtag'] = MOCK_GTAG;
+window['fbq'] = MOCK_FBQ;
+window['pintrk'] = MOCK_PINTRK;
+window['twq'] = MOCK_TWQ;
+window['apstag'] = MOCK_APSTAG;
+window['Criteo'] = MOCK_CRITEO;
+window['__cmp'] = MOCK___CMP;
+window['quantcastOptions'] = MOCK_QUANCASTOPTIONS;
+window['XMPP'] = MOCK_XMPP;
+
+document.head.appendChild(document.createElement('script'));
