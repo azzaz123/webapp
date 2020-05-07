@@ -100,7 +100,6 @@ export class WallacoinsComponent implements OnInit {
     modal.componentInstance.pack = pack;
     modal.componentInstance.packIndex = packIndex;
     modal.result.then((response) => {
-      console.warn(response.status);
       if (response === 'success' || response.status === '201' || response.status === 201) {
         code = '200';
         this.updateRemainingCredit(pack);
