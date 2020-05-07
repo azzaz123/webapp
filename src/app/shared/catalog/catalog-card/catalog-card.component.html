@@ -12,6 +12,7 @@
     <a href="{{item.webLink}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="info">
       <div class="price">{{item.salePrice | customCurrency:item.currencyCode}}</div>
       <div class="title">{{item.title}}</div>
+      <div class="title" *ngIf="item.km">{{item.km | number}} km</div>
     </a>
     <div class="published" [hidden]="item.sold || item.purchases && !item.flags.onhold">
       <div i18n>Published</div>
