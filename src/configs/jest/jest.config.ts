@@ -24,6 +24,9 @@ Object.defineProperty(window, 'getComputedStyle', {
 // More info about the issue: https://github.com/thymikee/jest-preset-angular/issues/347
 import '@angular/localize/init';
 
+// Ads "polyfills"
+import '../../assets/js/adsConfig.js';
+
 // Mock global variables in window manually
 import * as GLOBAL_MOCKS from './global-mocks.fixtures.spec';
 
@@ -42,3 +45,4 @@ Object.defineProperty(window, 'twq', { value: GLOBAL_MOCKS.MOCK_TWQ });
 Object.defineProperty(window, 'Visibility', { value: GLOBAL_MOCKS.MOCK_VISIBILITY });
 Object.defineProperty(window, 'XMPP', { value: GLOBAL_MOCKS.MOCK_XMPP });
 Object.defineProperty(navigator, 'connection', { value: GLOBAL_MOCKS.MOCK_NAVIGATOR_CONNECTION });
+Object.defineProperty(navigator, 'geolocation', { value: GLOBAL_MOCKS.MOCK_NAVIGATOR_GEOLOCATION, writable: true });

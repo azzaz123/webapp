@@ -91,3 +91,7 @@ export const MOCK_NAVIGATOR_CONNECTION = {
   rtt: 50,
   type: ''
 };
+
+export const MOCK_NAVIGATOR_GEOLOCATION = {
+  getCurrentPosition: () => ''
+};
