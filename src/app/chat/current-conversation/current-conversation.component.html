@@ -41,11 +41,20 @@
               <span i18n="@@userIsNotAvailableWarning">This person is no longer a wallapop member</span>
             </div>
 
-            <div
-              *ngIf="!currentConversation.user.blocked && currentConversation.user.available && currentConversation.item.notAvailable"
-              class="date-marker date-marker-warning">
-              <mat-icon svgIcon="not-available" class="not-available"></mat-icon>
-              <span i18n>This product is not available</span>
+            <div *ngIf="!currentConversation.user.blocked
+            && currentConversation.user.available
+            && currentConversation.item.notAvailable"
+                 class="date-marker date-marker-warning date-marker-warning-blue">
+              <span class="emoticon emoticon-ghost"></span>
+              <span i18n>This product has expired or has been removed</span>
+            </div>
+
+            <div *ngIf="!currentConversation.user.blocked
+            && currentConversation.user.available
+            && currentConversation.item.unpublished"
+                 class="date-marker date-marker-warning date-marker-warning-blue">
+              <span class="emoticon emoticon-police-car"></span>
+              <span i18n>The product violates wallapop coexistence regulations</span>
             </div>
           </div>
 

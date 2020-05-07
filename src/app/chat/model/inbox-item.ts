@@ -32,6 +32,7 @@ export class InboxItem {
     public sold = false;
     public reserved = false;
     public published = false;
+    public unpublished = false;
     public notAvailable = false;
     public views: number;
     public favorites: number;
@@ -51,7 +52,7 @@ export class InboxItem {
                 this.published = true;
                 break;
             case InboxItemStatus.UNPUBLISHED:
-                  this.notAvailable = true;
+                  this.unpublished = true;
                   break;
             default:
                 this.published = true;
