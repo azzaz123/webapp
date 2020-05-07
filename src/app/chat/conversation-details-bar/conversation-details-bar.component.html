@@ -60,10 +60,10 @@
     <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
     <div ngbDropdownMenu>
       <button class="dropdown-item" (click)="archiveConversation()" i18n
-              [hidden]="currentConversationisArchived">Archive conversation
+              [hidden]="currentConversationisArchived()">Archive conversation
       </button>
       <button class="dropdown-item" (click)="unarchiveConversation()" i18n
-              [hidden]="!currentConversationisArchived">Unarchive conversation
+              [hidden]="!currentConversationisArchived()">Unarchive conversation
       </button>
       <button class="dropdown-item" (click)="reportListingAction()"
               *ngIf="!itemIsMine && !currentConversation.item.notAvailable" i18n>Report this Listing
