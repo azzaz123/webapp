@@ -20,14 +20,25 @@
   <div class="item-second-section">
     <div>
       <span class="label-date" i18n>Start date</span>
-      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" [(ngModel)]="cartProItem.selectedDates.formattedFromDate"
-        [disabled]="!cartProItem.bumpType" [ngClass]="cartProItem.bumpType">
+      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy"
+        [ngModel]="newSelectedDates.formattedFromDate"
+        [disabled]="!cartProItem.bumpType"
+        [ngClass]="cartProItem.bumpType">
     </div>
     <div>
       <span class="label-date" i18n>End date</span>
-      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" [(ngModel)]="cartProItem.selectedDates.formattedToDate"
-        [disabled]="!cartProItem.bumpType" [ngClass]="cartProItem.bumpType">
+      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy"
+        [ngModel]="newSelectedDates.formattedToDate"
+        [disabled]="!cartProItem.bumpType"
+        [ngClass]="cartProItem.bumpType">
     </div>
     <button class="item-reset" (click)="removeItem()" [disabled]="!cartProItem.bumpType"></button>
   </div>
 </div>
+<tsl-range-datepicker *ngIf="!calendarHidden"
+  (applyCalendar)="onApplyCalendar($event)"
+  (closeCalendar)="calendarHidden = true"
+  [bumpType]="cartProItem.bumpType"
+  [selectedDates]="newSelectedDates"
+  >
+</tsl-range-datepicker> 

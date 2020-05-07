@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date';
 import { CalendarDates } from '../range-datepicker/calendar-dates';
@@ -17,10 +17,13 @@ export class CheckoutProItemComponent implements OnInit {
 
   todayDate: NgbDate;
   tomorrowDate: NgbDate;
-  private eventsSubscription: Subscription;
+  calendarHidden = true;
+  calendarType: string;
+  newBumpType: string;
+  newSelectedDates: CalendarDates;
 
   @Input() cartProItem: CartProItem;
-  @Input() events: Observable<string>;
+  @Input() selectAllEvent: Observable<any>;
   @Output() dateFocus: EventEmitter<CartProItem> = new EventEmitter();
 
   constructor(private cartService: CartService, private calendar: NgbCalendar) {
@@ -34,31 +37,76 @@ export class CheckoutProItemComponent implements OnInit {
   ngOnInit() {
     this.cartService.createInstance(new CartPro());
     this.cartProItem.selectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
-    this.eventsSubscription = this.events.subscribe((data) => this.selectAll(data));
+    this.newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
+    this.selectAllEvent.subscribe((data) => this.selectAll(data));
   }
 
-  onDateFocus() {
-    this.dateFocus.emit(this.cartProItem);
+  //new
+  onDateFocus(item: CartProItem) {
+    this.calendarType = null;
+    this.newBumpType = this.cartProItem.bumpType;
+    this.newSelectedDates = this.cartProItem.selectedDates;
+    this.toggleCalendar();
   }
+
+  onApplyCalendar(datesFromCalendar: CalendarDates) {
+    this.newSelectedDates = datesFromCalendar;
+    this.cartProItem.selectedDates = datesFromCalendar;
+    this.addToCart();
+    this.calendarType = null;
+  }
+
+  addToCart() {
+    this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
+    this.toggleCalendar();
+  }
+
+  private toggleCalendar() {
+    this.calendarHidden = !this.calendarHidden;
+  }
+  
+  //
+  /*onDateFocus() {
+    this.dateFocus.emit(this.cartProItem);
+  }*/
 
   onRemoveOrClean(cartProChange: CartChange) {
     if (cartProChange.action === 'remove' && cartProChange.itemId === this.cartProItem.item.id || cartProChange.action === 'clean') {
       delete this.cartProItem.bumpType;
       this.cartProItem.selectedDates.fromDate = this.todayDate;
       this.cartProItem.selectedDates.toDate = this.tomorrowDate;
+      //new
+      this.newSelectedDates.fromDate = this.todayDate;
+      this.newSelectedDates.toDate = this.tomorrowDate;
     }
   }
 
-  private selectAll(type: string): void {
-    this.selectBump(type)
+  private selectAll(data: any): void {
+    if (data.type === 'planning') {
+      this.newSelectedDates = data.dates;
+      this.cartProItem.selectedDates = data.dates;
+      if (this.cartProItem.bumpType) {
+        this.selectBump(data.type)
+      }
+    } else {
+      if (this.cartProItem.bumpType === data.type && !data.allSelected
+        || (!this.cartProItem.bumpType && data.allSelected)
+        || this.cartProItem.bumpType !== data.type && this.cartProItem.bumpType && data.allSelected) {
+        this.selectBump(data.type)
+      }
+    }
   }
 
   selectBump(type: string) {
-    if (this.cartProItem.bumpType === type) {
-      this.removeItem();
-    } else {
-      this.cartProItem.bumpType = type;
+    if (type === 'planning') {
       this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
+    } else {
+      if (this.cartProItem.bumpType === type) {
+        this.removeItem();
+      } else {
+        this.cartProItem.bumpType = type;
+        this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
+      }
     }
   }
 

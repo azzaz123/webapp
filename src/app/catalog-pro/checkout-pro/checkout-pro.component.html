@@ -55,7 +55,12 @@
           </div>
         </div>
         <div class="bumps-table">
-          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts" [events]="eventsSubject.asObservable()" [cartProItem]="item" (dateFocus)="onDateFocus($event)"></tsl-checkout-pro-item>
+          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts"
+            [cartProItem]="item"
+            (dateFocus)="onDateFocus($event)"
+            [selectAllEvent]="selectAllEventSubject.asObservable()"
+            >
+          </tsl-checkout-pro-item>
         </div>
       </div>
       <div class="col-md-3">
@@ -64,6 +69,11 @@
     </div>
     <tsl-spinner [firstLoad]="false" [hidden]="itemsWithProducts"></tsl-spinner>
   </div>
-  <tsl-range-datepicker *ngIf="!calendarHidden" (applyCalendar)="onApplyCalendar($event)" (closeCalendar)="calendarHidden = true"
-    [bumpType]="itemSelected?.bumpType" [selectedDates]="itemSelected?.selectedDates"></tsl-range-datepicker>
+  <tsl-range-datepicker *ngIf="!calendarHidden"
+    (applyCalendar)="onApplyCalendar($event)"
+    (closeCalendar)="calendarHidden = true"
+    [bumpType]="newBumpType"
+    [selectedDates]="newSelectedDates"
+    >
+  </tsl-range-datepicker> 
 </div>

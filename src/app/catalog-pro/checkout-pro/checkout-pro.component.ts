@@ -7,6 +7,7 @@ import { CartProItem } from '../../shared/catalog/cart/cart-item.interface';
 import { CartService } from '../../shared/catalog/cart/cart.service';
 import { CartPro } from '../../shared/catalog/cart/cart-pro';
 import { Subject } from 'rxjs';
+import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-checkout-pro',
@@ -18,14 +19,21 @@ export class CheckoutProComponent implements OnInit {
   itemsWithProducts: ItemWithProducts[];
   itemSelected: CartProItem;
   calendarHidden = true;
-  eventsSubject: Subject<string> = new Subject<string>();
+  selectAllEventSubject: Subject<{}> = new Subject<{}>();
   allSelectedCityBump: boolean;
   allSelectedCountryBump: boolean;
+  allSelectedPlanning: boolean;
+  calendarType: string;
+  newSelectedDates: CalendarDates;
+  todayDate: NgbDate;
+  tomorrowDate: NgbDate;
+  newBumpType: string;
   
   constructor(private itemService: ItemService,
               private router: Router,
               private cartService: CartService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private calendar: NgbCalendar) {
   }
 
   ngOnInit() {
@@ -40,13 +48,25 @@ export class CheckoutProComponent implements OnInit {
   }
 
   onDateFocus(item: CartProItem) {
-    this.itemSelected = item;
+    this.calendarType = null;
+    this.itemSelected = {... item};
+    this.newBumpType = this.itemSelected.bumpType;
+    this.newSelectedDates = item.selectedDates;
     this.toggleCalendar();
   }
 
   onApplyCalendar(datesFromCalendar: CalendarDates) {
-    this.itemSelected.selectedDates = datesFromCalendar;
-    this.addToCart();
+    this.newSelectedDates = datesFromCalendar;
+    this.toggleCalendar();
+    if (this.calendarType === 'planning') {
+      this.selectAllEventSubject.next({type: this.calendarType, allSelected: false, dates: datesFromCalendar});
+      this.allSelectedPlanning = false;
+      
+    } else {
+      this.itemSelected.selectedDates = datesFromCalendar;
+      this.addToCart();
+    }
+    this.calendarType = null;
   }
 
   addToCart() {
@@ -55,20 +75,34 @@ export class CheckoutProComponent implements OnInit {
   }
 
   selectAll(type: string): void {
+    this.calendarType = type;
+    this.newBumpType = type;
     if (type === 'citybump') {
       this.allSelectedCityBump = !this.allSelectedCityBump;
       if (this.allSelectedCountryBump === true) {
         this.allSelectedCountryBump = false;
       }
+      this.selectAllEventSubject.next({type, allSelected: this.allSelectedCityBump});
     }
     if (type === 'countrybump') {
       this.allSelectedCountryBump = !this.allSelectedCountryBump;
       if (this.allSelectedCityBump === true) {
         this.allSelectedCityBump = false;
       }
+      this.selectAllEventSubject.next({type, allSelected: this.allSelectedCountryBump});
     }
+    if (type === 'planning') {
+      if (!this.newSelectedDates) {
+        this.todayDate = this.calendar.getToday();
+        this.tomorrowDate = this.calendar.getNext(this.todayDate);
+        this.newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
+      }
+      this.toggleCalendar();
+    }
+  }
 
-    this.eventsSubject.next(type);
+  private toggleCalendar() {
+    this.calendarHidden = !this.calendarHidden;
   }
 
   private getProductsFromSelectedItems() {
@@ -91,10 +125,6 @@ export class CheckoutProComponent implements OnInit {
           this.router.navigate(['pro/catalog/list', {alreadyFeatured: true}]);
         }
       });
-  }
-
-  private toggleCalendar() {
-    this.calendarHidden = !this.calendarHidden;
   }
 
 }

@@ -72,7 +72,8 @@ export class RangeDatepickerComponent implements OnInit {
   endDate: NgbDateStruct;
   todayDay: NgbDateStruct;
   tomorrowDay: NgbDateStruct;
-  model;
+  model: NgbDateStruct;
+  newDates: CalendarDates;
 
   @Input() bumpType: string;
   @Input() selectedDates: CalendarDates;
@@ -94,6 +95,7 @@ export class RangeDatepickerComponent implements OnInit {
     this.tomorrowDay = this.selectedDates.toDate;
     this.startDate = this.selectedDates.fromDate;
     this.endDate = this.selectedDates.toDate;
+    this.newDates = new CalendarDates(this.todayDay, this.tomorrowDay);
   }
 
   onDateSelection(date: NgbDateStruct) {
@@ -101,8 +103,10 @@ export class RangeDatepickerComponent implements OnInit {
       this.startDate = date;
     } else if (this.startDate && !this.endDate && after(date, this.startDate)) {
       this.endDate = date;
-      this.selectedDates.fromDate = this.startDate;
-      this.selectedDates.toDate = this.endDate;
+      //this.selectedDates.fromDate = this.startDate;
+      //this.selectedDates.toDate = this.endDate;
+      this.newDates.fromDate = this.startDate;
+      this.newDates.toDate = this.endDate;
     } else {
       this.endDate = null;
       this.startDate = date;
@@ -110,13 +114,15 @@ export class RangeDatepickerComponent implements OnInit {
   }
 
   onCancel() {
-    this.selectedDates.fromDate = this.todayDay;
-    this.selectedDates.toDate = this.tomorrowDay;
+    //this.selectedDates.fromDate = this.todayDay;
+    //this.selectedDates.toDate = this.tomorrowDay;
+    //this.newDates.fromDate = this.todayDay;
+    //this.newDates.toDate = this.tomorrowDay;
     this.closeCalendar.emit();
   }
 
   onApply() {
-    this.applyCalendar.emit(this.selectedDates);
+    this.applyCalendar.emit(this.newDates);
   }
 
 }
