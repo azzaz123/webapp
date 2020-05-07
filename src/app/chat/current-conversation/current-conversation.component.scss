@@ -80,6 +80,11 @@
               color: $softblue-dark;
             }
 
+            &.date-marker-warning-red {
+              background-color: $negative-soft;
+              color: $magenta-dark;
+            }
+
             .padlock {
               height: 9px;
               width: $spacing-ms;
@@ -133,7 +138,7 @@
   }
 
   .emoticon {
-    margin-right: $spacing-xxs;
+    margin-right: $spacing-xs;
   }
 
   .emoticon-woman-gesturing-no::before {
