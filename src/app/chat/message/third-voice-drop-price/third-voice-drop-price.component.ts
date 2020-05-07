@@ -11,4 +11,5 @@ export class ThirdVoiceDropPriceComponent {
   public static ALLOW_MESSAGES_TYPES = [MessageType.PRICE_DROP, MessageType.DROP_PRICE];
 
   @Input() message: InboxMessage;
+  @Input() shortMessage = false;
 }
