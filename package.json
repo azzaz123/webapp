@@ -18,7 +18,7 @@
     "test-once": "jest -c=src/configs/jest/jest.config.js --maxWorkers=4",
     "test": "yarn test-once --watch",
     "test-ci": "yarn test-once --ci",
-    "test-coverage": "yarn test-once --coverage",
+    "test-coverage": "yarn test-once --coverage && ./scripts/tests/open-coverage.sh",
     "test-clean": "rm -rf ./coverage && yarn test-once --clearCache",
     "lint": "ng lint",
     "e2e": "ng e2e",
