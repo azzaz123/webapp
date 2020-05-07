@@ -36,7 +36,7 @@
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.html:15</source>Dashboard</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.html:23</source><source>app/favorites/favorites.component.html:28</source>Products</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.html:24</source>Catalog</msg>
-  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.html:50</source><source>app/layout/tabbar/tabbar.component.html:16</source><source>app/shared/catalog/catalog-card/catalog-card.component.html:51</source><source>app/stats/items-stats/items-stats.component.html:16</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:24</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:42</source>Favorites</msg>
+  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.html:50</source><source>app/layout/tabbar/tabbar.component.html:16</source><source>app/shared/catalog/catalog-card/catalog-card.component.html:52</source><source>app/stats/items-stats/items-stats.component.html:16</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:24</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:42</source>Favorites</msg>
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.html:57</source>Reviews</msg>
   <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.html:65</source><source>app/dashboard/dashboard.component.html:42</source>Phones</msg>
   <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.html:72</source>Help</msg>
@@ -120,7 +120,7 @@
   <msg id="2828231996579923086"><source>app/shared/profile/picture-upload/picture-upload.component.html:25</source><source>app/shared/profile/cover-upload/cover-upload.component.html:21</source>JPG format and a minimum size of 400 x 400px are accepted.</msg>
   <msg id="4918814479561513634"><source>app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:2</source>Do you want to leave this page?</msg>
   <msg id="6618892692857491514"><source>app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:3</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
-  <msg id="3542042671420335679"><source>app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:6</source><source>app/shared/catalog/catalog-card/catalog-card.component.html:87</source>No</msg>
+  <msg id="3542042671420335679"><source>app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:6</source><source>app/shared/catalog/catalog-card/catalog-card.component.html:88</source>No</msg>
   <msg id="4510233521290203619"><source>app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:7</source><source>app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:8</source>Yes, leave</msg>
   <msg id="5657739434954342535"><source>app/shared/confirmation-modal/confirmation-modal.component.html:3</source>Delete item</msg>
   <msg id="5455708050129988024"><source>app/shared/confirmation-modal/confirmation-modal.component.html:4</source>This will delete the item.</msg>
@@ -140,29 +140,29 @@
   <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.html:35</source><source>app/chat/item/item.component.html:17</source><source>app/chat/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:20</source>Reserve</msg>
   <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.html:36</source>Remove</msg>
   <msg id="7092318893814699678"><source>app/shared/confirmation-modal/confirmation-modal.component.html:37</source><source>app/profile/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:6</source>Yes, I am sure</msg>
-  <msg id="4058575476871566236"><source>app/shared/catalog/catalog-card/catalog-card.component.html:17</source><source>app/catalog/list/catalog-item/catalog-item.component.html:36</source>Published</msg>
-  <msg id="7239750919884229270"><source>app/shared/catalog/catalog-card/catalog-card.component.html:21</source>Updated</msg>
-  <msg id="4338022632676445411"><source>app/shared/catalog/catalog-card/catalog-card.component.html:25</source><source>app/chat/item/item.component.html:20</source><source>app/chat/item/item-sold/item-sold.component.html:3</source>Sold</msg>
-  <msg id="7166295046269696440"><source>app/shared/catalog/catalog-card/catalog-card.component.html:31,33</source>
+  <msg id="4058575476871566236"><source>app/shared/catalog/catalog-card/catalog-card.component.html:18</source><source>app/catalog/list/catalog-item/catalog-item.component.html:37</source>Published</msg>
+  <msg id="7239750919884229270"><source>app/shared/catalog/catalog-card/catalog-card.component.html:22</source>Updated</msg>
+  <msg id="4338022632676445411"><source>app/shared/catalog/catalog-card/catalog-card.component.html:26</source><source>app/chat/item/item.component.html:20</source><source>app/chat/item/item-sold/item-sold.component.html:3</source>Sold</msg>
+  <msg id="7166295046269696440"><source>app/shared/catalog/catalog-card/catalog-card.component.html:32,34</source>
           From <ph name="INTERPOLATION"><ex>{{item.purchases.scheduled_start_date | date:&apos;dd/MM/yy&apos;}}</ex>{{item.purchases.scheduled_start_date | date:&apos;dd/MM/yy&apos;}}</ph> to <ph name="INTERPOLATION_1"><ex>{{item.purchases.scheduled_end_date | date:&apos;dd/MM/yy&apos;}}</ex>{{item.purchases.scheduled_end_date | date:&apos;dd/MM/yy&apos;}}</ph>
         </msg>
-  <msg id="1290608591542945444"><source>app/shared/catalog/catalog-card/catalog-card.component.html:34,36</source>
+  <msg id="1290608591542945444"><source>app/shared/catalog/catalog-card/catalog-card.component.html:35,37</source>
           <ph name="INTERPOLATION"><ex>{{item.purchases.expiration_date | amCountdown}}</ex>{{item.purchases.expiration_date | amCountdown}}</ph> remaining
         </msg>
-  <msg id="3475752672270482528"><source>app/shared/catalog/catalog-card/catalog-card.component.html:37,39</source>
+  <msg id="3475752672270482528"><source>app/shared/catalog/catalog-card/catalog-card.component.html:38,40</source>
           <ph name="INTERPOLATION"><ex>{{item.purchases.scheduled_end_date | amCountdown}}</ex>{{item.purchases.scheduled_end_date | amCountdown}}</ph> remaining
         </msg>
-  <msg id="428164738594731840"><source>app/shared/catalog/catalog-card/catalog-card.component.html:42,43</source>
+  <msg id="428164738594731840"><source>app/shared/catalog/catalog-card/catalog-card.component.html:43,44</source>
           Cancel</msg>
-  <msg id="2123659921722214537"><source>app/shared/catalog/catalog-card/catalog-card.component.html:47</source><source>app/stats/items-stats/items-stats.component.html:10</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:12</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:40</source>Views</msg>
-  <msg id="6181907632373133266"><source>app/shared/catalog/catalog-card/catalog-card.component.html:55</source><source>app/stats/items-stats/items-stats.component.html:13</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:18</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:41</source>Chats</msg>
-  <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.html:62</source><source>app/catalog/list/catalog-item/catalog-item.component.html:77</source>Mark as sold</msg>
-  <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.html:65</source><source>app/catalog/list/catalog-item/catalog-item.component.html:81</source>Mark as reserved</msg>
-  <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.html:68</source><source>app/profile/subscription/subscription.component.html:37</source><source>app/catalog/list/list.component.html:21</source><source>app/catalog/list/catalog-item/catalog-item.component.html:86</source>Edit</msg>
-  <msg id="4416413576346763682"><source>app/shared/catalog/catalog-card/catalog-card.component.html:76</source><source>app/dashboard/dashboard.component.html:25</source><source>app/calls/calls.component.html:22</source><source>app/calls/calls.component.html:44</source><source>app/catalog/list/catalog-item/catalog-item.component.html:102</source>Pending</msg>
-  <msg id="5272763997595694217"><source>app/shared/catalog/catalog-card/catalog-card.component.html:83</source>Cancel Autorenew</msg>
-  <msg id="291347435854981703"><source>app/shared/catalog/catalog-card/catalog-card.component.html:84</source>Do you really want to cancel the autorenew for this item?</msg>
-  <msg id="2807800733729323332"><source>app/shared/catalog/catalog-card/catalog-card.component.html:88</source>Yes</msg>
+  <msg id="2123659921722214537"><source>app/shared/catalog/catalog-card/catalog-card.component.html:48</source><source>app/stats/items-stats/items-stats.component.html:10</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:12</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:40</source>Views</msg>
+  <msg id="6181907632373133266"><source>app/shared/catalog/catalog-card/catalog-card.component.html:56</source><source>app/stats/items-stats/items-stats.component.html:13</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:18</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:41</source>Chats</msg>
+  <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.html:63</source><source>app/catalog/list/catalog-item/catalog-item.component.html:78</source>Mark as sold</msg>
+  <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.html:66</source><source>app/catalog/list/catalog-item/catalog-item.component.html:82</source>Mark as reserved</msg>
+  <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.html:69</source><source>app/profile/subscription/subscription.component.html:37</source><source>app/catalog/list/list.component.html:21</source><source>app/catalog/list/catalog-item/catalog-item.component.html:87</source>Edit</msg>
+  <msg id="4416413576346763682"><source>app/shared/catalog/catalog-card/catalog-card.component.html:77</source><source>app/dashboard/dashboard.component.html:25</source><source>app/calls/calls.component.html:22</source><source>app/calls/calls.component.html:44</source><source>app/catalog/list/catalog-item/catalog-item.component.html:103</source>Pending</msg>
+  <msg id="5272763997595694217"><source>app/shared/catalog/catalog-card/catalog-card.component.html:84</source>Cancel Autorenew</msg>
+  <msg id="291347435854981703"><source>app/shared/catalog/catalog-card/catalog-card.component.html:85</source>Do you really want to cancel the autorenew for this item?</msg>
+  <msg id="2807800733729323332"><source>app/shared/catalog/catalog-card/catalog-card.component.html:89</source>Yes</msg>
   <msg id="957195517515723291"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:15</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>You’ve reached the maximum limit of items you can publish with a free account!<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
   <msg id="1168925957252341106"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:16</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>You&apos;ve reached the maximum number of items allowed with your current subscription!<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
   <msg id="7490117399669169777"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:17</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>You are trying to activate more items than what your plan supports<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
@@ -312,8 +312,8 @@
   <msg id="3325766019344626759"><source>app/chat/current-conversation/current-conversation.component.html:11</source>There are no messages</msg>
   <msg id="177886998911393770"><source>app/chat/current-conversation/current-conversation.component.html:12,13</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       Try again later.</msg>
-  <msg id="3934360921102914601"><source>app/chat/current-conversation/current-conversation.component.html:35</source>You have blocked this user. Unblock it to continue chatting</msg>
-  <msg id="5949661737880412802"><source>app/chat/current-conversation/current-conversation.component.html:41</source>This user is not available</msg>
+  <msg id="blockedPersonError"><source>app/chat/current-conversation/current-conversation.component.html:35</source>You have blocked this person. To continue chatting, unblock them</msg>
+  <msg id="userIsNotAvailableWarning"><source>app/chat/current-conversation/current-conversation.component.html:41</source>This person is no longer a wallapop member</msg>
   <msg id="3753612046513951428"><source>app/chat/current-conversation/current-conversation.component.html:48</source>This product is not available</msg>
   <msg id="2536023333703806770"><source>app/chat/current-conversation/current-conversation.component.html:71</source>Remember not to share private data for security reasons</msg>
   <msg id="6969584346860248976" desc="The distance between the user and the item"><source>app/chat/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:14,16</source>
@@ -927,13 +927,13 @@
       <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph><ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>of your credit<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> and put it in the top positions.</msg>
   <msg id="5107282366152603486"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.html:11</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Get more visibility and sell it faster.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
   <msg id="3244863581909362906"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.html:19</source>Only reactivate it, I don&apos;t want to sell it faster</msg>
-  <msg id="3553216189604488439"><source>app/catalog/list/catalog-item/catalog-item.component.html:42</source>Modified</msg>
-  <msg id="8204176479746810612"><source>app/catalog/list/catalog-item/catalog-item.component.html:48</source>Active</msg>
-  <msg id="7974113370320120814"><source>app/catalog/list/catalog-item/catalog-item.component.html:55,57</source>
+  <msg id="3553216189604488439"><source>app/catalog/list/catalog-item/catalog-item.component.html:43</source>Modified</msg>
+  <msg id="8204176479746810612"><source>app/catalog/list/catalog-item/catalog-item.component.html:49</source>Active</msg>
+  <msg id="7974113370320120814"><source>app/catalog/list/catalog-item/catalog-item.component.html:56,58</source>
               Inactive
             </msg>
-  <msg id="1384194580053922814"><source>app/catalog/list/catalog-item/catalog-item.component.html:66</source><source>app/catalog/list/selected-items/selected-items.component.html:61</source>Feature</msg>
-  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.html:95</source>Reactivate</msg>
+  <msg id="1384194580053922814"><source>app/catalog/list/catalog-item/catalog-item.component.html:67</source><source>app/catalog/list/selected-items/selected-items.component.html:61</source>Feature</msg>
+  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.html:96</source>Reactivate</msg>
   <msg id="8061241481597934094"><source>app/catalog/list/selected-items/selected-items.component.html:15,16</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ph> items selected
                 </msg>
   <msg id="3897348120591552265"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:15</source>Manage</msg>

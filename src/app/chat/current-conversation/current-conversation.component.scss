@@ -107,12 +107,11 @@
 .date-marker {
   display: inline-flex;
   text-align: center;
-  padding: $spacing-xxs $spacing-s;
+  padding: $spacing-s $spacing-ml;
   background-color: $blue-grey-4;
-  border-radius: 10px;
+  border-radius: $spacing-ml;
   margin: $spacing-ms 0;
   color: $white;
-  font-size: $font-size-xs;
 
   &.date-marker-error {
     color: $magenta-dark;
@@ -122,6 +121,18 @@
       width: 14px;
       height: 10px;
     }
+  }
+
+  .emoticon {
+    margin-right: $spacing-xxs;
+  }
+
+  .emoticon-woman-gesturing-no::before {
+    content: '\01F645';
+  }
+
+  .emoticon-dashing-away::before {
+    content: '\01F4A8';
   }
 }
 
