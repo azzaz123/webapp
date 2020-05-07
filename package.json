@@ -15,7 +15,7 @@
     "buildprod-en": "ng build --prod --aot --no-progress",
     "i18n": "ng xi18n --i18n-format=xmb --output-path=locale",
     "serve": "ng serve --aot --configuration=es",
-    "test-once": "jest -c=src/configs/jest/jest.config.js --maxWorkers=4",
+    "test-once": "jest -c=src/configs/jest/jest.config.js",
     "test": "yarn test-once --watch",
     "test-ci": "yarn test-once --ci",
     "test-coverage": "yarn test-once --coverage && ./scripts/tests/open-coverage.sh",
