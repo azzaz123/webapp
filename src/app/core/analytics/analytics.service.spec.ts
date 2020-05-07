@@ -6,6 +6,7 @@ import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
+import appboyKit from '@mparticle/web-appboy-kit';
 
 jest.mock('@mparticle/web-sdk', () => ({
   __esModule: true,
@@ -15,6 +16,14 @@ jest.mock('@mparticle/web-sdk', () => ({
     logPageView: (_pageName, _pageAttributes, _pageFlags) => {}
   },
   namedExport: 'mParticle'
+}));
+
+jest.mock('@mparticle/web-appboy-kit', () => ({
+  __esModule: true,
+  default: {
+    register: _config => {}
+  },
+  namedExport: 'appboyKit'
 }));
 
 describe('AnalyticsService', () => {
@@ -39,10 +48,12 @@ describe('AnalyticsService', () => {
   describe('initialize', () => {
     it('should initialize the analytics library', () => {
       spyOn(mParticle, 'init');
+      spyOn(appboyKit, 'register');
 
       service.initialize();
 
       expect(mParticle.init).toHaveBeenCalled();
+      expect(appboyKit.register).toHaveBeenCalled();
     });
   });
 
