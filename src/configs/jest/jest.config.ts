@@ -16,15 +16,6 @@ Object.defineProperty(window, 'getComputedStyle', {
   }
 });
 
-Object.defineProperty(document.body.style, 'transform', {
-  value: () => {
-    return {
-      enumerable: true,
-      configurable: true,
-    };
-  },
-});
-
 /**
  * Below you will find all definitions made by us to make our tests run properly
  */
