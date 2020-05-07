@@ -25,8 +25,7 @@ export class InboxItem {
         private _itemUrl: string,
         private _status: InboxItemStatus,
         private _isMine: boolean,
-        public categoryId: number,
-    ) {
+        public categoryId: number) {
         this.mapStatusToFlags(this.status);
     }
 
@@ -51,6 +50,9 @@ export class InboxItem {
             case InboxItemStatus.PUBLISHED:
                 this.published = true;
                 break;
+            case InboxItemStatus.UNPUBLISHED:
+                  this.notAvailable = true;
+                  break;
             default:
                 this.published = true;
                 break;
