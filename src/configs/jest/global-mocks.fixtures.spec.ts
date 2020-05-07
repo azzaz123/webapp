@@ -70,8 +70,20 @@ export const MOCK_QUANCASTOPTIONS = {
 
 export const MOCK_XMPP = {
   JID: class {
-    constructor(_other_user_id, _domain) {
-      return _other_user_id;
+    private _userId: string;
+    private _domain: string;
+
+    constructor(userId, domain) {
+      this._userId = userId;
+      this._domain = domain;
+    }
+
+    get bare(): string {
+      return `${this._userId}@${this._domain}`;
+    }
+
+    get local(): string {
+      return this._userId;
     }
   },
   createClient: () => {}
