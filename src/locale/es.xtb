@@ -1023,6 +1023,7 @@
   <translation id="7184510579643662120">Reportar usuario</translation>
   <translation id="5709935930083786813">Bloquear usuario</translation>
   <translation id="4100915642762454461">Desbloquear usuario</translation>
+  <translation id="5156014220156743328">Siguiente paso</translation>
 
   <!--Translations using keys-->
   <translation id="cardealerUpgradePlanContact">Para actualizar tu plan, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>{{email}}<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
