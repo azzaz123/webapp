@@ -823,8 +823,8 @@
   <translation id="8147495527699050606">Precio final financiado</translation>
   <translation id="2004481354231566060">Campo opcional. Este es el precio financiado.</translation>
   <translation id="6904447978553402020">Precio al contado</translation>
-  <translation id="3934360921102914601">Has bloqueado a este usuario. Desbloquéalo para poder seguir chateando</translation>
-  <translation id="5949661737880412802">Este usuario no está disponible</translation>
+  <translation id="blockedPersonError">Has bloqueado a esta persona. Para seguir charlando, desbloquéala</translation>
+  <translation id="userIsNotAvailableWarning">Esta persona ya no es miembro de wallapop</translation>
   <translation id="3753612046513951428">Este producto no está disponible</translation>
   <translation id="2536023333703806770">Recuerda no compartir datos privados por motivos de seguridad</translation>
   <translation id="682982254050004818">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>

@@ -31,14 +31,14 @@
         <div class="message-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}">
           <div class="notification-container" #userWarringNotification>
             <div *ngIf="currentConversation.user.blocked" class="date-marker date-marker-error">
-              <mat-icon svgIcon="blocked-error"></mat-icon>
-              <span i18n>You have blocked this user. Unblock it to continue chatting</span>
+              <span class="emoticon emoticon-woman-gesturing-no"></span>
+              <span i18n="@@blockedPersonError">You have blocked this person. To continue chatting, unblock them</span>
             </div>
 
             <div *ngIf="!currentConversation.user.blocked && !currentConversation.user.available"
                  class="date-marker date-marker-error">
-              <mat-icon svgIcon="not-available-error"></mat-icon>
-              <span i18n>This user is not available</span>
+              <span class="emoticon emoticon-dashing-away"></span>
+              <span i18n="@@userIsNotAvailableWarning">This person is no longer a wallapop member</span>
             </div>
 
             <div
