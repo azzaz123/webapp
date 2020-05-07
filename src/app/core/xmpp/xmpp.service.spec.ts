@@ -146,6 +146,8 @@ describe('Service: Xmpp', () => {
     service = TestBed.get(XmppService);
     remoteConsoleService = TestBed.get(RemoteConsoleService);
     appboy.initialize(environment.appboy);
+
+    spyOn(console, 'warn');
   });
 
   it('should create the instance', () => {
