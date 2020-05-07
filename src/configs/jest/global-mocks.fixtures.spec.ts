@@ -86,3 +86,8 @@ export const MOCK_LOCALSTORAGE = (function() {
     removeItem: key => delete store[key]
   };
 })();
+
+export const MOCK_NAVIGATOR_CONNECTION = {
+  rtt: 50,
+  type: ''
+};

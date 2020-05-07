@@ -41,3 +41,4 @@ Object.defineProperty(window, 'quancastOptions', { value: GLOBAL_MOCKS.MOCK_QUAN
 Object.defineProperty(window, 'twq', { value: GLOBAL_MOCKS.MOCK_TWQ });
 Object.defineProperty(window, 'Visibility', { value: GLOBAL_MOCKS.MOCK_VISIBILITY });
 Object.defineProperty(window, 'XMPP', { value: GLOBAL_MOCKS.MOCK_XMPP });
+Object.defineProperty(navigator, 'connection', { value: GLOBAL_MOCKS.MOCK_NAVIGATOR_CONNECTION });
