@@ -1,6 +1,6 @@
 import { InboxMessage, MESSAGES_WHITE_LIST } from './inbox-message';
 import { InboxUser, InboxUserPlaceholder } from './inbox-user';
-import { InboxImage, InboxItem, InboxItemPlaceholder } from './inbox-item';
+import { InboxItemStatus, InboxImage, InboxItem, InboxItemPlaceholder } from './inbox-item';
 import { environment } from '../../../environments/environment';
 import { InboxConversationApi, InboxItemApi, InboxUserApi } from './api';
 
@@ -138,7 +138,7 @@ export class InboxConversation {
             return InboxItemPlaceholder;
         }
         const itemUrl = `${environment.siteUrl}item/${item.slug}`;
-        const itemStatus = item.status === 'unpublished' ? 'not available' : item.status;
+        const itemStatus = item.status === InboxItemStatus.UNPUBLISHED ? InboxItemStatus.NOT_AVAILABLE : item.status as InboxItemStatus;
         return new InboxItem(item.hash, item.price, item.title, image, itemUrl, itemStatus, item.is_mine, item.category_id);
     }
 
