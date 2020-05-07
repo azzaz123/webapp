@@ -69,23 +69,11 @@
           .date-marker-warning {
             background-color: $blue-grey-5;
             color: $blue-grey-3;
-            padding: $spacing-xs $spacing-ml;
+            padding: $spacing-s $spacing-ml;
 
             &.date-marker-warning-blue {
               background-color: $softblue-light;
               color: $softblue-dark;
-            }
-
-            .emoticon-padlock  {
-              content: "\01F512";
-              font-size: $font-size-xs;
-              margin-right: $spacing-xs;
-            }
-
-            .padlock {
-              height: $font-size-xs;
-              width: $font-size-xs;
-              margin: $spacing-xs $spacing-xs 0 0;
             }
 
             span {
@@ -148,6 +136,10 @@
 
   .emoticon-dashing-away::before {
     content: '\01F4A8';
+  }
+
+  .emoticon-padlock {
+    content: "\01F512";
   }
 }
 
