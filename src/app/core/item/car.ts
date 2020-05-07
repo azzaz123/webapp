@@ -19,7 +19,6 @@ export class Car extends Item {
               private _brand?: string,
               private _model?: string,
               private _year?: number,
-              private _km?: number,
               private _gearbox?: string,
               private _engine?: string,
               private _color?: string,
@@ -33,7 +32,8 @@ export class Car extends Item {
               private _version?: string,
               private _financedPrice?: number,
               publishedDate?: number,
-              image?: any) {
+              image?: any,
+              km?: number) {
     super(
       id,
       0,
@@ -60,7 +60,10 @@ export class Car extends Item {
       webSlug,
       publishedDate,
       null,
-      ITEM_TYPES.CARS
+      ITEM_TYPES.CARS,
+      null,
+      null,
+      km
     );
   }
 
@@ -74,10 +77,6 @@ export class Car extends Item {
 
   get year(): number {
     return this._year;
-  }
-
-  get km(): number {
-    return this._km;
   }
 
   get gearbox(): string {
