@@ -53,7 +53,7 @@ div {
 }
 
 $sold-width: 32px;
-.sold, .reserved, .featured, .urgent, .not-available {
+.sold, .reserved, .not-available {
   @include square($sold-width);
   border-radius: 50%;
   display: flex;
@@ -74,31 +74,5 @@ $sold-width: 32px;
     height: 17px;
     width: 12px;
     vertical-align: sub;
-  }
-}
-
-.featured {
-  background-color: $walla-main;
-  mat-icon {
-    @include square(25px);
-  }
-  &.zonebump {
-    background-color: $zone-bump;
-  }
-  &.citybump {
-    background-color: $city-bump;
-  }
-  &.countrybump {
-    background-color: $country-bump;
-  }
-  &.planned {
-    background-color: $blue-grey-4;
-  }
-}
-
-.urgent {
-  background-color: $urgent;
-  mat-icon {
-    @include square(30px);
   }
 }

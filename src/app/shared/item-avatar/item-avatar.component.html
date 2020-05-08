@@ -2,27 +2,14 @@
   tslsanitizedBackground="{{avatar}}"
   [fallback]="fallback"
   [ngClass]="size" class="transition">
-  <span class="overlay" *ngIf="item?.featured || item?.sold || item?.reserved || item?.purchases || item?.notAvailable"></span>
-  <span class="not-available" *ngIf="item?.notAvailable && showAvailableStatus">
+  <span class="overlay" *ngIf="item?.sold || item?.reserved || item?.notAvailable || item?.unpublished"></span>
+  <span class="not-available" *ngIf="item?.notAvailable || item?.unpublished && showAvailableStatus">
     <mat-icon svgIcon="not-available"></mat-icon>
   </span>
   <span class="sold" *ngIf="item?.sold && !item?.notAvailable">
     <mat-icon svgIcon="sold"></mat-icon>
   </span>
-  <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.featured && !item?.purchases && !item?.notAvailable">
+  <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.notAvailable && !item?.unpublished">
     <mat-icon svgIcon="reserved"></mat-icon>
-  </span>
-  <span class="featured"
-        *ngIf="item?.featured && !item?.purchases && !item?.urgent && !item?.sold && !item.flags.onhold"
-        [ngClass]="item?.flags?.bump_type">
-    <mat-icon svgIcon="wing"></mat-icon>
-  </span>
-  <span class="featured" [class.planned]="item.purchases.scheduled_bump_type && !item.plannedStartsToday"
-        *ngIf="item?.purchases && !item?.urgent && !item?.sold && !item.flags.onhold"
-        [ngClass]="item?.purchases?.bump_type || item?.purchases?.scheduled_bump_type">
-    <mat-icon svgIcon="wing"></mat-icon>
-  </span>
-  <span class="urgent" *ngIf="item?.urgent && !item?.sold && !item.flags.onhold">
-    <mat-icon svgIcon="urgent"></mat-icon>
   </span>
 </div>
