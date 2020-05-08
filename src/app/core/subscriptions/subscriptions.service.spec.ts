@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { SubscriptionsService, SUBSCRIPTIONS_URL, SUBSCRIPTIONS_SLOTS_ENDPOINT, SUBSCRIPTION_TYPES } from './subscriptions.service';
 import { Observable, of } from 'rxjs';
 import { UserService } from '../user/user.service';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
+import { FeatureflagService } from '../user/featureflag.service';
 import { UUID } from 'angular2-uuid';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { HttpModuleNew } from '../http/http.module.new';
@@ -142,16 +142,6 @@ describe('SubscriptionsService', () => {
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.body).toEqual(expectedBody);
       expect(req.request.method).toBe('PUT');
-    });
-  });
-
-  describe('isSubscriptionsActive', () => {
-    it('should call featureflagService.getFlag when called', () => {
-      spyOn(featureflagService, 'getFlag');
-
-      service.isSubscriptionsActive$();
-
-      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);
     });
   });
 
