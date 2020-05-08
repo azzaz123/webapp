@@ -75,7 +75,7 @@ describe('Component: Conversation', () => {
     });
 
     it('should set conversation.cannotChat to FALSE when none of the above conditions are met', () => {
-      component.conversation.item.status = INBOX_ITEM_STATUSES.available;
+      component.conversation.item.status = InboxItemStatus.PUBLISHED;
       component.conversation.user.blocked = false;
       component.conversation.user.available = true;
 
