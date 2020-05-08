@@ -55,10 +55,11 @@
           </div>
         </div>
         <div class="bumps-table">
-          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts"
+          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts; let index = index; trackBy:trackByIndex;"
             [cartProItem]="item"
             (dateFocus)="onDateFocus($event)"
             [selectAllEvent]="selectAllEventSubject.asObservable()"
+            [index]=index
             >
           </tsl-checkout-pro-item>
         </div>

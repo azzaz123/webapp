@@ -47,6 +47,10 @@ export class CheckoutProComponent implements OnInit {
     });
   }
 
+  trackByIndex(index: number, obj: any): any {
+    return index;
+  }
+  
   onDateFocus(item: CartProItem) {
     this.calendarType = null;
     this.itemSelected = {... item};

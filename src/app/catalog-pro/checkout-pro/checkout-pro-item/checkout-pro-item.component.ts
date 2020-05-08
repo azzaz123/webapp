@@ -6,6 +6,7 @@ import { CartChange, CartProItem } from '../../../shared/catalog/cart/cart-item.
 import { CartService } from '../../../shared/catalog/cart/cart.service';
 import { CartPro } from '../../../shared/catalog/cart/cart-pro';
 import { Observable, Subscription } from 'rxjs';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'tsl-checkout-pro-item',
@@ -24,14 +25,22 @@ export class CheckoutProItemComponent implements OnInit {
 
   @Input() cartProItem: CartProItem;
   @Input() selectAllEvent: Observable<any>;
+  @Input() index: string;
   @Output() dateFocus: EventEmitter<CartProItem> = new EventEmitter();
 
-  constructor(private cartService: CartService, private calendar: NgbCalendar) {
+  public datesForm: FormGroup;
+
+  constructor(private cartService: CartService, private calendar: NgbCalendar, private fb: FormBuilder) {
     this.cartService.cart$.subscribe((cartChange: CartChange) => {
       this.onRemoveOrClean(cartChange);
     });
     this.todayDate = calendar.getToday();
     this.tomorrowDate = calendar.getNext(this.todayDate);
+
+    this.datesForm = fb.group({
+      fromDate: [{value: '', disabled: true}],
+      toDate: [{value: '', disabled: true}]
+    });
   }
 
   ngOnInit() {
@@ -39,6 +48,11 @@ export class CheckoutProItemComponent implements OnInit {
     this.cartProItem.selectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
     this.newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
     this.selectAllEvent.subscribe((data) => this.selectAll(data));
+
+    this.datesForm.patchValue({
+      fromDate: this.newSelectedDates.formattedFromDate,
+      toDate: this.newSelectedDates.formattedToDate
+    });
   }
 
   //new
@@ -52,11 +66,16 @@ export class CheckoutProItemComponent implements OnInit {
   onApplyCalendar(datesFromCalendar: CalendarDates) {
     this.newSelectedDates = datesFromCalendar;
     this.cartProItem.selectedDates = datesFromCalendar;
+    this.datesForm.patchValue({
+      fromDate: datesFromCalendar.formattedFromDate,
+      toDate: datesFromCalendar.formattedToDate
+    });
     this.addToCart();
     this.calendarType = null;
   }
 
   addToCart() {
+    console.log('addToCart ', this.cartProItem);
     this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
     this.toggleCalendar();
   }
@@ -76,8 +95,12 @@ export class CheckoutProItemComponent implements OnInit {
       this.cartProItem.selectedDates.fromDate = this.todayDate;
       this.cartProItem.selectedDates.toDate = this.tomorrowDate;
       //new
-      this.newSelectedDates.fromDate = this.todayDate;
-      this.newSelectedDates.toDate = this.tomorrowDate;
+      this.newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
+      this.datesForm.patchValue({
+        fromDate: this.newSelectedDates.formattedFromDate,
+        toDate: this.newSelectedDates.formattedToDate
+      });
+      this.datesForm.disable();
     }
   }
 
@@ -85,10 +108,15 @@ export class CheckoutProItemComponent implements OnInit {
     if (data.type === 'planning') {
       this.newSelectedDates = data.dates;
       this.cartProItem.selectedDates = data.dates;
+      this.datesForm.patchValue({
+        fromDate: data.dates.formattedFromDate,
+        toDate: data.dates.formattedToDate
+      });
       if (this.cartProItem.bumpType) {
         this.selectBump(data.type)
       }
     } else {
+      this.datesForm.enable();
       if (this.cartProItem.bumpType === data.type && !data.allSelected
         || (!this.cartProItem.bumpType && data.allSelected)
         || this.cartProItem.bumpType !== data.type && this.cartProItem.bumpType && data.allSelected) {
@@ -98,6 +126,7 @@ export class CheckoutProItemComponent implements OnInit {
   }
 
   selectBump(type: string) {
+    this.datesForm.enable();
     if (type === 'planning') {
       this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
     } else {

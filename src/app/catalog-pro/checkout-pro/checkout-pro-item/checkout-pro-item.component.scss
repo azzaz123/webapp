@@ -35,7 +35,7 @@
   .item-reset {
     width: 9px;
     height: 9px;
-    margin-top: $spacing-l;
+    margin-top: $spacing-m;
     background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOSIgaGVpZ2h0PSI5IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik01LjU2IDQuNWwzLjIyLTMuMjJBLjc1Ljc1IDAgMSAwIDcuNzIuMjJMNC41IDMuNDQgMS4yOC4yMkEuNzUuNzUgMCAxIDAgLjIyIDEuMjhMMy40NCA0LjUuMjIgNy43MmEuNzUuNzUgMCAxIDAgMS4wNiAxLjA2TDQuNSA1LjU2bDMuMjIgMy4yMmEuNzQ4Ljc0OCAwIDAgMCAxLjA2IDAgLjc1Ljc1IDAgMCAwIDAtMS4wNkw1LjU2IDQuNXoiIGZpbGw9IiM2MDdEOEIiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==);
     background-repeat: no-repeat;
     background-color: transparent;
@@ -136,5 +136,18 @@
     width: 1px;
     height: 61px;
     background-color: $blue-grey-5;
+  }
+
+  .form-date {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-evenly;
+  }
+
+  .date-field {
+    display: flex;
+    flex-direction: column;
   }
 }
