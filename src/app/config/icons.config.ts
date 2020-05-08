@@ -77,7 +77,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('cat_furniture', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_HomeGarden.svg'));
   matIconRegistry.addSvgIcon('cat_house', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Housing.svg'));
   matIconRegistry.addSvgIcon('cat_t-shirt', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Moda.svg'));
-  matIconRegistry.addSvgIcon('cat_helmet', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Motor.svg'));
+  matIconRegistry.addSvgIcon('cat_helmet', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/motoraccesories.svg'));
   matIconRegistry.addSvgIcon('cat_ghost', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Others.svg'));
   matIconRegistry.addSvgIcon('cat_toolbox', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Services.svg'));
   matIconRegistry.addSvgIcon('cat_ball', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Sports.svg'));

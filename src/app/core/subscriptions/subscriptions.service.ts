@@ -10,7 +10,6 @@ import { UUID } from 'angular2-uuid';
 import { FeatureflagService } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
-import { CARS_CATEGORY } from '../item/item-categories';
 import { CategoryService } from '../category/category.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -264,6 +263,10 @@ export class SubscriptionsService {
     }
 
     return tier.discount_available.discounted_price === 0;
+  }
+
+  public hasTrial(subscription: SubscriptionsResponse): boolean {
+    return subscription.trial_available;
   }
 
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]>{

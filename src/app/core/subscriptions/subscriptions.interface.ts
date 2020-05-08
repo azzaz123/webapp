@@ -37,6 +37,8 @@ export interface SubscriptionsResponse {
   subscribed_from: number,
   selected_tier_id: string,
   default_tier_id: string,
+  trial_available: boolean,
+  trial_days: number,
   tiers: Tier[],
   category_name?: string,
   category_icon?: string,
