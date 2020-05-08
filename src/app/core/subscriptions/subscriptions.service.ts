@@ -7,7 +7,7 @@ import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResp
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
+import { FeatureflagService } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
 import { CARS_CATEGORY } from '../item/item-categories';
@@ -145,10 +145,6 @@ export class SubscriptionsService {
 
   public checkRetrySubscriptionStatus(): Observable<any> {
     return this.http.get(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`);
-  }
-
-  public isSubscriptionsActive$(): Observable<boolean> {
-    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);
   }
 
   public getSubscriptions(cache: boolean = true): Observable<SubscriptionsResponse[]> {

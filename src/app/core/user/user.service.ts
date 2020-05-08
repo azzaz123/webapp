@@ -20,7 +20,7 @@ import { UserData, UserProData, UserProDataNotifications } from './user-data.int
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from './featureflag.service';
+import { FeatureflagService } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
 import { InboxUser } from '../../chat/model/inbox-user';
 import { InboxItem } from '../../chat/model';
@@ -377,12 +377,5 @@ export class UserService {
   // TODO: This logic is correct for now, but should be checked using the subscriptions BFF
   public isProUser(): Observable<boolean> {
     return this.me().pipe(map(user => user.featured));
-  }
-
-  public setSubscriptionsFeatureFlag(): Observable<boolean> {
-    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS).pipe(
-      map((isActive: boolean) => {
-        return isActive;
-      }));
   }
 }
