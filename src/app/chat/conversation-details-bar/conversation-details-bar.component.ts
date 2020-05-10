@@ -9,7 +9,7 @@ import { ReportListingComponent } from '../modals/report-listing';
 import { BlockUserComponent } from '../modals/block-user';
 import { UnblockUserComponent } from '../modals/unblock-user';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../core/toast/toast.service';
 import { UserService } from '../../core/user/user.service';
 import { ItemService } from '../../core/item/item.service';
 import { BlockUserService, BlockUserXmppService, InboxConversationService } from '../service';
@@ -29,7 +29,7 @@ export class ConversationDetailsBarComponent {
 
   constructor(private eventService: EventService,
               private modalService: NgbModal,
-              private toastr: ToastrService,
+              private toastService: ToastService,
               private trackingService: TrackingService,
               private userService: UserService,
               private itemService: ItemService,
@@ -59,7 +59,7 @@ export class ConversationDetailsBarComponent {
   public archiveConversation(): void {
     this.modalService.open(ArchiveInboxConversationComponent).result.then(() => {
       this.inboxConversationService.archive$(this.currentConversation).subscribe(() => {
-        this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
+        this.toastService.success(this.i18n.getTranslations('archiveConversationSuccess'));
         this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, null);
       });
     });
@@ -68,7 +68,7 @@ export class ConversationDetailsBarComponent {
   public unarchiveConversation() {
     this.modalService.open(UnarchiveInboxConversationComponent).result.then(() => {
       this.inboxConversationService.unarchive(this.currentConversation).subscribe(() => {
-        this.toastr.success(this.i18n.getTranslations('unarchiveConversationSuccess'));
+        this.toastService.success(this.i18n.getTranslations('unarchiveConversationSuccess'));
         this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, null);
       });
     });
@@ -85,7 +85,7 @@ export class ConversationDetailsBarComponent {
       ).subscribe(() => {
         this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
           { user_id: this.currentConversation.user.id, reason_id: result.reason });
-        this.toastr.success(this.i18n.getTranslations('reportUserSuccess'));
+        this.toastService.success(this.i18n.getTranslations('reportUserSuccess'));
       });
     });
   }
@@ -99,12 +99,12 @@ export class ConversationDetailsBarComponent {
       ).subscribe(() => {
         this.trackingService.track(TrackingService.PRODUCT_REPPORTED,
           { product_id: this.currentConversation.item.id, reason_id: result.reason });
-        this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
+        this.toastService.success(this.i18n.getTranslations('reportListingSuccess'));
       }, (error: any) => {
         if (error.status === 403) {
-          this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
+          this.toastService.success(this.i18n.getTranslations('reportListingSuccess'));
         } else {
-          this.toastr.error(this.i18n.getTranslations('serverError') + ' ' + error.json().message);
+          this.toastService.error(this.i18n.getTranslations('serverError') + ' ' + error.json().message);
         }
       });
     });
@@ -115,7 +115,7 @@ export class ConversationDetailsBarComponent {
       this.blockUserService.blockUser(this.currentConversation.user.id).subscribe(() => {
         this.blockUserXmppService.blockUser(this.currentConversation.user).subscribe(() => {
           this.blockUserEvent.emit();
-          this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
+          this.toastService.success(this.i18n.getTranslations('blockUserSuccess'));
         });
       }, () => {
       });
@@ -126,7 +126,7 @@ export class ConversationDetailsBarComponent {
     this.modalService.open(UnblockUserComponent).result.then(() => {
       this.blockUserService.unblockUser(this.currentConversation.user.id).subscribe(() => {
         this.blockUserXmppService.unblockUser(this.currentConversation.user).subscribe(() => {
-          this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
+          this.toastService.success(this.i18n.getTranslations('unblockUserSuccess'));
         });
       }, () => {
       });

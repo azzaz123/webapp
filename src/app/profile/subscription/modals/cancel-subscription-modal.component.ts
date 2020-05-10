@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../core/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import {
@@ -26,7 +26,7 @@ export class CancelSubscriptionModalComponent {
 
   constructor(public activeModal: NgbActiveModal,
               public subscriptionsService: SubscriptionsService,
-              private toastr: ToastrService,
+              private toastService: ToastService,
               private i18n: I18nService,
               private analyticsService: AnalyticsService) {
   }
@@ -36,12 +36,12 @@ export class CancelSubscriptionModalComponent {
     this.trackCancelSubscription();
     this.subscriptionsService.cancelSubscription(this.subscription.selected_tier_id).subscribe((response) => {
       if (response.status === 202) {
-          this.toastr.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
+          this.toastService.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
           this.loading = false;
           this.activeModal.close('success');
       } else {
         this.loading = false;
-        this.toastr.error(this.i18n.getTranslations('cancelSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionErrorBody'));
+        this.toastService.error(this.i18n.getTranslations('cancelSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionErrorBody'));
         this.activeModal.close('fail');
       }
     });

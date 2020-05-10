@@ -13,7 +13,7 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../core/toast/toast.service';
 import { Tier } from '../../../core/subscriptions/subscriptions.interface';
 import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
 
@@ -63,7 +63,7 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
   constructor(private cd: ChangeDetectorRef,
               private i18n: I18nService,
               private stripeService: StripeService,
-              private toastrService: ToastrService) {
+              private toastService: ToastService) {
   }
 
   ngAfterViewInit() {
@@ -140,7 +140,7 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
     const { token, error } = await this.stripeService.createToken(this.card);
 
     if (error) {
-      this.toastrService.error(error.message);
+      this.toastService.error(error.message);
     } else {
       this.stripeCardToken.emit(token);
     }
