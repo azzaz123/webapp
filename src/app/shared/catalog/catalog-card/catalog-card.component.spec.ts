@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '../../pipes';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../core/toast/toast.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { MOCK_ITEM, ITEM_ID, ITEM_DATA3, getMockItemWithPurchases } from '../../../../tests/item.fixtures.spec';
 import { Observable, of } from 'rxjs';
@@ -70,7 +70,7 @@ describe('CatalogCardComponent', () => {
         }
         },
         {
-          provide: ToastrService, useValue: {
+          provide: ToastService, useValue: {
           error() {
           }
         }

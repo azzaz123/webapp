@@ -6,7 +6,7 @@ import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { find } from 'lodash-es';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../core/toast/toast.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import {
@@ -56,7 +56,7 @@ describe('ListComponent', () => {
   let trackingService: TrackingService;
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
-  let toastr: ToastrService;
+  let toastService: ToastService;
   let trackingServiceSpy: jasmine.Spy;
   let itemerviceSpy: jasmine.Spy;
   let paymentService: PaymentService;
@@ -136,7 +136,7 @@ describe('ListComponent', () => {
           }
         },
         {
-          provide: ToastrService, useValue: {
+          provide: ToastService, useValue: {
             error() {
             },
             success() {
@@ -206,7 +206,7 @@ describe('ListComponent', () => {
     trackingService = TestBed.get(TrackingService);
     subscriptionsService = TestBed.get(SubscriptionsService);
     modalService = TestBed.get(NgbModal);
-    toastr = TestBed.get(ToastrService);
+    toastService = TestBed.get(ToastService);
     route = TestBed.get(ActivatedRoute);
     paymentService = TestBed.get(PaymentService);
     router = TestBed.get(Router);
@@ -290,7 +290,7 @@ describe('ListComponent', () => {
       });
     });
 
-    it('should open toastr', fakeAsync(() => {
+    it('should open toast', fakeAsync(() => {
       spyOn(errorService, 'i18nSuccess');
       route.params = of({
         updated: true
@@ -655,7 +655,7 @@ describe('ListComponent', () => {
         component.delete();
         tick();
       }));
-      it('should open error toastr', () => {
+      it('should open error toast', () => {
         expect(errorService.i18nError).toHaveBeenCalledWith('bulkDeleteError');
       });
     });
@@ -698,7 +698,7 @@ describe('ListComponent', () => {
         expect(component.items[4].reserved).toBeTruthy();
       });
 
-      it('should not call toastr', () => {
+      it('should not call toast', () => {
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
 
@@ -715,7 +715,7 @@ describe('ListComponent', () => {
         component.reserve();
         tick();
       }));
-      it('should open error toastr', () => {
+      it('should open error toast', () => {
         expect(errorService.i18nError).toHaveBeenCalledWith('bulkReserveError');
       });
     });

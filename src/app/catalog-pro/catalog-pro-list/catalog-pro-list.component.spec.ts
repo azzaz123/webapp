@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CatalogProListComponent } from './catalog-pro-list.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../core/toast/toast.service';
 import { Router, ActivatedRoute,NavigationEnd } from '@angular/router';
 import { UUID } from 'angular2-uuid';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
@@ -85,7 +85,7 @@ describe('CatalogProListComponent', () => {
           }
         },
         {
-          provide: ToastrService, useValue: {
+          provide: ToastService, useValue: {
             error() {
             },
             show() {
