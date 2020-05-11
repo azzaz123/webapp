@@ -36,6 +36,8 @@ import { createInboxConversationsArray } from '../tests/inbox.fixtures.spec';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
+import { DidomiService } from './core/didomi/didomi.service';
+import { MockDidomiService } from './core/didomi/didomi.service.spec';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -57,6 +59,7 @@ let connectionService: ConnectionService;
 let paymentService: PaymentService;
 let stripeService: StripeService;
 let analyticsService: AnalyticsService;
+let didomiService: DidomiService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -204,7 +207,8 @@ describe('App', () => {
             init() {}
           }
         },
-        { provide: AnalyticsService, useClass: MockAnalyticsService }
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        { provide: DidomiService, useValue: MockDidomiService }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -228,6 +232,7 @@ describe('App', () => {
     paymentService = TestBed.get(PaymentService);
     stripeService = TestBed.get(StripeService);
     analyticsService = TestBed.get(AnalyticsService);
+    didomiService = TestBed.get(DidomiService);
     spyOn(notificationService, 'init');
   });
 
@@ -546,6 +551,16 @@ describe('App', () => {
       component.ngOnInit();
 
       expect(analyticsService.initialize).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('GDPR', () => {
+    it('should initialize the GDPR library', () => {
+      spyOn(didomiService, 'initialize');
+
+      component.ngOnInit();
+
+      expect(didomiService.initialize).toHaveBeenCalledTimes(1);
     });
   });
 
