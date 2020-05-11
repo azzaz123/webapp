@@ -1,3 +1,5 @@
+import { DidomiLibrary } from '../../app/core/didomi/didomi.interface';
+
 export const MOCK_APPBOY = {
   initialize: () => {},
   logCustomEvent: () => {},
@@ -99,4 +101,9 @@ export const MOCK_NAVIGATOR_CONNECTION = {
 
 export const MOCK_NAVIGATOR_GEOLOCATION = {
   getCurrentPosition: () => ''
+};
+
+export const MOCK_DIDOMI: DidomiLibrary = {
+  getUserConsentStatusForPurpose: key => true,
+  getUserConsentStatusForVendor: key => true
 };
