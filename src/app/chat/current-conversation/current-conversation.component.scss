@@ -69,12 +69,15 @@
           .date-marker-warning {
             background-color: $blue-grey-5;
             color: $blue-grey-3;
-            padding: $spacing-xs $spacing-ml;
+            padding: $spacing-s $spacing-ml;
 
-            .padlock {
-              height: 9px;
-              width: $spacing-ms;
-              margin: 0 $spacing-xxs;
+            &.date-marker-warning-blue {
+              background-color: $softblue-light;
+              color: $softblue-dark;
+            }
+
+            span {
+              font-size: $font-size-s;
             }
 
             .not-available {
@@ -133,6 +136,10 @@
 
   .emoticon-dashing-away::before {
     content: '\01F4A8';
+  }
+
+  .emoticon-padlock {
+    content: "\01F512";
   }
 }
 
