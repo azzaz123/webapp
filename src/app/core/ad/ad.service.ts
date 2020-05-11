@@ -6,7 +6,8 @@ import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { AdKeyWords } from './ad.interface';
 import * as moment from 'moment';
-import { User } from '../user/user';;
+import { User } from '../user/user';
+import { DidomiService } from '../didomi/didomi.service';
 
 @Injectable()
 export class AdService {
@@ -20,21 +21,14 @@ export class AdService {
   private _bidTimeout = 2000;
 
   constructor(private userService: UserService,
-              private cookieService: CookieService
+              private cookieService: CookieService,
+              private didomiService: DidomiService
   ) {
     this.initKeyWordsFromCookies();
     this.initPositionKeyWords();
     this.initGoogletagConfig();
 
-    __cmp('getConsentData', 1, () => {
-      __cmp('getVendorConsents', [11], (ventorConsents) => {
-        let allowSegmentation = false;
-        if (!ventorConsents.gdprApplies || ventorConsents.purposeConsents[2]) {
-          allowSegmentation = ventorConsents.gdprApplies ? true : false;
-        }
-        this.allowSegmentation$.next(allowSegmentation);
-      });
-    });
+    this.allowSegmentation$.next(this.didomiService.userAllowedSegmentationInAds());
   }
 
   private initKeyWordsFromCookies() {
