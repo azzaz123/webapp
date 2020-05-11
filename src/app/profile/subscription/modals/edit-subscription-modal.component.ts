@@ -94,6 +94,10 @@ export class EditSubscriptionModalComponent implements OnInit {
     modalRef.result.then((result: string) => modalRef = null, () => {});
   }
 
+  public hasTrial(subscription: SubscriptionsResponse): boolean {
+    return this.subscriptionsService.hasTrial(subscription);
+  }
+
   private trackClickConfirmEdit() {
     const event: AnalyticsEvent<ClickConfirmEditCurrentSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ClickConfirmEditCurrentSubscription,

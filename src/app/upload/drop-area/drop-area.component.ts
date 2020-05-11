@@ -177,7 +177,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
       if (output.file.progress.data.responseStatus === 200) {
         if (output.file.response.id) {
           this.itemId = output.file.response.id;
-          this.item = output.file.response;
+          this.item = output.file.response.content ? output.file.response.content : output.file.response;
           if (this.files.length > 1) {
             this.uploadService.uploadOtherImages(output.file.response.id, this.type);
           } else {

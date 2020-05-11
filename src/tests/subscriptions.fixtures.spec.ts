@@ -83,6 +83,10 @@ export class MockSubscriptionService {
 
     return tier.discount_available.discounted_price === 0;
   }
+
+  public hasTrial(subscription: SubscriptionsResponse): boolean {
+    return subscription.trial_available;
+  }
 }
 
 export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [
@@ -166,6 +170,8 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED: SubscriptionsRespo
   subscribed_from: null,
   selected_tier_id: null,
   default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+  trial_available: false,
+  trial_days: 0,
   tiers:
   [
     {
@@ -185,6 +191,8 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED: Subscriptio
   subscribed_from: null,
   selected_tier_id: null,
   default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+  trial_available: false,
+  trial_days: 0,
   tiers:
   [
     {
@@ -204,6 +212,8 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED: SubscriptionsRe
   subscribed_from: 1567675698,
   selected_tier_id: 'plan_Fsf0Htv8L6Ox92',
   default_tier_id: 'plan_Fsf0Htv8L6Ox92',
+  trial_available: false,
+  trial_days: 0,
   tiers:
   [
     {
@@ -223,6 +233,8 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED: Sub
   subscribed_from: 1567675698,
   selected_tier_id: 'plan_Fsf0Htv8L6Ox92',
   default_tier_id: 'plan_Fsf0Htv8L6Ox92',
+  trial_available: false,
+  trial_days: 0,
   tiers:
   [
     {
@@ -242,6 +254,8 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED: Sub
   subscribed_from: 1567675698,
   selected_tier_id: 'plan_Fsf0Htv8L6Ox92',
   default_tier_id: 'plan_Fsf0Htv8L6Ox92',
+  trial_available: false,
+  trial_days: 0,
   tiers:
   [
     {
@@ -262,6 +276,8 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED: SubscriptionsRes
   subscribed_until: 1567675699,
   selected_tier_id: 'plan_Fsf0Htv8L6Ox92',
   default_tier_id: 'plan_Fsf0Htv8L6Ox92',
+  trial_available: false,
+  trial_days: 0,
   tiers:
   [
     {
@@ -282,6 +298,8 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
     subscribed_from: null,
     selected_tier_id: null,
     default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -318,6 +336,8 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
     subscribed_from: null,
     selected_tier_id: null,
     default_tier_id: 'plan_FsewICdAYXBUY0',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -353,7 +373,9 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
     current_limit: 3,
     subscribed_from: 1567675697,
     selected_tier_id: 'plan_FWuGNucr7WgWUc',
-		default_tier_id: 'plan_FWuFVeTHEDyECa',
+    default_tier_id: 'plan_FWuFVeTHEDyECa',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -390,7 +412,9 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] =
     subscribed_from: 1567675697,
     subscribed_until: 1574516986,
     selected_tier_id: 'plan_FWuGNucr7WgWUc',
-		default_tier_id: 'plan_FWuFVeTHEDyECa',
+    default_tier_id: 'plan_FWuFVeTHEDyECa',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -431,6 +455,8 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY: SubscriptionsResponse[] =
     subscribed_from: null,
     selected_tier_id: null,
     default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -467,6 +493,8 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY: SubscriptionsResponse[] =
     subscribed_from: null,
     selected_tier_id: null,
     default_tier_id: 'plan_FsewICdAYXBUY0',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -502,7 +530,9 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY: SubscriptionsResponse[] =
     current_limit: 3,
     subscribed_from: 1567675697,
     selected_tier_id: 'plan_FWuGNucr7WgWUc',
-		default_tier_id: 'plan_FWuFVeTHEDyECa',
+    default_tier_id: 'plan_FWuFVeTHEDyECa',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -543,6 +573,8 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE: SubscriptionsResponse[] =
     subscribed_from: null,
     selected_tier_id: null,
     default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -579,6 +611,8 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE: SubscriptionsResponse[] =
     subscribed_from: null,
     selected_tier_id: null,
     default_tier_id: 'plan_FsewICdAYXBUY0',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -614,7 +648,9 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE: SubscriptionsResponse[] =
     current_limit: 3,
     subscribed_from: 1567675697,
     selected_tier_id: 'plan_FWuGNucr7WgWUc',
-		default_tier_id: 'plan_FWuFVeTHEDyECa',
+    default_tier_id: 'plan_FWuFVeTHEDyECa',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -655,6 +691,8 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
     subscribed_from: null,
     selected_tier_id: null,
     default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -691,6 +729,8 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
     subscribed_from: null,
     selected_tier_id: null,
     default_tier_id: 'plan_FsewICdAYXBUY0',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -726,7 +766,9 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
     current_limit: 3,
     subscribed_from: null,
     selected_tier_id: null,
-		default_tier_id: 'plan_FWuFVeTHEDyECa',
+    default_tier_id: 'plan_FWuFVeTHEDyECa',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -763,7 +805,9 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] =
     subscribed_from: null,
     subscribed_until: null,
     selected_tier_id: null,
-		default_tier_id: 'plan_FWuFVeTHEDyECa',
+    default_tier_id: 'plan_FWuFVeTHEDyECa',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -804,6 +848,8 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
     subscribed_from: null,
     selected_tier_id: null,
     default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -843,6 +889,8 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
     subscribed_from: null,
     selected_tier_id: null,
     default_tier_id: 'plan_FsewICdAYXBUY0',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -881,7 +929,9 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] =
     current_limit: 3,
     subscribed_from: 1567675697,
     selected_tier_id: 'plan_FWuGNucr7WgWUc',
-		default_tier_id: 'plan_FWuFVeTHEDyECa',
+    default_tier_id: 'plan_FWuFVeTHEDyECa',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -930,6 +980,8 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] =
     subscribed_from: 1567675697,
     selected_tier_id: 'plan_Fsf0cCjrcaSCLx',
     default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -969,6 +1021,8 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] =
     subscribed_from: null,
     selected_tier_id: null,
     default_tier_id: 'plan_FsewICdAYXBUY0',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -1007,7 +1061,9 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] =
     current_limit: 3,
     subscribed_from: 1567675697,
     selected_tier_id: 'plan_FWuGNucr7WgWUc',
-		default_tier_id: 'plan_FWuFVeTHEDyECa',
+    default_tier_id: 'plan_FWuFVeTHEDyECa',
+    trial_available: true,
+    trial_days: 30,
     tiers:
     [
       {
@@ -1047,7 +1103,7 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] =
   }
 ];
 
-export const MAPPED_SUBSCRIPTIONS_WITH_INAPP = 
+export const MAPPED_SUBSCRIPTIONS_WITH_INAPP: SubscriptionsResponse[] = 
 [
   {
     id: 'abcd-1234-efgh-5678',
@@ -1056,6 +1112,8 @@ export const MAPPED_SUBSCRIPTIONS_WITH_INAPP =
     subscribed_from: 1567675697,
     selected_tier_id: 'plan_Fsf0cCjrcaSCLx',
     default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
@@ -1095,6 +1153,8 @@ export const MAPPED_SUBSCRIPTIONS_WITH_INAPP =
     subscribed_from: null,
     selected_tier_id: null,
     default_tier_id: 'plan_FsewICdAYXBUY0',
+    trial_available: false,
+    trial_days: 0,
     tiers:
     [
       {
