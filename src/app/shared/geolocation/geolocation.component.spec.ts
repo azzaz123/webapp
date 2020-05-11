@@ -97,11 +97,7 @@ describe('GeolocationComponent', () => {
     });
 
     it('should emit an event with the selected item', (done) => {
-      jasmine.clock().uninstall();
-      jasmine.clock().install();
       const currentDate = new Date();
-      const expirationDate = new Date(currentDate.getTime() + ( 15 * 60 * 1000));
-      jasmine.clock().mockDate(currentDate);
       const newLocation = {
         latitude: COORDINATE_DATA_WEB.latitude,
         longitude: COORDINATE_DATA_WEB.longitude,
@@ -113,8 +109,6 @@ describe('GeolocationComponent', () => {
 
       expect(component.newCoordinate.emit).toHaveBeenCalledWith(COORDINATE_DATA_WEB);
       expect(userService.updateSearchLocationCookies).toHaveBeenCalledWith(newLocation);
-
-      jasmine.clock().uninstall();
     });
 
     it('should not save cookies if updateLocation false', () => {
