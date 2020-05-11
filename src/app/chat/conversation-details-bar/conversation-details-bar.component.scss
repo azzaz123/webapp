@@ -110,7 +110,8 @@
 
 .faded {
   .lg-device-container {
-    tsl-user-avatar, h5 {
+    tsl-user-avatar, h5, .user-avatar {
+      pointer-events: none;
       opacity: 0.5;
     }
   }
@@ -118,7 +119,12 @@
   tsl-item-avatar,
   .item-details,
   .conversation-header-menu .user-avatar {
+    pointer-events: none;
     opacity: 0.5;
+  }
+
+  .sm-device-container .avatar-container .avatar {
+    pointer-events: none;
   }
 }
 

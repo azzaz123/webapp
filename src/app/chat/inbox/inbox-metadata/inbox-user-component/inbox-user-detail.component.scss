@@ -6,6 +6,7 @@
 
 a.user-info {
   &.faded {
+    pointer-events: none;
     .card-block, .avatar-block {
       opacity: 0.5;
     }
