@@ -30,7 +30,6 @@ import '../../assets/js/adsConfig.js';
 // Mock global variables in window manually
 import * as GLOBAL_MOCKS from './global-mocks.fixtures.spec';
 
-Object.defineProperty(window, '__cmp', { value: GLOBAL_MOCKS.MOCK___CMP });
 Object.defineProperty(window, 'appboy', { value: GLOBAL_MOCKS.MOCK_APPBOY });
 Object.defineProperty(window, 'apstag', { value: GLOBAL_MOCKS.MOCK_APSTAG });
 Object.defineProperty(window, 'Criteo', { value: GLOBAL_MOCKS.MOCK_CRITEO });
