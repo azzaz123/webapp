@@ -10,23 +10,25 @@ export class DidomiService {
   public library: any = null;
 
   public initialize(): void {
-    const coreScript: HTMLScriptElement = document.createElement('script');
-    coreScript.setAttribute('type', 'text/javascript');
-    coreScript.text = DIDOMI_EMBED;
-    document.head.appendChild(coreScript);
-
-    this.checkIfReady();
+    this.addOnReadyListener();
+    this.appendSDKScriptToDom();
   }
 
-  private checkIfReady(): void {
-    const checkInterval = setInterval(() => {
-      if (window['Didomi']) {
-        this.library = Didomi;
-        this.isReady = true;
-        this.isReady$.next(this.isReady);
-        clearInterval(checkInterval);
-      }
-    }, 100);
+  private appendSDKScriptToDom() {
+    const coreScript: HTMLScriptElement = document.createElement('script');
+    coreScript.setAttribute('type', 'text/javascript');
+    coreScript.setAttribute('charset', 'utf-8');
+    coreScript.text = DIDOMI_EMBED;
+    document.head.appendChild(coreScript);
+  }
+
+  private addOnReadyListener() {
+    window['didomiOnReady'] = window['didomiOnReady'] || [];
+    window['didomiOnReady'].push(() => {
+      this.library = Didomi;
+      this.isReady = true;
+      this.isReady$.next(true);
+    });
   }
 
   public userAllowedSegmentationInAds(): boolean {
