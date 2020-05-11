@@ -22,4 +22,4 @@ declare let elements: any;
 declare let paymentIntent: any;
 declare let Stripe: any;
 declare let mParticle: any;
-declare let Didomi: any;
+declare let Didomi: import("./app/core/didomi/didomi.interface").DidomiLibrary;
