@@ -22,7 +22,8 @@ export class InboxConversation {
 
     get cannotChat(): boolean {
         return  this.user.blocked
-                || !this.user.available;
+                || !this.user.available
+                || this.item.status === InboxItemStatus.UNPUBLISHED;
     }
 
     get id(): string {
