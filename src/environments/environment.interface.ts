@@ -12,4 +12,5 @@ export interface Environment {
   stripeKey: string;
   mParticleKey: string;
   remoteConsoleUrl: string;
+  didomiKey: string;
 }
