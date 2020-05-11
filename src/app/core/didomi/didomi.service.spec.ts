@@ -4,7 +4,8 @@ import { DIDOMI_EMBED } from './didomi-embed-script';
 
 export const MockDidomiService = {
   isReady: true,
-  initialize: () => {}
+  initialize: () => {},
+  userAllowedSegmentationInAds: () => true
 };
 
 describe('Service: Didomi', () => {
