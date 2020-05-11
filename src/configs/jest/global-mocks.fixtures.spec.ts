@@ -63,11 +63,6 @@ export const MOCK_CRITEO = {
 
 export const MOCK___CMP = (arg1, arg2, callback) => {};
 
-export const MOCK_QUANCASTOPTIONS = {
-  es: {},
-  en: {}
-};
-
 export const MOCK_XMPP = {
   JID: class {
     private _userId: string;

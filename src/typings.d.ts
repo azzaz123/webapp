@@ -17,7 +17,6 @@ declare let googletag: any;
 declare let Criteo: any;
 declare let apstag: any;
 declare let __cmp: any;
-declare let quancastOptions: {es: {}, en: {}};
 declare let Adomik: any;
 declare let stripe: any;
 declare let elements: any;
