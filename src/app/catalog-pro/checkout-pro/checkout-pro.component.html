@@ -16,7 +16,7 @@
                 <div i18n>City</div>
                 <div class="content-select">
                   <div class="checkbox">
-                    <button class="select" [ngClass]="{selected: allSelectedCityBump}" (click)="selectAll('citybump')">
+                    <button class="select citybump" [ngClass]="{selected: allSelected['citybump'] && !allSelected['countrybump']}" (click)="selectAll('citybump')">
                       <mat-icon svgIcon="check"></mat-icon>
                     </button>
                   </div>
@@ -30,7 +30,7 @@
                 <div i18n>Country</div>
                 <div class="content-select">
                   <div class="checkbox">
-                    <button class="select" [ngClass]="{selected: allSelectedCountryBump}" (click)="selectAll('countrybump')">
+                    <button class="select countrybump" [ngClass]="{selected: allSelected['countrybump'] && !allSelected['citybump'] }" (click)="selectAll('countrybump')">
                       <mat-icon svgIcon="check"></mat-icon>
                     </button>
                   </div>
@@ -55,7 +55,7 @@
           </div>
         </div>
         <div class="bumps-table">
-          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts; let index = index; trackBy:trackByIndex;"
+          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts; let index = index; "
             [cartProItem]="item"
             (dateFocus)="onDateFocus($event)"
             [selectAllEvent]="selectAllEventSubject.asObservable()"
@@ -76,5 +76,8 @@
     [bumpType]="newBumpType"
     [selectedDates]="newSelectedDates"
     >
-  </tsl-range-datepicker> 
+  </tsl-range-datepicker>
+  <!--
+    [bumpType]="cartProItem.bumpType"
+  -->
 </div>

@@ -9,6 +9,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  &.first {
+    border-top-right-radius: 0;
+  }
   .item-first-section, .item-second-section {
     display: flex;
   }
@@ -17,7 +20,7 @@
     display: flex;
   }
   .item-second-section {
-    width: 40%;
+    width: 39%;
     justify-content: space-evenly;
     align-items: center;
   }
@@ -27,7 +30,7 @@
     width: 50%;
   }
   .item-actions {
-    width: 50%;
+    width: 46%;
     display: flex;
     align-items: center;
     justify-content: space-around;

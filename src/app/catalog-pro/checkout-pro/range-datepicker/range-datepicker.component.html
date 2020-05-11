@@ -12,11 +12,11 @@
     <div class="selected-text" [ngClass]="bumpType">
       <span i18n>You have selected </span>
       <div class="bold">
-        <span>{{selectedDates.numberOfDays}} </span>
-        <span *ngIf="bumpType === 'citybump' && selectedDates.numberOfDays === 1" i18n>city bump</span>
-        <span *ngIf="bumpType === 'countrybump' && selectedDates.numberOfDays === 1" i18n>country bump</span>
-        <span *ngIf="bumpType === 'citybump' && selectedDates.numberOfDays > 1" i18n>city bumps</span>
-        <span *ngIf="bumpType === 'countrybump' && selectedDates.numberOfDays > 1" i18n>country bumps</span>
+        <span>{{newDates.numberOfDays}} </span>
+        <span *ngIf="bumpType === 'citybump' && newDates.numberOfDays === 1" i18n>city bump</span>
+        <span *ngIf="bumpType === 'countrybump' && newDates.numberOfDays === 1" i18n>country bump</span>
+        <span *ngIf="bumpType === 'citybump' && newDates.numberOfDays > 1" i18n>city bumps</span>
+        <span *ngIf="bumpType === 'countrybump' && newDates.numberOfDays > 1" i18n>country bumps</span>
         <span *ngIf="bumpType === 'planning'" i18n>Multiselect bumps</span>
       </div>
     </div>

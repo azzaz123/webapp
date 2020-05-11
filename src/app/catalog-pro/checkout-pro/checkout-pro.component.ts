@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ItemWithProducts } from '../../core/item/item-response.interface';
 import { ItemService } from '../../core/item/item.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,14 @@ import { CartService } from '../../shared/catalog/cart/cart.service';
 import { CartPro } from '../../shared/catalog/cart/cart-pro';
 import { Subject } from 'rxjs';
 import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+
+
+export enum BUMPS {
+  CITY = 'citybump',
+  COUNTRY = 'countrybump',
+  PLANNING = 'planning'
+}
+const CATALOG_PRO_LIST_URL = 'pro/catalog/list';
 
 @Component({
   selector: 'tsl-checkout-pro',
@@ -28,6 +36,12 @@ export class CheckoutProComponent implements OnInit {
   todayDate: NgbDate;
   tomorrowDate: NgbDate;
   newBumpType: string;
+
+  allSelected = {
+    countrybump: false,
+    citybump: false,
+    planning: false
+  }
   
   constructor(private itemService: ItemService,
               private router: Router,
@@ -47,24 +61,20 @@ export class CheckoutProComponent implements OnInit {
     });
   }
 
-  trackByIndex(index: number, obj: any): any {
-    return index;
-  }
-  
-  onDateFocus(item: CartProItem) {
+  /*onDateFocus(item: CartProItem) {
     this.calendarType = null;
     this.itemSelected = {... item};
     this.newBumpType = this.itemSelected.bumpType;
     this.newSelectedDates = item.selectedDates;
     this.toggleCalendar();
-  }
-
-  onApplyCalendar(datesFromCalendar: CalendarDates) {
+  }*/
+  
+  public onApplyCalendar(datesFromCalendar: CalendarDates): void {
     this.newSelectedDates = datesFromCalendar;
     this.toggleCalendar();
-    if (this.calendarType === 'planning') {
+    if (this.calendarType === BUMPS.PLANNING) {
       this.selectAllEventSubject.next({type: this.calendarType, allSelected: false, dates: datesFromCalendar});
-      this.allSelectedPlanning = false;
+      this.allSelected.planning = false;
       
     } else {
       this.itemSelected.selectedDates = datesFromCalendar;
@@ -73,35 +83,35 @@ export class CheckoutProComponent implements OnInit {
     this.calendarType = null;
   }
 
-  addToCart() {
+  public selectAll(type: string): void {
+    this.calendarType = type;
+    this.newBumpType = type;
+
+    if (type !== BUMPS.PLANNING) {
+      this.allSelected[type] = !this.allSelected[type];
+      if (type === BUMPS.CITY && this.allSelected.countrybump) {
+        this.allSelected.countrybump = false;
+      }
+      if (type === BUMPS.COUNTRY && this.allSelected.citybump) {
+        this.allSelected.citybump = false;
+      }
+      this.selectAllEventSubject.next({type, allSelected: this.allSelected[type]});
+    } else {
+      this.setDefaultDates();
+      this.toggleCalendar();
+    }
+  }
+
+  private addToCart(): void {
     this.cartService.add(this.itemSelected, this.itemSelected.bumpType);
     this.toggleCalendar();
   }
 
-  selectAll(type: string): void {
-    this.calendarType = type;
-    this.newBumpType = type;
-    if (type === 'citybump') {
-      this.allSelectedCityBump = !this.allSelectedCityBump;
-      if (this.allSelectedCountryBump === true) {
-        this.allSelectedCountryBump = false;
-      }
-      this.selectAllEventSubject.next({type, allSelected: this.allSelectedCityBump});
-    }
-    if (type === 'countrybump') {
-      this.allSelectedCountryBump = !this.allSelectedCountryBump;
-      if (this.allSelectedCityBump === true) {
-        this.allSelectedCityBump = false;
-      }
-      this.selectAllEventSubject.next({type, allSelected: this.allSelectedCountryBump});
-    }
-    if (type === 'planning') {
-      if (!this.newSelectedDates) {
-        this.todayDate = this.calendar.getToday();
-        this.tomorrowDate = this.calendar.getNext(this.todayDate);
-        this.newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
-      }
-      this.toggleCalendar();
+  private setDefaultDates() {
+    if (!this.newSelectedDates) {
+      this.todayDate = this.calendar.getToday();
+      this.tomorrowDate = this.calendar.getNext(this.todayDate);
+      this.newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
     }
   }
 
@@ -111,7 +121,7 @@ export class CheckoutProComponent implements OnInit {
 
   private getProductsFromSelectedItems() {
     if (!this.itemService.selectedItems.length) {
-      this.router.navigate(['pro/catalog/list']);
+      this.router.navigate([CATALOG_PRO_LIST_URL]);
       return;
     }
     this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems)
@@ -126,7 +136,7 @@ export class CheckoutProComponent implements OnInit {
         if (itemsWithProducts.length) {
           this.itemsWithProducts = itemsWithProducts;
         } else {
-          this.router.navigate(['pro/catalog/list', {alreadyFeatured: true}]);
+          this.router.navigate([CATALOG_PRO_LIST_URL, {alreadyFeatured: true}]);
         }
       });
   }

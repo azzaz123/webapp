@@ -19,7 +19,6 @@ export class CartService {
   }
 
   add(cartItem: CartItem | CartProItem, type: string) {
-    console.log('add to cart ', cartItem);
     this.cart.add(cartItem, type);
     this.cartSource.next({
       action: 'add',

@@ -103,8 +103,6 @@ export class RangeDatepickerComponent implements OnInit {
       this.startDate = date;
     } else if (this.startDate && !this.endDate && after(date, this.startDate)) {
       this.endDate = date;
-      //this.selectedDates.fromDate = this.startDate;
-      //this.selectedDates.toDate = this.endDate;
       this.newDates.fromDate = this.startDate;
       this.newDates.toDate = this.endDate;
     } else {
@@ -114,10 +112,6 @@ export class RangeDatepickerComponent implements OnInit {
   }
 
   onCancel() {
-    //this.selectedDates.fromDate = this.todayDay;
-    //this.selectedDates.toDate = this.tomorrowDay;
-    //this.newDates.fromDate = this.todayDay;
-    //this.newDates.toDate = this.tomorrowDay;
     this.closeCalendar.emit();
   }
 

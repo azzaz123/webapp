@@ -1,4 +1,4 @@
-<div class="item" *ngIf="cartProItem">
+<div class="item" *ngIf="cartProItem" [ngClass]="{first: index===0}">
   <div class="item-first-section">
     <div class="item-info">
       <tsl-item-avatar [item]="cartProItem.item" size="big" fallbackLight="true" title="{{cartProItem.item.title}}"></tsl-item-avatar>
@@ -41,10 +41,10 @@
     </form>
   </div>
 </div>
-<tsl-range-datepicker *ngIf="!calendarHidden"
+<tsl-range-datepicker class="ItemCalendar" *ngIf="!calendarHidden"
   (applyCalendar)="onApplyCalendar($event)"
   (closeCalendar)="calendarHidden = true"
   [bumpType]="cartProItem.bumpType"
-  [selectedDates]="newSelectedDates"
+  [selectedDates]="cartProItem.selectedDates"
   >
-</tsl-range-datepicker> 
+</tsl-range-datepicker>

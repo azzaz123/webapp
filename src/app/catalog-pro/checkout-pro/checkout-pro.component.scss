@@ -26,7 +26,7 @@ $feature-button-width: 170px;
 
 .bumps-table {
   z-index: 4;
-  position: relative;
+  //position: relative;
   margin-bottom: $spacing-xxxl;
 }
 
@@ -39,11 +39,19 @@ $feature-button-width: 170px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 50%;
+    width: 48%;
   }
   .bump-types {
     display: flex; 
     width: 100%;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-top: 1px solid $blue-grey-5;
+    border-right: 1px solid $blue-grey-5;
+    border-left: 1px solid $blue-grey-5;
+  }
+  .content-header {
+    width: 98px;
   }
   .info {
     font-size: $font-size-s;
@@ -63,7 +71,7 @@ $feature-button-width: 170px;
     color: $white;
     font-weight: $font-weight-chunky;
     text-align: left;
-    padding: $spacing-m;
+    padding: $spacing-m 0;
     font-size: $font-size-s;
     line-height: $line-height-m;
     background-color: $white;
@@ -72,16 +80,16 @@ $feature-button-width: 170px;
     &.city {
       color: $walla-main;
       border-top-left-radius: 18px;
-      width: 28%;
+      width: 21%;
     }
     &.country {
       color: $payblue-main;
-      width: 28%;
+      width: 21%;
     }
     &.planning {
       color: $blue-grey-1;
       box-shadow: none;
-      width: 72%;
+      width: 58%;
       display: flex;
       justify-content: flex-start;
       border-top-right-radius: 18px;
@@ -99,8 +107,7 @@ $feature-button-width: 170px;
   .content-header {
     display: flex;
     flex-direction: column;
-    //border-right: 1px solid $blue-grey-5;
-    //padding-right: $spacing-m;
+    padding: 0 $spacing-s;
     &.last {
       border-right: none;
     }
@@ -134,13 +141,18 @@ $feature-button-width: 170px;
         width: 12px;
       }
       &.selected {
-        background: $walla-main;
         border-color: transparent;
         mat-icon {
           display: flex;
           ::ng-deep svg g g {
             fill: $white;
           }
+        }
+        &.countrybump {
+          background: $payblue-main;
+        }
+        &.citybump {
+          background: $walla-main;
         }
       }
       &:hover {

@@ -5,8 +5,14 @@ import { CalendarDates } from '../range-datepicker/calendar-dates';
 import { CartChange, CartProItem } from '../../../shared/catalog/cart/cart-item.interface';
 import { CartService } from '../../../shared/catalog/cart/cart.service';
 import { CartPro } from '../../../shared/catalog/cart/cart-pro';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder } from '@angular/forms';
+
+export enum BUMPS {
+  CITY = 'citybump',
+  COUNTRY = 'countrybump',
+  PLANNING = 'planning'
+}
 
 @Component({
   selector: 'tsl-checkout-pro-item',
@@ -46,88 +52,35 @@ export class CheckoutProItemComponent implements OnInit {
   ngOnInit() {
     this.cartService.createInstance(new CartPro());
     this.cartProItem.selectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
-    this.newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
+    const newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
     this.selectAllEvent.subscribe((data) => this.selectAll(data));
 
-    this.datesForm.patchValue({
-      fromDate: this.newSelectedDates.formattedFromDate,
-      toDate: this.newSelectedDates.formattedToDate
-    });
+    this.patchFormDateValue(newSelectedDates);
   }
 
-  //new
-  onDateFocus(item: CartProItem) {
+  public onDateFocus(): void {
     this.calendarType = null;
     this.newBumpType = this.cartProItem.bumpType;
-    this.newSelectedDates = this.cartProItem.selectedDates;
     this.toggleCalendar();
   }
 
-  onApplyCalendar(datesFromCalendar: CalendarDates) {
-    this.newSelectedDates = datesFromCalendar;
+  public updateDate(datesFromCalendar: CalendarDates): void {
     this.cartProItem.selectedDates = datesFromCalendar;
-    this.datesForm.patchValue({
-      fromDate: datesFromCalendar.formattedFromDate,
-      toDate: datesFromCalendar.formattedToDate
-    });
+    this.patchFormDateValue(datesFromCalendar);
     this.addToCart();
     this.calendarType = null;
   }
 
-  addToCart() {
-    console.log('addToCart ', this.cartProItem);
-    this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
-    this.toggleCalendar();
+  public onApplyCalendar(datesFromCalendar: CalendarDates): void {
+    this.cartProItem.selectedDates = datesFromCalendar;
+    this.patchFormDateValue(datesFromCalendar);
+    this.addToCart();
+    this.calendarType = null;
   }
 
-  private toggleCalendar() {
-    this.calendarHidden = !this.calendarHidden;
-  }
-  
-  //
-  /*onDateFocus() {
-    this.dateFocus.emit(this.cartProItem);
-  }*/
-
-  onRemoveOrClean(cartProChange: CartChange) {
-    if (cartProChange.action === 'remove' && cartProChange.itemId === this.cartProItem.item.id || cartProChange.action === 'clean') {
-      delete this.cartProItem.bumpType;
-      this.cartProItem.selectedDates.fromDate = this.todayDate;
-      this.cartProItem.selectedDates.toDate = this.tomorrowDate;
-      //new
-      this.newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
-      this.datesForm.patchValue({
-        fromDate: this.newSelectedDates.formattedFromDate,
-        toDate: this.newSelectedDates.formattedToDate
-      });
-      this.datesForm.disable();
-    }
-  }
-
-  private selectAll(data: any): void {
-    if (data.type === 'planning') {
-      this.newSelectedDates = data.dates;
-      this.cartProItem.selectedDates = data.dates;
-      this.datesForm.patchValue({
-        fromDate: data.dates.formattedFromDate,
-        toDate: data.dates.formattedToDate
-      });
-      if (this.cartProItem.bumpType) {
-        this.selectBump(data.type)
-      }
-    } else {
-      this.datesForm.enable();
-      if (this.cartProItem.bumpType === data.type && !data.allSelected
-        || (!this.cartProItem.bumpType && data.allSelected)
-        || this.cartProItem.bumpType !== data.type && this.cartProItem.bumpType && data.allSelected) {
-        this.selectBump(data.type)
-      }
-    }
-  }
-
-  selectBump(type: string) {
+  public selectBump(type: string): void {
     this.datesForm.enable();
-    if (type === 'planning') {
+    if (type === BUMPS.PLANNING) {
       this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
     } else {
       if (this.cartProItem.bumpType === type) {
@@ -139,7 +92,52 @@ export class CheckoutProItemComponent implements OnInit {
     }
   }
 
-  removeItem() {
+  public removeItem(): void {
     this.cartService.remove(this.cartProItem.item.id, this.cartProItem.bumpType);
   }
+
+  private patchFormDateValue(dates: CalendarDates): void {
+    this.datesForm.patchValue({
+      fromDate: dates.formattedFromDate,
+      toDate: dates.formattedToDate
+    });
+  }
+  
+  private addToCart(): void {
+    this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
+    this.toggleCalendar();
+  }
+
+  private toggleCalendar(): void {
+    this.calendarHidden = !this.calendarHidden;
+  }
+
+  private selectAll(data: any): void {
+    if (data.type === BUMPS.PLANNING) {
+      this.cartProItem.selectedDates = data.dates;
+      this.patchFormDateValue(data.dates);
+      this.cartProItem.bumpType && this.selectBump(data.type);
+    } else {
+      this.datesForm.enable();
+      this.shouldSelectBump(data) && this.selectBump(data.type);
+    }
+  }
+
+  private shouldSelectBump(data: any): boolean {
+    return this.cartProItem.bumpType === data.type && !data.allSelected
+    || (!this.cartProItem.bumpType && data.allSelected)
+    || this.cartProItem.bumpType !== data.type && this.cartProItem.bumpType && data.allSelected
+  }
+
+  private onRemoveOrClean(cartProChange: CartChange): void {
+    if (cartProChange.action === 'remove' && cartProChange.itemId === this.cartProItem.item.id || cartProChange.action === 'clean') {
+      delete this.cartProItem.bumpType;
+      this.cartProItem.selectedDates.fromDate = this.todayDate;
+      this.cartProItem.selectedDates.toDate = this.tomorrowDate;
+      const newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
+      this.patchFormDateValue(newSelectedDates);
+      this.datesForm.disable();
+    }
+  }
+
 }
