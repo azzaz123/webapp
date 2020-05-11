@@ -3,11 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditSubscriptionModalComponent } from './edit-subscription-modal.component';
-import { MAPPED_SUBSCRIPTIONS, TIER, SUBSCRIPTIONS_NOT_SUB } from '../../../../tests/subscriptions.fixtures.spec';
+import { MAPPED_SUBSCRIPTIONS, TIER } from '../../../../tests/subscriptions.fixtures.spec';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
@@ -18,10 +18,10 @@ import {
   SCREEN_IDS,
   AnalyticsPageView,
   AnalyticsEvent,
-  ClickProfileSubscribeButton,
   ANALYTIC_EVENT_TYPES,
   ClickConfirmEditCurrentSubscription
 } from '../../../core/analytics/analytics-constants';
+import { DateUntilDayPipe } from '../../../shared/pipes';
 import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 
 describe('EditSubscriptionModalComponent', () => {
@@ -36,7 +36,7 @@ describe('EditSubscriptionModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditSubscriptionModalComponent ],
+      declarations: [ EditSubscriptionModalComponent, DateUntilDayPipe ],
       providers: [
         {
           provide: NgbActiveModal, useValue: {

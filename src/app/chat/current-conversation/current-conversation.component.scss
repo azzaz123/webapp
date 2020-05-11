@@ -73,7 +73,7 @@
           .date-marker-warning {
             background-color: $blue-grey-5;
             color: $blue-grey-3;
-            padding: $spacing-xs $spacing-ml;
+            padding: $spacing-s $spacing-ml;
 
             &.date-marker-warning-blue {
               background-color: $softblue-light;
@@ -89,6 +89,9 @@
               height: 9px;
               width: $spacing-ms;
               margin: 0 $spacing-xxs;
+
+            span {
+              font-size: $font-size-s;
             }
 
             .not-available {
@@ -155,6 +158,10 @@
 
   .emoticon-ghost::before {
     content: '\01F47B';
+  }
+
+  .emoticon-padlock {
+    content: "\01F512";
   }
 }
 
