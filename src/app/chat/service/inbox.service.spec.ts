@@ -69,7 +69,7 @@ describe('InboxService', () => {
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);
     httpTestingController = TestBed.get(HttpTestingController);
-    spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
+    jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_USER);
   });
 
   afterEach(() => {

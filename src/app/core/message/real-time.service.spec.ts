@@ -276,7 +276,7 @@ describe('RealTimeService', () => {
     });
 
     it('should call track with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
-      spyOn(window, 'fbq');
+      spyOn(window as any, 'fbq');
       const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
       const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(),
         MessageStatus.SENT, MessageType.TEXT);
@@ -293,7 +293,7 @@ describe('RealTimeService', () => {
     });
 
     it('should call pinterest checkout tracking with data', () => {
-      spyOn(window, 'pintrk');
+      spyOn(window as any, 'pintrk');
       const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
       const inboxMessage = new InboxMessage('someId', newConversation.id, 'some text', USER_ID, true, new Date(),
         MessageStatus.SENT, MessageType.TEXT);
