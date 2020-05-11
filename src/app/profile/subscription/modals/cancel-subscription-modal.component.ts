@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { ToastService } from '../../../core/toast/toast.service';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import {

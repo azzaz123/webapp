@@ -11,7 +11,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EventService } from '../../core/event/event.service';
 import { RealTimeService } from '../../core/message/real-time.service';
-import { ToastService } from '../../core/toast/toast.service';
+import { ToastService } from '../../layout/toast/toast.service';
 import { ItemService } from '../../core/item/item.service';
 import { UserService } from '../../core/user/user.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';

@@ -9,7 +9,7 @@ import { ReportListingComponent } from '../modals/report-listing';
 import { BlockUserComponent } from '../modals/block-user';
 import { UnblockUserComponent } from '../modals/unblock-user';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from '../../core/toast/toast.service';
+import { ToastService } from '../../layout/toast/toast.service';
 import { UserService } from '../../core/user/user.service';
 import { ItemService } from '../../core/item/item.service';
 import { BlockUserService, BlockUserXmppService, InboxConversationService } from '../service';

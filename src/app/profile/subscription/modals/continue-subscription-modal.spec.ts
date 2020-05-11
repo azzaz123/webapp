@@ -4,7 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ContinueSubscriptionModalComponent } from './continue-subscription-modal.component';
 import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.spec';
-import { ToastService } from '../../../core/toast/toast.service';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { of } from 'rxjs';

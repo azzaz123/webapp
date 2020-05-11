@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { Toast } from './toast.interface';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToastService {
-  toasts:any[]=[];
-  constructor(private toastService:ToastrService) { }
+  public toasts:Toast[]=[];
+  constructor() { }
 
-  
-  success(text:string, title?:string):void {
+  public show(toast: Toast): void {
+    this.toasts.push(toast);
+  }
+
+  public remove(toast: Toast): void {
+    this.toasts = this.toasts.filter(t => t !== toast);
+  }
+  /*success(text:string, title?:string):void {
     if (title == undefined) {
       this.toasts.push({ text,  ...{ classname: 'bg-success text-light', delay: 10000 } });
       this.toastService.success(text);
@@ -27,5 +34,6 @@ export class ToastService {
       this.toasts.push({ text, title });
       this.toastService.error(text, title);
     }
-  }
+  }*/
+
 }

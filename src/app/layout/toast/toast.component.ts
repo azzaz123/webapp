@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastService } from '../../core/toast/toast.service';
+import { ToastService } from '../../layout/toast/toast.service';
 
 @Component({
   selector: 'tsl-toast',

@@ -5,7 +5,7 @@ import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ItemBulkResponse } from '../../../core/item/item-response.interface';
-import { ToastService } from '../../../core/toast/toast.service';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Item } from '../../../core/item/item';
 

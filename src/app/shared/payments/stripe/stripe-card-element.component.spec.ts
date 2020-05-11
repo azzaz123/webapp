@@ -5,7 +5,7 @@ import { StripeCardElementComponent } from './stripe-card-element.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { NO_ERRORS_SCHEMA, ElementRef } from '@angular/core';
 import { I18nService } from '../../../core/i18n/i18n.service';
-import { ToastService } from '../../../core/toast/toast.service';
+import { ToastService } from '../../../layout/toast/toast.service';
 
 describe('StripeCardElementComponent', () => {
   let component: StripeCardElementComponent;

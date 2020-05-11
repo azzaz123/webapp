@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ToastComponent } from './toast.component';
 
 describe('ToastComponent', () => {
-  /*
   let component: ToastComponent;
   let fixture: ComponentFixture<ToastComponent>;
 
@@ -23,5 +22,4 @@ describe('ToastComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  */
 });

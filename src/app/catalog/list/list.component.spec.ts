@@ -6,7 +6,7 @@ import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { find } from 'lodash-es';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from '../../core/toast/toast.service';
+import { ToastService } from '../../layout/toast/toast.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import {

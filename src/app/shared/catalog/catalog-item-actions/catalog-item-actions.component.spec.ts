@@ -7,7 +7,7 @@ import {
   createItemsArray, ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED, ITEMS_BULK_UPDATED_IDS
 } from '../../../../tests/item.fixtures.spec';
-import { ToastService } from '../../../core/toast/toast.service';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { find } from 'lodash-es';
 import { TrackingService } from '../../../core/tracking/tracking.service';

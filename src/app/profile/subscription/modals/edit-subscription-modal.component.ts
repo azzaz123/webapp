@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionsResponse, Tier, SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
-import { ToastService } from '../../../core/toast/toast.service';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
