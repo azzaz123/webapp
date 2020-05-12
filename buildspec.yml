@@ -53,7 +53,7 @@ phases:
       - ./scripts/docknum/update.sh 137
  
       # LAUNCH TEST
-      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable yarn run test --watch=false --no-progress
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable yarn run test-ci
 
       # INSTALL ENV
       - >

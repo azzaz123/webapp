@@ -363,7 +363,7 @@ describe('CatalogItemComponent', () => {
         item = MOCK_ITEM;
         spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
-        spyOn(window, 'fbq');
+        spyOn(window as any, 'fbq');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
@@ -451,10 +451,13 @@ describe('CatalogItemComponent', () => {
   describe('onClickInfoElement', () => {
     it('should send PRODUCT_VIEWED to tracking service', () => {
       spyOn(trackingService, 'track');
+      spyOn(window, 'open');
 
       component.openItem();
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_VIEWED, { product_id: component.item.id });
+      expect(window.open).toHaveBeenCalledTimes(1);
+      expect(window.open).toHaveBeenCalledWith(component.link);
     });
   });
 });

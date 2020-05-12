@@ -7,6 +7,8 @@ import { SanitizedBackgroundDirective } from '../sanitized-background/sanitized-
 import { PROFILE_IMAGE } from '../../../tests/profile.fixtures.spec';
 import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '../../core/item/item';
 
+jest.mock('environments/environment', () => ({environment: { production: true, name: 'prod' }}));
+
 describe('ItemAvatarComponent', () => {
   let component: ProfileImagesComponent;
   let fixture: ComponentFixture<ProfileImagesComponent>;

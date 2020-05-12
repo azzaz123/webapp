@@ -29,10 +29,11 @@ Now you can navigate to `http://localhost:4200/login`.You should see the app run
 
 ### Tests
 Run one of the following commands to test the app:
-- Run `ng test` to execute the unit tests and watch for changes in Chrome and HeadlessChrome. **(recommended)**
-- Run `yarn test` to execute the unit test once in HeadlessChrome.
+- Run `yarn test` to execute the unit tests in watch mode. **(recommended)**
+- Run `yarn test-once` to execute them only once.
+- Run `yarn test-coverage` to first run the tests and if everything is ok, it will open an HTML with the coverage report.
 
-For more information about the unit test syntaxis, you can check out [Jasmine](https://jasmine.github.io/tutorials/your_first_suite).
+We are using [Jest](https://jestjs.io/) as our tests runner and we use [Jasmine](https://jasmine.github.io/tutorials/your_first_suite) for syntaxis.
 
 ### Code scaffolding
 

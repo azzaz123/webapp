@@ -118,7 +118,7 @@ describe('UploadConfirmationModalComponent', () => {
     });
 
     it('should send facebook AddToCart tracking', () => {
-      spyOn(window, 'fbq');
+      spyOn(window as any, 'fbq');
       component.item = MOCK_ITEM;
       const event = {
         value: component.item.salePrice,
@@ -133,7 +133,7 @@ describe('UploadConfirmationModalComponent', () => {
     });
 
     it('should send pinterest addtocart tracking', () => {
-      spyOn(window, 'pintrk');
+      spyOn(window as any, 'pintrk');
       component.item = MOCK_ITEM;
       const event = {
         value: component.item.salePrice,
