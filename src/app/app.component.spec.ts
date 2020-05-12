@@ -64,7 +64,6 @@ describe('App', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        ToastrModule.forRoot()
       ],
       declarations: [
         AppComponent

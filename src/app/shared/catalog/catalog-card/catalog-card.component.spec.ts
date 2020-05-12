@@ -71,7 +71,7 @@ describe('CatalogCardComponent', () => {
         },
         {
           provide: ToastService, useValue: {
-          error() {
+          show() {
           }
         }
         },

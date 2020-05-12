@@ -32,10 +32,7 @@ describe('CreditCardModalComponent', () => {
         ErrorsService,
         {
           provide: ToastService, useValue: {
-            error() {
-            },
-            success() {
-            }
+            show(){}
         }
         },
         {

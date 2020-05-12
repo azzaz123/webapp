@@ -44,6 +44,7 @@ describe('StripeCardElementComponent', () => {
           },
           {
             provide: ToastService, useValue: {
+              show(){}
             }
           }
         ],

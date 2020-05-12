@@ -137,10 +137,8 @@ describe('ListComponent', () => {
         },
         {
           provide: ToastService, useValue: {
-            error() {
-            },
-            success() {
-            }
+           
+            show(){}
           }
         },
         {

@@ -89,7 +89,7 @@ describe('CatalogItemComponent', () => {
         },
         {
           provide: ToastService, useValue: {
-            error() {
+            show() {
             }
           }
         },

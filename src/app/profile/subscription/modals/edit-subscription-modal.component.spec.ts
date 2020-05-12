@@ -46,10 +46,7 @@ describe('EditSubscriptionModalComponent', () => {
         },
         {
           provide: ToastService, useValue: {
-            error() {
-            },
-            show() {
-            },
+            show(){},
             i18nError() {
             },
             i18nSuccess() {

@@ -61,7 +61,7 @@ describe('CatalogItemActionsComponent', () => {
         },
         {
           provide: ToastService, useValue: {
-            error() {
+            show() {
             }
           }
         },
@@ -95,7 +95,7 @@ describe('CatalogItemActionsComponent', () => {
     router = TestBed.get(Router);
     eventService = TestBed.get(EventService);
     spyOn(modalService, 'open').and.callThrough();
-    spyOn(toastService, 'error');
+    spyOn(toastService, 'show');
   });
 
   describe('ngOnInit', () => {
@@ -154,7 +154,7 @@ describe('CatalogItemActionsComponent', () => {
       }));
 
       it('should open error toastService', () => {
-        expect(toastService.error).toHaveBeenCalledWith('Some listings have not been deleted due to an error');
+        expect(toastService.show).toHaveBeenCalledWith({text:'Some listings have not been deleted due to an error', type:"error"});
       });
     });
   });

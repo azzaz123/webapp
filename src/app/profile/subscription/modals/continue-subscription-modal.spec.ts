@@ -33,9 +33,7 @@ describe('ContinueSubscriptionModalComponent', () => {
         },
         {
           provide: ToastService, useValue: {
-            error() {
-            },
-            success() {
+            show() {
             },
             i18nError() {
             },

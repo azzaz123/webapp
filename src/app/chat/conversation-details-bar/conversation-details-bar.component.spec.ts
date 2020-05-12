@@ -98,7 +98,7 @@ describe('ConversationDetailsBarComponent', () => {
             }
           }
         },
-        { provide: ToastService, useClass: MockedToast },
+       
         { provide: ItemService, useClass: MockItemService },
         { provide: UserService, useClass: MockUserService },
         { provide: TrackingService, useClass: MockTrackingService },
@@ -149,7 +149,7 @@ describe('ConversationDetailsBarComponent', () => {
 
     it('should call the userService.reportUser and then close the modal and show a toast', fakeAsync(() => {
       spyOn(userService, 'reportUser').and.callThrough();
-      spyOn(toastService, 'success').and.callThrough();
+      spyOn(toastService, 'show').and.callThrough();
       component.currentConversation = MOCK_CONVERSATION();
 
       component.reportUserAction();
@@ -160,13 +160,13 @@ describe('ConversationDetailsBarComponent', () => {
         component.currentConversation.id,
         1,
         'Report User Reason');
-      expect(toastService.success).toHaveBeenCalledWith('The user has been reported correctly');
+      expect(toastService.show).toHaveBeenCalledWith({text:'The user has been reported correctly', type:"success"});
     }));
 
     it('should track the UserProfileRepported event', fakeAsync(() => {
       spyOn(trackingService, 'track');
       spyOn(userService, 'reportUser').and.callThrough();
-      spyOn(toastService, 'success').and.callThrough();
+      spyOn(toastService, 'show').and.callThrough();
       component.currentConversation = MOCK_CONVERSATION();
 
       component.reportUserAction();
@@ -192,20 +192,20 @@ describe('ConversationDetailsBarComponent', () => {
     describe('success', () => {
       it('should call the itemService.reportListing and then close the modal and show a toast', fakeAsync(() => {
         spyOn(itemService, 'reportListing').and.callThrough();
-        spyOn(toastService, 'success').and.callThrough();
+        spyOn(toastService, 'show').and.callThrough();
         component.currentConversation = MOCK_CONVERSATION();
 
         component.reportListingAction();
         tick();
 
         expect(itemService.reportListing).toHaveBeenCalledWith(ITEM_ID, 'Report Listing Reason', 1);
-        expect(toastService.success).toHaveBeenCalledWith('The listing has been reported correctly');
+        expect(toastService.show).toHaveBeenCalledWith({text:'The listing has been reported correctly', type:"success"});
       }));
 
       it('should track the ProductRepported event', fakeAsync(() => {
         spyOn(trackingService, 'track');
         spyOn(itemService, 'reportListing').and.callThrough();
-        spyOn(toastService, 'success').and.callThrough();
+        spyOn(toastService, 'show').and.callThrough();
         component.currentConversation = MOCK_CONVERSATION();
 
         component.reportListingAction();
@@ -223,13 +223,13 @@ describe('ConversationDetailsBarComponent', () => {
         spyOn(itemService, 'reportListing').and.returnValue(throwError({
           status: 403
         }));
-        spyOn(toastService, 'success').and.callThrough();
+        spyOn(toastService, 'show').and.callThrough();
         component.currentConversation = MOCK_CONVERSATION();
 
         component.reportListingAction();
         tick();
 
-        expect(toastService.success).toHaveBeenCalled();
+        expect(toastService.show).toHaveBeenCalled();
       }));
     });
   });
@@ -243,7 +243,7 @@ describe('ConversationDetailsBarComponent', () => {
 
     it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
-      spyOn(toastService, 'success').and.callThrough();
+      spyOn(toastService, 'show').and.callThrough();
       spyOn(blockUserService, 'blockUser').and.returnValue(of({}));
       spyOn(blockUserXmppService, 'blockUser').and.returnValue(of({}));
 
@@ -252,7 +252,7 @@ describe('ConversationDetailsBarComponent', () => {
 
       expect(blockUserService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
       expect(blockUserXmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
-      expect(toastService.success).toHaveBeenCalledWith('The user has been blocked');
+      expect(toastService.show).toHaveBeenCalledWith({text:'The user has been blocked', type:"success"});
     }));
   });
 
@@ -267,14 +267,14 @@ describe('ConversationDetailsBarComponent', () => {
       component.currentConversation = MOCK_CONVERSATION();
       spyOn(blockUserService, 'blockUser').and.returnValue(throwError(400));
       spyOn(blockUserXmppService, 'blockUser').and.returnValue(of({}));
-      spyOn(toastService, 'success').and.callThrough();
+      spyOn(toastService, 'show').and.callThrough();
 
       component.blockUserAction();
       tick();
 
       expect(blockUserService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
       expect(blockUserXmppService.blockUser).not.toHaveBeenCalled();
-      expect(toastService.success).not.toHaveBeenCalled();
+      expect(toastService.show).not.toHaveBeenCalled();
     }));
   });
 
@@ -289,14 +289,14 @@ describe('ConversationDetailsBarComponent', () => {
       component.currentConversation = MOCK_CONVERSATION();
       spyOn(blockUserXmppService, 'unblockUser').and.returnValue(of({}));
       spyOn(blockUserService, 'unblockUser').and.returnValue(of({}));
-      spyOn(toastService, 'success').and.callThrough();
+      spyOn(toastService, 'show').and.callThrough();
 
       component.unblockUserAction();
       tick();
 
       expect(blockUserService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
       expect(blockUserXmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
-      expect(toastService.success).toHaveBeenCalledWith('The user has been unblocked');
+      expect(toastService.show).toHaveBeenCalledWith({text:'The user has been unblocked',type:"success"});
     }));
   });
 
@@ -311,14 +311,14 @@ describe('ConversationDetailsBarComponent', () => {
       component.currentConversation = MOCK_CONVERSATION();
       spyOn(blockUserService, 'unblockUser').and.returnValue(throwError(400));
       spyOn(blockUserXmppService, 'unblockUser').and.returnValue(of({}));
-      spyOn(toastService, 'success').and.callThrough();
+      spyOn(toastService, 'show').and.callThrough();
 
       component.unblockUserAction();
       tick();
 
       expect(blockUserService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
       expect(blockUserXmppService.unblockUser).not.toHaveBeenCalled();
-      expect(toastService.success).not.toHaveBeenCalled();
+      expect(toastService.show).not.toHaveBeenCalled();
     }));
   });
 });
