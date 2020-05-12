@@ -1,4 +1,5 @@
-<ngb-toast *ngFor="let toast of toastService.toasts" [class]="toast.type" [autohide]="true" [delay]="2000"
+<ngb-toast *ngFor="let toast of toastService.toasts" [class]="toast.type" [autohide]="true" [delay]="5000"
     (hide)="toastService.remove(toast)">
+    
     <span>{{ toast.text }}</span>
 </ngb-toast> 
