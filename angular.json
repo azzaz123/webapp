@@ -37,7 +37,6 @@
               "src/ftlocal"
             ],
             "styles": [
-              "node_modules/ngx-toastr/toastr.css",
               "src/style/styles.scss"
             ],
             "scripts": [
@@ -107,7 +106,8 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "8kb"
                 }
-              ]}
+              ]
+            }
           }
         },
         "serve": {
@@ -151,7 +151,6 @@
               "src/assets/js/quantcast.js"
             ],
             "styles": [
-              "node_modules/ngx-toastr/toastr.css",
               "src/style/styles.scss"
             ],
             "assets": [
@@ -211,5 +210,8 @@
     "@schematics/angular:directive": {
       "prefix": "tsl"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
