@@ -140,7 +140,7 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
     const { token, error } = await this.stripeService.createToken(this.card);
 
     if (error) {
-      this.toastService.error(error.message);
+      this.toastService.show({text:error.message, type:'error'});
     } else {
       this.stripeCardToken.emit(token);
     }

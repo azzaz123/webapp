@@ -75,9 +75,9 @@ export class CatalogItemComponent implements OnInit {
           this.openReactivateDialog(item, orderEvent);
         }
       } else {
-        this.toastService.error(DEFAULT_ERROR_MESSAGE);
+        this.toastService.show({text:DEFAULT_ERROR_MESSAGE,type:'error'});
       }
-    }, () => this.toastService.error(DEFAULT_ERROR_MESSAGE));
+    }, () => this.toastService.show({text:DEFAULT_ERROR_MESSAGE,type:'error'}));
   }
 
   private buildOrderEvent(item: Item, product: Product): OrderEvent {

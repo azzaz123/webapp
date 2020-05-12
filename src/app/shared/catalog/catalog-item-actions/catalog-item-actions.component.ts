@@ -85,7 +85,7 @@ export class CatalogItemActionsComponent implements OnInit {
           this.getCounters.emit();
         });
         if (response.failedIds.length) {
-          this.toastService.error(this.i18n.getTranslations('bulkDeleteError'));
+          this.toastService.show({text:this.i18n.getTranslations('bulkDeleteError'), type:'error'});
         }
       });
     });

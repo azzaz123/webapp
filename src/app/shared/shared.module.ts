@@ -71,7 +71,6 @@ import { PreventDoubleClickDirective } from './prevent-double-click/prevent-doub
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
 import { StatusIconComponent } from './status-icon';
-import { ToastComponent } from './toast/toast.component';
 
 @NgModule({
   imports: [
@@ -206,7 +205,7 @@ import { ToastComponent } from './toast/toast.component';
     LinkTransformPipe,
     PreventDoubleClickDirective,
     DateUntilDayPipe,
-    ToastComponent
+   
   ],
   providers: [
     DecimalPipe,

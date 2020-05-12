@@ -36,12 +36,12 @@ export class CancelSubscriptionModalComponent {
     this.trackCancelSubscription();
     this.subscriptionsService.cancelSubscription(this.subscription.selected_tier_id).subscribe((response) => {
       if (response.status === 202) {
-          this.toastService.success(this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'));
+          this.toastService.show({text:this.i18n.getTranslations('cancelSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionSuccessBody'), type:'success'});
           this.loading = false;
           this.activeModal.close('success');
       } else {
         this.loading = false;
-        this.toastService.error(this.i18n.getTranslations('cancelSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionErrorBody'));
+        this.toastService.show({text:this.i18n.getTranslations('cancelSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('cancelSubscriptionErrorBody'), type:'error'});
         this.activeModal.close('fail');
       }
     });

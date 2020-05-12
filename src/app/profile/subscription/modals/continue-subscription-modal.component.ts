@@ -34,11 +34,11 @@ export class ContinueSubscriptionModalComponent {
     this.subscriptionsService.continueSubscription(this.subscription.selected_tier_id).subscribe(() => {
       this.loading = false;
       this.close();
-      this.toastService.success(this.i18n.getTranslations('continueSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('continueSubscriptionSuccessBody'));
+      this.toastService.show({text:this.i18n.getTranslations('continueSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('continueSubscriptionSuccessBody'),type:'success'});
     }, () => {
       this.loading = false;
       this.close();
-      this.toastService.error(this.i18n.getTranslations('continueSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('continueSubscriptionErrorBody'));
+      this.toastService.show({text:this.i18n.getTranslations('continueSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('continueSubscriptionErrorBody'),type:'error'});
     });
     
   }
