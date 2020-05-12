@@ -44,10 +44,10 @@
   <button class="btn btn-primary new-messages-toast" *ngIf="showNewMessagesToast" (click)="scrollToTop()"
           [@appearInOut]>
     <mat-icon svgIcon="up-arrow-white"></mat-icon>
-    <span i18n>New messages</span>
+    <span i18n="@@newMessages">New messages</span>
   </button>
   <div id="conversations" [hidden]="loading">
-    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n>We found some problems updating your inbox. Try again later.
+    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n="@@updateInboxWarning">We found some problems updating your inbox. Try again later.
     </div>
     <div *ngIf="hasConversations()" id="inbox-data">
       <tsl-inbox-conversation *ngFor="let conversation of conversations"
@@ -66,14 +66,14 @@
   <div class="load-more-container" *ngIf="showLoadMore()">
     <a class="load-more">
       <mat-icon svgIcon="spinner" [hidden]="!loadingMore" class="spinner"></mat-icon>
-      <span [hidden]="loadingMore" (click)="loadMore()" i18n>Load more</span>
+      <span [hidden]="loadingMore" (click)="loadMore()" i18n="@@loadMoreButton">Load more</span>
     </a>
   </div>
 </div>
 
 <div *ngIf="isArchived" class="scroll-panel" [ngClass]="{professional: isProfessional}">
   <div id="conversations" [hidden]="loading">
-    <div *ngIf="errorRetrievingArchived" class="inboxError" i18n>We found some problems updating your archived messages. Try again later.
+    <div *ngIf="errorRetrievingArchived" class="inboxError" i18n="@@updateArchivedMessagesWarning">We found some problems updating your archived messages. Try again later.
     </div>
     <div *ngIf="hasArchivedConversations()" id="inbox-data">
       <tsl-archived-inbox-conversation *ngFor="let conversation of archivedConversations"
@@ -92,7 +92,7 @@
   <div class="load-more-container" *ngIf="showLoadMoreArchived()">
     <a class="load-more">
       <mat-icon svgIcon="spinner" [hidden]="!loadingMore" class="spinner"></mat-icon>
-      <span [hidden]="loadingMore" (click)="loadMoreArchived()" i18n>Load more</span>
+      <span [hidden]="loadingMore" (click)="loadMoreArchived()" i18n="@@loadMoreButton">Load more</span>
     </a>
   </div>
 </div>

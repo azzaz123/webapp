@@ -15,12 +15,12 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <translationbundle lang="es">
-  <translation id="33149636091572968">Cargar más</translation>
+  <translation id="loadMoreButton">Cargar más</translation>
   <translation id="7579940623714391431">Borrar conversación</translation>
   <translation id="deleteConversation">Borrar conversación</translation>
   <translation id="5762515103229902547">Se procederá a borrar la conversación.</translation>
-  <translation id="deleteConversationWarring">Se procederá a borrar la conversación.</translation>
-  <translation id="archiveConversationWarring">Se procederá a archivar la conversación.</translation>
+  <translation id="deleteConversationWarning">Se procederá a borrar la conversación.</translation>
+  <translation id="archiveConversationWarning">Se procederá a archivar la conversación.</translation>
   <translation id="2159130950882492111">Cancelar</translation>
   <translation id="cancelButton">Cancelar</translation>
   <translation id="deleteButton">Borrar</translation>
@@ -41,7 +41,7 @@
   <translation id="7240635163184231751">Desbloquear usuario</translation>
   <translation id="4644715650405235071">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
   <translation id="3325766019344626759">No hay mensajes</translation>
-  <translation id="8032820066123493751">Nuevos mensajes</translation>
+  <translation id="newMessages">Nuevos mensajes</translation>
   <translation id="7443033219479243959">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
   <translation id="4896863464728200563">Escribe un mensaje...</translation>
   <translation id="3093507871243266697">Esperando red...</translation>
@@ -820,8 +820,8 @@
   <translation id="6184998176074927571" desc="La distancia entre el usuario y el item">
       <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km de ti
   </translation>
-  <translation id="6874509246509696354">Hemos encontrado un problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
-  <translation id="584537771740074660">Hemos encontrado un problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
+  <translation id="updateArchivedMessagesWarning">Hemos encontrado un problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
+  <translation id="updateInboxWarning">Hemos encontrado un problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
   <translation id="6721544969146753310">Gracias por la valoración</translation>
   <translation id="2094431645371030704">Precio financiado (opcional)</translation>
   <translation id="8147495527699050606">Precio final financiado</translation>
