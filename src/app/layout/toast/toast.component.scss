@@ -16,6 +16,7 @@ ngb-toast {
     right: 12px;
     width: 300px;
     height: 120px;
+  
     
     &.success {
         @extend %toast;
@@ -25,15 +26,10 @@ ngb-toast {
         @extend %toast;
         background-color: $negative-main;
     }
-    span {
-        display:inline-block;
-        width: 80%;
+    .toast-title {
+        font-weight:$font-weight-chunky;
+        padding:0 $spacing-s;
     }
-    .toast-icon-wrapper {
-        float:left;
-        height:100%;
-        width: 20%;
-        background-color: orange;    
-    }
+   
     
 }
