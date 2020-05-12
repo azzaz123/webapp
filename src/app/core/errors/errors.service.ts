@@ -24,7 +24,7 @@ export class ErrorsService {
       } else {
         message = error.message ? error.message : DEFAULT_ERROR_MESSAGE;
       }
-      this.toastService.show({text:message + 'Oops!', type:'error'});
+      this.toastService.show({text:message, title:'Oops!', type:'error'});
     }
   }
 
