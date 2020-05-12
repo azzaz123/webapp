@@ -25,17 +25,12 @@ const CATALOG_PRO_LIST_URL = 'pro/catalog/list';
 export class CheckoutProComponent implements OnInit {
 
   itemsWithProducts: ItemWithProducts[];
-  itemSelected: CartProItem;
   calendarHidden = true;
   selectAllEventSubject: Subject<{}> = new Subject<{}>();
-  allSelectedCityBump: boolean;
-  allSelectedCountryBump: boolean;
-  allSelectedPlanning: boolean;
   calendarType: string;
   newSelectedDates: CalendarDates;
   todayDate: NgbDate;
   tomorrowDate: NgbDate;
-  newBumpType: string;
 
   allSelected = {
     countrybump: false,
@@ -60,14 +55,6 @@ export class CheckoutProComponent implements OnInit {
       }
     });
   }
-
-  /*onDateFocus(item: CartProItem) {
-    this.calendarType = null;
-    this.itemSelected = {... item};
-    this.newBumpType = this.itemSelected.bumpType;
-    this.newSelectedDates = item.selectedDates;
-    this.toggleCalendar();
-  }*/
   
   public onApplyCalendar(datesFromCalendar: CalendarDates): void {
     this.newSelectedDates = datesFromCalendar;
@@ -76,16 +63,12 @@ export class CheckoutProComponent implements OnInit {
       this.selectAllEventSubject.next({type: this.calendarType, allSelected: false, dates: datesFromCalendar});
       this.allSelected.planning = false;
       
-    } else {
-      this.itemSelected.selectedDates = datesFromCalendar;
-      this.addToCart();
     }
     this.calendarType = null;
   }
 
   public selectAll(type: string): void {
     this.calendarType = type;
-    this.newBumpType = type;
 
     if (type !== BUMPS.PLANNING) {
       this.allSelected[type] = !this.allSelected[type];
@@ -102,12 +85,7 @@ export class CheckoutProComponent implements OnInit {
     }
   }
 
-  private addToCart(): void {
-    this.cartService.add(this.itemSelected, this.itemSelected.bumpType);
-    this.toggleCalendar();
-  }
-
-  private setDefaultDates() {
+  private setDefaultDates(): void {
     if (!this.newSelectedDates) {
       this.todayDate = this.calendar.getToday();
       this.tomorrowDate = this.calendar.getNext(this.todayDate);
@@ -115,7 +93,7 @@ export class CheckoutProComponent implements OnInit {
     }
   }
 
-  private toggleCalendar() {
+  private toggleCalendar(): void {
     this.calendarHidden = !this.calendarHidden;
   }
 

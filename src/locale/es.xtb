@@ -1032,5 +1032,8 @@
   <translation id="cardealerChangeCityPlan">Para cambiar tu plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
   <translation id="cardealerSubscribeCountryPlan">Para subscribirte a un plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
   <translation id="cardealerChangeCountryPlan">Para cambiar tu plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="CheckoutProCountryApplyAll">Aplicar a todos</translation>
+  <translation id="CheckoutProCityApplyAll">Aplicar a todos</translation>
+  <translation id="CheckoutProPlanningApplyAll">Programar todos</translation>
 
 </translationbundle>

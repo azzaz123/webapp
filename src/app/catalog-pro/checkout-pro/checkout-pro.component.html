@@ -73,7 +73,7 @@
   <tsl-range-datepicker *ngIf="!calendarHidden"
     (applyCalendar)="onApplyCalendar($event)"
     (closeCalendar)="calendarHidden = true"
-    [bumpType]="newBumpType"
+    [bumpType]="calendarType"
     [selectedDates]="newSelectedDates"
     >
   </tsl-range-datepicker>

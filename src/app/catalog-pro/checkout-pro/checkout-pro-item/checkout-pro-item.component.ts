@@ -6,7 +6,7 @@ import { CartChange, CartProItem } from '../../../shared/catalog/cart/cart-item.
 import { CartService } from '../../../shared/catalog/cart/cart.service';
 import { CartPro } from '../../../shared/catalog/cart/cart-pro';
 import { Observable } from 'rxjs';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 export enum BUMPS {
   CITY = 'citybump',
@@ -62,13 +62,6 @@ export class CheckoutProItemComponent implements OnInit {
     this.calendarType = null;
     this.newBumpType = this.cartProItem.bumpType;
     this.toggleCalendar();
-  }
-
-  public updateDate(datesFromCalendar: CalendarDates): void {
-    this.cartProItem.selectedDates = datesFromCalendar;
-    this.patchFormDateValue(datesFromCalendar);
-    this.addToCart();
-    this.calendarType = null;
   }
 
   public onApplyCalendar(datesFromCalendar: CalendarDates): void {
@@ -129,7 +122,7 @@ export class CheckoutProItemComponent implements OnInit {
     || this.cartProItem.bumpType !== data.type && this.cartProItem.bumpType && data.allSelected
   }
 
-  private onRemoveOrClean(cartProChange: CartChange): void {
+  onRemoveOrClean(cartProChange: CartChange): void {
     if (cartProChange.action === 'remove' && cartProChange.itemId === this.cartProItem.item.id || cartProChange.action === 'clean') {
       delete this.cartProItem.bumpType;
       this.cartProItem.selectedDates.fromDate = this.todayDate;
