@@ -7,7 +7,6 @@ import { SanitizedBackgroundDirective } from '../sanitized-background/sanitized-
 import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH, Item } from '../../core/item/item';
 import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 
 describe('ItemAvatarComponent', () => {
   let component: ItemAvatarComponent;
@@ -40,7 +39,6 @@ describe('ItemAvatarComponent', () => {
 
   it('should set the light fallback', () => {
     component.item = MOCK_ITEM;
-    component.inboxItem = CREATE_MOCK_INBOX_CONVERSATION();
     component.fallbackLight = true;
     component.ngOnChanges();
     expect(component.fallback).toBe(FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH);
