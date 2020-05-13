@@ -1,3 +1,4 @@
+import { CategoryResponse } from './../../core/category/category-response.interface';
 import { AnalyticsService } from './../../core/analytics/analytics.service';
 import {
   Component,
@@ -26,11 +27,11 @@ import { Item, ITEM_TYPES } from '../../core/item/item';
 import { DeliveryInfo, ItemContent } from '../../core/item/item-response.interface';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { UserService } from '../../core/user/user.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
@@ -114,7 +115,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private oldFormValue: any;
   private oldDeliveryValue: any;
   public isUrgent = false;
-  private allCategories: CategoryOption[];
+  private allCategories: CategoryResponse[];
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
 
@@ -166,16 +167,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngOnInit() {
-    this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
-      this.allCategories = categories;
-      this.categories = categories.filter((category: CategoryOption) => {
-        return !this.categoryService.isHeroCategory(+category.value);
-      });
-      if (!this.userService.isPro) {
-        this.categories = this.categories.filter((category: CategoryOption) => {
-          return +category.value !== CATEGORY_IDS.HELP
-        });
-      }
+
+    this.getUploadCategoriesOptions().subscribe((categories: CategoryOption[]) => {
+      this.categories = categories;
+
       this.detectCategoryChanges();
       if (!this.item) {
         if (this.categoryId && this.categoryId !== '-1') {
@@ -474,6 +469,34 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public updateUploadPercentage(percentage: number) {
     this.uploadCompletedPercentage = Math.round(percentage);
+  }
+
+  private getUploadCategoriesOptions(): Observable<CategoryOption[]> {
+    return this.categoryService.getCategories().pipe(
+      tap(categories => this.allCategories = categories),
+      map(categories => this.getConsumerGoodCategories(categories)),
+      map(categories => this.getNgSelectOptions(categories)));
+  }
+
+  private getConsumerGoodCategories(categories: CategoryResponse[]): CategoryResponse[] {
+    const userCategories = categories.filter((category) =>
+      category.vertical_id === 'consumer_goods' && !this.categoryService.isHeroCategory(+category.category_id)
+    );
+
+    if (this.userService.isPro) {
+      return userCategories;
+    }
+    return userCategories.filter((category) => +category.category_id !== CATEGORY_IDS.HELP);
+  }
+
+  private getNgSelectOptions(categories: CategoryResponse[]): CategoryOption[] {
+    return categories.map(category => {
+      return {
+        value: category.category_id.toString(),
+        label: category.name,
+        icon_id: category.icon_id,
+      }
+    });
   }
 
   private getConditions(): void {
