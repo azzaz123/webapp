@@ -15,9 +15,7 @@ export class CategoryService {
   private categories: CategoryResponse[];
   private lang = this.i18n.locale === 'es' ? this.i18n.locale + '_ES' : this.i18n.locale;
 
-  constructor(private http: HttpClient,
-    private i18n: I18nService) {
-  }
+  constructor(private http: HttpClient, private i18n: I18nService) { }
 
   public getCategoryById(id: number): Observable<CategoryResponse> {
     return this.getCategories().pipe(map(categories => categories.find(category => category.category_id === id)));

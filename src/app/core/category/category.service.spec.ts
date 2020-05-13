@@ -1,17 +1,14 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { TestBed, getTestBed } from '@angular/core/testing';
-import { CategoryService, CONSUMER_GOODS_ENDPOINT } from './category.service';
+import { CategoryService } from './category.service';
 import {
-  CATEGORIES_DATA_CONSUMER_GOODS, CATEGORIES_OPTIONS,
   CATEGORY_DATA_WEB
 } from '../../../tests/category.fixtures.spec';
 import { CategoryResponse } from './category-response.interface';
-import { IOption } from 'ng-select';
 import { I18nService } from '../i18n/i18n.service';
 import { HttpModuleNew } from '../http/http.module.new';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { LOCALE_ID } from '@angular/core';
 
 describe('CategoryService', () => {
@@ -47,45 +44,6 @@ describe('CategoryService', () => {
       });
 
       expect(response).toEqual(CATEGORY_DATA_WEB);
-    });
-  });
-
-  describe('getUploadCategories', () => {
-    let response: IOption[];
-    beforeEach(() => {
-      response = null;
-      spyOn(http, 'get').and.returnValue(observableOf(CATEGORIES_DATA_CONSUMER_GOODS));
-    });
-
-    it('should return the json from the categories and convert it into options', () => {
-      service.getUploadCategories().subscribe((data: IOption[]) => {
-        response = data;
-      });
-
-      expect(http.get).toHaveBeenCalledWith(`${environment.baseUrl}${CONSUMER_GOODS_ENDPOINT}`, { params: { language: 'es_ES' }});
-      expect(response).toEqual(CATEGORIES_OPTIONS);
-    });
-
-    it('should cache results', () => {
-      service.getUploadCategories().subscribe((data: IOption[]) => {
-        response = data;
-      });
-      service.getUploadCategories().subscribe((data: IOption[]) => {
-        response = data;
-      });
-
-      expect(http.get).toHaveBeenCalledTimes(1);
-      expect(response).toEqual(CATEGORIES_OPTIONS);
-    });
-  });
-
-  describe('isHeroCategory', () => {
-    it('should return true if categoryId is a hero category', () => {
-      expect(service.isHeroCategory(100)).toBeTruthy();
-    });
-
-    it('should return false if categoryId is not a hero category', () => {
-      expect(service.isHeroCategory(5)).toBeFalsy();
     });
   });
 
