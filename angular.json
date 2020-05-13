@@ -158,8 +158,5 @@
     "@schematics/angular:directive": {
       "prefix": "tsl"
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }
