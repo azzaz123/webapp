@@ -63,7 +63,7 @@ const routes: Routes = [
           isMyZone: true,
           isProfile: true,
           permissions: {
-            only: PERMISSIONS.professional,
+            only: PERMISSIONS.featured,
             redirectTo: '/profile'
           }
         }

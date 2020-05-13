@@ -11,6 +11,12 @@ import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-
 import { finalize } from 'rxjs/operators';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 
+export enum BILLING_TYPE {
+  NATURAL = '0',
+  LEGAL = '1'
+}
+
+
 @Component({
   selector: 'tsl-profile-pro-billing',
   templateUrl: './profile-pro-billing.component.html',
@@ -21,6 +27,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
   public billingForm: FormGroup;
   public isNewBillingInfoForm = true;
   public loading = false;
+  public registrationType: string;
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
 
   constructor(private fb: FormBuilder,
@@ -28,13 +35,14 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
               private errorsService: ErrorsService,
               private modalService: NgbModal) {
     this.billingForm = fb.group({
+      registrationType: ['', [Validators.required]],
       cif: ['', [Validators.required]],
       city: ['', [Validators.required]],
       company_name: ['', [Validators.required]],
       country: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
+      email: [''],
       name: ['', [Validators.required]],
-      phone: ['', [Validators.required]],
+      phone: [''],
       postal_code: ['', [Validators.required]],
       street: ['', [Validators.required]],
       surname: ['', [Validators.required]],
@@ -42,22 +50,51 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     });
   }
 
+  onChanges() {
+    this.billingForm.get('registrationType').valueChanges.subscribe(val => {
+      this.registrationType = val;
+      if (val === BILLING_TYPE.NATURAL) {
+        this.billingForm.get('name').setValidators(Validators.required);
+        this.billingForm.get('surname').setValidators(Validators.required);
+      } else {
+        this.billingForm.get('company_name').setValidators(Validators.required);
+        this.billingForm.get('name').setValidators(null);
+        this.billingForm.get('surname').setValidators(null);
+      }
+      
+    });
+  }
+
   initForm() {
     this.paymentService.getBillingInfo().subscribe((billingInfo: BillingInfoResponse) => {
       this.isNewBillingInfoForm = false;
+      this.registrationType = BILLING_TYPE.NATURAL;//billingInfo.type
       this.billingForm.patchValue(billingInfo);
       for (const control in this.billingForm.controls) {
         if (this.billingForm.controls.hasOwnProperty(control)) {
           this.billingForm.controls[control].markAsDirty();
         }
       }
+      this.onChanges();
+    }, () => {
+      this.registrationType = BILLING_TYPE.NATURAL;
+      this.onChanges();
     });
   }
 
   public onSubmit() {
     if (this.billingForm.valid) {
       this.loading = true;
-      
+      if (this.billingForm.get('registrationType').value === BILLING_TYPE.LEGAL) {
+        this.billingForm.patchValue({
+          name: '',
+          surname: ''
+        });
+      } else {
+        this.billingForm.patchValue({
+          company_name: ''
+        });
+      }
       this.paymentService.updateBillingInfo(this.billingForm.value)
       .pipe(finalize(() => this.loading = false))
       .subscribe(() => {

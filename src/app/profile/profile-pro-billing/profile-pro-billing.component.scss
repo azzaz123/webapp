@@ -1,14 +1,45 @@
 @import "~style/common";
 
 .delete-link {
-    text-decoration: underline;
-    color: $blue-grey-4;
-    font-size: $font-size-s;
-    cursor: pointer;
-    text-align: end;
-    align-items: end;
-    display: grid;
-    &:hover {
-        text-decoration: none;
+  text-decoration: underline;
+  color: $blue-grey-4;
+  font-size: $font-size-s;
+  cursor: pointer;
+  text-align: end;
+  align-items: end;
+  display: grid;
+  &:hover {
+      text-decoration: none;
+  }
+}
+
+form {
+  input,
+  textarea {
+    &.ng-dirty.ng-invalid {
+      border: 1px solid $negative-main !important;
     }
+  }
+  ng-select.ng-dirty.ng-invalid > div {
+    border: 1px solid $negative-main !important;
+  }
+  .input-radio.ng-dirty.ng-invalid input {
+    border: 1px solid $negative-main !important;
+  }
+
+  &.disabled {
+    .form-control:disabled {
+      cursor: auto;
+      border: 0;
+    }
+  }
+}
+.RegistrationType{
+  display: flex;
+  .RegistrationType_radio {
+    margin: 0 $spacing-l 0 0;
+    .RegistrationType_title {
+      margin: 0 $spacing-s;
+    }
+  }
 }
