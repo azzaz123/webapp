@@ -31,11 +31,6 @@ describe('CreditCardModalComponent', () => {
         EventService,
         ErrorsService,
         {
-          provide: ToastService, useValue: {
-            show(){}
-        }
-        },
-        {
           provide: StripeService, useValue: {
             buy() {}
           }

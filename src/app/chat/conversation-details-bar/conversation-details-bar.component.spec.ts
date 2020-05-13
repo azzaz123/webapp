@@ -44,12 +44,6 @@ class MockItemService {
   }
 }
 
-class MockedToast {
-
-  success(message: string, title?: string): any {
-  }
-}
-
 class MockConversationService {
   public loadMoreMessages() {
   }

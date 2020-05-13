@@ -45,15 +45,6 @@ describe('EditSubscriptionModalComponent', () => {
           }
         },
         {
-          provide: ToastService, useValue: {
-            show(){},
-            i18nError() {
-            },
-            i18nSuccess() {
-            }
-          }
-        },
-        {
           provide: NgbModal, useValue: {
             open() {
               return {

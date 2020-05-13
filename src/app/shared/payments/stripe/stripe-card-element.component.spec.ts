@@ -41,11 +41,6 @@ describe('StripeCardElementComponent', () => {
                 }
               }
           }
-          },
-          {
-            provide: ToastService, useValue: {
-              show(){}
-            }
           }
         ],
         schemas: [NO_ERRORS_SCHEMA]

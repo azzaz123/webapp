@@ -136,12 +136,6 @@ describe('ListComponent', () => {
           }
         },
         {
-          provide: ToastService, useValue: {
-           
-            show(){}
-          }
-        },
-        {
           provide: ActivatedRoute, useValue: {
             params: of({
               code: 200

@@ -85,15 +85,6 @@ describe('CatalogProListComponent', () => {
           }
         },
         {
-          provide: ToastService, useValue: {
-            show(){},
-            i18nError() {
-            },
-            i18nSuccess() {
-            }
-          }
-        },
-        {
           provide: UserService, useValue: {
             getStats() {
               return observableOf(MOCK_USER_STATS);
