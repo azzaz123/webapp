@@ -78,7 +78,7 @@ describe('Service: Didomi', () => {
   });
 
   describe('when user does not accept Google vendor', () => {
-    it('should', () => {
+    it('should not allow user segmentation for ads', () => {
       spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake(key => {
         if (key === 'google') {
           return false;
@@ -90,7 +90,7 @@ describe('Service: Didomi', () => {
   });
 
   describe('when user does not accept the personalized ads purpouse', () => {
-    it('should', () => {
+    it('should not allow user segmentation for ads', () => {
       spyOn(Didomi, 'getUserConsentStatusForPurpose').and.callFake(key => {
         if (key === 'advertising_personalization') {
           return false;
