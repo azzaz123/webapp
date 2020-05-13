@@ -16,8 +16,4 @@ export interface CategoryFields {
 
 export interface CategoryOption extends IOption {
   icon_id: string;
-  has_object_type?: boolean;
-  has_brand?: boolean;
-  has_model?: boolean;
-  object_type_title?: string;
 }
