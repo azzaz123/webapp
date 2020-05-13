@@ -1,5 +1,5 @@
 
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
@@ -32,7 +32,7 @@ export class CategoryService {
       headers: {
         'Accept': 'application/vnd.categories-v2+json'
       }
-    });
+    }).pipe(tap(categories => this.categories = categories));
   }
 
   public getConsumerGoodsCategory(): CategoryResponse {
