@@ -13,7 +13,6 @@ export const CONSUMER_GOODS_ENDPOINT = `${CATEGORIES_ENDPOINT}consumer_goods`;
 @Injectable()
 export class CategoryService {
   private categories: CategoryResponse[];
-  private heroCategoriesIds = [100, 13200, 13000, 21000];
   private lang = this.i18n.locale === 'es' ? this.i18n.locale + '_ES' : this.i18n.locale;
 
   constructor(private http: HttpClient,
@@ -34,10 +33,6 @@ export class CategoryService {
         'Accept': 'application/vnd.categories-v2+json'
       }
     });
-  }
-
-  public isHeroCategory(categoryId: number) {
-    return this.heroCategoriesIds.indexOf(categoryId) !== -1;
   }
 
   public getConsumerGoodsCategory(): CategoryResponse {

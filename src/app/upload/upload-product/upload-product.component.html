@@ -40,14 +40,13 @@
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="category" i18n>Category</label>
-          <ng-select [hidden]="fixedCategory" i18n-placeholder placeholder="Category" class="form-control"
-            formControlName="category_id" id="category" [options]="categories" noFilter="10">
+          <ng-select [disabled]="isHeroCategory(uploadForm.value?.category_id)" i18n-placeholder placeholder="Category"
+            class="form-control" formControlName="category_id" id="category" [options]="categories" noFilter="10">
             <ng-template #optionTemplate let-option="option">
               <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
               {{ option?.label }}
             </ng-template>
           </ng-select>
-          <input *ngIf="fixedCategory" disabled type="text" class="form-control" [value]="fixedCategory" />
         </div>
       </div>
       <ng-template #coachmarkPrice>

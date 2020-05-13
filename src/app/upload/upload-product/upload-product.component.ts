@@ -108,14 +108,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }];
   public categories: CategoryOption[] = [];
   public loading: boolean;
-  public fixedCategory: string;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @ViewChild('title', { static: true }) titleField: ElementRef;
   private focused: boolean;
   private oldFormValue: any;
   private oldDeliveryValue: any;
   public isUrgent = false;
-  private allCategories: CategoryResponse[];
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
 
@@ -172,38 +170,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.categories = categories;
 
       this.detectCategoryChanges();
-      if (!this.item) {
-        if (this.categoryId && this.categoryId !== '-1') {
-          this.uploadForm.get('category_id').patchValue(this.categoryId);
-          const fixedCategory = find(categories, { value: this.categoryId });
-          this.fixedCategory = fixedCategory ? fixedCategory.label : null;
-          this.uploadForm.get('delivery_info').patchValue(null);
-        } else {
-          this.fixedCategory = null;
-        }
-      } else {
-        const selectedCategory = find(categories, { value: this.item.categoryId.toString() });
-
-        if (this.categoryService.isHeroCategory(this.item.categoryId)) {
-          this.fixedCategory = selectedCategory ? selectedCategory.label : null;
-        }
-        this.uploadForm.patchValue({
-          id: this.item.id,
-          title: this.item.title,
-          sale_price: this.item.salePrice,
-          currency_code: this.item.currencyCode,
-          description: this.item.description,
-          sale_conditions: this.item.saleConditions ? this.item.saleConditions : {},
-          category_id: this.item.categoryId.toString(),
-          delivery_info: this.getDeliveryInfo(),
-          extra_info: this.item.extraInfo || {}
-        });
-        this.oldDeliveryValue = this.getDeliveryInfo();
-        if (+this.item.categoryId === this.fashionCategoryId) {
-          this.getSizes();
-        }
-        this.getObjectTypes();
-        this.getConditions();
+      if (this.item) {
+        this.initializeEditForm();
       }
       this.detectFormChanges();
     });
@@ -211,8 +179,33 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.categoryId) {
-      this.setFixedCategory(changes.categoryId.currentValue);
+      if (changes.categoryId.currentValue === '-1') {
+        this.uploadForm.get('category_id').reset();
+      }
+      if (changes.categoryId.currentValue !== '-1') {
+        this.uploadForm.patchValue({ category_id: changes.categoryId.currentValue });
+      }
     }
+  }
+
+  private initializeEditForm() {
+    this.uploadForm.patchValue({
+      id: this.item.id,
+      title: this.item.title,
+      sale_price: this.item.salePrice,
+      currency_code: this.item.currencyCode,
+      description: this.item.description,
+      sale_conditions: this.item.saleConditions ? this.item.saleConditions : {},
+      category_id: this.item.categoryId.toString(),
+      delivery_info: this.getDeliveryInfo(),
+      extra_info: this.item.extraInfo || {}
+    });
+    this.oldDeliveryValue = this.getDeliveryInfo();
+    if (+this.item.categoryId === this.fashionCategoryId) {
+      this.getSizes();
+    }
+    this.getObjectTypes();
+    this.getConditions();
   }
 
   private detectFormChanges() {
@@ -356,16 +349,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.isUrgent = isUrgent;
   }
 
-  private setFixedCategory(categoryId: string) {
-    if (categoryId === '-1') {
-      this.fixedCategory = null;
-    } else {
-      const fixedCategory = find(this.allCategories, { value: categoryId });
-      this.fixedCategory = fixedCategory ? fixedCategory.label : null;
-      this.uploadForm.get('category_id').patchValue(categoryId);
-    }
-  }
-
   public emitLocation(): void {
     this.locationSelected.emit(this.categoryId);
   }
@@ -473,14 +456,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private getUploadCategoriesOptions(): Observable<CategoryOption[]> {
     return this.categoryService.getCategories().pipe(
-      tap(categories => this.allCategories = categories),
       map(categories => this.getConsumerGoodCategories(categories)),
       map(categories => this.getNgSelectOptions(categories)));
   }
 
   private getConsumerGoodCategories(categories: CategoryResponse[]): CategoryResponse[] {
     const userCategories = categories.filter((category) =>
-      category.vertical_id === 'consumer_goods' && !this.categoryService.isHeroCategory(+category.category_id)
+      category.vertical_id === 'consumer_goods'
     );
 
     if (this.userService.isPro) {
@@ -497,6 +479,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         icon_id: category.icon_id,
       }
     });
+  }
+
+  public isHeroCategory(category_id: number): boolean {
+    const HERO_CATEGORIES = [CATEGORY_IDS.CAR, CATEGORY_IDS.SERVICES, CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.JOBS];
+
+    return HERO_CATEGORIES.includes(+category_id);
   }
 
   private getConditions(): void {
