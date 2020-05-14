@@ -68,10 +68,10 @@ describe('Component: Conversation', () => {
       expect(component.conversation.cannotChat).toBe(true);
     });
 
-    it('should set conversation.cannotChat to FALSE when the conversation item is not available', () => {
+    it('should set conversation.cannotChat to TRUE when the conversation item is not available', () => {
       component.conversation.item.status = InboxItemStatus.NOT_AVAILABLE;
 
-      expect(component.conversation.cannotChat).toBe(false);
+      expect(component.conversation.cannotChat).toBe(true);
     });
 
     it('should set conversation.cannotChat to FALSE when none of the above conditions are met', () => {
