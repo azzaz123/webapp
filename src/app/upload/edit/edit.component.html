@@ -20,7 +20,6 @@
                         [item]="item"
                         (onValidationError)="onValidationError()"
                         (onFormChanged)="onFormChanged($event)"
-                        [categoryId]="categoryId"
                         [urgentPrice]="urgentPrice"
                         (onCategorySelect)="getUrgentPrice($event)"
                         (locationSelected)="getUrgentPrice(categoryId)">

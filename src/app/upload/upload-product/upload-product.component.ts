@@ -165,8 +165,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngOnInit() {
-
-    this.getUploadCategoriesOptions().subscribe((categories: CategoryOption[]) => {
+    this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories;
 
       this.detectCategoryChanges();
@@ -454,7 +453,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.uploadCompletedPercentage = Math.round(percentage);
   }
 
-  private getUploadCategoriesOptions(): Observable<CategoryOption[]> {
+  private getUploadCategories(): Observable<CategoryOption[]> {
     return this.categoryService.getCategories().pipe(
       map(categories => this.getConsumerGoodCategories(categories)),
       map(categories => this.getNgSelectOptions(categories)));

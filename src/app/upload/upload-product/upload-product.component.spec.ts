@@ -5,11 +5,11 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { UploadProductComponent } from './upload-product.component';
 import { CategoryService } from '../../core/category/category.service';
-import { CATEGORIES_OPTIONS, CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../../tests/category.fixtures.spec';
+import { CATEGORIES_OPTIONS_CONSUMER_GOODS, CATEGORIES_DATA_CONSUMER_GOODS } from '../../../tests/category.fixtures.spec';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
@@ -60,7 +60,6 @@ describe('UploadProductComponent', () => {
   let errorService: ErrorsService;
   let generalSuggestionsService: GeneralSuggestionsService;
   let router: Router;
-  let categoryService: CategoryService;
   let modalService: NgbModal;
   let trackingService: TrackingService;
   let analyticsService: AnalyticsService;
@@ -101,11 +100,9 @@ describe('UploadProductComponent', () => {
         },
         {
           provide: CategoryService, useValue: {
-            getUploadCategories() {
-              return of(CATEGORIES_OPTIONS);
-            },
-            isHeroCategory() {
-            },
+            getCategories() {
+              return of(CATEGORIES_DATA_CONSUMER_GOODS);
+            }
           }
         },
         {
@@ -153,8 +150,6 @@ describe('UploadProductComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadProductComponent);
     component = fixture.componentInstance;
-    categoryService = TestBed.get(CategoryService);
-    spyOn(categoryService, 'getUploadCategories').and.callThrough();
     errorService = TestBed.get(ErrorsService);
     generalSuggestionsService = TestBed.get(GeneralSuggestionsService);
     router = TestBed.get(Router);
@@ -163,8 +158,8 @@ describe('UploadProductComponent', () => {
     analyticsService = TestBed.get(AnalyticsService);
     deviceService = TestBed.get(DeviceDetectorService);
     userService = TestBed.get(UserService);
-    fixture.detectChanges();
     appboy.initialize(environment.appboy);
+    fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
@@ -198,61 +193,19 @@ describe('UploadProductComponent', () => {
       const EXPECTED_CATEGORIES = CATEGORIES_OPTIONS_CONSUMER_GOODS.filter((category) => {
         return +category.value !== CATEGORY_IDS.HELP;
       });
-      spyOn(categoryService, 'isHeroCategory').and.returnValues(false, false, false, false, false, true, true);
 
       component.ngOnInit();
 
-      expect(categoryService.getUploadCategories).toHaveBeenCalled();
       expect(component.categories).toEqual(EXPECTED_CATEGORIES);
     });
 
     describe('when the user has a PRO subscription', () => {
       it('should show the Help category', () => {
-        spyOn(categoryService, 'isHeroCategory').and.returnValues(false, false, false, false, false, true, true);
         spyOn(userService, 'isPro').and.returnValue(true);
 
         component.ngOnInit();
 
-        expect(categoryService.getUploadCategories).toHaveBeenCalled();
         expect(component.categories).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS);
-      });
-    });
-
-    describe('with preselected category', () => {
-      beforeEach(() => {
-        component.categoryId = REALESTATE_CATEGORY;
-
-        component.ngOnInit();
-      });
-
-      it('should set form category_id', () => {
-        expect(component.uploadForm.get('category_id').value).toBe(REALESTATE_CATEGORY);
-      });
-
-      it('should set form delivery_info', () => {
-        expect(component.uploadForm.get('delivery_info').value).toBe(null);
-      });
-
-      it('should set fixedCategory', () => {
-        expect(component.fixedCategory).toBe('Real Estate');
-      });
-    });
-
-    describe('edit mode', () => {
-      it('should set fixedCategory if is hero category', () => {
-        spyOn(categoryService, 'isHeroCategory').and.returnValue(true);
-        component.item = new Item(
-          ITEM_DATA.id,
-          ITEM_DATA.legacy_id,
-          ITEM_DATA.owner,
-          ITEM_DATA.title,
-          ITEM_DATA.description,
-          13000
-        );
-
-        component.ngOnInit();
-
-        expect(component.fixedCategory).toBe('Real Estate');
       });
     });
 

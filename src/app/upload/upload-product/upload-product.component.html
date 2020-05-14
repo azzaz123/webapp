@@ -41,10 +41,13 @@
         <div class="form-group">
           <label for="category" i18n>Category</label>
           <ng-select [disabled]="isHeroCategory(uploadForm.value?.category_id)" i18n-placeholder placeholder="Category"
-            class="form-control" formControlName="category_id" id="category" [options]="categories" noFilter="10">
+            class="form-control categories-select" formControlName="category_id" id="category" [options]="categories"
+            noFilter="10">
             <ng-template #optionTemplate let-option="option">
-              <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
-              {{ option?.label }}
+              <div [ngClass]="'cat-' + option?.value">
+                <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
+                {{ option?.label }}
+              </div>
             </ng-template>
           </ng-select>
         </div>

@@ -94,6 +94,20 @@ ng-select {
     color: $blue-grey-3;
     margin-left: $spacing-xs;
   }
+  &.categories-select select-dropdown {
+    & > div .options ul li {
+      padding: 0 !important;
+      border: 0;
+      div {
+        padding: $spacing-ms !important;
+        border-top: 1px solid $blue-grey-5;
+        &.cat-13200,
+        &.cat-21000 {
+          display: none;
+        }
+      }
+    }
+  }
 }
 
 select-dropdown {
