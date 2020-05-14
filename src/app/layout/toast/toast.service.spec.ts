@@ -15,7 +15,7 @@ describe('ToastService', () => {
     expect(service).toBeTruthy();
   });
 
-  fdescribe('show', () => {
+  describe('show', () => {
     it('show add toast into toast array', () => {
       let Mock_Toast: Toast = { text: 'mocked toast created', type: 'success' };
 
