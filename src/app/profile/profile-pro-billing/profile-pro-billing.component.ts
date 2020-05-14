@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,8 +12,8 @@ import { finalize } from 'rxjs/operators';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 
 export enum BILLING_TYPE {
-  NATURAL = '0',
-  LEGAL = '1'
+  NATURAL = 'natural',
+  LEGAL = 'legal'
 }
 
 
@@ -27,15 +27,16 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
   public billingForm: FormGroup;
   public isNewBillingInfoForm = true;
   public loading = false;
-  public registrationType: string;
+  public type: string;
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
-
+  @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
+  
   constructor(private fb: FormBuilder,
               private paymentService: PaymentService,
               private errorsService: ErrorsService,
               private modalService: NgbModal) {
     this.billingForm = fb.group({
-      registrationType: ['', [Validators.required]],
+      type: ['', [Validators.required]],
       cif: ['', [Validators.required]],
       city: ['', [Validators.required]],
       company_name: ['', [Validators.required]],
@@ -51,8 +52,8 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
   }
 
   onChanges() {
-    this.billingForm.get('registrationType').valueChanges.subscribe(val => {
-      this.registrationType = val;
+    this.billingForm.get('type').valueChanges.subscribe(val => {
+      this.type = val;
       if (val === BILLING_TYPE.NATURAL) {
         this.billingForm.get('name').setValidators(Validators.required);
         this.billingForm.get('surname').setValidators(Validators.required);
@@ -61,31 +62,26 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
         this.billingForm.get('name').setValidators(null);
         this.billingForm.get('surname').setValidators(null);
       }
-      
     });
   }
 
   initForm() {
     this.paymentService.getBillingInfo().subscribe((billingInfo: BillingInfoResponse) => {
       this.isNewBillingInfoForm = false;
-      this.registrationType = BILLING_TYPE.NATURAL;//billingInfo.type
+      this.type = BILLING_TYPE.NATURAL;//billingInfo.type
       this.billingForm.patchValue(billingInfo);
       for (const control in this.billingForm.controls) {
         if (this.billingForm.controls.hasOwnProperty(control)) {
           this.billingForm.controls[control].markAsDirty();
         }
       }
-      this.onChanges();
-    }, () => {
-      this.registrationType = BILLING_TYPE.NATURAL;
-      this.onChanges();
-    });
+    }, () => { this.type = BILLING_TYPE.NATURAL; }, () => { this.onChanges(); });
   }
 
   public onSubmit() {
     if (this.billingForm.valid) {
       this.loading = true;
-      if (this.billingForm.get('registrationType').value === BILLING_TYPE.LEGAL) {
+      if (this.billingForm.get('type').value === BILLING_TYPE.LEGAL) {
         this.billingForm.patchValue({
           name: '',
           surname: ''

@@ -6,7 +6,7 @@
 <tsl-suggester (newSearchSubmit)="onSearchSubmit($event)" (newKeyword)="onKeywordUpdate($event)"
   (newSearch)="onSearchUpdate($event)"></tsl-suggester>
 <div class="main-header-login d-none d-lg-flex" [class.professional]="isProfessional">
-  <a [hidden]="!currencyName" *ngxPermissionsOnly="['isNormal']" tslTrackEvent="MYZONE_NAVBAR_WALLACOINS"
+  <a [hidden]="!currencyName" *ngxPermissionsExcept="['isProfessional']" tslTrackEvent="MYZONE_NAVBAR_WALLACOINS"
     class="main-header-credits menu-link" [routerLink]="['/wallacoins']" [routerLinkActive]="['active']">
     <mat-icon svgIcon="wallacoins-nav" class="topbar-icon"></mat-icon>
     <span *ngIf="currencyName === 'wallacoins'"><b>{{wallacoins | number}}</b> {{currencyName}}</span>
@@ -23,13 +23,13 @@
     [class.active]="isMyZone">
     <tsl-user-avatar class="topbar-avatar" [size]="32" [user]="user" *ngIf="user"
       [imageUrl]="user?.image?.urls_by_size.medium"></tsl-user-avatar>
-    <span *ngxPermissionsOnly="['isNormal']" i18n>My Zone</span>
+    <span *ngxPermissionsExcept="['isProfessional']" i18n>My Zone</span>
     <span *ngxPermissionsOnly="['isProfessional']" i18n>My Pro Zone</span>
     <div class="horizontal-line"></div>
   </a>
   <tsl-button [routerLink]="['/catalog/upload']" tslTrackEvent="MYZONE_UPLOAD">
     <mat-icon svgIcon="upload"></mat-icon>
-    <span *ngxPermissionsOnly="['isNormal']" i18n>List a product</span>
+    <span *ngxPermissionsExcept="['isProfessional']" i18n>List a product</span>
     <span *ngxPermissionsOnly="['isProfessional']" i18n>List a car</span>
   </tsl-button>
 </div>

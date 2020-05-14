@@ -1,6 +1,28 @@
 <h1 i18n>Billing Info</h1>
 <form [formGroup]="billingForm">
   <div class="row">
+    <label for="type" class="col-3" i18n="@@ProfileProBillingFormType">Type of registration:</label>
+    <div class="col-5 RegistrationType">
+      <div class="RegistrationType_radio">
+        <input type="radio"
+          formControlName="type"
+          value="natural"
+          id="type-natural"
+          required
+          [checked]="type === 'natural'">
+        <span class="RegistrationType_title">Natural</span>
+      </div>
+      <div class="RegistrationType_radio">
+        <input type="radio"
+          formControlName="type"
+          value="1"
+          id="type-legal"
+          [checked]="type !== 'natural'">
+        <span class="RegistrationType_title">Legal</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-4">
       <div class="form-group row align-items-center">
         <label for="name" i18n>First Name</label>

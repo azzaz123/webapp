@@ -46,9 +46,10 @@ export const routes: Routes = [
           isMyZone: true,
           isProducts: true,
           permissions: {
-            only: PERMISSIONS.normal,
+            except: PERMISSIONS.professional,
             redirectTo: {
-              isNormal: isNormalCatalogPermissions
+              isNormal: isNormalCatalogPermissions,
+              isFeatured: isNormalCheckoutPermissions
             }
           }
         }
@@ -60,9 +61,10 @@ export const routes: Routes = [
           isMyZone: true,
           isProducts: true,
           permissions: {
-            only: PERMISSIONS.normal,
+            except: PERMISSIONS.professional,
             redirectTo: {
-              isNormal: isNormalCheckoutPermissions
+              isNormal: isNormalCheckoutPermissions,
+              isFeatured: isNormalCheckoutPermissions
             }
           }
         }

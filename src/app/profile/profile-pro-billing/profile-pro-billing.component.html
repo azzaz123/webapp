@@ -5,45 +5,43 @@
         <div class="row">
           <div class="col-10 offset-2">
             <div class="form-group row align-items-center">
-                <label for="registrationType" class="col-3" i18n="@@ProfileProBillingFormType">Type of registration:</label>
-                <div class="col-5 RegistrationType">
-                  <div class="RegistrationType_radio">
-                    <input type="radio"
-                      formControlName="registrationType"
-                      value="0"
-                      id="registrationType-natural"
-                      required
-                      [checked]="registrationType === '0'">
-                    <span class="RegistrationType_title">Natural</span>
-                  </div>
-                  <div class="RegistrationType_radio">
-                    <input type="radio"
-                      formControlName="registrationType"
-                      value="1"
-                      id="registrationType-legal"
-                      [checked]="registrationType !== '0'">
-                    <span class="RegistrationType_title">Legal</span>
-                  </div>
+              <label for="type" class="col-3" i18n="@@ProfileProBillingFormType">Type of registration:</label>
+              <div class="col-5 RegistrationType">
+                <div class="RegistrationType_radio">
+                  <input type="radio"
+                    formControlName="type"
+                    value="natural"
+                    id="type-natural"
+                    required
+                    [checked]="type === 'natural'">
+                  <span class="RegistrationType_title">Natural</span>
                 </div>
+                <div class="RegistrationType_radio">
+                  <input type="radio"
+                    formControlName="type"
+                    value="legal"
+                    id="type-legal"
+                    [checked]="type !== 'natural'">
+                  <span class="RegistrationType_title">Legal</span>
+                </div>
+              </div>
             </div>
-            <div>
-            </div>
-            <div *ngIf="registrationType === '0'" class="form-group row align-items-center">
+            <div *ngIf="type === 'natural'" class="form-group row align-items-center">
               <label for="name" class="col-3" i18n>First Name:</label>
               <div class="col-5">
-                <input type="text" class="form-control" id="name" formControlName="name" data-require-pair="#registrationType-natural"/>
+                <input type="text" class="form-control" id="name" formControlName="name" data-require-pair="#type-natural"/>
               </div>
             </div>
-            <div *ngIf="registrationType === '0'" class="form-group row align-items-center">
+            <div *ngIf="type === 'natural'" class="form-group row align-items-center">
               <label for="surname" class="col-3" i18n>Last Name:</label>
               <div class="col-5">
-                <input type="text" class="form-control" id="surname" formControlName="surname" data-require-pair="#registrationType-natural"/>
+                <input type="text" class="form-control" id="surname" formControlName="surname" data-require-pair="#type-natural"/>
               </div>
             </div>
-            <div *ngIf="registrationType === '1'" class="form-group row align-items-center">
+            <div *ngIf="type === 'legal'" class="form-group row align-items-center">
               <label for="company_name" class="col-3" i18n>Company Name:</label>
               <div class="col-5">
-                <input type="text" class="form-control" id="company_name" formControlName="company_name" data-require-pair="#registrationType-legal"/>
+                <input type="text" class="form-control" id="company_name" formControlName="company_name" data-require-pair="#type-legal"/>
               </div>
             </div>
             <div class="form-group row align-items-center">
@@ -65,8 +63,8 @@
               </div>
             </div>
             <div class="form-group row align-items-center">
-              <label *ngIf="registrationType === '1'" for="cif" class="col-3" i18n>CIF Number:</label>
-              <label *ngIf="registrationType === '0'" for="cif" class="col-3" i18n>NIF Number:</label>
+              <label *ngIf="type === 'legal'" for="cif" class="col-3" i18n>CIF Number:</label>
+              <label *ngIf="type === 'natural'" for="cif" class="col-3" i18n>NIF Number:</label>
               <div class="col-5">
                 <input type="text" class="form-control" id="cif" formControlName="cif"/>
               </div>

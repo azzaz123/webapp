@@ -356,7 +356,7 @@ export class UserService {
 
   public setPermission(user: User): void {
     if (environment.profeatures) {
-      user.featured ? this.permissionService.addPermission(PERMISSIONS['featured']) : this.permissionService.addPermission(PERMISSIONS[user.type]);
+      user.featured && user.type !== 'professional' ? this.permissionService.addPermission(PERMISSIONS['featured']) : this.permissionService.addPermission(PERMISSIONS[user.type]);
     } else {
       this.permissionService.addPermission(PERMISSIONS['normal']);
     }

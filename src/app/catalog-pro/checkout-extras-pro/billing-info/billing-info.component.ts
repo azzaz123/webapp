@@ -8,7 +8,7 @@ import { UUID } from 'angular2-uuid';
   styleUrls: ['./billing-info.component.scss']
 })
 export class BillingInfoComponent {
-
+  public type: string;
   public billingForm: FormGroup;
   @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
 
@@ -24,6 +24,7 @@ export class BillingInfoComponent {
       postal_code: ['', [Validators.required]],
       street: ['', [Validators.required]],
       surname: ['', [Validators.required]],
+      type: ['', [Validators.required]],
       id: UUID.UUID()
     });
 
