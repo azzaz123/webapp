@@ -43,7 +43,7 @@
 
             <div *ngIf="!currentConversation.user.blocked
             && currentConversation.user.available
-            && currentConversation.item.notAvailable"
+            && currentConversation.item.unpublished"
                  class="date-marker date-marker-warning date-marker-warning-blue">
               <span class="emoticon emoticon-ghost"></span>
               <span i18n="@@itemIsNotAvailableWarning">This product has expired or has been removed</span>
@@ -51,7 +51,7 @@
 
             <div *ngIf="!currentConversation.user.blocked
             && currentConversation.user.available
-            && currentConversation.item.unpublished"
+            && currentConversation.item.notAvailable"
                  class="date-marker date-marker-warning date-marker-warning-red">
               <span class="emoticon emoticon-police-car"></span>
               <span i18n="@@itemIsUnpublishedWarning">The product violates wallapop coexistence regulations</span>

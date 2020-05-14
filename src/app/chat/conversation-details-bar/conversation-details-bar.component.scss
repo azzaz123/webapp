@@ -108,14 +108,20 @@
   }
 }
 
-.faded {
-  .lg-device-container {
+.faded-user {
+  .sm-device-container, .lg-device-container {
     tsl-user-avatar, h5, .user-avatar {
       pointer-events: none;
       opacity: 0.5;
     }
   }
 
+  &.sm-device-container .avatar-container .avatar {
+    pointer-events: none;
+  }
+}
+
+.faded-item {
   tsl-item-avatar,
   .item-details,
   .conversation-header-menu .user-avatar {
@@ -123,7 +129,7 @@
     opacity: 0.5;
   }
 
-  .sm-device-container .avatar-container .avatar {
+  &.sm-device-container .avatar-container .avatar {
     pointer-events: none;
   }
 }
