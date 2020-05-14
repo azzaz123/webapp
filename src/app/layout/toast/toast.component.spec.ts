@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
-
 import { ToastComponent } from './toast.component';
 import { ToastService } from './toast.service';
 import { By } from '@angular/platform-browser';
 import { Toast } from './toast.interface';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('ToastComponent', () => {
   let injector: TestBed;
@@ -13,6 +13,7 @@ describe('ToastComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports:[NgbModule],
       providers: [{
         provide: toastService, useValue: {
           toasts: []
@@ -37,7 +38,7 @@ describe('ToastComponent', () => {
   });
 
   describe('success toast', () => {    
-    describe("when toast is triggered", () => {
+    describe('when toast is triggered', () => {
       let toastHTML;
       const MOCKED_TOAST: Toast = { text: 'success toast', type: 'success' }
   
@@ -46,24 +47,24 @@ describe('ToastComponent', () => {
         fixture.detectChanges();
       })
 
-      // xit('should have the `success` class', () => {
-      //   toastHTML = fixture.debugElement.query(By.directive(ToastComponent)).childNodes[0].nativeNode;
-
-      //   expect(toastHTML.hasAttribute['class']).toBe(MOCKED_TOAST.type);
-      // })
+      it('should have the `success` class', () => {
+         toastHTML = fixture.debugElement.query(By.css('ngb-toast')).nativeNode;
+         let firstToastClassName = toastHTML.className.split(' ')[0]
+         expect(firstToastClassName).toMatch(MOCKED_TOAST.type)
+       })
   
-      it("should show the toast component", () => {
+      it('should show the toast component', () => {
         toastHTML = fixture.debugElement.query(By.css('.toast-test')).nativeNode;
         expect(toastHTML).toBeTruthy();
       })
   
-      it("should show the toast text", () => {
+      it('should show the toast text', () => {
         toastHTML = fixture.debugElement.query(By.css('.toast-test')).nativeNode;
 
         expect(toastHTML.innerHTML).toBe(MOCKED_TOAST.text)
       })
 
-      it("shouldn't show the toast title", () => {
+      it('should not show the toast title', () => {
         toastHTML = fixture.debugElement.query(By.css('.toast-title'));
         expect(toastHTML).toBeFalsy();
       })
@@ -80,22 +81,28 @@ describe('ToastComponent', () => {
         fixture.detectChanges();
       })
 
-      it("should show the toast component", () => {
+      it('should have the `error` class', () => {
+        toastHTML = fixture.debugElement.query(By.css('ngb-toast')).nativeNode;
+        let firstToastClassName = toastHTML.className.split(' ')[0]
+        expect(firstToastClassName).toMatch(MOCKED_TOAST.type)
+      })
+
+      it('should show the toast component', () => {
         toastHTML = fixture.debugElement.query(By.css('.toast-test')).nativeNode;
         expect(toastHTML).toBeTruthy();
       })
 
-      it("should show the toast text", () => {
+      it('should show the toast text', () => {
         toastHTML = fixture.debugElement.query(By.css('.toast-test')).nativeNode;
         expect(toastHTML.innerHTML).toBe(MOCKED_TOAST.text)
       })
 
-      it("shouldn't show the toast title if there is not toast title", () => {
+      it('should not show the toast title if there is not toast title', () => {
         toastHTML = fixture.debugElement.query(By.css('.toast-title'));
         expect(toastHTML).toBeFalsy();
       })
 
-      it("should show the toast title if there is toast title", () => {
+      it('should show the toast title if there is toast title', () => {
         MOCKED_TOAST.title = 'Oops';
         toastService.show(MOCKED_TOAST);
         fixture.detectChanges();
