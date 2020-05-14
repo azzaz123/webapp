@@ -18,6 +18,7 @@ export class RemoteConsoleService implements OnDestroy {
   deviceId: string;
   private connectionTimeCallNo = 0;
   private sendMessageTime = new Map();
+  private sendMessageActTime = new Map();
   private acceptMessageTime = new Map();
   private presentationMessageTimeout = new Map();
 
@@ -57,6 +58,20 @@ export class RemoteConsoleService implements OnDestroy {
         message_id: messageId,
         send_message_time: new Date().getTime() - this.sendMessageTime.get(messageId),
         metric_type: MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
+      });
+      this.sendMessageTime.delete(messageId);
+    }
+  }
+
+  sendMessageActTimeout(messageId: string): void {
+    if (!this.sendMessageActTime.has(messageId)) {
+      this.sendMessageActTime.set(messageId, new Date().getTime());
+    } else {
+      this.remoteConsoleClientService.info({
+        ...this.getCommonLog(this.userService.user.id),
+        message_id: messageId,
+        send_message_time: new Date().getTime() - this.sendMessageActTime.get(messageId),
+        metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
       });
       this.sendMessageTime.delete(messageId);
     }
