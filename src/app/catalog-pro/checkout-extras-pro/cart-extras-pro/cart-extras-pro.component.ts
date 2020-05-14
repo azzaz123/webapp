@@ -83,7 +83,6 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   saveAndCheckout() {
     this.loading = true;
-    
     if (this.billingInfoForm.valid) {
       this.paymentService.updateBillingInfo(this.billingInfoForm.value).subscribe(() => {
         this.processCheckout();

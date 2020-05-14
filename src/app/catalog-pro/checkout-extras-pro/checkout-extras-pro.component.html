@@ -31,7 +31,8 @@
           </div>
         </div>
         <div class="col-xl col-lg-8" *ngIf="billingInfoFormEnabled">
-          <tsl-billing-info (billingInfoFormChange)="onBillingInfoChange($event)"></tsl-billing-info>
+          <!--<tsl-billing-info (billingInfoFormChange)="onBillingInfoChange($event)"></tsl-billing-info>-->
+          <tsl-profile-pro-billing (billingInfoFormChange)="onBillingInfoChange($event)"></tsl-profile-pro-billing>
         </div>
         <div class="cart">
           <tsl-cart-extras-pro (billingInfoMissing)="onBillingInfoMissing($event)" [billingInfoFormEnabled]="billingInfoFormEnabled" [billingInfoForm]="billingInfoForm"></tsl-cart-extras-pro>

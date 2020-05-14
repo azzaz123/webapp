@@ -38,15 +38,15 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     this.billingForm = fb.group({
       type: ['', [Validators.required]],
       cif: ['', [Validators.required]],
-      city: ['', [Validators.required]],
+      city: [''],
       company_name: ['', [Validators.required]],
       country: ['', [Validators.required]],
       email: [''],
-      name: ['', [Validators.required]],
+      name: [''],
       phone: [''],
       postal_code: ['', [Validators.required]],
       street: ['', [Validators.required]],
-      surname: ['', [Validators.required]],
+      surname: [''],
       id: UUID.UUID()
     });
   }
@@ -62,6 +62,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
         this.billingForm.get('name').setValidators(null);
         this.billingForm.get('surname').setValidators(null);
       }
+      this.billingInfoFormChange.emit(this.billingForm);
     });
   }
 
@@ -75,7 +76,9 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
           this.billingForm.controls[control].markAsDirty();
         }
       }
-    }, () => { this.type = BILLING_TYPE.NATURAL; }, () => { this.onChanges(); });
+      this.onChanges();
+    },
+    (error) => { this.type = BILLING_TYPE.NATURAL; this.onChanges(); });
   }
 
   public onSubmit() {

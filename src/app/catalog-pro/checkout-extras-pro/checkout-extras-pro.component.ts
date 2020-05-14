@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { map, orderBy } from 'lodash-es';
 import { FormGroup } from '@angular/forms';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -14,7 +14,7 @@ export class CheckoutExtrasProComponent implements OnInit {
   packs: Array<any> = [];
   billingInfoFormEnabled = false;
   billingInfoForm: FormGroup;
-
+  
   constructor(private paymentService: PaymentService) { }
 
   ngOnInit() {
