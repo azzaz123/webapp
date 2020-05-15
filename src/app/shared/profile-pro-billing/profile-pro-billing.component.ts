@@ -38,12 +38,12 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     this.billingForm = fb.group({
       type: ['', [Validators.required]],
       cif: ['', [Validators.required]],
-      city: [''],
-      company_name: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      company_name: [''],
       country: ['', [Validators.required]],
-      email: [''],
+      email: ['', [Validators.required]],
       name: [''],
-      phone: [''],
+      phone: [' '],
       postal_code: ['', [Validators.required]],
       street: ['', [Validators.required]],
       surname: [''],
@@ -57,28 +57,36 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       if (val === BILLING_TYPE.NATURAL) {
         this.billingForm.get('name').setValidators(Validators.required);
         this.billingForm.get('surname').setValidators(Validators.required);
+        this.billingForm.get('company_name').setValidators(null);
       } else {
         this.billingForm.get('company_name').setValidators(Validators.required);
         this.billingForm.get('name').setValidators(null);
         this.billingForm.get('surname').setValidators(null);
       }
+      this.billingForm.get('company_name').updateValueAndValidity();
+      this.billingForm.get('name').updateValueAndValidity();
+      this.billingForm.get('surname').updateValueAndValidity();
       this.billingInfoFormChange.emit(this.billingForm);
     });
   }
 
   initForm() {
-    this.paymentService.getBillingInfo().subscribe((billingInfo: BillingInfoResponse) => {
-      this.isNewBillingInfoForm = false;
-      this.type = BILLING_TYPE.NATURAL;//billingInfo.type
-      this.billingForm.patchValue(billingInfo);
-      for (const control in this.billingForm.controls) {
-        if (this.billingForm.controls.hasOwnProperty(control)) {
-          this.billingForm.controls[control].markAsDirty();
+    this.paymentService.getBillingInfo().subscribe(
+      (billingInfo: BillingInfoResponse) => {
+        this.isNewBillingInfoForm = false;
+        this.type = BILLING_TYPE.NATURAL;//billingInfo.type
+        this.billingForm.patchValue(billingInfo);
+        for (const control in this.billingForm.controls) {
+          if (this.billingForm.controls.hasOwnProperty(control)) {
+            this.billingForm.controls[control].markAsDirty();
+          }
         }
-      }
+      },
+      () => { this.type = BILLING_TYPE.NATURAL }
+    )
+    .add(() => {
       this.onChanges();
-    },
-    (error) => { this.type = BILLING_TYPE.NATURAL; this.onChanges(); });
+    });
   }
 
   public onSubmit() {

@@ -33,6 +33,7 @@ $right-gutter: 35px;
         line-height: $line-height-l;
         color: $blue-grey-1;
         font-size: $font-size-m;
+        text-align: right;
         @include media-breakpoint-down(sm) {
           font-size: $font-size-s;
         }
