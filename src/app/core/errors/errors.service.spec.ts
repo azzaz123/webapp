@@ -98,8 +98,6 @@ describe('Service: Errors', () => {
 
       service.i18nError('key', 'text');
      
-    
-    
       expect(toastService.show).toHaveBeenCalledWith({ text:'messagetext', title:'title', type:"error" });
     });
   });
