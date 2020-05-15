@@ -143,7 +143,6 @@ describe('ConversationDetailsBarComponent', () => {
 
     it('should call the userService.reportUser and then close the modal and show a toast', fakeAsync(() => {
       spyOn(userService, 'reportUser').and.callThrough();
-      spyOn(toastService, 'show').and.callThrough();
       component.currentConversation = MOCK_CONVERSATION();
 
       component.reportUserAction();
