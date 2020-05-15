@@ -10,16 +10,13 @@ $inbox-header-height: 66px;
   border-bottom: 0 solid $blue-grey-5;
 
   h2 {
-    margin: $spacing-ml;
+    margin: $spacing-ml $spacing-ml 0;
     font-weight: $font-weight-chunky;
     font-size: $font-size-ll;
     letter-spacing: $letter-spacing;
 
-    span.badge {
-      margin-left: 0;
-      &.badge-pro {
-        display: inline-block;
-      }
+    tsl-pro-badge {
+      display: inline-block;
     }
   }
 }

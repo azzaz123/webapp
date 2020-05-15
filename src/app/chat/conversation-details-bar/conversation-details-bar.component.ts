@@ -43,7 +43,7 @@ export class ConversationDetailsBarComponent {
     return this.currentConversation.item.isMine;
   }
 
-  public currentConversationisArchived(): boolean {
+  public currentConversationIsArchived(): boolean {
     return this.inboxConversationService.containsArchivedConversation(this.currentConversation);
   }
 
