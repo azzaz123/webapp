@@ -143,6 +143,7 @@ describe('ConversationDetailsBarComponent', () => {
 
     it('should call the userService.reportUser and then close the modal and show a toast', fakeAsync(() => {
       spyOn(userService, 'reportUser').and.callThrough();
+      spyOn(toastService, 'show').and.callThrough();
       component.currentConversation = MOCK_CONVERSATION();
 
       component.reportUserAction();
@@ -153,7 +154,7 @@ describe('ConversationDetailsBarComponent', () => {
         component.currentConversation.id,
         1,
         'Report User Reason');
-      expect(toastService.show).toHaveBeenCalledWith({text:'The user has been reported correctly', type:"success"});
+      expect(toastService.show).toHaveBeenCalledWith({text:'The user has been reported correctly', type:'success'});
     }));
 
     it('should track the UserProfileRepported event', fakeAsync(() => {
@@ -192,7 +193,7 @@ describe('ConversationDetailsBarComponent', () => {
         tick();
 
         expect(itemService.reportListing).toHaveBeenCalledWith(ITEM_ID, 'Report Listing Reason', 1);
-        expect(toastService.show).toHaveBeenCalledWith({text:'The listing has been reported correctly', type:"success"});
+        expect(toastService.show).toHaveBeenCalledWith({text:'The listing has been reported correctly', type:'success'});
       }));
 
       it('should track the ProductRepported event', fakeAsync(() => {
@@ -245,7 +246,7 @@ describe('ConversationDetailsBarComponent', () => {
 
       expect(blockUserService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
       expect(blockUserXmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
-      expect(toastService.show).toHaveBeenCalledWith({text:'The user has been blocked', type:"success"});
+      expect(toastService.show).toHaveBeenCalledWith({text:'The user has been blocked', type:'success'});
     }));
   });
 
@@ -289,7 +290,7 @@ describe('ConversationDetailsBarComponent', () => {
 
       expect(blockUserService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
       expect(blockUserXmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
-      expect(toastService.show).toHaveBeenCalledWith({text:'The user has been unblocked',type:"success"});
+      expect(toastService.show).toHaveBeenCalledWith({text:'The user has been unblocked',type:'success'});
     }));
   });
 

@@ -148,7 +148,7 @@ describe('CatalogItemActionsComponent', () => {
       }));
 
       it('should open error toastService', () => {
-        expect(toastService.show).toHaveBeenCalledWith({text:'Some listings have not been deleted due to an error', type:"error"});
+        expect(toastService.show).toHaveBeenCalledWith({text:'Some listings have not been deleted due to an error', type:'error'});
       });
     });
   });
