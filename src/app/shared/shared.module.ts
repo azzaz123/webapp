@@ -205,7 +205,6 @@ import { StatusIconComponent } from './status-icon';
     LinkTransformPipe,
     PreventDoubleClickDirective,
     DateUntilDayPipe,
-   
   ],
   providers: [
     DecimalPipe,
