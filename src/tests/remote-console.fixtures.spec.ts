@@ -13,6 +13,9 @@ export class MockRemoteConsoleService {
   sendAcceptTimeout(messageId: string): void {
   }
 
+  sendMessageActTimeout(messageId: string): void {
+  }
+
   sendPresentationMessageTimeout(messageId: string): void {
   }
 

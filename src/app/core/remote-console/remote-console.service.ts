@@ -77,6 +77,9 @@ export class RemoteConsoleService implements OnDestroy {
     }
   }
 
+  /*
+   * @deprecated Use sendMessageActTimeout instead. Remove after deploy new metrics CHATO-4187, CHATO-4191 and CHATO-4199
+   */
   sendAcceptTimeout(messageId: string): void {
     if (!this.acceptMessageTime.has(messageId)) {
       this.acceptMessageTime.set(messageId, new Date().getTime());
@@ -129,8 +132,8 @@ export class RemoteConsoleService implements OnDestroy {
 
   getReleaseVersion(appVersion: string): number {
     return +appVersion.split('.')
-    .map((subVersion: string) => ('00' + subVersion).slice(-3))
-    .reduce((a: string, b: string) => a + b);
+      .map((subVersion: string) => ('00' + subVersion).slice(-3))
+      .reduce((a: string, b: string) => a + b);
   }
 
   private getCommonLog(userId: string): {} {
