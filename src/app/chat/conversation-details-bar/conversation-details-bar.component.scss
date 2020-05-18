@@ -110,7 +110,7 @@
 
 .faded-user {
   .sm-device-container, .lg-device-container {
-    tsl-user-avatar, h5, .user-avatar {
+    tsl-user-avatar, h5, a.user-avatar {
       pointer-events: none;
       opacity: 0.5;
     }
