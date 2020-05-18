@@ -81,8 +81,8 @@ export class ListComponent implements OnInit, OnDestroy {
   public user: User;
   public userScore: number;
 
-  @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
-  @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
+  @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
+  @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
     private trackingService: TrackingService,
@@ -226,6 +226,7 @@ export class ListComponent implements OnInit, OnDestroy {
           this.tooManyItemsModalRef = this.modalService.open(TooManyItemsModalComponent, {
             windowClass: 'modal-standard',
           });
+          this.tooManyItemsModalRef.componentInstance.itemId = params.itemId;
           this.tooManyItemsModalRef.componentInstance.type = params.onHoldType ? parseInt(params.onHoldType, 10) : SUBSCRIPTION_TYPES.stripe;
           this.tooManyItemsModalRef.result.then((orderEvent: OrderEvent) => {
             if (orderEvent) {

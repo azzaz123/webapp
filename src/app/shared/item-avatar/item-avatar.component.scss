@@ -5,6 +5,9 @@ div {
   margin-right: $item-avatar-margin;
   display: flex;
   position: relative;
+  &.transition {
+    transition: height 1s, width 1s
+  }
   &.small {
     @include square-avatar($item-avatar-size-small);
   }
@@ -17,6 +20,13 @@ div {
   &.bigger {
     @include square-avatar($item-avatar-size-bigger);
   }
+  &.xl {
+    @include square-avatar($item-avatar-size-xl);
+  }
+  &.rectangle-xl {
+    @include rectangle-avatar($item-avatar-size-l, $item-avatar-size-xl);
+  }
+
   &.full {
     width: 100%;
     padding-top: 100%;

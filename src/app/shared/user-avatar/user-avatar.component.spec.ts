@@ -5,6 +5,8 @@ import { UserAvatarComponent } from './user-avatar.component';
 import { SanitizedBackgroundDirective } from '../sanitized-background/sanitized-background.directive';
 import { PLACEHOLDER_AVATAR, User } from '../../core/user/user';
 import { IMAGE, MICRO_NAME, USER_ID } from '../../../tests/user.fixtures.spec';
+import { StatusIconComponent } from '../status-icon';
+import { MatIconModule } from '@angular/material';
 
 describe('Component: UserAvatar', () => {
 
@@ -12,14 +14,16 @@ describe('Component: UserAvatar', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        MatIconModule
+      ],
+      declarations: [UserAvatarComponent, SanitizedBackgroundDirective, StatusIconComponent],
       providers: [
         UserAvatarComponent
-      ],
-      declarations: [UserAvatarComponent, SanitizedBackgroundDirective]
+      ]
     });
     component = TestBed.createComponent(UserAvatarComponent).componentInstance;
   });
-
 
   describe('with user image', () => {
 
@@ -61,6 +65,5 @@ describe('Component: UserAvatar', () => {
       expect(component['avatar']).toBe(PLACEHOLDER_AVATAR);
     });
   });
-
 
 });

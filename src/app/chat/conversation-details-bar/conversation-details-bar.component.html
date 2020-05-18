@@ -1,0 +1,90 @@
+<div class="top-bar" [ngClass]="{'faded': !currentConversation.user.available, 'expanded': isExpanded}">
+  <mat-icon svgIcon="back-arrow" class="d-xl-none back-arrow" (click)="navigationBack()"></mat-icon>
+
+  <div class="lg-device-container d-none d-xl-inline-flex">
+    <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
+       target="_blank" class="user-avatar">
+      <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
+      <tsl-status-icon [blocked]="this.currentConversation.user.blocked"
+                       [unavailable]="!this.currentConversation.user.available"></tsl-status-icon>
+    </a>
+    <tsl-user-avatar *ngIf="!currentConversation?.user.profileUrl" [user]="this.currentConversation.user" size="40">
+    </tsl-user-avatar>
+
+    <h5>{{currentConversation?.user.microName}}</h5>
+  </div>
+
+  <div class="sm-device-container d-xl-none"
+       [ngClass]="{'expanded': isExpanded, 'faded': !currentConversation.user.available}">
+
+    <div class="avatar-container d-none d-sm-block">
+      <a href="{{ currentConversation?.item.itemUrl }}" target="_blank" class="avatar">
+        <tsl-item-avatar [item]="currentConversation.item" size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
+      </a>
+    </div>
+
+    <div class="avatar-container d-block d-sm-none">
+      <a href="{{ currentConversation?.item.itemUrl }}" target="_blank" class="avatar">
+        <tsl-item-avatar [item]="currentConversation.item"
+                         size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
+      </a>
+    </div>
+
+    <div (click)="expand()" class="item-details">
+      <div *ngIf="currentConversation.item.price" class="font-weight-bold">
+        {{currentConversation.item.price.amount | customCurrency:currentConversation.item.price.currency}}</div>
+      <div class="text-truncate">{{currentConversation.item.title}}</div>
+
+      <div [ngClass]="{'user-detail-dropdown': isExpanded}" class="user-detail">
+        <hr *ngIf="isExpanded">
+        <tsl-inbox-user-detail [item]="currentConversation.item"
+                               [user]="currentConversation.user"
+                               [deviceType]="'small'"
+                               [isNavigable]="!isExpanded"
+                               [avatarSize]="40"></tsl-inbox-user-detail>
+      </div>
+    </div>
+  </div>
+
+  <div ngbDropdown placement="bottom-right" class="conversation-header-menu" [ngClass]="{'expanded': isExpanded}">
+
+    <div class="conversation-header-avatar d-xl-none">
+      <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
+         target="_blank" class="user-avatar">
+        <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
+        <tsl-status-icon [blocked]="this.currentConversation.user.blocked"
+                         [unavailable]="!this.currentConversation.user.available"></tsl-status-icon>
+      </a>
+    </div>
+
+    <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
+    <div ngbDropdownMenu>
+      <button *ngxPermissionsOnly="['isNormal']" class="dropdown-item" (click)="archiveConversation()"
+              i18n="@@deleteConversation" [hidden]="currentConversationIsArchived()">Delete conversation
+      </button>
+      <button *ngxPermissionsOnly="['isProfessional']" class="dropdown-item" (click)="archiveConversation()"
+              i18n="@@archiveConversation" [hidden]="currentConversationIsArchived()">Archive conversation
+      </button>
+      <button *ngxPermissionsOnly="['isProfessional']" class="dropdown-item" (click)="unarchiveConversation()"
+              i18n="@@unarchiveConversation" [hidden]="!currentConversationIsArchived()">Unarchive conversation
+      </button>
+      <button class="dropdown-item" (click)="reportListingAction()"
+              *ngIf="!itemIsMine && !currentConversation.item.notAvailable"
+              i18n="@@reportListing">Report this Listing
+      </button>
+      <button *ngIf="currentConversation.user.available"
+              class="dropdown-item" (click)="reportUserAction()"
+              i18n="@@reportUser">Report this User
+      </button>
+      <button [hidden]="!currentConversation.user.id || currentConversation.user.blocked"
+              class="dropdown-item warn"
+              (click)="blockUserAction()" i18n="@@blockUser">Block this User
+      </button>
+      <button [hidden]="!currentConversation.user.id || !currentConversation.user.blocked"
+              class="dropdown-item warn"
+              (click)="unblockUserAction()" i18n="@@unblockUser">Unblock this User
+      </button>
+    </div>
+  </div>
+
+</div>

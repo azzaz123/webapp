@@ -7,7 +7,7 @@ import { MAPPED_SUBSCRIPTIONS, TIER } from '../../../../tests/subscriptions.fixt
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
@@ -16,8 +16,13 @@ import {
   ViewEditSubscriptionPlan,
   ANALYTICS_EVENT_NAMES,
   SCREEN_IDS,
-  AnalyticsPageView
+  AnalyticsPageView,
+  AnalyticsEvent,
+  ANALYTIC_EVENT_TYPES,
+  ClickConfirmEditCurrentSubscription
 } from '../../../core/analytics/analytics-constants';
+import { DateUntilDayPipe } from '../../../shared/pipes';
+import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 
 describe('EditSubscriptionModalComponent', () => {
   let component: EditSubscriptionModalComponent;
@@ -31,7 +36,7 @@ describe('EditSubscriptionModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditSubscriptionModalComponent ],
+      declarations: [ EditSubscriptionModalComponent, DateUntilDayPipe ],
       providers: [
         {
           provide: NgbActiveModal, useValue: {
@@ -104,7 +109,7 @@ describe('EditSubscriptionModalComponent', () => {
       const expectedPageView: AnalyticsPageView<ViewEditSubscriptionPlan> = {
         name: ANALYTICS_EVENT_NAMES.ViewEditSubscriptionPlan,
         attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagment
+          screenId: SCREEN_IDS.SubscriptionManagement
         }
       };
       component.ngOnInit();
@@ -151,15 +156,36 @@ describe('EditSubscriptionModalComponent', () => {
   });
 
   describe('editSubscription', () => {
+    beforeEach(() => {
+      spyOn(subscriptionsService, 'editSubscription').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+    });
+
     const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
 
     it('should call the editSubscription service', () => {
-      spyOn(subscriptionsService, 'editSubscription').and.callThrough();
-
       component.editSubscription();
       
       expect(component.subscriptionsService.editSubscription).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS[2], tier.id);
       expect(component.loading).toBe(false);
+    });
+
+    it('should send event to analytics', () => {
+      const expectedEvent: AnalyticsEvent<ClickConfirmEditCurrentSubscription> = {
+        name: ANALYTICS_EVENT_NAMES.ClickConfirmEditCurrentSubscription,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+          previousTier: component.currentTier.id,
+          newTier: component.selectedTier.id,
+          screenId: SCREEN_IDS.ProfileSubscription
+        }
+      };
+
+      component.editSubscription();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
 

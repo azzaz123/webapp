@@ -29,11 +29,6 @@ export function permissionFactory(userService: UserService, permissionService: N
       .pipe(map((user: User) => {
         if (user) {
           userService.setPermission(user.type);
-          userService.setSubscriptionsFeatureFlag().subscribe((isActive => {
-            if (isActive) {
-              permissionService.addPermission(PERMISSIONS.subscriptions);
-            }
-          }));
         }
         return user;
       }))

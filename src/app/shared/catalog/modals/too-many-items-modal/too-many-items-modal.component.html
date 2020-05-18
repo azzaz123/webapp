@@ -5,31 +5,37 @@
   </div>
 
   <div class="TooManyItemsModal__content">
-    <div class="TooManyItemsModal__content-image">
-      <img src="./assets/images/limit-reached.svg">
-    </div>
-
     <div class="TooManyItemsModal__content-info">
-
       <div class="TooManyItemsModal__content-info-title">
-        <span i18n *ngIf="type === notSubscribedType"><b>You’ve reached the maximum limit of items you can publish with a free account!</b></span>
-        <span i18n *ngIf="type === inAppType || type === stripeType"><b>You've reached the maximum number of items allowed with your current subscription!</b></span>
-        <span i18n *ngIf="type === carDealerType"><b>You are trying to activate more items than what your plan supports</b></span>
+        <span i18n *ngIf="type === notSubscribedType"><b>You’ve reached the maximum limit of {{categorySubscription?.category_name}} you can publish with a free account!</b></span>
+        <span i18n *ngIf="type === inAppType || type === stripeType"><b>You've reached the maximum number of {{categorySubscription?.category_name}} allowed with your current subscription!</b></span>
+        <span i18n *ngIf="type === carDealerType"><b>You are trying to activate more {{categorySubscription?.category_name}} than what your plan supports</b></span>
       </div>
 
       <div class="TooManyItemsModal__content-info-description">
-        <span i18n *ngIf="type === notSubscribedType">Subscribe to a PRO account to publish more</span>
-        <span i18n *ngIf="type === inAppType">You must upgrade your subscription <b>through the wallapop app</b> if you want to publish more</span>
-        <span i18n *ngIf="type === stripeType">You must upgrade your subscription if you want to publish more</span>
-        <span *ngIf="type === carDealerType"><span i18n>Please unselect some items or</span>&nbsp;<a href="mailto:contacto.motor@wallapop.com" i18n>contact us</a></span>
+        <div *ngIf="type === notSubscribedType">
+          <span [hidden]="isFreeTrial">Subscribe to a PRO account to publish more</span>
+          <span *ngIf="isFreeTrial" i18n="@@TooManyItemsModalTryTrial">
+            To publish more {{categorySubscription?.category_name}}, try wallapop PRO with a free {{categorySubscription?.trial_days}}-day trial.
+          </span>
+        </div>
+        <span i18n *ngIf="type === inAppType">You must upgrade your subscription <b>through the wallapop app</b> if you want to publish more {{categorySubscription?.category_name}}</span>
+        <span i18n *ngIf="type === stripeType">You must upgrade your subscription if you want to publish more {{categorySubscription?.category_name}}</span>
+        <span *ngIf="type === carDealerType">
+          <span i18n>Please unselect some items or</span>&nbsp;
+          <a href="mailto:contacto.motor@wallapop.com" i18n>contact us</a>
+        </span>
       </div>
     </div>
-
   </div>
 
   <div class="TooManyItemsModal__actions">
     <tsl-button *ngIf="type === inAppType || type === carDealerType" (click)="activeModal.close()" i18n>Understood</tsl-button>
-    <tsl-button *ngIf="type === notSubscribedType || type === stripeType" (click)="activeModal.close()" [routerLink]="'/profile/subscriptions'" i18n>Go to subscriptions</tsl-button>
+    <tsl-button *ngIf="type === notSubscribedType || type === stripeType" (click)="activeModal.close(); this.trackClickGoToSubscriptions();"
+    [routerLink]="'/profile/subscriptions'">
+      <span [hidden]="isFreeTrial" i18n="@@TooManyItemsModalButtonGoToSubscriptions">Go to subscriptions</span>
+      <span *ngIf="isFreeTrial" i18n="@@TooManyItemsModalButtonGoToTrial">Start free trial</span>
+    </tsl-button>
     <div class="TooManyItemsModal__actions-optional"
       *ngIf="type === notSubscribedType || type === stripeType"
       (click)="activeModal.close()" i18n

@@ -37,6 +37,9 @@ describe('LoggedGuard', (): void => {
             accessToken: null,
             storeAccessToken(value) {
               this.accessToken = value;
+            },
+            getTokenSignature() {
+              return 'thesignature';
             }
           }
         },
@@ -116,18 +119,6 @@ describe('LoggedGuard', (): void => {
 
       expect(userService.me).toHaveBeenCalled();
       expect(result).toBeTruthy();
-    });
-
-    it('should call setSubscriptionsFeatureFlag and set the subscriptions permissions', () => {
-      spyOn(userService, 'setSubscriptionsFeatureFlag').and.callThrough();
-      spyOn(permissionService, 'addPermission').and.callThrough();
-      
-      accessTokenService.storeAccessToken('abc');
-
-      userService.me().pipe(map((u: User) => {
-        expect(userService.setPermission).toHaveBeenCalledWith(u.type);
-        expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS.subscriptions);
-      }));
     });
   });
 });

@@ -128,7 +128,7 @@ a {
     height: 12px;
     transform: rotate(-90deg);
     margin-left: -10px;
-    /deep/ path {
+    ::ng-deep path {
       fill: $white;
     }
   }

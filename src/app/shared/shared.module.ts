@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { MatIconModule } from '@angular/material';
 import { AdComponent } from './ad/ad.component';
-import { CustomCurrencyPipe } from './pipes';
+import { CustomCurrencyPipe, DateUntilDayPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -70,13 +70,14 @@ import { SubscriptionsService } from '../core/subscriptions/subscriptions.servic
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
+import { StatusIconComponent } from './status-icon';
 
 @NgModule({
   imports: [
     CardModule,
     CommonModule,
     MatIconModule,
-    NgbModule.forRoot(),
+    NgbModule,
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,
@@ -106,6 +107,7 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
+    StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
     ArchiveButtonComponent,
@@ -143,7 +145,8 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
     NavLinksComponent,
     LinkTransformPipe,
     PreventDoubleClickDirective,
-    ProBadgeModule
+    ProBadgeModule,
+    DateUntilDayPipe
   ],
   declarations: [
     AdComponent,
@@ -159,6 +162,7 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
+    StatusIconComponent,
     ProcessAllButtonComponent,
     ArchivableComponent,
     ArchiveButtonComponent,
@@ -199,7 +203,8 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
     StripeCardSelectionComponent,
     NavLinksComponent,
     LinkTransformPipe,
-    PreventDoubleClickDirective
+    PreventDoubleClickDirective,
+    DateUntilDayPipe
   ],
   providers: [
     DecimalPipe,

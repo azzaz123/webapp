@@ -329,7 +329,7 @@ describe('UploadRealestateComponent', () => {
             condition: MOCK_REALESTATE.condition
           }
         };
-        editEvent.response.content = editResponse;
+        editEvent.response = editResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();
@@ -366,7 +366,7 @@ describe('UploadRealestateComponent', () => {
             condition: MOCK_REALESTATE.condition
           }
         };
-        uploadEvent.response.content = uploadResponse;
+        uploadEvent.response = uploadResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();

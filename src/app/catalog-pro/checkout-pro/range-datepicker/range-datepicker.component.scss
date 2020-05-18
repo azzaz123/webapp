@@ -58,7 +58,7 @@
     }
   }
   
-  :host /deep/ ngb-datepicker {
+  :host ::ng-deep ngb-datepicker {
     border: 0;
     display: flex;
     flex-direction: column;

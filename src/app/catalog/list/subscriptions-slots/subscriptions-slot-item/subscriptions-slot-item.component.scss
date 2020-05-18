@@ -63,7 +63,7 @@
   mat-icon {
     @include square($spacing-ms);
 
-    /deep/ svg path {
+    ::ng-deep svg path {
       fill: $blue-grey-3;
     }
   }

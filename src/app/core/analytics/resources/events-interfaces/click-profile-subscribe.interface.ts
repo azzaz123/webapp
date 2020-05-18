@@ -6,19 +6,19 @@
  */
 
 /**
- * User clicks on the subscribe button
+ * User clicks subscribe button or card on the subcription page
  */
 export interface ClickProfileSubscribeButton {
   /**
-   * Identifier of the screen
-   */
-  screenId: 206;
-  /**
-   * Subscription type
+   * Subscription category type
    */
   subscription: 0 | 100 | 14000 | 12800;
   /**
-   * If the user is a new subscriber
+   * If the user is a new or recurrent subscriber
    */
   isNewSubscriber: boolean;
+  /**
+   * Identifier of the subscription page screen
+   */
+  screenId: 206;
 }

@@ -80,7 +80,9 @@ describe('DashboardComponent', () => {
     router = TestBed.get(Router);
     realTimeService = TestBed.get(RealTimeService);
     fixture.detectChanges();
-    router.initialNavigation();
+
+    // Prevent console warning when redirecting outside ngZone
+    fixture.ngZone.run(() => router.initialNavigation());
   });
 
   it('should create the app', async(() => {

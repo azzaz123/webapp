@@ -31,9 +31,11 @@ describe('Directive: SanitizedBackground', () => {
   it('should create an instance', () => {
     expect(fixture).toBeTruthy();
   });
-  it('Should set the passed url as background-image', () => {
+
+  it('should set the passed url as background-image', () => {
     fixture.componentInstance.image = IMAGE.urls_by_size.medium;
     fixture.detectChanges();
-    expect(element.styles['backgroundImage']).toBe(`url(${IMAGE.urls_by_size.medium})`);
+
+    expect(element.styles.backgroundImage).toBe(`url(${IMAGE.urls_by_size.medium})`);
   });
 });

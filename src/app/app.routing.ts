@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { PERMISSIONS } from './core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
+import { DevelopmentGuard } from './core/user/development.guard';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'chat' },
@@ -11,26 +12,26 @@ const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       {
         path: 'help',
-        loadChildren: 'app/help/help.module#HelpModule'
+        loadChildren: () => import('app/help/help.module').then(m => m.HelpModule)
       },
       {
         path: 'dashboard',
-        loadChildren: 'app/dashboard/dashboard.module#DashboardModule'
+        loadChildren: () => import('app/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
         path: 'calls',
-        loadChildren: 'app/calls/calls.module#CallsModule'
+        loadChildren: () => import('app/calls/calls.module').then(m => m.CallsModule)
       },
       {
         path: 'catalog',
         children: [
           {
             path: '',
-            loadChildren: 'app/catalog-pro/catalog-pro.module#CatalogProModule'
+            loadChildren: () => import('app/catalog-pro/catalog-pro.module').then(m => m.CatalogProModule)
           },
           {
             path: 'upload',
-            loadChildren: 'app/upload/upload.module#UploadModule',
+            loadChildren: () => import('app/upload/upload.module').then(m => m.UploadModule),
             canLoad: [NgxPermissionsGuard],
             data: {
               isMyZone: true,
@@ -43,7 +44,7 @@ const routes: Routes = [
           },
           {
             path: 'edit',
-            loadChildren: 'app/upload/upload.module#UploadModule'
+            loadChildren: () => import('app/upload/upload.module').then(m => m.UploadModule)
           }
         ]
       }
@@ -51,34 +52,34 @@ const routes: Routes = [
   },
   {
     path: 'profile',
-    loadChildren: 'app/profile/profile.module#ProfileModule'
+    loadChildren: () => import('app/profile/profile.module').then(m => m.ProfileModule)
   },
   {
     path: 'chat',
-    loadChildren: 'app/chat/chat.module#ChatModule'
+    loadChildren: () => import('app/chat/chat.module').then(m => m.ChatModule)
   },
   {
     path: 'favorites',
-    loadChildren: 'app/favorites/favorites.module#FavoritesModule'
+    loadChildren: () => import('app/favorites/favorites.module').then(m => m.FavoritesModule)
   },
   {
     path: 'reviews',
-    loadChildren: 'app/reviews/reviews.module#ReviewsModule'
+    loadChildren: () => import('app/reviews/reviews.module').then(m => m.ReviewsModule)
   },
   {
     path: 'wallacoins',
-    loadChildren: 'app/wallacoins/wallacoins.module#WallacoinsModule'
+    loadChildren: () => import('app/wallacoins/wallacoins.module').then(m => m.WallacoinsModule)
   },
   {
     path: 'catalog',
     children: [
       {
         path: '',
-        loadChildren: 'app/catalog/catalog.module#CatalogModule'
+        loadChildren: () => import('app/catalog/catalog.module').then(m => m.CatalogModule)
       },
       {
         path: 'upload',
-        loadChildren: 'app/upload/upload.module#UploadModule',
+        loadChildren: () => import('app/upload/upload.module').then(m => m.UploadModule),
         canLoad: [NgxPermissionsGuard],
         data: {
           isMyZone: true,
@@ -91,17 +92,18 @@ const routes: Routes = [
       },
       {
         path: 'edit',
-        loadChildren: 'app/upload/upload.module#UploadModule'
+        loadChildren: () => import('app/upload/upload.module').then(m => m.UploadModule)
       }
     ]
   },
   {
     path: 'login',
-    loadChildren: 'app/login/login.module#LoginModule'
+    canLoad: [DevelopmentGuard],
+    loadChildren: () => import('app/login/login.module').then(m => m.LoginModule)
   },
   {
     path: 'stats',
-    loadChildren: 'app/stats/stats.module#StatsModule'
+    loadChildren: () => import('app/stats/stats.module').then(m => m.StatsModule)
   },
   {
     path: '**', redirectTo: 'chat'

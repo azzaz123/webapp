@@ -34,7 +34,7 @@ describe('CallStatusLabelPipe', () => {
   it('should return Shared Phone', () => {
     fixture.detectChanges();
 
-    expect(fixture.debugElement.nativeElement.innerText).toBe('Shared Phone');
+    expect(fixture.debugElement.nativeElement.textContent).toBe('Shared Phone');
   });
 
   it('should return Missed Call', () => {
@@ -42,7 +42,7 @@ describe('CallStatusLabelPipe', () => {
 
     fixture.detectChanges();
 
-    expect(fixture.debugElement.nativeElement.innerText).toBe('Missed Call');
+    expect(fixture.debugElement.nativeElement.textContent).toBe('Missed Call');
   });
 
   it('should return Missed Call', () => {
@@ -50,6 +50,6 @@ describe('CallStatusLabelPipe', () => {
 
     fixture.detectChanges();
 
-    expect(fixture.debugElement.nativeElement.innerText).toBe('Call');
+    expect(fixture.debugElement.nativeElement.textContent).toBe('Call');
   });
 });

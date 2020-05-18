@@ -214,7 +214,7 @@ describe('Component: Item', () => {
     });
 
     it('should emit ITEM_SOLD event', () => {
-      spyOn(window, 'fbq');
+      spyOn(window as any, 'fbq');
 
       component.trackSoldEvent(MOCKED_INBOX_CONVERSATIONS[0].item);
 

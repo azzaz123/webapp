@@ -18,11 +18,14 @@ describe('FeatureflagService', () => {
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
-      imports: [HttpClientTestingModule, HttpModuleNew],
+      imports: [HttpClientTestingModule],
       providers: [FeatureflagService,
         {
           provide: AccessTokenService, useValue: {
             accessToken: 'ACCESS_TOKEN'
+          },
+          getTokenSignature() {
+            return 'thesignature';
           }
         }]
     });

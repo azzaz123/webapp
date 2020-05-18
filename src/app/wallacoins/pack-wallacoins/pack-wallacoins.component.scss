@@ -84,7 +84,7 @@
   tsl-button {
     display: block;
     width: 100%;
-    /deep/ {
+    ::ng-deep {
       button {
         &.btn-grey {
           background-color: $blue-grey-3;

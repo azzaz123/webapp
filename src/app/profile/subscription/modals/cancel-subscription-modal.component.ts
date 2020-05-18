@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SubscriptionsResponse } from '../../../core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import {
   AnalyticsEvent,
-  ClickUnsuscribeConfirmation,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  SCREEN_IDS
+  SCREEN_IDS,
+  ClickConfirmCloseSubscription
 } from '../../../core/analytics/analytics-constants';
 
 @Component({
@@ -48,10 +48,12 @@ export class CancelSubscriptionModalComponent {
   }
 
   private trackCancelSubscription() {
-    const event: AnalyticsEvent<ClickUnsuscribeConfirmation> = {
-      name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeConfirmation,
+    const event: AnalyticsEvent<ClickConfirmCloseSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickConfirmCloseSubscription,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        tier: this.subscription.selected_tier_id,
         screenId: SCREEN_IDS.ProfileSubscription
       }
     };

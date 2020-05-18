@@ -6,11 +6,11 @@
  */
 
 /**
- * Screeb view of Edit Subscription Plan
+ * User views Edit Subscription Plan screen
  */
 export interface ViewEditSubscriptionPlan {
   /**
-   * Identifier of the screen from which the message was sent from
+   * Identifier of the Subscription Management screen
    */
   screenId: 191;
 }

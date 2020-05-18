@@ -30,7 +30,7 @@
       left: 50%;
       top: 50%;
       transform: translateX(-50%) translateY(-50%);
-      /deep/ g g {
+      ::ng-deep g g {
         fill: $blue-grey-1;
       }
     }
@@ -49,7 +49,7 @@
         color: $walla-main;
         font-weight: $font-weight-chunky;
       }
-      mat-icon /deep/ {
+      mat-icon ::ng-deep {
         g g, path {
           fill: $walla-main;
         }

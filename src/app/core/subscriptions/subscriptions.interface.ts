@@ -26,7 +26,9 @@ export enum SUBSCRIPTION_MARKETS {
   STRIPE = 'STRIPE',
   GOOGLE_PLAY = 'GOOGLE_PLAY',
   APPLE_STORE = 'APPLE_STORE',
-} 
+}
+
+export type SUBSCRIPTION_CATEGORIES = 0 | 100 | 14000 | 12800;
 
 export interface SubscriptionsResponse {
   id: string,
@@ -35,6 +37,8 @@ export interface SubscriptionsResponse {
   subscribed_from: number,
   selected_tier_id: string,
   default_tier_id: string,
+  trial_available: boolean,
+  trial_days: number,
   tiers: Tier[],
   category_name?: string,
   category_icon?: string,

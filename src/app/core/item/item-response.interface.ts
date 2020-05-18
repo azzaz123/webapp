@@ -58,6 +58,7 @@ export interface ItemContent {
   delivery_info?: DeliveryInfo;
   extra_info?: ItemExtraInfo;
   publish_date?: number;
+  km?: number;
 }
 
 export interface ItemProResponse {
@@ -91,6 +92,9 @@ export interface ItemByCategoryResponse {
   flags: ItemFlags;
   visibility_flags: ItemVisibilityFlags;
   web_slug: string;
+  car_info?: {
+    km: number;
+  }
 }
 
 export interface ItemVisibilityFlags {
@@ -105,6 +109,7 @@ export interface ItemProContent extends ItemContent {
   conversations: number;
   publish_date: number;
   purchases: AutorenewPurchase;
+  km?: number;
 }
 
 export interface AutorenewPurchase {
@@ -113,6 +118,10 @@ export interface AutorenewPurchase {
   scheduled_bump_type?: string;
   scheduled_end_date?: number;
   scheduled_start_date?: number;
+}
+
+export interface KmInfo {
+  km: number;
 }
 
 export interface CarContent extends ItemContent {

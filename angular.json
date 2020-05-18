@@ -4,6 +4,14 @@
   "newProjectRoot": "projects",
   "projects": {
     "webapp": {
+      "i18n": {
+        "locales": {
+          "es": {
+            "translation": "src/locale/es.xtb",
+            "baseHref": ""
+          }
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -11,6 +19,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -42,6 +51,12 @@
           },
           "configurations": {
             "docker": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "8kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -50,6 +65,12 @@
               ]
             },
             "beta": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "8kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -58,6 +79,12 @@
               ]
             },
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "8kb"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -75,10 +102,12 @@
               ]
             },
             "es": {
-              "i18nFile": "src/locale/es.xtb",
-              "i18nFormat": "xtb",
-              "i18nLocale": "es"
-            }
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "8kb"
+                }
+              ]}
           }
         },
         "serve": {
@@ -107,36 +136,6 @@
             "browserTarget": "webapp:build"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [
-              "node_modules/stanza.io/build/stanzaio.bundle.js",
-              "node_modules/visibilityjs/lib/visibility.core.js",
-              "node_modules/appboy-web-sdk/appboy.min.js",
-              "src/assets/js/adsConfig.js",
-              "src/assets/js/quantcast.js"
-            ],
-            "styles": [
-              "node_modules/ngx-toastr/toastr.css",
-              "src/style/styles.scss"
-            ],
-            "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/manifest.json",
-              "src/service-worker.js",
-              "src/doubleclick",
-              "src/eyeblaster",
-              "src/flashtalking",
-              "src/ftlocal"
-            ]
-          }
-        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
@@ -148,36 +147,13 @@
           }
         }
       }
-    },
-    "webapp-e2e": {
-      "root": "",
-      "sourceRoot": "e2e",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "webapp:serve"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "e2e/tsconfig.e2e.json"
-            ],
-            "exclude": []
-          }
-        }
-      }
     }
   },
   "defaultProject": "webapp",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "tsl",
-      "styleext": "scss"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "tsl"

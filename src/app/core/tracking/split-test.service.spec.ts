@@ -12,4 +12,9 @@ describe('SplitTestService', () => {
     });
     service = TestBed.get(SplitTestService);
   });
+
+  it('should create', () => {
+    expect(service).toBeTruthy();
+  });
+
 });

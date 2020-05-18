@@ -14,7 +14,7 @@
     text-decoration: none;
   }
 
-  /deep/ tsl-card-image {
+  ::ng-deep tsl-card-image {
     img {
       border: 4px solid $white;
       border-radius: $border-radius;
@@ -22,7 +22,7 @@
     }
   }
 
-  /deep/ tsl-card-content {
+  ::ng-deep tsl-card-content {
     display: block;
     padding: $spacing-ms;
     .tsl-card-title {
@@ -36,7 +36,7 @@
     }
   }
 
-  /deep/ tsl-card-footer {
+  ::ng-deep tsl-card-footer {
     display: block;
     padding: $spacing-ms;
     border-top: $blue-grey-5 solid thin;

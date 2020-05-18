@@ -113,30 +113,5 @@ describe('Component: Conversation', () => {
       expect(component.conversation).toEqual(null);
     });
   });
-
-  describe('getThirdVoiceTranslation', () => {
-
-    it('should return undefined if translations for message does not exist', () => {
-      const message = new InboxMessage('id-message', 'id-conversation', 'text', 'user-id', false, new Date(),
-        MessageStatus.RECEIVED, MessageType.REVIEW);
-
-      message.type = MessageType.TEXT;
-      expect(component.getThirdVoiceTranslation(message)).toEqual(undefined);
-    });
-
-    it('should NOT return undefined if translations for message does not exist', () => {
-      const message = new InboxMessage('id-message', 'id-conversation', 'text', 'user-id', false, new Date(),
-        MessageStatus.RECEIVED, MessageType.REVIEW);
-
-      message.type = MessageType.REVIEW;
-      expect(component.getThirdVoiceTranslation(message)).not.toEqual(undefined);
-
-      message.type = MessageType.PRICE_DROP;
-      expect(component.getThirdVoiceTranslation(message)).not.toEqual(undefined);
-
-      message.type = MessageType.DROP_PRICE;
-      expect(component.getThirdVoiceTranslation(message)).not.toEqual(undefined);
-    });
-  });
 });
 

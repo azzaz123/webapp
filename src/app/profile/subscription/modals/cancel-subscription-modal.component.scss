@@ -16,7 +16,7 @@
   tsl-button {
     margin: $spacing-s 0;
     width: 100%;
-    /deep/ button {
+    ::ng-deep button {
       width: 100%;
     }
   }
@@ -29,7 +29,7 @@
     width: $spacing-ms;
     height: $spacing-ms;
     line-height: $spacing-ms;
-    /deep/ svg path {
+    ::ng-deep svg path {
       fill: $blue-grey-2;
     }
   }

@@ -13,7 +13,7 @@
   mat-icon {
     height: 10px;
     width: 19px;
-    /deep/ g g {
+    ::ng-deep g g {
       fill: $blue-grey-3;
     }
   }
@@ -21,7 +21,7 @@
     background-color: $walla-main;
     border-color: $walla-main;
     mat-icon {
-      /deep/ g g {
+      ::ng-deep g g {
         fill: $white;
       }
     }
