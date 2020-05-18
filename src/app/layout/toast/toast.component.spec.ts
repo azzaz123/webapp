@@ -36,14 +36,24 @@ describe('ToastComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  
+
   describe('success toast', () => {    
     describe('when toast is triggered', () => {
       let toastHTML;
-      const MOCKED_TOAST: Toast = { text: 'success toast', type: 'success' }
+      const MOCKED_TOAST: Toast = { text: 'success toast', type: 'success' } 
   
       beforeEach(() => {
         toastService.show(MOCKED_TOAST);
         fixture.detectChanges();
+      })
+
+      it('should remove toast from toast array when toast is clicked', () => {
+        toastHTML = fixture.debugElement.query(By.css('ngb-toast'));
+
+        toastHTML.triggerEventHandler('click')
+
+        expect(toastService.toasts).toEqual([]);
       })
 
       it('should have the `success` class', () => {
@@ -82,6 +92,15 @@ describe('ToastComponent', () => {
         toastService.show(MOCKED_TOAST);
         fixture.detectChanges();
       })
+
+      it('should remove toast from toast array when toast is clicked', () => {
+        toastHTML = fixture.debugElement.query(By.css('ngb-toast'));
+
+        toastHTML.triggerEventHandler('click')
+
+        expect(toastService.toasts).toEqual([]);
+      })
+
 
       it('should have the `error` class', () => {
         toastHTML = fixture.debugElement.query(By.css('ngb-toast')).nativeNode;
