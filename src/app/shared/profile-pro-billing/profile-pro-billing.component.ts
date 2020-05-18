@@ -43,7 +43,6 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       country: ['', [Validators.required]],
       email: ['', [Validators.required]],
       name: [''],
-      phone: [' '],
       postal_code: ['', [Validators.required]],
       street: ['', [Validators.required]],
       surname: [''],
