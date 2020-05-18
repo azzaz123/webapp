@@ -9,6 +9,7 @@ import { APP_VERSION } from '../../../environments/version';
 import { UserService } from '../user/user.service';
 import { RemoteConsoleClientService } from './remote-console-client.service';
 import { User } from '../user/user';
+import { UUID } from 'angular2-uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ import { User } from '../user/user';
 export class RemoteConsoleService implements OnDestroy {
 
   deviceId: string;
+  sessionId: string;
   private connectionTimeCallNo = 0;
   private sendMessageTime = new Map();
   private sendMessageActTime = new Map();
@@ -27,6 +29,7 @@ export class RemoteConsoleService implements OnDestroy {
     this.deviceId = Fingerprint2.get({}, components => {
       const values = components.map(component => component.value);
       this.deviceId = Fingerprint2.x64hash128(values.join(''), 31);
+      this.sessionId = UUID.UUID();
     });
   }
 
@@ -72,6 +75,7 @@ export class RemoteConsoleService implements OnDestroy {
         message_id: messageId,
         send_message_time: new Date().getTime() - this.sendMessageActTime.get(messageId),
         metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
+        session_id: this.sessionId
       });
       this.sendMessageTime.delete(messageId);
     }
