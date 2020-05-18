@@ -73,7 +73,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     this.paymentService.getBillingInfo().subscribe(
       (billingInfo: BillingInfoResponse) => {
         this.isNewBillingInfoForm = false;
-        this.type = BILLING_TYPE.NATURAL;//billingInfo.type
+        this.type = billingInfo.type || BILLING_TYPE.NATURAL;
         this.billingForm.patchValue(billingInfo);
         for (const control in this.billingForm.controls) {
           if (this.billingForm.controls.hasOwnProperty(control)) {
