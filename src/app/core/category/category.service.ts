@@ -38,7 +38,8 @@ export class CategoryService {
       category_id: 0,
       name: this.i18n.getTranslations('consumerGoodsGeneralCategoryTitle'),
       icon_id: 'All',
-      vertical_id: 'consumer_goods'
+      vertical_id: 'consumer_goods',
+      fields: {}
     }
   }
 }

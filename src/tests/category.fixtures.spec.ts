@@ -8,37 +8,43 @@ export const CATEGORY_DATA_WEB: Array<CategoryResponse> = [
     category_id: 100,
     icon_id: 'car',
     name: 'Cars',
-    vertical_id: 'cars'
+    vertical_id: 'cars',
+    fields: {}
   },
   {
     category_id: 15000,
     icon_id: 'pc',
     name: 'Computers & Electronic',
-    vertical_id: 'consumer_goods'
+    vertical_id: 'consumer_goods',
+    fields: {}
   },
   {
     category_id: 15245,
     icon_id: 'pc',
     name: 'Computers & Electronic',
-    vertical_id: 'consumer_goods'
+    vertical_id: 'consumer_goods',
+    fields: {}
   },
   {
     category_id: 14000,
     icon_id: 'motorbike',
     name: 'Motorbikes',
-    vertical_id: 'consumer_goods'
+    vertical_id: 'consumer_goods',
+    fields: {}
   },
   {
     category_id: 12800,
     icon_id: 'helmet',
     name: 'Motor parts',
-    vertical_id: 'consumer_goods'
+    vertical_id: 'consumer_goods',
+    fields: {}
   },
   {
     category_id: 23000,
     icon_id: 'help',
     name: 'Help',
-    vertical_id: 'consumer_goods'
+    vertical_id: 'consumer_goods',
+    fields: {}
   }
 ];
 
@@ -46,40 +52,58 @@ export const CATEGORIES_DATA_CONSUMER_GOODS: CategoryResponse[] = [{
   category_id: 12465,
   name: 'Fashion & Accessories',
   icon_id: 't-shirt',
-  vertical_id: 'consumer_goods'
+  vertical_id: 'consumer_goods',
+  fields: {
+    brand: { title: "Brand", order: 1 },
+    gender: { title: "Gender", order: 2 },
+    size: { title: "Size", order: 3 },
+    type_of_object: { title: "Type of garment", order: 4 }
+  }
 }, {
   category_id: 12467,
   name: 'Home & Garden',
   icon_id: 'furniture',
-  vertical_id: 'consumer_goods'
+  vertical_id: 'consumer_goods',
+  fields: {}
 }, {
   category_id: 12545,
   name: 'Electronics',
   icon_id: 'smartphone',
-  vertical_id: 'consumer_goods'
+  vertical_id: 'consumer_goods',
+  fields: {}
 },
 {
   category_id: 16000,
   name: 'Phones',
   icon_id: 'smartphone',
-  vertical_id: 'consumer_goods'
+  vertical_id: 'consumer_goods',
+  fields: {
+    brand: { title: "Brand", order: 1 },
+    model: { title: "Modelo", order: 2 },
+    type_of_object: {
+      title: "Type of product", order: 3
+    }
+  }
 },
 {
   category_id: 23000,
   name: 'Help',
   icon_id: 'help',
-  vertical_id: 'consumer_goods'
+  vertical_id: 'consumer_goods',
+  fields: {}
 },
 {
   category_id: 13200,
   name: 'Services',
   icon_id: 'toolbox',
-  vertical_id: 'consumer_goods'
+  vertical_id: 'consumer_goods',
+  fields: {}
 }, {
   category_id: 13000,
   name: 'Real Estate',
   icon_id: 'house',
-  vertical_id: 'consumer_goods'
+  vertical_id: 'consumer_goods',
+  fields: {}
 }];
 
 export const CATEGORIES_OPTIONS_CONSUMER_GOODS: CategoryOption[] = [{

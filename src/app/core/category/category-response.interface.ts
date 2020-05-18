@@ -5,11 +5,20 @@ export interface CategoryResponse {
   name: string;
   icon_id: string;
   vertical_id: string;
-  fields?: CategoryFields[];
+  fields: CategoryFields;
   hasShipping?: boolean;
 }
 
 export interface CategoryFields {
+  type_of_object?: CategoryField;
+  type_of_object_level_2?: CategoryField;
+  brand?: CategoryField;
+  model?: CategoryField;
+  size?: CategoryField;
+  gender?: CategoryField;
+}
+
+export interface CategoryField {
   order: number;
   title: string;
 }
