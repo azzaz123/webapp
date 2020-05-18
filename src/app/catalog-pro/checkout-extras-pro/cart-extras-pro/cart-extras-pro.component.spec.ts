@@ -108,7 +108,6 @@ describe('CartExtrasProComponent', () => {
       country: new FormControl(),
       email: new FormControl(),
       name: new FormControl(),
-      phone: new FormControl(),
       postal_code: new FormControl(),
       street: new FormControl(),
       surname: new FormControl(),

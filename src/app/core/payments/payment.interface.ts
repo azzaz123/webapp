@@ -76,11 +76,11 @@ export interface BillingInfoResponse {
   email: string;
   id: string;
   name: string;
-  phone: string;
   postal_code: string;
   street: string;
   surname: string;
   type: string;
+  phone?: string;
 }
 
 export interface FinancialCard {
