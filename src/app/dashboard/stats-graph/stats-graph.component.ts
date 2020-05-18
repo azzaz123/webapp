@@ -36,6 +36,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
   }
 
   private setUpChart(entries: any) {
+    console.log('setUpChart ', entries);
     const xAxisData = [];
     const data1 = [];
     const data2 = [];
@@ -44,7 +45,10 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
     const data5 = [];
 
     entries.map(entry => {
-      xAxisData.push(moment.unix(entry.date).format("DD/MM/YY"));
+      const unixDate = moment.unix(entry.date/1000).utcOffset(0, true);
+      const validDate = moment(unixDate).format('YYYY-MM-DDTHH:mm');
+
+      xAxisData.push(validDate);
       data1.push(entry.values.chats);
       data2.push(entry.values.city_bump + entry.values.country_bump);
       data3.push(entry.values.phone_numbers);
@@ -59,9 +63,15 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       tooltip: {},
       xAxis: {
         data: xAxisData,
+        //type: 'time',
         silent: false,
         splitLine: {
           show: false
+        },
+        axisLabel: {
+          formatter: (function(value){
+              return moment(value).format('DD/MM/YY');
+          })
         }
       },
       yAxis: {
