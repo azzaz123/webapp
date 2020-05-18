@@ -6,7 +6,6 @@
     padding:15px;
     text-align: left;
     font-size: $font-size-m;
-    
 }
 
 ngb-toast {
@@ -16,20 +15,26 @@ ngb-toast {
     right: 12px;
     width: 300px;
     height: 120px;
-  
+    box-shadow:5px 10px 18px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+
+    &:hover {
+       box-shadow: 0 0 12px #000
+    }
     
     &.success {
         @extend %toast;
         background-color: $positive-main;
     }
+
     &.error {
         @extend %toast;
         background-color: $negative-main;
     }
+
     .toast-title {
+        display:block;
         font-weight:$font-weight-chunky;
-        padding:0 $spacing-s;
     }
-   
-    
+ 
 }
