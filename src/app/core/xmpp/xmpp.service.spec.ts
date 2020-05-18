@@ -129,8 +129,8 @@ describe('Service: Xmpp', () => {
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
       ]
     });
-    service = TestBed.get(XmppService);
-    eventService = TestBed.get(EventService);
+    service = TestBed.inject(XmppService);
+    eventService = TestBed.inject(EventService);
     spyOn(XMPP, 'createClient').and.returnValue(MOCKED_CLIENT);
     spyOn(MOCKED_CLIENT, 'on').and.callFake((event, callback) => {
       eventService.subscribe(event, callback);
@@ -143,8 +143,8 @@ describe('Service: Xmpp', () => {
       resolve({ time: { utc: MOCK_SERVER_DATE } });
     }));
     sendIqSpy = spyOn(MOCKED_CLIENT, 'sendIq').and.callThrough();
-    service = TestBed.get(XmppService);
-    remoteConsoleService = TestBed.get(RemoteConsoleService);
+    service = TestBed.inject(XmppService);
+    remoteConsoleService = TestBed.inject(RemoteConsoleService);
     appboy.initialize(environment.appboy);
 
     spyOn(console, 'warn');
