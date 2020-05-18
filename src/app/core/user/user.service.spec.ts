@@ -46,7 +46,7 @@ import { LoginResponse } from './login-response.interface';
 import { Image, UserLocation } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { FEATURE_FLAGS_ENUM, FeatureflagService } from './featureflag.service';
+import { FeatureflagService } from './featureflag.service';
 import { APP_VERSION } from '../../../environments/version';
 import { PhoneMethod } from '../../chat/model';
 import { HttpParams, HttpRequest } from '@angular/common/http';
@@ -720,16 +720,6 @@ describe('Service: User', () => {
         reason: REASON
       });
       expect(req.request.headers.get('AppBuild')).toEqual(APP_VERSION);
-    });
-  });
-
-  describe('setSubscriptionsFeatureFlag', () => {
-    it('should call getFlag and add permission if active', () => {
-      spyOn(featureflagService, 'getFlag').and.callThrough();
-
-      service.setSubscriptionsFeatureFlag();
-
-      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);
     });
   });
 });

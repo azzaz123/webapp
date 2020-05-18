@@ -1,8 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { SubscriptionsService, SUBSCRIPTIONS_URL, SUBSCRIPTIONS_SLOTS_ENDPOINT, SUBSCRIPTION_TYPES } from './subscriptions.service';
-import { Observable, of } from 'rxjs';
+import {
+  SubscriptionsService,
+  SUBSCRIPTIONS_URL,
+  SUBSCRIPTIONS_SLOTS_ENDPOINT,
+  SUBSCRIPTION_TYPES
+} from './subscriptions.service';
+import { of } from 'rxjs';
 import { UserService } from '../user/user.service';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
+import { FeatureflagService } from '../user/featureflag.service';
 import { UUID } from 'angular2-uuid';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { HttpModuleNew } from '../http/http.module.new';
@@ -10,7 +15,19 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { SubscriptionsResponse, SubscriptionSlot, Tier } from './subscriptions.interface';
-import { SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED, MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE, MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED, SUBSCRIPTIONS_NOT_SUB, MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY, MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE } from '../../../tests/subscriptions.fixtures.spec';
+import {
+  SUBSCRIPTIONS,
+  MAPPED_SUBSCRIPTIONS,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
+  MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE,
+  MOCK_SUBSCRIPTION_SLOTS,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
+  SUBSCRIPTIONS_NOT_SUB,
+  MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY,
+  MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE
+} from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { HttpClient } from '@angular/common/http';
@@ -142,16 +159,6 @@ describe('SubscriptionsService', () => {
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.body).toEqual(expectedBody);
       expect(req.request.method).toBe('PUT');
-    });
-  });
-
-  describe('isSubscriptionsActive', () => {
-    it('should call featureflagService.getFlag when called', () => {
-      spyOn(featureflagService, 'getFlag');
-
-      service.isSubscriptionsActive$();
-
-      expect(featureflagService.getFlag).toHaveBeenCalledWith(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);
     });
   });
 
@@ -419,6 +426,7 @@ describe('SubscriptionsService', () => {
         expect(result).toBe(0);
       });
     });
+
   })
 
   afterAll(() => {

@@ -238,19 +238,15 @@ describe('App', () => {
 
   describe('set cookie', () => {
     it('should create a cookie', () => {
-      jasmine.clock().uninstall();
       spyOn(UUID, 'UUID').and.returnValue('1-2-3');
       spyOn(cookieService, 'put');
-      jasmine.clock().install();
       const currentDate = new Date();
       const expirationDate = new Date(currentDate.getTime() + ( 900000 ));
-      jasmine.clock().mockDate(currentDate);
       const cookieOptions = {path: '/', expires: expirationDate};
 
       component.updateSessionCookie();
 
       expect(cookieService.put).toHaveBeenCalledWith('app_session_id', UUID.UUID() , cookieOptions);
-      jasmine.clock().uninstall();
     });
   });
 
