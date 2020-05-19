@@ -367,7 +367,7 @@ export interface DeliveryInfo {
 }
 
 export interface ItemExtraInfo {
-  object_type: {
+  type_of_object: {
     id: string;
     name: string;
   };

@@ -221,7 +221,7 @@ export const ITEM_COUNTERS_DATA: ItemCounters = {
 };
 
 export const ITEM_FASHION_EXTRA_INFO: ItemExtraInfo = {
-  object_type: {
+  type_of_object: {
     id: '1',
     name: 'Accessories'
   },
@@ -233,7 +233,7 @@ export const ITEM_FASHION_EXTRA_INFO: ItemExtraInfo = {
 }
 
 export const ITEM_CELLPHONES_EXTRA_INFO: ItemExtraInfo = {
-  object_type: {
+  type_of_object: {
     id: '1',
     name: 'Phones and Accessories'
   },

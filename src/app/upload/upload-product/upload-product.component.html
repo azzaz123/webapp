@@ -134,7 +134,7 @@
     </div>
     <div class="row" formGroupName="extra_info">
       <div class="col-12 col-md-4">
-        <div class="form-group last" formGroupName="object_type">
+        <div class="form-group last" formGroupName="type_of_object">
           <label for="objectType" i18n>Type of garment</label>
           <ng-select class="form-control" formControlName="id" id="objectType" i18n-placeholder
             placeholder="Select a type" [options]="objectTypes" noFilter="10" (opened)="getObjectTypes()"
@@ -167,7 +167,7 @@
     </div>
     <div class="row" formGroupName="extra_info">
       <div class="col-12 col-md-4">
-        <div class="form-group last" formGroupName="object_type">
+        <div class="form-group last" formGroupName="type_of_object">
           <label for="objectType" i18n>Type of object</label>
           <ng-select class="form-control" formControlName="id" id="objectType" i18n-placeholder
             placeholder="Select a type" [options]="objectTypes" noFilter="10" (selected)="resetCellphonesExtraFields()"

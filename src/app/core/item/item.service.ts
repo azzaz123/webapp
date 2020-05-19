@@ -275,9 +275,9 @@ export class ItemService {
       content.delivery_info,
       ITEM_TYPES.CONSUMER_GOODS,
       content.extra_info ? {
-        object_type: {
-          id: content.extra_info.object_type && content.extra_info.object_type.id ? content.extra_info.object_type.id.toString() : null,
-          name: content.extra_info.object_type && content.extra_info.object_type.name ? content.extra_info.object_type.name : null
+        type_of_object: {
+          id: content.extra_info.type_of_object && content.extra_info.type_of_object.id ? content.extra_info.type_of_object.id.toString() : null,
+          name: content.extra_info.type_of_object && content.extra_info.type_of_object.name ? content.extra_info.type_of_object.name : null
         },
         brand: content.extra_info.brand,
         model: content.extra_info.model,
