@@ -1,10 +1,8 @@
 import { Component, Inject, Input, LOCALE_ID, OnDestroy, OnInit } from '@angular/core';
-import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
 import { StatisticsService } from './statistics.service';
 import { StatisticEntriesResponse, StatisticFullResponse } from './statistic-response.interface';
 import { IOption } from 'ng-select';
 import * as moment from 'moment';
-import { find } from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
@@ -49,21 +47,20 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       const validDate = moment(unixDate).format('YYYY-MM-DDTHH:mm');
 
       xAxisData.push(validDate);
-      data1.push(entry.values.chats);
-      data2.push(entry.values.city_bump + entry.values.country_bump);
-      data3.push(entry.values.phone_numbers);
-      data4.push(entry.values.sold);
-      data5.push(entry.values.views);
+      data1.push(entry.values.phone_numbers);
+      data2.push(entry.values.city_bump);
+      data3.push(entry.values.country_bump);
+      data4.push(entry.values.views);
+      data4.push(entry.values.chats);
     });
     this.chartOption = {
       legend: {
-        data: ['chats', 'bumps', 'phoneNumbers', 'sold', 'views'],
+        data: ['phoneNumbers', 'cityBumps', 'countryBumps', 'views', 'chats'],
         align: 'left'
       },
       tooltip: {},
       xAxis: {
         data: xAxisData,
-        //type: 'time',
         silent: false,
         splitLine: {
           show: false
@@ -76,42 +73,66 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       },
       yAxis: {
       },
-      series: [{
-        name: 'chats',
-        type: 'bar',
-        data: data1,
-        animationDelay: function (idx) {
-          return idx * 10;
+      series: [
+        {
+          name: 'phoneNumbers',
+          type: 'bar',
+          data: data1,
+          animationDelay: function (idx) {
+            return idx * 10;
+          }
+        },
+        {
+          name: 'cityBumps',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          sampling: 'average',
+          itemStyle: {
+              color: 'rgb(19, 193, 172)'
+          },
+          areaStyle: {
+            color: 'rgb(19, 193, 172)'
+          },
+          data: data2,
+          animationDelay: function (idx) {
+            return idx * 100;
+          }
+        },
+        {
+          name: 'countryBumps',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          sampling: 'average',
+          itemStyle: {
+            color: 'rgb(86, 172, 255)'
+          },
+          areaStyle: {
+            color: 'rgb(86, 172, 255)'
+          },
+          data: data3,
+          animationDelay: function (idx) {
+            return idx * 170;
+          }
+        },
+        {
+          name: 'views',
+          type: 'line',
+          data: data4,
+          animationDelay: function (idx) {
+            return idx * 10 + 250;
+          }
+        },
+        {
+          name: 'chats',
+          type: 'bar',
+          data: data5,
+          animationDelay: function (idx) {
+            return idx * 10 + 300;
+          }
         }
-      }, {
-        name: 'bumps',
-        type: 'line',
-        data: data2,
-        animationDelay: function (idx) {
-          return idx * 100;
-        }
-      }, {
-        name: 'phoneNumbers',
-        type: 'line',
-        data: data3,
-        animationDelay: function (idx) {
-          return idx * 10 + 200;
-        }
-      }, {
-        name: 'sold',
-        type: 'line',
-        data: data4,
-        animationDelay: function (idx) {
-          return idx * 10 + 250;
-        }
-      }, {
-        name: 'views',
-        type: 'line',
-        data: data5,
-        animationDelay: function (idx) {
-          return idx * 10 + 300;
-        }
-      }],
+      ],
       animationEasing: 'elasticOut',
       animationDelayUpdate: function (idx) {
         return idx * 5;
