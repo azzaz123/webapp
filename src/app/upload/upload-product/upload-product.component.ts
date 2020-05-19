@@ -114,6 +114,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private oldFormValue: any;
   private oldDeliveryValue: any;
   private rawCategories: CategoryResponse[];
+  public selectedRawCategory: CategoryResponse;
   public isUrgent = false;
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
@@ -204,7 +205,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     if (+this.item.categoryId === this.fashionCategoryId) {
       this.getSizes();
     }
-    this.getObjectTypes();
     this.getConditions();
   }
 
@@ -226,7 +226,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private detectCategoryChanges() {
     this.uploadForm.get('category_id').valueChanges.subscribe((categoryId: number) => {
       this.handleUploadFormExtraFields();
-      this.getConditions();
       this.onCategorySelect.emit(categoryId);
     });
   }
@@ -236,7 +235,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     const rawCategory = this.rawCategories.find(category => category.category_id === +formCategoryId);
     const EXTRA_FIELDS_KEYS = ['type_of_object', 'brand', 'model', 'size', 'gender'];
 
-    if (rawCategory) {
+    if (!!rawCategory) {
+      this.selectedRawCategory = rawCategory;
+
       EXTRA_FIELDS_KEYS.map((entry) => {
         if (!!rawCategory.fields[entry]) {
           return this.getUploadExtraInfoControl(entry).enable();
@@ -244,6 +245,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         return this.getUploadExtraInfoControl(entry).disable();
       });
     }
+
+    this.getObjectTypes();
+    this.getConditions();
   }
 
   private getDeliveryInfo(): DeliveryInfo {
@@ -422,6 +426,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public getObjectTypes(): void {
     const currentCategorId: number = +this.uploadForm.get('category_id').value;
+    this.objectTypes = [];
     this.generalSuggestionsService.getObjectTypes(currentCategorId).subscribe((objectTypes: IOption[]) => {
       this.objectTypes = objectTypes;
     });
@@ -434,6 +439,16 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         model: brandModelObj.model
       });
     }
+  }
+
+  public resetExtraFields(): void {
+    this.getUploadExtraInfoControl().patchValue({
+      brand: null,
+      model: null,
+      size: {
+        id: null
+      }
+    });
   }
 
   public resetCellphonesExtraFields(): void {
