@@ -22,21 +22,8 @@
         </div>
       </ng-template>
     </div>
+
     <div class="row" [ngbPopover]="coachmarkPrice" [autoClose]="false" popoverClass="ml-3">
-      <div class="col-6 col-md-4">
-        <div class="form-group">
-          <label for="price" i18n>Price</label>
-          <input i18n-placeholder placeholder="(don't go crazy)" type="number" class="form-control"
-            formControlName="sale_price" id="price" min="0" max="999999999" />
-        </div>
-      </div>
-      <div class="col-6 col-md-2">
-        <div class="form-group">
-          <label for="currency" i18n>Currency</label>
-          <ng-select class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
-            noFilter="10"></ng-select>
-        </div>
-      </div>
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="category" i18n>Category</label>
@@ -52,12 +39,27 @@
           </ng-select>
         </div>
       </div>
+      <div class="col-6 col-md-4">
+        <div class="form-group">
+          <label for="price" i18n>Price</label>
+          <input i18n-placeholder placeholder="(don't go crazy)" type="number" class="form-control"
+            formControlName="sale_price" id="price" min="0" max="999999999" />
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="form-group">
+          <label for="currency" i18n>Currency</label>
+          <ng-select class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
+            noFilter="10"></ng-select>
+        </div>
+      </div>
       <ng-template #coachmarkPrice>
         <div i18n>
           Add a fair price and the category that best suits your item.
         </div>
       </ng-template>
     </div>
+    
     <div class="row" [ngbPopover]="coachmarkDescription" [autoClose]="false" popoverClass="ml-3">
       <div class="col-12">
         <div class="form-group mb-0">
