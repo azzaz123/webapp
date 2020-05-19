@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { map, orderBy } from 'lodash-es';
 import { FormGroup } from '@angular/forms';
 import { PaymentService } from '../../core/payments/payment.service';
