@@ -14,7 +14,7 @@ export class CheckoutExtrasProComponent implements OnInit {
   packs: Array<any> = [];
   billingInfoFormEnabled = false;
   billingInfoForm: FormGroup;
-  
+
   constructor(private paymentService: PaymentService) { }
 
   ngOnInit() {
