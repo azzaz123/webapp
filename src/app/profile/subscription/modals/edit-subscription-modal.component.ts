@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionsResponse, Tier, SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
@@ -39,7 +39,7 @@ export class EditSubscriptionModalComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               public subscriptionsService: SubscriptionsService,
-              private toastr: ToastrService,
+              private toastService: ToastService,
               private i18n: I18nService,
               private modalService: NgbModal,
               private analyticsService: AnalyticsService) {
@@ -68,11 +68,11 @@ export class EditSubscriptionModalComponent implements OnInit {
     this.loading = true;
     this.subscriptionsService.editSubscription(this.subscription, this.selectedTier.id).subscribe((response) => {
       if (response.status === 202) {
-          this.toastr.success(this.i18n.getTranslations('editSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('editSubscriptionSuccessBody'));
+          this.toastService.show({text:this.i18n.getTranslations('editSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('editSubscriptionSuccessBody'),type:'success'});
           this.loading = false;
       } else {
         this.loading = false;
-        this.toastr.error(this.i18n.getTranslations('editSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('editSubscriptionErrorBody'));
+        this.toastService.show({text:this.i18n.getTranslations('editSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('editSubscriptionErrorBody'),type:'error'});
       }
       this.close();
     });
