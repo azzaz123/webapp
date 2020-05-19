@@ -245,6 +245,7 @@ describe('App', () => {
     it('should create a cookie', () => {
       spyOn(UUID, 'UUID').and.returnValue('1-2-3');
       spyOn(cookieService, 'put');
+      spyOn(Date.prototype, 'getTime').and.returnValue(123456789);
       const currentDate = new Date();
       const expirationDate = new Date(currentDate.getTime() + ( 900000 ));
       const cookieOptions = {path: '/', expires: expirationDate};
