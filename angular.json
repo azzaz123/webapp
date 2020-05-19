@@ -37,7 +37,6 @@
               "src/ftlocal"
             ],
             "styles": [
-              "node_modules/ngx-toastr/toastr.css",
               "src/style/styles.scss"
             ],
             "scripts": [
@@ -106,7 +105,8 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "8kb"
                 }
-              ]}
+              ]
+            }
           }
         },
         "serve": {

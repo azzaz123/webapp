@@ -9,7 +9,7 @@ import { STRIPE_CARD_OPTION } from '../../../../../tests/stripe.fixtures.spec';
 import { StripeService } from '../../../../core/stripe/stripe.service';
 import { EventService } from '../../../../core/event/event.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../../layout/toast/toast.service';
 import { Router } from '@angular/router';
 import { I18nService } from '../../../../core/i18n/i18n.service';
 import { UUID } from 'angular2-uuid/index';
@@ -20,7 +20,7 @@ describe('CreditCardModalComponent', () => {
   let stripeService: StripeService;
   let eventService: EventService;
   let errorService: ErrorsService;
-  let toastrService: ToastrService;
+  let toastService: ToastService;
   let router: Router;
 
   beforeEach(async(() => {
@@ -30,14 +30,6 @@ describe('CreditCardModalComponent', () => {
         NgbActiveModal,
         EventService,
         ErrorsService,
-        {
-          provide: ToastrService, useValue: {
-            error() {
-            },
-            success() {
-            }
-        }
-        },
         {
           provide: StripeService, useValue: {
             buy() {}
@@ -67,7 +59,7 @@ describe('CreditCardModalComponent', () => {
     stripeService = TestBed.get(StripeService);
     eventService = TestBed.get(EventService);
     errorService = TestBed.get(ErrorsService);
-    toastrService = TestBed.get(ToastrService);
+    toastService = TestBed.get(ToastService);
     router = TestBed.get(Router);
     component = fixture.componentInstance;
     component.financialCard = FINANCIAL_CARD;
