@@ -113,6 +113,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private focused: boolean;
   private oldFormValue: any;
   private oldDeliveryValue: any;
+  private rawCategories: CategoryResponse[];
   public isUrgent = false;
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
@@ -455,6 +456,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private getUploadCategories(): Observable<CategoryOption[]> {
     return this.categoryService.getCategories().pipe(
+      tap(categories => this.rawCategories = categories),
       map(categories => this.getConsumerGoodCategories(categories)),
       map(categories => this.getNgSelectOptions(categories)));
   }
