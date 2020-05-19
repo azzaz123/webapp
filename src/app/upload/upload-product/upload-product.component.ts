@@ -149,14 +149,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }),
       extra_info: this.fb.group({
         type_of_object: this.fb.group({
-          id: [null, [Validators.required]]
+          id: [{ value: null, disabled: true }, [Validators.required]]
         }),
-        brand: [null, [Validators.required]],
-        model: [null, [Validators.required]],
+        brand: [{ value: null, disabled: true }, [Validators.required]],
+        model: [{ value: null, disabled: true }, [Validators.required]],
         size: this.fb.group({
-          id: [null, [Validators.required]]
+          id: [{ value: null, disabled: true }, [Validators.required]]
         }),
-        gender: [null, [Validators.required]],
+        gender: [{ value: null, disabled: true }, [Validators.required]],
         condition: [null]
       })
     });
