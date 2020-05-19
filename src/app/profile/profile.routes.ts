@@ -96,6 +96,5 @@ export const profileRoutedComponents = [
   ProfileInfoComponent,
   AccountComponent,
   SubscriptionsComponent,
-  //ProfileProBillingComponent,
   ProfileProSubscriptionComponent
 ];
