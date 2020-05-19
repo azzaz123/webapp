@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
+import { find } from 'lodash';
 
 @Component({
   selector: 'tsl-stats-graph',
@@ -34,7 +35,6 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
   }
 
   private setUpChart(entries: any) {
-    console.log('setUpChart ', entries);
     const xAxisData = [];
     const data1 = [];
     const data2 = [];
@@ -51,14 +51,30 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       data2.push(entry.values.city_bump);
       data3.push(entry.values.country_bump);
       data4.push(entry.values.views);
-      data4.push(entry.values.chats);
+      data5.push(entry.values.chats);
     });
     this.chartOption = {
       legend: {
-        data: ['phoneNumbers', 'cityBumps', 'countryBumps', 'views', 'chats'],
-        align: 'left'
+        data: ['Números de tel.', 'Destacados ciudad', 'Destacados país', 'Visualizaciones', 'Mensajes'],
+        align: 'left',
+        textStyle: {
+          color: '#000000'
+        },
+        icon: 'circle'
       },
-      tooltip: {},
+      tooltip: {
+        show: true,
+        trigger: 'axis',
+        backgroundColor: 'rgba(250, 250, 250, 0.9)',
+        textStyle: {
+            fontSize: 12,
+            color: '#000000'
+        },
+        //formatter: '{a0}: {c0}<br />{a1}: {c1}<br />{a2}: {c2}<br />{a3}: {c3}<br />{a4}: {c4}'
+      },
+      toolbox: {
+        show: false
+      },
       xAxis: {
         data: xAxisData,
         silent: false,
@@ -67,32 +83,44 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         },
         axisLabel: {
           formatter: (function(value){
-              return moment(value).format('DD/MM/YY');
+              return moment(value).format('DD');
           })
+        },
+        nameTextStyle: {
+          color: 'rgba(19, 193, 172, 1.0)'
+        },
+        axisLine: {
+          lineStyle: {
+              color: '#90A4AE'
+          }
         }
       },
       yAxis: {
+        nameTextStyle: {
+          color: 'rgba(19, 193, 172, 1.0)'
+        },
+        axisLine: {
+          lineStyle: {
+              color: '#90A4AE'
+          }
+        },
+        splitLine: {
+          lineStyle: {
+              color: 'rgba(232, 232, 232, 0.5)'
+          }
+        }
       },
       series: [
         {
-          name: 'phoneNumbers',
-          type: 'bar',
-          data: data1,
-          animationDelay: function (idx) {
-            return idx * 10;
-          }
-        },
-        {
-          name: 'cityBumps',
+          name: 'Destacados ciudad',
           type: 'line',
           smooth: true,
-          symbol: 'none',
           sampling: 'average',
           itemStyle: {
-              color: 'rgb(19, 193, 172)'
+              color: 'rgba(19, 193, 172, 0.1)'
           },
           areaStyle: {
-            color: 'rgb(19, 193, 172)'
+            color: 'rgba(19, 193, 172, 0.2)'
           },
           data: data2,
           animationDelay: function (idx) {
@@ -100,16 +128,15 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
           }
         },
         {
-          name: 'countryBumps',
+          name: 'Destacados país',
           type: 'line',
           smooth: true,
-          symbol: 'none',
           sampling: 'average',
           itemStyle: {
-            color: 'rgb(86, 172, 255)'
+            color: 'rgba(86, 172, 255, 0.1)'
           },
           areaStyle: {
-            color: 'rgb(86, 172, 255)'
+            color: 'rgba(86, 172, 255, 0.2)'
           },
           data: data3,
           animationDelay: function (idx) {
@@ -117,19 +144,36 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
           }
         },
         {
-          name: 'views',
+          name: 'Visualizaciones',
           type: 'line',
+          itemStyle: {
+            color: 'rgb(144, 164, 174)'
+          },
           data: data4,
           animationDelay: function (idx) {
             return idx * 10 + 250;
           }
         },
         {
-          name: 'chats',
+          name: 'Mensajes',
           type: 'bar',
+          itemStyle: {
+            color: 'rgb(61, 170, 191)'
+          },
           data: data5,
           animationDelay: function (idx) {
             return idx * 10 + 300;
+          }
+        },
+        {
+          name: 'Números de tel.',
+          type: 'bar',
+          itemStyle: {
+            color: 'rgb(255, 178, 56)'
+          },
+          data: data1,
+          animationDelay: function (idx) {
+            return idx * 10;
           }
         }
       ],
@@ -141,6 +185,9 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
   }
 
   private setStatsDurations() {
+    if (this.yearly) {
+      this.duration = '365';
+    }
     this.statsDurations = [{
       label: this.i18n.getTranslations('last30Days'),
       value: '30'
@@ -154,8 +201,27 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
   }
 
   private loadStats() {
+    let yearlyEntries: any = [];
+    let data: any = [];
     this.statisticsService.getStatistics(this.duration).subscribe((response: StatisticFullResponse) => {
-      this.setUpChart(response.entries);
+      if (this.yearly) {
+        data = response.entries;
+        data.forEach((entry: StatisticEntriesResponse) => {
+          console.log('entry ', entry);
+          const unixDate = moment.unix(+entry.date/1000).utcOffset(0, true);
+          const validDate = moment(unixDate).format('YYYY-MM-01');
+          yearlyEntries = find(data, {date: validDate});
+          /*yearlyEntries.phone_numbers += entry.values.phone_numbers || 0;
+          yearlyEntries.views += entry.values.views || 0;
+          yearlyEntries.chats += entry.values.chats || 0;
+          yearlyEntries.city_bump += entry.values.city_bump || 0;
+          yearlyEntries.country_bump += entry.values.country_bump || 0;*/
+          //yearlyEntries.push(entry.values);
+        });
+        console.log('yearly entries ', yearlyEntries);
+      } else {
+        this.setUpChart(response.entries);
+      }
     });
   }
 
