@@ -22,6 +22,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
   isSafari: boolean;
   public stats: any;
   public chartOption: EChartOption;
+  public yearData = [];
 
   constructor(private statisticsService: StatisticsService,
               private i18n: I18nService,
@@ -41,17 +42,28 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
     const data3 = [];
     const data4 = [];
     const data5 = [];
+    const axisDateFormat = this.yearly ? 'MMM' : 'DD';
+    const graphType = this.yearly ? 'bar' : undefined;
+    const transparency = this.yearly ? '1.0' : '0.1';
 
     entries.map(entry => {
-      const unixDate = moment.unix(entry.date/1000).utcOffset(0, true);
-      const validDate = moment(unixDate).format('YYYY-MM-DDTHH:mm');
+      if (!this.yearly) {
+        const unixDate = moment.unix(entry.date/1000).utcOffset(0, true);
+        xAxisData.push(moment(unixDate).format('YYYY-MM-DDTHH:mm'));
+        data1.push(entry.values.phone_numbers);
+        data2.push(entry.values.city_bump);
+        data3.push(entry.values.country_bump);
+        data4.push(entry.values.views);
+        data5.push(entry.values.chats);
+      } else {
+        xAxisData.push(entry.date);
+        data1.push(entry.phone_numbers);
+        data2.push(entry.city_bump);
+        data3.push(entry.country_bump);
+        data4.push(entry.views);
+        data5.push(entry.chats);
+      }
 
-      xAxisData.push(validDate);
-      data1.push(entry.values.phone_numbers);
-      data2.push(entry.values.city_bump);
-      data3.push(entry.values.country_bump);
-      data4.push(entry.values.views);
-      data5.push(entry.values.chats);
     });
     this.chartOption = {
       legend: {
@@ -70,7 +82,6 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
             fontSize: 12,
             color: '#000000'
         },
-        //formatter: '{a0}: {c0}<br />{a1}: {c1}<br />{a2}: {c2}<br />{a3}: {c3}<br />{a4}: {c4}'
       },
       toolbox: {
         show: false
@@ -83,7 +94,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         },
         axisLabel: {
           formatter: (function(value){
-              return moment(value).format('DD');
+              return moment(value).format(axisDateFormat);
           })
         },
         nameTextStyle: {
@@ -113,11 +124,11 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       series: [
         {
           name: 'Destacados ciudad',
-          type: 'line',
+          type: graphType || 'line',
           smooth: true,
           sampling: 'average',
           itemStyle: {
-              color: 'rgba(19, 193, 172, 0.1)'
+              color: `rgba(19, 193, 172, ${transparency})`
           },
           areaStyle: {
             color: 'rgba(19, 193, 172, 0.2)'
@@ -129,11 +140,11 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         },
         {
           name: 'Destacados país',
-          type: 'line',
+          type: graphType || 'line',
           smooth: true,
           sampling: 'average',
           itemStyle: {
-            color: 'rgba(86, 172, 255, 0.1)'
+            color: `rgba(86, 172, 255, ${transparency})`
           },
           areaStyle: {
             color: 'rgba(86, 172, 255, 0.2)'
@@ -145,7 +156,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         },
         {
           name: 'Visualizaciones',
-          type: 'line',
+          type: graphType || 'line',
           itemStyle: {
             color: 'rgb(144, 164, 174)'
           },
@@ -156,7 +167,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         },
         {
           name: 'Mensajes',
-          type: 'bar',
+          type: graphType || 'bar',
           itemStyle: {
             color: 'rgb(61, 170, 191)'
           },
@@ -167,7 +178,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         },
         {
           name: 'Números de tel.',
-          type: 'bar',
+          type: graphType || 'bar',
           itemStyle: {
             color: 'rgb(255, 178, 56)'
           },
@@ -201,24 +212,31 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
   }
 
   private loadStats() {
-    let yearlyEntries: any = [];
-    let data: any = [];
     this.statisticsService.getStatistics(this.duration).subscribe((response: StatisticFullResponse) => {
       if (this.yearly) {
-        data = response.entries;
-        data.forEach((entry: StatisticEntriesResponse) => {
-          console.log('entry ', entry);
+        this.yearData = [];
+        response.entries.forEach((entry: StatisticEntriesResponse) => {
           const unixDate = moment.unix(+entry.date/1000).utcOffset(0, true);
           const validDate = moment(unixDate).format('YYYY-MM-01');
-          yearlyEntries = find(data, {date: validDate});
-          /*yearlyEntries.phone_numbers += entry.values.phone_numbers || 0;
-          yearlyEntries.views += entry.values.views || 0;
-          yearlyEntries.chats += entry.values.chats || 0;
-          yearlyEntries.city_bump += entry.values.city_bump || 0;
-          yearlyEntries.country_bump += entry.values.country_bump || 0;*/
-          //yearlyEntries.push(entry.values);
+          const yearlyEntries = find(this.yearData, {date: validDate});
+          if (yearlyEntries) {
+            yearlyEntries.phone_numbers += entry.values.phone_numbers || 0;
+            yearlyEntries.views += entry.values.views || 0;
+            yearlyEntries.chats += entry.values.chats || 0;
+            yearlyEntries.city_bump += entry.values.city_bump || 0;
+            yearlyEntries.country_bump += entry.values.country_bump || 0;
+          } else {
+            this.yearData.push({
+              date: validDate,
+              phone_numbers: entry.values.phone_numbers || 0,
+              views: entry.values.views || 0,
+              chats: entry.values.chats || 0,
+              city_bump: entry.values.city_bump || 0,
+              country_bump: entry.values.country_bump || 0
+            })
+          }
         });
-        console.log('yearly entries ', yearlyEntries);
+        this.setUpChart(this.yearData);
       } else {
         this.setUpChart(response.entries);
       }
