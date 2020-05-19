@@ -8,8 +8,6 @@ import { ToastService } from '../../layout/toast/toast.service';
 })
 export class ToastComponent {
 
-  constructor(public toastService:ToastService) { }
-
- 
+  constructor(public toastService: ToastService) { }
 
 }
