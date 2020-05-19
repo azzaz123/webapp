@@ -148,7 +148,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         longitude: ['', [Validators.required]],
       }),
       extra_info: this.fb.group({
-        object_type: this.fb.group({
+        type_of_object: this.fb.group({
           id: [null, [Validators.required]]
         }),
         brand: [null, [Validators.required]],
@@ -225,21 +225,25 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private detectCategoryChanges() {
     this.uploadForm.get('category_id').valueChanges.subscribe((categoryId: number) => {
-      this.getUploadExtraInfoControl().reset();
-
-      if (+categoryId === CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
-        this.enableCellphonesExtraFields();
-      }
-      if (+categoryId === CATEGORY_IDS.FASHION_ACCESSORIES) {
-        this.enableFashionExtraFields();
-      }
-      if (+categoryId !== CATEGORY_IDS.FASHION_ACCESSORIES && +categoryId !== CATEGORY_IDS.CELL_PHONES_ACCESSORIES) {
-        this.disableExtraFields();
-      }
-
+      this.handleUploadFormExtraFields();
       this.getConditions();
       this.onCategorySelect.emit(categoryId);
     });
+  }
+
+  private handleUploadFormExtraFields(): void {
+    const formCategoryId = this.uploadForm.get('category_id').value;
+    const rawCategory = this.rawCategories.find(category => category.category_id === +formCategoryId);
+    const EXTRA_FIELDS_KEYS = ['type_of_object', 'brand', 'model', 'size', 'gender'];
+
+    if (rawCategory) {
+      EXTRA_FIELDS_KEYS.map((entry) => {
+        if (!!rawCategory.fields[entry]) {
+          return this.getUploadExtraInfoControl(entry).enable();
+        }
+        return this.getUploadExtraInfoControl(entry).disable();
+      });
+    }
   }
 
   private getDeliveryInfo(): DeliveryInfo {
@@ -357,7 +361,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     const suggestions: KeywordSuggestion[] = [];
     let objectTypeId: number;
 
-    objectTypeId = this.uploadExtraInfoValue.object_type.id;
+    objectTypeId = this.uploadExtraInfoValue.type_of_object.id;
 
     this.generalSuggestionsService.
       getBrands(brandKeyword, this.uploadForm.value.category_id, objectTypeId)
@@ -390,7 +394,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         modelKeyword,
         this.uploadForm.value.category_id,
         this.uploadExtraInfoValue.brand,
-        this.uploadExtraInfoValue.object_type.id)
+        this.uploadExtraInfoValue.type_of_object.id)
       .subscribe((models: Model[]) => {
         const suggestions: KeywordSuggestion[] = [];
 
@@ -402,7 +406,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getSizes(): void {
-    const objectTypeId = this.uploadExtraInfoValue.object_type.id;
+    const objectTypeId = this.uploadExtraInfoValue.type_of_object.id;
     const gender = this.uploadExtraInfoValue.gender;
 
     if (objectTypeId && gender) {
@@ -517,8 +521,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         };
 
         if (item.extra_info) {
-          if (item.extra_info.object_type && item.extra_info.object_type.id) {
-            baseEventAttrs.objectType = item.extra_info.object_type.name;
+          if (item.extra_info.type_of_object && item.extra_info.type_of_object.id) {
+            baseEventAttrs.objectType = item.extra_info.type_of_object.name;
           }
           if (item.extra_info.brand) {
             baseEventAttrs.brand = item.extra_info.brand;
@@ -550,30 +554,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.analyticsService.trackEvent(listItemCGEvent);
         }
       }));
-  }
-
-  private disableExtraFields(): void {
-    this.getUploadExtraInfoControl('object_type').disable();
-    this.getUploadExtraInfoControl('brand').disable();
-    this.getUploadExtraInfoControl('model').disable();
-    this.getUploadExtraInfoControl('size').disable();
-    this.getUploadExtraInfoControl('gender').disable();
-  }
-
-  private enableFashionExtraFields(): void {
-    this.getUploadExtraInfoControl('object_type').enable();
-    this.getUploadExtraInfoControl('brand').enable();
-    this.getUploadExtraInfoControl('size').enable();
-    this.getUploadExtraInfoControl('gender').enable();
-    this.getUploadExtraInfoControl('model').disable();
-  }
-
-  private enableCellphonesExtraFields(): void {
-    this.getUploadExtraInfoControl('object_type').enable();
-    this.getUploadExtraInfoControl('brand').enable();
-    this.getUploadExtraInfoControl('model').enable();
-    this.getUploadExtraInfoControl('size').disable();
-    this.getUploadExtraInfoControl('gender').disable();
   }
 
   private getUploadExtraInfoControl(field?: string): AbstractControl {
