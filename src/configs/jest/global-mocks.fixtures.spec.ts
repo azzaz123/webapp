@@ -1,3 +1,5 @@
+import { DidomiLibrary } from '../../app/core/didomi/didomi.interface';
+
 export const MOCK_APPBOY = {
   initialize: () => {},
   logCustomEvent: () => {},
@@ -61,13 +63,6 @@ export const MOCK_CRITEO = {
   SetDFPKeyValueTargeting() {},
 };
 
-export const MOCK___CMP = (arg1, arg2, callback) => {};
-
-export const MOCK_QUANCASTOPTIONS = {
-  es: {},
-  en: {}
-};
-
 export const MOCK_XMPP = {
   JID: class {
     private _userId: string;
@@ -106,4 +101,9 @@ export const MOCK_NAVIGATOR_CONNECTION = {
 
 export const MOCK_NAVIGATOR_GEOLOCATION = {
   getCurrentPosition: () => ''
+};
+
+export const MOCK_DIDOMI: DidomiLibrary = {
+  getUserConsentStatusForPurpose: key => true,
+  getUserConsentStatusForVendor: key => true
 };
