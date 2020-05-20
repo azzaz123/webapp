@@ -28,6 +28,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
               private i18n: I18nService,
               @Inject(LOCALE_ID) private locale: string) {
     this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    moment.locale(this.locale);
   }
 
   ngOnInit() {
@@ -49,7 +50,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
     entries.map(entry => {
       if (!this.yearly) {
         const unixDate = moment.unix(entry.date/1000).utcOffset(0, true);
-        xAxisData.push(moment(unixDate).format('YYYY-MM-DDTHH:mm'));
+        xAxisData.push(moment(unixDate).format('DD MMM'));
         data1.push(entry.values.phone_numbers);
         data2.push(entry.values.city_bump);
         data3.push(entry.values.country_bump);
@@ -67,7 +68,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
     });
     this.chartOption = {
       legend: {
-        data: ['Números de tel.', 'Destacados ciudad', 'Destacados país', 'Visualizaciones', 'Mensajes'],
+        data: [this.i18n.getTranslations('phonesShared'), this.i18n.getTranslations('citybump'), this.i18n.getTranslations('country'), this.i18n.getTranslations('views'), this.i18n.getTranslations('chats')],
         align: 'left',
         textStyle: {
           color: '#000000'
@@ -123,7 +124,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       },
       series: [
         {
-          name: 'Destacados ciudad',
+          name: this.i18n.getTranslations('citybump'),
           type: graphType || 'line',
           smooth: true,
           sampling: 'average',
@@ -139,7 +140,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
           }
         },
         {
-          name: 'Destacados país',
+          name: this.i18n.getTranslations('countrybump'),
           type: graphType || 'line',
           smooth: true,
           sampling: 'average',
@@ -155,7 +156,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
           }
         },
         {
-          name: 'Visualizaciones',
+          name: this.i18n.getTranslations('views'),
           type: graphType || 'line',
           itemStyle: {
             color: 'rgb(144, 164, 174)'
@@ -166,7 +167,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
           }
         },
         {
-          name: 'Mensajes',
+          name: this.i18n.getTranslations('chats'),
           type: graphType || 'bar',
           itemStyle: {
             color: 'rgb(61, 170, 191)'
@@ -177,7 +178,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
           }
         },
         {
-          name: 'Números de tel.',
+          name: this.i18n.getTranslations('phonesShared'),
           type: graphType || 'bar',
           itemStyle: {
             color: 'rgb(255, 178, 56)'

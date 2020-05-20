@@ -14,8 +14,7 @@ export class ItemStatsService {
   }
 
   public getStatistics(itemId: string): Observable<ItemStatisticFullResponse> {
-    return observableOf(ITEM_STATISTIC_RESPONSE);
-    //return this.http.get<ItemStatisticFullResponse>(`${environment.baseUrl}${ITEM_STATS_ENDPOINT}${itemId}`);
+    return this.http.get<ItemStatisticFullResponse>(`${environment.baseUrl}${ITEM_STATS_ENDPOINT}${itemId}`);
   }
 
 }

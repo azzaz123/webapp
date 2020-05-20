@@ -5,6 +5,7 @@ import { Item } from '../../../../core/item/item';
 import { I18nService } from '../../../../core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
 import * as moment from 'moment';
+import 'moment/locale/es';
 
 const GRAPH_COLORS = {
   CHAT: '#EEAA42',
@@ -29,7 +30,9 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
   public chartOption: EChartOption;
 
   constructor(private i18n: I18nService,
-              @Inject(LOCALE_ID) private locale: string) { }
+              @Inject(LOCALE_ID) private locale: string) {
+                moment.locale(this.locale);
+              }
 
   ngAfterViewInit() {
     this.loadStats();
@@ -40,14 +43,13 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
     const data1 = [];
     const data2 = [];
     const data3 = [];
-    let isBumped = false;
     let colorFavs = '';
     let colorChats = '';
     let colorViews = '';
 
     entries.map(entry => {
         const unixDate = moment.unix(entry.date/1000).utcOffset(0, true);
-        xAxisData.push(moment(unixDate).format('YYYY-MM-DDTHH:mm'));
+        xAxisData.push(moment(unixDate).format('DD MMMM'));
         if (this.type === 'favs') {
           data1.push(entry.favs);
         } else {
@@ -111,7 +113,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
       },
       series: [
         {
-          name: 'Favoritos',
+          name: this.i18n.getTranslations('favorites'),
           type: 'bar',
           smooth: true,
           sampling: 'average',
@@ -125,7 +127,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
           }
         },
         {
-          name: 'Visualizaciones',
+          name: this.i18n.getTranslations('views'),
           type: 'bar',
           smooth: true,
           sampling: 'average',
@@ -138,7 +140,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
           }
         },
         {
-          name: 'Mensajes',
+          name: this.i18n.getTranslations('chats'),
           type: 'bar',
           itemStyle: {
             color: colorChats
