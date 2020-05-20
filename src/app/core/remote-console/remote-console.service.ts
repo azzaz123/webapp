@@ -148,8 +148,8 @@ export class RemoteConsoleService implements OnDestroy {
 
   getReleaseVersion(appVersion: string): number {
     return +appVersion.split('.')
-    .map((subVersion: string) => ('00' + subVersion).slice(-3))
-    .reduce((a: string, b: string) => a + b);
+      .map((subVersion: string) => ('00' + subVersion).slice(-3))
+      .reduce((a: string, b: string) => a + b);
   }
 
   private getCommonLog(userId: string): {} {

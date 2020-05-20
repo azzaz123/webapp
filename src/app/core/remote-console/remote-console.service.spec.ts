@@ -133,7 +133,7 @@ describe('RemoteConsoleService', () => {
     };
 
     beforeEach(() => {
-      spyOn(userService, 'me').and.returnValue(of({id: USER_ID}));
+      spyOn(userService, 'me').and.returnValue(of({ id: USER_ID }));
       spyOn(remoteConsoleClientService, 'info');
       service.sessionId = SESSION_ID;
     });
