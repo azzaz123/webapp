@@ -4,7 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.spec';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { Observable, of } from 'rxjs';
@@ -25,7 +25,7 @@ describe('CancelSubscriptionModalComponent', () => {
   let activeModal: NgbActiveModal;
   let subscriptionsService: SubscriptionsService;
   let analyticsService: AnalyticsService;
-  let toastrService: ToastrService;
+  let toastService: ToastService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -34,18 +34,6 @@ describe('CancelSubscriptionModalComponent', () => {
         {
           provide: NgbActiveModal, useValue: {
             close() {
-            }
-          }
-        },
-        {
-          provide: ToastrService, useValue: {
-            error() {
-            },
-            success() {
-            },
-            i18nError() {
-            },
-            i18nSuccess() {
             }
           }
         },
@@ -80,7 +68,7 @@ describe('CancelSubscriptionModalComponent', () => {
     fixture = TestBed.createComponent(CancelSubscriptionModalComponent);
     component = fixture.componentInstance;
     activeModal = TestBed.get(NgbActiveModal);
-    toastrService = TestBed.get(ToastrService);
+    toastService = TestBed.get(ToastService);
     subscriptionsService = TestBed.get(SubscriptionsService);
     analyticsService = TestBed.get(AnalyticsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];

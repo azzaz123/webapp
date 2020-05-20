@@ -11,7 +11,6 @@ import { LayoutModule } from './layout/layout.module';
 import { DndModule } from 'ng2-dnd';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { ToastrModule } from 'ngx-toastr';
 import { HttpModuleNew } from './core/http/http.module.new';
 import * as Sentry from "@sentry/browser";
 import { UserService } from './core/user/user.service';
@@ -41,7 +40,6 @@ export class SentryErrorHandler implements ErrorHandler {
     CookieModule.forRoot(),
     CoreModule.forRoot(),
     DndModule.forRoot(),
-    ToastrModule.forRoot(),
     BrowserModule,
     HttpModuleNew,
     HttpClientModule,

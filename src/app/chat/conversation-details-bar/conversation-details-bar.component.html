@@ -1,4 +1,5 @@
-<div class="top-bar" [ngClass]="{'faded': !currentConversation.user.available, 'expanded': isExpanded}">
+<div class="top-bar"
+     [ngClass]="{'faded-user': !currentConversation.user.available, 'faded-item': currentConversation.item.notAvailable, 'expanded': isExpanded}">
   <mat-icon svgIcon="back-arrow" class="d-xl-none back-arrow" (click)="navigationBack()"></mat-icon>
 
   <div class="lg-device-container d-none d-xl-inline-flex">
@@ -15,17 +16,20 @@
   </div>
 
   <div class="sm-device-container d-xl-none"
-       [ngClass]="{'expanded': isExpanded, 'faded': !currentConversation.user.available}">
+       [ngClass]="{'expanded': isExpanded,
+       'faded-user': !currentConversation.user.available,
+        'faded-item': currentConversation.item.notAvailable || currentConversation.item.unpublished}">
 
     <div class="avatar-container d-none d-sm-block">
       <a href="{{ currentConversation?.item.itemUrl }}" target="_blank" class="avatar">
-        <tsl-item-avatar [item]="currentConversation.item" size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
+        <tsl-item-avatar [item]="currentConversation.item" [inboxItem]="currentConversation.item"
+                         size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
       </a>
     </div>
 
     <div class="avatar-container d-block d-sm-none">
       <a href="{{ currentConversation?.item.itemUrl }}" target="_blank" class="avatar">
-        <tsl-item-avatar [item]="currentConversation.item"
+        <tsl-item-avatar [item]="currentConversation.item" [inboxItem]="currentConversation.item"
                          size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
       </a>
     </div>

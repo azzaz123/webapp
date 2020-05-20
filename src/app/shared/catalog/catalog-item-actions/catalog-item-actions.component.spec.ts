@@ -7,7 +7,7 @@ import {
   createItemsArray, ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED, ITEMS_BULK_UPDATED_IDS
 } from '../../../../tests/item.fixtures.spec';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { find } from 'lodash-es';
 import { TrackingService } from '../../../core/tracking/tracking.service';
@@ -23,7 +23,7 @@ describe('CatalogItemActionsComponent', () => {
   let itemService: ItemService;
   let errorsService: ErrorsService;
   let modalService: NgbModal;
-  let toastr: ToastrService;
+  let toastService: ToastService;
   let trackingService: TrackingService;
   let router: Router;
   let eventService: EventService;
@@ -60,12 +60,6 @@ describe('CatalogItemActionsComponent', () => {
           }
         },
         {
-          provide: ToastrService, useValue: {
-            error() {
-            }
-          }
-        },
-        {
           provide: ErrorsService, useValue: {
             i18nError() {
             }
@@ -88,14 +82,14 @@ describe('CatalogItemActionsComponent', () => {
     fixture = TestBed.createComponent(CatalogItemActionsComponent);
     component = fixture.componentInstance;
     itemService = TestBed.get(ItemService);
-    toastr = TestBed.get(ToastrService);
+    toastService = TestBed.get(ToastService);
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
     modalService = TestBed.get(NgbModal);
     router = TestBed.get(Router);
     eventService = TestBed.get(EventService);
     spyOn(modalService, 'open').and.callThrough();
-    spyOn(toastr, 'error');
+    spyOn(toastService, 'show');
   });
 
   describe('ngOnInit', () => {
@@ -153,8 +147,8 @@ describe('CatalogItemActionsComponent', () => {
         tick();
       }));
 
-      it('should open error toastr', () => {
-        expect(toastr.error).toHaveBeenCalledWith('Some listings have not been deleted due to an error');
+      it('should open error toastService', () => {
+        expect(toastService.show).toHaveBeenCalledWith({text:'Some listings have not been deleted due to an error', type:'error'});
       });
     });
   });
