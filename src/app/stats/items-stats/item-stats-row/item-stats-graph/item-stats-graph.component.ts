@@ -1,10 +1,12 @@
 import { AfterViewInit, Component, Inject, Input, LOCALE_ID, OnDestroy } from '@angular/core';
-import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
 import { UUID } from 'angular2-uuid';
 import { ItemStatsService } from './item-stats.service';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from './item-stats-response.interface';
 import { Item } from '../../../../core/item/item';
 import { I18nService } from '../../../../core/i18n/i18n.service';
+import { EChartOption } from 'echarts';
+import * as moment from 'moment';
+import { ITEM_DATA_V4 } from 'tests/item.fixtures.spec';
 
 const GRAPH_COLORS = {
   CHAT: '#EEAA42',
@@ -26,110 +28,140 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
   @Input() item: Item;
   @Input() statsData: ItemStatisticFullResponse;
   public id: string = 'chart-' + UUID.UUID();
-  private chart: AmChart;
-  private chartOptions: any = {
-    'type': 'serial',
-    'categoryField': 'date',
-    'dataDateFormat': '',
-    'columnSpacing': 3,
-    'addClassNames': true,
-    'theme': 'light',
-    'categoryAxis': {
-      'dateFormats': [
-        {
-          'period': 'fff',
-          'format': 'JJ:NN:SS'
-        },
-        {
-          'period': 'ss',
-          'format': 'JJ:NN:SS'
-        },
-        {
-          'period': 'mm',
-          'format': 'JJ:NN'
-        },
-        {
-          'period': 'hh',
-          'format': 'JJ:NN'
-        },
-        {
-          'period': 'DD',
-          'format': 'DD'
-        },
-        {
-          'period': 'WW',
-          'format': 'MMM DD'
-        },
-        {
-          'period': 'MM',
-          'format': 'MMM'
-        },
-        {
-          'period': 'YYYY',
-          'format': 'YYYY'
-        }
-      ],
-      'gridPosition': 'start',
-      'parseDates': true,
-      'twoLineMode': true,
-      'axisAlpha': 1,
-      'gridAlpha': 0,
-      'markPeriodChange': false,
-      'minorGridAlpha': 0,
-      'color': '#90A4AE',
-      'fontSize': 10,
-      'centerLabels': true,
-      'minHorizontalGap': 5,
-      'axisColor': '#ECEFF1',
-      'axisThickness': 4
-    },
-    'chartCursor': {
-      'valueLineAlpha': 0.2,
-      'categoryBalloonDateFormat': 'EEEE DD',
-      'categoryBalloonColor': '#607D8B',
-      'cursorAlpha': 0.66,
-      'cursorColor':'#eceff1',
-      'fullWidth':true,
-      'zoomable': false
-    },
-    'trendLines': [],
-    'graphs': [],
-    'guides': [],
-    'valueAxes': [
-      {
-        'id': 'ValueAxisGeneral',
-        'color': '#FFFFFF',
-        'title': '',
-        'stackType': 'regular',
-        'axisThickness': 0,
-        'gridThickness': 0,
-        'ignoreAxisWidth': true
-      }
-    ],
-    'allLabels': [],
-    'balloon': {
-      'cornerRadius': 4,
-      'color': '#607D8B',
-      'fillAlpha': 1,
-      'shadowAlpha': 0
-    },
-    'legend': {
-      'enabled': false
-    },
-    'titles': [],
-    'dataProvider': []
-  };
+  public chartOption: EChartOption;
 
-  constructor(private AmCharts: AmChartsService,
-              private i18n: I18nService,
+  constructor(private i18n: I18nService,
               @Inject(LOCALE_ID) private locale: string) { }
 
   ngAfterViewInit() {
-    this.setChartOptions();
     this.loadStats();
   }
 
-  private setChartOptions() {
+  private setUpChart(entries: any) {
+    const xAxisData = [];
+    const data1 = [];
+    const data2 = [];
+    const data3 = [];
+    let colorFavs = '';
+    let colorChats = '';
+    let colorViews = '';
+
+    entries.map(entry => {
+        const unixDate = moment.unix(entry.date/1000).utcOffset(0, true);
+        xAxisData.push(moment(unixDate).format('YYYY-MM-DDTHH:mm'));
+        if (this.type === 'favs') {
+          data1.push(entry.favs);
+        } else {
+          data2.push(entry.views);
+          data3.push(entry.chats);
+        }
+        colorFavs = entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS;
+        colorChats = entry.bumped ? GRAPH_COLORS.CHAT_BUMPED : GRAPH_COLORS.CHAT;
+        colorViews = entry.bumped ? GRAPH_COLORS.VIEWS_BUMPED : GRAPH_COLORS.VIEWS;
+    });
+
+    this.chartOption = {
+      tooltip: {
+        show: true,
+        trigger: 'axis',
+        backgroundColor: 'rgba(250, 250, 250, 0.9)',
+        textStyle: {
+            fontSize: 12,
+            color: '#000000'
+        },
+      },
+      toolbox: {
+        show: false
+      },
+      grid:{
+        left: 50,
+        right: 50,
+        top: 20,
+        height: '50%'
+      },
+      xAxis: {
+        data: xAxisData,
+        silent: false,
+        splitLine: {
+          show: false
+        },
+        axisLabel: {
+          formatter: (function(value){
+              return moment(value).format('DD');
+          })
+        },
+        nameTextStyle: {
+          color: 'rgba(19, 193, 172, 1.0)'
+        },
+        axisLine: {
+          lineStyle: {
+              color: '#90A4AE'
+          }
+        }
+      },
+      yAxis: {
+        nameTextStyle: {
+          color: 'rgba(19, 193, 172, 1.0)'
+        },
+        axisLine: {
+          lineStyle: {
+              color: '#90A4AE'
+          }
+        },
+        splitLine: {
+          lineStyle: {
+              color: 'rgba(232, 232, 232, 0.5)'
+          }
+        }
+      },
+      series: [
+        {
+          name: 'Favoritos',
+          type: 'bar',
+          smooth: true,
+          sampling: 'average',
+          itemStyle: {
+              color: colorFavs
+          },
+          hoverAnimation: true,
+          data: data1,
+          animationDelay: function (idx) {
+            return idx * 100;
+          }
+        },
+        {
+          name: 'Visualizaciones',
+          type: 'bar',
+          smooth: true,
+          sampling: 'average',
+          itemStyle: {
+            color: colorViews
+          },
+          data: data2,
+          animationDelay: function (idx) {
+            return idx * 170;
+          }
+        },
+        {
+          name: 'Mensajes',
+          type: 'bar',
+          itemStyle: {
+            color: colorChats
+          },
+          data: data3,
+          animationDelay: function (idx) {
+            return idx * 10 + 250;
+          }
+        }
+      ],
+      animationEasing: 'elasticOut',
+      animationDelayUpdate: function (idx) {
+        return idx * 5;
+      }
+    };
+  }
+
+  /*private setChartOptions() {
     const balloonFunction = (graphDataItem, graph) => {
       let balloon = '<div style="text-align:left">';
       if (graphDataItem.dataContext.bumped) {
@@ -176,29 +208,23 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
       this.AmCharts.dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
     }
     this.AmCharts.useUTC = true;
-  }
+  }*/
 
   private loadStats() {
-    this.chartOptions.dataProvider = [];
+    const entries = [];
     this.statsData.entries.forEach((entry: ItemStatisticEntriesResponse) => {
-      this.chartOptions.dataProvider.push({
+      entries.push({
         date: +entry.date,
         favs: entry.values && entry.values.favs || 0,
         views: entry.values && entry.values.views || 0,
         chats: entry.values && entry.values.chats || 0,
-        colorChats: entry.bumped ? GRAPH_COLORS.CHAT_BUMPED : GRAPH_COLORS.CHAT,
-        colorViews: entry.bumped ? GRAPH_COLORS.VIEWS_BUMPED : GRAPH_COLORS.VIEWS,
-        colorFavs: entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS,
         bumped: entry.bumped
       });
     });
-    this.chart = this.AmCharts.makeChart(this.id, this.chartOptions);
+    this.setUpChart(entries);
   }
 
   ngOnDestroy() {
-    if (this.chart) {
-      this.AmCharts.destroyChart(this.chart);
-    }
   }
 
 }
