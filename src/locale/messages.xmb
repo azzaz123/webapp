@@ -273,9 +273,9 @@
         Finance your purchase
       </msg>
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.html:3</source>Reserved</msg>
-  <msg id="deleteConversation"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:63,64</source>Delete conversation</msg>
+  <msg id="deleteConversation"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:67,68</source>Delete conversation</msg>
   <msg id="deleteConversationWarning"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:3</source>This will delete the conversation.</msg>
-  <msg id="archiveConversation"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:4</source><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:66,67</source>Archive conversation</msg>
+  <msg id="archiveConversation"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:4</source><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:70,71</source>Archive conversation</msg>
   <msg id="archiveConversationWarning"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:5</source>This will archive the conversation.</msg>
   <msg id="cancelButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:8</source>Cancel</msg>
   <msg id="archiveButton"><source>app/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:10,11</source>Archive
@@ -306,7 +306,7 @@
   <msg id="newMessages"><source>app/chat/inbox/inbox.component.html:47</source>New messages</msg>
   <msg id="updateInboxWarning"><source>app/chat/inbox/inbox.component.html:50,51</source>We found some problems updating your inbox. Try again later.
     </msg>
-  <msg id="loadMoreButton"><source>app/chat/inbox/inbox.component.html:69</source><source>app/chat/inbox/inbox.component.html:95</source>Load more</msg>
+  <msg id="loadMoreButton"><source>app/chat/inbox/inbox.component.html:69</source><source>app/chat/inbox/inbox.component.html:95</source><source>app/chat/current-conversation/current-conversation.component.html:87</source>Load more</msg>
   <msg id="updateArchivedMessagesWarning"><source>app/chat/inbox/inbox.component.html:76,77</source>We found some problems updating your archived messages. Try again later.
     </msg>
   <msg id="8721026914522212662"><source>app/chat/inbox/archived-inbox-conversation/archived-inbox-conversation.component.html:42</source>Archived </msg>
@@ -317,9 +317,9 @@
       Try again later.</msg>
   <msg id="blockedPersonError"><source>app/chat/current-conversation/current-conversation.component.html:35</source>You have blocked this person. To continue chatting, unblock them</msg>
   <msg id="userIsNotAvailableWarning"><source>app/chat/current-conversation/current-conversation.component.html:41</source>This person is no longer a wallapop member</msg>
-  <msg id="3753612046513951428"><source>app/chat/current-conversation/current-conversation.component.html:48</source>This product is not available</msg>
-  <msg id="securityWarning"><source>app/chat/current-conversation/current-conversation.component.html:71</source>For security reasons, never share private data</msg>
-  <msg id="33149636091572968"><source>app/chat/current-conversation/current-conversation.component.html:78</source>Load more</msg>
+  <msg id="itemIsNotAvailableWarning"><source>app/chat/current-conversation/current-conversation.component.html:49</source>This product has expired or has been removed</msg>
+  <msg id="itemIsUnpublishedWarning"><source>app/chat/current-conversation/current-conversation.component.html:57</source>The product violates wallapop coexistence regulations</msg>
+  <msg id="securityWarning"><source>app/chat/current-conversation/current-conversation.component.html:80</source>For security reasons, never share private data</msg>
   <msg id="6969584346860248976" desc="The distance between the user and the item"><source>app/chat/inbox/inbox-metadata/inbox-user-component/inbox-user-detail.component.html:14,16</source>
         <ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ph>km from you
       </msg>
@@ -327,15 +327,15 @@
     </msg>
   <msg id="2020278898288143668"><source>app/chat/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component.html:8</source>Selling</msg>
   <msg id="3893097575013115653"><source>app/chat/inbox/inbox-metadata/inbox-item-for-sell/inbox-item-for-sell.component.html:9</source>+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex>{{user?.sellingItemCount}}</ph> More</msg>
-  <msg id="unarchiveConversation"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:69,70</source>Unarchive conversation
+  <msg id="unarchiveConversation"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:73,74</source>Unarchive conversation
       </msg>
-  <msg id="reportListing"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:73,74</source>Report this Listing
+  <msg id="reportListing"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:77,78</source>Report this Listing
       </msg>
-  <msg id="reportUser"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:77,78</source>Report this User
+  <msg id="reportUser"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:81,82</source>Report this User
       </msg>
-  <msg id="blockUser"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:81,82</source>Block this User
+  <msg id="blockUser"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:85,86</source>Block this User
       </msg>
-  <msg id="unblockUser"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:85,86</source>Unblock this User
+  <msg id="unblockUser"><source>app/chat/conversation-details-bar/conversation-details-bar.component.html:89,90</source>Unblock this User
       </msg>
   <msg id="thirdVoiceDoReview"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:1</source>Review</msg>
   <msg id="thirdVoiceThanksForRating"><source>app/chat/message/third-voice-review-button/third-voice-review-button.component.html:4</source>Thanks for your review!</msg>

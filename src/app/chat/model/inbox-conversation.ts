@@ -1,6 +1,6 @@
 import { InboxMessage, MESSAGES_WHITE_LIST } from './inbox-message';
 import { InboxUser, InboxUserPlaceholder } from './inbox-user';
-import { InboxImage, InboxItem, InboxItemPlaceholder } from './inbox-item';
+import { InboxItemStatus, InboxImage, InboxItem, InboxItemPlaceholder } from './inbox-item';
 import { environment } from '../../../environments/environment';
 import { InboxConversationApi, InboxItemApi, InboxUserApi } from './api';
 
@@ -22,7 +22,8 @@ export class InboxConversation {
 
     get cannotChat(): boolean {
         return  this.user.blocked
-                || !this.user.available;
+                || !this.user.available
+                || this.item.status === InboxItemStatus.NOT_AVAILABLE;
     }
 
     get id(): string {
@@ -138,8 +139,7 @@ export class InboxConversation {
             return InboxItemPlaceholder;
         }
         const itemUrl = `${environment.siteUrl}item/${item.slug}`;
-        const itemStatus = item.status === 'unpublished' ? 'not available' : item.status;
-        return new InboxItem(item.hash, item.price, item.title, image, itemUrl, itemStatus, item.is_mine, item.category_id);
+        return new InboxItem(item.hash, item.price, item.title, image, itemUrl, item.status as InboxItemStatus, item.is_mine, item.category_id);
     }
 
     private static buildInboxMessages(conversation, id) {
