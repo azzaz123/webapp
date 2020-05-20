@@ -1,18 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { ErrorsService, DEFAULT_ERROR_MESSAGE } from './errors.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../layout/toast/toast.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Component } from '@angular/core';
 import { I18nService } from '../i18n/i18n.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
-class MockedToastr {
-  error(message: string, title?: string, optionsOverride?: any): any {
-  }
 
-  success() {
-  }
-}
 
 @Component({
   template: '<router-outlet></router-outlet>'
@@ -26,7 +20,7 @@ class RoutingComponent {
 class LoginComponent {
 }
 
-let toasts: ToastrService;
+let toastService: ToastService;
 let service: ErrorsService;
 let i18n: I18nService;
 
@@ -46,7 +40,6 @@ describe('Service: Errors', () => {
       ],
       providers: [
         ErrorsService,
-        {provide: ToastrService, useClass: MockedToastr},
         {
           provide: I18nService, useValue: {
           getTranslations() {
@@ -56,11 +49,10 @@ describe('Service: Errors', () => {
       ]
     });
     TestBed.createComponent(RoutingComponent);
-    toasts = TestBed.get(ToastrService);
+    toastService = TestBed.get(ToastService);
     service = TestBed.get(ErrorsService);
     i18n = TestBed.get(I18nService);
-    spyOn(toasts, 'error').and.callThrough();
-    spyOn(toasts, 'success').and.callThrough();
+    spyOn(toastService, 'show').and.callThrough();
   });
 
   it('should create the instance', () => {
@@ -68,62 +60,62 @@ describe('Service: Errors', () => {
   });
 
   describe('show', () => {
-    it('should call the toastr.error method if there are errors in array', () => {
+    it('should call the toastService.show method for type error if there are errors in array', () => {
       const res = new HttpErrorResponse({ error: [{message: ERROR_MESSAGE }]});
 
       service.show(res);
 
-      expect(toasts.error).toHaveBeenCalledWith(ERROR_MESSAGE, 'Oops!');
+      expect(toastService.show).toHaveBeenCalledWith({text:ERROR_MESSAGE, title:'Oops!',type:'error'});
     });
 
-    it('should call the toastr.error method if there are errors', () => {
+    it('should call the toastService.show method for type error if there are errors', () => {
       const res = new HttpErrorResponse({ error: { message: ERROR_MESSAGE }});
 
       service.show(res);
 
-      expect(toasts.error).toHaveBeenCalledWith(ERROR_MESSAGE, 'Oops!');
+      expect(toastService.show).toHaveBeenCalledWith({text:ERROR_MESSAGE, title:'Oops!',type:'error'});
     });
 
-    it('should call the toastr.error with default message method if no error message', () => {
+    it('should call the toastService.show method for type error with default message method if no error message', () => {
       const res = new HttpErrorResponse({ error: {} });
 
       service.show(res);
 
-      expect(toasts.error).toHaveBeenCalledWith(DEFAULT_ERROR_MESSAGE, 'Oops!');
+      expect(toastService.show).toHaveBeenCalledWith({ text:DEFAULT_ERROR_MESSAGE, title:'Oops!', type:'error' });
     });
   });
 
   describe('i18nError', () => {
-    it('should call toastr.error with i18n message', () => {
+    it('should call toastService.show method for type error with i18n message', () => {
       spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
 
       service.i18nError('key');
 
-      expect(toasts.error).toHaveBeenCalledWith('message', 'title');
+      expect(toastService.show).toHaveBeenCalledWith({text:'message', title:'title', type:'error'});
     });
-    it('should call toastr.error with i18n message, concatenting text', () => {
+    it('should call toastService.show method for type error with i18n message, concatenting text', () => {
       spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
 
       service.i18nError('key', 'text');
-
-      expect(toasts.error).toHaveBeenCalledWith('messagetext', 'title');
+     
+      expect(toastService.show).toHaveBeenCalledWith({ text:'messagetext', title:'title', type:'error' });
     });
   });
 
   describe('i18nSuccess', () => {
-    it('should call toastr.success with i18n message', () => {
+    it('should call toastService.show method for type success with i18n message', () => {
       spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
 
       service.i18nSuccess('key');
 
-      expect(toasts.success).toHaveBeenCalledWith('message', 'title');
+      expect(toastService.show).toHaveBeenCalledWith({ text:'message', title:'title', type:'success' });
     });
-    it('should call toastr.success with i18n message, concatenting text', () => {
+    it('should call toastService.show method for type success with i18n message, concatenting text', () => {
       spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
 
       service.i18nSuccess('key', 'text');
 
-      expect(toasts.success).toHaveBeenCalledWith('messagetext', 'title');
+      expect(toastService.show).toHaveBeenCalledWith({ text:'messagetext', title:'title',type:'success' });
     });
   });
 });

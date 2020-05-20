@@ -204,7 +204,7 @@ import { StatusIconComponent } from './status-icon';
     NavLinksComponent,
     LinkTransformPipe,
     PreventDoubleClickDirective,
-    DateUntilDayPipe
+    DateUntilDayPipe,
   ],
   providers: [
     DecimalPipe,

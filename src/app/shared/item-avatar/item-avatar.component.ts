@@ -14,6 +14,7 @@ export class ItemAvatarComponent implements OnChanges {
   public fallback: string;
   @Input() fallbackLight: boolean;
   @Input() item: Item;
+  @Input() inboxItem: InboxItem;
   @Input() size: 'small' | 'medium' | 'big' | 'bigger' | 'xl' | 'rectangle-xl' |  'full';
   @Input() showAvailableStatus = true;
 

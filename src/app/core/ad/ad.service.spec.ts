@@ -5,6 +5,8 @@ import { AdService } from './ad.service';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MockDidomiService } from '../didomi/didomi.service.spec';
+import { DidomiService } from '../didomi/didomi.service';
 
 let service: AdService;
 let userService: UserService;
@@ -89,6 +91,9 @@ describe('AdService', () => {
               delete this.cookies[key];
             }
           }
+        },
+        {
+          provide: DidomiService, useValue: MockDidomiService
         }
       ],
     });

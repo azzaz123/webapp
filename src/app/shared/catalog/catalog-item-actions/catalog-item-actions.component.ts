@@ -5,7 +5,7 @@ import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ItemBulkResponse } from '../../../core/item/item-response.interface';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Item } from '../../../core/item/item';
 
@@ -33,7 +33,7 @@ export class CatalogItemActionsComponent implements OnInit {
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
               private modalService: NgbModal,
-              private toastr: ToastrService,
+              private toastService: ToastService,
               private i18n: I18nService,
               private router: Router,
               private eventService: EventService) {
@@ -85,7 +85,7 @@ export class CatalogItemActionsComponent implements OnInit {
           this.getCounters.emit();
         });
         if (response.failedIds.length) {
-          this.toastr.error(this.i18n.getTranslations('bulkDeleteError'));
+          this.toastService.show({text:this.i18n.getTranslations('bulkDeleteError'), type:'error'});
         }
       });
     });

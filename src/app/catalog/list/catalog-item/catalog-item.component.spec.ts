@@ -16,7 +16,7 @@ import {
   MOCK_ITEM, ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE,
   PRODUCT_RESPONSE, ITEM_WEB_SLUG
 } from '../../../../tests/item.fixtures.spec';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { Item } from '../../../core/item/item';
@@ -84,12 +84,6 @@ describe('CatalogItemComponent', () => {
                 result: Promise.resolve(),
                 componentInstance: componentInstance
               };
-            }
-          }
-        },
-        {
-          provide: ToastrService, useValue: {
-            error() {
             }
           }
         },
