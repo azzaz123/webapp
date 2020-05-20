@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { RemoteConsoleService } from './remote-console.service';
@@ -118,6 +118,131 @@ describe('RemoteConsoleService', () => {
         'call_no': 3,
         'connection_type': '',
         'ping_time_ms': navigator['connection']['rtt']
+      });
+    });
+  });
+
+  describe('sendConnectionChatTimeout', () => {
+    const SESSION_ID = 'session-id';
+
+    const commonConnectionChatTimeoutLog = {
+      'metric_type': MetricTypeEnum.CHAT_CONNECTION_TIME,
+      'session_id': SESSION_ID,
+      'connection_type': '',
+      'ping_time_ms': navigator['connection']['rtt'],
+    };
+
+    beforeEach(() => {
+      spyOn(userService, 'me').and.returnValue(of({id: USER_ID}));
+      spyOn(remoteConsoleClientService, 'info');
+      service.sessionId = SESSION_ID;
+    });
+
+    it('should connect to chat', () => {
+      spyOn(Date, 'now').and.returnValues(3000, 4000, 4500);
+
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', true);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        ...commonConnectionChatTimeoutLog,
+        'connection_time': 1500,
+        'xmpp_retry_count': 1,
+        'inbox_retry_count': 1,
+      });
+    });
+
+    it('should not connect to chat', () => {
+      service.sendConnectionChatTimeout('inbox', false);
+
+      expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
+    });
+
+    it('should not connect to chat if has get response from inbox but can not connect to xmpp', () => {
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', false);
+      expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
+    });
+
+    it('should connect to chat if was 1 error when get inbox', () => {
+      spyOn(Date, 'now').and.returnValues(3000, 4000, 4700);
+
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', true);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        ...commonConnectionChatTimeoutLog,
+        'connection_time': 1700,
+        'inbox_retry_count': 2,
+        'xmpp_retry_count': 1,
+      });
+    });
+
+    it('should connect to chat if were 2 error when get inbox', () => {
+      spyOn(Date, 'now').and.returnValues(3000, 4000, 4800);
+
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', true);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        ...commonConnectionChatTimeoutLog,
+        'connection_time': 1800,
+        'inbox_retry_count': 3,
+        'xmpp_retry_count': 1,
+      });
+    });
+
+    it('should connect to chat if was 2 error when get inbox and 1 error when connect to xmpp', () => {
+      spyOn(Date, 'now').and.returnValues(3000, 4000, 4900);
+
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', false);
+      service.sendConnectionChatTimeout('xmpp', true);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        ...commonConnectionChatTimeoutLog,
+        'connection_time': 1900,
+        'inbox_retry_count': 3,
+        'xmpp_retry_count': 2,
+      });
+    });
+
+    it('should connect to chat 2 times', () => {
+      spyOn(Date, 'now').and.returnValues(3000, 4000, 5100, 6000, 4000, 6200);
+
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', false);
+      service.sendConnectionChatTimeout('xmpp', true);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        ...commonConnectionChatTimeoutLog,
+        'connection_time': 2100,
+        'inbox_retry_count': 2,
+        'xmpp_retry_count': 2,
+      });
+
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', false);
+      service.sendConnectionChatTimeout('xmpp', true);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        ...commonConnectionChatTimeoutLog,
+        'connection_time': 200,
+        'inbox_retry_count': 1,
+        'xmpp_retry_count': 2,
       });
     });
   });
