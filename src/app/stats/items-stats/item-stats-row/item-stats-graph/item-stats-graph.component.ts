@@ -1,12 +1,10 @@
 import { AfterViewInit, Component, Inject, Input, LOCALE_ID, OnDestroy } from '@angular/core';
 import { UUID } from 'angular2-uuid';
-import { ItemStatsService } from './item-stats.service';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from './item-stats-response.interface';
 import { Item } from '../../../../core/item/item';
 import { I18nService } from '../../../../core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
 import * as moment from 'moment';
-import { ITEM_DATA_V4 } from 'tests/item.fixtures.spec';
 
 const GRAPH_COLORS = {
   CHAT: '#EEAA42',
@@ -42,6 +40,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
     const data1 = [];
     const data2 = [];
     const data3 = [];
+    let isBumped = false;
     let colorFavs = '';
     let colorChats = '';
     let colorViews = '';
@@ -73,6 +72,14 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
       toolbox: {
         show: false
       },
+      legend: {
+        show: false,
+        selected: {
+          'Favoritos': this.type === 'favs',
+          'Visualizaciones': this.type !== 'favs',
+          'Mensajes': this.type !== 'favs'
+        }
+      },
       grid:{
         left: 50,
         right: 50,
@@ -100,19 +107,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
         }
       },
       yAxis: {
-        nameTextStyle: {
-          color: 'rgba(19, 193, 172, 1.0)'
-        },
-        axisLine: {
-          lineStyle: {
-              color: '#90A4AE'
-          }
-        },
-        splitLine: {
-          lineStyle: {
-              color: 'rgba(232, 232, 232, 0.5)'
-          }
-        }
+        show: false
       },
       series: [
         {
@@ -160,55 +155,6 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
       }
     };
   }
-
-  /*private setChartOptions() {
-    const balloonFunction = (graphDataItem, graph) => {
-      let balloon = '<div style="text-align:left">';
-      if (graphDataItem.dataContext.bumped) {
-        balloon += '<b style="color:#13c1ac">' + this.i18n.getTranslations('featured') + '</b><br />';
-      }
-      balloon += graph.title + ': <b>' + graphDataItem.values.value + '</b>';
-      return balloon + '</div>';
-    };
-    const columnGraphOptions = {
-      'fillAlphas': 1,
-      'lineAlpha': 0,
-      'fixedColumnWidth': 20,
-      'type': 'column',
-      'balloonFunction': balloonFunction
-    };
-    if (this.type === 'favs') {
-      this.chartOptions.graphs.push({
-        ...columnGraphOptions,
-        'id': 'Favs',
-        'title': this.i18n.getTranslations('favorites'),
-        'valueField': 'favs',
-        'fillColorsField': 'colorFavs'
-      });
-    } else {
-      this.chartOptions.graphs.push({
-        ...columnGraphOptions,
-        'id': 'Chats',
-        'title': this.i18n.getTranslations('chats'),
-        'valueField': 'chats',
-        'fillColorsField': 'colorChats',
-      });
-      this.chartOptions.graphs.push({
-        ...columnGraphOptions,
-        'id': 'Views',
-        'title': this.i18n.getTranslations('views'),
-        'valueField': 'views',
-        'fillColorsField': 'colorViews',
-      });
-    }
-    this.chartOptions.chartCursor.categoryBalloonFunction = function(date) {
-      return date.toLocaleDateString(this.locale, { weekday: 'long', day: 'numeric' });
-    };
-    if (this.locale === 'es') {
-      this.AmCharts.dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-    }
-    this.AmCharts.useUTC = true;
-  }*/
 
   private loadStats() {
     const entries = [];
