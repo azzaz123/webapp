@@ -1,5 +1,5 @@
 
-import { of as observableOf } from 'rxjs';
+import { of } from 'rxjs';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { CategoryService } from './category.service';
 import {
@@ -37,7 +37,7 @@ describe('CategoryService', () => {
   describe('getCategories', () => {
     it('should return the json from the categories', () => {
       let response: CategoryResponse[];
-      spyOn(http, 'get').and.returnValue(observableOf(CATEGORY_DATA_WEB));
+      spyOn(http, 'get').and.returnValue(of(CATEGORY_DATA_WEB));
 
       service.getCategories().subscribe((data: CategoryResponse[]) => {
         response = data;
