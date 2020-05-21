@@ -21,7 +21,7 @@
         <span class="message-date"
               *ngIf="dateIsThisYear()">{{conversation?.modifiedDate| amCalendar:momentConfig }}</span>
         <span class="message-date"
-              *ngIf="!dateIsThisYear()">{{conversation?.modifiedDate| amDateFormat:'D MMM. YYYY' }}</span>
+              *ngIf="!dateIsThisYear()">{{conversation?.modifiedDate| date:'D MMM. YYYY' }}</span>
       </div>
     </div>
 

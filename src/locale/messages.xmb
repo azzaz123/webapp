@@ -968,6 +968,6 @@
   <msg id="5448941415082762589"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:65</source>Publish your product to see your stats and so that other users can contact you.</msg>
   <msg id="6821183586555063962"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:68</source>This product is Featured</msg>
   <msg id="3879651736105644738"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:69</source>You will get more views, chats and more interested people.</msg>
-  <msg id="916352071278248935"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:70</source>Your feature ends on <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amDateFormat:momentConfig}}</ex>{{item.bumpExpiringDate | amDateFormat:momentConfig}}</ph></msg>
+  <msg id="916352071278248935"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:70</source>Your feature ends on <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | date:momentConfig}}</ex>{{item.bumpExpiringDate | date:momentConfig}}</ph></msg>
   <msg id="3339021787040924237"><source>app/layout/topbar/suggester/suggester.component.html:2</source>Search in All categories</msg>
 </messagebundle>

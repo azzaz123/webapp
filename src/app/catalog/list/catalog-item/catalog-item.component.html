@@ -35,13 +35,13 @@
           <div class="col d-none d-md-flex flex-column item-info clickable" (click)="openItem()"
             *ngIf="!item.flags.onhold">
             <div i18n>Published</div>
-            <div class="subtitle"> {{ item.publishedDate | amDateFormat: 'DD/MM/YYYY'}}</div>
+            <div class="subtitle"> {{ item.publishedDate | date: 'DD/MM/YYYY'}}</div>
           </div>
 
           <div class="col d-none d-xl-flex flex-column item-info clickable" (click)="openItem()"
             *ngIf="!item.flags.onhold">
             <div i18n>Modified</div>
-            <div class="subtitle"> {{ item.modifiedDate | amDateFormat: 'DD/MM/YYYY'}}</div>
+            <div class="subtitle"> {{ item.modifiedDate | date: 'DD/MM/YYYY'}}</div>
           </div>
 
           <div class="col-1 d-none d-md-block item-info clickable" *ngIf="showListingFee() || item.listingFeeExpiringDate"
