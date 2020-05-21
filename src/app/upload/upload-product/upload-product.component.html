@@ -63,10 +63,10 @@
     <div class="row" formGroupName="extra_info">
       <div class="col-12 col-md-6">
         <div class="form-group" formGroupName="object_type">
-          <label for="objectType" i18n *ngIf="selectedRawCategory?.fields.type_of_object">
+          <label for="objectType" *ngIf="selectedRawCategory?.fields.type_of_object">
             {{selectedRawCategory.fields.type_of_object.title}}
           </label>
-          <label for="objectType" i18n *ngIf="!selectedRawCategory?.fields.type_of_object">
+          <label for="objectType" i18n="@@uploadFormSubcategory" *ngIf="!selectedRawCategory?.fields.type_of_object">
             Subcategory
           </label>
           <ng-select class="form-control" [disabled]="!objectTypes?.length" formControlName="id" id="objectType"
@@ -134,7 +134,7 @@
       <div class="col-md-3 mt-3" *ngIf="!!selectedRawCategory?.fields.gender">
         <div class="form-group last">
           <label for="gender" i18n>Gender</label>
-          <ng-select class="form-control" formControlName="gender" id="gender" i18n-placeholder
+          <ng-select class="form-control" formControlName="gender" id="gender" i18n-placeholder="@@uploadFormSelectGender"
             placeholder="Select a gender" [options]="gender"></ng-select>
         </div>
       </div>
