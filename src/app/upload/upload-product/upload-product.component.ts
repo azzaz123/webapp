@@ -247,20 +247,20 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private handleUploadFormExtraFields(): void {
     const formCategoryId = this.uploadForm.get('category_id').value;
     const rawCategory = this.rawCategories.find(category => category.category_id === +formCategoryId);
-    const EXTRA_FIELDS_KEYS = ['brand', 'model', 'size', 'gender'];
-
-    this.getObjectTypes();
-    this.getConditions();
+    const EXTRA_FIELDS_KEYS = ['type_of_object', 'brand', 'model', 'size', 'gender'];
 
     if (!!rawCategory) {
       this.selectedRawCategory = rawCategory;
+      this.getObjectTypes();
+      this.getConditions();
 
-      EXTRA_FIELDS_KEYS.map((entry) => {
-        this.getUploadExtraInfoControl(entry).reset();
-        if (!!rawCategory.fields[entry]) {
-          return this.getUploadExtraInfoControl(entry).enable();
+      EXTRA_FIELDS_KEYS.map(field => {
+        const formFieldName = field === 'type_of_object' ? 'object_type' : field;
+
+        if (!!rawCategory.fields[field]) {
+          return this.getUploadExtraInfoControl(formFieldName).enable();
         }
-        return this.getUploadExtraInfoControl(entry).disable();
+        return this.getUploadExtraInfoControl(formFieldName).disable();
       });
     }
   }
