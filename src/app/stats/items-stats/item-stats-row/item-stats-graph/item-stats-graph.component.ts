@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Inject, Input, LOCALE_ID, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from './item-stats-response.interface';
 import { Item } from '../../../../core/item/item';
@@ -21,7 +21,7 @@ const GRAPH_COLORS = {
   templateUrl: './item-stats-graph.component.html',
   styleUrls: ['./item-stats-graph.component.scss']
 })
-export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
+export class ItemStatsGraphComponent implements OnInit {
 
   @Input() type: string;
   @Input() item: Item;
@@ -34,7 +34,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
                 moment.locale(this.locale);
               }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.loadStats();
   }
 
@@ -60,7 +60,6 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
         colorChats = entry.bumped ? GRAPH_COLORS.CHAT_BUMPED : GRAPH_COLORS.CHAT;
         colorViews = entry.bumped ? GRAPH_COLORS.VIEWS_BUMPED : GRAPH_COLORS.VIEWS;
     });
-
     this.chartOption = {
       tooltip: {
         show: true,
@@ -170,9 +169,6 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
       });
     });
     this.setUpChart(entries);
-  }
-
-  ngOnDestroy() {
   }
 
 }

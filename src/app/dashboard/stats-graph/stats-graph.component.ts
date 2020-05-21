@@ -1,4 +1,4 @@
-import { Component, Inject, Input, LOCALE_ID, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
 import { StatisticsService } from './statistics.service';
 import { StatisticEntriesResponse, StatisticFullResponse } from './statistic-response.interface';
 import { IOption } from 'ng-select';
@@ -13,7 +13,7 @@ import { find } from 'lodash';
   templateUrl: './stats-graph.component.html',
   styleUrls: ['./stats-graph.component.scss']
 })
-export class StatsGraphComponent implements OnInit, OnDestroy {
+export class StatsGraphComponent implements OnInit {
 
   @Input() yearly: boolean = false;
   public id: string = 'chart-' + UUID.UUID();
@@ -246,10 +246,6 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
 
   onStatsPeriodChange() {
     this.loadStats();
-  }
-
-  ngOnDestroy() {
-    //destroy chart
   }
 
 }

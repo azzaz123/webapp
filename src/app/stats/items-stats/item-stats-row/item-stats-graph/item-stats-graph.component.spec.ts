@@ -42,25 +42,14 @@ describe('ItemStatsGraphComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('ngAfterViewInit', () => {
-    it('should call getStatistics and push them to dataProvider', () => {
+  describe('ngOnInit', () => {
+    it('should call loadStats and push them to chartOptions', () => {
       component.statsData = ITEM_STATISTIC_RESPONSE;
 
-      component.ngAfterViewInit();
+      component.ngOnInit();
 
-      expect(component['chartOptions'].dataProvider.length).toBe(ITEM_STATISTIC_RESPONSE.entries.length);
+      expect(component.chartOption.series[1].data[0]).toBe(ITEM_STATISTIC_RESPONSE.entries[0].values.views);
     });
   });
 
-  describe('ngOnDestroy', () => {
-    it('should call destroyChart', () => {
-      const CHART = {chart: 'chart'};
-      spyOn(AmCharts, 'destroyChart');
-      component['chart'] = CHART;
-
-      component.ngOnDestroy();
-
-      expect(AmCharts.destroyChart).toHaveBeenCalledWith(CHART);
-    });
-  });
 });
