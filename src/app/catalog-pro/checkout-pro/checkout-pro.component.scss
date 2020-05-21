@@ -24,6 +24,29 @@ $feature-button-width: 170px;
   }
 }
 
+.btn-selectAll {
+  background-color: transparent;
+  border: none;
+  color: $blue-grey-2;
+  font-size: $font-size-s;
+  padding: 0;
+  &.citybump {
+    &:hover {
+      color: $walla-main;
+    }
+  }
+  &.countrybump {
+    &:hover {
+      color: $payblue-main;
+    }
+  }
+  &.planning {
+    &:hover {
+      color: $blue-grey-1;
+    }
+  }
+}
+
 .bumps-table {
   z-index: 4;
   margin-bottom: $spacing-xxxl;

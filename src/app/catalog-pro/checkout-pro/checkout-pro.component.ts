@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ItemWithProducts } from '../../core/item/item-response.interface';
 import { ItemService } from '../../core/item/item.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarDates } from './range-datepicker/calendar-dates';
-import { CartProItem } from '../../shared/catalog/cart/cart-item.interface';
 import { CartService } from '../../shared/catalog/cart/cart.service';
 import { CartPro } from '../../shared/catalog/cart/cart-pro';
 import { Subject } from 'rxjs';
@@ -72,12 +71,6 @@ export class CheckoutProComponent implements OnInit {
 
     if (type !== BUMPS.PLANNING) {
       this.allSelected[type] = !this.allSelected[type];
-      if (type === BUMPS.CITY && this.allSelected.countrybump) {
-        this.allSelected.countrybump = false;
-      }
-      if (type === BUMPS.COUNTRY && this.allSelected.citybump) {
-        this.allSelected.citybump = false;
-      }
       this.selectAllEventSubject.next({type, allSelected: this.allSelected[type]});
     } else {
       this.setDefaultDates();

@@ -15,12 +15,9 @@
               <div class="content-header">
                 <div i18n>City</div>
                 <div class="content-select">
-                  <div class="checkbox">
-                    <button class="select citybump" [ngClass]="{selected: allSelected['citybump'] && !allSelected['countrybump']}" (click)="selectAll('citybump')">
-                      <mat-icon svgIcon="check"></mat-icon>
-                    </button>
-                  </div>
-                  <div class="select-all" i18n="@@CheckoutProCityApplyAll">Apply to all</div>
+                  <button class="select citybump btn btn-selectAll" (click)="selectAll('citybump')" i18n="@@ApplyAll">
+                    Apply to all
+                  </button>
                 </div>
               </div>
               <div class="item-separator"></div>
@@ -29,12 +26,9 @@
               <div class="content-header">
                 <div i18n>Country</div>
                 <div class="content-select">
-                  <div class="checkbox">
-                    <button class="select countrybump" [ngClass]="{selected: allSelected['countrybump'] && !allSelected['citybump'] }" (click)="selectAll('countrybump')">
-                      <mat-icon svgIcon="check"></mat-icon>
-                    </button>
-                  </div>
-                  <div class="select-all" i18n="@@CheckoutProCountryApplyAll">Apply to all</div>
+                  <button class="select countrybump btn btn-selectAll" (click)="selectAll('countrybump')" i18n="@@ApplyAll">
+                    Apply to all
+                  </button>
                 </div>
               </div>
               <div class="item-separator"></div>
@@ -43,12 +37,9 @@
               <div class="content-header last">
                 <div i18n="@@CheckoutProPlanning">Planning</div>
                 <div class="content-select">
-                  <div class="checkbox">
-                    <button class="select" (click)="selectAll('planning')">
-                      <mat-icon svgIcon="check"></mat-icon>
-                    </button>
-                  </div>
-                  <div class="select-all" i18n="@@CheckoutProPlanningApplyAll">Apply to all</div>
+                  <button class="select planning btn btn-selectAll" (click)="selectAll('planning')" i18n="@@ApplyAll">
+                    Apply to all
+                  </button>
                 </div>
               </div>
             </div>
