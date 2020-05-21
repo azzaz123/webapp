@@ -429,7 +429,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
     if (objectTypeId && gender) {
       this.generalSuggestionsService.getSizes(objectTypeId, gender).subscribe((sizes: IOption[]) => {
+        this.getUploadExtraInfoControl('size').enable();
         this.sizes = sizes;
+      }, () => {
+        this.getUploadExtraInfoControl('size').disable();
+        this.sizes = [];
       });
     }
   }
