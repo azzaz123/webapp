@@ -60,11 +60,15 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public itemTypes: any = ITEM_TYPES;
   public currentCategory: CategoryOption;
-  public objectTypes: IOption[];
-  public conditions: IOption[];
-  public brands: IOption[];
-  public models: IOption[];
-  public sizes: IOption[];
+  public objectTypes: IOption[] = [];
+  public conditions: IOption[] = [];
+  public brands: IOption[] = [];
+  public models: IOption[] = [];
+  public sizes: IOption[] = [];
+  public gender: IOption[] = [
+    { value: 'male', label: 'Male' },
+    { value: 'female', label: 'Female' }
+  ];
   public brandSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public uploadCompletedPercentage = 0;
@@ -171,6 +175,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.categories = categories;
 
       this.detectCategoryChanges();
+      this.detectObjectTypeChanges();
       if (this.item) {
         this.initializeEditForm();
       }
@@ -202,10 +207,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       extra_info: this.item.extraInfo || {}
     });
     this.oldDeliveryValue = this.getDeliveryInfo();
-    if (+this.item.categoryId === this.fashionCategoryId) {
-      this.getSizes();
-    }
-    this.getConditions();
   }
 
   private detectFormChanges() {
@@ -230,24 +231,39 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
   }
 
+  private detectObjectTypeChanges() {
+    this.getUploadExtraInfoControl('type_of_object').get('id').valueChanges.subscribe((typeOfbOjectId: number) => {
+      if (!!typeOfbOjectId && +this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
+        this.getSizes();
+      }
+    });
+    this.getUploadExtraInfoControl('gender').valueChanges.subscribe((gender: string) => {
+      if (!!gender && +this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
+        console.log(gender);
+        this.getSizes();
+      }
+    });
+  }
+
   private handleUploadFormExtraFields(): void {
     const formCategoryId = this.uploadForm.get('category_id').value;
     const rawCategory = this.rawCategories.find(category => category.category_id === +formCategoryId);
     const EXTRA_FIELDS_KEYS = ['type_of_object', 'brand', 'model', 'size', 'gender'];
 
+    this.getObjectTypes();
+    this.getConditions();
+
     if (!!rawCategory) {
       this.selectedRawCategory = rawCategory;
 
       EXTRA_FIELDS_KEYS.map((entry) => {
+        this.getUploadExtraInfoControl(entry).reset();
         if (!!rawCategory.fields[entry]) {
           return this.getUploadExtraInfoControl(entry).enable();
         }
         return this.getUploadExtraInfoControl(entry).disable();
       });
     }
-
-    this.getObjectTypes();
-    this.getConditions();
   }
 
   private getDeliveryInfo(): DeliveryInfo {
@@ -363,9 +379,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public getBrands(brandKeyword: string): void {
     const suggestions: KeywordSuggestion[] = [];
-    let objectTypeId: number;
-
-    objectTypeId = this.uploadExtraInfoValue.type_of_object.id;
+    let objectTypeId: number = this.getUploadExtraInfoControl('type_of_object').get('id').value;
 
     this.generalSuggestionsService.
       getBrands(brandKeyword, this.uploadForm.value.category_id, objectTypeId)
@@ -396,9 +410,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.generalSuggestionsService.
       getModels(
         modelKeyword,
-        this.uploadForm.value.category_id,
-        this.uploadExtraInfoValue.brand,
-        this.uploadExtraInfoValue.type_of_object.id)
+        this.uploadForm.get('category_id').value,
+        this.getUploadExtraInfoControl('brand').value,
+        this.getUploadExtraInfoControl('type_of_object').get('id').value)
       .subscribe((models: Model[]) => {
         const suggestions: KeywordSuggestion[] = [];
 
@@ -410,16 +424,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getSizes(): void {
-    const objectTypeId = this.uploadExtraInfoValue.type_of_object.id;
-    const gender = this.uploadExtraInfoValue.gender;
+    const objectTypeId = this.getUploadExtraInfoControl('type_of_object').get('id').value;
+    const gender = this.getUploadExtraInfoControl('gender').value;
+    this.sizes = [];
 
     if (objectTypeId && gender) {
       this.generalSuggestionsService.getSizes(objectTypeId, gender).subscribe((sizes: IOption[]) => {
-        this.getUploadExtraInfoControl('size').enable();
         this.sizes = sizes;
-      }, () => {
-        this.getUploadExtraInfoControl('size').disable();
-        this.sizes = [];
       });
     }
   }
@@ -449,24 +460,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         id: null
       }
     });
-  }
-
-  public resetCellphonesExtraFields(): void {
-    this.getUploadExtraInfoControl().patchValue({
-      brand: null,
-      model: null
-    });
-  }
-
-  public resetFashionExtraFields(): void {
-    this.getUploadExtraInfoControl().patchValue({
-      brand: null,
-      size: {
-        id: null
-      },
-    });
-
-    this.getSizes();
   }
 
   public updateUploadPercentage(percentage: number) {
@@ -509,7 +502,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private getConditions(): void {
     const currentCategorId: number = +this.uploadForm.get('category_id').value;
+
     this.conditions = [];
+    this.getUploadExtraInfoControl('condition').reset();
     this.generalSuggestionsService.getConditions(currentCategorId).subscribe((conditions: IOption[]) => {
       this.conditions = conditions;
     });
@@ -573,10 +568,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private getUploadExtraInfoControl(field?: string): AbstractControl {
     return field ? this.uploadForm.get('extra_info').get(field) : this.uploadForm.get('extra_info');
-  }
-
-  get uploadExtraInfoValue(): any {
-    return this.uploadForm.value['extra_info'];
   }
 }
 
