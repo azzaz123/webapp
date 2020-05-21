@@ -25,7 +25,7 @@ describe('CallItemComponent', () => {
       imports: [
         NoopAnimationsModule,
       ],
-      declarations: [CallItemComponent, CallStatusLabelPipe],
+      declarations: [CallItemComponent, CallStatusLabelPipe, CalendarPipe],
       providers: [
         I18nService,
         { provide: TrackingService, useClass: MockTrackingService },
@@ -40,7 +40,6 @@ describe('CallItemComponent', () => {
             }
           }
         },
-        CalendarPipe
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

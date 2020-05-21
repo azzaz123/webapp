@@ -28,9 +28,8 @@ describe('CallComponent', () => {
           }
         }
         },
-        CalendarPipe
       ],
-      declarations: [ CallComponent, CallStatusLabelPipe ],
+      declarations: [ CallComponent, CallStatusLabelPipe, CalendarPipe],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
