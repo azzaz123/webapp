@@ -46,7 +46,6 @@
     "@ng-bootstrap/ng-bootstrap": "6.0.3",
     "@ngu/carousel": "^2.0.3",
     "@sentry/browser": "^5.15.5",
-    "angular2-moment": "https://github.com/Wallapop/angular2-moment#2.2.0",
     "angular2-uuid": "^1.1.1",
     "appboy-web-sdk": "^2.4.3",
     "bootstrap": "4.0.0",

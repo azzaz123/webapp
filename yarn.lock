@@ -1892,12 +1892,6 @@ alt-sasl-digest-md5@^1.0.0:
     create-hash "^1.1.0"
     randombytes "^2.0.1"
 
-"angular2-moment@https://github.com/Wallapop/angular2-moment#2.2.0":
-  version "2.2.0"
-  resolved "https://github.com/Wallapop/angular2-moment#1214d11b4bc5facf1da2c08ad8f24d3f82a72917"
-  dependencies:
-    moment "^2.16.0"
-
 angular2-uuid@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/angular2-uuid/-/angular2-uuid-1.1.1.tgz#72f03cd532b7f40032eb1ecfb9f8457384be956e"
@@ -6801,10 +6795,6 @@ mkdirp@~0.5.1, mkdirp@~0.5.x:
   integrity sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
   dependencies:
     minimist "^1.2.5"
-
-moment@^2.16.0:
-  version "2.22.2"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 
 move-concurrently@^1.0.1:
   version "1.0.1"
