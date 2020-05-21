@@ -4,7 +4,6 @@ import { dashboardRoutedComponents, DashboardRoutingModule } from './dashboard.r
 import { CallComponent } from './call/call.component';
 import { MatIconModule } from '@angular/material';
 import { SharedModule } from '../shared/shared.module';
-import { MomentModule } from 'angular2-moment';
 import { ConversationModule } from '../core/conversation/conversation.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { StatsGraphComponent } from './stats-graph/stats-graph.component';
@@ -20,7 +19,6 @@ import { ChatModule } from '../chat/chat.module';
     DashboardRoutingModule,
     MatIconModule,
     SharedModule,
-    MomentModule,
     ConversationModule,
     NgbTooltipModule,
     AmChartsModule,

@@ -28,7 +28,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { SwitchComponent } from './switch/switch.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
-import { MomentModule } from 'angular2-moment';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
@@ -81,7 +80,6 @@ import { StatusIconComponent } from './status-icon';
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,
-    MomentModule,
     NgxPermissionsModule.forChild(),
     NgbDropdownModule,
     TrackingModule,
@@ -146,7 +144,9 @@ import { StatusIconComponent } from './status-icon';
     LinkTransformPipe,
     PreventDoubleClickDirective,
     ProBadgeModule,
-    DateUntilDayPipe
+    DateUntilDayPipe,
+    CalendarPipe,
+    CountdownPipe
   ],
   declarations: [
     AdComponent,
