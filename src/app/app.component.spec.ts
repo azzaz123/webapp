@@ -236,8 +236,7 @@ describe('App', () => {
     expect(app).toBeTruthy();
   }));
 
-  //Keeps failing randomly because of the timestamp
-  xdescribe('set cookie', () => {
+  describe('set cookie', () => {
     it('should create a cookie', () => {
       spyOn(UUID, 'UUID').and.returnValue('1-2-3');
       spyOn(cookieService, 'put');

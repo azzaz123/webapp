@@ -68,7 +68,7 @@ export class StatsGraphComponent implements OnInit {
     });
     this.chartOption = {
       legend: {
-        data: [this.i18n.getTranslations('phonesShared'), this.i18n.getTranslations('citybump'), this.i18n.getTranslations('country'), this.i18n.getTranslations('views'), this.i18n.getTranslations('chats')],
+        data: [this.i18n.getTranslations('phonesShared'), this.i18n.getTranslations('citybump'), this.i18n.getTranslations('countrybump'), this.i18n.getTranslations('views'), this.i18n.getTranslations('chats')],
         align: 'left',
         textStyle: {
           color: '#000000'
