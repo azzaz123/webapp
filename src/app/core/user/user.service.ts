@@ -1,7 +1,7 @@
 
 import {forkJoin as observableForkJoin, from as observableFrom,  Observable, of } from 'rxjs';
 
-import {share, mergeMap,  catchError, tap, map, finalize } from 'rxjs/operators';
+import { mergeMap,  catchError, tap, map } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { PERMISSIONS, User } from './user';
 import { EventService } from '../event/event.service';
@@ -15,19 +15,17 @@ import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '../../../environments/environment';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
-import { AvailableSlots, Counters, Ratings, UserStats, UserStatsResponse } from './user-stats.interface';
-import { UserData, UserProData, UserProDataNotifications } from './user-data.interface';
+import { Counters, Ratings, UserStats, UserStatsResponse } from './user-stats.interface';
+import { UserData, UserProData } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { FeatureflagService } from './featureflag.service';
 import { PhoneMethodResponse } from './phone-method.interface';
 import { InboxUser } from '../../chat/model/inbox-user';
 import { InboxItem } from '../../chat/model';
 import { APP_VERSION } from '../../../environments/version';
 import { UserReportApi } from './user-report.interface';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpResponse, HttpRequest } from '@angular/common/http';
-import { isEmpty } from 'lodash-es';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 
 export const LOGIN_ENDPOINT = 'shnm-portlet/api/v1/access.json/login3';
 export const LOGOUT_ENDPOINT = 'rest/logout';
@@ -53,6 +51,11 @@ export const USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT = `${USER_ENDPOINT}typ
 
 export const PROTOOL_ENDPOINT = 'api/v3/protool/';
 export const PROTOOL_EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}extraInfo`;
+export enum USER_TYPE {
+  PROFESSIONAL = 'professional',
+  FEATURED = 'featured',
+  NORMAL = 'normal'
+}
 
 @Injectable()
 export class UserService {
@@ -68,7 +71,6 @@ export class UserService {
     private accessTokenService: AccessTokenService,
     private cookieService: CookieService,
     private permissionService: NgxPermissionsService,
-    private featureflagService: FeatureflagService,
     @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -356,9 +358,9 @@ export class UserService {
 
   public setPermission(user: User): void {
     if (environment.profeatures) {
-      user.featured && user.type !== 'professional' ? this.permissionService.addPermission(PERMISSIONS['featured']) : this.permissionService.addPermission(PERMISSIONS[user.type]);
+      user.featured && user.type !== USER_TYPE.PROFESSIONAL ? this.permissionService.addPermission(PERMISSIONS[USER_TYPE.FEATURED]) : this.permissionService.addPermission(PERMISSIONS[user.type]);
     } else {
-      this.permissionService.addPermission(PERMISSIONS['normal']);
+      this.permissionService.addPermission(PERMISSIONS[USER_TYPE.NORMAL]);
     }
   }
 
@@ -371,7 +373,7 @@ export class UserService {
 
   // TODO: This is if user is car dealer, should be `isCarDealer`
   public isProfessional(): Observable<boolean> {
-    return this.hasPerm('professional');
+    return this.hasPerm(USER_TYPE.PROFESSIONAL);
   }
 
   // TODO: This logic is correct for now, but should be checked using the subscriptions BFF
