@@ -153,7 +153,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         longitude: ['', [Validators.required]],
       }),
       extra_info: this.fb.group({
-        type_of_object: this.fb.group({
+        object_type: this.fb.group({
           id: [{ value: null, disabled: true }, [Validators.required]]
         }),
         brand: [{ value: null, disabled: true }, [Validators.required]],
@@ -232,14 +232,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private detectObjectTypeChanges() {
-    this.getUploadExtraInfoControl('type_of_object').get('id').valueChanges.subscribe((typeOfbOjectId: number) => {
+    this.getUploadExtraInfoControl('object_type').get('id').valueChanges.subscribe((typeOfbOjectId: number) => {
       if (!!typeOfbOjectId && +this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
         this.getSizes();
       }
     });
     this.getUploadExtraInfoControl('gender').valueChanges.subscribe((gender: string) => {
       if (!!gender && +this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
-        console.log(gender);
         this.getSizes();
       }
     });
@@ -248,7 +247,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private handleUploadFormExtraFields(): void {
     const formCategoryId = this.uploadForm.get('category_id').value;
     const rawCategory = this.rawCategories.find(category => category.category_id === +formCategoryId);
-    const EXTRA_FIELDS_KEYS = ['type_of_object', 'brand', 'model', 'size', 'gender'];
+    const EXTRA_FIELDS_KEYS = ['brand', 'model', 'size', 'gender'];
 
     this.getObjectTypes();
     this.getConditions();
@@ -379,7 +378,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public getBrands(brandKeyword: string): void {
     const suggestions: KeywordSuggestion[] = [];
-    let objectTypeId: number = this.getUploadExtraInfoControl('type_of_object').get('id').value;
+    let objectTypeId: number = this.getUploadExtraInfoControl('object_type').get('id').value;
 
     this.generalSuggestionsService.
       getBrands(brandKeyword, this.uploadForm.value.category_id, objectTypeId)
@@ -412,7 +411,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         modelKeyword,
         this.uploadForm.get('category_id').value,
         this.getUploadExtraInfoControl('brand').value,
-        this.getUploadExtraInfoControl('type_of_object').get('id').value)
+        this.getUploadExtraInfoControl('object_type').get('id').value)
       .subscribe((models: Model[]) => {
         const suggestions: KeywordSuggestion[] = [];
 
@@ -424,7 +423,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getSizes(): void {
-    const objectTypeId = this.getUploadExtraInfoControl('type_of_object').get('id').value;
+    const objectTypeId = this.getUploadExtraInfoControl('object_type').get('id').value;
     const gender = this.getUploadExtraInfoControl('gender').value;
     this.sizes = [];
 
@@ -531,8 +530,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         };
 
         if (item.extra_info) {
-          if (item.extra_info.type_of_object && item.extra_info.type_of_object.id) {
-            baseEventAttrs.objectType = item.extra_info.type_of_object.name;
+          if (item.extra_info.object_type && item.extra_info.object_type.id) {
+            baseEventAttrs.objectType = item.extra_info.object_type.name;
           }
           if (item.extra_info.brand) {
             baseEventAttrs.brand = item.extra_info.brand;

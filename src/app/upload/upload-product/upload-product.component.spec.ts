@@ -232,8 +232,8 @@ describe('UploadProductComponent', () => {
               longitude: ''
             },
             extra_info: {
-              type_of_object: {
-                id: MOCK_ITEM_FASHION.extraInfo.type_of_object.id,
+              object_type: {
+                id: MOCK_ITEM_FASHION.extraInfo.object_type.id,
               },
               brand: MOCK_ITEM_FASHION.extraInfo.brand,
               size: {
@@ -287,8 +287,8 @@ describe('UploadProductComponent', () => {
               longitude: ''
             },
             extra_info: {
-              type_of_object: {
-                id: MOCK_ITEM_CELLPHONES.extraInfo.type_of_object.id,
+              object_type: {
+                id: MOCK_ITEM_CELLPHONES.extraInfo.object_type.id,
               },
               brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
               model: MOCK_ITEM_CELLPHONES.extraInfo.model,
@@ -319,8 +319,8 @@ describe('UploadProductComponent', () => {
         component.uploadForm.patchValue({ category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES });
       });
 
-      it('should enable the type_of_object field', () => {
-        expect(component.uploadForm.get('extra_info').get('type_of_object').disabled).toBe(false);
+      it('should enable the object_type field', () => {
+        expect(component.uploadForm.get('extra_info').get('object_type').disabled).toBe(false);
       });
       it('should enable the brand field', () => {
         expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(false);
@@ -340,8 +340,8 @@ describe('UploadProductComponent', () => {
         component.uploadForm.patchValue({ category_id: CATEGORY_IDS.FASHION_ACCESSORIES });
       });
 
-      it('should enable the type_of_object field', () => {
-        expect(component.uploadForm.get('extra_info').get('type_of_object').disabled).toBe(false);
+      it('should enable the object_type field', () => {
+        expect(component.uploadForm.get('extra_info').get('object_type').disabled).toBe(false);
       });
       it('should enable the brand field', () => {
         expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(false);
@@ -362,8 +362,8 @@ describe('UploadProductComponent', () => {
         component.uploadForm.patchValue({ category_id: CATEGORY_IDS.SERVICES });
       });
 
-      it('should disable the type_of_object field', () => {
-        expect(component.uploadForm.get('extra_info').get('type_of_object').disabled).toBe(true);
+      it('should disable the object_type field', () => {
+        expect(component.uploadForm.get('extra_info').get('object_type').disabled).toBe(true);
       });
       it('should disable the brand field', () => {
         expect(component.uploadForm.get('extra_info').get('brand').disabled).toBe(true);
@@ -509,7 +509,7 @@ describe('UploadProductComponent', () => {
       component.uploadForm.patchValue({
         category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
         extra_info: {
-          type_of_object: {
+          object_type: {
             id: '365'
           }
         }
@@ -539,7 +539,7 @@ describe('UploadProductComponent', () => {
       component.uploadForm.patchValue({
         category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
         extra_info: {
-          type_of_object: {
+          object_type: {
             id: '365'
           },
           brand: 'Apple'
@@ -556,7 +556,7 @@ describe('UploadProductComponent', () => {
   describe('getSizes', () => {
     it('should get the sizes for the current object type and gender', () => {
       component.uploadForm.get('extra_info').patchValue({
-        type_of_object: {
+        object_type: {
           id: '365'
         },
         gender: 'male'

@@ -142,7 +142,7 @@
         <div class="form-group last" formGroupName="size">
           <label for="size" i18n>Size</label>
           <ng-select class="form-control"
-            [disabled]="!!!getUploadExtraInfoControl('type_of_object').value || !!!getUploadExtraInfoControl('gender').value || !sizes.length"
+            [disabled]="!!!getUploadExtraInfoControl('object_type').value || !!!getUploadExtraInfoControl('gender').value || !sizes.length"
             formControlName="id" id="fashionSizes" i18n-placeholder placeholder="Select a size" [options]="sizes"
             noFilter="10"></ng-select>
         </div>
