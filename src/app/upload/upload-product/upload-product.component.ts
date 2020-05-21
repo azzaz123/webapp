@@ -455,7 +455,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
   }
 
-  public resetExtraFields(): void {
+  public resetAllExtraFields(): void {
+    this.getUploadExtraInfoControl().reset();
+  }
+
+  public resetCommonExtraFields(): void {
     this.getUploadExtraInfoControl().patchValue({
       brand: null,
       model: null,

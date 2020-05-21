@@ -29,7 +29,7 @@
           <label for="category" i18n>Category</label>
           <ng-select [disabled]="isHeroCategory(uploadForm.value?.category_id)" i18n-placeholder placeholder="Category"
             class="form-control categories-select" formControlName="category_id" id="category" [options]="categories"
-            noFilter="10">
+            noFilter="10" (selected)="resetAllExtraFields()">
             <ng-template #optionTemplate let-option="option">
               <div [ngClass]="'cat-' + option?.value">
                 <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
@@ -71,7 +71,7 @@
           </label>
           <ng-select class="form-control" [disabled]="!objectTypes?.length" formControlName="id" id="objectType"
             i18n-placeholder placeholder="Select a type" [options]="objectTypes" noFilter="10"
-            (selected)="resetExtraFields()">
+            (selected)="resetCommonExtraFields()">
           </ng-select>
         </div>
       </div>
