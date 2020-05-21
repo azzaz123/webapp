@@ -19,7 +19,7 @@ import { InboxConversationService } from '../service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { ConversationServiceMock } from '../../../tests';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
-import { CalendarPipe } from 'app/shared/pipes';
+import { DateCalendarPipe } from 'app/shared/pipes';
 
 class MockConversationService {
   public loadMoreMessages() {
@@ -51,7 +51,7 @@ describe('CurrentConversationComponent', () => {
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: InboxConversationService, useClass: ConversationServiceMock },
         I18nService,
-        CalendarPipe
+        DateCalendarPipe
       ]
     });
     fixture = TestBed.createComponent(CurrentConversationComponent);

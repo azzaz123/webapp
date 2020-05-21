@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CallComponent } from './call.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CallStatusLabelPipe, CalendarPipe } from '../../shared/pipes';
+import { CallStatusLabelPipe, DateCalendarPipe } from '../../shared/pipes';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CallsService } from '../../core/conversation/calls.service';
 import { MOCK_CALL } from '../../../tests/call.fixtures';
@@ -29,7 +29,7 @@ describe('CallComponent', () => {
         }
         },
       ],
-      declarations: [ CallComponent, CallStatusLabelPipe, CalendarPipe],
+      declarations: [ CallComponent, CallStatusLabelPipe, DateCalendarPipe],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();

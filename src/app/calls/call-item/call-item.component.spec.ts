@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { CallsService } from '../../core/conversation/calls.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CallStatusLabelPipe, CalendarPipe } from '../../shared/pipes';
+import { CallStatusLabelPipe, DateCalendarPipe } from '../../shared/pipes';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MOCK_CALL } from '../../../tests/call.fixtures';
@@ -25,7 +25,7 @@ describe('CallItemComponent', () => {
       imports: [
         NoopAnimationsModule,
       ],
-      declarations: [CallItemComponent, CallStatusLabelPipe, CalendarPipe],
+      declarations: [CallItemComponent, CallStatusLabelPipe, DateCalendarPipe],
       providers: [
         I18nService,
         { provide: TrackingService, useClass: MockTrackingService },

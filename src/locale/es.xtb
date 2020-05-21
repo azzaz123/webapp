@@ -672,7 +672,7 @@
   <translation id="6818764209697915477">Destácalo desde <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></translation>
   <translation id="6821183586555063962">Este producto está Destacado</translation>
   <translation id="3879651736105644738">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
-  <translation id="916352071278248935">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amCalendar:momentConfig}}</ex></ph></translation>
+  <translation id="916352071278248935">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | dateCalendar:momentConfig}}</ex></ph></translation>
   <translation id="8413861205232330672">Todavía no disponemos de datos para este producto</translation>
   <translation id="8167775963255607742">
     Por sólo

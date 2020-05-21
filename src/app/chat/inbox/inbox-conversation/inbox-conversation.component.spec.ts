@@ -11,7 +11,7 @@ import { InboxConversationServiceMock } from '../../../../tests';
 import { of } from 'rxjs';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../model';
 import { I18nService } from '../../../core/i18n/i18n.service';
-import { CalendarPipe } from 'app/shared/pipes';
+import { DateCalendarPipe } from 'app/shared/pipes';
 import { CommonModule } from '@angular/common';
 
 describe('Component: Conversation', () => {
@@ -29,7 +29,7 @@ describe('Component: Conversation', () => {
       providers: [
         I18nService,
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
-        CalendarPipe
+        DateCalendarPipe
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
