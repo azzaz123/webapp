@@ -1,4 +1,4 @@
-<div class="item" *ngIf="cartProItem" [ngClass]="{first: index===0}">
+<div class="item" *ngIf="cartProItem">
   <div class="item-first-section">
     <div class="item-info">
       <tsl-item-avatar [item]="cartProItem.item" size="big" fallbackLight="true" title="{{cartProItem.item.title}}"></tsl-item-avatar>
@@ -20,8 +20,8 @@
   </div>
   <div class="item-separator"></div>
   <div class="item-second-section">
-    <form [formGroup]="datesForm" class="form-date">
-      <div class="date-field">
+    <form [formGroup]="datesForm" class="d-flex flex-row align-items-center w-100">
+      <div class="d-flex flex-column">
         <span class="label-date" i18n>Start date</span>
         <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy"
           [disabled]="!cartProItem.bumpType"
@@ -29,7 +29,7 @@
           name="fromDate_{{index}}"
           formControlName="fromDate">
       </div>
-      <div class="date-field">
+      <div class="d-flex flex-column">
         <span class="label-date" i18n>End date</span>
         <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy"
           [disabled]="!cartProItem.bumpType"
