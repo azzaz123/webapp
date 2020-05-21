@@ -2,10 +2,10 @@
 
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { InboxItemStatus } from '../../model/inbox-item';
 import { ArchivedInboxConversationComponent } from './archived-inbox-conversation.component';
+import { CalendarPipe } from 'app/shared/pipes';
 
 
 describe('Component: Conversation', () => {
@@ -14,8 +14,8 @@ describe('Component: Conversation', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MomentModule],
       declarations: [ArchivedInboxConversationComponent],
+      providers: [CalendarPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();

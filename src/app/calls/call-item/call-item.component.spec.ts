@@ -8,8 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { CallsService } from '../../core/conversation/calls.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MomentModule } from 'angular2-moment';
-import { CallStatusLabelPipe } from '../../shared/pipes';
+import { CallStatusLabelPipe, CalendarPipe } from '../../shared/pipes';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MOCK_CALL } from '../../../tests/call.fixtures';
@@ -25,7 +24,6 @@ describe('CallItemComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
-        MomentModule
       ],
       declarations: [CallItemComponent, CallStatusLabelPipe],
       providers: [
@@ -42,6 +40,7 @@ describe('CallItemComponent', () => {
             }
           }
         },
+        CalendarPipe
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

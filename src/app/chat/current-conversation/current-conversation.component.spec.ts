@@ -4,7 +4,6 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 
 import { CurrentConversationComponent } from './current-conversation.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 import { InboxMessage, MessageStatus, MessageType } from '../model/inbox-message';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
@@ -20,6 +19,7 @@ import { InboxConversationService } from '../service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { ConversationServiceMock } from '../../../tests';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
+import { CalendarPipe } from 'app/shared/pipes';
 
 class MockConversationService {
   public loadMoreMessages() {
@@ -42,7 +42,6 @@ describe('CurrentConversationComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         NgbModule,
-        MomentModule,
         NgxPermissionsModule.forRoot()
       ],
       declarations: [CurrentConversationComponent],
@@ -51,7 +50,8 @@ describe('CurrentConversationComponent', () => {
         { provide: RealTimeService, useClass: RealTimeServiceMock },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: InboxConversationService, useClass: ConversationServiceMock },
-        I18nService
+        I18nService,
+        CalendarPipe
       ]
     });
     fixture = TestBed.createComponent(CurrentConversationComponent);
