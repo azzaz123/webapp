@@ -1,6 +1,6 @@
 @import "~style/common";
 
-$checkbox-width: 12px;
+$checkbox-width: $spacing-ms;
 $transition: all .5s ease;
 $feature-button-width: 170px;
 
@@ -115,8 +115,8 @@ $feature-button-width: 170px;
   .item-separator {
     background-color: $blue-grey-5;
     width: 1px;
-    height: 32px;
-    margin: 0px 0 0 8px;
+    height: $spacing-xl;
+    margin: 0px 0 0 $spacing-s;
   }
 
   .checkbox {
@@ -137,7 +137,7 @@ $feature-button-width: 170px;
       mat-icon {
         display: none;
         height: 9px;
-        width: 12px;
+        width: $spacing-ms;
       }
       &.selected {
         border-color: transparent;

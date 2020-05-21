@@ -5,7 +5,6 @@ import {of as observableOf, throwError as observableThrowError,  Observable ,  S
 import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ToastrModule } from 'ngx-toastr';
 import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
@@ -36,6 +35,8 @@ import { createInboxConversationsArray } from '../tests/inbox.fixtures.spec';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
+import { DidomiService } from './core/didomi/didomi.service';
+import { MockDidomiService } from './core/didomi/didomi.service.spec';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -57,6 +58,7 @@ let connectionService: ConnectionService;
 let paymentService: PaymentService;
 let stripeService: StripeService;
 let analyticsService: AnalyticsService;
+let didomiService: DidomiService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -65,7 +67,6 @@ describe('App', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        ToastrModule.forRoot()
       ],
       declarations: [
         AppComponent
@@ -204,7 +205,8 @@ describe('App', () => {
             init() {}
           }
         },
-        { provide: AnalyticsService, useClass: MockAnalyticsService }
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        { provide: DidomiService, useValue: MockDidomiService }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -228,6 +230,7 @@ describe('App', () => {
     paymentService = TestBed.get(PaymentService);
     stripeService = TestBed.get(StripeService);
     analyticsService = TestBed.get(AnalyticsService);
+    didomiService = TestBed.get(DidomiService);
     spyOn(notificationService, 'init');
   });
 
@@ -238,19 +241,16 @@ describe('App', () => {
 
   describe('set cookie', () => {
     it('should create a cookie', () => {
-      jasmine.clock().uninstall();
       spyOn(UUID, 'UUID').and.returnValue('1-2-3');
       spyOn(cookieService, 'put');
-      jasmine.clock().install();
+      spyOn(Date.prototype, 'getTime').and.returnValue(123456789);
       const currentDate = new Date();
       const expirationDate = new Date(currentDate.getTime() + ( 900000 ));
-      jasmine.clock().mockDate(currentDate);
       const cookieOptions = {path: '/', expires: expirationDate};
 
       component.updateSessionCookie();
 
       expect(cookieService.put).toHaveBeenCalledWith('app_session_id', UUID.UUID() , cookieOptions);
-      jasmine.clock().uninstall();
     });
   });
 
@@ -550,6 +550,16 @@ describe('App', () => {
       component.ngOnInit();
 
       expect(analyticsService.initialize).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('GDPR', () => {
+    it('should initialize the GDPR library', () => {
+      spyOn(didomiService, 'initialize');
+
+      component.ngOnInit();
+
+      expect(didomiService.initialize).toHaveBeenCalledTimes(1);
     });
   });
 

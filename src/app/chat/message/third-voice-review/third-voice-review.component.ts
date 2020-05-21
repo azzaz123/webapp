@@ -14,6 +14,7 @@ export class ThirdVoiceReviewComponent {
   @Input() message: InboxMessage;
   @Input() user: InboxUser;
   @Input() item: InboxItem;
+  @Input() shortMessage = false;
 
   public isReview(): boolean {
     return eq(this.message.type, MessageType.REVIEW);

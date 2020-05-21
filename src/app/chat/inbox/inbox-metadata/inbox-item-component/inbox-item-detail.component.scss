@@ -8,6 +8,7 @@
   width: 100%;
 
   &.faded {
+    pointer-events: none;
     .image-overlay, .actions-block, .card-block {
       opacity: 0.5;
     }

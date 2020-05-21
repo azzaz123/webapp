@@ -1,6 +1,6 @@
 @import "~style/common";
 
-$subscription-card-height: 282px;
+$subscription-card-height: 292px;
 $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
 
 .box-content {
@@ -42,6 +42,12 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
   p {
     margin: $spacing-xxs;
   }
+  .Subscriptions__category-base {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
   .Subscriptions__category-info {
     display: flex;
     flex-direction: column;
@@ -49,6 +55,8 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
     font-size: $font-size-s;
     margin: 0;
     white-space: nowrap;
+    flex-grow: 1;
+    justify-content: flex-start;
     &--edit {
       color: $walla-main;
       text-align: center;
@@ -56,9 +64,6 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
     }
     &--price {
       font-weight: bold;
-    }
-    &--discounted {
-      text-decoration: line-through;
     }
   }
   .Subscriptions__category-title {
@@ -130,15 +135,6 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
   margin: 0 auto;
 }
 
-.Subscriptions__category-info-discount {
-  color: $blue-grey-1;
-  background-color: rgba($yellow-main, 0.3);
-  padding: $spacing-xxs $spacing-ms;
-  margin: $spacing-ms;
-  border-radius: $spacing-xxs;
-  line-height: 22px;
-}
-
 @include media-breakpoint-down(md) {
   .box-content {
     padding: $spacing-l $spacing-m $spacing-m;
@@ -148,16 +144,16 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
     width: 100%;
     margin: 0px $spacing-m $spacing-m;
     padding: $spacing-l $spacing-m;
-    height: $subscription-mobile-card-height;
-    min-height: $subscription-mobile-card-height;
+    height: unset;
+    min-height: unset;
 
     &:last-child {
       margin-bottom: 0px;
     }
 
     &--with-one-free {
-      height: $subscription-mobile-card-height + 40px;
-      min-height: $subscription-mobile-card-height + 40px;
+      height: unset;
+      min-height: unset;
     }
   }
 }

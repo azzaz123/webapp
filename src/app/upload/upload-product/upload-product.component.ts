@@ -312,7 +312,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       localStorage.setItem('transactionType', 'urgent');
     }
 
-    this.trackEditOrUpload(!!this.item, uploadEvent.response.content).subscribe(() =>
+    this.trackEditOrUpload(!!this.item, uploadEvent.response).subscribe(() =>
       this.router.navigate(['/catalog/list', { [uploadEvent.action]: true, itemId: uploadEvent.response.id }])
     );
   }

@@ -14,8 +14,7 @@ export interface FeatureFlag {
 export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
 
 export enum FEATURE_FLAGS_ENUM {
-  STRIPE = 'web_stripe',
-  SUBSCRIPTIONS = 'web_subscriptions'
+  STRIPE = 'web_stripe'
 }
 
 @Injectable()

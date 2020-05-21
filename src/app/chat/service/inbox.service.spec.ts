@@ -7,7 +7,7 @@ import { MockMessageService } from '../../../tests/message.fixtures.spec';
 import { FeatureflagService } from '../../core/user/featureflag.service';
 import { EventService } from '../../core/event/event.service';
 import { InboxConversation } from '../model/inbox-conversation';
-import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../model/inbox-item';
+import { InboxItemStatus, InboxItemPlaceholder } from '../model/inbox-item';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { InboxUserPlaceholder } from '../model/inbox-user';
@@ -69,7 +69,7 @@ describe('InboxService', () => {
     eventService = TestBed.get(EventService);
     userService = TestBed.get(UserService);
     httpTestingController = TestBed.get(HttpTestingController);
-    spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
+    jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_USER);
   });
 
   afterEach(() => {
@@ -158,7 +158,7 @@ describe('InboxService', () => {
     beforeEach(() => modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE));
 
     it('should set item.reserved TRUE when the API response returns an item with status reserved', () => {
-      modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.reserved;
+      modifiedResponse.conversations[0].item.status = InboxItemStatus.RESERVED;
       spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
       inboxService.init();
@@ -167,7 +167,7 @@ describe('InboxService', () => {
     });
 
     it('should set item.sold TRUE when the API response returns an item with status sold', () => {
-      modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.sold;
+      modifiedResponse.conversations[0].item.status = InboxItemStatus.SOLD;
       spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
       inboxService.init();
@@ -176,7 +176,7 @@ describe('InboxService', () => {
     });
 
     it('should set item.notAvailable TRUE when the API response returns an item with status not_available', () => {
-      modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.notAvailable;
+      modifiedResponse.conversations[0].item.status = InboxItemStatus.NOT_AVAILABLE;
       spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
       inboxService.init();

@@ -29,6 +29,7 @@
           <div class="col-12 col-md-2 d-flex flex-column clickable" (click)="openItem()">
             <span class="info-price"> {{item.salePrice | customCurrency:item.currencyCode}} </span>
             <span class="info-title subtitle"> {{item.title}}</span>
+            <span class="info-title subtitle" *ngIf="item.car_info?.km"> {{item.car_info?.km | number}} km</span>
           </div>
 
           <div class="col d-none d-md-flex flex-column item-info clickable" (click)="openItem()"

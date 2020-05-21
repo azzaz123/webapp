@@ -16,7 +16,7 @@ import {
   MOCK_ITEM, ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE,
   PRODUCT_RESPONSE, ITEM_WEB_SLUG
 } from '../../../../tests/item.fixtures.spec';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { Item } from '../../../core/item/item';
@@ -84,12 +84,6 @@ describe('CatalogItemComponent', () => {
                 result: Promise.resolve(),
                 componentInstance: componentInstance
               };
-            }
-          }
-        },
-        {
-          provide: ToastrService, useValue: {
-            error() {
             }
           }
         },
@@ -363,7 +357,7 @@ describe('CatalogItemComponent', () => {
         item = MOCK_ITEM;
         spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
-        spyOn(window, 'fbq');
+        spyOn(window as any, 'fbq');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
@@ -451,10 +445,13 @@ describe('CatalogItemComponent', () => {
   describe('onClickInfoElement', () => {
     it('should send PRODUCT_VIEWED to tracking service', () => {
       spyOn(trackingService, 'track');
+      spyOn(window, 'open');
 
       component.openItem();
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_VIEWED, { product_id: component.item.id });
+      expect(window.open).toHaveBeenCalledTimes(1);
+      expect(window.open).toHaveBeenCalledWith(component.link);
     });
   });
 });

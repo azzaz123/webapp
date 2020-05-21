@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed, tick, fakeAsync, flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { NgbActiveModal, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { EventService } from '../../../core/event/event.service';
@@ -14,8 +14,7 @@ import {
   SUBSCRIPTION_SUCCESS,
   TIER,
   MAPPED_SUBSCRIPTIONS,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
-  SUBSCRIPTIONS_NOT_SUB
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED
 } from '../../../../tests/subscriptions.fixtures.spec';
 import { STRIPE_CARD, FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { PaymentSuccessModalComponent } from './payment-success-modal.component';
@@ -31,7 +30,8 @@ import {
   ClickSubscriptionDirectContact,
   SubscriptionPayConfirmation
 } from '../../../core/analytics/analytics-constants';
-import { By } from '@angular/platform-browser';
+import { CustomCurrencyPipe, DateUntilDayPipe } from '../../../shared/pipes';
+import { DecimalPipe } from '@angular/common';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
 import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 
@@ -43,6 +43,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   let errorsService: ErrorsService;
   let stripeService: StripeService;
   let subscriptionsService: SubscriptionsService;
+  let eventService: EventService;
   let analyticsService: AnalyticsService;
   const componentInstance = {
     subscription: MAPPED_SUBSCRIPTIONS[2]
@@ -51,8 +52,9 @@ describe('AddNewSubscriptionModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NgbCarouselModule],
-      declarations: [AddNewSubscriptionModalComponent],
+      declarations: [AddNewSubscriptionModalComponent, CustomCurrencyPipe, DateUntilDayPipe],
       providers: [
+        DecimalPipe,
         {
           provide: NgbActiveModal, useValue: {
             close() {
@@ -94,6 +96,9 @@ describe('AddNewSubscriptionModalComponent', () => {
             },
             isDiscountedTier() {
               return false;
+            },
+            hasTrial() {
+              return true;
             }
           }
         },
@@ -125,7 +130,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     stripeService = TestBed.get(StripeService);
     subscriptionsService = TestBed.get(SubscriptionsService);
     errorsService = TestBed.get(ErrorsService);
-    event = TestBed.get(EventService);
+    eventService = TestBed.get(EventService);
     analyticsService = TestBed.get(AnalyticsService);
     component.card = STRIPE_CARD;
     component.subscription = MAPPED_SUBSCRIPTIONS[2];

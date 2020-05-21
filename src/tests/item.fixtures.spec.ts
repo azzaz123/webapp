@@ -849,6 +849,34 @@ export const MOCK_ITEM_V3_2: Item = new Item(
   undefined
 );
 
+export const MOCK_ITEM_V3_3: Item = new Item(
+  ITEMS_DATA_V3[0].content.id,
+  null,
+  ITEMS_DATA_V3[0].content.seller_id,
+  ITEMS_DATA_V3[0].content.title,
+  ITEMS_DATA_V3[0].content.description,
+  14000,
+  null,
+  ITEMS_DATA_V3[0].content.sale_price,
+  ITEMS_DATA_V3[0].content.currency_code,
+  ITEMS_DATA_V3[0].content.modified_date,
+  undefined,
+  ITEMS_DATA_V3[0].content.flags,
+  null,
+  undefined,
+  {
+    id: '1',
+    original_width: ITEMS_DATA_V3[0].content.image.original_width,
+    original_height: ITEMS_DATA_V3[0].content.image.original_height,
+    average_hex_color: '',
+    urls_by_size: ITEMS_DATA_V3[0].content.image
+  },
+  undefined,
+  ITEMS_DATA_V3[0].content.web_slug,
+  ITEMS_DATA_V3[0].content.modified_date,
+  undefined
+);
+
 export const ITEMS_DATA_v3_FAVORITES = [{
   'id': 'lqzmrdgogy6v',
   'type': 'consumer_goods',

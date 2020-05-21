@@ -9,23 +9,18 @@
           'Subscriptions__category--with-one-free': hasOneFreeSubscription(subscription)
         }"
       (click)="openSubscriptionModal(subscription)" *ngFor="let subscription of subscriptions">
-        <div class="Subscriptions__category-icon">
-          <mat-icon *ngIf="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}"class="image"></mat-icon>
-          <mat-icon [hidden]="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}-disabled" class="image"></mat-icon>
+        <div class="Subscriptions__category-base">
+          <div class="Subscriptions__category-icon">
+            <mat-icon *ngIf="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}"class="image"></mat-icon>
+            <mat-icon [hidden]="subscription.subscribed_from" svgIcon="cat_{{subscription.category_icon}}-disabled" class="image"></mat-icon>
+          </div>
+          <div class="Subscriptions__category-title">{{subscription.category_name}}</div>
+          <hr />
         </div>
-        <div class="Subscriptions__category-title">{{subscription.category_name}}</div>
-        <hr />
         <div [hidden]="subscription.subscribed_from" class="Subscriptions__category-info">
             <p i18n *ngIf="subscription.current_limit">Limit without subscription: {{subscription.current_limit}}</p>
             <p i18n *ngIf="!subscription.current_limit">No limit</p>
-            <p [ngClass]="{ 'Subscriptions__category-info--discounted': hasOneTierDiscount(subscription) }">
-              <span i18n *ngIf="subscription.tiers.length !== 1">From: </span>
-              {{subscription.tiers[0].price}}{{subscription.tiers[0].currency}}
-            </p>
-            <div *ngIf="hasOneFreeTier(subscription)" class="Subscriptions__category-info-discount">
-              <div *ngIf="subscription.tiers[0].discount_available.months === 1" i18n>One month free</div>
-              <div *ngIf="subscription.tiers[0].discount_available.months > 1" i18n>{{subscription.tiers[0].discount_available.months}} months free</div>
-            </div>
+            <tsl-subscription-price-discount [subscription]="subscription"></tsl-subscription-price-discount>
         </div>
         <div *ngIf="subscription.subscribed_from" class="Subscriptions__category-info">
             <p i18n *ngIf="subscription.selected_tier.limit">{{subscription.selected_tier.limit}} products</p>

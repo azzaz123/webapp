@@ -130,6 +130,7 @@ export class I18nService {
       model_example: 'E.g: iPhone',
       noResultsFound: 'No results found',
       writeMessage: 'Write a message...',
+      disableMessage: 'Conversation disabled',
       selling: 'Selling',
       active: 'Active',
       inactive: 'Inactive',
@@ -150,9 +151,6 @@ export class I18nService {
       continueSubscriptionErrorBody: 'We could not proceed with your request.',
       paymentFailed: 'The payment could not be done',
       consumerGoodsGeneralCategoryTitle: 'Everything else',
-      review: 'How did it go? Take a moment to leave some feedback to the user to help our community!',
-      price_drop: 'The item price has dropped. Close the deal!',
-      drop_price: 'The item price has dropped. Close the deal!',
       subscriptionBenefits: [
         {
           iconId: 'paintbrush',
@@ -304,6 +302,7 @@ export class I18nService {
       model_example: 'P. ej: iPhone',
       noResultsFound: 'No hay resultados',
       writeMessage: 'Escribe un mensaje...',
+      disableMessage: 'Conversación deshabilitada',
       selling: 'En venta',
       active: 'Activos',
       inactive: 'Inactivos',
@@ -324,9 +323,6 @@ export class I18nService {
       continueSubscriptionErrorBody: 'Tu suscripción no ha podido ser restablecida.',
       paymentFailed: 'No ha podido realizarse el pago',
       consumerGoodsGeneralCategoryTitle: 'Todo lo demás',
-      review: '¿Como ha ido? ¡Tómate un momento para valorar la experiencia con el usuario y ayudar a la comunidad!',
-      price_drop: 'El producto ha bajado de precio. ¡Cierra el trato!',
-      drop_price: 'El producto ha bajado de precio. ¡Cierra el trato!',
       subscriptionBenefits: [
         {
           iconId: 'paintbrush',

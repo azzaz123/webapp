@@ -3,18 +3,16 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
-    "types": ["heremaps"]
   },
   "files": [
     "main.ts",
     "polyfills.ts"
   ],
   "include": [
-    "./"
+    "./**.ts"
   ],
   "exclude": [
-    "test.ts",
-    "**/*.spec.ts",
+    "**/*.spec.ts"
   ],
   "angularCompilerOptions": {
     "enableIvy": false

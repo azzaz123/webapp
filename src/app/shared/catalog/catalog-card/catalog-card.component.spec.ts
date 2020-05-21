@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '../../pipes';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { MOCK_ITEM, ITEM_ID, ITEM_DATA3, getMockItemWithPurchases } from '../../../../tests/item.fixtures.spec';
 import { Observable, of } from 'rxjs';
@@ -66,12 +66,6 @@ describe('CatalogCardComponent', () => {
               result: Promise.resolve(),
               componentInstance: componentInstance
             };
-          }
-        }
-        },
-        {
-          provide: ToastrService, useValue: {
-          error() {
           }
         }
         },
@@ -138,7 +132,7 @@ describe('CatalogCardComponent', () => {
         spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
         spyOn(appboy, 'logCustomEvent');
-        spyOn(window, 'fbq');
+        spyOn(window as any, 'fbq');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });

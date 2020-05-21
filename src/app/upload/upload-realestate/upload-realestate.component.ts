@@ -235,7 +235,7 @@ export class UploadRealestateComponent implements OnInit {
       params.onHold = true;
     }
 
-    this.trackEditOrUpload(!!this.item, uploadEvent.response.content).subscribe(() =>
+    this.trackEditOrUpload(!!this.item, uploadEvent.response).subscribe(() =>
       this.router.navigate(['/catalog/list', params])
     );
   }

@@ -6,7 +6,7 @@ import { CartChange, CartProItem } from '../../../shared/catalog/cart/cart-item.
 import { CartService } from '../../../shared/catalog/cart/cart.service';
 import { CartPro } from '../../../shared/catalog/cart/cart-pro';
 import { Observable } from 'rxjs';
-import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 export enum BUMPS {
   CITY = 'citybump',

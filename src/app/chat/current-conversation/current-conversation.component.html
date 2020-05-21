@@ -31,21 +31,30 @@
         <div class="message-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}">
           <div class="notification-container" #userWarringNotification>
             <div *ngIf="currentConversation.user.blocked" class="date-marker date-marker-error">
-              <mat-icon svgIcon="blocked-error"></mat-icon>
-              <span i18n>You have blocked this user. Unblock it to continue chatting</span>
+              <span class="emoticon emoticon-woman-gesturing-no"></span>
+              <span i18n="@@blockedPersonError">You have blocked this person. To continue chatting, unblock them</span>
             </div>
 
             <div *ngIf="!currentConversation.user.blocked && !currentConversation.user.available"
                  class="date-marker date-marker-error">
-              <mat-icon svgIcon="not-available-error"></mat-icon>
-              <span i18n>This user is not available</span>
+              <span class="emoticon emoticon-dashing-away"></span>
+              <span i18n="@@userIsNotAvailableWarning">This person is no longer a wallapop member</span>
             </div>
 
-            <div
-              *ngIf="!currentConversation.user.blocked && currentConversation.user.available && currentConversation.item.notAvailable"
-              class="date-marker date-marker-warning">
-              <mat-icon svgIcon="not-available" class="not-available"></mat-icon>
-              <span i18n>This product is not available</span>
+            <div *ngIf="!currentConversation.user.blocked
+            && currentConversation.user.available
+            && currentConversation.item.unpublished"
+                 class="date-marker date-marker-warning date-marker-warning-blue">
+              <span class="emoticon emoticon-ghost"></span>
+              <span i18n="@@itemIsNotAvailableWarning">This product has expired or has been removed</span>
+            </div>
+
+            <div *ngIf="!currentConversation.user.blocked
+            && currentConversation.user.available
+            && currentConversation.item.notAvailable"
+                 class="date-marker date-marker-warning date-marker-warning-red">
+              <span class="emoticon emoticon-police-car"></span>
+              <span i18n="@@itemIsUnpublishedWarning">The product violates wallapop coexistence regulations</span>
             </div>
           </div>
 
@@ -66,16 +75,16 @@
           </div>
 
           <div class="notification-container">
-            <div class="date-marker date-marker-warning">
-              <mat-icon svgIcon="padlock" class="padlock"></mat-icon>
-              <span i18n>Remember not to share private data for security reasons</span>
+            <div class="date-marker date-marker-warning date-marker-warning-blue notification-secure-privacy ">
+              <span class="emoticon emoticon-padlock">🔒</span>
+              <span i18n="@@securityWarning">For security reasons, never share private data</span>
             </div>
           </div>
 
           <div *ngIf="hasMoreMessages()" class="more-messages-loader">
             <a class="load-more">
                             <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
-                                  i18n>Load more</span>
+                                  i18n="@@loadMoreButton">Load more</span>
               <mat-icon *ngIf="isLoadingMoreMessages" svgIcon="spinner" class="spinner"></mat-icon>
             </a>
           </div>
