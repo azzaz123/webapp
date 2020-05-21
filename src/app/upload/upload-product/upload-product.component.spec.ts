@@ -823,7 +823,8 @@ describe('UploadProductComponent', () => {
     describe('when selecting a model in the brand field', () => {
       it('should patch brand and model values', () => {
         const brandModelObj: BrandModel = { brand: 'Apple', model: 'iPhone 11 Pro' };
-
+        
+        component.uploadForm.patchValue({ category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES });
         component.autoCompleteCellphonesModel(brandModelObj);
 
         expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
