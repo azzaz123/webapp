@@ -147,7 +147,7 @@ export class XmppService {
       interval: 30
     });
     this.client.on('message', (message: XmppBodyMessage) => {
-      if (this.isFromSelf(message)) {
+      if (!this.isFromSelf(message) && message.sentReceipt && message.sentReceipt.id) {
         this.remoteConsoleService.sendMessageActTimeout(message.sentReceipt.id);
       }
       this.canProcessRealtime ? this.onNewMessage(message) : this.realtimeQ.push(message);
