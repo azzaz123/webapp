@@ -54,17 +54,11 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     this.billingForm.get('type').valueChanges.subscribe(val => {
       this.type = val;
       if (val === BILLING_TYPE.NATURAL) {
-        this.billingForm.get('name').setValidators(Validators.required);
-        this.billingForm.get('surname').setValidators(Validators.required);
-        this.billingForm.get('company_name').setValidators(null);
+        this.setNaturalRequiredFields();
       } else {
-        this.billingForm.get('company_name').setValidators(Validators.required);
-        this.billingForm.get('name').setValidators(null);
-        this.billingForm.get('surname').setValidators(null);
+        this.setLegalRequiredFields();
       }
-      this.billingForm.get('company_name').updateValueAndValidity();
-      this.billingForm.get('name').updateValueAndValidity();
-      this.billingForm.get('surname').updateValueAndValidity();
+      this.updateFieldsValidity();
       this.billingInfoFormChange.emit(this.billingForm);
     });
   }
@@ -81,7 +75,15 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
           }
         }
       },
-      () => { this.type = BILLING_TYPE.NATURAL }
+      () => {
+        this.type = BILLING_TYPE.NATURAL;
+        if (this.type === BILLING_TYPE.NATURAL) {
+          this.setNaturalRequiredFields();
+        } else {
+          this.setLegalRequiredFields();
+        }
+        this.updateFieldsValidity();
+      }
     )
     .add(() => {
       this.onChanges();
@@ -136,5 +138,23 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
         });
       }
     });
+  }
+
+  private setNaturalRequiredFields() {
+    this.billingForm.get('name').setValidators(Validators.required);
+    this.billingForm.get('surname').setValidators(Validators.required);
+    this.billingForm.get('company_name').setValidators(null);
+  }
+
+  private setLegalRequiredFields() {
+    this.billingForm.get('company_name').setValidators(Validators.required);
+    this.billingForm.get('name').setValidators(null);
+    this.billingForm.get('surname').setValidators(null);
+  }
+
+  private updateFieldsValidity() {
+    this.billingForm.get('company_name').updateValueAndValidity();
+    this.billingForm.get('name').updateValueAndValidity();
+    this.billingForm.get('surname').updateValueAndValidity();
   }
 }

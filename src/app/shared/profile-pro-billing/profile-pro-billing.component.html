@@ -14,7 +14,7 @@
                     id="type-natural"
                     required
                     [checked]="type === 'natural'">
-                  <span class="RegistrationType_title">Natural</span>
+                  <span class="RegistrationType_title" i18n="@@ProfileProBillingFormNatural">Natural</span>
                 </div>
                 <div class="RegistrationType_radio">
                   <input type="radio"
@@ -22,71 +22,71 @@
                     value="legal"
                     id="type-legal"
                     [checked]="type !== 'natural'">
-                  <span class="RegistrationType_title">Legal</span>
+                  <span class="RegistrationType_title" i18n="@@ProfileProBillingFormLegal">Legal</span>
                 </div>
               </div>
             </div>
             <div *ngIf="type === 'natural'" class="form-group row align-items-center">
-              <label for="name" class="col-sm-12 col-md-3" i18n>First Name</label>
+              <label for="name" class="col-sm-12 col-md-3" i18n="@@FirstName">First Name</label>
               <div class="col-sm-12 col-md-5">
                 <input type="text" class="form-control" id="name" formControlName="name" />
               </div>
             </div>
             <div *ngIf="type === 'natural'" class="form-group row align-items-center">
-              <label for="surname" class="col-sm-12 col-md-3" i18n>Last Name</label>
+              <label for="surname" class="col-sm-12 col-md-3" i18n="@@LastName">Last Name</label>
               <div class="col-sm-12 col-md-5">
                 <input type="text" class="form-control" id="surname" formControlName="surname" />
               </div>
             </div>
             <div *ngIf="type === 'legal'" class="form-group row align-items-center">
-              <label for="company_name" class="col-sm-12 col-md-3" i18n>Company Name</label>
+              <label for="company_name" class="col-sm-12 col-md-3" i18n="@@CompanyName">Company Name</label>
               <div class="col-sm-12 col-md-5">
                 <input type="text" class="form-control" id="company_name" formControlName="company_name" />
               </div>
             </div>
             <div class="form-group row align-items-center">
-              <label for="email" class="col-sm-12 col-md-3" i18n>E-mail</label>
+              <label for="email" class="col-sm-12 col-md-3" i18n="@@Email">E-mail</label>
               <div class="col-sm-12 col-md-5">
                 <input type="text" class="form-control" id="email" formControlName="email" />
               </div>
             </div>
             <div class="form-group row align-items-center">
-              <label for="street" class="col-sm-12 col-md-3" i18n>Billing address</label>
+              <label for="street" class="col-sm-12 col-md-3" i18n="@@BillingAddress">Billing address</label>
               <div class="col-sm-12 col-md-5">
                 <input type="text" class="form-control" id="street" formControlName="street"/>
               </div>
             </div>
             <div class="form-group row align-items-center">
-              <label for="city" class="col-sm-12 col-md-3" i18n>City</label>
+              <label for="city" class="col-sm-12 col-md-3" i18n="@@City">City</label>
               <div class="col-sm-12 col-md-5">
                 <input type="text" class="form-control" id="city" formControlName="city"/>
               </div>
             </div>
             <div class="form-group row align-items-center">
-              <label for="postal_code" class="col-sm-12 col-md-3" i18n>Postal code</label>
+              <label for="postal_code" class="col-sm-12 col-md-3" i18n="@@PostalCode">Postal code</label>
               <div class="col-sm-12 col-md-5">
                 <input type="text" class="form-control" id="postal_code" formControlName="postal_code"/>
               </div>
             </div>
             <div class="form-group row align-items-center">
-              <label for="country" class="col-sm-12 col-md-3" i18n>Country</label>
+              <label for="country" class="col-sm-12 col-md-3" i18n="@@Country">Country</label>
               <div class="col-sm-12 col-md-5">
                 <input type="text" class="form-control" id="country" formControlName="country"/>
               </div>
             </div>
             <div class="form-group row align-items-center">
-              <label *ngIf="type === 'legal'" for="cif" class="col-sm-12 col-md-3" i18n>CIF Number</label>
-              <label *ngIf="type === 'natural'" for="cif" class="col-sm-12 col-md-3" i18n>NIF Number</label>
+              <label *ngIf="type === 'legal'" for="cif" class="col-sm-12 col-md-3" i18n="@@CIFNumber">CIF Number</label>
+              <label *ngIf="type === 'natural'" for="cif" class="col-sm-12 col-md-3" i18n="@@NIFNumber">NIF Number</label>
               <div class="col-sm-12 col-md-5">
                 <input type="text" class="form-control" id="cif" formControlName="cif"/>
               </div>
             </div>
             <div class="row">
               <div class="col-9" [ngClass]="{'offset-md-3 offset-sm-2': isNewBillingInfoForm, 'text-center': !isNewBillingInfoForm}">
-                <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big" i18n [disabled]="!formComponent.hasNotSavedChanges">Save</tsl-button>
+                <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big" i18n="@@Save">Save</tsl-button>
               </div>
               <div class="col-sm-12 col-md-3 delete-link" *ngIf="!isNewBillingInfoForm">
-                <a (click)="deleteBillingInfo()" i18n>Delete information</a>
+                <a (click)="deleteBillingInfo()" i18n="@@DeleteInformation">Delete information</a>
               </div>
             </div>
           </div>

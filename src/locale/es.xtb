@@ -503,14 +503,6 @@
   <translation id="4849465581526004216">destacados de país</translation>
   <translation id="8847634013548993288">destacado de país</translation>
   <translation id="8108541630841000132">Información de facturación</translation>
-  <translation id="6028371114637047813">Nombre</translation>
-  <translation id="4407559560004943843">Apellidos</translation>
-  <translation id="6765071518635771784">Nombre de la empresa</translation>
-  <translation id="9005249750227479148">Email de facturación</translation>
-  <translation id="643007923046147044">Teléfono de facturación</translation>
-  <translation id="6539741229179513116">Dirección de facturación</translation>
-  <translation id="3164629351326127839">CIF</translation>
-  <translation id="7450324673386885301">Código Postal</translation>
   <translation id="4464028962645674576">Activos <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>/<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="6474953774520959911">Los coches que están planeados no pueden ser destacados de nuevo. Puedes cancelar los destacados para estos productos o continuar destacando los otros.</translation>
   <translation id="4807588143683316694">Los coches que están planeados no pueden ser destacados de nuevo.</translation>
@@ -531,7 +523,6 @@
   <translation id="6348395677948023023">Subir coche</translation>
   <translation id="8458658926966860767">¿Estás seguro que quieres eliminar la información de facturación? </translation>
   <translation id="7092318893814699678">Sí, estoy seguro/a</translation>
-  <translation id="1250063669755603957">Eliminar información</translation>
   <translation id="773668064257926548">Eliminar tarjeta</translation>
   <translation id="8843627277100451781">¿Estas seguro que quieres eliminar la tarjeta?</translation>
   <translation id="4468071625554558577">Método de pago:</translation>
@@ -1044,4 +1035,19 @@
   <translation id="AddNewModalSubscribeNow">¡Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días!</translation>
   <translation id="EditSubscriptionModalCancelSubscription">Quiero cancelar mi suscripción</translation>
   <translation id="EditSubscriptionModalCancelFreeTrial">Cancelar prueba gratuita</translation>
+  <translation id="ProfileProBillingFormType">Estoy registrado/a como</translation>
+  <translation id="ProfileProBillingFormNatural">Física</translation>
+  <translation id="ProfileProBillingFormLegal">Jurídica</translation>
+  <translation id="FirstName">Nombre</translation>
+  <translation id="LastName">Apellidos</translation>
+  <translation id="CompanyName">Nombre de la empresa</translation>
+  <translation id="Email">E-mail de facturación</msg>
+  <translation id="BillingAddress">Dirección de facturación</translation>
+  <translation id="City">Ciudad</translation>
+  <translation id="PostalCode">Código postal</translation>
+  <translation id="Country">País</translation>
+  <translation id="CIFNumber">CIF</translation>
+  <translation id="NIFNumber">NIF</translation>
+  <translation id="Save">Guardar</translation>
+  <translation id="DeleteInformation">Eliminar información</translation>
 </translationbundle>
