@@ -21,6 +21,7 @@ export class RemoteConsoleService implements OnDestroy {
   sessionId: string;
   private connectionTimeCallNo = 0;
   private sendMessageTime = new Map();
+  private sendMessageActTime = new Map();
   private acceptMessageTime = new Map();
   private presentationMessageTimeout = new Map();
   private chatConnectionMetric: ChatConnectionMetric;
@@ -96,6 +97,24 @@ export class RemoteConsoleService implements OnDestroy {
     }
   }
 
+  sendMessageActTimeout(messageId: string): void {
+    if (!this.sendMessageActTime.has(messageId)) {
+      this.sendMessageActTime.set(messageId, new Date().getTime());
+    } else {
+      this.remoteConsoleClientService.info({
+        ...this.getCommonLog(this.userService.user.id),
+        message_id: messageId,
+        send_message_time: new Date().getTime() - this.sendMessageActTime.get(messageId),
+        metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
+        session_id: this.sessionId
+      });
+      this.sendMessageTime.delete(messageId);
+    }
+  }
+
+  /*
+   * @deprecated Use sendMessageActTimeout instead. Remove after deploy new metrics CHATO-4187, CHATO-4191 and CHATO-4199
+   */
   sendAcceptTimeout(messageId: string): void {
     if (!this.acceptMessageTime.has(messageId)) {
       this.acceptMessageTime.set(messageId, new Date().getTime());

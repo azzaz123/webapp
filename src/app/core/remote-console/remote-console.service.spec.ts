@@ -337,6 +337,66 @@ describe('RemoteConsoleService', () => {
     }));
   });
 
+  describe('sendMessageActTimeout', () => {
+    it('should NOT send call', () => {
+      spyOn(remoteConsoleClientService, 'info');
+
+      service.sendMessageActTimeout(null);
+
+      expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
+    });
+
+    it('should NOT send call if not init timestamp', () => {
+      spyOn(remoteConsoleClientService, 'info');
+
+      service.sendMessageActTimeout('MESSAGE_ID');
+
+      expect(remoteConsoleClientService.info).not.toHaveBeenCalledWith();
+    });
+
+    it('should send call with act sending time', fakeAsync(() => {
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(1000, 4000, 2000);
+
+      service.sendMessageActTimeout('MESSAGE_ID');
+      service.sendMessageActTimeout('MESSAGE_ID');
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(1);
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'message_id': 'MESSAGE_ID',
+        'send_message_time': 1000,
+        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_TIME
+      });
+    }));
+
+    it('should send twice time call with act sending time', fakeAsync(() => {
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000, 4000, 4000);
+
+      service.sendMessageActTimeout('MESSAGE_ID_1');
+      service.sendMessageActTimeout('MESSAGE_ID_2');
+      service.sendMessageActTimeout('MESSAGE_ID_1');
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'send_message_time': 3000,
+        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
+        'message_id': 'MESSAGE_ID_1'
+      });
+
+      service.sendMessageActTimeout('MESSAGE_ID_2');
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(2);
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'send_message_time': 2000,
+        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
+        'message_id': 'MESSAGE_ID_2'
+      });
+    }));
+  });
+
   describe('sendAcceptedTimeout', () => {
     it('should NOT send call', () => {
       spyOn(remoteConsoleClientService, 'info');
