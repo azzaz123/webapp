@@ -1,4 +1,5 @@
-<div class="top-bar" [ngClass]="{'faded': !currentConversation.user.available, 'expanded': isExpanded}">
+<div class="top-bar"
+     [ngClass]="{'faded-user': !currentConversation.user.available, 'faded-item': currentConversation.item.notAvailable, 'expanded': isExpanded}">
   <mat-icon svgIcon="back-arrow" class="d-xl-none back-arrow" (click)="navigationBack()"></mat-icon>
 
   <div class="lg-device-container d-none d-xl-inline-flex">
@@ -15,17 +16,20 @@
   </div>
 
   <div class="sm-device-container d-xl-none"
-       [ngClass]="{'expanded': isExpanded, 'faded': !currentConversation.user.available}">
+       [ngClass]="{'expanded': isExpanded,
+       'faded-user': !currentConversation.user.available,
+        'faded-item': currentConversation.item.notAvailable || currentConversation.item.unpublished}">
 
     <div class="avatar-container d-none d-sm-block">
       <a href="{{ currentConversation?.item.itemUrl }}" target="_blank" class="avatar">
-        <tsl-item-avatar [item]="currentConversation.item" size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
+        <tsl-item-avatar [item]="currentConversation.item" [inboxItem]="currentConversation.item"
+                         size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
       </a>
     </div>
 
     <div class="avatar-container d-block d-sm-none">
       <a href="{{ currentConversation?.item.itemUrl }}" target="_blank" class="avatar">
-        <tsl-item-avatar [item]="currentConversation.item"
+        <tsl-item-avatar [item]="currentConversation.item" [inboxItem]="currentConversation.item"
                          size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
       </a>
     </div>
@@ -59,25 +63,30 @@
 
     <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
     <div ngbDropdownMenu>
-      <button class="dropdown-item" (click)="archiveConversation()" i18n
-              [hidden]="currentConversationisArchived()">Archive conversation
+      <button *ngxPermissionsOnly="['isNormal']" class="dropdown-item" (click)="archiveConversation()"
+              i18n="@@deleteConversation" [hidden]="currentConversationIsArchived()">Delete conversation
       </button>
-      <button class="dropdown-item" (click)="unarchiveConversation()" i18n
-              [hidden]="!currentConversationisArchived()">Unarchive conversation
+      <button *ngxPermissionsOnly="['isProfessional']" class="dropdown-item" (click)="archiveConversation()"
+              i18n="@@archiveConversation" [hidden]="currentConversationIsArchived()">Archive conversation
+      </button>
+      <button *ngxPermissionsOnly="['isProfessional']" class="dropdown-item" (click)="unarchiveConversation()"
+              i18n="@@unarchiveConversation" [hidden]="!currentConversationIsArchived()">Unarchive conversation
       </button>
       <button class="dropdown-item" (click)="reportListingAction()"
-              *ngIf="!itemIsMine && !currentConversation.item.notAvailable" i18n>Report this Listing
+              *ngIf="!itemIsMine && !currentConversation.item.notAvailable"
+              i18n="@@reportListing">Report this Listing
       </button>
       <button *ngIf="currentConversation.user.available"
-              class="dropdown-item" (click)="reportUserAction()" i18n>Report this User
+              class="dropdown-item" (click)="reportUserAction()"
+              i18n="@@reportUser">Report this User
       </button>
       <button [hidden]="!currentConversation.user.id || currentConversation.user.blocked"
               class="dropdown-item warn"
-              (click)="blockUserAction()" i18n>Block this User
+              (click)="blockUserAction()" i18n="@@blockUser">Block this User
       </button>
       <button [hidden]="!currentConversation.user.id || !currentConversation.user.blocked"
               class="dropdown-item warn"
-              (click)="unblockUserAction()" i18n>Unblock this User
+              (click)="unblockUserAction()" i18n="@@unblockUser">Unblock this User
       </button>
     </div>
   </div>

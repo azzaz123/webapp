@@ -15,10 +15,15 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <translationbundle lang="es">
-  <translation id="33149636091572968">Cargar más</translation>
+  <translation id="loadMoreButton">Cargar más</translation>
   <translation id="7579940623714391431">Borrar conversación</translation>
+  <translation id="deleteConversation">Borrar conversación</translation>
   <translation id="5762515103229902547">Se procederá a borrar la conversación.</translation>
+  <translation id="deleteConversationWarning">Se procederá a borrar la conversación.</translation>
+  <translation id="archiveConversationWarning">Se procederá a archivar la conversación.</translation>
   <translation id="2159130950882492111">Cancelar</translation>
+  <translation id="cancelButton">Cancelar</translation>
+  <translation id="deleteButton">Borrar</translation>
   <translation id="7022070615528435141">Borrar</translation>
   <translation id="7008439939460403347">Reportar</translation>
   <translation id="568597304214607466">Estoy reportando a este usuario porque...</translation>
@@ -36,7 +41,7 @@
   <translation id="7240635163184231751">Desbloquear usuario</translation>
   <translation id="4644715650405235071">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
   <translation id="3325766019344626759">No hay mensajes</translation>
-  <translation id="8032820066123493751">Nuevos mensajes</translation>
+  <translation id="newMessages">Nuevos mensajes</translation>
   <translation id="7443033219479243959">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
   <translation id="4896863464728200563">Escribe un mensaje...</translation>
   <translation id="3093507871243266697">Esperando red...</translation>
@@ -346,7 +351,7 @@
   <translation id="124288245683167765">¡Márcalo como urgente!</translation>
   <translation id="1388549121916575785">Tu producto ya se ha subido y está marcado como urgente</translation>
   <translation id="6771710083447673223">Marcado como urgente</translation>
-  <translation id="6146618115870222180">Tus Mensajes</translation>
+  <translation id="yourMessages">Tus Mensajes</translation>
   <translation id="8848709900682152607">Marcar todo como Procesado</translation>
   <translation id="4749295647449765550">Procesado</translation>
   <translation id="1798778629973365531">Sin denuncias</translation>
@@ -762,7 +767,7 @@
   <translation id="3339021787040924237">Buscar en Todas las categorías</translation>
   <translation id="8886737317292020570">Archivar conversación</translation>
   <translation id="5298644184637702922">Esto archivará la conversación.</translation>
-  <translation id="1055686627716339120">Archivar</translation>
+  <translation id="archiveButton">Archivar</translation>
   <translation id="6288847433566396172">Desarchivar conversación</translation>
   <translation id="3205414127595653303">Esto desarchivará la cconversación.</translation>
   <translation id="1121513541518618634">Desarchivar</translation>
@@ -771,8 +776,8 @@
   <translation id="6105231501608810838">Servicio no disponible por el momento.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
             Inténtelo de nuevo más tarde.</translation>
   <translation id="7913053333994057167">Desarchivar conversación</translation>
-  <translation id="799485662157076328">Bandeja de Entrada</translation>
-  <translation id="2247942788262300865">Mensajes Archivados</translation>
+  <translation id="inboxBox">Bandeja de Entrada</translation>
+  <translation id="inboxArchivedBox">Mensajes Archivados</translation>
   <translation id="8721026914522212662">Archivado</translation>
   <translation id="3644199581629588381">Escoge el género de la prenda</translation>
   <translation id="45739481977493163">Talla</translation>
@@ -806,8 +811,8 @@
   <translation id="6184998176074927571" desc="La distancia entre el usuario y el item">
       <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km de ti
   </translation>
-  <translation id="7238711418435054042">Hemos encontrado algún problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
-  <translation id="265020643835790616">Hemos encontrado algún problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
+  <translation id="updateArchivedMessagesWarning">Hemos encontrado un problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
+  <translation id="updateInboxWarning">Hemos encontrado un problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
   <translation id="6721544969146753310">Gracias por la valoración</translation>
   <translation id="2094431645371030704">Precio financiado (opcional)</translation>
   <translation id="8147495527699050606">Precio final financiado</translation>
@@ -815,7 +820,8 @@
   <translation id="6904447978553402020">Precio al contado</translation>
   <translation id="blockedPersonError">Has bloqueado a esta persona. Para seguir charlando, desbloquéala</translation>
   <translation id="userIsNotAvailableWarning">Esta persona ya no es miembro de wallapop</translation>
-  <translation id="3753612046513951428">Este producto no está disponible</translation>
+  <translation id="itemIsNotAvailableWarning">El producto ha caducado o ha sido eliminado</translation>
+  <translation id="itemIsUnpublishedWarning">El producto incumple las normas de convivencia de wallapop</translation>
   <translation id="securityWarning">Por razones de seguridad, nunca compartas datos privados</translation>
   <translation id="682982254050004818">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
   <translation id="177886998911393770">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
@@ -897,12 +903,12 @@
   <translation id="6044974118925437441">Actualiza tu suscripción en función de los productos que quieras subir</translation>
   <translation id="1487803193155715207">Suscripciones PRO</translation>
   <translation id="1698114086921246480">Cancelar la suscripción</translation>
-  <translation id="3520858718490550964">Archivar conversación</translation>
-  <translation id="603154656968324663">Desarchivar conversación</translation>
-  <translation id="511133215426042486">Denunciar producto</translation>
-  <translation id="2311423194575383733">Reportar usuario</translation>
-  <translation id="8621433484657846443">Bloquear usuario</translation>
-  <translation id="7895174555296226408">Desbloquear usuario</translation>
+  <translation id="archiveConversation">Archivar conversación</translation>
+  <translation id="unarchiveConversation">Desarchivar conversación</translation>
+  <translation id="reportListing">Denunciar producto</translation>
+  <translation id="reportUser">Reportar usuario</translation>
+  <translation id="blockUser">Bloquear usuario</translation>
+  <translation id="unblockUser">Desbloquear usuario</translation>
   <translation id="5189929163900690785">Sí, quiero mantener mi suscripción</translation>
   <translation id="1355341408067809538">No, quiero cancelarla</translation>
   <translation id="6307606007112781268">Mantener suscripción</translation>
@@ -957,6 +963,7 @@
   <translation id="8945513634555081527">¿Por qué suscribirte a wallapop PRO?</translation>
   <translation id="6468756919468494280">Ventajas para quienes quieran vender más y mejor</translation>
   <translation id="ngb.alert.close">Cerrar</translation>
+  <translation id="ngb.toast.close-aria">Cerrar</translation>
   <translation id="ngb.carousel.previous">Anterior</translation>
   <translation id="ngb.carousel.next">Siguiente</translation>
   <translation id="ngb.datepicker.previous-month">Mes anterior</translation>
@@ -1008,12 +1015,6 @@
   <translation id="7360959010817146974">Debes actualizar tu suscripción <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>mediante la app de wallapop<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> si quieres publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph></translation>
   <translation id="3575157423161267350">Debes actualizar tu suscripción si quieres publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph></translation>
   <translation id="2475529887887098318"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Ya has llegado al límite de <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph> que puedes publicar con una cuenta gratuita.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
-  <translation id="1275264267936980927">Archivar conversación</translation>
-  <translation id="6744583700854319987">Desarchivar conversación</translation>
-  <translation id="7181016097805690972">Denunciar producto</translation>
-  <translation id="7184510579643662120">Reportar usuario</translation>
-  <translation id="5709935930083786813">Bloquear usuario</translation>
-  <translation id="4100915642762454461">Desbloquear usuario</translation>
   <translation id="5156014220156743328">Siguiente paso</translation>
 
   <!--Translations using keys-->
@@ -1041,7 +1042,7 @@
   <translation id="FirstName">Nombre</translation>
   <translation id="LastName">Apellidos</translation>
   <translation id="CompanyName">Nombre de la empresa</translation>
-  <translation id="Email">E-mail de facturación</msg>
+  <translation id="Email">E-mail de facturación</translation>
   <translation id="BillingAddress">Dirección de facturación</translation>
   <translation id="City">Ciudad</translation>
   <translation id="PostalCode">Código postal</translation>
