@@ -315,7 +315,7 @@ describe('InboxService', () => {
       inboxService.getNextPage$().subscribe();
 
       const req = httpTestingController.expectOne(
-        `${ environment.baseUrl }bff/messaging/inbox?page_size=${ InboxService.PAGE_SIZE }&from=${ expectedRes.next_from }`);
+        `${environment.baseUrl}bff/messaging/inbox?page_size=${InboxService.PAGE_SIZE}&from=${expectedRes.next_from}`);
 
       expect(req.request.method).toEqual('GET');
     });
@@ -333,7 +333,7 @@ describe('InboxService', () => {
 
     it('should add not existing conversations', () => {
       const apiResponse = JSON.parse(JSON.stringify(modifiedResponse));
-      apiResponse.conversations.map(conversation => conversation.hash = `${ conversation.hash }new`);
+      apiResponse.conversations.map(conversation => conversation.hash = `${conversation.hash}new`);
 
       spyOn(http, 'get')
         .and.returnValues(of(modifiedResponse), of(apiResponse), of(apiResponse));
@@ -377,7 +377,7 @@ describe('InboxService', () => {
       inboxService.getInbox$().subscribe();
 
       const req = httpTestingController.expectOne(
-        `${ environment.baseUrl }bff/messaging/inbox?page_size=${ InboxService.PAGE_SIZE }&max_messages=${ messageNo }`);
+        `${environment.baseUrl}bff/messaging/inbox?page_size=${InboxService.PAGE_SIZE}&max_messages=${messageNo}`);
       expect(req.request.method).toEqual('GET');
     });
 
@@ -385,7 +385,7 @@ describe('InboxService', () => {
       inboxService.getArchivedInbox$().subscribe();
 
       const req = httpTestingController.expectOne(
-        `${ environment.baseUrl }bff/messaging/archived?page_size=${ InboxService.PAGE_SIZE }&max_messages=${ messageNo }`);
+        `${environment.baseUrl}bff/messaging/archived?page_size=${InboxService.PAGE_SIZE}&max_messages=${messageNo}`);
       expect(req.request.method).toEqual('GET');
     });
   });
