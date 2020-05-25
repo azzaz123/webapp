@@ -91,7 +91,7 @@ describe('RealTimeService', () => {
       expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('xmpp', true);
     });
 
-    it('should call xmpp.connect and return failed', () => {
+    it('should not call xmpp.connect and return failed', () => {
       connectionService.isConnected = true;
       spyOn(xmppService, 'connect$').and.returnValue(throwError(''));
 
