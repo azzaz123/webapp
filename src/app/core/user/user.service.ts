@@ -357,11 +357,9 @@ export class UserService {
   }
 
   public setPermission(user: User): void {
-    if (environment.profeatures) {
-      user.featured && user.type !== USER_TYPE.PROFESSIONAL ? this.permissionService.addPermission(PERMISSIONS[USER_TYPE.FEATURED]) : this.permissionService.addPermission(PERMISSIONS[user.type]);
-    } else {
-      this.permissionService.addPermission(PERMISSIONS[USER_TYPE.NORMAL]);
-    }
+    user.featured && user.type !== USER_TYPE.PROFESSIONAL ?
+    this.permissionService.addPermission(PERMISSIONS[USER_TYPE.FEATURED]) :
+    this.permissionService.addPermission(PERMISSIONS[user.type]);
   }
 
   public hasPerm(permission: string): Observable<boolean> {
