@@ -1,12 +1,12 @@
 <tsl-third-voice-message *ngIf="!shortMessage && !item.isMine" [message]="message">
-  <span i18n="@@thirdVoiceReviewFirstMessage">It's great that you have found what you were looking for&nbsp;</span>
+  <span i18n="@@thirdVoiceReviewFirstMessage">You have found what you were looking for. Great!&nbsp;</span>
   <span class="emoticon-hug"></span>
 </tsl-third-voice-message>
 
 <tsl-third-voice-message *ngIf="!shortMessage" [message]="message">
-  <span i18n="@@thirdVoiceReviewSecondMessage">How did it go? Take a minute to review the user, your opinion helps to improve our community!</span>
+  <span i18n="@@thirdVoiceReviewSecondMessage">How did it go? Take a moment to rate the experience, your opinion will help other people</span>
   <tsl-third-voice-button *ngIf="isReview()" [message]="message" [user]="user" [item]="item"
                           class="text-center"></tsl-third-voice-button>
 </tsl-third-voice-message>
 
-<span *ngIf="shortMessage" i18n="@@thirdVoiceReviewSecondMessage">How did it go? Take a minute to review the user, your opinion helps to improve our community!</span>
+<span *ngIf="shortMessage" i18n="@@thirdVoiceReviewSecondMessage">How did it go? Take a moment to rate the experience, your opinion will help other people</span>

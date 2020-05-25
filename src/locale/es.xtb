@@ -957,8 +957,8 @@
   <translation id="931255636742351800">Sin límite</translation>
   <translation id="5813721227215884251">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
   <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
-  <translation id="thirdVoiceReviewFirstMessage">Qué bien que hayas encontrado lo que buscabas </translation>
-  <translation id="thirdVoiceReviewSecondMessage">¿Cómo ha ido? Dedica un segundo a valorar al usuario, ¡tu opinión mejora nuestra comunidad!</translation>
+  <translation id="thirdVoiceReviewFirstMessage">Has encontrado lo que buscabas. ¡Genial!</translation>
+  <translation id="thirdVoiceReviewSecondMessage">¿Cómo ha ido? Dedica un segundo a valorar la experiencia, tu opinión será útil para otras personas</translation>
   <translation id="thirdVoiceDoReview">Valorar</translation>
   <translation id="thirdVoiceThanksForRating">¡Gracias por tu valoración!</translation>
   <translation id="thirdVoiceDropPrice">El producto ha bajado de precio. ¿Quieres cerrar un trato?</translation>
