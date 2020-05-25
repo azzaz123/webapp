@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH, Item } from '../../core/item/item';
 import { environment } from '../../../environments/environment';
+import { InboxItem } from '../../chat/model';
 
 @Component({
   selector: 'tsl-item-avatar',
@@ -13,7 +14,8 @@ export class ItemAvatarComponent implements OnChanges {
   public fallback: string;
   @Input() fallbackLight: boolean;
   @Input() item: Item;
-  @Input() size: string;
+  @Input() inboxItem: InboxItem;
+  @Input() size: 'small' | 'medium' | 'big' | 'bigger' | 'xl' | 'rectangle-xl' |  'full';
   @Input() showAvailableStatus = true;
 
   constructor() {

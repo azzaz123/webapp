@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
@@ -32,7 +32,7 @@ export class CatalogItemComponent implements OnInit {
     private modalService: NgbModal,
     public itemService: ItemService,
     private trackingService: TrackingService,
-    private toastr: ToastrService,
+    private toastService: ToastService,
     private eventService: EventService,
     private deviceService: DeviceDetectorService,
     @Inject('SUBDOMAIN') private subdomain: string) {
@@ -75,9 +75,9 @@ export class CatalogItemComponent implements OnInit {
           this.openReactivateDialog(item, orderEvent);
         }
       } else {
-        this.toastr.error(DEFAULT_ERROR_MESSAGE);
+        this.toastService.show({text:DEFAULT_ERROR_MESSAGE,type:'error'});
       }
-    }, () => this.toastr.error(DEFAULT_ERROR_MESSAGE));
+    }, () => this.toastService.show({text:DEFAULT_ERROR_MESSAGE,type:'error'}));
   }
 
   private buildOrderEvent(item: Item, product: Product): OrderEvent {

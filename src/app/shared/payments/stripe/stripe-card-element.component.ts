@@ -5,7 +5,7 @@ import {
   Output,
   Input,
   ChangeDetectorRef,
-  SimpleChanges
+  SimpleChanges, AfterViewInit, OnChanges, OnDestroy
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CartBase } from '../../catalog/cart/cart-base';
@@ -13,7 +13,7 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
 import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { Tier } from '../../../core/subscriptions/subscriptions.interface';
 import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
 
@@ -29,9 +29,9 @@ import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/cons
     },
   ],
 })
-export class StripeCardElementComponent implements ControlValueAccessor {
+export class StripeCardElementComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnDestroy {
 
-  private _model: boolean = false;
+  private _model = false;
   public financialCard: FinancialCard;
   public hasFinancialCard: boolean;
   public card: any;
@@ -63,7 +63,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
   constructor(private cd: ChangeDetectorRef,
               private i18n: I18nService,
               private stripeService: StripeService,
-              private toastrService: ToastrService) {
+              private toastService: ToastService) {
   }
 
   ngAfterViewInit() {
@@ -140,7 +140,7 @@ export class StripeCardElementComponent implements ControlValueAccessor {
     const { token, error } = await this.stripeService.createToken(this.card);
 
     if (error) {
-      this.toastrService.error(error.message);
+      this.toastService.show({text:error.message, type:'error'});
     } else {
       this.stripeCardToken.emit(token);
     }

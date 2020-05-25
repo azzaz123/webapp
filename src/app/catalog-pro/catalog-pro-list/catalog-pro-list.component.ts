@@ -47,7 +47,7 @@ export class CatalogProListComponent implements OnInit {
   public subscriptionPlan: number;
   private uploadModalRef: NgbModalRef;
 
-  @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
+  @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,

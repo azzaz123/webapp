@@ -194,7 +194,7 @@
           font-size: $font-size-m;
         }
         mat-icon {
-          /deep/ path {
+          ::ng-deep path {
             fill: $white
           }
         }

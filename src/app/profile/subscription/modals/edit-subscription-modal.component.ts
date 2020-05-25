@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SubscriptionsResponse, Tier } from '../../../core/subscriptions/subscriptions.interface';
-import { ToastrService } from 'ngx-toastr';
+import { SubscriptionsResponse, Tier, SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
@@ -10,7 +10,10 @@ import {
   AnalyticsPageView,
   ViewEditSubscriptionPlan,
   ANALYTICS_EVENT_NAMES,
-  SCREEN_IDS
+  SCREEN_IDS,
+  AnalyticsEvent,
+  ClickConfirmEditCurrentSubscription,
+  ANALYTIC_EVENT_TYPES
 } from '../../../core/analytics/analytics-constants';
 
 @Component({
@@ -36,7 +39,7 @@ export class EditSubscriptionModalComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               public subscriptionsService: SubscriptionsService,
-              private toastr: ToastrService,
+              private toastService: ToastService,
               private i18n: I18nService,
               private modalService: NgbModal,
               private analyticsService: AnalyticsService) {
@@ -49,7 +52,7 @@ export class EditSubscriptionModalComponent implements OnInit {
     const pageView: AnalyticsPageView<ViewEditSubscriptionPlan> = {
       name: ANALYTICS_EVENT_NAMES.ViewEditSubscriptionPlan,
       attributes: {
-        screenId: SCREEN_IDS.SubscriptionManagment
+        screenId: SCREEN_IDS.SubscriptionManagement
       }
     };
 
@@ -61,14 +64,15 @@ export class EditSubscriptionModalComponent implements OnInit {
   }
 
   public editSubscription() {
+    this.trackClickConfirmEdit();
     this.loading = true;
     this.subscriptionsService.editSubscription(this.subscription, this.selectedTier.id).subscribe((response) => {
       if (response.status === 202) {
-          this.toastr.success(this.i18n.getTranslations('editSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('editSubscriptionSuccessBody'));
+          this.toastService.show({text:this.i18n.getTranslations('editSubscriptionSuccessTitle') + ' ' + this.i18n.getTranslations('editSubscriptionSuccessBody'),type:'success'});
           this.loading = false;
       } else {
         this.loading = false;
-        this.toastr.error(this.i18n.getTranslations('editSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('editSubscriptionErrorBody'));
+        this.toastService.show({text:this.i18n.getTranslations('editSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('editSubscriptionErrorBody'),type:'error'});
       }
       this.close();
     });
@@ -90,4 +94,21 @@ export class EditSubscriptionModalComponent implements OnInit {
     modalRef.result.then((result: string) => modalRef = null, () => {});
   }
 
+  public hasTrial(subscription: SubscriptionsResponse): boolean {
+    return this.subscriptionsService.hasTrial(subscription);
+  }
+
+  private trackClickConfirmEdit() {
+    const event: AnalyticsEvent<ClickConfirmEditCurrentSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickConfirmEditCurrentSubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        previousTier: this.currentTier.id,
+        newTier: this.selectedTier.id,
+        screenId: SCREEN_IDS.ProfileSubscription
+      }
+    };
+    this.analyticsService.trackEvent(event);
+  }
 }

@@ -21,14 +21,14 @@
   right: -20px;
   mat-icon {
     @include square(12px);
-    /deep/ path {
+    ::ng-deep path {
       fill: $blue-grey-2;
 
     }
   }
   &:hover {
     mat-icon {
-      /deep/ path {
+      ::ng-deep path {
         fill: $blue-grey-1;
       }
     }

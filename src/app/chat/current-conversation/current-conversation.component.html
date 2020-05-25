@@ -18,43 +18,11 @@
   <div class="messaging">
     <div class="chat">
 
-      <div class="top-bar" [ngClass]="{'faded': !currentConversation.user.available}">
-        <mat-icon svgIcon="back-arrow" class="d-lg-none back-arrow" (click)="navigationBack()"></mat-icon>
-        <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
-           target="_blank" class="user-avatar">
-          <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
-        </a>
-        <tsl-user-avatar *ngIf="!currentConversation?.user.profileUrl" [user]="this.currentConversation.user" size="40">
-        </tsl-user-avatar>
-        <div class="conversation-header-user-info">
-          <h5>{{currentConversation?.user.microName}}</h5>
-        </div>
-        <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
-          <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
-          <div ngbDropdownMenu>
-            <button class="dropdown-item" (click)="archiveConversation()" i18n
-                    [hidden]="currentConversationisArchived">Archive conversation
-            </button>
-            <button class="dropdown-item" (click)="unarchiveConversation()" i18n
-                    [hidden]="!currentConversationisArchived">Unarchive conversation
-            </button>
-            <button class="dropdown-item" (click)="reportListingAction()"
-                    *ngIf="!itemIsMine && !currentConversation.item.notAvailable" i18n>Report this Listing
-            </button>
-            <button *ngIf="currentConversation.user.available"
-                    class="dropdown-item" (click)="reportUserAction()" i18n>Report this User
-            </button>
-            <button [hidden]="!currentConversation.user.id || currentConversation.user.blocked"
-                    class="dropdown-item warn"
-                    (click)="blockUserAction()" i18n>Block this User
-            </button>
-            <button [hidden]="!currentConversation.user.id || !currentConversation.user.blocked"
-                    class="dropdown-item warn"
-                    (click)="unblockUserAction()" i18n>Unblock this User
-            </button>
-          </div>
-        </div>
-      </div>
+      <tsl-conversation-details-bar [currentConversation]="currentConversation"
+                                    [isExpanded]="isTopBarExpanded"
+                                    (blockUserEvent)="scrollToLastMessage()"
+                                    (expandContainer)="expandTopBar($event)"
+                                    [ngClass]="{expanded: isTopBarExpanded}"></tsl-conversation-details-bar>
 
       <div class="messages-panel-container" #scrollElement (scroll)="onScrollMessages($event)">
 
@@ -63,21 +31,30 @@
         <div class="message-container" [ngClass]="{'extra-top-padding': hasMoreMessages()}">
           <div class="notification-container" #userWarringNotification>
             <div *ngIf="currentConversation.user.blocked" class="date-marker date-marker-error">
-              <mat-icon svgIcon="blocked-error"></mat-icon>
-              <span i18n>You have blocked this user. Unblock it to continue chatting</span>
+              <span class="emoticon emoticon-woman-gesturing-no"></span>
+              <span i18n="@@blockedPersonError">You have blocked this person. To continue chatting, unblock them</span>
             </div>
 
             <div *ngIf="!currentConversation.user.blocked && !currentConversation.user.available"
                  class="date-marker date-marker-error">
-              <mat-icon svgIcon="not-available-error"></mat-icon>
-              <span i18n>This user is not available</span>
+              <span class="emoticon emoticon-dashing-away"></span>
+              <span i18n="@@userIsNotAvailableWarning">This person is no longer a wallapop member</span>
             </div>
 
-            <div
-              *ngIf="!currentConversation.user.blocked && currentConversation.user.available && currentConversation.item.notAvailable"
-              class="date-marker date-marker-warning">
-              <mat-icon svgIcon="not-available" class="not-available"></mat-icon>
-              <span i18n>This product is not available</span>
+            <div *ngIf="!currentConversation.user.blocked
+            && currentConversation.user.available
+            && currentConversation.item.unpublished"
+                 class="date-marker date-marker-warning date-marker-warning-blue">
+              <span class="emoticon emoticon-ghost"></span>
+              <span i18n="@@itemIsNotAvailableWarning">This product has expired or has been removed</span>
+            </div>
+
+            <div *ngIf="!currentConversation.user.blocked
+            && currentConversation.user.available
+            && currentConversation.item.notAvailable"
+                 class="date-marker date-marker-warning date-marker-warning-red">
+              <span class="emoticon emoticon-police-car"></span>
+              <span i18n="@@itemIsUnpublishedWarning">The product violates wallapop coexistence regulations</span>
             </div>
           </div>
 
@@ -98,16 +75,16 @@
           </div>
 
           <div class="notification-container">
-            <div class="date-marker date-marker-warning">
-              <mat-icon svgIcon="padlock" class="padlock"></mat-icon>
-              <span i18n>Remember not to share private data for security reasons</span>
+            <div class="date-marker date-marker-warning date-marker-warning-blue notification-secure-privacy ">
+              <span class="emoticon emoticon-padlock">🔒</span>
+              <span i18n="@@securityWarning">For security reasons, never share private data</span>
             </div>
           </div>
 
           <div *ngIf="hasMoreMessages()" class="more-messages-loader">
             <a class="load-more">
                             <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
-                                  i18n>Load more</span>
+                                  i18n="@@loadMoreButton">Load more</span>
               <mat-icon *ngIf="isLoadingMoreMessages" svgIcon="spinner" class="spinner"></mat-icon>
             </a>
           </div>
@@ -120,14 +97,16 @@
       </div>
 
       <div class="input send-message-container">
-        <tsl-input [currentConversation]="currentConversation"></tsl-input>
+        <tsl-input [currentConversation]="currentConversation" (typing)="typing()"></tsl-input>
       </div>
     </div>
   </div>
 
-  <div id="conversation-meta" class="d-none d-xl-block">
-    <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item"
-                           [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
+  <div id="conversation-meta" class="conversation-meta d-none d-xl-block">
+    <div class="card">
+      <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item"
+                             [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
+    </div>
     <tsl-inbox-item-for-sell *ngxPermissionsOnly="['isProfessional']"
                              [user]="currentConversation.user"></tsl-inbox-item-for-sell>
     <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>

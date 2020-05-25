@@ -41,12 +41,7 @@ describe('ProfileCardFavoriteComponent', () => {
       declarations: [ ProfileCardFavoriteComponent, CustomCurrencyPipe ],
       providers: [
         DecimalPipe,
-        { provide: WindowRef, useValue: {
-          nativeWindow: {
-            open: () => {}
-          }
-        }
-        },
+        WindowRef,
         { provide: NgbModal, useValue: {
             open() {
               return modalRef;
@@ -125,10 +120,10 @@ describe('ProfileCardFavoriteComponent', () => {
 
   describe('goToProfileDetail', () => {
     it('should change window url', () => {
-      spyOn(windowRef.nativeWindow, 'open');
+      spyOn(window, 'open');
       const MOCK_PROFILE_URL: string = environment.siteUrl.replace('es', subdomain) + 'user/' + MOCK_PROFILE.screen_name;
       component.goToProfileDetail();
-      expect(windowRef.nativeWindow.open).toHaveBeenCalledWith(MOCK_PROFILE_URL);
+      expect(window.open).toHaveBeenCalledWith(MOCK_PROFILE_URL);
     });
   });
 

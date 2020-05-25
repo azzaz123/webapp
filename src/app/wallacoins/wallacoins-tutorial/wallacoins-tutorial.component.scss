@@ -7,7 +7,7 @@
 }
 
 ngb-carousel {
-  /deep/ {
+  ::ng-deep {
     .carousel-control-prev, .carousel-control-next {
       display: none;
     }

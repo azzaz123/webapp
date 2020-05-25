@@ -22,7 +22,7 @@
   tsl-button {
     margin-top: $spacing-ml;
     margin-bottom: $spacing-ms;
-    /deep/ {
+    ::ng-deep {
       .btn {
         width: 350px;
       }

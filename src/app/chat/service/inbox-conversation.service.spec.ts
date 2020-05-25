@@ -23,7 +23,7 @@ import { AccessTokenService } from '../../core/http/access-token.service';
 import * as moment from 'moment';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 import { RemoteConsoleService } from '../../core/remote-console';
-import { RemoteConsoleClientServiceMock } from '../../../tests/remote-console-service-client.spec';
+import { RemoteConsoleClientServiceMock } from '../../../tests/remote-console-service-client.fixtures.spec';
 
 describe('InboxConversationService', () => {
 
@@ -48,7 +48,10 @@ describe('InboxConversationService', () => {
         { provide: RealTimeService, useClass: RealTimeServiceMock },
         {
           provide: AccessTokenService, useValue: {
-            accessToken: 'ACCESS_TOKEN'
+            accessToken: 'ACCESS_TOKEN',
+            getTokenSignature() {
+              return 'thesignature';
+            }
           }
         },
         { provide: RemoteConsoleService, useClass: RemoteConsoleClientServiceMock },
@@ -65,7 +68,7 @@ describe('InboxConversationService', () => {
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
     httpTestingController = TestBed.get(HttpTestingController);
-    spyOnProperty(userService, 'user').and.returnValue(MOCK_USER);
+    jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_USER);
     service.subscribeChatEvents();
     service.conversations = [];
     service.archivedConversations = [];

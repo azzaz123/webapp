@@ -1,0 +1,15 @@
+<div class="SubscriptionPriceDiscount">
+  <div *ngIf="!hasTrial(subscription)" [ngClass]="{ 'Subscriptions__category-info--discounted': hasOneTierDiscount(subscription) }">
+    <span i18n="@@SubscriptionPriceDiscountFromPrice" *ngIf="subscription.tiers.length !== 1">From: </span>
+    {{subscription?.tiers[0]?.price}}{{subscription?.tiers[0]?.currency}}
+  </div>
+  <div *ngIf="hasOneFreeTier(subscription) && !hasTrial(subscription)" class="Subscriptions__category-info-discount">
+    <div *ngIf="subscription.tiers[0].discount_available.months === 1" i18n="@@SubscriptionPriceDiscountMonthFree">One month free</div>
+    <div *ngIf="subscription.tiers[0].discount_available.months > 1" i18n="@@SubscriptionPriceDiscountMonthsFree">
+      {{subscription?.tiers[0]?.discount_available.months}} months free
+    </div>
+  </div>
+  <div *ngIf="hasTrial(subscription)" class="Subscriptions__category-info-trial">
+    <div i18n="@@SubscriptionPriceDiscountDaysTrialFree">{{subscription?.trial_days}}-day trial for free!</div>
+  </div>
+</div>

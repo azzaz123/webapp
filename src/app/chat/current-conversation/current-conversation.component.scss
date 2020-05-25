@@ -15,60 +15,9 @@
       display: flex;
       flex-direction: column;
 
-      .top-bar {
-        height: 80px;
-        padding: 0 $spacing-ml;
-        border-bottom: 1px solid $blue-grey-5;
-        z-index: 99;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        position: sticky;
-        top: 0;
-        width: 100%;
-
-        &.professional {
-          height: 103px;
-
-          tsl-user-avatar {
-            display: none;
-          }
-
-          h5 {
-            margin-top: -25px;
-          }
-        }
-
-        span {
-          color: $blue-grey-2;
-        }
-
-        .user-avatar {
-          display: inline-flex;
-        }
-
-        tsl-user-avatar {
-          margin-right: $spacing-ms;
-        }
-
-        .conversation-header-user-info {
-          display: inline-block;
-          flex-grow: 1;
-
-          h5 {
-            color: $blue-grey-1;
-            font-size: $font-size-m;
-            font-weight: normal;
-            margin-bottom: 0;
-          }
-        }
-
-        span {
-          font-size: $font-size-s;
-        }
-        @include media-breakpoint-down(md) {
-          height: 66px;
-        }
+      tsl-conversation-details-bar {
+        height: 74px;
+        z-index: 999;
       }
 
       .messages-panel-container {
@@ -117,15 +66,27 @@
           text-align: center;
           margin: 0 auto;
 
+          .notification-secure-privacy {
+            padding: $spacing-s $spacing-ml;
+          }
+
           .date-marker-warning {
             background-color: $blue-grey-5;
             color: $blue-grey-3;
-            padding: $spacing-xs $spacing-ml;
+            padding: $spacing-s $spacing-ml;
 
-            .padlock {
-              height: 9px;
-              width: $spacing-ms;
-              margin: 0 $spacing-xxs;
+            &.date-marker-warning-blue {
+              background-color: $softblue-light;
+              color: $softblue-dark;
+            }
+
+            &.date-marker-warning-red {
+              background-color: $negative-soft;
+              color: $magenta-dark;
+            }
+
+            span {
+              font-size: $font-size-s;
             }
 
             .not-available {
@@ -148,6 +109,7 @@
         border-top: 1px solid $color-inbox-background;
       }
     }
+
     @include media-breakpoint-down(md) {
       width: 100%;
     }
@@ -157,12 +119,11 @@
 .date-marker {
   display: inline-flex;
   text-align: center;
-  padding: $spacing-xxs $spacing-s;
+  padding: $spacing-xs $spacing-ml;
   background-color: $blue-grey-4;
-  border-radius: 10px;
+  border-radius: $spacing-ml;
   margin: $spacing-ms 0;
   color: $white;
-  font-size: $font-size-xs;
 
   &.date-marker-error {
     color: $magenta-dark;
@@ -173,35 +134,33 @@
       height: 10px;
     }
   }
-}
 
-.back-arrow {
-  margin-right: $spacing-m;
-}
-
-.conversation-header-menu {
-  height: 24px;
-
-  mat-icon {
-    cursor: pointer;
-    padding: 0 3px;
-
-    /deep/ #MVP {
-      fill: $blue-grey-2;
-    }
+  .emoticon {
+    margin-right: $spacing-xs;
   }
 
-  .dropdown-item {
-    padding: ($spacing-ml / 2) $spacing-ml;
-    cursor: pointer;
+  .emoticon-woman-gesturing-no::before {
+    content: '\01F645';
+  }
 
-    &.warn {
-      color: $warn;
-    }
+  .emoticon-dashing-away::before {
+    content: '\01F4A8';
+  }
+
+  .emoticon-police-car::before {
+    content: '\01F693';
+  }
+
+  .emoticon-ghost::before {
+    content: '\01F47B';
+  }
+
+  .emoticon-padlock {
+    content: "\01F512";
   }
 }
 
-#conversation-meta {
+.conversation-meta {
   overflow-y: auto;
   height: calc(100vh - #{$topbar-height});
   float: right;
@@ -210,6 +169,11 @@
   background-color: $blue-grey-5;
   border-left: 1px solid $blue-grey-4;
   flex-shrink: 0;
+
+  .card {
+    padding-top: $spacing-s;
+    padding-left: $spacing-ms;
+  }
 
   tsl-user {
     margin-bottom: $spacing-ml;
@@ -258,13 +222,6 @@
     position: absolute;
     top: 0;
     left: -#{$spacing-ml + 5px};
-  }
-}
-
-.faded {
-  tsl-user-avatar,
-  .conversation-header-user-info {
-    opacity: 0.5;
   }
 }
 

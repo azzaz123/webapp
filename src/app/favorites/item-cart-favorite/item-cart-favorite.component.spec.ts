@@ -41,12 +41,7 @@ describe('ItemCartFavoriteComponent', () => {
       declarations: [ ItemCartFavoriteComponent, CustomCurrencyPipe ],
       providers: [
         DecimalPipe,
-        { provide: WindowRef, useValue: {
-            nativeWindow: {
-              open: () => {}
-            }
-          }
-        },
+        WindowRef,
         { provide: ItemService, useValue: {
             favoriteItem () {
               return observableOf({});
@@ -82,10 +77,10 @@ describe('ItemCartFavoriteComponent', () => {
 
   describe('goToItemDetail', () => {
     it('should change window url', () => {
-      spyOn(windowRef.nativeWindow, 'open');
+      spyOn(window, 'open');
       const MOCK_ITEM_URL: string = environment.siteUrl.replace('es', subdomain) + 'item/' + MOCK_ITEM.webSlug;
       component.goToItemDetail();
-      expect(windowRef.nativeWindow.open).toHaveBeenCalledWith(MOCK_ITEM_URL);
+      expect(window.open).toHaveBeenCalledWith(MOCK_ITEM_URL);
     });
   });
 

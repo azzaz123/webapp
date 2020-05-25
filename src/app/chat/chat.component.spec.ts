@@ -41,7 +41,7 @@ describe('Component: ChatComponent with ItemId', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ChatComponent],
-      imports: [NgbModule.forRoot(), FormsModule, NgxPermissionsModule],
+      imports: [NgbModule, FormsModule, NgxPermissionsModule],
       providers: [
         ChatComponent,
         { provide: ConversationService, useClass: ConversationServiceMock },
@@ -209,7 +209,7 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ChatComponent],
-      imports: [NgbModule.forRoot(), FormsModule, NgxPermissionsModule],
+      imports: [NgbModule, FormsModule, NgxPermissionsModule],
       providers: [
         ChatComponent,
         { provide: ConversationService, useClass: ConversationServiceMock },

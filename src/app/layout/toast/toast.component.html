@@ -1,0 +1,7 @@
+<div class="toast-container">
+    <ngb-toast (click)="toastService.remove(toast)" *ngFor="let toast of toastService.toasts" [class]="toast.type"
+        [autohide]="true" [delay]="5000" (hide)="toastService.remove(toast)">
+        <span *ngIf="toast.title" class="toast-title">{{toast.title}}</span>
+        <span class="toast-text">{{ toast.text }}</span>
+    </ngb-toast>
+</div>

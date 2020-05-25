@@ -198,7 +198,6 @@ export class ItemService {
       content.brand,
       content.model,
       content.year,
-      content.km,
       content.gearbox,
       content.engine,
       content.color,
@@ -212,7 +211,8 @@ export class ItemService {
       content.version,
       content.financed_price,
       content.publish_date,
-      content.image
+      content.image,
+      content.km
     );
   }
 
@@ -345,7 +345,11 @@ export class ItemService {
       response.main_image,
       null,
       response.web_slug,
-      response.publish_date
+      response.publish_date,
+      null,
+      null,
+      null,
+      response.car_info
     );
 
     if (response.active_item_purchase) {
@@ -653,6 +657,7 @@ export class ItemService {
                 item.favorites = i.content.favorites;
                 item.conversations = i.content.conversations;
                 item.purchases = i.content.purchases ? i.content.purchases : null;
+                item.km = i.content.km ? i.content.km : null;
                 return item;
               });
             this.items[status] = items;

@@ -7,10 +7,9 @@ import { SubscriptionSlot, SubscriptionSlotResponse, SubscriptionSlotGeneralResp
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { UUID } from 'angular2-uuid';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from '../user/featureflag.service';
+import { FeatureflagService } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
-import { CARS_CATEGORY } from '../item/item-categories';
 import { CategoryService } from '../category/category.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -147,10 +146,6 @@ export class SubscriptionsService {
     return this.http.get(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/payment_attempt/${this.uuid}`);
   }
 
-  public isSubscriptionsActive$(): Observable<boolean> {
-    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.SUBSCRIPTIONS);
-  }
-
   public getSubscriptions(cache: boolean = true): Observable<SubscriptionsResponse[]> {
     if (this.subscriptions && cache) {
       return observableOf(this.subscriptions);
@@ -268,6 +263,10 @@ export class SubscriptionsService {
     }
 
     return tier.discount_available.discounted_price === 0;
+  }
+
+  public hasTrial(subscription: SubscriptionsResponse): boolean {
+    return subscription.trial_available;
   }
 
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]>{

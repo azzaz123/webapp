@@ -1,8 +1,9 @@
-import { Input, OnInit } from '@angular/core';
+import { Input, OnInit, Directive } from '@angular/core';
 
 import { InboxMessage } from '../model/inbox-message';
 import { InboxConversation } from '../model/inbox-conversation';
 
+@Directive()
 export abstract class MessageComponent implements OnInit {
 
   private readonly HTML_REGEX = /<[a-z][\s\S]*>/i;

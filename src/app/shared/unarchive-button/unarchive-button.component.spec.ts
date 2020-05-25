@@ -19,7 +19,7 @@ describe('UnarchiveButtonComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        NgbModule.forRoot()
+        NgbModule
       ],
       providers: [
         { provide: TrackingService, useClass: MockTrackingService },

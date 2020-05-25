@@ -16,7 +16,7 @@ export class CheckoutComponent implements OnInit {
   itemsWithProducts: ItemWithProducts[];
   provincialBump: boolean;
   creditInfo: CreditInfo;
-  @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
+  @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
 
   constructor(private itemService: ItemService,
               private router: Router,

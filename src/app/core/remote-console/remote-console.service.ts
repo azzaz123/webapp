@@ -9,6 +9,8 @@ import { APP_VERSION } from '../../../environments/version';
 import { UserService } from '../user/user.service';
 import { RemoteConsoleClientService } from './remote-console-client.service';
 import { User } from '../user/user';
+import { UUID } from 'angular2-uuid';
+import { ChatConnectionMetric } from './chat-connection-metric';
 
 @Injectable({
   providedIn: 'root'
@@ -16,16 +18,20 @@ import { User } from '../user/user';
 export class RemoteConsoleService implements OnDestroy {
 
   deviceId: string;
+  sessionId: string;
   private connectionTimeCallNo = 0;
   private sendMessageTime = new Map();
+  private sendMessageActTime = new Map();
   private acceptMessageTime = new Map();
   private presentationMessageTimeout = new Map();
+  private chatConnectionMetric: ChatConnectionMetric;
 
   constructor(private remoteConsoleClientService: RemoteConsoleClientService, private deviceService: DeviceDetectorService,
               private featureflagService: FeatureflagService, private userService: UserService) {
     this.deviceId = Fingerprint2.get({}, components => {
       const values = components.map(component => component.value);
       this.deviceId = Fingerprint2.x64hash128(values.join(''), 31);
+      this.sessionId = UUID.UUID();
     });
   }
 
@@ -44,8 +50,37 @@ export class RemoteConsoleService implements OnDestroy {
       connection_time: connectionTime,
       call_no: this.connectionTimeCallNo,
       connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
-      ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : ''
+      ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1
     });
+  }
+
+  sendConnectionChatTimeout(connectionType: 'inbox' | 'xmpp', success: boolean): void {
+    if (this.chatConnectionMetric === null || this.chatConnectionMetric === undefined) {
+      this.chatConnectionMetric = new ChatConnectionMetric();
+    }
+    if (connectionType === 'inbox') {
+      this.chatConnectionMetric.inboxConnectionSuccess = success;
+      this.chatConnectionMetric.inboxRetryCount += 1;
+    }
+    if (connectionType === 'xmpp') {
+      this.chatConnectionMetric.xmppConnectionSuccess = success;
+      this.chatConnectionMetric.xmppRetryCount += 1;
+    }
+
+    if (this.chatConnectionMetric.inboxConnectionSuccess && this.chatConnectionMetric.xmppConnectionSuccess) {
+      this.userService.me().subscribe((user: User) => this.remoteConsoleClientService.info({
+        ...this.getCommonLog(user.id),
+        connection_time: Date.now() - this.chatConnectionMetric.connectionChatTimeStart,
+        xmpp_retry_count: this.chatConnectionMetric.xmppRetryCount,
+        inbox_retry_count: this.chatConnectionMetric.inboxRetryCount,
+        metric_type: MetricTypeEnum.CHAT_CONNECTION_TIME,
+        session_id: this.sessionId,
+        connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
+        ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1
+      }));
+
+      this.chatConnectionMetric = null;
+    }
   }
 
   sendMessageTimeout(messageId: string): void {
@@ -62,6 +97,24 @@ export class RemoteConsoleService implements OnDestroy {
     }
   }
 
+  sendMessageActTimeout(messageId: string): void {
+    if (!this.sendMessageActTime.has(messageId)) {
+      this.sendMessageActTime.set(messageId, new Date().getTime());
+    } else {
+      this.remoteConsoleClientService.info({
+        ...this.getCommonLog(this.userService.user.id),
+        message_id: messageId,
+        send_message_time: new Date().getTime() - this.sendMessageActTime.get(messageId),
+        metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
+        session_id: this.sessionId
+      });
+      this.sendMessageTime.delete(messageId);
+    }
+  }
+
+  /*
+   * @deprecated Use sendMessageActTimeout instead. Remove after deploy new metrics CHATO-4187, CHATO-4191 and CHATO-4199
+   */
   sendAcceptTimeout(messageId: string): void {
     if (!this.acceptMessageTime.has(messageId)) {
       this.acceptMessageTime.set(messageId, new Date().getTime());
@@ -114,8 +167,8 @@ export class RemoteConsoleService implements OnDestroy {
 
   getReleaseVersion(appVersion: string): number {
     return +appVersion.split('.')
-    .map((subVersion: string) => ('00' + subVersion).slice(-3))
-    .reduce((a: string, b: string) => a + b);
+      .map((subVersion: string) => ('00' + subVersion).slice(-3))
+      .reduce((a: string, b: string) => a + b);
   }
 
   private getCommonLog(userId: string): {} {

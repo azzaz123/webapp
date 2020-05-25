@@ -60,7 +60,7 @@
     color: $blue-grey-4;
   }
   &.active {
-    /deep/ svg g path {
+    ::ng-deep svg g path {
       fill: $walla-main;
     }
   }
@@ -79,7 +79,7 @@
   }
 }
 
-:host /deep/ .dropdown-menu {
+:host ::ng-deep .dropdown-menu {
   & {
     padding: 0;
     overflow: hidden;
@@ -88,7 +88,7 @@
   }
 }
 
-:host /deep/ .dropdown-item {
+:host ::ng-deep .dropdown-item {
   & {
     background-color: transparent;
     cursor: pointer;
@@ -102,6 +102,6 @@
   }
 }
 
-:host /deep/ .dropdown-item.active {
+:host ::ng-deep .dropdown-item.active {
   background-color: $blue-grey-5;
 }

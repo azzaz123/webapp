@@ -1,17 +1,10 @@
 
 import {mergeMap, map, filter, distinctUntilChanged} from 'rxjs/operators';
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
-import { DOCUMENT, DomSanitizer, Title } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
+import { DOCUMENT } from "@angular/common";
 import { configMoment } from './config/moment.config';
 import { configIcons } from './config/icons.config';
-
-
-
-
-
-
-
-
 import { MatIconRegistry } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
@@ -36,6 +29,7 @@ import { InboxService } from './chat/service';
 import { Subscription } from 'rxjs';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
+import { DidomiService } from './core/didomi/didomi.service';
 
 @Component({
   selector: 'tsl-root',
@@ -78,7 +72,8 @@ export class AppComponent implements OnInit {
               private paymentService: PaymentService,
               private callService: CallsService,
               private stripeService: StripeService,
-              private analyticsService: AnalyticsService) {
+              private analyticsService: AnalyticsService,
+              private didomiService: DidomiService) {
     this.config();
   }
 
@@ -98,8 +93,7 @@ export class AppComponent implements OnInit {
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
-
-    __cmp('init', quancastOptions[this.i18n.locale]);
+    this.didomiService.initialize();
   }
 
   private updateUrlAndSendAnalytics() {

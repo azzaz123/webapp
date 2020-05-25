@@ -4,7 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CancelSubscriptionModalComponent } from './cancel-subscription-modal.component';
 import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.spec';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { Observable, of } from 'rxjs';
@@ -12,11 +12,12 @@ import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import {
   AnalyticsEvent,
-  ClickUnsuscribeConfirmation,
+  ClickConfirmCloseSubscription,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS
 } from '../../../core/analytics/analytics-constants';
+import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 
 describe('CancelSubscriptionModalComponent', () => {
   let component: CancelSubscriptionModalComponent;
@@ -24,7 +25,7 @@ describe('CancelSubscriptionModalComponent', () => {
   let activeModal: NgbActiveModal;
   let subscriptionsService: SubscriptionsService;
   let analyticsService: AnalyticsService;
-  let toastrService: ToastrService;
+  let toastService: ToastService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -33,18 +34,6 @@ describe('CancelSubscriptionModalComponent', () => {
         {
           provide: NgbActiveModal, useValue: {
             close() {
-            }
-          }
-        },
-        {
-          provide: ToastrService, useValue: {
-            error() {
-            },
-            success() {
-            },
-            i18nError() {
-            },
-            i18nSuccess() {
             }
           }
         },
@@ -79,7 +68,7 @@ describe('CancelSubscriptionModalComponent', () => {
     fixture = TestBed.createComponent(CancelSubscriptionModalComponent);
     component = fixture.componentInstance;
     activeModal = TestBed.get(NgbActiveModal);
-    toastrService = TestBed.get(ToastrService);
+    toastService = TestBed.get(ToastService);
     subscriptionsService = TestBed.get(SubscriptionsService);
     analyticsService = TestBed.get(AnalyticsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
@@ -101,10 +90,12 @@ describe('CancelSubscriptionModalComponent', () => {
     it('should send the event', () => {
       spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({status: 202}));
       spyOn(analyticsService, 'trackEvent');
-      const expectedEvent: AnalyticsEvent<ClickUnsuscribeConfirmation> = {
-        name: ANALYTICS_EVENT_NAMES.ClickUnsuscribeConfirmation,
+      const expectedEvent: AnalyticsEvent<ClickConfirmCloseSubscription> = {
+        name: ANALYTICS_EVENT_NAMES.ClickConfirmCloseSubscription,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
+          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+          tier: component.subscription.selected_tier_id,
           screenId: SCREEN_IDS.ProfileSubscription
         }
       };

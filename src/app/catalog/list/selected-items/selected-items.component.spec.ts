@@ -20,7 +20,7 @@ describe('SelectedItemsComponent', () => {
       providers: [
         {
           provide: ItemService, useValue: {
-            selectedItems$: new ReplaySubject(1),
+            selectedItems$: new ReplaySubject(),
             selectedItems: [],
             selectedAction: null,
             deselectItems: () =>  {}
@@ -57,6 +57,7 @@ describe('SelectedItemsComponent', () => {
     it('should set disableFeatureOption if a selected item is inactive or expired', () => {
       itemService.selectedAction = 'feature';
       const ITEMS = createItemsArray(5);
+      ITEMS[0].flags.expired = true;
       component.items = ITEMS;
       itemService.selectedItems = [anId, anotherId];
       fixture.detectChanges();

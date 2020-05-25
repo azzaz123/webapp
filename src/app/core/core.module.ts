@@ -27,6 +27,8 @@ import { BlockUserService, BlockUserXmppService, InboxService } from '../chat/se
 import { StripeService } from './stripe/stripe.service';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
 import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
+import { DevelopmentGuard } from './user/development.guard';
+import { DidomiService } from './didomi/didomi.service';
 
 @NgModule({
   imports: [
@@ -51,11 +53,12 @@ import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
 })
 export class CoreModule {
 
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<CoreModule> {
     return {
       ngModule: CoreModule,
       providers: [
         LoggedGuard,
+        DevelopmentGuard,
         EventService,
         I18nService,
         ErrorsService,
@@ -75,7 +78,8 @@ export class CoreModule {
         ConnectionService,
         ProfileService,
         StripeService,
-        SubscriptionsService
+        SubscriptionsService,
+        DidomiService
       ]
     };
   }

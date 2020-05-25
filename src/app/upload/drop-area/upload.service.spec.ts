@@ -1,4 +1,8 @@
-import { TOKEN_AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME } from './../../core/http/interceptors/token.interceptor';
+import {
+  TOKEN_AUTHORIZATION_HEADER_NAME,
+  TOKEN_SIGNATURE_HEADER_NAME,
+  TOKEN_TIMESTAMP_HEADER_NAME
+} from './../../core/http/interceptors/token.interceptor';
 import { TestBed } from '@angular/core/testing';
 import { UploadService } from './upload.service';
 import { environment } from '../../../environments/environment';
@@ -9,7 +13,6 @@ import { ITEM_ID } from '../../../tests/item.fixtures.spec';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { ITEM_TYPES } from '../../core/item/item';
 import { UploadInput } from '../../shared/uploader/upload.interface';
-import * as tokenInterceptor from './../../core/http/interceptors/token.interceptor';
 
 describe('UploadService', () => {
 
@@ -29,7 +32,10 @@ describe('UploadService', () => {
         UploadService,
         {
           provide: AccessTokenService, useValue: {
-            accessToken: 'thetoken'
+            accessToken: 'thetoken',
+            getTokenSignature() {
+              return 'thesignature';
+            }
           }
         }
       ]
@@ -41,8 +47,7 @@ describe('UploadService', () => {
       response = r;
     });
 
-    spyOn(tokenInterceptor, 'getTokenSignature').and.returnValue('thesignature');
-    spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
+    spyOn(Date, 'now').and.returnValues(TIMESTAMP);
   });
 
   describe('createItemWithFirstImage', () => {
@@ -162,7 +167,7 @@ describe('UploadService', () => {
             })
           },
           headers: {
-            ...headers, 
+            ...headers,
             'X-DeviceOS': '0'
           },
           file: UPLOAD_FILE

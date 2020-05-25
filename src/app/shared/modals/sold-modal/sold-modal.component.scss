@@ -67,7 +67,7 @@ h1 {
         width: 42px;
         height: 42px;
         transition: right ease .2s;
-        /deep/ svg path {
+        ::ng-deep svg path {
           fill: $blue-grey-3;
         }
       }
@@ -78,7 +78,7 @@ h1 {
         }
         .arrow-icon {
           right: -10px;
-          /deep/ svg path {
+          ::ng-deep svg path {
             fill: $walla-main;
           }
         }

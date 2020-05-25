@@ -5,7 +5,10 @@
 }
 
 .card {
+  width: 100%;
+
   &.faded {
+    pointer-events: none;
     .image-overlay, .actions-block, .card-block {
       opacity: 0.5;
     }
@@ -25,6 +28,7 @@
       width: 100%;
       max-height: 180px;
     }
+
     a.btn-edit {
       @include square(40px);
       border: solid 2px rgba(207, 216, 220, 0.5);
@@ -39,64 +43,77 @@
       cursor: pointer;
       background-color: white;
       padding: $spacing-xxs $spacing-s $spacing-xxs;
-      mat-icon /deep/ {
+
+      mat-icon ::ng-deep {
         float: left;
+
         svg g g, svg path {
           fill: $blue-grey-2;
         }
       }
+
       &:hover, &.active {
         background: $blue-grey-2;
         border-color: transparent;
-        mat-icon /deep/ {
+
+        mat-icon ::ng-deep {
           svg g g, svg path {
             fill: $white;
           }
         }
       }
     }
+
     .image-bottom {
       position: absolute;
       bottom: 20px;
       display: flex;
       flex-direction: column;
       width: 100%;
+
       tsl-item-sold, tsl-item-reserved {
         align-self: center;
       }
     }
   }
+
   .actions-block {
     width: 100%;
     padding: $spacing-ms $spacing-ml 0;
 
     tsl-button {
       &:first-of-type {
-      margin-right: $spacing-ms;
+        margin-right: $spacing-ms;
       }
+
       width: calc(50% - 10px);
     }
-    /deep/
+
+    ::ng-deep
     .btn-reserve {
       font-size: $font-size-xs;
       padding-top: $spacing-xs;
       padding-bottom: $spacing-xs;
       width: 100%;
     }
-    /deep/
+
+    ::ng-deep
     .btn-sold {
       font-size: $font-size-xs;
       padding-top: $spacing-xs;
       padding-bottom: $spacing-xs;
       width: 100%;
       background-color: $magenta-main;
+
       &:hover {
         background-color: lighten($magenta-main, 3%);
       }
     }
   }
+
   .card-block {
     padding: $spacing-ms;
+
     .card-title {
       font-size: $font-size-m;
       margin-bottom: $spacing-ms;
@@ -104,19 +121,23 @@
       max-height: 44px;
       overflow: hidden;
     }
+
     .card-item-info {
       display: flex;
       flex-direction: row;
+
       .price {
         font-size: $font-size-m;
         color: $blue-grey-1;
         flex-grow: 1;
       }
+
       .stats {
         font-size: $font-size-xs;
         color: $blue-grey-2;
         line-height: $line-height-l;
         flex-grow: 0;
+
         mat-icon {
           height: 14px;
           width: 17px;
