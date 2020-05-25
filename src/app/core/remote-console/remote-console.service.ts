@@ -10,6 +10,7 @@ import { UserService } from '../user/user.service';
 import { RemoteConsoleClientService } from './remote-console-client.service';
 import { User } from '../user/user';
 import { UUID } from 'angular2-uuid';
+import { ChatConnectionMetric } from './chat-connection-metric';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class RemoteConsoleService implements OnDestroy {
   private sendMessageActTime = new Map();
   private acceptMessageTime = new Map();
   private presentationMessageTimeout = new Map();
+  private chatConnectionMetric: ChatConnectionMetric;
 
   constructor(private remoteConsoleClientService: RemoteConsoleClientService, private deviceService: DeviceDetectorService,
               private featureflagService: FeatureflagService, private userService: UserService) {
@@ -50,6 +52,35 @@ export class RemoteConsoleService implements OnDestroy {
       connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
       ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1
     });
+  }
+
+  sendConnectionChatTimeout(connectionType: 'inbox' | 'xmpp', success: boolean): void {
+    if (this.chatConnectionMetric === null || this.chatConnectionMetric === undefined) {
+      this.chatConnectionMetric = new ChatConnectionMetric();
+    }
+    if (connectionType === 'inbox') {
+      this.chatConnectionMetric.inboxConnectionSuccess = success;
+      this.chatConnectionMetric.inboxRetryCount += 1;
+    }
+    if (connectionType === 'xmpp') {
+      this.chatConnectionMetric.xmppConnectionSuccess = success;
+      this.chatConnectionMetric.xmppRetryCount += 1;
+    }
+
+    if (this.chatConnectionMetric.inboxConnectionSuccess && this.chatConnectionMetric.xmppConnectionSuccess) {
+      this.userService.me().subscribe((user: User) => this.remoteConsoleClientService.info({
+        ...this.getCommonLog(user.id),
+        connection_time: Date.now() - this.chatConnectionMetric.connectionChatTimeStart,
+        xmpp_retry_count: this.chatConnectionMetric.xmppRetryCount,
+        inbox_retry_count: this.chatConnectionMetric.inboxRetryCount,
+        metric_type: MetricTypeEnum.CHAT_CONNECTION_TIME,
+        session_id: this.sessionId,
+        connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
+        ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1
+      }));
+
+      this.chatConnectionMetric = null;
+    }
   }
 
   sendMessageTimeout(messageId: string): void {
