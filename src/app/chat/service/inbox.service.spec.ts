@@ -100,7 +100,6 @@ describe('InboxService', () => {
       inboxService.init();
 
       expect(inboxService.getInbox$).toHaveBeenCalledWith();
-      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', true);
     });
 
     it('should return an array of InboxConversation`s with the correct lastMesage for each', () => {
@@ -112,7 +111,6 @@ describe('InboxService', () => {
         expect(conversation instanceof InboxConversation).toBe(true);
         expect(conversation.lastMessage.id).toEqual(apiResponse[index].messages.messages[0].id);
       });
-      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', true);
     });
 
     it('should emit a EventService.INBOX_LOADED after getInbox returns', () => {
@@ -123,7 +121,6 @@ describe('InboxService', () => {
       inboxService.init();
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, parsedConversationsResponse, 'LOAD_INBOX');
-      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', true);
     });
 
     it('should emit a EventService.CHAT_CAN_PROCESS_RT with TRUE after getInbox returns', () => {
@@ -132,7 +129,6 @@ describe('InboxService', () => {
       inboxService.init();
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, true);
-      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', true);
     });
 
     it('should call conversationService.subscribeChatEvents', () => {
@@ -141,6 +137,11 @@ describe('InboxService', () => {
       inboxService.init();
 
       expect(inboxConversationService.subscribeChatEvents).toHaveBeenCalled();
+    });
+
+    it('should send metric time to connect to chat', () => {
+      inboxService.init();
+
       expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', true);
     });
   });
@@ -156,13 +157,17 @@ describe('InboxService', () => {
       inboxService.init();
 
       expect(inboxService.errorRetrievingInbox).toBe(true);
-      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', false);
     });
 
     it('should return empty list', () => {
       inboxService.init();
 
       expect(inboxConversationService.conversations).toEqual([]);
+    });
+
+    it('should call send metric chat timeout', () => {
+      inboxService.init();
+
       expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', false);
     });
   });
