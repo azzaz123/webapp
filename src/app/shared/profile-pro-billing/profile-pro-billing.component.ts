@@ -39,13 +39,13 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       type: ['', [Validators.required]],
       cif: ['', [Validators.required]],
       city: ['', [Validators.required]],
-      company_name: [''],
+      company_name: ['', [Validators.required]],
       country: ['', [Validators.required]],
       email: ['', [Validators.required]],
-      name: [''],
+      name: ['', [Validators.required]],
       postal_code: ['', [Validators.required]],
       street: ['', [Validators.required]],
-      surname: [''],
+      surname: ['', [Validators.required]],
       id: UUID.UUID()
     });
   }
@@ -77,15 +77,18 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       },
       () => {
         this.type = BILLING_TYPE.NATURAL;
-        if (this.type === BILLING_TYPE.NATURAL) {
-          this.setNaturalRequiredFields();
-        } else {
-          this.setLegalRequiredFields();
-        }
-        this.updateFieldsValidity();
       }
     )
     .add(() => {
+      this.billingForm.patchValue({
+        type: this.type || BILLING_TYPE.NATURAL
+      });
+      if (this.type === BILLING_TYPE.NATURAL) {
+        this.setNaturalRequiredFields();
+      } else {
+        this.setLegalRequiredFields();
+      }
+      this.updateFieldsValidity();
       this.onChanges();
     });
   }
