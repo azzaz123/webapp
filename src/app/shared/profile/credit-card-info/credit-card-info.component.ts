@@ -1,9 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from './financial-card';
 import { finalize } from 'rxjs/operators';
+import { NewCardModalComponent } from 'app/shared/modals/new-card-modal/new-card-modal.component';
+import { ErrorsService } from 'app/core/errors/errors.service';
 
 @Component({
   selector: 'tsl-credit-card-info',
@@ -14,11 +16,12 @@ export class CreditCardInfoComponent {
   public loading = false;
   
   @Input() financialCard: FinancialCard;
-  @Output() onDeleteCard: EventEmitter<FinancialCard> = new EventEmitter();
+  @Output() onSetDefaultCard: EventEmitter<FinancialCard> = new EventEmitter();
   @Output() onDeleteStripeCard: EventEmitter<FinancialCard> = new EventEmitter();
 
   constructor(private modalService: NgbModal,
-              private stripeService: StripeService) { }
+              private stripeService: StripeService,
+              private errorService: ErrorsService) { }
 
   public deleteStripeCard(e: Event) {
     e.stopPropagation();
@@ -33,6 +36,23 @@ export class CreditCardInfoComponent {
         this.financialCard = null;
       });
     }, () => {});
+  }
+
+  public changeStripeCard(e: Event) {
+    let modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {windowClass: 'review'});
+    modalRef.result.then((financialCard: FinancialCard) => {
+      this.loading = true;
+      this.stripeService.setDefaultCard(financialCard.id)
+        .pipe(finalize(() => this.loading = false))
+        .subscribe(
+          () =>  this.onSetDefaultCard.emit(this.financialCard),
+          () => this.errorService.i18nError('addNewCardError')
+        );
+      
+      modalRef = null;
+    },
+    () => this.loading = false)
+    .catch(() => this.loading = false)
   }
 
 }

@@ -54,5 +54,10 @@ export class StripeCardsComponent implements OnInit {
     () => this.loading = false)
     .catch(() => this.loading = false)
   }
+
+  public onSetDefaultCard(stripeCard: FinancialCard): void {
+    console.log('setDefaultCard ', stripeCard);
+    this.stripeCards.push(stripeCard);
+  }
   
 }

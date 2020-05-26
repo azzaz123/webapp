@@ -147,7 +147,7 @@ export interface PaymentMethodResponse {
 
 export interface PaymentMethodCardResponse {
   brand: string;
-  default: boolean;
+  invoices_default: boolean;
   expiration_month: number;
   expiration_year: number;
   id: string;

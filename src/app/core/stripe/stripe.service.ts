@@ -93,6 +93,10 @@ export class StripeService {
     return this.http.put(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/attach`, {});
   }
 
+  public setDefaultCard(paymentMethodId: string): Observable<any> {
+    return this.http.put(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/attach`, {});
+  }
+
   public createStripeCard(cardElement: any): Promise<any> {
     return this.createStripePaymentMethod(cardElement).then((response: any) => {
       if (response.error) {
@@ -140,6 +144,7 @@ export class StripeService {
         res.id,
         res.card.last4,
         null,
+        null,
         res.card
       );
   }
@@ -150,6 +155,7 @@ export class StripeService {
         `${stripeCard.expiration_month}/${stripeCard.expiration_year}`,
         stripeCard.id,
         stripeCard.last_digits,
+        stripeCard.invoices_default,
         null,
         {
           brand: stripeCard.brand,

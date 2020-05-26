@@ -1,6 +1,6 @@
 <div class="CreditCard__info" *ngIf="!loading">
   <div class="credit-card-field">
-    <div class="info">
+    <div class="CreditCard__info--info">
       <mat-icon svgIcon="{{financialCard?.stripeCard?.brand}}"
       *ngIf="financialCard?.stripeCard?.brand === 'visa' || financialCard?.stripeCard?.brand === 'mastercard'"
       class="card-icon">
@@ -10,10 +10,12 @@
       class="card-icon">
       </mat-icon>
       <div class="number"><span>**** **** **** </span>{{financialCard?.number}}</div>
-      <div class="date">{{financialCard?.expire_date | date:'MM/yy'}}</div>
+      <div class="date">{{financialCard?.expire_date}}</div>
     </div>
-    <div class="delete-link">
-      <a (click)="deleteStripeCard($event)" i18n>Delete card</a>
+    <div class="CreditCard__info--actions">
+      <div class="CreditCard__info--actions-default" *ngIf="financialCard?.invoices_default" i18n="@@DefaultCreditCard">Subscription card</div>
+      <a class="CreditCard__info--actions-delete" *ngIf="!financialCard?.invoices_default" (click)="deleteStripeCard($event)" i18n="@@DeleteCard">Delete card</a>
+      <a class="CreditCard__info--actions-change" *ngIf="financialCard?.invoices_default" (click)="changeStripeCard($event)" i18n="@@ChangeCard">Change card</a>
     </div>
   </div>
 </div>

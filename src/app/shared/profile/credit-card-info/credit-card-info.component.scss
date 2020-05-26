@@ -27,23 +27,6 @@ $card-height: 88px;
       font-size: $font-size-xs;
     }
   }
-  .info {
-    width: 100%;
-    display: flex;
-    padding: 0;
-  }
-}
-.delete-link {
-  font-size: $font-size-s;
-  cursor: pointer;
-  margin-left: auto;
-  a {
-    cursor: pointer;
-    color: $walla-main;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 }
 
 .CreditCard__info {
@@ -53,9 +36,35 @@ $card-height: 88px;
     justify-content: center;
     align-content: center;
     align-items: center;
-
     width: $card-width;
     height: $card-height;
     background: white;
+  }
+  &--info {
+    width: 100%;
+    display: flex;
+    padding: 0;
+    margin-bottom: $spacing-s;
+  }
+  &--actions {
+    font-size: $font-size-s;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    a {
+      cursor: pointer;
+      color: $walla-main;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    &-default {
+      color: $blue-grey-3;
+      width: 50%;
+    }
+    &-delete, &-change {
+      text-align: right;
+      width: 50%;
+    }
   }
 }

@@ -5,6 +5,7 @@ export class FinancialCard implements Model {
   constructor(private _expire_date: string,
               private _id: string,
               private _number: string,
+              private _invoices_default?: boolean,
               private _favorite?: boolean,
               private _stripeCard?: StripeCard) {
   }
@@ -30,6 +31,14 @@ export class FinancialCard implements Model {
 
   set number(value: string) {
     this._number = value;
+  }
+
+  get invoices_default(): boolean {
+    return this._invoices_default;
+  }
+
+  set invoices_default(value: boolean) {
+    this._invoices_default = value;
   }
 
   get favorite(): boolean {
