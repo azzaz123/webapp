@@ -14,18 +14,21 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { HttpModuleNew } from './core/http/http.module.new';
 import * as Sentry from "@sentry/browser";
 import { UserService } from './core/user/user.service';
+import { environment } from 'environments/environment';
 
-Sentry.init({
-  dsn: "https://6550aa8cfb064cacbb547f4928eb98a5@o391386.ingest.sentry.io/5237431"
-});
 @Injectable()
 export class SentryErrorHandler implements ErrorHandler {
   constructor(public userService: UserService) {
-    this.userService.me().subscribe(user => {
-      Sentry.configureScope(function(scope) {
-        scope.setUser({"id": user.id});
+    if (environment.production) {
+      Sentry.init({
+        dsn: "https://6550aa8cfb064cacbb547f4928eb98a5@o391386.ingest.sentry.io/5237431"
       });
-    });
+      this.userService.me().subscribe(user => {
+        Sentry.configureScope(function(scope) {
+          scope.setUser({"id": user.id});
+        });
+      });
+    }
   }
   handleError(error) {
     Sentry.captureException(error.originalError || error);
