@@ -129,8 +129,8 @@ describe('Service: Xmpp', () => {
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
       ]
     });
-    service = TestBed.get(XmppService);
-    eventService = TestBed.get(EventService);
+    service = TestBed.inject(XmppService);
+    eventService = TestBed.inject(EventService);
     spyOn(XMPP, 'createClient').and.returnValue(MOCKED_CLIENT);
     spyOn(MOCKED_CLIENT, 'on').and.callFake((event, callback) => {
       eventService.subscribe(event, callback);
@@ -143,8 +143,8 @@ describe('Service: Xmpp', () => {
       resolve({ time: { utc: MOCK_SERVER_DATE } });
     }));
     sendIqSpy = spyOn(MOCKED_CLIENT, 'sendIq').and.callThrough();
-    service = TestBed.get(XmppService);
-    remoteConsoleService = TestBed.get(RemoteConsoleService);
+    service = TestBed.inject(XmppService);
+    remoteConsoleService = TestBed.inject(RemoteConsoleService);
     appboy.initialize(environment.appboy);
 
     spyOn(console, 'warn');
@@ -668,7 +668,7 @@ describe('Service: Xmpp', () => {
     it('should send a new message', () => {
       spyOn<any>(service, 'onNewMessage');
       spyOn<any>(remoteConsoleService, 'sendMessageTimeout');
-      spyOn<any>(remoteConsoleService, 'sendAcceptTimeout');
+      spyOn<any>(remoteConsoleService, 'sendMessageActTimeout');
 
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       service.sendMessage(CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE(CONVERSATION_ID, USER_ID), MESSAGE_BODY);
@@ -683,7 +683,7 @@ describe('Service: Xmpp', () => {
       };
 
       expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(queryId);
-      expect(remoteConsoleService.sendAcceptTimeout).toHaveBeenCalledWith(queryId);
+      expect(remoteConsoleService.sendMessageActTimeout).toHaveBeenCalledWith(queryId);
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(message);
       expect(service['onNewMessage']).toHaveBeenCalledWith(message, true);
     });
@@ -704,14 +704,14 @@ describe('Service: Xmpp', () => {
     it('should emit a MESSAGE_SENT event when called', () => {
       spyOn(eventService, 'emit');
       spyOn<any>(remoteConsoleService, 'sendMessageTimeout');
-      spyOn<any>(remoteConsoleService, 'sendAcceptTimeout');
+      spyOn<any>(remoteConsoleService, 'sendMessageActTimeout');
       spyOn<any>(remoteConsoleService, 'sendPresentationMessageTimeout');
 
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       service.sendMessage(CREATE_MOCK_INBOX_CONVERSATION(), MESSAGE_BODY);
 
       expect(remoteConsoleService.sendMessageTimeout).toHaveBeenCalledWith(queryId);
-      expect(remoteConsoleService.sendAcceptTimeout).toHaveBeenCalledWith(queryId);
+      expect(remoteConsoleService.sendMessageActTimeout).toHaveBeenCalledWith(queryId);
       expect(remoteConsoleService.sendPresentationMessageTimeout).not.toHaveBeenCalled();
       expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT, CREATE_MOCK_INBOX_CONVERSATION(), queryId);
     });

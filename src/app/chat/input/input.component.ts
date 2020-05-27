@@ -78,7 +78,9 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   public getPlaceholder(): string {
-    return this.isUserBlocked || !this.isMessagingAvailable() ? '' : this.i18n.getTranslations('writeMessage');
+    return this.isUserBlocked || !this.isMessagingAvailable()
+      ? this.i18n.getTranslations('disableMessage')
+      : this.i18n.getTranslations('writeMessage');
   }
 
   public isMessagingAvailable(): boolean {

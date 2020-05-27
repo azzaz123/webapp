@@ -5,7 +5,7 @@ import { StripeCardElementComponent } from './stripe-card-element.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { NO_ERRORS_SCHEMA, ElementRef } from '@angular/core';
 import { I18nService } from '../../../core/i18n/i18n.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 
 describe('StripeCardElementComponent', () => {
   let component: StripeCardElementComponent;
@@ -41,10 +41,6 @@ describe('StripeCardElementComponent', () => {
                 }
               }
           }
-          },
-          {
-            provide: ToastrService, useValue: {
-            }
           }
         ],
         schemas: [NO_ERRORS_SCHEMA]

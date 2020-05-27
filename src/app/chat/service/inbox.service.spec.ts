@@ -7,12 +7,12 @@ import { MockMessageService } from '../../../tests/message.fixtures.spec';
 import { FeatureflagService } from '../../core/user/featureflag.service';
 import { EventService } from '../../core/event/event.service';
 import { InboxConversation } from '../model/inbox-conversation';
-import { INBOX_ITEM_STATUSES, InboxItemPlaceholder } from '../model/inbox-item';
+import { InboxItemStatus, InboxItemPlaceholder } from '../model/inbox-item';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { InboxUserPlaceholder } from '../model/inbox-user';
 import { InboxConversationService } from './inbox-conversation.service';
-import { DeviceDetectorServiceMock, FeatureFlagServiceMock } from '../../../tests';
+import { DeviceDetectorServiceMock, FeatureFlagServiceMock, MockRemoteConsoleService } from '../../../tests';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpModuleNew } from '../../core/http/http.module.new';
 import { RealTimeService } from '../../core/message/real-time.service';
@@ -20,6 +20,7 @@ import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../../core/http/access-token.service';
 import { HttpClient } from '@angular/common/http';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { RemoteConsoleService } from '../../core/remote-console';
 
 describe('InboxService', () => {
 
@@ -31,6 +32,7 @@ describe('InboxService', () => {
   let featureflagService: FeatureflagService;
   let eventService: EventService;
   let userService: UserService;
+  let remoteConsoleService: RemoteConsoleService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
@@ -46,6 +48,7 @@ describe('InboxService', () => {
         { provide: UserService, useClass: MockedUserService },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         {
           provide: AccessTokenService, useValue: {
             accessToken: 'ACCESS_TOKEN'
@@ -60,15 +63,16 @@ describe('InboxService', () => {
         }
       ]
     });
-    inboxService = TestBed.get(InboxService);
-    http = TestBed.get(HttpClient);
-    realTime = TestBed.get(RealTimeService);
-    messageService = TestBed.get(MessageService);
-    inboxConversationService = TestBed.get(InboxConversationService);
-    featureflagService = TestBed.get(FeatureflagService);
-    eventService = TestBed.get(EventService);
-    userService = TestBed.get(UserService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    inboxService = TestBed.inject(InboxService);
+    http = TestBed.inject(HttpClient);
+    realTime = TestBed.inject(RealTimeService);
+    messageService = TestBed.inject(MessageService);
+    inboxConversationService = TestBed.inject(InboxConversationService);
+    featureflagService = TestBed.inject(FeatureflagService);
+    eventService = TestBed.inject(EventService);
+    userService = TestBed.inject(UserService);
+    remoteConsoleService = TestBed.inject(RemoteConsoleService);
+    httpTestingController = TestBed.inject(HttpTestingController);
     jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_USER);
   });
 
@@ -79,7 +83,10 @@ describe('InboxService', () => {
   describe('init', () => {
     let parsedConversationsResponse;
 
-    beforeEach(() => spyOn(http, 'get').and.returnValue(of(JSON.parse(MOCK_INBOX_API_RESPONSE))));
+    beforeEach(() => {
+      spyOn(http, 'get').and.returnValue(of(JSON.parse(MOCK_INBOX_API_RESPONSE)));
+      spyOn(remoteConsoleService, 'sendConnectionChatTimeout');
+    });
 
     it('should set selfId as the of the logged in used', () => {
       inboxService.init();
@@ -131,12 +138,19 @@ describe('InboxService', () => {
 
       expect(inboxConversationService.subscribeChatEvents).toHaveBeenCalled();
     });
+
+    it('should send metric time to connect to chat', () => {
+      inboxService.init();
+
+      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', true);
+    });
   });
 
   describe('when the http request throws an error', () => {
     beforeEach(() => {
       spyOn<any>(inboxService, 'getInbox$').and.returnValue(throwError(''));
       spyOn<any>(inboxService, 'getArchivedInbox$').and.returnValue(of([]));
+      spyOn(remoteConsoleService, 'sendConnectionChatTimeout');
     });
 
     it('should set errorRetrievingInbox to true', () => {
@@ -150,6 +164,12 @@ describe('InboxService', () => {
 
       expect(inboxConversationService.conversations).toEqual([]);
     });
+
+    it('should call send metric chat timeout', () => {
+      inboxService.init();
+
+      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', false);
+    });
   });
 
   describe('process API item status as item flags', () => {
@@ -158,7 +178,7 @@ describe('InboxService', () => {
     beforeEach(() => modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE));
 
     it('should set item.reserved TRUE when the API response returns an item with status reserved', () => {
-      modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.reserved;
+      modifiedResponse.conversations[0].item.status = InboxItemStatus.RESERVED;
       spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
       inboxService.init();
@@ -167,7 +187,7 @@ describe('InboxService', () => {
     });
 
     it('should set item.sold TRUE when the API response returns an item with status sold', () => {
-      modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.sold;
+      modifiedResponse.conversations[0].item.status = InboxItemStatus.SOLD;
       spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
       inboxService.init();
@@ -176,7 +196,7 @@ describe('InboxService', () => {
     });
 
     it('should set item.notAvailable TRUE when the API response returns an item with status not_available', () => {
-      modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.notAvailable;
+      modifiedResponse.conversations[0].item.status = InboxItemStatus.NOT_AVAILABLE;
       spyOn(http, 'get').and.returnValue(of(modifiedResponse));
 
       inboxService.init();
@@ -284,7 +304,7 @@ describe('InboxService', () => {
     it('should emit CHAT_CAN_PROCESS_RT with false', () => {
       spyOn(eventService, 'emit').and.callThrough();
       spyOn(http, 'get')
-      .and.returnValues(of(modifiedResponse), of(modifiedResponse), of(modifiedResponse));
+        .and.returnValues(of(modifiedResponse), of(modifiedResponse), of(modifiedResponse));
 
       inboxService.init();
 
@@ -307,7 +327,7 @@ describe('InboxService', () => {
 
     it('should not add existing conversations', () => {
       spyOn(http, 'get')
-      .and.returnValues(of(modifiedResponse), of(modifiedResponse), of(modifiedResponse));
+        .and.returnValues(of(modifiedResponse), of(modifiedResponse), of(modifiedResponse));
 
       inboxService.init();
 
@@ -321,7 +341,7 @@ describe('InboxService', () => {
       apiResponse.conversations.map(conversation => conversation.hash = `${conversation.hash}new`);
 
       spyOn(http, 'get')
-      .and.returnValues(of(modifiedResponse), of(apiResponse), of(apiResponse));
+        .and.returnValues(of(modifiedResponse), of(apiResponse), of(apiResponse));
 
       inboxService.init();
 
@@ -338,7 +358,7 @@ describe('InboxService', () => {
 
     it('should return TRUE if APIResponse has next_from', () => {
       spyOn(http, 'get')
-      .and.returnValues(of(modifiedResponse), of(modifiedResponse));
+        .and.returnValues(of(modifiedResponse), of(modifiedResponse));
 
       inboxService.init();
 
