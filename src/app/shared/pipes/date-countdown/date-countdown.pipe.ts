@@ -1,108 +1,57 @@
-/* angular2-moment (c) 2015, 2016 Uri Shaked / MIT Licence */
-
-import {Pipe, ChangeDetectorRef, PipeTransform, OnDestroy, NgZone} from '@angular/core';
+import { Pipe, PipeTransform, ChangeDetectorRef, OnDestroy, NgZone } from '@angular/core';
 import * as moment from 'moment';
+import { interval, Subscription } from 'rxjs';
 
-// under systemjs, moment is actually exported as the default export, so we account for that
-const momentConstructor: (value?: any) => moment.Moment = (<any>moment).default || moment;
-
-@Pipe({name: 'amCountdown', pure: false})
+@Pipe({ name: 'amCountdown', pure: false })
 export class CountdownPipe implements PipeTransform, OnDestroy {
-	private currentTimer: number;
+  private subscription: Subscription;
 
-	private lastTime: number;
-	private lastValue: moment.Duration;
-	private lastOmitSuffix: boolean;
-	private lastText: string;
-
-	constructor(private cdRef: ChangeDetectorRef, private ngZone: NgZone) {
-	}
-
-	transform(value: Date | moment.Moment, omitSuffix?: boolean): string {
-		if (this.hasChanged(value, omitSuffix)) {
-			this.lastTime = this.getTime(value);
-			this.lastValue = moment.duration(this.lastTime - new Date().getTime(), 'milliseconds');
-			this.lastOmitSuffix = omitSuffix;
-			this.removeTimer();
-			this.createTimer();
-			if (this.lastValue.asHours() < 0) {
-				this.lastText = '00h 00m 00s';
-			} else {
-				this.lastText =  this.formatText(this.lastValue);
-			}
-		} else {
-			this.createTimer();
-		}
-
-		return this.lastText;
-	}
-
-	ngOnDestroy(): void {
-		this.removeTimer();
-	}
-
-	private pad(value: number): string {
-		if (value < 10) {
-			return '0' + value;
-		}
-		return value.toString();
-	}
-
-	private formatText(value: moment.Duration) {
-	  let text = '';
-	  let days = Math.floor(this.lastValue.asDays());
-	  let hours = this.lastValue.hours();
-	  let minutes = this.lastValue.minutes();
-	  let seconds = this.lastValue.seconds();
-    if (days > 0) {
-      text += this.pad(days) + 'd ';
+  constructor(changeDetectorRef: ChangeDetectorRef) {
+    if (this.subscription) {
+      return;
     }
-    text += this.pad(hours) + 'h ';
-    text += this.pad(minutes) + 'm ';
-    text += this.pad(seconds) + 's';
-    return text;
+
+    this.subscription = interval(1000).subscribe(() => {
+      changeDetectorRef.markForCheck();
+    });
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
-	private createTimer() {
-		if (this.currentTimer) {
-			return;
-		}
-		this.currentTimer = this.ngZone.runOutsideAngular(() => {
-			if (typeof window !== 'undefined') {
-				return window.setTimeout(() => {
-					this.lastValue = moment.duration(this.lastValue.asMilliseconds() - 1000, 'milliseconds');
-					if (this.lastText === '00h 00m 00s') {
-						this.removeTimer();
-					} else {
-						this.lastText = this.formatText(this.lastValue);
-					}
-					this.currentTimer = null;
-					this.ngZone.run(() => this.cdRef.markForCheck());
-				}, 1000);
-			}
-		});
-	}
+  public transform(deadlineInMs: number): string {
+    return this.formatRemainingTime(deadlineInMs);
+  }
 
+  private formatRemainingTime(deadlineInMs: number): string {
+    let remainingMilliseconds = deadlineInMs - Date.now();
+    if (remainingMilliseconds < 0) {
+      remainingMilliseconds = 0;
+    }
+    const output = [];
+    const duration = moment.duration(remainingMilliseconds, 'milliseconds');
+    const days = Math.floor(duration.asDays());
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+    const seconds = duration.seconds();
 
-	private removeTimer() {
-		if (this.currentTimer) {
-			window.clearTimeout(this.currentTimer);
-			this.currentTimer = null;
-		}
-	}
+    if (days > 0) {
+      output.push(`${this.pad(days)}d`);
+    }
+    output.push(`${this.pad(hours)}h`);
+    output.push(`${this.pad(minutes)}m`);
+    output.push(`${this.pad(seconds)}s`);
 
-	private hasChanged(value: Date | moment.Moment, omitSuffix?: boolean) {
-		return this.getTime(value) !== this.lastTime || omitSuffix !== this.lastOmitSuffix;
-	}
+    return output.join(' ');
+  }
 
-	private getTime(value: Date | moment.Moment) {
-		if (moment.isDate(value)) {
-			return value.getTime();
-		} else if (moment.isMoment(value)) {
-			return value.valueOf();
-		} else {
-			return momentConstructor(value).valueOf();
-		}
-	}
+  private pad(value: number): string {
+    if (value < 10) {
+      return `0${value}`;
+    }
+    return value.toString();
+  }
 }
