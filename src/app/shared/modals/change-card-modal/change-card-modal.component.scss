@@ -1,0 +1,39 @@
+@import "~style/common";
+
+.ChangeCardModal {
+  text-align: center;
+  &-header {
+    background: $walla-main;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    color: $white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  &-body {
+    padding: $spacing-l $spacing-xxxl;
+  }
+  &--title {
+    font-size: $font-size-l;
+    font-weight: bold;
+    margin: $spacing-xxl 0 $spacing-ms;
+  }
+  &--subtitle {
+    font-size: $font-size-m;
+    color: $white;
+    margin: 0 0 $spacing-l;
+  }
+  &__NewCard {
+    &--add, &--used {
+      font-size: $font-size-s;
+      color: $walla-main;
+      text-align: left;
+      cursor: pointer;
+    }
+    &--add {
+      margin: 0 0 $spacing-l;
+    }
+  }
+}

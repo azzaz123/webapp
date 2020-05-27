@@ -53,18 +53,27 @@ $card-height: 88px;
     width: 100%;
     a {
       cursor: pointer;
-      color: $walla-main;
       &:hover {
         text-decoration: underline;
       }
     }
     &-default {
       color: $blue-grey-3;
-      width: 50%;
+      width: 33%;
     }
-    &-delete, &-change {
+    &-change, &-delete {
       text-align: right;
-      width: 50%;
+      width: 33%;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    &-change {
+      color: $walla-main;
+    }
+    &-delete {
+      color: $magenta-main;
     }
   }
 }

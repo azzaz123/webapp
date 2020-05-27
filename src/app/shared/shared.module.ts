@@ -71,6 +71,7 @@ import { PreventDoubleClickDirective } from './prevent-double-click/prevent-doub
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
 import { StatusIconComponent } from './status-icon';
+import { ChangeCardModalComponent } from './modals/change-card-modal/change-card-modal.component';
 
 @NgModule({
   imports: [
@@ -140,6 +141,7 @@ import { StatusIconComponent } from './status-icon';
     StripeCardElementComponent,
     StripeCardsComponent,
     NewCardModalComponent,
+    ChangeCardModalComponent,
     StripeCardSelectionComponent,
     SelectModule,
     NavLinksComponent,
@@ -200,6 +202,7 @@ import { StatusIconComponent } from './status-icon';
     StripeCardElementComponent,
     StripeCardsComponent,
     NewCardModalComponent,
+    ChangeCardModalComponent,
     StripeCardSelectionComponent,
     NavLinksComponent,
     LinkTransformPipe,
@@ -225,7 +228,8 @@ import { StatusIconComponent } from './status-icon';
     ExitConfirmationModalComponent,
     ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
-    NewCardModalComponent
+    NewCardModalComponent,
+    ChangeCardModalComponent,
   ]
 })
 export class SharedModule {
