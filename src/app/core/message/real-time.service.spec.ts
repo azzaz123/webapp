@@ -64,6 +64,7 @@ describe('RealTimeService', () => {
   describe('connect', () => {
     beforeEach(() => {
       spyOn(remoteConsoleService, 'sendConnectionTimeout').and.callThrough();
+      spyOn(remoteConsoleService, 'sendConnectionChatTimeout');
     });
 
     it('should not call xmpp.connect if user is connected', () => {
@@ -76,6 +77,7 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect$).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionChatTimeout).not.toHaveBeenCalled();
     });
 
     it('should call xmpp.connect and return success', () => {
@@ -86,6 +88,18 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect$).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
       expect(remoteConsoleService.sendConnectionTimeout).toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('xmpp', true);
+    });
+
+    it('should not call xmpp.connect and return failed', () => {
+      connectionService.isConnected = true;
+      spyOn(xmppService, 'connect$').and.returnValue(throwError(''));
+
+      service.connect(MOCK_USER.id, ACCESS_TOKEN);
+
+      expect(xmppService.connect$).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
+      expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('xmpp', false);
     });
 
     it('should NOT call xmpp.connect if user do not have internet connection', () => {
@@ -97,6 +111,7 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect$).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionChatTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call xmpp.connect if is already connected', () => {
@@ -269,10 +284,10 @@ describe('RealTimeService', () => {
       eventService.emit(EventService.MESSAGE_SENT, newConversation, inboxMessage.id);
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW, {
-          thread_id: newConversation.id,
-          message_id: inboxMessage.id,
-          item_id: newConversation.item.id
-        });
+        thread_id: newConversation.id,
+        message_id: inboxMessage.id,
+        item_id: newConversation.item.id
+      });
     });
 
     it('should call track with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
