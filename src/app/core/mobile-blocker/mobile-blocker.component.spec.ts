@@ -7,7 +7,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 
-describe('MobileBlockerComponent', () => {
+xdescribe('MobileBlockerComponent', () => {
   let injector: TestBed;
   let component: MobileBlockerComponent;
   let userService: UserService;
