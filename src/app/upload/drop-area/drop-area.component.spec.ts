@@ -348,7 +348,7 @@ describe('DropAreaComponent', () => {
     }));
   });
 
-  xdescribe('onUploadDone', () => {
+  describe('onUploadDone', () => {
     describe('with response 200', () => {
       describe('first image upload', () => {
         describe('with many images', () => {
@@ -464,7 +464,7 @@ describe('DropAreaComponent', () => {
             file: UPLOADED_FILE_OTHER
           });
 
-          expect(event).toEqual( { action: 'created', response: UPLOADED_FILE_OTHER.response });
+          expect(event).toEqual({ action: 'created', response: UPLOAD_FILE_DONE.response });
         });
 
         it('should NOT emit onUploaded event if not every file has been uploaded', () => {
