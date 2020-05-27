@@ -67,7 +67,7 @@
                 <span i18n>Feature</span>
               </tsl-button>
               <button class="btn-featured" *ngIf="item.bumpExpiringDate" [hidden]="selectMode">
-                {{item.bumpExpiringDate | amCountdown}}
+                {{item.bumpExpiringDate | dateCountdown}}
               </button>
             </div>
           </div>

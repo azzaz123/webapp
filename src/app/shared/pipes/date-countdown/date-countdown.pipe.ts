@@ -2,7 +2,7 @@ import { Pipe, PipeTransform, ChangeDetectorRef, OnDestroy, NgZone } from '@angu
 import * as moment from 'moment';
 import { interval, Subscription } from 'rxjs';
 
-@Pipe({ name: 'amCountdown', pure: false })
+@Pipe({ name: 'dateCountdown', pure: false })
 export class CountdownPipe implements PipeTransform, OnDestroy {
   private subscription: Subscription;
 

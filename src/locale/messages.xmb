@@ -147,10 +147,10 @@
           From <ph name="INTERPOLATION"><ex>{{item.purchases.scheduled_start_date | date:&apos;dd/MM/yy&apos;}}</ex>{{item.purchases.scheduled_start_date | date:&apos;dd/MM/yy&apos;}}</ph> to <ph name="INTERPOLATION_1"><ex>{{item.purchases.scheduled_end_date | date:&apos;dd/MM/yy&apos;}}</ex>{{item.purchases.scheduled_end_date | date:&apos;dd/MM/yy&apos;}}</ph>
         </msg>
   <msg id="1290608591542945444"><source>app/shared/catalog/catalog-card/catalog-card.component.html:35,37</source>
-          <ph name="INTERPOLATION"><ex>{{item.purchases.expiration_date | amCountdown}}</ex>{{item.purchases.expiration_date | amCountdown}}</ph> remaining
+          <ph name="INTERPOLATION"><ex>{{item.purchases.expiration_date | dateCountdown}}</ex>{{item.purchases.expiration_date | dateCountdown}}</ph> remaining
         </msg>
   <msg id="3475752672270482528"><source>app/shared/catalog/catalog-card/catalog-card.component.html:38,40</source>
-          <ph name="INTERPOLATION"><ex>{{item.purchases.scheduled_end_date | amCountdown}}</ex>{{item.purchases.scheduled_end_date | amCountdown}}</ph> remaining
+          <ph name="INTERPOLATION"><ex>{{item.purchases.scheduled_end_date | dateCountdown}}</ex>{{item.purchases.scheduled_end_date | dateCountdown}}</ph> remaining
         </msg>
   <msg id="428164738594731840"><source>app/shared/catalog/catalog-card/catalog-card.component.html:43,44</source>
           Cancel</msg>
