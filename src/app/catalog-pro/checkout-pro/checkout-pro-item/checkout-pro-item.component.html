@@ -24,7 +24,7 @@
       <div class="d-flex flex-column">
         <span class="label-date" i18n>Start date</span>
         <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy"
-          [disabled]="!cartProItem.bumpType"
+          
           [ngClass]="cartProItem.bumpType"
           name="fromDate_{{index}}"
           formControlName="fromDate">
@@ -32,7 +32,7 @@
       <div class="d-flex flex-column">
         <span class="label-date" i18n>End date</span>
         <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy"
-          [disabled]="!cartProItem.bumpType"
+          
           [ngClass]="cartProItem.bumpType"
           name="toDate_{{index}}"
           formControlName="toDate">

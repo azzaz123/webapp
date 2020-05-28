@@ -71,6 +71,12 @@ export class CheckoutProComponent implements OnInit {
 
     if (type !== BUMPS.PLANNING) {
       this.allSelected[type] = !this.allSelected[type];
+      if (type === BUMPS.CITY && this.allSelected.countrybump) {	
+        this.allSelected.countrybump = false;	
+      }	
+      if (type === BUMPS.COUNTRY && this.allSelected.citybump) {	
+        this.allSelected.citybump = false;	
+      }
       this.selectAllEventSubject.next({type, allSelected: this.allSelected[type]});
     } else {
       this.setDefaultDates();

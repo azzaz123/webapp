@@ -78,6 +78,7 @@ export class CheckoutProItemComponent implements OnInit {
     } else {
       if (this.cartProItem.bumpType === type) {
         this.removeItem();
+        this.datesForm.disable();
       } else {
         this.cartProItem.bumpType = type;
         this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
@@ -111,7 +112,7 @@ export class CheckoutProItemComponent implements OnInit {
       this.patchFormDateValue(data.dates);
       this.cartProItem.bumpType && this.selectBump(data.type);
     } else {
-      this.datesForm.enable();
+      data.allSelected ? this.datesForm.enable() : this.datesForm.disable();
       this.shouldSelectBump(data) && this.selectBump(data.type);
     }
   }
