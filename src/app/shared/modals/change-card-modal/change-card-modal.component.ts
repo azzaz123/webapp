@@ -37,19 +37,6 @@ export class ChangeCardModalComponent implements OnInit  {
     }
   }
 
-  private managePaymentResponse(paymentResponse: string): void {
-    switch(paymentResponse && paymentResponse.toUpperCase()) {
-      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-        this.activeModal.close('success');
-        break;
-      }
-      default: {
-        this.activeModal.close('error');
-        break;
-      }
-    }
-  }
-
   public setCardInfo(card: any) {
     this.card = card;
   }
@@ -69,6 +56,23 @@ export class ChangeCardModalComponent implements OnInit  {
     this.savedCard = true;
     this.selectedCard = true;
     this.setCardInfo(selectedCard);
+  }
+
+  public setNewCard(event: any) {
+    console.log('event ', event);
+  }
+
+  private managePaymentResponse(paymentResponse: string): void {
+    switch(paymentResponse && paymentResponse.toUpperCase()) {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
+        this.activeModal.close('success');
+        break;
+      }
+      default: {
+        this.activeModal.close('error');
+        break;
+      }
+    }
   }
   
 }

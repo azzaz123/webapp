@@ -5,6 +5,8 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { NewCardModalComponent } from '../../modals/new-card-modal/new-card-modal.component';
 import { FinancialCard } from '../credit-card-info/financial-card';
 import { finalize } from 'rxjs/operators';
+import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
+import { SubscriptionsResponse } from 'app/core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -15,14 +17,19 @@ export class StripeCardsComponent implements OnInit {
 
   public loading = false;
   public stripeCards: FinancialCard[];
+  public subscriptionStripeCards: FinancialCard[];
+  public subscriptions: SubscriptionsResponse[];
 
   constructor(private stripeService: StripeService,
               private modalService: NgbModal,
-              private errorService: ErrorsService) { }
+              private errorService: ErrorsService,
+              private subscriptionsService: SubscriptionsService) { }
 
   ngOnInit() {
+    this.getSubscriptions();
     this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
-      this.stripeCards = stripeCards;
+      this.subscriptionStripeCards = stripeCards.filter( card => card.invoices_default);
+      this.stripeCards = stripeCards.filter( card => !card.invoices_default);
     }, () => {
         this.errorService.i18nError('getStripeCardsError');
     });
@@ -56,8 +63,19 @@ export class StripeCardsComponent implements OnInit {
   }
 
   public onSetDefaultCard(stripeCard: FinancialCard): void {
-    console.log('setDefaultCard ', stripeCard);
-    this.stripeCards.push(stripeCard);
+    const existingCard = this.stripeCards.filter(stripeCard => stripeCard.id === stripeCard.id);
+    if (!existingCard.length) {
+      this.stripeCards.push(stripeCard);
+    }
+  }
+
+  private filterSubscriptionCard(stripeCards: FinancialCard[]) {
+    this.subscriptionStripeCards = stripeCards.filter( card => card.invoices_default);
+  }
+
+  private getSubscriptions() {
+    this.subscriptionsService.getSubscriptions(false)
+      .subscribe(subscriptions => this.subscriptions = subscriptions);
   }
   
 }
