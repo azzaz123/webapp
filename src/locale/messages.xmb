@@ -381,10 +381,13 @@
             plan.</msg>
   <msg id="7291421467944217279"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:51</source>Activate cars</msg>
   <msg id="8890553633144307762"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:8</source><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:3</source><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:4</source><source>app/catalog/checkout/checkout.component.html:3</source>Back</msg>
-  <msg id="ApplyAll"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:18,20</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:29,31</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:40,42</source>
+  <msg id="ApplyAll"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:18,20</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:29,31</source>
                     Apply to all
                   </msg>
   <msg id="CheckoutProPlanning"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:38</source>Planning</msg>
+  <msg id="PlanAll"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:40,42</source>
+                    Apply to all
+                  </msg>
   <msg id="2157586494270826789"><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:10</source>What are the extras?</msg>
   <msg id="9078334813317415148"><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:17</source>City feauture</msg>
   <msg id="308057973020043316"><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:25</source>Country feature</msg>

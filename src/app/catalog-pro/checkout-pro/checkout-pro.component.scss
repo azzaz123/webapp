@@ -71,10 +71,7 @@ $feature-button-width: 170px;
     border-top: 1px solid $blue-grey-5;
     border-right: 1px solid $blue-grey-5;
     border-left: 1px solid $blue-grey-5;
-  }
-  .content-header {
-    width: 98px;
-  }
+  }∫
   .info {
     font-size: $font-size-s;
     text-decoration: underline;
@@ -102,16 +99,16 @@ $feature-button-width: 170px;
     &.city {
       color: $walla-main;
       border-top-left-radius: 18px;
-      width: 21%;
+      width: 23%;
     }
     &.country {
       color: $payblue-main;
-      width: 21%;
+      width: 23%;
     }
     &.planning {
       color: $blue-grey-1;
       box-shadow: none;
-      width: 58%;
+      width: 55%;
       display: flex;
       justify-content: flex-start;
       border-top-right-radius: 18px;
@@ -129,7 +126,7 @@ $feature-button-width: 170px;
   .content-header {
     display: flex;
     flex-direction: column;
-    padding: 0 $spacing-s;
+    margin: 0 14px;
     &.last {
       border-right: none;
     }
