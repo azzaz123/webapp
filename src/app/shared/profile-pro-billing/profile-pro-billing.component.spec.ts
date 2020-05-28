@@ -130,16 +130,15 @@ describe('ProfileProBillingComponent', () => {
           company_name: 'company',
           email: 'email@email.com',
           name: 'name',
-          phone: '666666666',
           postal_code: '12345',
           street: 'street',
           surname: 'surname',
-          id: '123'
+          id: '123',
+          type: 'legal'
         });
 
         component.onSubmit();
 
-        expect(component.billingForm.get('city').dirty).toBe(true);
         expect(component.billingForm.get('country').dirty).toBe(true);
       });
     });
@@ -151,11 +150,11 @@ describe('ProfileProBillingComponent', () => {
           company_name: 'company',
           email: 'email@email.com',
           name: 'name',
-          phone: '666666666',
           postal_code: '12345',
           street: 'street',
           surname: 'surname',
-          id: '123'
+          id: '123',
+          type: 'legal'
         });
       });
 

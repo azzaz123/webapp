@@ -85,7 +85,7 @@ const routes: Routes = [
           isMyZone: true,
           isProducts: true,
           permissions: {
-            only: PERMISSIONS.normal,
+            except: PERMISSIONS.professional,
             redirectTo: '/pro/catalog/upload'
           }
         }
