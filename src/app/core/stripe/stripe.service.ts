@@ -15,6 +15,7 @@ import { FinancialCard } from '../../shared/profile/credit-card-info/financial-c
 import { FeatureflagService } from '../user/featureflag.service';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { async } from 'q';
 
 export const PAYMENTS_API_URL = 'api/v3/payments';
 
@@ -94,7 +95,7 @@ export class StripeService {
   }
 
   public setDefaultCard(paymentMethodId: string): Observable<any> {
-    return this.http.put(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/attach`, {});
+    return this.http.put(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/default`, {});
   }
 
   public createStripeCard(cardElement: any): Promise<any> {
@@ -106,7 +107,23 @@ export class StripeService {
     }).catch(() => this.eventService.emit(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, PAYMENT_RESPONSE_STATUS.FAILED));
   }
 
+  public getSetupIntent(): Observable<any> {
+    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/setupIntent`, {});
+  }
+
+  public createDefaultCard(clientSecret: string, cardElement: any): Promise<any> {
+    return this.stripeSetupIntent(clientSecret, cardElement).then(function(result) {
+      if (result.error) {
+        this.eventService.emit(result.error);
+      } else {
+        return result.setupIntent.payment_method;
+      }
+    });
+  }
+
   createStripePaymentMethod = async (cardElement: any) => await this.lib.createPaymentMethod('card', cardElement);
+
+  stripeSetupIntent = async (clientSecret: string, cardElement: any) => await this.lib.confirmCardSetup(clientSecret, {payment_method: { card: cardElement }});
 
   handlePayment = (paymentResponse, type = 'paymentResponse')  => {
     const { paymentIntent, error } = paymentResponse;

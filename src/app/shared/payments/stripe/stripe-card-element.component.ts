@@ -51,6 +51,7 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
   @Output() onStripeCardCreate: EventEmitter<PaymentMethodResponse> = new EventEmitter();
+  @Output() onStripeSetDefaultCard: EventEmitter<PaymentMethodResponse> = new EventEmitter();
   @Output() onClickUseSavedCard = new EventEmitter();
   @Output() onFocusCard = new EventEmitter<boolean>();
 
@@ -155,6 +156,19 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
         this.newLoading = false;
       }
     }).catch(() => this.newLoading = false);
+  }
+
+  public setDefaultCard() {
+    this.newLoading = true;
+    this.stripeService.getSetupIntent().subscribe((clientSecret: string) => {
+      this.stripeService.createDefaultCard(clientSecret, this.card).then((paymentMethod: PaymentMethodResponse) => {
+        if (paymentMethod) {
+          this.onStripeSetDefaultCard.emit(paymentMethod);
+        } else {
+          this.newLoading = false;
+        }
+      }).catch(() => this.newLoading = false);
+    });
   }
 
   public get model(): boolean {

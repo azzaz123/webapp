@@ -30,6 +30,8 @@ export class CreditCardInfoComponent {
       windowClass: 'modal-prompt'
     });
     modalRef.componentInstance.type = 4;
+    //show text in the modal stating that he won't be able to renew his subscriptions
+    modalRef.componentInstance.financialCard = this.financialCard;//invoices_default
     modalRef.result.then(() => {
       this.loading = true;
       this.stripeService.deleteCard(this.financialCard.id).pipe(finalize(() => this.loading = false)).subscribe(() => {
@@ -43,13 +45,16 @@ export class CreditCardInfoComponent {
     let modalRef: NgbModalRef = this.modalService.open(ChangeCardModalComponent, {windowClass: 'review'});
     modalRef.result.then((financialCard: FinancialCard) => {
       this.loading = true;
+      console.log('onsetdefaultcard ', financialCard);
+      //const existingCard = this.stripeCards.filter(stripeCard => stripeCard.id === financialCard.id);
+
       this.stripeService.setDefaultCard(financialCard.id)
         .pipe(finalize(() => this.loading = false))
         .subscribe(
-          () =>  this.onSetDefaultCard.emit(this.financialCard),
-          () => this.errorService.i18nError('addNewCardError')
+          () => this.onSetDefaultCard.emit(financialCard),
+          () => this.errorService.i18nError('setDefaultCardError')
         );
-      
+
       modalRef = null;
     },
     () => this.loading = false)

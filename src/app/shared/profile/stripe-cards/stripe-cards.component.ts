@@ -7,6 +7,7 @@ import { FinancialCard } from '../credit-card-info/financial-card';
 import { finalize } from 'rxjs/operators';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse } from 'app/core/subscriptions/subscriptions.interface';
+import { ChangeCardModalComponent } from 'app/shared/modals/change-card-modal/change-card-modal.component';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -62,15 +63,8 @@ export class StripeCardsComponent implements OnInit {
     .catch(() => this.loading = false)
   }
 
-  public onSetDefaultCard(stripeCard: FinancialCard): void {
-    const existingCard = this.stripeCards.filter(stripeCard => stripeCard.id === stripeCard.id);
-    if (!existingCard.length) {
-      this.stripeCards.push(stripeCard);
-    }
-  }
-
-  private filterSubscriptionCard(stripeCards: FinancialCard[]) {
-    this.subscriptionStripeCards = stripeCards.filter( card => card.invoices_default);
+  public onSetDefaultCard(event: any): void {
+    console.log('onsetdefaultcard stripe cards', event);
   }
 
   private getSubscriptions() {
