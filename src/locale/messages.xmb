@@ -212,7 +212,7 @@
   <msg id="2906587845957718064"><source>app/shared/catalog/cart/cart.component.html:42</source>Local</msg>
   <msg id="1186759635333538896"><source>app/shared/catalog/cart/cart.component.html:43</source>Provincial</msg>
   <msg id="2314075913167237221"><source>app/shared/catalog/cart/cart.component.html:45</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:16</source><source>app/catalog-pro/checkout-extras-pro/billing-info/billing-info.component.html:60</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:31</source>City</msg>
-  <msg id="516176798986294299"><source>app/shared/catalog/cart/cart.component.html:46</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:30</source><source>app/catalog-pro/checkout-extras-pro/billing-info/billing-info.component.html:66</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:32</source>Country</msg>
+  <msg id="516176798986294299"><source>app/shared/catalog/cart/cart.component.html:46</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:27</source><source>app/catalog-pro/checkout-extras-pro/billing-info/billing-info.component.html:66</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:32</source>Country</msg>
   <msg id="7036284206110282007"><source>app/shared/catalog/cart/cart.component.html:48</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:34</source><source>app/catalog/checkout/checkout-item/checkout-item.component.html:8</source>days</msg>
   <msg id="3448462145758383019"><source>app/shared/catalog/cart/cart.component.html:62</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:45</source>Total</msg>
   <msg id="5269877616047992907"><source>app/shared/catalog/cart/cart.component.html:75</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:37</source>spending</msg>
@@ -381,10 +381,10 @@
             plan.</msg>
   <msg id="7291421467944217279"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:51</source>Activate cars</msg>
   <msg id="8890553633144307762"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:8</source><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:3</source><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:4</source><source>app/catalog/checkout/checkout.component.html:3</source>Back</msg>
-  <msg id="CheckoutProCityApplyAll"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:23</source>Apply to all</msg>
-  <msg id="CheckoutProCountryApplyAll"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:37</source>Apply to all</msg>
-  <msg id="CheckoutProPlanning"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:44</source>Planning</msg>
-  <msg id="CheckoutProPlanningApplyAll"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:51</source>Apply to all</msg>
+  <msg id="ApplyAll"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:18,20</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:29,31</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:40,42</source>
+                    Apply to all
+                  </msg>
+  <msg id="CheckoutProPlanning"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:38</source>Planning</msg>
   <msg id="2157586494270826789"><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:10</source>What are the extras?</msg>
   <msg id="9078334813317415148"><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:17</source>City feauture</msg>
   <msg id="308057973020043316"><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:25</source>Country feature</msg>
