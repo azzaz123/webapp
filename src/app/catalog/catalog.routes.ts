@@ -48,7 +48,7 @@ export const routes: Routes = [
           permissions: {
             except: PERMISSIONS.professional,
             redirectTo: {
-              isNormal: isNormalCatalogPermissions
+              isProfessional: isNormalCatalogPermissions
             }
           }
         }
@@ -62,7 +62,7 @@ export const routes: Routes = [
           permissions: {
             except: PERMISSIONS.professional,
             redirectTo: {
-              isNormal: isNormalCheckoutPermissions
+              isProfessional: isNormalCheckoutPermissions
             }
           }
         }
