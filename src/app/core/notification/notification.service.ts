@@ -3,7 +3,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { I18nService } from '../i18n/i18n.service';
 import { Message } from '../message/message';
 import { PLACEHOLDER_AVATAR } from '../user/user';
-import { PushNotificationsService } from 'ng-push';
+import { PushNotificationsService } from 'ng-push-ivy';
 
 export const NOTIFICATION_DURATION = 4000;
 
