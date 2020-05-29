@@ -8,6 +8,10 @@ $card-width: 300px;
     font-size: $font-size-s;
     font-weight: $font-weight-chunky;
   }
+  h4 {
+    font-size: $font-size-m;
+    color: $blue-grey-3;
+  }
 }
 
 .StripeCards__group {
