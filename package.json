@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
+    "postinstall": "ngcc",
     "start": "./scripts/docknum/start.sh",
     "start-beta": "ng serve -c=beta",
     "builddev": "ng build --aot --i18n-locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
