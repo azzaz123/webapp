@@ -238,13 +238,18 @@ Resources:
       VpcConfig:
         SecurityGroupIds:
           - Fn::ImportValue:
-              !Sub "Core-${Environment}-SSHSecurityGroup"
+              !Sub "Core-${EnvName}-SSHSecurityGroup"
         VpcId:
           Fn::ImportValue:
-            !Sub "Core-${Environment}-VPC"
+            !Sub "Core-${EnvName}-VPC"
         Subnets:
           - Fn::ImportValue:
-              !Sub "Core-${Environment}-NatSubnet1"
+              !Sub "Core-${EnvName}-NatSubnet1"
+      Tags:
+        - Key: Env
+          Value: !Ref EnvName
+        - Key: Project
+          Value: !Ref ProjectName
 
   CodeBuildServiceRole:
     Type: AWS::IAM::Role
