@@ -4,6 +4,8 @@ import { FinancialCardOption, PaymentMethodResponse, FinancialCard } from '../..
 import { PAYMENT_RESPONSE_STATUS } from 'app/core/payments/payment.service';
 import { EventService } from 'app/core/event/event.service';
 import { StripeService } from 'app/core/stripe/stripe.service';
+import { finalize } from 'rxjs/operators';
+import { STATUS_CODES } from 'http';
 
 @Component({
   selector: 'tsl-change-card-modal',
@@ -20,6 +22,7 @@ export class ChangeCardModalComponent implements OnInit  {
   public savedCard = true;
   public selectedCard = false;
   public newLoading = false;
+  errorService: any;
 
   constructor(public activeModal: NgbActiveModal,
               private eventService: EventService,
@@ -61,27 +64,33 @@ export class ChangeCardModalComponent implements OnInit  {
     this.setCardInfo(selectedCard);
   }
 
-  public setDefaultCard(paymentMethod?: PaymentMethodResponse) {
-    console.log('setDefaultCard event ', paymentMethod, this.card);
-    let financialCard: FinancialCard
+  public setDefaultCard(paymentMethod: any) {
     if (paymentMethod) {
-        financialCard = this.stripeService.mapResponse(paymentMethod);
+      this.stripeService.setDefaultCard(paymentMethod)
+        .pipe(finalize(() => this.loading = false))
+        .subscribe(
+          () => this.activeModal.close(this.card),
+          () => this.errorService.i18nError('setDefaultCardError')
+        );
     } else {
-        financialCard = this.card;
+        this.activeModal.close(this.card.id);
     }
-    this.activeModal.close(financialCard);
-      
+  }
+
+  public setNewDefaultCard(paymentIntent: any) {
+    this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
+      this.card = stripeCards.filter( card => card.number === paymentIntent.number);
+    });
+    this.setDefaultCard(paymentIntent.payment_method);
   }
 
   public setExistingDefaultCard() {
-    console.log('setExistingDefaultCard event ', this.card);
-    let financialCard = this.card
     this.newLoading = true;
-    this.stripeService.getSetupIntent().subscribe((clientSecret: string) => {
-      this.stripeService.createDefaultCard(clientSecret, this.card).then((paymentMethod: PaymentMethodResponse) => {
-        if (paymentMethod) {
-          financialCard = this.stripeService.mapResponse(paymentMethod);
-          this.activeModal.close(financialCard);
+  
+    this.stripeService.getSetupIntent().subscribe((clientSecret: any) => {
+      this.stripeService.createDefaultCard(clientSecret.setup_intent, this.card.id).then((response: any) => {
+        if (response.status === PAYMENT_RESPONSE_STATUS.SUCCEEDED) {
+          this.setDefaultCard(response.payment_method);
         } else {
           this.newLoading = false;
         }

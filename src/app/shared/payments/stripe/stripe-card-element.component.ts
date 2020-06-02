@@ -160,12 +160,11 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
 
   public setDefaultCard() {
     this.newLoading = true;
-    this.stripeService.getSetupIntent().subscribe((clientSecret: string) => {
-      this.stripeService.createDefaultCard(clientSecret, this.card).then((paymentMethod: PaymentMethodResponse) => {
+    this.stripeService.getSetupIntent().subscribe((clientSecret: any) => {
+      this.stripeService.createDefaultCard(clientSecret.setup_intent, {card: this.card}).then((paymentMethod: PaymentMethodResponse) => {
+        this.newLoading = false;
         if (paymentMethod) {
           this.onStripeSetDefaultCard.emit(paymentMethod);
-        } else {
-          this.newLoading = false;
         }
       }).catch(() => this.newLoading = false);
     });

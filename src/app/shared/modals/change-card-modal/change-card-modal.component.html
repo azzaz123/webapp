@@ -12,8 +12,8 @@
       ></tsl-stripe-card-selection>
       <div class="ChangeCardModal__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
       <div class="ChangeCardModal__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
-      <tsl-stripe-card-element *ngIf="showCard" [type]="'setDefault'" [cart]="cart" (stripeCardToken)="setDefaultCard($event)"
-                                  (stripeCard)="setCardInfo($event)" (onStripeSetDefaultCard)="setDefaultCard($event)" [loading]="loading"
+      <tsl-stripe-card-element *ngIf="showCard" [type]="'setDefault'" [cart]="cart"
+                                  (stripeCard)="setCardInfo($event)" (onStripeSetDefaultCard)="setNewDefaultCard($event)" [loading]="loading"
       ></tsl-stripe-card-element>
       <tsl-button [hidden]="!savedCard"
                   className="btn-block btn-primary"
@@ -22,7 +22,7 @@
                   [disabled]="!selectedCard"
       >
         <div class="secure-payment-button">
-        <span i18n="@@SaveCard">Save card</span>
+        <span i18n="@@SetDefaultCard">Set default card</span>
         </div>
       </tsl-button>
     </div>

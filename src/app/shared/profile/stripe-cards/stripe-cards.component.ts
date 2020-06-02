@@ -7,7 +7,6 @@ import { FinancialCard } from '../credit-card-info/financial-card';
 import { finalize } from 'rxjs/operators';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse } from 'app/core/subscriptions/subscriptions.interface';
-import { ChangeCardModalComponent } from 'app/shared/modals/change-card-modal/change-card-modal.component';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -28,12 +27,7 @@ export class StripeCardsComponent implements OnInit {
 
   ngOnInit() {
     this.getSubscriptions();
-    this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
-      this.subscriptionStripeCards = stripeCards.filter( card => card.invoices_default);
-      this.stripeCards = stripeCards.filter( card => !card.invoices_default);
-    }, () => {
-        this.errorService.i18nError('getStripeCardsError');
-    });
+    this.getAllCards();
   }
 
   public onDeleteCard(stripeCard: FinancialCard): void {
@@ -64,12 +58,21 @@ export class StripeCardsComponent implements OnInit {
   }
 
   public onSetDefaultCard(event: any): void {
-    console.log('onsetdefaultcard stripe cards', event);
+    this.getAllCards();
   }
 
   private getSubscriptions() {
     this.subscriptionsService.getSubscriptions(false)
       .subscribe(subscriptions => this.subscriptions = subscriptions);
+  }
+
+  private getAllCards() {
+    this.stripeService.getCards(false).subscribe((stripeCards: FinancialCard[]) => {
+      this.subscriptionStripeCards = stripeCards.filter( card => card.invoices_default);
+      this.stripeCards = stripeCards.filter( card => !card.invoices_default);
+    }, () => {
+        this.errorService.i18nError('getStripeCardsError');
+    });
   }
   
 }

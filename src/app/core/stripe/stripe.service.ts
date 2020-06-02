@@ -30,6 +30,7 @@ export class StripeService {
   public fullName: string;
   public PAYMENT_PROVIDER_STRIPE = false;
   private financialCards: FinancialCard[];
+  private setupIntentSecret: string;
 
   constructor(private paymentService: PaymentService,
               private userService: UserService,
@@ -77,8 +78,8 @@ export class StripeService {
     })
   }
 
-  public getCards(): Observable<FinancialCard[]> {
-    if (this.financialCards) {
+  public getCards(cache = true): Observable<FinancialCard[]> {
+    if (this.financialCards && cache) {
       return observableOf(this.financialCards);
     }
     return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/cards`).pipe(
@@ -108,7 +109,7 @@ export class StripeService {
   }
 
   public getSetupIntent(): Observable<any> {
-    return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/setupIntent`, {});
+    return this.http.get<string>(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/setup_intent_secret`);
   }
 
   public createDefaultCard(clientSecret: string, cardElement: any): Promise<any> {
@@ -116,14 +117,14 @@ export class StripeService {
       if (result.error) {
         this.eventService.emit(result.error);
       } else {
-        return result.setupIntent.payment_method;
+        return result.setupIntent;
       }
     });
   }
 
   createStripePaymentMethod = async (cardElement: any) => await this.lib.createPaymentMethod('card', cardElement);
 
-  stripeSetupIntent = async (clientSecret: string, cardElement: any) => await this.lib.confirmCardSetup(clientSecret, {payment_method: { card: cardElement }});
+  stripeSetupIntent = async (clientSecret: string, paymentMethod: any) => await this.lib.confirmCardSetup(clientSecret, {payment_method: paymentMethod});
 
   handlePayment = (paymentResponse, type = 'paymentResponse')  => {
     const { paymentIntent, error } = paymentResponse;

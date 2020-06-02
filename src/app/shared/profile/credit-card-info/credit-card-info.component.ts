@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 import { NewCardModalComponent } from 'app/shared/modals/new-card-modal/new-card-modal.component';
 import { ErrorsService } from 'app/core/errors/errors.service';
 import { ChangeCardModalComponent } from 'app/shared/modals/change-card-modal/change-card-modal.component';
+import { PaymentMethodCardResponse } from 'app/core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-credit-card-info',
@@ -43,18 +44,9 @@ export class CreditCardInfoComponent {
 
   public changeStripeCard(e: Event) {
     let modalRef: NgbModalRef = this.modalService.open(ChangeCardModalComponent, {windowClass: 'review'});
-    modalRef.result.then((financialCard: FinancialCard) => {
-      this.loading = true;
-      console.log('onsetdefaultcard ', financialCard);
-      //const existingCard = this.stripeCards.filter(stripeCard => stripeCard.id === financialCard.id);
-
-      this.stripeService.setDefaultCard(financialCard.id)
-        .pipe(finalize(() => this.loading = false))
-        .subscribe(
-          () => this.onSetDefaultCard.emit(financialCard),
-          () => this.errorService.i18nError('setDefaultCardError')
-        );
-
+    modalRef.result.then((card: FinancialCard) => {
+      this.loading = false;
+      this.onSetDefaultCard.emit(card);
       modalRef = null;
     },
     () => this.loading = false)
