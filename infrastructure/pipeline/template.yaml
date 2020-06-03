@@ -299,15 +299,15 @@ Resources:
                   - ec2:Describe*
                   - ec2:DeleteNetworkInterface
               - Resource:
-                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/webapp-invalidate-caches-${Environment}:*"
+                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/webapp-invalidate-caches-${EnvName}:*"
                 Effect: Allow
                 Action:
                   - logs:*
 
-  TerminateSolrMasterLambdaLogGroup:
+  InvalidateCachesCodebuildLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub "/aws/codebuild/webapp-invalidate-caches-${Environment}"
+      LogGroupName: !Sub "/aws/codebuild/webapp-invalidate-caches-${EnvName}"
       RetentionInDays: 90
 
   Pipeline:
