@@ -67,6 +67,16 @@ export class StatsGraphComponent implements OnInit {
 
     });
     this.chartOption = {
+      title: {
+        show: xAxisData.length === 0,
+        textStyle: {
+            color: "grey",
+            fontSize: 20
+        },
+        text: this.i18n.getTranslations('nodata'),
+        left: "center",
+        top: "center"
+      },
       legend: {
         data: [this.i18n.getTranslations('phonesShared'), this.i18n.getTranslations('citybump'), this.i18n.getTranslations('countrybump'), this.i18n.getTranslations('views'), this.i18n.getTranslations('chats')],
         align: 'left',
