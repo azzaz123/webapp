@@ -147,6 +147,7 @@ Resources:
               - iam:PutRolePolicy
               - iam:GetRole
               - iam:PassRole
+              - logs:*
 
           - Resource:
               - !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:webapp-${EnvName}*"
