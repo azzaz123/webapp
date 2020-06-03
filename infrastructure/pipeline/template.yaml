@@ -228,9 +228,9 @@ Resources:
       Name: !Sub "webapp-invalidate-caches-${EnvName}"
       ServiceRole: !Ref CodeBuildServiceRole
       Artifacts:
-        Type: CODEPIPELINE
+        Type: NO_ARTIFACTS
       Source:
-        Type: CODEPIPELINE
+        Type: NO_SOURCE
         BuildSpec: |
           version: 0.2
           phases:
