@@ -90,7 +90,7 @@ Resources:
               - iam:TagRole
               - iam:UntagUser
               - iam:UntagRole
-              - - iam:CreateRole
+              - iam:CreateRole
               - iam:DeleteRole
               - iam:DeleteRolePolicy
               - iam:PutRolePolicy
