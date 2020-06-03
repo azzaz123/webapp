@@ -53,6 +53,14 @@ Resources:
               - s3:*
 
           - Resource:
+              - !GetAtt CodePipelineServiceRole.Arn
+              - !GetAtt CloudFormationExecutionRole.Arn
+              - !GetAtt CodeBuildServiceRole.Arn
+            Effect: Allow
+            Action:
+              - iam:*
+
+          - Resource:
               - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/webapp-pipeline-${EnvName}*"
               - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/Webapp-${EnvName}*"
               - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/webapp-s3-${EnvName}*"
@@ -164,6 +172,7 @@ Resources:
           - Resource:
               - !GetAtt CodePipelineServiceRole.Arn
               - !GetAtt CloudFormationExecutionRole.Arn
+              - !GetAtt CodeBuildServiceRole.Arn
             Effect: Allow
             Action:
               - iam:*
