@@ -18,7 +18,7 @@ export class CreditCardInfoComponent {
   public loading = false;
   
   @Input() financialCard: FinancialCard;
-  @Output() onSetDefaultCard: EventEmitter<FinancialCard> = new EventEmitter();
+  @Output() onSetChangeCard: EventEmitter<Event> = new EventEmitter();
   @Output() onDeleteStripeCard: EventEmitter<FinancialCard> = new EventEmitter();
 
   constructor(private modalService: NgbModal,
@@ -43,14 +43,7 @@ export class CreditCardInfoComponent {
   }
 
   public changeStripeCard(e: Event) {
-    let modalRef: NgbModalRef = this.modalService.open(ChangeCardModalComponent, {windowClass: 'review'});
-    modalRef.result.then((card: FinancialCard) => {
-      this.loading = false;
-      this.onSetDefaultCard.emit(card);
-      modalRef = null;
-    },
-    () => this.loading = false)
-    .catch(() => this.loading = false)
+    this.onSetChangeCard.emit(e);
   }
 
 }

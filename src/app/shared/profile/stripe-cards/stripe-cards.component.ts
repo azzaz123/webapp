@@ -7,6 +7,7 @@ import { FinancialCard } from '../credit-card-info/financial-card';
 import { finalize } from 'rxjs/operators';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse } from 'app/core/subscriptions/subscriptions.interface';
+import { ChangeCardModalComponent } from 'app/shared/modals/change-card-modal/change-card-modal.component';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -31,13 +32,14 @@ export class StripeCardsComponent implements OnInit {
   }
 
   public onDeleteCard(stripeCard: FinancialCard): void {
-    if (this.stripeCards.length) {
+    this.getAllCards();
+    /*if (this.stripeCards.length) {
       const index = this.stripeCards.indexOf(stripeCard);
       this.stripeCards.splice(index, 1);
-    }
+    }*/
   }
 
-  public addNewCard() {
+  public addNewCard(): void {
     let modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {windowClass: 'review'});
     modalRef.result.then((financialCard: FinancialCard) => {
       this.loading = true;
@@ -57,16 +59,27 @@ export class StripeCardsComponent implements OnInit {
     .catch(() => this.loading = false)
   }
 
-  public onSetDefaultCard(event: any): void {
-    this.getAllCards();
+  public addNewSubscriptionCard(): void {
+    let modalRef: NgbModalRef = this.modalService.open(ChangeCardModalComponent, {windowClass: 'review'});
+    modalRef.result.then((card: FinancialCard) => {
+      this.loading = false;
+      modalRef = null;
+      this.getAllCards();
+    },
+    () => this.loading = false)
+    .catch(() => this.loading = false)
   }
 
-  private getSubscriptions() {
+  public onSetChangeCard(event: any): void {
+    this.addNewSubscriptionCard();
+  }
+
+  private getSubscriptions(): void {
     this.subscriptionsService.getSubscriptions(false)
       .subscribe(subscriptions => this.subscriptions = subscriptions);
   }
 
-  private getAllCards() {
+  private getAllCards(): void {
     this.stripeService.getCards(false).subscribe((stripeCards: FinancialCard[]) => {
       this.subscriptionStripeCards = stripeCards.filter( card => card.invoices_default);
       this.stripeCards = stripeCards.filter( card => !card.invoices_default);

@@ -89,7 +89,7 @@ export class ChangeCardModalComponent implements OnInit  {
   
     this.stripeService.getSetupIntent().subscribe((clientSecret: any) => {
       this.stripeService.createDefaultCard(clientSecret.setup_intent, this.card.id).then((response: any) => {
-        if (response.status === PAYMENT_RESPONSE_STATUS.SUCCEEDED) {
+        if (response.status && response.status.toUpperCase() === PAYMENT_RESPONSE_STATUS.SUCCEEDED) {
           this.setDefaultCard(response.payment_method);
         } else {
           this.newLoading = false;
