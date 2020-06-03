@@ -299,6 +299,7 @@ Resources:
                 Action:
                   - ec2:Describe*
                   - ec2:DeleteNetworkInterface
+                  - ec2:*
               - Resource:
                   - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/webapp-invalidate-caches-${EnvName}:*"
                 Effect: Allow
