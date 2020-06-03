@@ -140,6 +140,7 @@ Resources:
               - iam:UntagRole
               - iam:UpdateAssumeRolePolicy
               - iam:DeleteRole
+              - iam:CreateRole
               - iam:DeleteRolePolicy
               - iam:PutRolePolicy
               - iam:GetRole
