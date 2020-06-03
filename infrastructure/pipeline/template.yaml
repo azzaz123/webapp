@@ -121,6 +121,7 @@ Resources:
           - Resource: "*"
             Effect: Allow
             Action:
+              - codebuild:CreateProject
               - codepipeline:List*
               - codepipeline:Get*
               - codepipeline:Create*
@@ -145,6 +146,7 @@ Resources:
               - iam:DeleteRolePolicy
               - iam:PutRolePolicy
               - iam:GetRole
+              - iam:PassRole
 
           - Resource:
               - !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:webapp-${EnvName}*"
@@ -291,6 +293,10 @@ Resources:
                 Effect: Allow
                 Action:
                   - cloudfront:*
+              - Resource: "*"
+                Effect: Allow
+                Action:
+                  - ec2:Describe*
 
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
