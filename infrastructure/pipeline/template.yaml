@@ -297,6 +297,7 @@ Resources:
                 Effect: Allow
                 Action:
                   - ec2:Describe*
+                  - ec2:DeleteNetworkInterface
 
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
