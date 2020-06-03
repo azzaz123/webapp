@@ -1312,7 +1312,6 @@
 "@mparticle/web-appboy-kit@^2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@mparticle/web-appboy-kit/-/web-appboy-kit-2.0.4.tgz#2386ae9e51ce12528336754edc24c9ebfb4017d9"
-  integrity sha512-rZK3PPGxO6YME/O7fCU0m6Q26l8mEVM6F1z55IO5yCIAVVmLJ+saqwkD7lwPElOHn7kAxNlqSx5dm8j+dBmDow==
   dependencies:
     "@mparticle/web-sdk" "^2.11.3"
     appboy-web-sdk "2.2.4"
@@ -1469,6 +1468,13 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
+"@types/echarts@^4.6.0":
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.6.0.tgz#0dbf5c35db16ed23f9e61370179989fcd62c2678"
+  integrity sha512-Unz/VUdQ3KwD3vtCh8bI295F3p6rFSApivwGPQJ1Mu6837xeit7C1YuX+75gRwfahotbaazmG8e2rLBNEzrfFg==
+  dependencies:
+    "@types/zrender" "*"
+
 "@types/events@*":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
@@ -1595,6 +1601,10 @@
   integrity sha512-9T1auFmbPZoxHz0enUFlUuKRy3it01R+hlggyVUMtnCTQRunsQYifnSGb8hET4Xo8yiC0o0r1paW3ud5+rbURg==
   dependencies:
     "@types/yargs-parser" "*"
+
+"@types/zrender@*":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/zrender/-/zrender-4.0.0.tgz#a6806f12ec4eccaaebd9b0d816f049aca6188fbd"
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
@@ -1989,7 +1999,6 @@ app-root-path@^2.2.1:
 appboy-web-sdk@2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/appboy-web-sdk/-/appboy-web-sdk-2.2.4.tgz#f4f3915e3c47ff856baaf73495e6f4b788d01bae"
-  integrity sha512-AHaJT5DRoEsyO4RCz1rGh5sUalbiEtuyk/TOZapFhwUhQgI2j1ltrEfyhTwS/Ar+NzgLa6MzqeDiEpc5DeO/5g==
 
 appboy-web-sdk@^2.4.3:
   version "2.4.3"
@@ -3750,6 +3759,12 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
+
+echarts@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/echarts/-/echarts-4.7.0.tgz#5b3875a4c2f91e3929425fabab9eace7e4098b3f"
+  dependencies:
+    zrender "4.3.0"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -6960,6 +6975,12 @@ ngx-cookie@4.0.2:
 ngx-device-detector@1.3.11:
   version "1.3.11"
   resolved "https://registry.yarnpkg.com/ngx-device-detector/-/ngx-device-detector-1.3.11.tgz#8a2efcd754b96668d6b78e05c8ac6a64282081e9"
+  dependencies:
+    tslib "^1.9.0"
+
+ngx-echarts@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/ngx-echarts/-/ngx-echarts-4.2.2.tgz#9eb5f69f923084869ea014f117915cd6cc366343"
   dependencies:
     tslib "^1.9.0"
 
@@ -10777,3 +10798,7 @@ zone.js@~0.10.2:
   version "0.10.3"
   resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.10.3.tgz#3e5e4da03c607c9dcd92e37dd35687a14a140c16"
   integrity sha512-LXVLVEq0NNOqK/fLJo3d0kfzd4sxwn2/h67/02pjCjfKDxgx1i9QqpvtHD8CrBnSSwMw5+dy11O7FRX5mkO7Cg==
+
+zrender@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/zrender/-/zrender-4.3.0.tgz#9f056121b20bbae44414d287bf6a119ff7042661"

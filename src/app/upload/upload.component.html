@@ -1,6 +1,6 @@
 <div class="page-content" #scrollPanel>
   <div class="container upload-page">
-    <tsl-category-selector (onSelect)="setCategory($event)" *ngxPermissionsOnly="['isNormal']"></tsl-category-selector>
+    <tsl-category-selector (onSelect)="setCategory($event)" *ngxPermissionsExcept="['isProfessional']"></tsl-category-selector>
     <tsl-upload-car *ngIf="categoryId === '100'"
                     [urgentPrice]="urgentPrice"
                     (onValidationError)="onValidationError()"
