@@ -254,15 +254,17 @@ describe('RemoteConsoleService', () => {
 
     it('should send metric if send message is failed', () => {
       const MESSAGE_ID = 'MESSAGE_ID';
+      const DESCRIPTION = 'MESSAGE_ID';
       spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000);
 
-      service.sendMessageAckFailed(MESSAGE_ID);
+      service.sendMessageAckFailed(MESSAGE_ID, DESCRIPTION);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
         'message_id': MESSAGE_ID,
-        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_FAILED
+        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_FAILED,
+        'description': DESCRIPTION
       });
     });
   });
