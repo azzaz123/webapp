@@ -11,7 +11,7 @@ import { Message } from '../message/message';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { MOCK_USER, USER_DATA } from '../../../tests/user.fixtures.spec';
 import { PLACEHOLDER_AVATAR, User } from '../user/user';
-import { PushNotificationsService } from 'ng-push-ivy';
+import { PushNotificationsService } from 'ng-push';
 import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 
 let service: NotificationService;
