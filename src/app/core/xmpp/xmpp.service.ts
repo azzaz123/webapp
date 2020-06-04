@@ -1,7 +1,6 @@
+import { from as observableFrom, of as observableOf, Observable, Observer, ReplaySubject, throwError } from 'rxjs';
 
-import {from as observableFrom, of as observableOf,  Observable, Observer ,  ReplaySubject, throwError } from 'rxjs';
-
-import {map, tap, mergeMap} from 'rxjs/operators';
+import { map, tap, mergeMap } from 'rxjs/operators';
 import { clone, eq, remove, includes } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { EventService } from '../event/event.service';
@@ -47,7 +46,7 @@ export class XmppService {
     }
   }
 
-  public sendMessage(conversation: InboxConversation, body: string) {
+  public sendMessage(conversation: InboxConversation, body: string): string {
     const messageId = this.client.nextId();
     this.remoteConsoleService.sendMessageActTimeout(messageId);
     this.remoteConsoleService.sendMessageTimeout(messageId);
@@ -56,6 +55,7 @@ export class XmppService {
     this.client.sendMessage(message);
     this.remoteConsoleService.sendMessageTimeout(message.id);
     this.eventService.emit(EventService.MESSAGE_SENT, conversation, message.id);
+    return message.id;
   }
 
   public resendMessage(conversation: InboxConversation, message: InboxMessage) {
