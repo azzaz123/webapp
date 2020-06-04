@@ -2,35 +2,24 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { StripeService } from '../../../core/stripe/stripe.service';
-import { NewCardModalComponent } from './new-card-modal.component';
-import { Observable } from 'rxjs/index';
-import { FINANCIAL_CARD, PAYMENT_METHOD_DATA } from '../../../../tests/payments.fixtures.spec';
+import { ConfirmCardModalComponent } from './confirm-card-modal.component';
 
-describe('NewCardModalComponent', () => {
-  let component: NewCardModalComponent;
-  let fixture: ComponentFixture<NewCardModalComponent>;
+describe('ConfirmdCardModalComponent', () => {
+  let component: ConfirmCardModalComponent;
+  let fixture: ComponentFixture<ConfirmCardModalComponent>;
   let activeModal: NgbActiveModal;
-  let stripeService: StripeService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [NewCardModalComponent],
+        declarations: [ConfirmCardModalComponent],
         providers: [
           {
             provide: NgbActiveModal, useValue: {
-            close() {
-            },
-            dismiss() {
+              close() {
+              },
+              dismiss() {
+              }
             }
-          }
-          },
-          {
-            provide: StripeService, useValue: {
-            mapResponse() {
-              return FINANCIAL_CARD
-            }
-          }
           },
         ],
         schemas: [NO_ERRORS_SCHEMA]
@@ -39,21 +28,19 @@ describe('NewCardModalComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewCardModalComponent);
+    fixture = TestBed.createComponent(ConfirmCardModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     activeModal = TestBed.get(NgbActiveModal);
-    stripeService = TestBed.get(StripeService);
   });
 
-  describe('onCreateCard', () => {
-    it('should close the modal with a FinancialCard', () => {
-      spyOn(stripeService, 'mapResponse').and.returnValue(FINANCIAL_CARD);
+  describe('confirmChange', () => {
+    it('should close the modal with a string', () => {
       spyOn(activeModal, 'close');
 
-      component.onCreateCard(PAYMENT_METHOD_DATA);
+      component.confirmChange();
 
-      expect(activeModal.close).toHaveBeenCalledWith(FINANCIAL_CARD);
+      expect(activeModal.close).toHaveBeenCalledWith('changeCardModal');
     });
 
   });

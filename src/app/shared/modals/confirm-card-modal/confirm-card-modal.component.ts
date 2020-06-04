@@ -8,8 +8,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ConfirmCardModalComponent {
 
-  public loading: boolean;
-
   constructor(public activeModal: NgbActiveModal) {
   }
 

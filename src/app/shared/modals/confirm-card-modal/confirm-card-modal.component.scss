@@ -2,7 +2,7 @@
 
 .ConfirmCardModal {
   text-align: center;
-  padding: $spacing-xxl;
+  padding: $spacing-xxl $spacing-xxxl;
 
   @include media-breakpoint-down(md) {
     padding: $spacing-l $spacing-m;
@@ -13,4 +13,17 @@
     font-weight: bold;
   }
 
+  &--buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: $spacing-l 0 0;
+  }
+
+  tsl-button {
+    width: 100%;
+    ::ng-deep .btn {
+      width: 95%;
+    }
+  }
 }

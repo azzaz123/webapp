@@ -8,8 +8,10 @@
       <mat-icon svgIcon="{{financialCard.brand}}"></mat-icon>
       ****-****-****-{{financialCard.last4}}
     </div>
-    <tsl-button (click)="activeModal.dismiss()" i18n="@@Cancel">Cancel
-    </tsl-button>
-    <tsl-button (click)="confirmChange()" i18n="@@Yes">Yes
-    </tsl-button>
+    <div class="ConfirmCardModal--buttons">
+      <tsl-button className="btn btn-secondary" (click)="activeModal.dismiss()" i18n="@@Cancel">Cancel
+      </tsl-button>
+      <tsl-button className="btn btn-primary" (click)="confirmChange()" i18n="@@Yes">Yes
+      </tsl-button>
+    </div>
 </div>
