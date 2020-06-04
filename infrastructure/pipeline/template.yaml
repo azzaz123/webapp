@@ -147,6 +147,7 @@ Resources:
               - iam:PutRolePolicy
               - iam:GetRole
               - iam:PassRole
+              - logs:*
 
           - Resource:
               - !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:webapp-${EnvName}*"
@@ -227,9 +228,9 @@ Resources:
       Name: !Sub "webapp-invalidate-caches-${EnvName}"
       ServiceRole: !Ref CodeBuildServiceRole
       Artifacts:
-        Type: CODEPIPELINE
+        Type: NO_ARTIFACTS
       Source:
-        Type: CODEPIPELINE
+        Type: NO_SOURCE
         BuildSpec: |
           version: 0.2
           phases:
@@ -296,7 +297,35 @@ Resources:
               - Resource: "*"
                 Effect: Allow
                 Action:
-                  - ec2:Describe*
+                  - ec2:CreateNetworkInterface
+                  - ec2:DescribeDhcpOptions
+                  - ec2:DescribeNetworkInterfaces
+                  - ec2:DeleteNetworkInterface
+                  - ec2:DescribeSubnets
+                  - ec2:DescribeSecurityGroups
+                  - ec2:DescribeVpcs
+              - Resource:
+                  - !Sub "arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:network-interface/*"
+                Effect: Allow
+                Action:
+                  - ec2:CreateNetworkInterfacePermission
+              - Resource:
+                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/webapp-invalidate-caches-${EnvName}:*"
+                Effect: Allow
+                Action:
+                  - logs:*
+              - Resource:
+                  - !GetAtt ArtifactBucket.Arn
+                  - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
+                Effect: Allow
+                Action:
+                  - s3:*
+
+  InvalidateCachesCodebuildLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/codebuild/webapp-invalidate-caches-${EnvName}"
+      RetentionInDays: 90
 
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
