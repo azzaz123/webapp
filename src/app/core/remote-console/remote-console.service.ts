@@ -93,6 +93,14 @@ export class RemoteConsoleService implements OnDestroy {
     }
   }
 
+  sendMessageAckFailed(messageId: string): void {
+    this.remoteConsoleClientService.info({
+      ...this.getCommonLog(this.userService.user.id),
+      message_id: messageId,
+      metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_FAILED,
+    });
+  }
+
   sendMessageActTimeout(messageId: string): void {
     if (!this.sendMessageActTime.has(messageId)) {
       this.sendMessageActTime.set(messageId, new Date().getTime());

@@ -250,6 +250,23 @@ describe('RemoteConsoleService', () => {
     });
   });
 
+  describe('sendMessageAckFailed', () => {
+
+    it('should send metric if send message is failed', () => {
+      const MESSAGE_ID = 'MESSAGE_ID';
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(4000);
+
+      service.sendMessageAckFailed(MESSAGE_ID);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'message_id': MESSAGE_ID,
+        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_FAILED
+      });
+    });
+  });
+
   describe('sendDuplicateConversations', () => {
 
     it('should call duplicated conversation conection with parameters', () => {
