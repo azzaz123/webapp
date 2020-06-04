@@ -12,14 +12,16 @@ import {
 } from '@angular/core';
 import { EventService } from '../../core/event/event.service';
 import { RealTimeService } from '../../core/message/real-time.service';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { InboxConversationService } from '../service';
 import { TextMessageComponent } from '../message/text-message';
 import { eq, includes, isEmpty } from 'lodash-es';
-import { InboxConversation, InboxMessage, MessageType } from '../model';
+import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../model';
 import { ThirdVoiceDropPriceComponent } from '../message/third-voice-drop-price';
 import { ThirdVoiceReviewComponent } from '../message/third-voice-review';
+import { RemoteConsoleService } from '../../core/remote-console';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -30,6 +32,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   public readonly BOTTOM_BUFFER_ZONE = 100;
   private MESSAGE_HEIGHT = 14;
+  public readonly MESSAGE_METRIC_DELAY = 5 * 1000;
 
   @Input() currentConversation: InboxConversation;
   @Input() conversationsTotal: number;
@@ -52,7 +55,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   constructor(private eventService: EventService,
               private i18n: I18nService,
               private realTime: RealTimeService,
-              private inboxConversationService: InboxConversationService) {
+              private inboxConversationService: InboxConversationService,
+              private remoteConsoleService: RemoteConsoleService) {
     this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
   }
 
@@ -193,5 +197,16 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   public typing() {
     this.isTopBarExpanded = false;
+  }
+
+  public clickSendMessage(messageId: string): void {
+    of(messageId).pipe(delay(this.MESSAGE_METRIC_DELAY))
+      .subscribe(id => this.sendMetricMessageSendFailed(id, `message is not send after ${this.MESSAGE_METRIC_DELAY}ms`));
+  }
+
+  private sendMetricMessageSendFailed(messageId: string, description: string): void {
+    this.currentConversation.messages
+      .filter(message => message.id === messageId && message.status === MessageStatus.PENDING)
+      .forEach(message => this.remoteConsoleService.sendMessageAckFailed(message.id, description));
   }
 }
