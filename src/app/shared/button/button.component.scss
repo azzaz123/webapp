@@ -32,6 +32,7 @@ $vertical-padding: $spacing-ms;
   }
   &.btn-primary {
     &.disabled, &:disabled {
+      cursor: inherit;
       &:active {
         background-color: $walla-main;
         border-color: transparent;

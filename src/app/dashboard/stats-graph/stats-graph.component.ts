@@ -50,14 +50,14 @@ export class StatsGraphComponent implements OnInit {
     entries.map(entry => {
       if (!this.yearly) {
         const unixDate = moment.unix(entry.date/1000).utcOffset(0, true);
-        xAxisData.push(moment(unixDate).format('DD MMM'));
+        xAxisData.push(moment(unixDate, axisDateFormat).format('DD MMM'));
         data1.push(entry.values.phone_numbers);
         data2.push(entry.values.city_bump);
         data3.push(entry.values.country_bump);
         data4.push(entry.values.views);
         data5.push(entry.values.chats);
       } else {
-        xAxisData.push(entry.date);
+        xAxisData.push(moment(entry.date, 'YYY-MM-DD').format(axisDateFormat));
         data1.push(entry.phone_numbers);
         data2.push(entry.city_bump);
         data3.push(entry.country_bump);
@@ -102,11 +102,6 @@ export class StatsGraphComponent implements OnInit {
         silent: false,
         splitLine: {
           show: false
-        },
-        axisLabel: {
-          formatter: (function(value){
-              return moment(value).format(axisDateFormat);
-          })
         },
         nameTextStyle: {
           color: 'rgba(19, 193, 172, 1.0)'
