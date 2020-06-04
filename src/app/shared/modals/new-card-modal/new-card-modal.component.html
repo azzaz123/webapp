@@ -4,7 +4,7 @@
         <mat-icon svgIcon="cross"></mat-icon>
     </div>
     <h4 class="NewCardModal--title" i18n="@@AddNewCreditCard">Add a new credit card</h4>
-    <p class="NewCardModal--subtitle" i18n="@@ChangeSubscriptionCardSubstitle">Subtitle for adding new card</p>
+    <p class="NewCardModal--subtitle" i18n="@@ChangeSubscriptionCardSubtitle">Subtitle for adding new card</p>
   </div>
   <div class="NewCardModal--body">
       <tsl-stripe-card-element [newLoading]="loading" (onStripeCardCreate)="onCreateCard($event)" [type]="'new'"

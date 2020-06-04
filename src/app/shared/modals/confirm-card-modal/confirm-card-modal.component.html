@@ -1,0 +1,15 @@
+<div class="ConfirmCardModal">
+    <div class="modal-close" (click)="activeModal.dismiss()">
+        <mat-icon svgIcon="cross"></mat-icon>
+    </div>
+    <h4 class="ConfirmCardModal--title" i18n="@@ConfirmPaymentMethod">Confirm payment method</h4>
+    <p class="" i18n="@@ChargeThisCard">Do you want to be charged to the card</p>
+    <div class="ConfirmCardModal--cardNumber">
+      <mat-icon svgIcon="{{financialCard.brand}}"></mat-icon>
+      ****-****-****-{{financialCard.last4}}
+    </div>
+    <tsl-button (click)="activeModal.dismiss()" i18n="@@Cancel">Cancel
+    </tsl-button>
+    <tsl-button (click)="confirmChange()" i18n="@@Yes">Yes
+    </tsl-button>
+</div>

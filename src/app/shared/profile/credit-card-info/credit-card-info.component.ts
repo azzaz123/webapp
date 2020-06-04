@@ -8,6 +8,7 @@ import { NewCardModalComponent } from 'app/shared/modals/new-card-modal/new-card
 import { ErrorsService } from 'app/core/errors/errors.service';
 import { ChangeCardModalComponent } from 'app/shared/modals/change-card-modal/change-card-modal.component';
 import { PaymentMethodCardResponse } from 'app/core/payments/payment.interface';
+import { NoCardModalComponent } from 'app/shared/modals/no-card-modal/no-card-modal.component';
 
 @Component({
   selector: 'tsl-credit-card-info',
@@ -25,14 +26,28 @@ export class CreditCardInfoComponent {
               private stripeService: StripeService,
               private errorService: ErrorsService) { }
 
-  public deleteStripeCard(e: Event) {
+  public checkDelete(e: Event) {
     e.stopPropagation();
+    if (this.financialCard.invoices_default) {
+      let modalRef: NgbModalRef = this.modalService.open(NoCardModalComponent, {windowClass: 'review'});
+      modalRef.result.then((action: string) => {
+        modalRef = null;
+        if (action === 'deleteCardModal') {
+          this.deleteStripeCard();
+        }
+      });
+    } else {
+      this.deleteStripeCard();
+    }
+    
+  }
+
+  public deleteStripeCard() {
     const modalRef = this.modalService.open(ConfirmationModalComponent, {
       windowClass: 'modal-prompt'
     });
     modalRef.componentInstance.type = 4;
-    //show text in the modal stating that he won't be able to renew his subscriptions
-    modalRef.componentInstance.financialCard = this.financialCard;//invoices_default
+    modalRef.componentInstance.financialCard = this.financialCard;
     modalRef.result.then(() => {
       this.loading = true;
       this.stripeService.deleteCard(this.financialCard.id).pipe(finalize(() => this.loading = false)).subscribe(() => {

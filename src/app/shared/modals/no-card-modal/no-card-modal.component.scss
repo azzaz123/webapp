@@ -1,0 +1,11 @@
+@import "~style/common";
+
+.NoCardModal {
+  text-align: center;
+  padding: $spacing-xxl;
+
+  @include media-breakpoint-down(md) {
+    padding: $spacing-l $spacing-m;
+  }
+}
+

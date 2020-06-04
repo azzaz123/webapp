@@ -1,0 +1,15 @@
+<div class="NoCardModal">
+  <div class="modal-close" (click)="activeModal.dismiss()">
+      <mat-icon svgIcon="cross"></mat-icon>
+  </div>
+  <h4 class="NoCardModal--title" i18n="@@MissingPaymentMethod">Missing payment method</h4>
+  <p class="NoCardModal--subtitle" i18n="@@">You won't have any payment method linked to your subscription...</p>
+  <tsl-button (click)="activeModal.dismiss()"
+              i18n="@@Cancel"
+  >Cancel
+  </tsl-button>
+  <tsl-button (click)="deleteCard()"
+              i18n="@@DeleteCard"
+  >Yes, I want to delete it
+  </tsl-button>
+</div>

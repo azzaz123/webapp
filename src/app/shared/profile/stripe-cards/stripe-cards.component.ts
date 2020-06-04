@@ -33,10 +33,6 @@ export class StripeCardsComponent implements OnInit {
 
   public onDeleteCard(stripeCard: FinancialCard): void {
     this.getAllCards();
-    /*if (this.stripeCards.length) {
-      const index = this.stripeCards.indexOf(stripeCard);
-      this.stripeCards.splice(index, 1);
-    }*/
   }
 
   public addNewCard(): void {

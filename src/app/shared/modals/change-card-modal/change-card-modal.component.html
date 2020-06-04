@@ -4,7 +4,7 @@
         <mat-icon svgIcon="cross"></mat-icon>
       </div>
       <h4 class="ChangeCardModal--title" i18n="@@ChangeSubscriptionCardTitle">Change subscription card</h4>
-      <p class="ChangeCardModal--subtitle" i18n="@@ChangeSubscriptionCardSubstitle">Subtitle for changing card</p>
+      <p class="ChangeCardModal--subtitle" i18n="@@ChangeSubscriptionCardSubtitle">Subtitle for changing card</p>
     </div>
     <div class="ChangeCardModal-body">
       <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
