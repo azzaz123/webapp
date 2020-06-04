@@ -27,7 +27,7 @@ export class LoggedGuard implements CanActivate {
     }
     if (isEmpty(this.permissionService.getPermissions())) {
       return this.userService.me().pipe(map((user: User) => {
-        this.userService.setPermission(user.type);
+        this.userService.setPermission(user);
         return true;
       }));
     } else {

@@ -14,7 +14,7 @@ const routes: Routes = [
     data: {
       isMyZone: true,
       permissions: {
-        only: PERMISSIONS.normal,
+        except: PERMISSIONS.professional,
         redirectTo: '/pro/dashboard'
       }
     },

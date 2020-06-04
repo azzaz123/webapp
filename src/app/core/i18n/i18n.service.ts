@@ -151,6 +151,7 @@ export class I18nService {
       continueSubscriptionErrorBody: 'We could not proceed with your request.',
       paymentFailed: 'The payment could not be done',
       consumerGoodsGeneralCategoryTitle: 'Everything else',
+      nodata: 'No data available',
       subscriptionBenefits: [
         {
           iconId: 'paintbrush',
@@ -323,6 +324,7 @@ export class I18nService {
       continueSubscriptionErrorBody: 'Tu suscripción no ha podido ser restablecida.',
       paymentFailed: 'No ha podido realizarse el pago',
       consumerGoodsGeneralCategoryTitle: 'Todo lo demás',
+      nodata: 'No hay datos disponibles',
       subscriptionBenefits: [
         {
           iconId: 'paintbrush',

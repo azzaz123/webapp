@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +11,12 @@ import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-
 import { finalize } from 'rxjs/operators';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 
+export enum BILLING_TYPE {
+  NATURAL = 'natural',
+  LEGAL = 'legal'
+}
+
+
 @Component({
   selector: 'tsl-profile-pro-billing',
   templateUrl: './profile-pro-billing.component.html',
@@ -21,20 +27,22 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
   public billingForm: FormGroup;
   public isNewBillingInfoForm = true;
   public loading = false;
+  public type: string;
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
-
+  @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
+  
   constructor(private fb: FormBuilder,
               private paymentService: PaymentService,
               private errorsService: ErrorsService,
               private modalService: NgbModal) {
     this.billingForm = fb.group({
+      type: ['', [Validators.required]],
       cif: ['', [Validators.required]],
       city: ['', [Validators.required]],
       company_name: ['', [Validators.required]],
       country: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required]],
       name: ['', [Validators.required]],
-      phone: ['', [Validators.required]],
       postal_code: ['', [Validators.required]],
       street: ['', [Validators.required]],
       surname: ['', [Validators.required]],
@@ -42,22 +50,62 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     });
   }
 
-  initForm() {
-    this.paymentService.getBillingInfo().subscribe((billingInfo: BillingInfoResponse) => {
-      this.isNewBillingInfoForm = false;
-      this.billingForm.patchValue(billingInfo);
-      for (const control in this.billingForm.controls) {
-        if (this.billingForm.controls.hasOwnProperty(control)) {
-          this.billingForm.controls[control].markAsDirty();
-        }
+  onChanges() {
+    this.billingForm.get('type').valueChanges.subscribe(val => {
+      this.type = val;
+      if (val === BILLING_TYPE.NATURAL) {
+        this.setNaturalRequiredFields();
+      } else {
+        this.setLegalRequiredFields();
       }
+      this.updateFieldsValidity();
+      this.billingInfoFormChange.emit(this.billingForm);
+    });
+  }
+
+  initForm() {
+    this.paymentService.getBillingInfo().subscribe(
+      (billingInfo: BillingInfoResponse) => {
+        this.isNewBillingInfoForm = false;
+        this.type = billingInfo.type || BILLING_TYPE.NATURAL;
+        this.billingForm.patchValue(billingInfo);
+        for (const control in this.billingForm.controls) {
+          if (this.billingForm.controls.hasOwnProperty(control)) {
+            this.billingForm.controls[control].markAsDirty();
+          }
+        }
+      },
+      () => {
+        this.type = BILLING_TYPE.NATURAL;
+      }
+    )
+    .add(() => {
+      this.billingForm.patchValue({
+        type: this.type || BILLING_TYPE.NATURAL
+      });
+      if (this.type === BILLING_TYPE.NATURAL) {
+        this.setNaturalRequiredFields();
+      } else {
+        this.setLegalRequiredFields();
+      }
+      this.updateFieldsValidity();
+      this.onChanges();
     });
   }
 
   public onSubmit() {
     if (this.billingForm.valid) {
       this.loading = true;
-      
+      if (this.billingForm.get('type').value === BILLING_TYPE.LEGAL) {
+        this.billingForm.patchValue({
+          name: '',
+          surname: ''
+        });
+      } else {
+        this.billingForm.patchValue({
+          company_name: ''
+        });
+      }
       this.paymentService.updateBillingInfo(this.billingForm.value)
       .pipe(finalize(() => this.loading = false))
       .subscribe(() => {
@@ -93,5 +141,23 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
         });
       }
     });
+  }
+
+  private setNaturalRequiredFields() {
+    this.billingForm.get('name').setValidators(Validators.required);
+    this.billingForm.get('surname').setValidators(Validators.required);
+    this.billingForm.get('company_name').setValidators(null);
+  }
+
+  private setLegalRequiredFields() {
+    this.billingForm.get('company_name').setValidators(Validators.required);
+    this.billingForm.get('name').setValidators(null);
+    this.billingForm.get('surname').setValidators(null);
+  }
+
+  private updateFieldsValidity() {
+    this.billingForm.get('company_name').updateValueAndValidity();
+    this.billingForm.get('name').updateValueAndValidity();
+    this.billingForm.get('surname').updateValueAndValidity();
   }
 }

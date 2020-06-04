@@ -53,6 +53,14 @@ Resources:
               - s3:*
 
           - Resource:
+              - !GetAtt CodePipelineServiceRole.Arn
+              - !GetAtt CloudFormationExecutionRole.Arn
+              - !GetAtt CodeBuildServiceRole.Arn
+            Effect: Allow
+            Action:
+              - iam:*
+
+          - Resource:
               - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/webapp-pipeline-${EnvName}*"
               - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/Webapp-${EnvName}*"
               - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/webapp-s3-${EnvName}*"
@@ -66,6 +74,12 @@ Resources:
             Action:
               - codepipeline:*
 
+          - Resource:
+              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-invalidate-caches-${EnvName}*"
+            Effect: Allow
+            Action:
+              - codebuild:*
+
           - Resource: "*"
             Effect: Allow
             Action:
@@ -76,6 +90,7 @@ Resources:
               - iam:TagRole
               - iam:UntagUser
               - iam:UntagRole
+              - iam:CreateRole
               - iam:DeleteRole
               - iam:DeleteRolePolicy
               - iam:PutRolePolicy
@@ -106,6 +121,7 @@ Resources:
           - Resource: "*"
             Effect: Allow
             Action:
+              - codebuild:CreateProject
               - codepipeline:List*
               - codepipeline:Get*
               - codepipeline:Create*
@@ -126,9 +142,12 @@ Resources:
               - iam:UntagRole
               - iam:UpdateAssumeRolePolicy
               - iam:DeleteRole
+              - iam:CreateRole
               - iam:DeleteRolePolicy
               - iam:PutRolePolicy
               - iam:GetRole
+              - iam:PassRole
+              - logs:*
 
           - Resource:
               - !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:webapp-${EnvName}*"
@@ -158,6 +177,7 @@ Resources:
           - Resource:
               - !GetAtt CodePipelineServiceRole.Arn
               - !GetAtt CloudFormationExecutionRole.Arn
+              - !GetAtt CodeBuildServiceRole.Arn
             Effect: Allow
             Action:
               - iam:*
@@ -172,10 +192,17 @@ Resources:
           - Resource: !Join
               - ''
               - - !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/'
-                - Fn::ImportValue: !Sub webapp-es-cloudfront-distribution-id-${EnvName}
+                - Fn::ImportValue: !Sub webapp-en-cloudfront-distribution-id-${EnvName}
             Effect: Allow
             Action:
               - cloudfront:*
+
+          - Resource:
+              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-invalidate-caches-${EnvName}*"
+            Effect: Allow
+            Action:
+              - codebuild:*
+
       Roles:
         - Ref: "CloudFormationExecutionRole"
 
@@ -194,6 +221,111 @@ Resources:
           Value: !Ref EnvName
         - Key: Project
           Value: !Ref ProjectName
+
+  CodeBuildScripts:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub "webapp-invalidate-caches-${EnvName}"
+      ServiceRole: !Ref CodeBuildServiceRole
+      Artifacts:
+        Type: NO_ARTIFACTS
+      Source:
+        Type: NO_SOURCE
+        BuildSpec: |
+          version: 0.2
+          phases:
+              build:
+                  commands:
+                    - aws cloudfront create-invalidation --distribution-id $EN_DISTRIBUTION --paths "/index.html"
+                    - aws cloudfront create-invalidation --distribution-id $ES_DISTRIBUTION --paths "/index.html"
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: "aws/codebuild/docker:17.09.0"
+        Type: LINUX_CONTAINER
+        EnvironmentVariables:
+          - Name: EN_DISTRIBUTION
+            Value:
+              Fn::ImportValue: !Sub webapp-en-cloudfront-distribution-id-${EnvName}
+          - Name: ES_DISTRIBUTION
+            Value:
+              Fn::ImportValue: !Sub webapp-es-cloudfront-distribution-id-${EnvName}
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::ImportValue:
+              !Sub "Core-${EnvName}-SSHSecurityGroup"
+        VpcId:
+          Fn::ImportValue:
+            !Sub "Core-${EnvName}-VPC"
+        Subnets:
+          - Fn::ImportValue:
+              !Sub "Core-${EnvName}-NatSubnet1"
+      Tags:
+        - Key: Env
+          Value: !Ref EnvName
+        - Key: Project
+          Value: !Ref ProjectName
+
+  CodeBuildServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: Allow
+          Principal:
+            Service: codebuild.amazonaws.com
+          Action: sts:AssumeRole
+      Policies:
+        - PolicyName: !Sub "webapp-codebuild-role-${EnvName}"
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource: !Join
+                  - ''
+                  - - !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/'
+                    - Fn::ImportValue: !Sub webapp-es-cloudfront-distribution-id-${EnvName}
+                Effect: Allow
+                Action:
+                  - cloudfront:*
+              - Resource: !Join
+                  - ''
+                  - - !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/'
+                    - Fn::ImportValue: !Sub webapp-en-cloudfront-distribution-id-${EnvName}
+                Effect: Allow
+                Action:
+                  - cloudfront:*
+              - Resource: "*"
+                Effect: Allow
+                Action:
+                  - ec2:CreateNetworkInterface
+                  - ec2:DescribeDhcpOptions
+                  - ec2:DescribeNetworkInterfaces
+                  - ec2:DeleteNetworkInterface
+                  - ec2:DescribeSubnets
+                  - ec2:DescribeSecurityGroups
+                  - ec2:DescribeVpcs
+              - Resource:
+                  - !Sub "arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:network-interface/*"
+                Effect: Allow
+                Action:
+                  - ec2:CreateNetworkInterfacePermission
+              - Resource:
+                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/webapp-invalidate-caches-${EnvName}:*"
+                Effect: Allow
+                Action:
+                  - logs:*
+              - Resource:
+                  - !GetAtt ArtifactBucket.Arn
+                  - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
+                Effect: Allow
+                Action:
+                  - s3:*
+
+  InvalidateCachesCodebuildLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/codebuild/webapp-invalidate-caches-${EnvName}"
+      RetentionInDays: 90
 
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
@@ -252,3 +384,14 @@ Resources:
               InputArtifacts:
                 - Name: App
               RunOrder: 2
+            - Name: Invalidate-Caches
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: "1"
+                Provider: CodeBuild
+              Configuration:
+                ProjectName: !Ref CodeBuildScripts
+              InputArtifacts:
+                - Name: App
+              RunOrder: 3

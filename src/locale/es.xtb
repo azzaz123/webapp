@@ -336,7 +336,6 @@
   <translation id="3258601590058086652">¿Tienes prisa para vender tu producto?</translation>
   <translation id="4495547321385209565">Diferencia tu producto durante 7 días en el muro para que sea más fácil de encontrar mediante el filtro "Urge"</translation>
   <translation id="4532380494593950343">Aquí podrás ver y editar los datos de tu perfil</translation>
-  <translation id="140771848071043686">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
   <translation id="6938753357996446484">Tus favoritos</translation>
   <translation id="7695212222770955574">Estos son los productos de wallapop que más te gustan</translation>
   <translation id="1339317612974362100">favoritos</translation>
@@ -508,14 +507,6 @@
   <translation id="4849465581526004216">destacados de país</translation>
   <translation id="8847634013548993288">destacado de país</translation>
   <translation id="8108541630841000132">Información de facturación</translation>
-  <translation id="6028371114637047813">Nombre</translation>
-  <translation id="4407559560004943843">Apellidos</translation>
-  <translation id="6765071518635771784">Nombre de la empresa</translation>
-  <translation id="9005249750227479148">Email de facturación</translation>
-  <translation id="643007923046147044">Teléfono de facturación</translation>
-  <translation id="6539741229179513116">Dirección de facturación</translation>
-  <translation id="3164629351326127839">CIF</translation>
-  <translation id="7450324673386885301">Código Postal</translation>
   <translation id="4464028962645674576">Activos <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>/<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="6474953774520959911">Los coches que están planeados no pueden ser destacados de nuevo. Puedes cancelar los destacados para estos productos o continuar destacando los otros.</translation>
   <translation id="4807588143683316694">Los coches que están planeados no pueden ser destacados de nuevo.</translation>
@@ -536,7 +527,6 @@
   <translation id="6348395677948023023">Subir coche</translation>
   <translation id="8458658926966860767">¿Estás seguro que quieres eliminar la información de facturación? </translation>
   <translation id="7092318893814699678">Sí, estoy seguro/a</translation>
-  <translation id="1250063669755603957">Eliminar información</translation>
   <translation id="773668064257926548">Eliminar tarjeta</translation>
   <translation id="8843627277100451781">¿Estas seguro que quieres eliminar la tarjeta?</translation>
   <translation id="4468071625554558577">Método de pago:</translation>
@@ -957,10 +947,10 @@
   <translation id="931255636742351800">Sin límite</translation>
   <translation id="5813721227215884251">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
   <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
-  <translation id="thirdVoiceReviewFirstMessage">Qué bien que hayas encontrado lo que buscabas </translation>
-  <translation id="thirdVoiceReviewSecondMessage">¿Cómo ha ido? Dedica un segundo a valorar al usuario, ¡tu opinión mejora nuestra comunidad!</translation>
+  <translation id="thirdVoiceReviewFirstMessage">Has encontrado lo que buscabas. ¡Genial!</translation>
+  <translation id="thirdVoiceReviewSecondMessage">¿Cómo ha ido? Valora tu experiencia con este usuario, será útil para nuestra comunidad</translation>
   <translation id="thirdVoiceDoReview">Valorar</translation>
-  <translation id="thirdVoiceThanksForRating">¡Gracias por tu valoración!</translation>
+  <translation id="thirdVoiceThanksForRating">¡Gracias! Otras personas apreciarán tu valoracióng</translation>
   <translation id="thirdVoiceDropPrice">El producto ha bajado de precio. ¿Quieres cerrar un trato?</translation>
   <translation id="949044872815747177">Gestionar desde la app</translation>
   <translation id="6488767812620715130"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Parece que quieres cambiar algo en tu suscripción<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
@@ -1035,7 +1025,8 @@
   <translation id="CheckoutProCountryApplyAll">Aplicar a todos</translation>
   <translation id="CheckoutProCityApplyAll">Aplicar a todos</translation>
   <translation id="CheckoutProPlanningApplyAll">Programar todos</translation>
-
+  <translation id="SubscriptionsSlotItemPublishMore">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> <ph name="INTERPOLATION_1"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph> más</translation>
+  <translation id="ListComponentHeaderSubtitle">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
   <translation id="TooManyItemsModalButtonGoToSubscriptions">Elige una suscripción PRO</translation>
   <translation id="TooManyItemsModalButtonGoToTrial">Comenzar prueba gratuita</translation>
   <translation id="subscriptionNewModalUntilDate"><ph name="INTERPOLATION"><ex>{{0 | customCurrency}}</ex>{{0 | customCurrency}}</ph> hasta <ph name="INTERPOLATION_1"><ex>{{subscription.trial_days | dateUntilDay}}</ex>{{subscription.trial_days | dateUntilDay}}</ph></translation>
@@ -1059,4 +1050,20 @@
   <translation id="CheckoutProPlanning">Planificación</translation>
   <translation id="ApplyAll">Aplicar a todos</translation>
   <translation id="PlanAll">Planificar todos</translation>
+  <translation id="ProfileProBillingFormType">Estoy registrado/a como</translation>
+  <translation id="ProfileProBillingFormNatural">Física</translation>
+  <translation id="ProfileProBillingFormLegal">Jurídica</translation>
+  <translation id="FirstName">Nombre</translation>
+  <translation id="LastName">Apellidos</translation>
+  <translation id="CompanyName">Nombre de la empresa</translation>
+  <translation id="Email">E-mail de facturación</translation>
+  <translation id="BillingAddress">Dirección de facturación</translation>
+  <translation id="City">Ciudad</translation>
+  <translation id="PostalCode">Código postal</translation>
+  <translation id="Country">País</translation>
+  <translation id="CIFNumber">CIF</translation>
+  <translation id="NIFNumber">NIF</translation>
+  <translation id="Save">Guardar</translation>
+  <translation id="DeleteInformation">Eliminar información</translation>
+  <translation id="5875130684997376720">Facturación</translation>
 </translationbundle>

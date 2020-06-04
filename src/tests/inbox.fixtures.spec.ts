@@ -181,7 +181,7 @@ export const CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE: Function = (
   const conv = CREATE_MOCK_INBOX_CONVERSATION(id, userId);
   conv.messages = [];
   return conv;
-}
+};
 
 export const SECOND_MOCK_INBOX_CONVERSATION: InboxConversation = new InboxConversation('secondId', INBOX_CONVERSATION_DATE,
   mockInboxUser, mockInboxItem, null, mockInboxMessages, false, null, 0, mockInboxMessages[0]);

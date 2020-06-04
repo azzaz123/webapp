@@ -20,7 +20,7 @@
   <div class="sidebar-section-circle">
     <mat-icon svgIcon="navigation_catalog"></mat-icon>
   </div>
-  <h2 *ngxPermissionsOnly="['isNormal']" i18n>Products</h2>
+  <h2 *ngxPermissionsExcept="['isProfessional']" i18n>Products</h2>
   <h2 *ngxPermissionsOnly="['isProfessional']" i18n>Catalog</h2>
 </a>
 
@@ -33,7 +33,7 @@
   <h2 i18n>Messages</h2>
 </a>
 
-<a *ngxPermissionsOnly="['isNormal']" id="qa-sidebar-credit" class="sidebar-section" [routerLink]="['/wallacoins']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_WALLACOINS"
+<a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-credit" class="sidebar-section" [routerLink]="['/wallacoins']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_WALLACOINS"
    [ngClass]="{active: tutorialService.step === 4}">
   <div class="sidebar-section-circle">
     <mat-icon svgIcon="navigation_wallacoins"></mat-icon>
@@ -42,7 +42,7 @@
   <h2 *ngIf="!withCoins" i18n>credit</h2>
 </a>
 
-<a *ngxPermissionsOnly="['isNormal']" id="qa-sidebar-favorites" class="sidebar-section" [routerLink]="['/favorites']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_FAVOURITES"
+<a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-favorites" class="sidebar-section" [routerLink]="['/favorites']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_FAVOURITES"
   [ngClass]="{active: tutorialService.step === 5}">
   <div class="sidebar-section-circle">
     <mat-icon svgIcon="navigation_favorites"></mat-icon>
@@ -50,7 +50,7 @@
   <h2 i18n>Favorites</h2>
 </a>
 
-<a *ngxPermissionsOnly="['isNormal']" id="qa-sidebar-reviews" class="sidebar-section" [routerLink]="['/reviews']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_REVIEWS" [ngClass]="{active: tutorialService.step === 6}">
+<a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-reviews" class="sidebar-section" [routerLink]="['/reviews']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_REVIEWS" [ngClass]="{active: tutorialService.step === 6}">
   <div class="sidebar-section-circle">
     <mat-icon svgIcon="navigation_reviews"></mat-icon>
   </div>
@@ -72,7 +72,7 @@
   <h2 i18n>Help</h2>
 </a>
 
-<a *ngxPermissionsOnly="['isNormal']" id="qa-sidebar-stats" class="sidebar-section" [routerLink]="['/stats']" routerLinkActive="active">
+<a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-stats" class="sidebar-section" [routerLink]="['/stats']" routerLinkActive="active">
   <div class="sidebar-section-circle">
     <mat-icon svgIcon="navigation_dashboard"></mat-icon>
   </div>
