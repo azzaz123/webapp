@@ -305,6 +305,12 @@ Resources:
                 Effect: Allow
                 Action:
                   - logs:*
+              - Resource:
+                  - !GetAtt ArtifactBucket.Arn
+                  - !Join [ '', [!GetAtt ArtifactBucket.Arn, '/*' ] ]
+                Effect: Allow
+                Action:
+                  - s3:*
 
   InvalidateCachesCodebuildLogGroup:
     Type: AWS::Logs::LogGroup
