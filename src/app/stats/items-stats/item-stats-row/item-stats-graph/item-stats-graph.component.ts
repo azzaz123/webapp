@@ -49,7 +49,7 @@ export class ItemStatsGraphComponent implements OnInit {
 
     entries.map(entry => {
         const unixDate = moment.unix(entry.date/1000).utcOffset(0, true);
-        xAxisData.push(moment(unixDate).format('DD MMMM'));
+        xAxisData.push(moment(unixDate, 'DD').format('DD MMM'));
         if (this.type === 'favs') {
           data1.push(entry.favs);
         } else {
@@ -92,11 +92,6 @@ export class ItemStatsGraphComponent implements OnInit {
         silent: false,
         splitLine: {
           show: false
-        },
-        axisLabel: {
-          formatter: (function(value){
-              return moment(value).format('DD');
-          })
         },
         nameTextStyle: {
           color: 'rgba(19, 193, 172, 1.0)'
