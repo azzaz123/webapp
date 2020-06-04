@@ -8,9 +8,11 @@
       </div>
     </div>
     <div class="item-actions">
+      <div class="item-separator"></div>
       <div class="btn-bumps citybump" id="qa-checkout-pro-select-citybump" [ngClass]="{selected: cartProItem.bumpType === 'citybump'}" (click)="selectBump('citybump')">
         <mat-icon svgIcon="bump-city-pro"></mat-icon>
       </div>
+      <div class="item-separator"></div>
       <div class="btn-bumps countrybump" id="qa-checkout-pro-select-countrybump" [ngClass]="{selected: cartProItem.bumpType === 'countrybump'}" (click)="selectBump('countrybump')">
         <mat-icon svgIcon="bump-country-pro"></mat-icon>
       </div>
@@ -18,16 +20,31 @@
   </div>
   <div class="item-separator"></div>
   <div class="item-second-section">
-    <div>
-      <span class="label-date" i18n>Start date</span>
-      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" [(ngModel)]="cartProItem.selectedDates.formattedFromDate"
-        [disabled]="!cartProItem.bumpType" [ngClass]="cartProItem.bumpType">
-    </div>
-    <div>
-      <span class="label-date" i18n>End date</span>
-      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" [(ngModel)]="cartProItem.selectedDates.formattedToDate"
-        [disabled]="!cartProItem.bumpType" [ngClass]="cartProItem.bumpType">
-    </div>
-    <button class="item-reset" (click)="removeItem()" [disabled]="!cartProItem.bumpType"></button>
+    <form [formGroup]="datesForm" class="d-flex flex-row align-items-center w-100 justify-content-around">
+      <div class="d-flex flex-column">
+        <span class="label-date" i18n>Start date</span>
+        <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy"
+          
+          [ngClass]="cartProItem.bumpType"
+          name="fromDate_{{index}}"
+          formControlName="fromDate">
+      </div>
+      <div class="d-flex flex-column">
+        <span class="label-date" i18n>End date</span>
+        <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy"
+          
+          [ngClass]="cartProItem.bumpType"
+          name="toDate_{{index}}"
+          formControlName="toDate">
+      </div>
+      <button class="item-reset" (click)="removeItem()" [disabled]="!cartProItem.bumpType"></button>
+    </form>
   </div>
 </div>
+<tsl-range-datepicker class="ItemCalendar" *ngIf="!calendarHidden"
+  (applyCalendar)="onApplyCalendar($event)"
+  (closeCalendar)="calendarHidden = true"
+  [bumpType]="cartProItem.bumpType"
+  [selectedDates]="cartProItem.selectedDates"
+  >
+</tsl-range-datepicker>

@@ -92,7 +92,7 @@
   <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.html:39</source>Continue</msg>
   <msg id="8753092784115704500"><source>app/shared/process-all-button/process-all-button.component.html:7</source><source>app/shared/process-all-button/process-all-button.component.html:12</source><source>app/calls/calls.component.html:27</source>Process all</msg>
   <msg id="4965764680155209445"><source>app/shared/process-all-button/process-all-button.component.html:8</source>This will process all the elements in this page.</msg>
-  <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.html:11</source><source>app/shared/confirmation-modal/confirmation-modal.component.html:32</source><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:6</source><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:6</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:34</source><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:6</source><source>app/chat/modals/block-user/block-user.component.html:6</source><source>app/chat/modals/unblock-user/unblock-user.component.html:6</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:23</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:6</source><source>app/profile/subscription/subscription.component.html:33</source><source>app/profile/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:5</source>Cancel</msg>
+  <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.html:11</source><source>app/shared/confirmation-modal/confirmation-modal.component.html:32</source><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:6</source><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:6</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:34</source><source>app/chat/modals/unarchive-inbox-conversation/unarchive-inbox-conversation.component.html:6</source><source>app/chat/modals/block-user/block-user.component.html:6</source><source>app/chat/modals/unblock-user/unblock-user.component.html:6</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:6</source><source>app/profile/subscription/subscription.component.html:33</source><source>app/profile/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:5</source>Cancel</msg>
   <msg id="4749295647449765550"><source>app/shared/archivable/archivable.component.html:6</source><source>app/calls/calls.component.html:23</source><source>app/calls/calls.component.html:43</source>Processed</msg>
   <msg id="5847549463396300276"><source>app/shared/modals/review-modal/review-modal.component.html:8</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex>&lt;strong&gt;</ph><ph name="INTERPOLATION"><ex>{{userName}}</ex>{{userName}}</ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex>&lt;/strong&gt;</ph></msg>
   <msg id="4650730844441578299"><source>app/shared/modals/review-modal/review-modal.component.html:9</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
@@ -211,8 +211,8 @@
   <msg id="4669498559280449685"><source>app/shared/catalog/cart/cart.component.html:24</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:17</source>Country bump</msg>
   <msg id="2906587845957718064"><source>app/shared/catalog/cart/cart.component.html:42</source>Local</msg>
   <msg id="1186759635333538896"><source>app/shared/catalog/cart/cart.component.html:43</source>Provincial</msg>
-  <msg id="2314075913167237221"><source>app/shared/catalog/cart/cart.component.html:45</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:14</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:31</source>City</msg>
-  <msg id="516176798986294299"><source>app/shared/catalog/cart/cart.component.html:46</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:17</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:32</source>Country</msg>
+  <msg id="2314075913167237221"><source>app/shared/catalog/cart/cart.component.html:45</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:16</source><source>app/catalog-pro/checkout-extras-pro/billing-info/billing-info.component.html:60</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:31</source>City</msg>
+  <msg id="516176798986294299"><source>app/shared/catalog/cart/cart.component.html:46</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:27</source><source>app/catalog-pro/checkout-extras-pro/billing-info/billing-info.component.html:66</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:32</source>Country</msg>
   <msg id="7036284206110282007"><source>app/shared/catalog/cart/cart.component.html:48</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:34</source><source>app/catalog/checkout/checkout-item/checkout-item.component.html:8</source>days</msg>
   <msg id="3448462145758383019"><source>app/shared/catalog/cart/cart.component.html:62</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:45</source>Total</msg>
   <msg id="5269877616047992907"><source>app/shared/catalog/cart/cart.component.html:75</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:37</source>spending</msg>
@@ -235,7 +235,7 @@
   <msg id="5691966639616932851"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:9</source>Card</msg>
   <msg id="4940843552280014819"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:18</source>+ Add new card</msg>
   <msg id="8429052002955936753"><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source>Select your card</msg>
-  <msg id="4391289919356861627"><source>app/shared/geolocation/location-select/location-modal/location-modal.component.html:4</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:24</source>Apply</msg>
+  <msg id="4391289919356861627"><source>app/shared/geolocation/location-select/location-modal/location-modal.component.html:4</source>Apply</msg>
   <msg id="4359291232904891489"><source>app/shared/geolocation/location-select/location-select.component.html:3</source>Set a location</msg>
   <msg id="5371960677736303052"><source>app/shared/geolocation/geolocation.component.html:9</source>Where?</msg>
   <msg id="958176169457402389"><source>app/shared/geolocation/location-box/location-box.component.html:4</source>Your products are in:</msg>
@@ -485,7 +485,13 @@
             plan.</msg>
   <msg id="7291421467944217279"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:51</source>Activate cars</msg>
   <msg id="8890553633144307762"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:8</source><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:3</source><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:4</source><source>app/catalog/checkout/checkout.component.html:3</source>Back</msg>
-  <msg id="6668584344316209309"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:22</source>Planning</msg>
+  <msg id="ApplyAll"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:18,20</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:29,31</source>
+                    Apply to all
+                  </msg>
+  <msg id="CheckoutProPlanning"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:38</source>Planning</msg>
+  <msg id="PlanAll"><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:40,42</source>
+                    Apply to all
+                  </msg>
   <msg id="2157586494270826789"><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:10</source>What are the extras?</msg>
   <msg id="9078334813317415148"><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:17</source>City feauture</msg>
   <msg id="308057973020043316"><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:25</source>Country feature</msg>
@@ -520,8 +526,16 @@
   <msg id="9139280231181462"><source>app/catalog-pro/checkout-pro/cart-pro/cart-pro.component.html:38</source>city</msg>
   <msg id="3598887185953670111"><source>app/catalog-pro/checkout-pro/cart-pro/cart-pro.component.html:40</source>country</msg>
   <msg id="9157216793820090491"><source>app/catalog-pro/checkout-pro/cart-pro/cart-pro.component.html:54</source>Apply bumps</msg>
-  <msg id="888341446683346521"><source>app/catalog-pro/checkout-pro/checkout-pro-item/checkout-pro-item.component.html:22</source>Start date</msg>
-  <msg id="126074860850048964"><source>app/catalog-pro/checkout-pro/checkout-pro-item/checkout-pro-item.component.html:27</source>End date</msg>
+  <msg id="888341446683346521"><source>app/catalog-pro/checkout-pro/checkout-pro-item/checkout-pro-item.component.html:25</source>Start date</msg>
+  <msg id="126074860850048964"><source>app/catalog-pro/checkout-pro/checkout-pro-item/checkout-pro-item.component.html:33</source>End date</msg>
+  <msg id="RangeDatepickerHaveSelected"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:13</source>You have selected </msg>
+  <msg id="RangeDatepickerCitybump"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:16</source>city bump</msg>
+  <msg id="RangeDatepickerCountrybump"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:17</source>country bump</msg>
+  <msg id="RangeDatepickerCitybumps"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:18</source>city bumps</msg>
+  <msg id="RangeDatepickerCountrybumps"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:19</source>country bumps</msg>
+  <msg id="2468076008299260383"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:20</source>Multiselect bumps</msg>
+  <msg id="Cancel"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:24</source>Cancel</msg>
+  <msg id="Apply"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:25</source>Apply</msg>
   <msg id="2920017199919975554"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:13</source>You have selected </msg>
   <msg id="1355570958947358343"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:16</source>city bump</msg>
   <msg id="8847634013548993288"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:17</source>country bump</msg>
