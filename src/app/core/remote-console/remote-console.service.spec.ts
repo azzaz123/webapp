@@ -37,10 +37,10 @@ describe('RemoteConsoleService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(RemoteConsoleService);
-    remoteConsoleClientService = TestBed.get(RemoteConsoleClientService);
-    userService = TestBed.get(UserService);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(RemoteConsoleService);
+    remoteConsoleClientService = TestBed.inject(RemoteConsoleClientService);
+    userService = TestBed.inject(UserService);
 
     service.deviceId = DEVICE_ID;
   });
