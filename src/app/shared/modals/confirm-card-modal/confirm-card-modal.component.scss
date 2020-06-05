@@ -26,4 +26,16 @@
       width: 95%;
     }
   }
+
+  &--cardDetails {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+
+  &--cardNumber {
+    margin: 0 $spacing-xs;
+    color: $walla-main;
+    font-weight: bold;
+  }
 }
