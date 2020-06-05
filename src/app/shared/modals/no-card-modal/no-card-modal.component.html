@@ -2,8 +2,9 @@
   <div class="modal-close" (click)="activeModal.dismiss()">
       <mat-icon svgIcon="cross"></mat-icon>
   </div>
-  <h4 class="NoCardModal--title" i18n="@@MissingPaymentMethod">Missing payment method</h4>
-  <p class="NoCardModal--subtitle" i18n="@@">You won't have any payment method linked to your subscription...</p>
+  <h4 class="NoCardModal--title" i18n="@@MissingPaymentMethodTitle">No payment method available</h4>
+  <p class="NoCardModal--subtitle" i18n="@@MissingPaymentMethodSubtitle">There is no payment mehtod available so we can renew your subscription when it expires</p>
+  <p class="NoCardModal--subtitle" i18n="@@PleaseAddCreditCard">Please, add a credit card so you won't lose the benefits of being a PRO</p>
   <div class="NoCardModal--buttons">
     <tsl-button className="btn btn-secondary" (click)="activeModal.dismiss()"
                 i18n="@@Cancel"

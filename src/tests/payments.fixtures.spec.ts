@@ -545,7 +545,7 @@ export const PERK_RESPONSE: PerkResponse[] = [{
 export const PAYMENT_METHOD_CARD_RESPONSE: PaymentMethodCardResponse[] = [
   {
     brand: null,
-    default: true,
+    invoices_default: null,
     expiration_month: 2,
     expiration_year: 2020,
     id: 'pm_a0b1c2',
@@ -553,7 +553,7 @@ export const PAYMENT_METHOD_CARD_RESPONSE: PaymentMethodCardResponse[] = [
   },
   {
     brand: null,
-    default: false,
+    invoices_default: null,
     expiration_month: 4,
     expiration_year: 2024,
     id: 'pm_d3e4f5',

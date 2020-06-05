@@ -66,7 +66,7 @@ export class ChangeCardModalComponent implements OnInit  {
     this.setCardInfo(selectedCard);
   }
 
-  public setDefaultCard(paymentMethod: any) {
+  public setDefaultCard(paymentMethod: string) {
     if (paymentMethod) {
       this.stripeService.setDefaultCard(paymentMethod)
         .pipe(finalize(() => this.loading = false))

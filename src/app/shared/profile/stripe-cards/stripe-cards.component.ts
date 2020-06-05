@@ -31,7 +31,7 @@ export class StripeCardsComponent implements OnInit {
     this.getAllCards();
   }
 
-  public onDeleteCard(stripeCard: FinancialCard): void {
+  public onDeleteCard(): void {
     this.getAllCards();
   }
 

@@ -4,7 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmCardModalComponent } from './confirm-card-modal.component';
 
-describe('ConfirmdCardModalComponent', () => {
+describe('ConfirmCardModalComponent', () => {
   let component: ConfirmCardModalComponent;
   let fixture: ComponentFixture<ConfirmCardModalComponent>;
   let activeModal: NgbActiveModal;

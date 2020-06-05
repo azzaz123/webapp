@@ -4,10 +4,6 @@ import { ConfirmationModalComponent } from '../../confirmation-modal/confirmatio
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from './financial-card';
 import { finalize } from 'rxjs/operators';
-import { NewCardModalComponent } from 'app/shared/modals/new-card-modal/new-card-modal.component';
-import { ErrorsService } from 'app/core/errors/errors.service';
-import { ChangeCardModalComponent } from 'app/shared/modals/change-card-modal/change-card-modal.component';
-import { PaymentMethodCardResponse } from 'app/core/payments/payment.interface';
 import { NoCardModalComponent } from 'app/shared/modals/no-card-modal/no-card-modal.component';
 
 @Component({
@@ -23,8 +19,7 @@ export class CreditCardInfoComponent {
   @Output() onDeleteStripeCard: EventEmitter<FinancialCard> = new EventEmitter();
 
   constructor(private modalService: NgbModal,
-              private stripeService: StripeService,
-              private errorService: ErrorsService) { }
+              private stripeService: StripeService) { }
 
   public checkDelete(e: Event) {
     e.stopPropagation();

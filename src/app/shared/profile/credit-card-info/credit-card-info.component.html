@@ -13,7 +13,7 @@
       <div class="date">{{financialCard?.expire_date}}</div>
     </div>
     <div class="CreditCard__info--actions">
-        <div class="CreditCard__info--actions-change" *ngIf="financialCard?.invoices_default" (click)="changeStripeCard($event)" i18n="@@ChangeCard">Change card</div>
+      <div class="CreditCard__info--actions-change" *ngIf="financialCard?.invoices_default" (click)="changeStripeCard($event)" i18n="@@ChangeCard">Change card</div>
       <div class="CreditCard__info--actions-delete" (click)="checkDelete($event)" i18n="@@DeleteCard">Delete card</div>
     </div>
   </div>

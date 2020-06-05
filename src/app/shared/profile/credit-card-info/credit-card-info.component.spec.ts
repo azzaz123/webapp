@@ -9,6 +9,7 @@ import { StripeService } from '../../../core/stripe/stripe.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { delay } from 'rxjs/operators';
+import { ErrorsService } from 'app/core/errors/errors.service';
 describe('CreditCardInfoComponent', () => {
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;
@@ -36,7 +37,9 @@ describe('CreditCardInfoComponent', () => {
                 result: Promise.resolve(),
                 componentInstance: componentInstance
               }
-            }
+            },
+            close() {
+            },
           },
         }
       ],
@@ -55,7 +58,10 @@ describe('CreditCardInfoComponent', () => {
   });
 
   describe('deleteStripeCreditCard', () => {
-    beforeEach(() => deleteStripeCardButton = fixture.debugElement.nativeElement.querySelector('a'));
+    beforeEach(() =>  {
+      deleteStripeCardButton = fixture.debugElement.nativeElement.querySelector('.CreditCard__info--actions-delete');
+      //spyOn(activeModal, 'close');
+    });
 
     it('should open modal when clicking in add more cards button', fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
