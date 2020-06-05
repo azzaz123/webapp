@@ -865,10 +865,10 @@ export class ItemService {
   }
 
   public cancelAutorenew(itemId: string): Observable<any> {
-    return this.http.put(`${environment.baseUrl}${PROTOOL_API_URL}/autorenew/update`, {
+    return this.http.put(`${environment.baseUrl}${PROTOOL_API_URL}/autorenew/update`, [{
       item_id: itemId,
       autorenew: false
-    });
+    }]);
   }
 
   public getLatest(userId: string): Observable<ItemDataResponse> {
