@@ -10,7 +10,6 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import {
   createFinancialCardFixture,
-  createFavoriteFinancialCardFixture
 } from '../../../../tests/stripe.fixtures.spec';
 import { delay } from 'rxjs/operators';
 import { ButtonComponent } from '../../button/button.component';
@@ -26,6 +25,7 @@ describe('StripeCardsComponent', () => {
   let errorService: ErrorsService;
   let modalSpy: jasmine.Spy;
   let activeModal: NgbActiveModal;
+  let subscriptionsService: SubscriptionsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -88,6 +88,7 @@ describe('StripeCardsComponent', () => {
     modalService = TestBed.get(NgbModal);
     errorService = TestBed.get(ErrorsService);
     activeModal = TestBed.get(NgbActiveModal);
+    subscriptionsService = TestBed.get(SubscriptionsService);
   });
 
   describe('ngOnInit', () => {
@@ -106,6 +107,15 @@ describe('StripeCardsComponent', () => {
       component.ngOnInit();
 
       expect(errorService.i18nError).toHaveBeenCalledWith('getStripeCardsError');
+    });
+
+    it('should call getSubscriptions service', () => {
+      spyOn(subscriptionsService, 'getSubscriptions').and.callThrough();
+  
+
+      component.ngOnInit();
+
+      expect(subscriptionsService.getSubscriptions).toHaveBeenCalledWith(false);
     });
   });
 

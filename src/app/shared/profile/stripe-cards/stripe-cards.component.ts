@@ -19,7 +19,7 @@ export class StripeCardsComponent implements OnInit {
   public loading = false;
   public stripeCards: FinancialCard[];
   public subscriptionStripeCards: FinancialCard[];
-  public subscriptions: SubscriptionsResponse[];
+  public isSubscribed: boolean;
 
   constructor(private stripeService: StripeService,
               private modalService: NgbModal,
@@ -72,8 +72,14 @@ export class StripeCardsComponent implements OnInit {
 
   private getSubscriptions(): void {
     this.subscriptionsService.getSubscriptions(false)
-      .subscribe(subscriptions => this.subscriptions = subscriptions);
+      .subscribe(subscriptions => subscriptions.map((subscription: SubscriptionsResponse) => this.isSubscriptionSelected(subscription)));
   }
+
+  private isSubscriptionSelected(subscription: SubscriptionsResponse): void {
+    if (subscription.selected_tier_id !== null) {
+      this.isSubscribed = true;
+    }
+  };
 
   private getAllCards(): void {
     this.stripeService.getCards(false).subscribe((stripeCards: FinancialCard[]) => {

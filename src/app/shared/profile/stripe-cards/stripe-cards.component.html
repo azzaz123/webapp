@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="form-group row mb-0">
-      <div *ngIf="subscriptions.length > 0" class="col-12 col-md-4 offset-md-2">
+      <div *ngIf="isSubscribed" class="col-12 col-md-4 offset-md-2">
           <h4 i18n="@@SubscriptionCard">Subscription card</h4>
           <div class="StripeCards__card" *ngFor="let subscriptionStripeCard of subscriptionStripeCards">
             <tsl-credit-card-info [financialCard]="subscriptionStripeCard"
@@ -17,7 +17,7 @@
             <span i18n="@@AddNewSubscriptionCard" (click)="addNewSubscriptionCard()">+ Add new subscription card</span>
           </div>
       </div>
-      <div class="col-12 col-md-4 offset-md-1">
+      <div class="col-12 col-md-4 " [ngClass]="{'offset-md-1': isSubscribed,'offset-md-2': !isSubscribed}">
         <h4 i18n="@@CurrentCards">Current cards</h4>
         <div class="StripeCards__group">
           <div class="StripeCards__card" *ngFor="let stripeCard of stripeCards">
