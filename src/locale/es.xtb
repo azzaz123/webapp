@@ -1063,7 +1063,4 @@
   <translation id="AddNewSubscriptionCard">+ Añadir nueva tarjeta de suscripción</translation>
   <translation id="CurrentCards">Tarjetas actuales</translation>
   <translation id="AddNewCard">Añadir nueva tarjeta</translation>
-  <translation id="ListComponentHeaderSubtitle">Aquí puedes listar tus productos, editar los que ya tienes y activar destacados para venderlos más rápido.</translation>
-  <translation id="SubscriptionsSlotItemPublishMore">Puedes listar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> más <ph name="INTERPOLATION_1"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></translation>
-  
 </translationbundle>
