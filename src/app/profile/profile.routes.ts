@@ -62,6 +62,10 @@ const routes: Routes = [
         data: {
           isMyZone: true,
           isProfile: true,
+          permissions: {
+            only: PERMISSIONS.professional,
+            redirectTo: '/profile'
+          }
         }
       },
       {

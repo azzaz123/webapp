@@ -462,10 +462,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       category.vertical_id === 'consumer_goods'
     );
 
-    if (this.userService.isPro) {
-      return userCategories;
-    }
-    return userCategories.filter((category) => +category.category_id !== CATEGORY_IDS.HELP);
+    return userCategories;
   }
 
   private getNgSelectOptions(categories: CategoryResponse[]): CategoryOption[] {

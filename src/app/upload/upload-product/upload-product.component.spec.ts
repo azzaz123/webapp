@@ -190,23 +190,9 @@ describe('UploadProductComponent', () => {
     });
 
     it('should get and set categories', () => {
-      const EXPECTED_CATEGORIES = CATEGORIES_OPTIONS_CONSUMER_GOODS.filter((category) => {
-        return +category.value !== CATEGORY_IDS.HELP;
-      });
-
       component.ngOnInit();
 
-      expect(component.categories).toEqual(EXPECTED_CATEGORIES);
-    });
-
-    describe('when the user has a PRO subscription', () => {
-      it('should show the Help category', () => {
-        spyOn(userService, 'isPro').and.returnValue(true);
-
-        component.ngOnInit();
-
-        expect(component.categories).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS);
-      });
+      expect(component.categories).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS);
     });
 
     describe('when the item has extra fields', () => {

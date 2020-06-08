@@ -38,13 +38,6 @@ export const CATEGORY_DATA_WEB: Array<CategoryResponse> = [
     name: 'Motor parts',
     vertical_id: 'consumer_goods',
     fields: {}
-  },
-  {
-    category_id: 23000,
-    icon_id: 'help',
-    name: 'Help',
-    vertical_id: 'consumer_goods',
-    fields: {}
   }
 ];
 
@@ -86,13 +79,6 @@ export const CATEGORIES_DATA_CONSUMER_GOODS: CategoryResponse[] = [{
   }
 },
 {
-  category_id: 23000,
-  name: 'Help',
-  icon_id: 'help',
-  vertical_id: 'consumer_goods',
-  fields: {}
-},
-{
   category_id: 13200,
   name: 'Services',
   icon_id: 'toolbox',
@@ -122,10 +108,6 @@ export const CATEGORIES_OPTIONS_CONSUMER_GOODS: CategoryOption[] = [{
   value: '16000',
   label: 'Phones',
   icon_id: 'smartphone'
-}, {
-  value: '23000',
-  label: 'Help',
-  icon_id: 'help'
 },
 {
   value: "13200",
