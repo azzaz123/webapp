@@ -85,6 +85,9 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
         this.isConversationChanged = false;
         this.currentConversation = conversation;
       });
+
+    this.eventService.subscribe(EventService.CONNECTION_RESTORED,
+      () => this.sendMetricMessageSendFailed('pending messages after restored connection'));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -201,12 +204,18 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   public clickSendMessage(messageId: string): void {
     of(messageId).pipe(delay(this.MESSAGE_METRIC_DELAY))
-      .subscribe(id => this.sendMetricMessageSendFailed(id, `message is not send after ${this.MESSAGE_METRIC_DELAY}ms`));
+      .subscribe(id => this.sendMetricMessageSendFailedByMessageId(id, `message is not send after ${this.MESSAGE_METRIC_DELAY}ms`));
   }
 
-  private sendMetricMessageSendFailed(messageId: string, description: string): void {
+  private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
     this.currentConversation.messages
       .filter(message => message.id === messageId && message.status === MessageStatus.PENDING)
+      .forEach(message => this.remoteConsoleService.sendMessageAckFailed(message.id, description));
+  }
+
+  private sendMetricMessageSendFailed(description: string): void {
+    this.currentConversation.messages
+      .filter(message => message.status === MessageStatus.PENDING)
       .forEach(message => this.remoteConsoleService.sendMessageAckFailed(message.id, description));
   }
 }

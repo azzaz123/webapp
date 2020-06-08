@@ -3,7 +3,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { CurrentConversationComponent } from './current-conversation.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
-import { CREATE_MOCK_INBOX_CONVERSATION, MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 import { InboxMessage, MessageStatus, MessageType } from '../model/inbox-message';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { RealTimeService } from '../../core/message/real-time.service';
@@ -312,7 +312,7 @@ describe('CurrentConversationComponent', () => {
       const MESSAGE_ID = 'MESSAGE_ID';
       const message = new InboxMessage(MESSAGE_ID, 'message_thread', 'text', 'user_id', true, new Date(),
         MessageStatus.PENDING, MessageType.TEXT);
-      component.currentConversation = MOCK_INBOX_CONVERSATION;
+      component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
       component.currentConversation.messages = [message];
 
       component.clickSendMessage(MESSAGE_ID);
@@ -321,5 +321,24 @@ describe('CurrentConversationComponent', () => {
 
       expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(MESSAGE_ID, 'message is not send after 5000ms');
     }));
+  });
+
+  describe('restoreConnection', () => {
+
+    beforeEach(() => {
+      spyOn(remoteConsoleService, 'sendMessageAckFailed');
+      component.ngOnInit();
+    });
+
+    it('should send metric message is not sent after restoring metric', () => {
+      const MESSAGE_ID = 'MESSAGE_ID';
+      const message = new InboxMessage(MESSAGE_ID, 'message_thread', 'text', 'user_id', true, new Date(),
+        MessageStatus.PENDING, MessageType.TEXT);
+      component.currentConversation.messages = [message];
+
+      eventService.emit(EventService.CONNECTION_RESTORED);
+
+      expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(MESSAGE_ID, 'pending messages after restored connection');
+    });
   });
 });
