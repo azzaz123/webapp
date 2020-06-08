@@ -171,11 +171,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.categories = categories.filter((category: CategoryOption) => {
         return !this.categoryService.isHeroCategory(+category.value);
       });
-      if (!this.userService.isPro) {
-        this.categories = this.categories.filter((category: CategoryOption) => {
-          return +category.value !== CATEGORY_IDS.HELP
-        });
-      }
       this.detectCategoryChanges();
       if (!this.item) {
         if (this.categoryId && this.categoryId !== '-1') {
