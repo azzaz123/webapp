@@ -108,17 +108,29 @@
   }
 }
 
-.faded {
-  .lg-device-container {
-    tsl-user-avatar, h5 {
+.faded-user {
+  .sm-device-container, .lg-device-container {
+    tsl-user-avatar, h5, a.user-avatar {
+      pointer-events: none;
       opacity: 0.5;
     }
   }
 
+  &.sm-device-container .avatar-container .avatar {
+    pointer-events: none;
+  }
+}
+
+.faded-item {
   tsl-item-avatar,
   .item-details,
   .conversation-header-menu .user-avatar {
+    pointer-events: none;
     opacity: 0.5;
+  }
+
+  &.sm-device-container .avatar-container .avatar {
+    pointer-events: none;
   }
 }
 

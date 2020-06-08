@@ -648,7 +648,7 @@ describe('UploadProductComponent', () => {
             screenId: SCREEN_IDS.EditItem
           }
         };
-        editEvent.response.content = editResponse;
+        editEvent.response = editResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();
@@ -680,7 +680,7 @@ describe('UploadProductComponent', () => {
             screenId: SCREEN_IDS.Upload
           }
         };
-        uploadEvent.response.content = uploadResponse;
+        uploadEvent.response = uploadResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();

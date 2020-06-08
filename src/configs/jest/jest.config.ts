@@ -30,7 +30,6 @@ import '../../assets/js/adsConfig.js';
 // Mock global variables in window manually
 import * as GLOBAL_MOCKS from './global-mocks.fixtures.spec';
 
-Object.defineProperty(window, '__cmp', { value: GLOBAL_MOCKS.MOCK___CMP });
 Object.defineProperty(window, 'appboy', { value: GLOBAL_MOCKS.MOCK_APPBOY });
 Object.defineProperty(window, 'apstag', { value: GLOBAL_MOCKS.MOCK_APSTAG });
 Object.defineProperty(window, 'Criteo', { value: GLOBAL_MOCKS.MOCK_CRITEO });
@@ -40,9 +39,9 @@ Object.defineProperty(window, 'gtag', { value: GLOBAL_MOCKS.MOCK_GTAG });
 Object.defineProperty(window, 'googletag', { value: GLOBAL_MOCKS.MOCK_GOOGLE_TAG });
 Object.defineProperty(window, 'localStorage', { value: GLOBAL_MOCKS.MOCK_LOCALSTORAGE });
 Object.defineProperty(window, 'pintrk', { value: GLOBAL_MOCKS.MOCK_PINTRK, writable: true });
-Object.defineProperty(window, 'quancastOptions', { value: GLOBAL_MOCKS.MOCK_QUANCASTOPTIONS });
 Object.defineProperty(window, 'twq', { value: GLOBAL_MOCKS.MOCK_TWQ });
 Object.defineProperty(window, 'Visibility', { value: GLOBAL_MOCKS.MOCK_VISIBILITY });
 Object.defineProperty(window, 'XMPP', { value: GLOBAL_MOCKS.MOCK_XMPP });
+Object.defineProperty(window, 'Didomi', { value: GLOBAL_MOCKS.MOCK_DIDOMI });
 Object.defineProperty(navigator, 'connection', { value: GLOBAL_MOCKS.MOCK_NAVIGATOR_CONNECTION });
 Object.defineProperty(navigator, 'geolocation', { value: GLOBAL_MOCKS.MOCK_NAVIGATOR_GEOLOCATION, writable: true });

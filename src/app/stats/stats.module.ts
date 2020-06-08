@@ -9,9 +9,9 @@ import { MomentModule } from 'angular2-moment';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { MatIconModule } from '@angular/material';
 import { ItemStatsGraphComponent } from './items-stats/item-stats-row/item-stats-graph/item-stats-graph.component';
-import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { ItemStatsService } from './items-stats/item-stats-row/item-stats-graph/item-stats.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   imports: [
@@ -21,8 +21,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     MomentModule,
     TrackingModule,
     MatIconModule,
-    AmChartsModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    NgxEchartsModule
   ],
   providers: [
     ItemStatsService

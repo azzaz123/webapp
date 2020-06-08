@@ -1,6 +1,5 @@
 export interface Environment {
   production: boolean;
-  profeatures: boolean;
   name: string;
   baseUrl: string;
   xmppDomain: string;
@@ -12,4 +11,5 @@ export interface Environment {
   stripeKey: string;
   mParticleKey: string;
   remoteConsoleUrl: string;
+  didomiKey: string;
 }

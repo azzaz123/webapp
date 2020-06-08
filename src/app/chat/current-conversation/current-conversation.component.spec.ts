@@ -10,7 +10,7 @@ import { InboxMessage, MessageStatus, MessageType } from '../model/inbox-message
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { EventService } from '../../core/event/event.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../layout/toast/toast.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';

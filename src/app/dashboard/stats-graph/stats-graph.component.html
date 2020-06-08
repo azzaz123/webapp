@@ -1,5 +1,5 @@
 <ng-select [hidden]="yearly" class="form-control" [options]="statsDurations" [(ngModel)]="duration" (selected)="onStatsPeriodChange()" [noFilter]="10"></ng-select>
 <div [hidden]="!yearly" class="title" i18n>Last 12 months</div>
 <div class="chart">
-  <div [id]="id" [style.width.%]="100" [style.height.px]="400"></div>
+  <div echarts [options]="chartOption" class="pro-stats"></div>
 </div>

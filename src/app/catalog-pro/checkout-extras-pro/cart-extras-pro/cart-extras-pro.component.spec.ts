@@ -108,11 +108,11 @@ describe('CartExtrasProComponent', () => {
       country: new FormControl(),
       email: new FormControl(),
       name: new FormControl(),
-      phone: new FormControl(),
       postal_code: new FormControl(),
       street: new FormControl(),
       surname: new FormControl(),
-      id: new FormControl()
+      id: new FormControl(),
+      type: new FormControl()
     });
     cartService = TestBed.get(CartService);
     paymentService = TestBed.get(PaymentService);

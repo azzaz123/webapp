@@ -13,19 +13,5 @@
     text {
       font-family: $wallie;
     }
-    .amcharts-axis-label, .amcharts-balloon-div-categoryAxis {
-      text-transform: uppercase;
-      div {
-        font-family: $wallie !important;
-        font-size: $font-size-xxs !important;
-        font-weight: bold !important;
-        line-height: $line-height-ml !important;
-      }
-    }
-    .amcharts-legend-label {
-      text-transform: uppercase;
-      font-family: $wallie !important;
-      font-weight: bold !important;
-    }
   }
 }

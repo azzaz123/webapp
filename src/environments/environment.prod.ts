@@ -2,7 +2,6 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: true,
-  profeatures: true,
   name: 'prod',
   baseUrl: 'https://api.wallapop.com/',
   xmppDomain: 'wallapop.com',
@@ -12,5 +11,6 @@ export const environment: Environment = {
   clickStreamURL: 'https://collector.wallapop.com/clickstream.json/sendEvents',
   stripeKey: 'pk_live_jXjzhS3WcTU1jg0QKkkUF8Dv00Ar0ATFyN',
   mParticleKey: 'us1-04eb03d316b54f4f99265340abe886e6',
-  remoteConsoleUrl: ' https://client-metrics.wallapop.com/metrics/chat'
+  remoteConsoleUrl: 'https://client-metrics.wallapop.com/metrics/chat',
+  didomiKey: 'ffa4bae4-25a5-42df-a1a2-74f3dfa3cd35'
 };
