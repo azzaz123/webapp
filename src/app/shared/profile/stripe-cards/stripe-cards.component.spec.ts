@@ -109,6 +109,7 @@ describe('StripeCardsComponent', () => {
     });
   });
 
+
   describe('onDeleteCard', () => {
     it('should call getCards service and set the cards', () => {
       spyOn(stripeService, 'getCards').and.callThrough();
@@ -117,12 +118,32 @@ describe('StripeCardsComponent', () => {
 
       expect(stripeService.getCards).toHaveBeenCalledWith(false);
     });
+  });
 
+  describe('onSetChangeCard', () => {
+    it('should call addNewSubscriptionCard', () => {
+      spyOn(component, 'addNewSubscriptionCard').and.callThrough();
+
+      component.onSetChangeCard('e');
+
+      expect(component.addNewSubscriptionCard).toHaveBeenCalled();
+    });
+  });
+
+  describe('addNewSubscriptionCard', () => {
+    it('should open the ChangeCardModalComponent modal', fakeAsync(() => {
+      spyOn(modalService, 'open').and.callThrough();
+      spyOn(stripeService, 'getCards').and.callThrough();
+
+      component.addNewSubscriptionCard();
+      tick();
+
+      expect(stripeService.getCards).toHaveBeenCalled();
+    }));
   });
 
   describe('onAddNewCard', () => {
     beforeEach(fakeAsync(() => {
-      //spyOn(component, 'addNewCard').and.callThrough();
       modalSpy = spyOn(modalService, 'open').and.callThrough();
       component.stripeCards[0] = createFinancialCardFixture();
     }));

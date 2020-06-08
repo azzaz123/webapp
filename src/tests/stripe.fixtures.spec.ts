@@ -44,6 +44,15 @@ export const STRIPE_CARD_OPTION: any = {
   stripeCard: STRIPE_CARD
 };
 
+export const STRIPE_CARD_OPTION_SUBSCRIPTION: any = {
+  expire_date: '01/2021',
+  id: 'pm_2f2f2f',
+  number: '4242',
+  invoices_default: true,
+  favorite: true,
+  stripeCard: STRIPE_CARD
+};
+
 export function createFinancialCardFixture(): FinancialCard {
 
   return new FinancialCard(

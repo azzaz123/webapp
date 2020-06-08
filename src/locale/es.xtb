@@ -1046,4 +1046,24 @@
   <translation id="AddNewModalSubscribeNow">¡Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días!</translation>
   <translation id="EditSubscriptionModalCancelSubscription">Quiero cancelar mi suscripción</translation>
   <translation id="EditSubscriptionModalCancelFreeTrial">Cancelar prueba gratuita</translation>
+  <translation id="MissingPaymentMethodTitle">No hay un método de pago disponible</translation>
+  <translation id="MissingPaymentMethodSubtitle">No hay un método de pago disponible para que podamos renovar tu suscripción cuando caduque.</translation>
+  <translation id="PleaseAddCreditCard">Por favor, añade una tarjeta de crédito para no perder los beneficios de ser PRO</translation>
+  <translation id="Cancel">Cancelar</translation>
+  <translation id="DeleteCard">Sí, quiero borrarla</translation>
+  <translation id="ChangeCard">Cambiar tarjeta</translation>
+  <translation id="AddNewCreditCard">Añadir una tarjeta de crédito</translation>
+  <translation id="ChangeSubscriptionCardSubtitle">Subtítulo para añadir una tarjeta</translation>
+  <translation id="ConfirmPaymentMethod">Confirma tu método de pago</translation>
+  <translation id="ChargeThisCard">Quieres que se cobre en la tarjeta</translation>
+  <translation id="Yes">Sí</translation>
+  <translation id="ChangeSubscriptionCardTitle">Cambiar tarjeta para la suscripción</translation>
+  <translation id="SetDefaultCard">Establecer tarjeta por defecto</translation>
+  <translation id="SubscriptionCard">Tarjeta para la suscripción</translation>
+  <translation id="AddNewSubscriptionCard">+ Añadir nueva tarjeta de suscripción</translation>
+  <translation id="CurrentCards">Tarjetas actuales</translation>
+  <translation id="AddNewCard">Añadir nueva tarjeta</translation>
+  <translation id="ListComponentHeaderSubtitle">Aquí puedes listar tus productos, editar los que ya tienes y activar destacados para venderlos más rápido.</translation>
+  <translation id="SubscriptionsSlotItemPublishMore">Puedes listar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> más <ph name="INTERPOLATION_1"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></translation>
+  
 </translationbundle>

@@ -1,7 +1,7 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf,  Observable } from 'rxjs';
 
-import {tap, map} from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../payments/payment.service';
 import { User } from '../user/user';
@@ -15,7 +15,6 @@ import { FinancialCard } from '../../shared/profile/credit-card-info/financial-c
 import { FeatureflagService } from '../user/featureflag.service';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { async } from 'q';
 
 export const PAYMENTS_API_URL = 'api/v3/payments';
 
@@ -30,14 +29,12 @@ export class StripeService {
   public fullName: string;
   public PAYMENT_PROVIDER_STRIPE = false;
   private financialCards: FinancialCard[];
-  private setupIntentSecret: string;
 
   constructor(private paymentService: PaymentService,
               private userService: UserService,
               private router: Router,
               private eventService: EventService,
-              private http: HttpClient,
-              private featureflagService: FeatureflagService) {
+              private http: HttpClient) {
     this.userService.me().subscribe((user: User) => {
       this.fullName = user ?  `${user.firstName} ${user.lastName}` : '';
     });
@@ -113,9 +110,9 @@ export class StripeService {
   }
 
   public createDefaultCard(clientSecret: string, cardElement: any): Promise<any> {
-    return this.stripeSetupIntent(clientSecret, cardElement).then(function(result) {
+    return this.stripeSetupIntent(clientSecret, cardElement).then((result) => {
       if (result.error) {
-        this.eventService.emit(result.error);
+        return this.eventService.emit(result.error);
       } else {
         return result.setupIntent;
       }

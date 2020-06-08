@@ -57,7 +57,7 @@ export class StripeCardsComponent implements OnInit {
 
   public addNewSubscriptionCard(): void {
     let modalRef: NgbModalRef = this.modalService.open(ChangeCardModalComponent, {windowClass: 'review'});
-    modalRef.result.then((card: FinancialCard) => {
+    modalRef.result.then(() => {
       this.loading = false;
       modalRef = null;
       this.getAllCards();
