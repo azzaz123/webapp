@@ -1040,7 +1040,6 @@
   <translation id="AddNewModalSubscribeNow">¡Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días!</translation>
   <translation id="EditSubscriptionModalCancelSubscription">Quiero cancelar mi suscripción</translation>
   <translation id="EditSubscriptionModalCancelFreeTrial">Cancelar prueba gratuita</translation>
-<<<<<<< HEAD
   <translation id="MissingPaymentMethodTitle">No hay un método de pago disponible</translation>
   <translation id="MissingPaymentMethodSubtitle">No hay un método de pago disponible para que podamos renovar tu suscripción cuando caduque.</translation>
   <translation id="PleaseAddCreditCard">Por favor, añade una tarjeta de crédito para no perder los beneficios de ser PRO</translation>
@@ -1058,13 +1057,11 @@
   <translation id="AddNewSubscriptionCard">+ Añadir nueva tarjeta de suscripción</translation>
   <translation id="CurrentCards">Tarjetas actuales</translation>
   <translation id="AddNewCard">Añadir nueva tarjeta</translation>
-=======
   <translation id="RangeDatepickerHaveSelected">Has seleccionado </translation>
   <translation id="RangeDatepickerCitybump">destacado de ciudad</translation>
   <translation id="RangeDatepickerCountrybump">destacado de país</translation>
   <translation id="RangeDatepickerCitybumps">destacados de ciudad</translation>
   <translation id="RangeDatepickerCountrybumps">destacados de país</translation>
-  <translation id="Cancel">Cancelar</translation>
   <translation id="Apply">Aplicar</translation>
   <translation id="CheckoutProPlanning">Planificación</translation>
   <translation id="ApplyAll">Aplicar a todos</translation>
@@ -1085,5 +1082,4 @@
   <translation id="Save">Guardar</translation>
   <translation id="DeleteInformation">Eliminar información</translation>
   <translation id="5875130684997376720">Facturación</translation>
->>>>>>> develop
 </translationbundle>
