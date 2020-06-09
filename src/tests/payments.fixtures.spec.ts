@@ -482,8 +482,8 @@ export const BILLING_INFO_RESPONSE: BillingInfoResponse = {
   country: 'country',
   email: 'email@email.com',
   name: 'name',
-  phone: '666666666',
   postal_code: '12345',
+  type: 'legal',
   street: 'street',
   surname: 'surname',
   id: '123'

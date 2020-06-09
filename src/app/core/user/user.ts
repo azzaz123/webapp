@@ -9,7 +9,8 @@ export const PLACEHOLDER_COVER = '/assets/images/cover.svg';
 export const PERMISSIONS = {
   'normal': 'isNormal',
   'professional': 'isProfessional',
-  'coins': 'coins'
+  'coins': 'coins',
+  'featured': 'isFeatured'
 };
 
 export class User implements Model {

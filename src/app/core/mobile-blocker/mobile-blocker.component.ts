@@ -19,7 +19,7 @@ export class MobileBlockerComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.userService.isProfessional().subscribe(val => this.isCardealer = val);
+    //this.userService.isProfessional().subscribe(val => this.isCardealer = val);
     this.isMobile = this.deviceDetector.isMobile();
   }
 }

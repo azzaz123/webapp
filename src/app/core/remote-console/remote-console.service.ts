@@ -11,6 +11,7 @@ import { RemoteConsoleClientService } from './remote-console-client.service';
 import { User } from '../user/user';
 import { UUID } from 'angular2-uuid';
 import { ChatConnectionMetric } from './chat-connection-metric';
+import { finalize } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -68,18 +69,18 @@ export class RemoteConsoleService implements OnDestroy {
     }
 
     if (this.chatConnectionMetric.inboxConnectionSuccess && this.chatConnectionMetric.xmppConnectionSuccess) {
-      this.userService.me().subscribe((user: User) => this.remoteConsoleClientService.info({
-        ...this.getCommonLog(user.id),
-        connection_time: Date.now() - this.chatConnectionMetric.connectionChatTimeStart,
-        xmpp_retry_count: this.chatConnectionMetric.xmppRetryCount,
-        inbox_retry_count: this.chatConnectionMetric.inboxRetryCount,
-        metric_type: MetricTypeEnum.CHAT_CONNECTION_TIME,
-        session_id: this.sessionId,
-        connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
-        ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1
-      }));
-
-      this.chatConnectionMetric = null;
+      this.userService.me()
+        .pipe(finalize(() => this.chatConnectionMetric = null))
+        .subscribe((user: User) => this.remoteConsoleClientService.info({
+          ...this.getCommonLog(user.id),
+          connection_time: Date.now() - this.chatConnectionMetric.connectionChatTimeStart,
+          xmpp_retry_count: this.chatConnectionMetric.xmppRetryCount,
+          inbox_retry_count: this.chatConnectionMetric.inboxRetryCount,
+          metric_type: MetricTypeEnum.CHAT_CONNECTION_TIME,
+          session_id: this.sessionId,
+          connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
+          ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1
+        }));
     }
   }
 

@@ -28,7 +28,7 @@ export function permissionFactory(userService: UserService, permissionService: N
     return userService.me()
       .pipe(map((user: User) => {
         if (user) {
-          userService.setPermission(user.type);
+          userService.setPermission(user);
         }
         return user;
       }))
