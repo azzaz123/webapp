@@ -88,6 +88,7 @@ export class ChatComponent implements OnInit {
     }
 
     this.route.queryParams.subscribe((params: Params) => {
+      const searchId = params.searchId;
       const itemId = params.itemId;
       const conversationId = params.conversationId;
 
