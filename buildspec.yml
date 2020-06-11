@@ -1,6 +1,9 @@
 version: 0.2
 
 env:
+  variables:
+    ECR: "745640521341.dkr.ecr.eu-west-1.amazonaws.com"
+    NODE_IMAGE: "nodejs12"
   parameter-store:
     build_ssh_key: "BuildSSHKey"
     code_build_token: "/corp/releasebot/codebuild/token"
@@ -16,13 +19,13 @@ phases:
 
   pre_build:
     commands:
+      # Log in into ECR
       - $(aws ecr get-login --no-include-email --region eu-west-1)
 
   build:
     commands:
       # RUN cfn-lint ON CLOUDFORMATION TEMPLATE FILES
-      - ecr="745640521341.dkr.ecr.eu-west-1.amazonaws.com"
-      - docker run -v "$PWD":/code -w /code $ecr/cfn-lint:stable -t infrastructure/*/*.yaml
+      - docker run -v "$PWD":/code -w /code $ECR/cfn-lint:stable -t infrastructure/*/*.yaml
 
       # OBTAIN WORKING BRANCH
       - BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
@@ -44,14 +47,13 @@ phases:
 
       # VARIABLE DEFINITIONS
       - export AMAZON_REPO_URL="745640521341.dkr.ecr.eu-west-1.amazonaws.com/"
-      - export NODE_IMAGE="nodejs12"
 
       # LOAD YARN DEPENDENCIES
       - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable yarn
 
       # ADD DOCKNUM TO ENVIRONMENT FOR TESTS
       - ./scripts/docknum/update.sh 137
- 
+
       # LAUNCH TEST
       - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} ${AMAZON_REPO_URL}${NODE_IMAGE}:stable yarn run test-ci
 
