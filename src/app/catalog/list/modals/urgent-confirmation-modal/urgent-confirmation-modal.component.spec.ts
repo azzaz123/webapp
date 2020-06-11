@@ -14,6 +14,7 @@ import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { environment } from 'environments/environment';
 
 describe('UrgentConfirmationModalComponent', () => {
   let component: UrgentConfirmationModalComponent;
@@ -59,6 +60,7 @@ describe('UrgentConfirmationModalComponent', () => {
     userService = TestBed.get(UserService);
     paymentService = TestBed.get(PaymentService);
     component = fixture.componentInstance;
+    appboy.initialize(environment.appboy);
     fixture.detectChanges();
   });
 
@@ -97,6 +99,15 @@ describe('UrgentConfirmationModalComponent', () => {
         expect(component.withCoins).toBe(true);
         expect(component.creditInfo).toBe(creditInfo);
       }));
+
+      it('should send appboy VisibilityPurchaseSuccess event if code == 200', () => {
+      spyOn(appboy, 'logCustomEvent');
+      component.code = '200';
+
+      component.ngOnInit();
+
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('VisibilityPurchaseSuccess', {platform: 'web'});
+    });
     });
   });
 });
