@@ -384,6 +384,9 @@ Resources:
               InputArtifacts:
                 - Name: App
               RunOrder: 2
+
+        - Name: Deploy
+          Actions:
             - Name: Invalidate-Caches
               ActionTypeId:
                 Category: Build
@@ -394,4 +397,4 @@ Resources:
                 ProjectName: !Ref CodeBuildScripts
               InputArtifacts:
                 - Name: App
-              RunOrder: 3
+              RunOrder: 1 # this will be changed in next PRs
