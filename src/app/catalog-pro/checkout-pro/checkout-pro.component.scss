@@ -1,5 +1,9 @@
 @import "~style/common";
 
+$checkbox-width: $spacing-ms;
+$transition: all .5s ease;
+$feature-button-width: 170px;
+
 .back {
   position: absolute;
   top: 50%;
@@ -20,9 +24,31 @@
   }
 }
 
+.btn-selectAll {
+  background-color: transparent;
+  border: none;
+  color: $blue-grey-2;
+  font-size: $font-size-s;
+  padding: 0;
+  &.citybump {
+    &:hover {
+      color: $walla-main;
+    }
+  }
+  &.countrybump {
+    &:hover {
+      color: $payblue-main;
+    }
+  }
+  &.planning {
+    &:hover {
+      color: $blue-grey-1;
+    }
+  }
+}
+
 .bumps-table {
   z-index: 4;
-  position: relative;
   margin-bottom: $spacing-xxxl;
 }
 
@@ -35,12 +61,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 60%;
+    width: 48%;
   }
   .bump-types {
     display: flex; 
-    width: 50%;
-  }
+    width: 100%;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-top: 1px solid $blue-grey-5;
+    border-right: 1px solid $blue-grey-5;
+    border-left: 1px solid $blue-grey-5;
+  }∫
   .info {
     font-size: $font-size-s;
     text-decoration: underline;
@@ -52,38 +83,100 @@
   }
   .type {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    flex-direction: column;
     margin-bottom: -$spacing-xs;
-    align-self: flex-end;
-    border-top-right-radius: 20px;
-    border-top-left-radius: 20px;
-    box-shadow: 3px 6px 10px 0 rgba($black, 0.2);
-    border: solid 1px $blue-grey-5;
-    border-bottom: 0;
+    align-self: flex-start;
     color: $white;
     font-weight: $font-weight-chunky;
-    text-align: center;
-    padding: $spacing-m;
+    text-align: left;
+    padding: $spacing-m 0;
     font-size: $font-size-s;
     line-height: $line-height-m;
+    background-color: $white;
+    flex-direction: row;
+    align-items: center;
     &.city {
-      background-image: linear-gradient(206deg, #2be2d6, #2be2d6, #2ae1d5, #2ae0d4 1%, $walla-main);
-      z-index: 3;  
-      width: 50%;
+      color: $walla-main;
+      border-top-left-radius: 18px;
+      width: 23%;
     }
     &.country {
-      background-image: linear-gradient(208deg, #8fd6ff, $country-bump);
-      z-index: 2;
-      width: 50%;
+      color: $payblue-main;
+      width: 23%;
     }
     &.planning {
-      background-color: $white;
       color: $blue-grey-1;
       box-shadow: none;
-      z-index: 1;
-      width: 40%;
+      width: 55%;
+      display: flex;
+      justify-content: flex-start;
+      border-top-right-radius: 18px;
+    }
+  }
+
+  .content-select {
+    display: flex;
+    font-size: $font-size-xs;
+    font-weight: lighter;
+    margin: $spacing-xs 0 0;
+    color: $blue-grey-3;
+  }
+
+  .content-header {
+    display: flex;
+    flex-direction: column;
+    margin: 0 14px;
+    &.last {
+      border-right: none;
+    }
+  }
+
+  .item-separator {
+    background-color: $blue-grey-5;
+    width: 1px;
+    height: $spacing-xl;
+    margin: 0px 0 0 $spacing-s;
+  }
+
+  .checkbox {
+    transition: $transition;
+    width: $checkbox-width;
+    margin: $spacing-xxs $spacing-xs 0 0;
+    .select {
+      @include square($checkbox-width);
+      border: 1px solid $blue-grey-4;
+      border-radius: 2px;
+      padding: 0;
+      background: transparent;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      mat-icon {
+        display: none;
+        height: 9px;
+        width: $spacing-ms;
+      }
+      &.selected {
+        border-color: transparent;
+        mat-icon {
+          display: flex;
+          ::ng-deep svg g g {
+            fill: $white;
+          }
+        }
+        &.countrybump {
+          background: $payblue-main;
+        }
+        &.citybump {
+          background: $walla-main;
+        }
+      }
+      &:hover {
+        border: 1px solid $blue-grey-3;
+      }
     }
   }
 }

@@ -7,11 +7,11 @@ import { SharedModule } from '../shared/shared.module';
 import { ConversationModule } from '../core/conversation/conversation.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { StatsGraphComponent } from './stats-graph/stats-graph.component';
-import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { StatisticsService } from './stats-graph/statistics.service';
 import { SelectModule } from 'ng-select';
 import { FormsModule } from '@angular/forms';
 import { ChatModule } from '../chat/chat.module';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   imports: [
@@ -21,7 +21,7 @@ import { ChatModule } from '../chat/chat.module';
     SharedModule,
     ConversationModule,
     NgbTooltipModule,
-    AmChartsModule,
+    NgxEchartsModule,
     SelectModule,
     FormsModule,
     ChatModule

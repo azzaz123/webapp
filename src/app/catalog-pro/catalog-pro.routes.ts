@@ -36,7 +36,8 @@ export const routes: Routes = [
           permissions: {
             only: PERMISSIONS.professional,
             redirectTo: {
-              isProfessional: isProfessionalCatalogPermissions
+              isNormal: isProfessionalCatalogPermissions,
+              isFeatured: isProfessionalCatalogPermissions
             }
           }
         }

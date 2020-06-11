@@ -2,7 +2,6 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: true,
-  profeatures: true,
   name: 'prod',
   baseUrl: 'https://api.wallapop.com/',
   xmppDomain: 'wallapop.com',
