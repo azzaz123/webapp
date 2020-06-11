@@ -44,6 +44,7 @@ phases:
       - if [ "`echo $BRANCH | grep master`" != "" ]; then export IMAGE_TAG="stable"; fi
       - if [ "`echo $BRANCH | grep release/`" != "" ]; then export IMAGE_TAG="release"; fi
       - if [ "`echo $BRANCH | grep hotfix/`" != "" ]; then export IMAGE_TAG="release"; fi
+      - if [ "`echo $BRANCH | grep develop`" != "" ]; then export IMAGE_TAG="latest"; fi
       - echo $IMAGE_TAG
 
       # LOAD YARN DEPENDENCIES
@@ -84,12 +85,9 @@ phases:
 
       - >
         if [ "`echo $ENV | grep dockx`" != "" ]; then
-          TAG_BRANCH=feature-$(echo $BRANCH | cut -d '/' -f 2)
-          echo $TAG_BRANCH
-          if [ "`echo $BRANCH | grep develop`" != "" ]; then export TAG_BRANCH="latest"; fi
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run builddocker
-          docker build -f docker/Dockerfile -t $ECR_REPO:$TAG_BRANCH .
-          docker push "$ECR_REPO:$TAG_BRANCH"
+          docker build -f docker/Dockerfile -t $ECR_REPO:$IMAGE_TAG .
+          docker push "$ECR_REPO:$IMAGE_TAG"
         fi
 
       # TRIGGER BETA/PROD INFRASTRUCTURE PIPELINES
