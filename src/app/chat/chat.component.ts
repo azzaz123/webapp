@@ -11,6 +11,7 @@ import { AdService } from '../core/ad/ad.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ConversationService } from '../core/conversation/conversation.service';
 import { isEmpty, isNil } from 'lodash-es';
+import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 
 @Component({
   selector: 'tsl-chat',
@@ -94,6 +95,10 @@ export class ChatComponent implements OnInit {
         this.openConversationByConversationId(conversationId);
       } else if (itemId) {
         this.openConversationByItmId(itemId);
+      }
+
+      if (searchId) {
+        sessionStorage.setItem(SEARCHID_STORAGE_NAME, searchId);
       }
     });
   }
