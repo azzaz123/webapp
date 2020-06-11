@@ -363,10 +363,18 @@ describe('RealTimeService', () => {
     });
 
     describe('if it`s the first message', () => {
-      it('should send the Send First Message event', () => {
-        const inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(),
+      let inboxMessage;
+      let inboxConversation;
+
+      beforeEach(() => {
+        inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(),
           MessageStatus.SENT, MessageType.TEXT);
-        const inboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
+        inboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
+
+        inboxConversation.messages.push(inboxMessage);
+      });
+
+      it('should send the Send First Message event', () => {
         const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
           name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
           eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -378,12 +386,36 @@ describe('RealTimeService', () => {
             categoryId: inboxConversation.item.categoryId
           }
         };
-        inboxConversation.messages.push(inboxMessage);
+
         spyOn(analyticsService, 'trackEvent');
 
         eventService.emit(EventService.MESSAGE_SENT, inboxConversation, 'newMsgId');
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+
+      describe('and has searchId in sessionStorage', () => {
+        it('should send the Send First Message event with searchId', () => {
+          const searchId = '123456789';
+          const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
+            name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              itemId: inboxConversation.item.id,
+              sellerUserId: inboxConversation.user.id,
+              conversationId: inboxConversation.id,
+              screenId: SCREEN_IDS.Chat,
+              categoryId: inboxConversation.item.categoryId,
+              searchId
+            }
+          };
+          spyOn(sessionStorage, 'getItem').and.returnValue(searchId);
+          spyOn(analyticsService, 'trackEvent');
+
+          eventService.emit(EventService.MESSAGE_SENT, inboxConversation, 'newMsgId');
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        });
       });
     });
 

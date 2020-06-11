@@ -16,7 +16,8 @@ import {
   SendFirstMessage
 } from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
-import { filter } from 'rxjs/operators';
+
+export const SEARCHID_STORAGE_NAME = 'searchId';
 
 @Injectable()
 export class RealTimeService {
@@ -146,6 +147,7 @@ export class RealTimeService {
   }
 
   private trackSendFirstMessage(conversation: InboxConversation) {
+    const searchId = sessionStorage.getItem(SEARCHID_STORAGE_NAME);
     const event: AnalyticsEvent<SendFirstMessage> = {
       name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
       eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -158,6 +160,11 @@ export class RealTimeService {
       }
     };
 
+    if (searchId) {
+      event.attributes.searchId = searchId;
+    }
+
     this.analyticsService.trackEvent(event);
+    sessionStorage.removeItem(SEARCHID_STORAGE_NAME);
   }
 }
