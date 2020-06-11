@@ -175,7 +175,7 @@ describe('Component: ChatComponent with ItemId', () => {
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
     });
 
-    it('should set current conversation if link contains itemId', () => {
+    it('should save searchId if link contains searchId', () => {
       const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
       const searchId = '123456789';
       spyOn(inboxService, 'isInboxReady').and.returnValue(true);
