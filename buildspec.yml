@@ -20,7 +20,7 @@ phases:
 
   pre_build:
     commands:
-      # Log in into ECR
+      # LOG IN INTO ECR
       - $(aws ecr get-login --no-include-email --region eu-west-1)
 
   build:
@@ -50,7 +50,7 @@ phases:
       # LOAD YARN DEPENDENCIES
       - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn
 
-      # ADD DOCKNUM TO ENVIRONMENT FOR TESTS
+      # ADD DOCKNUM 137 TO ENVIRONMENT FOR TESTS
       - ./scripts/docknum/update.sh 137
 
       # LAUNCH TEST
@@ -65,9 +65,6 @@ phases:
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run buildprod-en
           aws s3 sync dist s3://web-en.wallapop.com --delete
           aws s3 cp dist/index.html s3://web-en.wallapop.com/index.html --cache-control max-age=0
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run builddocker
-          docker build -f docker/Dockerfile -t $ECR_REPO:stable .
-          docker push "$ECR_REPO:stable"
         fi
 
       - >
@@ -78,17 +75,12 @@ phases:
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run buildbeta-en
           aws s3 sync dist s3://web-en.beta.wallapop.com --delete
           aws s3 cp dist/index.html s3://web-en.beta.wallapop.com/index.html --cache-control max-age=0
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run builddocker
-          docker build -f docker/Dockerfile -t $ECR_REPO:release .
-          docker push "$ECR_REPO:release"
         fi
 
-      - >
-        if [ "`echo $ENV | grep dockx`" != "" ]; then
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run builddocker
-          docker build -f docker/Dockerfile -t $ECR_REPO:$IMAGE_TAG .
-          docker push "$ECR_REPO:$IMAGE_TAG"
-        fi
+      # BUILD AND PUSH IMAGE
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run builddocker
+      - docker build -f docker/Dockerfile -t $ECR_REPO:$IMAGE_TAG .
+      - docker push "$ECR_REPO:$IMAGE_TAG"
 
       # TRIGGER BETA/PROD INFRASTRUCTURE PIPELINES
       - zip -r webapp-${IMAGE_TAG}.zip infrastructure/*
