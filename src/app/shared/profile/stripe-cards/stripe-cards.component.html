@@ -7,18 +7,18 @@
     </div>
     <div class="form-group row mb-0">
       <div *ngIf="isSubscribed" class="col-12 col-md-4 offset-md-2">
-          <h4 i18n="@@SubscriptionCard">Subscription card</h4>
+          <h4 i18n="@@SubscriptionCard">Card linked to subscriptions</h4>
           <div class="StripeCards__card" *ngFor="let subscriptionStripeCard of subscriptionStripeCards">
             <tsl-credit-card-info [financialCard]="subscriptionStripeCard"
               (onSetChangeCard)="onSetChangeCard($event)" (onDeleteStripeCard)="onDeleteCard($event)">
             </tsl-credit-card-info>
           </div>
           <div class="StripeCards__addNew" *ngIf="subscriptionStripeCards.length <= 0">
-            <span i18n="@@AddNewSubscriptionCard" (click)="addNewSubscriptionCard()">+ Add new subscription card</span>
+            <span i18n="@@AddNewSubscriptionCard" (click)="addNewSubscriptionCard()">Link a card to your subscriptions</span>
           </div>
       </div>
       <div class="col-12 col-md-4 " [ngClass]="{'offset-md-1': isSubscribed,'offset-md-2': !isSubscribed}">
-        <h4 i18n="@@CurrentCards">Current cards</h4>
+        <h4 i18n="@@CurrentCards">Saved cards</h4>
         <div class="StripeCards__group">
           <div class="StripeCards__card" *ngFor="let stripeCard of stripeCards">
             <tsl-credit-card-info [financialCard]="stripeCard"
@@ -26,7 +26,7 @@
             </tsl-credit-card-info>
           </div>
           <div class="StripeCards__addNew" *ngIf="stripeCards?.length < 10">
-              <span (click)="addNewCard()" i18n="@@AddNewCard">+ Add new card</span>
+              <span (click)="addNewCard()" i18n="@@AddCard">Add card</span>
           </div>
         </div>
       </div>

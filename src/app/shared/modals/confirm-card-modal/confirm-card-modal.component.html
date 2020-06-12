@@ -3,7 +3,7 @@
         <mat-icon svgIcon="cross"></mat-icon>
     </div>
     <h4 class="ConfirmCardModal--title" i18n="@@ConfirmPaymentMethod">Confirm payment method</h4>
-    <p class="" i18n="@@ChargeThisCard">Do you want to be charged to the card</p>
+    <p class="" i18n="@@ChargeThisCard">The card linked to your subscriptions will be</p>
     <div class="ConfirmCardModal--cardDetails">
       <mat-icon svgIcon="{{financialCard?.brand}}"></mat-icon>
       <span class="ConfirmCardModal--cardNumber">****-****-****-{{financialCard?.last4}}</span>
@@ -11,7 +11,7 @@
     <div class="ConfirmCardModal--buttons">
       <tsl-button className="btn btn-secondary" (click)="activeModal.dismiss()" i18n="@@Cancel">Cancel
       </tsl-button>
-      <tsl-button className="btn btn-primary" (click)="confirmChange()" i18n="@@Yes">Yes
+      <tsl-button className="btn btn-primary" (click)="confirmChange()" i18n="@@Yes">Confirm payment method
       </tsl-button>
     </div>
 </div>

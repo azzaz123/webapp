@@ -28,7 +28,10 @@ export class CreditCardInfoComponent {
       modalRef.result.then((action: string) => {
         modalRef = null;
         if (action === 'deleteCardModal') {
-          this.deleteStripeCard();
+          this.stripeService.deleteCard(this.financialCard.id).pipe(finalize(() => this.loading = false)).subscribe(() => {
+            this.onDeleteStripeCard.emit(this.financialCard);
+            this.financialCard = null;
+          });
         }
       });
     } else {
@@ -48,6 +51,7 @@ export class CreditCardInfoComponent {
       this.stripeService.deleteCard(this.financialCard.id).pipe(finalize(() => this.loading = false)).subscribe(() => {
         this.onDeleteStripeCard.emit(this.financialCard);
         this.financialCard = null;
+        this.loading = false;
       });
     }, () => {});
   }

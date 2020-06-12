@@ -1053,10 +1053,10 @@
   <translation id="Yes">Sí</translation>
   <translation id="ChangeSubscriptionCardTitle">Cambiar tarjeta para la suscripción</translation>
   <translation id="SetDefaultCard">Establecer tarjeta por defecto</translation>
-  <translation id="SubscriptionCard">Tarjeta para la suscripción</translation>
+  <translation id="SubscriptionCard">Tarjeta vinculada a suscripciones</translation>
   <translation id="AddNewSubscriptionCard">+ Añadir nueva tarjeta de suscripción</translation>
-  <translation id="CurrentCards">Tarjetas actuales</translation>
-  <translation id="AddNewCard">Añadir nueva tarjeta</translation>
+  <translation id="CurrentCards">Tarjetas guardadas</translation>
+  <translation id="AddNewCard">Añadir tarjeta</translation>
   <translation id="RangeDatepickerHaveSelected">Has seleccionado </translation>
   <translation id="RangeDatepickerCitybump">destacado de ciudad</translation>
   <translation id="RangeDatepickerCountrybump">destacado de país</translation>
@@ -1082,4 +1082,12 @@
   <translation id="Save">Guardar</translation>
   <translation id="DeleteInformation">Eliminar información</translation>
   <translation id="5875130684997376720">Facturación</translation>
+  <translation id="ChangeAddSubscriptionCardTitle">Añade una tarjeta de crédito</translation>
+  <translation id="ChangeSubscriptionCardSubtitle">"Será el método de pago vinculado a tu suscripción"</translation>
+  <translation id="SelectSavedCard">Seleccionar tarjeta guardada</translation>
+  <translation id="ChangeSelectSubscriptionCardTitle">Selecciona una tarjeta de crédito</translation>
+  <translation id="ChangeSubscriptionCardSubtitle">Será el método de pago vinculado a tu suscripción</translation>
+  <translation id="2341832243359741366">Seleccionar tarjeta guardada</translation>
+  <translation id="AddCard">Añadir tarjeta</translation>
+  <translation id="UseSavedCard">Utiliza tarjeta guardada</translation>
 </translationbundle>

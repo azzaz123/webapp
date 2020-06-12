@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FinancialCardOption, PaymentMethodResponse, FinancialCard } from '../../../core/payments/payment.interface';
+import { FinancialCardOption, FinancialCard } from '../../../core/payments/payment.interface';
 import { PAYMENT_RESPONSE_STATUS } from 'app/core/payments/payment.service';
 import { EventService } from 'app/core/event/event.service';
 import { StripeService } from 'app/core/stripe/stripe.service';
 import { finalize } from 'rxjs/operators';
-import { STATUS_CODES } from 'http';
 import { ConfirmCardModalComponent } from '../confirm-card-modal/confirm-card-modal.component';
 
 @Component({
@@ -87,6 +86,8 @@ export class ChangeCardModalComponent implements OnInit  {
   }
 
   public setExistingDefaultCard() {
+    if (!this.selectedCard) return;
+
     let modalRef: NgbModalRef = this.modalService.open(ConfirmCardModalComponent, {windowClass: 'review'});
     modalRef.componentInstance.financialCard = this.card.stripeCard;
     modalRef.result.then((action: string) => {

@@ -16,6 +16,7 @@ import { ButtonComponent } from '../../button/button.component';
 import { NewCardModalComponent } from 'app/shared/modals/new-card-modal/new-card-modal.component';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.spec';
+import { ToastService } from 'app/layout/toast/toast.service';
 
 describe('StripeCardsComponent', () => {
   let component: StripeCardsComponent;
@@ -26,6 +27,7 @@ describe('StripeCardsComponent', () => {
   let modalSpy: jasmine.Spy;
   let activeModal: NgbActiveModal;
   let subscriptionsService: SubscriptionsService;
+  let toastService: ToastService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -88,6 +90,7 @@ describe('StripeCardsComponent', () => {
     modalService = TestBed.get(NgbModal);
     errorService = TestBed.get(ErrorsService);
     activeModal = TestBed.get(NgbActiveModal);
+    toastService = TestBed.get(ToastService);
     subscriptionsService = TestBed.get(SubscriptionsService);
   });
 

@@ -152,6 +152,9 @@ export class I18nService {
       paymentFailed: 'The payment could not be done',
       consumerGoodsGeneralCategoryTitle: 'Everything else',
       nodata: 'No data available',
+      SubscriptionCardNotSet: 'Your card could not be saved',
+      SubscriptionCardSet: 'Your card has been saved successfully',
+      SubscriptionCardDeleted: 'Your card has been deleted',
       subscriptionBenefits: [
         {
           iconId: 'paintbrush',
@@ -325,6 +328,9 @@ export class I18nService {
       paymentFailed: 'No ha podido realizarse el pago',
       consumerGoodsGeneralCategoryTitle: 'Todo lo demás',
       nodata: 'No hay datos disponibles',
+      SubscriptionCardNotSet: 'Tu tarjeta no ha podido ser guardada',
+      SubscriptionCardSet: 'Tu tarjeta se ha guardado correctamente',
+      SubscriptionCardDeleted: 'Tu tarjeta se ha borrada correctamente',
       subscriptionBenefits: [
         {
           iconId: 'paintbrush',

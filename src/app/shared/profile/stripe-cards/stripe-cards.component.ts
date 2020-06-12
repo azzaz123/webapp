@@ -8,6 +8,8 @@ import { finalize } from 'rxjs/operators';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse } from 'app/core/subscriptions/subscriptions.interface';
 import { ChangeCardModalComponent } from 'app/shared/modals/change-card-modal/change-card-modal.component';
+import { ToastService } from 'app/layout/toast/toast.service';
+import { I18nService } from 'app/core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -24,14 +26,17 @@ export class StripeCardsComponent implements OnInit {
   constructor(private stripeService: StripeService,
               private modalService: NgbModal,
               private errorService: ErrorsService,
-              private subscriptionsService: SubscriptionsService) { }
+              private subscriptionsService: SubscriptionsService,
+              private toastService: ToastService,
+              private i18n: I18nService) { }
 
   ngOnInit() {
     this.getSubscriptions();
     this.getAllCards();
   }
-
+  
   public onDeleteCard(): void {
+    this.toastService.show({title:this.i18n.getTranslations('continueSubscriptionSuccessTitle'), text:this.i18n.getTranslations('SubscriptionCardDeleted'), type:'success'});
     this.getAllCards();
   }
 
@@ -61,9 +66,13 @@ export class StripeCardsComponent implements OnInit {
       this.loading = false;
       modalRef = null;
       this.getAllCards();
+      this.toastService.show({title:this.i18n.getTranslations('continueSubscriptionSuccessTitle'), text:this.i18n.getTranslations('SubscriptionCardSet'), type:'success'});
     },
     () => this.loading = false)
-    .catch(() => this.loading = false)
+    .catch(() => {
+      this.loading = false;
+      this.errorService.i18nError('SubscriptionCardNotSet');
+    })
   }
 
   public onSetChangeCard(event: any): void {
