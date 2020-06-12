@@ -80,11 +80,12 @@ describe('CreditCardInfoComponent', () => {
         componentInstance: componentInstance
       });
       spyOn(component, 'deleteStripeCard').and.callThrough();
-      
+      component.financialCard = STRIPE_CARD_OPTION;
+
       deleteStripeCardButton.click();
       tick();
 
-      expect(component.deleteStripeCard).toHaveBeenCalledWith()
+      expect(component.deleteStripeCard).toHaveBeenCalled();
     }));
   });
 
