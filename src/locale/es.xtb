@@ -1047,7 +1047,6 @@
   <translation id="DeleteCard">Sí, quiero borrarla</translation>
   <translation id="ChangeCard">Cambiar tarjeta</translation>
   <translation id="AddNewCreditCard">Añadir una tarjeta de crédito</translation>
-  <translation id="ChangeSubscriptionCardSubtitle">Subtítulo para añadir una tarjeta</translation>
   <translation id="ConfirmPaymentMethod">Confirma tu método de pago</translation>
   <translation id="ChargeThisCard">Quieres que se cobre en la tarjeta</translation>
   <translation id="Yes">Sí</translation>
@@ -1083,7 +1082,6 @@
   <translation id="DeleteInformation">Eliminar información</translation>
   <translation id="5875130684997376720">Facturación</translation>
   <translation id="ChangeAddSubscriptionCardTitle">Añade una tarjeta de crédito</translation>
-  <translation id="ChangeSubscriptionCardSubtitle">"Será el método de pago vinculado a tu suscripción"</translation>
   <translation id="SelectSavedCard">Seleccionar tarjeta guardada</translation>
   <translation id="ChangeSelectSubscriptionCardTitle">Selecciona una tarjeta de crédito</translation>
   <translation id="ChangeSubscriptionCardSubtitle">Será el método de pago vinculado a tu suscripción</translation>
