@@ -86,7 +86,7 @@ export const MOCK_XMPP = {
 
 class MockStorage {
   private store = {};
-  public getItem = key => this.store[key ];
+  public getItem = key => this.store[key];
   public setItem = (key, value) => this.store[key] = value.toString();
   public clear = () => this.store = {};
   public removeItem = key => delete this.store[key];
