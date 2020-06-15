@@ -1044,7 +1044,7 @@
   <translation id="MissingPaymentMethodSubtitle">No hay un método de pago disponible para que podamos renovar tu suscripción cuando caduque.</translation>
   <translation id="PleaseAddCreditCard">Por favor, añade una tarjeta de crédito para no perder los beneficios de ser PRO</translation>
   <translation id="Cancel">Cancelar</translation>
-  <translation id="DeleteCard">Sí, quiero borrarla</translation>
+  <translation id="DeleteCard">Sí, eliminar tarjeta</translation>
   <translation id="ChangeCard">Cambiar tarjeta</translation>
   <translation id="AddNewCreditCard">Añadir una tarjeta de crédito</translation>
   <translation id="ConfirmPaymentMethod">Confirma tu método de pago</translation>
@@ -1053,7 +1053,7 @@
   <translation id="ChangeSubscriptionCardTitle">Cambiar tarjeta para la suscripción</translation>
   <translation id="SetDefaultCard">Establecer tarjeta por defecto</translation>
   <translation id="SubscriptionCard">Tarjeta vinculada a suscripciones</translation>
-  <translation id="AddNewSubscriptionCard">+ Añadir nueva tarjeta de suscripción</translation>
+  <translation id="AddNewSubscriptionCard">Añadir nueva tarjeta de suscripción</translation>
   <translation id="CurrentCards">Tarjetas guardadas</translation>
   <translation id="AddNewCard">Añadir tarjeta</translation>
   <translation id="RangeDatepickerHaveSelected">Has seleccionado </translation>

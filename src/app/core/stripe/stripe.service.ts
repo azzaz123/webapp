@@ -111,12 +111,8 @@ export class StripeService {
 
   public createDefaultCard(clientSecret: string, cardElement: any): Promise<any> {
     return this.stripeSetupIntent(clientSecret, cardElement).then((result) => {
-      if (result.error) {
-        return this.eventService.emit(result.error);
-      } else {
-        return result.setupIntent;
-      }
-    });
+      return result;
+    }).catch(() => { return {result: { error: {message: 'error' } } } });
   }
 
   createStripePaymentMethod = async (cardElement: any) => await this.lib.createPaymentMethod('card', cardElement);

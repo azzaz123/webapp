@@ -165,15 +165,13 @@ describe('StripeService', () => {
   });
 
   describe('createDefaultCard', () => {
-    it('should emit an error if response from backend has error', fakeAsync(() => {
-      spyOn(eventService, 'emit').and.callThrough();
+    it('should call stripeSetupIntent', fakeAsync(() => {
       spyOn(service, 'stripeSetupIntent').and.returnValue(Promise.resolve({ error: { message: 'Payment error' } }));
 
       service.createDefaultCard('abc', {});
       tick();
 
-      expect(eventService.emit).toHaveBeenCalledTimes(1);
-      expect(eventService.emit).toHaveBeenCalledWith({ message: 'Payment error' });
+      expect(service.stripeSetupIntent).toHaveBeenCalledTimes(1);
     }));
   });
 

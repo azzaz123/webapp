@@ -330,7 +330,7 @@ export class I18nService {
       nodata: 'No hay datos disponibles',
       SubscriptionCardNotSet: 'Tu tarjeta no ha podido ser guardada',
       SubscriptionCardSet: 'Tu tarjeta se ha guardado correctamente',
-      SubscriptionCardDeleted: 'Tu tarjeta se ha borrada correctamente',
+      SubscriptionCardDeleted: 'Tu tarjeta se ha borrado correctamente',
       subscriptionBenefits: [
         {
           iconId: 'paintbrush',

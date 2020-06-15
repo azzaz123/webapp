@@ -3,10 +3,6 @@
 .NewCardModal {
   text-align: center;
 
-  @include media-breakpoint-down(md) {
-    padding: $spacing-l $spacing-m;
-  }
-
   &--header {
     background: $walla-main;
     border-top-left-radius: 0.3rem;

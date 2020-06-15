@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FinancialCardOption, FinancialCard } from '../../../core/payments/payment.interface';
+import { FinancialCardOption, FinancialCard, SetupIntent } from '../../../core/payments/payment.interface';
 import { PAYMENT_RESPONSE_STATUS } from 'app/core/payments/payment.service';
 import { EventService } from 'app/core/event/event.service';
 import { StripeService } from 'app/core/stripe/stripe.service';
@@ -79,15 +79,11 @@ export class ChangeCardModalComponent implements OnInit  {
   }
 
   public setNewDefaultCard(paymentIntent: any) {
-    this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
-      this.card = stripeCards.filter( card => card.number === paymentIntent.number);
-    });
     this.setDefaultCard(paymentIntent.payment_method);
   }
 
   public setExistingDefaultCard() {
     if (!this.selectedCard) return;
-
     let modalRef: NgbModalRef = this.modalService.open(ConfirmCardModalComponent, {windowClass: 'review'});
     modalRef.componentInstance.financialCard = this.card.stripeCard;
     modalRef.result.then((action: string) => {
@@ -103,8 +99,8 @@ export class ChangeCardModalComponent implements OnInit  {
   
     this.stripeService.getSetupIntent().subscribe((clientSecret: any) => {
       this.stripeService.createDefaultCard(clientSecret.setup_intent, this.card.id).then((response: any) => {
-        if (response.status && response.status.toUpperCase() === PAYMENT_RESPONSE_STATUS.SUCCEEDED) {
-          this.setDefaultCard(response.payment_method);
+        if (response.setupIntent.status && response.setupIntent.status.toUpperCase() === PAYMENT_RESPONSE_STATUS.SUCCEEDED) {
+          this.setDefaultCard(response.setupIntent.payment_method);
         } else {
           this.newLoading = false;
         }

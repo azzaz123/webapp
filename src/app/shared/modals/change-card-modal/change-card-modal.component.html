@@ -1,13 +1,13 @@
 <div class="ChangeCardModal">
-    <div class="ChangeCardModal-header">
-      <div class="modal-close" (click)="activeModal.close()">
+    <div class="ChangeCardModal__header">
+      <div class="modal-close" (click)="activeModal.dismiss()">
         <mat-icon svgIcon="cross"></mat-icon>
       </div>
-      <h4 *ngIf="hasSavedCard && savedCard" class="ChangeCardModal--title" i18n="@@ChangeSelectSubscriptionCardTitle">Select a credit card</h4>
-      <h4 *ngIf="!hasSavedCard || !savedCard" class="ChangeCardModal--title" i18n="@@ChangeAddSubscriptionCardTitle">Add a credit card</h4>
-      <p class="ChangeCardModal--subtitle" i18n="@@ChangeSubscriptionCardSubtitle">This will be the payment method linked to your subscription</p>
+      <h4 *ngIf="hasSavedCard && savedCard" class="ChangeCardModal__title" i18n="@@ChangeSelectSubscriptionCardTitle">Select a credit card</h4>
+      <h4 *ngIf="!hasSavedCard || !savedCard" class="ChangeCardModal__title" i18n="@@ChangeAddSubscriptionCardTitle">Add a credit card</h4>
+      <p class="ChangeCardModal__subtitle" i18n="@@ChangeSubscriptionCardSubtitle">This will be the payment method linked to your subscription</p>
     </div>
-    <div class="ChangeCardModal-body">
+    <div class="ChangeCardModal__body">
       <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
                             (hasCard)="hasCard($event)"
       ></tsl-stripe-card-selection>

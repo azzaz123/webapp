@@ -155,6 +155,26 @@ export interface PaymentMethodCardResponse {
   last_digits: string;
 }
 
+export interface SetupIntent {
+  cancellation_reason: string;
+  client_secret: string;
+  created: number;
+  description: string;
+  id: string;
+  last_setup_error: number;
+  livemode: boolean;
+  next_action: string;
+  object: string;
+  payment_method: string;
+  payment_method_types: string[];
+  status: string;
+  usage: string;
+}
+
+export interface SetupIntentResponse {
+  setupIntent: SetupIntent;
+}
+
 export interface Order {
   id: string;
   packs: string[];

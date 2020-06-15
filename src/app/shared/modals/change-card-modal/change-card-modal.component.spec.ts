@@ -131,17 +131,16 @@ describe('ChangeCardModalComponent', () => {
 
   describe('setNewDefaultCard', () => {
     let paymentIntent = {payment_method: 'aaaabbbb3333'};
-    it('should get all cards', () => {
-      spyOn(stripeService, 'getCards').and.callThrough();
+    it('should call setDefaultCard with paymentMethod', () => {
+      spyOn(component, 'setDefaultCard').and.callThrough();
       
       component.setNewDefaultCard(paymentIntent);
-
-      expect(stripeService.getCards).toHaveBeenCalled();
+      
+      expect(component.setDefaultCard).toHaveBeenCalledWith(paymentIntent.payment_method);
     });
 
     it('should call setDefaultCard', () => {
       spyOn(stripeService, 'getCards').and.callThrough();
-      //spyOn(stripeService, 'setDefaultCard').and.callThrough();
       spyOn(component, 'setDefaultCard').and.callThrough();
 
       component.setNewDefaultCard(paymentIntent);

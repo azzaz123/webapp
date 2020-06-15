@@ -8,7 +8,7 @@ import {
   PackResponse,
   ProductResponse,
   OrderProExtras,
-  PerkResponse, PaymentMethodCardResponse, FinancialCard, PaymentMethodResponse
+  PerkResponse, PaymentMethodCardResponse, FinancialCard, PaymentMethodResponse, SetupIntent, SetupIntentResponse
 } from '../app/core/payments/payment.interface';
 import { PurchasesModel } from '../app/core/payments/purchase.model';
 import { STRIPE_CARD } from './stripe.fixtures.spec';
@@ -572,6 +572,24 @@ export const PAYMENT_METHOD_DATA: PaymentMethodResponse = {
   object: '',
   type: ''
 };
+
+export const SETUP_INTENT_DATA: SetupIntentResponse= {
+  setupIntent: {
+    cancellation_reason: null,
+    client_secret: "seti_1GuJFAKhcEtiGcVWSHkYzyrN_secret_HTFknLSUTusQScMoXWqbx2X7IHuPSMa",
+    created: 1592231100,
+    description: null,
+    id: "seti_1GuJFAKhcEtiGcVWSHkYzyrN",
+    last_setup_error: null,
+    livemode: false,
+    next_action: null,
+    object: "setup_intent",
+    payment_method: "pm_1GuJFAKhcEtiGcVWcJfQ2fYM",
+    payment_method_types: ["card"],
+    status: "succeeded",
+    usage: "off_session"
+  }
+}
 
 export function createPerksModelFixture(): PerksModel {
 
