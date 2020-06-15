@@ -12,6 +12,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../model';
+import { XmppBodyMessage } from '../../core/xmpp/xmpp.interface';
 
 @Injectable()
 export class MessageService {
@@ -52,8 +53,8 @@ export class MessageService {
     return message;
   }
 
-  public send(conversation: InboxConversation, message: string) {
-    this.realTime.sendMessage(conversation, message);
+  public send(conversation: InboxConversation, message: string): string {
+    return this.realTime.sendMessage(conversation, message);
   }
 
   public addPhoneNumberRequestMessage(conversation: InboxConversation, withTracking = true): InboxConversation {
