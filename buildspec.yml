@@ -28,8 +28,7 @@ phases:
       # RUN cfn-lint ON CLOUDFORMATION TEMPLATE FILES
       - docker run -v "$PWD":/code -w /code $ECR/cfn-lint:stable -t infrastructure/*/*.yaml
 
-      # OBTAIN WORKING BRANCH
-      - BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
+      # OBTAIN WORKING BRANCH FROM ENV VARIABLE
       - echo $BRANCH
 
       # EXPORT TAG ENV FROM BRANCH
