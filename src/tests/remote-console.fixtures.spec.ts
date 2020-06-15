@@ -24,6 +24,9 @@ export class MockRemoteConsoleService {
 
   sendConnectionChatTimeout(connectionType: 'inbox' | 'xmpp', success: boolean): void {
   }
+
+  sendMessageAckFailed(messageId: string, description: string): void {
+  }
 }
 
 export const BROWSER = 'CHROME';
@@ -37,6 +40,6 @@ export class DeviceDetectorServiceMock {
     } as DeviceInfo;
   }
   isMobile(): boolean {
-    return false
+    return false;
   }
 }

@@ -18,6 +18,7 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   @Input() currentConversation: InboxConversation;
   @Output() typing = new EventEmitter();
+  @Output() clickSentMessage = new EventEmitter();
   @ViewChild('messageTextarea', { static: true }) messageArea: ElementRef;
 
   public message: string;
@@ -48,7 +49,8 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
         this.trackingService.track(TrackingService.SEND_BUTTON, {
           thread_id: this.currentConversation.id,
         });
-        this.messageService.send(this.currentConversation, this.message);
+        const messageId = this.messageService.send(this.currentConversation, this.message);
+        this.clickSentMessage.emit(messageId);
       }
       this.message = '';
     }
