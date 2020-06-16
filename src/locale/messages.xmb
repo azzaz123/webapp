@@ -144,9 +144,10 @@
   <msg id="MissingPaymentMethodSubtitle"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:6</source>Without a card linked to your subscriptions, you won&apos;t be able to renew them and you will lose the benefits of being PRO. Is that what you want?</msg>
   <msg id="Cancel"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:10,11</source><source>app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:12,13</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:24</source>Cancel
     </msg>
-  <msg id="DeleteCard"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:14,15</source><source>app/shared/profile/credit-card-info/credit-card-info.component.html:17</source>Delete
+  <msg id="ConfirmDeleteCard"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:14,15</source>Yes, delete card
     </msg>
   <msg id="ChangeCard"><source>app/shared/profile/credit-card-info/credit-card-info.component.html:16</source>Change card</msg>
+  <msg id="DeleteCard"><source>app/shared/profile/credit-card-info/credit-card-info.component.html:17</source>Delete card</msg>
   <msg id="4058575476871566236"><source>app/shared/catalog/catalog-card/catalog-card.component.html:18</source><source>app/catalog/list/catalog-item/catalog-item.component.html:37</source>Published</msg>
   <msg id="7239750919884229270"><source>app/shared/catalog/catalog-card/catalog-card.component.html:22</source>Updated</msg>
   <msg id="4338022632676445411"><source>app/shared/catalog/catalog-card/catalog-card.component.html:26</source><source>app/chat/item/item.component.html:20</source><source>app/chat/item/item-sold/item-sold.component.html:3</source>Sold</msg>
