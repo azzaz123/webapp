@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { UserService } from '../user/user.service';
 
@@ -11,6 +11,7 @@ export class MobileBlockerComponent implements OnInit {
 
   public isCardealer: boolean;
   public isMobile: boolean;
+  @Output() viewIsBlocked: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private deviceDetector: DeviceDetectorService,
@@ -19,7 +20,18 @@ export class MobileBlockerComponent implements OnInit {
   }
   
   ngOnInit() {
-    //this.userService.isProfessional().subscribe(val => this.isCardealer = val);
-    this.isMobile = this.deviceDetector.isMobile();
+    this.userService.isProfessional().subscribe(val => {
+      this.isCardealer = val;
+      this.isMobile = this.deviceDetector.isMobile();
+      this.viewIsBlocked.emit({isCardealer: this.isCardealer, isMobile: this.isMobile});
+    });
+  }
+
+  public openIOSApp(): void {
+    console.log('open ios link');
+  }
+
+  public openAndroidApp(): void {
+    console.log('open ios link');
   }
 }

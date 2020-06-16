@@ -1,11 +1,23 @@
 <div class="MobileBlocker" *ngIf="isCardealer && isMobile">
   <div class="MobileBLocker__icon">
-    <img src="./assets/images/no-activate.svg" />
+    <img src="./assets/images/mobile-blocker.svg" />
   </div>
 
-  <div i18n class="MobileBlocker__text">
-    Your device has a small screen for this content
-    <br>
-    Check it in the app or in a computer
+  <div i18n="@@MobileBlockerTitle" class="MobileBlocker__text">
+    Nice screen, but the resolution is low
+  </div>
+  <div i18n="@@MobileBlockerSubtitle" class="MobileBlocker__text">
+    To see this content, open the wallapop app or continue browsing from your computer  
+  </div>
+  
+  <div class="MobileBlocker__download">
+    <div class="MobileBlocker__store" (click)="openIOSApp()">
+      <mat-icon svgIcon="download-ios"></mat-icon>
+      <div class="MobileBlocker__store__name">App store</div>
+    </div>
+    <div class="MobileBlocker__store" (click)="openAndroidApp()">
+      <mat-icon svgIcon="download-android"></mat-icon>
+      <div class="MobileBlocker__store__name">Google Play</div>
+    </div>
   </div>
 </div>

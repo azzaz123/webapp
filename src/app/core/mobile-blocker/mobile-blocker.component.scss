@@ -14,13 +14,31 @@
   justify-content: center;
   text-align: center;
 
-  background: $walla-main;
-  color: $white;
+  background: $white;
+  color: $blue-grey-1;
 
   z-index: 10000;
 
   img {
     margin: $spacing-l;
     height: 15vh;
+  }
+
+  &__download {
+    position: absolute;
+    display: flex;
+    bottom: $spacing-l;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  &__store {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &__name {
+      margin-left: $spacing-xs;
+      color: $blue-grey-3;
+    }
   }
 }

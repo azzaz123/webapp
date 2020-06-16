@@ -6,6 +6,7 @@ import { UserService } from '../user/user.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { EventService } from '../event/event.service';
 
 xdescribe('MobileBlockerComponent', () => {
   let injector: TestBed;
@@ -13,11 +14,13 @@ xdescribe('MobileBlockerComponent', () => {
   let userService: UserService;
   let deviceDetectorService: DeviceDetectorService;
   let fixture: ComponentFixture<MobileBlockerComponent>;
+  let eventService: EventService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ MobileBlockerComponent ],
       providers: [
+        EventService,
         { provide: UserService, useValue: { isProfessional: () => of(false) }},
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock }
       ]
@@ -29,7 +32,7 @@ xdescribe('MobileBlockerComponent', () => {
     fixture = TestBed.createComponent(MobileBlockerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
+    eventService = TestBed.get(EventService);
     injector = getTestBed();
     userService = injector.get(UserService);
     deviceDetectorService = injector.get(DeviceDetectorService);
@@ -55,6 +58,16 @@ xdescribe('MobileBlockerComponent', () => {
         const componentHTML = fixture.debugElement.query(By.css('.MobileBlocker'));
         expect(componentHTML).toBeTruthy();
       });
+
+      it('should emit the blocked content event', () => {
+        spyOn(userService, 'isProfessional').and.returnValue(of(true));
+        spyOn(component.viewIsBlocked, 'emit').and.callThrough();
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(component.viewIsBlocked.emit).toHaveBeenCalledWith({isCardealer: true, isMobile: true});
+      });
     });
   
     describe('and the user is not a car dealer', () => {
@@ -66,6 +79,16 @@ xdescribe('MobileBlockerComponent', () => {
   
         const componentHTML = fixture.debugElement.query(By.css('.MobileBlocker'));
         expect(componentHTML).toBeFalsy();
+      });
+
+      it('should not emit the blocked content event', () => {
+        spyOn(userService, 'isProfessional').and.returnValue(of(false));
+        spyOn(component.viewIsBlocked, 'emit').and.callThrough();
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        expect(component.viewIsBlocked.emit).not.toHaveBeenCalled();
       });
     });
   });
