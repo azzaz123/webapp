@@ -27,11 +27,4 @@ export class MobileBlockerComponent implements OnInit {
     });
   }
 
-  public openIOSApp(): void {
-    console.log('open ios link');
-  }
-
-  public openAndroidApp(): void {
-    console.log('open ios link');
-  }
 }
