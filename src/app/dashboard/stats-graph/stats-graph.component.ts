@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
-import { find } from 'lodash';
+import { find } from 'lodash-es';
 
 @Component({
   selector: 'tsl-stats-graph',
