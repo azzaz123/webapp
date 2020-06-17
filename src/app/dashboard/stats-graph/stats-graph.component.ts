@@ -28,7 +28,6 @@ export class StatsGraphComponent implements OnInit {
               private i18n: I18nService,
               @Inject(LOCALE_ID) private locale: string) {
     this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    moment.locale(this.locale);
   }
 
   ngOnInit() {

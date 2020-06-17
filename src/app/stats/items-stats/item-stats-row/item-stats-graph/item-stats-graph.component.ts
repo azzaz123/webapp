@@ -5,7 +5,6 @@ import { Item } from '../../../../core/item/item';
 import { I18nService } from '../../../../core/i18n/i18n.service';
 import { EChartOption } from 'echarts';
 import * as moment from 'moment';
-import 'moment/locale/es';
 
 const GRAPH_COLORS = {
   CHAT: '#EEAA42',
@@ -31,7 +30,6 @@ export class ItemStatsGraphComponent implements OnInit {
 
   constructor(private i18n: I18nService,
               @Inject(LOCALE_ID) private locale: string) {
-                moment.locale(this.locale);
               }
 
   ngOnInit() {
