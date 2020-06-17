@@ -22,10 +22,10 @@
 ]>
 <messagebundle>
   <msg id="MobileBlockerTitle"><source>app/core/mobile-blocker/mobile-blocker.component.html:6,8</source>
-    Nice screen, but the resolution is low
+    Nice screen, but the resolution is low.
   </msg>
   <msg id="MobileBlockerSubtitle"><source>app/core/mobile-blocker/mobile-blocker.component.html:9,11</source>
-    To see this content, open the wallapop app or continue browsing from your computer  
+    To see this content, open the wallapop app or continue browsing from your computer.
   </msg>
   <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.html:13</source><source>app/layout/sidebar/sidebar.component.html:42</source><source>app/shared/catalog/cart/cart.component.html:71</source><source>app/wallacoins/wallacoins.component.html:27</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:33</source>credit</msg>
   <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.html:19</source><source>app/layout/sidebar/sidebar.component.html:33</source><source>app/layout/tabbar/tabbar.component.html:39</source><source>app/dashboard/dashboard.component.html:33</source>Messages</msg>
