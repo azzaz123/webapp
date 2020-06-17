@@ -11,8 +11,7 @@ export class I18nService {
         nextDay: '[Tomorrow]',
         lastWeek: 'dddd - HH:mm',
         nextWeek: 'dddd',
-        sameElse: 'Do [of] MMMM',
-        mediumDate: 'MMM d, y'
+        sameElse: 'MMM DD, YYYY'
       },
       defaultDaysMomentConfig: {
         lastDay: '[Yesterday]',
@@ -182,8 +181,7 @@ export class I18nService {
         nextDay: '[Mañana]',
         lastWeek: 'dddd - HH:mm',
         nextWeek: 'dddd',
-        sameElse: 'D [de] MMMM',
-        mediumDate: 'd MMM y'
+        sameElse: 'MMM DD, YYYY'
       },
       defaultDaysMomentConfig: {
         lastDay: '[Ayer]',

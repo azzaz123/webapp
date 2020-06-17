@@ -6,7 +6,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MatIconModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
-import { MomentModule } from 'angular2-moment';
 import { BumpConfirmationModalComponent } from './list/modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { NgbButtonsModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { UploadConfirmationModalComponent } from './list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
@@ -31,7 +30,6 @@ import { ReviewsModule } from '../reviews/reviews.module';
     CatalogRoutingModule,
     MatIconModule,
     InfiniteScrollModule,
-    MomentModule,
     ReactiveFormsModule,
     TrackingModule,
     NgbButtonsModule,

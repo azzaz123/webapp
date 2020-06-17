@@ -6,7 +6,6 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
 import { Observable, of, throwError } from 'rxjs';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MomentModule } from 'angular2-moment';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EventService } from '../../core/event/event.service';
@@ -80,7 +79,6 @@ describe('ConversationDetailsBarComponent', () => {
       imports: [
         SharedModule,
         NgbModule,
-        MomentModule,
         NgxPermissionsModule.forRoot()
       ],
       declarations: [ConversationDetailsBarComponent],

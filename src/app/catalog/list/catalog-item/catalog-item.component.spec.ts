@@ -6,8 +6,7 @@ import { Observable, of, ReplaySubject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
-import { MomentModule } from 'angular2-moment';
-import { CustomCurrencyPipe } from '../../../shared/pipes';
+import { CustomCurrencyPipe, CountdownPipe } from '../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
@@ -44,7 +43,6 @@ describe('CatalogItemComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CatalogItemComponent, CustomCurrencyPipe, ThousandSuffixesPipe],
-      imports: [MomentModule],
       providers: [
         DecimalPipe,
         EventService,
@@ -93,7 +91,8 @@ describe('CatalogItemComponent', () => {
             }
           }
         },
-        { provide: 'SUBDOMAIN', useValue: 'es' }
+        { provide: 'SUBDOMAIN', useValue: 'es' },
+        CountdownPipe
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
