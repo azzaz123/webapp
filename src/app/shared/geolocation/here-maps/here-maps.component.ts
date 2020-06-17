@@ -95,7 +95,7 @@ export class HereMapsComponent implements OnInit, AfterViewInit, OnChanges {
     this.platform = new H.service.Platform({
       app_id: 'RgPrXX1bXt123UgUFc7B',
       app_code: 'HtfX0DsqZ2Y0x-44GfujFA',
-      useCIT: true,
+      useCIT: false,
       useHTTPS: true
     });
   }

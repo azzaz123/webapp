@@ -368,6 +368,22 @@ Resources:
               InputArtifacts:
                 - Name: App
               RunOrder: 1
+            - Name: S3
+              ActionTypeId:
+                Category: Deploy
+                Provider: CloudFormation
+                Owner: AWS
+                Version: "1"
+              Configuration:
+                ActionMode: CREATE_UPDATE
+                Capabilities: CAPABILITY_IAM
+                StackName: !Sub webapp-s3-${EnvName}
+                TemplateConfiguration: !Sub App::infrastructure/s3/${EnvName}.json
+                TemplatePath: App::infrastructure/s3/template.yml
+                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+              InputArtifacts:
+                - Name: App
+              RunOrder: 2
             - Name: Cloudfront
               ActionTypeId:
                 Category: Deploy
@@ -383,7 +399,10 @@ Resources:
                 RoleArn: !GetAtt CloudFormationExecutionRole.Arn
               InputArtifacts:
                 - Name: App
-              RunOrder: 2
+              RunOrder: 3
+
+        - Name: Deploy
+          Actions:
             - Name: Invalidate-Caches
               ActionTypeId:
                 Category: Build
@@ -394,4 +413,4 @@ Resources:
                 ProjectName: !Ref CodeBuildScripts
               InputArtifacts:
                 - Name: App
-              RunOrder: 3
+              RunOrder: 1 # this will be changed in next PRs
