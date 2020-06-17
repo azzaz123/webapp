@@ -6,7 +6,6 @@ import { UserService } from '../user/user.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
-import { EventService } from '../event/event.service';
 
 xdescribe('MobileBlockerComponent', () => {
   let injector: TestBed;
@@ -14,13 +13,11 @@ xdescribe('MobileBlockerComponent', () => {
   let userService: UserService;
   let deviceDetectorService: DeviceDetectorService;
   let fixture: ComponentFixture<MobileBlockerComponent>;
-  let eventService: EventService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ MobileBlockerComponent ],
       providers: [
-        EventService,
         { provide: UserService, useValue: { isProfessional: () => of(false) }},
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock }
       ]
@@ -32,7 +29,6 @@ xdescribe('MobileBlockerComponent', () => {
     fixture = TestBed.createComponent(MobileBlockerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    eventService = TestBed.get(EventService);
     injector = getTestBed();
     userService = injector.get(UserService);
     deviceDetectorService = injector.get(DeviceDetectorService);
