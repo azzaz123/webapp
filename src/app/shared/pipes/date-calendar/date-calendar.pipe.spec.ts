@@ -1,7 +1,8 @@
-import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component } from '@angular/core';
 
 import { DateCalendarPipe } from './date-calendar.pipe';
+import * as moment from 'moment';
 
 const ONE_HOUR_IN_MS = 1000 * 60 * 60;
 const ONE_DAY_IN_MS = ONE_HOUR_IN_MS * 24;
@@ -45,28 +46,38 @@ describe('DateCalendarPipe', () => {
   it('should display "Yesterday - hours:minutes" when date is from yesterday', () => {
     let shownText: string;
     const yesterdayInMs = ELEVENTH_OF_JUNE_OF_2020_IN_MS - ONE_DAY_IN_MS;
+    const momentDate = moment(yesterdayInMs);
+    const expectedHours = momentDate.format('hh');
+    const expectedMinutes = momentDate.format('mm');
 
     component.timestamp = yesterdayInMs;
-
     fixture.detectChanges();
+
     shownText = fixture.debugElement.nativeElement.textContent;
-    expect(shownText).toBe('Yesterday - 11:29');
+    expect(shownText).toBe(`Yesterday - ${expectedHours}:${expectedMinutes}`);
   });
 
   it('should display "Today - hours:minutes" when date is from today', () => {
     let shownText: string;
-    component.timestamp = ELEVENTH_OF_JUNE_OF_2020_IN_MS;
+    const todayInMs = ELEVENTH_OF_JUNE_OF_2020_IN_MS;
+    const momentDate = moment(todayInMs);
+    const expectedHours = momentDate.format('hh');
+    const expectedMinutes = momentDate.format('mm');
 
+    component.timestamp = todayInMs;
     fixture.detectChanges();
+
     shownText = fixture.debugElement.nativeElement.textContent;
-    expect(shownText).toBe('Today - 11:29');
+    expect(shownText).toBe(`Today - ${expectedHours}:${expectedMinutes}`);
   });
 
   it('should display "Tomorrow" when date is from today', () => {
     let shownText: string;
-    component.timestamp = ELEVENTH_OF_JUNE_OF_2020_IN_MS + ONE_DAY_IN_MS;
+    const tomorrowInMs = ELEVENTH_OF_JUNE_OF_2020_IN_MS + ONE_DAY_IN_MS;
 
+    component.timestamp = tomorrowInMs;
     fixture.detectChanges();
+
     shownText = fixture.debugElement.nativeElement.textContent;
     expect(shownText).toBe('Tomorrow');
   });
@@ -74,27 +85,36 @@ describe('DateCalendarPipe', () => {
 
   it('should display "Day - hours:minutes" when date was from last week', () => {
     let shownText: string;
-    component.timestamp = ELEVENTH_OF_JUNE_OF_2020_IN_MS - ONE_DAY_IN_MS * 5;
+    const pastSaturdayInMs = ELEVENTH_OF_JUNE_OF_2020_IN_MS - ONE_DAY_IN_MS * 5;
+    const momentDate = moment(pastSaturdayInMs);
+    const expectedHours = momentDate.format('hh');
+    const expectedMinutes = momentDate.format('mm');
 
+    component.timestamp = pastSaturdayInMs;
     fixture.detectChanges();
+
     shownText = fixture.debugElement.nativeElement.textContent;
-    expect(shownText).toBe('Saturday - 11:29');
+    expect(shownText).toBe(`Saturday - ${expectedHours}:${expectedMinutes}`);
   });
 
   it('should display "day" when date is from next week', () => {
     let shownText: string;
-    component.timestamp = ELEVENTH_OF_JUNE_OF_2020_IN_MS + ONE_DAY_IN_MS * 5;
+    const nextTuesday = ELEVENTH_OF_JUNE_OF_2020_IN_MS + ONE_DAY_IN_MS * 5;
 
+    component.timestamp = nextTuesday;
     fixture.detectChanges();
+
     shownText = fixture.debugElement.nativeElement.textContent;
     expect(shownText).toBe('Tuesday');
   });
 
   it('should display "month name day number, year" when date is from same year', () => {
     let shownText: string;
-    component.timestamp = ELEVENTH_OF_JUNE_OF_2020_IN_MS - ONE_DAY_IN_MS * 60;
+    const pastTwelvethOfApril = ELEVENTH_OF_JUNE_OF_2020_IN_MS - ONE_DAY_IN_MS * 60;
 
+    component.timestamp = pastTwelvethOfApril;
     fixture.detectChanges();
+
     shownText = fixture.debugElement.nativeElement.textContent;
     expect(shownText).toBe('Apr 12, 2020');
   });
