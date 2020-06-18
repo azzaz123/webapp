@@ -24,12 +24,16 @@
     height: 15vh;
   }
 
+  &__icon {
+    margin-top: auto;
+  }
+
   &__download {
-    position: absolute;
     display: flex;
-    bottom: $spacing-l;
     width: 100%;
     justify-content: space-around;
+    margin-top: auto;
+    margin-bottom: $spacing-l;
   }
 
   &__store {
