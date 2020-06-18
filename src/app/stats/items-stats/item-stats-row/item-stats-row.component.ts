@@ -68,7 +68,7 @@ export class ItemStatsRowComponent implements OnInit {
   constructor(@Inject('SUBDOMAIN') private subdomain: string,
               private itemStatsService: ItemStatsService,
               private itemService: ItemService) {
-    this.momentConfig = 'DD MMM YYYY';
+    this.momentConfig = 'dd MMM yyyy';
   }
 
   ngOnInit() {

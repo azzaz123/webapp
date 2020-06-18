@@ -61,8 +61,8 @@
           <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-wrapper"
                [ngClass]="{'message-owner': message.fromSelf, 'not-message-owner': !message.fromSelf}">
             <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
-              <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
-              <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
+              <span *ngIf="dateIsThisYear(message.date)">{{message.date | dateCalendar:momentConfig}}</span>
+              <span *ngIf="!dateIsThisYear(message.date)">{{message.date | date:'d MMM. yyyy' }}</span>
             </div>
 
             <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message"></tsl-text-message>
