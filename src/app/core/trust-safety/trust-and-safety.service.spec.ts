@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TrustAndSafetyService } from './trust-and-safety.service';
+import { TrustAndSafetyService, USER_STARTER_ENDPOINT } from './trust-and-safety.service';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { MOCK_IS_STARTER_RESPONSE } from './trust-and-safety.fixtures.spec';
 
 describe('TrustAndSafetyService', () => {
   let service: TrustAndSafetyService;
@@ -9,27 +10,55 @@ describe('TrustAndSafetyService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
+      providers: [TrustAndSafetyService]
     });
     service = TestBed.inject(TrustAndSafetyService);
     httpMock = TestBed.inject(HttpTestingController);
   });
+
+  afterEach(() => httpMock.verify());
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
   describe('when asking server if user is an starter user', () => {
-    it('should ask server for the first time', () => {
+    it('should ask server for the first time and get if user is starter', () => {
+      let isStarter: boolean;
 
+      service.isStarterUser().subscribe(r => isStarter = r);
+      const req = httpMock.expectOne(USER_STARTER_ENDPOINT);
+      req.flush(MOCK_IS_STARTER_RESPONSE);
+
+      expect(isStarter).toEqual(MOCK_IS_STARTER_RESPONSE.starter);
+      expect(req.request.urlWithParams).toBe(USER_STARTER_ENDPOINT);
+      expect(req.request.method).toBe('GET');
     });
 
-    it('should NOT ask server when using cache', () => {
+    it('should NOT ask server when already asked previously', () => {
+      let isStarter: boolean;
 
+      service.isStarterUser().subscribe();
+      const req = httpMock.expectOne(USER_STARTER_ENDPOINT);
+      req.flush(MOCK_IS_STARTER_RESPONSE);
+      service.isStarterUser().subscribe(r => isStarter = r);
+
+      httpMock.expectNone(USER_STARTER_ENDPOINT);
+      expect(isStarter).toEqual(MOCK_IS_STARTER_RESPONSE.starter);
     });
 
     it('should ask server if not using cache and already saved', () => {
+      let isStarter: boolean;
 
+      service.isStarterUser().subscribe();
+      const req = httpMock.expectOne(USER_STARTER_ENDPOINT);
+      req.flush(MOCK_IS_STARTER_RESPONSE);
+      service.isStarterUser(false).subscribe(r => isStarter = r);
+      const req2 = httpMock.expectOne(USER_STARTER_ENDPOINT);
+      req2.flush(MOCK_IS_STARTER_RESPONSE);
+
+      expect(isStarter).toEqual(MOCK_IS_STARTER_RESPONSE.starter);
     });
   });
 
