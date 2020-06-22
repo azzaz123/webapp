@@ -96,6 +96,11 @@ export class AppComponent implements OnInit {
     this.didomiService.initialize();
   }
 
+  public onViewIsBlocked(): void {		
+    this.renderer.addClass(document.body, 'blocked-page');
+    this.renderer.addClass(document.body.parentElement, 'blocked-page');
+  }
+  
   private updateUrlAndSendAnalytics() {
     this.router.events.pipe(distinctUntilChanged((previous: any, current: any) => {
       if (current instanceof NavigationEnd) {

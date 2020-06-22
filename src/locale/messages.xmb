@@ -21,10 +21,11 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <messagebundle>
-  <msg id="2709150569630268"><source>app/core/mobile-blocker/mobile-blocker.component.html:6,10</source>
-    Your device has a small screen for this content
-    <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
-    Check it in the app or in a computer
+  <msg id="MobileBlockerTitle"><source>app/core/mobile-blocker/mobile-blocker.component.html:6,8</source>
+    Nice screen, but the resolution is low.
+  </msg>
+  <msg id="MobileBlockerSubtitle"><source>app/core/mobile-blocker/mobile-blocker.component.html:9,11</source>
+    To see this content, open the wallapop app or continue browsing from your computer.
   </msg>
   <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.html:13</source><source>app/layout/sidebar/sidebar.component.html:42</source><source>app/shared/catalog/cart/cart.component.html:71</source><source>app/wallacoins/wallacoins.component.html:27</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:33</source>credit</msg>
   <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.html:19</source><source>app/layout/sidebar/sidebar.component.html:33</source><source>app/layout/tabbar/tabbar.component.html:39</source><source>app/dashboard/dashboard.component.html:33</source>Messages</msg>
@@ -155,10 +156,10 @@
           From <ph name="INTERPOLATION"><ex>{{item.purchases.scheduled_start_date | date:&apos;dd/MM/yy&apos;}}</ex>{{item.purchases.scheduled_start_date | date:&apos;dd/MM/yy&apos;}}</ph> to <ph name="INTERPOLATION_1"><ex>{{item.purchases.scheduled_end_date | date:&apos;dd/MM/yy&apos;}}</ex>{{item.purchases.scheduled_end_date | date:&apos;dd/MM/yy&apos;}}</ph>
         </msg>
   <msg id="1290608591542945444"><source>app/shared/catalog/catalog-card/catalog-card.component.html:35,37</source>
-          <ph name="INTERPOLATION"><ex>{{item.purchases.expiration_date | amCountdown}}</ex>{{item.purchases.expiration_date | amCountdown}}</ph> remaining
+          <ph name="INTERPOLATION"><ex>{{item.purchases.expiration_date | dateCountdown}}</ex>{{item.purchases.expiration_date | dateCountdown}}</ph> remaining
         </msg>
   <msg id="3475752672270482528"><source>app/shared/catalog/catalog-card/catalog-card.component.html:38,40</source>
-          <ph name="INTERPOLATION"><ex>{{item.purchases.scheduled_end_date | amCountdown}}</ex>{{item.purchases.scheduled_end_date | amCountdown}}</ph> remaining
+          <ph name="INTERPOLATION"><ex>{{item.purchases.scheduled_end_date | dateCountdown}}</ex>{{item.purchases.scheduled_end_date | dateCountdown}}</ph> remaining
         </msg>
   <msg id="428164738594731840"><source>app/shared/catalog/catalog-card/catalog-card.component.html:43,44</source>
           Cancel</msg>
@@ -992,6 +993,6 @@
   <msg id="5448941415082762589"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:65</source>Publish your product to see your stats and so that other users can contact you.</msg>
   <msg id="6821183586555063962"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:68</source>This product is Featured</msg>
   <msg id="3879651736105644738"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:69</source>You will get more views, chats and more interested people.</msg>
-  <msg id="916352071278248935"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:70</source>Your feature ends on <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amDateFormat:momentConfig}}</ex>{{item.bumpExpiringDate | amDateFormat:momentConfig}}</ph></msg>
+  <msg id="916352071278248935"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:70</source>Your feature ends on <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | date:momentConfig}}</ex>{{item.bumpExpiringDate | date:momentConfig}}</ph></msg>
   <msg id="3339021787040924237"><source>app/layout/topbar/suggester/suggester.component.html:2</source>Search in All categories</msg>
 </messagebundle>

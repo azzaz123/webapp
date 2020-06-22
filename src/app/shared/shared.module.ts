@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { MatIconModule } from '@angular/material';
 import { AdComponent } from './ad/ad.component';
-import { CustomCurrencyPipe, DateUntilDayPipe } from './pipes';
+import { CustomCurrencyPipe, DateUntilDayPipe, DateCalendarPipe, CountdownPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,7 +28,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { SwitchComponent } from './switch/switch.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
-import { MomentModule } from 'angular2-moment';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
@@ -84,7 +83,6 @@ import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-c
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,
-    MomentModule,
     NgxPermissionsModule.forChild(),
     NgbDropdownModule,
     TrackingModule,
@@ -152,7 +150,9 @@ import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-c
     LinkTransformPipe,
     PreventDoubleClickDirective,
     ProBadgeModule,
-    DateUntilDayPipe
+    DateUntilDayPipe,
+    DateCalendarPipe,
+    CountdownPipe
   ],
   declarations: [
     AdComponent,
@@ -214,6 +214,8 @@ import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-c
     LinkTransformPipe,
     PreventDoubleClickDirective,
     DateUntilDayPipe,
+    DateCalendarPipe,
+    CountdownPipe
   ],
   providers: [
     DecimalPipe,
