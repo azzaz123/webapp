@@ -40,8 +40,7 @@ describe('TrustAndSafetyService', () => {
       let isStarter: boolean;
 
       service.isStarterUser().subscribe();
-      const req = httpMock.expectOne(USER_STARTER_ENDPOINT);
-      req.flush(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER);
+      httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER);
       service.isStarterUser().subscribe(r => isStarter = r);
 
       httpMock.expectNone(USER_STARTER_ENDPOINT);
@@ -52,11 +51,9 @@ describe('TrustAndSafetyService', () => {
       let isStarter: boolean;
 
       service.isStarterUser().subscribe();
-      const req = httpMock.expectOne(USER_STARTER_ENDPOINT);
-      req.flush(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER);
+      httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER);
       service.isStarterUser(false).subscribe(r => isStarter = r);
-      const req2 = httpMock.expectOne(USER_STARTER_ENDPOINT);
-      req2.flush(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER);
+      httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER);
 
       expect(isStarter).toEqual(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER.starter);
     });
@@ -65,7 +62,7 @@ describe('TrustAndSafetyService', () => {
   describe('when initializing profiling', () => {
     it('should ask server if user is starter', () => {
       service.initializeProfiling();
-      
+
       httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_IS_STARTER_RESPONSE_WITH_NON_STARTER_USER);
     });
 
