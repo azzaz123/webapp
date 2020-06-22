@@ -3,7 +3,6 @@
 import { InboxConversationComponent } from './inbox-conversation.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
 import { InboxItemStatus } from '../../model/inbox-item';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -12,6 +11,8 @@ import { InboxConversationServiceMock } from '../../../../tests';
 import { of } from 'rxjs';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../model';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { DateCalendarPipe } from 'app/shared/pipes';
+import { CommonModule } from '@angular/common';
 
 describe('Component: Conversation', () => {
   let inboxConversationService: InboxConversationService;
@@ -21,13 +22,14 @@ describe('Component: Conversation', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MomentModule,
+        CommonModule,
         NgxPermissionsModule.forRoot()
       ],
       declarations: [InboxConversationComponent],
       providers: [
         I18nService,
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
+        DateCalendarPipe
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

@@ -35,6 +35,7 @@ export class UrgentConfirmationModalComponent implements OnInit {
         if (this.code === '200') {
           this.trackingService.track(TrackingService.URGENT_PURCHASE_SUCCESS);
           ga('send', 'event', 'Item', 'urgent-ok');
+          appboy.logCustomEvent('VisibilityPurchaseSuccess', {platform: 'web'});
         } else {
           this.trackingService.track(TrackingService.URGENT_PURCHASE_ERROR, { error_code: this.code });
           ga('send', 'event', 'Item', 'urgent-ko');
