@@ -70,20 +70,35 @@ describe('TrustAndSafetyService', () => {
     });
 
     describe('and when the user is starter', () => {
-      it('should start Threat Metrix', () => {
+      xit('should start Threat Metrix', () => {
+        spyOn(threadMetrixLibrary, 'profile');
 
+        service.initializeProfiling();
+        httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
+
+        expect(threadMetrixLibrary.profile).toHaveBeenCalled();
       });
     });
 
     describe('and when the user is not an starter', () => {
       it('should not initialize Threat Metrix', () => {
+        spyOn(threadMetrixLibrary, 'profile');
 
+        service.initializeProfiling();
+        httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_NON_STARTER_USER_RESPONSE);
+
+        expect(threadMetrixLibrary.profile).not.toHaveBeenCalled();
       });
     });
 
     describe('and when the server does not respond', () => {
       it('should not initialize Threat Metrix', () => {
+        spyOn(threadMetrixLibrary, 'profile');
 
+        service.initializeProfiling();
+        httpMock.expectOne(USER_STARTER_ENDPOINT).flush({}, { status: 500, statusText: 'Error' });
+
+        expect(threadMetrixLibrary.profile).not.toHaveBeenCalled();
       });
     });
   });
