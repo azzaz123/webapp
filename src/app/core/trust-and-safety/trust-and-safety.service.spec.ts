@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { TrustAndSafetyService, USER_STARTER_ENDPOINT } from './trust-and-safety.service';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { MOCK_IS_STARTER_RESPONSE } from './trust-and-safety.fixtures.spec';
+import { MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER, MOCK_IS_STARTER_RESPONSE_WITH_NON_STARTER_USER } from './trust-and-safety.fixtures.spec';
 
 describe('TrustAndSafetyService', () => {
   let service: TrustAndSafetyService;
@@ -29,9 +29,9 @@ describe('TrustAndSafetyService', () => {
 
       service.isStarterUser().subscribe(r => isStarter = r);
       const req = httpMock.expectOne(USER_STARTER_ENDPOINT);
-      req.flush(MOCK_IS_STARTER_RESPONSE);
+      req.flush(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER);
 
-      expect(isStarter).toEqual(MOCK_IS_STARTER_RESPONSE.starter);
+      expect(isStarter).toEqual(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER.starter);
       expect(req.request.urlWithParams).toBe(USER_STARTER_ENDPOINT);
       expect(req.request.method).toBe('GET');
     });
@@ -41,11 +41,11 @@ describe('TrustAndSafetyService', () => {
 
       service.isStarterUser().subscribe();
       const req = httpMock.expectOne(USER_STARTER_ENDPOINT);
-      req.flush(MOCK_IS_STARTER_RESPONSE);
+      req.flush(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER);
       service.isStarterUser().subscribe(r => isStarter = r);
 
       httpMock.expectNone(USER_STARTER_ENDPOINT);
-      expect(isStarter).toEqual(MOCK_IS_STARTER_RESPONSE.starter);
+      expect(isStarter).toEqual(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER.starter);
     });
 
     it('should ask server if not using cache and already saved', () => {
@@ -53,18 +53,20 @@ describe('TrustAndSafetyService', () => {
 
       service.isStarterUser().subscribe();
       const req = httpMock.expectOne(USER_STARTER_ENDPOINT);
-      req.flush(MOCK_IS_STARTER_RESPONSE);
+      req.flush(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER);
       service.isStarterUser(false).subscribe(r => isStarter = r);
       const req2 = httpMock.expectOne(USER_STARTER_ENDPOINT);
-      req2.flush(MOCK_IS_STARTER_RESPONSE);
+      req2.flush(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER);
 
-      expect(isStarter).toEqual(MOCK_IS_STARTER_RESPONSE.starter);
+      expect(isStarter).toEqual(MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER.starter);
     });
   });
 
   describe('when initializing profiling', () => {
     it('should ask server if user is starter', () => {
-
+      service.initializeProfiling();
+      
+      httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_IS_STARTER_RESPONSE_WITH_NON_STARTER_USER);
     });
 
     describe('and when the user is starter', () => {
