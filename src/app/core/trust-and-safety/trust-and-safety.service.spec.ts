@@ -6,10 +6,13 @@ import {
   MOCK_STARTER_USER_RESPONSE,
   MOCK_NON_STARTER_USER_RESPONSE,
 } from './trust-and-safety.fixtures.spec';
+import { SessionProfileData, SessionProfileDataLocation, SessionProfileDataPlatform } from './trust-and-safety.interface';
+import { UUID } from 'angular2-uuid';
 
 describe('TrustAndSafetyService', () => {
   let service: TrustAndSafetyService;
   let httpMock: HttpTestingController;
+  const mockUUID = 'very-cool-uuid-bruh';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -18,6 +21,8 @@ describe('TrustAndSafetyService', () => {
     });
     service = TestBed.inject(TrustAndSafetyService);
     httpMock = TestBed.inject(HttpTestingController);
+
+    spyOn(UUID, 'UUID').and.returnValue(mockUUID);
   });
 
   afterEach(() => httpMock.verify());
@@ -99,6 +104,36 @@ describe('TrustAndSafetyService', () => {
         httpMock.expectOne(USER_STARTER_ENDPOINT).flush({}, { status: 500, statusText: 'Error' });
 
         expect(threadMetrixLibrary.profile).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('when sending profiling to server', () => {
+    describe('and when the user is an starter user', () => {
+      it('should send valid information only once with same identifier', () => {
+        service.initializeProfiling();
+        httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
+        const expectedBody: SessionProfileData = {
+          id: mockUUID,
+          location: SessionProfileDataLocation.OpenChat,
+          platform: SessionProfileDataPlatform.Web
+        };
+
+        service.submitProfile(SessionProfileDataLocation.OpenChat).subscribe();
+        const req = httpMock.expectOne(USER_STARTER_ENDPOINT);
+        req.flush({});
+
+        expect(req.request.method).toBe('POST');
+        expect(req.request.body).toEqual(expectedBody);
+      });
+    });
+
+    describe('and when the user is a non starter user', () => {
+      it('should fail', () => {
+        service.initializeProfiling();
+        httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_NON_STARTER_USER_RESPONSE);
+
+        expect(() => service.submitProfile(SessionProfileDataLocation.OpenChat)).toThrowError();
       });
     });
   });
