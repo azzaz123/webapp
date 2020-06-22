@@ -1,8 +1,11 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { TrustAndSafetyService, USER_STARTER_ENDPOINT } from './trust-and-safety.service';
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER, MOCK_IS_STARTER_RESPONSE_WITH_NON_STARTER_USER } from './trust-and-safety.fixtures.spec';
+import {
+  MOCK_IS_STARTER_RESPONSE_WITH_STARTER_USER,
+  MOCK_IS_STARTER_RESPONSE_WITH_NON_STARTER_USER
+} from './trust-and-safety.fixtures.spec';
 
 describe('TrustAndSafetyService', () => {
   let service: TrustAndSafetyService;
