@@ -1,5 +1,5 @@
 import { DidomiLibrary } from '../../app/core/didomi/didomi.interface';
-import { ThreatMetrixLibrary } from 'app/core/trust-safety/threat-metrix.interface';
+import { ThreatMetrixLibrary } from 'app/core/trust-and-safety/threat-metrix.interface';
 
 export const MOCK_APPBOY = {
   initialize: () => {},
