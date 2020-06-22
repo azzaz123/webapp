@@ -23,3 +23,4 @@ declare let paymentIntent: any;
 declare let Stripe: any;
 declare let mParticle: any;
 declare let Didomi: import("./app/core/didomi/didomi.interface").DidomiLibrary;
+declare let threadMetrixLibrary: import("./app/core/trust-safety/threat-metrix.interface").ThreatMetrixLibrary;

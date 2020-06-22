@@ -43,5 +43,6 @@ Object.defineProperty(window, 'twq', { value: GLOBAL_MOCKS.MOCK_TWQ });
 Object.defineProperty(window, 'Visibility', { value: GLOBAL_MOCKS.MOCK_VISIBILITY });
 Object.defineProperty(window, 'XMPP', { value: GLOBAL_MOCKS.MOCK_XMPP });
 Object.defineProperty(window, 'Didomi', { value: GLOBAL_MOCKS.MOCK_DIDOMI });
+Object.defineProperty(window, 'threadMetrixLibrary', { value: GLOBAL_MOCKS.MOCK_THREAT_METRIX, writable: true });
 Object.defineProperty(navigator, 'connection', { value: GLOBAL_MOCKS.MOCK_NAVIGATOR_CONNECTION });
 Object.defineProperty(navigator, 'geolocation', { value: GLOBAL_MOCKS.MOCK_NAVIGATOR_GEOLOCATION, writable: true });
