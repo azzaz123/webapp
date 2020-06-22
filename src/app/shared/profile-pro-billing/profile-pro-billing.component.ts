@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation-modal/delete-info-confirmation-modal.component';
@@ -41,7 +41,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       city: ['', [Validators.required]],
       company_name: ['', [Validators.required]],
       country: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, this.emailValidator]],
       name: ['', [Validators.required]],
       postal_code: ['', [Validators.required]],
       street: ['', [Validators.required]],
@@ -64,6 +64,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
   }
 
   initForm() {
+    console.log('init form');
     this.paymentService.getBillingInfo().subscribe(
       (billingInfo: BillingInfoResponse) => {
         this.isNewBillingInfoForm = false;
@@ -147,12 +148,14 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     this.billingForm.get('name').setValidators(Validators.required);
     this.billingForm.get('surname').setValidators(Validators.required);
     this.billingForm.get('company_name').setValidators(null);
+    this.billingForm.get('cif').setValidators([Validators.required, this.nifValidator]);
   }
 
   private setLegalRequiredFields() {
     this.billingForm.get('company_name').setValidators(Validators.required);
     this.billingForm.get('name').setValidators(null);
     this.billingForm.get('surname').setValidators(null);
+    this.billingForm.get('cif').setValidators([Validators.required, this.cifValidator]);
   }
 
   private updateFieldsValidity() {
@@ -160,4 +163,31 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     this.billingForm.get('name').updateValueAndValidity();
     this.billingForm.get('surname').updateValueAndValidity();
   }
+
+  public nifValidator(control: FormControl) {
+    //return this.paymentService.isNIFValid(control.value) ? null : { invalid: true };
+    const DNI_REGEX = /^(\d{8})([A-Z])$/;
+    const NIE_REGEX = /^[XYZKL]\d{7}[A-Z]$/;
+    let nif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
+
+    return (DNI_REGEX.test(nif) || NIE_REGEX.test(nif)) ? null : {'cif': true};
+  }
+  
+  public cifValidator(control: FormControl) {
+    //return this.paymentService.isCIFValid(control.value) ? null : { invalid: true };
+    const CIF_REGEX = /^(\d{7})([A-Z])$/;
+    const CIF2_REGEX = /^([A-Z])(\d{8})$/;
+    let cif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
+
+    return (CIF_REGEX.test(cif) ||CIF2_REGEX.test(cif)) ? null : {'cif': true};
+  }
+
+  private emailValidator(control: AbstractControl): { [key: string]: boolean } {
+    if (Validators.required(control)) {
+      return null;
+    }
+    const pattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    return pattern.test(control.value) ? null : {'email': true};
+  }
+
 }

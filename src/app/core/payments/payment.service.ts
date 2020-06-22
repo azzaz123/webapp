@@ -168,6 +168,22 @@ export class PaymentService {
     this.perksModel = null;
   }
 
+  public isNIFValid(nif: string): any {
+    const DNI_REGEX = /^(\d{8})([A-Z])$/;
+    const NIE_REGEX = /^[XYZKL]\d{7}[A-Z]$/;
+    nif = nif.toUpperCase().replace(/[_\W\s]+/g, '');
+
+    return (DNI_REGEX.test(nif) || NIE_REGEX.test(nif)) ? null : {'cif': true};
+  }
+
+  public isCIFValid(cif: string): any {
+    const CIF_REGEX = /^(\d{7})([A-Z])$/;
+    const CIF2_REGEX = /^([A-Z])(\d{8})$/;
+    cif = cif.toUpperCase().replace(/[_\W\s]+/g, '');
+    
+    return (CIF_REGEX.test(cif) ||CIF2_REGEX.test(cif)) ? null : {'cif': true};
+  }
+
   private preparePacks(sortedPacks, product?: Products) {
     const packsResponse: Packs = {
       cityBump: [],
