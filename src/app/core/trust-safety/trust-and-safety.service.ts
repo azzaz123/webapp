@@ -45,8 +45,18 @@ export class TrustAndSafetyService {
     return this.http.post<GenerateSessionIdResponse>(GENERATE_SESSION_ID_ENDPOINT, {}).pipe(map(response => response.id));
   }
 
+  public isStarterUser(useCache = true): Observable<boolean> {
+    if (useCache && this._cachedIsStarterResponse) {
+      return of(this._cachedIsStarterResponse).pipe(map(response => response.starter));
+    }
+    return this.http.get<StarterResponse>(USER_STARTER_ENDPOINT).pipe(
+      tap(firstResponse => this._cachedIsStarterResponse = firstResponse),
+      map(response => response.starter)
+    );
+  }
+
   public initializeProfiling() {
-    this.isUserStarter().subscribe(isStarter => {
+    this.isStarterUser().subscribe(isStarter => {
       if (!isStarter) {
         return;
       }
@@ -55,16 +65,6 @@ export class TrustAndSafetyService {
         this._initializeLibrary(sessionId);
       });
     });
-  }
-
-  public isUserStarter(useCache = true): Observable<boolean> {
-    if (useCache && this._cachedIsStarterResponse) {
-      return of(this._cachedIsStarterResponse).pipe(map(response => response.starter));
-    }
-    return this.http.get<StarterResponse>(USER_STARTER_ENDPOINT).pipe(
-      tap(firstResponse => this._cachedIsStarterResponse = firstResponse),
-      map(response => response.starter)
-    );
   }
 
   public submitProfile(location: SessionProfileDataLocation) {
