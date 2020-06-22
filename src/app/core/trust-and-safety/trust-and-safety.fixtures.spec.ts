@@ -1,4 +1,4 @@
-import { StarterResponse, GenerateSessionIdResponse } from './trust-and-safety.interface';
+import { StarterResponse } from './trust-and-safety.interface';
 
 export const MOCK_STARTER_USER_RESPONSE: StarterResponse = {
   starter: true
