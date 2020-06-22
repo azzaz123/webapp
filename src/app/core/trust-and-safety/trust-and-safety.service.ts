@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { Observable, interval, Subscription, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { StarterResponse, SessionProfileData, SessionProfileDataLocation } from './trust-and-safety.interface';
+import { StarterResponse, SessionProfileData, SessionProfileDataLocation, SessionProfileDataPlatform } from './trust-and-safety.interface';
 import { UUID } from 'angular2-uuid';
 
 export const USER_STARTER_ENDPOINT = `${environment.baseUrl}api/v3/users/me/starter`;
@@ -70,7 +70,7 @@ export class TrustAndSafetyService {
     const profile: SessionProfileData = {
       id: this._sessionId,
       location,
-      platform: 'Web'
+      platform: SessionProfileDataPlatform.Web
     };
 
     return this.http.post(USER_STARTER_ENDPOINT, profile);
