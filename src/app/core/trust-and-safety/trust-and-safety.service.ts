@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { Observable, interval, Subscription, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { StarterResponse, GenerateSessionIdResponse, SessionProfileData, SessionProfileDataLocation } from './trust-and-safety.interface';
+import { StarterResponse, SessionProfileData, SessionProfileDataLocation } from './trust-and-safety.interface';
+import { UUID } from 'angular2-uuid';
 
 export const USER_STARTER_ENDPOINT = `${environment.baseUrl}api/v3/users/me/starter`;
-export const GENERATE_SESSION_ID_ENDPOINT = `${environment.baseUrl}/api/v3/users/me/id`;
 
 @Injectable({
   providedIn: 'root'
@@ -41,10 +41,6 @@ export class TrustAndSafetyService {
     // threadMetrixLibrary.profile();
   }
 
-  private _getSessionId(): Observable<string> {
-    return this.http.post<GenerateSessionIdResponse>(GENERATE_SESSION_ID_ENDPOINT, {}).pipe(map(response => response.id));
-  }
-
   public isStarterUser(useCache = true): Observable<boolean> {
     if (useCache && this._cachedIsStarterResponse) {
       return of(this._cachedIsStarterResponse).pipe(map(response => response.starter));
@@ -56,14 +52,13 @@ export class TrustAndSafetyService {
   }
 
   public initializeProfiling() {
-    this.isStarterUser().subscribe(isStarter => {
+    this.isStarterUser(false).subscribe(isStarter => {
       if (!isStarter) {
         return;
       }
-      this._getSessionId().subscribe(sessionId => {
-        this._sessionId = sessionId;
-        this._initializeLibrary(sessionId);
-      });
+      const sessionId = UUID.UUID();
+      this._sessionId = sessionId;
+      this._initializeLibrary(sessionId);
     });
   }
 

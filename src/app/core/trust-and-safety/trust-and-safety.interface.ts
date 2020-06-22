@@ -2,10 +2,6 @@ export interface StarterResponse {
   starter: boolean;
 }
 
-export interface GenerateSessionIdResponse {
-  id: string;
-}
-
 export type SessionProfileDataLocation = 'OpenChat' | 'OpenCreateListing';
 export type SessionProfileDataPlatform = 'Android' | 'IOS' | 'Web';
 
