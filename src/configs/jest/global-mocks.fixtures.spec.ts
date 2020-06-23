@@ -110,5 +110,5 @@ export const MOCK_DIDOMI: DidomiLibrary = {
 };
 
 export const MOCK_THREAT_METRIX: ThreatMetrixLibrary = {
-  profile: () => {}
+  asap: (_domain: string, _orgId: string, _sessionId: string) => {}
 };
