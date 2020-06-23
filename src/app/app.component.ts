@@ -19,7 +19,6 @@ import { MessageService } from './chat/service/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
@@ -30,6 +29,7 @@ import { Subscription } from 'rxjs';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { DidomiService } from './core/didomi/didomi.service';
+import { TrustAndSafetyService } from './core/trust-and-safety/trust-and-safety.service';
 
 @Component({
   selector: 'tsl-root',
@@ -67,13 +67,13 @@ export class AppComponent implements OnInit {
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
-              private modalService: NgbModal,
               private connectionService: ConnectionService,
               private paymentService: PaymentService,
               private callService: CallsService,
               private stripeService: StripeService,
               private analyticsService: AnalyticsService,
-              private didomiService: DidomiService) {
+              private didomiService: DidomiService,
+              private trustAndSafetyService: TrustAndSafetyService) {
     this.config();
   }
 
@@ -94,6 +94,7 @@ export class AppComponent implements OnInit {
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
     this.didomiService.initialize();
+    this.trustAndSafetyService.initializeProfiling();
   }
 
   private updateUrlAndSendAnalytics() {
