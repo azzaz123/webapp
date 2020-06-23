@@ -18,13 +18,20 @@ export class TrustAndSafetyService {
 
   constructor(private http: HttpClient) {}
 
-  private _initializeLibrary(session_id: string) {
+  public _initializeLibrary(session_id: string) {
     this._includeThreatMetrixInDOM(session_id);
     this._checkThreatMetrixReady();
   }
 
-  private _includeThreatMetrixInDOM(session_id: string) {
-    // TODO
+  private _includeThreatMetrixInDOM(sessionId: string) {
+    const THREAT_METRIX_URL =
+      `https://h.online-metrix.net/fp/tags.js?org_id=${environment.threatMetrixOrgId}&session_id=${sessionId}`;
+    // Session id in example: 01f50c4d1430a620a3b50005ffe98541
+    const coreScript = document.createElement('script');
+    coreScript.setAttribute('src', THREAT_METRIX_URL);
+    coreScript.setAttribute('type', 'text/javascript');
+    coreScript.setAttribute('charset', 'utf-8');
+    document.head.appendChild(coreScript);
   }
 
   private _checkThreatMetrixReady() {
