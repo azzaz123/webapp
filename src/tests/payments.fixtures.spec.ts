@@ -476,7 +476,7 @@ export const ORDER_CART_EXTRAS_PRO: OrderProExtras = {
 };
 
 export const BILLING_INFO_RESPONSE: BillingInfoResponse = {
-  cif: 'cif',
+  cif: 'A00000000',
   city: 'city',
   company_name: 'company',
   country: 'country',

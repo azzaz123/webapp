@@ -64,7 +64,6 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
   }
 
   initForm() {
-    console.log('init form');
     this.paymentService.getBillingInfo().subscribe(
       (billingInfo: BillingInfoResponse) => {
         this.isNewBillingInfoForm = false;
@@ -72,6 +71,8 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
         this.billingForm.patchValue(billingInfo);
         for (const control in this.billingForm.controls) {
           if (this.billingForm.controls.hasOwnProperty(control)) {
+            this.billingForm.controls['cif'].disable();
+            this.billingForm.controls['type'].disable();
             this.billingForm.controls[control].markAsDirty();
           }
         }
@@ -107,7 +108,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
           company_name: ''
         });
       }
-      this.paymentService.updateBillingInfo(this.billingForm.value)
+      this.paymentService.updateBillingInfo(this.billingForm.getRawValue())
       .pipe(finalize(() => this.loading = false))
       .subscribe(() => {
         this.errorsService.i18nSuccess('userEdited');
@@ -162,24 +163,23 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     this.billingForm.get('company_name').updateValueAndValidity();
     this.billingForm.get('name').updateValueAndValidity();
     this.billingForm.get('surname').updateValueAndValidity();
+    this.billingForm.get('cif').updateValueAndValidity();
   }
 
-  public nifValidator(control: FormControl) {
-    //return this.paymentService.isNIFValid(control.value) ? null : { invalid: true };
+  private nifValidator(control: FormControl) {
     const DNI_REGEX = /^(\d{8})([A-Z])$/;
     const NIE_REGEX = /^[XYZKL]\d{7}[A-Z]$/;
     let nif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
 
-    return (DNI_REGEX.test(nif) || NIE_REGEX.test(nif)) ? null : {'cif': true};
+    return (DNI_REGEX.test(nif) || NIE_REGEX.test(nif)) ? null : { 'cif': true };
   }
   
-  public cifValidator(control: FormControl) {
-    //return this.paymentService.isCIFValid(control.value) ? null : { invalid: true };
+  private cifValidator(control: FormControl) {
     const CIF_REGEX = /^(\d{7})([A-Z])$/;
     const CIF2_REGEX = /^([A-Z])(\d{8})$/;
     let cif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
-
-    return (CIF_REGEX.test(cif) ||CIF2_REGEX.test(cif)) ? null : {'cif': true};
+    
+    return (CIF_REGEX.test(cif) || CIF2_REGEX.test(cif)) ? null : { 'cif': true };
   }
 
   private emailValidator(control: AbstractControl): { [key: string]: boolean } {
@@ -187,7 +187,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       return null;
     }
     const pattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    return pattern.test(control.value) ? null : {'email': true};
+    return pattern.test(control.value) ? null : { 'email': true };
   }
 
 }

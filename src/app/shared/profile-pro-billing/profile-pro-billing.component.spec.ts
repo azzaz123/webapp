@@ -92,7 +92,7 @@ describe('ProfileProBillingComponent', () => {
     });
 
     it('should set form value with billing info', () => {
-      expect(component.billingForm.value).toEqual({
+      expect(component.billingForm.getRawValue()).toEqual({
         ...BILLING_INFO_RESPONSE
       });
     });
@@ -126,7 +126,7 @@ describe('ProfileProBillingComponent', () => {
     describe('form not valid', () => {
       it('should set invalid fields as dirty', () => {
         component.billingForm.patchValue({
-          cif: 'cif',
+          cif: 'A00000000',
           company_name: 'company',
           email: 'email@email.com',
           name: 'name',
@@ -141,12 +141,10 @@ describe('ProfileProBillingComponent', () => {
 
         expect(component.billingForm.get('country').dirty).toBe(true);
       });
-    });
 
-    describe('deleteBillingInfo', () => {
-      beforeEach(() => {
+      it('should set cif as invalid', () => {
         component.billingForm.patchValue({
-          cif: 'cif',
+          cif: 'A000',
           company_name: 'company',
           email: 'email@email.com',
           name: 'name',
@@ -154,8 +152,19 @@ describe('ProfileProBillingComponent', () => {
           street: 'street',
           surname: 'surname',
           id: '123',
-          type: 'legal'
+          type: 'legal',
+          country: 'catalonia'
         });
+
+        component.onSubmit();
+
+        expect(component.billingForm.valid).toBeFalsy();
+      });
+    });
+
+    describe('deleteBillingInfo', () => {
+      beforeEach(() => {
+        component.billingForm.patchValue(BILLING_INFO_RESPONSE);
       });
 
       it('should call open modalservice method', () => {
