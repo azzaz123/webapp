@@ -5,6 +5,8 @@ import { Observable, interval, Subscription, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { StarterResponse, SessionProfileData, SessionProfileDataLocation, SessionProfileDataPlatform } from './trust-and-safety.interface';
 import { UUID } from 'angular2-uuid';
+import { THREAT_METRIX_EMBED } from './threat-metrix-embed-script';
+import { ThreatMetrixLibrary } from './threat-metrix.interface';
 
 export const USER_STARTER_ENDPOINT = `${environment.baseUrl}api/v3/users/me/starter`;
 
@@ -12,31 +14,30 @@ export const USER_STARTER_ENDPOINT = `${environment.baseUrl}api/v3/users/me/star
   providedIn: 'root'
 })
 export class TrustAndSafetyService {
+  private _threatMetrixRef: ThreatMetrixLibrary;
   private _sessionId: string;
   private _subscription: Subscription;
   private _cachedIsStarterResponse: StarterResponse;
 
   constructor(private http: HttpClient) {}
 
-  public _initializeLibrary(session_id: string) {
-    this._includeThreatMetrixInDOM(session_id);
+  private _initializeLibrary() {
+    this._includeThreatMetrixInDOM();
     this._checkThreatMetrixReady();
   }
 
-  private _includeThreatMetrixInDOM(sessionId: string) {
-    const THREAT_METRIX_URL =
-      `https://h.online-metrix.net/fp/tags.js?org_id=${environment.threatMetrixOrgId}&session_id=${sessionId}`;
-    // Session id in example: 01f50c4d1430a620a3b50005ffe98541
+  private _includeThreatMetrixInDOM() {
     const coreScript = document.createElement('script');
-    coreScript.setAttribute('src', THREAT_METRIX_URL);
     coreScript.setAttribute('type', 'text/javascript');
     coreScript.setAttribute('charset', 'utf-8');
+    coreScript.text = THREAT_METRIX_EMBED;
     document.head.appendChild(coreScript);
   }
 
   private _checkThreatMetrixReady() {
     this._subscription = interval(1000).subscribe(() => {
-      if (threadMetrixLibrary) {
+      if (wadgtlft) {
+        this._threatMetrixRef = wadgtlft;
         this._subscription.unsubscribe();
         this._startThreatMetrixProfiling();
       }
@@ -44,8 +45,10 @@ export class TrustAndSafetyService {
   }
 
   private _startThreatMetrixProfiling() {
-    // TODO
-    // threadMetrixLibrary.profile();
+    if (!this._sessionId || !this._threatMetrixRef) {
+      throw new Error('Session profiling error');
+    }
+    this._threatMetrixRef.asap('h.online-metrix.net', environment.threatMetrixOrgId, this._sessionId);
   }
 
   public isStarterUser(useCache = true): Observable<boolean> {
@@ -63,14 +66,13 @@ export class TrustAndSafetyService {
       if (!isStarter) {
         return;
       }
-      const sessionId = UUID.UUID();
-      this._sessionId = sessionId;
-      this._initializeLibrary(sessionId);
+      this._sessionId = UUID.UUID();
+      this._initializeLibrary();
     });
   }
 
   public submitProfile(location: SessionProfileDataLocation) {
-    if (!this._sessionId || !threadMetrixLibrary) {
+    if (!this._sessionId || !this._threatMetrixRef) {
       throw new Error('Session profiling error');
     }
 

@@ -1,3 +1,3 @@
 export interface ThreatMetrixLibrary {
-  profile: Function;
+  asap(domain: string, orgId: string, sessionId: string): Function;
 }
