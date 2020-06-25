@@ -80,15 +80,14 @@ Resources:
             Action:
               - codepipeline:*
           - Resource:
-              - !GetAtt CodeBuildScripts.Arn
-              - !GetAtt CodeBuildDeployScripts.Arn
+              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-invalidate-caches-${EnvName}*"
+              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-deploy-service-${EnvName}*"
             Effect: Allow
             Action:
               - codebuild:*
           - Resource: "*"
             Effect: Allow
             Action:
-              - codebuild:*Get*
               - iam:PassRole
               - iam:ListUserTags
               - iam:ListRoleTags
@@ -128,7 +127,6 @@ Resources:
             Effect: Allow
             Action:
               - codebuild:CreateProject
-              - codebuild:*Get*
               - codepipeline:List*
               - codepipeline:Get*
               - codepipeline:Create*
@@ -200,8 +198,8 @@ Resources:
             Action:
               - cloudfront:*
           - Resource:
-              - !GetAtt CodeBuildScripts.Arn
-              - !GetAtt CodeBuildDeployScripts.Arn
+              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-invalidate-caches-${EnvName}*"
+              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-deploy-service-${EnvName}*"
             Effect: Allow
             Action:
               - codebuild:*
