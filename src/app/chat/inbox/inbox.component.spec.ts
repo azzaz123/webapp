@@ -3,7 +3,6 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
-import { MomentModule } from 'angular2-moment';
 import { InboxComponent, InboxState } from './inbox.component';
 import { InboxConversationComponent } from './inbox-conversation/inbox-conversation.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -43,7 +42,6 @@ describe('Component: InboxComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MomentModule,
         NgxPermissionsModule,
         NgxPermissionsModule.forRoot()
       ],

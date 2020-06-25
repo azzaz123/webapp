@@ -2,7 +2,7 @@
   <div class="call-info">
     <div class="call-user-row">
       <div class="call-meta">
-        <span class="call-date">{{call.modifiedDate | amCalendar:momentConfig }}</span>
+        <span class="call-date">{{call.modifiedDate | dateCalendar:momentConfig }}</span>
       </div>
     </div>
     <div class="call-data-row" [ngSwitch]="call.callStatus">
