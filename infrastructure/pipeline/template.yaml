@@ -63,7 +63,7 @@ Resources:
               - !GetAtt CodePipelineServiceRole.Arn
               - !GetAtt CloudFormationExecutionRole.Arn
               - !GetAtt CodeBuildServiceRole.Arn
-              - !GetAtt CodeBuildDeployServiceRole
+              - !GetAtt CodeBuildDeployServiceRole.Arn
             Effect: Allow
             Action:
               - iam:*
@@ -179,7 +179,7 @@ Resources:
               - !GetAtt CodePipelineServiceRole.Arn
               - !GetAtt CloudFormationExecutionRole.Arn
               - !GetAtt CodeBuildServiceRole.Arn
-              - !GetAtt CodeBuildDeployServiceRole
+              - !GetAtt CodeBuildDeployServiceRole.Arn
             Effect: Allow
             Action:
               - iam:*
