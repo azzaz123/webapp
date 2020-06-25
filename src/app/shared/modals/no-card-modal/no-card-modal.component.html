@@ -2,9 +2,9 @@
   <div class="modal-close" (click)="activeModal.dismiss()">
       <mat-icon svgIcon="cross"></mat-icon>
   </div>
-  <h4 class="NoCardModal--title" i18n="@@MissingPaymentMethodTitle">Delete payment method</h4>
-  <p class="NoCardModal--subtitle" i18n="@@MissingPaymentMethodSubtitle">Without a card linked to your subscriptions, you won't be able to renew them and you will lose the benefits of being PRO. Is that what you want?</p>
-  <div class="NoCardModal--buttons">
+  <h4 class="NoCardModal__title" i18n="@@MissingPaymentMethodTitle">Delete payment method</h4>
+  <p class="NoCardModal__subtitle" i18n="@@MissingPaymentMethodSubtitle">Without a card linked to your subscriptions, you won't be able to renew them and you will lose the benefits of being PRO. Is that what you want?</p>
+  <div class="NoCardModal__buttons">
     <tsl-button className="btn btn-secondary" (click)="activeModal.dismiss()"
                 i18n="@@Cancel"
     >Cancel
