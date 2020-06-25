@@ -80,8 +80,8 @@ Resources:
             Action:
               - codepipeline:*
           - Resource:
-              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-invalidate-caches-${EnvName}*"
-              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-deploy-service-${EnvName}*"
+              - !GetAtt CodeBuildScripts.Arn
+              - !GetAtt CodeBuildDeployScripts.Arn
             Effect: Allow
             Action:
               - codebuild:*
@@ -198,8 +198,8 @@ Resources:
             Action:
               - cloudfront:*
           - Resource:
-              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-invalidate-caches-${EnvName}*"
-              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-deploy-service-${EnvName}*"
+              - !GetAtt CodeBuildScripts.Arn
+              - !GetAtt CodeBuildDeployScripts.Arn
             Effect: Allow
             Action:
               - codebuild:*
