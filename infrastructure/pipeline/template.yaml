@@ -81,7 +81,7 @@ Resources:
               - codepipeline:*
           - Resource:
               - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-invalidate-caches-${EnvName}*"
-              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-codebuild-deploy-service-${EnvName}*"
+              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/webapp-deploy-service-${EnvName}*"
             Effect: Allow
             Action:
               - codebuild:*
