@@ -131,7 +131,7 @@
   <msg id="7498605020756139080"><source>app/shared/confirmation-modal/confirmation-modal.component.html:12</source>The selected items will be reserved.</msg>
   <msg id="3870006899502072841"><source>app/shared/confirmation-modal/confirmation-modal.component.html:15</source>Remove item from favorites</msg>
   <msg id="3870268043917301466"><source>app/shared/confirmation-modal/confirmation-modal.component.html:16</source>The item will be removed from favorites.</msg>
-  <msg id="773668064257926548"><source>app/shared/confirmation-modal/confirmation-modal.component.html:19</source><source>app/shared/profile/credit-card-info/credit-card-info.component.html:16</source>Delete card</msg>
+  <msg id="773668064257926548"><source>app/shared/confirmation-modal/confirmation-modal.component.html:19</source>Delete card</msg>
   <msg id="8843627277100451781"><source>app/shared/confirmation-modal/confirmation-modal.component.html:20</source>Are you sure you want to delete the card saved?</msg>
   <msg id="7078772344681242222"><source>app/shared/confirmation-modal/confirmation-modal.component.html:23</source>Remove featured profile from favorites</msg>
   <msg id="5556202995949734730"><source>app/shared/confirmation-modal/confirmation-modal.component.html:24</source>The profile will be removed from favorites.</msg>
@@ -141,6 +141,14 @@
   <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.html:35</source><source>app/chat/item/item.component.html:17</source><source>app/chat/inbox/inbox-metadata/inbox-item-component/inbox-item-detail.component.html:20</source>Reserve</msg>
   <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.html:36</source>Remove</msg>
   <msg id="7092318893814699678"><source>app/shared/confirmation-modal/confirmation-modal.component.html:37</source><source>app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:6</source>Yes, I am sure</msg>
+  <msg id="MissingPaymentMethodTitle"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:5</source>Delete payment method</msg>
+  <msg id="MissingPaymentMethodSubtitle"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:6</source>Without a card linked to your subscriptions, you won&apos;t be able to renew them and you will lose the benefits of being PRO. Is that what you want?</msg>
+  <msg id="Cancel"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:10,11</source><source>app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:12,13</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:24</source>Cancel
+    </msg>
+  <msg id="ConfirmDeleteCard"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:14,15</source>Yes, delete card
+    </msg>
+  <msg id="ChangeCard"><source>app/shared/profile/credit-card-info/credit-card-info.component.html:16</source>Change card</msg>
+  <msg id="DeleteCard"><source>app/shared/profile/credit-card-info/credit-card-info.component.html:17</source>Delete card</msg>
   <msg id="4058575476871566236"><source>app/shared/catalog/catalog-card/catalog-card.component.html:18</source><source>app/catalog/list/catalog-item/catalog-item.component.html:37</source>Published</msg>
   <msg id="7239750919884229270"><source>app/shared/catalog/catalog-card/catalog-card.component.html:22</source>Updated</msg>
   <msg id="4338022632676445411"><source>app/shared/catalog/catalog-card/catalog-card.component.html:26</source><source>app/chat/item/item.component.html:20</source><source>app/chat/item/item-sold/item-sold.component.html:3</source>Sold</msg>
@@ -231,11 +239,23 @@
   <msg id="7274286978511770772"><source>app/shared/payments/stripe/stripe-card-element.component.html:33</source>Continue to Checkout</msg>
   <msg id="3768927257183755959"><source>app/shared/payments/stripe/stripe-card-element.component.html:44</source><source>app/profile/profile-info/profile-info.component.html:83</source><source>app/profile/account/account.component.html:36</source>Save</msg>
   <msg id="848453031482663640"><source>app/shared/payments/stripe/stripe-card-element.component.html:55</source>Subscribe now</msg>
-  <msg id="6201766420022369899"><source>app/shared/modals/new-card-modal/new-card-modal.component.html:6</source>Add a new credit card</msg>
+  <msg id="Save"><source>app/shared/payments/stripe/stripe-card-element.component.html:66</source><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:86</source>Save</msg>
+  <msg id="AddNewCreditCard"><source>app/shared/modals/new-card-modal/new-card-modal.component.html:6</source>Add a new credit card</msg>
+  <msg id="ChangeSubscriptionCardSubtitle"><source>app/shared/modals/new-card-modal/new-card-modal.component.html:7</source><source>app/shared/modals/change-card-modal/change-card-modal.component.html:8</source>This will be the payment method linked to your subscription</msg>
+  <msg id="ConfirmPaymentMethod"><source>app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:5</source>Confirm payment method</msg>
+  <msg id="ChargeThisCard"><source>app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:6</source>The card linked to your subscriptions will be</msg>
+  <msg id="Yes"><source>app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:14,15</source>Confirm payment method
+      </msg>
+  <msg id="ChangeSelectSubscriptionCardTitle"><source>app/shared/modals/change-card-modal/change-card-modal.component.html:6</source>Select a credit card</msg>
+  <msg id="ChangeAddSubscriptionCardTitle"><source>app/shared/modals/change-card-modal/change-card-modal.component.html:7</source>Add a credit card</msg>
+  <msg id="AddCard"><source>app/shared/modals/change-card-modal/change-card-modal.component.html:14</source><source>app/shared/profile/stripe-cards/stripe-cards.component.html:29</source>Add card</msg>
+  <msg id="UseSavedCard"><source>app/shared/modals/change-card-modal/change-card-modal.component.html:15</source>Use a saved card</msg>
+  <msg id="SelectSavedCard"><source>app/shared/modals/change-card-modal/change-card-modal.component.html:26</source>Select saved card</msg>
   <msg id="5722353260643724736"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:5</source>Payment method</msg>
-  <msg id="5691966639616932851"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:9</source>Card</msg>
-  <msg id="4940843552280014819"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:18</source>+ Add new card</msg>
-  <msg id="8429052002955936753"><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source>Select your card</msg>
+  <msg id="SubscriptionCard"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:10</source>Card linked to subscriptions</msg>
+  <msg id="AddNewSubscriptionCard"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:17</source>Link a card to your subscriptions</msg>
+  <msg id="CurrentCards"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:21</source>Saved cards</msg>
+  <msg id="2341832243359741366"><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source>Select saved card</msg>
   <msg id="4391289919356861627"><source>app/shared/geolocation/location-select/location-modal/location-modal.component.html:4</source>Apply</msg>
   <msg id="4359291232904891489"><source>app/shared/geolocation/location-select/location-select.component.html:3</source>Set a location</msg>
   <msg id="5371960677736303052"><source>app/shared/geolocation/geolocation.component.html:9</source>Where?</msg>
@@ -431,7 +451,6 @@
   <msg id="RangeDatepickerCitybumps"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:18</source>city bumps</msg>
   <msg id="RangeDatepickerCountrybumps"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:19</source>country bumps</msg>
   <msg id="2468076008299260383"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:20</source>Multiselect bumps</msg>
-  <msg id="Cancel"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:24</source>Cancel</msg>
   <msg id="Apply"><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:25</source>Apply</msg>
   <msg id="8458658926966860767"><source>app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:2</source>Are you sure you want to delete billing information?</msg>
   <msg id="ProfileProBillingFormType"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:8</source>Type of registration</msg>
@@ -447,7 +466,6 @@
   <msg id="Country"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:72</source>Country</msg>
   <msg id="CIFNumber"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:78</source>CIF Number</msg>
   <msg id="NIFNumber"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:79</source>NIF Number</msg>
-  <msg id="Save"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:86</source>Save</msg>
   <msg id="DeleteInformation"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:89</source>Delete information</msg>
   <msg id="3749157863216929849"><source>app/upload/edit/edit.component.html:4</source>Back to catalog</msg>
   <msg id="1526908168288421707"><source>app/upload/category-selector/category-selector.component.html:4</source>What will you list?</msg>

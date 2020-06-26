@@ -1,8 +1,7 @@
 @import "~style/common";
 
-.NewCardModal {
+.ChangeCardModal {
   text-align: center;
-
   &__header {
     background: $walla-main;
     border-top-left-radius: 0.3rem;
@@ -25,5 +24,16 @@
     font-size: $font-size-m;
     color: $white;
     margin: 0 0 $spacing-l;
+  }
+  &__NewCard {
+    &--add, &--used {
+      font-size: $font-size-s;
+      color: $walla-main;
+      text-align: left;
+      cursor: pointer;
+    }
+    &--add {
+      margin: 0 0 $spacing-l;
+    }
   }
 }
