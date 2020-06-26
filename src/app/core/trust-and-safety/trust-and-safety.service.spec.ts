@@ -6,7 +6,7 @@ import {
   MOCK_STARTER_USER_RESPONSE,
   MOCK_NON_STARTER_USER_RESPONSE,
 } from './trust-and-safety.fixtures.spec';
-import { SessionProfileData, SessionProfileDataLocation, SessionProfileDataPlatform } from './trust-and-safety.interface';
+import { SessionProfileData } from './trust-and-safety.interface';
 import { UUID } from 'angular2-uuid';
 import { environment } from 'environments/environment';
 
@@ -131,12 +131,12 @@ describe('TrustAndSafetyService', () => {
         httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
         const expectedBody: SessionProfileData = {
           id: mockUUID,
-          location: SessionProfileDataLocation.OpenChat,
-          platform: SessionProfileDataPlatform.Web
+          location: 'OpenChat',
+          platform: 'Web'
         };
         tick(1000);
 
-        service.submitProfile(SessionProfileDataLocation.OpenChat).subscribe();
+        service.submitProfile('OpenChat').subscribe();
         const req = httpMock.expectOne(USER_STARTER_ENDPOINT);
         req.flush({});
 
@@ -150,7 +150,7 @@ describe('TrustAndSafetyService', () => {
         service.initializeProfiling();
         httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_NON_STARTER_USER_RESPONSE);
 
-        expect(() => service.submitProfile(SessionProfileDataLocation.OpenChat)).toThrowError();
+        expect(() => service.submitProfile('OpenChat')).toThrowError();
       });
     });
   });

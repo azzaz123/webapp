@@ -79,7 +79,7 @@ export class TrustAndSafetyService {
     const profile: SessionProfileData = {
       id: this._sessionId,
       location,
-      platform: SessionProfileDataPlatform.Web
+      platform: 'Web'
     };
 
     return this.http.post(USER_STARTER_ENDPOINT, profile);
