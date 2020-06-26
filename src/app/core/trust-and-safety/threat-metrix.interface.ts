@@ -1,3 +1,3 @@
 export interface ThreatMetrixLibrary {
-  asap(domain: string, orgId: string, sessionId: string): void;
+  nfl(domain: string, orgId: string, sessionId: string): void;
 }
