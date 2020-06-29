@@ -7,12 +7,16 @@ import { Observable, of } from 'rxjs';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { UserService } from '../core/user/user.service';
 import { CARS_CATEGORY } from '../core/item/item-categories';
+import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
+import { MockTrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.fixtures.spec';
+import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
   let fixture: ComponentFixture<UploadComponent>;
   let itemService: ItemService;
   let userService: UserService;
+  let trustAndSafetyService: TrustAndSafetyService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -31,7 +35,8 @@ describe('UploadComponent', () => {
               return of(false);
             }
           }
-        }
+        },
+        { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService }
       ]
     })
       .compileComponents();
@@ -41,7 +46,10 @@ describe('UploadComponent', () => {
     fixture = TestBed.createComponent(UploadComponent);
     itemService = TestBed.get(ItemService);
     userService = TestBed.get(UserService);
+    trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
     component = fixture.componentInstance;
+
+    spyOn(trustAndSafetyService, 'submitProfile');
   });
 
   describe('ngOnInit', () => {
@@ -63,6 +71,27 @@ describe('UploadComponent', () => {
       component.ngOnInit();
 
       expect(component.setCategory).not.toHaveBeenCalled();
+    });
+
+    describe('when the user is a starter user', () => {
+      it('should submit profiling to trust and safety team', () => {
+        spyOn(trustAndSafetyService, 'isStarterUser').and.returnValue(of(true));
+
+        component.ngOnInit();
+
+        expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
+        expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith(SessionProfileDataLocation.OpenCreateListing);
+      });
+    });
+
+    describe('when the user is not a starter user', () => {
+      it('should not submit profiling to trust and safety team', () => {
+        spyOn(trustAndSafetyService, 'isStarterUser').and.returnValue(of(false));
+
+        component.ngOnInit();
+
+        expect(trustAndSafetyService.submitProfile).not.toHaveBeenCalled();
+      });
     });
   });
 

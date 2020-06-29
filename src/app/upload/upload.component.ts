@@ -3,6 +3,8 @@ import { ItemService } from '../core/item/item.service';
 import { Product } from '../core/item/item-response.interface';
 import { UserService } from '../core/user/user.service';
 import { CARS_CATEGORY } from '../core/item/item-categories';
+import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
+import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 
 @Component({
   selector: 'tsl-upload',
@@ -15,13 +17,19 @@ export class UploadComponent implements OnInit {
   public urgentPrice: string = null;
   @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
 
-  constructor(private itemService: ItemService, private userService: UserService) {
+  constructor(private itemService: ItemService, private userService: UserService, private trustAndSafetyService: TrustAndSafetyService) {
   }
 
   ngOnInit() {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
       if (isProfessional) {
         this.setCategory(CARS_CATEGORY);
+      }
+    });
+
+    this.trustAndSafetyService.isStarterUser().subscribe(isStarter => {
+      if (isStarter) {
+        this.trustAndSafetyService.submitProfile(SessionProfileDataLocation.OpenCreateListing);
       }
     });
   }
