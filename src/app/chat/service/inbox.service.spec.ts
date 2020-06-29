@@ -151,6 +151,7 @@ describe('InboxService', () => {
       spyOn<any>(inboxService, 'getInbox$').and.returnValue(throwError(''));
       spyOn<any>(inboxService, 'getArchivedInbox$').and.returnValue(of([]));
       spyOn(remoteConsoleService, 'sendConnectionChatTimeout');
+      spyOn(remoteConsoleService, 'sendConnectionChatFailed');
     });
 
     it('should set errorRetrievingInbox to true', () => {
@@ -169,6 +170,12 @@ describe('InboxService', () => {
       inboxService.init();
 
       expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', false);
+    });
+
+    it('should send metric connection to inbox is failed', () => {
+      inboxService.init();
+
+      expect(remoteConsoleService.sendConnectionChatFailed).toHaveBeenCalledWith('inbox');
     });
   });
 
