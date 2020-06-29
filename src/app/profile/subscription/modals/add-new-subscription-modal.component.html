@@ -14,8 +14,8 @@
         <div class="box-content">
 
           <div>
-            <p class="AddNewSubscription__listing-limit-steps" i18n>Step <span class="bold">1</span> of <span
-                class="bold">2</span></p>
+            <p class="AddNewSubscription__listing-limit-steps" i18n="@@step1of3">Step <span class="bold">1</span> of <span
+                class="bold">3</span></p>
             <div class="AddNewSubscription__listing-limit-title" i18n>How many
               {{subscription.category_name.toLowerCase()}} are you going to upload to your profile?</div>
           </div>
@@ -61,8 +61,8 @@
                 </div>
               </div>
             </div>
-            <tsl-button className="btn-primary btn-medium payment" [disabled]="!selectedTier" (click)="carousel.next(); trackClickContinueToPayment()" i18n>
-              Continue to payment
+            <tsl-button className="btn-primary btn-medium payment" [disabled]="!selectedTier" (click)="carousel.next()" i18n="@@ContinueToInvoice">
+              Continue to invoice
             </tsl-button>
           </div>
         </div>
@@ -72,9 +72,57 @@
       <div class="step step-2">
         <div class="box-content">
           <div>
+            <p class="AddNewSubscription__listing-limit-steps" i18n="@@step2of3">Step <span class="bold">2</span> of <span
+                class="bold">3</span></p>
+            <div class="AddNewSubscription__listing-limit-title" i18n="@@Invoice">Invoice</div>
+          </div>
+          <div>
+            <div class="form-group">
+              <ng-select class="form-control" i18n-placeholder placeholder="Do you need an invoice?" (selected)="onInvoiceOptionSelect($event)" 
+              id="invoiceOptions" [options]="invoiceOptions" noFilter="10">
+              </ng-select>
+            </div>
+          </div>
+          <div>
+            <tsl-button *ngIf="selectedInvoiceOption === 'false' || !selectedInvoiceOption" className="btn-primary btn-medium payment" [disabled]="!selectedInvoiceOption" (click)="carousel.next(); trackClickContinueToPayment()" i18n="@@ContinueToPayment">
+              Continue to payment
+            </tsl-button>
+            <tsl-button *ngIf="selectedInvoiceOption === 'true'" className="btn-primary btn-medium payment" [disabled]="!selectedInvoiceOption" (click)="carousel.next()" i18n="@@ContinueToInvoice">
+              Continue to invoice
+            </tsl-button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide id="2b">
+      <div class="step step-2b">
+        <div class="box-content">
+          <div>
+            <p class="AddNewSubscription__listing-limit-steps" i18n="@@step2of3">Step <span class="bold">2</span> of <span
+              class="bold">3</span></p>
+            <div class="AddNewSubscription__listing-limit-title" i18n="@@Invoice">Invoice</div>
+          </div>
+          <div>
+            <tsl-profile-pro-billing (billingInfoFormChange)="onBillingInfoChange($event)"></tsl-profile-pro-billing>
+          </div>
+          <div>
+            <tsl-button className="btn-primary btn-medium payment" [disabled]="!formIsValid" (click)="carousel.select(step-3); trackClickContinueToPayment()" i18n="@@ContinueToPayment">
+              Continue to payment
+            </tsl-button>
+            <tsl-button className="btn-primary btn-medium payment" (click)="carousel.previous()" i18n="@@BackToInvoice">
+              Back to invoice
+            </tsl-button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide id="step-3">
+      <div class="step step-3">
+        <div class="box-content">
+          <div>
             <div *ngIf="subscription.tiers.length !== 1">
-              <p class="AddNewSubscription__listing-limit-steps" i18n>Step <span class="bold">2</span> of <span
-                  class="bold">2</span></p>
+              <p class="AddNewSubscription__listing-limit-steps" i18n="@@step3of3">Step <span class="bold">3</span> of <span
+                  class="bold">3</span></p>
             </div>
             <div class="AddNewSubscription__listing-limit-title" i18n>Add payment details</div>
           </div>

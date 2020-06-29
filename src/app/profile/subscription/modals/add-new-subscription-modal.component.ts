@@ -21,6 +21,7 @@ import {
 import { PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
 import { CAR_DEALER_TYPEFORM_URL, TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
+import { IOption } from 'ng-select';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -48,6 +49,11 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   public carDealerTypeformLink = CAR_DEALER_TYPEFORM_URL;
   public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
   public privacyPolicyURL = PRIVACY_POLICY_URL;
+  public invoiceOptions: IOption[] = [
+    { value: 'true', label: 'Yes' },
+    { value: 'false', label: 'No' }
+  ];
+  public selectedInvoiceOption: boolean;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -309,6 +315,10 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     };
 
     this.analyticsService.trackEvent(event);
+  }
+
+  public onInvoiceOptionSelect(event: any) {
+    this.selectedInvoiceOption = event.value;
   }
 
 }

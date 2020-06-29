@@ -299,6 +299,14 @@ ngb-carousel {
   }
 }
 
+select-dropdown > div .options ul li {
+  text-align: left;
+}
+
+.form-control {
+  text-align: left;
+}
+
 @include media-breakpoint-down(sm) {
   ngb-carousel {
     ::ng-deep {

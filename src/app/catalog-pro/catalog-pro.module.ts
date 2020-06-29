@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { CreditCardModalComponent } from './catalog-pro-list/modals/credit-card-modal/credit-card-modal.component';
-import { ProfileProBillingComponent } from '../shared/profile-pro-billing/profile-pro-billing.component';
+//import { ProfileProBillingComponent } from 'app/shared/profile-pro-billing/profile-pro-billing.component';
 
 @NgModule({
   imports: [
@@ -40,7 +40,7 @@ import { ProfileProBillingComponent } from '../shared/profile-pro-billing/profil
     CheckoutProItemComponent,
     RangeDatepickerComponent,
     CreditCardModalComponent,
-    ProfileProBillingComponent
+    //ProfileProBillingComponent
   ],
   entryComponents: [
     ProBumpConfirmationModalComponent,
