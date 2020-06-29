@@ -1,4 +1,5 @@
 import { DidomiLibrary } from '../../app/core/didomi/didomi.interface';
+import { ThreatMetrixLibrary } from 'app/core/trust-and-safety/threat-metrix.interface';
 
 export const MOCK_APPBOY = {
   initialize: () => {},
@@ -106,4 +107,8 @@ export const MOCK_NAVIGATOR_GEOLOCATION = {
 export const MOCK_DIDOMI: DidomiLibrary = {
   getUserConsentStatusForPurpose: key => true,
   getUserConsentStatusForVendor: key => true
+};
+
+export const MOCK_THREAT_METRIX: ThreatMetrixLibrary = {
+  profile: () => {}
 };

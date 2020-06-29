@@ -20,7 +20,7 @@ import { NotificationService } from './core/notification/notification.service';
 import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { UserService } from './core/user/user.service';
-import { MOCK_FULL_USER, MOCK_USER, USER_DATA, USER_ID } from '../tests/user.fixtures.spec';
+import { MOCK_USER, USER_ID } from '../tests/user.fixtures.spec';
 import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
@@ -31,12 +31,14 @@ import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
 import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
 import { InboxService } from './chat/service';
-import { createInboxConversationsArray } from '../tests/inbox.fixtures.spec';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
 import { DidomiService } from './core/didomi/didomi.service';
 import { MockDidomiService } from './core/didomi/didomi.service.spec';
+import { TrustAndSafetyService } from './core/trust-and-safety/trust-and-safety.service';
+import { MockInterceptor } from './core/http/interceptors';
+import { MockTrustAndSafetyService } from './core/trust-and-safety/trust-and-safety.fixtures.spec';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -53,12 +55,12 @@ let window: any;
 let conversationService: ConversationService;
 let callsService: CallsService;
 let cookieService: CookieService;
-let modalService: NgbModal;
 let connectionService: ConnectionService;
 let paymentService: PaymentService;
 let stripeService: StripeService;
 let analyticsService: AnalyticsService;
 let didomiService: DidomiService;
+let trustAndSafetyService: TrustAndSafetyService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -206,31 +208,33 @@ describe('App', () => {
           }
         },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
-        { provide: DidomiService, useValue: MockDidomiService }
+        { provide: DidomiService, useValue: MockDidomiService },
+        { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
-    userService = TestBed.get(UserService);
-    errorsService = TestBed.get(ErrorsService);
-    eventService = TestBed.get(EventService);
-    realTime = TestBed.get(RealTimeService);
-    inboxService = TestBed.get(InboxService);
-    notificationService = TestBed.get(NotificationService);
-    messageService = TestBed.get(MessageService);
-    titleService = TestBed.get(Title);
-    trackingService = TestBed.get(TrackingService);
-    window = TestBed.get(WindowRef).nativeWindow;
-    conversationService = TestBed.get(ConversationService);
-    callsService = TestBed.get(CallsService);
-    cookieService = TestBed.get(CookieService);
-    modalService = TestBed.get(NgbModal);
-    connectionService = TestBed.get(ConnectionService);
-    paymentService = TestBed.get(PaymentService);
-    stripeService = TestBed.get(StripeService);
-    analyticsService = TestBed.get(AnalyticsService);
-    didomiService = TestBed.get(DidomiService);
+    userService = TestBed.inject(UserService);
+    errorsService = TestBed.inject(ErrorsService);
+    eventService = TestBed.inject(EventService);
+    realTime = TestBed.inject(RealTimeService);
+    inboxService = TestBed.inject(InboxService);
+    notificationService = TestBed.inject(NotificationService);
+    messageService = TestBed.inject(MessageService);
+    titleService = TestBed.inject(Title);
+    trackingService = TestBed.inject(TrackingService);
+    window = TestBed.inject(WindowRef).nativeWindow;
+    conversationService = TestBed.inject(ConversationService);
+    callsService = TestBed.inject(CallsService);
+    cookieService = TestBed.inject(CookieService);
+    connectionService = TestBed.inject(ConnectionService);
+    paymentService = TestBed.inject(PaymentService);
+    stripeService = TestBed.inject(StripeService);
+    analyticsService = TestBed.inject(AnalyticsService);
+    didomiService = TestBed.inject(DidomiService);
+    trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
+
     spyOn(notificationService, 'init');
   });
 
@@ -560,6 +564,16 @@ describe('App', () => {
       component.ngOnInit();
 
       expect(didomiService.initialize).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('trust and safety', () => {
+    it('should initialize the trust and safety process', () => {
+      spyOn(trustAndSafetyService, 'initializeProfiling');
+
+      component.ngOnInit();
+
+      expect(trustAndSafetyService.initializeProfiling).toHaveBeenCalledTimes(1);
     });
   });
 
