@@ -36,7 +36,7 @@ export class TrustAndSafetyService {
 
   private _checkThreatMetrixReady() {
     this._subscription = interval(100).subscribe(() => {
-      if (wadgtlft && this._threatMetrixTagsInitialized) {
+      if (wadgtlft && this._threatMetrixTagsInitialized()) {
         this._threatMetrixRef = wadgtlft;
         this._subscription.unsubscribe();
         this._startThreatMetrixProfiling();

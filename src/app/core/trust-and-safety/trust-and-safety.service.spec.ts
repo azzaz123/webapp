@@ -10,6 +10,11 @@ import { SessionProfileData } from './trust-and-safety.interface';
 import { UUID } from 'angular2-uuid';
 import { environment } from 'environments/environment';
 
+jest.mock('./threat-metrix-embed-script', () => ({
+  __esModule: true,
+  THREAT_METRIX_EMBED: ''
+}));
+
 describe('TrustAndSafetyService', () => {
   let service: TrustAndSafetyService;
   let httpMock: HttpTestingController;
@@ -26,7 +31,15 @@ describe('TrustAndSafetyService', () => {
     spyOn(UUID, 'UUID').and.returnValue(mockUUID);
   });
 
-  afterEach(() => httpMock.verify());
+  beforeEach(fakeAsync(() => {
+    tick(50);
+    window['tmx_profiling_started'] = true; // set by SDK when ready
+  }));
+
+  afterEach(() => {
+    httpMock.verify();
+    window['tmx_profiling_started'] = false;
+  });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
