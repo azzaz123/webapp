@@ -35,13 +35,17 @@ export class TrustAndSafetyService {
   }
 
   private _checkThreatMetrixReady() {
-    this._subscription = interval(1000).subscribe(() => {
-      if (wadgtlft) {
+    this._subscription = interval(100).subscribe(() => {
+      if (wadgtlft && this._threatMetrixTagsInitialized) {
         this._threatMetrixRef = wadgtlft;
         this._subscription.unsubscribe();
         this._startThreatMetrixProfiling();
       }
     });
+  }
+
+  private _threatMetrixTagsInitialized() {
+    return typeof window['tmx_profiling_started'] !== 'undefined' && window['tmx_profiling_started'];
   }
 
   private _startThreatMetrixProfiling() {
