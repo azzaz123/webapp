@@ -1,7 +1,10 @@
-import { StarterResponse } from './trust-and-safety.interface';
+import { StarterResponse, SessionProfileDataLocation } from './trust-and-safety.interface';
+import { of } from 'rxjs';
 
 export const MockTrustAndSafetyService = {
-  initializeProfiling() {}
+  isStarterUser: () => of(false),
+  initializeProfiling: () => {},
+  submitProfile: (_location: SessionProfileDataLocation) => {}
 };
 
 export const MOCK_STARTER_USER_RESPONSE: StarterResponse = {
