@@ -2,7 +2,7 @@
 // Provided by ThreatMetrix (LexisNexis), they asked us to ofuscate the names of the global object and profile name
 
 export const threatMetrixVarName = 'wadgtlft';
-export const threatMetrixProfileFunctionName = 'asap';
+export const threatMetrixProfileFunctionName = 'nfl';
 
 export const THREAT_METRIX_EMBED = `var ${threatMetrixVarName} = ${threatMetrixVarName} || {};
 (${threatMetrixVarName}.version = 3),
