@@ -102,6 +102,15 @@ export class RemoteConsoleService implements OnDestroy {
     });
   }
 
+  sendConnectionChatFailed(message: 'inbox' | 'xmpp'): void {
+    this.remoteConsoleClientService.info({
+      ...this.getCommonLog(this.userService.user.id),
+      metric_type: MetricTypeEnum.CHAT_FAILED_CONNECTION,
+      xmpp_connected: message === 'inbox',
+      description: message === 'inbox' ? 'Get inbox is failed' : 'Connection xmpp is failed'
+    });
+  }
+
   sendMessageActTimeout(messageId: string): void {
     if (!this.sendMessageActTime.has(messageId)) {
       this.sendMessageActTime.set(messageId, new Date().getTime());

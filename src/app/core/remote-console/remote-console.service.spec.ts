@@ -292,6 +292,37 @@ describe('RemoteConsoleService', () => {
     });
   });
 
+  describe('sendConnectionChatFailed', () => {
+
+    it('should call connection failed if inbox return error', () => {
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(4000);
+
+      service.sendConnectionChatFailed('inbox');
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
+        'description': 'Get inbox is failed',
+        'xmpp_connected': true
+      });
+    });
+
+    it('should call connection failed if inbox return error', () => {
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(4000);
+
+      service.sendConnectionChatFailed('xmpp');
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
+        'description': 'Connection xmpp is failed',
+        'xmpp_connected': false
+      });
+    });
+  });
+
   describe('sendMessageTimeout', () => {
     it('should NOT send call', () => {
       spyOn(remoteConsoleClientService, 'info');
