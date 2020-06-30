@@ -304,7 +304,7 @@ describe('RemoteConsoleService', () => {
         ...commonLog,
         'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
         'description': 'Get inbox is failed',
-        'xmpp_connected': true
+        'xmpp_connected': false
       });
     });
 
@@ -318,7 +318,7 @@ describe('RemoteConsoleService', () => {
         ...commonLog,
         'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
         'description': 'Connection xmpp is failed',
-        'xmpp_connected': false
+        'xmpp_connected': true
       });
     });
   });

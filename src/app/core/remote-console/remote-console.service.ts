@@ -106,7 +106,7 @@ export class RemoteConsoleService implements OnDestroy {
     this.remoteConsoleClientService.info({
       ...this.getCommonLog(this.userService.user.id),
       metric_type: MetricTypeEnum.CHAT_FAILED_CONNECTION,
-      xmpp_connected: message === 'inbox',
+      xmpp_connected: message === 'xmpp',
       description: message === 'inbox' ? 'Get inbox is failed' : 'Connection xmpp is failed'
     });
   }
