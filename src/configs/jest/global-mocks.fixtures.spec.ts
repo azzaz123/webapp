@@ -84,15 +84,16 @@ export const MOCK_XMPP = {
   createClient: () => {}
 };
 
-export const MOCK_LOCALSTORAGE = (function() {
-  let store = {};
-  return {
-    getItem: key => store[key],
-    setItem: (key, value) => store[key] = value.toString(),
-    clear: () => store = {},
-    removeItem: key => delete store[key]
-  };
-})();
+class MockStorage {
+  private store = {};
+  public getItem = key => this.store[key];
+  public setItem = (key, value) => this.store[key] = value.toString();
+  public clear = () => this.store = {};
+  public removeItem = key => delete this.store[key];
+}
+
+export const MOCK_LOCALSTORAGE = new MockStorage();
+export const MOCK_SESSIONSTORAGE = new MockStorage();
 
 export const MOCK_NAVIGATOR_CONNECTION = {
   rtt: 50,
