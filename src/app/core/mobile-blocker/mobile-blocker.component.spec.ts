@@ -7,7 +7,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 
-xdescribe('MobileBlockerComponent', () => {
+describe('MobileBlockerComponent', () => {
   let injector: TestBed;
   let component: MobileBlockerComponent;
   let userService: UserService;
@@ -29,7 +29,6 @@ xdescribe('MobileBlockerComponent', () => {
     fixture = TestBed.createComponent(MobileBlockerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
     injector = getTestBed();
     userService = injector.get(UserService);
     deviceDetectorService = injector.get(DeviceDetectorService);
@@ -55,6 +54,16 @@ xdescribe('MobileBlockerComponent', () => {
         const componentHTML = fixture.debugElement.query(By.css('.MobileBlocker'));
         expect(componentHTML).toBeTruthy();
       });
+
+      it('should emit the blocked content event', () => {	
+        spyOn(userService, 'isProfessional').and.returnValue(of(true));	
+        spyOn(component.viewIsBlocked, 'emit').and.callThrough();	
+
+        component.ngOnInit();	
+        fixture.detectChanges();	
+
+        expect(component.viewIsBlocked.emit).toHaveBeenCalledWith({isCardealer: true, isMobile: true});	
+      });
     });
   
     describe('and the user is not a car dealer', () => {
@@ -66,6 +75,16 @@ xdescribe('MobileBlockerComponent', () => {
   
         const componentHTML = fixture.debugElement.query(By.css('.MobileBlocker'));
         expect(componentHTML).toBeFalsy();
+      });
+
+      it('should not emit the blocked content event', () => {	
+        spyOn(userService, 'isProfessional').and.returnValue(of(false));	
+        spyOn(component.viewIsBlocked, 'emit').and.callThrough();	
+
+        component.ngOnInit();	
+        fixture.detectChanges();	
+
+        expect(component.viewIsBlocked.emit).not.toHaveBeenCalled();	
       });
     });
   });

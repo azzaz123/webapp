@@ -5,6 +5,11 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { NewCardModalComponent } from '../../modals/new-card-modal/new-card-modal.component';
 import { FinancialCard } from '../credit-card-info/financial-card';
 import { finalize } from 'rxjs/operators';
+import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
+import { SubscriptionsResponse } from 'app/core/subscriptions/subscriptions.interface';
+import { ChangeCardModalComponent } from 'app/shared/modals/change-card-modal/change-card-modal.component';
+import { ToastService } from 'app/layout/toast/toast.service';
+import { I18nService } from 'app/core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -15,27 +20,27 @@ export class StripeCardsComponent implements OnInit {
 
   public loading = false;
   public stripeCards: FinancialCard[];
+  public subscriptionStripeCards: FinancialCard[];
+  public isSubscribed: boolean;
 
   constructor(private stripeService: StripeService,
               private modalService: NgbModal,
-              private errorService: ErrorsService) { }
+              private errorService: ErrorsService,
+              private subscriptionsService: SubscriptionsService,
+              private toastService: ToastService,
+              private i18n: I18nService) { }
 
   ngOnInit() {
-    this.stripeService.getCards().subscribe((stripeCards: FinancialCard[]) => {
-      this.stripeCards = stripeCards;
-    }, () => {
-        this.errorService.i18nError('getStripeCardsError');
-    });
+    this.getSubscriptions();
+    this.getAllCards();
+  }
+  
+  public onDeleteCard(): void {
+    this.toastService.show({title:this.i18n.getTranslations('continueSubscriptionSuccessTitle'), text:this.i18n.getTranslations('SubscriptionCardDeleted'), type:'success'});
+    this.getAllCards();
   }
 
-  public onDeleteCard(stripeCard: FinancialCard): void {
-    if (this.stripeCards.length) {
-      const index = this.stripeCards.indexOf(stripeCard);
-      this.stripeCards.splice(index, 1);
-    }
-  }
-
-  public addNewCard() {
+  public addNewCard(): void {
     let modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {windowClass: 'review'});
     modalRef.result.then((financialCard: FinancialCard) => {
       this.loading = true;
@@ -53,6 +58,45 @@ export class StripeCardsComponent implements OnInit {
     },
     () => this.loading = false)
     .catch(() => this.loading = false)
+  }
+
+  public addNewSubscriptionCard(): void {
+    let modalRef: NgbModalRef = this.modalService.open(ChangeCardModalComponent, {windowClass: 'review'});
+    modalRef.result.then(() => {
+      this.loading = false;
+      modalRef = null;
+      this.getAllCards();
+      this.toastService.show({title:this.i18n.getTranslations('continueSubscriptionSuccessTitle'), text:this.i18n.getTranslations('SubscriptionCardSet'), type:'success'});
+    },
+    () => this.loading = false)
+    .catch(() => {
+      this.loading = false;
+      this.errorService.i18nError('SubscriptionCardNotSet');
+    })
+  }
+
+  public onSetChangeCard(event: any): void {
+    this.addNewSubscriptionCard();
+  }
+
+  private getSubscriptions(): void {
+    this.subscriptionsService.getSubscriptions(false)
+      .subscribe(subscriptions => subscriptions.map((subscription: SubscriptionsResponse) => this.isSubscriptionSelected(subscription)));
+  }
+
+  private isSubscriptionSelected(subscription: SubscriptionsResponse): void {
+    if (subscription.selected_tier_id !== null) {
+      this.isSubscribed = true;
+    }
+  };
+
+  private getAllCards(): void {
+    this.stripeService.getCards(false).subscribe((stripeCards: FinancialCard[]) => {
+      this.subscriptionStripeCards = stripeCards.filter( card => card.invoices_default);
+      this.stripeCards = stripeCards.filter( card => !card.invoices_default);
+    }, () => {
+        this.errorService.i18nError('getStripeCardsError');
+    });
   }
   
 }

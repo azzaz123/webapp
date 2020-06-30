@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
-    <g fill="none" fill-rule="evenodd" stroke-width="2" transform="translate(29.8 53.6)">
-        <path stroke="#CFD8DC" stroke-linecap="round" d="M.598 21.406H53.4M56.4 21.406h5.268"/>
-        <rect width="21" height="6" x="8.2" y="1.4" fill="#FFF" stroke="#13C1AC" rx="2"/>
-        <rect width="21" height="6" x="27.559" y="6.615" fill="#FFF" stroke="#13C1AC" rx="2" transform="rotate(55 38.059 9.615)"/>
-        <rect width="21" height="6" x="7.2" y="7.4" fill="#FFF" stroke="#13C1AC" rx="2"/>
-        <rect width="21" height="6" x="8.2" y="13.4" fill="#FFF" stroke="#13C1AC" rx="2"/>
-    </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><g fill="none" fill-rule="evenodd" stroke-width="2" transform="translate(29.8 53.6)"><path stroke="#CFD8DC" stroke-linecap="round" d="M.598 21.406H53.4m3 0h5.268"/><rect width="21" height="6" x="8.2" y="1.4" fill="#FFF" stroke="#13C1AC" rx="2"/><rect width="21" height="6" x="27.559" y="6.615" fill="#FFF" stroke="#13C1AC" rx="2" transform="rotate(55 38.059 9.615)"/><rect width="21" height="6" x="7.2" y="7.4" fill="#FFF" stroke="#13C1AC" rx="2"/><rect width="21" height="6" x="8.2" y="13.4" fill="#FFF" stroke="#13C1AC" rx="2"/></g></svg>

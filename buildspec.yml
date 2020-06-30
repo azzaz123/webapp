@@ -59,21 +59,25 @@ phases:
       - >
         if [ "`echo $ENV | grep prod`" != "" ]; then
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run buildprod
-          aws s3 sync dist s3://web-es.wallapop.com --delete
-          aws s3 cp dist/index.html s3://web-es.wallapop.com/index.html --cache-control max-age=0
+          mkdir es
+          cp -r dist es
+          zip -r webapp-${IMAGE_TAG}.zip es/*
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run buildprod-en
-          aws s3 sync dist s3://web-en.wallapop.com --delete
-          aws s3 cp dist/index.html s3://web-en.wallapop.com/index.html --cache-control max-age=0
+          mkdir en
+          cp -r dist en
+          zip -r webapp-${IMAGE_TAG}.zip en/*
         fi
 
       - >
         if [ "`echo $ENV | grep beta`" != "" ]; then
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run buildbeta
-          aws s3 sync dist s3://web-es.beta.wallapop.com --delete
-          aws s3 cp dist/index.html s3://web-es.beta.wallapop.com/index.html --cache-control max-age=0
+          mkdir es
+          cp -r dist es
+          zip -r webapp-${IMAGE_TAG}.zip es/*
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run buildbeta-en
-          aws s3 sync dist s3://web-en.beta.wallapop.com --delete
-          aws s3 cp dist/index.html s3://web-en.beta.wallapop.com/index.html --cache-control max-age=0
+          mkdir en
+          cp -r dist en
+          zip -r webapp-${IMAGE_TAG}.zip en/*
         fi
 
       # BUILD AND PUSH IMAGE
@@ -82,7 +86,7 @@ phases:
       - docker push "$ECR_REPO:$IMAGE_TAG"
 
       # TRIGGER BETA/PROD INFRASTRUCTURE PIPELINES
-      - zip -r webapp-${IMAGE_TAG}.zip infrastructure/*
+      - zip -r webapp-${IMAGE_TAG}.zip infrastructure/* dist/*
       - aws s3 cp webapp-${IMAGE_TAG}.zip s3://wallapop-trigger-link-cicd/webapp/
 
       # SEND RELEASE EMAIL
