@@ -180,8 +180,6 @@ describe('Component: ChatComponent with ItemId', () => {
       const searchId = '123456789';
       spyOn(inboxService, 'isInboxReady').and.returnValue(true);
       spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversation));
-      spyOn(inboxConversationService, 'openConversationByConversationId$').and.returnValue(of(null));
-      spyOn(userService, 'getPhoneInfo').and.returnValue(of(convertToParamMap({})));
       spyOn(sessionStorage, 'setItem');
 
       activatedRoute.queryParams = observableFrom([{ itemId: 'itemId', searchId  }]);
