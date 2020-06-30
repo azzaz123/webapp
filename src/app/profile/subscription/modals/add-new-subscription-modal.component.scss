@@ -201,6 +201,11 @@ ngb-carousel {
     .step {
       height: 100%;
     }
+    .step-2b {
+      .box-content {
+        max-width: 100%;
+      }
+    }
     .carousel-control-prev, .carousel-control-next {
       display: none;
     }
@@ -223,7 +228,7 @@ ngb-carousel {
       }
     }
     .carousel-item {
-      height: $add-subscription-modal-content-default-height;
+      height: auto;//$add-subscription-modal-content-default-height;
     }
 
     .carousel-inner {
@@ -243,13 +248,13 @@ ngb-carousel {
 
   &.extra-info ::ng-deep {
     .carousel-item {
-      height: $add-subscription-modal-content-default-height + 34px;
+      height: auto;//$add-subscription-modal-content-default-height + 34px;
     };
   }
 
   &.single ::ng-deep {
     .carousel-item {
-      height: $add-subscription-modal-content-default-height - 38px;
+      height: auto;//$add-subscription-modal-content-default-height - 38px;
     }
     .carousel-indicators {
       display: none;
@@ -258,6 +263,36 @@ ngb-carousel {
     .box-content {
       padding: $spacing-ml;
     }
+  }
+}
+
+tsl-profile-pro-billing {
+  height: 100%;
+  ::ng-deep {
+    .box {
+      border: none;
+      border-radius: 0;
+      border-bottom: 1px solid $blue-grey-3;
+      overflow: scroll;
+      max-height: 250px;
+      margin-bottom: $spacing-xs;
+    }
+    .row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}
+
+tsl-button ::ng-deep .simple  {
+  background-color: transparent;
+  color: $walla-main;
+  font-size: $font-size-m;
+  font-weight: $font-weight-chunky;
+  text-decoration: underline;
+  &:hover {
+    background-color: transparent;
+    color: $walla-dark;
   }
 }
 

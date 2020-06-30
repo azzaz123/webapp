@@ -9,7 +9,7 @@
   </div>
   <ngb-carousel interval="0" *ngIf="loaded"
     [ngClass]="{ 'extra-info': subscription.category_id === carsCategoryId, 'single': subscription.tiers.length === 1 }">
-    <ng-template ngbSlide *ngIf="subscription.tiers.length !== 1">
+    <ng-template ngbSlide *ngIf="subscription.tiers.length !== 1" id="step-1">
       <div class="step step-1">
         <div class="box-content">
 
@@ -68,7 +68,7 @@
         </div>
       </div>
     </ng-template>
-    <ng-template ngbSlide>
+    <ng-template ngbSlide id="step-2">
       <div class="step step-2">
         <div class="box-content">
           <div>
@@ -84,32 +84,39 @@
             </div>
           </div>
           <div>
-            <tsl-button *ngIf="selectedInvoiceOption === 'false' || !selectedInvoiceOption" className="btn-primary btn-medium payment" [disabled]="!selectedInvoiceOption" (click)="carousel.next(); trackClickContinueToPayment()" i18n="@@ContinueToPayment">
+            <tsl-button *ngIf="selectedInvoiceOption === 'false' || !selectedInvoiceOption || !isBillingInfoMissing"
+            className="btn-primary btn-medium payment" [disabled]="!selectedInvoiceOption"
+            (click)="carousel.select('step-3'); trackClickContinueToPayment()" i18n="@@ContinueToPayment">
               Continue to payment
             </tsl-button>
-            <tsl-button *ngIf="selectedInvoiceOption === 'true'" className="btn-primary btn-medium payment" [disabled]="!selectedInvoiceOption" (click)="carousel.next()" i18n="@@ContinueToInvoice">
+            <tsl-button *ngIf="selectedInvoiceOption === 'true' && isBillingInfoMissing " className="btn-primary btn-medium payment"
+            [disabled]="!selectedInvoiceOption"
+            (click)="continueToInvoice()" i18n="@@ContinueToInvoice">
               Continue to invoice
             </tsl-button>
           </div>
         </div>
       </div>
     </ng-template>
-    <ng-template ngbSlide id="2b">
+    <ng-template ngbSlide id="step-2b">
       <div class="step step-2b">
         <div class="box-content">
           <div>
-            <p class="AddNewSubscription__listing-limit-steps" i18n="@@step2of3">Step <span class="bold">2</span> of <span
-              class="bold">3</span></p>
+            <p class="AddNewSubscription__listing-limit-steps" i18n="@@step2of3">
+              Step <span class="bold">2</span> of <span class="bold">3</span></p>
             <div class="AddNewSubscription__listing-limit-title" i18n="@@Invoice">Invoice</div>
           </div>
           <div>
-            <tsl-profile-pro-billing (billingInfoFormChange)="onBillingInfoChange($event)"></tsl-profile-pro-billing>
+            <tsl-profile-pro-billing [containerType]="'modal'" (billingInfoFormSaved)="onBillingInfoFormSaved()">
+            </tsl-profile-pro-billing>
           </div>
           <div>
-            <tsl-button className="btn-primary btn-medium payment" [disabled]="!formIsValid" (click)="carousel.select(step-3); trackClickContinueToPayment()" i18n="@@ContinueToPayment">
+            <tsl-button className="btn-primary btn-medium payment"
+            (click)="continueToPayment();trackClickContinueToPayment();"
+            i18n="@@ContinueToPayment">
               Continue to payment
             </tsl-button>
-            <tsl-button className="btn-primary btn-medium payment" (click)="carousel.previous()" i18n="@@BackToInvoice">
+            <tsl-button className="simple" (click)="carousel.prev()" i18n="@@BackToInvoice">
               Back to invoice
             </tsl-button>
           </div>
@@ -136,9 +143,11 @@
             </div>
             <div
               class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--right">
-              <span *ngIf="!isDiscountedTier(selectedTier) && !isFreeTier(selectedTier) && !hasTrial(subscription)" class="AddNewSubscription__listing-limit-price--selected"
+              <span *ngIf="!isDiscountedTier(selectedTier) && !isFreeTier(selectedTier) && !hasTrial(subscription)"
+              class="AddNewSubscription__listing-limit-price--selected"
                 i18n>{{selectedTier.price}}{{selectedTier.currency}}/month</span>
-              <div *ngIf="isDiscountedTier(selectedTier) && !isFreeTier(selectedTier) && !hasTrial(subscription)" class="AddNewSubscription__listing-limit-price--selected"
+              <div *ngIf="isDiscountedTier(selectedTier) && !isFreeTier(selectedTier) && !hasTrial(subscription)"
+              class="AddNewSubscription__listing-limit-price--selected"
                 i18n>{{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}/month</div>
               <div class="AddNewSubscription__free-months" *ngIf="isFreeTier(selectedTier) && !hasTrial(subscription)">
                 <b *ngIf="selectedTier.discount_available?.months === 1" i18n>One month free</b>
@@ -150,7 +159,7 @@
               <div *ngIf="isDiscountedTier(selectedTier) || isFreeTier(selectedTier) || hasTrial(subscription)"
                 class="AddNewSubscription__price-after-discount" i18n>Then {{selectedTier.price}}{{selectedTier.currency}}/month</div>
               <div *ngIf="subscription.tiers.length !== 1" class="AddNewSubscription__listing-limit-payment-edit"
-                (click)="carousel.prev()" i18n>Change</div>
+                (click)="carousel.select('step-1')" i18n>Change</div>
             </div>
           </div>
           <div>

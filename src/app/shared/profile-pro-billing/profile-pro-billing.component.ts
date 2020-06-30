@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,6 +10,7 @@ import { BillingInfoResponse } from '../../core/payments/payment.interface';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { finalize } from 'rxjs/operators';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
+import { EventService } from 'app/core/event/event.service';
 
 export enum BILLING_TYPE {
   NATURAL = 'natural',
@@ -30,11 +31,14 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
   public type: string;
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
+  @Output() billingInfoFormSaved: EventEmitter<FormGroup> = new EventEmitter();
+  @Input() containerType: string;
   
   constructor(private fb: FormBuilder,
               private paymentService: PaymentService,
               private errorsService: ErrorsService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private eventService: EventService) {
     this.billingForm = fb.group({
       type: ['', [Validators.required]],
       cif: ['', [Validators.required]],
@@ -47,6 +51,9 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       street: ['', [Validators.required]],
       surname: ['', [Validators.required]],
       id: UUID.UUID()
+    });
+    this.eventService.subscribe('formSubmited', () => {
+      this.onSubmit();
     });
   }
 
@@ -107,7 +114,10 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
         });
       }
       this.paymentService.updateBillingInfo(this.billingForm.value)
-      .pipe(finalize(() => this.loading = false))
+      .pipe(finalize(() => {
+        this.billingInfoFormSaved.emit(this.billingForm);
+        this.loading = false;
+      }))
       .subscribe(() => {
         this.errorsService.i18nSuccess('userEdited');
         this.formComponent.initFormControl();
@@ -159,5 +169,9 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     this.billingForm.get('company_name').updateValueAndValidity();
     this.billingForm.get('name').updateValueAndValidity();
     this.billingForm.get('surname').updateValueAndValidity();
+  }
+
+  get containerTypeIsModal(): boolean {
+    return this.containerType === 'modal' ? true : false;
   }
 }

@@ -18,10 +18,11 @@ import {
   SubscriptionPayConfirmation,
   ClickSubscriptionDirectContact
 } from '../../../core/analytics/analytics-constants';
-import { PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
+import { PAYMENT_RESPONSE_STATUS, PaymentService } from '../../../core/payments/payment.service';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
 import { CAR_DEALER_TYPEFORM_URL, TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
 import { IOption } from 'ng-select';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -53,7 +54,10 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     { value: 'true', label: 'Yes' },
     { value: 'false', label: 'No' }
   ];
-  public selectedInvoiceOption: boolean;
+  public isBillingInfoValid: boolean;
+  private _selectedInvoiceOption: boolean;
+  private _submitBillingInfoForm = false;
+  private _isBillingInfoMissing: boolean;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -61,7 +65,8 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
               private subscriptionsService: SubscriptionsService,
               private modalService: NgbModal,
               private errorService: ErrorsService,
-              private analyticsService: AnalyticsService) {
+              private analyticsService: AnalyticsService,
+              private paymentService: PaymentService) {
   }
 
   ngOnInit() {
@@ -70,6 +75,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     this.eventService.subscribe(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, (response) => {
       this.managePaymentResponse(response);
     });
+    this.getBillingInfo();
   }
 
   ngOnDestroy() {
@@ -318,7 +324,41 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   }
 
   public onInvoiceOptionSelect(event: any) {
-    this.selectedInvoiceOption = event.value;
+    this._selectedInvoiceOption = event.value;
   }
+
+  public onBillingInfoFormSaved(): void {
+    this.carousel.select('step-3');
+  }
+
+  public getBillingInfo(): void {
+    this.paymentService.getBillingInfo().subscribe(() => {
+      this._isBillingInfoMissing = false;
+    }, () => {
+      this._isBillingInfoMissing = true;
+    });
+  }
+
+  public continueToPayment() {
+    this._submitBillingInfoForm = true;
+    this.eventService.emit('formSubmited');
+  }
+
+  public continueToInvoice() {
+    this.carousel.select('step-2b');
+  }
+
+  get submitBillingInfoForm(): boolean {
+    return this._submitBillingInfoForm;
+  }
+
+  get selectedInvoiceOption(): boolean {
+    return this._selectedInvoiceOption;
+  }
+
+  get isBillingInfoMissing(): boolean {
+    return this._isBillingInfoMissing;
+  }
+
 
 }
