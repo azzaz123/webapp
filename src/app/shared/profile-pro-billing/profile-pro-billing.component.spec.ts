@@ -4,13 +4,14 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 
 import { ProfileProBillingComponent } from './profile-pro-billing.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { PaymentService } from '../../core/payments/payment.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { BILLING_INFO_RESPONSE } from '../../../tests/payments.fixtures.spec';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
+import { By } from '@angular/platform-browser';
 
 describe('ProfileProBillingComponent', () => {
   let component: ProfileProBillingComponent;
@@ -18,6 +19,7 @@ describe('ProfileProBillingComponent', () => {
   let paymentService: PaymentService;
   let errorsService: ErrorsService;
   let modalService: NgbModal;
+  let HTMLelement: DebugElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -77,6 +79,7 @@ describe('ProfileProBillingComponent', () => {
     paymentService = TestBed.get(PaymentService);
     errorsService = TestBed.get(ErrorsService);
     component.formComponent = TestBed.get(ProfileFormComponent);
+    HTMLelement = fixture.debugElement;
     fixture.detectChanges();
   });
 
@@ -137,7 +140,7 @@ describe('ProfileProBillingComponent', () => {
           type: 'legal'
         });
 
-        component.onSubmit();
+        HTMLelement.query(By.css('form')).triggerEventHandler('submit', null);
 
         expect(component.billingForm.get('country').dirty).toBe(true);
       });
@@ -155,8 +158,8 @@ describe('ProfileProBillingComponent', () => {
           type: 'legal',
           country: 'catalonia'
         });
-
-        component.onSubmit();
+        
+        HTMLelement.queryAll(By.css('tsl-button'))[0].nativeElement.click();
 
         expect(component.billingForm.valid).toBeFalsy();
       });
