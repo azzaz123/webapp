@@ -4,7 +4,6 @@ import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { of, throwError } from 'rxjs';
 import { Message } from './message';
 import { ACCESS_TOKEN, MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
