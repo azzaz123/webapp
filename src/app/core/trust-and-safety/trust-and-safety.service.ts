@@ -52,7 +52,7 @@ export class TrustAndSafetyService {
     if (!this._sessionId || !this._threatMetrixRef) {
       throw new Error('Session profiling error');
     }
-    this._threatMetrixRef.nfl('h.online-metrix.net', environment.threatMetrixOrgId, this._sessionId);
+    this._threatMetrixRef.nfl(environment.threatMetrixProfilingDomain, environment.threatMetrixOrgId, this._sessionId);
   }
 
   public isStarterUser(useCache = true): Observable<boolean> {

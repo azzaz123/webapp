@@ -13,4 +13,5 @@ export interface Environment {
   remoteConsoleUrl: string;
   didomiKey: string;
   threatMetrixOrgId: string;
+  threatMetrixProfilingDomain: string;
 }

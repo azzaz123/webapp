@@ -97,7 +97,7 @@ describe('TrustAndSafetyService', () => {
           httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
           tick(1000);
 
-          expect(wadgtlft.nfl).toHaveBeenCalledWith('h.online-metrix.net', environment.threatMetrixOrgId, mockUUID);
+          expect(wadgtlft.nfl).toHaveBeenCalledWith(environment.threatMetrixProfilingDomain, environment.threatMetrixOrgId, mockUUID);
         }));
       });
 
@@ -109,7 +109,7 @@ describe('TrustAndSafetyService', () => {
           httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
           tick(1000);
 
-          expect(wadgtlft.nfl).toHaveBeenCalledWith('h.online-metrix.net', environment.threatMetrixOrgId, mockUUID);
+          expect(wadgtlft.nfl).toHaveBeenCalledWith(environment.threatMetrixProfilingDomain, environment.threatMetrixOrgId, mockUUID);
         }));
       });
     });
