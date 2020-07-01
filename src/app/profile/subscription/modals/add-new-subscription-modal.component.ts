@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { NgbActiveModal, NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from '../../../core/stripe/stripe.service';
 import { FinancialCardOption, PaymentMethodResponse } from '../../../core/payments/payment.interface';
@@ -22,14 +22,13 @@ import { PAYMENT_RESPONSE_STATUS, PaymentService } from '../../../core/payments/
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
 import { CAR_DEALER_TYPEFORM_URL, TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
 import { IOption } from 'ng-select';
-import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
   templateUrl: './add-new-subscription-modal.component.html',
   styleUrls: ['./add-new-subscription-modal.component.scss']
 })
-export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
+export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   public card: any;
@@ -43,7 +42,6 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
   public isNewSubscriber = false;
-  private invoiceId: string;
   public loaded: boolean;
   public hasSavedCard = true;
   public carsCategoryId = CATEGORY_IDS.CAR;
@@ -51,10 +49,11 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
   public privacyPolicyURL = PRIVACY_POLICY_URL;
   public invoiceOptions: IOption[] = [
-    { value: 'true', label: 'Yes' },
-    { value: 'false', label: 'No' }
+    { value: true, label: 'Yes' },
+    { value: false, label: 'No' }
   ];
   public isBillingInfoValid: boolean;
+  private _invoiceId: string;
   private _selectedInvoiceOption: boolean;
   private _submitBillingInfoForm = false;
   private _isBillingInfoMissing: boolean;
@@ -78,12 +77,16 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     this.getBillingInfo();
   }
 
+  ngAfterViewInit(): void {
+    this.carousel.showNavigationIndicators = false;
+  }
+
   ngOnDestroy() {
     this.eventService.unsubscribeAll(STRIPE_PAYMENT_RESPONSE_EVENT_KEY);
   }
 
   public close() {
-      this.activeModal.close('add');
+    this.activeModal.close('add');
   }
 
   public addSubscription(paymentMethod: PaymentMethodResponse) {
@@ -104,7 +107,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     if (this.isRetryInvoice) {
       this.retrySubscription();
     } else {
-      this.subscriptionsService.newSubscription(selectedPlanId, paymentMethodId).subscribe((response) => {
+      this.subscriptionsService.newSubscription(selectedPlanId, paymentMethodId, this.selectedInvoiceOption).subscribe((response) => {
         if (response.status === 202) {
           this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: SubscriptionResponse) => {
             if (!response.payment_status) {
@@ -113,7 +116,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
             switch(response.payment_status.toUpperCase() ) {
               case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
                 this.isRetryInvoice = true;
-                this.invoiceId = response.latest_invoice_id;
+                this._invoiceId = response.latest_invoice_id;
                 this.requestNewPayment({error: { message: PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD }});
                 break;
               }
@@ -144,7 +147,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     if (!this.loading) {
       this.loading = true;
     }
-    this.subscriptionsService.retrySubscription(this.invoiceId, paymentMethodId).subscribe((response) => {
+    this.subscriptionsService.retrySubscription(this._invoiceId, paymentMethodId).subscribe((response) => {
       if (response.status === 202) {
         this.subscriptionsService.checkRetrySubscriptionStatus().subscribe((response) => {
           switch(response.status.toUpperCase() ) {

@@ -84,12 +84,13 @@
             </div>
           </div>
           <div>
-            <tsl-button *ngIf="selectedInvoiceOption === 'false' || !selectedInvoiceOption || !isBillingInfoMissing"
-            className="btn-primary btn-medium payment" [disabled]="!selectedInvoiceOption"
+            //{{selectedInvoiceOption}}//
+            <tsl-button *ngIf="selectedInvoiceOption === false || selectedInvoiceOption === undefined || !isBillingInfoMissing"
+            className="btn-primary btn-medium payment" [disabled]="selectedInvoiceOption === undefined"
             (click)="carousel.select('step-3'); trackClickContinueToPayment()" i18n="@@ContinueToPayment">
               Continue to payment
             </tsl-button>
-            <tsl-button *ngIf="selectedInvoiceOption === 'true' && isBillingInfoMissing " className="btn-primary btn-medium payment"
+            <tsl-button *ngIf="selectedInvoiceOption === true && isBillingInfoMissing" className="btn-primary btn-medium payment"
             [disabled]="!selectedInvoiceOption"
             (click)="continueToInvoice()" i18n="@@ContinueToInvoice">
               Continue to invoice
