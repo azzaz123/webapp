@@ -150,7 +150,7 @@ export class ChatComponent implements OnInit {
   private submitProfileIfNeeded() {
     this.trustAndSafetyService.isStarterUser().subscribe(isStarter => {
       if (isStarter) {
-        this.trustAndSafetyService.submitProfile(SessionProfileDataLocation.OpenChat);
+        this.trustAndSafetyService.submitProfile('OpenChat');
       }
     });
   }
