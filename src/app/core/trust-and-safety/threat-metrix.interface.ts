@@ -1,3 +1,3 @@
 export interface ThreatMetrixLibrary {
-  profile: Function;
+  nfl(domain: string, orgId: string, sessionId: string): void;
 }

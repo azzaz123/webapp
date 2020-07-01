@@ -12,4 +12,6 @@ export interface Environment {
   mParticleKey: string;
   remoteConsoleUrl: string;
   didomiKey: string;
+  threatMetrixOrgId: string;
+  threatMetrixProfilingDomain: string;
 }
