@@ -61,6 +61,7 @@ import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
 import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.component';
 import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
+import { NoCardModalComponent } from './modals/no-card-modal/no-card-modal.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { SelectModule } from 'ng-select';
 import { LinkTransformPipe } from './pipes';
@@ -70,6 +71,8 @@ import { PreventDoubleClickDirective } from './prevent-double-click/prevent-doub
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
 import { StatusIconComponent } from './status-icon';
+import { ChangeCardModalComponent } from './modals/change-card-modal/change-card-modal.component';
+import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-card-modal.component';
 
 @NgModule({
   imports: [
@@ -138,6 +141,9 @@ import { StatusIconComponent } from './status-icon';
     StripeCardElementComponent,
     StripeCardsComponent,
     NewCardModalComponent,
+    NoCardModalComponent,
+    ConfirmCardModalComponent,
+    ChangeCardModalComponent,
     StripeCardSelectionComponent,
     SelectModule,
     NavLinksComponent,
@@ -200,6 +206,9 @@ import { StatusIconComponent } from './status-icon';
     StripeCardElementComponent,
     StripeCardsComponent,
     NewCardModalComponent,
+    NoCardModalComponent,
+    ConfirmCardModalComponent,
+    ChangeCardModalComponent,
     StripeCardSelectionComponent,
     NavLinksComponent,
     LinkTransformPipe,
@@ -227,7 +236,10 @@ import { StatusIconComponent } from './status-icon';
     ExitConfirmationModalComponent,
     ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
-    NewCardModalComponent
+    NewCardModalComponent,
+    NoCardModalComponent,
+    ConfirmCardModalComponent,
+    ChangeCardModalComponent,
   ]
 })
 export class SharedModule {
