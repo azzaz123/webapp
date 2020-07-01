@@ -17,6 +17,9 @@ import { ConversationServiceMock, InboxConversationServiceMock, InboxServiceMock
 import { PhoneMethodResponse } from '../core/user/phone-method.interface';
 import { InboxConversation, MessageStatus } from './model';
 import { ChatComponent } from './chat.component';
+import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
+import { MockTrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.fixtures.spec';
+import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 
 class MockUserService {
   public isProfessional() {
@@ -37,6 +40,7 @@ describe('Component: ChatComponent with ItemId', () => {
   let activatedRoute: ActivatedRoute;
   let inboxService: InboxService;
   let inboxConversationService: InboxConversationService;
+  let trustAndSafetyService: TrustAndSafetyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -62,7 +66,8 @@ describe('Component: ChatComponent with ItemId', () => {
             adsRefresh() {
             }
           }
-        }
+        },
+        { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -74,6 +79,9 @@ describe('Component: ChatComponent with ItemId', () => {
     activatedRoute = TestBed.get(ActivatedRoute);
     inboxService = TestBed.get(InboxService);
     inboxConversationService = TestBed.get(InboxConversationService);
+    trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
+
+    spyOn(trustAndSafetyService, 'submitProfile');
 
     fixture.autoDetectChanges();
   });
@@ -173,6 +181,27 @@ describe('Component: ChatComponent with ItemId', () => {
       expect(inboxConversationService.resendPendingMessages).toHaveBeenCalled();
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
     });
+
+    describe('when the user is a starter user', () => {
+      it('should submit profiling to trust and safety team', () => {
+        spyOn(trustAndSafetyService, 'isStarterUser').and.returnValue(of(true));
+
+        component.ngOnInit();
+
+        expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
+        expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith('OpenChat');
+      });
+    });
+
+    describe('when the user is not a starter user', () => {
+      it('should not submit profiling to trust and safety team', () => {
+        spyOn(trustAndSafetyService, 'isStarterUser').and.returnValue(of(false));
+
+        component.ngOnInit();
+
+        expect(trustAndSafetyService.submitProfile).not.toHaveBeenCalled();
+      });
+    });
   });
 
   describe('onChangeInboxOrArchivedDropdown', () => {
@@ -205,6 +234,7 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
   let activatedRoute: ActivatedRoute;
   let inboxService: InboxService;
   let inboxConversationService: InboxConversationService;
+  let trustAndSafetyService: TrustAndSafetyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -230,7 +260,8 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
             adsRefresh() {
             }
           }
-        }
+        },
+        { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -242,12 +273,14 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
     activatedRoute = TestBed.get(ActivatedRoute);
     inboxService = TestBed.get(InboxService);
     inboxConversationService = TestBed.get(InboxConversationService);
+    trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
+
+    spyOn(trustAndSafetyService, 'submitProfile');
 
     fixture.autoDetectChanges();
   });
 
   describe('ngOnInit', () => {
-
     it('should open conversation by conversationId', () => {
       const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
 
@@ -260,6 +293,27 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
 
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
       expect(inboxConversationService.openConversationByConversationId$).toHaveBeenCalled();
+    });
+
+    describe('when the user is a starter user', () => {
+      it('should submit profiling to trust and safety team', () => {
+        spyOn(trustAndSafetyService, 'isStarterUser').and.returnValue(of(true));
+
+        component.ngOnInit();
+
+        expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
+        expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith('OpenChat');
+      });
+    });
+
+    describe('when the user is not a starter user', () => {
+      it('should not submit profiling to trust and safety team', () => {
+        spyOn(trustAndSafetyService, 'isStarterUser').and.returnValue(of(false));
+
+        component.ngOnInit();
+
+        expect(trustAndSafetyService.submitProfile).not.toHaveBeenCalled();
+      });
     });
   });
 });

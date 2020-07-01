@@ -11,6 +11,8 @@ import { AdService } from '../core/ad/ad.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ConversationService } from '../core/conversation/conversation.service';
 import { isEmpty, isNil } from 'lodash-es';
+import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
+import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 
 @Component({
   selector: 'tsl-chat',
@@ -33,7 +35,8 @@ export class ChatComponent implements OnInit {
               private route: ActivatedRoute,
               private conversationService: ConversationService,
               private inboxService: InboxService,
-              public inboxConversationService: InboxConversationService) {
+              public inboxConversationService: InboxConversationService,
+              private trustAndSafetyService: TrustAndSafetyService) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
@@ -67,6 +70,8 @@ export class ChatComponent implements OnInit {
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_READY, (ready) => {
       this.archivedInboxReady = ready;
     });
+
+    this.submitProfileIfNeeded();
   }
 
   public onLoad(event: any) {
@@ -138,6 +143,14 @@ export class ChatComponent implements OnInit {
     this.userService.getPhoneInfo(conversation.user.id).subscribe(phoneInfo => {
       if (!isNil(phoneInfo) && phoneInfo.phone_method === PhoneMethod.POP_UP) {
         this.conversationService.openPhonePopup(conversation, true);
+      }
+    });
+  }
+
+  private submitProfileIfNeeded() {
+    this.trustAndSafetyService.isStarterUser().subscribe(isStarter => {
+      if (isStarter) {
+        this.trustAndSafetyService.submitProfile('OpenChat');
       }
     });
   }
