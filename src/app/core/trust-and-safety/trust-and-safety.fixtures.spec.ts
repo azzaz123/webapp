@@ -1,8 +1,8 @@
 import { UserStarterResponse, SessionProfileDataLocation } from './trust-and-safety.interface';
 
 export const MockTrustAndSafetyService = {
-  initializeProfiling: () => {},
-  submitProfile: (_location: SessionProfileDataLocation) => {}
+  initializeProfilingIfNeeded: () => {},
+  submitProfileIfNeeded: (_location: SessionProfileDataLocation) => {}
 };
 
 export const MOCK_STARTER_USER_RESPONSE: UserStarterResponse = {

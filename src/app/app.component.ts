@@ -94,7 +94,7 @@ export class AppComponent implements OnInit {
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
     this.didomiService.initialize();
-    this.trustAndSafetyService.initializeProfiling();
+    this.trustAndSafetyService.initializeProfilingIfNeeded();
   }
 
   private updateUrlAndSendAnalytics() {

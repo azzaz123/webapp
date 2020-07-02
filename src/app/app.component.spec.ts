@@ -568,11 +568,11 @@ describe('App', () => {
 
   describe('trust and safety', () => {
     it('should initialize the trust and safety process', () => {
-      spyOn(trustAndSafetyService, 'initializeProfiling');
+      spyOn(trustAndSafetyService, 'initializeProfilingIfNeeded');
 
       component.ngOnInit();
 
-      expect(trustAndSafetyService.initializeProfiling).toHaveBeenCalledTimes(1);
+      expect(trustAndSafetyService.initializeProfilingIfNeeded).toHaveBeenCalledTimes(1);
     });
   });
 
