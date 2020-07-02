@@ -18,7 +18,6 @@ export interface MockUrl {
 export class MockInterceptor implements HttpInterceptor {
 
   public mockUrls: MockUrl[] = [
-    { url: USER_STARTER_ENDPOINT, data: { starter: false }}
   ];
 
   constructor() { }
