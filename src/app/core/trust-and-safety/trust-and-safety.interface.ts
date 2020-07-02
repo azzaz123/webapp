@@ -1,4 +1,4 @@
-export interface StarterResponse {
+export interface UserStarterResponse {
   starter: boolean;
 }
 
