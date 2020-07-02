@@ -80,9 +80,6 @@ describe('Component: ChatComponent with ItemId', () => {
     inboxService = TestBed.get(InboxService);
     inboxConversationService = TestBed.get(InboxConversationService);
     trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
-
-    spyOn(trustAndSafetyService, 'submitProfile');
-
     fixture.autoDetectChanges();
   });
 
@@ -262,9 +259,6 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
     inboxService = TestBed.get(InboxService);
     inboxConversationService = TestBed.get(InboxConversationService);
     trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
-
-    spyOn(trustAndSafetyService, 'submitProfile');
-
     fixture.autoDetectChanges();
   });
 
@@ -284,6 +278,8 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
     });
 
     it('should delegate profiling to trust and safety team', () => {
+    spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
+
       component.ngOnInit();
 
       expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);

@@ -48,8 +48,6 @@ describe('UploadComponent', () => {
     userService = TestBed.get(UserService);
     trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
     component = fixture.componentInstance;
-
-    spyOn(trustAndSafetyService, 'submitProfile');
   });
 
   describe('ngOnInit', () => {
