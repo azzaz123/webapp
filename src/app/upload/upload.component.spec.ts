@@ -73,25 +73,13 @@ describe('UploadComponent', () => {
       expect(component.setCategory).not.toHaveBeenCalled();
     });
 
-    describe('when the user is a starter user', () => {
-      it('should submit profiling to trust and safety team', () => {
-        spyOn(trustAndSafetyService, 'isStarterUser').and.returnValue(of(true));
+    it('should delegate profiling to trust and safety team', () => {
+      spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
 
-        component.ngOnInit();
+      component.ngOnInit();
 
-        expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
-        expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith('OpenCreateListing');
-      });
-    });
-
-    describe('when the user is not a starter user', () => {
-      it('should not submit profiling to trust and safety team', () => {
-        spyOn(trustAndSafetyService, 'isStarterUser').and.returnValue(of(false));
-
-        component.ngOnInit();
-
-        expect(trustAndSafetyService.submitProfile).not.toHaveBeenCalled();
-      });
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith('OpenCreateListing');
     });
   });
 

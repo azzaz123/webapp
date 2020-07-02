@@ -71,7 +71,7 @@ export class ChatComponent implements OnInit {
       this.archivedInboxReady = ready;
     });
 
-    this.submitProfileIfNeeded();
+    this.trustAndSafetyService.submitProfileIfNeeded('OpenChat');
   }
 
   public onLoad(event: any) {
@@ -143,14 +143,6 @@ export class ChatComponent implements OnInit {
     this.userService.getPhoneInfo(conversation.user.id).subscribe(phoneInfo => {
       if (!isNil(phoneInfo) && phoneInfo.phone_method === PhoneMethod.POP_UP) {
         this.conversationService.openPhonePopup(conversation, true);
-      }
-    });
-  }
-
-  private submitProfileIfNeeded() {
-    this.trustAndSafetyService.isStarterUser().subscribe(isStarter => {
-      if (isStarter) {
-        this.trustAndSafetyService.submitProfile('OpenChat');
       }
     });
   }

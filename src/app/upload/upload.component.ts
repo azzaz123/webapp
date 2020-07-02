@@ -27,15 +27,7 @@ export class UploadComponent implements OnInit {
       }
     });
 
-    this._submitProfileIfNeeded();
-  }
-
-  private _submitProfileIfNeeded() {
-    this.trustAndSafetyService.isStarterUser().subscribe(isStarter => {
-      if (isStarter) {
-        this.trustAndSafetyService.submitProfile('OpenCreateListing');
-      }
-    });
+    this.trustAndSafetyService.submitProfileIfNeeded('OpenCreateListing');
   }
 
   public setCategory(categoryId: string) {
