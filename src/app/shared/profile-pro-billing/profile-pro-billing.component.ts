@@ -80,6 +80,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       },
       () => {
         this.type = BILLING_TYPE.NATURAL;
+        this.patchFormValues();
         this.formComponent.initFormControl();
         this.isNewBillingInfoForm = true;
         this.billingForm.controls['cif'].enable();
