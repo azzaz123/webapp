@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable, of } from 'rxjs';
+import {throwError as observableThrowError, of, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { ProfileProBillingComponent } from './profile-pro-billing.component';
@@ -9,7 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation-modal/delete-info-confirmation-modal.component';
 import { PaymentService } from '../../core/payments/payment.service';
 import { ErrorsService } from '../../core/errors/errors.service';
-import { BILLING_INFO_RESPONSE } from '../../../tests/payments.fixtures.spec';
+import { BILLING_INFO_RESPONSE, BILLING_INFO_RESPONSE_LEGAL } from '../../../tests/payments.fixtures.spec';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { By } from '@angular/platform-browser';
 
@@ -109,10 +109,11 @@ describe('ProfileProBillingComponent', () => {
 
       it('should update billing info and should put false isnewBillingInfoForm boolean', () => {
         spyOn(paymentService, 'updateBillingInfo').and.callThrough();
+        spyOn(paymentService, 'getBillingInfo').and.returnValue(of(BILLING_INFO_RESPONSE_LEGAL));
 
         component.onSubmit();
 
-        expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(component.billingForm.value);
+        expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(component.billingForm.getRawValue());
         expect(component.isNewBillingInfoForm).toBe(false);
       });
 
@@ -205,12 +206,13 @@ describe('ProfileProBillingComponent', () => {
         }));
 
         it('all reset form and set true isnewbillinginfo boolean', fakeAsync(() => {
-          spyOn(component.billingForm, 'reset').and.callThrough();
+          spyOn(component, 'initForm').and.callThrough();
+          spyOn(paymentService, 'getBillingInfo').and.returnValue(throwError('404'));
 
           component.deleteBillingInfo();
           tick();
 
-          expect(component.billingForm.reset).toHaveBeenCalled();
+          expect(component.initForm).toHaveBeenCalled();
           expect(component.isNewBillingInfoForm).toBe(true);
         }));
 

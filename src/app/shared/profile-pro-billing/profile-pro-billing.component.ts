@@ -35,19 +35,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
               private paymentService: PaymentService,
               private errorsService: ErrorsService,
               private modalService: NgbModal) {
-    this.billingForm = fb.group({
-      type: ['', [Validators.required]],
-      cif: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      company_name: ['', [Validators.required]],
-      country: ['', [Validators.required]],
-      email: ['', [Validators.required, this.emailValidator]],
-      name: ['', [Validators.required]],
-      postal_code: ['', [Validators.required]],
-      street: ['', [Validators.required]],
-      surname: ['', [Validators.required]],
-      id: UUID.UUID()
-    });
+    this.buildForm();
   }
 
   onChanges() {
@@ -63,22 +51,40 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     });
   }
 
+  buildForm() {
+    this.billingForm = this.fb.group({
+      type: ['', [Validators.required]],
+      cif: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      company_name: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      email: ['', [Validators.required, this.emailValidator]],
+      name: ['', [Validators.required]],
+      postal_code: ['', [Validators.required, this.cpValidator]],
+      street: ['', [Validators.required]],
+      surname: ['', [Validators.required]],
+      id: UUID.UUID()
+    });
+  }
+
   initForm() {
     this.paymentService.getBillingInfo().subscribe(
       (billingInfo: BillingInfoResponse) => {
         this.isNewBillingInfoForm = false;
         this.type = billingInfo.type || BILLING_TYPE.NATURAL;
         this.billingForm.patchValue(billingInfo);
-        for (const control in this.billingForm.controls) {
-          if (this.billingForm.controls.hasOwnProperty(control)) {
-            this.billingForm.controls['cif'].disable();
-            this.billingForm.controls['type'].disable();
-            this.billingForm.controls[control].markAsDirty();
-          }
-        }
+        this.billingForm.controls['cif'].disable();
+        this.billingForm.controls['type'].disable();
+        this.patchFormValues();
+        this.formComponent.initFormControl();
       },
       () => {
         this.type = BILLING_TYPE.NATURAL;
+        this.formComponent.initFormControl();
+        this.isNewBillingInfoForm = true;
+        this.billingForm.controls['cif'].enable();
+        this.billingForm.controls['type'].enable(); 
+        this.buildForm();
       }
     )
     .add(() => {
@@ -109,11 +115,14 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
         });
       }
       this.paymentService.updateBillingInfo(this.billingForm.getRawValue())
-      .pipe(finalize(() => this.loading = false))
+      .pipe(finalize(() => {
+        this.loading = false;
+      }))
       .subscribe(() => {
         this.errorsService.i18nSuccess('userEdited');
         this.formComponent.initFormControl();
         this.isNewBillingInfoForm = false;
+        this.initForm();
       }, (error: HttpErrorResponse) => {
         this.errorsService.show(error);
       });
@@ -136,13 +145,20 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       if (result) {
         this.paymentService.deleteBillingInfo(this.billingForm.value.id).subscribe(() => {
           this.errorsService.i18nSuccess('deleteBillingInfoSuccess');
-          this.billingForm.reset();
-          this.isNewBillingInfoForm = true;
+          this.initForm();
         }, () => {
           this.errorsService.i18nError('deleteBillingInfoError');
         });
       }
     });
+  }
+
+  private patchFormValues() {
+    for (const control in this.billingForm.controls) {
+      if (this.billingForm.controls.hasOwnProperty(control)) {
+        this.billingForm.controls[control].markAsPristine();
+      }
+    }
   }
 
   private setNaturalRequiredFields() {
@@ -189,6 +205,15 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     const pattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     
     return pattern.test(control.value) ? null : { 'email': true };
+  }
+
+  private cpValidator(control: AbstractControl): { [key: string]: boolean } {
+    if (Validators.required(control)) {
+      return null;
+    }
+    const pattern: RegExp = /^[0-9]*$/;
+    
+    return pattern.test(control.value) ? null : { 'postal_code': true };
   }
 
 }

@@ -489,6 +489,20 @@ export const BILLING_INFO_RESPONSE: BillingInfoResponse = {
   id: '123'
 };
 
+export const BILLING_INFO_RESPONSE_LEGAL: BillingInfoResponse = {
+  cif: 'A00000000',
+  city: 'city',
+  company_name: 'company',
+  country: 'country',
+  email: 'email@email.com',
+  name: '',
+  postal_code: '12345',
+  type: 'legal',
+  street: 'street',
+  surname: '',
+  id: '123'
+};
+
 export const BUMPS_PRODUCT_RESPONSE: ProductResponse[] = [{
   id: NATIONAL_BUMP_ID,
   name: 'NATIONAL_BUMP'
