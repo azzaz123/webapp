@@ -169,7 +169,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
   private nifValidator(control: FormControl) {
     const DNI_REGEX = /^(\d{8})([A-Z])$/;
     const NIE_REGEX = /^[XYZKL]\d{7}[A-Z]$/;
-    let nif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
+    const nif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
 
     return (DNI_REGEX.test(nif) || NIE_REGEX.test(nif)) ? null : { 'cif': true };
   }
@@ -177,7 +177,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
   private cifValidator(control: FormControl) {
     const CIF_REGEX = /^(\d{7})([A-Z])$/;
     const CIF2_REGEX = /^([A-Z])(\d{8})$/;
-    let cif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
+    const cif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
     
     return (CIF_REGEX.test(cif) || CIF2_REGEX.test(cif)) ? null : { 'cif': true };
   }
@@ -187,6 +187,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       return null;
     }
     const pattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    
     return pattern.test(control.value) ? null : { 'email': true };
   }
 
