@@ -37,7 +37,6 @@ import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
 import { DidomiService } from './core/didomi/didomi.service';
 import { MockDidomiService } from './core/didomi/didomi.service.spec';
 import { TrustAndSafetyService } from './core/trust-and-safety/trust-and-safety.service';
-import { MockInterceptor } from './core/http/interceptors';
 import { MockTrustAndSafetyService } from './core/trust-and-safety/trust-and-safety.fixtures.spec';
 
 let fixture: ComponentFixture<AppComponent>;
