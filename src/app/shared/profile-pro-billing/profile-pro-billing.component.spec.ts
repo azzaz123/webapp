@@ -11,6 +11,7 @@ import { PaymentService } from '../../core/payments/payment.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { BILLING_INFO_RESPONSE } from '../../../tests/payments.fixtures.spec';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
+import { EventService } from 'app/core/event/event.service';
 
 describe('ProfileProBillingComponent', () => {
   let component: ProfileProBillingComponent;
@@ -18,6 +19,7 @@ describe('ProfileProBillingComponent', () => {
   let paymentService: PaymentService;
   let errorsService: ErrorsService;
   let modalService: NgbModal;
+  let eventService: EventService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,6 +28,7 @@ describe('ProfileProBillingComponent', () => {
       ],
       declarations: [ProfileProBillingComponent],
       providers: [
+        EventService,
         {
           provide: PaymentService, useValue: {
             updateBillingInfo() {
@@ -76,6 +79,7 @@ describe('ProfileProBillingComponent', () => {
     component = fixture.componentInstance;
     paymentService = TestBed.get(PaymentService);
     errorsService = TestBed.get(ErrorsService);
+    eventService = TestBed.get(EventService);
     component.formComponent = TestBed.get(ProfileFormComponent);
     fixture.detectChanges();
   });
@@ -106,11 +110,13 @@ describe('ProfileProBillingComponent', () => {
 
       it('should update billing info and should put false isnewBillingInfoForm boolean', () => {
         spyOn(paymentService, 'updateBillingInfo').and.callThrough();
+        spyOn(component.billingInfoFormSaved, 'emit').and.callThrough();
 
         component.onSubmit();
 
         expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(component.billingForm.value);
         expect(component.isNewBillingInfoForm).toBe(false);
+        expect(component.billingInfoFormSaved.emit).toHaveBeenCalledWith(component.billingForm.value);
       });
 
       it('should show error if call fails', () => {
@@ -235,6 +241,13 @@ describe('ProfileProBillingComponent', () => {
         expect(component.formComponent.canExit).toHaveBeenCalled();
       });
     });
+  });
 
+  describe('containerTypeIsModal', () => {
+    it('should return true if component is inside a modal', () => {
+      component.containerType = 'modal';
+
+      expect(component.containerTypeIsModal).toBe(true);
+    });
   });
 });

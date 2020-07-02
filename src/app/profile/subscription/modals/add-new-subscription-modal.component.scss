@@ -228,7 +228,7 @@ ngb-carousel {
       }
     }
     .carousel-item {
-      height: auto;//$add-subscription-modal-content-default-height;
+      height: auto;
     }
 
     .carousel-inner {
@@ -248,13 +248,13 @@ ngb-carousel {
 
   &.extra-info ::ng-deep {
     .carousel-item {
-      height: auto;//$add-subscription-modal-content-default-height + 34px;
+      height: auto;
     };
   }
 
   &.single ::ng-deep {
     .carousel-item {
-      height: auto;//$add-subscription-modal-content-default-height - 38px;
+      height: auto;
     }
     .carousel-indicators {
       display: none;
