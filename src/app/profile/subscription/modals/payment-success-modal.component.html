@@ -7,9 +7,10 @@
       <img src="/assets/images/subscription-success.svg" alt="success!" />
     </div>
     <div class="SubscribedSuccessfully__box-content text-center text-md-left">
-      <h3 i18n>Perfect!</h3>
-      <p i18n>The subscription has been correctly created. Everything is prepared to boost your sales!</p>
-      <div class="d-flex justify-content-center"><tsl-button className="btn btn-primary" (click)="close()" i18n>Go to my profile</tsl-button></div>
+      <h3 i18n="@@Perfect">Perfect!</h3>
+      <p i18n="@@SubscriptionCreated">The subscription has been correctly created. Everything is prepared to boost your sales!</p>
+      <p i18n="@@InvoiceEmail" *ngIf="isInvoice === 'true'">You will receive an e-mail with your invoice shortly.</p>
+      <div class="d-flex justify-content-center"><tsl-button className="btn btn-primary" (click)="close()" i18n="@@GoToMyProfile">Go to my profile</tsl-button></div>
     </div>
   </div>
 </div>

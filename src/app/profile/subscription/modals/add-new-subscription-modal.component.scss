@@ -56,6 +56,10 @@ $add-subscription-modal-content-default-height: 382px;
   margin-bottom: $spacing-s;
 }
 
+.AddNewSubscription__listing-limit-invoice {
+  border-bottom: 1px solid $blue-grey-5;
+}
+
 .AddNewSubscription__listing-limit-container {
   display: flex;
   flex-direction: row;
@@ -161,7 +165,6 @@ $add-subscription-modal-content-default-height: 382px;
 }
 
 tsl-button, tsl-stripe-card-element ::ng-deep tsl-button {
-  width: 100%;
   ::ng-deep {
     .btn-text {
       font-size: $spacing-m;
@@ -272,7 +275,7 @@ tsl-profile-pro-billing {
     .box {
       border: none;
       border-radius: 0;
-      border-bottom: 1px solid $blue-grey-3;
+      border-bottom: 1px solid $blue-grey-5;
       overflow: scroll;
       max-height: 250px;
       margin-bottom: $spacing-xs;
@@ -332,6 +335,11 @@ tsl-button ::ng-deep .simple  {
     text-decoration: none;
     font-weight: bold;
   }
+}
+
+.AddNewSubscription__ButtonActions {
+  display: flex;
+  flex-direction: column;
 }
 
 select-dropdown > div .options ul li {

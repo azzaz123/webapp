@@ -72,27 +72,29 @@
       <div class="step step-2">
         <div class="box-content">
           <div>
-            <p class="AddNewSubscription__listing-limit-steps" i18n="@@step2of3">Step <span class="bold">2</span> of <span
-                class="bold">3</span></p>
+            <p class="AddNewSubscription__listing-limit-steps" i18n="@@step2of3">Step <span class="bold">2</span> of <span class="bold">3</span></p>
             <div class="AddNewSubscription__listing-limit-title" i18n="@@Invoice">Invoice</div>
           </div>
           <div>
             <div class="form-group">
               <ng-select class="form-control" i18n-placeholder placeholder="Do you need an invoice?" (selected)="onInvoiceOptionSelect($event)" 
-              id="invoiceOptions" [options]="invoiceOptions" noFilter="10">
+              id="invoiceOptions" [options]="invoiceOptions" [ngModel]="selectedInvoiceOption" noFilter="10">
               </ng-select>
             </div>
           </div>
-          <div>
-            <tsl-button *ngIf="selectedInvoiceOption === false || selectedInvoiceOption === undefined || !isBillingInfoMissing"
+          <div class="AddNewSubscription__ButtonActions">
+            <tsl-button *ngIf="canContinueToPayment"
             className="btn-primary btn-medium payment" [disabled]="selectedInvoiceOption === undefined"
             (click)="carousel.select('step-3'); trackClickContinueToPayment()" i18n="@@ContinueToPayment">
               Continue to payment
             </tsl-button>
-            <tsl-button *ngIf="selectedInvoiceOption === true && isBillingInfoMissing" className="btn-primary btn-medium payment"
-            [disabled]="!selectedInvoiceOption"
+            <tsl-button class="AddNewSubscription__ButtonActions-invoice" *ngIf="canContinueToInvoice" className="btn-primary btn-medium payment"
+            [disabled]="selectedInvoiceOption === undefined"
             (click)="continueToInvoice()" i18n="@@ContinueToInvoice">
               Continue to invoice
+            </tsl-button>
+            <tsl-button *ngIf="canEditInvoice" className="simple" (click)="continueToInvoice()" i18n="@@EditInvoice">
+              Edit invoice information
             </tsl-button>
           </div>
         </div>
@@ -101,7 +103,7 @@
     <ng-template ngbSlide id="step-2b">
       <div class="step step-2b">
         <div class="box-content">
-          <div>
+          <div class="AddNewSubscription__listing-limit-invoice">
             <p class="AddNewSubscription__listing-limit-steps" i18n="@@step2of3">
               Step <span class="bold">2</span> of <span class="bold">3</span></p>
             <div class="AddNewSubscription__listing-limit-title" i18n="@@Invoice">Invoice</div>
@@ -110,8 +112,8 @@
             <tsl-profile-pro-billing [containerType]="'modal'" (billingInfoFormSaved)="onBillingInfoFormSaved()">
             </tsl-profile-pro-billing>
           </div>
-          <div>
-            <tsl-button className="btn-primary btn-medium payment"
+          <div class="AddNewSubscription__ButtonActions">
+            <tsl-button id="AddNewSubscription__ButtonActions-payment" className="btn-primary btn-medium payment"
             (click)="continueToPayment();trackClickContinueToPayment();"
             i18n="@@ContinueToPayment">
               Continue to payment

@@ -34,6 +34,8 @@ import { CustomCurrencyPipe, DateUntilDayPipe } from '../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
 import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
+import { By } from '@angular/platform-browser';
+import { PaymentService } from 'app/core/payments/payment.service';
 
 describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
@@ -45,6 +47,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let eventService: EventService;
   let analyticsService: AnalyticsService;
+  let paymentService: PaymentService;
   const componentInstance = {
     subscription: MAPPED_SUBSCRIPTIONS[2]
   };
@@ -55,6 +58,7 @@ describe('AddNewSubscriptionModalComponent', () => {
       declarations: [AddNewSubscriptionModalComponent, CustomCurrencyPipe, DateUntilDayPipe],
       providers: [
         DecimalPipe,
+        EventService,
         {
           provide: NgbActiveModal, useValue: {
             close() {
@@ -113,9 +117,15 @@ describe('AddNewSubscriptionModalComponent', () => {
           }
         },
         {
-          provide: AnalyticsService, useClass: MockAnalyticsService
+          provide: PaymentService, useValue: {
+            getBillingInfo() {
+              return of('');
+            }
+          }
         },
-        EventService
+        {
+          provide: AnalyticsService, useClass: MockAnalyticsService
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -132,11 +142,36 @@ describe('AddNewSubscriptionModalComponent', () => {
     errorsService = TestBed.get(ErrorsService);
     eventService = TestBed.get(EventService);
     analyticsService = TestBed.get(AnalyticsService);
+    paymentService = TestBed.get(PaymentService);
     component.card = STRIPE_CARD;
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     component.isNewSubscriber = false;
     fixture.detectChanges();
     spyOn(component, 'reloadPage').and.returnValue(() => {});
+    
+  });
+
+  describe('ngOnInit', () => {
+    it('should select invoice default option', () => {
+      component.ngOnInit();
+
+      expect(component.selectedInvoiceOption).toBe('false');
+    });
+
+    it('should get the billing info from a user', () => {
+      spyOn(component, 'getBillingInfo').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(component.getBillingInfo).toHaveBeenCalled();
+    })
+
+    it('should set the default tier', () => {
+      component.ngOnInit();
+      component.subscription = MAPPED_SUBSCRIPTIONS[0];
+
+      expect(component.selectedTier).toEqual(MAPPED_SUBSCRIPTIONS[2].tiers[1]);
+    })
   });
 
   describe('close', () => {
@@ -159,7 +194,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     it('should requestNewPayment if card is not attached', fakeAsync(() => {
       spyOn(stripeService, 'addNewCard').and.returnValue(throwError('bad credit card'));
       spyOn(errorsService, 'i18nError');
-
+      
       component.addSubscription(PAYMENT_METHOD_DATA);
 
       expect(component.loading).toBe(false);
@@ -171,11 +206,11 @@ describe('AddNewSubscriptionModalComponent', () => {
     it('should call addSubscriptionFromSavedCard if card is attached and it is no retry', fakeAsync(() => {
       component.isRetryInvoice = false;
       component.card = STRIPE_CARD;
-
       spyOn(stripeService, 'addNewCard').and.returnValue(of(200));
       spyOn(component, 'addSubscriptionFromSavedCard').and.callThrough();
 
       component.addSubscription(PAYMENT_METHOD_DATA);
+      
       expect(component.addSubscriptionFromSavedCard).toHaveBeenCalled();
     }));
   });
@@ -397,21 +432,21 @@ describe('AddNewSubscriptionModalComponent', () => {
       fixture.detectChanges();
 
       const carousel: HTMLElement = fixture.elementRef.nativeElement.querySelector('ngb-carousel');
+      
       expect(carousel.className.includes('single')).toBe(true);
     });
 
-    it('should hide first step, carousel indicators, current step indicator and change button', () => {
+    it('should hide first step, current step indicator and change button', () => {
       component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED;
       fixture.detectChanges();
 
       const firstStepElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.step-1');
       const carouselIndicatorsElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.carousel-indicators');
       const carouselIndicatorsElementStyle = getComputedStyle(carouselIndicatorsElement);
-      const stepsIndicatorElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.AddNewSubscription__listing-limit-steps');
       const changeButton: HTMLElement = fixture.elementRef.nativeElement.querySelector('.AddNewSubscription__listing-limit-payment-edit');
+      
       expect(firstStepElement).toBeNull();
       expect(carouselIndicatorsElementStyle.display).toBe('none');
-      expect(stepsIndicatorElement).toBeNull();
       expect(changeButton).toBeNull();
     });
   });
@@ -439,4 +474,54 @@ describe('AddNewSubscriptionModalComponent', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
+
+  describe('User selects invoice option', () => {
+    it('should set the selected invoice option', () => {
+      const removeFavoriteButton = fixture.debugElement.nativeElement.querySelector('ng-select');
+
+      removeFavoriteButton.click();
+
+      expect(component.selectedInvoiceOption).toBeTruthy();
+    });
+  });
+
+  describe('User saves the invoice form', () => {
+    it('should set the carousel in step 3', () => {
+      const stepThreeElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.step-3');
+
+      expect(stepThreeElement).toBeTruthy();
+    });
+  });
+
+  describe('Getting the billing info', () => {
+    it('should call the billing info service', () => {
+      spyOn(paymentService, 'getBillingInfo').and.callThrough();
+      
+      component.getBillingInfo();
+
+      expect(paymentService.getBillingInfo).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('User selects continue to Payment', () => {
+    it('should emit the formSubmited event', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+
+      const continueToPaymentButton = fixture.debugElement.nativeElement.querySelector('#AddNewSubscription__ButtonActions-payment');
+      continueToPaymentButton.click();
+
+      expect(eventService.emit).toHaveBeenCalledWith('formSubmited');
+    });
+  });
+
+  describe('User selects continue to Invoice', () => {
+    it('should go to the invoice slider', () => {
+      const invoiceStepElement: HTMLElement = fixture.elementRef.nativeElement.querySelector('.step-2b');
+
+      component.continueToInvoice()
+
+      expect(invoiceStepElement).toBeTruthy();
+    });
+  });
+
 });

@@ -116,7 +116,7 @@ describe('ProfileProBillingComponent', () => {
 
         expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(component.billingForm.value);
         expect(component.isNewBillingInfoForm).toBe(false);
-        expect(component.billingInfoFormSaved.emit).toHaveBeenCalledWith(component.billingForm.value);
+        expect(component.billingInfoFormSaved.emit).toHaveBeenCalledWith(component.billingForm);
       });
 
       it('should show error if call fails', () => {

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, OnDestroy } from '@angular/core';
 import { NgbActiveModal, NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from '../../../core/stripe/stripe.service';
 import { FinancialCardOption, PaymentMethodResponse } from '../../../core/payments/payment.interface';
@@ -28,7 +28,7 @@ import { IOption } from 'ng-select';
   templateUrl: './add-new-subscription-modal.component.html',
   styleUrls: ['./add-new-subscription-modal.component.scss']
 })
-export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
 
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   public card: any;
@@ -49,12 +49,12 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
   public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
   public privacyPolicyURL = PRIVACY_POLICY_URL;
   public invoiceOptions: IOption[] = [
-    { value: true, label: 'Yes' },
-    { value: false, label: 'No' }
+    { value: 'true', label: 'Yes' },
+    { value: 'false', label: 'No' }
   ];
   public isBillingInfoValid: boolean;
   private _invoiceId: string;
-  private _selectedInvoiceOption: boolean;
+  private _selectedInvoiceOption: string;
   private _submitBillingInfoForm = false;
   private _isBillingInfoMissing: boolean;
 
@@ -75,10 +75,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
       this.managePaymentResponse(response);
     });
     this.getBillingInfo();
-  }
-
-  ngAfterViewInit(): void {
-    this.carousel.showNavigationIndicators = false;
+    this._selectedInvoiceOption = this.invoiceOptions[1].value.toString();
   }
 
   ngOnDestroy() {
@@ -107,7 +104,8 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
     if (this.isRetryInvoice) {
       this.retrySubscription();
     } else {
-      this.subscriptionsService.newSubscription(selectedPlanId, paymentMethodId, this.selectedInvoiceOption).subscribe((response) => {
+      this.subscriptionsService.newSubscription(selectedPlanId, paymentMethodId, JSON.parse(this.selectedInvoiceOption))
+      .subscribe((response) => {
         if (response.status === 202) {
           this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: SubscriptionResponse) => {
             if (!response.payment_status) {
@@ -248,6 +246,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
     modalComponent.tier = this.selectedTier.id;
     modalComponent.isNewSubscriber = this.isNewSubscriber;
     modalComponent.isNewCard = !this.hasSavedCard;
+    modalComponent.isInvoice = this.selectedInvoiceOption;
     modalComponent.subscriptionCategoryId = this.subscription.category_id as SUBSCRIPTION_CATEGORIES;
 
     modalRef.result.then(() => {
@@ -355,7 +354,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
     return this._submitBillingInfoForm;
   }
 
-  get selectedInvoiceOption(): boolean {
+  get selectedInvoiceOption(): string {
     return this._selectedInvoiceOption;
   }
 
@@ -363,5 +362,16 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
     return this._isBillingInfoMissing;
   }
 
+  get canContinueToPayment(): boolean {
+    return this.selectedInvoiceOption === 'false' || !this.isBillingInfoMissing;
+  }
+
+  get canContinueToInvoice(): boolean {
+    return this.selectedInvoiceOption === 'true' && this.isBillingInfoMissing;
+  }
+
+  get canEditInvoice(): boolean {
+    return !this.isBillingInfoMissing && this.selectedInvoiceOption === 'true';
+  }
 
 }
