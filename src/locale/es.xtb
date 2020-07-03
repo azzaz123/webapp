@@ -1110,7 +1110,6 @@
   <translation id="ContinueToPayment">Continuar a pago</translation>
   <translation id="BackToInvoice">Volver a facturación</translation>
   <translation id="step3of3">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
-  <translation id="Email">E-mail</translation>
   <translation id="Perfect">¡Perfecto!</translation>
   <translation id="SubscriptionCreated">Te has suscrito correctamente. ¡Todo está preparado para incrementar tus ventas!</translation>
   <translation id="InvoiceEmail">Pronto recibirás un e-mail con tu factura.</translation>
