@@ -1096,9 +1096,7 @@
   <translation id="step1of3">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>1<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
   <translation id="HowManyProductsToUpload">¿Cuantos <ph name="INTERPOLATION"><ex>{{subscription.category_name.toLowerCase()}}</ex>{{subscription.category_name.toLowerCase()}}</ph> vas a subit a tu perfil?</translation>
   <translation id="Unlimited">Ilimitado</translation>
-  <translation id="ContactUsDirectly">¿Tienes más de
-              <ph name="INTERPOLATION"><ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name.toLowerCase()}}</ex>{{subscription.category_name.toLowerCase()}}</ph>?
-              <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>Contáctanos directamente<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="ContactUsDirectly">¿Tienes más de <ph name="INTERPOLATION"><ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name.toLowerCase()}}</ex>{{subscription.category_name.toLowerCase()}}</ph>? <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>Contáctanos directamente<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
   <translation id="CategoryPlan"><ph name="INTERPOLATION"><ex>Plan {{selectedTier.limit}}</ex>{{selectedTier.limit}}</ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex>{{subscription.category_name}}</ph></translation>
   <translation id="UnlimitedPlan">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex>{{subscription.category_name}}</ph> ilimitado</translation>
   <translation id="OneMonthFree">Un mes gratis</translation>
@@ -1113,4 +1111,9 @@
   <translation id="ContinueToPayment">Continuar a pago</translation>
   <translation id="BackToInvoice">Volver a facturación</translation>
   <translation id="step3of3">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="Email">E-mail</translation>
+  <translation id="Perfect">¡Perfecto!</translation>
+  <translation id="SubscriptionCreated">Te has suscrito correctamente. ¡Todo está preparado para incrementar tus ventas!</translation>
+  <translation id="InvoiceEmail">Pronto recibirás un e-mail con tu factura.</translation>
+  <translation id="GoToMyProfile">Ir a mi perfil</translation>
 </translationbundle>
