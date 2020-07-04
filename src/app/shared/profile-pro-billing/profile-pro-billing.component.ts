@@ -10,6 +10,7 @@ import { BillingInfoResponse } from '../../core/payments/payment.interface';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { finalize } from 'rxjs/operators';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
+import { validDNI, validNIE, validCIF } from 'spain-id';
 
 export enum BILLING_TYPE {
   NATURAL = 'natural',
@@ -184,19 +185,15 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
   }
 
   private nifValidator(control: FormControl) {
-    const DNI_REGEX = /^(\d{8})([A-Z])$/;
-    const NIE_REGEX = /^[XYZKL]\d{7}[A-Z]$/;
     const nif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
 
-    return (DNI_REGEX.test(nif) || NIE_REGEX.test(nif)) ? null : { 'cif': true };
+    return (validDNI(nif) ||  validNIE(nif)) ? null : { 'cif': true };
   }
   
   private cifValidator(control: FormControl) {
-    const CIF_REGEX = /^(\d{7})([A-Z])$/;
-    const CIF2_REGEX = /^([A-Z])(\d{8})$/;
     const cif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
     
-    return (CIF_REGEX.test(cif) || CIF2_REGEX.test(cif)) ? null : { 'cif': true };
+    return (validCIF(cif)) ? null : { 'cif': true };
   }
 
   private emailValidator(control: AbstractControl): { [key: string]: boolean } {
