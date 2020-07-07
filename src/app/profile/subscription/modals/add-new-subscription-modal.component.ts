@@ -223,12 +223,11 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   private paymentSucceeded() {
     this.loading = false;
     this.isRetryInvoice = false;
-    this.close();
     this.openPaymentSuccessModal();
   }
 
   private openPaymentSuccessModal() {
-    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
+    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success'/*, backdrop: 'static'*/ });
     const modalComponent: PaymentSuccessModalComponent = modalRef.componentInstance;
     modalComponent.tier = this.selectedTier.id;
     modalComponent.isNewSubscriber = this.isNewSubscriber;
@@ -237,8 +236,10 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
 
     modalRef.result.then(() => {
       modalRef = null;
-      this.reloadPage();
-    }, () => {});
+      this.close();
+    }, () => {
+      this.close();
+    });
   }
 
   @HostListener('click') onClick() {
