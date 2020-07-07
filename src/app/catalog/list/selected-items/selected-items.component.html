@@ -54,8 +54,9 @@
             [disabled]="!itemService.selectedItems.length" (click)="onClickAction('activate')" i18n>Activate</button>
 
           <!-- Feature -->
+          status: {{selectedStatus}} / {{hideFeaturedButton}}
           <div class="SelectedItems__feature d-none d-md-flex flex-column mt-3 ml-4"
-            [hidden]="selectedStatus === 'inactive' || selectedStatus === 'sold' || disableFeatureOption">
+            *ngIf="!hideFeaturedButton">
             <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
               [routerLink]="['/catalog/checkout']" [params]="{ payment_method: 'STRIPE' }"
               tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE" i18n>Feature</tsl-button>
