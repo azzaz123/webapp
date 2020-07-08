@@ -89,7 +89,7 @@ export class SubscriptionsComponent implements OnInit {
     this.userService.me(false)
     .pipe(
       repeatWhen(completed => completed.pipe(delay(1000), takeWhile(() => this.loading))),
-      take(10),
+      take(30),
       finalize(() => {
         this.router.navigate(['profile/info'])
       })
@@ -106,7 +106,7 @@ export class SubscriptionsComponent implements OnInit {
     this.subscriptionsService.getSubscriptions(false)
     .pipe(
       repeatWhen(completed => completed.pipe(delay(1000), takeWhile(() => this.loading))),
-      take(5),
+      take(30),
       finalize(() => this.router.navigate(['profile/subscriptions']))
     )
     .subscribe(
