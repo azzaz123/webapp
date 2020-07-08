@@ -185,7 +185,7 @@ describe('Component: ChatComponent with ItemId', () => {
       component.ngOnInit();
 
       expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
-      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith('OpenChat');
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
     });
   });
 
@@ -283,7 +283,7 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
       component.ngOnInit();
 
       expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
-      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith('OpenChat');
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
     });
   });
 });

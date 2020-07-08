@@ -77,7 +77,7 @@ describe('UploadComponent', () => {
       component.ngOnInit();
 
       expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
-      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith('OpenCreateListing');
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CREATE_LISTING);
     });
   });
 

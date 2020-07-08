@@ -71,7 +71,7 @@ export class ChatComponent implements OnInit {
       this.archivedInboxReady = ready;
     });
 
-    this.trustAndSafetyService.submitProfileIfNeeded('OpenChat');
+    this.trustAndSafetyService.submitProfileIfNeeded(SessionProfileDataLocation.OPEN_CHAT);
   }
 
   public onLoad(event: any) {
