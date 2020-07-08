@@ -9241,6 +9241,11 @@ sourcemap-codec@^1.4.4, sourcemap-codec@^1.4.8:
   version "1.4.8"
   resolved "https://registry.yarnpkg.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
 
+spain-id@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/spain-id/-/spain-id-1.0.9.tgz#ef117cfb764ac03e406677375e22dba8874a4ea1"
+  integrity sha512-f39pTy8Y+uEOijWwT4D2lUPoyJA2Nb+46cEvV8RS29xmraLqHEWp/nE7gkQGG+fQJvDcGTtAlAfyGGClyiy9vA==
+
 spdx-correct@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/spdx-correct/-/spdx-correct-3.0.0.tgz#05a5b4d7153a195bc92c3c425b69f3b2a9524c82"
