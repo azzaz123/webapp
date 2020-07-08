@@ -13,6 +13,6 @@ export const environment: Environment = {
   mParticleKey: 'us1-04eb03d316b54f4f99265340abe886e6',
   remoteConsoleUrl: 'https://client-metrics.wallapop.com/metrics/chat',
   didomiKey: 'ffa4bae4-25a5-42df-a1a2-74f3dfa3cd35',
-  threatMetrixOrgId: '6ldgf22r',
-  threatMetrixProfilingDomain: 'h-wallapop.online-metrix.net'
+  threatMetrixOrgId: 'bjf37sdb',
+  threatMetrixProfilingDomain: 'clear.wallapop.com'
 };
