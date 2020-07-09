@@ -476,7 +476,7 @@ export const ORDER_CART_EXTRAS_PRO: OrderProExtras = {
 };
 
 export const BILLING_INFO_RESPONSE: BillingInfoResponse = {
-  cif: 'cif',
+  cif: 'A00000000',
   city: 'city',
   company_name: 'company',
   country: 'country',
@@ -486,6 +486,20 @@ export const BILLING_INFO_RESPONSE: BillingInfoResponse = {
   type: 'legal',
   street: 'street',
   surname: 'surname',
+  id: '123'
+};
+
+export const BILLING_INFO_RESPONSE_LEGAL: BillingInfoResponse = {
+  cif: 'A00000000',
+  city: 'city',
+  company_name: 'company',
+  country: 'country',
+  email: 'email@email.com',
+  name: '',
+  postal_code: '12345',
+  type: 'legal',
+  street: 'street',
+  surname: '',
   id: '123'
 };
 

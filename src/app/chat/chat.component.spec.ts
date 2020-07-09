@@ -17,6 +17,7 @@ import { ConversationServiceMock, InboxConversationServiceMock, InboxServiceMock
 import { PhoneMethodResponse } from '../core/user/phone-method.interface';
 import { InboxConversation, MessageStatus } from './model';
 import { ChatComponent } from './chat.component';
+import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 
 class MockUserService {
   public isProfessional() {
@@ -172,6 +173,20 @@ describe('Component: ChatComponent with ItemId', () => {
       expect(component.connectionError).toBe(false);
       expect(inboxConversationService.resendPendingMessages).toHaveBeenCalled();
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
+    });
+
+    it('should save searchId if link contains searchId', () => {
+      const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
+      const searchId = '123456789';
+      spyOn(inboxService, 'isInboxReady').and.returnValue(true);
+      spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversation));
+      spyOn(sessionStorage, 'setItem');
+
+      activatedRoute.queryParams = observableFrom([{ itemId: 'itemId', searchId  }]);
+
+      component.ngOnInit();
+
+      expect(sessionStorage.setItem).toHaveBeenCalledWith(SEARCHID_STORAGE_NAME, searchId);
     });
   });
 

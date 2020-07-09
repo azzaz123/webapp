@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild, Output, EventEmitter, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation-modal/delete-info-confirmation-modal.component';
@@ -11,6 +11,7 @@ import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-
 import { finalize } from 'rxjs/operators';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 import { EventService } from 'app/core/event/event.service';
+import { validDNI, validNIE, validCIF } from 'spain-id';
 
 export enum BILLING_TYPE {
   NATURAL = 'natural',
@@ -39,19 +40,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
               private errorsService: ErrorsService,
               private modalService: NgbModal,
               private eventService: EventService) {
-    this.billingForm = fb.group({
-      type: ['', [Validators.required]],
-      cif: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      company_name: ['', [Validators.required]],
-      country: ['', [Validators.required]],
-      email: ['', [Validators.required]],
-      name: ['', [Validators.required]],
-      postal_code: ['', [Validators.required]],
-      street: ['', [Validators.required]],
-      surname: ['', [Validators.required]],
-      id: UUID.UUID()
-    });
+    this.buildForm();
     this.eventService.subscribe('formSubmited', () => {
       this.onSubmit();
     });
@@ -70,20 +59,41 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     });
   }
 
+  buildForm() {
+    this.billingForm = this.fb.group({
+      type: ['', [Validators.required]],
+      cif: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      company_name: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      email: ['', [Validators.required, this.emailValidator]],
+      name: ['', [Validators.required]],
+      postal_code: ['', [Validators.required, this.cpValidator]],
+      street: ['', [Validators.required]],
+      surname: ['', [Validators.required]],
+      id: UUID.UUID()
+    });
+  }
+
   initForm() {
     this.paymentService.getBillingInfo().subscribe(
       (billingInfo: BillingInfoResponse) => {
         this.isNewBillingInfoForm = false;
         this.type = billingInfo.type || BILLING_TYPE.NATURAL;
         this.billingForm.patchValue(billingInfo);
-        for (const control in this.billingForm.controls) {
-          if (this.billingForm.controls.hasOwnProperty(control)) {
-            this.billingForm.controls[control].markAsDirty();
-          }
-        }
+        this.billingForm.controls['cif'].disable();
+        this.billingForm.controls['type'].disable();
+        this.patchFormValues();
+        this.formComponent.initFormControl();
       },
       () => {
         this.type = BILLING_TYPE.NATURAL;
+        this.patchFormValues();
+        this.formComponent.initFormControl();
+        this.isNewBillingInfoForm = true;
+        this.billingForm.controls['cif'].enable();
+        this.billingForm.controls['type'].enable(); 
+        this.buildForm();
       }
     )
     .add(() => {
@@ -113,7 +123,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
           company_name: ''
         });
       }
-      this.paymentService.updateBillingInfo(this.billingForm.value)
+      this.paymentService.updateBillingInfo(this.billingForm.getRawValue())
       .pipe(finalize(() => {
         this.billingInfoFormSaved.emit(this.billingForm);
         this.loading = false;
@@ -122,6 +132,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
         this.errorsService.i18nSuccess('userEdited');
         this.formComponent.initFormControl();
         this.isNewBillingInfoForm = false;
+        this.initForm();
       }, (error: HttpErrorResponse) => {
         this.errorsService.show(error);
       });
@@ -144,8 +155,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       if (result) {
         this.paymentService.deleteBillingInfo(this.billingForm.value.id).subscribe(() => {
           this.errorsService.i18nSuccess('deleteBillingInfoSuccess');
-          this.billingForm.reset();
-          this.isNewBillingInfoForm = true;
+          this.initForm();
         }, () => {
           this.errorsService.i18nError('deleteBillingInfoError');
         });
@@ -153,25 +163,67 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     });
   }
 
+  private patchFormValues() {
+    for (const control in this.billingForm.controls) {
+      if (this.billingForm.controls.hasOwnProperty(control)) {
+        this.billingForm.controls[control].markAsPristine();
+      }
+    }
+  }
+
   private setNaturalRequiredFields() {
     this.billingForm.get('name').setValidators(Validators.required);
     this.billingForm.get('surname').setValidators(Validators.required);
     this.billingForm.get('company_name').setValidators(null);
+    this.billingForm.get('cif').setValidators([Validators.required, this.nifValidator]);
   }
 
   private setLegalRequiredFields() {
     this.billingForm.get('company_name').setValidators(Validators.required);
     this.billingForm.get('name').setValidators(null);
     this.billingForm.get('surname').setValidators(null);
+    this.billingForm.get('cif').setValidators([Validators.required, this.cifValidator]);
   }
 
   private updateFieldsValidity() {
     this.billingForm.get('company_name').updateValueAndValidity();
     this.billingForm.get('name').updateValueAndValidity();
     this.billingForm.get('surname').updateValueAndValidity();
+    this.billingForm.get('cif').updateValueAndValidity();
+  }
+
+  private nifValidator(control: FormControl) {
+    const nif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
+
+    return (validDNI(nif) ||  validNIE(nif)) ? null : { 'cif': true };
+  }
+  
+  private cifValidator(control: FormControl) {
+    const cif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
+    
+    return (validCIF(cif)) ? null : { 'cif': true };
+  }
+
+  private emailValidator(control: AbstractControl): { [key: string]: boolean } {
+    if (Validators.required(control)) {
+      return null;
+    }
+    const pattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    
+    return pattern.test(control.value) ? null : { 'email': true };
   }
 
   get containerTypeIsModal(): boolean {
     return this.containerType === 'modal' ? true : false;
   }
+  
+  private cpValidator(control: AbstractControl): { [key: string]: boolean } {
+    if (Validators.required(control)) {
+      return null;
+    }
+    const pattern: RegExp = /^[0-9]*$/;
+    
+    return pattern.test(control.value) ? null : { 'postal_code': true };
+  }
+
 }
