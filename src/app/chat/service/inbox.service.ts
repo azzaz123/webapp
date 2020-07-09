@@ -48,6 +48,7 @@ export class InboxService {
     catchError(() => {
       this.errorRetrievingInbox = true;
       this.remoteConsoleService.sendConnectionChatTimeout('inbox', false);
+      this.remoteConsoleService.sendConnectionChatFailed('inbox');
       return of([]);
     }))
     .subscribe((conversations: InboxConversation[]) => {

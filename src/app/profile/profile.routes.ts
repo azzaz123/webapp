@@ -61,11 +61,7 @@ const routes: Routes = [
         canDeactivate: [ExitConfirmGuard],
         data: {
           isMyZone: true,
-          isProfile: true,
-          permissions: {
-            only: PERMISSIONS.professional,
-            redirectTo: '/profile'
-          }
+          isProfile: true
         }
       },
       {
