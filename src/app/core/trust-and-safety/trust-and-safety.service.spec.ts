@@ -6,9 +6,10 @@ import {
   MOCK_STARTER_USER_RESPONSE,
   MOCK_NON_STARTER_USER_RESPONSE,
 } from './trust-and-safety.fixtures.spec';
-import { SessionProfileData } from './trust-and-safety.interface';
+import { SessionProfileData, SessionProfileDataLocation, SessionProfileDataPlatform } from './trust-and-safety.interface';
 import { UUID } from 'angular2-uuid';
 import { environment } from 'environments/environment';
+import { environment as prodEnv } from 'environments/environment.prod';
 
 jest.mock('./threat-metrix-embed-script', () => ({
   __esModule: true,
@@ -45,59 +46,28 @@ describe('TrustAndSafetyService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when asking server if user is an starter user', () => {
-    it('should ask server for the first time and get if user is starter', () => {
-      let isStarter: boolean;
-
-      service.isStarterUser().subscribe(r => isStarter = r);
-      const req = httpMock.expectOne(USER_STARTER_ENDPOINT);
-      req.flush(MOCK_STARTER_USER_RESPONSE);
-
-      expect(isStarter).toEqual(MOCK_STARTER_USER_RESPONSE.starter);
-      expect(req.request.urlWithParams).toBe(USER_STARTER_ENDPOINT);
-      expect(req.request.method).toBe('GET');
-    });
-
-    it('should NOT ask server when already asked previously', () => {
-      let isStarter: boolean;
-
-      service.isStarterUser().subscribe();
-      httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
-      service.isStarterUser().subscribe(r => isStarter = r);
-
-      httpMock.expectNone(USER_STARTER_ENDPOINT);
-      expect(isStarter).toEqual(MOCK_STARTER_USER_RESPONSE.starter);
-    });
-
-    it('should ask server if not using cache and already saved', () => {
-      let isStarter: boolean;
-
-      service.isStarterUser().subscribe();
-      httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
-      service.isStarterUser(false).subscribe(r => isStarter = r);
-      httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
-
-      expect(isStarter).toEqual(MOCK_STARTER_USER_RESPONSE.starter);
-    });
-  });
-
   describe('when initializing profiling', () => {
     it('should ask server if user is starter', () => {
-      service.initializeProfiling();
+      service.initializeProfilingIfNeeded();
 
       httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_NON_STARTER_USER_RESPONSE);
     });
 
     describe('and when the user is starter', () => {
       describe('and when the environment is production', () => {
+        beforeEach(() => {
+          environment.threatMetrixProfilingDomain = prodEnv.threatMetrixProfilingDomain;
+          environment.threatMetrixOrgId = prodEnv.threatMetrixOrgId;
+        });
+
         it('should start Threat Metrix profiling with production organization identifier', fakeAsync(() => {
           spyOn(wadgtlft, 'nfl');
 
-          service.initializeProfiling();
+          service.initializeProfilingIfNeeded();
           httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
           tick(1000);
 
-          expect(wadgtlft.nfl).toHaveBeenCalledWith(environment.threatMetrixProfilingDomain, environment.threatMetrixOrgId, mockUUID);
+          expect(wadgtlft.nfl).toHaveBeenCalledWith(prodEnv.threatMetrixProfilingDomain, prodEnv.threatMetrixOrgId, mockUUID);
         }));
       });
 
@@ -105,7 +75,7 @@ describe('TrustAndSafetyService', () => {
         it('should start Threat Metrix profiling with development organization identifier', fakeAsync(() => {
           spyOn(wadgtlft, 'nfl');
 
-          service.initializeProfiling();
+          service.initializeProfilingIfNeeded();
           httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
           tick(1000);
 
@@ -118,7 +88,7 @@ describe('TrustAndSafetyService', () => {
       it('should not initialize Threat Metrix', () => {
         spyOn(wadgtlft, 'nfl');
 
-        service.initializeProfiling();
+        service.initializeProfilingIfNeeded();
         httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_NON_STARTER_USER_RESPONSE);
 
         expect(wadgtlft.nfl).not.toHaveBeenCalled();
@@ -129,7 +99,7 @@ describe('TrustAndSafetyService', () => {
       it('should not initialize Threat Metrix', () => {
         spyOn(wadgtlft, 'nfl');
 
-        service.initializeProfiling();
+        service.initializeProfilingIfNeeded();
         httpMock.expectOne(USER_STARTER_ENDPOINT).flush({}, { status: 500, statusText: 'Error' });
 
         expect(wadgtlft.nfl).not.toHaveBeenCalled();
@@ -137,33 +107,59 @@ describe('TrustAndSafetyService', () => {
     });
   });
 
-  describe('when sending profiling to server', () => {
+  describe('when submiting profiling to wallapop server', () => {
     describe('and when the user is an starter user', () => {
       it('should send valid information only once with same identifier', fakeAsync(() => {
-        service.initializeProfiling();
+        service.initializeProfilingIfNeeded();
         httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
         const expectedBody: SessionProfileData = {
           id: mockUUID,
-          location: 'OpenChat',
-          platform: 'Web'
+          location: SessionProfileDataLocation.OPEN_CHAT,
+          platform: SessionProfileDataPlatform.WEB
         };
         tick(1000);
 
-        service.submitProfile('OpenChat').subscribe();
-        const req = httpMock.expectOne(USER_STARTER_ENDPOINT);
-        req.flush({});
+        service.submitProfileIfNeeded(SessionProfileDataLocation.OPEN_CHAT);
+        httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
+        const postStarterRequest = httpMock.expectOne(USER_STARTER_ENDPOINT);
+        postStarterRequest.flush({});
 
-        expect(req.request.method).toBe('POST');
-        expect(req.request.body).toEqual(expectedBody);
+        expect(postStarterRequest.request.method).toBe('POST');
+        expect(postStarterRequest.request.body).toEqual(expectedBody);
       }));
+
+      describe('and when the ThreatMetrix profile has not been sent yet', () => {
+        it('should wait to ThreatMetrix profile sent and then submit profile to wallapop server', fakeAsync(() => {
+          service.initializeProfilingIfNeeded();
+          httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
+          const expectedBody: SessionProfileData = {
+            id: mockUUID,
+            location: SessionProfileDataLocation.OPEN_CHAT,
+            platform: SessionProfileDataPlatform.WEB
+          };
+
+          service.submitProfileIfNeeded(SessionProfileDataLocation.OPEN_CHAT);
+          tick(5000);
+          window['tmx_profiling_started'] = true;
+          httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_STARTER_USER_RESPONSE);
+          const postStarterRequest = httpMock.expectOne(USER_STARTER_ENDPOINT);
+          postStarterRequest.flush({});
+
+          expect(postStarterRequest.request.method).toBe('POST');
+          expect(postStarterRequest.request.body).toEqual(expectedBody);
+        }));
+      });
     });
 
     describe('and when the user is a non starter user', () => {
-      it('should fail', () => {
-        service.initializeProfiling();
+      it('should do nothing', () => {
+        service.initializeProfilingIfNeeded();
         httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_NON_STARTER_USER_RESPONSE);
 
-        expect(() => service.submitProfile('OpenChat')).toThrowError();
+        service.submitProfileIfNeeded(SessionProfileDataLocation.OPEN_CHAT);
+        httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_NON_STARTER_USER_RESPONSE);
+
+        httpMock.expectNone(USER_STARTER_ENDPOINT);
       });
     });
   });
