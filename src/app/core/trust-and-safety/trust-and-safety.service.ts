@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { Observable, interval, Subscription, of, ReplaySubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import {
   UserStarterResponse,
   SessionProfileData,
@@ -65,17 +65,16 @@ export class TrustAndSafetyService {
     this._profileSentToThreatMetrix.next(true);
   }
 
-  private _onProfilingSubmitedSuccess() {
-    this._cachedIsStarterResponse = {
-      starter: false
-    };
-  }
-
   private _isStarterUser(): Observable<boolean> {
     if (this._cachedIsStarterResponse) {
       return of(this._cachedIsStarterResponse.starter);
     }
     return this.http.get<UserStarterResponse>(USER_STARTER_ENDPOINT).pipe(
+      tap(response => {
+        if (!response.starter) {
+          this._cachedIsStarterResponse = response;
+        }
+      }),
       map(response => response.starter)
     );
   }
@@ -111,14 +110,14 @@ export class TrustAndSafetyService {
           if (!profileSent) {
             return;
           }
-          this.http.post(USER_STARTER_ENDPOINT, profile).subscribe(() => this._onProfilingSubmitedSuccess());
+          this.http.post(USER_STARTER_ENDPOINT, profile).subscribe();
           subscription.unsubscribe();
         });
 
         return;
       }
 
-      this.http.post(USER_STARTER_ENDPOINT, profile).subscribe(() => this._onProfilingSubmitedSuccess());
+      this.http.post(USER_STARTER_ENDPOINT, profile).subscribe();
     });
   }
 }

@@ -152,12 +152,11 @@ describe('TrustAndSafetyService', () => {
     });
 
     describe('and when the user is a non starter user', () => {
-      it('should do nothing', () => {
+      it('should ask to wallapop backend and then do nothing else', () => {
         service.initializeProfilingIfNeeded();
         httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_NON_STARTER_USER_RESPONSE);
 
         service.submitProfileIfNeeded(SessionProfileDataLocation.OPEN_CHAT);
-        httpMock.expectOne(USER_STARTER_ENDPOINT).flush(MOCK_NON_STARTER_USER_RESPONSE);
 
         httpMock.expectNone(USER_STARTER_ENDPOINT);
       });
