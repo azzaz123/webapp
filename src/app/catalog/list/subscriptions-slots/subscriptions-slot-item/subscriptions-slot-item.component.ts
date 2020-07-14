@@ -33,9 +33,14 @@ export class SubscriptionsSlotItemComponent implements OnInit {
   }
 
   onClick(subscriptionSlot: SubscriptionSlot, e: any) {
+    if (!subscriptionSlot) {
+      e.stopPropagation();
+      this.selected.emit(null);
+    }
+
     if (subscriptionSlot === this.selectedSubscriptionSlot) {
       this.selected.emit(null);
-    } else {
+    } else if(subscriptionSlot) {
       this.selected.emit(subscriptionSlot);
 
       const event: AnalyticsEvent<ClickCatalogManagement> = {
@@ -49,9 +54,6 @@ export class SubscriptionsSlotItemComponent implements OnInit {
       this.analyticsService.trackEvent(event);
     }
 
-    if (!subscriptionSlot) {
-      e.stopPropagation();
-    }
   }
 
 }

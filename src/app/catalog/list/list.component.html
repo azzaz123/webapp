@@ -2,58 +2,57 @@
      infiniteScroll
      [infiniteScrollDistance]="5"
      [infiniteScrollThrottle]="100"
-     [infiniteScrollDisabled]="end || loading"
+     [infiniteScrollDisabled]="!items.length || end || loading"
      (scrolled)="loadMore()"
      [scrollTop]="scrollTop">
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent"></tsl-spinner>
   <div class="container" *ngIf="!isUrgent">
-
-  <tsl-header>
-    <div class="col-8 col-md-7">
-      <div class="header-row">
-        <h1 class="header-title">
-          <div class="d-md-none flex-column">
-            <div class="mb-2 d-flex align-items-center">
-              <div class="List__title">{{user?.microName}}</div>
+    <tsl-header>
+      <div class="col-8 col-md-7">
+        <div class="header-row">
+          <h1 class="header-title">
+            <div class="d-md-none flex-column">
+              <div class="mb-2 d-flex align-items-center">
+                <div class="List__title">{{user?.microName}}</div>
+                <tsl-pro-badge></tsl-pro-badge>
+              </div>
+              <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
+              <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n>Edit</button>
+              <button (click)="userService.logout()" class="edit-profile-btn" i18n>Logout</button>
+            </div>
+            <div class="d-none d-md-flex align-items-center">
+              <div class="List__title" i18n>Your products</div>
               <tsl-pro-badge></tsl-pro-badge>
             </div>
-            <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
-            <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n>Edit</button>
-            <button (click)="userService.logout()" class="edit-profile-btn" i18n>Logout</button>
-          </div>
-          <div class="d-none d-md-flex align-items-center">
-            <div class="List__title" i18n>Your products</div>
-            <tsl-pro-badge></tsl-pro-badge>
-          </div>
-        </h1>
+          </h1>
+        </div>
+        <div class="header-row d-none d-md-block">
+          <h4 class="header-subtitle" i18n="@@ListComponentHeaderSubtitle">
+            Here you can list items, manage the ones you already have and activate featured to sell them faster
+          </h4>
+        </div>
       </div>
-      <div class="header-row d-none d-md-block">
-        <h4 class="header-subtitle" i18n="@@ListComponentHeaderSubtitle">
-          Here you can list items, manage the ones you already have and activate featured to sell them faster
-        </h4>
+      <div class="col info d-none d-md-flex">
+        <mat-icon svgIcon="feature"></mat-icon>
+        <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
       </div>
-    </div>
-    <div class="col info d-none d-md-flex">
-      <mat-icon svgIcon="feature"></mat-icon>
-      <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
-    </div>
-    <div class="col-4 col-md-1 header-numbers">
-      <p class="header-numbers-top d-none d-md-block">
-        <span *ngIf="numberOfProducts === 0 && loading">--</span>
-        <span *ngIf="!loading">{{numberOfProducts}}</span>
-      </p>
-      <p class="header-numbers-bottom d-none d-md-block">
-        <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
-        <span *ngIf="numberOfProducts === 1" i18n>product</span>
-      </p>
-      <a class="d-flex justify-content-end d-md-none" [routerLink]="['/profile/info']">
-        <tsl-user-avatar [user]="user" size="80"></tsl-user-avatar>
-      </a>
-    </div>
-  </tsl-header>
+      <div class="col-4 col-md-1 header-numbers">
+        <p class="header-numbers-top d-none d-md-block">
+          <span *ngIf="numberOfProducts === 0 && loading">--</span>
+          <span *ngIf="!loading">{{numberOfProducts}}</span>
+        </p>
+        <p class="header-numbers-bottom d-none d-md-block">
+          <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
+          <span *ngIf="numberOfProducts === 1" i18n>product</span>
+        </p>
+        <a class="d-flex justify-content-end d-md-none" [routerLink]="['/profile/info']">
+          <tsl-user-avatar [user]="user" size="80"></tsl-user-avatar>
+        </a>
+      </div>
+    </tsl-header>
 
     <tsl-subscriptions-slots-list
-      class="d-none d-md-block"
+      class="d-md-block"
       [subscriptionsSlots]="subscriptionSlots"
       [selectedSubscriptionSlot]="selectedSubscriptionSlot"
       (subscriptionSlotSelected)="onSelectSubscriptionSlot($event)"
