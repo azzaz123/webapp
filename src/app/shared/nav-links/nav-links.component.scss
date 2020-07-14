@@ -28,8 +28,11 @@
     }
   }
 
-  .NavLinks__link {
-    margin-top: 2px;
+  .NavLinks__links {
+    display: flex;
+    .NavLinks__link {
+      margin-top: 2px;
+    }
   }
 
   .NavLinks__sort-select {
@@ -43,6 +46,23 @@
       letter-spacing: 0.5px;
       height: 38px;
       line-height: $line-height-xl;
+    }
+  }
+
+  .NavLinks__search-input {
+    @media (max-width: 768px) {
+      tsl-search-input ::ng-deep div {
+        &.active {
+          width: 32px;
+        }
+      }
+      tsl-search-input {
+        &.hover ::ng-deep div {
+          &.active {
+            width: 300px;
+          }
+        }
+      }
     }
   }
 }

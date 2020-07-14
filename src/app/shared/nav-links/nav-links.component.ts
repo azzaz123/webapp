@@ -17,7 +17,8 @@ export class NavLinksComponent implements OnInit {
   @Output() clickedLink = new EventEmitter<string>();
   @Output() searchChanged = new EventEmitter<string>();
   @Output() sortChanged = new EventEmitter<string>();
-
+  public searchClicked: boolean;
+  
   constructor() { }
 
   ngOnInit() {
@@ -36,6 +37,10 @@ export class NavLinksComponent implements OnInit {
 
   onSortChange(sort: string) {
     this.sortChanged.emit(sort);
+  }
+
+  onClickSearch(): void {
+    this.searchClicked = true;
   }
 
 }
