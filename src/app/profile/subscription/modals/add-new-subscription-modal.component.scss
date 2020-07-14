@@ -56,10 +56,6 @@ $add-subscription-modal-content-default-height: 382px;
   margin-bottom: $spacing-s;
 }
 
-.AddNewSubscription__listing-limit-invoice {
-  border-bottom: 1px solid $blue-grey-5;
-}
-
 .AddNewSubscription__listing-limit-container {
   display: flex;
   flex-direction: row;
@@ -276,9 +272,12 @@ tsl-profile-pro-billing {
       border: none;
       border-radius: 0;
       border-bottom: 1px solid $blue-grey-5;
+      border-top: 1px solid $blue-grey-5;
+      box-shadow: inset 0px 0px 4px $blue-grey-5;
       overflow: scroll;
       max-height: 250px;
-      margin-bottom: $spacing-xs;
+      margin-bottom: $spacing-m;
+      margin-top: $spacing-m;
     }
     .row {
       margin-left: 0;
@@ -287,15 +286,15 @@ tsl-profile-pro-billing {
   }
 }
 
-tsl-button ::ng-deep .simple  {
+tsl-button ::ng-deep .simple.light  {
   background-color: transparent;
-  color: $walla-main;
+  color: $blue-grey-3;
   font-size: $font-size-m;
-  font-weight: $font-weight-chunky;
-  text-decoration: underline;
+  font-weight: normal;
+  text-decoration: none;
   &:hover {
     background-color: transparent;
-    color: $walla-dark;
+    color: $blue-grey-2;
   }
 }
 
@@ -354,7 +353,7 @@ select-dropdown > div .options ul li {
   ngb-carousel {
     ::ng-deep {
       .box-content {
-        padding: $spacing-ml 0 $spacing-xxl;
+        padding: $spacing-s 0 $spacing-xxl;
       }
     }
 

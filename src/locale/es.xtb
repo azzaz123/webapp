@@ -1114,4 +1114,9 @@
   <translation id="SubscriptionCreated">Te has suscrito correctamente. ¡Todo está preparado para incrementar tus ventas!</translation>
   <translation id="InvoiceEmail">Pronto recibirás un e-mail con tu factura.</translation>
   <translation id="GoToMyProfile">Ir a mi perfil</translation>
+  <translation id="EditInvoice">Editar mis datos de facturación</translation>
+  <translation id="step1of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>1<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="step2of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="step3of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="step4of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
 </translationbundle>

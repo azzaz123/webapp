@@ -125,10 +125,10 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       }
       this.paymentService.updateBillingInfo(this.billingForm.getRawValue())
       .pipe(finalize(() => {
-        this.billingInfoFormSaved.emit(this.billingForm);
         this.loading = false;
       }))
       .subscribe(() => {
+        this.billingInfoFormSaved.emit(this.billingForm);
         this.errorsService.i18nSuccess('userEdited');
         this.formComponent.initFormControl();
         this.isNewBillingInfoForm = false;

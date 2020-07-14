@@ -684,7 +684,7 @@
   <msg id="SubscribeToPro"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:6</source>Subscribe to PRO</msg>
   <msg id="ChooseSubscription"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:7,8</source>Choose a subscription and take your sales up to the next level.
     </msg>
-  <msg id="step1of3"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:17,18</source>Step <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>1<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> of <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
+  <msg id="step1of4"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:17,18</source>Step <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>1<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> of <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
   <msg id="HowManyProductsToUpload"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:19,20</source>How many
               <ph name="INTERPOLATION"><ex>{{subscription.category_name.toLowerCase()}}</ex>{{subscription.category_name.toLowerCase()}}</ph> are you going to upload to your profile?</msg>
   <msg id="Unlimited"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:29</source>Unlimited</msg>
@@ -708,7 +708,7 @@
   <msg id="ContinueToInvoice"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:64,66</source><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:93,95</source>
               Continue to invoice
             </msg>
-  <msg id="step2of3"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:75</source><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:107,108</source>Step <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> of <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
+  <msg id="step2of4"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:75</source>Step <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> of <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
   <msg id="Invoice"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:76</source><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:109</source>Invoice</msg>
   <msg id="3086731599944442002"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:80</source>Do you need an invoice?</msg>
   <msg id="ContinueToPayment"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:88,90</source><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:118,120</source>
@@ -717,10 +717,12 @@
   <msg id="EditInvoice"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:96,98</source>
               Edit invoice information
             </msg>
+  <msg id="step3of4"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:107,108</source>
+              Step <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> of <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
   <msg id="BackToInvoice"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:121,123</source>
               Back to invoice
             </msg>
-  <msg id="step3of3"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:133,134</source>Step <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> of <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
+  <msg id="step4of4"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:133,134</source>Step <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> of <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
   <msg id="7205093490438309267"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:136</source>Add payment details</msg>
   <msg id="3953884740420390564"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:142</source><ph name="INTERPOLATION"><ex>{{selectedTier.limit}}</ex>{{selectedTier.limit}}</ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex>{{subscription.category_name}}</ph> Plan</msg>
   <msg id="3546316122339217988"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:143</source>Unlimited <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex>{{subscription.category_name}}</ph> Plan</msg>

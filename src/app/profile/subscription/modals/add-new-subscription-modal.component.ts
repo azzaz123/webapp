@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { NgbActiveModal, NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from '../../../core/stripe/stripe.service';
 import { FinancialCardOption, PaymentMethodResponse } from '../../../core/payments/payment.interface';
@@ -28,7 +28,7 @@ import { IOption } from 'ng-select';
   templateUrl: './add-new-subscription-modal.component.html',
   styleUrls: ['./add-new-subscription-modal.component.scss']
 })
-export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
+export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   public card: any;
@@ -76,6 +76,10 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     });
     this.getBillingInfo();
     this._selectedInvoiceOption = this.invoiceOptions[1].value.toString();
+  }
+
+  ngAfterViewInit() {
+    this.carousel.keyboard = false;
   }
 
   ngOnDestroy() {
