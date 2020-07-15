@@ -62,10 +62,12 @@ phases:
           mkdir es
           cp -r dist es
           zip -r webapp-${IMAGE_TAG}.zip es/*
+          rm -rf dist
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run buildprod-en
           mkdir en
           cp -r dist en
           zip -r webapp-${IMAGE_TAG}.zip en/*
+          rm -rf dist
         fi
 
       - >
@@ -74,10 +76,12 @@ phases:
           mkdir es
           cp -r dist es
           zip -r webapp-${IMAGE_TAG}.zip es/*
+          rm -rf dist
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run buildbeta-en
           mkdir en
           cp -r dist en
           zip -r webapp-${IMAGE_TAG}.zip en/*
+          rm -rf dist
         fi
 
       # BUILD AND PUSH IMAGE
