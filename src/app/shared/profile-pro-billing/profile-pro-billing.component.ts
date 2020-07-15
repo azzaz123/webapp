@@ -127,15 +127,18 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       .pipe(finalize(() => {
         this.loading = false;
       }))
-      .subscribe(() => {
-        this.billingInfoFormSaved.emit(this.billingForm);
-        this.errorsService.i18nSuccess('userEdited');
-        this.formComponent.initFormControl();
-        this.isNewBillingInfoForm = false;
-        this.initForm();
-      }, (error: HttpErrorResponse) => {
-        this.errorsService.show(error);
-      });
+      .subscribe(
+        () => {
+          this.errorsService.i18nSuccess('userEdited');
+          this.billingInfoFormSaved.emit(this.billingForm);
+          this.formComponent.initFormControl();
+          this.isNewBillingInfoForm = false;
+          this.initForm();
+        },
+        (error: HttpErrorResponse) => {
+          this.errorsService.show(error);
+        }
+      );
     } else {
       this.errorsService.i18nError('formErrors');
       for (const control in this.billingForm.controls) {

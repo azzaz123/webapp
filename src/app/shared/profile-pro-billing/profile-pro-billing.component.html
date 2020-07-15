@@ -82,10 +82,10 @@
               </div>
             </div>
             <div class="row" *ngIf="!containerTypeIsModal">
-              <div class="col-9" [ngClass]="{'offset-md-3 offset-sm-2': isNewBillingInfoForm, 'text-center': !isNewBillingInfoForm}">
+              <div class="col-8 offset-2" [ngClass]="{'offset-md-3 offset-sm-2': isNewBillingInfoForm, 'text-center': !isNewBillingInfoForm}">
                 <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big" i18n="@@Save">Save</tsl-button>
               </div>
-              <div class="col-sm-12 col-md-3 delete-link" *ngIf="!isNewBillingInfoForm">
+              <div class="col-sm-12 col-md-2 delete-link" *ngIf="!isNewBillingInfoForm">
                 <a (click)="deleteBillingInfo()" i18n="@@DeleteInformation">Delete information</a>
               </div>
             </div>

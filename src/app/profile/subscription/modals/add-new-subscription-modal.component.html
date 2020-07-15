@@ -7,7 +7,7 @@
     <p class="AddNewSubscription__box--subtitle" i18n="@@ChooseSubscription">Choose a subscription and take your sales up to the next level.
     </p>
   </div>
-  <ngb-carousel data-interval="0" data-keyboard="false" *ngIf="loaded"
+  <ngb-carousel data-interval="0" *ngIf="loaded"
     [ngClass]="{ 'extra-info': subscription.category_id === carsCategoryId, 'single': subscription.tiers.length === 1 }">
     <ng-template ngbSlide *ngIf="subscription.tiers.length !== 1" id="step-1">
       <div class="step step-1">
