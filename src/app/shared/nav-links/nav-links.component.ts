@@ -21,6 +21,8 @@ export class NavLinksComponent implements OnInit {
   public searchClicked: boolean;
   public closeSearch: boolean;
   public dropdownLinks: any[];
+  public selectedSubscriptionSelectedNavLinks: any;
+  public selectedLink: NavLink;
   
   constructor() { }
 
@@ -28,16 +30,25 @@ export class NavLinksComponent implements OnInit {
     if (!this.selectedLinkId && this.navLinks && this.navLinks[0]) {
       this.selectedLinkId = this.navLinks[0].id;
     }
-    this.mapLinksToDropdown();
+    //this.mapLinksToDropdown();
+  }
+
+  public openMenuModal(navLink: NavLink): void {
+    //open Modal 100% with options
+    this.onClickNavLink(navLink);
   }
 
   private mapLinksToDropdown(): void {
     this.dropdownLinks = [];
     this.subscriptionSelectedNavLinks.forEach(value => this.dropdownLinks.push({ value: value.id, label: value.display }));
+    if (!this.selectedSubscriptionSelectedNavLinks && this.subscriptionSelectedNavLinks && this.subscriptionSelectedNavLinks[0]) {
+      this.selectedSubscriptionSelectedNavLinks = this.subscriptionSelectedNavLinks[0];
+    }
   }
 
   onClickNavLink(navLink: NavLink) {
     this.clickedLink.emit(navLink.id);
+    this.selectedLink = navLink;
   }
 
   onSearchChange(search: string) {

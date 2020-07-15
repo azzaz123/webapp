@@ -8,23 +8,31 @@
     (click)="onClickCloseSearch($event)">Cancel</span>
   </div>
   <div class="NavLinks__links">
-    <div class="NavLinks__link" *ngFor="let navLink of navLinks">
+    <div *ngIf="!subscriptionSelectedNavLinks">
+      <div class="NavLinks__link" *ngFor="let navLink of navLinks">
+        <a
+          [ngClass]="{ active: selectedLinkId === navLink.id }"
+          (click)="onClickNavLink(navLink)"
+        >
+          <span>{{navLink.display}}</span>
+          <span *ngIf="navLink.counter && navLink.counter.maxVal">
+            ({{navLink.counter.currentVal}}/{{navLink.counter.maxVal}})
+          </span>
+          <span *ngIf="navLink.counter && navLink.counter.currentVal && !navLink.counter.maxVal">
+            ({{navLink.counter.currentVal}})
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <div class="d-md-block">
       <a
         [ngClass]="{ active: selectedLinkId === navLink.id }"
-        (click)="onClickNavLink(navLink)"
+        (click)="openMenuModal(navLink)"
       >
-        <span>{{navLink.display}}</span>
-        <span *ngIf="navLink.counter && navLink.counter.maxVal">
-          ({{navLink.counter.currentVal}}/{{navLink.counter.maxVal}})
-        </span>
-        <span *ngIf="navLink.counter && navLink.counter.currentVal && !navLink.counter.maxVal">
-          ({{navLink.counter.currentVal}})
-        </span>
+        <span>{{selectedLinkId.display}}</span>
       </a>
     </div>
-    <!--<div *ngIf="showSortItems" class="NavLinks__link-mobile d-sm-block d-lg-none">
-      <tsl-select [items]="dropdownLinks" (valueChanges)="onClickNavLink($event)"></tsl-select>
-    </div>-->
     
     <div class="NavLinks__sort-select" *ngIf="showSortItems && sortItems">
       <tsl-select [items]="sortItems" (valueChanges)="onSortChange($event)"></tsl-select>
