@@ -51,16 +51,38 @@
 
   .NavLinks__search-input {
     @media (max-width: 768px) {
+      display: flex;
+      align-items: center;
       tsl-search-input ::ng-deep div {
         &.active {
           width: 32px;
         }
       }
       tsl-search-input {
-        &.hover ::ng-deep div {
-          &.active {
-            width: 300px;
+        position: relative;
+        &.opened ::ng-deep {
+          div {
+            &.active {
+              width: 250px;
+              position: relative;
+            }
           }
+          .clear-search {
+            display: block;
+            position: absolute;
+            right: 0;
+            bottom: 5px;
+          }
+        }
+      }
+      &--close {
+        &.opened {
+          display: block;
+          position: absolute;
+          right: 15px;
+        }
+        &.closed {
+          display: none;
         }
       }
     }

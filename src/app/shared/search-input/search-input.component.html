@@ -2,3 +2,5 @@
   <mat-icon svgIcon="glass"></mat-icon>
   <input type="text" placeholder="{{placeholder}}" (input)="search($event.target.value)" #input />
 </div>
+<mat-icon svgIcon="remove" class="clear-search" (click)="closeSearch($event)"
+></mat-icon>

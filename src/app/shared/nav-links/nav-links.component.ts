@@ -14,10 +14,13 @@ export class NavLinksComponent implements OnInit {
   @Input() searchPlaceholder = 'Search';
   @Input() sortItems: any[];
   @Input() showSortItems = false;
+  @Input() subscriptionSelectedNavLinks: any[];
   @Output() clickedLink = new EventEmitter<string>();
   @Output() searchChanged = new EventEmitter<string>();
   @Output() sortChanged = new EventEmitter<string>();
   public searchClicked: boolean;
+  public closeSearch: boolean;
+  public dropdownLinks: any[];
   
   constructor() { }
 
@@ -25,6 +28,12 @@ export class NavLinksComponent implements OnInit {
     if (!this.selectedLinkId && this.navLinks && this.navLinks[0]) {
       this.selectedLinkId = this.navLinks[0].id;
     }
+    this.mapLinksToDropdown();
+  }
+
+  private mapLinksToDropdown(): void {
+    this.dropdownLinks = [];
+    this.subscriptionSelectedNavLinks.forEach(value => this.dropdownLinks.push({ value: value.id, label: value.display }));
   }
 
   onClickNavLink(navLink: NavLink) {
@@ -41,6 +50,13 @@ export class NavLinksComponent implements OnInit {
 
   onClickSearch(): void {
     this.searchClicked = true;
+  }
+
+  onClickCloseSearch(e: Event): void {
+    e.stopPropagation();
+    e.preventDefault();
+    this.searchClicked = false;
+    this.closeSearch = true;
   }
 
 }

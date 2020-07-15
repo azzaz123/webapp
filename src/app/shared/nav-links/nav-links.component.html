@@ -1,9 +1,12 @@
 <nav class="NavLinks">
 
   <div class="NavLinks__search-input" *ngIf="showSearchInput" (click)="onClickSearch()">
-    <tsl-search-input [ngClass]="{hover: searchClicked}" [placeholder]="searchPlaceholder" (term)="onSearchChange($event)"></tsl-search-input>
+    <tsl-search-input [ngClass]="{opened: searchClicked, closed: !searchClicked}"
+    [placeholder]="searchPlaceholder" [onCloseSearch]="closeSearch" (term)="onSearchChange($event)"
+    ></tsl-search-input>
+    <span i18n="@@Cancel" class="NavLinks__search-input--close" [ngClass]="{opened: searchClicked, closed: !searchClicked}"
+    (click)="onClickCloseSearch($event)">Cancel</span>
   </div>
-
   <div class="NavLinks__links">
     <div class="NavLinks__link" *ngFor="let navLink of navLinks">
       <a
@@ -19,6 +22,10 @@
         </span>
       </a>
     </div>
+    <!--<div *ngIf="showSortItems" class="NavLinks__link-mobile d-sm-block d-lg-none">
+      <tsl-select [items]="dropdownLinks" (valueChanges)="onClickNavLink($event)"></tsl-select>
+    </div>-->
+    
     <div class="NavLinks__sort-select" *ngIf="showSortItems && sortItems">
       <tsl-select [items]="sortItems" (valueChanges)="onSortChange($event)"></tsl-select>
     </div>
