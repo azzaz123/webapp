@@ -330,6 +330,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
   }
 
   public onInvoiceOptionSelect(event: any) {
+    this.loading = false;
     this._selectedInvoiceOption = event.value;
   }
 
@@ -346,6 +347,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
   }
 
   public continueToPayment() {
+    this.loading = true;
     this._submitBillingInfoForm = true;
     this.eventService.emit('formSubmited');
   }

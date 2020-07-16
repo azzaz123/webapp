@@ -113,9 +113,15 @@
             </tsl-profile-pro-billing>
           </div>
           <div class="AddNewSubscription__ButtonActions">
-            <tsl-button id="AddNewSubscription__ButtonActions-payment" class="col-8 offset-2" className="btn-primary btn-medium payment"
-            (click)="continueToPayment();trackClickContinueToPayment();"
-            i18n="@@ContinueToPayment">
+            <tsl-button
+              id="AddNewSubscription__ButtonActions-payment"
+              class="col-8 offset-2"
+              className="btn-primary btn-medium payment"
+              (click)="continueToPayment();trackClickContinueToPayment();"
+              [disabled]="loading"
+              [loading]="loading"
+              i18n="@@ContinueToPayment"
+            >
               Continue to payment
             </tsl-button>
             <tsl-button class="col-8 offset-2" className="simple light" (click)="carousel.prev()" i18n="@@BackToInvoice">
