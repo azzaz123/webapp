@@ -338,7 +338,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
   }
 
   public getBillingInfo(): void {
-    this.paymentService.getBillingInfo().subscribe(() => {
+    this.paymentService.getBillingInfo(false).subscribe(() => {
       this._isBillingInfoMissing = false;
     }, () => {
       this._isBillingInfoMissing = true;

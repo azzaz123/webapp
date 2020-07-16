@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -24,7 +24,7 @@ export enum BILLING_TYPE {
   templateUrl: './profile-pro-billing.component.html',
   styleUrls: ['./profile-pro-billing.component.scss']
 })
-export class ProfileProBillingComponent implements CanComponentDeactivate {
+export class ProfileProBillingComponent implements CanComponentDeactivate, OnDestroy {
 
   public billingForm: FormGroup;
   public isNewBillingInfoForm = true;
@@ -59,6 +59,10 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     });
   }
 
+  ngOnDestroy() {
+    this.eventService.unsubscribeAll('formSubmited');
+  }
+
   buildForm() {
     this.billingForm = this.fb.group({
       type: ['', [Validators.required]],
@@ -75,8 +79,8 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     });
   }
 
-  initForm() {
-    this.paymentService.getBillingInfo().subscribe(
+  initForm(cache: boolean = true) {
+    this.paymentService.getBillingInfo(cache).subscribe(
       (billingInfo: BillingInfoResponse) => {
         this.isNewBillingInfoForm = false;
         this.type = billingInfo.type || BILLING_TYPE.NATURAL;
@@ -110,7 +114,8 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     });
   }
 
-  public onSubmit() {
+  public onSubmit(e?: Event) {
+    console.log('onSubmit e', this.billingForm.valid, e);
     if (this.billingForm.valid) {
       this.loading = true;
       if (this.billingForm.get('type').value === BILLING_TYPE.LEGAL) {
@@ -133,7 +138,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
           this.billingInfoFormSaved.emit(this.billingForm);
           this.formComponent.initFormControl();
           this.isNewBillingInfoForm = false;
-          this.initForm();
+          this.initForm(false);
         },
         (error: HttpErrorResponse) => {
           this.errorsService.show(error);
@@ -158,7 +163,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       if (result) {
         this.paymentService.deleteBillingInfo(this.billingForm.value.id).subscribe(() => {
           this.errorsService.i18nSuccess('deleteBillingInfoSuccess');
-          this.initForm();
+          this.initForm(false);
         }, () => {
           this.errorsService.i18nError('deleteBillingInfoError');
         });
@@ -217,7 +222,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
   }
 
   get containerTypeIsModal(): boolean {
-    return this.containerType === 'modal' ? true : false;
+    return this.containerType === 'modal';
   }
   
   private cpValidator(control: AbstractControl): { [key: string]: boolean } {

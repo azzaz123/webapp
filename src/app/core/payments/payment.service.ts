@@ -36,12 +36,21 @@ export class PaymentService {
 
   private products: Products;
   private perksModel: PerksModel;
+  private billingInfo: BillingInfoResponse;
 
   constructor(private http: HttpClient) {
   }
 
-  public getBillingInfo(): Observable<BillingInfoResponse> {
-    return this.http.get<BillingInfoResponse>(`${environment.baseUrl}${PAYMENTS_API_URL}/billing-info/me`);
+  public getBillingInfo(cache: boolean = true): Observable<BillingInfoResponse> {
+    if (cache && this.billingInfo) {
+      return observableOf(this.billingInfo);
+    }
+
+    return this.http.get<BillingInfoResponse>(`${environment.baseUrl}${PAYMENTS_API_URL}/billing-info/me`)
+      .pipe(map((billingInfo: BillingInfoResponse) => {
+        this.billingInfo = billingInfo;
+        return this.billingInfo;
+      }));
   }
 
   public updateBillingInfo(data: any): Observable<any> {
