@@ -28,7 +28,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
 
   public billingForm: FormGroup;
   public isNewBillingInfoForm = true;
-  public loading = false;
+  public loading = true;
   public type: string;
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
@@ -111,6 +111,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
       }
       this.updateFieldsValidity();
       this.onChanges();
+      this.loading = false;
     });
   }
 

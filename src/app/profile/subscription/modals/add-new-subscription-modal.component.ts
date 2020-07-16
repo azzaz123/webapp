@@ -330,11 +330,11 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
   }
 
   public onInvoiceOptionSelect(event: any) {
-    this.loading = false;
     this._selectedInvoiceOption = event.value;
   }
 
   public onBillingInfoFormSaved(): void {
+    this.loading = false;
     this.carousel.select('step-3');
   }
 
@@ -353,6 +353,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
   }
 
   public continueToInvoice() {
+    this.loading = false;
     this.carousel.select('step-2b');
   }
 

@@ -12,6 +12,10 @@
   }
 }
 
+.content {
+  margin: 0 $spacing-s;
+}
+
 form {
   input,
   textarea {
@@ -41,4 +45,8 @@ form {
       margin: 0 $spacing-s;
     }
   }
+}
+.loading-center {
+  display: block;
+  margin: 0 auto;
 }
