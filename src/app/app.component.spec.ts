@@ -566,14 +566,4 @@ describe('App', () => {
     });
   });
 
-  describe('trust and safety', () => {
-    it('should initialize the trust and safety process', () => {
-      spyOn(trustAndSafetyService, 'initializeProfilingIfNeeded');
-
-      component.ngOnInit();
-
-      expect(trustAndSafetyService.initializeProfilingIfNeeded).toHaveBeenCalledTimes(1);
-    });
-  });
-
 });
