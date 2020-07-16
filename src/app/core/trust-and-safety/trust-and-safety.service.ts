@@ -62,7 +62,7 @@ export class TrustAndSafetyService {
       throw new Error('Session profiling error');
     }
     this._threatMetrixRef.nfl(environment.threatMetrixProfilingDomain, environment.threatMetrixOrgId, this._sessionId);
-    this._profileSentToThreatMetrix.next(true);
+    this._checkProfileSentToThreatMetrix();
   }
 
   private _isStarterUser(): Observable<boolean> {
@@ -79,18 +79,17 @@ export class TrustAndSafetyService {
     );
   }
 
-  private _canSubmitProfile(): boolean {
-    return this._sessionId && this._threatMetrixRef && this._isThreatMetrixProfilingStarted();
+  private _checkProfileSentToThreatMetrix() {
+    const checkProfile = interval(1000).subscribe(() => {
+      if (this._canSubmitProfile()) {
+        checkProfile.unsubscribe();
+        this._profileSentToThreatMetrix.next(true);
+      }
+    });
   }
 
-  public initializeProfilingIfNeeded() {
-    this._isStarterUser().subscribe(isStarter => {
-      if (!isStarter) {
-        return;
-      }
-      this._sessionId = UUID.UUID();
-      this._initializeLibrary();
-    });
+  private _canSubmitProfile(): boolean {
+    return this._sessionId && this._threatMetrixRef && this._isThreatMetrixProfilingStarted();
   }
 
   public submitProfileIfNeeded(location: SessionProfileDataLocation): void {
@@ -99,25 +98,22 @@ export class TrustAndSafetyService {
         return;
       }
 
+      this._sessionId = UUID.UUID();
+      this._initializeLibrary();
+
       const profile: SessionProfileData = {
         id: this._sessionId,
         location,
         platform: SessionProfileDataPlatform.WEB
       };
 
-      if (!this._canSubmitProfile()) {
-        const subscription = this._profileSentToThreatMetrix.subscribe(profileSent => {
-          if (!profileSent) {
-            return;
-          }
-          this.http.post(USER_STARTER_ENDPOINT, profile).subscribe();
-          subscription.unsubscribe();
-        });
-
-        return;
-      }
-
-      this.http.post(USER_STARTER_ENDPOINT, profile).subscribe();
+      const subscription = this._profileSentToThreatMetrix.subscribe(profileSent => {
+        if (!profileSent) {
+          return;
+        }
+        this.http.post(USER_STARTER_ENDPOINT, profile).subscribe();
+        subscription.unsubscribe();
+      });
     });
   }
 }
