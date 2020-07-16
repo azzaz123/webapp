@@ -30,12 +30,13 @@ export class NavLinksComponent implements OnInit {
     if (!this.selectedLinkId && this.navLinks && this.navLinks[0]) {
       this.selectedLinkId = this.navLinks[0].id;
     }
+    this.selectedLink = this.navLinks.find(navLink => navLink.id === this.selectedLinkId);
     //this.mapLinksToDropdown();
   }
 
   public openMenuModal(navLink: NavLink): void {
     //open Modal 100% with options
-    this.onClickNavLink(navLink);
+    //this.onClickNavLink(navLink);
   }
 
   private mapLinksToDropdown(): void {

@@ -29,6 +29,9 @@
   }
 
   .NavLinks__links {
+    div {
+      display: flex;
+    }
     display: flex;
     .NavLinks__link {
       margin-top: 2px;

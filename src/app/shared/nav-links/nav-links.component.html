@@ -4,11 +4,11 @@
     <tsl-search-input [ngClass]="{opened: searchClicked, closed: !searchClicked}"
     [placeholder]="searchPlaceholder" [onCloseSearch]="closeSearch" (term)="onSearchChange($event)"
     ></tsl-search-input>
-    <span i18n="@@Cancel" class="NavLinks__search-input--close" [ngClass]="{opened: searchClicked, closed: !searchClicked}"
+    <span i18n="@@Cancel" class="NavLinks__search-input--close d-md-none" [ngClass]="{opened: searchClicked, closed: !searchClicked}"
     (click)="onClickCloseSearch($event)">Cancel</span>
   </div>
   <div class="NavLinks__links">
-    <div *ngIf="!subscriptionSelectedNavLinks">
+    <div *ngIf="!showSearchInput">
       <div class="NavLinks__link" *ngFor="let navLink of navLinks">
         <a
           [ngClass]="{ active: selectedLinkId === navLink.id }"
@@ -25,12 +25,9 @@
       </div>
     </div>
 
-    <div class="d-md-block">
-      <a
-        [ngClass]="{ active: selectedLinkId === navLink.id }"
-        (click)="openMenuModal(navLink)"
-      >
-        <span>{{selectedLinkId.display}}</span>
+    <div class="d-block d-sm-block d-md-none" *ngIf="showSearchInput">
+      <a class="active" (click)="openMenuModal(selectedLink)">
+        <span>{{selectedLink?.display}}</span>
       </a>
     </div>
     
