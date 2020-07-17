@@ -29,7 +29,6 @@ import { Subscription } from 'rxjs';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { DidomiService } from './core/didomi/didomi.service';
-import { TrustAndSafetyService } from './core/trust-and-safety/trust-and-safety.service';
 
 @Component({
   selector: 'tsl-root',
