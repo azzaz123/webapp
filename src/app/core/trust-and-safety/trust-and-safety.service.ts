@@ -21,7 +21,6 @@ export const USER_STARTER_ENDPOINT = `${environment.baseUrl}api/v3/users/me/star
 export class TrustAndSafetyService {
   private _threatMetrixRef: ThreatMetrixLibrary;
   private _sessionId: string;
-  private _subscription: Subscription;
   private _cachedIsStarterResponse: UserStarterResponse = null;
   private _profileSentToThreatMetrix: ReplaySubject<boolean> = new ReplaySubject();
 
@@ -44,10 +43,10 @@ export class TrustAndSafetyService {
   }
 
   private _checkThreatMetrixReady() {
-    this._subscription = interval(1000).subscribe(() => {
+    const checkThreatMetrixInterval = interval(1000).subscribe(() => {
       if (wadgtlft) {
+        checkThreatMetrixInterval.unsubscribe();
         this._threatMetrixRef = wadgtlft;
-        this._subscription.unsubscribe();
         this._startThreatMetrixProfiling();
       }
     });
