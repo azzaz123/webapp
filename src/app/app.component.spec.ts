@@ -36,8 +36,6 @@ import { AnalyticsService } from './core/analytics/analytics.service';
 import { MockAnalyticsService } from '../tests/analytics.fixtures.spec';
 import { DidomiService } from './core/didomi/didomi.service';
 import { MockDidomiService } from './core/didomi/didomi.service.spec';
-import { TrustAndSafetyService } from './core/trust-and-safety/trust-and-safety.service';
-import { MockTrustAndSafetyService } from './core/trust-and-safety/trust-and-safety.fixtures.spec';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -59,7 +57,6 @@ let paymentService: PaymentService;
 let stripeService: StripeService;
 let analyticsService: AnalyticsService;
 let didomiService: DidomiService;
-let trustAndSafetyService: TrustAndSafetyService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -208,7 +205,6 @@ describe('App', () => {
         },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         { provide: DidomiService, useValue: MockDidomiService },
-        { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -232,7 +228,6 @@ describe('App', () => {
     stripeService = TestBed.inject(StripeService);
     analyticsService = TestBed.inject(AnalyticsService);
     didomiService = TestBed.inject(DidomiService);
-    trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
 
     spyOn(notificationService, 'init');
   });
