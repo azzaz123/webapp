@@ -7,8 +7,10 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
-import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
+import { STRIPE_CARD_OPTION, STRIPE_CARD_OPTION_SUBSCRIPTION } from '../../../../tests/stripe.fixtures.spec';
 import { delay } from 'rxjs/operators';
+import { NoCardModalComponent } from 'app/shared/modals/no-card-modal/no-card-modal.component';
+
 describe('CreditCardInfoComponent', () => {
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;
@@ -36,7 +38,9 @@ describe('CreditCardInfoComponent', () => {
                 result: Promise.resolve(),
                 componentInstance: componentInstance
               }
-            }
+            },
+            close() {
+            },
           },
         }
       ],
@@ -54,14 +58,43 @@ describe('CreditCardInfoComponent', () => {
     component.financialCard = STRIPE_CARD_OPTION;
   });
 
-  describe('deleteStripeCreditCard', () => {
-    beforeEach(() => deleteStripeCardButton = fixture.debugElement.nativeElement.querySelector('a'));
+  describe('checkDelete', () => {
+    beforeEach(() =>  {
+      deleteStripeCardButton = fixture.debugElement.nativeElement.querySelector('.CreditCard__info--actions-delete');
+      component.financialCard = STRIPE_CARD_OPTION_SUBSCRIPTION;
+    });
+    it('should open NoCardModalComponent modal if card is default', fakeAsync(() => {
+      spyOn(modalService, 'open').and.callThrough();
+      
+      deleteStripeCardButton.click();
+      tick();
 
+      expect(modalService.open).toHaveBeenCalledWith(NoCardModalComponent, {
+        windowClass: 'review'
+      });
+    }));
+
+    it('should call deleteCard', fakeAsync(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve('deleteCardModal'),
+        componentInstance: componentInstance
+      });
+      spyOn(component, 'deleteStripeCard').and.callThrough();
+      component.financialCard = STRIPE_CARD_OPTION;
+
+      deleteStripeCardButton.click();
+      tick();
+
+      expect(component.deleteStripeCard).toHaveBeenCalled();
+    }));
+  });
+
+  describe('deleteStripeCreditCard', () => {
     it('should open modal when clicking in add more cards button', fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component.onDeleteStripeCard, 'emit');
 
-      deleteStripeCardButton.click();
+      component.deleteStripeCard();
       tick();
 
       expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
@@ -74,7 +107,7 @@ describe('CreditCardInfoComponent', () => {
     it('should ask to Stripe backend to delete the card', fakeAsync(() => {
       spyOn(stripeService, 'deleteCard').and.callThrough();
 
-      deleteStripeCardButton.click();
+      component.deleteStripeCard();
       tick();
 
       expect(stripeService.deleteCard).toHaveBeenCalled();
@@ -85,7 +118,7 @@ describe('CreditCardInfoComponent', () => {
       const backendResponseTimeMs = 3000;
       spyOn(stripeService, 'deleteCard').and.returnValue(of().pipe(delay(backendResponseTimeMs)));
 
-      deleteStripeCardButton.click();
+      component.deleteStripeCard();
       tick();
       fixture.detectChanges();
 
@@ -99,7 +132,6 @@ describe('CreditCardInfoComponent', () => {
       const backendResponseTimeMs = 3000;
       spyOn(stripeService, 'deleteCard').and.returnValue(of().pipe(delay(backendResponseTimeMs)));
 
-      deleteStripeCardButton.click();
       tick(backendResponseTimeMs + 1);
 
       const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('.CreditCard__info--loading');

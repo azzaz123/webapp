@@ -20,6 +20,7 @@ import { ChatComponent } from './chat.component';
 import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
 import { MockTrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.fixtures.spec';
 import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
+import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 
 class MockUserService {
   public isProfessional() {
@@ -186,6 +187,20 @@ describe('Component: ChatComponent with ItemId', () => {
 
       expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
       expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
+    });
+
+    it('should save searchId if link contains searchId', () => {
+      const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
+      const searchId = '123456789';
+      spyOn(inboxService, 'isInboxReady').and.returnValue(true);
+      spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversation));
+      spyOn(sessionStorage, 'setItem');
+
+      activatedRoute.queryParams = observableFrom([{ itemId: 'itemId', searchId  }]);
+
+      component.ngOnInit();
+
+      expect(sessionStorage.setItem).toHaveBeenCalledWith(SEARCHID_STORAGE_NAME, searchId);
     });
   });
 

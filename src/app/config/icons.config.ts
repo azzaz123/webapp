@@ -294,4 +294,6 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('watch', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/watch.svg'));
   matIconRegistry.addSvgIcon('poweredByStripe', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/poweredByStripe.svg'));
   matIconRegistry.addSvgIcon('lock-new', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/lock-new.svg'));
+  matIconRegistry.addSvgIcon('download-android', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/download-android.svg'));
+  matIconRegistry.addSvgIcon('download-ios', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/download-ios.svg'));
 }

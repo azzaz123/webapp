@@ -948,9 +948,9 @@
   <translation id="5813721227215884251">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
   <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
   <translation id="thirdVoiceReviewFirstMessage">Has encontrado lo que buscabas. ¡Genial!</translation>
-  <translation id="thirdVoiceReviewSecondMessage">¿Cómo ha ido? Valora tu experiencia con este usuario, será útil para nuestra comunidad</translation>
+  <translation id="thirdVoiceReviewSecondMessage">¿Cómo ha ido? Valora tu experiencia con este usuario, será útil para nuestra comunidad.</translation>
   <translation id="thirdVoiceDoReview">Valorar</translation>
-  <translation id="thirdVoiceThanksForRating">¡Gracias! Otras personas apreciarán tu valoracióng</translation>
+  <translation id="thirdVoiceThanksForRating">¡Gracias! Otras personas apreciarán tu valoración.</translation>
   <translation id="thirdVoiceDropPrice">El producto ha bajado de precio. ¿Quieres cerrar un trato?</translation>
   <translation id="949044872815747177">Gestionar desde la app</translation>
   <translation id="6488767812620715130"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Parece que quieres cambiar algo en tu suscripción<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
@@ -1040,12 +1040,27 @@
   <translation id="AddNewModalSubscribeNow">¡Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días!</translation>
   <translation id="EditSubscriptionModalCancelSubscription">Quiero cancelar mi suscripción</translation>
   <translation id="EditSubscriptionModalCancelFreeTrial">Cancelar prueba gratuita</translation>
+  <translation id="MissingPaymentMethodTitle">No hay un método de pago disponible</translation>
+  <translation id="MissingPaymentMethodSubtitle">No hay un método de pago disponible para que podamos renovar tu suscripción cuando caduque.</translation>
+  <translation id="PleaseAddCreditCard">Por favor, añade una tarjeta de crédito para no perder los beneficios de ser PRO</translation>
+  <translation id="Cancel">Cancelar</translation>
+  <translation id="DeleteCard">Eliminar</translation>
+  <translation id="ChangeCard">Cambiar tarjeta</translation>
+  <translation id="AddNewCreditCard">Añadir una tarjeta de crédito</translation>
+  <translation id="ConfirmPaymentMethod">Confirma tu método de pago</translation>
+  <translation id="ChargeThisCard">Quieres que se cobre en la tarjeta</translation>
+  <translation id="Yes">Sí</translation>
+  <translation id="ChangeSubscriptionCardTitle">Cambiar tarjeta para la suscripción</translation>
+  <translation id="SetDefaultCard">Establecer tarjeta por defecto</translation>
+  <translation id="SubscriptionCard">Tarjeta vinculada a suscripciones</translation>
+  <translation id="AddNewSubscriptionCard">Añadir nueva tarjeta de suscripción</translation>
+  <translation id="CurrentCards">Tarjetas guardadas</translation>
+  <translation id="AddNewCard">Añadir tarjeta</translation>
   <translation id="RangeDatepickerHaveSelected">Has seleccionado </translation>
   <translation id="RangeDatepickerCitybump">destacado de ciudad</translation>
   <translation id="RangeDatepickerCountrybump">destacado de país</translation>
   <translation id="RangeDatepickerCitybumps">destacados de ciudad</translation>
   <translation id="RangeDatepickerCountrybumps">destacados de país</translation>
-  <translation id="Cancel">Cancelar</translation>
   <translation id="Apply">Aplicar</translation>
   <translation id="CheckoutProPlanning">Planificación</translation>
   <translation id="ApplyAll">Aplicar a todos</translation>
@@ -1066,4 +1081,14 @@
   <translation id="Save">Guardar</translation>
   <translation id="DeleteInformation">Eliminar información</translation>
   <translation id="5875130684997376720">Facturación</translation>
+  <translation id="ChangeAddSubscriptionCardTitle">Añade una tarjeta de crédito</translation>
+  <translation id="SelectSavedCard">Seleccionar tarjeta guardada</translation>
+  <translation id="ChangeSelectSubscriptionCardTitle">Selecciona una tarjeta de crédito</translation>
+  <translation id="ChangeSubscriptionCardSubtitle">Será el método de pago vinculado a tu suscripción</translation>
+  <translation id="2341832243359741366">Seleccionar tarjeta guardada</translation>
+  <translation id="AddCard">Añadir tarjeta</translation>
+  <translation id="UseSavedCard">Utiliza tarjeta guardada</translation>
+  <translation id="ConfirmDeleteCard">Sí, eliminar tarjeta</translation>
+  <translation id="MobileBlockerTitle">Bonita pantalla, pero baja resolución.</translation>
+  <translation id="MobileBlockerSubtitle">Para visualizar este contenido, abre la app de wallapop o continúa desde un ordenador.</translation>
 </translationbundle>

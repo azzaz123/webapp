@@ -100,6 +100,14 @@ $modal-border-radius: 0.3rem;
     &.btn-warn {
       color: $negative-main;
     }
+    &.btn-danger {
+      background-color: $warn !important;
+      color: $white !important;
+      &:hover {
+        background-color: $warn !important;
+        opacity: 0.9;
+      }
+    }
   }
 
   .btn-corporate {

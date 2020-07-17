@@ -13,6 +13,7 @@ import { ConversationService } from '../core/conversation/conversation.service';
 import { isEmpty, isNil } from 'lodash-es';
 import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
 import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
+import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 
 @Component({
   selector: 'tsl-chat',
@@ -92,6 +93,7 @@ export class ChatComponent implements OnInit {
     }
 
     this.route.queryParams.subscribe((params: Params) => {
+      const searchId = params.searchId;
       const itemId = params.itemId;
       const conversationId = params.conversationId;
 
@@ -99,6 +101,10 @@ export class ChatComponent implements OnInit {
         this.openConversationByConversationId(conversationId);
       } else if (itemId) {
         this.openConversationByItmId(itemId);
+      }
+
+      if (searchId) {
+        sessionStorage.setItem(SEARCHID_STORAGE_NAME, searchId);
       }
     });
   }

@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "postinstall": "ngcc",
+    "postinstall": "node scripts/postinstall/remove-unused-moment-locales.js && ngcc",
     "start": "./scripts/docknum/start.sh",
     "start-beta": "ng serve -c=beta",
     "builddev": "ng build --i18n-locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
@@ -70,6 +70,7 @@
     "ngx-permissions": "^7.0.3",
     "rxjs": "^6.5.5",
     "shelving-mock-indexeddb": "^1.1.0",
+    "spain-id": "^1.0.9",
     "stanza.io": "https://github.com/Wallapop/stanza.io#v8.0.5",
     "tslib": "^1.10.0",
     "visibilityjs": "^2.0.1",
