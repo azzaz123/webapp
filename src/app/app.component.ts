@@ -72,8 +72,7 @@ export class AppComponent implements OnInit {
               private callService: CallsService,
               private stripeService: StripeService,
               private analyticsService: AnalyticsService,
-              private didomiService: DidomiService,
-              private trustAndSafetyService: TrustAndSafetyService) {
+              private didomiService: DidomiService) {
     this.config();
   }
 
@@ -94,7 +93,6 @@ export class AppComponent implements OnInit {
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
     this.didomiService.initialize();
-    this.trustAndSafetyService.initializeProfiling();
   }
 
   private updateUrlAndSendAnalytics() {

@@ -7,7 +7,6 @@ import {
   HttpResponse
 } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { USER_STARTER_ENDPOINT } from 'app/core/trust-and-safety/trust-and-safety.service';
 
 export interface MockUrl {
   url: string;
@@ -18,7 +17,6 @@ export interface MockUrl {
 export class MockInterceptor implements HttpInterceptor {
 
   public mockUrls: MockUrl[] = [
-    { url: USER_STARTER_ENDPOINT, data: { starter: false }}
   ];
 
   constructor() { }

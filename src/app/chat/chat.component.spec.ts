@@ -80,9 +80,6 @@ describe('Component: ChatComponent with ItemId', () => {
     inboxService = TestBed.get(InboxService);
     inboxConversationService = TestBed.get(InboxConversationService);
     trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
-
-    spyOn(trustAndSafetyService, 'submitProfile');
-
     fixture.autoDetectChanges();
   });
 
@@ -182,25 +179,13 @@ describe('Component: ChatComponent with ItemId', () => {
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
     });
 
-    describe('when the user is a starter user', () => {
-      it('should submit profiling to trust and safety team', () => {
-        spyOn(trustAndSafetyService, 'isStarterUser').and.returnValue(of(true));
+    it('should delegate profiling to trust and safety team', () => {
+      spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
 
-        component.ngOnInit();
+      component.ngOnInit();
 
-        expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
-        expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith('OpenChat');
-      });
-    });
-
-    describe('when the user is not a starter user', () => {
-      it('should not submit profiling to trust and safety team', () => {
-        spyOn(trustAndSafetyService, 'isStarterUser').and.returnValue(of(false));
-
-        component.ngOnInit();
-
-        expect(trustAndSafetyService.submitProfile).not.toHaveBeenCalled();
-      });
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
     });
   });
 
@@ -274,9 +259,6 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
     inboxService = TestBed.get(InboxService);
     inboxConversationService = TestBed.get(InboxConversationService);
     trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
-
-    spyOn(trustAndSafetyService, 'submitProfile');
-
     fixture.autoDetectChanges();
   });
 
@@ -295,25 +277,13 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
       expect(inboxConversationService.openConversationByConversationId$).toHaveBeenCalled();
     });
 
-    describe('when the user is a starter user', () => {
-      it('should submit profiling to trust and safety team', () => {
-        spyOn(trustAndSafetyService, 'isStarterUser').and.returnValue(of(true));
+    it('should delegate profiling to trust and safety team', () => {
+    spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
 
-        component.ngOnInit();
+      component.ngOnInit();
 
-        expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
-        expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith('OpenChat');
-      });
-    });
-
-    describe('when the user is not a starter user', () => {
-      it('should not submit profiling to trust and safety team', () => {
-        spyOn(trustAndSafetyService, 'isStarterUser').and.returnValue(of(false));
-
-        component.ngOnInit();
-
-        expect(trustAndSafetyService.submitProfile).not.toHaveBeenCalled();
-      });
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
     });
   });
 });
