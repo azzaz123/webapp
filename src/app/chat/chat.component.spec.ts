@@ -17,6 +17,9 @@ import { ConversationServiceMock, InboxConversationServiceMock, InboxServiceMock
 import { PhoneMethodResponse } from '../core/user/phone-method.interface';
 import { InboxConversation, MessageStatus } from './model';
 import { ChatComponent } from './chat.component';
+import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
+import { MockTrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.fixtures.spec';
+import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 
 class MockUserService {
@@ -38,6 +41,7 @@ describe('Component: ChatComponent with ItemId', () => {
   let activatedRoute: ActivatedRoute;
   let inboxService: InboxService;
   let inboxConversationService: InboxConversationService;
+  let trustAndSafetyService: TrustAndSafetyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -63,7 +67,8 @@ describe('Component: ChatComponent with ItemId', () => {
             adsRefresh() {
             }
           }
-        }
+        },
+        { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -75,7 +80,7 @@ describe('Component: ChatComponent with ItemId', () => {
     activatedRoute = TestBed.get(ActivatedRoute);
     inboxService = TestBed.get(InboxService);
     inboxConversationService = TestBed.get(InboxConversationService);
-
+    trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
     fixture.autoDetectChanges();
   });
 
@@ -175,6 +180,15 @@ describe('Component: ChatComponent with ItemId', () => {
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
     });
 
+    it('should delegate profiling to trust and safety team', () => {
+      spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
+
+      component.ngOnInit();
+
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
+    });
+
     it('should save searchId if link contains searchId', () => {
       const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
       const searchId = '123456789';
@@ -220,6 +234,7 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
   let activatedRoute: ActivatedRoute;
   let inboxService: InboxService;
   let inboxConversationService: InboxConversationService;
+  let trustAndSafetyService: TrustAndSafetyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -245,7 +260,8 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
             adsRefresh() {
             }
           }
-        }
+        },
+        { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -257,12 +273,11 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
     activatedRoute = TestBed.get(ActivatedRoute);
     inboxService = TestBed.get(InboxService);
     inboxConversationService = TestBed.get(InboxConversationService);
-
+    trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
     fixture.autoDetectChanges();
   });
 
   describe('ngOnInit', () => {
-
     it('should open conversation by conversationId', () => {
       const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
 
@@ -275,6 +290,15 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
 
       expect(inboxConversationService.openConversationByItemId$).not.toHaveBeenCalled();
       expect(inboxConversationService.openConversationByConversationId$).toHaveBeenCalled();
+    });
+
+    it('should delegate profiling to trust and safety team', () => {
+    spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
+
+      component.ngOnInit();
+
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
     });
   });
 });
