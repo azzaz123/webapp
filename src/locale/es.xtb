@@ -1065,8 +1065,8 @@
   <translation id="ApplyAll">Aplicar a todos</translation>
   <translation id="PlanAll">Planificar todos</translation>
   <translation id="ProfileProBillingFormType">Estoy registrado/a como</translation>
-  <translation id="ProfileProBillingFormNatural">Física</translation>
-  <translation id="ProfileProBillingFormLegal">Jurídica</translation>
+  <translation id="ProfileProBillingFormNatural">Persona física</translation>
+  <translation id="ProfileProBillingFormLegal">Persona jurídica</translation>
   <translation id="FirstName">Nombre</translation>
   <translation id="LastName">Apellidos</translation>
   <translation id="CompanyName">Nombre de la empresa</translation>
@@ -1105,6 +1105,7 @@
   <translation id="PriceMonth"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex>{{selectedTier.price}}</ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex>{{selectedTier.currency}}</ph>/mes</translation>
   <translation id="ContinueToInvoice">Continuar a facturación</translation>
   <translation id="step2of3">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="ReceiveInvoices">¿Quieres recibir facturas?</translation>
   <translation id="Invoice">Facturación</translation>
   <translation id="3086731599944442002">¿Necesitas una factura?</translation>
   <translation id="ContinueToPayment">Continuar a pago</translation>
