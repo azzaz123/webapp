@@ -45,7 +45,6 @@
     "@ng-bootstrap/ng-bootstrap": "6.0.3",
     "@ngu/carousel": "^2.0.3",
     "angular2-uuid": "^1.1.1",
-    "appboy-web-sdk": "^2.4.3",
     "bootstrap": "4.0.0",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.5.7",

@@ -1938,10 +1938,6 @@ appboy-web-sdk@2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/appboy-web-sdk/-/appboy-web-sdk-2.2.4.tgz#f4f3915e3c47ff856baaf73495e6f4b788d01bae"
 
-appboy-web-sdk@^2.4.3:
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/appboy-web-sdk/-/appboy-web-sdk-2.4.3.tgz#b268acb3c7e02a19cc6c4d2bee0b754516bac8ef"
-
 aproba@^1.0.3, aproba@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/aproba/-/aproba-1.2.0.tgz#6802e6264efd18c790a1b0d517f0f2627bf2c94a"
