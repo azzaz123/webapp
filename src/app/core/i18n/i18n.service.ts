@@ -5,6 +5,8 @@ export class I18nService {
 
   protected translations: any = {
     en: {
+      yes: 'Yes',
+      no: 'No',
       daysMomentConfig: {
         lastDay: '[Yesterday] - HH:mm',
         sameDay: '[Today] - HH:mm',
@@ -178,6 +180,8 @@ export class I18nService {
       ]
     },
     es: {
+      yes: 'Sí',
+      no: 'No',
       daysMomentConfig: {
         lastDay: '[Ayer] - HH:mm',
         sameDay: '[Hoy] - HH:mm',

@@ -145,7 +145,7 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
     margin: 0px $spacing-m $spacing-m;
     padding: $spacing-l $spacing-m;
     height: unset;
-    min-height: unset;
+    min-height: 312px;
 
     &:last-child {
       margin-bottom: 0px;

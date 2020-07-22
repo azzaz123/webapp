@@ -73,6 +73,7 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
 import { StatusIconComponent } from './status-icon';
 import { ChangeCardModalComponent } from './modals/change-card-modal/change-card-modal.component';
 import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-card-modal.component';
+import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
 
 @NgModule({
   imports: [
@@ -152,7 +153,8 @@ import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-c
     ProBadgeModule,
     DateUntilDayPipe,
     DateCalendarPipe,
-    CountdownPipe
+    CountdownPipe,
+    ProfileProBillingComponent
   ],
   declarations: [
     AdComponent,
@@ -215,7 +217,8 @@ import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-c
     PreventDoubleClickDirective,
     DateUntilDayPipe,
     DateCalendarPipe,
-    CountdownPipe
+    CountdownPipe,
+    ProfileProBillingComponent
   ],
   providers: [
     DecimalPipe,
