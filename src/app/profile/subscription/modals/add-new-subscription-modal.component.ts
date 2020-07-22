@@ -22,6 +22,7 @@ import { PAYMENT_RESPONSE_STATUS, PaymentService } from '../../../core/payments/
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
 import { CAR_DEALER_TYPEFORM_URL, TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
 import { IOption } from 'ng-select';
+import { I18nService } from 'app/core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
@@ -48,10 +49,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
   public carDealerTypeformLink = CAR_DEALER_TYPEFORM_URL;
   public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
   public privacyPolicyURL = PRIVACY_POLICY_URL;
-  public invoiceOptions: IOption[] = [
-    { value: 'true', label: 'Yes' },
-    { value: 'false', label: 'No' }
-  ];
+  public invoiceOptions: IOption[] = [];
   public isBillingInfoValid: boolean;
   private _invoiceId: string;
   private _selectedInvoiceOption: string;
@@ -65,10 +63,12 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
               private modalService: NgbModal,
               private errorService: ErrorsService,
               private analyticsService: AnalyticsService,
-              private paymentService: PaymentService) {
+              private paymentService: PaymentService,
+              private i18nService: I18nService) {
   }
 
   ngOnInit() {
+    this.generateInvoiceOptions();
     this.loaded = true;
     this.selectedTier = this.subscription.selected_tier;
     this.eventService.subscribe(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, (response) => {
@@ -84,6 +84,13 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
 
   ngOnDestroy() {
     this.eventService.unsubscribeAll(STRIPE_PAYMENT_RESPONSE_EVENT_KEY);
+  }
+
+  private generateInvoiceOptions() {
+    this.invoiceOptions = [
+      { value: 'true', label: this.i18nService.getTranslations('yes') },
+      { value: 'false', label: this.i18nService.getTranslations('no') }
+    ];
   }
 
   public close() {

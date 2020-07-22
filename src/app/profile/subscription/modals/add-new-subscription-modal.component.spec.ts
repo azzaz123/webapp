@@ -36,6 +36,7 @@ import { CATEGORY_IDS } from '../../../core/category/category-ids';
 import { SUBSCRIPTION_CATEGORIES } from '../../../core/subscriptions/subscriptions.interface';
 import { By } from '@angular/platform-browser';
 import { PaymentService } from 'app/core/payments/payment.service';
+import { I18nService } from 'app/core/i18n/i18n.service';
 
 describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
@@ -48,6 +49,7 @@ describe('AddNewSubscriptionModalComponent', () => {
   let eventService: EventService;
   let analyticsService: AnalyticsService;
   let paymentService: PaymentService;
+  let i18nService: I18nService;
   const componentInstance = {
     subscription: MAPPED_SUBSCRIPTIONS[2]
   };
@@ -125,7 +127,8 @@ describe('AddNewSubscriptionModalComponent', () => {
         },
         {
           provide: AnalyticsService, useClass: MockAnalyticsService
-        }
+        },
+        I18nService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -143,6 +146,7 @@ describe('AddNewSubscriptionModalComponent', () => {
     eventService = TestBed.get(EventService);
     analyticsService = TestBed.get(AnalyticsService);
     paymentService = TestBed.get(PaymentService);
+    i18nService = TestBed.inject(I18nService);
     component.card = STRIPE_CARD;
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     component.isNewSubscriber = false;
@@ -172,6 +176,34 @@ describe('AddNewSubscriptionModalComponent', () => {
 
       expect(component.selectedTier).toEqual(MAPPED_SUBSCRIPTIONS[2].tiers[1]);
     })
+
+    describe('and when the webapp is in English', () => {
+      it('should set the English invoice options', () => {
+        const expectedEnglishInvoiceOptions = [
+          { value: 'true', label: 'Yes' },
+          { value: 'false', label: 'No' }
+        ];
+
+        component.ngOnInit();
+
+        expect(component.invoiceOptions).toEqual(expectedEnglishInvoiceOptions);
+      });
+    });
+
+    describe('and when the webapp is in Spanish', () => {
+      beforeEach(() => i18nService['_locale'] = 'es');
+
+      it('should set the Spanish invoice options', () => {
+        const expectedSpanishInvoiceOptions = [
+          { value: 'true', label: 'Sí' },
+          { value: 'false', label: 'No' }
+        ];
+
+        component.ngOnInit();
+
+        expect(component.invoiceOptions).toEqual(expectedSpanishInvoiceOptions);
+      });
+    });
   });
 
   describe('close', () => {

@@ -259,8 +259,8 @@
   <msg id="8458658926966860767"><source>app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:2</source>Are you sure you want to delete billing information?</msg>
   <msg id="InvoiceInformation"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:7</source>Invoice information</msg>
   <msg id="ProfileProBillingFormType"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:13</source>Type of registration</msg>
-  <msg id="ProfileProBillingFormNatural"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:22</source>Natural</msg>
-  <msg id="ProfileProBillingFormLegal"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:30</source>Legal</msg>
+  <msg id="ProfileProBillingFormNatural"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:22</source>Natural person</msg>
+  <msg id="ProfileProBillingFormLegal"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:30</source>Legal person</msg>
   <msg id="FirstName"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:35</source>First Name</msg>
   <msg id="LastName"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:41</source>Last Name</msg>
   <msg id="CompanyName"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:47</source>Company Name</msg>
@@ -710,7 +710,7 @@
               Continue to invoice
             </msg>
   <msg id="step2of4"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:75</source>Step <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> of <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
-  <msg id="Invoice"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:76</source><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:109</source>Invoice</msg>
+  <msg id="ReceiveInvoices"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:76</source>Do you want to receive invoices?</msg>
   <msg id="3086731599944442002"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:80</source>Do you need an invoice?</msg>
   <msg id="ContinueToPayment"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:88,90</source><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:124,126</source>
               Continue to payment
@@ -720,6 +720,7 @@
             </msg>
   <msg id="step3of4"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:107,108</source>
               Step <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> of <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></msg>
+  <msg id="Invoice"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:109</source>Invoice</msg>
   <msg id="BackToInvoice"><source>app/profile/subscription/modals/add-new-subscription-modal.component.html:127,129</source>
               Back to invoice
             </msg>
