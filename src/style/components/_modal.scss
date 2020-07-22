@@ -87,7 +87,7 @@ $modal-border-radius: 0.3rem;
     margin-bottom: 0;
     font-size: $font-size-s;
   }
-  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.btn-gray):not(.custom-radio):not(.btn-text) {
+  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.btn-gray):not(.custom-radio):not(.btn-text):not(.simple.light) {
     color: $blue-grey-1;
     background-color: transparent;
     outline: 0;

@@ -161,7 +161,6 @@ $add-subscription-modal-content-default-height: 382px;
 }
 
 tsl-button, tsl-stripe-card-element ::ng-deep tsl-button {
-  width: 100%;
   ::ng-deep {
     .btn-text {
       font-size: $spacing-m;
@@ -201,6 +200,11 @@ ngb-carousel {
     .step {
       height: 100%;
     }
+    .step-2b {
+      .box-content {
+        max-width: 100%;
+      }
+    }
     .carousel-control-prev, .carousel-control-next {
       display: none;
     }
@@ -223,7 +227,7 @@ ngb-carousel {
       }
     }
     .carousel-item {
-      height: $add-subscription-modal-content-default-height;
+      height: auto;
     }
 
     .carousel-inner {
@@ -243,13 +247,13 @@ ngb-carousel {
 
   &.extra-info ::ng-deep {
     .carousel-item {
-      height: $add-subscription-modal-content-default-height + 34px;
+      height: auto;
     };
   }
 
   &.single ::ng-deep {
     .carousel-item {
-      height: $add-subscription-modal-content-default-height - 38px;
+      height: auto;
     }
     .carousel-indicators {
       display: none;
@@ -258,6 +262,39 @@ ngb-carousel {
     .box-content {
       padding: $spacing-ml;
     }
+  }
+}
+
+tsl-profile-pro-billing {
+  height: 100%;
+  ::ng-deep {
+    .box {
+      border: none;
+      border-radius: 0;
+      border-bottom: 1px solid $blue-grey-5;
+      border-top: 1px solid $blue-grey-5;
+      box-shadow: inset 0px 0px 4px $blue-grey-5;
+      overflow: scroll;
+      max-height: 250px;
+      margin-bottom: $spacing-m;
+      margin-top: $spacing-m;
+    }
+    .row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}
+
+tsl-button ::ng-deep .simple.light  {
+  background-color: transparent;
+  color: $blue-grey-3;
+  font-size: $font-size-m;
+  font-weight: normal;
+  text-decoration: none;
+  &:hover {
+    background-color: transparent;
+    color: $blue-grey-2;
   }
 }
 
@@ -299,11 +336,24 @@ ngb-carousel {
   }
 }
 
+.AddNewSubscription__ButtonActions {
+  display: flex;
+  flex-direction: column;
+}
+
+select-dropdown > div .options ul li {
+  text-align: left;
+}
+
+.form-control {
+  text-align: left;
+}
+
 @include media-breakpoint-down(sm) {
   ngb-carousel {
     ::ng-deep {
       .box-content {
-        padding: $spacing-ml 0 $spacing-xxl;
+        padding: $spacing-s 0 $spacing-xxl;
       }
     }
 

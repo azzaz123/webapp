@@ -112,11 +112,12 @@ export class SubscriptionsService {
     );
   }
 
-  public newSubscription(subscriptionId: string, paymentId: string): Observable<any> {
+  public newSubscription(subscriptionId: string, paymentId: string, billing: boolean = false): Observable<any> {
     this.uuid = UUID.UUID();
     return this.http.post(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`, {
         payment_method_id: paymentId,
-        product_subscription_id: subscriptionId
+        product_subscription_id: subscriptionId,
+        billing
       },
       {
         observe: 'response' as 'body'
