@@ -204,6 +204,12 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   }
 
   private isSpanishCifValid(cif: string) {
+    if (!cif) {
+      return false;
+    }
+
+    cif = cif.toUpperCase().replace(/[_\W\s]+/g, '');
+
     return validDNI(cif) || validCIF(cif) || validNIE(cif);
   }
 
