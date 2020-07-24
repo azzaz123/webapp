@@ -85,8 +85,10 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
         this.isNewBillingInfoForm = false;
         this.type = billingInfo.type || BILLING_TYPE.NATURAL;
         this.billingForm.patchValue(billingInfo);
-        this.billingForm.controls['cif'].disable();
-        this.billingForm.controls['type'].disable();
+        if (this.isSpanishCifOrNifValid(billingInfo.cif)) {
+          this.billingForm.controls['cif'].disable();
+          this.billingForm.controls['type'].disable();
+        }
         this.patchFormValues();
         this.formComponent.initFormControl();
       },
@@ -116,7 +118,6 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   }
 
   public onSubmit(e?: Event) {
-    console.log('onSubmit e', this.billingForm.valid, e);
     if (this.billingForm.valid) {
       this.loading = true;
       if (this.billingForm.get('type').value === BILLING_TYPE.LEGAL) {
@@ -199,6 +200,16 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
     this.billingForm.get('name').updateValueAndValidity();
     this.billingForm.get('surname').updateValueAndValidity();
     this.billingForm.get('cif').updateValueAndValidity();
+  }
+
+  private isSpanishCifOrNifValid(cif: string) {
+    if (!cif) {
+      return false;
+    }
+
+    cif = cif.toUpperCase().replace(/[_\W\s]+/g, '');
+
+    return validDNI(cif) || validCIF(cif) || validNIE(cif);
   }
 
   private nifValidator(control: FormControl) {
