@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { NavLink } from './nav-link.interface';
+import { NavLink, SortLink } from './nav-link.interface';
+import { FullScreenModalComponent } from '../modals/full-screen-menu/full-screen-modal.component';
+import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'tsl-nav-links',
@@ -12,7 +15,7 @@ export class NavLinksComponent implements OnInit {
   @Input() selectedLinkId: string;
   @Input() showSearchInput = false;
   @Input() searchPlaceholder = 'Search';
-  @Input() sortItems: any[];
+  @Input() sortItems: SortLink[];
   @Input() showSortItems = false;
   @Input() subscriptionSelectedNavLinks: any[];
   @Output() clickedLink = new EventEmitter<string>();
@@ -23,28 +26,50 @@ export class NavLinksComponent implements OnInit {
   public dropdownLinks: any[];
   public selectedSubscriptionSelectedNavLinks: any;
   public selectedLink: NavLink;
+  public selectedSort: NavLink;
+  public isMobile = false;
   
-  constructor() { }
+  constructor(private modalService: NgbModal,
+              private deviceService: DeviceDetectorService) { }
 
   ngOnInit() {
     if (!this.selectedLinkId && this.navLinks && this.navLinks[0]) {
       this.selectedLinkId = this.navLinks[0].id;
     }
     this.selectedLink = this.navLinks.find(navLink => navLink.id === this.selectedLinkId);
-    //this.mapLinksToDropdown();
-  }
-
-  public openMenuModal(navLink: NavLink): void {
-    //open Modal 100% with options
-    //this.onClickNavLink(navLink);
-  }
-
-  private mapLinksToDropdown(): void {
-    this.dropdownLinks = [];
-    this.subscriptionSelectedNavLinks.forEach(value => this.dropdownLinks.push({ value: value.id, label: value.display }));
-    if (!this.selectedSubscriptionSelectedNavLinks && this.subscriptionSelectedNavLinks && this.subscriptionSelectedNavLinks[0]) {
-      this.selectedSubscriptionSelectedNavLinks = this.subscriptionSelectedNavLinks[0];
+    const sortLinks = this.mapSortToLink(this.sortItems);
+    this.selectedSort = sortLinks[0];
+    if (this.deviceService.isMobile()) {
+      this.isMobile = true;
     }
+  }
+
+  public selectMenu(): void {
+    let modalRef: NgbModalRef = this.modalService.open(FullScreenModalComponent, {windowClass: 'full-screen'});
+    modalRef.componentInstance.items = this.navLinks;
+    modalRef.result.then((link: NavLink) => {
+      modalRef = null;
+      this.onClickNavLink(link);
+    });
+  }
+
+  public selectSort(): void {
+    const sortLinks = this.mapSortToLink(this.sortItems);
+    let modalRef: NgbModalRef = this.modalService.open(FullScreenModalComponent, {windowClass: 'full-screen'});
+    modalRef.componentInstance.items = sortLinks;
+    modalRef.result.then((link: NavLink) => {
+      modalRef = null;
+      this.onSortChange(link);
+    });
+  }
+
+  private mapSortToLink(sortItems: SortLink[]): NavLink[] {
+    const sortLinks: NavLink[] = [];
+    sortItems.map((sortItem: SortLink) => {
+      let sortObj = { id: sortItem.value, display: sortItem.label };
+      sortLinks.push(sortObj)
+    });
+    return sortLinks;
   }
 
   onClickNavLink(navLink: NavLink) {
@@ -56,19 +81,25 @@ export class NavLinksComponent implements OnInit {
     this.searchChanged.emit(search);
   }
 
-  onSortChange(sort: string) {
-    this.sortChanged.emit(sort);
+  onDeleteSearch() {
+    this.onSearchChange('');
+  }
+
+  onSortChange(sort: NavLink) {
+    this.sortChanged.emit(sort.id);
+    this.selectedSort = sort;
   }
 
   onClickSearch(): void {
-    this.searchClicked = true;
+    if (this.deviceService.isMobile()) {
+      this.searchClicked = true;
+    }
   }
 
-  onClickCloseSearch(e: Event): void {
-    e.stopPropagation();
-    e.preventDefault();
+  onClickCloseSearch(): void {
     this.searchClicked = false;
     this.closeSearch = true;
+    this.onSearchChange('');
   }
 
 }

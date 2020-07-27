@@ -17,6 +17,9 @@ $background: #f4f6f7;
 
     tsl-subscriptions-slot-item {
       width: 100%;
+      @media (max-width: 768px) {
+        min-width: 285px;
+      }
 
       &:not(:first-child):not(:last-child) {
         margin: 0 $spacing-s;
@@ -83,7 +86,7 @@ $background: #f4f6f7;
     display: flex;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    
+    width: 100%;
     &::-webkit-scrollbar { 
       display: none;
     }

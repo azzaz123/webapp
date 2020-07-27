@@ -1,5 +1,9 @@
 @import "~style/common";
 
+:host {
+  width: 100%;
+}
+
 .SubscriptionsSlotItem {
   display: flex;
   align-items: center;
@@ -7,7 +11,6 @@
   justify-content: center;
   position: relative;
   transition: all .25s ease;
-
   width: 100%;
   height: 80px;
   padding: $spacing-m;
@@ -47,6 +50,9 @@
 
 .SubscriptionsSlotItem__info-title {
   color: $walla-main;
+  span {
+    font-weight: $font-weight-chunky;
+  }
 }
 
 .SubscriptionsSlotItem__info-description {
@@ -82,10 +88,18 @@
   .SubscriptionsSlotItem__info {
     .SubscriptionsSlotItem__info-title {
       color: $walla-main;
+      @media (max-width: 768px) {
+        display: flex;
+        align-items: center;
+        word-break: break-word;
+      }
     }
 
     .SubscriptionsSlotItem__info-description {
       color: $blue-grey-1;
+      @media (max-width: 768px) {
+        margin-right: 0;
+      }
     }
   }
 
@@ -94,5 +108,23 @@
 .SubscriptionsSlotItem--not-selected {
   .SubscriptionsSlotItem__info-title {
     color: $blue-grey-2;
+  }
+}
+
+.SubscriptionsSlotItem--not-selected, .SubscriptionsSlotItem--single {
+  .SubscriptionsSlotItem__info-title {
+    @media (max-width: 768px) {
+      width: 40%;
+      display: flex;
+      align-items: center;
+      word-break: break-word;
+    }
+  }
+  .SubscriptionsSlotItem__info-description {
+    color: $blue-grey-1;
+    @media (max-width: 768px) {
+      margin-right: 0;
+      width: 60%;
+    }
   }
 }

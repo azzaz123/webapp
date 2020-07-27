@@ -7,7 +7,9 @@
 
   div {
     margin-right: $spacing-xl;
-
+    @media (max-width: 768px) {
+      margin-right: $spacing-m;
+    }
     a {
       cursor: pointer;
       color: $blue-grey-2;
@@ -24,6 +26,10 @@
       &.active {
         color: $walla-main;
         border-bottom: 2px solid $walla-main;
+        @media (max-width: 768px) {
+          color: $blue-grey-2;
+          border-bottom: none;
+        }
       }
     }
   }
@@ -89,5 +95,8 @@
         }
       }
     }
+  }
+  .hidden {
+    display: none;
   }
 }

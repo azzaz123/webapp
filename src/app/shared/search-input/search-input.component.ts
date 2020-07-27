@@ -15,6 +15,7 @@ export class SearchInputComponent implements OnChanges {
   @Input() placeholder;
   @Input() onCloseSearch: boolean;
   @Output('term') public term$: EventEmitter<string> = new EventEmitter<string>();
+  @Output() deleteSearch: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('input') input: ElementRef;
   private term: Subject<string> = new Subject<string>();
 
@@ -38,11 +39,11 @@ export class SearchInputComponent implements OnChanges {
   }
 
   public closeSearch(e?: Event): void {
-    console.log('close event ', e);
     if (e) {
       e.stopPropagation();
       e.preventDefault();
     }
     this.input.nativeElement.value = '';
+    this.deleteSearch.emit();
   }
 }

@@ -114,6 +114,7 @@ export class ListComponent implements OnInit, OnDestroy {
     ];
 
     this.navLinks = this.normalNavLinks;
+    this.setSortItems();
 
     this.getItems();
     this.getCreditInfo();
