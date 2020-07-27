@@ -11,6 +11,8 @@ import { AdService } from '../core/ad/ad.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ConversationService } from '../core/conversation/conversation.service';
 import { isEmpty, isNil } from 'lodash-es';
+import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
+import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 import { SEARCHID_STORAGE_NAME } from '../core/message/real-time.service';
 
 @Component({
@@ -34,7 +36,8 @@ export class ChatComponent implements OnInit {
               private route: ActivatedRoute,
               private conversationService: ConversationService,
               private inboxService: InboxService,
-              public inboxConversationService: InboxConversationService) {
+              public inboxConversationService: InboxConversationService,
+              private trustAndSafetyService: TrustAndSafetyService) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
@@ -68,6 +71,8 @@ export class ChatComponent implements OnInit {
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_READY, (ready) => {
       this.archivedInboxReady = ready;
     });
+
+    this.trustAndSafetyService.submitProfileIfNeeded(SessionProfileDataLocation.OPEN_CHAT);
   }
 
   public onLoad(event: any) {

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,6 +10,7 @@ import { BillingInfoResponse } from '../../core/payments/payment.interface';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { finalize } from 'rxjs/operators';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
+import { EventService } from 'app/core/event/event.service';
 import { validDNI, validNIE, validCIF } from 'spain-id';
 
 export enum BILLING_TYPE {
@@ -23,20 +24,26 @@ export enum BILLING_TYPE {
   templateUrl: './profile-pro-billing.component.html',
   styleUrls: ['./profile-pro-billing.component.scss']
 })
-export class ProfileProBillingComponent implements CanComponentDeactivate {
+export class ProfileProBillingComponent implements CanComponentDeactivate, OnDestroy {
 
   public billingForm: FormGroup;
   public isNewBillingInfoForm = true;
-  public loading = false;
+  public loading = true;
   public type: string;
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
+  @Output() billingInfoFormSaved: EventEmitter<FormGroup> = new EventEmitter();
+  @Input() containerType: string;
   
   constructor(private fb: FormBuilder,
               private paymentService: PaymentService,
               private errorsService: ErrorsService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private eventService: EventService) {
     this.buildForm();
+    this.eventService.subscribe('formSubmited', () => {
+      this.onSubmit();
+    });
   }
 
   onChanges() {
@@ -50,6 +57,10 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       this.updateFieldsValidity();
       this.billingInfoFormChange.emit(this.billingForm);
     });
+  }
+
+  ngOnDestroy() {
+    this.eventService.unsubscribeAll('formSubmited');
   }
 
   buildForm() {
@@ -68,14 +79,16 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     });
   }
 
-  initForm() {
-    this.paymentService.getBillingInfo().subscribe(
+  initForm(cache: boolean = true) {
+    this.paymentService.getBillingInfo(cache).subscribe(
       (billingInfo: BillingInfoResponse) => {
         this.isNewBillingInfoForm = false;
         this.type = billingInfo.type || BILLING_TYPE.NATURAL;
         this.billingForm.patchValue(billingInfo);
-        this.billingForm.controls['cif'].disable();
-        this.billingForm.controls['type'].disable();
+        if (this.isSpanishCifOrNifValid(billingInfo.cif)) {
+          this.billingForm.controls['cif'].disable();
+          this.billingForm.controls['type'].disable();
+        }
         this.patchFormValues();
         this.formComponent.initFormControl();
       },
@@ -100,10 +113,11 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       }
       this.updateFieldsValidity();
       this.onChanges();
+      this.loading = false;
     });
   }
 
-  public onSubmit() {
+  public onSubmit(e?: Event) {
     if (this.billingForm.valid) {
       this.loading = true;
       if (this.billingForm.get('type').value === BILLING_TYPE.LEGAL) {
@@ -120,14 +134,18 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       .pipe(finalize(() => {
         this.loading = false;
       }))
-      .subscribe(() => {
-        this.errorsService.i18nSuccess('userEdited');
-        this.formComponent.initFormControl();
-        this.isNewBillingInfoForm = false;
-        this.initForm();
-      }, (error: HttpErrorResponse) => {
-        this.errorsService.show(error);
-      });
+      .subscribe(
+        () => {
+          this.errorsService.i18nSuccess('userEdited');
+          this.billingInfoFormSaved.emit(this.billingForm);
+          this.formComponent.initFormControl();
+          this.isNewBillingInfoForm = false;
+          this.initForm(false);
+        },
+        (error: HttpErrorResponse) => {
+          this.errorsService.show(error);
+        }
+      );
     } else {
       this.errorsService.i18nError('formErrors');
       for (const control in this.billingForm.controls) {
@@ -147,7 +165,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
       if (result) {
         this.paymentService.deleteBillingInfo(this.billingForm.value.id).subscribe(() => {
           this.errorsService.i18nSuccess('deleteBillingInfoSuccess');
-          this.initForm();
+          this.initForm(false);
         }, () => {
           this.errorsService.i18nError('deleteBillingInfoError');
         });
@@ -184,6 +202,16 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     this.billingForm.get('cif').updateValueAndValidity();
   }
 
+  private isSpanishCifOrNifValid(cif: string) {
+    if (!cif) {
+      return false;
+    }
+
+    cif = cif.toUpperCase().replace(/[_\W\s]+/g, '');
+
+    return validDNI(cif) || validCIF(cif) || validNIE(cif);
+  }
+
   private nifValidator(control: FormControl) {
     const nif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
 
@@ -205,6 +233,10 @@ export class ProfileProBillingComponent implements CanComponentDeactivate {
     return pattern.test(control.value) ? null : { 'email': true };
   }
 
+  get containerTypeIsModal(): boolean {
+    return this.containerType === 'modal';
+  }
+  
   private cpValidator(control: AbstractControl): { [key: string]: boolean } {
     if (Validators.required(control)) {
       return null;

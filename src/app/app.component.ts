@@ -19,7 +19,6 @@ import { MessageService } from './chat/service/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
@@ -67,7 +66,6 @@ export class AppComponent implements OnInit {
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
-              private modalService: NgbModal,
               private connectionService: ConnectionService,
               private paymentService: PaymentService,
               private callService: CallsService,

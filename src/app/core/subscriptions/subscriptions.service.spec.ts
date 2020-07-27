@@ -103,7 +103,8 @@ describe('SubscriptionsService', () => {
       const expectedUrl = `${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/1-2-3`;
       const expectedBody = {
         payment_method_id: paymentId,
-        product_subscription_id: subscriptionId
+        product_subscription_id: subscriptionId,
+        billing: false
       };
 
       service.newSubscription(subscriptionId, paymentId).subscribe();
