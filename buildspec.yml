@@ -96,7 +96,7 @@ phases:
       # SEND RELEASE EMAIL
       - >
         if [ "`echo $BRANCH | grep release/`" != "" ]; then
-          RELEASE_BOT_COMMAND='email_release repo=webapp jira_tag_prefix=MOD email_destination=frontend@wallapop.com,qa@wallapop.com'
+          RELEASE_BOT_COMMAND='email_release repo=webapp jira_tag_prefix=WEBAPP email_destination=frontend@wallapop.com,qa@wallapop.com'
           curl -X POST https://releasebot.wallapop.com/event-handler -d "{\"headers\":{},\"body\":{\"token\":\"$code_build_token\",\"event\":{\"type\":\"message\",\"text\":\"$RELEASE_BOT_COMMAND\",\"channel\":\"\",\"channel_type\":\"im\"}}}"
         fi
 
