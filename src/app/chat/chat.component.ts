@@ -71,8 +71,6 @@ export class ChatComponent implements OnInit {
     this.eventService.subscribe(EventService.ARCHIVED_INBOX_READY, (ready) => {
       this.archivedInboxReady = ready;
     });
-
-    this.trustAndSafetyService.submitProfileIfNeeded(SessionProfileDataLocation.OPEN_CHAT);
   }
 
   public onLoad(event: any) {
@@ -101,6 +99,10 @@ export class ChatComponent implements OnInit {
         this.openConversationByConversationId(conversationId);
       } else if (itemId) {
         this.openConversationByItmId(itemId);
+      }
+
+      if (conversationId || itemId) {
+        this.trustAndSafetyService.submitProfileIfNeeded(SessionProfileDataLocation.OPEN_CHAT);
       }
 
       if (searchId) {
