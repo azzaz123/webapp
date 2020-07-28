@@ -35,4 +35,26 @@ describe('SearchInputComponent', () => {
 
     expect(term).toBe(TEXT);
   }));
+
+  describe('closeSearch', () => {
+    it('should emit deleteSearch', () => {
+      spyOn(component.deleteSearch, 'emit');
+
+      component.closeSearch(new Event(''));
+
+      expect(component.deleteSearch.emit).toHaveBeenCalled();
+    });
+
+    it('should set the input field to empty', () => {
+      component.input = {
+        nativeElement: {
+          value: 'mesa'
+        }
+      };
+
+      component.closeSearch(new Event(''));
+
+      expect(component.input.nativeElement.value).toEqual('');
+    });
+  });
 });
