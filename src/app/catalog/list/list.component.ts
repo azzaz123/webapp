@@ -317,8 +317,8 @@ export class ListComponent implements OnInit, OnDestroy {
             this.items = append ? this.items.concat(itemsByCategory) : itemsByCategory;
             this.updateNavLinksCounters();
             this.setNumberOfProducts();
-            this.loading = false;
           }
+          this.loading = false;
           this.end = true;
         });
     } else {
