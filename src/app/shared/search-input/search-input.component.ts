@@ -43,7 +43,9 @@ export class SearchInputComponent implements OnChanges {
       e.stopPropagation();
       e.preventDefault();
     }
-    this.input.nativeElement.value = '';
+    if (this.input) {
+      this.input.nativeElement.value = '';
+    }
     this.deleteSearch.emit();
   }
 }

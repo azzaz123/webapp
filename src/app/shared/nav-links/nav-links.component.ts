@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { NavLink, SortLink } from './nav-link.interface';
 import { FullScreenModalComponent } from '../modals/full-screen-menu/full-screen-modal.component';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,7 +9,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   templateUrl: './nav-links.component.html',
   styleUrls: ['./nav-links.component.scss']
 })
-export class NavLinksComponent implements OnInit {
+export class NavLinksComponent implements OnInit, OnChanges {
 
   @Input() navLinks: NavLink[];
   @Input() selectedLinkId: string;
@@ -41,6 +41,12 @@ export class NavLinksComponent implements OnInit {
     this.selectedSort = sortLinks[0];
     if (this.deviceService.isMobile()) {
       this.isMobile = true;
+    }
+  }
+
+  ngOnChanges() {
+    if (this.navLinks) {
+      this.selectedLink = this.navLinks.find(navLink => navLink.id === this.selectedLinkId);
     }
   }
 
@@ -78,7 +84,9 @@ export class NavLinksComponent implements OnInit {
   }
 
   onSearchChange(search: string) {
-    this.searchChanged.emit(search);
+    if (search !== '') {
+      this.searchChanged.emit(search);
+    }
   }
 
   onDeleteSearch() {
@@ -96,7 +104,9 @@ export class NavLinksComponent implements OnInit {
     }
   }
 
-  onClickCloseSearch(): void {
+  onClickCloseSearch(e: Event): void {
+    e.stopPropagation();
+    e.preventDefault();
     this.searchClicked = false;
     this.closeSearch = true;
     this.onSearchChange('');

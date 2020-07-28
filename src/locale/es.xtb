@@ -1121,5 +1121,6 @@
   <translation id="step3of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
   <translation id="step4of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
   <translation id="InvoiceInformation">Información de facturación</translation>
-  <translation id="OrderYourCatalogBy">Ordena tu catálogo por</msg>
+  <translation id="OrderYourCatalogBy">Ordena tu catálogo por</translation>
+  <translation id="OrderBy">Ordenar por</translation>
 </translationbundle>

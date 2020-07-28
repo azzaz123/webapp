@@ -257,6 +257,7 @@
   <msg id="CurrentCards"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:21</source>Saved cards</msg>
   <msg id="2341832243359741366"><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source>Select saved card</msg>
   <msg id="OrderYourCatalogBy"><source>app/shared/modals/full-screen-menu/full-screen-modal.component.html:3</source>Order your catalog by</msg>
+  <msg id="OrderBy"><source>app/shared/nav-links/nav-links.component.html:41</source>Order by</msg>
   <msg id="8458658926966860767"><source>app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:2</source>Are you sure you want to delete billing information?</msg>
   <msg id="InvoiceInformation"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:7</source>Invoice information</msg>
   <msg id="ProfileProBillingFormType"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:13</source>Type of registration</msg>

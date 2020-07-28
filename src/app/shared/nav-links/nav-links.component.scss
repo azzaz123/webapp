@@ -42,11 +42,23 @@
     .NavLinks__link {
       margin-top: 2px;
     }
+    .NavLinks__anchor {
+      span {
+        margin-right: $spacing-xs;
+      }
+      mat-icon {
+        ::ng-deep {
+          width: 12px;
+          vertical-align: middle;
+        }
+      }
+    }
   }
 
   .NavLinks__sort-select {
     margin-left: auto;
     margin-right: 0;
+    display: block;
     tsl-select {
       font-size: $font-size-xs;
       font-weight: $font-weight-chunky;
@@ -55,6 +67,19 @@
       letter-spacing: 0.5px;
       height: 38px;
       line-height: $line-height-xl;
+    }
+    .NavLinks__anchor {
+      display: flex;
+      align-items: center;
+      span {
+        margin-right: $spacing-xs;
+      }
+      mat-icon {
+        ::ng-deep {
+          width: 12px;
+          vertical-align: middle;
+        }
+      }
     }
   }
 
@@ -74,6 +99,7 @@
             &.active {
               width: 250px;
               position: relative;
+              border-bottom: 1px solid $walla-main;
             }
           }
           .clear-search {

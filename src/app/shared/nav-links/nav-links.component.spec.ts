@@ -146,13 +146,13 @@ describe('NavLinksComponent', () => {
     it('should call onSearchChange', () => {
       spyOn(component, 'onSearchChange').and.callThrough();
 
-      component.onClickCloseSearch();
+      component.onClickCloseSearch(new Event(''));
 
       expect(component.onSearchChange).toHaveBeenCalledWith('');
     });
 
     it('should set the search vars to new values', () => {
-      component.onClickCloseSearch();
+      component.onClickCloseSearch(new Event(''));
 
       expect(component.searchClicked).toBe(false);
       expect(component.closeSearch).toBe(true);
