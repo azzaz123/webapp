@@ -182,6 +182,7 @@ describe('Component: ChatComponent with ItemId', () => {
 
     it('should delegate profiling to trust and safety team', () => {
       spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
+      spyOn(inboxService, 'isInboxReady').and.returnValue(true);
 
       component.ngOnInit();
 
@@ -293,7 +294,8 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
     });
 
     it('should delegate profiling to trust and safety team', () => {
-    spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
+      spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
+      spyOn(inboxService, 'isInboxReady').and.returnValue(true);
 
       component.ngOnInit();
 
