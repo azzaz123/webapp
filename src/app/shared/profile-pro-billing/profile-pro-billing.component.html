@@ -90,9 +90,6 @@
               <div class="col-7" [ngClass]="{'offset-md-5 offset-sm-2': isNewBillingInfoForm, 'offset-md-3 text-center': !isNewBillingInfoForm}">
                 <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big" i18n="@@Save">Save</tsl-button>
               </div>
-              <div class="col-sm-12 col-md-2 delete-link" *ngIf="!isNewBillingInfoForm && !containerTypeIsModal">
-                <a (click)="deleteBillingInfo()" i18n="@@DeleteInformation">Delete information</a>
-              </div>
             </div>
           </div>
         </div>
