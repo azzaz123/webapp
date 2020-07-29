@@ -329,7 +329,7 @@ export class InboxConversationService {
     return throwError(new Error('Not found'));
   }
 
-  private displayErrorIfTooManyNewConversations(error): Observable<never> {
+  private handleTooManyNewConversationsError(error): Observable<never> {
     const { code } = error;
     if (code === ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS) {
       const title = this.i18nService.getTranslations('defaultErrorTitle');
@@ -343,7 +343,7 @@ export class InboxConversationService {
   private fetchConversationByItem$(itemId: string): Observable<InboxConversation> {
     return this.httpClient.post<ConversationResponse>(`${environment.baseUrl}api/v3/conversations`, { item_id: itemId }).pipe(
       mergeMap((response: ConversationResponse) => this.getConversation(response.conversation_id)),
-      catchError(({ error }) => this.displayErrorIfTooManyNewConversations(error)),
+      catchError(({ error }) => this.handleTooManyNewConversationsError(error)),
     );
   }
 
