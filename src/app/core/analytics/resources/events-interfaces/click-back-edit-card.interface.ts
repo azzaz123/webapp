@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks on the Catalog Management button
+ * User clicks back button without editing card in Edit Card screen
  */
-export interface ClickCatalogManagement {
+export interface ClickBackEditCard {
   /**
-   * Identifier of the User Catalog screen
+   * Identifier of the screen where the click is done
    */
-  screenId: 219 | 112;
+  screenId: 220;
 }

@@ -6,9 +6,9 @@
  */
 
 /**
- * User views transaction pay screen
+ * User clicks change home delivery method button in the transaction pay screen
  */
-export interface ViewTransactionPayScreen {
+export interface ClickChangeHomeAddressTransactionPay {
   /**
    * The unique identifier for an item
    */

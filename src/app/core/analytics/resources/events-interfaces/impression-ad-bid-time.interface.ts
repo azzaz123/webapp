@@ -33,4 +33,8 @@ export interface ImpressionAdBidTime {
    * Type of connection being used by the device that makes the request
    */
   connection_type?: string;
+  /**
+   * Identifies the source to which the ad belongs
+   */
+  advertiser?: string;
 }

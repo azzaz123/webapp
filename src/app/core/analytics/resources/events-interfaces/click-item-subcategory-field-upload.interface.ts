@@ -6,11 +6,15 @@
  */
 
 /**
- * User clicks on the Catalog Management button
+ * Users clicks on the subcategory when uploading an item
  */
-export interface ClickCatalogManagement {
+export interface ClickItemSubcategoryFieldUpload {
   /**
-   * Identifier of the User Catalog screen
+   * Identifier of the category
    */
-  screenId: 219 | 112;
+  categoryId?: number;
+  /**
+   * Identifier of the upload screen
+   */
+  screenId: 41;
 }

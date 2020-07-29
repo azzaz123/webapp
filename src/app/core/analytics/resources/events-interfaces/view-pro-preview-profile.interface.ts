@@ -21,4 +21,8 @@ export interface ViewProPreviewProfile {
    * The unique identifier of the search
    */
   searchId: string;
+  /**
+   * Name of the experiment or A/B testing applied to the user who has performed the view. The default value would be 'baseline'
+   */
+  experiment?: string;
 }

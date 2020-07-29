@@ -6,9 +6,9 @@
  */
 
 /**
- * Users perform a search
+ * Users saves a search
  */
-export interface Search {
+export interface SaveSearch {
   /**
    * The unique identifier of the search
    */
@@ -16,11 +16,7 @@ export interface Search {
   /**
    * The unique identifier of the saved search
    */
-  savedSearchId?: string;
-  /**
-   * Name of the experiment or A/B testing applied to tgghe user who has performed the search. The default value would be 'baseline'
-   */
-  experiment?: string;
+  savedSearchId: string;
   /**
    * The source from which the searching comes. The sources for the app clients can be: search_box, recent_searches, quick_filters, stored_filters, category_slider and default_filters. The sources for web can be: search_box, default_filters, quick_filters, seo_section, seo_list, seo_location_list, seo_sitemap
    */
@@ -33,12 +29,11 @@ export interface Search {
     | "seo_section"
     | "seo_list"
     | "seo_location_list"
-    | "seo_sitemap"
-    | "item_detail";
+    | "seo_sitemap";
   /**
    * Identifier of the screen where the searching has been done
    */
-  screenId: 110 | 111 | 193 | 217;
+  screenId: 111;
   /**
    * Latitude of the performed search
    */

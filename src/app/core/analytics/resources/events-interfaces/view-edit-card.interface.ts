@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks on the Catalog Management button
+ * User views Edit Card screen
  */
-export interface ClickCatalogManagement {
+export interface ViewEditCard {
   /**
-   * Identifier of the User Catalog screen
+   * Identifier of the Edit Card screen
    */
-  screenId: 219 | 112;
+  screenId: 220;
 }

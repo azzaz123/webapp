@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks on the Catalog Management button
+ * User clicks save button after editing card in Edit Card screen
  */
-export interface ClickCatalogManagement {
+export interface ClickSaveEditCard {
   /**
-   * Identifier of the User Catalog screen
+   * Identifier of the screen where the click is done
    */
-  screenId: 219 | 112;
+  screenId: 220;
 }
