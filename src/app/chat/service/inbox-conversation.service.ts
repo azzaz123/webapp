@@ -329,21 +329,21 @@ export class InboxConversationService {
     return throwError(new Error('Not found'));
   }
 
-  private handleTooManyNewConversationsError(error): Observable<never> {
-    const { code } = error;
+  private handleTooManyNewConversationsError(errorResponse): Observable<never> {
+    const { code } = errorResponse.error;
     if (code === ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS) {
       const title = this.i18nService.getTranslations('defaultErrorTitle');
       const text = this.i18nService.getTranslations('tooManyNewConversations');
       this.toastService.show({ title, text, type: 'error' });
     }
 
-    return throwError({});
+    return throwError(errorResponse);
   }
 
   private fetchConversationByItem$(itemId: string): Observable<InboxConversation> {
     return this.httpClient.post<ConversationResponse>(`${environment.baseUrl}api/v3/conversations`, { item_id: itemId }).pipe(
       mergeMap((response: ConversationResponse) => this.getConversation(response.conversation_id)),
-      catchError(({ error }) => this.handleTooManyNewConversationsError(error)),
+      catchError(errorResponse => this.handleTooManyNewConversationsError(errorResponse)),
     );
   }
 
