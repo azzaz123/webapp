@@ -12,7 +12,7 @@ export interface ViewOwnProfile {
   /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: 112;
+  screenId: number;
   /**
    * If the user profile is a pro user
    */
@@ -20,5 +20,9 @@ export interface ViewOwnProfile {
   /**
    * If the card of manage is shown
    */
-  showManageCard: boolean;
+  showManageCard?: boolean;
+  /**
+   * Name of the experiment or A/B testing applied to the user who has performed the view. The default value would be 'baseline'
+   */
+  experiment?: string;
 }

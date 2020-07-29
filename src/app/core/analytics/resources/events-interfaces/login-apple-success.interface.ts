@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks on the Catalog Management button
+ * Users successfully login with Apple
  */
-export interface ClickCatalogManagement {
+export interface LoginAppleSuccess {
   /**
-   * Identifier of the User Catalog screen
+   * Identifier of the screen where the options to login or register appear
    */
-  screenId: 219 | 112;
+  screenId: 177;
 }

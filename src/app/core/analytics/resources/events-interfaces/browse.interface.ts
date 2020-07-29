@@ -36,7 +36,8 @@ export interface Browse {
     | "default_filters"
     | "seo_category_slider"
     | "seo_home"
-    | "seo_sitemap";
+    | "seo_sitemap"
+    | "item_detail";
   /**
    * Identifier of the screen where the browsing has been done
    */

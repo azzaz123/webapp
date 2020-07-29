@@ -6,9 +6,9 @@
  */
 
 /**
- * User views transaction pay screen
+ * User clicks add office delivery method button in the transaction pay screen
  */
-export interface ViewTransactionPayScreen {
+export interface ClickAddOfficeTransactionPay {
   /**
    * The unique identifier for an item
    */

@@ -6,9 +6,9 @@
  */
 
 /**
- * Users views item detail screen for a Real Estate property
+ * User reactivate an item
  */
-export interface ViewOthersItemREDetail {
+export interface ReactivateItem {
   /**
    * The unique identifier for an item
    */
@@ -18,6 +18,10 @@ export interface ViewOthersItemREDetail {
    */
   categoryId: number;
   /**
+   * Identifier of the subcategory that the item belongs to
+   */
+  subcategoryId?: number;
+  /**
    * Item price
    */
   salePrice?: number;
@@ -26,35 +30,23 @@ export interface ViewOthersItemREDetail {
    */
   title: string;
   /**
-   * Real State Operation
+   * Brand
    */
-  operation?: string;
+  brand?: string;
   /**
-   * Real State Property Type
+   * Model
    */
-  type?: string;
+  model?: string;
   /**
-   * Real State condition
+   * CG Object type name
    */
-  condition?: string;
+  objectType?: string;
   /**
-   * Real State surface area
-   */
-  surface?: number;
-  /**
-   * Real State number of rooms
-   */
-  rooms?: number;
-  /**
-   * If the seller of the item viewed is a professional user
+   * If the item is from a professional user
    */
   isPro: boolean;
   /**
-   * Identifier of the screen that the item was viewed from
+   * Identifier of the screen that the item was reactivated from
    */
   screenId: number;
-  /**
-   * Identifier of the state of the view
-   */
-  state?: string;
 }
