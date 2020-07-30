@@ -150,45 +150,12 @@ describe('Service: Message', () => {
     });
   });
 
-  describe('addPhoneNumberRequestMessage', () => {
-    let conversation: InboxConversation;
-
-    beforeEach(() => {
-      conversation = CREATE_MOCK_INBOX_CONVERSATION();
-    });
-
-    it('should track the CHAT_SHAREPHONE_OPENSHARING event when no second argument is passed', () => {
-      spyOn(trackingService, 'track');
-
-      service.addPhoneNumberRequestMessage(conversation);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
-    });
-
-    it('should track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is true', () => {
-      spyOn(trackingService, 'track');
-
-      service.addPhoneNumberRequestMessage(conversation, true);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
-    });
-
-    it('should NOT track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is false', () => {
-      spyOn(trackingService, 'track');
-
-      service.addPhoneNumberRequestMessage(conversation, false);
-
-      expect(trackingService.track).not.toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
-    });
-  });
-
   describe('createPhoneNumberMessage', () => {
     const phone = '+34912345678';
     const conversation = MOCK_CONVERSATION();
 
     beforeEach(() => {
       spyOn(realTime, 'sendMessage');
-      service.addPhoneNumberRequestMessage(conversation);
     });
 
     it('should call realTime.sendMessage with the new message', () => {

@@ -116,14 +116,6 @@ describe('SendPhoneComponent', () => {
           fixture.detectChanges();
         });
 
-        it('should call messageService.addPhoneNumberRequestMessage with the conversation and FALSE', () => {
-          spyOn(messageService, 'addPhoneNumberRequestMessage');
-
-          component.createPhoneNumberMessage();
-
-          expect(messageService.addPhoneNumberRequestMessage).toHaveBeenCalledWith(component.conversation, false);
-        });
-
         it('should call trackingService.track with ITEM_SHAREPHONE_SENDPHONE', () => {
           spyOn(trackingService, 'track');
 
