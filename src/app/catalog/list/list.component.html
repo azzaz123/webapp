@@ -2,7 +2,7 @@
      infiniteScroll
      [infiniteScrollDistance]="1"
      [infiniteScrollThrottle]="100"
-     [infiniteScrollDisabled]="!items.length || end || loading"
+     [infiniteScrollDisabled]="!items.length || end || loading"
      (scrolled)="loadMore()"
      [scrollTop]="scrollTop">
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent"></tsl-spinner>
