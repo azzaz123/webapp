@@ -46,24 +46,24 @@ phases:
       - if [ "`echo $BRANCH | grep develop`" != "" ]; then export IMAGE_TAG="latest"; fi
       - echo $IMAGE_TAG
 
-      # LOAD YARN DEPENDENCIES
-      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn
+      # INSTALL NODE DEPENDENCIES
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn install
 
       # ADD DOCKNUM 137 TO ENVIRONMENT FOR TESTS
       - ./scripts/docknum/update.sh 137
 
       # LAUNCH TEST
-      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn run test-ci
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn test-ci
 
       # INSTALL ENV
       - >
         if [ "`echo $ENV | grep prod`" != "" ]; then
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run buildprod
+          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn buildprod
           mkdir es
           cp -r dist es
           zip -r webapp-${IMAGE_TAG}.zip es/*
           rm -rf dist
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run buildprod-en
+          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn buildprod-en
           mkdir en
           cp -r dist en
           zip -r webapp-${IMAGE_TAG}.zip en/*
@@ -72,12 +72,12 @@ phases:
 
       - >
         if [ "`echo $ENV | grep beta`" != "" ]; then
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run buildbeta
+          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn buildbeta
           mkdir es
           cp -r dist es
           zip -r webapp-${IMAGE_TAG}.zip es/*
           rm -rf dist
-          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run buildbeta-en
+          docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn buildbeta-en
           mkdir en
           cp -r dist en
           zip -r webapp-${IMAGE_TAG}.zip en/*
@@ -85,7 +85,7 @@ phases:
         fi
 
       # BUILD AND PUSH IMAGE
-      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable npm run builddocker
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn builddocker
       - docker build -f docker/Dockerfile -t $ECR_REPO:$IMAGE_TAG .
       - docker push "$ECR_REPO:$IMAGE_TAG"
 
