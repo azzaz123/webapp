@@ -47,4 +47,12 @@ export enum SCREEN_IDS {
 	NotificationCenter = 218,
 	MyCatalog = 219,
 	EditCardTransactionPay = 220,
+	RegisterForm = 221,
+	RegisterVerification = 222,
+	RegisterHelpCenter = 223,
+	MySavedSearchesSection = 224,
+	CustomNative = 225,
+	Banner = 226,
+	OfficeToOfficeMap = 227,
+	Messages = 228,
 }

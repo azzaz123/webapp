@@ -6,9 +6,13 @@
  */
 
 /**
- * Users views item detail screen for a consumer goods item
+ * User clicks on the bump button of an item reactivation screen
  */
-export interface ViewOthersItemCGDetail {
+export interface ClickBumpItemReactivation {
+  /**
+   * If the item clicked is from a professional user
+   */
+  isPro: boolean;
   /**
    * The unique identifier for an item
    */
@@ -18,23 +22,15 @@ export interface ViewOthersItemCGDetail {
    */
   categoryId: number;
   /**
-   * Item price
+   * Item price without fees
    */
-  salePrice: number;
+  itemPrice: number;
   /**
    * Item title
    */
   title: string;
   /**
-   * If the seller of the item viewed is a professional user
+   * Identifier of the screen that the item was clicked from
    */
-  isPro: boolean;
-  /**
-   * Identifier of the screen that the item was viewed from
-   */
-  screenId: number;
-  /**
-   * Identifier of the state of the view
-   */
-  state?: string;
+  screenId: 212;
 }

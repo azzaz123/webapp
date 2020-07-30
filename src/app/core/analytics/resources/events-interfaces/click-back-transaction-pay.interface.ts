@@ -6,9 +6,9 @@
  */
 
 /**
- * User views transaction pay screen
+ * User goes back from pay screen to exit transaction without completing the payment
  */
-export interface ViewTransactionPayScreen {
+export interface ClickBackTransactionPay {
   /**
    * The unique identifier for an item
    */

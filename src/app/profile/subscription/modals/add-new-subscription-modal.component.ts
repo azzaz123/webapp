@@ -247,7 +247,6 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
   private paymentSucceeded() {
     this.loading = false;
     this.isRetryInvoice = false;
-    this.close();
     this.openPaymentSuccessModal();
   }
 
@@ -262,8 +261,10 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
 
     modalRef.result.then(() => {
       modalRef = null;
-      this.reloadPage();
-    }, () => {});
+      this.close();
+    }, () => {
+      this.close();
+    });
   }
 
   @HostListener('click') onClick() {

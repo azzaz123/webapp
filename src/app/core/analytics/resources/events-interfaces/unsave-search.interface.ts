@@ -6,74 +6,47 @@
  */
 
 /**
- * Users perform a search
+ * Users unsaves a search
  */
-export interface Search {
-  /**
-   * The unique identifier of the search
-   */
-  searchId: string;
+export interface UnsaveSearch {
   /**
    * The unique identifier of the saved search
    */
-  savedSearchId?: string;
+  savedSearchId: string;
   /**
-   * Name of the experiment or A/B testing applied to tgghe user who has performed the search. The default value would be 'baseline'
+   * Identifier of the screen where the saved search has been unsaved
    */
-  experiment?: string;
-  /**
-   * The source from which the searching comes. The sources for the app clients can be: search_box, recent_searches, quick_filters, stored_filters, category_slider and default_filters. The sources for web can be: search_box, default_filters, quick_filters, seo_section, seo_list, seo_location_list, seo_sitemap
-   */
-  source:
-    | "search_box"
-    | "recent_searches"
-    | "default_filters"
-    | "quick_filters"
-    | "stored_filters"
-    | "seo_section"
-    | "seo_list"
-    | "seo_location_list"
-    | "seo_sitemap"
-    | "item_detail";
-  /**
-   * Identifier of the screen where the searching has been done
-   */
-  screenId: 110 | 111 | 193 | 217;
+  screenId: 224;
   /**
    * Latitude of the performed search
    */
-  latitude: number;
+  latitude?: number;
   /**
    * Latitude of the performed search
    */
-  longitude: number;
+  longitude?: number;
   /**
-   * The distance in km from the location where the search is performed and the location of the first item returned in the search results
-   */
-  firstItemDistance?: number;
-  hasResults?: boolean;
-  /**
-   * Identifier of the category that has been filtered in the search
+   * Identifier of the category that has been filtered in the saved search
    */
   categoryId?: number;
   /**
-   * Keywords applied in the search
+   * Keywords applied in the saved search
    */
   keywords?: string;
   /**
-   * Minimum price set as a filter in the search
+   * Minimum price set as a filter in the saved search
    */
   minPrice?: number;
   /**
-   * Maximum price set as a filter in the search
+   * Maximum price set as a filter in the saved search
    */
   maxPrice?: number;
   /**
-   * Distance in km set as a filter in the search
+   * Distance in km set as a filter in the saved search
    */
   distance?: number;
   /**
-   * Order criteria in which the results of the search are shown
+   * Order criteria in which the results of the saved search are shown
    */
   orderBy: "distance" | "price_low_to_high" | "price_high_to_low" | "newest" | "most_relevant";
   professional?: boolean;
@@ -114,7 +87,7 @@ export interface Search {
   size?: string;
   gender?: "female" | "male";
   /**
-   * Item condition set as a filter in the search
+   * Item condition set as a filter in the saved search
    */
   itemCondition?: string;
 }

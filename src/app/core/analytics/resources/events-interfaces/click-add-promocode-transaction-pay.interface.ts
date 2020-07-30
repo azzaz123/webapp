@@ -6,9 +6,9 @@
  */
 
 /**
- * User views transaction pay screen
+ * User clicks add button before adding a promocode in transaction pay screen
  */
-export interface ViewTransactionPayScreen {
+export interface ClickAddPromocodeTransactionPay {
   /**
    * The unique identifier for an item
    */

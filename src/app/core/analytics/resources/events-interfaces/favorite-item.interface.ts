@@ -20,7 +20,7 @@ export interface FavoriteItem {
   /**
    * Identifier of the screen that the item was favorited from
    */
-  screenId: 110 | 111 | 29 | 188 | 190 | 194 | 115;
+  screenId: 110 | 111 | 29 | 188 | 190 | 194 | 115 | 217;
   /**
    * The unique identifier of the search that the favorite is under
    */
@@ -45,4 +45,8 @@ export interface FavoriteItem {
    * If the item favorited is a bumped item
    */
   isBumped: boolean;
+  /**
+   * When the event is triggered in SavedSearchesNewVsOld screen (217), specify if it is in the 'new' results or 'old'
+   */
+  savedSearchResults?: string;
 }

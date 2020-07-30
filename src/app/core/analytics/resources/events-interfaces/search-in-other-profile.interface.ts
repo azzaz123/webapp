@@ -6,23 +6,19 @@
  */
 
 /**
- * View other profile screen
+ * Users perform a search in another user's profile
  */
-export interface ViewOtherProfile {
+export interface SearchInOtherProfile {
   /**
-   * Identifier of the screen from which the message was sent from
+   * Identifier of the screen where the searching has been done
    */
   screenId: 29;
-  /**
-   * If the user profile is a pro user
-   */
-  isPro: boolean;
   /**
    * Identifier of the user profile
    */
   sellerUserId: string;
   /**
-   * Name of the experiment or A/B testing applied to the user who has performed the view. The default value would be 'baseline'
+   * Keywords applied in the search
    */
-  experiment?: string;
+  keywords: string;
 }
