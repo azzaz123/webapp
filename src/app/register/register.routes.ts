@@ -12,7 +12,7 @@ const routes: Routes = [
     component: RegisterComponent,
     children: [
       {
-        path: '/*',
+        path: '**',
         component: VerifyComponent
       }
     ]
