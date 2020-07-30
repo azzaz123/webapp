@@ -39,6 +39,11 @@ describe('SearchInputComponent', () => {
   describe('closeSearch', () => {
     it('should emit deleteSearch', () => {
       spyOn(component.deleteSearch, 'emit');
+      component.input = {
+        nativeElement: {
+          value: 'mesa'
+        }
+      };
 
       component.closeSearch(new Event(''));
 

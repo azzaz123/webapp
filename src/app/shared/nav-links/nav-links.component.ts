@@ -84,9 +84,7 @@ export class NavLinksComponent implements OnInit, OnChanges {
   }
 
   onSearchChange(search: string) {
-    if (search !== '') {
-      this.searchChanged.emit(search);
-    }
+    this.searchChanged.emit(search);
   }
 
   onDeleteSearch() {

@@ -35,10 +35,11 @@
   }
 
   .NavLinks__links {
+    width: 100%;
+    display: flex;
     div {
       display: flex;
     }
-    display: flex;
     .NavLinks__link {
       margin-top: 2px;
     }

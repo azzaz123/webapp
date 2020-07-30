@@ -49,7 +49,7 @@
 }
 
 .SubscriptionsSlotItem__info-title {
-  color: $walla-main;
+  color: $blue-grey-1;
   span {
     font-weight: $font-weight-chunky;
   }
@@ -106,25 +106,28 @@
 }
 
 .SubscriptionsSlotItem--not-selected {
-  .SubscriptionsSlotItem__info-title {
-    color: $blue-grey-2;
+  .SubscriptionsSlotItem__info {
+    .SubscriptionsSlotItem__info-title {
+      color: $blue-grey-2;
+    }
   }
 }
 
 .SubscriptionsSlotItem--not-selected, .SubscriptionsSlotItem--single {
-  .SubscriptionsSlotItem__info-title {
-    @media (max-width: 768px) {
-      width: 40%;
-      display: flex;
-      align-items: center;
-      word-break: break-word;
+  .SubscriptionsSlotItem__info {
+    .SubscriptionsSlotItem__info-title {
+      color: $blue-grey-2;
+      @media (max-width: 768px) {
+        display: flex;
+        align-items: center;
+        word-break: break-word;
+      }
     }
-  }
-  .SubscriptionsSlotItem__info-description {
-    color: $blue-grey-1;
-    @media (max-width: 768px) {
-      margin-right: 0;
-      width: 60%;
+    .SubscriptionsSlotItem__info-description {
+      color: $blue-grey-1;
+      @media (max-width: 768px) {
+        margin-right: 0;
+      }
     }
   }
 }
