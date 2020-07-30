@@ -177,7 +177,8 @@ export class I18nService {
           title: 'Without compromise',
           description: 'You can cancel your subscription whenever you want, without penalties'
         }
-      ]
+      ],
+      tooManyNewConversations: 'We can\'t keep up with you. Wait a moment so you can open up new conversations.'
     },
     es: {
       yes: 'Sí',
@@ -354,7 +355,8 @@ export class I18nService {
           title: 'Sin compromiso',
           description: 'Puedes cancelar la suscripción cuando quieras, sin penalizaciones de ningún tipo'
         }
-      ]
+      ],
+      tooManyNewConversations: 'No te podemos seguir el ritmo. Espera un momento para poder abrir nuevas conversaciones.'
     }
   };
 
