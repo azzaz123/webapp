@@ -35,6 +35,9 @@
               <label for="name" class="col-sm-12 col-md-5" i18n="@@FirstName">First Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="name" formControlName="name" />
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+                  <span i18n="@@NameRequired">Name required</span>
+                </div>
               </div>
             </div>
             <div *ngIf="type === 'natural'" class="form-group row align-items-center">

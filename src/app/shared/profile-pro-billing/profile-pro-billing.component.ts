@@ -246,4 +246,6 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
     return pattern.test(control.value) ? null : { 'postal_code': true };
   }
 
+  get name() { return this.billingForm.get('name'); }
+
 }
