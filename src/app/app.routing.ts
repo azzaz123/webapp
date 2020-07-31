@@ -102,6 +102,11 @@ const routes: Routes = [
     loadChildren: () => import('app/login/login.module').then(m => m.LoginModule)
   },
   {
+    path: 'register',
+    canLoad: [DevelopmentGuard],
+    loadChildren: () => import('app/register/register.module').then(m => m.RegisterModule)
+  },
+  {
     path: 'stats',
     loadChildren: () => import('app/stats/stats.module').then(m => m.StatsModule)
   },
