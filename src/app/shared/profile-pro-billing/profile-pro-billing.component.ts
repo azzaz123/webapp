@@ -249,5 +249,6 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   get name() { return this.billingForm.get('name'); }
   get surname() { return this.billingForm.get('surname'); }
   get cif() { return this.billingForm.get('cif'); }
+  get email() { return this.billingForm.get('email'); }
 
 }

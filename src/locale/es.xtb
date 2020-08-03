@@ -1129,4 +1129,6 @@
   <translation id="CompanyNameMaxLength">El nombre de empresa no puede tener más de 32 catacteres.</translation>
   <translation id="CifRequired">El CIF/NIF es requerido.</translation>
   <translation id="CifFormat">El CIF/NIF debe ser válido.</translation>
+  <translation id="EmailRequired">E-mail is required.</translation>
+  <translation id="EmailFormat">E-mail must be valid.</translation>
 </translationbundle>

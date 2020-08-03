@@ -29,12 +29,15 @@ form {
   .input-radio.ng-dirty.ng-invalid input {
     border: 1px solid $negative-main !important;
   }
-
   &.disabled {
     .form-control:disabled {
       cursor: auto;
       border: 0;
     }
+  }
+  .alert {
+    font-size: $font-size-s;
+    color: $negative-main;
   }
 }
 .RegistrationType{

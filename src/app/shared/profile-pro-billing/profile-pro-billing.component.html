@@ -35,7 +35,7 @@
               <label for="name" class="col-sm-12 col-md-5" i18n="@@FirstName">First Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="name" formControlName="name" />
-                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
                   <span *ngIf="name.errors.required" i18n="@@NameRequired">
                     Name is required.
                   </span>
@@ -49,7 +49,7 @@
               <label for="surname" class="col-sm-12 col-md-5" i18n="@@LastName">Last Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="surname" formControlName="surname" />
-                <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert alert-danger">
+                <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert">
                   <span *ngIf="surname.errors.required" i18n="@@SurnameRequired">
                     Surname is required.
                   </span>
@@ -77,6 +77,14 @@
               <label for="email" class="col-sm-12 col-md-5" i18n="@@Email">E-mail</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="email" formControlName="email" />
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert">
+                  <span *ngIf="email.errors.required" i18n="@@EmailRequired">
+                    E-mail is required.
+                  </span>
+                  <span *ngIf="email.errors.email" i18n="@@EmailFormat">
+                    E-mail must be valid.
+                  </span>
+                </div>
               </div>
             </div>
             <div class="form-group row align-items-center">
@@ -108,7 +116,7 @@
               <label *ngIf="type === 'natural'" for="cif" class="col-sm-12 col-md-5" i18n="@@NIFNumber">NIF Number</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="cif" formControlName="cif"/>
-                <div *ngIf="cif.invalid && (cif.dirty || cif.touched)" class="alert alert-danger">
+                <div *ngIf="cif.invalid && (cif.dirty || cif.touched)" class="alert">
                   <span *ngIf="cif.errors.required" i18n="@@CifRequired">
                     CIF/NIF is required.
                   </span>
