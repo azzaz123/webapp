@@ -143,7 +143,7 @@
   <msg id="7092318893814699678"><source>app/shared/confirmation-modal/confirmation-modal.component.html:37</source><source>app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:6</source>Yes, I am sure</msg>
   <msg id="MissingPaymentMethodTitle"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:5</source>Delete payment method</msg>
   <msg id="MissingPaymentMethodSubtitle"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:6</source>Without a card linked to your subscriptions, you won&apos;t be able to renew them and you will lose the benefits of being PRO. Is that what you want?</msg>
-  <msg id="Cancel"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:10,11</source><source>app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:12,13</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:24</source>Cancel
+  <msg id="Cancel"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:10,11</source><source>app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:12,13</source><source>app/shared/modals/full-screen-menu/full-screen-modal.component.html:12</source><source>app/shared/nav-links/nav-links.component.html:8</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:24</source>Cancel
     </msg>
   <msg id="ConfirmDeleteCard"><source>app/shared/modals/no-card-modal/no-card-modal.component.html:14,15</source>Yes, delete card
     </msg>
@@ -167,7 +167,7 @@
   <msg id="6181907632373133266"><source>app/shared/catalog/catalog-card/catalog-card.component.html:56</source><source>app/stats/items-stats/items-stats.component.html:13</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:18</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:41</source>Chats</msg>
   <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.html:63</source><source>app/catalog/list/catalog-item/catalog-item.component.html:78</source>Mark as sold</msg>
   <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.html:66</source><source>app/catalog/list/catalog-item/catalog-item.component.html:82</source>Mark as reserved</msg>
-  <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.html:69</source><source>app/profile/subscription/subscription.component.html:32</source><source>app/catalog/list/list.component.html:21</source><source>app/catalog/list/catalog-item/catalog-item.component.html:87</source>Edit</msg>
+  <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.html:69</source><source>app/profile/subscription/subscription.component.html:32</source><source>app/catalog/list/list.component.html:20</source><source>app/catalog/list/catalog-item/catalog-item.component.html:87</source>Edit</msg>
   <msg id="4416413576346763682"><source>app/shared/catalog/catalog-card/catalog-card.component.html:77</source><source>app/dashboard/dashboard.component.html:25</source><source>app/calls/calls.component.html:22</source><source>app/calls/calls.component.html:44</source><source>app/catalog/list/catalog-item/catalog-item.component.html:103</source>Pending</msg>
   <msg id="5272763997595694217"><source>app/shared/catalog/catalog-card/catalog-card.component.html:84</source>Cancel Autorenew</msg>
   <msg id="291347435854981703"><source>app/shared/catalog/catalog-card/catalog-card.component.html:85</source>Do you really want to cancel the autorenew for this item?</msg>
@@ -256,6 +256,8 @@
   <msg id="AddNewSubscriptionCard"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:17</source>Link a card to your subscriptions</msg>
   <msg id="CurrentCards"><source>app/shared/profile/stripe-cards/stripe-cards.component.html:21</source>Saved cards</msg>
   <msg id="2341832243359741366"><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source><source>app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:2</source>Select saved card</msg>
+  <msg id="OrderYourCatalogBy"><source>app/shared/modals/full-screen-menu/full-screen-modal.component.html:3</source>Order your catalog by</msg>
+  <msg id="OrderBy"><source>app/shared/nav-links/nav-links.component.html:41</source>Order by</msg>
   <msg id="8458658926966860767"><source>app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:2</source>Are you sure you want to delete billing information?</msg>
   <msg id="InvoiceInformation"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:7</source>Invoice information</msg>
   <msg id="ProfileProBillingFormType"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:13</source>Type of registration</msg>
@@ -636,7 +638,7 @@
   <msg id="792930787826735850"><source>app/profile/profile.component.html:7</source>Your profile</msg>
   <msg id="4532380494593950343"><source>app/profile/profile.component.html:12</source>From here you can view and edit your profile</msg>
   <msg id="7022993325750262876"><source>app/profile/profile.component.html:14</source>View my public profile</msg>
-  <msg id="3797778920049399855"><source>app/profile/profile.component.html:20</source><source>app/catalog/list/list.component.html:22</source>Logout</msg>
+  <msg id="3797778920049399855"><source>app/profile/profile.component.html:20</source><source>app/catalog/list/list.component.html:21</source>Logout</msg>
   <msg id="4086606389696938932"><source>app/profile/profile.component.html:28</source>Account</msg>
   <msg id="690637757793763587"><source>app/profile/profile.component.html:30</source>Billing information</msg>
   <msg id="5875130684997376720"><source>app/profile/profile.component.html:32</source>Billing</msg>
@@ -940,7 +942,7 @@
   <msg id="8720977247725652816"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:61</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:67</source><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:7</source>Ok</msg>
   <msg id="2044384665651917054"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:65</source>TPV... what?</msg>
   <msg id="5578025610796640405"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:66</source>There has been an unexpected error in the paying system. Why not trying again later?</msg>
-  <msg id="5411836089142777830"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:4</source><source>app/catalog/list/list.component.html:38</source><source>app/catalog/checkout/checkout.component.html:9</source>What can features do for you?</msg>
+  <msg id="5411836089142777830"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:4</source><source>app/catalog/list/list.component.html:37</source><source>app/catalog/checkout/checkout.component.html:9</source>What can features do for you?</msg>
   <msg id="6763447295092579753"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:5,7</source>By featuring your item you will make it more visible to the restof the community thanks to its special
                 features. What will that give to you? Basically, that more people will contact you and you&apos;ll sell your
                 items quicker. Take a look at which of the following suits you best. </msg>
@@ -973,12 +975,12 @@
   <msg id="708817521397622777"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:20</source>Pay with your credit and credit card:</msg>
   <msg id="349473182974314723"><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:12</source>Your item is now reactivated and in the first positions!</msg>
   <msg id="7588966777090643410"><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:6</source>Your car is published for 60 days. You can find it in your catalog.</msg>
-  <msg id="5433688037539750263"><source>app/catalog/list/list.component.html:25</source>Your products</msg>
-  <msg id="ListComponentHeaderSubtitle"><source>app/catalog/list/list.component.html:31,33</source>
-          Here you can list items, manage the ones you already have and activate featured to sell them faster
-        </msg>
-  <msg id="442085080206895883"><source>app/catalog/list/list.component.html:46</source>products</msg>
-  <msg id="776785241867401546"><source>app/catalog/list/list.component.html:47</source>product</msg>
+  <msg id="5433688037539750263"><source>app/catalog/list/list.component.html:24</source>Your products</msg>
+  <msg id="ListComponentHeaderSubtitle"><source>app/catalog/list/list.component.html:30,32</source>
+            Here you can list items, manage the ones you already have and activate featured to sell them faster
+          </msg>
+  <msg id="442085080206895883"><source>app/catalog/list/list.component.html:45</source>products</msg>
+  <msg id="776785241867401546"><source>app/catalog/list/list.component.html:46</source>product</msg>
   <msg id="833919813165214228"><source>app/catalog/checkout/checkout.component.html:14</source>Feature it locally</msg>
   <msg id="4721342773618175343"><source>app/catalog/checkout/checkout.component.html:15</source>Feature it provincially</msg>
   <msg id="4828515169928166764"><source>app/catalog/checkout/checkout.component.html:23</source>Feature it your city</msg>
@@ -997,7 +999,7 @@
   <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.html:96</source>Reactivate</msg>
   <msg id="8061241481597934094"><source>app/catalog/list/selected-items/selected-items.component.html:15,16</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ph> items selected
                 </msg>
-  <msg id="3897348120591552265"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:15</source>Manage</msg>
+  <msg id="ManageCatalogSubscription"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:15</source>Manage <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></msg>
   <msg id="SubscriptionsSlotItemPublishMore"><source>app/catalog/list/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component.html:17</source>You can list <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> more <ph name="INTERPOLATION_1"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></msg>
   <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.html:23</source>Not Available</msg>
   <msg id="605166699517966750"><source>app/stats/stats.component.html:15</source>Control the progress of your listings and improve your sales.</msg>

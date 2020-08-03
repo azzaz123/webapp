@@ -33,7 +33,8 @@ export class SubscriptionsSlotItemComponent implements OnInit {
   }
 
   onClick(subscriptionSlot: SubscriptionSlot, e: any) {
-    if (subscriptionSlot === this.selectedSubscriptionSlot) {
+    if (!subscriptionSlot || subscriptionSlot === this.selectedSubscriptionSlot) {
+      e.stopPropagation();
       this.selected.emit(null);
     } else {
       this.selected.emit(subscriptionSlot);
@@ -47,10 +48,6 @@ export class SubscriptionsSlotItemComponent implements OnInit {
       };
 
       this.analyticsService.trackEvent(event);
-    }
-
-    if (!subscriptionSlot) {
-      e.stopPropagation();
     }
   }
 

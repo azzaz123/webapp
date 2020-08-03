@@ -1,0 +1,15 @@
+<div class="FullScreenModal">
+  <div class="FullScreenModal__header">
+    <p class="FullScreenModal__title" i18n="@@OrderYourCatalogBy">Order your catalog by</p>
+  </div>
+  <div class="FullScreenModal__body">
+    <div class="FullScreenModal__menu" *ngFor="let item of items">
+      <li (click)="selectItem(item)">{{item?.display}}</li>
+    </div>
+  </div>
+  <div class="FullScreenModal__footer">
+    <div class="modal-close" (click)="activeModal.dismiss()">
+        <p i18n="@@Cancel">Cancel</p>
+    </div>
+  </div>
+</div>
