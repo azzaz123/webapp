@@ -71,10 +71,10 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
       company_name: ['', [Validators.required]],
       country: ['', [Validators.required]],
       email: ['', [Validators.required, this.emailValidator]],
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(32)]],
       postal_code: ['', [Validators.required, this.cpValidator]],
       street: ['', [Validators.required]],
-      surname: ['', [Validators.required]],
+      surname: ['', [Validators.required, Validators.maxLength(32)]],
       id: UUID.UUID()
     });
   }
@@ -182,14 +182,14 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   }
 
   private setNaturalRequiredFields() {
-    this.billingForm.get('name').setValidators(Validators.required);
-    this.billingForm.get('surname').setValidators(Validators.required);
+    this.billingForm.get('name').setValidators([Validators.required, Validators.maxLength(32)]);
+    this.billingForm.get('surname').setValidators([Validators.required, Validators.maxLength(32)]);
     this.billingForm.get('company_name').setValidators(null);
     this.billingForm.get('cif').setValidators([Validators.required, this.nifValidator]);
   }
 
   private setLegalRequiredFields() {
-    this.billingForm.get('company_name').setValidators(Validators.required);
+    this.billingForm.get('company_name').setValidators([Validators.required, Validators.maxLength(32)]);
     this.billingForm.get('name').setValidators(null);
     this.billingForm.get('surname').setValidators(null);
     this.billingForm.get('cif').setValidators([Validators.required, this.cifValidator]);
@@ -215,7 +215,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   private nifValidator(control: FormControl) {
     const nif = control.value.toUpperCase().replace(/[_\W\s]+/g, '');
 
-    return (validDNI(nif) ||  validNIE(nif)) ? null : { 'cif': true };
+    return (validDNI(nif) || validNIE(nif)) ? null : { 'cif': true };
   }
   
   private cifValidator(control: FormControl) {
@@ -247,5 +247,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   }
 
   get name() { return this.billingForm.get('name'); }
+  get surname() { return this.billingForm.get('surname'); }
+  get cif() { return this.billingForm.get('cif'); }
 
 }

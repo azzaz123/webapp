@@ -239,7 +239,7 @@
   <msg id="7274286978511770772"><source>app/shared/payments/stripe/stripe-card-element.component.html:33</source>Continue to Checkout</msg>
   <msg id="3768927257183755959"><source>app/shared/payments/stripe/stripe-card-element.component.html:44</source><source>app/profile/profile-info/profile-info.component.html:83</source><source>app/profile/account/account.component.html:36</source>Save</msg>
   <msg id="848453031482663640"><source>app/shared/payments/stripe/stripe-card-element.component.html:55</source>Subscribe now</msg>
-  <msg id="Save"><source>app/shared/payments/stripe/stripe-card-element.component.html:66</source><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:91</source>Save</msg>
+  <msg id="Save"><source>app/shared/payments/stripe/stripe-card-element.component.html:66</source><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:123</source>Save</msg>
   <msg id="AddNewCreditCard"><source>app/shared/modals/new-card-modal/new-card-modal.component.html:6</source>Add a new credit card</msg>
   <msg id="ChangeSubscriptionCardSubtitle"><source>app/shared/modals/new-card-modal/new-card-modal.component.html:7</source><source>app/shared/modals/change-card-modal/change-card-modal.component.html:8</source>This will be the payment method linked to your subscription</msg>
   <msg id="ConfirmPaymentMethod"><source>app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:5</source>Confirm payment method</msg>
@@ -262,16 +262,39 @@
   <msg id="ProfileProBillingFormNatural"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:22</source>Natural person</msg>
   <msg id="ProfileProBillingFormLegal"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:30</source>Legal person</msg>
   <msg id="FirstName"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:35</source>First Name</msg>
-  <msg id="LastName"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:41</source>Last Name</msg>
-  <msg id="CompanyName"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:47</source>Company Name</msg>
-  <msg id="Email"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:53</source>E-mail</msg>
-  <msg id="BillingAddress"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:59</source>Billing address</msg>
-  <msg id="City"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:65</source>City</msg>
-  <msg id="PostalCode"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:71</source>Postal code</msg>
-  <msg id="Country"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:77</source>Country</msg>
-  <msg id="CIFNumber"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:83</source>CIF Number</msg>
-  <msg id="NIFNumber"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:84</source>NIF Number</msg>
-  <msg id="DeleteInformation"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:94</source>Delete information</msg>
+  <msg id="NameRequired"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:39,41</source>
+                    Name is required.
+                  </msg>
+  <msg id="NameMaxLength"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:42,44</source>
+                    Name must be at most 32 characters long.
+                  </msg>
+  <msg id="LastName"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:49</source>Last Name</msg>
+  <msg id="SurnameRequired"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:53,55</source>
+                    Surname is required.
+                  </msg>
+  <msg id="SurnameMaxLength"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:56,58</source>
+                    Surname must be at most 32 characters long.
+                  </msg>
+  <msg id="CompanyName"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:63</source>Company Name</msg>
+  <msg id="CompanyNameRequired"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:67,69</source>
+                    Company name is required.
+                  </msg>
+  <msg id="CompanyNameMaxLength"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:70,72</source>
+                    Company name must be at most 32 characters long.
+                  </msg>
+  <msg id="Email"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:77</source>E-mail</msg>
+  <msg id="BillingAddress"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:83</source>Billing address</msg>
+  <msg id="City"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:89</source>City</msg>
+  <msg id="PostalCode"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:95</source>Postal code</msg>
+  <msg id="Country"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:101</source>Country</msg>
+  <msg id="CIFNumber"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:107</source>CIF Number</msg>
+  <msg id="NIFNumber"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:108</source>NIF Number</msg>
+  <msg id="CifRequired"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:112,114</source>
+                    CIF/NIF is required.
+                  </msg>
+  <msg id="CifFormat"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:115,117</source>
+                    CIF/NIF must be valid.
+                  </msg>
   <msg id="4391289919356861627"><source>app/shared/geolocation/location-select/location-modal/location-modal.component.html:4</source>Apply</msg>
   <msg id="4359291232904891489"><source>app/shared/geolocation/location-select/location-select.component.html:3</source>Set a location</msg>
   <msg id="5371960677736303052"><source>app/shared/geolocation/geolocation.component.html:9</source>Where?</msg>

@@ -36,7 +36,12 @@
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="name" formControlName="name" />
                 <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
-                  <span i18n="@@NameRequired">Name required</span>
+                  <span *ngIf="name.errors.required" i18n="@@NameRequired">
+                    Name is required.
+                  </span>
+                  <span *ngIf="name.errors.maxlength" i18n="@@NameMaxLength">
+                    Name must be at most 32 characters long.
+                  </span>
                 </div>
               </div>
             </div>
@@ -44,12 +49,28 @@
               <label for="surname" class="col-sm-12 col-md-5" i18n="@@LastName">Last Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="surname" formControlName="surname" />
+                <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert alert-danger">
+                  <span *ngIf="surname.errors.required" i18n="@@SurnameRequired">
+                    Surname is required.
+                  </span>
+                  <span *ngIf="surname.errors.maxlength" i18n="@@SurnameMaxLength">
+                    Surname must be at most 32 characters long.
+                  </span>
+                </div>
               </div>
             </div>
             <div *ngIf="type === 'legal'" class="form-group row align-items-center">
               <label for="company_name" class="col-sm-12 col-md-5" i18n="@@CompanyName">Company Name</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="company_name" formControlName="company_name" />
+                <div *ngIf="company_name.invalid && (company_name.dirty || company_name.touched)" class="alert alert-danger">
+                  <span *ngIf="company_name.errors.required" i18n="@@CompanyNameRequired">
+                    Company name is required.
+                  </span>
+                  <span *ngIf="company_name.errors.maxlength" i18n="@@CompanyNameMaxLength">
+                    Company name must be at most 32 characters long.
+                  </span>
+                </div>
               </div>
             </div>
             <div class="form-group row align-items-center">
@@ -87,6 +108,14 @@
               <label *ngIf="type === 'natural'" for="cif" class="col-sm-12 col-md-5" i18n="@@NIFNumber">NIF Number</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="cif" formControlName="cif"/>
+                <div *ngIf="cif.invalid && (cif.dirty || cif.touched)" class="alert alert-danger">
+                  <span *ngIf="cif.errors.required" i18n="@@CifRequired">
+                    CIF/NIF is required.
+                  </span>
+                  <span *ngIf="cif.errors.cif" i18n="@@CifFormat">
+                    CIF/NIF must be valid.
+                  </span>
+                </div>
               </div>
             </div>
             <div class="row" *ngIf="!containerTypeIsModal">

@@ -1121,4 +1121,12 @@
   <translation id="step3of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
   <translation id="step4of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
   <translation id="InvoiceInformation">Información de facturación</translation>
+  <translation id="NameRequired">El nombre es obligatorio.</translation>
+  <translation id="NameMaxLength">El nombre no puede tener más de 32 catacteres.</translation>
+  <translation id="SurnameRequired">El apellido es requerido.</translation>
+  <translation id="SurnameMaxLength">El apellido no puede tener más de 32 catacteres.</translation>
+  <translation id="CompanyNameRequired">El nombre de empresa es requerido.</translation>
+  <translation id="CompanyNameMaxLength">El nombre de empresa no puede tener más de 32 catacteres.</translation>
+  <translation id="CifRequired">El CIF/NIF es requerido.</translation>
+  <translation id="CifFormat">El CIF/NIF debe ser válido.</translation>
 </translationbundle>
