@@ -280,6 +280,9 @@ $modal-border-radius: 0.3rem;
         color: $blue-grey-2 !important;
         border: 0 !important;
         border-radius: 20px !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         &.btn-warn {
           background-color: $warn !important;
           color: $white !important;;
