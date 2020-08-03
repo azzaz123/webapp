@@ -287,6 +287,9 @@ $modal-border-radius: 0.3rem;
         &:hover {
           opacity: .8;
         }
+        &.confirmation {
+          line-height: $font-size-m;
+        }
       }
     }
     @include media-breakpoint-down(sm) {
