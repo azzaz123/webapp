@@ -78,7 +78,7 @@ describe('SubscriptionsSlotItemComponent', () => {
 
       expect(component.selected.emit).toHaveBeenCalledTimes(1);
       expect(component.selected.emit).toHaveBeenCalledWith(null);
-      expect(event.stopPropagation).toHaveBeenCalledTimes(0);
+      expect(event.stopPropagation).toHaveBeenCalledTimes(1);
     });
 
     it('should stopPropagation when null subscription', () => {

@@ -8,3 +8,8 @@ export interface NavLink {
     display: string;
     counter?: NavLinkCounter;
 }
+
+export interface SortLink {
+    value: string;
+    label: string;
+}

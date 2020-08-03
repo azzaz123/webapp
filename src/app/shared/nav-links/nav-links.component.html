@@ -1,26 +1,46 @@
 <nav class="NavLinks">
 
-  <div class="NavLinks__search-input" *ngIf="showSearchInput">
-    <tsl-search-input [placeholder]="searchPlaceholder" (term)="onSearchChange($event)"></tsl-search-input>
+  <div class="NavLinks__search-input" *ngIf="showSearchInput" (click)="onClickSearch()">
+    <tsl-search-input [ngClass]="{opened: searchClicked, closed: !searchClicked}"
+    [placeholder]="searchPlaceholder" [onCloseSearch]="closeSearch" (deleteSearch)="onDeleteSearch()" (term)="onSearchChange($event)"
+    ></tsl-search-input>
+    <span i18n="@@Cancel" class="NavLinks__search-input--close d-md-none" [ngClass]="{opened: searchClicked, closed: !searchClicked}"
+    (click)="onClickCloseSearch($event)">Cancel</span>
   </div>
+  <div class="NavLinks__links" [ngClass]="{ hidden: searchClicked }">
+    <div *ngIf="!isMobile || isMobile && !showSearchInput">
+      <div class="NavLinks__link" *ngFor="let navLink of navLinks">
+        <a
+          [ngClass]="{ active: selectedLinkId === navLink.id }"
+          (click)="onClickNavLink(navLink)"
+        >
+          <span>{{navLink.display}}</span>
+          <span *ngIf="navLink.counter && navLink.counter.maxVal">
+            ({{navLink.counter.currentVal}}/{{navLink.counter.maxVal}})
+          </span>
+          <span *ngIf="navLink.counter && navLink.counter.currentVal && !navLink.counter.maxVal">
+            ({{navLink.counter.currentVal}})
+          </span>
+        </a>
+      </div>
+    </div>
 
-  <div class="NavLinks__link" *ngFor="let navLink of navLinks">
-    <a
-      [ngClass]="{ active: selectedLinkId === navLink.id }"
-      (click)="onClickNavLink(navLink)"
-    >
-      <span>{{navLink.display}}</span>
-      <span *ngIf="navLink.counter && navLink.counter.maxVal">
-        ({{navLink.counter.currentVal}}/{{navLink.counter.maxVal}})
-      </span>
-      <span *ngIf="navLink.counter && navLink.counter.currentVal && !navLink.counter.maxVal">
-        ({{navLink.counter.currentVal}})
-      </span>
-    </a>
+    <div class="d-block d-sm-block d-md-none" *ngIf="showSearchInput">
+      <a class="NavLinks__anchor active" (click)="selectMenu()">
+        <span>{{selectedLink?.display}}</span>
+        <span *ngIf="selectedLink.counter && selectedLink.counter.maxVal">
+          ({{selectedLink.counter.currentVal}}/{{selectedLink.counter.maxVal}})
+        </span>
+        <mat-icon svgIcon="caret"></mat-icon>
+      </a>
+    </div>
+    
+    <div class="NavLinks__sort-select" *ngIf="showSortItems && sortItems">
+      <tsl-select [items]="sortItems" (valueChanges)="onSortChange($event)" class="d-none d-sm-none d-md-block d-lg-block"></tsl-select>
+      <a class="NavLinks__anchor active active d-block d-sm-block d-md-none" (click)="selectSort()">
+        <span i18n="@@OrderBy">Order by</span>
+        <mat-icon svgIcon="caret"></mat-icon>
+      </a>
+    </div>
   </div>
-
-  <div class="NavLinks__sort-select" *ngIf="showSortItems && sortItems">
-    <tsl-select [items]="sortItems" (valueChanges)="onSortChange($event)"></tsl-select>
-  </div>
-
 </nav>

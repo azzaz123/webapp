@@ -1131,4 +1131,7 @@
   <translation id="CifFormat">El CIF/NIF debe ser válido.</translation>
   <translation id="EmailRequired">E-mail is required.</translation>
   <translation id="EmailFormat">E-mail must be valid.</translation>
+  <translation id="OrderYourCatalogBy">Ordena tu catálogo por</translation>
+  <translation id="OrderBy">Ordenar por</translation>
+  <translation id="ManageCatalogSubscription">Gestionar <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></translation>
 </translationbundle>
