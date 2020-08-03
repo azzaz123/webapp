@@ -57,24 +57,6 @@ export class MessageService {
     return this.realTime.sendMessage(conversation, message);
   }
 
-  public addPhoneNumberRequestMessage(conversation: InboxConversation, withTracking = true): InboxConversation {
-    const message = new InboxMessage(UUID.UUID(),
-      conversation.id,
-      this.i18n.getTranslations('phoneRequestMessage'),
-      conversation.user.id,
-      true,
-      new Date(),
-      MessageStatus.READ,
-      MessageType.TEXT,
-      null);
-    conversation.messages.push(message);
-    if (withTracking) {
-      this.trackingService.track(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
-    }
-    conversation.modifiedDate = new Date();
-    return conversation;
-  }
-
   public createPhoneNumberMessage(conversation, phone) {
     const message = this.i18n.getTranslations('phoneMessage') + phone;
     this.realTime.sendMessage(conversation, message);
