@@ -1,8 +1,8 @@
 
-import {mergeMap, map, filter, distinctUntilChanged} from 'rxjs/operators';
+import { mergeMap, map, filter, distinctUntilChanged } from 'rxjs/operators';
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
-import { DOCUMENT } from "@angular/common";
+import { DOCUMENT } from '@angular/common';
 import { configMoment } from './config/moment.config';
 import { configIcons } from './config/icons.config';
 import { MatIconRegistry } from '@angular/material';
@@ -49,56 +49,78 @@ export class AppComponent implements OnInit {
   private RTConnectedSubscription: Subscription;
 
   constructor(private event: EventService,
-              private realTime: RealTimeService,
-              private inboxService: InboxService,
-              public userService: UserService,
-              private errorsService: ErrorsService,
-              private notificationService: NotificationService,
-              private messageService: MessageService,
-              private titleService: Title,
-              private sanitizer: DomSanitizer,
-              private matIconRegistry: MatIconRegistry,
-              private trackingService: TrackingService,
-              private i18n: I18nService,
-              private winRef: WindowRef,
-              private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private renderer: Renderer2,
-              @Inject(DOCUMENT) private document: Document,
-              private cookieService: CookieService,
-              private connectionService: ConnectionService,
-              private paymentService: PaymentService,
-              private callService: CallsService,
-              private stripeService: StripeService,
-              private analyticsService: AnalyticsService,
-              private didomiService: DidomiService) {
-    this.config();
+    private realTime: RealTimeService,
+    private inboxService: InboxService,
+    public userService: UserService,
+    private errorsService: ErrorsService,
+    private notificationService: NotificationService,
+    private messageService: MessageService,
+    private titleService: Title,
+    private sanitizer: DomSanitizer,
+    private matIconRegistry: MatIconRegistry,
+    private trackingService: TrackingService,
+    private i18n: I18nService,
+    private winRef: WindowRef,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document,
+    private cookieService: CookieService,
+    private connectionService: ConnectionService,
+    private paymentService: PaymentService,
+    private callService: CallsService,
+    private stripeService: StripeService,
+    private analyticsService: AnalyticsService,
+    private didomiService: DidomiService) {
   }
 
   ngOnInit() {
+    this.initializeConfigs();
+    this.initializeServices();
+    this.initializeEventListeners();
+    this.initializeRouterEventListeners();
+  }
+
+  private initializeConfigs() {
+    configMoment(this.i18n.locale);
+    configIcons(this.matIconRegistry, this.sanitizer);
+  }
+
+  private initializeServices() {
+    this.didomiService.initialize();
     this.stripeService.init();
     this.analyticsService.initialize();
+    this.initializeBraze();
+    this.userService.checkUserStatus();
+    this.notificationService.init();
+    this.connectionService.checkConnection();
+  }
+
+  // TODO: This should be encapsualted in a service (e.g.: BrazeService)
+  private initializeBraze() {
     appboy.initialize(environment.appboy, { enableHtmlInAppMessages: true });
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
+  }
+
+  private initializeEventListeners() {
     this.subscribeEventUserLogin();
     this.subscribeEventUserLogout();
     this.subscribeChatEvents();
     this.subscribeEventItemUpdated();
-    this.userService.checkUserStatus();
-    this.notificationService.init();
-    this.setTitle();
-    this.setBodyClass();
-    this.updateUrlAndSendAnalytics();
-    this.connectionService.checkConnection();
-    this.didomiService.initialize();
   }
 
-  public onViewIsBlocked(): void {		
+  private initializeRouterEventListeners() {
+    this.updateUrlAndSendAnalytics();
+    this.setTitle();
+    this.setBodyClass();
+  }
+
+  public onViewIsBlocked(): void {
     this.renderer.addClass(document.body, 'blocked-page');
     this.renderer.addClass(document.body.parentElement, 'blocked-page');
   }
-  
+
   private updateUrlAndSendAnalytics() {
     this.router.events.pipe(distinctUntilChanged((previous: any, current: any) => {
       if (current instanceof NavigationEnd) {
@@ -111,11 +133,6 @@ export class AppComponent implements OnInit {
       ga('set', 'page', x.url);
       ga('send', 'pageview');
     });
-  }
-
-  private config() {
-    configMoment(this.i18n.locale);
-    configIcons(this.matIconRegistry, this.sanitizer);
   }
 
   private updateSessionCookie() {
@@ -222,29 +239,29 @@ export class AppComponent implements OnInit {
 
   private setTitle() {
     this.router.events.pipe(
-    filter(event => event instanceof NavigationEnd),
-    map(() => this.activatedRoute),
-    map(route => {
-      while (route.firstChild) {
-        route = route.firstChild;
-      }
-      return route;
-    }),
-    filter(route => route.outlet === 'primary'),
-    mergeMap(route => route.data),)
-    .subscribe((event) => {
-      let notifications = '';
-      const split: string[] = this.titleService.getTitle().split(' ');
-      if (split.length > 1) {
-        notifications = split[0].trim() + ' ';
-      }
-      const title = !(event['title']) ? 'Wallapop' : event['title'];
-      this.titleService.setTitle(notifications + title);
-      this.hideSidebar = event['hideSidebar'];
-      this.isMyZone = event['isMyZone'];
-      this.isProducts = event['isProducts'];
-      this.isProfile = event['isProfile'];
-    });
+      filter(event => event instanceof NavigationEnd),
+      map(() => this.activatedRoute),
+      map(route => {
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route;
+      }),
+      filter(route => route.outlet === 'primary'),
+      mergeMap(route => route.data))
+      .subscribe((event) => {
+        let notifications = '';
+        const split: string[] = this.titleService.getTitle().split(' ');
+        if (split.length > 1) {
+          notifications = split[0].trim() + ' ';
+        }
+        const title = !(event['title']) ? 'Wallapop' : event['title'];
+        this.titleService.setTitle(notifications + title);
+        this.hideSidebar = event['hideSidebar'];
+        this.isMyZone = event['isMyZone'];
+        this.isProducts = event['isProducts'];
+        this.isProfile = event['isProfile'];
+      });
   }
 
   private setBodyClass() {
