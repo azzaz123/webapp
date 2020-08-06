@@ -1,0 +1,15 @@
+<div class="box profile-box">
+  <div class="InvoiceHistory">
+    <div class="row mb-2 mb-md-4" *ngIf="!containerTypeIsModal">
+      <div class="col-12">
+        <h3 i18n="@@InvoiceHistory">Invoice history</h3>
+        <span i18n="@@InvoiceHistorySubtitle">Fill in your invoice information in order to download your invoices.</span>      
+      </div>
+    </div>
+    <tsl-invoice-item 
+    *ngFor="let invoice of invoices"
+    [invoice]="invoice"
+    >
+    </tsl-invoice-item>
+  </div>
+</div>

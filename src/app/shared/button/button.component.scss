@@ -74,6 +74,13 @@ $vertical-padding: $spacing-ms;
     color: $walla-main;
     &:hover {
       color: $white;
+      &:disabled {
+        color: $blue-grey-4;
+      }
+    }
+    &:disabled {
+      border-color: $blue-grey-4;
+      color: $blue-grey-4;
     }
   }
   &.btn-gray {
