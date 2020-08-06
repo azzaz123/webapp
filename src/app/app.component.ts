@@ -1,5 +1,5 @@
 
-import { mergeMap, map, filter, distinctUntilChanged } from 'rxjs/operators';
+import { mergeMap, map, filter, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
@@ -156,8 +156,11 @@ export class AppComponent implements OnInit {
 
   private subscribeEventUserLogin() {
     this.event.subscribe(EventService.USER_LOGIN, (accessToken: string) => {
-      this.userService.me().subscribe(
-        (user: User) => {
+      this.setLoading(true);
+      this.userService.me()
+        .pipe(finalize(() => this.setLoading(false)))
+        .subscribe(user => {
+          this.userService.setPermission(user);
           this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
           this.initRealTimeChat(user, accessToken);
           appboy.changeUser(user.id);
@@ -166,10 +169,6 @@ export class AppComponent implements OnInit {
             this.trackAppOpen();
             this.updateSessionCookie();
           }
-        },
-        (error: any) => {
-          this.userService.logout();
-          this.errorsService.show(error);
         });
     });
   }
@@ -278,10 +277,14 @@ export class AppComponent implements OnInit {
       }
 
       if (event instanceof RouteConfigLoadStart) {
-        this.renderer.addClass(document.body, 'route-loading');
+        this.setLoading(true);
       } else if (event instanceof RouteConfigLoadEnd) {
-        this.renderer.removeClass(document.body, 'route-loading');
+        this.setLoading(false);
       }
     });
+  }
+
+  private setLoading(loading: boolean): void {
+    loading ? this.renderer.addClass(document.body, 'route-loading') : this.renderer.removeClass(document.body, 'route-loading');
   }
 }
