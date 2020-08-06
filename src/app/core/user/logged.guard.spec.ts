@@ -1,124 +1,97 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
-
-import {map} from 'rxjs/operators';
 import { TestBed } from '@angular/core/testing';
 import { LoggedGuard } from './logged.guard';
 import { environment } from '../../../environments/environment';
-import { WindowRef } from '../window/window.service';
 import { AccessTokenService } from '../http/access-token.service';
-import { NgxPermissionsService } from 'ngx-permissions';
-import { UserService } from './user.service';
-import { User, PERMISSIONS } from './user';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-
-class MockWindow {
-  public nativeWindow = {
-    location: {
-      href: ''
-    }
-  };
-}
+import { CookieService } from 'ngx-cookie';
 
 describe('LoggedGuard', (): void => {
 
   let loggedGuard: LoggedGuard;
-  let window: WindowRef;
   let accessTokenService: AccessTokenService;
-  let permissionService: NgxPermissionsService;
-  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: WindowRef, useClass: MockWindow },
-        {
-          provide: AccessTokenService, useValue: {
-            accessToken: null,
-            storeAccessToken(value) {
-              this.accessToken = value;
-            },
-            getTokenSignature() {
-              return 'thesignature';
-            }
-          }
-        },
         LoggedGuard,
+        AccessTokenService,
         {
-          provide: NgxPermissionsService,
-          useValue: {
-            getPermissions() { },
-            addPermission() { }
-          }
-        },
-        {
-          provide: UserService,
-          useValue: {
-            me(): Observable<User> {
-              return observableOf(MOCK_USER);
+          provide: CookieService, useValue: {
+            put(value) {
             },
-            setPermission(userType: string): void { },
-            setSubscriptionsFeatureFlag() {
-              return observableOf(true);
+            remove() {
+            },
+            get () {
             }
-          },
+          }
         }
       ]
     });
-    loggedGuard = TestBed.get(LoggedGuard);
-    window = TestBed.get(WindowRef);
-    accessTokenService = TestBed.get(AccessTokenService);
-    accessTokenService.storeAccessToken(null);
-    userService = TestBed.get(UserService);
-    permissionService = TestBed.get(NgxPermissionsService);
+    loggedGuard = TestBed.inject(LoggedGuard);
+    accessTokenService = TestBed.inject(AccessTokenService);
   });
 
   it('should create an instance', (): void => {
     expect(loggedGuard).toBeTruthy();
   });
 
-  describe('canActivate', (): void => {
-    let redirectUrl;
+  describe('canActivate', () => {
+    const redirectUrl = encodeURIComponent(window.location.href);
 
-    beforeEach(() => {
-      spyOn(permissionService, 'getPermissions').and.returnValue({});
-      spyOn(userService, 'me').and.callThrough();
-      redirectUrl = encodeURIComponent(window.nativeWindow.location.href);
+    describe('when there is no access token in cookies', () => {
+      beforeEach(() => accessTokenService.deleteAccessToken());
+
+      it('should return false and redirect', () => {
+        let result: boolean;
+
+        result = loggedGuard.canActivate();
+
+        expect(result).toBeFalsy();
+        expect(window.location.href).toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
+      });
     });
 
-    it('should return false and redirect if no access token', (): void => {
-      const result = loggedGuard.canActivate();
+    describe('when there is access token in cookies', () => {
+      beforeEach(() => accessTokenService.storeAccessToken('mockToken'));
 
-      expect(result).toBeFalsy();
-      expect(window.nativeWindow.location.href).toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
-    });
+      it('should return true and do NOT redirect if access token', () => {
+        let result: boolean;
 
-    it('should return true and NOT redirect if access token', () => {
-      accessTokenService.storeAccessToken('abc');
-      const result = loggedGuard.canActivate();
+        result = loggedGuard.canActivate();
 
-      expect(result).toBeTruthy();
-      expect(window.nativeWindow.location.href).not.toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
-    });
-
-    it('should check the current user permissions', () => {
-      accessTokenService.storeAccessToken('abc');
-      const result = loggedGuard.canActivate();
-
-      expect(permissionService.getPermissions).toHaveBeenCalled();
-      expect(result).toBeTruthy();
-    });
-
-    it('should call userService.me and set the permissions for the user', () => {
-      accessTokenService.storeAccessToken('abc');
-      const result = loggedGuard.canActivate();
-
-      userService.me().pipe(map((u: User) => {
-        expect(userService.setPermission).toHaveBeenCalledWith(u.type);
-      }));
-
-      expect(userService.me).toHaveBeenCalled();
-      expect(result).toBeTruthy();
+        expect(result).toBeTruthy();
+        expect(window.location.href).not.toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
+      });
     });
   });
+
+  describe('canLoad', () => {
+    const redirectUrl = encodeURIComponent(window.location.href);
+
+    describe('when there is no access token in cookies', () => {
+      beforeEach(() => accessTokenService.deleteAccessToken());
+
+      it('should return false and redirect', () => {
+        let result: boolean;
+
+        result = loggedGuard.canLoad();
+
+        expect(result).toBeFalsy();
+        expect(window.location.href).toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
+      });
+    });
+
+    describe('when there is access token in cookies', () => {
+      beforeEach(() => accessTokenService.storeAccessToken('mockToken'));
+
+      it('should return true and do NOT redirect if access token', () => {
+        let result: boolean;
+
+        result = loggedGuard.canLoad();
+
+        expect(result).toBeTruthy();
+        expect(window.location.href).not.toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
+      });
+    });
+  });
+  
 });

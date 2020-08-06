@@ -1,38 +1,30 @@
 
-import {map} from 'rxjs/operators';
+import { CanActivate, CanLoad } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { AccessTokenService } from '../http/access-token.service';
 import { WindowRef } from '../window/window.service';
-import { UserService } from './user.service';
-import { NgxPermissionsService } from 'ngx-permissions';
-import { User, PERMISSIONS } from './user';
-import { isEmpty } from 'lodash-es';
+import { AccessTokenService } from '../http/access-token.service';
 
 @Injectable()
-export class LoggedGuard implements CanActivate {
+export class LoggedGuard implements CanActivate, CanLoad {
 
-  constructor(private accessTokenService: AccessTokenService,
-    private window: WindowRef,
-    private permissionService: NgxPermissionsService,
-    private userService: UserService) {
-  }
+  constructor(private accessTokenService: AccessTokenService) { }
 
   public canActivate() {
+    return this.loggedGuardLogic();
+  }
+
+  public canLoad() {
+    return this.loggedGuardLogic();
+  }
+
+  private loggedGuardLogic(): boolean {
     if (!this.accessTokenService.accessToken) {
-      const redirect = `${environment.siteUrl}login?redirectUrl=${encodeURIComponent(this.window.nativeWindow.location.href)}`;
-      this.window.nativeWindow.location.href = redirect;
+      const redirect = `${environment.siteUrl}login?redirectUrl=${encodeURIComponent(window.location.href)}`;
+      window.location.href = redirect;
       return false;
     }
-    if (isEmpty(this.permissionService.getPermissions())) {
-      return this.userService.me().pipe(map((user: User) => {
-        this.userService.setPermission(user);
-        return true;
-      }));
-    } else {
-      return true;
-    }
+    return true;
   }
 }
 
