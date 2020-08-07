@@ -74,6 +74,7 @@ import { StatusIconComponent } from './status-icon';
 import { ChangeCardModalComponent } from './modals/change-card-modal/change-card-modal.component';
 import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-card-modal.component';
 import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
+import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
 
 @NgModule({
   imports: [
@@ -154,7 +155,8 @@ import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-bi
     DateUntilDayPipe,
     DateCalendarPipe,
     CountdownPipe,
-    ProfileProBillingComponent
+    ProfileProBillingComponent,
+    FullScreenModalComponent
   ],
   declarations: [
     AdComponent,
@@ -218,7 +220,8 @@ import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-bi
     DateUntilDayPipe,
     DateCalendarPipe,
     CountdownPipe,
-    ProfileProBillingComponent
+    ProfileProBillingComponent,
+    FullScreenModalComponent
   ],
   providers: [
     DecimalPipe,
@@ -243,6 +246,7 @@ import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-bi
     NoCardModalComponent,
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
+    FullScreenModalComponent
   ]
 })
 export class SharedModule {
