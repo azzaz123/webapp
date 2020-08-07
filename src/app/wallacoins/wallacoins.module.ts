@@ -21,8 +21,7 @@ import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tu
     FormsModule,
     MatIconModule,
     NguCarouselModule,
-    TrackingModule,
-    NgbCarouselModule
+    TrackingModule
   ],
   declarations: [
     wallacoinsRoutedComponents,

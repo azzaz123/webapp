@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { SharedModule } from '../shared/shared.module';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
@@ -31,7 +31,8 @@ import { SubscriptionPriceDiscountComponent } from './subscription/subscription-
     MatIconModule,
     NgbButtonsModule,
     GeolocationModule,
-    NgbCarouselModule
+    NgbCarouselModule,
+    NgbAccordionModule
   ],
   declarations: [
     profileRoutedComponents,
