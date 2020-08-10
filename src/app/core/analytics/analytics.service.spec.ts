@@ -1,10 +1,10 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
+import {AnalyticsEvent, AnalyticsPageView, MParticleIntegrationIds} from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
 import appboyKit from '@mparticle/web-appboy-kit';
 
@@ -13,7 +13,8 @@ jest.mock('@mparticle/web-sdk', () => ({
   default: {
     init: () => {},
     logEvent: (_eventName, _eventType, _eventAttributes) => {},
-    logPageView: (_pageName, _pageAttributes, _pageFlags) => {}
+    logPageView: (_pageName, _pageAttributes, _pageFlags) => {},
+    setIntegrationAttribute: (_integrationId, _integrationAttributes) => {}
   },
   namedExport: 'mParticle'
 }));
@@ -24,6 +25,11 @@ jest.mock('@mparticle/web-appboy-kit', () => ({
     register: _config => {}
   },
   namedExport: 'appboyKit'
+}));
+
+jest.mock('fingerprintjs2', () => ({
+  get: (_options, _callback) => _callback([]),
+  x64hash128: () => 'fingerprint'
 }));
 
 describe('AnalyticsService', () => {
@@ -48,11 +54,15 @@ describe('AnalyticsService', () => {
   describe('initialize', () => {
     it('should initialize the analytics library', () => {
       spyOn(mParticle, 'init');
+      spyOn(mParticle, 'setIntegrationAttribute');
       spyOn(appboyKit, 'register');
 
       service.initialize();
 
       expect(mParticle.init).toHaveBeenCalled();
+      expect(mParticle.setIntegrationAttribute).toHaveBeenCalledWith(MParticleIntegrationIds.Internal, {
+        deviceId: 'fingerprint'
+      });
       expect(appboyKit.register).toHaveBeenCalled();
     });
   });
