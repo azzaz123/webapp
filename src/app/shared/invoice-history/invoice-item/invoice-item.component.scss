@@ -21,4 +21,12 @@
     padding: $spacing-s;
     margin: $spacing-s 0;
   }
+  &__info-title {
+    color: $blue-grey-3;
+  }
+  &__info-price {
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-l;
+    line-height: $font-size-l;
+  }
 }

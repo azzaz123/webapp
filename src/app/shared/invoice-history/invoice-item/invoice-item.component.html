@@ -9,16 +9,18 @@
       <div class="col-11 overflow-sm-hidden">
         <div class="row h-100 d-flex align-items-center">
           <div class="col-5 col-md-5 d-flex flex-column clickable">
-            <span class="info-price"> {{invoice.price}} </span>
-            <span class="info-title subtitle"> {{invoice.title}}</span>
+            <span class="InvoiceItem__info-price">{{invoice.price}}</span>
+            <span class="InvoiceItem__info-title subtitle">{{invoice.title}}</span>
           </div>
           <div class="col-4 d-none d-md-flex flex-column item-info clickable">
-            <div i18n>Transaction date</div>
-            <div class="subtitle"> {{ invoice.transaction_date | date: 'dd/MM/yyyy'}}</div>
+            <div i18n="@@TransactionDate">Transaction date</div>
+            <div class="InvoiceItem__info-title subtitle">{{ invoice.transaction_date | date: 'dd/MM/yyyy'}}</div>
           </div>
           <div class="col-3 ml-auto d-none d-md-flex align-items-center justify-content-center">
             <div class="feature-action">
-              <tsl-button [disabled]="!invoice.available" className="btn-outline-primary" (click)="downloadInvoice(invoice)">
+              <tsl-button [disabled]="!invoice.available || !active" className="btn-outline-primary"
+              (click)="downloadInvoice($event, invoice) && click($event)" 
+              >
                 <span i18n="@@DownloadInvoice">Download invoice</span>
               </tsl-button>
             </div>

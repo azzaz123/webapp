@@ -76,6 +76,7 @@ $vertical-padding: $spacing-ms;
       color: $white;
       &:disabled {
         color: $blue-grey-4;
+        cursor: auto;
       }
     }
     &:disabled {

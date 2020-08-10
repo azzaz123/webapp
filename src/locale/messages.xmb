@@ -259,7 +259,7 @@
   <msg id="OrderYourCatalogBy"><source>app/shared/modals/full-screen-menu/full-screen-modal.component.html:3</source>Order your catalog by</msg>
   <msg id="OrderBy"><source>app/shared/nav-links/nav-links.component.html:41</source>Order by</msg>
   <msg id="8458658926966860767"><source>app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:2</source>Are you sure you want to delete billing information?</msg>
-  <msg id="InvoiceInformation"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:7</source>Invoice information</msg>
+  <msg id="InvoiceInformation"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:7</source><source>app/profile/invoice/invoice.component.html:5</source>Invoice information</msg>
   <msg id="ProfileProBillingFormType"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:13</source>Type of registration</msg>
   <msg id="ProfileProBillingFormNatural"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:22</source>Natural person</msg>
   <msg id="ProfileProBillingFormLegal"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:30</source>Legal person</msg>
@@ -303,6 +303,12 @@
   <msg id="CifFormat"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:123,125</source>
                     CIF/NIF must be valid.
                   </msg>
+  <msg id="InvoiceHistory"><source>app/shared/invoice-history/invoice-history.component.html:5</source>Invoice history</msg>
+  <msg id="InvoiceHistorySubtitle"><source>app/shared/invoice-history/invoice-history.component.html:6</source>Fill in your invoice information in order to download your invoices.</msg>
+  <msg id="loadMoreButton"><source>app/shared/invoice-history/invoice-history.component.html:17,18</source><source>app/chat/inbox/inbox.component.html:69</source><source>app/chat/inbox/inbox.component.html:95</source><source>app/chat/current-conversation/current-conversation.component.html:87</source>Load more
+        </msg>
+  <msg id="TransactionDate"><source>app/shared/invoice-history/invoice-item/invoice-item.component.html:16</source>Transaction date</msg>
+  <msg id="DownloadInvoice"><source>app/shared/invoice-history/invoice-item/invoice-item.component.html:22</source>Download invoice</msg>
   <msg id="4391289919356861627"><source>app/shared/geolocation/location-select/location-modal/location-modal.component.html:4</source>Apply</msg>
   <msg id="4359291232904891489"><source>app/shared/geolocation/location-select/location-select.component.html:3</source>Set a location</msg>
   <msg id="5371960677736303052"><source>app/shared/geolocation/geolocation.component.html:9</source>Where?</msg>
@@ -374,7 +380,6 @@
   <msg id="newMessages"><source>app/chat/inbox/inbox.component.html:47</source>New messages</msg>
   <msg id="updateInboxWarning"><source>app/chat/inbox/inbox.component.html:50,51</source>We found some problems updating your inbox. Try again later.
     </msg>
-  <msg id="loadMoreButton"><source>app/chat/inbox/inbox.component.html:69</source><source>app/chat/inbox/inbox.component.html:95</source><source>app/chat/current-conversation/current-conversation.component.html:87</source>Load more</msg>
   <msg id="updateArchivedMessagesWarning"><source>app/chat/inbox/inbox.component.html:76,77</source>We found some problems updating your archived messages. Try again later.
     </msg>
   <msg id="8721026914522212662"><source>app/chat/inbox/archived-inbox-conversation/archived-inbox-conversation.component.html:42</source>Archived </msg>

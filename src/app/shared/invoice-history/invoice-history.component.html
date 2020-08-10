@@ -7,9 +7,17 @@
       </div>
     </div>
     <tsl-invoice-item 
-    *ngFor="let invoice of invoices"
+    *ngFor="let invoice of sortedInvoices | slice:0:limit"
     [invoice]="invoice"
+    [active]="invoice"
     >
     </tsl-invoice-item>
+    <div class="InvoiceHistory__load-more-container" *ngIf="showLoadMore()">
+      <a class="load-more">
+        <tsl-button className="btn-outline-primary" (click)="loadMore()" i18n="@@loadMoreButton"
+        >Load more
+        </tsl-button>
+      </a>
+    </div>
   </div>
 </div>

@@ -1134,4 +1134,8 @@
   <translation id="OrderYourCatalogBy">Ordena tu catálogo por</translation>
   <translation id="OrderBy">Ordenar por</translation>
   <translation id="ManageCatalogSubscription">Gestionar <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></translation>
+  <translation id="InvoiceHistory">Tus facturas</translation>
+  <translation id="InvoiceHistorySubtitle">Rellena tus datos de facturación para descargar todas tus facturas.</translation>
+  <translation id="DownloadInvoice">Descargar factura</translation>
+  <translation id="TransactionDate">Fecha de transacción</translation>
 </translationbundle>

@@ -34,7 +34,6 @@ export class InvoiceService {
         }))
         .pipe(
           map((invoices: Invoice[]) => {
-            console.log('service ', invoices);
             if (invoices.length > 0) {
               return invoices.map((invoice: Invoice) => this.mapInvoices(invoice, categories))
             }
@@ -45,7 +44,6 @@ export class InvoiceService {
   };
 
   private mapInvoices(invoice: Invoice, categories: CategoryResponse[]): Invoice {
-    console.log('mapInvoice ', invoice, categories);
     let category = categories.find((category: CategoryResponse) => invoice.category_id === category.category_id);
     
     if (!category && invoice.category_id === 0) {

@@ -2,4 +2,8 @@
 
 .InvoiceHistory {
   padding: $spacing-l;
+  &__load-more-container {
+    display: flex;
+    justify-content: center;
+  }
 }
