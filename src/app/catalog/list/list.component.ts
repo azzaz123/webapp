@@ -114,6 +114,7 @@ export class ListComponent implements OnInit, OnDestroy {
     ];
 
     this.navLinks = this.normalNavLinks;
+    this.setSortItems();
 
     this.getItems();
     this.getCreditInfo();
@@ -295,6 +296,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private getItems(append?: boolean) {
     this.loading = true;
+    this.end = false;
 
     if (!append) {
       this.init = 0;
@@ -311,10 +313,13 @@ export class ListComponent implements OnInit, OnDestroy {
           this.page, this.pageSize, this.selectedSubscriptionSlot.category.category_id, this.sortBy, this.selectedStatus, this.searchTerm
         )
         .subscribe(itemsByCategory => {
-          this.items = append ? this.items.concat(itemsByCategory) : itemsByCategory;
-          this.updateNavLinksCounters();
-          this.setNumberOfProducts();
+          if (itemsByCategory) {
+            this.items = append ? this.items.concat(itemsByCategory) : itemsByCategory;
+            this.updateNavLinksCounters();
+            this.setNumberOfProducts();
+          }
           this.loading = false;
+          this.end = true;
         });
     } else {
       this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {

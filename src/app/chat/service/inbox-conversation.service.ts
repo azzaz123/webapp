@@ -13,7 +13,11 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
 import { InboxConversationApi, InboxMessagesApi } from '../model/api';
-import { RemoteConsoleClientService, RemoteConsoleService } from '../../core/remote-console';
+import { RemoteConsoleService } from '../../core/remote-console';
+import { ToastService } from 'app/layout/toast/toast.service';
+import { I18nService } from 'app/core/i18n/i18n.service';
+
+export const ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS = 100;
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +43,10 @@ export class InboxConversationService {
     private realTime: RealTimeService,
     private messageService: MessageService,
     private remoteConsoleService: RemoteConsoleService,
-    private eventService: EventService) {
+    private eventService: EventService,
+    private toastService: ToastService,
+    private i18nService: I18nService,
+    ) {
     this.conversations = [];
     this.archivedConversations = [];
     this.currentConversation = null;
@@ -322,9 +329,22 @@ export class InboxConversationService {
     return throwError(new Error('Not found'));
   }
 
+  private handleTooManyNewConversationsError(errorResponse): Observable<never> {
+    const { code } = errorResponse.error;
+    if (code === ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS) {
+      const title = this.i18nService.getTranslations('defaultErrorTitle');
+      const text = this.i18nService.getTranslations('tooManyNewConversations');
+      this.toastService.show({ title, text, type: 'error' });
+    }
+
+    return throwError(errorResponse);
+  }
+
   private fetchConversationByItem$(itemId: string): Observable<InboxConversation> {
     return this.httpClient.post<ConversationResponse>(`${environment.baseUrl}api/v3/conversations`, { item_id: itemId }).pipe(
-    mergeMap((response: ConversationResponse) => this.getConversation(response.conversation_id)));
+      mergeMap((response: ConversationResponse) => this.getConversation(response.conversation_id)),
+      catchError(errorResponse => this.handleTooManyNewConversationsError(errorResponse)),
+    );
   }
 
   public resendPendingMessages(conversation: InboxConversation): void {
