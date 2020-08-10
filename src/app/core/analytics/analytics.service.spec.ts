@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import {AnalyticsEvent, AnalyticsPageView, MParticleIntegrationIds} from './analytics-constants';
+import { AnalyticsEvent, AnalyticsPageView, MParticleIntegrationIds } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
 import appboyKit from '@mparticle/web-appboy-kit';
 
