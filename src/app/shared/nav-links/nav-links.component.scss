@@ -7,7 +7,9 @@
 
   div {
     margin-right: $spacing-xl;
-
+    @media (max-width: 768px) {
+      margin-right: $spacing-m;
+    }
     a {
       cursor: pointer;
       color: $blue-grey-2;
@@ -24,17 +26,40 @@
       &.active {
         color: $walla-main;
         border-bottom: 2px solid $walla-main;
+        @media (max-width: 768px) {
+          color: $blue-grey-2;
+          border-bottom: none;
+        }
       }
     }
   }
 
-  .NavLinks__link {
-    margin-top: 2px;
+  .NavLinks__links {
+    width: 100%;
+    display: flex;
+    div {
+      display: flex;
+    }
+    .NavLinks__link {
+      margin-top: 2px;
+    }
+    .NavLinks__anchor {
+      span {
+        margin-right: $spacing-xs;
+      }
+      mat-icon {
+        ::ng-deep {
+          width: 12px;
+          vertical-align: middle;
+        }
+      }
+    }
   }
 
   .NavLinks__sort-select {
     margin-left: auto;
     margin-right: 0;
+    display: block;
     tsl-select {
       font-size: $font-size-xs;
       font-weight: $font-weight-chunky;
@@ -44,5 +69,61 @@
       height: 38px;
       line-height: $line-height-xl;
     }
+    .NavLinks__anchor {
+      display: flex;
+      align-items: center;
+      span {
+        margin-right: $spacing-xs;
+      }
+      mat-icon {
+        ::ng-deep {
+          width: 12px;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+
+  .NavLinks__search-input {
+    @media (max-width: 768px) {
+      display: flex;
+      align-items: center;
+      tsl-search-input ::ng-deep div {
+        &.active {
+          width: 32px;
+        }
+      }
+      tsl-search-input {
+        position: relative;
+        &.opened ::ng-deep {
+          div {
+            &.active {
+              width: 250px;
+              position: relative;
+              border-bottom: 1px solid $walla-main;
+            }
+          }
+          .clear-search {
+            display: block;
+            position: absolute;
+            right: 0;
+            bottom: 5px;
+          }
+        }
+      }
+      &--close {
+        &.opened {
+          display: block;
+          position: absolute;
+          right: 15px;
+        }
+        &.closed {
+          display: none;
+        }
+      }
+    }
+  }
+  .hidden {
+    display: none;
   }
 }

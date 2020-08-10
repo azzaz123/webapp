@@ -93,9 +93,9 @@ Example with branch `feature/FRON-1234`:
 ```
 deploy env=beta service=webapp tag=feature-FRON-1234
 ```
-How to revert beta to its previous state (without doing a release):
+How to revert beta to its previous state (without doing a release), will put what's in develop, there's no workaround yet:
 ```
-deploy env=beta service=vision tag=release
+deploy env=beta service=webapp tag=latest
 ```
 
 ## Commentaries
