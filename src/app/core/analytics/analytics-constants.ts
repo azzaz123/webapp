@@ -16,6 +16,10 @@ export enum ANALYTIC_EVENT_TYPES {
     Other = 8
 }
 
+export enum MParticleIntegrationIds {
+  Internal = 8080
+}
+
 export interface AnalyticsPageView<T> {
     name: string;
     attributes: T;

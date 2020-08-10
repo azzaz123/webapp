@@ -4,7 +4,8 @@ import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
-import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
+import * as Fingerprint2 from 'fingerprintjs2';
+import {AnalyticsEvent, AnalyticsPageView, MParticleIntegrationIds} from './analytics-constants';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,13 @@ export class AnalyticsService {
 
       appboyKit.register(CONFIG);
       mParticle.init(environment.mParticleKey, CONFIG);
+      Fingerprint2.get({}, components => {
+        const values = components.map(component => component.value);
+        const fingerprint = Fingerprint2.x64hash128(values.join(''), 31);
+        mParticle.setIntegrationAttribute(MParticleIntegrationIds.Internal, {
+          deviceId: fingerprint
+        });
+      });
     });
   }
 
