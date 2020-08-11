@@ -1,13 +1,12 @@
 import mParticle from '@mparticle/web-sdk';
 import appboyKit from '@mparticle/web-appboy-kit';
-import {UserService} from './../user/user.service';
-import {Injectable} from '@angular/core';
-import {environment} from '../../../environments/environment';
-import {User} from '../user/user';
-import * as Fingerprint2 from 'fingerprintjs2';
-import {AnalyticsEvent, AnalyticsPageView, MParticleIntegrationIds} from './analytics-constants';
-import {CookieService} from "ngx-cookie";
-import {UUID} from "angular2-uuid";
+import { UserService } from './../user/user.service';
+import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { User } from '../user/user';
+import { AnalyticsEvent, AnalyticsPageView, MParticleIntegrationIds } from './analytics-constants';
+import { CookieService } from "ngx-cookie";
+import { UUID } from "angular2-uuid";
 
 @Injectable({
   providedIn: 'root'

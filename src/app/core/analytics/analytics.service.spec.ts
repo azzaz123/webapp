@@ -1,5 +1,5 @@
 
-import {of as observableOf } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
@@ -7,6 +7,7 @@ import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { AnalyticsEvent, AnalyticsPageView, MParticleIntegrationIds } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
 import appboyKit from '@mparticle/web-appboy-kit';
+import { CookieService } from "ngx-cookie";
 
 jest.mock('@mparticle/web-sdk', () => ({
   __esModule: true,
@@ -27,23 +28,36 @@ jest.mock('@mparticle/web-appboy-kit', () => ({
   namedExport: 'appboyKit'
 }));
 
-jest.mock('fingerprintjs2', () => ({
-  get: (_options, _callback) => _callback([]),
-  x64hash128: () => 'fingerprint'
+jest.mock('angular2-uuid', () => ({
+  UUID: {
+    UUID: () => 'newDeviceId'
+  }
 }));
 
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
+  let deviceIdValue: string;
 
   beforeEach(() => {
+    deviceIdValue = 'deviceId';
+
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: UserService, useValue: {
+          provide: UserService,
+          useValue: {
             me() {
               return observableOf(MOCK_USER);
             },
           },
+        }, {
+          provide: CookieService,
+          useValue: {
+            get: () => deviceIdValue,
+            put: (value) => {
+              deviceIdValue = value
+            }
+          }
         }
       ]
     });
@@ -52,7 +66,7 @@ describe('AnalyticsService', () => {
   });
 
   describe('initialize', () => {
-    it('should initialize the analytics library', () => {
+    it('should initialize the analytics library and use existing UUID if deviceId cookie exists', () => {
       spyOn(mParticle, 'init');
       spyOn(mParticle, 'setIntegrationAttribute');
       spyOn(appboyKit, 'register');
@@ -61,10 +75,26 @@ describe('AnalyticsService', () => {
 
       expect(mParticle.init).toHaveBeenCalled();
       expect(mParticle.setIntegrationAttribute).toHaveBeenCalledWith(MParticleIntegrationIds.Internal, {
-        deviceId: 'fingerprint'
+        deviceId: 'deviceId'
       });
       expect(appboyKit.register).toHaveBeenCalled();
     });
+
+    it('should initialize the analytics library and create new UUID if deviceId cookie does not exist', function () {
+      deviceIdValue = undefined;
+      spyOn(mParticle, 'init');
+      spyOn(mParticle, 'setIntegrationAttribute');
+      spyOn(appboyKit, 'register');
+
+      service.initialize();
+
+      expect(mParticle.init).toHaveBeenCalled();
+      expect(mParticle.setIntegrationAttribute).toHaveBeenCalledWith(MParticleIntegrationIds.Internal, {
+        deviceId: 'newDeviceId'
+      });
+      expect(appboyKit.register).toHaveBeenCalled();
+    });
+
   });
 
   describe('trackEvent', () => {
