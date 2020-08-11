@@ -29,9 +29,4 @@ export class SidebarComponent implements OnInit {
       this.isProfessional = value;
     });
   }
-
-  public logout($event: any) {
-    $event.preventDefault();
-    this.userService.logout();
-  }
 }

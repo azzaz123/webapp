@@ -73,22 +73,4 @@ describe('SidebarComponent', () => {
     });
   });
 
-  describe('logout', () => {
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {preventDefault: preventDefault};
-
-    beforeEach(() => {
-      spyOn(userService, 'logout');
-      component.logout(event);
-    });
-
-    it('should prevent event', () => {
-      expect(preventDefault).toHaveBeenCalled();
-    });
-
-    it('should logout', () => {
-      expect(userService.logout).toHaveBeenCalled();
-    });
-  });
-
 });
