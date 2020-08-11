@@ -3,7 +3,7 @@ import { environment } from 'environments/environment';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Invoice } from './invoice.interface';
-import { INVOICE_HISTORY } from 'tests/invoice.fixtures.spec';
+import { MOCK_INVOICE_HISTORY } from '../../../tests/invoice.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import { CategoryResponse } from '../category/category-response.interface';
@@ -28,7 +28,7 @@ export class InvoiceService {
     .pipe(
       mergeMap((categories) => {
         //return this.http.get<Invoice[]>(`${environment.baseUrl}${INVOICE_HISTORY_ENDPOINT}`).pipe(
-        return of(INVOICE_HISTORY).pipe(
+        return of(MOCK_INVOICE_HISTORY).pipe(
         catchError((error) => {
           return of(error);
         }))

@@ -13,14 +13,15 @@ export class InvoiceHistoryComponent implements OnInit {
   public invoices: Invoice[];
   public limit = 5;
   public total: number;
+  private LOAD_MORE_QUANTITY = 5;
   
   constructor(private invoiceService: InvoiceService) {}
 
   ngOnInit() {
-    this.getInvoices();
+    this.getInvoice();
   }
 
-  private getInvoices(): void {
+  private getInvoice(): void {
     this.invoiceService.getInvoices().subscribe((invoices) => {
       this.invoices = invoices;
       this.total = this.invoices.length;
@@ -28,11 +29,11 @@ export class InvoiceHistoryComponent implements OnInit {
   }
 
   public loadMore(): void {
-    this.limit = this.limit + 5;
+    this.limit = this.limit + this.LOAD_MORE_QUANTITY;
   }
 
   public showLoadMore(): boolean {
-    return this.invoices && this.invoices.length > 10 && this.limit <= this.total;
+    return this.invoices && this.invoices.length > this.LOAD_MORE_QUANTITY && this.limit <= this.total;
   }
 
   get sortedInvoices() {
