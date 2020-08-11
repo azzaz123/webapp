@@ -19,7 +19,7 @@
           <div class="col-3 ml-auto d-none d-md-flex align-items-center justify-content-center">
             <div class="feature-action">
               <tsl-button [disabled]="!invoice.available || !active" className="btn-outline-primary"
-              (click)="downloadInvoice($event, invoice) && click($event)" 
+              (click)="downloadInvoice($event, invoice)" 
               >
                 <span i18n="@@DownloadInvoice">Download invoice</span>
               </tsl-button>
