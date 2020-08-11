@@ -7,13 +7,14 @@ import {User} from '../user/user';
 import * as Fingerprint2 from 'fingerprintjs2';
 import {AnalyticsEvent, AnalyticsPageView, MParticleIntegrationIds} from './analytics-constants';
 import {CookieService} from "ngx-cookie";
+import {UUID} from "angular2-uuid";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalyticsService {
 
-  private static FINGERPRINT_COOKIE_NAME = 'device_access_token_id';
+  private static DEVICE_ID_COOKIE_NAME = 'device_id';
   constructor(private userService: UserService, private cookieService: CookieService) { }
 
   public initialize() {
@@ -35,16 +36,15 @@ export class AnalyticsService {
       appboyKit.register(CONFIG);
       mParticle.init(environment.mParticleKey, CONFIG);
 
-      let fingerprint = this.cookieService.get(AnalyticsService.FINGERPRINT_COOKIE_NAME);
-      if (!fingerprint) {
-        Fingerprint2.get({}, components => {
-          const values = components.map(component => component.value);
-          fingerprint = Fingerprint2.x64hash128(values.join(''), 31);
-          this.cookieService.put(AnalyticsService.FINGERPRINT_COOKIE_NAME, fingerprint)
+      let deviceId = this.cookieService.get(AnalyticsService.DEVICE_ID_COOKIE_NAME);
+      if (!deviceId) {
+        deviceId = UUID.UUID();
+        this.cookieService.put(AnalyticsService.DEVICE_ID_COOKIE_NAME, deviceId, {
+          expires: new Date('2038-01-19')
         });
       }
       mParticle.setIntegrationAttribute(MParticleIntegrationIds.Internal, {
-        deviceId: fingerprint
+        deviceId: deviceId
       });
     });
   }
