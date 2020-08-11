@@ -1,4 +1,3 @@
-
 import { mergeMap, map, filter, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
@@ -153,11 +152,9 @@ export class AppComponent implements OnInit {
   }
 
   private updateSessionCookie() {
-    const uuid: string = UUID.UUID();
-    this.setCookie('app_session_id', uuid, 900000);
-  }
-
-  private setCookie(name: string, token: string, expiration: number) {
+    const name = 'app_session_id';
+    const token = UUID.UUID();
+    const expiration = 900000;
     const expirationDate: Date = new Date();
     expirationDate.setTime(expirationDate.getTime() + expiration);
     const options: CookieOptions = {
