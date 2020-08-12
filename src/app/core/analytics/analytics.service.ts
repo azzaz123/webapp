@@ -35,16 +35,17 @@ export class AnalyticsService {
 
       appboyKit.register(CONFIG);
       mParticle.init(environment.mParticleKey, CONFIG);
-
-      let deviceId = this.cookieService.get(DEVICE_ID_COOKIE_NAME);
-      if (!deviceId) {
-        deviceId = UUID.UUID();
-        this.cookieService.put(DEVICE_ID_COOKIE_NAME, deviceId, {
-          expires: new Date('2038-01-19')
+      mParticle.ready(() => {
+        let deviceId = this.cookieService.get(DEVICE_ID_COOKIE_NAME);
+        if (!deviceId) {
+          deviceId = UUID.UUID();
+          this.cookieService.put(DEVICE_ID_COOKIE_NAME, deviceId, {
+            expires: new Date('2038-01-19')
+          });
+        }
+        mParticle.setIntegrationAttribute(MParticleIntegrationIds.Internal, {
+          deviceId: deviceId
         });
-      }
-      mParticle.setIntegrationAttribute(MParticleIntegrationIds.Internal, {
-        deviceId: deviceId
       });
     });
   }
