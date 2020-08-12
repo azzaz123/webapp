@@ -12,7 +12,8 @@ import { CookieService } from "ngx-cookie";
 jest.mock('@mparticle/web-sdk', () => ({
   __esModule: true,
   default: {
-    init: () => {},
+    init: () => {this.ready()},
+    ready: (_callback) => _callback(),
     logEvent: (_eventName, _eventType, _eventAttributes) => {},
     logPageView: (_pageName, _pageAttributes, _pageFlags) => {},
     setIntegrationAttribute: (_integrationId, _integrationAttributes) => {}
