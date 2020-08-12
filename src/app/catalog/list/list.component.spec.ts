@@ -48,6 +48,8 @@ import { MOCK_USER, USER_INFO_RESPONSE } from '../../../tests/user.fixtures.spec
 import { SubscriptionsSlotsListComponent } from './subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
 import { By } from '@angular/platform-browser';
 import { SubscriptionsSlotItemComponent } from './subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
+import { AnalyticsService } from "../../core/analytics/analytics.service";
+import { MockAnalyticsService } from "../../../tests/analytics.fixtures.spec";
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -184,7 +186,8 @@ describe('ListComponent', () => {
         },
         {
           provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock
-        }
+        },
+        { provide: AnalyticsService, useClass: MockAnalyticsService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

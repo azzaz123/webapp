@@ -19,6 +19,8 @@ import { RemoteConsoleService } from '../../core/remote-console';
 import { MockRemoteConsoleService } from '../../../tests';
 import { InboxConversation, MessageStatus } from '../model';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
+import { AnalyticsService } from "../../core/analytics/analytics.service";
+import { MockAnalyticsService } from "../../../tests/analytics.fixtures.spec";
 
 describe('Service: Message', () => {
 
@@ -42,6 +44,7 @@ describe('Service: Message', () => {
         { provide: ConnectionService, useValue: {} },
         { provide: UserService, useValue: { user: new User(USER_ID) } },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
+        { provide: AnalyticsService, useClass: MockAnalyticsService }
       ]
     });
     realTime = TestBed.get(RealTimeService);

@@ -66,33 +66,37 @@ describe('AnalyticsService', () => {
   });
 
   describe('initialize', () => {
-    it('should initialize the analytics library and use existing UUID if deviceId cookie exists', () => {
-      spyOn(mParticle, 'init');
-      spyOn(mParticle, 'setIntegrationAttribute');
-      spyOn(appboyKit, 'register');
+    describe('when there is an identifier in cookies', () => {
+      it('should initialize the analytics library with existing identifier', () => {
+        spyOn(mParticle, 'init');
+        spyOn(mParticle, 'setIntegrationAttribute');
+        spyOn(appboyKit, 'register');
 
-      service.initialize();
+        service.initialize();
 
-      expect(mParticle.init).toHaveBeenCalled();
-      expect(mParticle.setIntegrationAttribute).toHaveBeenCalledWith(MParticleIntegrationIds.Internal, {
-        deviceId: 'deviceId'
+        expect(mParticle.init).toHaveBeenCalled();
+        expect(mParticle.setIntegrationAttribute).toHaveBeenCalledWith(MParticleIntegrationIds.Internal, {
+          deviceId: 'deviceId'
+        });
+        expect(appboyKit.register).toHaveBeenCalled();
       });
-      expect(appboyKit.register).toHaveBeenCalled();
     });
 
-    it('should initialize the analytics library and create new UUID if deviceId cookie does not exist', function () {
-      deviceIdValue = undefined;
-      spyOn(mParticle, 'init');
-      spyOn(mParticle, 'setIntegrationAttribute');
-      spyOn(appboyKit, 'register');
+    describe('when there is no identifier in cookies', () => {
+      it('should initialize the analytics library ', () => {
+        deviceIdValue = undefined;
+        spyOn(mParticle, 'init');
+        spyOn(mParticle, 'setIntegrationAttribute');
+        spyOn(appboyKit, 'register');
 
-      service.initialize();
+        service.initialize();
 
-      expect(mParticle.init).toHaveBeenCalled();
-      expect(mParticle.setIntegrationAttribute).toHaveBeenCalledWith(MParticleIntegrationIds.Internal, {
-        deviceId: 'newDeviceId'
+        expect(mParticle.init).toHaveBeenCalled();
+        expect(mParticle.setIntegrationAttribute).toHaveBeenCalledWith(MParticleIntegrationIds.Internal, {
+          deviceId: 'newDeviceId'
+        });
+        expect(appboyKit.register).toHaveBeenCalled();
       });
-      expect(appboyKit.register).toHaveBeenCalled();
     });
 
   });

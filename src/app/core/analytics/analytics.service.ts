@@ -8,12 +8,13 @@ import { AnalyticsEvent, AnalyticsPageView, MParticleIntegrationIds } from './an
 import { CookieService } from "ngx-cookie";
 import { UUID } from "angular2-uuid";
 
+export const DEVICE_ID_COOKIE_NAME = 'device_id';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AnalyticsService {
 
-  private static DEVICE_ID_COOKIE_NAME = 'device_id';
   constructor(private userService: UserService, private cookieService: CookieService) { }
 
   public initialize() {
@@ -35,10 +36,10 @@ export class AnalyticsService {
       appboyKit.register(CONFIG);
       mParticle.init(environment.mParticleKey, CONFIG);
 
-      let deviceId = this.cookieService.get(AnalyticsService.DEVICE_ID_COOKIE_NAME);
+      let deviceId = this.cookieService.get(DEVICE_ID_COOKIE_NAME);
       if (!deviceId) {
         deviceId = UUID.UUID();
-        this.cookieService.put(AnalyticsService.DEVICE_ID_COOKIE_NAME, deviceId, {
+        this.cookieService.put(DEVICE_ID_COOKIE_NAME, deviceId, {
           expires: new Date('2038-01-19')
         });
       }

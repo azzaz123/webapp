@@ -26,6 +26,8 @@ import { TestRequest } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
 import { Item } from '../item/item';
+import { AnalyticsService } from "../analytics/analytics.service";
+import { MockAnalyticsService } from "../../../tests/analytics.fixtures.spec";
 
 let service: CallsService;
 let userService: UserService;
@@ -52,7 +54,8 @@ describe('CallsService', () => {
         { provide: TrackingService, useValue: {} },
         {
           provide: ConnectionService, useValue: {}
-        }
+        },
+        { provide: AnalyticsService, useClass: MockAnalyticsService }
       ]
     });
     service = TestBed.get(CallsService);
