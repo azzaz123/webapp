@@ -1,4 +1,4 @@
-import { Invoice } from 'app/core/invoice/invoice.interface';
+import { Invoice, InvoiceDownload } from 'app/core/invoice/invoice.interface';
 
 export const MOCK_INVOICE_HISTORY: Invoice[] = [
   {
@@ -194,3 +194,7 @@ export const MOCK_INVOICE_HISTORY_SORTED: Invoice[] = [
     available: true,
   }
 ];
+
+export const MOCK_INVOICE_DOWNLOAD: InvoiceDownload = {
+  file: 'pdfURL'
+}

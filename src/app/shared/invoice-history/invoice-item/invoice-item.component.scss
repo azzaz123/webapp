@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .InvoiceItem {
-  padding: $spacing-m;
+  padding: 0 $spacing-xs $spacing-xs;
   &__avatar {
     width: 80px;
     height: 80px;
@@ -19,7 +19,7 @@
     border: 1px solid $blue-grey-5;
     border-radius: 10px;
     padding: $spacing-s;
-    margin: $spacing-s 0;
+    margin: $spacing-xs 0;
   }
   &__info-title {
     color: $blue-grey-3;

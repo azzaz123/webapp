@@ -3,12 +3,13 @@ import { environment } from 'environments/environment';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Invoice } from './invoice.interface';
-import { MOCK_INVOICE_HISTORY } from '../../../tests/invoice.fixtures.spec';
+import { MOCK_INVOICE_HISTORY, MOCK_INVOICE_DOWNLOAD } from '../../../tests/invoice.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import { CategoryResponse } from '../category/category-response.interface';
 
 export const INVOICE_HISTORY_ENDPOINT = 'api/v3/users/me/invoice-history';
+export const INVOICE_DOWNLOAD_ENDPOINT = 'api/v3/users/me/invoice-download';
 
 @Injectable()
 export class InvoiceService {
@@ -27,6 +28,7 @@ export class InvoiceService {
     return this.categoryService.getCategories()
     .pipe(
       mergeMap((categories) => {
+        // TODO: Call correct endpoint when backend has developed it.
         //return this.http.get<Invoice[]>(`${environment.baseUrl}${INVOICE_HISTORY_ENDPOINT}`).pipe(
         return of(MOCK_INVOICE_HISTORY).pipe(
         catchError((error) => {
@@ -39,6 +41,20 @@ export class InvoiceService {
             }
           })
         );
+      })
+    )
+  };
+
+  public downloadInvoice(invoice: Invoice): Observable<Invoice[]> {
+    return this.categoryService.getCategories()
+    .pipe(
+      mergeMap((categories) => {
+        // TODO: Call correct endpoint when backend has developed it.
+        //return this.http.get<Invoice[]>(`${environment.baseUrl}${INVOICE_DOWNLOAD_ENDPOINT}/invoice.id`).pipe(
+        return of(MOCK_INVOICE_DOWNLOAD).pipe(
+        catchError((error) => {
+          return of(error);
+        }));
       })
     )
   };

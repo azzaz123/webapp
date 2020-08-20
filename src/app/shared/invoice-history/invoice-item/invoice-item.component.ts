@@ -1,25 +1,26 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Invoice } from 'app/core/invoice/invoice.interface';
+import { InvoiceService } from 'app/core/invoice/invoice.service';
 
 @Component({
   selector: 'tsl-invoice-item',
   templateUrl: './invoice-item.component.html',
   styleUrls: ['./invoice-item.component.scss'],
 })
-export class InvoiceItemComponent implements OnInit {
+export class InvoiceItemComponent {
   
   @Input() invoice: Invoice;
   @Input() active: boolean;
 
-  constructor() {}
+  constructor(private invoiceService: InvoiceService) {}
 
-  ngOnInit() {
-  }
-
+  // TODO: call endpoint to download PDF (to be decided with backend)
   public downloadInvoice(e: Event, invoice: Invoice) {
     e.stopPropagation();
     if (invoice.available && this.active) {
-      console.log('invoice ', e, invoice);
+      this.invoiceService.downloadInvoice(invoice).subscribe((pdfFile) => {
+        console.log('PDF File: ', pdfFile);
+      });
     }
     
   }

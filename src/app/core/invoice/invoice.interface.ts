@@ -8,3 +8,7 @@ export interface Invoice {
     category_name?: string;
     category_icon?: string;
 }
+
+export interface InvoiceDownload {
+    file: string;
+}
