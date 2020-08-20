@@ -1,4 +1,4 @@
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
@@ -18,7 +18,7 @@ import { CarInfo, CarContent } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
-import { tap } from 'rxjs/operators';
+import { tap, flatMap, map } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
@@ -139,11 +139,60 @@ export class UploadCarComponent implements OnInit {
         year: carYear,
         version: this.item.version
       });
-      this.getModels(this.item.brand, true);
-      this.getYears(this.item.model, true);
-      this.getVersions(carYear, true);
+
+      this.setParameters(carYear).subscribe(() => {});
       this.detectFormChanges();
     }
+  }
+
+  private setParameters(carYear): Observable<any> {
+    return forkJoin([
+      this.getModels(this.item.brand),
+      this.getYears(this.item.model),
+      this.getVersions(carYear),
+    ]).pipe(tap((values: any[]) => {
+      this.setModel(values[0], true);
+      this.setYears(values[1], true);
+      this.setVersions(values[2], true);
+    }));
+  }
+
+  private setModel(models, editMode) {
+    if (models.length <= 0) {
+      this.customMake = true;
+    }
+    this.models = models;
+    this.toggleField('model', 'enable', !editMode);
+    if (!editMode) {
+      this.toggleField('year', 'disable');
+      this.toggleField('version', 'disable');
+    }
+    if (!this.settingItem) {
+      this.resetTitle();
+    }
+  }
+
+  private setYears(years, editMode) {
+      this.years = years;
+      this.toggleField('year', 'enable', !editMode);
+      if (!editMode) {
+        this.toggleField('version', 'disable');
+      }
+      if (!this.settingItem) {
+        this.resetTitle();
+      }
+  }
+
+  private setVersions(versions, editMode) {
+    this.versions = versions;
+    this.toggleField('version', 'enable', !editMode);
+    if (this.item) {
+      this.customVersion = !find(this.versions, { value: this.item.version });
+    }
+    if (!this.settingItem) {
+      this.setTitle();
+    }
+    this.settingItem = false;
   }
 
   private detectFormChanges() {
@@ -183,55 +232,23 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
-  public getModels(brand: string, editMode: boolean = false) {
-    this.carSuggestionsService.getModels(brand).subscribe((models: IOption[]) => {
-      if (models.length <= 0) {
-        this.customMake = true;
-      }
-      this.models = models;
-      this.toggleField('model', 'enable', !editMode);
-      if (!editMode) {
-        this.toggleField('year', 'disable');
-        this.toggleField('version', 'disable');
-      }
-      if (!this.settingItem) {
-        this.resetTitle();
-      }
-    });
+  public getModels(brand: string): Observable<IOption[]> {
+    return this.carSuggestionsService.getModels(brand)
   }
 
-  public getYears(model: string, editMode: boolean = false) {
-    this.carSuggestionsService.getYears(
+  public getYears(model: string): Observable<IOption[]> {
+    return this.carSuggestionsService.getYears(
       this.uploadForm.get('brand').value,
       model
-    ).subscribe((years: IOption[]) => {
-      this.years = years;
-      this.toggleField('year', 'enable', !editMode);
-      if (!editMode) {
-        this.toggleField('version', 'disable');
-      }
-      if (!this.settingItem) {
-        this.resetTitle();
-      }
-    });
+    );
   }
 
-  public getVersions(year: string, editMode: boolean = false) {
-    this.carSuggestionsService.getVersions(
+  public getVersions(year: string): Observable<IOption[]> {
+    return this.carSuggestionsService.getVersions(
       this.uploadForm.get('brand').value,
       this.uploadForm.get('model').value,
       year
-    ).subscribe((versions: IOption[]) => {
-      this.versions = versions;
-      this.toggleField('version', 'enable', !editMode);
-      if (this.item) {
-        this.customVersion = !find(this.versions, { value: this.item.version });
-      }
-      if (!this.settingItem) {
-        this.setTitle();
-      }
-      this.settingItem = false;
-    });
+    );
   }
 
   public getInfo(version: string) {
