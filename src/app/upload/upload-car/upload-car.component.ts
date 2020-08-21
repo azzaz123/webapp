@@ -183,18 +183,6 @@ export class UploadCarComponent implements OnInit {
       }
   }
 
-  private setVersions(versions, editMode) {
-    this.versions = versions;
-    this.toggleField('version', 'enable', !editMode);
-    if (this.item) {
-      this.customVersion = !find(this.versions, { value: this.item.version });
-    }
-    if (!this.settingItem) {
-      this.setTitle();
-    }
-    this.settingItem = false;
-  }
-
   private detectFormChanges() {
     this.uploadForm.valueChanges.subscribe((value) => {
       if (this.brands && this.carTypes && this.models && this.years && this.versions) {
