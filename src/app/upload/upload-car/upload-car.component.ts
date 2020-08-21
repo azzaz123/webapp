@@ -18,7 +18,7 @@ import { CarInfo, CarContent } from '../../core/item/item-response.interface';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { UserService } from '../../core/user/user.service';
 import { SubscriptionsService } from '../../core/subscriptions/subscriptions.service';
-import { tap, flatMap, map } from 'rxjs/operators';
+import { tap, finalize } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
@@ -140,21 +140,21 @@ export class UploadCarComponent implements OnInit {
         version: this.item.version
       });
 
-      this.setParameters(carYear).subscribe(() => {});
+      this.setParameters(carYear);
       this.detectFormChanges();
     }
   }
 
-  private setParameters(carYear): Observable<any> {
-    return forkJoin([
+  private setParameters(carYear: string): void {
+    forkJoin([
       this.getModels(this.item.brand),
-      this.getYears(this.item.model),
-      this.getVersions(carYear),
-    ]).pipe(tap((values: any[]) => {
+      this.getYears(this.item.model)
+    ]).pipe(finalize(() => {
+      this.getVersions(carYear, true);
+    })).subscribe((values: any[]) => {
       this.setModel(values[0], true);
       this.setYears(values[1], true);
-      this.setVersions(values[2], true);
-    }));
+    });
   }
 
   private setModel(models, editMode) {
@@ -243,12 +243,22 @@ export class UploadCarComponent implements OnInit {
     );
   }
 
-  public getVersions(year: string): Observable<IOption[]> {
-    return this.carSuggestionsService.getVersions(
+  public getVersions(year: string, editMode: boolean): void {
+    this.carSuggestionsService.getVersions(
       this.uploadForm.get('brand').value,
       this.uploadForm.get('model').value,
       year
-    );
+    ).subscribe((versions) => {
+      this.versions = versions;
+      this.toggleField('version', 'enable', !editMode);
+      if (this.item) {
+        this.customVersion = !find(this.versions, { value: this.item.version });
+      }
+      if (!this.settingItem) {
+        this.setTitle();
+      }
+      this.settingItem = false;
+    });
   }
 
   public getInfo(version: string) {
