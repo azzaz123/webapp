@@ -243,7 +243,7 @@ export class UploadCarComponent implements OnInit {
     );
   }
 
-  public getVersions(year: string, editMode: boolean): void {
+  public getVersions(year: string, editMode: boolean = false): void {
     this.carSuggestionsService.getVersions(
       this.uploadForm.get('brand').value,
       this.uploadForm.get('model').value,
