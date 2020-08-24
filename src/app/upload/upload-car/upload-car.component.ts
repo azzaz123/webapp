@@ -151,9 +151,9 @@ export class UploadCarComponent implements OnInit {
       this.getYears(this.item.model)
     ]).pipe(finalize(() => {
       this.getVersions(carYear, true);
-    })).subscribe((values: any[]) => {
-      this.setModel(values[0], true);
-      this.setYears(values[1], true);
+    })).subscribe(([models, years]) => {
+      this.setModel(models, true);
+      this.setYears(years, true);
     });
   }
 
