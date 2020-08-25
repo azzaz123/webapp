@@ -39,7 +39,7 @@ import {
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
-xdescribe('UploadCarComponent', () => {
+describe('UploadCarComponent', () => {
   let component: UploadCarComponent;
   let fixture: ComponentFixture<UploadCarComponent>;
   let carSuggestionsService: CarSuggestionsService;
@@ -203,20 +203,20 @@ xdescribe('UploadCarComponent', () => {
 
       it('should set settingItem to true', () => {
         component.item = MOCK_CAR;
-        spyOn<any>(component, 'getModels');
-        spyOn<any>(component, 'getYears');
-        spyOn<any>(component, 'getVersions');
+        spyOn<any>(component, 'getModels').and.returnValue(of(CAR_MODELS));;
+        spyOn<any>(component, 'getYears').and.returnValue(of(CAR_YEARS));;
+        spyOn<any>(component, 'getVersions').and.returnValue(of(CAR_VERSIONS));;
 
         component.ngOnInit();
 
         expect(component['settingItem']).toBe(true);
       });
 
-      it('should call the 3 services to get th c', () => {
+      it('should call the 3 services to get the car information', () => {
         component.item = MOCK_CAR;
-        spyOn(component, 'getModels').and.callThrough();
-        spyOn(component, 'getYears').and.callThrough();
-        spyOn(component, 'getVersions').and.callThrough();
+        spyOn(component, 'getModels').and.returnValue(of(CAR_MODELS));
+        spyOn(component, 'getYears').and.returnValue(of(CAR_YEARS));
+        spyOn(component, 'getVersions').and.returnValue(of(CAR_VERSIONS));
 
         component.ngOnInit();
         component.uploadForm.get('images').patchValue([IMAGE]);

@@ -221,7 +221,7 @@ export class UploadCarComponent implements OnInit {
   }
 
   public getModels(brand: string): Observable<IOption[]> {
-    return this.carSuggestionsService.getModels(brand)
+    return this.carSuggestionsService.getModels(brand);
   }
 
   public getYears(model: string): Observable<IOption[]> {
