@@ -93,31 +93,6 @@ export class UploadCarComponent implements OnInit {
   }
 
   private initializeUploadFormFields(): void {
-    // this.settingItem = true;
-    // const carYear: string = this.item.year ? this.item.year.toString() : '';
-    // const carCategory: string = this.item.categoryId ? this.item.categoryId.toString() : '';
-    // this.uploadForm.patchValue({
-    //   id: this.item?.id,
-    //   title: this.item?.title,
-    //   sale_price: this.item?.salePrice,
-    //   financed_price: this.item?.financedPrice,
-    //   currency_code: this.item?.currencyCode,
-    //   storytelling: this.item?.description,
-    //   sale_conditions: this.item?.saleConditions,
-    //   category_id: CARS_CATEGORY,
-    //   num_seats: this.item?.numSeats,
-    //   num_doors: this.item?.numDoors,
-    //   body_type: this.item?.bodyType,
-    //   km: this.item?.km,
-    //   engine: this.item?.engine,
-    //   gearbox: this.item?.gearbox,
-    //   horsepower: this.item?.horsepower,
-    //   brand: this.item?.brand,
-    //   model: this.item?.model,
-    //   year: this.item?.year,
-    //   version: this.item?.version
-    // });
-
     this.uploadForm = this.fb.group({
       id: this.item?.id,
       category_id: CARS_CATEGORY,
