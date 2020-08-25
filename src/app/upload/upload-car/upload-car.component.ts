@@ -83,7 +83,7 @@ export class UploadCarComponent implements OnInit {
       sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       financed_price: ['', [this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
-      version: [{ value: '', disabled: true }, [Validators.required]],
+      version: ['', [Validators.required]],
       num_seats: ['', [this.min(0), this.max(99)]],
       num_doors: ['', [this.min(0), this.max(99)]],
       body_type: null,
@@ -117,6 +117,7 @@ export class UploadCarComponent implements OnInit {
         this.isEditing && this.setUploadWithSavedData();
         this.subscribeToBrandChanges();
         this.subscribeToModelChanges();
+        this.subscribeToYearChanges();
       })
     ).subscribe(([brands, carTypes]) => {
       this.brands = brands;
@@ -161,7 +162,7 @@ export class UploadCarComponent implements OnInit {
       this.getModels(this.item.brand),
       this.getYears(this.item.model)
     ]).pipe(finalize(() => {
-      this.getVersions(carYear, true);
+      this.getVersions(carYear);
     })).subscribe(([models, years]) => {
       this.setModel(models, true);
       this.setYears(years, true);
@@ -210,6 +211,14 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
+  private subscribeToYearChanges(): void {
+    this.uploadForm.get('year').valueChanges.subscribe((year: string) => {
+      this.getVersions(year).subscribe((versions: IOption[]) => {
+        this.versions = versions;
+      });
+    }); 
+  }
+
   private detectFormChanges() {
     this.uploadForm.valueChanges.subscribe((value) => {
       if (this.brands && this.carTypes && this.models && this.years && this.versions) {
@@ -255,22 +264,21 @@ export class UploadCarComponent implements OnInit {
     );
   }
 
-  public getVersions(year: string, editMode: boolean = false): void {
-    this.carSuggestionsService.getVersions(
+  public getVersions(year: string): Observable<IOption[]> {
+    return this.carSuggestionsService.getVersions(
       this.uploadForm.get('brand').value,
       this.uploadForm.get('model').value,
       year
-    ).subscribe((versions: IOption[]) => {
-      this.versions = versions;
-      this.toggleField('version', 'enable', !editMode);
-      if (this.item) {
-        this.customVersion = !find(this.versions, { value: this.item.version });
-      }
-      if (!this.settingItem) {
-        this.setTitle();
-      }
-      this.settingItem = false;
-    });
+    )
+      // this.versions = versions;
+      // this.toggleField('version', 'enable', !editMode);
+      // if (this.item) {
+      //   this.customVersion = !find(this.versions, { value: this.item.version });
+      // }
+      // if (!this.settingItem) {
+      //   this.setTitle();
+      // }
+      // this.settingItem = false;
   }
 
   public getInfo(version: string) {
@@ -463,6 +471,14 @@ export class UploadCarComponent implements OnInit {
 
   get modelFieldDisabled(): boolean {
     return this.uploadForm.get('brand').invalid;
+  }
+
+  get yearFieldDisabled(): boolean {
+    return this.uploadForm.get('model').invalid;
+  }
+
+  get versionFieldDisabled(): boolean {
+    return this.uploadForm.get('year').invalid;
   }
 
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {

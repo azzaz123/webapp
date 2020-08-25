@@ -68,7 +68,7 @@
         <div class="form-group">
           <label for="year" i18n>Year</label>
           <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Number plate" class="form-control"
-            formControlName="year" id="year" [options]="years" (selected)="getVersions($event.value)"></ng-select>
+            formControlName="year" id="year" [options]="years" [disabled]="yearFieldDisabled"></ng-select>
           <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Number plate" class="form-control"
             formControlName="year" id="year" />
         </div>
@@ -100,7 +100,7 @@
           </div>
           <ng-select *ngIf="!customMake && !customVersion" i18n-placeholder
             placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
-            for="version" [options]="versions" (selected)="getInfo($event.value)"></ng-select>
+            for="version" [options]="versions" [disabled]="versionFieldDisabled"></ng-select>
           <input *ngIf="customMake || customVersion" type="text" i18n-placeholder
             placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
             id="version" />
