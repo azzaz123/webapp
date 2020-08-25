@@ -71,9 +71,9 @@ export class UploadCarComponent implements OnInit {
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
     private popoverConfig: NgbPopoverConfig) {
-      this.popoverConfig.placement = 'right';
-      this.popoverConfig.triggers = 'focus:blur';
-      this.popoverConfig.container = 'body';
+    this.popoverConfig.placement = 'right';
+    this.popoverConfig.triggers = 'focus:blur';
+    this.popoverConfig.container = 'body';
   }
 
   ngOnInit() {
@@ -136,12 +136,12 @@ export class UploadCarComponent implements OnInit {
   private setParameters(): void {
     forkJoin([
       this.getModels(this.item.brand),
-      this.getYears(this.item.model)
-    ]).pipe(finalize(() => {
-      this.getVersions(this.item.year.toString());
-    })).subscribe(([models, years]) => {
-      this.setModel(models, true);
-      this.setYears(years, true);
+      this.getYears(this.item.model),
+      this.getVersions(this.item.year.toString())
+    ]).subscribe(([models, years, versions]) => {
+      this.models = models;
+      this.years = years;
+      this.versions = versions;
     });
   }
 
