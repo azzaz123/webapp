@@ -267,13 +267,13 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
-  private setTitle() {
-    this.uploadForm.get('title').patchValue(
-      this.uploadForm.get('brand').value + ' ' +
-      this.uploadForm.get('model').value + ' ' +
-      this.uploadForm.get('year').value
-    );
-    this.uploadForm.get('title').markAsDirty();
+  private autocompleteTitle() {
+    const brand = this.uploadForm.get('brand').value;
+    const model = this.uploadForm.get('model').value;
+    const year = this.uploadForm.get('year').value;
+    const title = `${brand} ${model} ${year}`;
+
+    this.uploadForm.get('title').patchValue(title);
   }
 
   private resetTitle() {
