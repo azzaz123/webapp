@@ -71,41 +71,7 @@ export class UploadCarComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
-    config: NgbPopoverConfig) {
-    this.uploadForm = fb.group({
-      id: '',
-      category_id: CARS_CATEGORY,
-      images: [[], [Validators.required]],
-      model: ['', [Validators.required]],
-      brand: ['', [Validators.required]],
-      title: ['', [Validators.required]],
-      year: ['', [Validators.required]],
-      sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
-      financed_price: ['', [this.min(0), this.max(999999999)]],
-      currency_code: ['EUR', [Validators.required]],
-      version: ['', [Validators.required]],
-      num_seats: ['', [this.min(0), this.max(99)]],
-      num_doors: ['', [this.min(0), this.max(99)]],
-      body_type: null,
-      km: ['', [this.min(0), this.max(999999999)]],
-      storytelling: '',
-      engine: null,
-      gearbox: null,
-      horsepower: ['', [this.min(0), this.max(999)]],
-      sale_conditions: fb.group({
-        fix_price: false,
-        exchange_allowed: false,
-        shipping_allowed: false
-      }),
-      location: this.fb.group({
-        address: ['', [Validators.required]],
-        latitude: ['', [Validators.required]],
-        longitude: ['', [Validators.required]],
-      })
-    });
-    config.placement = 'right';
-    config.triggers = 'focus:blur';
-    config.container = 'body';
+    private popoverConfig: NgbPopoverConfig) {
   }
 
   ngOnInit() {
@@ -114,7 +80,8 @@ export class UploadCarComponent implements OnInit {
       this.getCarTypes()
     ).pipe(
       finalize(() => {
-        this.isEditing && this.setUploadWithSavedData();
+        this.initializeUploadFormFields();
+        this.initializePopoverConfig();
         this.subscribeToBrandChanges();
         this.subscribeToModelChanges();
         this.subscribeToYearChanges();
@@ -125,44 +92,86 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
-  private setUploadWithSavedData(): void {
-    if (this.item) {
-      this.settingItem = true;
-      const carYear: string = this.item.year ? this.item.year.toString() : '';
-      const carCategory: string = this.item.categoryId ? this.item.categoryId.toString() : '';
-      this.uploadForm.patchValue({
-        id: this.item.id,
-        title: this.item.title,
-        sale_price: this.item.salePrice,
-        financed_price: this.item.financedPrice,
-        currency_code: this.item.currencyCode,
-        storytelling: this.item.description,
-        sale_conditions: this.item.saleConditions,
-        category_id: carCategory,
-        num_seats: this.item.numSeats,
-        num_doors: this.item.numDoors,
-        body_type: this.item.bodyType,
-        km: this.item.km,
-        engine: this.item.engine,
-        gearbox: this.item.gearbox,
-        horsepower: this.item.horsepower,
-        brand: this.item.brand,
-        model: this.item.model,
-        year: carYear,
-        version: this.item.version
-      });
+  private initializeUploadFormFields(): void {
+    // this.settingItem = true;
+    // const carYear: string = this.item.year ? this.item.year.toString() : '';
+    // const carCategory: string = this.item.categoryId ? this.item.categoryId.toString() : '';
+    // this.uploadForm.patchValue({
+    //   id: this.item?.id,
+    //   title: this.item?.title,
+    //   sale_price: this.item?.salePrice,
+    //   financed_price: this.item?.financedPrice,
+    //   currency_code: this.item?.currencyCode,
+    //   storytelling: this.item?.description,
+    //   sale_conditions: this.item?.saleConditions,
+    //   category_id: CARS_CATEGORY,
+    //   num_seats: this.item?.numSeats,
+    //   num_doors: this.item?.numDoors,
+    //   body_type: this.item?.bodyType,
+    //   km: this.item?.km,
+    //   engine: this.item?.engine,
+    //   gearbox: this.item?.gearbox,
+    //   horsepower: this.item?.horsepower,
+    //   brand: this.item?.brand,
+    //   model: this.item?.model,
+    //   year: this.item?.year,
+    //   version: this.item?.version
+    // });
 
-      this.setParameters(carYear);
-      this.detectFormChanges();
+    this.uploadForm = this.fb.group({
+      id: this.item?.id,
+      category_id: CARS_CATEGORY,
+      images: [[], [Validators.required]],
+      model: [this.item?.model, [Validators.required]],
+      brand: [this.item?.brand, [Validators.required]],
+      title: [this.item?.title, [Validators.required]],
+      year: [this.item?.year, [Validators.required]],
+      sale_price: [this.item?.salePrice, [Validators.required, this.min(0), this.max(999999999)]],
+      financed_price: [this.item?.financedPrice, [this.min(0), this.max(999999999)]],
+      currency_code: ['EUR', [Validators.required]],
+      version: [this.item?.version, [Validators.required]],
+      num_seats: [this.item?.numSeats, [this.min(0), this.max(99)]],
+      num_doors: [this.item?.numDoors, [this.min(0), this.max(99)]],
+      body_type: this.item?.bodyType,
+      km: [this.item?.km, [this.min(0), this.max(999999999)]],
+      storytelling: this.item?.description,
+      engine: this.item?.engine,
+      gearbox: this.item?.gearbox,
+      horsepower: [this.item?.horsepower, [this.min(0), this.max(999)]],
+      sale_conditions: this.fb.group({
+        fix_price: this.item?.saleConditions?.fix_price,
+        exchange_allowed: this.item?.saleConditions?.exchange_allowed,
+        shipping_allowed: this.item?.saleConditions?.shipping_allowed
+      }),
+      location: this.fb.group({
+        address: ['', [Validators.required]],
+        latitude: ['', [Validators.required]],
+        longitude: ['', [Validators.required]],
+      })
+    });
+
+    if (this.item) {
+      this.setParameters();
     }
+
+    this.detectFormChanges();
   }
 
-  private setParameters(carYear: string): void {
+  private initializePopoverConfig(): void {
+    this.popoverConfig = {
+      ...this.popoverConfig,
+      placement: 'right',
+      triggers: 'focus:blur',
+      container: 'body'
+    };
+  }
+
+  private setParameters(): void {
     forkJoin([
       this.getModels(this.item.brand),
       this.getYears(this.item.model)
     ]).pipe(finalize(() => {
-      this.getVersions(carYear);
+      this.getVersions(this.item.year.toString());
     })).subscribe(([models, years]) => {
       this.setModel(models, true);
       this.setYears(years, true);
@@ -216,7 +225,7 @@ export class UploadCarComponent implements OnInit {
       this.getVersions(year).subscribe((versions: IOption[]) => {
         this.versions = versions;
       });
-    }); 
+    });
   }
 
   private detectFormChanges() {
@@ -270,15 +279,15 @@ export class UploadCarComponent implements OnInit {
       this.uploadForm.get('model').value,
       year
     )
-      // this.versions = versions;
-      // this.toggleField('version', 'enable', !editMode);
-      // if (this.item) {
-      //   this.customVersion = !find(this.versions, { value: this.item.version });
-      // }
-      // if (!this.settingItem) {
-      //   this.setTitle();
-      // }
-      // this.settingItem = false;
+    // this.versions = versions;
+    // this.toggleField('version', 'enable', !editMode);
+    // if (this.item) {
+    //   this.customVersion = !find(this.versions, { value: this.item.version });
+    // }
+    // if (!this.settingItem) {
+    //   this.setTitle();
+    // }
+    // this.settingItem = false;
   }
 
   public getInfo(version: string) {
