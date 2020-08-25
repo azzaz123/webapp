@@ -113,14 +113,14 @@ export class UploadCarComponent implements OnInit {
       this.getBrands(),
       this.getCarTypes()
     ).pipe(
-      finalize(() => this.isEditing && this.setUploadSavedData())
+      finalize(() => this.isEditing && this.setUploadWithSavedData())
     ).subscribe(([brands, carTypes]) => {
       this.brands = brands;
       this.carTypes = carTypes;
     });
   }
 
-  private setUploadSavedData() {
+  private setUploadWithSavedData(): void {
     if (this.item) {
       this.settingItem = true;
       const carYear: string = this.item.year ? this.item.year.toString() : '';
