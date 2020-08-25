@@ -76,10 +76,10 @@ export class UploadCarComponent implements OnInit {
       id: '',
       category_id: CARS_CATEGORY,
       images: [[], [Validators.required]],
-      model: [{ value: '', disabled: true }, [Validators.required]],
+      model: ['', [Validators.required]],
       brand: ['', [Validators.required]],
       title: ['', [Validators.required]],
-      year: [{ value: '', disabled: true }, [Validators.required]],
+      year: ['', [Validators.required]],
       sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       financed_price: ['', [this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
@@ -113,7 +113,11 @@ export class UploadCarComponent implements OnInit {
       this.getBrands(),
       this.getCarTypes()
     ).pipe(
-      finalize(() => this.isEditing && this.setUploadWithSavedData())
+      finalize(() => {
+        this.isEditing && this.setUploadWithSavedData();
+        this.subscribeToBrandChanges();
+        this.subscribeToModelChanges();
+      })
     ).subscribe(([brands, carTypes]) => {
       this.brands = brands;
       this.carTypes = carTypes;
@@ -180,14 +184,30 @@ export class UploadCarComponent implements OnInit {
   }
 
   private setYears(years, editMode) {
-      this.years = years;
-      this.toggleField('year', 'enable', !editMode);
-      if (!editMode) {
-        this.toggleField('version', 'disable');
-      }
-      if (!this.settingItem) {
-        this.resetTitle();
-      }
+    this.years = years;
+    this.toggleField('year', 'enable', !editMode);
+    if (!editMode) {
+      this.toggleField('version', 'disable');
+    }
+    if (!this.settingItem) {
+      this.resetTitle();
+    }
+  }
+
+  private subscribeToBrandChanges(): void {
+    this.uploadForm.get('brand').valueChanges.subscribe((brand: string) => {
+      this.getModels(brand).subscribe((models: IOption[]) => {
+        this.models = models;
+      });
+    });
+  }
+
+  private subscribeToModelChanges(): void {
+    this.uploadForm.get('model').valueChanges.subscribe((model: string) => {
+      this.getYears(model).subscribe((years: IOption[]) => {
+        this.years = years;
+      });
+    });
   }
 
   private detectFormChanges() {
@@ -439,6 +459,10 @@ export class UploadCarComponent implements OnInit {
 
   public updateUploadPercentage(percentage: number) {
     this.uploadCompletedPercentage = Math.round(percentage);
+  }
+
+  get modelFieldDisabled(): boolean {
+    return this.uploadForm.get('brand').invalid;
   }
 
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {

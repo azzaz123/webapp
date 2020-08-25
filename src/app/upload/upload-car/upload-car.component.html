@@ -17,7 +17,7 @@
             </a>
           </div>
           <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Seat" class="form-control"
-            formControlName="brand" id="brand" [options]="brands" (selected)="getModels($event.value)">
+            formControlName="brand" id="brand" [options]="brands">
           </ng-select>
           <input *ngIf="customMake" type="text" placeholder="E.g. Seat" class="form-control" formControlName="brand"
             id="brand" />
@@ -27,7 +27,7 @@
         <div class="form-group">
           <label for="model" i18n>Model</label>
           <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Ibiza" class="form-control"
-            formControlName="model" id="model" [options]="models" (selected)="getYears($event.value)">
+            formControlName="model" id="model" [options]="models" [disabled]="modelFieldDisabled">
           </ng-select>
           <input *ngIf="customMake" type="text" i18n-placeholder placeholder="E.g. Ibiza" class="form-control"
             formControlName="model" id="model" />
