@@ -40,6 +40,7 @@ export class UploadCarComponent implements OnInit {
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Car;
   @Input() urgentPrice: number;
+
   public uploadForm: FormGroup;
   public models: IOption[];
   public years: IOption[];
@@ -56,7 +57,6 @@ export class UploadCarComponent implements OnInit {
   public isUrgent = false;
   public customMake = false;
   public customVersion = false;
-  private settingItem: boolean;
   public uploadCompletedPercentage = 0;
 
   constructor(private fb: FormBuilder,
@@ -71,9 +71,7 @@ export class UploadCarComponent implements OnInit {
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
     private popoverConfig: NgbPopoverConfig) {
-    this.popoverConfig.placement = 'right';
-    this.popoverConfig.triggers = 'focus:blur';
-    this.popoverConfig.container = 'body';
+      this.initializePopoverConfiguration();
   }
 
   ngOnInit() {
@@ -134,6 +132,12 @@ export class UploadCarComponent implements OnInit {
     this.detectFormChanges();
   }
 
+  private initializePopoverConfiguration(): void {
+    this.popoverConfig.placement = 'right';
+    this.popoverConfig.triggers = 'focus:blur';
+    this.popoverConfig.container = 'body';
+  }
+
   private setParameters(): void {
     forkJoin([
       this.getModels(this.item.brand),
@@ -144,32 +148,6 @@ export class UploadCarComponent implements OnInit {
       this.years = years;
       this.versions = versions;
     });
-  }
-
-  private setModel(models, editMode) {
-    if (models.length <= 0) {
-      this.customMake = true;
-    }
-    this.models = models;
-    this.toggleField('model', 'enable', !editMode);
-    if (!editMode) {
-      this.toggleField('year', 'disable');
-      this.toggleField('version', 'disable');
-    }
-    if (!this.settingItem) {
-      this.resetTitle();
-    }
-  }
-
-  private setYears(years, editMode) {
-    this.years = years;
-    this.toggleField('year', 'enable', !editMode);
-    if (!editMode) {
-      this.toggleField('version', 'disable');
-    }
-    if (!this.settingItem) {
-      this.resetTitle();
-    }
   }
 
   private subscribeToBrandChanges(): void {
@@ -225,47 +203,29 @@ export class UploadCarComponent implements OnInit {
 
   private getBrands(): Observable<IOption[]> {
     return this.carSuggestionsService.getBrands();
-
-    // this.brands = brands;
-    // this.markFieldAsPristine('brand');
-    // if (this.item) {
-    //   this.customMake = !find(this.brands, { value: this.item.brand });
-    // }
   }
 
   private getCarTypes(): Observable<IOption[]> {
     return this.carKeysService.getTypes();
-
-    // this.carTypes = carTypes;
-    // this.markFieldAsPristine('body_type');
   }
 
-  public getModels(brand: string): Observable<IOption[]> {
+  private getModels(brand: string): Observable<IOption[]> {
     return this.carSuggestionsService.getModels(brand);
   }
 
-  public getYears(model: string): Observable<IOption[]> {
+  private getYears(model: string): Observable<IOption[]> {
     return this.carSuggestionsService.getYears(
       this.uploadForm.get('brand').value,
       model
     );
   }
 
-  public getVersions(year: string): Observable<IOption[]> {
+  private getVersions(year: string): Observable<IOption[]> {
     return this.carSuggestionsService.getVersions(
       this.uploadForm.get('brand').value,
       this.uploadForm.get('model').value,
       year
-    )
-    // this.versions = versions;
-    // this.toggleField('version', 'enable', !editMode);
-    // if (this.item) {
-    //   this.customVersion = !find(this.versions, { value: this.item.version });
-    // }
-    // if (!this.settingItem) {
-    //   this.setTitle();
-    // }
-    // this.settingItem = false;
+    );
   }
 
   private getAutocompleteFields(version: string) {
@@ -283,11 +243,6 @@ export class UploadCarComponent implements OnInit {
     const title = `${brand} ${model} ${year}`;
 
     this.uploadForm.get('title').patchValue(title);
-  }
-
-  private resetTitle() {
-    this.uploadForm.get('title').patchValue('');
-    this.uploadForm.get('title').markAsPristine();
   }
 
   onSubmit() {
@@ -358,7 +313,7 @@ export class UploadCarComponent implements OnInit {
     return params;
   }
 
-  onError(response: any) {
+  public onError(response: any) {
     this.loading = false;
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, { category: this.uploadForm.value.category_id });
@@ -422,23 +377,7 @@ export class UploadCarComponent implements OnInit {
   }
 
   public toggleCustomMakeSelection() {
-    if (!this.customMake) {
-      this.customMake = true;
-      this.uploadForm.get('brand').patchValue('');
-      this.toggleField('model', 'enable');
-      this.toggleField('year', 'enable');
-      this.toggleField('version', 'enable');
-      if (!this.customVersion) {
-        this.customVersion = !this.customVersion;
-      }
-    } else {
-      this.customMake = false;
-      this.uploadForm.get('brand').patchValue('');
-      this.toggleField('model', 'disable');
-      this.toggleField('year', 'disable');
-      this.toggleField('version', 'disable');
-      this.customVersion = !this.customVersion;
-    }
+    this.customMake = !this.customMake;
   }
 
   public toggleCustomVersionSelection() {
