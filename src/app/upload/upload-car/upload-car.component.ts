@@ -58,6 +58,7 @@ export class UploadCarComponent implements OnInit {
   public customVersion = false;
   private settingItem: boolean;
   public uploadCompletedPercentage = 0;
+  private isEditing = !!this.item;
 
   constructor(private fb: FormBuilder,
     private carSuggestionsService: CarSuggestionsService,
@@ -108,9 +109,15 @@ export class UploadCarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getBrands();
-    this.getCarTypes();
-    this.setItemData();
+    forkJoin(
+      this.getBrands(),
+      this.getCarTypes()
+    ).pipe(
+      finalize(() => this.isEditing && this.setItemData())
+    ).subscribe(([brands, carTypes]) => {
+      this.brands = brands;
+      this.carTypes = carTypes;
+    });
   }
 
   private setItemData() {
@@ -200,24 +207,21 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
-  public noop() {
+  private getBrands(): Observable<IOption[]> {
+    return this.carSuggestionsService.getBrands();
+
+    // this.brands = brands;
+    // this.markFieldAsPristine('brand');
+    // if (this.item) {
+    //   this.customMake = !find(this.brands, { value: this.item.brand });
+    // }
   }
 
-  private getBrands() {
-    this.carSuggestionsService.getBrands().subscribe((brands: IOption[]) => {
-      this.brands = brands;
-      this.markFieldAsPristine('brand');
-      if (this.item) {
-        this.customMake = !find(this.brands, { value: this.item.brand });
-      }
-    });
-  }
+  private getCarTypes(): Observable<IOption[]> {
+    return this.carKeysService.getTypes();
 
-  private getCarTypes() {
-    this.carKeysService.getTypes().subscribe((carTypes: IOption[]) => {
-      this.carTypes = carTypes;
-      this.markFieldAsPristine('body_type');
-    });
+    // this.carTypes = carTypes;
+    // this.markFieldAsPristine('body_type');
   }
 
   public getModels(brand: string): Observable<IOption[]> {
