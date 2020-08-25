@@ -86,6 +86,7 @@ export class UploadCarComponent implements OnInit {
         this.subscribeToBrandChanges();
         this.subscribeToModelChanges();
         this.subscribeToYearChanges();
+        this.subscribeToVersionChanges();
       })
     ).subscribe(([brands, carTypes]) => {
       this.brands = brands;
@@ -196,6 +197,15 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
+  private subscribeToVersionChanges(): void {
+    this.uploadForm.get('version').valueChanges.subscribe((version: string) => {
+      this.autocompleteTitle();
+      this.getAutocompleteFields(version).subscribe((fields: CarInfo) => {
+        this.uploadForm.patchValue(fields);
+      });
+    });
+  }
+
   private detectFormChanges() {
     this.uploadForm.valueChanges.subscribe((value) => {
       if (this.brands && this.carTypes && this.models && this.years && this.versions) {
@@ -258,14 +268,12 @@ export class UploadCarComponent implements OnInit {
     // this.settingItem = false;
   }
 
-  public getInfo(version: string) {
-    this.itemService.getCarInfo(
+  private getAutocompleteFields(version: string) {
+    return this.itemService.getCarInfo(
       this.uploadForm.get('brand').value,
       this.uploadForm.get('model').value,
       version
-    ).subscribe((carInfo: CarInfo) => {
-      this.uploadForm.patchValue(carInfo);
-    });
+    );
   }
 
   private autocompleteTitle() {
