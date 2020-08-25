@@ -58,7 +58,6 @@ export class UploadCarComponent implements OnInit {
   public customVersion = false;
   private settingItem: boolean;
   public uploadCompletedPercentage = 0;
-  private isEditing = !!this.item;
 
   constructor(private fb: FormBuilder,
     private carSuggestionsService: CarSuggestionsService,
@@ -72,6 +71,9 @@ export class UploadCarComponent implements OnInit {
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
     private popoverConfig: NgbPopoverConfig) {
+      this.popoverConfig.placement = 'right';
+      this.popoverConfig.triggers = 'focus:blur';
+      this.popoverConfig.container = 'body';
   }
 
   ngOnInit() {
@@ -81,7 +83,6 @@ export class UploadCarComponent implements OnInit {
     ).pipe(
       finalize(() => {
         this.initializeUploadFormFields();
-        this.initializePopoverConfig();
         this.subscribeToBrandChanges();
         this.subscribeToModelChanges();
         this.subscribeToYearChanges();
@@ -130,15 +131,6 @@ export class UploadCarComponent implements OnInit {
     }
 
     this.detectFormChanges();
-  }
-
-  private initializePopoverConfig(): void {
-    this.popoverConfig = {
-      ...this.popoverConfig,
-      placement: 'right',
-      triggers: 'focus:blur',
-      container: 'body'
-    };
   }
 
   private setParameters(): void {
