@@ -189,6 +189,7 @@ export class UploadCarComponent implements OnInit {
 
   private subscribeToYearChanges(): void {
     this.uploadForm.get('year').valueChanges.subscribe((year: string) => {
+      this.autocompleteTitle();
       this.getVersions(year).subscribe((versions: IOption[]) => {
         this.versions = versions;
       });
