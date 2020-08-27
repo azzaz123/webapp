@@ -71,7 +71,7 @@ export class UploadCarComponent implements OnInit {
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
     private popoverConfig: NgbPopoverConfig) {
-      this.initializePopoverConfiguration();
+    this.initializePopoverConfiguration();
   }
 
   ngOnInit() {
@@ -143,11 +143,17 @@ export class UploadCarComponent implements OnInit {
       this.getModels(this.item.brand),
       this.getYears(this.item.model),
       this.getVersions(this.item.year.toString())
-    ]).subscribe(([models, years, versions]) => {
-      this.models = models;
-      this.years = years;
-      this.versions = versions;
-    });
+    ])
+      .pipe(finalize(() => {
+        this.customVersion = !this.versions.find(
+          version => this.item.version === version.value
+        );
+      }))
+      .subscribe(([models, years, versions]) => {
+        this.models = models;
+        this.years = years;
+        this.versions = versions;
+      });
   }
 
   private subscribeToBrandChanges(): void {
