@@ -81,10 +81,6 @@ export class UploadCarComponent implements OnInit {
     ).pipe(
       finalize(() => {
         this.initializeUploadFormFields();
-        this.subscribeToBrandChanges();
-        this.subscribeToModelChanges();
-        this.subscribeToYearChanges();
-        this.subscribeToVersionChanges();
       })
     ).subscribe(([brands, carTypes]) => {
       this.brands = brands;
@@ -100,7 +96,7 @@ export class UploadCarComponent implements OnInit {
       model: [this.item?.model, [Validators.required]],
       brand: [this.item?.brand, [Validators.required]],
       title: [this.item?.title, [Validators.required]],
-      year: [this.item?.year, [Validators.required]],
+      year: [this.item?.year.toString(), [Validators.required]],
       sale_price: [this.item?.salePrice, [Validators.required, this.min(0), this.max(999999999)]],
       financed_price: [this.item?.financedPrice, [this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
@@ -128,6 +124,11 @@ export class UploadCarComponent implements OnInit {
     if (this.item) {
       this.setParameters();
     }
+
+    this.subscribeToBrandChanges();
+    this.subscribeToModelChanges();
+    this.subscribeToYearChanges();
+    this.subscribeToVersionChanges();
 
     this.detectFormChanges();
   }
