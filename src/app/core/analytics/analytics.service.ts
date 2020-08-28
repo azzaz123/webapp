@@ -4,7 +4,7 @@ import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
-import { AnalyticsEvent, AnalyticsPageView, MParticleIntegrationIds } from './analytics-constants';
+import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import { CookieService } from "ngx-cookie";
 import { UUID } from "angular2-uuid";
 
@@ -43,9 +43,7 @@ export class AnalyticsService {
             expires: new Date('2038-01-19')
           });
         }
-        mParticle.setIntegrationAttribute(MParticleIntegrationIds.Internal, {
-          deviceId: deviceId
-        });
+        mParticle.Identity.getCurrentUser().setUserAttribute('deviceId', deviceId);
       });
     });
   }

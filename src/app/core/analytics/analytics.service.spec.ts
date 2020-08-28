@@ -4,10 +4,14 @@ import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { AnalyticsEvent, AnalyticsPageView, MParticleIntegrationIds } from './analytics-constants';
+import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
 import appboyKit from '@mparticle/web-appboy-kit';
 import { CookieService } from "ngx-cookie";
+
+const user = {
+  setUserAttribute: () => {}
+};
 
 jest.mock('@mparticle/web-sdk', () => ({
   __esModule: true,
@@ -16,7 +20,10 @@ jest.mock('@mparticle/web-sdk', () => ({
     ready: (_callback) => _callback(),
     logEvent: (_eventName, _eventType, _eventAttributes) => {},
     logPageView: (_pageName, _pageAttributes, _pageFlags) => {},
-    setIntegrationAttribute: (_integrationId, _integrationAttributes) => {}
+    setIntegrationAttribute: (_integrationId, _integrationAttributes) => {},
+    Identity: {
+      getCurrentUser: () => user
+    }
   },
   namedExport: 'mParticle'
 }));
@@ -69,16 +76,15 @@ describe('AnalyticsService', () => {
   describe('initialize', () => {
     describe('when there is an identifier in cookies', () => {
       it('should initialize the analytics library with existing identifier', () => {
+        let user = mParticle.Identity.getCurrentUser();
         spyOn(mParticle, 'init');
-        spyOn(mParticle, 'setIntegrationAttribute');
+        spyOn(user, 'setUserAttribute');
         spyOn(appboyKit, 'register');
 
         service.initialize();
 
         expect(mParticle.init).toHaveBeenCalled();
-        expect(mParticle.setIntegrationAttribute).toHaveBeenCalledWith(MParticleIntegrationIds.Internal, {
-          deviceId: 'deviceId'
-        });
+        expect(user.setUserAttribute).toHaveBeenCalledWith('deviceId', 'deviceId');
         expect(appboyKit.register).toHaveBeenCalled();
       });
     });
@@ -87,15 +93,13 @@ describe('AnalyticsService', () => {
       it('should initialize the analytics library ', () => {
         deviceIdValue = undefined;
         spyOn(mParticle, 'init');
-        spyOn(mParticle, 'setIntegrationAttribute');
+        spyOn(mParticle.Identity.getCurrentUser(), 'setUserAttribute');
         spyOn(appboyKit, 'register');
 
         service.initialize();
 
         expect(mParticle.init).toHaveBeenCalled();
-        expect(mParticle.setIntegrationAttribute).toHaveBeenCalledWith(MParticleIntegrationIds.Internal, {
-          deviceId: 'newDeviceId'
-        });
+        expect(mParticle.Identity.getCurrentUser().setUserAttribute).toHaveBeenCalledWith('deviceId', 'newDeviceId');
         expect(appboyKit.register).toHaveBeenCalled();
       });
     });
