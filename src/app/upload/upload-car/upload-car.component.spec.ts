@@ -620,28 +620,22 @@ describe('UploadCarComponent', () => {
     });
   });
 
-  fdescribe('toggleCustomMakeSelection', () => {
-    it('should enable model, year and version fields', () => {
+  describe('toggleCustomMakeSelection', () => {
+    it('should enable custom make selection', () => {
       component.ngOnInit();
 
       component.toggleCustomMakeSelection();
 
       expect(component.customMake).toBe(true);
-      expect(component.uploadForm.get('model').enabled).toBeTruthy();
-      expect(component.uploadForm.get('year').enabled).toBeTruthy();
-      expect(component.uploadForm.get('version').enabled).toBeTruthy();
     });
 
-    it('should set customMake false and disable other fields', () => {
+    it('should disable custom make selection', () => {
       component.ngOnInit();
 
       component.toggleCustomMakeSelection();
       component.toggleCustomMakeSelection();
 
       expect(component.customMake).toBe(false);
-      expect(component.uploadForm.get('model').disabled).toBeTruthy();
-      expect(component.uploadForm.get('year').disabled).toBeTruthy();
-      expect(component.uploadForm.get('version').disabled).toBeTruthy();
     });
   });
 
