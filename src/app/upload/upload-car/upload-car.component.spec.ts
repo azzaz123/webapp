@@ -339,370 +339,340 @@ describe('UploadCarComponent', () => {
     });
   });
 
-  // describe('onSubmit', () => {
-  //   it('should has category set by default', () => {
-  //     expect(component.uploadForm.get('category_id').value).toBe(CARS_CATEGORY);
-  //   });
-
-  //   it('should emit uploadEvent if form is valid', () => {
-  //     let input: any;
-  //     component.uploadForm.patchValue(UPLOAD_FORM_CAR_VALUES);
-  //     expect(component.uploadForm.valid).toBeTruthy();
-  //     component.uploadEvent.subscribe((i: any) => {
-  //       input = i;
-  //     });
-
-  //     component.onSubmit();
-
-  //     expect(input).toEqual({
-  //       type: 'create',
-  //       values: component.uploadForm.value
-  //     });
-  //     expect(component.loading).toBeTruthy();
-  //   });
-
-  //   it('should set form as pending', () => {
-  //     component.onSubmit();
-
-  //     expect(component.uploadForm.pending).toBe(true);
-  //   });
-
-  //   it('should show image error', () => {
-  //     spyOn(errorService, 'i18nError');
-
-  //     component.onSubmit();
-
-  //     expect(errorService.i18nError).toHaveBeenCalledWith('missingImageError');
-  //   });
-
-  //   it('should not accept sale_price < 0', () => {
-  //     component.uploadForm.get('sale_price').patchValue(-1);
-
-  //     expect(component.uploadForm.valid).toBeFalsy();
-  //   });
-
-  //   it('should not accept sale_price > 999999999', () => {
-  //     component.uploadForm.get('sale_price').patchValue(9999999999);
-
-  //     expect(component.uploadForm.valid).toBeFalsy();
-  //   });
-
-  //   it('should not accept km < 0', () => {
-  //     component.uploadForm.get('km').patchValue(-1);
-
-  //     expect(component.uploadForm.valid).toBeFalsy();
-  //   });
-
-  //   it('should not accept km > 999999999', () => {
-  //     component.uploadForm.get('km').patchValue(9999999999);
-
-  //     expect(component.uploadForm.valid).toBeFalsy();
-  //   });
-
-  //   it('should not accept num_seats < 0', () => {
-  //     component.uploadForm.get('num_seats').patchValue(-1);
-
-  //     expect(component.uploadForm.valid).toBeFalsy();
-  //   });
-
-  //   it('should not accept num_seats > 99', () => {
-  //     component.uploadForm.get('num_seats').patchValue(100);
-
-  //     expect(component.uploadForm.valid).toBeFalsy();
-  //   });
-  // });
-
-  // describe('onUploaded', () => {
-  //   const MOCK_RESPONSE_CONTENT: CarContent = {
-  //     id: MOCK_CAR.id,
-  //     category_id: MOCK_CAR.categoryId,
-  //     sale_price: MOCK_CAR.salePrice,
-  //     title: MOCK_CAR.title,
-  //     description: MOCK_CAR.description,
-  //     modified_date: MOCK_CAR.modifiedDate,
-  //     flags: MOCK_CAR.flags,
-  //     seller_id: 'ukd73df',
-  //     web_slug: MOCK_CAR.webSlug,
-  //     brand: MOCK_CAR.brand,
-  //     model: MOCK_CAR.model,
-  //     body_type: MOCK_CAR.bodyType,
-  //     km: MOCK_CAR.km,
-  //     year: MOCK_CAR.year,
-  //     engine: MOCK_CAR.engine,
-  //     gearbox: MOCK_CAR.gearbox,
-  //     horsepower: MOCK_CAR.horsepower,
-  //     num_doors: MOCK_CAR.numDoors
-  //   }
-  //   const uploadedEvent = {
-  //     action: 'updated',
-  //     response: MOCK_RESPONSE_CONTENT
-  //   };
-  //   it('should redirect', () => {
-  //     component.item = <Car>MOCK_ITEM_V3;
-  //     component.item.flags.onhold = null;
-  //     spyOn(router, 'navigate');
-
-  //     component.onUploaded(uploadedEvent);
-
-  //     expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id }]);
-  //   });
-
-  //   it('should redirect with onHold true', () => {
-  //     component.item = <Car>MOCK_ITEM_V3;
-  //     component.item.flags.onhold = true;
-  //     spyOn(router, 'navigate');
-
-  //     component.onUploaded(uploadedEvent);
-
-  //     expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true }]);
-  //   });
-
-  //   it('should set action as urgent if item is urgent and product not on hold', () => {
-  //     component.isUrgent = true;
-  //     spyOn(router, 'navigate');
-
-  //     component.onUploaded(uploadedEvent);
-
-  //     expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { urgent: true, itemId: uploadedEvent.response.id }]);
-  //   });
-
-  //   describe('if it`s a item modification', () => {
-  //     it('should send the Edit Item Car tracking event', () => {
-  //       component.item = MOCK_CAR;
-  //       const editEvent: any = {
-  //         action: 'update',
-  //         response: {
-  //           id: MOCK_CAR.id,
-  //           type: 'edit'
-  //         }
-  //       }
-  //       const editResponse: CarContent = MOCK_RESPONSE_CONTENT;
-  //       const expectedEvent: AnalyticsEvent<EditItemCar> = {
-  //         name: ANALYTICS_EVENT_NAMES.EditItemCar,
-  //         eventType: ANALYTIC_EVENT_TYPES.Other,
-  //         attributes: {
-  //           itemId: MOCK_CAR.id,
-  //           categoryId: MOCK_CAR.categoryId,
-  //           salePrice: MOCK_CAR.salePrice,
-  //           title: MOCK_CAR.title,
-  //           screenId: SCREEN_IDS.EditItem,
-  //           brand: MOCK_CAR.brand,
-  //           model: MOCK_CAR.model,
-  //           bodyType: MOCK_CAR.bodyType,
-  //           km: MOCK_CAR.km,
-  //           year: MOCK_CAR.year,
-  //           engine: MOCK_CAR.engine,
-  //           gearbox: MOCK_CAR.gearbox,
-  //           hp: MOCK_CAR.horsepower,
-  //           numDoors: MOCK_CAR.numDoors,
-  //           isCarDealer: false,
-  //           isPro: false
-  //         }
-  //       };
-  //       editEvent.response = editResponse;
-  //       spyOn(analyticsService, 'trackEvent');
-
-  //       component.ngOnInit();
-  //       component.onUploaded(editEvent);
-
-  //       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-  //     });
-  //   });
-
-  //   describe('if it`s a item upload', () => {
-  //     it('should send the List Item Car tracking event', () => {
-  //       const uploadEvent: any = {
-  //         action: 'create',
-  //         response: {
-  //           id: MOCK_CAR.id,
-  //           type: 'upload'
-  //         }
-  //       }
-  //       const uploadResponse: CarContent = MOCK_RESPONSE_CONTENT;
-  //       const expectedEvent: AnalyticsEvent<ListItemCar> = {
-  //         name: ANALYTICS_EVENT_NAMES.ListItemCar,
-  //         eventType: ANALYTIC_EVENT_TYPES.Other,
-  //         attributes: {
-  //           itemId: MOCK_CAR.id,
-  //           categoryId: MOCK_CAR.categoryId,
-  //           salePrice: MOCK_CAR.salePrice,
-  //           title: MOCK_CAR.title,
-  //           screenId: SCREEN_IDS.Upload,
-  //           brand: MOCK_CAR.brand,
-  //           model: MOCK_CAR.model,
-  //           bodyType: MOCK_CAR.bodyType,
-  //           km: MOCK_CAR.km,
-  //           year: MOCK_CAR.year,
-  //           engine: MOCK_CAR.engine,
-  //           gearbox: MOCK_CAR.gearbox,
-  //           hp: MOCK_CAR.horsepower,
-  //           numDoors: MOCK_CAR.numDoors,
-  //           isCarDealer: false,
-  //           isPro: false
-  //         }
-  //       };
-  //       uploadEvent.response = uploadResponse;
-  //       spyOn(analyticsService, 'trackEvent');
-
-  //       component.ngOnInit();
-  //       component.onUploaded(uploadEvent);
-
-  //       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-  //     });
-  //   });
-  // });
-
-  // describe('onError', () => {
-  //   it('should set loading to false', () => {
-  //     spyOn(trackingService, 'track');
-  //     component.loading = true;
-
-  //     component.onError('response');
-
-  //     expect(component.loading).toBeFalsy();
-  //     expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
-  //   });
-  // });
-
-  // describe('preview', () => {
-  //   beforeEach(fakeAsync(() => {
-  //     spyOn(modalService, 'open').and.callThrough();
-  //     spyOn(component, 'onSubmit');
-  //     component.uploadForm.get('model').enable();
-  //     component.uploadForm.get('year').enable();
-  //     component.uploadForm.get('version').enable();
-  //     component.uploadForm.patchValue(UPLOAD_FORM_CAR_VALUES);
-  //     component.preview();
-  //   }));
-
-  //   it('should open modal', () => {
-  //     expect(modalService.open).toHaveBeenCalledWith(PreviewModalComponent, {
-  //       windowClass: 'preview'
-  //     });
-  //   });
-  //   it('should set itemPreview', () => {
-  //     expect(componentInstance.itemPreview).toEqual(UPLOAD_FORM_CAR_VALUES);
-  //   });
-  //   it('should submit form', fakeAsync(() => {
-  //     tick();
-
-  //     expect(component.onSubmit).toHaveBeenCalled();
-  //   }));
-  //   it('should call getBodyType', () => {
-  //     expect(componentInstance.getBodyType).toHaveBeenCalled();
-  //   });
-  // });
-
-  // describe('Select Urgent', () => {
-  //   it('should set as urgent when checkbox is selected', () => {
-  //     component.selectUrgent(true);
-
-  //     expect(component.isUrgent).toBeTruthy();
-  //   });
-  //   it('should set as not urgent when checkbox is unselected', () => {
-  //     component.selectUrgent(false);
-
-  //     expect(component.isUrgent).toBeFalsy();
-  //   });
-  // });
-
-  // describe('Emit Location', () => {
-  //   let categoryId: number;
-
-  //   it('should emit location updated event', () => {
-  //     component.locationSelected.subscribe((s: number) => {
-  //       categoryId = s;
-  //     });
-
-  //     component.emitLocation();
-
-  //     expect(categoryId).toBe(100);
-  //   });
-  // });
-
-  // describe('toggleCustomMakeSelection', () => {
-  //   it('should set customMake true and enable other fields', () => {
-  //     component.uploadForm.get('brand').patchValue('test');
-  //     component.uploadForm.get('model').disable();
-  //     component.uploadForm.get('year').disable();
-  //     component.uploadForm.get('version').disable();
-  //     component.customVersion = true;
-
-  //     component.toggleCustomMakeSelection();
-
-  //     expect(component.customMake).toBe(true);
-  //     expect(component.uploadForm.get('brand').value).toBe('');
-  //     expect(component.uploadForm.get('model').enabled).toBeTruthy();
-  //     expect(component.uploadForm.get('year').enabled).toBeTruthy();
-  //     expect(component.uploadForm.get('version').enabled).toBeTruthy();
-  //     expect(component.customVersion).toBe(true);
-  //   });
-
-  //   it('should set customMake false and disable other fields', () => {
-  //     component.uploadForm.get('brand').patchValue('test');
-  //     component.uploadForm.get('model').enable();
-  //     component.uploadForm.get('year').enable();
-  //     component.uploadForm.get('version').enable();
-  //     component.customMake = true;
-  //     component.customVersion = false;
-
-  //     component.toggleCustomMakeSelection();
-
-  //     expect(component.customMake).toBe(false);
-  //     expect(component.uploadForm.get('brand').value).toBe('');
-  //     expect(component.uploadForm.get('model').disabled).toBeTruthy();
-  //     expect(component.uploadForm.get('year').disabled).toBeTruthy();
-  //     expect(component.uploadForm.get('version').disabled).toBeTruthy();
-  //     expect(component.customVersion).toBe(true);
-  //   });
-  // });
-
-  // describe('getInfo', () => {
-  //   it('should call getCarInfo and set it if in creation mode', () => {
-  //     spyOn(itemService, 'getCarInfo').and.callThrough();
-  //     const BRAND = 'brand';
-  //     const MODEL = 'model';
-  //     const VERSION = 'version';
-  //     component.uploadForm.get('brand').setValue(BRAND);
-  //     component.uploadForm.get('model').setValue(MODEL);
-
-  //     component.getInfo(VERSION);
-
-  //     expect(itemService.getCarInfo).toHaveBeenCalledWith(BRAND, MODEL, VERSION);
-  //     Object.keys(CAR_INFO).forEach((field) => {
-  //       expect(component.uploadForm.get(field).value).toEqual(CAR_INFO[field]);
-  //     })
-  //   });
-  // });
-
-  // describe('toggleCustomVersionSelection', () => {
-  //   it('should not toggle the version value if its true and disable the field', () => {
-  //     component.customVersion = true;
-  //     component.uploadForm.get('version').enable();
-
-  //     component.toggleCustomVersionSelection();
-
-  //     expect(component.customVersion).toBe(false);
-  //     expect(component.uploadForm.get('version').disabled).toBeFalsy();
-  //   });
-
-  //   it('should toggle the version value and enable the field', () => {
-  //     component.customVersion = false;
-  //     component.uploadForm.get('version').disable();
-
-  //     component.toggleCustomVersionSelection();
-
-  //     expect(component.customVersion).toBe(true);
-  //     expect(component.uploadForm.get('version').enabled).toBeTruthy();
-  //   });
-  // });
-
-  // describe('updateUploadPercentage', () => {
-  //   it('should update the completed percentage of the upload', () => {
-  //     component.updateUploadPercentage(88.01);
-
-  //     expect(component.uploadCompletedPercentage).toBe(88);
-  //   });
-  // });
+  describe('onSubmit', () => {
+    it('should has category set by default', () => {
+      expect(component.uploadForm.get('category_id').value).toBe(CARS_CATEGORY);
+    });
+
+    it('should emit uploadEvent if form is valid', () => {
+      let input: any;
+      component.uploadForm.patchValue(UPLOAD_FORM_CAR_VALUES);
+      expect(component.uploadForm.valid).toBeTruthy();
+      component.uploadEvent.subscribe((i: any) => {
+        input = i;
+      });
+
+      component.onSubmit();
+
+      expect(input).toEqual({
+        type: 'create',
+        values: component.uploadForm.value
+      });
+      expect(component.loading).toBeTruthy();
+    });
+
+    it('should set form as pending', () => {
+      component.onSubmit();
+
+      expect(component.uploadForm.pending).toBe(true);
+    });
+
+    it('should show image error', () => {
+      spyOn(errorService, 'i18nError');
+
+      component.onSubmit();
+
+      expect(errorService.i18nError).toHaveBeenCalledWith('missingImageError');
+    });
+
+    it('should not accept sale_price < 0', () => {
+      component.uploadForm.get('sale_price').patchValue(-1);
+
+      expect(component.uploadForm.valid).toBeFalsy();
+    });
+
+    it('should not accept sale_price > 999999999', () => {
+      component.uploadForm.get('sale_price').patchValue(9999999999);
+
+      expect(component.uploadForm.valid).toBeFalsy();
+    });
+
+    it('should not accept km < 0', () => {
+      component.uploadForm.get('km').patchValue(-1);
+
+      expect(component.uploadForm.valid).toBeFalsy();
+    });
+
+    it('should not accept km > 999999999', () => {
+      component.uploadForm.get('km').patchValue(9999999999);
+
+      expect(component.uploadForm.valid).toBeFalsy();
+    });
+
+    it('should not accept num_seats < 0', () => {
+      component.uploadForm.get('num_seats').patchValue(-1);
+
+      expect(component.uploadForm.valid).toBeFalsy();
+    });
+
+    it('should not accept num_seats > 99', () => {
+      component.uploadForm.get('num_seats').patchValue(100);
+
+      expect(component.uploadForm.valid).toBeFalsy();
+    });
+  });
+
+  describe('onUploaded', () => {
+    const MOCK_RESPONSE_CONTENT: CarContent = {
+      id: MOCK_CAR.id,
+      category_id: MOCK_CAR.categoryId,
+      sale_price: MOCK_CAR.salePrice,
+      title: MOCK_CAR.title,
+      description: MOCK_CAR.description,
+      modified_date: MOCK_CAR.modifiedDate,
+      flags: MOCK_CAR.flags,
+      seller_id: 'ukd73df',
+      web_slug: MOCK_CAR.webSlug,
+      brand: MOCK_CAR.brand,
+      model: MOCK_CAR.model,
+      body_type: MOCK_CAR.bodyType,
+      km: MOCK_CAR.km,
+      year: MOCK_CAR.year,
+      engine: MOCK_CAR.engine,
+      gearbox: MOCK_CAR.gearbox,
+      horsepower: MOCK_CAR.horsepower,
+      num_doors: MOCK_CAR.numDoors
+    }
+    const uploadedEvent = {
+      action: 'updated',
+      response: MOCK_RESPONSE_CONTENT
+    };
+    it('should redirect', () => {
+      component.item = <Car>MOCK_ITEM_V3;
+      component.item.flags.onhold = null;
+      spyOn(router, 'navigate');
+
+      component.onUploaded(uploadedEvent);
+
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id }]);
+    });
+
+    it('should redirect with onHold true', () => {
+      component.item = <Car>MOCK_ITEM_V3;
+      component.item.flags.onhold = true;
+      spyOn(router, 'navigate');
+
+      component.onUploaded(uploadedEvent);
+
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { [uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true }]);
+    });
+
+    it('should set action as urgent if item is urgent and product not on hold', () => {
+      component.isUrgent = true;
+      spyOn(router, 'navigate');
+
+      component.onUploaded(uploadedEvent);
+
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', { urgent: true, itemId: uploadedEvent.response.id }]);
+    });
+
+    describe('if it`s a item modification', () => {
+      it('should send the Edit Item Car tracking event', () => {
+        component.item = MOCK_CAR;
+        const editEvent: any = {
+          action: 'update',
+          response: {
+            id: MOCK_CAR.id,
+            type: 'edit'
+          }
+        }
+        const editResponse: CarContent = MOCK_RESPONSE_CONTENT;
+        const expectedEvent: AnalyticsEvent<EditItemCar> = {
+          name: ANALYTICS_EVENT_NAMES.EditItemCar,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            itemId: MOCK_CAR.id,
+            categoryId: MOCK_CAR.categoryId,
+            salePrice: MOCK_CAR.salePrice,
+            title: MOCK_CAR.title,
+            screenId: SCREEN_IDS.EditItem,
+            brand: MOCK_CAR.brand,
+            model: MOCK_CAR.model,
+            bodyType: MOCK_CAR.bodyType,
+            km: MOCK_CAR.km,
+            year: MOCK_CAR.year,
+            engine: MOCK_CAR.engine,
+            gearbox: MOCK_CAR.gearbox,
+            hp: MOCK_CAR.horsepower,
+            numDoors: MOCK_CAR.numDoors,
+            isCarDealer: false,
+            isPro: false
+          }
+        };
+        editEvent.response = editResponse;
+        spyOn(analyticsService, 'trackEvent');
+
+        component.ngOnInit();
+        component.onUploaded(editEvent);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
+    describe('if it`s a item upload', () => {
+      it('should send the List Item Car tracking event', () => {
+        const uploadEvent: any = {
+          action: 'create',
+          response: {
+            id: MOCK_CAR.id,
+            type: 'upload'
+          }
+        }
+        const uploadResponse: CarContent = MOCK_RESPONSE_CONTENT;
+        const expectedEvent: AnalyticsEvent<ListItemCar> = {
+          name: ANALYTICS_EVENT_NAMES.ListItemCar,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            itemId: MOCK_CAR.id,
+            categoryId: MOCK_CAR.categoryId,
+            salePrice: MOCK_CAR.salePrice,
+            title: MOCK_CAR.title,
+            screenId: SCREEN_IDS.Upload,
+            brand: MOCK_CAR.brand,
+            model: MOCK_CAR.model,
+            bodyType: MOCK_CAR.bodyType,
+            km: MOCK_CAR.km,
+            year: MOCK_CAR.year,
+            engine: MOCK_CAR.engine,
+            gearbox: MOCK_CAR.gearbox,
+            hp: MOCK_CAR.horsepower,
+            numDoors: MOCK_CAR.numDoors,
+            isCarDealer: false,
+            isPro: false
+          }
+        };
+        uploadEvent.response = uploadResponse;
+        spyOn(analyticsService, 'trackEvent');
+
+        component.ngOnInit();
+        component.onUploaded(uploadEvent);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+  });
+
+  describe('onError', () => {
+    it('should set loading to false', () => {
+      spyOn(trackingService, 'track');
+      component.loading = true;
+
+      component.onError('response');
+
+      expect(component.loading).toBeFalsy();
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
+    });
+  });
+
+  describe('preview', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(modalService, 'open').and.callThrough();
+      spyOn(component, 'onSubmit');
+      component.uploadForm.get('model').enable();
+      component.uploadForm.get('year').enable();
+      component.uploadForm.get('version').enable();
+      component.uploadForm.patchValue(UPLOAD_FORM_CAR_VALUES);
+      component.preview();
+    }));
+
+    it('should open modal', () => {
+      expect(modalService.open).toHaveBeenCalledWith(PreviewModalComponent, {
+        windowClass: 'preview'
+      });
+    });
+    it('should set itemPreview', () => {
+      expect(componentInstance.itemPreview).toEqual(UPLOAD_FORM_CAR_VALUES);
+    });
+    it('should submit form', fakeAsync(() => {
+      tick();
+
+      expect(component.onSubmit).toHaveBeenCalled();
+    }));
+    it('should call getBodyType', () => {
+      expect(componentInstance.getBodyType).toHaveBeenCalled();
+    });
+  });
+
+  describe('Select Urgent', () => {
+    it('should set as urgent when checkbox is selected', () => {
+      component.selectUrgent(true);
+
+      expect(component.isUrgent).toBeTruthy();
+    });
+    it('should set as not urgent when checkbox is unselected', () => {
+      component.selectUrgent(false);
+
+      expect(component.isUrgent).toBeFalsy();
+    });
+  });
+
+  describe('Emit Location', () => {
+    let categoryId: number;
+
+    it('should emit location updated event', () => {
+      component.locationSelected.subscribe((s: number) => {
+        categoryId = s;
+      });
+
+      component.emitLocation();
+
+      expect(categoryId).toBe(100);
+    });
+  });
+
+  fdescribe('toggleCustomMakeSelection', () => {
+    it('should enable model, year and version fields', () => {
+      component.ngOnInit();
+
+      component.toggleCustomMakeSelection();
+
+      expect(component.customMake).toBe(true);
+      expect(component.uploadForm.get('model').enabled).toBeTruthy();
+      expect(component.uploadForm.get('year').enabled).toBeTruthy();
+      expect(component.uploadForm.get('version').enabled).toBeTruthy();
+    });
+
+    it('should set customMake false and disable other fields', () => {
+      component.ngOnInit();
+
+      component.toggleCustomMakeSelection();
+      component.toggleCustomMakeSelection();
+
+      expect(component.customMake).toBe(false);
+      expect(component.uploadForm.get('model').disabled).toBeTruthy();
+      expect(component.uploadForm.get('year').disabled).toBeTruthy();
+      expect(component.uploadForm.get('version').disabled).toBeTruthy();
+    });
+  });
+
+  describe('toggleCustomVersionSelection', () => {
+    it('should not toggle the version value if its true and disable the field', () => {
+      component.customVersion = true;
+      component.uploadForm.get('version').enable();
+
+      component.toggleCustomVersionSelection();
+
+      expect(component.customVersion).toBe(false);
+      expect(component.uploadForm.get('version').disabled).toBeFalsy();
+    });
+
+    it('should toggle the version value and enable the field', () => {
+      component.customVersion = false;
+      component.uploadForm.get('version').disable();
+
+      component.toggleCustomVersionSelection();
+
+      expect(component.customVersion).toBe(true);
+      expect(component.uploadForm.get('version').enabled).toBeTruthy();
+    });
+  });
+
+  describe('updateUploadPercentage', () => {
+    it('should update the completed percentage of the upload', () => {
+      component.updateUploadPercentage(88.01);
+
+      expect(component.uploadCompletedPercentage).toBe(88);
+    });
+  });
 
 });
