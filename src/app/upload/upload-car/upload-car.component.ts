@@ -71,6 +71,39 @@ export class UploadCarComponent implements OnInit {
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
     private popoverConfig: NgbPopoverConfig) {
+
+    this.uploadForm = fb.group({
+      id: null,
+      category_id: CARS_CATEGORY,
+      images: [[], [Validators.required]],
+      model: [{ value: null, disabled: true }, [Validators.required]],
+      brand: [null, [Validators.required]],
+      title: [null, [Validators.required]],
+      year: [{ value: null, disabled: true }, [Validators.required]],
+      sale_price: [null, [Validators.required, this.min(0), this.max(999999999)]],
+      financed_price: [null, [this.min(0), this.max(999999999)]],
+      currency_code: ['EUR', [Validators.required]],
+      version: [{ value: null, disabled: true }, [Validators.required]],
+      num_seats: [null, [this.min(0), this.max(99)]],
+      num_doors: [null, [this.min(0), this.max(99)]],
+      body_type: null,
+      km: [null, [this.min(0), this.max(999999999)]],
+      storytelling: null,
+      engine: null,
+      gearbox: null,
+      horsepower: [null, [this.min(0), this.max(999)]],
+      sale_conditions: fb.group({
+        fix_price: false,
+        exchange_allowed: false,
+        shipping_allowed: false
+      }),
+      location: this.fb.group({
+        address: [null, [Validators.required]],
+        latitude: [null, [Validators.required]],
+        longitude: [null, [Validators.required]],
+      })
+    });
+
     this.initializePopoverConfiguration();
   }
 
@@ -89,36 +122,28 @@ export class UploadCarComponent implements OnInit {
   }
 
   private initializeUploadFormFields(): void {
-    this.uploadForm = this.fb.group({
+    this.uploadForm.patchValue({
       id: this.item?.id,
-      category_id: CARS_CATEGORY,
-      images: [[], [Validators.required]],
-      model: [this.item?.model, [Validators.required]],
-      brand: [this.item?.brand, [Validators.required]],
-      title: [this.item?.title, [Validators.required]],
-      year: [this.item?.year.toString(), [Validators.required]],
-      sale_price: [this.item?.salePrice, [Validators.required, this.min(0), this.max(999999999)]],
-      financed_price: [this.item?.financedPrice, [this.min(0), this.max(999999999)]],
-      currency_code: ['EUR', [Validators.required]],
-      version: [this.item?.version, [Validators.required]],
-      num_seats: [this.item?.numSeats, [this.min(0), this.max(99)]],
-      num_doors: [this.item?.numDoors, [this.min(0), this.max(99)]],
+      model: this.item?.model,
+      brand: this.item?.brand,
+      title: this.item?.title,
+      year: this.item?.year.toString(),
+      sale_price: this.item?.salePrice,
+      financed_price: this.item?.financedPrice,
+      version: this.item?.version,
+      num_seats: this.item?.numSeats,
+      num_doors: this.item?.numDoors,
       body_type: this.item?.bodyType,
-      km: [this.item?.km, [this.min(0), this.max(999999999)]],
+      km: this.item?.km,
       storytelling: this.item?.description,
       engine: this.item?.engine,
       gearbox: this.item?.gearbox,
-      horsepower: [this.item?.horsepower, [this.min(0), this.max(999)]],
-      sale_conditions: this.fb.group({
+      horsepower: this.item?.horsepower,
+      sale_conditions: {
         fix_price: this.item?.saleConditions?.fix_price,
         exchange_allowed: this.item?.saleConditions?.exchange_allowed,
         shipping_allowed: this.item?.saleConditions?.shipping_allowed
-      }),
-      location: this.fb.group({
-        address: ['', [Validators.required]],
-        latitude: ['', [Validators.required]],
-        longitude: ['', [Validators.required]],
-      })
+      },
     });
 
     if (this.item) {
