@@ -164,24 +164,6 @@ export class UploadCarComponent implements OnInit {
     this.popoverConfig.container = 'body';
   }
 
-  private setParameters(): void {
-    forkJoin([
-      this.getModels(this.item.brand),
-      this.getYears(this.item.model),
-      this.getVersions(this.item.year.toString())
-    ])
-      .pipe(finalize(() => {
-        this.customVersion = !this.versions.find(
-          version => this.item.version === version.value
-        );
-      }))
-      .subscribe(([models, years, versions]) => {
-        this.models = models;
-        this.years = years;
-        this.versions = versions;
-      });
-  }
-
   private subscribeToBrandChanges(): void {
     this.uploadForm.get('brand').valueChanges.subscribe((brand: string) => {
       this.getModels(brand).subscribe((models: IOption[]) => {
