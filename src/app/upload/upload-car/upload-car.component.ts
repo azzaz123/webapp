@@ -108,60 +108,70 @@ export class UploadCarComponent implements OnInit {
   }
 
   ngOnInit() {
+    const isItemEdit = !!this.item;
+
+    if (isItemEdit) {
+      return this.initializeEditForm();
+    }
+    this.initializeUploadForm();
+  }
+
+  private initializeUploadForm(): void {
     forkJoin(
       this.getBrands(),
       this.getCarTypes()
     ).pipe(
-      finalize(() => {
-        if (!this.item) {
-          return this.subscribeToFieldsChanges();
-        }
-        this.initializeUploadFormFields();
-      })
+      finalize(() => this.subscribeToFieldsChanges())
     ).subscribe(([brands, carTypes]) => {
       this.brands = brands;
       this.carTypes = carTypes;
     });
   }
 
-  private initializeUploadFormFields(): void {
-    this.uploadForm.patchValue({
-      id: this.item.id,
-      model: this.item.model,
-      brand: this.item.brand,
-      title: this.item.title,
-      year: this.item.year.toString(),
-      sale_price: this.item.salePrice,
-      financed_price: this.item.financedPrice,
-      version: this.item.version,
-      num_seats: this.item.numSeats,
-      num_doors: this.item.numDoors,
-      body_type: this.item.bodyType,
-      km: this.item.km,
-      storytelling: this.item.description,
-      engine: this.item.engine,
-      gearbox: this.item.gearbox,
-      horsepower: this.item.horsepower,
-      sale_conditions: {
-        fix_price: this.item.saleConditions?.fix_price,
-        exchange_allowed: this.item.saleConditions?.exchange_allowed,
-        shipping_allowed: this.item.saleConditions?.shipping_allowed
-      },
-    }, { emitEvent: false });
-
+  private initializeEditForm(): void {
     forkJoin(
+      this.getBrands(),
+      this.getCarTypes(),
       this.getModels(this.item.brand),
       this.getYears(this.item.model),
       this.getVersions(`${this.item.year}`)
-    ).subscribe(([models, years, versions]) => {
+    ).pipe(
+      finalize(() => {
+        this.uploadForm.patchValue({
+          id: this.item.id,
+          model: this.item.model,
+          brand: this.item.brand,
+          title: this.item.title,
+          year: this.item.year.toString(),
+          sale_price: this.item.salePrice,
+          financed_price: this.item.financedPrice,
+          version: this.item.version,
+          num_seats: this.item.numSeats,
+          num_doors: this.item.numDoors,
+          body_type: this.item.bodyType,
+          km: this.item.km,
+          storytelling: this.item.description,
+          engine: this.item.engine,
+          gearbox: this.item.gearbox,
+          horsepower: this.item.horsepower,
+          sale_conditions: {
+            fix_price: this.item.saleConditions?.fix_price,
+            exchange_allowed: this.item.saleConditions?.exchange_allowed,
+            shipping_allowed: this.item.saleConditions?.shipping_allowed
+          },
+        }, { emitEvent: false });
+
+        this.customVersion = !this.versions.find(version => this.item.version === version.value);
+        this.customMake = !this.brands.find(brand => this.item.brand === brand.value);
+        this.subscribeToFieldsChanges();
+      })
+    ).subscribe(([brands, carTypes, models, years, versions]) => {
+      this.brands = brands;
+      this.carTypes = carTypes;
       this.models = models;
       this.years = years;
       this.versions = versions;
-      this.customVersion = !this.versions.find(version => this.item.version === version.value);
-      this.customMake = !this.brands.find(brand => this.item.brand === brand.value);
-      this.subscribeToFieldsChanges();
     });
-
   }
 
   private subscribeToFieldsChanges(): void {
