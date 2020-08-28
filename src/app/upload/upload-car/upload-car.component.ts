@@ -73,34 +73,34 @@ export class UploadCarComponent implements OnInit {
     private popoverConfig: NgbPopoverConfig) {
 
     this.uploadForm = fb.group({
-      id: null,
+      id: '',
       category_id: CARS_CATEGORY,
       images: [[], [Validators.required]],
-      model: [{ value: null, disabled: true }, [Validators.required]],
-      brand: [null, [Validators.required]],
-      title: [null, [Validators.required]],
-      year: [{ value: null, disabled: true }, [Validators.required]],
-      sale_price: [null, [Validators.required, this.min(0), this.max(999999999)]],
-      financed_price: [null, [this.min(0), this.max(999999999)]],
+      model: ['', [Validators.required]],
+      brand: ['', [Validators.required]],
+      title: ['', [Validators.required]],
+      year: ['', [Validators.required]],
+      sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
+      financed_price: ['', [this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
-      version: [{ value: null, disabled: true }, [Validators.required]],
-      num_seats: [null, [this.min(0), this.max(99)]],
-      num_doors: [null, [this.min(0), this.max(99)]],
+      version: ['', [Validators.required]],
+      num_seats: ['', [this.min(0), this.max(99)]],
+      num_doors: ['', [this.min(0), this.max(99)]],
       body_type: null,
-      km: [null, [this.min(0), this.max(999999999)]],
-      storytelling: null,
+      km: ['', [this.min(0), this.max(999999999)]],
+      storytelling: '',
       engine: null,
       gearbox: null,
-      horsepower: [null, [this.min(0), this.max(999)]],
+      horsepower: ['', [this.min(0), this.max(999)]],
       sale_conditions: fb.group({
         fix_price: false,
         exchange_allowed: false,
         shipping_allowed: false
       }),
       location: this.fb.group({
-        address: [null, [Validators.required]],
-        latitude: [null, [Validators.required]],
-        longitude: [null, [Validators.required]],
+        address: ['', [Validators.required]],
+        latitude: ['', [Validators.required]],
+        longitude: ['', [Validators.required]],
       })
     });
 
@@ -113,13 +113,10 @@ export class UploadCarComponent implements OnInit {
       this.getCarTypes()
     ).pipe(
       finalize(() => {
-        this.subscribeToBrandChanges();
-        this.subscribeToModelChanges();
-        this.subscribeToYearChanges();
-        this.subscribeToVersionChanges();
-        if (this.item) {
-          this.initializeUploadFormFields();
+        if (!this.item) {
+          return this.subscribeToFieldsChanges();
         }
+        this.initializeUploadFormFields();
       })
     ).subscribe(([brands, carTypes]) => {
       this.brands = brands;
@@ -129,32 +126,49 @@ export class UploadCarComponent implements OnInit {
 
   private initializeUploadFormFields(): void {
     this.uploadForm.patchValue({
-      id: this.item?.id,
-      model: this.item?.model,
-      brand: this.item?.brand,
-      title: this.item?.title,
-      year: this.item?.year.toString(),
-      sale_price: this.item?.salePrice,
-      financed_price: this.item?.financedPrice,
-      version: this.item?.version,
-      num_seats: this.item?.numSeats,
-      num_doors: this.item?.numDoors,
-      body_type: this.item?.bodyType,
-      km: this.item?.km,
-      storytelling: this.item?.description,
-      engine: this.item?.engine,
-      gearbox: this.item?.gearbox,
-      horsepower: this.item?.horsepower,
+      id: this.item.id,
+      model: this.item.model,
+      brand: this.item.brand,
+      title: this.item.title,
+      year: this.item.year.toString(),
+      sale_price: this.item.salePrice,
+      financed_price: this.item.financedPrice,
+      version: this.item.version,
+      num_seats: this.item.numSeats,
+      num_doors: this.item.numDoors,
+      body_type: this.item.bodyType,
+      km: this.item.km,
+      storytelling: this.item.description,
+      engine: this.item.engine,
+      gearbox: this.item.gearbox,
+      horsepower: this.item.horsepower,
       sale_conditions: {
-        fix_price: this.item?.saleConditions?.fix_price,
-        exchange_allowed: this.item?.saleConditions?.exchange_allowed,
-        shipping_allowed: this.item?.saleConditions?.shipping_allowed
+        fix_price: this.item.saleConditions?.fix_price,
+        exchange_allowed: this.item.saleConditions?.exchange_allowed,
+        shipping_allowed: this.item.saleConditions?.shipping_allowed
       },
     });
 
-    this.customVersion = !this.versions.find(version => this.item.version === version.value);
-    this.customMake = !this.brands.find(brand => this.item.brand === brand.value);
+    forkJoin(
+      this.getModels(this.item.brand),
+      this.getYears(this.item.model),
+      this.getVersions(`${this.item.year}`)
+    ).subscribe(([models, years, versions]) => {
+      this.models = models;
+      this.years = years;
+      this.versions = versions;
+      this.customVersion = !this.versions.find(version => this.item.version === version.value);
+      this.customMake = !this.brands.find(brand => this.item.brand === brand.value);
+      this.subscribeToFieldsChanges();
+    });
 
+  }
+
+  private subscribeToFieldsChanges(): void {
+    this.subscribeToBrandChanges();
+    this.subscribeToModelChanges();
+    this.subscribeToYearChanges();
+    this.subscribeToVersionChanges();
     this.detectFormChanges();
   }
 
