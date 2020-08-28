@@ -150,7 +150,7 @@ describe('UploadCarComponent', () => {
     itemService = TestBed.get(ItemService);
   });
 
-  describe('when initializing the upload page', () => {
+  describe('when the upload page is initialized', () => {
     beforeEach(() => {
       component.ngOnInit();
     });
@@ -159,7 +159,7 @@ describe('UploadCarComponent', () => {
       expect(component.brands).toEqual(CAR_BRANDS);
     });
 
-    it('should get types for the body type selector', () => {
+    it('should get body types for the body type selector', () => {
       expect(component.carTypes).toEqual(CAR_BODY_TYPES);
     });
 
@@ -238,17 +238,17 @@ describe('UploadCarComponent', () => {
         });
       });
 
-      it('should get models for the saved car brand', () => {
+      it('should get models belonging to the saved car brand', () => {
         expect(carSuggestionsService.getModels).toHaveBeenCalledWith(MOCK_CAR.brand);
         expect(component.models).toEqual(CAR_MODELS);
       });
 
-      it('should get years for the saved car model', () => {
+      it('should get years belonging to the saved car model', () => {
         expect(carSuggestionsService.getYears).toHaveBeenCalledWith(MOCK_CAR.brand, MOCK_CAR.model);
         expect(component.years).toEqual(CAR_YEARS);
       });
 
-      it('should get versions for the saved car year', () => {
+      it('should get versions belonging to the saved car year', () => {
         expect(carSuggestionsService.getVersions).toHaveBeenCalledWith(
           MOCK_CAR.brand,
           MOCK_CAR.model,
@@ -260,146 +260,84 @@ describe('UploadCarComponent', () => {
   });
 
   describe('when changing brand field', () => {
-    //TODO
+    it('should get the models belonging to that brand', () => {
+      spyOn(carSuggestionsService, 'getModels').and.callThrough();
+      component.ngOnInit();
+
+      component.uploadForm.get('brand').patchValue(MOCK_CAR.brand);
+
+      expect(carSuggestionsService.getModels).toHaveBeenCalledWith(MOCK_CAR.brand);
+      expect(component.models).toEqual(CAR_MODELS);
+    });
   });
 
-  // describe('ngOnInit', () => {
-  //   it('should call getBrands and getCarTypes', () => {
-  //     spyOn<any>(component, 'getBrands');
-  //     spyOn<any>(component, 'getCarTypes');
-  //     component.ngOnInit();
-  //     expect(component['getBrands']).toHaveBeenCalled();
-  //     expect(component['getCarTypes']).toHaveBeenCalled();
-  //   });
+  describe('when changing model field', () => {
+    it('should get the years in which that model was built', () => {
+      spyOn(carSuggestionsService, 'getYears').and.callThrough();
+      component.ngOnInit();
 
-  //   describe('edit mode', () => {
+      component.uploadForm.get('brand').patchValue(MOCK_CAR.brand);
+      component.uploadForm.get('model').patchValue(MOCK_CAR.model);
 
-  //     it('should set form value', () => {
-  //       spyOn<any>(component, 'getModels').and.callThrough();
-  //       spyOn<any>(component, 'getYears').and.callThrough();
-  //       spyOn<any>(component, 'getVersions').and.callThrough();
-  //       component.item = MOCK_CAR;
+      expect(carSuggestionsService.getYears).toHaveBeenCalledWith(MOCK_CAR.brand, MOCK_CAR.model);
+      expect(component.years).toEqual(CAR_YEARS);
+    });
+  });
 
-  //       component.ngOnInit();
+  describe('when changing year field', () => {
+    beforeEach(() => {
+      spyOn(carSuggestionsService, 'getVersions').and.callThrough();
+      component.ngOnInit();
 
-  //       expect(component.uploadForm.value).toEqual({
-  //         id: MOCK_CAR.id,
-  //         title: MOCK_CAR.title,
-  //         sale_price: MOCK_CAR.salePrice,
-  //         financed_price: MOCK_CAR.salePrice,
-  //         currency_code: MOCK_CAR.currencyCode,
-  //         storytelling: MOCK_CAR.description,
-  //         sale_conditions: MOCK_CAR.saleConditions,
-  //         category_id: MOCK_CAR.categoryId.toString(),
-  //         num_seats: MOCK_CAR.numSeats,
-  //         num_doors: MOCK_CAR.numDoors,
-  //         body_type: MOCK_CAR.bodyType,
-  //         km: MOCK_CAR.km,
-  //         engine: MOCK_CAR.engine,
-  //         gearbox: MOCK_CAR.gearbox,
-  //         horsepower: MOCK_CAR.horsepower,
-  //         brand: MOCK_CAR.brand,
-  //         model: MOCK_CAR.model,
-  //         year: MOCK_CAR.year.toString(),
-  //         version: MOCK_CAR.version,
-  //         images: [],
-  //         location: {
-  //           address: '',
-  //           latitude: '',
-  //           longitude: ''
-  //         }
-  //       });
-  //       expect(component['getModels']).toHaveBeenCalledWith(MOCK_CAR.brand);
-  //       expect(component['getYears']).toHaveBeenCalledWith(MOCK_CAR.model);
-  //       expect(component['getVersions']).toHaveBeenCalledWith(MOCK_CAR.year.toString(), true);
-  //     });
+      component.uploadForm.get('brand').patchValue(MOCK_CAR.brand);
+      component.uploadForm.get('model').patchValue(MOCK_CAR.model);
+      component.uploadForm.get('year').patchValue(MOCK_CAR.year);
+    });
 
-  //     it('should set settingItem to true', () => {
-  //       component.item = MOCK_CAR;
-  //       spyOn<any>(component, 'getModels').and.returnValue(of(CAR_MODELS));;
-  //       spyOn<any>(component, 'getYears').and.returnValue(of(CAR_YEARS));;
-  //       spyOn<any>(component, 'getVersions').and.returnValue(of(CAR_VERSIONS));;
+    it('should get the versions belonging to that year', () => {
+      expect(carSuggestionsService.getVersions).toHaveBeenCalledWith(
+        MOCK_CAR.brand,
+        MOCK_CAR.model,
+        MOCK_CAR.year
+      );
+      expect(component.versions).toEqual(CAR_VERSIONS);
+    });
 
-  //       component.ngOnInit();
+    it('should autocomplete the form title with car brand, model and year', () => {
+      const title = component.uploadForm.get('title').value;
+      const expectedTitle = `${MOCK_CAR.brand} ${MOCK_CAR.model} ${MOCK_CAR.year}`
 
-  //       expect(component['settingItem']).toBe(true);
-  //     });
+      expect(title).toEqual(expectedTitle);
+    });
+  });
 
-  //     it('should call the 3 services to get the car information', () => {
-  //       component.item = MOCK_CAR;
-  //       spyOn(component, 'getModels').and.returnValue(of(CAR_MODELS));
-  //       spyOn(component, 'getYears').and.returnValue(of(CAR_YEARS));
-  //       spyOn(component, 'getVersions').and.returnValue(of(CAR_VERSIONS));
+  describe('when changing version field', () => {
+    it('should autocomplete fields with the ones that backend sends', () => {
+      spyOn(itemService, 'getCarInfo').and.callThrough();
+      spyOn(component.uploadForm, 'patchValue').and.callThrough();
 
-  //       component.ngOnInit();
-  //       component.uploadForm.get('images').patchValue([IMAGE]);
-  //       component.uploadForm.get('title').patchValue('new title');
-  //       fixture.detectChanges();
+      component.uploadForm.get('brand').patchValue(MOCK_CAR.brand);
+      component.uploadForm.get('model').patchValue(MOCK_CAR.model);
+      component.uploadForm.get('year').patchValue(MOCK_CAR.year);
+      component.uploadForm.get('version').patchValue(MOCK_CAR.version);
 
-  //       expect(component.getModels).toHaveBeenCalledTimes(1);
-  //       expect(component.getYears).toHaveBeenCalledTimes(1);
-  //       expect(component.getVersions).toHaveBeenCalledTimes(1);
-  //     });
-  //   });
-  // });
-
-  // describe('getBrands', () => {
-  //   it('should get and set brands', () => {
-  //     spyOn(carSuggestionsService, 'getBrands').and.returnValue(of(CAR_BRANDS));
-
-  //     component['getBrands']();
-
-  //     expect(carSuggestionsService.getBrands).toHaveBeenCalled();
-  //     expect(component.brands).toEqual(CAR_BRANDS);
-  //     expect(component.uploadForm.get('brand').pristine).toBeTruthy();
-  //   });
-  // });
-
-  // describe('getCarTypes', () => {
-  //   it('should get and set types', () => {
-  //     spyOn(carKeysService, 'getTypes').and.returnValue(of(CAR_BODY_TYPES));
-
-  //     component['getCarTypes']();
-
-  //     expect(carKeysService.getTypes).toHaveBeenCalled();
-  //     expect(component.carTypes).toEqual(CAR_BODY_TYPES);
-  //     expect(component.uploadForm.get('body_type').pristine).toBeTruthy();
-  //   });
-  // });
-
-  // describe('getModels', () => {
-  //   it('should get and set models', () => {
-  //     spyOn(carSuggestionsService, 'getModels').and.returnValue(of(CAR_MODELS));
-
-  //     component.getModels('Abarth');
-
-  //     expect(carSuggestionsService.getModels).toHaveBeenCalledWith('Abarth');
-  //   });
-  // });
-
-  // describe('getYears', () => {
-  //   it('should get and set years', () => {
-  //     spyOn(carSuggestionsService, 'getYears').and.returnValue(of(CAR_YEARS));
-  //     component.uploadForm.get('brand').patchValue('Abarth');
-
-  //     component.getYears('Spider');
-
-  //     expect(carSuggestionsService.getYears).toHaveBeenCalledWith('Abarth', 'Spider');
-  //   });
-  // });
-
-  // describe('getVersions', () => {
-  //   it('should get and set versions', () => {
-  //     spyOn(carSuggestionsService, 'getVersions').and.returnValue(of(CAR_VERSIONS));
-  //     component.uploadForm.get('brand').patchValue('Abarth');
-  //     component.uploadForm.get('model').patchValue('Spider');
-  //     component.uploadForm.get('year').patchValue('2017');
-
-  //     component.getVersions('2017', true);
-
-  //     expect(carSuggestionsService.getVersions).toHaveBeenCalledWith('Abarth', 'Spider', '2017');
-  //   });
-  // });
+      expect(itemService.getCarInfo).toHaveBeenCalledWith(
+        MOCK_CAR.brand,
+        MOCK_CAR.model,
+        MOCK_CAR.version
+      );
+      expect(component.uploadForm.patchValue).toHaveBeenCalledWith(
+        CAR_INFO,
+        { emitEvent: false }
+      );
+      expect(component.uploadForm.get('brand').value).toEqual(CAR_INFO.brand);
+      expect(component.uploadForm.get('model').value).toEqual(CAR_INFO.model);
+      expect(component.uploadForm.get('engine').value).toEqual(CAR_INFO.engine);
+      expect(component.uploadForm.get('gearbox').value).toEqual(CAR_INFO.gearbox);
+      expect(component.uploadForm.get('num_doors').value).toEqual(CAR_INFO.num_doors);
+      expect(component.uploadForm.get('num_seats').value).toEqual(CAR_INFO.num_seats);
+    });
+  });
 
   // describe('onSubmit', () => {
   //   it('should has category set by default', () => {
