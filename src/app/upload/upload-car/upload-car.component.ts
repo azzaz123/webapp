@@ -113,7 +113,13 @@ export class UploadCarComponent implements OnInit {
       this.getCarTypes()
     ).pipe(
       finalize(() => {
-        this.initializeUploadFormFields();
+        this.subscribeToBrandChanges();
+        this.subscribeToModelChanges();
+        this.subscribeToYearChanges();
+        this.subscribeToVersionChanges();
+        if (this.item) {
+          this.initializeUploadFormFields();
+        }
       })
     ).subscribe(([brands, carTypes]) => {
       this.brands = brands;
@@ -146,14 +152,8 @@ export class UploadCarComponent implements OnInit {
       },
     });
 
-    if (this.item) {
-      this.setParameters();
-    }
-
-    this.subscribeToBrandChanges();
-    this.subscribeToModelChanges();
-    this.subscribeToYearChanges();
-    this.subscribeToVersionChanges();
+    this.customVersion = !this.versions.find(version => this.item.version === version.value);
+    this.customMake = !this.brands.find(brand => this.item.brand === brand.value);
 
     this.detectFormChanges();
   }
