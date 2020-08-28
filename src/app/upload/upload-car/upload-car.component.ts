@@ -184,7 +184,6 @@ export class UploadCarComponent implements OnInit {
 
   private subscribeToVersionChanges(): void {
     this.uploadForm.get('version').valueChanges.subscribe((version: string) => {
-      this.autocompleteTitle();
       this.getAutocompleteFields(version).subscribe((fields: CarInfo) => {
         this.uploadForm.patchValue(fields, { emitEvent: false });
       });
