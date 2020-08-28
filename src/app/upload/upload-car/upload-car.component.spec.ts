@@ -165,35 +165,35 @@ describe('UploadCarComponent', () => {
 
     it('should initialize the upload form with default values', () => {
       expect(component.uploadForm.value).toEqual({
-        body_type: null,
-        brand: null,
+        id: '',
         category_id: CARS_CATEGORY,
-        currency_code: "EUR",
-        engine: null,
-        financed_price: null,
-        gearbox: null,
-        horsepower: null,
-        id: null,
         images: [],
-        km: null,
+        model: '',
+        brand: '',
+        title: '',
+        year: '',
+        sale_price: '',
+        financed_price: '',
+        currency_code: 'EUR',
+        version: '',
+        num_seats: '',
+        num_doors: '',
+        body_type: null,
+        km: '',
+        storytelling: '',
+        engine: null,
+        gearbox: null,
+        horsepower: '',
+        sale_conditions: {
+          fix_price: false,
+          exchange_allowed: false,
+          shipping_allowed: false
+        },
         location: {
           address: '',
           latitude: '',
           longitude: ''
-        },
-        model: null,
-        num_doors: null,
-        num_seats: null,
-        sale_conditions: {
-          exchange_allowed: null,
-          fix_price: null,
-          shipping_allowed: null,
-        },
-        sale_price: null,
-        storytelling: null,
-        title: null,
-        version: null,
-        year: null,
+        }
       });
     });
 
@@ -262,8 +262,8 @@ describe('UploadCarComponent', () => {
   describe('when changing brand field', () => {
     it('should get the models belonging to that brand', () => {
       spyOn(carSuggestionsService, 'getModels').and.callThrough();
-      component.ngOnInit();
 
+      component.ngOnInit();
       component.uploadForm.get('brand').patchValue(MOCK_CAR.brand);
 
       expect(carSuggestionsService.getModels).toHaveBeenCalledWith(MOCK_CAR.brand);
@@ -642,22 +642,18 @@ describe('UploadCarComponent', () => {
   describe('toggleCustomVersionSelection', () => {
     it('should not toggle the version value if its true and disable the field', () => {
       component.customVersion = true;
-      component.uploadForm.get('version').enable();
 
       component.toggleCustomVersionSelection();
 
       expect(component.customVersion).toBe(false);
-      expect(component.uploadForm.get('version').disabled).toBeFalsy();
     });
 
     it('should toggle the version value and enable the field', () => {
       component.customVersion = false;
-      component.uploadForm.get('version').disable();
 
       component.toggleCustomVersionSelection();
 
       expect(component.customVersion).toBe(true);
-      expect(component.uploadForm.get('version').enabled).toBeTruthy();
     });
   });
 

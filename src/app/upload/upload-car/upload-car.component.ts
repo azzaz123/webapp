@@ -129,6 +129,30 @@ export class UploadCarComponent implements OnInit {
   }
 
   private initializeEditForm(): void {
+    this.uploadForm.patchValue({
+      id: this.item.id,
+      model: this.item.model,
+      brand: this.item.brand,
+      title: this.item.title,
+      year: this.item.year.toString(),
+      sale_price: this.item.salePrice,
+      financed_price: this.item.financedPrice,
+      version: this.item.version,
+      num_seats: this.item.numSeats,
+      num_doors: this.item.numDoors,
+      body_type: this.item.bodyType,
+      km: this.item.km,
+      storytelling: this.item.description,
+      engine: this.item.engine,
+      gearbox: this.item.gearbox,
+      horsepower: this.item.horsepower,
+      sale_conditions: {
+        fix_price: this.item.saleConditions?.fix_price,
+        exchange_allowed: this.item.saleConditions?.exchange_allowed,
+        shipping_allowed: this.item.saleConditions?.shipping_allowed
+      },
+    }, { emitEvent: false });
+
     forkJoin(
       this.getBrands(),
       this.getCarTypes(),
@@ -137,30 +161,6 @@ export class UploadCarComponent implements OnInit {
       this.getVersions(`${this.item.year}`)
     ).pipe(
       finalize(() => {
-        this.uploadForm.patchValue({
-          id: this.item.id,
-          model: this.item.model,
-          brand: this.item.brand,
-          title: this.item.title,
-          year: this.item.year.toString(),
-          sale_price: this.item.salePrice,
-          financed_price: this.item.financedPrice,
-          version: this.item.version,
-          num_seats: this.item.numSeats,
-          num_doors: this.item.numDoors,
-          body_type: this.item.bodyType,
-          km: this.item.km,
-          storytelling: this.item.description,
-          engine: this.item.engine,
-          gearbox: this.item.gearbox,
-          horsepower: this.item.horsepower,
-          sale_conditions: {
-            fix_price: this.item.saleConditions?.fix_price,
-            exchange_allowed: this.item.saleConditions?.exchange_allowed,
-            shipping_allowed: this.item.saleConditions?.shipping_allowed
-          },
-        }, { emitEvent: false });
-
         this.customVersion = !this.versions.find(version => this.item.version === version.value);
         this.customMake = !this.brands.find(brand => this.item.brand === brand.value);
         this.subscribeToFieldsChanges();
@@ -419,11 +419,6 @@ export class UploadCarComponent implements OnInit {
 
   public toggleCustomVersionSelection() {
     this.customVersion = !this.customVersion;
-    if (this.customVersion) {
-      this.toggleField('version', 'enable');
-    } else if (!this.customMake && !this.years && !this.brands && !this.models || this.customMake) {
-      this.toggleField('version', 'disable');
-    }
   }
 
   public updateUploadPercentage(percentage: number) {
