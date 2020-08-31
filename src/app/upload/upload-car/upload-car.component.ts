@@ -103,7 +103,6 @@ export class UploadCarComponent implements OnInit {
         longitude: ['', [Validators.required]],
       })
     });
-
     this.initializePopoverConfiguration();
   }
 
@@ -134,7 +133,7 @@ export class UploadCarComponent implements OnInit {
       model: this.item.model,
       brand: this.item.brand,
       title: this.item.title,
-      year: this.item.year.toString(),
+      year: `${this.item.year}`,
       sale_price: this.item.salePrice,
       financed_price: this.item.financedPrice,
       version: this.item.version,
@@ -357,20 +356,6 @@ export class UploadCarComponent implements OnInit {
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
     }
-  }
-
-  private markFieldAsPristine(field: string) {
-    setTimeout(() => {
-      this.uploadForm.get(field).markAsPristine();
-    });
-  }
-
-  private toggleField(field: string, action: string, reset: boolean = true) {
-    this.uploadForm.get(field)[action]();
-    if (reset) {
-      this.uploadForm.get(field).setValue('');
-    }
-    this.markFieldAsPristine(field);
   }
 
   preview() {
