@@ -8,7 +8,6 @@ import * as CryptoJS from 'crypto-js';
 describe('LoggedGuard', (): void => {
   let loggedGuard: LoggedGuard;
   let accessTokenService: AccessTokenService;
-  const mockCurrentUrl = 'https://web.wallapop.com/chat';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,6 +28,8 @@ describe('LoggedGuard', (): void => {
     });
     loggedGuard = TestBed.inject(LoggedGuard);
     accessTokenService = TestBed.inject(AccessTokenService);
+
+    window.location.href = 'https://web.wallapop.com';
   });
 
   it('should create an instance', (): void => {
@@ -37,11 +38,11 @@ describe('LoggedGuard', (): void => {
 
   describe('canActivate', (): void => {
     describe('when no access token', () => {
-      it('should return false and redirect to SEO web with pending redirect', () => {
+      it('should deny access and redirect to SEO web with pending redirect', () => {
         const decriptAux =
           (toDecrypt: string) => CryptoJS.AES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoJS.enc.Utf8);
         const expectedUrl = `${environment.siteUrl}login?redirectUrl=`;
-        const expectedRedirectQueryParam = mockCurrentUrl;
+        const expectedRedirectQueryParam = window.location.href;
 
         const result = loggedGuard.canActivate();
         const resultRedirectQueryParam = window.location.href.split('?')[1].replace('redirectUrl=', '');
@@ -55,7 +56,7 @@ describe('LoggedGuard', (): void => {
     describe('when access token in cookies', () => {
       beforeEach(() => accessTokenService.storeAccessToken('abc'));
 
-      it('should return true and NOT redirect to SEO web if access token', () => {
+      it('should allow access and NOT redirect to SEO web if access token', () => {
         const notExpectedUrl = `${environment.siteUrl}login?redirectUrl=`;
 
         const result = loggedGuard.canActivate();
@@ -69,11 +70,11 @@ describe('LoggedGuard', (): void => {
 
   describe('canLoad', () => {
     describe('when no access token', () => {
-      it('should return false and redirect to SEO web with pending redirect', () => {
+      it('should deny access and redirect to SEO web with pending redirect', () => {
         const decriptAux =
           (toDecrypt: string) => CryptoJS.AES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoJS.enc.Utf8);
         const expectedUrl = `${environment.siteUrl}login?redirectUrl=`;
-        const expectedRedirectQueryParam = mockCurrentUrl;
+        const expectedRedirectQueryParam = window.location.href;
 
         const result = loggedGuard.canActivate();
         const resultRedirectQueryParam = window.location.href.split('?')[1].replace('redirectUrl=', '');
@@ -87,7 +88,7 @@ describe('LoggedGuard', (): void => {
     describe('when access token in cookies', () => {
       beforeEach(() => accessTokenService.storeAccessToken('abc'));
 
-      it('should return true and NOT redirect to SEO web if access token', () => {
+      it('should allow access and NOT redirect to SEO web if access token', () => {
         const notExpectedUrl = `${environment.siteUrl}login?redirectUrl=`;
 
         const result = loggedGuard.canActivate();
