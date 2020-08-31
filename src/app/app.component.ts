@@ -121,15 +121,17 @@ export class AppComponent implements OnInit {
   private handleUserLoggedOut(redirectUrl: string) {
     this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
     this.paymentService.deleteCache();
+
     try {
       this.realTime.disconnect();
     } catch (err) {
     }
+
     if (redirectUrl) {
-      window.location.href = redirectUrl;
-    } else {
-      window.location.reload();
+      return window.location.href = redirectUrl;
     }
+
+    return window.location.reload();
   }
 
   public onViewIsBlocked(): void {
