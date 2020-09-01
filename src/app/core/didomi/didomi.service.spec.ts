@@ -60,43 +60,32 @@ describe('Service: Didomi', () => {
     });
   });
 
-  describe('when user accepts all GDPR vendors and purpouses', () => {
+  describe('when user accepts all purposes', () => {
+    beforeEach(() => {
+      spyOn(Didomi, 'getUserConsentStatusForAll').and.returnValue({
+          purposes: {
+            enabled: ['purpose1', 'purpose2', 'purpose3'],
+            disabled: []
+          }
+      });
+    });
+
     it('should allow user segmentation for ads', () => {
       expect(service.userAllowedSegmentationInAds()).toBe(true);
     });
   });
 
-  describe('when user does not accept all GDPR vendors and purpouses', () => {
+  describe('when user does not accept at least 1 purpose', () => {
     beforeEach(() => {
-      spyOn(Didomi, 'getUserConsentStatusForPurpose').and.returnValue(false);
-      spyOn(Didomi, 'getUserConsentStatusForVendor').and.returnValue(false);
-    });
-
-    it('should not allow user segmentation for ads', () => {
-      expect(service.userAllowedSegmentationInAds()).toBe(false);
-    });
-  });
-
-  describe('when user does not accept Google vendor', () => {
-    it('should not allow user segmentation for ads', () => {
-      spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake(key => {
-        if (key === 'google') {
-          return false;
+      spyOn(Didomi, 'getUserConsentStatusForAll').and.returnValue({
+        purposes: {
+          enabled: ['purpose1', 'purpose3'],
+          disabled: ['purpose2']
         }
       });
-
-      expect(service.userAllowedSegmentationInAds()).toBe(false);
     });
-  });
 
-  describe('when user does not accept the personalized ads purpouse', () => {
     it('should not allow user segmentation for ads', () => {
-      spyOn(Didomi, 'getUserConsentStatusForPurpose').and.callFake(key => {
-        if (key === 'advertising_personalization') {
-          return false;
-        }
-      });
-
       expect(service.userAllowedSegmentationInAds()).toBe(false);
     });
   });
