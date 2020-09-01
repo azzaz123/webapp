@@ -53,7 +53,7 @@ describe('SidebarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
-    userService = TestBed.get(UserService);
+    userService = TestBed.inject(UserService);
     spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
   });

@@ -51,9 +51,9 @@ describe('PasswordModalComponent', () => {
     fixture = TestBed.createComponent(PasswordModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    userService = TestBed.get(UserService);
-    activeModal = TestBed.get(NgbActiveModal);
-    errorsService = TestBed.get(ErrorsService);
+    userService = TestBed.inject(UserService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    errorsService = TestBed.inject(ErrorsService);
   });
 
   describe('onSubmit', () => {

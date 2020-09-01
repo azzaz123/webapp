@@ -36,8 +36,8 @@ describe('BumpConfirmationModalComponent', () => {
     });
     fixture = TestBed.createComponent(ProBumpConfirmationModalComponent);
     component = fixture.componentInstance;
-    trackingService = TestBed.get(TrackingService);
-    userService = TestBed.get(UserService);
+    trackingService = TestBed.inject(TrackingService);
+    userService = TestBed.inject(UserService);
     appboy.initialize(environment.appboy);
     fixture.detectChanges();
   });

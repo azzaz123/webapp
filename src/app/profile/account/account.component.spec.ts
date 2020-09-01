@@ -78,12 +78,12 @@ describe('AccountComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountComponent);
     component = fixture.componentInstance;
-    component.formComponent = TestBed.get(ProfileFormComponent);
-    userService = TestBed.get(UserService);
+    component.formComponent = TestBed.inject(ProfileFormComponent);
+    userService = TestBed.inject(UserService);
     spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
-    errorsService = TestBed.get(ErrorsService);
-    modalService = TestBed.get(NgbModal);
+    errorsService = TestBed.inject(ErrorsService);
+    modalService = TestBed.inject(NgbModal);
   });
 
   describe('initForm', () => {

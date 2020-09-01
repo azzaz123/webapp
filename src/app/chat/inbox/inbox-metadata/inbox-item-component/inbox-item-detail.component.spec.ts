@@ -58,9 +58,9 @@ describe('Component: Item', () => {
     });
     fixture = TestBed.createComponent(InboxItemDetailComponent);
     component = TestBed.createComponent(InboxItemDetailComponent).componentInstance;
-    itemService = TestBed.get(ItemService);
-    trackingService = TestBed.get(TrackingService);
-    cookieService = TestBed.get(CookieService);
+    itemService = TestBed.inject(ItemService);
+    trackingService = TestBed.inject(TrackingService);
+    cookieService = TestBed.inject(CookieService);
     appboy.initialize(environment.appboy);
   });
 

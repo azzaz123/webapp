@@ -17,7 +17,7 @@ describe('Component: ConnectionAlert', () => {
     });
     fixture = TestBed.createComponent(ConnectionAlertComponent);
     component = TestBed.createComponent(ConnectionAlertComponent).componentInstance;
-    eventService = TestBed.get(EventService);
+    eventService = TestBed.inject(EventService);
   });
 
   it('should listen to CONNECTION_ERROR', () => {

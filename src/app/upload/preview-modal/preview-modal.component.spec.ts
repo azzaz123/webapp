@@ -37,7 +37,7 @@ describe('PreviewModalComponent', () => {
     fixture = TestBed.createComponent(PreviewModalComponent);
     component = fixture.componentInstance;
     component.itemPreview = UPLOAD_FORM_CAR_VALUES;
-    carKeysService = TestBed.get(CarKeysService);
+    carKeysService = TestBed.inject(CarKeysService);
     fixture.detectChanges();
   });
 

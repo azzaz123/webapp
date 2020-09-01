@@ -31,7 +31,7 @@ describe('BumpTutorialComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BumpTutorialComponent);
     component = fixture.componentInstance;
-    tutorialService = TestBed.get(BumpTutorialService);
+    tutorialService = TestBed.inject(BumpTutorialService);
   });
 
   describe('ngOnDestroy', () => {

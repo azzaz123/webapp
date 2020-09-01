@@ -50,13 +50,13 @@ describe('RealTimeService', () => {
       ]
     });
 
-    service = TestBed.get(RealTimeService);
-    eventService = TestBed.get(EventService);
-    xmppService = TestBed.get(XmppService);
-    trackingService = TestBed.get(TrackingService);
-    remoteConsoleService = TestBed.get(RemoteConsoleService);
-    analyticsService = TestBed.get(AnalyticsService);
-    connectionService = TestBed.get(ConnectionService);
+    service = TestBed.inject(RealTimeService);
+    eventService = TestBed.inject(EventService);
+    xmppService = TestBed.inject(XmppService);
+    trackingService = TestBed.inject(TrackingService);
+    remoteConsoleService = TestBed.inject(RemoteConsoleService);
+    analyticsService = TestBed.inject(AnalyticsService);
+    connectionService = TestBed.inject(ConnectionService);
     appboy.initialize(environment.appboy);
   });
 

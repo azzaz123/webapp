@@ -55,12 +55,12 @@ describe('CallsService', () => {
         }
       ]
     });
-    service = TestBed.get(CallsService);
-    userService = TestBed.get(UserService);
-    itemService = TestBed.get(ItemService);
-    connectionService = TestBed.get(ConnectionService);
-    eventService = TestBed.get(EventService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    service = TestBed.inject(CallsService);
+    userService = TestBed.inject(UserService);
+    itemService = TestBed.inject(ItemService);
+    connectionService = TestBed.inject(ConnectionService);
+    eventService = TestBed.inject(EventService);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

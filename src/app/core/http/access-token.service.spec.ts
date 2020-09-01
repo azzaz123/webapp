@@ -26,8 +26,8 @@ describe('AccessTokenService', () => {
         }
       ]
     });
-    service = TestBed.get(AccessTokenService);
-    cookieService = TestBed.get(CookieService);
+    service = TestBed.inject(AccessTokenService);
+    cookieService = TestBed.inject(CookieService);
   });
 
   describe('storeAccessToken', () => {

@@ -39,7 +39,7 @@ describe('CallComponent', () => {
     fixture = TestBed.createComponent(CallComponent);
     component = fixture.componentInstance;
     component.call = MOCK_CALL();
-    callService = TestBed.get(CallsService);
+    callService = TestBed.inject(CallsService);
     fixture.detectChanges();
   });
 

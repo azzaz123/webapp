@@ -40,8 +40,8 @@ describe('UploadService', () => {
         }
       ]
     });
-    service = TestBed.get(UploadService);
-    accessTokenService = TestBed.get(AccessTokenService);
+    service = TestBed.inject(UploadService);
+    accessTokenService = TestBed.inject(AccessTokenService);
     response = null;
     service.uploadInput.subscribe((r: UploadInput) => {
       response = r;

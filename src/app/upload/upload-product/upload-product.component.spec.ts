@@ -153,16 +153,16 @@ describe('UploadProductComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadProductComponent);
     component = fixture.componentInstance;
-    categoryService = TestBed.get(CategoryService);
+    categoryService = TestBed.inject(CategoryService);
     spyOn(categoryService, 'getUploadCategories').and.callThrough();
-    errorService = TestBed.get(ErrorsService);
-    generalSuggestionsService = TestBed.get(GeneralSuggestionsService);
-    router = TestBed.get(Router);
-    modalService = TestBed.get(NgbModal);
-    trackingService = TestBed.get(TrackingService);
-    analyticsService = TestBed.get(AnalyticsService);
-    deviceService = TestBed.get(DeviceDetectorService);
-    userService = TestBed.get(UserService);
+    errorService = TestBed.inject(ErrorsService);
+    generalSuggestionsService = TestBed.inject(GeneralSuggestionsService);
+    router = TestBed.inject(Router);
+    modalService = TestBed.inject(NgbModal);
+    trackingService = TestBed.inject(TrackingService);
+    analyticsService = TestBed.inject(AnalyticsService);
+    deviceService = TestBed.inject(DeviceDetectorService);
+    userService = TestBed.inject(UserService);
     fixture.detectChanges();
     appboy.initialize(environment.appboy);
   });

@@ -60,7 +60,7 @@ describe('CheckoutItemComponent', () => {
       factor: 100
     };
     fixture.detectChanges();
-    cartService = TestBed.get(CartService);
+    cartService = TestBed.inject(CartService);
   });
 
   describe('ngOnInit', () => {

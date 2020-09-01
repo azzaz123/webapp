@@ -57,8 +57,8 @@ describe('ItemStatsRowComponent', () => {
     fixture = TestBed.createComponent(ItemStatsRowComponent);
     component = fixture.componentInstance;
     component.item = MOCK_ITEM_V3;
-    itemStatsService = TestBed.get(ItemStatsService);
-    itemService = TestBed.get(ItemService);
+    itemStatsService = TestBed.inject(ItemStatsService);
+    itemService = TestBed.inject(ItemService);
     fixture.detectChanges();
   });
 

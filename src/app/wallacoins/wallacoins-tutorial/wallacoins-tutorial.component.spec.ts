@@ -39,7 +39,7 @@ describe('WallacoinsTutorialComponent', () => {
     fixture = TestBed.createComponent(WallacoinsTutorialComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    userService = TestBed.get(UserService);
+    userService = TestBed.inject(UserService);
   });
 
   describe('ngOnInit', () => {
