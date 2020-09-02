@@ -30,21 +30,25 @@ export class AnalyticsService {
             email: user.email,
             customerid: user.id
           }
+        },
+        identityCallback: result => {
+          let deviceId = this.cookieService.get(DEVICE_ID_COOKIE_NAME);
+          if (!deviceId) {
+            deviceId = UUID.UUID();
+            this.cookieService.put(DEVICE_ID_COOKIE_NAME, deviceId, {
+              expires: new Date('2038-01-19')
+            });
+          }
+
+          const user = result.getUser();
+          if (user) {
+            user.setUserAttribute('deviceId', deviceId);
+          }
         }
       };
 
       appboyKit.register(CONFIG);
       mParticle.init(environment.mParticleKey, CONFIG);
-      mParticle.ready(() => {
-        let deviceId = this.cookieService.get(DEVICE_ID_COOKIE_NAME);
-        if (!deviceId) {
-          deviceId = UUID.UUID();
-          this.cookieService.put(DEVICE_ID_COOKIE_NAME, deviceId, {
-            expires: new Date('2038-01-19')
-          });
-        }
-        mParticle.Identity.getCurrentUser().setUserAttribute('deviceId', deviceId);
-      });
     });
   }
 
