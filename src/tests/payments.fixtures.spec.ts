@@ -8,7 +8,7 @@ import {
   PackResponse,
   ProductResponse,
   OrderProExtras,
-  PerkResponse, PaymentMethodCardResponse, FinancialCard, PaymentMethodResponse
+  PerkResponse, PaymentMethodCardResponse, FinancialCard, PaymentMethodResponse, SetupIntent, SetupIntentResponse
 } from '../app/core/payments/payment.interface';
 import { PurchasesModel } from '../app/core/payments/purchase.model';
 import { STRIPE_CARD } from './stripe.fixtures.spec';
@@ -476,16 +476,30 @@ export const ORDER_CART_EXTRAS_PRO: OrderProExtras = {
 };
 
 export const BILLING_INFO_RESPONSE: BillingInfoResponse = {
-  cif: 'cif',
+  cif: 'A00000000',
   city: 'city',
   company_name: 'company',
   country: 'country',
   email: 'email@email.com',
   name: 'name',
-  phone: '666666666',
   postal_code: '12345',
+  type: 'legal',
   street: 'street',
   surname: 'surname',
+  id: '123'
+};
+
+export const BILLING_INFO_RESPONSE_LEGAL: BillingInfoResponse = {
+  cif: 'A00000000',
+  city: 'city',
+  company_name: 'company',
+  country: 'country',
+  email: 'email@email.com',
+  name: '',
+  postal_code: '12345',
+  type: 'legal',
+  street: 'street',
+  surname: '',
   id: '123'
 };
 
@@ -545,7 +559,7 @@ export const PERK_RESPONSE: PerkResponse[] = [{
 export const PAYMENT_METHOD_CARD_RESPONSE: PaymentMethodCardResponse[] = [
   {
     brand: null,
-    default: true,
+    invoices_default: null,
     expiration_month: 2,
     expiration_year: 2020,
     id: 'pm_a0b1c2',
@@ -553,7 +567,7 @@ export const PAYMENT_METHOD_CARD_RESPONSE: PaymentMethodCardResponse[] = [
   },
   {
     brand: null,
-    default: false,
+    invoices_default: null,
     expiration_month: 4,
     expiration_year: 2024,
     id: 'pm_d3e4f5',
@@ -572,6 +586,24 @@ export const PAYMENT_METHOD_DATA: PaymentMethodResponse = {
   object: '',
   type: ''
 };
+
+export const SETUP_INTENT_DATA: SetupIntentResponse= {
+  setupIntent: {
+    cancellation_reason: null,
+    client_secret: "seti_1GuJFAKhcEtiGcVWSHkYzyrN_secret_HTFknLSUTusQScMoXWqbx2X7IHuPSMa",
+    created: 1592231100,
+    description: null,
+    id: "seti_1GuJFAKhcEtiGcVWSHkYzyrN",
+    last_setup_error: null,
+    livemode: false,
+    next_action: null,
+    object: "setup_intent",
+    payment_method: "pm_1GuJFAKhcEtiGcVWcJfQ2fYM",
+    payment_method_types: ["card"],
+    status: "succeeded",
+    usage: "off_session"
+  }
+}
 
 export function createPerksModelFixture(): PerksModel {
 

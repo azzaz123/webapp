@@ -24,6 +24,9 @@ import { CancelSubscriptionModalComponent } from './modals/cancel-subscription-m
 import { CheckSubscriptionInAppModalComponent } from './modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { UnsubscribeInAppFirstModal } from './modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './modals/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user';
+import { UserResponse } from 'app/core/user/user-response.interface';
 
 export type SubscriptionModal =
   typeof CheckSubscriptionInAppModalComponent |
@@ -41,11 +44,13 @@ export class SubscriptionsComponent implements OnInit {
   public action: string;
   public subscriptions: SubscriptionsResponse[];
   public loading = false;
+  public user: User;
 
   constructor(private modalService: NgbModal,
     private subscriptionsService: SubscriptionsService,
     private router: Router,
-    private analyticsService: AnalyticsService) {
+    private analyticsService: AnalyticsService,
+    private userService: UserService) {
   }
 
   ngOnInit() {
@@ -55,6 +60,7 @@ export class SubscriptionsComponent implements OnInit {
       .subscribe(subscriptions => this.subscriptions = subscriptions);
 
     this.trackPageView();
+    this.userService.me(true).subscribe((user) => this.user = user);
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
@@ -65,7 +71,11 @@ export class SubscriptionsComponent implements OnInit {
     modalRef.result.then((action: string) => {
       if (action) {
         this.loading = true;
-        this.isSubscriptionUpdated();
+        if (this.user && this.user.featured) {
+          this.isSubscriptionUpdated();
+        } else {
+          this.isUserUpdated();
+        }
       }
       modalRef = null;
     }, () => {
@@ -75,19 +85,37 @@ export class SubscriptionsComponent implements OnInit {
     this.trackOpenModalEvent(subscription, modal);
   }
 
+  private isUserUpdated() {
+    this.userService.me(false)
+    .pipe(
+      repeatWhen(completed => completed.pipe(delay(1000), takeWhile(() => this.loading))),
+      take(30),
+      finalize(() => {
+        this.router.navigate(['profile/info'])
+      })
+    )
+    .subscribe(
+      (updatedUser) => {
+        if (updatedUser.featured) {
+          this.loading = false;
+        }
+      });
+  }
+
   private isSubscriptionUpdated() {
     this.subscriptionsService.getSubscriptions(false)
-      .pipe(
-        repeatWhen(completed => completed.pipe(delay(1000), takeWhile(() => this.loading))),
-        take(5),
-        finalize(() => this.router.navigate(['profile/info']))
-      )
-      .subscribe(
-        (updatedSubscriptions) => {
-          if (!isEqual(this.subscriptions, updatedSubscriptions)) {
-            this.loading = false;
-          }
-        });
+    .pipe(
+      repeatWhen(completed => completed.pipe(delay(1000), takeWhile(() => this.loading))),
+      take(30),
+      finalize(() => this.router.navigate(['profile/subscriptions']))
+    )
+    .subscribe(
+      (updatedSubscriptions) => {
+        if (!isEqual(this.subscriptions, updatedSubscriptions)) {
+          this.subscriptions = updatedSubscriptions;
+          this.loading = false;
+        }
+      });
   }
 
   private trackPageView() {

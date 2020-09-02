@@ -3,7 +3,6 @@ import { MessageService } from '../../chat/service';
 import { ConversationService } from './conversation.service';
 import { CommonModule } from '@angular/common';
 import { ItemModule } from '../item/item.module';
-import { MomentModule } from 'angular2-moment';
 import { MatIconModule } from '@angular/material';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CallsService } from './calls.service';
@@ -16,7 +15,6 @@ import { SharedModule } from '../../shared/shared.module';
     imports: [
         CommonModule,
         ItemModule,
-        MomentModule,
         MatIconModule,
         NgbTooltipModule,
         NgbDropdownModule,

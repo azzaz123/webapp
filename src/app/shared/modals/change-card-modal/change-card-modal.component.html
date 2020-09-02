@@ -1,0 +1,30 @@
+<div class="ChangeCardModal">
+    <div class="ChangeCardModal__header">
+      <div class="modal-close" (click)="activeModal.dismiss()">
+        <mat-icon svgIcon="cross"></mat-icon>
+      </div>
+      <h4 *ngIf="hasSavedCard && savedCard" class="ChangeCardModal__title" i18n="@@ChangeSelectSubscriptionCardTitle">Select a credit card</h4>
+      <h4 *ngIf="!hasSavedCard || !savedCard" class="ChangeCardModal__title" i18n="@@ChangeAddSubscriptionCardTitle">Add a credit card</h4>
+      <p class="ChangeCardModal__subtitle" i18n="@@ChangeSubscriptionCardSubtitle">This will be the payment method linked to your subscription</p>
+    </div>
+    <div class="ChangeCardModal__body">
+      <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+                            (hasCard)="hasCard($event)"
+      ></tsl-stripe-card-selection>
+      <div class="ChangeCardModal__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n="@@AddCard">Add card</div>
+      <div class="ChangeCardModal__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n="@@UseSavedCard">Use a saved card</div>
+      <tsl-stripe-card-element *ngIf="showCard" [type]="'setDefault'" [cart]="cart"
+                                  (stripeCard)="setCardInfo($event)" (onStripeSetDefaultCard)="setNewDefaultCard($event)" [loading]="loading"
+      ></tsl-stripe-card-element>
+      <tsl-button [hidden]="!savedCard"
+                  className="btn-block btn-primary"
+                  (click)="setExistingDefaultCard()"
+                  [loading]="newLoading"
+                  [disabled]="!selectedCard"
+      >
+        <div class="secure-payment-button">
+        <span i18n="@@SelectSavedCard">Select saved card</span>
+        </div>
+      </tsl-button>
+    </div>
+</div>

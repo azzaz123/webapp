@@ -1,18 +1,29 @@
 @import "~style/common";
 
 .NewCardModal {
-  padding: $spacing-xxl $spacing-xxxl;
+  text-align: center;
 
-  @include media-breakpoint-down(md) {
-    padding: $spacing-l $spacing-m;
+  &__header {
+    background: $walla-main;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    color: $white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
-
-  .NewCardModal__header {
-    h1 {
-      font-size: $font-size-l;
-      font-family: $wallie;
-      font-weight: $font-weight-chunky;
-      text-align: center;
-    }
+  &__body {
+    padding: $spacing-l $spacing-xxxl;
+  }
+  &__title {
+    font-size: $font-size-l;
+    font-weight: bold;
+    margin: $spacing-xxl 0 $spacing-ms;
+  }
+  &__subtitle {
+    font-size: $font-size-m;
+    color: $white;
+    margin: 0 0 $spacing-l;
   }
 }

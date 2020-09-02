@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
 import { SubscriptionSlot } from '../../../core/subscriptions/subscriptions.interface';
+import { STATUS } from './selected-product.interface';
 
 @Component({
   selector: 'tsl-selected-items',
@@ -41,6 +42,10 @@ export class SelectedItemsComponent implements OnInit {
 
   private isItemDisabled(items: Item[]) {
     return items.filter(item => item.flags.onhold || item.flags.expired);
+  }
+
+  get hideFeaturedButton(): boolean {
+    return this.selectedStatus === STATUS.INACTIVE || this.selectedStatus === STATUS.SOLD || this.disableFeatureOption
   }
 
 }

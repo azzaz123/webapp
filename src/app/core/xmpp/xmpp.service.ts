@@ -1,7 +1,6 @@
+import { from as observableFrom, of as observableOf, Observable, Observer, ReplaySubject, throwError } from 'rxjs';
 
-import {from as observableFrom, of as observableOf,  Observable, Observer ,  ReplaySubject, throwError } from 'rxjs';
-
-import {map, tap, mergeMap} from 'rxjs/operators';
+import { map, tap, mergeMap } from 'rxjs/operators';
 import { clone, eq, remove, includes } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { EventService } from '../event/event.service';
@@ -47,15 +46,16 @@ export class XmppService {
     }
   }
 
-  public sendMessage(conversation: InboxConversation, body: string) {
+  public sendMessage(conversation: InboxConversation, body: string): string {
     const messageId = this.client.nextId();
+    this.remoteConsoleService.sendMessageActTimeout(messageId);
     this.remoteConsoleService.sendMessageTimeout(messageId);
     const message = this.createXmppMessage(conversation, messageId, body);
     this.onNewMessage(clone(message), true);
     this.client.sendMessage(message);
     this.remoteConsoleService.sendMessageTimeout(message.id);
-    this.remoteConsoleService.sendAcceptTimeout(message.id);
     this.eventService.emit(EventService.MESSAGE_SENT, conversation, message.id);
+    return message.id;
   }
 
   public resendMessage(conversation: InboxConversation, message: InboxMessage) {
@@ -148,7 +148,7 @@ export class XmppService {
     });
     this.client.on('message', (message: XmppBodyMessage) => {
       if (!this.isFromSelf(message) && message.sentReceipt && message.sentReceipt.id) {
-        this.remoteConsoleService.sendAcceptTimeout(message.sentReceipt.id);
+        this.remoteConsoleService.sendMessageActTimeout(message.sentReceipt.id);
       }
       this.canProcessRealtime ? this.onNewMessage(message) : this.realtimeQ.push(message);
     });
@@ -165,6 +165,7 @@ export class XmppService {
     this.client.on('disconnected', () => {
       this.clientConnected = false;
       this.remoteConsoleService.sendXmppConnectionClosedWithError();
+      this.remoteConsoleService.sendConnectionChatFailed('xmpp');
       console.warn('Client disconnected');
       this.eventService.emit(EventService.CHAT_RT_DISCONNECTED);
     });
@@ -280,8 +281,8 @@ export class XmppService {
         }
       }
     })
-    .catch(() => {
-    }));
+      .catch(() => {
+      }));
   }
 
   private getPrivacyList(): Observable<any> {
@@ -293,39 +294,39 @@ export class XmppService {
         }
       }
     })
-    .catch(() => {
-    })).pipe(
-    map((response: any) => {
-      const blockedIds = [];
-      if (response && response.privacy && response.privacy.jids) {
-        response.privacy.jids.map((jid: string) => blockedIds.push(jid.split('@')[0]));
-      }
-      return blockedIds;
-    }));
+      .catch(() => {
+      })).pipe(
+      map((response: any) => {
+        const blockedIds = [];
+        if (response && response.privacy && response.privacy.jids) {
+          response.privacy.jids.map((jid: string) => blockedIds.push(jid.split('@')[0]));
+        }
+        return blockedIds;
+      }));
   }
 
   public blockUser(user: User | InboxUser): Observable<any> {
     this.blockedUsers.push(user.id);
     return this.setPrivacyList(this.blockedUsers).pipe(
-    mergeMap(() => {
-      if (this.blockedUsers.length === 1) {
-        return this.setDefaultPrivacyList();
-      }
-      return observableOf({});
-    }),
-    tap(() => {
-      user.blocked = true;
-      this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
-    }),);
+      mergeMap(() => {
+        if (this.blockedUsers.length === 1) {
+          return this.setDefaultPrivacyList();
+        }
+        return observableOf({});
+      }),
+      tap(() => {
+        user.blocked = true;
+        this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
+      }),);
   }
 
   public unblockUser(user: User | InboxUser): Observable<any> {
     remove(this.blockedUsers, (userId) => userId === user.id);
     return this.setPrivacyList(this.blockedUsers).pipe(
-    tap(() => {
-      user.blocked = false;
-      this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
-    }));
+      tap(() => {
+        user.blocked = false;
+        this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
+      }));
   }
 
   private onPrivacyListChange(iq: any) {

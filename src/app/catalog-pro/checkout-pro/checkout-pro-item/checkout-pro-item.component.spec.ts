@@ -1,9 +1,9 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutProItemComponent } from './checkout-pro-item.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { DecimalPipe } from '@angular/common';
 import { CalendarDates } from '../range-datepicker/calendar-dates';
@@ -12,15 +12,15 @@ import { CartPro } from '../../../shared/catalog/cart/cart-pro';
 import { CartChange } from '../../../shared/catalog/cart/cart-item.interface';
 import { ITEM_ID, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
 import { CustomCurrencyPipe } from '../../../shared/pipes';
-import { MOCK_DATE2, MOCK_DATE3 } from '../../../../tests/calendar.fixtures.spec';
-import { MOCK_PROITEM, MOCK_PROITEM3 } from '../../../../tests/pro-item.fixtures.spec';
+import { MOCK_DATE2, MOCK_DATE3, MOCK_DATE } from '../../../../tests/calendar.fixtures.spec';
+import { MOCK_PROITEM3 } from '../../../../tests/pro-item.fixtures.spec';
 
 describe('CheckoutProItemComponent', () => {
   let component: CheckoutProItemComponent;
   let fixture: ComponentFixture<CheckoutProItemComponent>;
   let cartService: CartService;
   let calendar: NgbCalendar;
-
+  let fb: FormBuilder;
   const CART = new CartPro();
   const TYPE = 'citybump';
   const TYPE2 = 'countrybump';
@@ -33,11 +33,11 @@ describe('CheckoutProItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule, ReactiveFormsModule],
       declarations: [CheckoutProItemComponent, CustomCurrencyPipe],
       providers: [
-        NgbCalendar,
         DecimalPipe,
+        FormBuilder,
         {
           provide: CartService, useValue: {
             createInstance() {
@@ -67,6 +67,8 @@ describe('CheckoutProItemComponent', () => {
     fixture = TestBed.createComponent(CheckoutProItemComponent);
     component = fixture.componentInstance;
     component.cartProItem = MOCK_PROITEM3;
+    component.selectAllEvent = observableOf(1);
+    fb = TestBed.get(FormBuilder);
     fixture.detectChanges();
     cartService = TestBed.get(CartService);
     calendar = TestBed.get(NgbCalendar);
@@ -94,12 +96,41 @@ describe('CheckoutProItemComponent', () => {
   });
 
   describe('onDateFocus', () => {
-    it('should emit dateFocus event with cartProItem', () => {
-      spyOn(component.dateFocus, 'emit');
-
+    it('should set the bumptype and toggle the calendar', () => {
       component.onDateFocus();
 
-      expect(component.dateFocus.emit).toHaveBeenCalledWith(component.cartProItem);
+      expect(component.calendarType).toBe(null);
+      expect(component.newBumpType).toEqual(component.cartProItem.bumpType);
+      expect(component.calendarHidden).toBe(false);
+    });
+  });
+
+  describe('onApplyCalendar', () => {
+    let newDates: CalendarDates;
+    beforeEach(() => {
+      const todayDate = calendar.getToday();
+      const tomorrowDate = calendar.getNext(todayDate);
+      newDates = new CalendarDates(todayDate, tomorrowDate);
+      spyOn(cartService, 'add').and.callThrough();
+
+      component.onApplyCalendar(newDates);
+    });
+    it('should set the bumptype and toggle the calendar', () => {
+      expect(component.calendarType).toBe(null);
+      expect(component.cartProItem.selectedDates).toEqual(newDates);
+    });
+
+    it('should add the item to the cart', () => {
+      expect(cartService.add).toHaveBeenCalledWith(component.cartProItem, component.cartProItem.bumpType);
+    })
+
+    it('should toggle the calendar view', () => {
+      expect(component.calendarHidden).toBe(false);
+    })
+
+    it('should update the form\'s values', () => {
+      expect(component.datesForm.value.fromDate).toEqual(newDates.formattedFromDate);
+      expect(component.datesForm.value.toDate).toEqual(newDates.formattedToDate);
     });
   });
 

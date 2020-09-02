@@ -12,6 +12,7 @@ import { InboxApi, InboxConversationApi } from '../model/api';
 import { uniqBy } from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { RemoteConsoleService } from '../../core/remote-console';
 
 @Injectable()
 export class InboxService {
@@ -32,7 +33,8 @@ export class InboxService {
               private inboxConversationService: InboxConversationService,
               private featureflagService: FeatureflagService,
               private eventService: EventService,
-              private userService: UserService) {
+              private userService: UserService,
+              private remoteConsoleService: RemoteConsoleService) {
   }
 
   public init() {
@@ -45,9 +47,12 @@ export class InboxService {
     this.getInbox$().pipe(
     catchError(() => {
       this.errorRetrievingInbox = true;
+      this.remoteConsoleService.sendConnectionChatTimeout('inbox', false);
+      this.remoteConsoleService.sendConnectionChatFailed('inbox');
       return of([]);
     }))
     .subscribe((conversations: InboxConversation[]) => {
+      this.remoteConsoleService.sendConnectionChatTimeout('inbox', true);
       this.inboxConversationService.conversations = conversations;
       this.inboxReady = true;
       this.eventService.emit(EventService.INBOX_LOADED, conversations, 'LOAD_INBOX');

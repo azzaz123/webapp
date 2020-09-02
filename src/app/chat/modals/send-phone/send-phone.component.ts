@@ -52,7 +52,6 @@ export class SendPhoneComponent implements OnInit {
     const phoneNumber = this.sendPhoneForm.controls.phone.value;
     if (this.sendPhoneForm.valid) {
       if (this.required) {
-        this.messageService.addPhoneNumberRequestMessage(this.conversation, false);
         this.trackingService.track(TrackingService.ITEM_SHAREPHONE_SENDPHONE, { item_id: this.conversation.item.id });
       } else {
         this.trackingService.track(TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING);

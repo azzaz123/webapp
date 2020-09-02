@@ -13,6 +13,7 @@ import { CustomCurrencyPipe } from '../../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { environment } from 'environments/environment';
 
 let component: BumpConfirmationModalComponent;
 let fixture: ComponentFixture<BumpConfirmationModalComponent>;
@@ -60,6 +61,7 @@ describe('BumpConfirmationModalComponent', () => {
     userService = TestBed.get(UserService);
     paymentService = TestBed.get(PaymentService);
     eventService = TestBed.get(EventService);
+    appboy.initialize(environment.appboy);
     fixture.detectChanges();
   });
 
@@ -100,6 +102,15 @@ describe('BumpConfirmationModalComponent', () => {
       expect(component.creditInfo).toBe(CREDIT_INFO);
       expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, CREDITS);
     }));
+
+    it('should send appboy VisibilityPurchaseSuccess event', () => {
+      spyOn(appboy, 'logCustomEvent');
+      component.code = '200';
+
+      component.ngOnInit();
+
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('VisibilityPurchaseSuccess', {platform: 'web'});
+    });
   });
 
 });

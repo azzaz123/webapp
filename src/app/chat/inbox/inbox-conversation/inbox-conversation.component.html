@@ -1,6 +1,6 @@
 <div class="inbox-conversation-container"
      [ngClass]="{'faded': conversation.cannotChat, 'inbox-archived-container': archiveConversation}">
-  <tsl-item-avatar [item]="conversation?.item" [showAvailableStatus]="conversation.user.available"></tsl-item-avatar>
+  <tsl-item-avatar [item]="conversation?.item" [inboxItem]="conversation?.item" [showAvailableStatus]="true"></tsl-item-avatar>
   <div class="conversation-info" *ngIf="conversation">
     <div class="user-name-row">
       <div class="user-name-row-left">
@@ -19,9 +19,9 @@
       </div>
       <div class="user-name-row-right">
         <span class="message-date"
-              *ngIf="dateIsThisYear()">{{conversation?.modifiedDate| amCalendar:momentConfig }}</span>
+              *ngIf="dateIsThisYear()">{{conversation?.modifiedDate| dateCalendar:momentConfig }}</span>
         <span class="message-date"
-              *ngIf="!dateIsThisYear()">{{conversation?.modifiedDate| amDateFormat:'D MMM. YYYY' }}</span>
+              *ngIf="!dateIsThisYear()">{{conversation?.modifiedDate| date:'d MMM. yyyy' }}</span>
       </div>
     </div>
 

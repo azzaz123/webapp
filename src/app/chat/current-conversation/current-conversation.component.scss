@@ -66,6 +66,10 @@
           text-align: center;
           margin: 0 auto;
 
+          .notification-secure-privacy {
+            padding: $spacing-s $spacing-ml;
+          }
+
           .date-marker-warning {
             background-color: $blue-grey-5;
             color: $blue-grey-3;
@@ -74,6 +78,11 @@
             &.date-marker-warning-blue {
               background-color: $softblue-light;
               color: $softblue-dark;
+            }
+
+            &.date-marker-warning-red {
+              background-color: $negative-soft;
+              color: $magenta-dark;
             }
 
             span {
@@ -110,7 +119,7 @@
 .date-marker {
   display: inline-flex;
   text-align: center;
-  padding: $spacing-s $spacing-ml;
+  padding: $spacing-xs $spacing-ml;
   background-color: $blue-grey-4;
   border-radius: $spacing-ml;
   margin: $spacing-ms 0;
@@ -127,7 +136,7 @@
   }
 
   .emoticon {
-    margin-right: $spacing-xxs;
+    margin-right: $spacing-xs;
   }
 
   .emoticon-woman-gesturing-no::before {
@@ -136,6 +145,14 @@
 
   .emoticon-dashing-away::before {
     content: '\01F4A8';
+  }
+
+  .emoticon-police-car::before {
+    content: '\01F693';
+  }
+
+  .emoticon-ghost::before {
+    content: '\01F47B';
   }
 
   .emoticon-padlock {

@@ -1,4 +1,5 @@
 import { DeviceInfo } from 'ngx-device-detector';
+import { MetricTypeEnum } from '../app/core/remote-console';
 
 export class MockRemoteConsoleService {
   sendConnectionTimeout(userId: string, timeout: number): void {
@@ -13,10 +14,22 @@ export class MockRemoteConsoleService {
   sendAcceptTimeout(messageId: string): void {
   }
 
+  sendMessageActTimeout(messageId: string): void {
+  }
+
   sendPresentationMessageTimeout(messageId: string): void {
   }
 
   sendXmppConnectionClosedWithError(message: string): void {
+  }
+
+  sendConnectionChatTimeout(connectionType: 'inbox' | 'xmpp', success: boolean): void {
+  }
+
+  sendMessageAckFailed(messageId: string, description: string): void {
+  }
+
+  sendConnectionChatFailed(message: 'inbox' | 'xmpp'): void {
   }
 }
 
@@ -30,7 +43,8 @@ export class DeviceDetectorServiceMock {
       browser_version: BROWSER_VERSION
     } as DeviceInfo;
   }
+
   isMobile(): boolean {
-    return false
+    return false;
   }
 }

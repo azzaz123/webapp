@@ -5,7 +5,6 @@ import { ConnectionAlertComponent } from './connection-alert/connection-alert.co
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material';
-import { MomentModule } from 'angular2-moment';
 import { ItemComponent } from './item/item.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
@@ -38,7 +37,6 @@ import { ConversationDetailsBarComponent } from './conversation-details-bar';
   imports: [
     CommonModule,
     FormsModule,
-    MomentModule,
     MatIconModule,
     NgbTooltipModule,
     NgbDropdownModule,

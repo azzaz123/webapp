@@ -51,6 +51,9 @@
       &.countrybump {
         color: $country-bump;
       }
+      &.planning {
+        color: $blue-grey-3;
+      }
       &:disabled {
         cursor: not-allowed;
         opacity: 0.5;        
@@ -117,6 +120,9 @@
     &.countrybump {
       color: $country-bump;
     }
+    &.planning {
+      color: $blue-grey-3;
+    }
     .bold {
       display: inline-block;
       font-weight: $font-weight-chunky;
@@ -139,6 +145,9 @@
       }
       &.countrybump {
         background-color: $country-bump;
+      }
+      &.planning {
+        background-color: $blue-grey-5;
       }
     }
     &.start {
@@ -164,6 +173,9 @@
       }
       &.countrybump {
         background-color: rgba($country-bump, 0.7);
+      }
+      &.planning {
+        background-color: rgba($blue-grey-3, 0.7);
       }
     }
   }

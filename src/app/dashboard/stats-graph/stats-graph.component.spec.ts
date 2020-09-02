@@ -1,9 +1,8 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatsGraphComponent } from './stats-graph.component';
-import { AmChartsService } from '@amcharts/amcharts3-angular';
 import { StatisticsService } from './statistics.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -13,17 +12,11 @@ describe('StatsGraphComponent', () => {
   let component: StatsGraphComponent;
   let fixture: ComponentFixture<StatsGraphComponent>;
   let statisticsService: StatisticsService;
-  let AmCharts: AmChartsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [StatsGraphComponent],
-      providers: [{
-        provide: AmChartsService, useValue: {
-          makeChart() {},
-          destroyChart() {}
-        }
-      },
+      providers: [
         {
           provide: StatisticsService, useValue: {
           getStatistics() {
@@ -47,17 +40,17 @@ describe('StatsGraphComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     statisticsService = TestBed.get(StatisticsService);
-    AmCharts = TestBed.get(AmChartsService);
   });
 
   describe('ngOnInit', () => {
     it('should call getStatistics and push them to dataProvider', () => {
+      component.yearly = false;
       spyOn(statisticsService, 'getStatistics').and.callThrough();
 
       component.ngOnInit();
 
       expect(statisticsService.getStatistics).toHaveBeenCalledWith('30');
-      expect(component['chartOptions'].dataProvider.length).toBe(STATISTICS_RESPONSE.entries.length);
+      expect(component.chartOption.series[1].data[0]).toBe(STATISTICS_RESPONSE.entries[0].values.country_bump);
     });
   });
 
@@ -71,15 +64,4 @@ describe('StatsGraphComponent', () => {
     });
   });
 
-  describe('ngOnDestroy', () => {
-    it('should call destroyChart', () => {
-      const CHART = {chart: 'chart'};
-      spyOn(AmCharts, 'destroyChart');
-      component['chart'] = CHART;
-
-      component.ngOnDestroy();
-
-      expect(AmCharts.destroyChart).toHaveBeenCalledWith(CHART);
-    });
-  });
 });

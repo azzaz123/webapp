@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { RemoteConsoleService } from './remote-console.service';
@@ -37,10 +37,10 @@ describe('RemoteConsoleService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(RemoteConsoleService);
-    remoteConsoleClientService = TestBed.get(RemoteConsoleClientService);
-    userService = TestBed.get(UserService);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(RemoteConsoleService);
+    remoteConsoleClientService = TestBed.inject(RemoteConsoleClientService);
+    userService = TestBed.inject(UserService);
 
     service.deviceId = DEVICE_ID;
   });
@@ -54,7 +54,10 @@ describe('RemoteConsoleService', () => {
       'browser_version': BROWSER_VERSION,
       'user_id': USER_ID,
       'feature_flag': true,
-      'app_version': service.getReleaseVersion(APP_VERSION)
+      'app_version': service.getReleaseVersion(APP_VERSION),
+      'ping_time_ms': navigator['connection']['rtt'],
+      'connection_type': '',
+      'session_id': undefined,
     };
   });
 
@@ -122,6 +125,150 @@ describe('RemoteConsoleService', () => {
     });
   });
 
+  describe('sendConnectionChatTimeout', () => {
+    const SESSION_ID = 'session-id';
+
+    const commonConnectionChatTimeoutLog = {
+      'metric_type': MetricTypeEnum.CHAT_CONNECTION_TIME,
+      'session_id': SESSION_ID,
+      'connection_type': '',
+      'ping_time_ms': navigator['connection']['rtt'],
+    };
+
+    beforeEach(() => {
+      spyOn(userService, 'me').and.returnValue(of({ id: USER_ID }));
+      spyOn(remoteConsoleClientService, 'info');
+      service.sessionId = SESSION_ID;
+    });
+
+    it('should connect to chat', () => {
+      spyOn(Date, 'now').and.returnValues(3000, 4000, 4500);
+
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', true);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        ...commonConnectionChatTimeoutLog,
+        'connection_time': 1500,
+        'xmpp_retry_count': 1,
+        'inbox_retry_count': 1,
+      });
+    });
+
+    it('should not connect to chat', () => {
+      service.sendConnectionChatTimeout('inbox', false);
+
+      expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
+    });
+
+    it('should not connect to chat if has get response from inbox but can not connect to xmpp', () => {
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', false);
+      expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
+    });
+
+    it('should connect to chat if was 1 error when get inbox', () => {
+      spyOn(Date, 'now').and.returnValues(3000, 4000, 4700);
+
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', true);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        ...commonConnectionChatTimeoutLog,
+        'connection_time': 1700,
+        'inbox_retry_count': 2,
+        'xmpp_retry_count': 1,
+      });
+    });
+
+    it('should connect to chat if were 2 error when get inbox', () => {
+      spyOn(Date, 'now').and.returnValues(3000, 4000, 4800);
+
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', true);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        ...commonConnectionChatTimeoutLog,
+        'connection_time': 1800,
+        'inbox_retry_count': 3,
+        'xmpp_retry_count': 1,
+      });
+    });
+
+    it('should connect to chat if was 2 error when get inbox and 1 error when connect to xmpp', () => {
+      spyOn(Date, 'now').and.returnValues(3000, 4000, 4900);
+
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', false);
+      service.sendConnectionChatTimeout('xmpp', true);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        ...commonConnectionChatTimeoutLog,
+        'connection_time': 1900,
+        'inbox_retry_count': 3,
+        'xmpp_retry_count': 2,
+      });
+    });
+
+    it('should connect to chat 2 times', () => {
+      spyOn(Date, 'now').and.returnValues(3000, 4000, 5100, 6000, 4000, 6200);
+
+      service.sendConnectionChatTimeout('inbox', false);
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', false);
+      service.sendConnectionChatTimeout('xmpp', true);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        ...commonConnectionChatTimeoutLog,
+        'connection_time': 2100,
+        'inbox_retry_count': 2,
+        'xmpp_retry_count': 2,
+      });
+
+      service.sendConnectionChatTimeout('inbox', true);
+      service.sendConnectionChatTimeout('xmpp', false);
+      service.sendConnectionChatTimeout('xmpp', true);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        ...commonConnectionChatTimeoutLog,
+        'connection_time': 200,
+        'inbox_retry_count': 1,
+        'xmpp_retry_count': 2,
+      });
+    });
+  });
+
+  describe('sendMessageAckFailed', () => {
+
+    it('should send metric if send message is failed', () => {
+      const MESSAGE_ID = 'MESSAGE_ID';
+      const DESCRIPTION = 'MESSAGE_ID';
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(4000);
+
+      service.sendMessageAckFailed(MESSAGE_ID, DESCRIPTION);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'message_id': MESSAGE_ID,
+        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_FAILED,
+        'description': DESCRIPTION
+      });
+    });
+  });
+
   describe('sendDuplicateConversations', () => {
 
     it('should call duplicated conversation conection with parameters', () => {
@@ -133,21 +280,45 @@ describe('RemoteConsoleService', () => {
       spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000);
 
-      service.sendDuplicateConversations(LOCAL_USER_ID, LOAD_MORE_CONVERSATIONS, CONVERSATIONS_BY_ID);
+      service.sendDuplicateConversations(USER_ID, LOAD_MORE_CONVERSATIONS, CONVERSATIONS_BY_ID);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        'timestamp': 4000,
-        'client': 'WEB',
-        'device_id': DEVICE_ID,
-        'browser': BROWSER,
-        'browser_version': BROWSER_VERSION,
-        'user_id': LOCAL_USER_ID,
-        'feature_flag': true,
-        'app_version': service.getReleaseVersion(APP_VERSION),
+        ...commonLog,
         'metric_type': MetricTypeEnum.DUPLICATE_CONVERSATION,
         'message': 'send log when user see duplicate conversation in inbox',
         'call_method_client': LOAD_MORE_CONVERSATIONS,
         'conversations_count_by_id': JSON.stringify({ 'xa4ld642': 2 })
+      });
+    });
+  });
+
+  describe('sendConnectionChatFailed', () => {
+
+    it('should call connection failed if inbox return error', () => {
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(4000);
+
+      service.sendConnectionChatFailed('inbox');
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
+        'description': 'Get inbox is failed',
+        'xmpp_connected': false
+      });
+    });
+
+    it('should call connection failed if inbox return error', () => {
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(4000);
+
+      service.sendConnectionChatFailed('xmpp');
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
+        'description': 'Connection xmpp is failed',
+        'xmpp_connected': true
       });
     });
   });
@@ -207,6 +378,66 @@ describe('RemoteConsoleService', () => {
         ...commonLog,
         'send_message_time': 2000,
         'metric_type': MetricTypeEnum.CLIENT_SEND_MESSAGE_TIME,
+        'message_id': 'MESSAGE_ID_2'
+      });
+    }));
+  });
+
+  describe('sendMessageActTimeout', () => {
+    it('should NOT send call', () => {
+      spyOn(remoteConsoleClientService, 'info');
+
+      service.sendMessageActTimeout(null);
+
+      expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
+    });
+
+    it('should NOT send call if not init timestamp', () => {
+      spyOn(remoteConsoleClientService, 'info');
+
+      service.sendMessageActTimeout('MESSAGE_ID');
+
+      expect(remoteConsoleClientService.info).not.toHaveBeenCalledWith();
+    });
+
+    it('should send call with act sending time', fakeAsync(() => {
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(1000, 4000, 2000);
+
+      service.sendMessageActTimeout('MESSAGE_ID');
+      service.sendMessageActTimeout('MESSAGE_ID');
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(1);
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'message_id': 'MESSAGE_ID',
+        'send_message_time': 1000,
+        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_TIME
+      });
+    }));
+
+    it('should send twice time call with act sending time', fakeAsync(() => {
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000, 4000, 4000);
+
+      service.sendMessageActTimeout('MESSAGE_ID_1');
+      service.sendMessageActTimeout('MESSAGE_ID_2');
+      service.sendMessageActTimeout('MESSAGE_ID_1');
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'send_message_time': 3000,
+        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
+        'message_id': 'MESSAGE_ID_1'
+      });
+
+      service.sendMessageActTimeout('MESSAGE_ID_2');
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(2);
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'send_message_time': 2000,
+        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
         'message_id': 'MESSAGE_ID_2'
       });
     }));
@@ -352,7 +583,6 @@ describe('RemoteConsoleService', () => {
         ...commonLog,
         'metric_type': MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
         'message': '',
-        'ping_time_ms': navigator['connection']['rtt']
       });
     }));
   });

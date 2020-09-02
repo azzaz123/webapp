@@ -32,7 +32,7 @@ export interface ClickItemCard {
   /**
    * Identifier of the screen that the item was clicked from
    */
-  screenId: 110 | 111 | 29 | 187 | 188 | 140 | 190 | 194 | 214;
+  screenId: 110 | 111 | 29 | 187 | 188 | 140 | 190 | 194 | 214 | 217;
   /**
    * If the item clicked is from a professional user
    */
@@ -65,4 +65,8 @@ export interface ClickItemCard {
    * If the item clicked is a bumped item
    */
   isBumped: boolean;
+  /**
+   * When the event is triggered in SavedSearchesNewVsOld screen (217), specify if it is in the 'new' results or 'old'
+   */
+  savedSearchResults?: string;
 }

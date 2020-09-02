@@ -23,6 +23,7 @@ export class ProBumpConfirmationModalComponent implements OnInit {
       () => {
         if (this.code === '200' || this.code === '201') {
           this.trackingService.track(TrackingService.PRO_FEATURED_PURCHASE_SUCCESS);
+          appboy.logCustomEvent('VisibilityPurchaseSuccess', {platform: 'web'});
         } else {
           this.trackingService.track(TrackingService.PRO_FEATURED_PURCHASE_ERROR);
         }

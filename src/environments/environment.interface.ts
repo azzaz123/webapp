@@ -1,6 +1,5 @@
 export interface Environment {
   production: boolean;
-  profeatures: boolean;
   name: string;
   baseUrl: string;
   xmppDomain: string;
@@ -13,4 +12,6 @@ export interface Environment {
   mParticleKey: string;
   remoteConsoleUrl: string;
   didomiKey: string;
+  threatMetrixOrgId: string;
+  threatMetrixProfilingDomain: string;
 }

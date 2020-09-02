@@ -70,6 +70,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('arrow-waterfall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-waterfall.svg'));
   matIconRegistry.addSvgIcon('arrow-right', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-right.svg'));
   matIconRegistry.addSvgIcon('cat_car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/cars.svg'));
+  matIconRegistry.addSvgIcon('cat_motoraccessories', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/motoraccesories.svg'));
   matIconRegistry.addSvgIcon('cat_laundry', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Appliances.svg'));
   matIconRegistry.addSvgIcon('cat_baby_car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Babies.svg'));
   matIconRegistry.addSvgIcon('cat_smartphone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Electronics.svg'));
@@ -91,7 +92,6 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('cat_building', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/construction.svg'));
   matIconRegistry.addSvgIcon('cat_farming', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/agriculture.svg'));
   matIconRegistry.addSvgIcon('cat_jobs', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/job.svg'));
-  matIconRegistry.addSvgIcon('cat_help', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/help.svg'));
   matIconRegistry.addSvgIcon('send', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/send.svg'));
   matIconRegistry.addSvgIcon('wall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wall.svg'));
   matIconRegistry.addSvgIcon('check', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/check.svg'));
@@ -236,7 +236,6 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('cat_house-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/realstate.svg'));
   matIconRegistry.addSvgIcon('cat_toolbox-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/services.svg'));
   matIconRegistry.addSvgIcon('cat_ghost-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/others.svg'));
-  matIconRegistry.addSvgIcon('cat_help-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/help.svg'));
   matIconRegistry.addSvgIcon('cat_All-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/allcategories.svg'));
   matIconRegistry.addSvgIcon('cat_motorbike-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/motos.svg'));
   matIconRegistry.addSvgIcon('cat_car-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/cars.svg'));
@@ -259,7 +258,6 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('cat_house-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/realstate.svg'));
   matIconRegistry.addSvgIcon('cat_toolbox-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/services.svg'));
   matIconRegistry.addSvgIcon('cat_ghost-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/others.svg'));
-  matIconRegistry.addSvgIcon('cat_help-disabled', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/disabled/help.svg'));
   matIconRegistry.addSvgIcon('buy', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/buy.svg'));
   matIconRegistry.addSvgIcon('rent', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/rent.svg'));
   matIconRegistry.addSvgIcon('apartment', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/apartment.svg'));
@@ -296,4 +294,6 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('watch', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/watch.svg'));
   matIconRegistry.addSvgIcon('poweredByStripe', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/poweredByStripe.svg'));
   matIconRegistry.addSvgIcon('lock-new', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/lock-new.svg'));
+  matIconRegistry.addSvgIcon('download-android', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/download-android.svg'));
+  matIconRegistry.addSvgIcon('download-ios', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/download-ios.svg'));
 }

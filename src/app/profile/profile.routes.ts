@@ -8,9 +8,9 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
 import { ProfileInfoComponent } from './profile-info/profile-info.component';
 import { AccountComponent } from './account/account.component';
-import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
 import { ProfileProSubscriptionComponent } from './profile-pro-subscription/profile-pro-subscription.component';
 import { SubscriptionsComponent } from './subscription/subscription.component';
+import { ProfileProBillingComponent } from '../shared/profile-pro-billing/profile-pro-billing.component';
 
 const routes: Routes = [
   {
@@ -61,11 +61,7 @@ const routes: Routes = [
         canDeactivate: [ExitConfirmGuard],
         data: {
           isMyZone: true,
-          isProfile: true,
-          permissions: {
-            only: PERMISSIONS.professional,
-            redirectTo: '/profile'
-          }
+          isProfile: true
         }
       },
       {
@@ -96,6 +92,5 @@ export const profileRoutedComponents = [
   ProfileInfoComponent,
   AccountComponent,
   SubscriptionsComponent,
-  ProfileProBillingComponent,
   ProfileProSubscriptionComponent
 ];

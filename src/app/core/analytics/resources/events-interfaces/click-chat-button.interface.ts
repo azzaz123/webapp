@@ -32,5 +32,9 @@ export interface ClickChatButton {
   /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: 110 | 111 | 115 | 188 | 29 | 194;
+  screenId: 110 | 111 | 115 | 188 | 29 | 194 | 217;
+  /**
+   * When the event is triggered in SavedSearchesNewVsOld screen (217), specify if it is in the 'new' results or 'old'
+   */
+  savedSearchResults?: string;
 }

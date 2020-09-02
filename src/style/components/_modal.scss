@@ -87,7 +87,7 @@ $modal-border-radius: 0.3rem;
     margin-bottom: 0;
     font-size: $font-size-s;
   }
-  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.btn-gray):not(.custom-radio):not(.btn-text) {
+  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.btn-gray):not(.custom-radio):not(.btn-text):not(.simple.light) {
     color: $blue-grey-1;
     background-color: transparent;
     outline: 0;
@@ -99,6 +99,14 @@ $modal-border-radius: 0.3rem;
     }
     &.btn-warn {
       color: $negative-main;
+    }
+    &.btn-danger {
+      background-color: $warn !important;
+      color: $white !important;
+      &:hover {
+        background-color: $warn !important;
+        opacity: 0.9;
+      }
     }
   }
 
@@ -272,6 +280,9 @@ $modal-border-radius: 0.3rem;
         color: $blue-grey-2 !important;
         border: 0 !important;
         border-radius: 20px !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         &.btn-warn {
           background-color: $warn !important;
           color: $white !important;;
@@ -283,6 +294,32 @@ $modal-border-radius: 0.3rem;
     }
     @include media-breakpoint-down(sm) {
       width: 100% !important;
+    }
+  }
+}
+
+.modal.full-screen {
+  $modal-width: 100%;
+  $modal-height: 100%;
+  .modal-dialog {
+    width: $modal-width;
+    height: $modal-height;
+    max-height: $modal-height !important;
+    margin: 0 !important;
+  }
+  .modal-content {
+    height: auto;
+    min-height: $modal-height;
+    border-radius: 0;
+    .modal-close {
+      width: auto;
+      height: auto;
+      cursor: pointer;
+      position: relative;
+      right: unset;
+      top: unset;
+      z-index: unset;
+      text-align: right;
     }
   }
 }

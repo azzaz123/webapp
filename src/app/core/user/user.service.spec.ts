@@ -651,7 +651,7 @@ describe('Service: User', () => {
     it('should call addPermission', () => {
       spyOn(permissionService, 'addPermission').and.returnValue({});
 
-      service.setPermission('normal');
+      service.setPermission(MOCK_USER);
 
       expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS['normal']);
     });
