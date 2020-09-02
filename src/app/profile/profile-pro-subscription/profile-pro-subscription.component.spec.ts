@@ -54,9 +54,9 @@ describe('ProfileProSubscriptionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileProSubscriptionComponent);
     component = fixture.componentInstance;
-    paymentsService = TestBed.get(PaymentService);
-    modalService = TestBed.get(NgbModal);
-    router = TestBed.get(Router);
+    paymentsService = TestBed.inject(PaymentService);
+    modalService = TestBed.inject(NgbModal);
+    router = TestBed.inject(Router);
     spyOn(paymentsService, 'getSubscriptionPacks').and.callThrough();
     spyOn(paymentsService, 'getPerks').and.callThrough();
     fixture.detectChanges();

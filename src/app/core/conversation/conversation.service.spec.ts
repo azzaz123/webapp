@@ -32,9 +32,9 @@ describe('Service: Conversation', () => {
         }
       ]
     });
-    service = TestBed.get(ConversationService);
-    trackingService = TestBed.get(TrackingService);
-    modalService = TestBed.get(NgbModal);
+    service = TestBed.inject(ConversationService);
+    trackingService = TestBed.inject(TrackingService);
+    modalService = TestBed.inject(NgbModal);
   });
 
   it('should instantiate the service', () => {

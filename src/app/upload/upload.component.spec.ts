@@ -44,8 +44,8 @@ describe('UploadComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadComponent);
-    itemService = TestBed.get(ItemService);
-    userService = TestBed.get(UserService);
+    itemService = TestBed.inject(ItemService);
+    userService = TestBed.inject(UserService);
     trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
     component = fixture.componentInstance;
   });

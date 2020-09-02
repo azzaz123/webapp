@@ -44,13 +44,13 @@ describe('Service: Message', () => {
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
       ]
     });
-    realTime = TestBed.get(RealTimeService);
-    service = TestBed.get(MessageService);
-    userService = TestBed.get(UserService);
-    connectionService = TestBed.get(ConnectionService);
-    trackingService = TestBed.get(TrackingService);
-    eventService = TestBed.get(EventService);
-    i18n = TestBed.get(I18nService);
+    realTime = TestBed.inject(RealTimeService);
+    service = TestBed.inject(MessageService);
+    userService = TestBed.inject(UserService);
+    connectionService = TestBed.inject(ConnectionService);
+    trackingService = TestBed.inject(TrackingService);
+    eventService = TestBed.inject(EventService);
+    i18n = TestBed.inject(I18nService);
   });
 
   it('should instanciate', () => {

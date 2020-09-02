@@ -50,8 +50,8 @@ describe('CallItemComponent', () => {
     fixture = TestBed.createComponent(CallItemComponent);
     component = fixture.componentInstance;
     component.call = MOCK_CALL();
-    trackingService = TestBed.get(TrackingService);
-    callService = TestBed.get(CallsService);
+    trackingService = TestBed.inject(TrackingService);
+    callService = TestBed.inject(CallsService);
     fixture.detectChanges();
   });
 

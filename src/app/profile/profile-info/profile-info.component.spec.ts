@@ -100,13 +100,13 @@ describe('ProfileInfoComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileInfoComponent);
     component = fixture.componentInstance;
-    userService = TestBed.get(UserService);
-    errorsService = TestBed.get(ErrorsService);
-    modalService = TestBed.get(NgbModal);
+    userService = TestBed.inject(UserService);
+    errorsService = TestBed.inject(ErrorsService);
+    modalService = TestBed.inject(NgbModal);
     spyOn(userService, 'me').and.callThrough();
     spyOn(userService, 'isProUser').and.returnValue(of(true));
     spyOn(userService, 'getUserCover').and.returnValue(of(IMAGE));
-    component.formComponent = TestBed.get(ProfileFormComponent);
+    component.formComponent = TestBed.inject(ProfileFormComponent);
     fixture.detectChanges();
   });
 

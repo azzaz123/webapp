@@ -57,10 +57,10 @@ describe('HelpComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HelpComponent);
     component = fixture.componentInstance;
-    helpService = TestBed.get(HelpService);
-    documentObject = TestBed.get(DOCUMENT);
-    router = TestBed.get(Router);
-    route = TestBed.get(ActivatedRoute);
+    helpService = TestBed.inject(HelpService);
+    documentObject = TestBed.inject(DOCUMENT);
+    router = TestBed.inject(Router);
+    route = TestBed.inject(ActivatedRoute);
   });
 
   describe('ngOnInit', () => {

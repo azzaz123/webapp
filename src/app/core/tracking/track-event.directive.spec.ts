@@ -32,7 +32,7 @@ describe('Directive: TrackEvent', () => {
       ]
     });
     fixture = TestBed.createComponent(TestComponent);
-    trackingService = TestBed.get(TrackingService);
+    trackingService = TestBed.inject(TrackingService);
     element = fixture.debugElement.queryAll(By.directive(TrackEventDirective))[0];
     spyOn(trackingService, 'track');
   });

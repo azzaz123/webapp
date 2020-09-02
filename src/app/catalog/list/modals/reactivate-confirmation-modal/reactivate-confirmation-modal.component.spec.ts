@@ -38,7 +38,7 @@ describe('ReactivateConfirmationModalComponent', () => {
     fixture = TestBed.createComponent(ReactivateConfirmationModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    paymentService = TestBed.get(PaymentService);
+    paymentService = TestBed.inject(PaymentService);
   });
 
   describe('ngOnInit', () => {

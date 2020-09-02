@@ -39,7 +39,7 @@ describe('StatsGraphComponent', () => {
     fixture = TestBed.createComponent(StatsGraphComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    statisticsService = TestBed.get(StatisticsService);
+    statisticsService = TestBed.inject(StatisticsService);
   });
 
   describe('ngOnInit', () => {

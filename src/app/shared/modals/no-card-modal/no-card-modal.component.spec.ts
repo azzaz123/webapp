@@ -31,7 +31,7 @@ describe('NoCardModalComponent', () => {
     fixture = TestBed.createComponent(NoCardModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    activeModal = TestBed.get(NgbActiveModal);
+    activeModal = TestBed.inject(NgbActiveModal);
   });
 
   describe('onDeleteCard', () => {

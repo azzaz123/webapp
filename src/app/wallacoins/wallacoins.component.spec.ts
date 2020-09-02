@@ -107,10 +107,10 @@ describe('WallacoinsComponent', () => {
     component = fixture.componentInstance;
     localStorageSpy = spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(PACK));
     fixture.detectChanges();
-    paymentService = TestBed.get(PaymentService);
-    modalService = TestBed.get(NgbModal);
-    router = TestBed.get(Router);
-    eventService = TestBed.get(EventService);
+    paymentService = TestBed.inject(PaymentService);
+    modalService = TestBed.inject(NgbModal);
+    router = TestBed.inject(Router);
+    eventService = TestBed.inject(EventService);
   });
 
   describe('ngOnInit', () => {

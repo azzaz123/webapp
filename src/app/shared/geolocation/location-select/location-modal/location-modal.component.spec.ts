@@ -31,7 +31,7 @@ describe('LocationModalComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LocationModalComponent);
-    activeModal = TestBed.get(NgbActiveModal);
+    activeModal = TestBed.inject(NgbActiveModal);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
