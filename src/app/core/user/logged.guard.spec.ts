@@ -1,79 +1,35 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
-
-import {map} from 'rxjs/operators';
 import { TestBed } from '@angular/core/testing';
 import { LoggedGuard, REDIRECT_SECRET } from './logged.guard';
 import { environment } from '../../../environments/environment';
-import { WindowRef } from '../window/window.service';
 import { AccessTokenService } from '../http/access-token.service';
-import { NgxPermissionsService } from 'ngx-permissions';
-import { UserService } from './user.service';
-import { User, PERMISSIONS } from './user';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { CookieService } from 'ngx-cookie';
 import * as CryptoJS from 'crypto-js';
 
-const mockCurrentUrl = 'https://web.wallapop.com/chat';
-
-class MockWindow {
-  public nativeWindow = {
-    location: {
-      href: mockCurrentUrl
-    }
-  };
-}
-
 describe('LoggedGuard', (): void => {
-
   let loggedGuard: LoggedGuard;
-  let window: WindowRef;
   let accessTokenService: AccessTokenService;
-  let permissionService: NgxPermissionsService;
-  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: WindowRef, useClass: MockWindow },
-        {
-          provide: AccessTokenService, useValue: {
-            accessToken: null,
-            storeAccessToken(value) {
-              this.accessToken = value;
-            },
-            getTokenSignature() {
-              return 'thesignature';
-            }
-          }
-        },
         LoggedGuard,
+        AccessTokenService,
         {
-          provide: NgxPermissionsService,
-          useValue: {
-            getPermissions() { },
-            addPermission() { }
-          }
-        },
-        {
-          provide: UserService,
-          useValue: {
-            me(): Observable<User> {
-              return observableOf(MOCK_USER);
+          provide: CookieService, useValue: {
+            put(value) {
             },
-            setPermission(userType: string): void { },
-            setSubscriptionsFeatureFlag() {
-              return observableOf(true);
+            remove() {
+            },
+            get() {
             }
-          },
+          }
         }
       ]
     });
-    loggedGuard = TestBed.get(LoggedGuard);
-    window = TestBed.get(WindowRef);
-    accessTokenService = TestBed.get(AccessTokenService);
-    accessTokenService.storeAccessToken(null);
-    userService = TestBed.get(UserService);
-    permissionService = TestBed.get(NgxPermissionsService);
+    loggedGuard = TestBed.inject(LoggedGuard);
+    accessTokenService = TestBed.inject(AccessTokenService);
+
+    window.location.href = 'https://web.wallapop.com';
   });
 
   it('should create an instance', (): void => {
@@ -81,53 +37,65 @@ describe('LoggedGuard', (): void => {
   });
 
   describe('canActivate', (): void => {
-    beforeEach(() => {
-      spyOn(permissionService, 'getPermissions').and.returnValue({});
-      spyOn(userService, 'me').and.callThrough();
+    describe('when the user is logged out', () => {
+      it('should deny access and redirect to SEO web with pending redirect', () => {
+        const decriptAux =
+          (toDecrypt: string) => CryptoJS.AES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoJS.enc.Utf8);
+        const expectedUrl = `${environment.siteUrl}login?redirectUrl=`;
+        const expectedRedirectQueryParam = window.location.href;
+
+        const result = loggedGuard.canActivate();
+        const resultRedirectQueryParam = window.location.href.split('?')[1].replace('redirectUrl=', '');
+
+        expect(result).toEqual(false);
+        expect(window.location.href.startsWith(expectedUrl)).toEqual(true);
+        expect(decriptAux(resultRedirectQueryParam)).toEqual(expectedRedirectQueryParam);
+      });
     });
 
-    it('should return false and redirect to SEO web with pending redirect when no access token', () => {
-      const decriptAux =
-        (toDecrypt: string) => CryptoJS.AES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoJS.enc.Utf8);
-      const expectedUrl = `${environment.siteUrl}login?redirectUrl=`;
-      const expectedRedirectQueryParam = mockCurrentUrl;
+    describe('when access token in cookies', () => {
+      beforeEach(() => accessTokenService.storeAccessToken('abc'));
 
-      const result = loggedGuard.canActivate();
-      const resultRedirectQueryParam = window.nativeWindow.location.href.split('?')[1].replace('redirectUrl=', '');
+      it('should allow access and NOT redirect to SEO web if access token', () => {
+        const notExpectedUrl = `${environment.siteUrl}login?redirectUrl=`;
 
-      expect(result).toEqual(false);
-      expect(expectedUrl.startsWith(expectedUrl)).toEqual(true);
-      expect(decriptAux(resultRedirectQueryParam)).toEqual(expectedRedirectQueryParam);
+        const result = loggedGuard.canActivate();
+
+        expect(result).toEqual(true);
+        expect(window.location.href.startsWith(notExpectedUrl)).toEqual(false);
+      });
     });
 
-    it('should return true and NOT redirect to SEO web if access token', () => {
-      accessTokenService.storeAccessToken('abc');
-      const notExpectedUrl = `${environment.siteUrl}login?redirectUrl=`;
+  });
 
-      const result = loggedGuard.canActivate();
+  describe('canLoad', () => {
+    describe('when the user is logged out', () => {
+      it('should deny access and redirect to SEO web with pending redirect', () => {
+        const decriptAux =
+          (toDecrypt: string) => CryptoJS.AES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoJS.enc.Utf8);
+        const expectedUrl = `${environment.siteUrl}login?redirectUrl=`;
+        const expectedRedirectQueryParam = window.location.href;
 
-      expect(result).toBeTruthy();
-      expect(window.nativeWindow.location.href.startsWith(notExpectedUrl)).toEqual(false);
+        const result = loggedGuard.canActivate();
+        const resultRedirectQueryParam = window.location.href.split('?')[1].replace('redirectUrl=', '');
+
+        expect(result).toEqual(false);
+        expect(window.location.href.startsWith(expectedUrl)).toEqual(true);
+        expect(decriptAux(resultRedirectQueryParam)).toEqual(expectedRedirectQueryParam);
+      });
     });
 
-    it('should check the current user permissions', () => {
-      accessTokenService.storeAccessToken('abc');
-      const result = loggedGuard.canActivate();
+    describe('when access token in cookies', () => {
+      beforeEach(() => accessTokenService.storeAccessToken('abc'));
 
-      expect(permissionService.getPermissions).toHaveBeenCalled();
-      expect(result).toBeTruthy();
-    });
+      it('should allow access and NOT redirect to SEO web if access token', () => {
+        const notExpectedUrl = `${environment.siteUrl}login?redirectUrl=`;
 
-    it('should call userService.me and set the permissions for the user', () => {
-      accessTokenService.storeAccessToken('abc');
-      const result = loggedGuard.canActivate();
+        const result = loggedGuard.canActivate();
 
-      userService.me().pipe(map((u: User) => {
-        expect(userService.setPermission).toHaveBeenCalledWith(u.type);
-      }));
-
-      expect(userService.me).toHaveBeenCalled();
-      expect(result).toBeTruthy();
+        expect(result).toEqual(true);
+        expect(window.location.href.startsWith(notExpectedUrl)).toEqual(false);
+      });
     });
   });
 });

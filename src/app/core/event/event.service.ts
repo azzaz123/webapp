@@ -1,6 +1,6 @@
 
 import {share} from 'rxjs/operators';
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject ,  Subscription } from 'rxjs';
 
 @Injectable()
@@ -26,23 +26,11 @@ export class EventService {
   public static CURRENT_CONVERSATION_SET = 'currentConversationSet';
   public static CONVERSATION_ARCHIVED = 'conversationArchived';
   public static CONVERSATION_UNARCHIVED = 'conversationUnarchived';
-  public static CONV_WITH_PHONE_CREATED = 'conversationWithPhoneCreated';
   public static LEAD_ARCHIVED = 'leadArchived';
   public static ITEM_SOLD = 'itemSold';
   public static ITEM_UPDATED = 'itemUpdated';
   public static ITEM_RESERVED = 'itemReserved';
-  public static FIND_CONVERSATION = 'findConversation';
-  public static UPDATE_COORDINATE = 'updateCoordinate';
-  public static UPDATE_CATEGORY = 'updateCategory';
-  public static UPDATE_SEARCH = 'updateSearch';
-  public static CLOSE_EXPANDED_CALLS = 'closeExpandedCalls';
   public static TOTAL_CREDITS_UPDATED = 'packBought';
-  public static DB_READY = 'dbReady';
-  public static INBOX_DB_READY = 'inboxDbReady';
-  public static FOUND_MESSAGES_IN_DB = 'foundMessagesInDb';
-  public static CONVERSATION_BUMPED = 'conversationBumped';
-  public static HTTP_REQUEST_FAILED = 'httpRequestFailed';
-  public static REQUEST_PHONE = 'requestPhone';
   public static PRIVACY_LIST_UPDATED = 'privacyListUpdated';
   public static INBOX_READY = 'inboxReady';
   public static ARCHIVED_INBOX_READY = 'archivedInboxReady';
