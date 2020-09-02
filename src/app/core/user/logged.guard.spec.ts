@@ -37,7 +37,7 @@ describe('LoggedGuard', (): void => {
   });
 
   describe('canActivate', (): void => {
-    describe('when no access token', () => {
+    describe('when the user is logged out', () => {
       it('should deny access and redirect to SEO web with pending redirect', () => {
         const decriptAux =
           (toDecrypt: string) => CryptoJS.AES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoJS.enc.Utf8);
@@ -69,7 +69,7 @@ describe('LoggedGuard', (): void => {
   });
 
   describe('canLoad', () => {
-    describe('when no access token', () => {
+    describe('when the user is logged out', () => {
       it('should deny access and redirect to SEO web with pending redirect', () => {
         const decriptAux =
           (toDecrypt: string) => CryptoJS.AES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoJS.enc.Utf8);
