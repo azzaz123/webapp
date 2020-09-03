@@ -106,6 +106,8 @@ export const MOCK_NAVIGATOR_GEOLOCATION = {
 };
 
 export const MOCK_DIDOMI: DidomiLibrary = {
+  getUserConsentStatusForPurpose: key => true,
+  getUserConsentStatusForVendor: key => true,
   getUserConsentStatusForAll: () => {
     return {
       purposes: {

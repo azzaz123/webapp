@@ -70,9 +70,35 @@ describe('Service: Didomi', () => {
       });
     });
 
-    it('should allow user segmentation for ads', () => {
-      expect(service.userAllowedSegmentationInAds()).toBe(true);
+    describe('and when user also accepts Google vendor', () => {
+      beforeEach(() => {
+        spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake(key => {
+          if (key === 'google') {
+            return true;
+          }
+        });
+      });
+
+      it('should allow user segmentation for ads', () => {
+        expect(service.userAllowedSegmentationInAds()).toBe(true);
+      });
     });
+
+
+    describe('and when user rejects Google vendor', () => {
+      beforeEach(() => {
+        spyOn(Didomi, 'getUserConsentStatusForVendor').and.callFake(key => {
+          if (key === 'google') {
+            return false;
+          }
+        });
+      });
+
+      it('should NOT allow user segmentation for ads', () => {
+        expect(service.userAllowedSegmentationInAds()).toBe(false);
+      });
+    });
+
   });
 
   describe('when user does not accept at least 1 purpose', () => {
