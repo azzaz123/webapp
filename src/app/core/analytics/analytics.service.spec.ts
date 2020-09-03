@@ -16,11 +16,13 @@ const user = {
 jest.mock('@mparticle/web-sdk', () => ({
   __esModule: true,
   default: {
-    init: () => {this.ready()},
-    ready: (_callback) => _callback(),
+    init: (key, config) => {
+      config.identityCallback({
+        getUser: () => user
+      });
+    },
     logEvent: (_eventName, _eventType, _eventAttributes) => {},
     logPageView: (_pageName, _pageAttributes, _pageFlags) => {},
-    setIntegrationAttribute: (_integrationId, _integrationAttributes) => {},
     Identity: {
       getCurrentUser: () => user
     }
@@ -77,7 +79,7 @@ describe('AnalyticsService', () => {
     describe('when there is an identifier in cookies', () => {
       it('should initialize the analytics library with existing identifier', () => {
         let user = mParticle.Identity.getCurrentUser();
-        spyOn(mParticle, 'init');
+        spyOn(mParticle, 'init').and.callThrough();
         spyOn(user, 'setUserAttribute');
         spyOn(appboyKit, 'register');
 
@@ -92,7 +94,7 @@ describe('AnalyticsService', () => {
     describe('when there is no identifier in cookies', () => {
       it('should initialize the analytics library ', () => {
         deviceIdValue = undefined;
-        spyOn(mParticle, 'init');
+        spyOn(mParticle, 'init').and.callThrough();
         spyOn(mParticle.Identity.getCurrentUser(), 'setUserAttribute');
         spyOn(appboyKit, 'register');
 
