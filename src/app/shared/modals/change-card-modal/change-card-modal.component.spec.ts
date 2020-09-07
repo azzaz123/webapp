@@ -46,9 +46,9 @@ describe('ChangeCardModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ChangeCardModalComponent);
     component = fixture.componentInstance;
-    stripeService = TestBed.get(StripeService);
+    stripeService = TestBed.inject(StripeService);
     fixture.detectChanges();
-    activeModal = TestBed.get(NgbActiveModal);
+    activeModal = TestBed.inject(NgbActiveModal);
   });
 
   describe('setSavedCard', () => {

@@ -38,7 +38,7 @@ describe('ItemsStatsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemsStatsComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
+    itemService = TestBed.inject(ItemService);
     component.paginate = new Subject<boolean>();
   });
 

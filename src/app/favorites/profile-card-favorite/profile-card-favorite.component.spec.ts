@@ -66,11 +66,11 @@ describe('ProfileCardFavoriteComponent', () => {
     fixture = TestBed.createComponent(ProfileCardFavoriteComponent);
     component = fixture.componentInstance;
     component.profile = MOCK_PROFILE;
-    profileService = TestBed.get(ProfileService);
+    profileService = TestBed.inject(ProfileService);
     element = fixture.nativeElement;
-    windowRef = TestBed.get(WindowRef);
-    modalService = TestBed.get(NgbModal);
-    subdomain = TestBed.get('SUBDOMAIN');
+    windowRef = TestBed.inject(WindowRef);
+    modalService = TestBed.inject(NgbModal);
+    subdomain = TestBed.inject(<any>'SUBDOMAIN');
 
     fixture.detectChanges();
   });

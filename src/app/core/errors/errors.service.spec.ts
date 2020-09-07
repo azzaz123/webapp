@@ -49,9 +49,9 @@ describe('Service: Errors', () => {
       ]
     });
     TestBed.createComponent(RoutingComponent);
-    toastService = TestBed.get(ToastService);
-    service = TestBed.get(ErrorsService);
-    i18n = TestBed.get(I18nService);
+    toastService = TestBed.inject(ToastService);
+    service = TestBed.inject(ErrorsService);
+    i18n = TestBed.inject(I18nService);
     spyOn(toastService, 'show').and.callThrough();
   });
 

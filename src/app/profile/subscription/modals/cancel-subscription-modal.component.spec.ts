@@ -67,10 +67,10 @@ describe('CancelSubscriptionModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CancelSubscriptionModalComponent);
     component = fixture.componentInstance;
-    activeModal = TestBed.get(NgbActiveModal);
-    toastService = TestBed.get(ToastService);
-    subscriptionsService = TestBed.get(SubscriptionsService);
-    analyticsService = TestBed.get(AnalyticsService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    toastService = TestBed.inject(ToastService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
+    analyticsService = TestBed.inject(AnalyticsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     fixture.detectChanges();
   });

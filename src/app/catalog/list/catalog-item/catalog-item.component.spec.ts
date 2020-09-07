@@ -104,12 +104,12 @@ describe('CatalogItemComponent', () => {
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
     fixture.detectChanges();
-    itemService = TestBed.get(ItemService);
-    modalService = TestBed.get(NgbModal);
-    trackingService = TestBed.get(TrackingService);
-    errorsService = TestBed.get(ErrorsService);
-    eventService = TestBed.get(EventService);
-    deviceService = TestBed.get(DeviceDetectorService);
+    itemService = TestBed.inject(ItemService);
+    modalService = TestBed.inject(NgbModal);
+    trackingService = TestBed.inject(TrackingService);
+    errorsService = TestBed.inject(ErrorsService);
+    eventService = TestBed.inject(EventService);
+    deviceService = TestBed.inject(DeviceDetectorService);
     appboy.initialize(environment.appboy);
   });
 

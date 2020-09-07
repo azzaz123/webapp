@@ -36,7 +36,7 @@ describe('KeywordSuggesterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(KeywordSuggesterComponent);
     component = fixture.componentInstance;
-    i18n = TestBed.get(I18nService);
+    i18n = TestBed.inject(I18nService);
     component.suggestions = new Subject();
     component.placeholder = 'Brand';
     fixture.detectChanges();

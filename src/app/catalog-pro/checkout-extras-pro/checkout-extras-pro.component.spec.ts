@@ -34,7 +34,7 @@ describe('CheckoutExtrasProComponent', () => {
     fixture = TestBed.createComponent(CheckoutExtrasProComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    paymentService = TestBed.get(PaymentService);
+    paymentService = TestBed.inject(PaymentService);
   });
 
   describe('ngOnInit', () => {

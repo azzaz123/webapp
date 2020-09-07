@@ -56,11 +56,11 @@ describe('CreditCardModalComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreditCardModalComponent);
-    stripeService = TestBed.get(StripeService);
-    eventService = TestBed.get(EventService);
-    errorService = TestBed.get(ErrorsService);
-    toastService = TestBed.get(ToastService);
-    router = TestBed.get(Router);
+    stripeService = TestBed.inject(StripeService);
+    eventService = TestBed.inject(EventService);
+    errorService = TestBed.inject(ErrorsService);
+    toastService = TestBed.inject(ToastService);
+    router = TestBed.inject(Router);
     component = fixture.componentInstance;
     component.financialCard = FINANCIAL_CARD;
     fixture.detectChanges();

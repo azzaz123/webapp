@@ -86,12 +86,12 @@ describe('StripeCardsComponent', () => {
     fixture = TestBed.createComponent(StripeCardsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    stripeService = TestBed.get(StripeService);
-    modalService = TestBed.get(NgbModal);
-    errorService = TestBed.get(ErrorsService);
-    activeModal = TestBed.get(NgbActiveModal);
-    toastService = TestBed.get(ToastService);
-    subscriptionsService = TestBed.get(SubscriptionsService);
+    stripeService = TestBed.inject(StripeService);
+    modalService = TestBed.inject(NgbModal);
+    errorService = TestBed.inject(ErrorsService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    toastService = TestBed.inject(ToastService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
   });
 
   describe('ngOnInit', () => {

@@ -49,8 +49,8 @@ describe('LocationSelectComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LocationSelectComponent);
-    fb = TestBed.get(FormBuilder);
-    modalService = TestBed.get(NgbModal);
+    fb = TestBed.inject(FormBuilder);
+    modalService = TestBed.inject(NgbModal);
     component = fixture.componentInstance;
     component.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -62,7 +62,7 @@ describe('LocationSelectComponent', () => {
         approximated_location: false
       })
     });
-    userService = TestBed.get(UserService);
+    userService = TestBed.inject(UserService);
     component.name = 'location';
     fixture.detectChanges();
   });

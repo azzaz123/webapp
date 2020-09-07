@@ -67,10 +67,10 @@ describe('ItemCartFavoriteComponent', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.item = MOCK_ITEM;
-    itemService = TestBed.get(ItemService);
-    windowRef = TestBed.get(WindowRef);
-    modalService = TestBed.get(NgbModal);
-    subdomain = TestBed.get('SUBDOMAIN');
+    itemService = TestBed.inject(ItemService);
+    windowRef = TestBed.inject(WindowRef);
+    modalService = TestBed.inject(NgbModal);
+    subdomain = TestBed.inject(<any>'SUBDOMAIN');
 
     fixture.detectChanges();
   });

@@ -23,8 +23,8 @@ describe('GeneralSuggestionsService', () => {
       ],
       imports: [HttpClientTestingModule]
     });
-    service = TestBed.get(GeneralSuggestionsService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(GeneralSuggestionsService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

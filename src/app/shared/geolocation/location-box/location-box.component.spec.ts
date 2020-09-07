@@ -45,7 +45,7 @@ describe('LocationBoxComponent', () => {
     });
     component.name = 'location';
     fixture.detectChanges();
-    userService = TestBed.get(UserService);
+    userService = TestBed.inject(UserService);
   });
 
   describe('ngOnInit', () => {

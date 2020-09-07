@@ -33,7 +33,7 @@ describe('SubscriptionsSlotItemComponent', () => {
     component = fixture.componentInstance;
     component.subscriptionSlot = MOCK_SUBSCRIPTION_SLOT_CARS;
     component.selectedSubscriptionSlot = MOCK_SUBSCRIPTION_SLOT_CARS;
-    analyticsService = TestBed.get(AnalyticsService);
+    analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
 

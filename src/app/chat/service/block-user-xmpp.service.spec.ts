@@ -24,8 +24,8 @@ describe('BlockUserXmppService', () => {
         { provide: TrackingService, useValue: {} }
       ]
     });
-    service = TestBed.get(BlockUserXmppService);
-    xmppService = TestBed.get(XmppService);
+    service = TestBed.inject(BlockUserXmppService);
+    xmppService = TestBed.inject(XmppService);
   });
 
   describe('blockUser', () => {

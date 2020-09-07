@@ -37,7 +37,7 @@ describe('EditEmailComponent', () => {
     fixture = TestBed.createComponent(EditEmailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    modalService = TestBed.get(NgbModal);
+    modalService = TestBed.inject(NgbModal);
   });
 
   describe('openModal', () => {
