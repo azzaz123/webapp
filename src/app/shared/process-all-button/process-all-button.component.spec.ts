@@ -45,9 +45,9 @@ describe('ProcessAllButtonComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProcessAllButtonComponent);
     component = fixture.componentInstance;
-    modal = TestBed.get(NgbModal);
-    callsService = TestBed.get(CallsService);
-    trackingService = TestBed.get(TrackingService);
+    modal = TestBed.inject(NgbModal);
+    callsService = TestBed.inject(CallsService);
+    trackingService = TestBed.inject(TrackingService);
     fixture.detectChanges();
   });
 

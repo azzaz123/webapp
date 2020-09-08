@@ -76,11 +76,11 @@ describe('CheckoutProComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutProComponent);
     component = fixture.componentInstance;
-    cartService = TestBed.get(CartService);
-    calendar = TestBed.get(NgbCalendar);
-    itemService = TestBed.get(ItemService);
-    router = TestBed.get(Router);
-    route = TestBed.get(ActivatedRoute);
+    cartService = TestBed.inject(CartService);
+    calendar = TestBed.inject(NgbCalendar);
+    itemService = TestBed.inject(ItemService);
+    router = TestBed.inject(Router);
+    route = TestBed.inject(ActivatedRoute);
     spyCall = spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
     fixture.detectChanges();
   });

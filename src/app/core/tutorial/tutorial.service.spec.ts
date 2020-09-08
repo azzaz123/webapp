@@ -27,7 +27,7 @@ describe('TutorialService', () => {
         }
       ]
     });
-    service = TestBed.get(TutorialService);
+    service = TestBed.inject(TutorialService);
   });
 
   describe('nextStep', () => {

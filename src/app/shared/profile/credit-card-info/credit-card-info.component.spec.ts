@@ -53,8 +53,8 @@ describe('CreditCardInfoComponent', () => {
     fixture = TestBed.createComponent(CreditCardInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    stripeService = TestBed.get(StripeService);
-    modalService = TestBed.get(NgbModal);
+    stripeService = TestBed.inject(StripeService);
+    modalService = TestBed.inject(NgbModal);
     component.financialCard = STRIPE_CARD_OPTION;
   });
 

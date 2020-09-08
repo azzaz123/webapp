@@ -57,10 +57,10 @@ describe('GeolocationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GeolocationComponent);
     component = fixture.componentInstance;
-    eventService = TestBed.get(EventService);
-    geolocationService = TestBed.get(GeolocationService);
-    cookieService = TestBed.get(CookieService);
-    userService = TestBed.get(UserService);
+    eventService = TestBed.inject(EventService);
+    geolocationService = TestBed.inject(GeolocationService);
+    cookieService = TestBed.inject(CookieService);
+    userService = TestBed.inject(UserService);
   });
 
   describe('ngOnChanges', () => {

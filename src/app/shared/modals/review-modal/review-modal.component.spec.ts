@@ -57,9 +57,9 @@ describe('ReviewModalComponent', () => {
     fixture = TestBed.createComponent(ReviewModalComponent);
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
-    itemService = TestBed.get(ItemService);
-    activeModal = TestBed.get(NgbActiveModal);
-    reviewService = TestBed.get(ReviewService);
+    itemService = TestBed.inject(ItemService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    reviewService = TestBed.inject(ReviewService);
     spyOn(itemService, 'getConversationUsers').and.callThrough();
     fixture.detectChanges();
   });

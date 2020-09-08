@@ -18,8 +18,8 @@ describe('RemoteConsoleClientService', () => {
       ]
     });
 
-    service = TestBed.get(RemoteConsoleClientService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(RemoteConsoleClientService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

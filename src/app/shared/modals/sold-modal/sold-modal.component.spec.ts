@@ -40,8 +40,8 @@ describe('SoldModalComponent', () => {
     fixture = TestBed.createComponent(SoldModalComponent);
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
-    itemService = TestBed.get(ItemService);
-    activeModal = TestBed.get(NgbActiveModal);
+    itemService = TestBed.inject(ItemService);
+    activeModal = TestBed.inject(NgbActiveModal);
     spyOn(itemService, 'getConversationUsers').and.callThrough();
     fixture.detectChanges();
   });

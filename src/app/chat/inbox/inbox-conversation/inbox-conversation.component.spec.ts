@@ -40,7 +40,7 @@ describe('Component: Conversation', () => {
     fixture = TestBed.createComponent(InboxConversationComponent);
     component = fixture.componentInstance;
     component.conversation = CREATE_MOCK_INBOX_CONVERSATION();
-    inboxConversationService = TestBed.get(InboxConversationService);
+    inboxConversationService = TestBed.inject(InboxConversationService);
     fixture.detectChanges();
   });
 

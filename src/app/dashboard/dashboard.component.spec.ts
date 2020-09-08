@@ -72,13 +72,13 @@ describe('DashboardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
-    callService = TestBed.get(CallsService);
-    trackingService = TestBed.get(TrackingService);
-    eventService = TestBed.get(EventService);
-    inboxService = TestBed.get(InboxService);
-    inboxConversationService = TestBed.get(InboxConversationService);
-    router = TestBed.get(Router);
-    realTimeService = TestBed.get(RealTimeService);
+    callService = TestBed.inject(CallsService);
+    trackingService = TestBed.inject(TrackingService);
+    eventService = TestBed.inject(EventService);
+    inboxService = TestBed.inject(InboxService);
+    inboxConversationService = TestBed.inject(InboxConversationService);
+    router = TestBed.inject(Router);
+    realTimeService = TestBed.inject(RealTimeService);
     fixture.detectChanges();
 
     // Prevent console warning when redirecting outside ngZone

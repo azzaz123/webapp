@@ -91,10 +91,10 @@ describe('ItemSoldDirective', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
-    modalService = TestBed.get(NgbModal);
-    trackingService = TestBed.get(TrackingService);
-    errorsService = TestBed.get(ErrorsService);
+    itemService = TestBed.inject(ItemService);
+    modalService = TestBed.inject(NgbModal);
+    trackingService = TestBed.inject(TrackingService);
+    errorsService = TestBed.inject(ErrorsService);
     element = fixture.debugElement.queryAll(By.directive(ItemSoldDirective))[0];
     spyOn(trackingService, 'track');
   });

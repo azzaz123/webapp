@@ -42,8 +42,8 @@ describe('PaymentSuccessModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentSuccessModalComponent);
     component = fixture.componentInstance;
-    activeModal = TestBed.get(NgbActiveModal);
-    analyticsService = TestBed.get(AnalyticsService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
 

@@ -10,7 +10,7 @@ describe('ExitConfirmGuard', () => {
     TestBed.configureTestingModule({
       providers: [ExitConfirmGuard]
     });
-    guard = TestBed.get(ExitConfirmGuard);
+    guard = TestBed.inject(ExitConfirmGuard);
   });
 
   it('should call canExit', () => {

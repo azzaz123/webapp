@@ -97,8 +97,8 @@ describe('AdService', () => {
         }
       ],
     });
-    userService = TestBed.get(UserService);
-    cookieService = TestBed.get(CookieService);
+    userService = TestBed.inject(UserService);
+    cookieService = TestBed.inject(CookieService);
     spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
       callback(position);
     });
@@ -116,7 +116,7 @@ describe('AdService', () => {
     Object.keys(cookies).forEach(key => {
       cookieService.put(key, cookies[key]);
     });
-    service = TestBed.get(AdService);
+    service = TestBed.inject(AdService);
     service.allowSegmentation$.next(false);
   });
 

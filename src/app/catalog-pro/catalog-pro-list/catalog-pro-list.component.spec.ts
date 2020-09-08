@@ -133,17 +133,17 @@ describe('CatalogProListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogProListComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
-    trackingService = TestBed.get(TrackingService);
-    modalService = TestBed.get(NgbModal);
-    userService = TestBed.get(UserService);
-    router = TestBed.get(Router);
-    route = TestBed.get(ActivatedRoute);
-    errorService = TestBed.get(ErrorsService);
+    itemService = TestBed.inject(ItemService);
+    trackingService = TestBed.inject(TrackingService);
+    modalService = TestBed.inject(NgbModal);
+    userService = TestBed.inject(UserService);
+    router = TestBed.inject(Router);
+    route = TestBed.inject(ActivatedRoute);
+    errorService = TestBed.inject(ErrorsService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemServiceSpy = spyOn(itemService, 'mines').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
-    eventService = TestBed.get(EventService);
+    eventService = TestBed.inject(EventService);
     fixture.detectChanges();
   });
 

@@ -25,8 +25,8 @@ describe('ItemResolverService', () => {
         }
       ]
     });
-    service = TestBed.get(ItemResolverService);
-    itemService = TestBed.get(ItemService);
+    service = TestBed.inject(ItemResolverService);
+    itemService = TestBed.inject(ItemService);
   });
 
   it('should return Observable with item', () => {

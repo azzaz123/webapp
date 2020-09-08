@@ -57,8 +57,8 @@ describe('ProfileComponent', () => {
     }).compileComponents();
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
-    userService = TestBed.get(UserService);
-    httpMock = TestBed.get(HttpTestingController);
+    userService = TestBed.inject(UserService);
+    httpMock = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
   }));
 

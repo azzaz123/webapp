@@ -51,9 +51,9 @@ describe('FavoritesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FavoritesComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
-    userService = TestBed.get(UserService);
-    profileService = TestBed.get(ProfileService);
+    itemService = TestBed.inject(ItemService);
+    userService = TestBed.inject(UserService);
+    profileService = TestBed.inject(ProfileService);
     fixture.detectChanges();
   });
 

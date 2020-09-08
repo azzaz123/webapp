@@ -73,9 +73,9 @@ describe('ItemService', () => {
         I18nService
       ]
     });
-    service = TestBed.get(ItemService);
-    httpMock = TestBed.get(HttpTestingController);
-    eventService = TestBed.get(EventService);
+    service = TestBed.inject(ItemService);
+    httpMock = TestBed.inject(HttpTestingController);
+    eventService = TestBed.inject(EventService);
     spyOn(UUID, 'UUID').and.returnValues('1', '2');
   });
 

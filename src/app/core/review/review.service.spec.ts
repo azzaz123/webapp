@@ -15,8 +15,8 @@ describe('ReviewService', () => {
       providers: [ReviewService],
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.get(ReviewService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(ReviewService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

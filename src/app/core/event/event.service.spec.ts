@@ -17,7 +17,7 @@ describe('Service: Event', () => {
     TestBed.configureTestingModule({
       providers: [EventService],
     });
-    service = TestBed.get(EventService);
+    service = TestBed.inject(EventService);
   });
 
   it('should instantiate the service', () => {

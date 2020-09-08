@@ -14,8 +14,8 @@ describe('HelpService', () => {
       imports: [HttpClientTestingModule],
       providers: [HelpService]
     });
-    service = TestBed.get(HelpService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(HelpService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

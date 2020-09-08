@@ -100,17 +100,17 @@ describe('TopbarComponent', () => {
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
-    userService = TestBed.get(UserService);
+    userService = TestBed.inject(UserService);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TopbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    eventService = TestBed.get(EventService);
-    windowRef = TestBed.get(WindowRef);
-    paymentService = TestBed.get(PaymentService);
-    cookieService = TestBed.get(CookieService);
+    eventService = TestBed.inject(EventService);
+    windowRef = TestBed.inject(WindowRef);
+    paymentService = TestBed.inject(PaymentService);
+    cookieService = TestBed.inject(CookieService);
   });
 
   it('should be created', () => {

@@ -68,12 +68,12 @@ describe('LoggedGuard', (): void => {
         }
       ]
     });
-    loggedGuard = TestBed.get(LoggedGuard);
-    window = TestBed.get(WindowRef);
-    accessTokenService = TestBed.get(AccessTokenService);
+    loggedGuard = TestBed.inject(LoggedGuard);
+    window = TestBed.inject(WindowRef);
+    accessTokenService = TestBed.inject(AccessTokenService);
     accessTokenService.storeAccessToken(null);
-    userService = TestBed.get(UserService);
-    permissionService = TestBed.get(NgxPermissionsService);
+    userService = TestBed.inject(UserService);
+    permissionService = TestBed.inject(NgxPermissionsService);
   });
 
   it('should create an instance', (): void => {

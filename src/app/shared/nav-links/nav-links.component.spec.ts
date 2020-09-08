@@ -43,8 +43,8 @@ describe('NavLinksComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NavLinksComponent);
     component = fixture.componentInstance;
-    deviceService = TestBed.get(DeviceDetectorService);
-    modalService = TestBed.get(NgbModal);
+    deviceService = TestBed.inject(DeviceDetectorService);
+    modalService = TestBed.inject(NgbModal);
     component.sortItems = [SORT_LINK];
     component.navLinks = [NAV_LINK];
     fixture.detectChanges();

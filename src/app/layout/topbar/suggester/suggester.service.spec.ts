@@ -17,8 +17,8 @@ describe('SuggesterService', () => {
       imports: [HttpClientTestingModule],
       providers: [SuggesterService]
     });
-    service = TestBed.get(SuggesterService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(SuggesterService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
