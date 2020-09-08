@@ -161,7 +161,6 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
           .pipe(finalize(() => {
             this.loading = false;
             this.formComponent.initFormControl();
-            this.errorsService.i18nSuccess('userEdited');
           }))
           .subscribe(() => {
             if (!this.user.location ||
@@ -177,6 +176,11 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
                 this.userService.updateSearchLocationCookies(newLocation);
               });
             }
+
+            this.errorsService.i18nSuccess('userEdited');
+          },
+          errorResponse => {
+            this.errorsService.show(errorResponse);
           });
       });
     } else {
