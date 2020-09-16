@@ -20,7 +20,7 @@
             and the <a href="{{policyPrivacyURL}}" target="_blank">privacy policy</a> of Wallapop S.L. and Stripe Ltd
         </div>
 
-        <tsl-button [hidden]="type === 'new' || type === 'subscription'"
+        <tsl-button [hidden]="type === 'new' || type === 'subscription' || type === 'setDefault'"
                     id="checkout-card-button"
                     className="btn-primary btn-medium stripe"
                     [disabled]="type === 'cart' && !cart?.total || loading"
@@ -53,6 +53,17 @@
         >
             <div class="secure-payment">
                 <span i18n>Subscribe now</span>
+            </div>
+        </tsl-button>
+        <tsl-button *ngIf="type === 'setDefault'"
+                    id="checkout-card-button-new"
+                    className="btn-primary btn-medium stripe"
+                    [disabled]="disabled || newLoading"
+                    [loading]="newLoading"
+                    (click)="setDefaultCard()"
+        >
+            <div class="secure-payment">
+                <span i18n="@@Save">Save</span>
             </div>
         </tsl-button>
     </form>

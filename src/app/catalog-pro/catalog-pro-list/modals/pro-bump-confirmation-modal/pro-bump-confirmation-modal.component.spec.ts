@@ -10,6 +10,7 @@ import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { UserService } from '../../../../core/user/user.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 import { MOCK_USER } from '../../../../../tests/user.fixtures.spec';
+import { environment } from 'environments/environment';
 
 let component: ProBumpConfirmationModalComponent;
 let fixture: ComponentFixture<ProBumpConfirmationModalComponent>;
@@ -35,8 +36,9 @@ describe('BumpConfirmationModalComponent', () => {
     });
     fixture = TestBed.createComponent(ProBumpConfirmationModalComponent);
     component = fixture.componentInstance;
-    trackingService = TestBed.get(TrackingService);
-    userService = TestBed.get(UserService);
+    trackingService = TestBed.inject(TrackingService);
+    userService = TestBed.inject(UserService);
+    appboy.initialize(environment.appboy);
     fixture.detectChanges();
   });
 
@@ -67,6 +69,15 @@ describe('BumpConfirmationModalComponent', () => {
       component.ngOnInit();
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_FEATURED_PURCHASE_ERROR);
+    });
+
+    it('should send appboy VisibilityPurchaseSuccess event if code == 200 or 201', () => {
+      spyOn(appboy, 'logCustomEvent');
+      component.code = '200';
+
+      component.ngOnInit();
+
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('VisibilityPurchaseSuccess', {platform: 'web'});
     });
   });
 

@@ -14,13 +14,35 @@
   justify-content: center;
   text-align: center;
 
-  background: $walla-main;
-  color: $white;
+  background: $white;
+  color: $blue-grey-1;
 
   z-index: 10000;
 
   img {
     margin: $spacing-l;
     height: 15vh;
+  }
+
+  &__icon {
+    margin-top: auto;
+  }
+
+  &__download {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    margin-top: auto;
+    margin-bottom: $spacing-l;
+  }
+
+  &__store {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &__name {
+      margin-left: $spacing-xs;
+      color: $blue-grey-3;
+    }
   }
 }

@@ -1,7 +1,7 @@
 <div class="call">
   <div class="row">
     <div class="col-3">
-      <span>{{call.modifiedDate | amCalendar:momentConfig}}</span>
+      <span>{{call.modifiedDate | dateCalendar:momentConfig}}</span>
     </div>
     <div class="col-6 col-phone">
       <span [ngSwitch]="call.callStatus" class="icon">

@@ -1,7 +1,7 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf,  Observable } from 'rxjs';
 
-import {tap, map} from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../payments/payment.service';
 import { User } from '../user/user';
@@ -34,8 +34,7 @@ export class StripeService {
               private userService: UserService,
               private router: Router,
               private eventService: EventService,
-              private http: HttpClient,
-              private featureflagService: FeatureflagService) {
+              private http: HttpClient) {
     this.userService.me().subscribe((user: User) => {
       this.fullName = user ?  `${user.firstName} ${user.lastName}` : '';
     });
@@ -76,8 +75,8 @@ export class StripeService {
     })
   }
 
-  public getCards(): Observable<FinancialCard[]> {
-    if (this.financialCards) {
+  public getCards(cache = true): Observable<FinancialCard[]> {
+    if (this.financialCards && cache) {
       return observableOf(this.financialCards);
     }
     return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/cards`).pipe(
@@ -93,6 +92,10 @@ export class StripeService {
     return this.http.put(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/attach`, {});
   }
 
+  public setDefaultCard(paymentMethodId: string): Observable<any> {
+    return this.http.put(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${paymentMethodId}/default`, {});
+  }
+
   public createStripeCard(cardElement: any): Promise<any> {
     return this.createStripePaymentMethod(cardElement).then((response: any) => {
       if (response.error) {
@@ -102,7 +105,19 @@ export class StripeService {
     }).catch(() => this.eventService.emit(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, PAYMENT_RESPONSE_STATUS.FAILED));
   }
 
+  public getSetupIntent(): Observable<any> {
+    return this.http.get<string>(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/setup_intent_secret`);
+  }
+
+  public createDefaultCard(clientSecret: string, cardElement: any): Promise<any> {
+    return this.stripeSetupIntent(clientSecret, cardElement).then((result) => {
+      return result;
+    }).catch(() => { return {result: { error: {message: 'error' } } } });
+  }
+
   createStripePaymentMethod = async (cardElement: any) => await this.lib.createPaymentMethod('card', cardElement);
+
+  stripeSetupIntent = async (clientSecret: string, paymentMethod: any) => await this.lib.confirmCardSetup(clientSecret, {payment_method: paymentMethod});
 
   handlePayment = (paymentResponse, type = 'paymentResponse')  => {
     const { paymentIntent, error } = paymentResponse;
@@ -140,6 +155,7 @@ export class StripeService {
         res.id,
         res.card.last4,
         null,
+        null,
         res.card
       );
   }
@@ -150,6 +166,7 @@ export class StripeService {
         `${stripeCard.expiration_month}/${stripeCard.expiration_year}`,
         stripeCard.id,
         stripeCard.last_digits,
+        stripeCard.invoices_default,
         null,
         {
           brand: stripeCard.brand,

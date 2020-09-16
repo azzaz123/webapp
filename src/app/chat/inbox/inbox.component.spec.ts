@@ -3,7 +3,6 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
-import { MomentModule } from 'angular2-moment';
 import { InboxComponent, InboxState } from './inbox.component';
 import { InboxConversationComponent } from './inbox-conversation/inbox-conversation.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -43,7 +42,6 @@ describe('Component: InboxComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MomentModule,
         NgxPermissionsModule,
         NgxPermissionsModule.forRoot()
       ],
@@ -88,13 +86,13 @@ describe('Component: InboxComponent', () => {
       schemas: [NO_ERRORS_SCHEMA]
     });
     component = TestBed.createComponent(InboxComponent).componentInstance;
-    inboxService = TestBed.get(InboxService);
-    eventService = TestBed.get(EventService);
-    userService = TestBed.get(UserService);
-    addService = TestBed.get(AdService);
-    remoteConsoleService = TestBed.get(RemoteConsoleService);
-    conversationService = TestBed.get(InboxConversationService);
-    analyticsService = TestBed.get(AnalyticsService);
+    inboxService = TestBed.inject(InboxService);
+    eventService = TestBed.inject(EventService);
+    userService = TestBed.inject(UserService);
+    addService = TestBed.inject(AdService);
+    remoteConsoleService = TestBed.inject(RemoteConsoleService);
+    conversationService = TestBed.inject(InboxConversationService);
+    analyticsService = TestBed.inject(AnalyticsService);
   });
 
   describe('ngOnInit', () => {

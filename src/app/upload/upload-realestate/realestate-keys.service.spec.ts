@@ -21,8 +21,8 @@ describe('RealestateKeysService', () => {
       ],
       imports: [HttpClientTestingModule]
     });
-    service = TestBed.get(RealestateKeysService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(RealestateKeysService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

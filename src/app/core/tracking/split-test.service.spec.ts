@@ -10,7 +10,7 @@ describe('SplitTestService', () => {
     TestBed.configureTestingModule({
       providers: [SplitTestService]
     });
-    service = TestBed.get(SplitTestService);
+    service = TestBed.inject(SplitTestService);
   });
 
   it('should create', () => {

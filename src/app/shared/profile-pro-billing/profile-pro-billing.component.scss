@@ -5,12 +5,15 @@
   color: $blue-grey-4;
   font-size: $font-size-s;
   cursor: pointer;
-  text-align: end;
   align-items: end;
   display: grid;
   &:hover {
       text-decoration: none;
   }
+}
+
+.content {
+  margin: 0 $spacing-s;
 }
 
 form {
@@ -42,4 +45,8 @@ form {
       margin: 0 $spacing-s;
     }
   }
+}
+.loading-center {
+  display: block;
+  margin: 0 auto;
 }

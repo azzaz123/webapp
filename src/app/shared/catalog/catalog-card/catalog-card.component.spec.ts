@@ -4,14 +4,13 @@ import { CatalogCardComponent } from './catalog-card.component';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustomCurrencyPipe } from '../../pipes';
+import { CustomCurrencyPipe, CountdownPipe } from '../../pipes';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
 import { ToastService } from '../../../layout/toast/toast.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { MOCK_ITEM, ITEM_ID, ITEM_DATA3, getMockItemWithPurchases } from '../../../../tests/item.fixtures.spec';
 import { Observable, of } from 'rxjs';
-import { MomentModule } from 'angular2-moment';
 import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
 import { Item } from '../../../core/item/item';
 import { I18nService } from '../../../core/i18n/i18n.service';
@@ -36,7 +35,6 @@ describe('CatalogCardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CatalogCardComponent, CustomCurrencyPipe ],
-      imports: [ MomentModule ],
       providers: [
         DecimalPipe,
         I18nService,
@@ -76,7 +74,8 @@ describe('CatalogCardComponent', () => {
         }
         },
         {provide: 'SUBDOMAIN', useValue: 'es'},
-        EventService
+        EventService,
+        CountdownPipe
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
@@ -88,13 +87,13 @@ describe('CatalogCardComponent', () => {
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
     fixture.detectChanges();
-    itemService = TestBed.get(ItemService);
-    modalService = TestBed.get(NgbModal);
-    trackingService = TestBed.get(TrackingService);
-    errorsService = TestBed.get(ErrorsService);
-    i18nService = TestBed.get(I18nService);
+    itemService = TestBed.inject(ItemService);
+    modalService = TestBed.inject(NgbModal);
+    trackingService = TestBed.inject(TrackingService);
+    errorsService = TestBed.inject(ErrorsService);
+    i18nService = TestBed.inject(I18nService);
     appboy.initialize(environment.appboy);
-    eventService = TestBed.get(EventService);
+    eventService = TestBed.inject(EventService);
   });
 
   describe('select', () => {

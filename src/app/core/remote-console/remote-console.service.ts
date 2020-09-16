@@ -50,8 +50,6 @@ export class RemoteConsoleService implements OnDestroy {
       message: 'xmpp connection time',
       connection_time: connectionTime,
       call_no: this.connectionTimeCallNo,
-      connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
-      ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1
     });
   }
 
@@ -77,9 +75,6 @@ export class RemoteConsoleService implements OnDestroy {
           xmpp_retry_count: this.chatConnectionMetric.xmppRetryCount,
           inbox_retry_count: this.chatConnectionMetric.inboxRetryCount,
           metric_type: MetricTypeEnum.CHAT_CONNECTION_TIME,
-          session_id: this.sessionId,
-          connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
-          ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1
         }));
     }
   }
@@ -98,6 +93,24 @@ export class RemoteConsoleService implements OnDestroy {
     }
   }
 
+  sendMessageAckFailed(messageId: string, description: string): void {
+    this.remoteConsoleClientService.info({
+      ...this.getCommonLog(this.userService.user.id),
+      message_id: messageId,
+      metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_FAILED,
+      description: description
+    });
+  }
+
+  sendConnectionChatFailed(message: 'inbox' | 'xmpp'): void {
+    this.remoteConsoleClientService.info({
+      ...this.getCommonLog(this.userService.user.id),
+      metric_type: MetricTypeEnum.CHAT_FAILED_CONNECTION,
+      xmpp_connected: message === 'xmpp',
+      description: message === 'inbox' ? 'Get inbox is failed' : 'Connection xmpp is failed'
+    });
+  }
+
   sendMessageActTimeout(messageId: string): void {
     if (!this.sendMessageActTime.has(messageId)) {
       this.sendMessageActTime.set(messageId, new Date().getTime());
@@ -107,7 +120,6 @@ export class RemoteConsoleService implements OnDestroy {
         message_id: messageId,
         send_message_time: new Date().getTime() - this.sendMessageActTime.get(messageId),
         metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
-        session_id: this.sessionId
       });
       this.sendMessageTime.delete(messageId);
     }
@@ -125,7 +137,6 @@ export class RemoteConsoleService implements OnDestroy {
         message_id: messageId,
         send_message_time: new Date().getTime() - this.acceptMessageTime.get(messageId),
         metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-        ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : ''
       });
       this.acceptMessageTime.delete(messageId);
     }
@@ -140,7 +151,6 @@ export class RemoteConsoleService implements OnDestroy {
         message_id: messageId,
         send_message_time: new Date().getTime() - this.presentationMessageTimeout.get(messageId),
         metric_type: MetricTypeEnum.CLIENT_PRESENTATION_MESSAGE_TIME,
-        ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : ''
       });
       this.presentationMessageTimeout.delete(messageId);
     }
@@ -161,7 +171,6 @@ export class RemoteConsoleService implements OnDestroy {
         ...this.getCommonLog(user.id),
         metric_type: MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
         message: '',
-        ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : ''
       })
     );
   }
@@ -182,7 +191,10 @@ export class RemoteConsoleService implements OnDestroy {
       browser_version: device.browser_version,
       user_id: userId,
       feature_flag: true,
-      app_version: this.getReleaseVersion(APP_VERSION)
+      app_version: this.getReleaseVersion(APP_VERSION),
+      session_id: this.sessionId,
+      connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
+      ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1
     };
   }
 }

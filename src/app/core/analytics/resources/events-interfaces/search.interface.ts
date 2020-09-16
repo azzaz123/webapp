@@ -18,7 +18,7 @@ export interface Search {
    */
   savedSearchId?: string;
   /**
-   * Name of the experiment or A/B testing applied to the user who has performed the search. The default value would be 'baseline'
+   * Name of the experiment or A/B testing applied to tgghe user who has performed the search. The default value would be 'baseline'
    */
   experiment?: string;
   /**
@@ -33,11 +33,12 @@ export interface Search {
     | "seo_section"
     | "seo_list"
     | "seo_location_list"
-    | "seo_sitemap";
+    | "seo_sitemap"
+    | "item_detail";
   /**
    * Identifier of the screen where the searching has been done
    */
-  screenId: 110 | 111 | 193;
+  screenId: 110 | 111 | 193 | 217;
   /**
    * Latitude of the performed search
    */
@@ -56,7 +57,7 @@ export interface Search {
    */
   categoryId?: number;
   /**
-   * Keywords aaplied in the search
+   * Keywords applied in the search
    */
   keywords?: string;
   /**

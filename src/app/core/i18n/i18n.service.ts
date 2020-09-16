@@ -5,14 +5,15 @@ export class I18nService {
 
   protected translations: any = {
     en: {
+      yes: 'Yes',
+      no: 'No',
       daysMomentConfig: {
         lastDay: '[Yesterday] - HH:mm',
         sameDay: '[Today] - HH:mm',
         nextDay: '[Tomorrow]',
         lastWeek: 'dddd - HH:mm',
         nextWeek: 'dddd',
-        sameElse: 'Do [of] MMMM',
-        mediumDate: 'MMM d, y'
+        sameElse: 'MMM DD, YYYY'
       },
       defaultDaysMomentConfig: {
         lastDay: '[Yesterday]',
@@ -112,7 +113,6 @@ export class I18nService {
       packError: 'There was a error buying this pack',
       noCardSelectedError: 'Please select a credit card',
       alreadyFeatured: 'You are trying to feature an item that is already planned.',
-      phoneRequestMessage: 'Please contact us or leave us your phone number and we will contact you',
       phoneMessage: 'My phone number is ',
       cars_subscription_tutorial_listinglimit5: 'Upload 5 cars.',
       cars_subscription_tutorial_listinglimit9: 'Upload 9 cars.',
@@ -152,6 +152,9 @@ export class I18nService {
       paymentFailed: 'The payment could not be done',
       consumerGoodsGeneralCategoryTitle: 'Everything else',
       nodata: 'No data available',
+      SubscriptionCardNotSet: 'Your card could not be saved',
+      SubscriptionCardSet: 'Your card has been saved successfully',
+      SubscriptionCardDeleted: 'Your card has been deleted',
       subscriptionBenefits: [
         {
           iconId: 'paintbrush',
@@ -173,17 +176,19 @@ export class I18nService {
           title: 'Without compromise',
           description: 'You can cancel your subscription whenever you want, without penalties'
         }
-      ]
+      ],
+      tooManyNewConversations: 'We can\'t keep up with you. Wait a moment so you can open up new conversations.'
     },
     es: {
+      yes: 'Sí',
+      no: 'No',
       daysMomentConfig: {
         lastDay: '[Ayer] - HH:mm',
         sameDay: '[Hoy] - HH:mm',
         nextDay: '[Mañana]',
         lastWeek: 'dddd - HH:mm',
         nextWeek: 'dddd',
-        sameElse: 'D [de] MMMM',
-        mediumDate: 'd MMM y'
+        sameElse: 'MMM DD, YYYY'
       },
       defaultDaysMomentConfig: {
         lastDay: '[Ayer]',
@@ -285,7 +290,6 @@ export class I18nService {
       packError: 'Hubo un error al comprar este paquete',
       noCardSelectedError: 'Por favor selecciona una tarjeta de crédito',
       alreadyFeatured: '¡Ups! Estás intentando destacar un item que ya tiene planificados',
-      phoneRequestMessage: 'Por favor contáctanos o deja tu número de teléfono y te contactaremos',
       phoneMessage: 'Mi número de teléfono es ',
       cars_subscription_tutorial_listinglimit5: 'Publica hasta 5 coches.',
       cars_subscription_tutorial_listinglimit9: 'Publica hasta 9 coches.',
@@ -325,6 +329,9 @@ export class I18nService {
       paymentFailed: 'No ha podido realizarse el pago',
       consumerGoodsGeneralCategoryTitle: 'Todo lo demás',
       nodata: 'No hay datos disponibles',
+      SubscriptionCardNotSet: 'Tu tarjeta no ha podido ser guardada',
+      SubscriptionCardSet: 'Tu tarjeta se ha guardado correctamente',
+      SubscriptionCardDeleted: 'Tu tarjeta se ha borrado correctamente',
       subscriptionBenefits: [
         {
           iconId: 'paintbrush',
@@ -346,7 +353,8 @@ export class I18nService {
           title: 'Sin compromiso',
           description: 'Puedes cancelar la suscripción cuando quieras, sin penalizaciones de ningún tipo'
         }
-      ]
+      ],
+      tooManyNewConversations: 'No te podemos seguir el ritmo. Espera un momento para poder abrir nuevas conversaciones.'
     }
   };
 

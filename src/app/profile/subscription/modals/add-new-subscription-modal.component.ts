@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { NgbActiveModal, NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from '../../../core/stripe/stripe.service';
 import { FinancialCardOption, PaymentMethodResponse } from '../../../core/payments/payment.interface';
@@ -18,16 +18,18 @@ import {
   SubscriptionPayConfirmation,
   ClickSubscriptionDirectContact
 } from '../../../core/analytics/analytics-constants';
-import { PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
+import { PAYMENT_RESPONSE_STATUS, PaymentService } from '../../../core/payments/payment.service';
 import { CATEGORY_IDS } from '../../../core/category/category-ids';
 import { CAR_DEALER_TYPEFORM_URL, TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
+import { IOption } from 'ng-select';
+import { I18nService } from 'app/core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-add-new-subscription-modal',
   templateUrl: './add-new-subscription-modal.component.html',
   styleUrls: ['./add-new-subscription-modal.component.scss']
 })
-export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
+export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(NgbCarousel) public carousel: NgbCarousel;
   public card: any;
@@ -41,13 +43,18 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   public isRetryInvoice = false;
   public subscription: SubscriptionsResponse;
   public isNewSubscriber = false;
-  private invoiceId: string;
   public loaded: boolean;
   public hasSavedCard = true;
   public carsCategoryId = CATEGORY_IDS.CAR;
   public carDealerTypeformLink = CAR_DEALER_TYPEFORM_URL;
   public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
   public privacyPolicyURL = PRIVACY_POLICY_URL;
+  public invoiceOptions: IOption[] = [];
+  public isBillingInfoValid: boolean;
+  private _invoiceId: string;
+  private _selectedInvoiceOption: string;
+  private _submitBillingInfoForm = false;
+  private _isBillingInfoMissing: boolean;
 
   constructor(public activeModal: NgbActiveModal,
               private stripeService: StripeService,
@@ -55,23 +62,39 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
               private subscriptionsService: SubscriptionsService,
               private modalService: NgbModal,
               private errorService: ErrorsService,
-              private analyticsService: AnalyticsService) {
+              private analyticsService: AnalyticsService,
+              private paymentService: PaymentService,
+              private i18nService: I18nService) {
   }
 
   ngOnInit() {
+    this.generateInvoiceOptions();
     this.loaded = true;
     this.selectedTier = this.subscription.selected_tier;
     this.eventService.subscribe(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, (response) => {
       this.managePaymentResponse(response);
     });
+    this.getBillingInfo();
+    this._selectedInvoiceOption = this.invoiceOptions[1].value.toString();
+  }
+
+  ngAfterViewInit() {
+    this.carousel.keyboard = false;
   }
 
   ngOnDestroy() {
     this.eventService.unsubscribeAll(STRIPE_PAYMENT_RESPONSE_EVENT_KEY);
   }
 
+  private generateInvoiceOptions() {
+    this.invoiceOptions = [
+      { value: 'true', label: this.i18nService.getTranslations('yes') },
+      { value: 'false', label: this.i18nService.getTranslations('no') }
+    ];
+  }
+
   public close() {
-      this.activeModal.close('add');
+    this.activeModal.close('add');
   }
 
   public addSubscription(paymentMethod: PaymentMethodResponse) {
@@ -92,7 +115,8 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     if (this.isRetryInvoice) {
       this.retrySubscription();
     } else {
-      this.subscriptionsService.newSubscription(selectedPlanId, paymentMethodId).subscribe((response) => {
+      this.subscriptionsService.newSubscription(selectedPlanId, paymentMethodId, JSON.parse(this.selectedInvoiceOption))
+      .subscribe((response) => {
         if (response.status === 202) {
           this.subscriptionsService.checkNewSubscriptionStatus().subscribe((response: SubscriptionResponse) => {
             if (!response.payment_status) {
@@ -101,7 +125,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
             switch(response.payment_status.toUpperCase() ) {
               case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
                 this.isRetryInvoice = true;
-                this.invoiceId = response.latest_invoice_id;
+                this._invoiceId = response.latest_invoice_id;
                 this.requestNewPayment({error: { message: PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD }});
                 break;
               }
@@ -132,7 +156,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     if (!this.loading) {
       this.loading = true;
     }
-    this.subscriptionsService.retrySubscription(this.invoiceId, paymentMethodId).subscribe((response) => {
+    this.subscriptionsService.retrySubscription(this._invoiceId, paymentMethodId).subscribe((response) => {
       if (response.status === 202) {
         this.subscriptionsService.checkRetrySubscriptionStatus().subscribe((response) => {
           switch(response.status.toUpperCase() ) {
@@ -223,7 +247,6 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
   private paymentSucceeded() {
     this.loading = false;
     this.isRetryInvoice = false;
-    this.close();
     this.openPaymentSuccessModal();
   }
 
@@ -233,12 +256,15 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     modalComponent.tier = this.selectedTier.id;
     modalComponent.isNewSubscriber = this.isNewSubscriber;
     modalComponent.isNewCard = !this.hasSavedCard;
+    modalComponent.isInvoice = this.selectedInvoiceOption;
     modalComponent.subscriptionCategoryId = this.subscription.category_id as SUBSCRIPTION_CATEGORIES;
 
     modalRef.result.then(() => {
       modalRef = null;
-      this.reloadPage();
-    }, () => {});
+      this.close();
+    }, () => {
+      this.close();
+    });
   }
 
   @HostListener('click') onClick() {
@@ -309,6 +335,58 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy {
     };
 
     this.analyticsService.trackEvent(event);
+  }
+
+  public onInvoiceOptionSelect(event: any) {
+    this._selectedInvoiceOption = event.value;
+  }
+
+  public onBillingInfoFormSaved(): void {
+    this.loading = false;
+    this.carousel.select('step-3');
+  }
+
+  public getBillingInfo(): void {
+    this.paymentService.getBillingInfo(false).subscribe(() => {
+      this._isBillingInfoMissing = false;
+    }, () => {
+      this._isBillingInfoMissing = true;
+    });
+  }
+
+  public continueToPayment() {
+    this.loading = true;
+    this._submitBillingInfoForm = true;
+    this.eventService.emit('formSubmited');
+  }
+
+  public continueToInvoice() {
+    this.loading = false;
+    this.carousel.select('step-2b');
+  }
+
+  get submitBillingInfoForm(): boolean {
+    return this._submitBillingInfoForm;
+  }
+
+  get selectedInvoiceOption(): string {
+    return this._selectedInvoiceOption;
+  }
+
+  get isBillingInfoMissing(): boolean {
+    return this._isBillingInfoMissing;
+  }
+
+  get canContinueToPayment(): boolean {
+    return this.selectedInvoiceOption === 'false' || !this.isBillingInfoMissing;
+  }
+
+  get canContinueToInvoice(): boolean {
+    return this.selectedInvoiceOption === 'true' && this.isBillingInfoMissing;
+  }
+
+  get canEditInvoice(): boolean {
+    return !this.isBillingInfoMissing && this.selectedInvoiceOption === 'true';
   }
 
 }

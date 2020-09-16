@@ -77,8 +77,8 @@ describe('EditComponent', () => {
     fixture = TestBed.createComponent(EditComponent);
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
-    modalService = TestBed.get(NgbModal);
-    itemService = TestBed.get(ItemService);
+    modalService = TestBed.inject(NgbModal);
+    itemService = TestBed.inject(ItemService);
   });
 
   describe('ngOnInit', () => {

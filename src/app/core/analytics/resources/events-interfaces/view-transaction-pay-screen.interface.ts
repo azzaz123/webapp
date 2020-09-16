@@ -6,7 +6,7 @@
  */
 
 /**
- * Users views transaction pay screen
+ * User views transaction pay screen
  */
 export interface ViewTransactionPayScreen {
   /**

@@ -76,11 +76,11 @@ describe('StripeService', () => {
       ],
       imports: [HttpClientTestingModule]
     });
-    service = TestBed.get(StripeService);
-    paymentService = TestBed.get(PaymentService);
-    userService = TestBed.get(UserService);
-    httpMock = TestBed.get(HttpTestingController);
-    eventService = TestBed.get(EventService);
+    service = TestBed.inject(StripeService);
+    paymentService = TestBed.inject(PaymentService);
+    userService = TestBed.inject(UserService);
+    httpMock = TestBed.inject(HttpTestingController);
+    eventService = TestBed.inject(EventService);
   });
 
   describe('buy', () => {
@@ -162,6 +162,41 @@ describe('StripeService', () => {
       expect(eventService.emit).toHaveBeenCalledTimes(1);
       expect(eventService.emit).toHaveBeenCalledWith(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, PAYMENT_RESPONSE_STATUS.FAILED);
     }));
+  });
+
+  describe('createDefaultCard', () => {
+    it('should call stripeSetupIntent', fakeAsync(() => {
+      spyOn(service, 'stripeSetupIntent').and.returnValue(Promise.resolve({ error: { message: 'Payment error' } }));
+
+      service.createDefaultCard('abc', {});
+      tick();
+
+      expect(service.stripeSetupIntent).toHaveBeenCalledTimes(1);
+    }));
+  });
+
+  describe('setDefaultCard', () => {
+    it('should call the endpoint', () => {
+      const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/${MOCK_PAYMENT_METHOD_ID}/default`;
+      service.setDefaultCard(MOCK_PAYMENT_METHOD_ID).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.method).toBe('PUT');
+    });
+  });
+
+  describe('getSetupIntent', () => {
+    it('should call the endpoint', () => {
+      const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/setup_intent_secret`;
+      service.getSetupIntent().subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.url).toBe(expectedUrl);
+      expect(req.request.method).toBe('GET');
+    });
   });
 
 });

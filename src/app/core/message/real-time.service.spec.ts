@@ -4,7 +4,6 @@ import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { of, throwError } from 'rxjs';
 import { Message } from './message';
 import { ACCESS_TOKEN, MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
@@ -51,13 +50,13 @@ describe('RealTimeService', () => {
       ]
     });
 
-    service = TestBed.get(RealTimeService);
-    eventService = TestBed.get(EventService);
-    xmppService = TestBed.get(XmppService);
-    trackingService = TestBed.get(TrackingService);
-    remoteConsoleService = TestBed.get(RemoteConsoleService);
-    analyticsService = TestBed.get(AnalyticsService);
-    connectionService = TestBed.get(ConnectionService);
+    service = TestBed.inject(RealTimeService);
+    eventService = TestBed.inject(EventService);
+    xmppService = TestBed.inject(XmppService);
+    trackingService = TestBed.inject(TrackingService);
+    remoteConsoleService = TestBed.inject(RemoteConsoleService);
+    analyticsService = TestBed.inject(AnalyticsService);
+    connectionService = TestBed.inject(ConnectionService);
     appboy.initialize(environment.appboy);
   });
 
@@ -363,10 +362,18 @@ describe('RealTimeService', () => {
     });
 
     describe('if it`s the first message', () => {
-      it('should send the Send First Message event', () => {
-        const inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(),
+      let inboxMessage;
+      let inboxConversation;
+
+      beforeEach(() => {
+        inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(),
           MessageStatus.SENT, MessageType.TEXT);
-        const inboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
+        inboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
+
+        inboxConversation.messages.push(inboxMessage);
+      });
+
+      it('should send the Send First Message event', () => {
         const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
           name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
           eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -378,12 +385,36 @@ describe('RealTimeService', () => {
             categoryId: inboxConversation.item.categoryId
           }
         };
-        inboxConversation.messages.push(inboxMessage);
+
         spyOn(analyticsService, 'trackEvent');
 
         eventService.emit(EventService.MESSAGE_SENT, inboxConversation, 'newMsgId');
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+
+      describe('and has searchId in sessionStorage', () => {
+        it('should send the Send First Message event with searchId', () => {
+          const searchId = '123456789';
+          const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
+            name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              itemId: inboxConversation.item.id,
+              sellerUserId: inboxConversation.user.id,
+              conversationId: inboxConversation.id,
+              screenId: SCREEN_IDS.Chat,
+              categoryId: inboxConversation.item.categoryId,
+              searchId
+            }
+          };
+          spyOn(sessionStorage, 'getItem').and.returnValue(searchId);
+          spyOn(analyticsService, 'trackEvent');
+
+          eventService.emit(EventService.MESSAGE_SENT, inboxConversation, 'newMsgId');
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        });
       });
     });
 

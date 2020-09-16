@@ -39,6 +39,16 @@ export const STRIPE_CARD_OPTION: any = {
   expire_date: '01/2021',
   id: 'pm_2f2f2f',
   number: '4242',
+  invoices_default: false,
+  favorite: true,
+  stripeCard: STRIPE_CARD
+};
+
+export const STRIPE_CARD_OPTION_SUBSCRIPTION: any = {
+  expire_date: '01/2021',
+  id: 'pm_2f2f2f',
+  number: '4242',
+  invoices_default: true,
   favorite: true,
   stripeCard: STRIPE_CARD
 };
@@ -50,6 +60,7 @@ export function createFinancialCardFixture(): FinancialCard {
     'pm_a0b1c2',
     '4242',
     null,
+    null,
     STRIPE_CARD
   );
 }
@@ -59,6 +70,7 @@ export function createFavoriteFinancialCardFixture(): FinancialCard {
     '01/2021',
     'pm_2f2f2f',
     '4242',
+    null,
     true,
     STRIPE_CARD
   );

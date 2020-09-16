@@ -12,6 +12,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../model';
+import { XmppBodyMessage } from '../../core/xmpp/xmpp.interface';
 
 @Injectable()
 export class MessageService {
@@ -52,26 +53,8 @@ export class MessageService {
     return message;
   }
 
-  public send(conversation: InboxConversation, message: string) {
-    this.realTime.sendMessage(conversation, message);
-  }
-
-  public addPhoneNumberRequestMessage(conversation: InboxConversation, withTracking = true): InboxConversation {
-    const message = new InboxMessage(UUID.UUID(),
-      conversation.id,
-      this.i18n.getTranslations('phoneRequestMessage'),
-      conversation.user.id,
-      true,
-      new Date(),
-      MessageStatus.READ,
-      MessageType.TEXT,
-      null);
-    conversation.messages.push(message);
-    if (withTracking) {
-      this.trackingService.track(TrackingService.CHAT_SHAREPHONE_OPENSHARING);
-    }
-    conversation.modifiedDate = new Date();
-    return conversation;
+  public send(conversation: InboxConversation, message: string): string {
+    return this.realTime.sendMessage(conversation, message);
   }
 
   public createPhoneNumberMessage(conversation, phone) {

@@ -43,8 +43,8 @@ describe('ReportUserComponent', () => {
     fixture = TestBed.createComponent(ReportUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    userService = TestBed.get(UserService);
-    activeModal = TestBed.get(NgbActiveModal);
+    userService = TestBed.inject(UserService);
+    activeModal = TestBed.inject(NgbActiveModal);
   });
 
   it('should be created', () => {

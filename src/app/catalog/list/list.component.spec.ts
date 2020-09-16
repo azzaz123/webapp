@@ -48,6 +48,8 @@ import { MOCK_USER, USER_INFO_RESPONSE } from '../../../tests/user.fixtures.spec
 import { SubscriptionsSlotsListComponent } from './subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
 import { By } from '@angular/platform-browser';
 import { SubscriptionsSlotItemComponent } from './subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
+import { AnalyticsService } from "../../core/analytics/analytics.service";
+import { MockAnalyticsService } from "../../../tests/analytics.fixtures.spec";
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -184,7 +186,8 @@ describe('ListComponent', () => {
         },
         {
           provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock
-        }
+        },
+        { provide: AnalyticsService, useClass: MockAnalyticsService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -194,18 +197,18 @@ describe('ListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ListComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
-    trackingService = TestBed.get(TrackingService);
-    subscriptionsService = TestBed.get(SubscriptionsService);
-    modalService = TestBed.get(NgbModal);
-    toastService = TestBed.get(ToastService);
-    route = TestBed.get(ActivatedRoute);
-    paymentService = TestBed.get(PaymentService);
-    router = TestBed.get(Router);
-    errorService = TestBed.get(ErrorsService);
-    userService = TestBed.get(UserService);
-    eventService = TestBed.get(EventService);
-    deviceService = TestBed.get(DeviceDetectorService);
+    itemService = TestBed.inject(ItemService);
+    trackingService = TestBed.inject(TrackingService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
+    modalService = TestBed.inject(NgbModal);
+    toastService = TestBed.inject(ToastService);
+    route = TestBed.inject(ActivatedRoute);
+    paymentService = TestBed.inject(PaymentService);
+    router = TestBed.inject(Router);
+    errorService = TestBed.inject(ErrorsService);
+    userService = TestBed.inject(UserService);
+    eventService = TestBed.inject(EventService);
+    deviceService = TestBed.inject(DeviceDetectorService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();

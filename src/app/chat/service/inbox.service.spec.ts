@@ -21,6 +21,7 @@ import { AccessTokenService } from '../../core/http/access-token.service';
 import { HttpClient } from '@angular/common/http';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { RemoteConsoleService } from '../../core/remote-console';
+import { I18nService } from 'app/core/i18n/i18n.service';
 
 describe('InboxService', () => {
 
@@ -60,7 +61,8 @@ describe('InboxService', () => {
             sendDeliveryReceipt(to: string, id: string, thread: string) {
             }
           }
-        }
+        },
+        I18nService
       ]
     });
     inboxService = TestBed.inject(InboxService);
@@ -151,6 +153,7 @@ describe('InboxService', () => {
       spyOn<any>(inboxService, 'getInbox$').and.returnValue(throwError(''));
       spyOn<any>(inboxService, 'getArchivedInbox$').and.returnValue(of([]));
       spyOn(remoteConsoleService, 'sendConnectionChatTimeout');
+      spyOn(remoteConsoleService, 'sendConnectionChatFailed');
     });
 
     it('should set errorRetrievingInbox to true', () => {
@@ -169,6 +172,12 @@ describe('InboxService', () => {
       inboxService.init();
 
       expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', false);
+    });
+
+    it('should send metric connection to inbox is failed', () => {
+      inboxService.init();
+
+      expect(remoteConsoleService.sendConnectionChatFailed).toHaveBeenCalledWith('inbox');
     });
   });
 

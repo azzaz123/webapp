@@ -109,13 +109,13 @@ describe('CartComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CartComponent);
     component = fixture.componentInstance;
-    cartService = TestBed.get(CartService);
-    itemService = TestBed.get(ItemService);
-    errorService = TestBed.get(ErrorsService);
-    router = TestBed.get(Router);
-    trackingService = TestBed.get(TrackingService);
-    eventService = TestBed.get(EventService);
-    stripeService = TestBed.get(StripeService);
+    cartService = TestBed.inject(CartService);
+    itemService = TestBed.inject(ItemService);
+    errorService = TestBed.inject(ErrorsService);
+    router = TestBed.inject(Router);
+    trackingService = TestBed.inject(TrackingService);
+    eventService = TestBed.inject(EventService);
+    stripeService = TestBed.inject(StripeService);
     component.creditInfo = {
       currencyName: 'wallacoins',
       credit: 200,

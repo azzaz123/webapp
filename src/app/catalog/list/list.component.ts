@@ -1,23 +1,22 @@
 
 import {takeWhile} from 'rxjs/operators';
-import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
-import { every, find, findIndex } from 'lodash-es';
+import { find, findIndex } from 'lodash-es';
 import {
-  ItemBulkResponse, ItemsData, Order, Product,
-  SelectedItemsAction
+  ItemBulkResponse, ItemsData, Order, Product
 } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { OrderEvent } from './selected-items/selected-product.interface';
+import { OrderEvent, STATUS } from './selected-items/selected-product.interface';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { Counters, UserStats, AvailableSlots } from '../../core/user/user-stats.interface';
+import { Counters, UserStats } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -35,8 +34,6 @@ import { CreditInfo } from '../../core/payments/payment.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '../../core/subscriptions/subscriptions.service';
 import { SubscriptionSlot } from '../../core/subscriptions/subscriptions.interface';
 import { NavLink } from '../../shared/nav-links/nav-link.interface';
-import { CategoryService } from '../../core/category/category.service';
-import { CATEGORY_IDS } from '../../core/category/category-ids';
 import { User } from '../../core/user/user';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
@@ -52,7 +49,7 @@ const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reac
 export class ListComponent implements OnInit, OnDestroy {
 
   public items: Item[] = [];
-  public selectedStatus = 'published';
+  public selectedStatus: string = STATUS.PUBLISHED;
   public loading = true;
   private init = 0;
   public end: boolean;
@@ -95,7 +92,6 @@ export class ListComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     protected i18n: I18nService,
     private subscriptionsService: SubscriptionsService,
-    private categoryService: CategoryService,
     private deviceService: DeviceDetectorService) {
   }
 
@@ -103,8 +99,8 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getUserInfo();
 
     this.normalNavLinks = [
-      { id: 'published', display: this.i18n.getTranslations('selling') },
-      { id: 'sold', display: this.i18n.getTranslations('sold') }
+      { id: STATUS.PUBLISHED, display: this.i18n.getTranslations('selling') },
+      { id: STATUS.SOLD, display: this.i18n.getTranslations(STATUS.SOLD) }
     ];
 
     if (this.deviceService.isMobile()) {
@@ -112,12 +108,13 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     this.subscriptionSelectedNavLinks = [
-      { id: 'active', display: this.i18n.getTranslations('active') },
-      { id: 'inactive', display: this.i18n.getTranslations('inactive') },
-      { id: 'sold', display: this.i18n.getTranslations('sold') }
+      { id: STATUS.ACTIVE, display: this.i18n.getTranslations(STATUS.ACTIVE) },
+      { id: STATUS.INACTIVE, display: this.i18n.getTranslations(STATUS.INACTIVE) },
+      { id: STATUS.SOLD, display: this.i18n.getTranslations(STATUS.SOLD) }
     ];
 
     this.navLinks = this.normalNavLinks;
+    this.setSortItems();
 
     this.getItems();
     this.getCreditInfo();
@@ -128,7 +125,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     this.itemService.selectedItems$.pipe(takeWhile(() => {
       return this.active;
-    })).subscribe((action: SelectedItemsAction) => {
+    })).subscribe(() => {
       this.selectedItems = this.itemService.selectedItems.map((id: string) => {
         return <Item>find(this.items, {id: id});
       });
@@ -242,7 +239,7 @@ export class ListComponent implements OnInit, OnDestroy {
             this.soldButton.callback.subscribe(() => {
               this.itemChanged({
                 item: item,
-                action: 'sold'
+                action: STATUS.SOLD
               });
               this.eventService.emit(EventService.ITEM_SOLD, item);
             });
@@ -268,7 +265,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.itemService.selectedItems.forEach((itemId: string) => {
       this.itemService.selectedItems$.next({
         id: itemId,
-        action: 'selected'
+        action: STATUS.SELECTED
       });
     });
   }
@@ -299,6 +296,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private getItems(append?: boolean) {
     this.loading = true;
+    this.end = false;
 
     if (!append) {
       this.init = 0;
@@ -315,17 +313,20 @@ export class ListComponent implements OnInit, OnDestroy {
           this.page, this.pageSize, this.selectedSubscriptionSlot.category.category_id, this.sortBy, this.selectedStatus, this.searchTerm
         )
         .subscribe(itemsByCategory => {
-          this.items = append ? this.items.concat(itemsByCategory) : itemsByCategory;
-          this.updateNavLinksCounters();
-          this.setNumberOfProducts();
+          if (itemsByCategory) {
+            this.items = append ? this.items.concat(itemsByCategory) : itemsByCategory;
+            this.updateNavLinksCounters();
+            this.setNumberOfProducts();
+          }
           this.loading = false;
+          this.end = true;
         });
     } else {
       this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
         const items = itemsData.data;
-        if (this.selectedStatus === 'sold') {
+        if (this.selectedStatus === STATUS.SOLD) {
           this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, { total_products: items.length });
-        } else if (this.selectedStatus === 'published') {
+        } else if (this.selectedStatus === STATUS.PUBLISHED) {
           this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, { total_products: items.length });
         }
         this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, { init: this.init });
@@ -471,9 +472,9 @@ export class ListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.selectedStatus === 'sold') {
+    if (this.selectedStatus === STATUS.SOLD) {
       this.numberOfProducts = this.counters.sold;
-    } else if (this.selectedStatus === 'published') {
+    } else if (this.selectedStatus === STATUS.PUBLISHED) {
       this.numberOfProducts = this.counters.publish;
     }
   }
@@ -498,7 +499,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.itemService.deactivate().subscribe(() => {
         items.forEach((id: string) => {
           let item: Item = find(this.items, {'id': id});
-          item.flags['onhold'] = true;
+          item.flags[STATUS.ONHOLD] = true;
           item.selected = false;
 
           const itemIndex = this.items.indexOf(item);
@@ -517,7 +518,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.itemService.activate().subscribe((resp: any) => {
         items.forEach((id: string) => {
           let item: Item = find(this.items, {'id': id});
-          item.flags['onhold'] = false;
+          item.flags[STATUS.ONHOLD] = false;
           item.selected = false;
 
           const itemIndex = this.items.indexOf(item);
@@ -583,11 +584,11 @@ export class ListComponent implements OnInit, OnDestroy {
     this.selectedSubscriptionSlot = subscription;
 
     if (!subscription) {
-      this.selectedStatus = 'published';
+      this.selectedStatus = STATUS.PUBLISHED;
       this.searchTerm = null;
       this.sortBy = SORTS[0];
     } else {
-      this.selectedStatus = 'active';
+      this.selectedStatus = STATUS.ACTIVE;
     }
 
     this.updateNavLinks();
@@ -606,7 +607,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public updateNavLinksCounters() {
     this.navLinks.forEach(navLink => {
       if (navLink.id === this.selectedStatus) {
-        if (this.selectedStatus === 'active') {
+        if (this.selectedStatus === STATUS.ACTIVE) {
           navLink.counter = {
             currentVal: this.items.length,
             maxVal: this.selectedSubscriptionSlot.limit

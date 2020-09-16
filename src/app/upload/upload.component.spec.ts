@@ -7,12 +7,16 @@ import { Observable, of } from 'rxjs';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { UserService } from '../core/user/user.service';
 import { CARS_CATEGORY } from '../core/item/item-categories';
+import { TrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.service';
+import { MockTrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.fixtures.spec';
+import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
   let fixture: ComponentFixture<UploadComponent>;
   let itemService: ItemService;
   let userService: UserService;
+  let trustAndSafetyService: TrustAndSafetyService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -31,7 +35,8 @@ describe('UploadComponent', () => {
               return of(false);
             }
           }
-        }
+        },
+        { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService }
       ]
     })
       .compileComponents();
@@ -39,8 +44,9 @@ describe('UploadComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadComponent);
-    itemService = TestBed.get(ItemService);
-    userService = TestBed.get(UserService);
+    itemService = TestBed.inject(ItemService);
+    userService = TestBed.inject(UserService);
+    trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
     component = fixture.componentInstance;
   });
 
@@ -63,6 +69,15 @@ describe('UploadComponent', () => {
       component.ngOnInit();
 
       expect(component.setCategory).not.toHaveBeenCalled();
+    });
+
+    it('should delegate profiling to trust and safety team', () => {
+      spyOn(trustAndSafetyService, 'submitProfileIfNeeded');
+
+      component.ngOnInit();
+
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledTimes(1);
+      expect(trustAndSafetyService.submitProfileIfNeeded).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CREATE_LISTING);
     });
   });
 

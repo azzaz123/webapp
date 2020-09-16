@@ -10,7 +10,7 @@ describe('TabbarService', () => {
       providers: [TabbarService]
     });
 
-    tabBarService = TestBed.get(TabbarService);
+    tabBarService = TestBed.inject(TabbarService);
   });
 
   describe('hideTabBar', () => {

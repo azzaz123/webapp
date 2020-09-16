@@ -1,4 +1,3 @@
-import { now } from 'lodash-es';
 import * as retry from 'retry';
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
@@ -16,7 +15,8 @@ import {
   SendFirstMessage
 } from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
-import { filter } from 'rxjs/operators';
+
+export const SEARCHID_STORAGE_NAME = 'searchId';
 
 @Injectable()
 export class RealTimeService {
@@ -35,10 +35,10 @@ export class RealTimeService {
 
   public connect(userId: string, accessToken: string) {
     if (this.connectionService.isConnected && !this.xmpp.clientConnected) {
-      let startTimestamp = now();
+      let startTimestamp = Date.now();
       this.xmpp.connect$(userId, accessToken).subscribe(() => {
         this.remoteConsoleService.sendConnectionChatTimeout('xmpp', true);
-        this.remoteConsoleService.sendConnectionTimeout(userId, now() - startTimestamp);
+        this.remoteConsoleService.sendConnectionTimeout(userId, Date.now() - startTimestamp);
         startTimestamp = null;
       }, () => {
         this.remoteConsoleService.sendConnectionChatTimeout('xmpp', false);
@@ -77,8 +77,8 @@ export class RealTimeService {
     });
   }
 
-  public sendMessage(conversation: InboxConversation, body: string) {
-    this.xmpp.sendMessage(conversation, body);
+  public sendMessage(conversation: InboxConversation, body: string): string {
+    return this.xmpp.sendMessage(conversation, body);
   }
 
   public resendMessage(conversation: InboxConversation, message: InboxMessage) {
@@ -146,6 +146,7 @@ export class RealTimeService {
   }
 
   private trackSendFirstMessage(conversation: InboxConversation) {
+    const searchId = sessionStorage.getItem(SEARCHID_STORAGE_NAME);
     const event: AnalyticsEvent<SendFirstMessage> = {
       name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
       eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -158,6 +159,11 @@ export class RealTimeService {
       }
     };
 
+    if (searchId) {
+      event.attributes.searchId = searchId;
+    }
+
     this.analyticsService.trackEvent(event);
+    sessionStorage.removeItem(SEARCHID_STORAGE_NAME);
   }
 }

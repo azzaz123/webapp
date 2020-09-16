@@ -33,4 +33,8 @@ export interface ViewOthersItemCGDetail {
    * Identifier of the screen that the item was viewed from
    */
   screenId: number;
+  /**
+   * Identifier of the state of the view
+   */
+  state?: string;
 }

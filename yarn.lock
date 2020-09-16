@@ -1846,12 +1846,6 @@ alt-sasl-digest-md5@^1.0.0:
     create-hash "^1.1.0"
     randombytes "^2.0.1"
 
-"angular2-moment@https://github.com/Wallapop/angular2-moment#2.2.0":
-  version "2.2.0"
-  resolved "https://github.com/Wallapop/angular2-moment#1214d11b4bc5facf1da2c08ad8f24d3f82a72917"
-  dependencies:
-    moment "^2.16.0"
-
 angular2-uuid@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/angular2-uuid/-/angular2-uuid-1.1.1.tgz#72f03cd532b7f40032eb1ecfb9f8457384be956e"
@@ -1943,10 +1937,6 @@ app-root-path@^2.2.1:
 appboy-web-sdk@2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/appboy-web-sdk/-/appboy-web-sdk-2.2.4.tgz#f4f3915e3c47ff856baaf73495e6f4b788d01bae"
-
-appboy-web-sdk@^2.4.3:
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/appboy-web-sdk/-/appboy-web-sdk-2.4.3.tgz#b268acb3c7e02a19cc6c4d2bee0b754516bac8ef"
 
 aproba@^1.0.3, aproba@^1.1.1:
   version "1.2.0"
@@ -6761,9 +6751,10 @@ mkdirp@~0.5.1, mkdirp@~0.5.x:
   dependencies:
     minimist "^1.2.5"
 
-moment@^2.16.0:
-  version "2.22.2"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+moment@^2.26.0:
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.26.0.tgz#5e1f82c6bafca6e83e808b30c8705eed0dcbd39a"
+  integrity sha512-oIixUO+OamkUkwjhAVE18rAMfRJNsNe/Stid/gwHSOfHrOtw9EhAY2AHvdKZ/k/MggcYELFCJz/Sn2pL8b8JMw==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -6776,9 +6767,9 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
-"mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#0.19.1":
+"mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#0.32.0":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#5654de17a5f1f06afdd5645541913c3ef99054fa"
+  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#4c2d9d0640eb4d46bd81935a8324cf39661123f6"
 
 ms@0.7.1:
   version "0.7.1"
@@ -9245,6 +9236,11 @@ source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0, source-map@~0.6.1:
 sourcemap-codec@^1.4.4, sourcemap-codec@^1.4.8:
   version "1.4.8"
   resolved "https://registry.yarnpkg.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
+
+spain-id@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/spain-id/-/spain-id-1.0.9.tgz#ef117cfb764ac03e406677375e22dba8874a4ea1"
+  integrity sha512-f39pTy8Y+uEOijWwT4D2lUPoyJA2Nb+46cEvV8RS29xmraLqHEWp/nE7gkQGG+fQJvDcGTtAlAfyGGClyiy9vA==
 
 spdx-correct@^3.0.0:
   version "3.0.0"

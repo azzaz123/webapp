@@ -19,6 +19,9 @@
 html, body {
   font-size: $font-size-base-walla;
   height: 100%;
+  &.blocked-page {
+    overflow: hidden;
+  }
 }
 
 body {

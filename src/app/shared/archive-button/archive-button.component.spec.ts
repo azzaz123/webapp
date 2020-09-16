@@ -35,8 +35,8 @@ describe('ArchiveButtonComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveButtonComponent);
     component = fixture.componentInstance;
-    callsService = TestBed.get(CallsService);
-    trackingService = TestBed.get(TrackingService);
+    callsService = TestBed.inject(CallsService);
+    trackingService = TestBed.inject(TrackingService);
     fixture.detectChanges();
   });
 

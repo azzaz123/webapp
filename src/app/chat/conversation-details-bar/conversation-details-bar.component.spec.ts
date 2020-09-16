@@ -6,7 +6,6 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
 import { Observable, of, throwError } from 'rxjs';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MomentModule } from 'angular2-moment';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EventService } from '../../core/event/event.service';
@@ -67,7 +66,7 @@ describe('ConversationDetailsBarComponent', () => {
   let realTime: RealTimeService;
   let eventService: EventService;
   let toastService: ToastService;
-  let itemService: MockItemService;
+  let itemService: ItemService;
   let userService: UserService;
   let trackingService: TrackingService;
   let modalService: NgbModal;
@@ -80,7 +79,6 @@ describe('ConversationDetailsBarComponent', () => {
       imports: [
         SharedModule,
         NgbModule,
-        MomentModule,
         NgxPermissionsModule.forRoot()
       ],
       declarations: [ConversationDetailsBarComponent],
@@ -115,16 +113,16 @@ describe('ConversationDetailsBarComponent', () => {
     fixture = TestBed.createComponent(ConversationDetailsBarComponent);
     component = fixture.componentInstance;
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
-    realTime = TestBed.get(RealTimeService);
-    eventService = TestBed.get(EventService);
-    userService = TestBed.get(UserService);
-    trackingService = TestBed.get(TrackingService);
-    itemService = TestBed.get(ItemService);
-    toastService = TestBed.get(ToastService);
-    modalService = TestBed.get(NgbModal);
-    blockUserService = TestBed.get(BlockUserService);
-    blockUserXmppService = TestBed.get(BlockUserXmppService);
-    conversationService = TestBed.get(InboxConversationService);
+    realTime = TestBed.inject(RealTimeService);
+    eventService = TestBed.inject(EventService);
+    userService = TestBed.inject(UserService);
+    trackingService = TestBed.inject(TrackingService);
+    itemService = TestBed.inject(ItemService);
+    toastService = TestBed.inject(ToastService);
+    modalService = TestBed.inject(NgbModal);
+    blockUserService = TestBed.inject(BlockUserService);
+    blockUserXmppService = TestBed.inject(BlockUserXmppService);
+    conversationService = TestBed.inject(InboxConversationService);
   });
 
   it('should create', () => {

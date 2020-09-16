@@ -37,10 +37,10 @@ describe('RemoteConsoleService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(RemoteConsoleService);
-    remoteConsoleClientService = TestBed.get(RemoteConsoleClientService);
-    userService = TestBed.get(UserService);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(RemoteConsoleService);
+    remoteConsoleClientService = TestBed.inject(RemoteConsoleClientService);
+    userService = TestBed.inject(UserService);
 
     service.deviceId = DEVICE_ID;
   });
@@ -54,7 +54,10 @@ describe('RemoteConsoleService', () => {
       'browser_version': BROWSER_VERSION,
       'user_id': USER_ID,
       'feature_flag': true,
-      'app_version': service.getReleaseVersion(APP_VERSION)
+      'app_version': service.getReleaseVersion(APP_VERSION),
+      'ping_time_ms': navigator['connection']['rtt'],
+      'connection_type': '',
+      'session_id': undefined,
     };
   });
 
@@ -247,6 +250,25 @@ describe('RemoteConsoleService', () => {
     });
   });
 
+  describe('sendMessageAckFailed', () => {
+
+    it('should send metric if send message is failed', () => {
+      const MESSAGE_ID = 'MESSAGE_ID';
+      const DESCRIPTION = 'MESSAGE_ID';
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(4000);
+
+      service.sendMessageAckFailed(MESSAGE_ID, DESCRIPTION);
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'message_id': MESSAGE_ID,
+        'metric_type': MetricTypeEnum.MESSAGE_SENT_ACK_FAILED,
+        'description': DESCRIPTION
+      });
+    });
+  });
+
   describe('sendDuplicateConversations', () => {
 
     it('should call duplicated conversation conection with parameters', () => {
@@ -258,21 +280,45 @@ describe('RemoteConsoleService', () => {
       spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000);
 
-      service.sendDuplicateConversations(LOCAL_USER_ID, LOAD_MORE_CONVERSATIONS, CONVERSATIONS_BY_ID);
+      service.sendDuplicateConversations(USER_ID, LOAD_MORE_CONVERSATIONS, CONVERSATIONS_BY_ID);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        'timestamp': 4000,
-        'client': 'WEB',
-        'device_id': DEVICE_ID,
-        'browser': BROWSER,
-        'browser_version': BROWSER_VERSION,
-        'user_id': LOCAL_USER_ID,
-        'feature_flag': true,
-        'app_version': service.getReleaseVersion(APP_VERSION),
+        ...commonLog,
         'metric_type': MetricTypeEnum.DUPLICATE_CONVERSATION,
         'message': 'send log when user see duplicate conversation in inbox',
         'call_method_client': LOAD_MORE_CONVERSATIONS,
         'conversations_count_by_id': JSON.stringify({ 'xa4ld642': 2 })
+      });
+    });
+  });
+
+  describe('sendConnectionChatFailed', () => {
+
+    it('should call connection failed if inbox return error', () => {
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(4000);
+
+      service.sendConnectionChatFailed('inbox');
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
+        'description': 'Get inbox is failed',
+        'xmpp_connected': false
+      });
+    });
+
+    it('should call connection failed if inbox return error', () => {
+      spyOn(remoteConsoleClientService, 'info');
+      spyOn(Date, 'now').and.returnValues(4000);
+
+      service.sendConnectionChatFailed('xmpp');
+
+      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+        ...commonLog,
+        'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
+        'description': 'Connection xmpp is failed',
+        'xmpp_connected': true
       });
     });
   });
@@ -537,7 +583,6 @@ describe('RemoteConsoleService', () => {
         ...commonLog,
         'metric_type': MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
         'message': '',
-        'ping_time_ms': navigator['connection']['rtt']
       });
     }));
   });
