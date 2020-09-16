@@ -108,19 +108,19 @@ describe('CartExtrasProComponent', () => {
       country: new FormControl(),
       email: new FormControl(),
       name: new FormControl(),
-      phone: new FormControl(),
       postal_code: new FormControl(),
       street: new FormControl(),
       surname: new FormControl(),
-      id: new FormControl()
+      id: new FormControl(),
+      type: new FormControl()
     });
-    cartService = TestBed.get(CartService);
-    paymentService = TestBed.get(PaymentService);
-    errorsService = TestBed.get(ErrorsService);
-    router = TestBed.get(Router);
-    trackingService = TestBed.get(TrackingService);
-    stripeService = TestBed.get(StripeService);
-    eventService = TestBed.get(EventService);
+    cartService = TestBed.inject(CartService);
+    paymentService = TestBed.inject(PaymentService);
+    errorsService = TestBed.inject(ErrorsService);
+    router = TestBed.inject(Router);
+    trackingService = TestBed.inject(TrackingService);
+    stripeService = TestBed.inject(StripeService);
+    eventService = TestBed.inject(EventService);
     fixture.detectChanges();
   });
 

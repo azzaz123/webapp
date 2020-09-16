@@ -76,10 +76,11 @@ export interface BillingInfoResponse {
   email: string;
   id: string;
   name: string;
-  phone: string;
   postal_code: string;
   street: string;
   surname: string;
+  type: string;
+  phone?: string;
 }
 
 export interface FinancialCard {
@@ -147,11 +148,31 @@ export interface PaymentMethodResponse {
 
 export interface PaymentMethodCardResponse {
   brand: string;
-  default: boolean;
+  invoices_default: boolean;
   expiration_month: number;
   expiration_year: number;
   id: string;
   last_digits: string;
+}
+
+export interface SetupIntent {
+  cancellation_reason: string;
+  client_secret: string;
+  created: number;
+  description: string;
+  id: string;
+  last_setup_error: number;
+  livemode: boolean;
+  next_action: string;
+  object: string;
+  payment_method: string;
+  payment_method_types: string[];
+  status: string;
+  usage: string;
+}
+
+export interface SetupIntentResponse {
+  setupIntent: SetupIntent;
 }
 
 export interface Order {

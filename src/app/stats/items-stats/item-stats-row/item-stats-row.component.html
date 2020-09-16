@@ -6,7 +6,7 @@
       <div class="title">{{item.title}}</div>
     </div>
     <div class="col-2 col-date">
-      <span>{{item.publishedDate | amDateFormat:momentConfig}}</span>
+      <span>{{item.publishedDate | date:momentConfig}}</span>
     </div>
     <div class="col-1 col-counters">
       <div class="counters" ngbTooltip="Views" i18n-ngbTooltip placement="top">
@@ -67,7 +67,7 @@
     <div class="graphs-container graph-info" *ngIf="item.featured">
       <h2 i18n>This product is Featured</h2>
       <p class="note" i18n>You will get more views, chats and more interested people.</p>
-      <p class="bump-note" i18n>Your feature ends on {{item.bumpExpiringDate | amDateFormat:momentConfig}}</p>
+      <p class="bump-note" i18n>Your feature ends on {{item.bumpExpiringDate | date:momentConfig}}</p>
     </div>
   </div>
 </div>

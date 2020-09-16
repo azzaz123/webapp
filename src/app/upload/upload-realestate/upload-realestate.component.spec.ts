@@ -116,13 +116,13 @@ describe('UploadRealestateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadRealestateComponent);
     component = fixture.componentInstance;
-    errorService = TestBed.get(ErrorsService);
-    router = TestBed.get(Router);
-    trackingService = TestBed.get(TrackingService);
-    realestateKeysService = TestBed.get(RealestateKeysService);
-    modalService = TestBed.get(NgbModal);
-    itemService = TestBed.get(ItemService);
-    analyticsService = TestBed.get(AnalyticsService);
+    errorService = TestBed.inject(ErrorsService);
+    router = TestBed.inject(Router);
+    trackingService = TestBed.inject(TrackingService);
+    realestateKeysService = TestBed.inject(RealestateKeysService);
+    modalService = TestBed.inject(NgbModal);
+    itemService = TestBed.inject(ItemService);
+    analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
 
@@ -329,7 +329,7 @@ describe('UploadRealestateComponent', () => {
             condition: MOCK_REALESTATE.condition
           }
         };
-        editEvent.response.content = editResponse;
+        editEvent.response = editResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();
@@ -366,7 +366,7 @@ describe('UploadRealestateComponent', () => {
             condition: MOCK_REALESTATE.condition
           }
         };
-        uploadEvent.response.content = uploadResponse;
+        uploadEvent.response = uploadResponse;
         spyOn(analyticsService, 'trackEvent');
 
         component.ngOnInit();

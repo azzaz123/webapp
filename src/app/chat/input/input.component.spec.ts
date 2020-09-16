@@ -26,6 +26,8 @@ class MessageServiceMock {
 
 describe('Component: Input', () => {
 
+  const MESSAGE_ID = 'MESSAGE_ID';
+
   let component: InputComponent;
   let messageService: MessageService;
   let fixture: ComponentFixture<InputComponent>;
@@ -59,12 +61,15 @@ describe('Component: Input', () => {
     });
     fixture = TestBed.createComponent(InputComponent);
     component = TestBed.createComponent(InputComponent).componentInstance;
-    messageService = TestBed.get(MessageService);
-    eventService = TestBed.get(EventService);
-    trackingService = TestBed.get(TrackingService);
-    remoteConsoleService = TestBed.get(RemoteConsoleService);
-    deviceService = TestBed.get(DeviceDetectorService);
-    spyOn(messageService, 'send');
+    messageService = TestBed.inject(MessageService);
+    eventService = TestBed.inject(EventService);
+    trackingService = TestBed.inject(TrackingService);
+    remoteConsoleService = TestBed.inject(RemoteConsoleService);
+    deviceService = TestBed.inject(DeviceDetectorService);
+  });
+
+  beforeEach(() => {
+    spyOn(messageService, 'send').and.returnValue(MESSAGE_ID);
   });
 
   describe('ngOnInit', () => {
@@ -98,6 +103,7 @@ describe('Component: Input', () => {
       spyOn(trackingService, 'track');
       spyOn(remoteConsoleService, 'sendMessageTimeout');
       spyOn(remoteConsoleService, 'sendAcceptTimeout');
+      spyOn(component.clickSentMessage, 'emit');
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       component.currentConversation = conversation;
     });
@@ -114,6 +120,7 @@ describe('Component: Input', () => {
         thread_id: conversation.id
       });
       expect(trackingService.track).toHaveBeenCalledTimes(1);
+      expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
     });
 
     it('should call the send method and track the SEND_BUTTON event if texts is present with spaces', () => {
@@ -128,6 +135,7 @@ describe('Component: Input', () => {
         thread_id: conversation.id
       });
       expect(trackingService.track).toHaveBeenCalledTimes(1);
+      expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if texts is empty', () => {
@@ -177,6 +185,7 @@ describe('Component: Input', () => {
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalled();
       expect(trackingService.track).toHaveBeenCalled();
+      expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains correct and wrong link at the same time',
@@ -188,6 +197,7 @@ describe('Component: Input', () => {
         expect(EVENT.preventDefault).toHaveBeenCalled();
         expect(messageService.send).toHaveBeenCalled();
         expect(trackingService.track).toHaveBeenCalled();
+        expect(component.clickSentMessage.emit).toHaveBeenCalledWith(MESSAGE_ID);
       });
   });
 

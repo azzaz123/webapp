@@ -73,9 +73,9 @@ describe('ItemService', () => {
         I18nService
       ]
     });
-    service = TestBed.get(ItemService);
-    httpMock = TestBed.get(HttpTestingController);
-    eventService = TestBed.get(EventService);
+    service = TestBed.inject(ItemService);
+    httpMock = TestBed.inject(HttpTestingController);
+    eventService = TestBed.inject(EventService);
     spyOn(UUID, 'UUID').and.returnValues('1', '2');
   });
 
@@ -749,10 +749,10 @@ describe('ItemService', () => {
   describe('cancelAutorenew', () => {
     it('should cancel the item bump autorenew', () => {
       const expectedUrl = `${environment.baseUrl}${PROTOOL_API_URL}/autorenew/update`;
-      const expectedBody = {
+      const expectedBody = [{
         item_id: ITEM_ID,
         autorenew: false
-      };
+      }];
 
       service.cancelAutorenew(ITEM_ID).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);

@@ -1,25 +1,23 @@
-
-import {of as observableOf,  Observable, throwError } from 'rxjs';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { CurrentConversationComponent } from './current-conversation.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 import { InboxMessage, MessageStatus, MessageType } from '../model/inbox-message';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { EventService } from '../../core/event/event.service';
-import { ToastrService } from 'ngx-toastr';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { InboxConversationService } from '../service';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { ConversationServiceMock } from '../../../tests';
+import { ConversationServiceMock, MockRemoteConsoleService } from '../../../tests';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
+import { DateCalendarPipe } from 'app/shared/pipes';
+import { RemoteConsoleService } from '../../core/remote-console';
 
 class MockConversationService {
   public loadMoreMessages() {
@@ -37,12 +35,12 @@ describe('CurrentConversationComponent', () => {
   let realTime: RealTimeService;
   let eventService: EventService;
   let conversationService: InboxConversationService;
+  let remoteConsoleService: RemoteConsoleService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         NgbModule,
-        MomentModule,
         NgxPermissionsModule.forRoot()
       ],
       declarations: [CurrentConversationComponent],
@@ -51,6 +49,8 @@ describe('CurrentConversationComponent', () => {
         { provide: RealTimeService, useClass: RealTimeServiceMock },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: InboxConversationService, useClass: ConversationServiceMock },
+        DateCalendarPipe,
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         I18nService
       ]
     });
@@ -58,9 +58,10 @@ describe('CurrentConversationComponent', () => {
     component = fixture.componentInstance;
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
 
-    realTime = TestBed.get(RealTimeService);
-    eventService = TestBed.get(EventService);
-    conversationService = TestBed.get(InboxConversationService);
+    realTime = TestBed.inject(RealTimeService);
+    eventService = TestBed.inject(EventService);
+    conversationService = TestBed.inject(InboxConversationService);
+    remoteConsoleService = TestBed.inject(RemoteConsoleService);
   });
 
   describe('ngOnInit', () => {
@@ -300,6 +301,44 @@ describe('CurrentConversationComponent', () => {
       component.navigationBack();
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CURRENT_CONVERSATION_SET, null);
+    });
+  });
+
+  describe('clickSendMessage', () => {
+
+    beforeEach(() => spyOn(remoteConsoleService, 'sendMessageAckFailed'));
+
+    it('should send message is not send for pending messages', fakeAsync(() => {
+      const MESSAGE_ID = 'MESSAGE_ID';
+      const message = new InboxMessage(MESSAGE_ID, 'message_thread', 'text', 'user_id', true, new Date(),
+        MessageStatus.PENDING, MessageType.TEXT);
+      component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
+      component.currentConversation.messages = [message];
+
+      component.clickSendMessage(MESSAGE_ID);
+
+      tick(component.MESSAGE_METRIC_DELAY);
+
+      expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(MESSAGE_ID, 'message is not send after 5000ms');
+    }));
+  });
+
+  describe('restoreConnection', () => {
+
+    beforeEach(() => {
+      spyOn(remoteConsoleService, 'sendMessageAckFailed');
+      component.ngOnInit();
+    });
+
+    it('should send metric message is not sent after restoring metric', () => {
+      const MESSAGE_ID = 'MESSAGE_ID';
+      const message = new InboxMessage(MESSAGE_ID, 'message_thread', 'text', 'user_id', true, new Date(),
+        MessageStatus.PENDING, MessageType.TEXT);
+      component.currentConversation.messages = [message];
+
+      eventService.emit(EventService.CONNECTION_RESTORED);
+
+      expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(MESSAGE_ID, 'pending messages after restored connection');
     });
   });
 });

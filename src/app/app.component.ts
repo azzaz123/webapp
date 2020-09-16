@@ -5,14 +5,6 @@ import { DomSanitizer, Title } from '@angular/platform-browser';
 import { DOCUMENT } from "@angular/common";
 import { configMoment } from './config/moment.config';
 import { configIcons } from './config/icons.config';
-
-
-
-
-
-
-
-
 import { MatIconRegistry } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
@@ -27,7 +19,6 @@ import { MessageService } from './chat/service/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
@@ -37,6 +28,7 @@ import { InboxService } from './chat/service';
 import { Subscription } from 'rxjs';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
+import { DidomiService } from './core/didomi/didomi.service';
 
 @Component({
   selector: 'tsl-root',
@@ -74,12 +66,12 @@ export class AppComponent implements OnInit {
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
-              private modalService: NgbModal,
               private connectionService: ConnectionService,
               private paymentService: PaymentService,
               private callService: CallsService,
               private stripeService: StripeService,
-              private analyticsService: AnalyticsService) {
+              private analyticsService: AnalyticsService,
+              private didomiService: DidomiService) {
     this.config();
   }
 
@@ -99,10 +91,14 @@ export class AppComponent implements OnInit {
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
-
-    __cmp('init', quancastOptions[this.i18n.locale]);
+    this.didomiService.initialize();
   }
 
+  public onViewIsBlocked(): void {		
+    this.renderer.addClass(document.body, 'blocked-page');
+    this.renderer.addClass(document.body.parentElement, 'blocked-page');
+  }
+  
   private updateUrlAndSendAnalytics() {
     this.router.events.pipe(distinctUntilChanged((previous: any, current: any) => {
       if (current instanceof NavigationEnd) {

@@ -32,7 +32,7 @@ describe('EditPasswordComponent', () => {
     fixture = TestBed.createComponent(EditPasswordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    modalService = TestBed.get(NgbModal);
+    modalService = TestBed.inject(NgbModal);
   });
 
   describe('openModal', () => {

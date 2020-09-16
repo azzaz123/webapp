@@ -15,8 +15,8 @@ describe('UserReviewService', () => {
       providers: [UserReviewService],
       imports: [HttpClientTestingModule]
     });
-    service = TestBed.get(UserReviewService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(UserReviewService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   describe('getPaginationReviews', () => {

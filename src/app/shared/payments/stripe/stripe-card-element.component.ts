@@ -12,8 +12,8 @@ import { CartBase } from '../../catalog/cart/cart-base';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from '../../profile/credit-card-info/financial-card';
-import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
-import { ToastrService } from 'ngx-toastr';
+import { PaymentMethodResponse, SetupIntentResponse, SetupIntent } from '../../../core/payments/payment.interface';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { Tier } from '../../../core/subscriptions/subscriptions.interface';
 import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
 
@@ -51,6 +51,7 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
   @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
   @Output() onStripeCardCreate: EventEmitter<PaymentMethodResponse> = new EventEmitter();
+  @Output() onStripeSetDefaultCard: EventEmitter<SetupIntent> = new EventEmitter();
   @Output() onClickUseSavedCard = new EventEmitter();
   @Output() onFocusCard = new EventEmitter<boolean>();
 
@@ -63,7 +64,7 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
   constructor(private cd: ChangeDetectorRef,
               private i18n: I18nService,
               private stripeService: StripeService,
-              private toastrService: ToastrService) {
+              private toastService: ToastService) {
   }
 
   ngAfterViewInit() {
@@ -140,7 +141,7 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
     const { token, error } = await this.stripeService.createToken(this.card);
 
     if (error) {
-      this.toastrService.error(error.message);
+      this.toastService.show({text:error.message, type:'error'});
     } else {
       this.stripeCardToken.emit(token);
     }
@@ -155,6 +156,20 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
         this.newLoading = false;
       }
     }).catch(() => this.newLoading = false);
+  }
+
+  public setDefaultCard() {
+    this.newLoading = true;
+    this.stripeService.getSetupIntent().subscribe((clientSecret: any) => {
+      this.stripeService.createDefaultCard(clientSecret.setup_intent, {card: this.card}).then((result: any) => {
+        this.newLoading = false;
+        if (result.setupIntent && result.setupIntent.payment_method) {
+          this.onStripeSetDefaultCard.emit(result.setupIntent);
+        } else {
+          this.error = result.error.message;
+        }
+      }).catch(() => this.newLoading = false);
+    });
   }
 
   public get model(): boolean {

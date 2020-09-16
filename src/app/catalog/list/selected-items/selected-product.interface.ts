@@ -9,3 +9,12 @@ export interface OrderEvent {
   order: Order[];
   total: number;
 }
+
+export enum STATUS {
+  SOLD = 'sold',
+  PUBLISHED = 'published',
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  SELECTED = 'selected',
+  ONHOLD = 'onhold'
+}

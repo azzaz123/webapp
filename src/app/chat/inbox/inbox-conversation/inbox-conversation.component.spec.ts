@@ -3,15 +3,16 @@
 import { InboxConversationComponent } from './inbox-conversation.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MomentModule } from 'angular2-moment';
 import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../../tests/inbox.fixtures.spec';
-import { INBOX_ITEM_STATUSES } from '../../model/inbox-item';
+import { InboxItemStatus } from '../../model/inbox-item';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { InboxConversationService } from '../../service';
 import { InboxConversationServiceMock } from '../../../../tests';
 import { of } from 'rxjs';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '../../model';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { DateCalendarPipe } from 'app/shared/pipes';
+import { CommonModule } from '@angular/common';
 
 describe('Component: Conversation', () => {
   let inboxConversationService: InboxConversationService;
@@ -21,13 +22,14 @@ describe('Component: Conversation', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MomentModule,
+        CommonModule,
         NgxPermissionsModule.forRoot()
       ],
       declarations: [InboxConversationComponent],
       providers: [
         I18nService,
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
+        DateCalendarPipe
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -38,7 +40,7 @@ describe('Component: Conversation', () => {
     fixture = TestBed.createComponent(InboxConversationComponent);
     component = fixture.componentInstance;
     component.conversation = CREATE_MOCK_INBOX_CONVERSATION();
-    inboxConversationService = TestBed.get(InboxConversationService);
+    inboxConversationService = TestBed.inject(InboxConversationService);
     fixture.detectChanges();
   });
 
@@ -81,14 +83,14 @@ describe('Component: Conversation', () => {
       expect(component.conversation.cannotChat).toBe(true);
     });
 
-    it('should set conversation.cannotChat to FALSE when the conversation item is not available', () => {
-      component.conversation.item.status = INBOX_ITEM_STATUSES.notAvailable;
+    it('should set conversation.cannotChat to TRUE when the conversation item is not available', () => {
+      component.conversation.item.status = InboxItemStatus.NOT_AVAILABLE;
 
-      expect(component.conversation.cannotChat).toBe(false);
+      expect(component.conversation.cannotChat).toBe(true);
     });
 
     it('should set conversation.cannotChat to FALSE when none of the above conditions are met', () => {
-      component.conversation.item.status = INBOX_ITEM_STATUSES.available;
+      component.conversation.item.status = InboxItemStatus.PUBLISHED;
       component.conversation.user.blocked = false;
       component.conversation.user.available = true;
 

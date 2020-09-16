@@ -22,8 +22,8 @@ describe('CarSuggestionsService', () => {
       providers: [CarSuggestionsService],
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.get(CarSuggestionsService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(CarSuggestionsService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

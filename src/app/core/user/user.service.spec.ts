@@ -113,16 +113,16 @@ describe('Service: User', () => {
         }
       ]
     });
-    service = TestBed.get(UserService);
-    haversineService = TestBed.get(HaversineService);
-    accessTokenService = TestBed.get(AccessTokenService);
+    service = TestBed.inject(UserService);
+    haversineService = TestBed.inject(HaversineService);
+    accessTokenService = TestBed.inject(AccessTokenService);
     accessTokenService.storeAccessToken(null);
-    event = TestBed.get(EventService);
-    cookieService = TestBed.get(CookieService);
-    permissionService = TestBed.get(NgxPermissionsService);
-    featureflagService = TestBed.get(FeatureflagService);
-    httpMock = TestBed.get(HttpTestingController);
-    eventService = TestBed.get(EventService);
+    event = TestBed.inject(EventService);
+    cookieService = TestBed.inject(CookieService);
+    permissionService = TestBed.inject(NgxPermissionsService);
+    featureflagService = TestBed.inject(FeatureflagService);
+    httpMock = TestBed.inject(HttpTestingController);
+    eventService = TestBed.inject(EventService);
   });
 
   afterEach(() => {
@@ -651,7 +651,7 @@ describe('Service: User', () => {
     it('should call addPermission', () => {
       spyOn(permissionService, 'addPermission').and.returnValue({});
 
-      service.setPermission('normal');
+      service.setPermission(MOCK_USER);
 
       expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS['normal']);
     });

@@ -4,7 +4,6 @@ import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { of, throwError } from 'rxjs';
 import { Message } from './message';
 import { ACCESS_TOKEN, MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
@@ -51,19 +50,20 @@ describe('RealTimeService', () => {
       ]
     });
 
-    service = TestBed.get(RealTimeService);
-    eventService = TestBed.get(EventService);
-    xmppService = TestBed.get(XmppService);
-    trackingService = TestBed.get(TrackingService);
-    remoteConsoleService = TestBed.get(RemoteConsoleService);
-    analyticsService = TestBed.get(AnalyticsService);
-    connectionService = TestBed.get(ConnectionService);
+    service = TestBed.inject(RealTimeService);
+    eventService = TestBed.inject(EventService);
+    xmppService = TestBed.inject(XmppService);
+    trackingService = TestBed.inject(TrackingService);
+    remoteConsoleService = TestBed.inject(RemoteConsoleService);
+    analyticsService = TestBed.inject(AnalyticsService);
+    connectionService = TestBed.inject(ConnectionService);
     appboy.initialize(environment.appboy);
   });
 
   describe('connect', () => {
     beforeEach(() => {
       spyOn(remoteConsoleService, 'sendConnectionTimeout').and.callThrough();
+      spyOn(remoteConsoleService, 'sendConnectionChatTimeout');
     });
 
     it('should not call xmpp.connect if user is connected', () => {
@@ -76,6 +76,7 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect$).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionChatTimeout).not.toHaveBeenCalled();
     });
 
     it('should call xmpp.connect and return success', () => {
@@ -86,6 +87,18 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect$).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
       expect(remoteConsoleService.sendConnectionTimeout).toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('xmpp', true);
+    });
+
+    it('should not call xmpp.connect and return failed', () => {
+      connectionService.isConnected = true;
+      spyOn(xmppService, 'connect$').and.returnValue(throwError(''));
+
+      service.connect(MOCK_USER.id, ACCESS_TOKEN);
+
+      expect(xmppService.connect$).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
+      expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('xmpp', false);
     });
 
     it('should NOT call xmpp.connect if user do not have internet connection', () => {
@@ -97,6 +110,7 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect$).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendConnectionChatTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call xmpp.connect if is already connected', () => {
@@ -269,10 +283,10 @@ describe('RealTimeService', () => {
       eventService.emit(EventService.MESSAGE_SENT, newConversation, inboxMessage.id);
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW, {
-          thread_id: newConversation.id,
-          message_id: inboxMessage.id,
-          item_id: newConversation.item.id
-        });
+        thread_id: newConversation.id,
+        message_id: inboxMessage.id,
+        item_id: newConversation.item.id
+      });
     });
 
     it('should call track with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
@@ -348,10 +362,18 @@ describe('RealTimeService', () => {
     });
 
     describe('if it`s the first message', () => {
-      it('should send the Send First Message event', () => {
-        const inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(),
+      let inboxMessage;
+      let inboxConversation;
+
+      beforeEach(() => {
+        inboxMessage = new InboxMessage('someId', 'conversationId', 'some text', USER_ID, true, new Date(),
           MessageStatus.SENT, MessageType.TEXT);
-        const inboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
+        inboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE();
+
+        inboxConversation.messages.push(inboxMessage);
+      });
+
+      it('should send the Send First Message event', () => {
         const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
           name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
           eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -363,12 +385,36 @@ describe('RealTimeService', () => {
             categoryId: inboxConversation.item.categoryId
           }
         };
-        inboxConversation.messages.push(inboxMessage);
+
         spyOn(analyticsService, 'trackEvent');
 
         eventService.emit(EventService.MESSAGE_SENT, inboxConversation, 'newMsgId');
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+
+      describe('and has searchId in sessionStorage', () => {
+        it('should send the Send First Message event with searchId', () => {
+          const searchId = '123456789';
+          const expectedEvent: AnalyticsEvent<SendFirstMessage> = {
+            name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
+            eventType: ANALYTIC_EVENT_TYPES.Other,
+            attributes: {
+              itemId: inboxConversation.item.id,
+              sellerUserId: inboxConversation.user.id,
+              conversationId: inboxConversation.id,
+              screenId: SCREEN_IDS.Chat,
+              categoryId: inboxConversation.item.categoryId,
+              searchId
+            }
+          };
+          spyOn(sessionStorage, 'getItem').and.returnValue(searchId);
+          spyOn(analyticsService, 'trackEvent');
+
+          eventService.emit(EventService.MESSAGE_SENT, inboxConversation, 'newMsgId');
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        });
       });
     });
 

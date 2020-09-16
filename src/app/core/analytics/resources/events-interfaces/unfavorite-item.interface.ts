@@ -20,7 +20,7 @@ export interface UnfavoriteItem {
   /**
    * Identifier of the screen that the item was unfavorited from
    */
-  screenId: 110 | 111 | 29 | 188 | 190 | 194 | 115;
+  screenId: 110 | 111 | 29 | 188 | 190 | 194 | 115 | 217;
   /**
    * If the item unfavorited is from a professional user
    */
@@ -41,4 +41,8 @@ export interface UnfavoriteItem {
    * If the item unfavorited is a bumped item
    */
   isBumped: boolean;
+  /**
+   * When the event is triggered in SavedSearchesNewVsOld screen (217), specify if it is in the 'new' results or 'old'
+   */
+  savedSearchResults?: string;
 }

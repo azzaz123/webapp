@@ -57,10 +57,10 @@ describe('UploadConfirmationModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadConfirmationModalComponent);
     component = fixture.componentInstance;
-    trackingService = TestBed.get(TrackingService);
-    itemService = TestBed.get(ItemService);
-    activeModal = TestBed.get(NgbActiveModal);
-    paymentService = TestBed.get(PaymentService);
+    trackingService = TestBed.inject(TrackingService);
+    itemService = TestBed.inject(ItemService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    paymentService = TestBed.inject(PaymentService);
   });
 
   describe('ngOnInit', () => {

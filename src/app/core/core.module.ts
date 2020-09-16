@@ -28,6 +28,8 @@ import { StripeService } from './stripe/stripe.service';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
 import { MobileBlockerModule } from './mobile-blocker/mobile-blocker.module';
 import { DevelopmentGuard } from './user/development.guard';
+import { DidomiService } from './didomi/didomi.service';
+import { TrustAndSafetyService } from './trust-and-safety/trust-and-safety.service';
 
 @NgModule({
   imports: [
@@ -77,7 +79,9 @@ export class CoreModule {
         ConnectionService,
         ProfileService,
         StripeService,
-        SubscriptionsService
+        SubscriptionsService,
+        DidomiService,
+        TrustAndSafetyService
       ]
     };
   }

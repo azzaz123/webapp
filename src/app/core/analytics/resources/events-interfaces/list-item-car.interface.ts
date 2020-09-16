@@ -18,6 +18,10 @@ export interface ListItemCar {
    */
   categoryId: number;
   /**
+   * Identifier of the subcategory that the item belongs to
+   */
+  subcategoryId?: number;
+  /**
    * Item price
    */
   salePrice: number;

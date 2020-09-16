@@ -4,7 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditSubscriptionModalComponent } from './edit-subscription-modal.component';
 import { MAPPED_SUBSCRIPTIONS, TIER } from '../../../../tests/subscriptions.fixtures.spec';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
 import { of } from 'rxjs';
@@ -28,7 +28,7 @@ describe('EditSubscriptionModalComponent', () => {
   let component: EditSubscriptionModalComponent;
   let fixture: ComponentFixture<EditSubscriptionModalComponent>;
   let activeModal: NgbActiveModal;
-  let toastrService: ToastrService;
+  let toastService: ToastService;
   let analyticsService: AnalyticsService;
   let eventService: EventService;
   let subscriptionsService: SubscriptionsService;
@@ -41,18 +41,6 @@ describe('EditSubscriptionModalComponent', () => {
         {
           provide: NgbActiveModal, useValue: {
             close() {
-            }
-          }
-        },
-        {
-          provide: ToastrService, useValue: {
-            error() {
-            },
-            show() {
-            },
-            i18nError() {
-            },
-            i18nSuccess() {
             }
           }
         },
@@ -87,13 +75,13 @@ describe('EditSubscriptionModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditSubscriptionModalComponent);
     component = fixture.componentInstance;
-    toastrService = TestBed.get(ToastrService);
-    activeModal = TestBed.get(NgbActiveModal);
-    modalService = TestBed.get(NgbModal);
-    eventService = TestBed.get(EventService);
-    subscriptionsService = TestBed.get(SubscriptionsService);
+    toastService = TestBed.inject(ToastService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    modalService = TestBed.inject(NgbModal);
+    eventService = TestBed.inject(EventService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
-    analyticsService = TestBed.get(AnalyticsService);
+    analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
 

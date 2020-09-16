@@ -29,6 +29,8 @@ import { ContinueSubscriptionModalComponent } from "./modals/continue-subscripti
 import { CheckSubscriptionInAppModalComponent } from "./modals/check-subscription-in-app-modal/check-subscription-in-app-modal.component";
 import { UnsubscribeInAppFirstModal } from "./modals/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component";
 import { SUBSCRIPTION_CATEGORIES } from '../../core/subscriptions/subscriptions.interface';
+import { UserService } from 'app/core/user/user.service';
+import { USER_DATA, MOCK_FULL_USER_NON_FEATURED, MOCK_USER, MOCK_FULL_USER } from '../../../tests/user.fixtures.spec';
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionsComponent;
@@ -38,6 +40,7 @@ describe('SubscriptionComponent', () => {
   let modalService: NgbModal;
   let router: Router;
   let analyticsService: AnalyticsService;
+  let userService: UserService;
   const componentInstance = {subscription: MAPPED_SUBSCRIPTIONS[0]};
   
   beforeEach(async(() => {
@@ -69,6 +72,13 @@ describe('SubscriptionComponent', () => {
             }
           }
         },
+        {
+          provide: UserService, useValue: {
+            me() {
+              return of(USER_DATA);
+            }
+          }
+        },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
       ],
     schemas: [NO_ERRORS_SCHEMA]
@@ -77,13 +87,14 @@ describe('SubscriptionComponent', () => {
   }));
   
   beforeEach(() => {
-    modalService = TestBed.get(NgbModal);
+    modalService = TestBed.inject(NgbModal);
     fixture = TestBed.createComponent(SubscriptionsComponent);
     component = fixture.componentInstance;
-    subscriptionsService = TestBed.get(SubscriptionsService);
-    categoryService = TestBed.get(CategoryService);
-    router = TestBed.get(Router);
-    analyticsService = TestBed.get(AnalyticsService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
+    categoryService = TestBed.inject(CategoryService);
+    router = TestBed.inject(Router);
+    analyticsService = TestBed.inject(AnalyticsService);
+    userService = TestBed.inject(UserService);
     fixture.detectChanges();
   });
 
@@ -110,6 +121,15 @@ describe('SubscriptionComponent', () => {
 
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedPageViewEvent);
+    });
+
+    it('should set the user information', () => {
+      spyOn(userService, 'me').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(userService.me).toHaveBeenCalledTimes(1);
+      expect(component.user).toEqual(USER_DATA);
     });
 
     afterEach(() => {
@@ -153,7 +173,7 @@ describe('SubscriptionComponent', () => {
       expect(component.loading).toBe(false);
     });
 
-    it('should redirect to profile if action is present and subscription changed', fakeAsync(() => {
+    it('should redirect to subscriptions if action is present and user is featured', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve('add'),
         componentInstance: componentInstance
@@ -163,6 +183,21 @@ describe('SubscriptionComponent', () => {
 
       component.subscriptions = MAPPED_SUBSCRIPTIONS;
 
+      component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
+      tick(1000);
+
+      expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+    }));
+
+    it('should redirect to profile if action is present and subscription changed and user is not featured', fakeAsync(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve('add'),
+        componentInstance: componentInstance
+      });
+      spyOn(userService, 'me').and.returnValue(of(MOCK_FULL_USER));
+      spyOn(router, 'navigate');
+
+      component.user = MOCK_FULL_USER_NON_FEATURED;
       component.openSubscriptionModal(MAPPED_SUBSCRIPTIONS[0]);
       tick(1000);
 

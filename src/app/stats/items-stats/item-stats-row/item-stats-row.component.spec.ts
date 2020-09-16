@@ -5,8 +5,7 @@ import { ItemStatsService } from './item-stats-graph/item-stats.service';
 import { Observable, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../shared/pipes';
-import { DecimalPipe } from '@angular/common';
-import { MomentModule } from 'angular2-moment';
+import { DecimalPipe, CommonModule } from '@angular/common';
 import {
   ITEM_CONVERSATIONS,
   ITEM_COUNTERS_DATA,
@@ -27,7 +26,7 @@ describe('ItemStatsRowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MomentModule, NoopAnimationsModule],
+      imports: [CommonModule, NoopAnimationsModule],
       declarations: [ ItemStatsRowComponent, CustomCurrencyPipe ],
       providers: [
         DecimalPipe,
@@ -58,8 +57,8 @@ describe('ItemStatsRowComponent', () => {
     fixture = TestBed.createComponent(ItemStatsRowComponent);
     component = fixture.componentInstance;
     component.item = MOCK_ITEM_V3;
-    itemStatsService = TestBed.get(ItemStatsService);
-    itemService = TestBed.get(ItemService);
+    itemStatsService = TestBed.inject(ItemStatsService);
+    itemService = TestBed.inject(ItemService);
     fixture.detectChanges();
   });
 

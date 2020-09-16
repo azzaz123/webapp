@@ -40,8 +40,8 @@ describe('UnarchiveButtonComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UnarchiveButtonComponent);
     component = fixture.componentInstance;
-    callsService = TestBed.get(CallsService);
-    trackingService = TestBed.get(TrackingService);
+    callsService = TestBed.inject(CallsService);
+    trackingService = TestBed.inject(TrackingService);
     fixture.detectChanges();
   });
 

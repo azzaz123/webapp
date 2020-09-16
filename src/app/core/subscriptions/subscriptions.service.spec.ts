@@ -81,12 +81,12 @@ describe('SubscriptionsService', () => {
         I18nService
       ]
     });
-    service = TestBed.get(SubscriptionsService);
-    http = TestBed.get(HttpClient);
-    httpMock = TestBed.get(HttpTestingController);
-    userService = TestBed.get(UserService);
-    featureflagService = TestBed.get(FeatureflagService);
-    categoryService = TestBed.get(CategoryService);
+    service = TestBed.inject(SubscriptionsService);
+    http = TestBed.inject(HttpClient);
+    httpMock = TestBed.inject(HttpTestingController);
+    userService = TestBed.inject(UserService);
+    featureflagService = TestBed.inject(FeatureflagService);
+    categoryService = TestBed.inject(CategoryService);
     service.uuid = '1-2-3';
     spyOn(UUID, 'UUID').and.returnValue('1-2-3');
     spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
@@ -103,7 +103,8 @@ describe('SubscriptionsService', () => {
       const expectedUrl = `${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/1-2-3`;
       const expectedBody = {
         payment_method_id: paymentId,
-        product_subscription_id: subscriptionId
+        product_subscription_id: subscriptionId,
+        billing: false
       };
 
       service.newSubscription(subscriptionId, paymentId).subscribe();

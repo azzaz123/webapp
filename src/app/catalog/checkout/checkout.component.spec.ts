@@ -60,10 +60,10 @@ describe('CheckoutComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
-    router = TestBed.get(Router);
-    paymentService = TestBed.get(PaymentService);
-    route = TestBed.get(ActivatedRoute);
+    itemService = TestBed.inject(ItemService);
+    router = TestBed.inject(Router);
+    paymentService = TestBed.inject(PaymentService);
+    route = TestBed.inject(ActivatedRoute);
     spyCall = spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
     appboy.initialize(environment.appboy);
     fixture.detectChanges();

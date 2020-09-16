@@ -33,7 +33,7 @@ describe('UrgentCheckboxComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UrgentCheckboxComponent);
     component = fixture.componentInstance;
-    paymentService = TestBed.get(PaymentService);
+    paymentService = TestBed.inject(PaymentService);
   });
 
   describe('ngOnInit', () => {

@@ -15,10 +15,15 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <translationbundle lang="es">
-  <translation id="33149636091572968">Cargar más</translation>
+  <translation id="loadMoreButton">Cargar más</translation>
   <translation id="7579940623714391431">Borrar conversación</translation>
+  <translation id="deleteConversation">Borrar conversación</translation>
   <translation id="5762515103229902547">Se procederá a borrar la conversación.</translation>
+  <translation id="deleteConversationWarning">Se procederá a borrar la conversación.</translation>
+  <translation id="archiveConversationWarning">Se procederá a archivar la conversación.</translation>
   <translation id="2159130950882492111">Cancelar</translation>
+  <translation id="cancelButton">Cancelar</translation>
+  <translation id="deleteButton">Borrar</translation>
   <translation id="7022070615528435141">Borrar</translation>
   <translation id="7008439939460403347">Reportar</translation>
   <translation id="568597304214607466">Estoy reportando a este usuario porque...</translation>
@@ -36,7 +41,7 @@
   <translation id="7240635163184231751">Desbloquear usuario</translation>
   <translation id="4644715650405235071">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
   <translation id="3325766019344626759">No hay mensajes</translation>
-  <translation id="8032820066123493751">Nuevos mensajes</translation>
+  <translation id="newMessages">Nuevos mensajes</translation>
   <translation id="7443033219479243959">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
   <translation id="4896863464728200563">Escribe un mensaje...</translation>
   <translation id="3093507871243266697">Esperando red...</translation>
@@ -331,7 +336,6 @@
   <translation id="3258601590058086652">¿Tienes prisa para vender tu producto?</translation>
   <translation id="4495547321385209565">Diferencia tu producto durante 7 días en el muro para que sea más fácil de encontrar mediante el filtro "Urge"</translation>
   <translation id="4532380494593950343">Aquí podrás ver y editar los datos de tu perfil</translation>
-  <translation id="140771848071043686">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
   <translation id="6938753357996446484">Tus favoritos</translation>
   <translation id="7695212222770955574">Estos son los productos de wallapop que más te gustan</translation>
   <translation id="1339317612974362100">favoritos</translation>
@@ -346,7 +350,7 @@
   <translation id="124288245683167765">¡Márcalo como urgente!</translation>
   <translation id="1388549121916575785">Tu producto ya se ha subido y está marcado como urgente</translation>
   <translation id="6771710083447673223">Marcado como urgente</translation>
-  <translation id="6146618115870222180">Tus Mensajes</translation>
+  <translation id="yourMessages">Tus Mensajes</translation>
   <translation id="8848709900682152607">Marcar todo como Procesado</translation>
   <translation id="4749295647449765550">Procesado</translation>
   <translation id="1798778629973365531">Sin denuncias</translation>
@@ -503,14 +507,6 @@
   <translation id="4849465581526004216">destacados de país</translation>
   <translation id="8847634013548993288">destacado de país</translation>
   <translation id="8108541630841000132">Información de facturación</translation>
-  <translation id="6028371114637047813">Nombre</translation>
-  <translation id="4407559560004943843">Apellidos</translation>
-  <translation id="6765071518635771784">Nombre de la empresa</translation>
-  <translation id="9005249750227479148">Email de facturación</translation>
-  <translation id="643007923046147044">Teléfono de facturación</translation>
-  <translation id="6539741229179513116">Dirección de facturación</translation>
-  <translation id="3164629351326127839">CIF</translation>
-  <translation id="7450324673386885301">Código Postal</translation>
   <translation id="4464028962645674576">Activos <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>/<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="6474953774520959911">Los coches que están planeados no pueden ser destacados de nuevo. Puedes cancelar los destacados para estos productos o continuar destacando los otros.</translation>
   <translation id="4807588143683316694">Los coches que están planeados no pueden ser destacados de nuevo.</translation>
@@ -531,7 +527,6 @@
   <translation id="6348395677948023023">Subir coche</translation>
   <translation id="8458658926966860767">¿Estás seguro que quieres eliminar la información de facturación? </translation>
   <translation id="7092318893814699678">Sí, estoy seguro/a</translation>
-  <translation id="1250063669755603957">Eliminar información</translation>
   <translation id="773668064257926548">Eliminar tarjeta</translation>
   <translation id="8843627277100451781">¿Estas seguro que quieres eliminar la tarjeta?</translation>
   <translation id="4468071625554558577">Método de pago:</translation>
@@ -667,7 +662,7 @@
   <translation id="6818764209697915477">Destácalo desde <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></translation>
   <translation id="6821183586555063962">Este producto está Destacado</translation>
   <translation id="3879651736105644738">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
-  <translation id="916352071278248935">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amCalendar:momentConfig}}</ex></ph></translation>
+  <translation id="916352071278248935">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | dateCalendar:momentConfig}}</ex></ph></translation>
   <translation id="8413861205232330672">Todavía no disponemos de datos para este producto</translation>
   <translation id="8167775963255607742">
     Por sólo
@@ -771,7 +766,7 @@
   <translation id="3339021787040924237">Buscar en Todas las categorías</translation>
   <translation id="8886737317292020570">Archivar conversación</translation>
   <translation id="5298644184637702922">Esto archivará la conversación.</translation>
-  <translation id="1055686627716339120">Archivar</translation>
+  <translation id="archiveButton">Archivar</translation>
   <translation id="6288847433566396172">Desarchivar conversación</translation>
   <translation id="3205414127595653303">Esto desarchivará la cconversación.</translation>
   <translation id="1121513541518618634">Desarchivar</translation>
@@ -780,8 +775,8 @@
   <translation id="6105231501608810838">Servicio no disponible por el momento.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
             Inténtelo de nuevo más tarde.</translation>
   <translation id="7913053333994057167">Desarchivar conversación</translation>
-  <translation id="799485662157076328">Bandeja de Entrada</translation>
-  <translation id="2247942788262300865">Mensajes Archivados</translation>
+  <translation id="inboxBox">Bandeja de Entrada</translation>
+  <translation id="inboxArchivedBox">Mensajes Archivados</translation>
   <translation id="8721026914522212662">Archivado</translation>
   <translation id="3644199581629588381">Escoge el género de la prenda</translation>
   <translation id="45739481977493163">Talla</translation>
@@ -815,8 +810,8 @@
   <translation id="6184998176074927571" desc="La distancia entre el usuario y el item">
       <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km de ti
   </translation>
-  <translation id="7238711418435054042">Hemos encontrado algún problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
-  <translation id="265020643835790616">Hemos encontrado algún problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
+  <translation id="updateArchivedMessagesWarning">Hemos encontrado un problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
+  <translation id="updateInboxWarning">Hemos encontrado un problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
   <translation id="6721544969146753310">Gracias por la valoración</translation>
   <translation id="2094431645371030704">Precio financiado (opcional)</translation>
   <translation id="8147495527699050606">Precio final financiado</translation>
@@ -824,7 +819,8 @@
   <translation id="6904447978553402020">Precio al contado</translation>
   <translation id="blockedPersonError">Has bloqueado a esta persona. Para seguir charlando, desbloquéala</translation>
   <translation id="userIsNotAvailableWarning">Esta persona ya no es miembro de wallapop</translation>
-  <translation id="3753612046513951428">Este producto no está disponible</translation>
+  <translation id="itemIsNotAvailableWarning">El producto ha caducado o ha sido eliminado</translation>
+  <translation id="itemIsUnpublishedWarning">El producto incumple las normas de convivencia de wallapop</translation>
   <translation id="securityWarning">Por razones de seguridad, nunca compartas datos privados</translation>
   <translation id="682982254050004818">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
   <translation id="177886998911393770">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
@@ -906,12 +902,12 @@
   <translation id="6044974118925437441">Actualiza tu suscripción en función de los productos que quieras subir</translation>
   <translation id="1487803193155715207">Suscripciones PRO</translation>
   <translation id="1698114086921246480">Cancelar la suscripción</translation>
-  <translation id="3520858718490550964">Archivar conversación</translation>
-  <translation id="603154656968324663">Desarchivar conversación</translation>
-  <translation id="511133215426042486">Denunciar producto</translation>
-  <translation id="2311423194575383733">Reportar usuario</translation>
-  <translation id="8621433484657846443">Bloquear usuario</translation>
-  <translation id="7895174555296226408">Desbloquear usuario</translation>
+  <translation id="archiveConversation">Archivar conversación</translation>
+  <translation id="unarchiveConversation">Desarchivar conversación</translation>
+  <translation id="reportListing">Denunciar producto</translation>
+  <translation id="reportUser">Reportar usuario</translation>
+  <translation id="blockUser">Bloquear usuario</translation>
+  <translation id="unblockUser">Desbloquear usuario</translation>
   <translation id="5189929163900690785">Sí, quiero mantener mi suscripción</translation>
   <translation id="1355341408067809538">No, quiero cancelarla</translation>
   <translation id="6307606007112781268">Mantener suscripción</translation>
@@ -951,10 +947,10 @@
   <translation id="931255636742351800">Sin límite</translation>
   <translation id="5813721227215884251">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
   <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
-  <translation id="thirdVoiceReviewFirstMessage">Qué bien que hayas encontrado lo que buscabas </translation>
-  <translation id="thirdVoiceReviewSecondMessage">¿Cómo ha ido? Dedica un segundo a valorar al usuario, ¡tu opinión mejora nuestra comunidad!</translation>
+  <translation id="thirdVoiceReviewFirstMessage">Has encontrado lo que buscabas. ¡Genial!</translation>
+  <translation id="thirdVoiceReviewSecondMessage">¿Cómo ha ido? Valora tu experiencia con este usuario, será útil para nuestra comunidad.</translation>
   <translation id="thirdVoiceDoReview">Valorar</translation>
-  <translation id="thirdVoiceThanksForRating">¡Gracias por tu valoración!</translation>
+  <translation id="thirdVoiceThanksForRating">¡Gracias! Otras personas apreciarán tu valoración.</translation>
   <translation id="thirdVoiceDropPrice">El producto ha bajado de precio. ¿Quieres cerrar un trato?</translation>
   <translation id="949044872815747177">Gestionar desde la app</translation>
   <translation id="6488767812620715130"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Parece que quieres cambiar algo en tu suscripción<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
@@ -966,6 +962,7 @@
   <translation id="8945513634555081527">¿Por qué suscribirte a wallapop PRO?</translation>
   <translation id="6468756919468494280">Ventajas para quienes quieran vender más y mejor</translation>
   <translation id="ngb.alert.close">Cerrar</translation>
+  <translation id="ngb.toast.close-aria">Cerrar</translation>
   <translation id="ngb.carousel.previous">Anterior</translation>
   <translation id="ngb.carousel.next">Siguiente</translation>
   <translation id="ngb.datepicker.previous-month">Mes anterior</translation>
@@ -1017,12 +1014,6 @@
   <translation id="7360959010817146974">Debes actualizar tu suscripción <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>mediante la app de wallapop<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> si quieres publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph></translation>
   <translation id="3575157423161267350">Debes actualizar tu suscripción si quieres publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph></translation>
   <translation id="2475529887887098318"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Ya has llegado al límite de <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph> que puedes publicar con una cuenta gratuita.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
-  <translation id="1275264267936980927">Archivar conversación</translation>
-  <translation id="6744583700854319987">Desarchivar conversación</translation>
-  <translation id="7181016097805690972">Denunciar producto</translation>
-  <translation id="7184510579643662120">Reportar usuario</translation>
-  <translation id="5709935930083786813">Bloquear usuario</translation>
-  <translation id="4100915642762454461">Desbloquear usuario</translation>
   <translation id="5156014220156743328">Siguiente paso</translation>
 
   <!--Translations using keys-->
@@ -1031,6 +1022,11 @@
   <translation id="cardealerChangeCityPlan">Para cambiar tu plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
   <translation id="cardealerSubscribeCountryPlan">Para subscribirte a un plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
   <translation id="cardealerChangeCountryPlan">Para cambiar tu plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="CheckoutProCountryApplyAll">Aplicar a todos</translation>
+  <translation id="CheckoutProCityApplyAll">Aplicar a todos</translation>
+  <translation id="CheckoutProPlanningApplyAll">Programar todos</translation>
+  <translation id="SubscriptionsSlotItemPublishMore">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> <ph name="INTERPOLATION_1"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph> más</translation>
+  <translation id="ListComponentHeaderSubtitle">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
   <translation id="TooManyItemsModalButtonGoToSubscriptions">Elige una suscripción PRO</translation>
   <translation id="TooManyItemsModalButtonGoToTrial">Comenzar prueba gratuita</translation>
   <translation id="subscriptionNewModalUntilDate"><ph name="INTERPOLATION"><ex>{{0 | customCurrency}}</ex>{{0 | customCurrency}}</ph> hasta <ph name="INTERPOLATION_1"><ex>{{subscription.trial_days | dateUntilDay}}</ex>{{subscription.trial_days | dateUntilDay}}</ph></translation>
@@ -1040,10 +1036,94 @@
   <translation id="SubscriptionPriceDiscountMonthsFree"><ph name="INTERPOLATION"><ex>{{subscription?.tiers[0]?.discount_available.months}}</ex>{{subscription?.tiers[0]?.discount_available.months}}</ph> meses gratis</translation>
   <translation id="SubscriptionPriceDiscountDaysTrialFree">Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días!</translation>
   <translation id="TooManyItemsModalTryTrial">Para publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph>, prueba gratis wallapop PRO durante <ph name="INTERPOLATION_1"><ex>{{categorySubscription?.trial_days}}</ex>{{categorySubscription?.trial_days}}</ph> días.</translation>
-  <translation id="AddNewSubscriptionDaysFree"><ph name="INTERPOLATION"><ex>{{subscription.trial_days}}</ex>{{subscription.trial_days}}</ph> días gratis</translation>
   <translation id="AddNewModalSubscribeNow">¡Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días!</translation>
   <translation id="EditSubscriptionModalCancelSubscription">Quiero cancelar mi suscripción</translation>
   <translation id="EditSubscriptionModalCancelFreeTrial">Cancelar prueba gratuita</translation>
   <translation id="uploadFormSelectGender">Selecciona un género</translation>
   <translation id="uploadFormSubcategory">Subcategoría</translation>
+  <translation id="MissingPaymentMethodTitle">No hay un método de pago disponible</translation>
+  <translation id="MissingPaymentMethodSubtitle">No hay un método de pago disponible para que podamos renovar tu suscripción cuando caduque.</translation>
+  <translation id="PleaseAddCreditCard">Por favor, añade una tarjeta de crédito para no perder los beneficios de ser PRO</translation>
+  <translation id="Cancel">Cancelar</translation>
+  <translation id="DeleteCard">Eliminar</translation>
+  <translation id="ChangeCard">Cambiar tarjeta</translation>
+  <translation id="AddNewCreditCard">Añadir una tarjeta de crédito</translation>
+  <translation id="ConfirmPaymentMethod">Confirma tu método de pago</translation>
+  <translation id="ChargeThisCard">Quieres que se cobre en la tarjeta</translation>
+  <translation id="Yes">Sí</translation>
+  <translation id="ChangeSubscriptionCardTitle">Cambiar tarjeta para la suscripción</translation>
+  <translation id="SetDefaultCard">Establecer tarjeta por defecto</translation>
+  <translation id="SubscriptionCard">Tarjeta vinculada a suscripciones</translation>
+  <translation id="AddNewSubscriptionCard">Añadir nueva tarjeta de suscripción</translation>
+  <translation id="CurrentCards">Tarjetas guardadas</translation>
+  <translation id="AddNewCard">Añadir tarjeta</translation>
+  <translation id="RangeDatepickerHaveSelected">Has seleccionado </translation>
+  <translation id="RangeDatepickerCitybump">destacado de ciudad</translation>
+  <translation id="RangeDatepickerCountrybump">destacado de país</translation>
+  <translation id="RangeDatepickerCitybumps">destacados de ciudad</translation>
+  <translation id="RangeDatepickerCountrybumps">destacados de país</translation>
+  <translation id="Apply">Aplicar</translation>
+  <translation id="CheckoutProPlanning">Planificación</translation>
+  <translation id="ApplyAll">Aplicar a todos</translation>
+  <translation id="PlanAll">Planificar todos</translation>
+  <translation id="ProfileProBillingFormType">Estoy registrado/a como</translation>
+  <translation id="ProfileProBillingFormNatural">Persona física</translation>
+  <translation id="ProfileProBillingFormLegal">Persona jurídica</translation>
+  <translation id="FirstName">Nombre</translation>
+  <translation id="LastName">Apellidos</translation>
+  <translation id="CompanyName">Nombre de la empresa</translation>
+  <translation id="Email">E-mail de facturación</translation>
+  <translation id="BillingAddress">Dirección de facturación</translation>
+  <translation id="City">Ciudad</translation>
+  <translation id="PostalCode">Código postal</translation>
+  <translation id="Country">País</translation>
+  <translation id="CIFNumber">CIF</translation>
+  <translation id="NIFNumber">NIF</translation>
+  <translation id="Save">Guardar</translation>
+  <translation id="DeleteInformation">Eliminar información</translation>
+  <translation id="5875130684997376720">Facturación</translation>
+  <translation id="ChangeAddSubscriptionCardTitle">Añade una tarjeta de crédito</translation>
+  <translation id="SelectSavedCard">Seleccionar tarjeta guardada</translation>
+  <translation id="ChangeSelectSubscriptionCardTitle">Selecciona una tarjeta de crédito</translation>
+  <translation id="ChangeSubscriptionCardSubtitle">Será el método de pago vinculado a tu suscripción</translation>
+  <translation id="2341832243359741366">Seleccionar tarjeta guardada</translation>
+  <translation id="AddCard">Añadir tarjeta</translation>
+  <translation id="UseSavedCard">Utiliza tarjeta guardada</translation>
+  <translation id="ConfirmDeleteCard">Sí, eliminar tarjeta</translation>
+  <translation id="MobileBlockerTitle">Bonita pantalla, pero baja resolución.</translation>
+  <translation id="MobileBlockerSubtitle">Para visualizar este contenido, abre la app de wallapop o continúa desde un ordenador.</translation>
+  <translation id="SubscribeToPro">Suscríbete a wallapop PRO</translation>
+  <translation id="ChooseSubscription">Escoje una suscripción y lleva tus ventas al siguiente nivel.</translation>
+  <translation id="step1of3">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>1<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="HowManyProductsToUpload">¿Cuantos <ph name="INTERPOLATION"><ex>{{subscription.category_name.toLowerCase()}}</ex>{{subscription.category_name.toLowerCase()}}</ph> vas a subit a tu perfil?</translation>
+  <translation id="Unlimited">Ilimitado</translation>
+  <translation id="ContactUsDirectly">¿Tienes más de <ph name="INTERPOLATION"><ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name.toLowerCase()}}</ex>{{subscription.category_name.toLowerCase()}}</ph>? <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>Contáctanos directamente<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="CategoryPlan"><ph name="INTERPOLATION"><ex>Plan {{selectedTier.limit}}</ex>{{selectedTier.limit}}</ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex>{{subscription.category_name}}</ph></translation>
+  <translation id="UnlimitedPlan">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex>{{subscription.category_name}}</ph> ilimitado</translation>
+  <translation id="OneMonthFree">Un mes gratis</translation>
+  <translation id="MultipleMonthsFree"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.months}}</ex>{{selectedTier.discount_available.months}}</ph> meses gratis</translation>
+  <translation id="AddNewSubscriptionDaysFree"><ph name="INTERPOLATION"><ex>{{subscription.trial_days}}</ex>{{subscription.trial_days}}</ph> días gratis</translation>
+  <translation id="ThenPriceMonth">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex>{{selectedTier.price}}</ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex>{{selectedTier.currency}}</ph>/mes</translation>
+  <translation id="PriceMonth"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex>{{selectedTier.price}}</ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex>{{selectedTier.currency}}</ph>/mes</translation>
+  <translation id="ContinueToInvoice">Continuar a facturación</translation>
+  <translation id="step2of3">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="ReceiveInvoices">¿Quieres recibir facturas?</translation>
+  <translation id="Invoice">Facturación</translation>
+  <translation id="3086731599944442002">¿Necesitas una factura?</translation>
+  <translation id="ContinueToPayment">Continuar a pago</translation>
+  <translation id="BackToInvoice">Volver a facturación</translation>
+  <translation id="step3of3">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="Perfect">¡Perfecto!</translation>
+  <translation id="SubscriptionCreated">Te has suscrito correctamente. ¡Todo está preparado para incrementar tus ventas!</translation>
+  <translation id="InvoiceEmail">Pronto recibirás un e-mail con tu factura.</translation>
+  <translation id="GoToMyProfile">Ir a mi perfil</translation>
+  <translation id="EditInvoice">Editar mis datos de facturación</translation>
+  <translation id="step1of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>1<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="step2of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="step3of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="step4of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="InvoiceInformation">Información de facturación</translation>
+  <translation id="OrderYourCatalogBy">Ordena tu catálogo por</translation>
+  <translation id="OrderBy">Ordenar por</translation>
+  <translation id="ManageCatalogSubscription">Gestionar <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></translation>
 </translationbundle>

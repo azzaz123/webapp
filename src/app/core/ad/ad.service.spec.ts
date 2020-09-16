@@ -5,6 +5,8 @@ import { AdService } from './ad.service';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MockDidomiService } from '../didomi/didomi.service.spec';
+import { DidomiService } from '../didomi/didomi.service';
 
 let service: AdService;
 let userService: UserService;
@@ -89,11 +91,14 @@ describe('AdService', () => {
               delete this.cookies[key];
             }
           }
+        },
+        {
+          provide: DidomiService, useValue: MockDidomiService
         }
       ],
     });
-    userService = TestBed.get(UserService);
-    cookieService = TestBed.get(CookieService);
+    userService = TestBed.inject(UserService);
+    cookieService = TestBed.inject(CookieService);
     spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
       callback(position);
     });
@@ -111,7 +116,7 @@ describe('AdService', () => {
     Object.keys(cookies).forEach(key => {
       cookieService.put(key, cookies[key]);
     });
-    service = TestBed.get(AdService);
+    service = TestBed.inject(AdService);
     service.allowSegmentation$.next(false);
   });
 

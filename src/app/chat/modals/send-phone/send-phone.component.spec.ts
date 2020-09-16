@@ -75,12 +75,12 @@ describe('SendPhoneComponent', () => {
     element = fixture.debugElement.query(By.css('#phone'));
     component = fixture.componentInstance;
     component.phone = phoneNumber;
-    messageService = TestBed.get(MessageService);
-    inboxConversationService = TestBed.get(InboxConversationService);
-    trackingService = TestBed.get(TrackingService);
-    errorsService = TestBed.get(ErrorsService);
-    httpMock = TestBed.get(HttpTestingController);
-    windowRef = TestBed.get(WindowRef);
+    messageService = TestBed.inject(MessageService);
+    inboxConversationService = TestBed.inject(InboxConversationService);
+    trackingService = TestBed.inject(TrackingService);
+    errorsService = TestBed.inject(ErrorsService);
+    httpMock = TestBed.inject(HttpTestingController);
+    windowRef = TestBed.inject(WindowRef);
     fixture.detectChanges();
   });
 
@@ -114,14 +114,6 @@ describe('SendPhoneComponent', () => {
           component.conversation = MOCK_CONVERSATION();
           component.required = true;
           fixture.detectChanges();
-        });
-
-        it('should call messageService.addPhoneNumberRequestMessage with the conversation and FALSE', () => {
-          spyOn(messageService, 'addPhoneNumberRequestMessage');
-
-          component.createPhoneNumberMessage();
-
-          expect(messageService.addPhoneNumberRequestMessage).toHaveBeenCalledWith(component.conversation, false);
         });
 
         it('should call trackingService.track with ITEM_SHAREPHONE_SENDPHONE', () => {

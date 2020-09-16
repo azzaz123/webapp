@@ -38,7 +38,7 @@ describe('ReactivateModalComponent', () => {
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
     fixture.detectChanges();
-    paymentService = TestBed.get(PaymentService);
+    paymentService = TestBed.inject(PaymentService);
   });
 
   describe('ngOnInit', () => {

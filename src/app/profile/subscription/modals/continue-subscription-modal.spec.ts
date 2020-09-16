@@ -4,7 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ContinueSubscriptionModalComponent } from './continue-subscription-modal.component';
 import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.spec';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
 import { of } from 'rxjs';
@@ -19,7 +19,7 @@ describe('ContinueSubscriptionModalComponent', () => {
   let activeModal: NgbActiveModal;
   let analyticsService: AnalyticsService;
   let subscriptionsService: SubscriptionsService;
-  let toastrService: ToastrService;
+  let toastService: ToastService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -28,18 +28,6 @@ describe('ContinueSubscriptionModalComponent', () => {
         {
           provide: NgbActiveModal, useValue: {
             close() {
-            }
-          }
-        },
-        {
-          provide: ToastrService, useValue: {
-            error() {
-            },
-            success() {
-            },
-            i18nError() {
-            },
-            i18nSuccess() {
             }
           }
         },
@@ -73,10 +61,10 @@ describe('ContinueSubscriptionModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContinueSubscriptionModalComponent);
     component = fixture.componentInstance;
-    activeModal = TestBed.get(NgbActiveModal);
-    toastrService = TestBed.get(ToastrService);
-    subscriptionsService = TestBed.get(SubscriptionsService);
-    analyticsService = TestBed.get(AnalyticsService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    toastService = TestBed.inject(ToastService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
+    analyticsService = TestBed.inject(AnalyticsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
     fixture.detectChanges();
   });

@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CatalogProListComponent } from './catalog-pro-list.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../layout/toast/toast.service';
 import { Router, ActivatedRoute,NavigationEnd } from '@angular/router';
 import { UUID } from 'angular2-uuid';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
@@ -85,18 +85,6 @@ describe('CatalogProListComponent', () => {
           }
         },
         {
-          provide: ToastrService, useValue: {
-            error() {
-            },
-            show() {
-            },
-            i18nError() {
-            },
-            i18nSuccess() {
-            }
-          }
-        },
-        {
           provide: UserService, useValue: {
             getStats() {
               return observableOf(MOCK_USER_STATS);
@@ -145,17 +133,17 @@ describe('CatalogProListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogProListComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
-    trackingService = TestBed.get(TrackingService);
-    modalService = TestBed.get(NgbModal);
-    userService = TestBed.get(UserService);
-    router = TestBed.get(Router);
-    route = TestBed.get(ActivatedRoute);
-    errorService = TestBed.get(ErrorsService);
+    itemService = TestBed.inject(ItemService);
+    trackingService = TestBed.inject(TrackingService);
+    modalService = TestBed.inject(NgbModal);
+    userService = TestBed.inject(UserService);
+    router = TestBed.inject(Router);
+    route = TestBed.inject(ActivatedRoute);
+    errorService = TestBed.inject(ErrorsService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemServiceSpy = spyOn(itemService, 'mines').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
-    eventService = TestBed.get(EventService);
+    eventService = TestBed.inject(EventService);
     fixture.detectChanges();
   });
 

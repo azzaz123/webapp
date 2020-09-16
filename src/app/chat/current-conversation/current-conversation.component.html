@@ -41,19 +41,28 @@
               <span i18n="@@userIsNotAvailableWarning">This person is no longer a wallapop member</span>
             </div>
 
-            <div
-              *ngIf="!currentConversation.user.blocked && currentConversation.user.available && currentConversation.item.notAvailable"
-              class="date-marker date-marker-warning">
-              <mat-icon svgIcon="not-available" class="not-available"></mat-icon>
-              <span i18n>This product is not available</span>
+            <div *ngIf="!currentConversation.user.blocked
+            && currentConversation.user.available
+            && currentConversation.item.unpublished"
+                 class="date-marker date-marker-warning date-marker-warning-blue">
+              <span class="emoticon emoticon-ghost"></span>
+              <span i18n="@@itemIsNotAvailableWarning">This product has expired or has been removed</span>
+            </div>
+
+            <div *ngIf="!currentConversation.user.blocked
+            && currentConversation.user.available
+            && currentConversation.item.notAvailable"
+                 class="date-marker date-marker-warning date-marker-warning-red">
+              <span class="emoticon emoticon-police-car"></span>
+              <span i18n="@@itemIsUnpublishedWarning">The product violates wallapop coexistence regulations</span>
             </div>
           </div>
 
           <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-wrapper"
                [ngClass]="{'message-owner': message.fromSelf, 'not-message-owner': !message.fromSelf}">
             <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
-              <span *ngIf="dateIsThisYear(message.date)">{{message.date | amCalendar:momentConfig}}</span>
-              <span *ngIf="!dateIsThisYear(message.date)">{{message.date | amDateFormat:'D MMM. YYYY' }}</span>
+              <span *ngIf="dateIsThisYear(message.date)">{{message.date | dateCalendar:momentConfig}}</span>
+              <span *ngIf="!dateIsThisYear(message.date)">{{message.date | date:'d MMM. yyyy' }}</span>
             </div>
 
             <tsl-text-message *ngIf="isTextMessage(message.type)" [message]="message"></tsl-text-message>
@@ -66,7 +75,7 @@
           </div>
 
           <div class="notification-container">
-            <div class="date-marker date-marker-warning date-marker-warning-blue">
+            <div class="date-marker date-marker-warning date-marker-warning-blue notification-secure-privacy ">
               <span class="emoticon emoticon-padlock">🔒</span>
               <span i18n="@@securityWarning">For security reasons, never share private data</span>
             </div>
@@ -75,7 +84,7 @@
           <div *ngIf="hasMoreMessages()" class="more-messages-loader">
             <a class="load-more">
                             <span *ngIf="!isLoadingMoreMessages" (click)="loadMoreMessages(scrollElement.scrollHeight)"
-                                  i18n>Load more</span>
+                                  i18n="@@loadMoreButton">Load more</span>
               <mat-icon *ngIf="isLoadingMoreMessages" svgIcon="spinner" class="spinner"></mat-icon>
             </a>
           </div>
@@ -88,7 +97,7 @@
       </div>
 
       <div class="input send-message-container">
-        <tsl-input [currentConversation]="currentConversation" (typing)="typing()"></tsl-input>
+        <tsl-input [currentConversation]="currentConversation" (typing)="typing()" (clickSentMessage)="clickSendMessage($event)"></tsl-input>
       </div>
     </div>
   </div>

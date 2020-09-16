@@ -118,7 +118,7 @@ export class UploadService {
       [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
       [TOKEN_SIGNATURE_HEADER_NAME]: signature,
       [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString()
-    }
+    };
   }
 
 }

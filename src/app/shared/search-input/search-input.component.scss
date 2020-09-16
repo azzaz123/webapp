@@ -35,6 +35,11 @@ div {
   }
   &.active {
     width: 204px;
-    border-color: $walla-main;
+    @media (min-width: 768px) {
+      border-bottom: 2px solid $walla-main;
+    }
   }
+}
+.clear-search {
+  display: none;
 }

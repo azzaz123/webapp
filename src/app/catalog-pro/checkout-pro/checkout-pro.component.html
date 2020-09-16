@@ -9,21 +9,50 @@
           </a>
           <div class="header-first-section">
             <a class="info"></a>
-            <div class="bump-types">
-              <div class="type city">
+          </div>
+          <div class="bump-types">
+            <div class="type city">
+              <div class="content-header">
                 <div i18n>City</div>
+                <div class="content-select">
+                  <button class="select citybump btn btn-selectAll" (click)="selectAll('citybump')" i18n="@@ApplyAll">
+                    Apply to all
+                  </button>
+                </div>
               </div>
-              <div class="type country">
+              <div class="item-separator"></div>
+            </div>
+            <div class="type country">
+              <div class="content-header">
                 <div i18n>Country</div>
+                <div class="content-select">
+                  <button class="select countrybump btn btn-selectAll" (click)="selectAll('countrybump')" i18n="@@ApplyAll">
+                    Apply to all
+                  </button>
+                </div>
+              </div>
+              <div class="item-separator"></div>
+            </div>
+            <div class="type planning">
+              <div class="content-header last">
+                <div i18n="@@CheckoutProPlanning">Planning</div>
+                <div class="content-select">
+                  <button class="select planning btn btn-selectAll" (click)="selectAll('planning')" i18n="@@PlanAll">
+                    Apply to all
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-          <div class="type planning">
-            <div i18n>Planning</div>
-          </div>
         </div>
         <div class="bumps-table">
-          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts" [cartProItem]="item" (dateFocus)="onDateFocus($event)"></tsl-checkout-pro-item>
+          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts; let index = index; "
+            [cartProItem]="item"
+            (dateFocus)="onDateFocus($event)"
+            [selectAllEvent]="selectAllEventSubject.asObservable()"
+            [index]=index
+            >
+          </tsl-checkout-pro-item>
         </div>
       </div>
       <div class="col-md-3">
@@ -32,6 +61,11 @@
     </div>
     <tsl-spinner [firstLoad]="false" [hidden]="itemsWithProducts"></tsl-spinner>
   </div>
-  <tsl-range-datepicker *ngIf="!calendarHidden" (applyCalendar)="onApplyCalendar($event)" (closeCalendar)="calendarHidden = true"
-    [bumpType]="itemSelected?.bumpType" [selectedDates]="itemSelected?.selectedDates"></tsl-range-datepicker>
+  <tsl-range-datepicker *ngIf="!calendarHidden"
+    (applyCalendar)="onApplyCalendar($event)"
+    (closeCalendar)="calendarHidden = true"
+    [bumpType]="calendarType"
+    [selectedDates]="newSelectedDates"
+    >
+  </tsl-range-datepicker>
 </div>

@@ -6,8 +6,7 @@ import { Observable, of, ReplaySubject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
-import { MomentModule } from 'angular2-moment';
-import { CustomCurrencyPipe } from '../../../shared/pipes';
+import { CustomCurrencyPipe, CountdownPipe } from '../../../shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
@@ -16,7 +15,7 @@ import {
   MOCK_ITEM, ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE,
   PRODUCT_RESPONSE, ITEM_WEB_SLUG
 } from '../../../../tests/item.fixtures.spec';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../../layout/toast/toast.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { Item } from '../../../core/item/item';
@@ -44,7 +43,6 @@ describe('CatalogItemComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CatalogItemComponent, CustomCurrencyPipe, ThousandSuffixesPipe],
-      imports: [MomentModule],
       providers: [
         DecimalPipe,
         EventService,
@@ -88,18 +86,13 @@ describe('CatalogItemComponent', () => {
           }
         },
         {
-          provide: ToastrService, useValue: {
-            error() {
-            }
-          }
-        },
-        {
           provide: ErrorsService, useValue: {
             i18nError() {
             }
           }
         },
-        { provide: 'SUBDOMAIN', useValue: 'es' }
+        { provide: 'SUBDOMAIN', useValue: 'es' },
+        CountdownPipe
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -111,12 +104,12 @@ describe('CatalogItemComponent', () => {
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
     fixture.detectChanges();
-    itemService = TestBed.get(ItemService);
-    modalService = TestBed.get(NgbModal);
-    trackingService = TestBed.get(TrackingService);
-    errorsService = TestBed.get(ErrorsService);
-    eventService = TestBed.get(EventService);
-    deviceService = TestBed.get(DeviceDetectorService);
+    itemService = TestBed.inject(ItemService);
+    modalService = TestBed.inject(NgbModal);
+    trackingService = TestBed.inject(TrackingService);
+    errorsService = TestBed.inject(ErrorsService);
+    eventService = TestBed.inject(EventService);
+    deviceService = TestBed.inject(DeviceDetectorService);
     appboy.initialize(environment.appboy);
   });
 

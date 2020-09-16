@@ -6,7 +6,7 @@ import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { find } from 'lodash-es';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from '../../layout/toast/toast.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import {
@@ -48,6 +48,8 @@ import { MOCK_USER, USER_INFO_RESPONSE } from '../../../tests/user.fixtures.spec
 import { SubscriptionsSlotsListComponent } from './subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
 import { By } from '@angular/platform-browser';
 import { SubscriptionsSlotItemComponent } from './subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
+import { AnalyticsService } from "../../core/analytics/analytics.service";
+import { MockAnalyticsService } from "../../../tests/analytics.fixtures.spec";
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -56,7 +58,7 @@ describe('ListComponent', () => {
   let trackingService: TrackingService;
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
-  let toastr: ToastrService;
+  let toastService: ToastService;
   let trackingServiceSpy: jasmine.Spy;
   let itemerviceSpy: jasmine.Spy;
   let paymentService: PaymentService;
@@ -136,14 +138,6 @@ describe('ListComponent', () => {
           }
         },
         {
-          provide: ToastrService, useValue: {
-            error() {
-            },
-            success() {
-            }
-          }
-        },
-        {
           provide: ActivatedRoute, useValue: {
             params: of({
               code: 200
@@ -192,7 +186,8 @@ describe('ListComponent', () => {
         },
         {
           provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock
-        }
+        },
+        { provide: AnalyticsService, useClass: MockAnalyticsService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -202,18 +197,18 @@ describe('ListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ListComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
-    trackingService = TestBed.get(TrackingService);
-    subscriptionsService = TestBed.get(SubscriptionsService);
-    modalService = TestBed.get(NgbModal);
-    toastr = TestBed.get(ToastrService);
-    route = TestBed.get(ActivatedRoute);
-    paymentService = TestBed.get(PaymentService);
-    router = TestBed.get(Router);
-    errorService = TestBed.get(ErrorsService);
-    userService = TestBed.get(UserService);
-    eventService = TestBed.get(EventService);
-    deviceService = TestBed.get(DeviceDetectorService);
+    itemService = TestBed.inject(ItemService);
+    trackingService = TestBed.inject(TrackingService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
+    modalService = TestBed.inject(NgbModal);
+    toastService = TestBed.inject(ToastService);
+    route = TestBed.inject(ActivatedRoute);
+    paymentService = TestBed.inject(PaymentService);
+    router = TestBed.inject(Router);
+    errorService = TestBed.inject(ErrorsService);
+    userService = TestBed.inject(UserService);
+    eventService = TestBed.inject(EventService);
+    deviceService = TestBed.inject(DeviceDetectorService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -290,7 +285,7 @@ describe('ListComponent', () => {
       });
     });
 
-    it('should open toastr', fakeAsync(() => {
+    it('should open toast', fakeAsync(() => {
       spyOn(errorService, 'i18nSuccess');
       route.params = of({
         updated: true
@@ -655,7 +650,7 @@ describe('ListComponent', () => {
         component.delete();
         tick();
       }));
-      it('should open error toastr', () => {
+      it('should open error toast', () => {
         expect(errorService.i18nError).toHaveBeenCalledWith('bulkDeleteError');
       });
     });
@@ -698,7 +693,7 @@ describe('ListComponent', () => {
         expect(component.items[4].reserved).toBeTruthy();
       });
 
-      it('should not call toastr', () => {
+      it('should not call toast', () => {
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
 
@@ -715,7 +710,7 @@ describe('ListComponent', () => {
         component.reserve();
         tick();
       }));
-      it('should open error toastr', () => {
+      it('should open error toast', () => {
         expect(errorService.i18nError).toHaveBeenCalledWith('bulkReserveError');
       });
     });

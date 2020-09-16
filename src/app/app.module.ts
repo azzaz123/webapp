@@ -11,7 +11,6 @@ import { LayoutModule } from './layout/layout.module';
 import { DndModule } from 'ng2-dnd';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { ToastrModule } from 'ngx-toastr';
 import { HttpModuleNew } from './core/http/http.module.new';
 
 @NgModule({
@@ -23,7 +22,6 @@ import { HttpModuleNew } from './core/http/http.module.new';
     CookieModule.forRoot(),
     CoreModule.forRoot(),
     DndModule.forRoot(),
-    ToastrModule.forRoot(),
     BrowserModule,
     HttpModuleNew,
     HttpClientModule,

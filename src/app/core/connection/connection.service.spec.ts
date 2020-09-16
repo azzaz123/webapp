@@ -12,9 +12,9 @@ describe('ConnectionService', () => {
     TestBed.configureTestingModule({
       providers: [ ConnectionService, WindowRef, EventService ]
     });
-    service = TestBed.get(ConnectionService);
-    winRef = TestBed.get(WindowRef);
-    eventService = TestBed.get(EventService);
+    service = TestBed.inject(ConnectionService);
+    winRef = TestBed.inject(WindowRef);
+    eventService = TestBed.inject(EventService);
   });
 
 

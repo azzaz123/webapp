@@ -35,7 +35,7 @@ describe('SelectedItemsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectedItemsComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
+    itemService = TestBed.inject(ItemService);
   });
 
   describe('ngOnInit', () => {

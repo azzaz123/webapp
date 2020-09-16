@@ -12,9 +12,9 @@
 
   <div class="SubscriptionsSlotItem__info">
     <div class="SubscriptionsSlotItem__info-title">
-      <b><span i18n>Manage</span>&nbsp;<span>{{subscriptionSlot.category.name}}</span></b>
+      <span i18n="@@ManageCatalogSubscription">Manage {{subscriptionSlot.category.name}}</span>
     </div>
-    <div class="SubscriptionsSlotItem__info-description" i18n>You can publish <b>{{subscriptionSlot.available}}</b> more</div>
+    <div class="SubscriptionsSlotItem__info-description" i18n="@@SubscriptionsSlotItemPublishMore">You can list <b>{{subscriptionSlot.available}}</b> more {{subscriptionSlot.category.name}}</div>
   </div>
 
   <div class="SubscriptionsSlotItem__deselect" (click)="onClick(undefined, $event)">

@@ -186,11 +186,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   ngOnChanges(changes: SimpleChanges) {
     if (changes.categoryId) {
       if (changes.categoryId.currentValue === '-1') {
-        this.uploadForm.get('category_id').reset();
+        return this.uploadForm.get('category_id').reset();
       }
-      if (changes.categoryId.currentValue !== '-1') {
-        this.uploadForm.patchValue({ category_id: changes.categoryId.currentValue });
-      }
+      return this.uploadForm.patchValue({ category_id: changes.categoryId.currentValue });
     }
   }
 
@@ -323,7 +321,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       localStorage.setItem('transactionType', 'urgent');
     }
 
-    this.trackEditOrUpload(!!this.item, uploadEvent.response.content).subscribe(() =>
+    this.trackEditOrUpload(!!this.item, uploadEvent.response).subscribe(() =>
       this.router.navigate(['/catalog/list', { [uploadEvent.action]: true, itemId: uploadEvent.response.id }])
     );
   }
@@ -485,10 +483,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       category.vertical_id === 'consumer_goods'
     );
 
-    if (this.userService.isPro) {
-      return userCategories;
-    }
-    return userCategories.filter((category) => +category.category_id !== CATEGORY_IDS.HELP);
+    return userCategories;
   }
 
   private getNgSelectOptions(categories: CategoryResponse[]): CategoryOption[] {

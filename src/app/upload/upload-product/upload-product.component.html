@@ -31,7 +31,7 @@
             class="form-control categories-select" formControlName="category_id" id="category" [options]="categories"
             noFilter="10" (selected)="resetAllExtraFields()">
             <ng-template #optionTemplate let-option="option">
-              <div [ngClass]="'cat-' + option?.value">
+              <div [ngClass]="'cat_' + option?.value">
                 <mat-icon svgIcon="cat_{{ option?.icon_id }}"></mat-icon>
                 {{ option?.label }}
               </div>

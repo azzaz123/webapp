@@ -71,7 +71,7 @@ export const SCORING_STARTS = 0;
 export const RESPONSE_RATE = 'less_than_one_hour';
 export const ONLINE = false;
 export const RECEIVED_REPORTS = 3;
-export const USER_TYPE = 'inactive';
+export const USER_TYPE = 'normal';
 export const USER_WEB_SLUG = 'webslug-l1kmzn82zn3p';
 export const USER_FIRST_NAME = 'Daniele';
 export const USER_LAST_NAME = 'Ghidoli';
@@ -197,6 +197,30 @@ export const MOCK_FULL_USER = new User(
   USER_DATA.email,
   USER_DATA.featured,
   USER_DATA.extra_info
+);
+
+export const MOCK_FULL_USER_NON_FEATURED = new User(
+  MOCK_NON_FEATURED_USER_RESPONSE.id,
+  MOCK_NON_FEATURED_USER_RESPONSE.micro_name,
+  MOCK_NON_FEATURED_USER_RESPONSE.image,
+  MOCK_NON_FEATURED_USER_RESPONSE.location,
+  MOCK_NON_FEATURED_USER_RESPONSE.stats,
+  MOCK_NON_FEATURED_USER_RESPONSE.validations,
+  MOCK_NON_FEATURED_USER_RESPONSE.verification_level,
+  MOCK_NON_FEATURED_USER_RESPONSE.scoring_stars,
+  MOCK_NON_FEATURED_USER_RESPONSE.scoring_starts,
+  MOCK_NON_FEATURED_USER_RESPONSE.response_rate,
+  MOCK_NON_FEATURED_USER_RESPONSE.online,
+  MOCK_NON_FEATURED_USER_RESPONSE.type,
+  MOCK_NON_FEATURED_USER_RESPONSE.received_reports,
+  MOCK_NON_FEATURED_USER_RESPONSE.web_slug,
+  MOCK_NON_FEATURED_USER_RESPONSE.first_name,
+  MOCK_NON_FEATURED_USER_RESPONSE.last_name,
+  MOCK_NON_FEATURED_USER_RESPONSE.birth_date,
+  MOCK_NON_FEATURED_USER_RESPONSE.gender,
+  MOCK_NON_FEATURED_USER_RESPONSE.email,
+  MOCK_NON_FEATURED_USER_RESPONSE.featured,
+  MOCK_NON_FEATURED_USER_RESPONSE.extra_info
 );
 
 export const MOCK_USER_PRO: User = new User(

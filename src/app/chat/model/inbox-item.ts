@@ -1,9 +1,10 @@
-export const INBOX_ITEM_STATUSES: any = {
-    sold: 'sold',
-    reserved: 'reserved',
-    notAvailable: 'not available',
-    published: 'published'
-};
+export enum InboxItemStatus {
+  SOLD = 'sold',
+  RESERVED = 'reserved',
+  NOT_AVAILABLE = 'not available',
+  PUBLISHED = 'published',
+  UNPUBLISHED = 'unpublished',
+}
 
 export class InboxItemPrice {
     amount: number;
@@ -22,34 +23,37 @@ export class InboxItem {
         private _title: string,
         private _mainImage: InboxImage,
         private _itemUrl: string,
-        private _status: string,
+        private _status: InboxItemStatus,
         private _isMine: boolean,
-        public categoryId: number,
-    ) {
+        public categoryId: number) {
         this.mapStatusToFlags(this.status);
     }
 
     public sold = false;
     public reserved = false;
     public published = false;
+    public unpublished = false;
     public notAvailable = false;
     public views: number;
     public favorites: number;
 
     private mapStatusToFlags(status: string) {
         switch (status) {
-            case INBOX_ITEM_STATUSES.sold:
+            case InboxItemStatus.SOLD:
                 this.sold = true;
                 break;
-            case INBOX_ITEM_STATUSES.reserved:
+            case InboxItemStatus.RESERVED:
                 this.reserved = true;
                 break;
-            case INBOX_ITEM_STATUSES.notAvailable:
+            case InboxItemStatus.NOT_AVAILABLE:
                 this.notAvailable = true;
                 break;
-            case INBOX_ITEM_STATUSES.published:
+            case InboxItemStatus.PUBLISHED:
                 this.published = true;
                 break;
+            case InboxItemStatus.UNPUBLISHED:
+                  this.unpublished = true;
+                  break;
             default:
                 this.published = true;
                 break;
@@ -72,7 +76,7 @@ export class InboxItem {
         return this._status;
     }
 
-    set status(value: string) {
+    set status(value: InboxItemStatus) {
         this._status = value;
     }
 
@@ -105,4 +109,4 @@ export class InboxItem {
     }
 }
 
-export const InboxItemPlaceholder = new InboxItem(null, null, 'unknown', null, null, INBOX_ITEM_STATUSES.notAvailable, false, null);
+export const InboxItemPlaceholder = new InboxItem(null, null, 'unknown', null, null, InboxItemStatus.NOT_AVAILABLE, false, null);

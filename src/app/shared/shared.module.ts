@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { MatIconModule } from '@angular/material';
 import { AdComponent } from './ad/ad.component';
-import { CustomCurrencyPipe, DateUntilDayPipe } from './pipes';
+import { CustomCurrencyPipe, DateUntilDayPipe, DateCalendarPipe, CountdownPipe } from './pipes';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,7 +28,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { SwitchComponent } from './switch/switch.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
-import { MomentModule } from 'angular2-moment';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
@@ -62,6 +61,7 @@ import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
 import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.component';
 import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
+import { NoCardModalComponent } from './modals/no-card-modal/no-card-modal.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { SelectModule } from 'ng-select';
 import { LinkTransformPipe } from './pipes';
@@ -71,6 +71,10 @@ import { PreventDoubleClickDirective } from './prevent-double-click/prevent-doub
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
 import { StatusIconComponent } from './status-icon';
+import { ChangeCardModalComponent } from './modals/change-card-modal/change-card-modal.component';
+import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-card-modal.component';
+import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
+import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
 
 @NgModule({
   imports: [
@@ -81,7 +85,6 @@ import { StatusIconComponent } from './status-icon';
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,
-    MomentModule,
     NgxPermissionsModule.forChild(),
     NgbDropdownModule,
     TrackingModule,
@@ -140,13 +143,20 @@ import { StatusIconComponent } from './status-icon';
     StripeCardElementComponent,
     StripeCardsComponent,
     NewCardModalComponent,
+    NoCardModalComponent,
+    ConfirmCardModalComponent,
+    ChangeCardModalComponent,
     StripeCardSelectionComponent,
     SelectModule,
     NavLinksComponent,
     LinkTransformPipe,
     PreventDoubleClickDirective,
     ProBadgeModule,
-    DateUntilDayPipe
+    DateUntilDayPipe,
+    DateCalendarPipe,
+    CountdownPipe,
+    ProfileProBillingComponent,
+    FullScreenModalComponent
   ],
   declarations: [
     AdComponent,
@@ -200,11 +210,18 @@ import { StatusIconComponent } from './status-icon';
     StripeCardElementComponent,
     StripeCardsComponent,
     NewCardModalComponent,
+    NoCardModalComponent,
+    ConfirmCardModalComponent,
+    ChangeCardModalComponent,
     StripeCardSelectionComponent,
     NavLinksComponent,
     LinkTransformPipe,
     PreventDoubleClickDirective,
-    DateUntilDayPipe
+    DateUntilDayPipe,
+    DateCalendarPipe,
+    CountdownPipe,
+    ProfileProBillingComponent,
+    FullScreenModalComponent
   ],
   providers: [
     DecimalPipe,
@@ -225,7 +242,11 @@ import { StatusIconComponent } from './status-icon';
     ExitConfirmationModalComponent,
     ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
-    NewCardModalComponent
+    NewCardModalComponent,
+    NoCardModalComponent,
+    ConfirmCardModalComponent,
+    ChangeCardModalComponent,
+    FullScreenModalComponent
   ]
 })
 export class SharedModule {

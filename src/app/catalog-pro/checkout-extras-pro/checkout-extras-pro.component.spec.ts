@@ -34,7 +34,7 @@ describe('CheckoutExtrasProComponent', () => {
     fixture = TestBed.createComponent(CheckoutExtrasProComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    paymentService = TestBed.get(PaymentService);
+    paymentService = TestBed.inject(PaymentService);
   });
 
   describe('ngOnInit', () => {
@@ -65,7 +65,8 @@ describe('CheckoutExtrasProComponent', () => {
       postal_code: new FormControl(),
       street: new FormControl(),
       surname: new FormControl(),
-      id: new FormControl()
+      id: new FormControl(),
+      type: new FormControl()
     });
     const billingInfoFormValues = {
       cif: 'cif',
@@ -78,7 +79,8 @@ describe('CheckoutExtrasProComponent', () => {
       postal_code: 'postal_code',
       street: 'street',
       surname: 'surname',
-      id: 'id'
+      id: 'id',
+      type: 'legal'
     };
 
     it('should receive a form and set billingInfoForm with it', () => {

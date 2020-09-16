@@ -3,7 +3,7 @@ import {of as observableOf,  Observable } from 'rxjs';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { InboxConversationService } from './inbox-conversation.service';
+import { InboxConversationService, ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS } from './inbox-conversation.service';
 import { MessageService } from './message.service';
 import { RealTimeService } from '../../core/message/real-time.service';
 import { EventService } from '../../core/event/event.service';
@@ -24,6 +24,9 @@ import * as moment from 'moment';
 import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
 import { RemoteConsoleService } from '../../core/remote-console';
 import { RemoteConsoleClientServiceMock } from '../../../tests/remote-console-service-client.fixtures.spec';
+import { I18nService } from 'app/core/i18n/i18n.service';
+import { ToastService } from 'app/layout/toast/toast.service';
+import { Toast } from 'app/layout/toast/toast.interface';
 
 describe('InboxConversationService', () => {
 
@@ -34,6 +37,8 @@ describe('InboxConversationService', () => {
   let messageService: MessageService;
   let userService: UserService;
   let itemService: ItemService;
+  let toastService: ToastService;
+  let i18nService: I18nService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
@@ -57,17 +62,21 @@ describe('InboxConversationService', () => {
         { provide: RemoteConsoleService, useClass: RemoteConsoleClientServiceMock },
         { provide: MessageService, useValue: { totalUnreadMessages: 0 } },
         { provide: UserService, useClass: MockedUserService },
-        { provide: ItemService, useClass: MockedItemService }
+        { provide: ItemService, useClass: MockedItemService },
+        ToastService,
+        I18nService
       ]
     });
-    service = TestBed.get(InboxConversationService);
-    eventService = TestBed.get(EventService);
-    realTime = TestBed.get(RealTimeService);
-    remoteConsoleService = TestBed.get(RemoteConsoleService);
-    messageService = TestBed.get(MessageService);
-    userService = TestBed.get(UserService);
-    itemService = TestBed.get(ItemService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    service = TestBed.inject(InboxConversationService);
+    eventService = TestBed.inject(EventService);
+    realTime = TestBed.inject(RealTimeService);
+    remoteConsoleService = TestBed.inject(RemoteConsoleService);
+    messageService = TestBed.inject(MessageService);
+    userService = TestBed.inject(UserService);
+    itemService = TestBed.inject(ItemService);
+    toastService = TestBed.inject(ToastService);
+    i18nService = TestBed.inject(I18nService);
+    httpTestingController = TestBed.inject(HttpTestingController);
     jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_USER);
     service.subscribeChatEvents();
     service.conversations = [];
@@ -569,6 +578,23 @@ describe('InboxConversationService', () => {
       const req = httpTestingController.expectOne(`${environment.baseUrl}api/v3/conversations`);
       expect(req.request.method).toEqual('POST');
       expect(req.request.body).toEqual({ item_id: ITEM_ID });
+    });
+
+    describe('and when user can not open new conversations', () => {
+      it('should display toast with error', () => {
+        spyOn(toastService, 'show');
+        const expectedToast: Toast = {
+          title: i18nService.getTranslations('defaultErrorTitle'),
+          text: i18nService.getTranslations('tooManyNewConversations'),
+          type: 'error'
+        };
+
+        service.openConversationByItemId$('1337').subscribe();
+        httpTestingController.expectOne(`${environment.baseUrl}api/v3/conversations`)
+          .flush({ code: ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS }, { status: 500, statusText: 'error' });
+
+        expect(toastService.show).toHaveBeenCalledWith(expectedToast);
+      });
     });
   });
 

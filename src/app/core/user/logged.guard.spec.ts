@@ -3,7 +3,7 @@ import {of as observableOf,  Observable } from 'rxjs';
 
 import {map} from 'rxjs/operators';
 import { TestBed } from '@angular/core/testing';
-import { LoggedGuard } from './logged.guard';
+import { LoggedGuard, REDIRECT_SECRET } from './logged.guard';
 import { environment } from '../../../environments/environment';
 import { WindowRef } from '../window/window.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -11,11 +11,14 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { UserService } from './user.service';
 import { User, PERMISSIONS } from './user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import * as CryptoJS from 'crypto-js';
+
+const mockCurrentUrl = 'https://web.wallapop.com/chat';
 
 class MockWindow {
   public nativeWindow = {
     location: {
-      href: ''
+      href: mockCurrentUrl
     }
   };
 }
@@ -65,12 +68,12 @@ describe('LoggedGuard', (): void => {
         }
       ]
     });
-    loggedGuard = TestBed.get(LoggedGuard);
-    window = TestBed.get(WindowRef);
-    accessTokenService = TestBed.get(AccessTokenService);
+    loggedGuard = TestBed.inject(LoggedGuard);
+    window = TestBed.inject(WindowRef);
+    accessTokenService = TestBed.inject(AccessTokenService);
     accessTokenService.storeAccessToken(null);
-    userService = TestBed.get(UserService);
-    permissionService = TestBed.get(NgxPermissionsService);
+    userService = TestBed.inject(UserService);
+    permissionService = TestBed.inject(NgxPermissionsService);
   });
 
   it('should create an instance', (): void => {
@@ -78,27 +81,33 @@ describe('LoggedGuard', (): void => {
   });
 
   describe('canActivate', (): void => {
-    let redirectUrl;
-
     beforeEach(() => {
       spyOn(permissionService, 'getPermissions').and.returnValue({});
       spyOn(userService, 'me').and.callThrough();
-      redirectUrl = encodeURIComponent(window.nativeWindow.location.href);
     });
 
-    it('should return false and redirect if no access token', (): void => {
+    it('should return false and redirect to SEO web with pending redirect when no access token', () => {
+      const decriptAux =
+        (toDecrypt: string) => CryptoJS.AES.decrypt(decodeURIComponent(toDecrypt), REDIRECT_SECRET).toString(CryptoJS.enc.Utf8);
+      const expectedUrl = `${environment.siteUrl}login?redirectUrl=`;
+      const expectedRedirectQueryParam = mockCurrentUrl;
+
       const result = loggedGuard.canActivate();
+      const resultRedirectQueryParam = window.nativeWindow.location.href.split('?')[1].replace('redirectUrl=', '');
 
-      expect(result).toBeFalsy();
-      expect(window.nativeWindow.location.href).toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
+      expect(result).toEqual(false);
+      expect(expectedUrl.startsWith(expectedUrl)).toEqual(true);
+      expect(decriptAux(resultRedirectQueryParam)).toEqual(expectedRedirectQueryParam);
     });
 
-    it('should return true and NOT redirect if access token', () => {
+    it('should return true and NOT redirect to SEO web if access token', () => {
       accessTokenService.storeAccessToken('abc');
+      const notExpectedUrl = `${environment.siteUrl}login?redirectUrl=`;
+
       const result = loggedGuard.canActivate();
 
       expect(result).toBeTruthy();
-      expect(window.nativeWindow.location.href).not.toBe(`${environment.siteUrl}login?redirectUrl=${redirectUrl}`);
+      expect(window.nativeWindow.location.href.startsWith(notExpectedUrl)).toEqual(false);
     });
 
     it('should check the current user permissions', () => {
