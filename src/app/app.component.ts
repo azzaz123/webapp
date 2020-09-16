@@ -66,8 +66,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.initializeConfigs();
-    this.initializeServices();
     this.initializeEventListeners();
+    this.initializeServices();
     this.initializeRouterEventListeners();
   }
 
