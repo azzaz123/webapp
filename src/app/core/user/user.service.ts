@@ -208,7 +208,8 @@ export class UserService {
       itemHashId,
       conversationHash,
       comments,
-      reason
+      reason,
+      targetCrm: 'zendesk'
     },
       {
         headers: new HttpHeaders().append('AppBuild', APP_VERSION)
