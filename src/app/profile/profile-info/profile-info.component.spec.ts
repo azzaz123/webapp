@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { competitorLinks, ProfileInfoComponent } from './profile-info.component';
+import { competitorLinks, ProfileInfoComponent, BAD_USERNAME_ERROR_CODE } from './profile-info.component';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import {
   IMAGE,
   MOCK_FULL_USER,
@@ -16,6 +16,7 @@ import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-
 import { SwitchComponent } from '../../shared/switch/switch.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
+import { By } from '@angular/platform-browser';
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -94,7 +95,11 @@ describe('ProfileInfoComponent', () => {
           }
         }
       ],
-      declarations: [ProfileInfoComponent, SwitchComponent],
+      declarations: [
+        ProfileInfoComponent,
+        ProfileFormComponent,
+        SwitchComponent
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -224,15 +229,35 @@ describe('ProfileInfoComponent', () => {
         });
       });
 
-      describe('and when the server responds with an error', () => {
+      describe('and when the server errors', () => {
         it('should display error to user as a toast', () => {
-          const backendError = { code: 101, message: 'General error' };
+          const backendError = { error: { code: 101, message: 'General error' } };
           spyOn(userService, 'edit').and.returnValue(throwError(backendError));
           spyOn(errorsService, 'show');
 
           component.onSubmit();
 
           expect(errorsService.show).toHaveBeenCalledWith(backendError);
+        });
+
+        describe('and when the server notifies username is incorrect', () => {
+          it('should mark username fields as invalid', () => {
+            const backendError = { error: { code: BAD_USERNAME_ERROR_CODE, message: 'Incorrect username' } };
+            spyOn(userService, 'edit').and.returnValue(throwError(backendError));
+            spyOn(errorsService, 'show');
+            let firstNameFieldElementRef;
+            let lastNameFieldElementRef;
+
+            component.onSubmit();
+            fixture.detectChanges();
+            firstNameFieldElementRef
+              = fixture.debugElement.query(By.css('input[formControlname="first_name"]'));
+            lastNameFieldElementRef
+              = fixture.debugElement.query(By.css('input[formControlname="last_name"]'));
+
+            expect(firstNameFieldElementRef.classes['ng-invalid']).toBeDefined();
+            expect(lastNameFieldElementRef.classes['ng-invalid']).toBeDefined();
+          });
         });
       });
     });
