@@ -1,7 +1,7 @@
 <a class="sidebar-section profile-item" id="qa-sidebar-profile" [routerLink]="['/profile']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_PROFILE"
   [ngClass]="{active: tutorialService.step === 1}" [class.active]="isProfile">
   <div class="sidebar-section-circle">
-    <tsl-user-avatar class="topbar-avatar" [size]="50" [user]="user" *ngIf="user" [imageUrl]="user?.image?.urls_by_size.medium">
+    <tsl-user-avatar class="topbar-avatar" [size]="50" [user]="user" [imageUrl]="user?.image?.urls_by_size.medium">
     </tsl-user-avatar>
   </div>
   <h2 i18n>Profile</h2>
