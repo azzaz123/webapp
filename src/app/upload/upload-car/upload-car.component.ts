@@ -189,6 +189,7 @@ export class UploadCarComponent implements OnInit {
 
   private subscribeToBrandChanges(): void {
     this.uploadForm.get('brand').valueChanges.subscribe((brand: string) => {
+      this.resetFieldsAfterBrandChange();
       this.getModels(brand).subscribe((models: IOption[]) => {
         this.models = models;
       });
@@ -197,6 +198,7 @@ export class UploadCarComponent implements OnInit {
 
   private subscribeToModelChanges(): void {
     this.uploadForm.get('model').valueChanges.subscribe((model: string) => {
+      this.resetFieldsAfterModelChange();
       this.getYears(model).subscribe((years: IOption[]) => {
         this.years = years;
       });
@@ -205,6 +207,7 @@ export class UploadCarComponent implements OnInit {
 
   private subscribeToYearChanges(): void {
     this.uploadForm.get('year').valueChanges.subscribe((year: string) => {
+      this.resetFieldsAfterYearChange();
       this.autocompleteTitle();
       this.getVersions(year).subscribe((versions: IOption[]) => {
         this.versions = versions;
@@ -214,6 +217,7 @@ export class UploadCarComponent implements OnInit {
 
   private subscribeToVersionChanges(): void {
     this.uploadForm.get('version').valueChanges.subscribe((version: string) => {
+      this.resetFieldsAfterVersionChange();
       this.getAutocompleteFields(version).subscribe((fields: CarInfo) => {
         this.uploadForm.patchValue(fields, { emitEvent: false });
       });
@@ -390,6 +394,36 @@ export class UploadCarComponent implements OnInit {
     };
   }
 
+  private resetFieldsAfterBrandChange(): void {
+    this.uploadForm.reset({
+      brand: this.uploadForm.get('brand').value
+    }, { emitEvent: false });
+  }
+
+  private resetFieldsAfterModelChange(): void {
+    this.uploadForm.reset({
+      brand: this.uploadForm.get('brand').value,
+      model: this.uploadForm.get('model').value
+    }, { emitEvent: false });
+  }
+
+  private resetFieldsAfterYearChange(): void {
+    this.uploadForm.reset({
+      brand: this.uploadForm.get('brand').value,
+      model: this.uploadForm.get('model').value,
+      year: this.uploadForm.get('year').value
+    }, { emitEvent: false });
+  }
+
+  private resetFieldsAfterVersionChange(): void {
+    this.uploadForm.reset({
+      brand: this.uploadForm.get('brand').value,
+      model: this.uploadForm.get('model').value,
+      year: this.uploadForm.get('year').value,
+      version: this.uploadForm.get('version').value
+    }, { emitEvent: false });
+  }
+
   public selectUrgent(isUrgent: boolean): void {
     this.isUrgent = isUrgent;
   }
@@ -415,11 +449,15 @@ export class UploadCarComponent implements OnInit {
   }
 
   get yearFieldDisabled(): boolean {
-    return this.uploadForm.get('model').invalid;
+    const modelField = this.uploadForm.get('model');
+
+    return modelField.disabled || modelField.invalid;
   }
 
   get versionFieldDisabled(): boolean {
-    return this.uploadForm.get('year').invalid;
+    const yearField = this.uploadForm.get('year');
+
+    return yearField.disabled || yearField.invalid;
   }
 
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {
