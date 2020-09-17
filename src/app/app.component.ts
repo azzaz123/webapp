@@ -1,8 +1,6 @@
-
-import {mergeMap, map, filter, distinctUntilChanged} from 'rxjs/operators';
-import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
+import { mergeMap, map, filter, distinctUntilChanged, finalize } from 'rxjs/operators';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
-import { DOCUMENT } from "@angular/common";
 import { configMoment } from './config/moment.config';
 import { configIcons } from './config/icons.config';
 import { MatIconRegistry } from '@angular/material';
@@ -13,11 +11,9 @@ import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { EventService } from './core/event/event.service';
 import { UserService } from './core/user/user.service';
-import { ErrorsService } from './core/errors/errors.service';
 import { NotificationService } from './core/notification/notification.service';
 import { MessageService } from './chat/service/message.service';
 import { I18nService } from './core/i18n/i18n.service';
-import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
@@ -25,7 +21,6 @@ import { Item } from './core/item/item';
 import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
 import { InboxService } from './chat/service';
-import { Subscription } from 'rxjs';
 import { StripeService } from './core/stripe/stripe.service';
 import { AnalyticsService } from './core/analytics/analytics.service';
 import { DidomiService } from './core/didomi/didomi.service';
@@ -37,7 +32,6 @@ import { DidomiService } from './core/didomi/didomi.service';
 })
 export class AppComponent implements OnInit {
 
-  public loggingOut: boolean;
   public hideSidebar: boolean;
   public isMyZone: boolean;
   public isProducts: boolean;
@@ -46,59 +40,105 @@ export class AppComponent implements OnInit {
   private currentUrl: string;
   private previousSlug: string;
   private sendPresenceInterval = 240000;
-  private RTConnectedSubscription: Subscription;
 
   constructor(private event: EventService,
-              private realTime: RealTimeService,
-              private inboxService: InboxService,
-              public userService: UserService,
-              private errorsService: ErrorsService,
-              private notificationService: NotificationService,
-              private messageService: MessageService,
-              private titleService: Title,
-              private sanitizer: DomSanitizer,
-              private matIconRegistry: MatIconRegistry,
-              private trackingService: TrackingService,
-              private i18n: I18nService,
-              private winRef: WindowRef,
-              private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private renderer: Renderer2,
-              @Inject(DOCUMENT) private document: Document,
-              private cookieService: CookieService,
-              private connectionService: ConnectionService,
-              private paymentService: PaymentService,
-              private callService: CallsService,
-              private stripeService: StripeService,
-              private analyticsService: AnalyticsService,
-              private didomiService: DidomiService) {
-    this.config();
+    private realTime: RealTimeService,
+    private inboxService: InboxService,
+    public userService: UserService,
+    private notificationService: NotificationService,
+    private messageService: MessageService,
+    private titleService: Title,
+    private sanitizer: DomSanitizer,
+    private matIconRegistry: MatIconRegistry,
+    private trackingService: TrackingService,
+    private i18n: I18nService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private renderer: Renderer2,
+    private cookieService: CookieService,
+    private connectionService: ConnectionService,
+    private paymentService: PaymentService,
+    private callService: CallsService,
+    private stripeService: StripeService,
+    private analyticsService: AnalyticsService,
+    private didomiService: DidomiService) {
   }
 
   ngOnInit() {
+    this.initializeConfigs();
+    this.initializeEventListeners();
+    this.initializeServices();
+    this.initializeRouterEventListeners();
+  }
+
+  private initializeConfigs() {
+    configMoment(this.i18n.locale);
+    configIcons(this.matIconRegistry, this.sanitizer);
+  }
+
+  private initializeServices() {
+    this.didomiService.initialize();
     this.stripeService.init();
     this.analyticsService.initialize();
+    this.initializeBraze();
+    this.userService.checkUserStatus();
+    this.notificationService.init();
+    this.connectionService.checkConnection();
+  }
+
+  // TODO: This should be encapsualted in a service (e.g.: BrazeService)
+  private initializeBraze() {
     appboy.initialize(environment.appboy, { enableHtmlInAppMessages: true });
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
+  }
+
+  private initializeEventListeners() {
     this.subscribeEventUserLogin();
     this.subscribeEventUserLogout();
     this.subscribeChatEvents();
     this.subscribeEventItemUpdated();
-    this.userService.checkUserStatus();
-    this.notificationService.init();
-    this.setTitle();
-    this.setBodyClass();
-    this.updateUrlAndSendAnalytics();
-    this.connectionService.checkConnection();
-    this.didomiService.initialize();
   }
 
-  public onViewIsBlocked(): void {		
+  private initializeRouterEventListeners() {
+    this.updateUrlAndSendAnalytics();
+    this.setTitle();
+    this.setBodyClass();
+  }
+
+  private handleUserLoggedIn(user: User, accessToken: string) {
+    this.userService.setPermission(user);
+    this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
+    this.initRealTimeChat(user, accessToken);
+    appboy.changeUser(user.id);
+    appboy.openSession();
+    if (!this.cookieService.get('app_session_id')) {
+      this.trackAppOpen();
+      this.updateSessionCookie();
+    }
+  }
+
+  private handleUserLoggedOut(redirectUrl: string) {
+    this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
+    this.paymentService.deleteCache();
+
+    try {
+      this.realTime.disconnect();
+    } catch (err) {
+    }
+
+    if (redirectUrl) {
+      return window.location.href = redirectUrl;
+    }
+
+    return window.location.reload();
+  }
+
+  public onViewIsBlocked(): void {
     this.renderer.addClass(document.body, 'blocked-page');
     this.renderer.addClass(document.body.parentElement, 'blocked-page');
   }
-  
+
   private updateUrlAndSendAnalytics() {
     this.router.events.pipe(distinctUntilChanged((previous: any, current: any) => {
       if (current instanceof NavigationEnd) {
@@ -113,17 +153,10 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private config() {
-    configMoment(this.i18n.locale);
-    configIcons(this.matIconRegistry, this.sanitizer);
-  }
-
   private updateSessionCookie() {
-    const uuid: string = UUID.UUID();
-    this.setCookie('app_session_id', uuid, 900000);
-  }
-
-  private setCookie(name: string, token: string, expiration: number) {
+    const name = 'app_session_id';
+    const token = UUID.UUID();
+    const expiration = 900000;
     const expirationDate: Date = new Date();
     expirationDate.setTime(expirationDate.getTime() + expiration);
     const options: CookieOptions = {
@@ -139,26 +172,15 @@ export class AppComponent implements OnInit {
 
   private subscribeEventUserLogin() {
     this.event.subscribe(EventService.USER_LOGIN, (accessToken: string) => {
-      this.userService.me().subscribe(
-        (user: User) => {
-          this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
-          this.initRealTimeChat(user, accessToken);
-          appboy.changeUser(user.id);
-          appboy.openSession();
-          if (!this.cookieService.get('app_session_id')) {
-            this.trackAppOpen();
-            this.updateSessionCookie();
-          }
-        },
-        (error: any) => {
-          this.userService.logout();
-          this.errorsService.show(error);
-        });
+      this.setLoading(true);
+      this.userService.me()
+        .pipe(finalize(() => this.setLoading(false)))
+        .subscribe(user => this.handleUserLoggedIn(user, accessToken));
     });
   }
 
   private initRealTimeChat(user: User, accessToken: string) {
-    this.RTConnectedSubscription = this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
+    this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
       this.initCalls();
       this.inboxService.init();
     });
@@ -174,20 +196,7 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeEventUserLogout() {
-    this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {
-      this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
-      this.paymentService.deleteCache();
-      try {
-        this.realTime.disconnect();
-      } catch (err) {
-      }
-      this.loggingOut = true;
-      if (redirectUrl) {
-        this.winRef.nativeWindow.location.href = redirectUrl;
-      } else {
-        this.winRef.nativeWindow.location.reload();
-      }
-    });
+    this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => this.handleUserLoggedOut(redirectUrl));
   }
 
   private subscribeChatEvents() {
@@ -222,36 +231,36 @@ export class AppComponent implements OnInit {
 
   private setTitle() {
     this.router.events.pipe(
-    filter(event => event instanceof NavigationEnd),
-    map(() => this.activatedRoute),
-    map(route => {
-      while (route.firstChild) {
-        route = route.firstChild;
-      }
-      return route;
-    }),
-    filter(route => route.outlet === 'primary'),
-    mergeMap(route => route.data),)
-    .subscribe((event) => {
-      let notifications = '';
-      const split: string[] = this.titleService.getTitle().split(' ');
-      if (split.length > 1) {
-        notifications = split[0].trim() + ' ';
-      }
-      const title = !(event['title']) ? 'Wallapop' : event['title'];
-      this.titleService.setTitle(notifications + title);
-      this.hideSidebar = event['hideSidebar'];
-      this.isMyZone = event['isMyZone'];
-      this.isProducts = event['isProducts'];
-      this.isProfile = event['isProfile'];
-    });
+      filter(event => event instanceof NavigationEnd),
+      map(() => this.activatedRoute),
+      map(route => {
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route;
+      }),
+      filter(route => route.outlet === 'primary'),
+      mergeMap(route => route.data))
+      .subscribe((event) => {
+        let notifications = '';
+        const split: string[] = this.titleService.getTitle().split(' ');
+        if (split.length > 1) {
+          notifications = split[0].trim() + ' ';
+        }
+        const title = !(event['title']) ? 'Wallapop' : event['title'];
+        this.titleService.setTitle(notifications + title);
+        this.hideSidebar = event['hideSidebar'];
+        this.isMyZone = event['isMyZone'];
+        this.isProducts = event['isProducts'];
+        this.isProfile = event['isProfile'];
+      });
   }
 
   private setBodyClass() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         if (this.previousSlug) {
-          this.renderer.removeClass(this.document.body, this.previousSlug);
+          this.renderer.removeClass(document.body, this.previousSlug);
         }
         const currentUrlSlug = 'page-' + event.url.slice(1).replace(/\//g, '-');
         if (currentUrlSlug) {
@@ -261,10 +270,14 @@ export class AppComponent implements OnInit {
       }
 
       if (event instanceof RouteConfigLoadStart) {
-        this.renderer.addClass(document.body, 'route-loading');
+        this.setLoading(true);
       } else if (event instanceof RouteConfigLoadEnd) {
-        this.renderer.removeClass(document.body, 'route-loading');
+        this.setLoading(false);
       }
     });
+  }
+
+  private setLoading(loading: boolean): void {
+    loading ? this.renderer.addClass(document.body, 'route-loading') : this.renderer.removeClass(document.body, 'route-loading');
   }
 }

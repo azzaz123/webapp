@@ -17,6 +17,9 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (request.url.endsWith('.svg')) {
+      return next.handle(request);
+    }
 
     if (this.accessTokenService.accessToken || request.url === `${environment.baseUrl}${LOGIN_ENDPOINT}`) {
       const setHeaders: any = {};

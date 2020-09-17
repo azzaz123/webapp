@@ -27,7 +27,7 @@
   <msg id="MobileBlockerSubtitle"><source>app/core/mobile-blocker/mobile-blocker.component.html:9,11</source>
     To see this content, open the wallapop app or continue browsing from your computer.
   </msg>
-  <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.html:13</source><source>app/layout/sidebar/sidebar.component.html:42</source><source>app/shared/catalog/cart/cart.component.html:71</source><source>app/wallacoins/wallacoins.component.html:27</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:33</source>credit</msg>
+  <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.html:13</source><source>app/layout/sidebar/sidebar.component.html:41</source><source>app/shared/catalog/cart/cart.component.html:71</source><source>app/wallacoins/wallacoins.component.html:27</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:33</source>credit</msg>
   <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.html:19</source><source>app/layout/sidebar/sidebar.component.html:33</source><source>app/layout/tabbar/tabbar.component.html:39</source><source>app/dashboard/dashboard.component.html:33</source>Messages</msg>
   <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.html:26</source><source>app/layout/tabbar/tabbar.component.html:59</source>My Zone</msg>
   <msg id="3983509092263971640"><source>app/layout/topbar/topbar.component.html:27</source>My Pro Zone</msg>
@@ -37,11 +37,11 @@
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.html:15</source>Dashboard</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.html:23</source><source>app/favorites/favorites.component.html:28</source>Products</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.html:24</source>Catalog</msg>
-  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.html:50</source><source>app/layout/tabbar/tabbar.component.html:16</source><source>app/shared/catalog/catalog-card/catalog-card.component.html:52</source><source>app/stats/items-stats/items-stats.component.html:16</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:24</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:42</source>Favorites</msg>
-  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.html:57</source>Reviews</msg>
-  <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.html:65</source><source>app/dashboard/dashboard.component.html:42</source>Phones</msg>
-  <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.html:72</source>Help</msg>
-  <msg id="4088311569349098646"><source>app/layout/sidebar/sidebar.component.html:79</source><source>app/stats/stats.component.html:12</source>Stats</msg>
+  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.html:49</source><source>app/layout/tabbar/tabbar.component.html:16</source><source>app/shared/catalog/catalog-card/catalog-card.component.html:52</source><source>app/stats/items-stats/items-stats.component.html:16</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:24</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:42</source>Favorites</msg>
+  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.html:56</source>Reviews</msg>
+  <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.html:64</source><source>app/dashboard/dashboard.component.html:42</source>Phones</msg>
+  <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.html:71</source>Help</msg>
+  <msg id="4088311569349098646"><source>app/layout/sidebar/sidebar.component.html:78</source><source>app/stats/stats.component.html:12</source>Stats</msg>
   <msg id="2821179408673282599"><source>app/layout/tabbar/tabbar.component.html:8</source>Home</msg>
   <msg id="6932865105766151309"><source>app/layout/tabbar/tabbar.component.html:25</source>Upload</msg>
   <msg id="ngb.alert.close"><source>../node_modules/@ng-bootstrap/ng-bootstrap/alert/alert.d.ts:3</source>Close</msg>
@@ -273,7 +273,6 @@
   <msg id="Country"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:77</source>Country</msg>
   <msg id="CIFNumber"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:83</source>CIF Number</msg>
   <msg id="NIFNumber"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:84</source>NIF Number</msg>
-  <msg id="DeleteInformation"><source>app/shared/profile-pro-billing/profile-pro-billing.component.html:94</source>Delete information</msg>
   <msg id="4391289919356861627"><source>app/shared/geolocation/location-select/location-modal/location-modal.component.html:4</source>Apply</msg>
   <msg id="4359291232904891489"><source>app/shared/geolocation/location-select/location-select.component.html:3</source>Set a location</msg>
   <msg id="5371960677736303052"><source>app/shared/geolocation/geolocation.component.html:9</source>Where?</msg>
@@ -885,20 +884,14 @@
   <msg id="5722262557807435110"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.html:17</source>Something went wrong :(</msg>
   <msg id="4289382185311381834"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.html:18</source>There was a problem with your request. Please, try again. </msg>
   <msg id="6650633628037596693"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.html:19</source>Try again</msg>
-  <msg id="1679509264092655850"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:8</source>Introducing... wallacoins!</msg>
-  <msg id="6032356805176766219"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:9</source>Our new currency for your features with unique benefits.</msg>
-  <msg id="977443694790489693"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:12</source>Introducing... credit!</msg>
-  <msg id="1923907148262898536"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:13</source>You don&apos;t need to pay for each feature anymore. Now you can buy packs of features... and save money!</msg>
-  <msg id="7310579825724301285"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:18</source><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:22</source>Custom packs</msg>
-  <msg id="6105008229590992791"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:19</source>You choose how many wallacoins you want to buy. Depending on your needs, you can choose the pack of wallacoins that best suits you.</msg>
-  <msg id="4047068775001617459"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:23</source>Depending on your needs, you can choose the pack of wallacoins that best suits you. No matter if you buy a lot of features or a few, you will save money for sure.</msg>
-  <msg id="2363998753044006673"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:28</source>Save with your wallacoins</msg>
-  <msg id="7468243639829626176"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:29</source>Buy our packs and you can get free wallacoins. The bigger the pack, we will give you more wallacoins.</msg>
-  <msg id="3975193160474724854"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:32</source>Only for your features</msg>
-  <msg id="2029069198994571617"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:33</source>Watch out! The available credit can be only used to buy features. As well, there are many advantages, you will save money and you will pay just once.</msg>
-  <msg id="3885497195825665706"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:37</source><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:73</source>Next</msg>
-  <msg id="3646679051227826982"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:39</source>Go to wallacoins</msg>
-  <msg id="78876651719315122"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:40</source>Go to credit</msg>
+  <msg id="977443694790489693"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:8</source>Introducing... credit!</msg>
+  <msg id="1923907148262898536"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:9</source>You don&apos;t need to pay for each feature anymore. Now you can buy packs of features... and save money!</msg>
+  <msg id="7310579825724301285"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:14</source>Custom packs</msg>
+  <msg id="4047068775001617459"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:15</source>Depending on your needs, you can choose the pack of wallacoins that best suits you. No matter if you buy a lot of features or a few, you will save money for sure.</msg>
+  <msg id="3975193160474724854"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:20</source>Only for your features</msg>
+  <msg id="2029069198994571617"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:21</source>Watch out! The available credit can be only used to buy features. As well, there are many advantages, you will save money and you will pay just once.</msg>
+  <msg id="3885497195825665706"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:25</source><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.html:73</source>Next</msg>
+  <msg id="78876651719315122"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.html:27</source>Go to credit</msg>
   <msg id="272934122656341350"><source>app/wallacoins/wallacoins.component.html:9</source>Credit</msg>
   <msg id="5484168340945543767"><source>app/wallacoins/wallacoins.component.html:15</source>Buy saving packs to feature your items and check your credit remaining.</msg>
   <msg id="2767524293310239820"><source>app/wallacoins/wallacoins.component.html:16</source>Wallacoins make it easy for you to buy features. From here you can buy them and see your credit.</msg>
