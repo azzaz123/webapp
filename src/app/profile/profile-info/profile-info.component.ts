@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
@@ -22,6 +22,8 @@ export const competitorLinks = [
   'milanuncios.com',
   'motor.es'
 ];
+
+export const BAD_USERNAME_ERROR_CODE = 112;
 
 @Component({
   selector: 'tsl-profile-info',
@@ -119,6 +121,8 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   }
 
   public onSubmit() {
+    this.setUsernameFormControlsErrors(false);
+
     const phoneNumberControl = this.profileForm.get('phone_number');
     if (this.isPro && phoneNumberControl.value) {
       if (!isValidNumber(phoneNumberControl.value, 'ES')) {
@@ -161,7 +165,6 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
           .pipe(finalize(() => {
             this.loading = false;
             this.formComponent.initFormControl();
-            this.errorsService.i18nSuccess('userEdited');
           }))
           .subscribe(() => {
             if (!this.user.location ||
@@ -176,6 +179,23 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
                 this.userService.user.location = newUserLocation;
                 this.userService.updateSearchLocationCookies(newLocation);
               });
+            }
+
+            this.errorsService.i18nSuccess('userEdited');
+          },
+          errorResponse => {
+            this.errorsService.show(errorResponse);
+
+            const { error } = errorResponse;
+            if (!error) {
+              return;
+            }
+
+            const { code } = error;
+
+            if (code === BAD_USERNAME_ERROR_CODE) {
+              this.profileForm.markAsDirty();
+              this.setUsernameFormControlsErrors(true);
             }
           });
       });
@@ -193,4 +213,19 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     }
   }
 
+  private setUsernameFormControlsErrors(incorrect: boolean) {
+    const firstNameFormControl = this.profileForm.get('first_name');
+    const lastNameFormControl = this.profileForm.get('last_name');
+
+    if (incorrect) {
+      firstNameFormControl.setErrors({ incorrect });
+      lastNameFormControl.setErrors({ incorrect });
+      return;
+    }
+
+    firstNameFormControl.setErrors(null);
+    lastNameFormControl.setErrors(null);
+    firstNameFormControl.updateValueAndValidity();
+    lastNameFormControl.updateValueAndValidity();
+  }
 }

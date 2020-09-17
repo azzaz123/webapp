@@ -15,7 +15,6 @@ export class SidebarComponent implements OnInit {
   @Input() isProducts: boolean;
   @Input() isProfile: boolean;
   public isProfessional: boolean;
-  public withCoins: boolean;
 
   constructor(private userService: UserService,
               public tutorialService: TutorialService,
@@ -29,13 +28,5 @@ export class SidebarComponent implements OnInit {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
-    this.userService.hasPerm('coins').subscribe((withCoins: boolean) => {
-      this.withCoins = withCoins;
-    });
-  }
-
-  public logout($event: any) {
-    $event.preventDefault();
-    this.userService.logout();
   }
 }
