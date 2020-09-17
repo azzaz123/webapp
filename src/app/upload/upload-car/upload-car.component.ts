@@ -116,9 +116,10 @@ export class UploadCarComponent implements OnInit {
   }
 
   private initializeUploadForm(): void {
-    forkJoin(
+    forkJoin([
       this.getBrands(),
       this.getCarTypes()
+    ]
     ).pipe(
       finalize(() => this.subscribeToFieldsChanges())
     ).subscribe(([brands, carTypes]) => {
@@ -152,12 +153,13 @@ export class UploadCarComponent implements OnInit {
       },
     }, { emitEvent: false });
 
-    forkJoin(
+    forkJoin([
       this.getBrands(),
       this.getCarTypes(),
       this.getModels(this.item.brand),
       this.getYears(this.item.model),
       this.getVersions(`${this.item.year}`)
+    ]
     ).pipe(
       finalize(() => {
         this.customVersion = !this.versions.find(version => this.item.version === version.value);
