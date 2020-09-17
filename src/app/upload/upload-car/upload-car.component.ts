@@ -191,7 +191,19 @@ export class UploadCarComponent implements OnInit {
 
   private subscribeToBrandChanges(): void {
     this.uploadForm.get('brand').valueChanges.subscribe((brand: string) => {
-      this.resetFieldsAfterBrandChange();
+      this.resetFormFields([
+        'model',
+        'title',
+        'year',
+        'version',
+        'num_seats',
+        'num_doors',
+        'body_type',
+        'km',
+        'engine',
+        'gearbox',
+        'horsepower'
+      ]);
       this.getModels(brand).subscribe((models: IOption[]) => {
         this.models = models;
       });
@@ -200,7 +212,18 @@ export class UploadCarComponent implements OnInit {
 
   private subscribeToModelChanges(): void {
     this.uploadForm.get('model').valueChanges.subscribe((model: string) => {
-      this.resetFieldsAfterModelChange();
+      this.resetFormFields([
+        'title',
+        'year',
+        'version',
+        'num_seats',
+        'num_doors',
+        'body_type',
+        'km',
+        'engine',
+        'gearbox',
+        'horsepower'
+      ]);
       this.getYears(model).subscribe((years: IOption[]) => {
         this.years = years;
       });
@@ -209,7 +232,16 @@ export class UploadCarComponent implements OnInit {
 
   private subscribeToYearChanges(): void {
     this.uploadForm.get('year').valueChanges.subscribe((year: string) => {
-      this.resetFieldsAfterYearChange();
+      this.resetFormFields([
+        'version',
+        'num_seats',
+        'num_doors',
+        'body_type',
+        'km',
+        'engine',
+        'gearbox',
+        'horsepower'
+      ]);
       this.autocompleteTitle();
       this.getVersions(year).subscribe((versions: IOption[]) => {
         this.versions = versions;
@@ -219,7 +251,15 @@ export class UploadCarComponent implements OnInit {
 
   private subscribeToVersionChanges(): void {
     this.uploadForm.get('version').valueChanges.subscribe((version: string) => {
-      this.resetFieldsAfterVersionChange();
+      this.resetFormFields([
+        'num_seats',
+        'num_doors',
+        'body_type',
+        'km',
+        'engine',
+        'gearbox',
+        'horsepower'
+      ]);
       this.getAutocompleteFields(version).subscribe((fields: CarInfo) => {
         this.uploadForm.patchValue(fields, { emitEvent: false });
       });
@@ -285,6 +325,12 @@ export class UploadCarComponent implements OnInit {
     const title = `${brand} ${model} ${year}`;
 
     this.uploadForm.get('title').patchValue(title);
+  }
+
+  private resetFormFields(fields: string[]): void {
+    fields.forEach(field => {
+      this.uploadForm.get(field).reset(undefined, { emitEvent: false });
+    });
   }
 
   onSubmit() {
@@ -394,36 +440,6 @@ export class UploadCarComponent implements OnInit {
       const v: number = Number(control.value);
       return v > max ? { 'max': { 'requiredMax': max, 'actualMax': v } } : null;
     };
-  }
-
-  private resetFieldsAfterBrandChange(): void {
-    this.uploadForm.reset({
-      brand: this.uploadForm.get('brand').value
-    }, { emitEvent: false });
-  }
-
-  private resetFieldsAfterModelChange(): void {
-    this.uploadForm.reset({
-      brand: this.uploadForm.get('brand').value,
-      model: this.uploadForm.get('model').value
-    }, { emitEvent: false });
-  }
-
-  private resetFieldsAfterYearChange(): void {
-    this.uploadForm.reset({
-      brand: this.uploadForm.get('brand').value,
-      model: this.uploadForm.get('model').value,
-      year: this.uploadForm.get('year').value
-    }, { emitEvent: false });
-  }
-
-  private resetFieldsAfterVersionChange(): void {
-    this.uploadForm.reset({
-      brand: this.uploadForm.get('brand').value,
-      model: this.uploadForm.get('model').value,
-      year: this.uploadForm.get('year').value,
-      version: this.uploadForm.get('version').value
-    }, { emitEvent: false });
   }
 
   public selectUrgent(isUrgent: boolean): void {
