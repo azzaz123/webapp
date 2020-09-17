@@ -717,7 +717,8 @@ describe('Service: User', () => {
         itemHashId: ITEM_HASH,
         conversationHash: CONVERSATIONS_HASH,
         comments: COMMENT,
-        reason: REASON
+        reason: REASON,
+        targetCrm: 'zendesk'
       });
       expect(req.request.headers.get('AppBuild')).toEqual(APP_VERSION);
     });
