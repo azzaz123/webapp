@@ -5,7 +5,7 @@ import { UploadCarComponent } from './upload-car.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
 import {
@@ -18,7 +18,7 @@ import { MOCK_ITEM_V3, UPLOAD_FORM_CAR_VALUES } from '../../../tests/item.fixtur
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { User } from '../../core/user/user';
-import { IMAGE, USER_ID } from '../../../tests/user.fixtures.spec';
+import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Car } from '../../core/item/car';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
@@ -43,7 +43,6 @@ describe('UploadCarComponent', () => {
   let component: UploadCarComponent;
   let fixture: ComponentFixture<UploadCarComponent>;
   let carSuggestionsService: CarSuggestionsService;
-  let carKeysService: CarKeysService;
   let errorService: ErrorsService;
   let router: Router;
   let modalService: NgbModal;
@@ -141,7 +140,6 @@ describe('UploadCarComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     carSuggestionsService = TestBed.inject(CarSuggestionsService);
-    carKeysService = TestBed.inject(CarKeysService);
     errorService = TestBed.inject(ErrorsService);
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
@@ -269,6 +267,45 @@ describe('UploadCarComponent', () => {
       expect(carSuggestionsService.getModels).toHaveBeenCalledWith(MOCK_CAR.brand);
       expect(component.models).toEqual(CAR_MODELS);
     });
+
+    it('should reset fields that depend on brand', () => {
+      component.item = MOCK_CAR;
+
+      component.ngOnInit();
+      component.uploadForm.patchValue({ brand: 'New brand' });
+
+      expect(component.uploadForm.value).toEqual({
+        body_type: null,
+        brand: "New brand",
+        category_id: `${MOCK_CAR.categoryId}`,
+        currency_code: "EUR",
+        engine: null,
+        financed_price: MOCK_CAR.financedPrice,
+        gearbox: null,
+        horsepower: null,
+        id: MOCK_CAR.id,
+        images: [],
+        km: null,
+        location: {
+          address: "",
+          latitude: "",
+          longitude: "",
+        },
+        model: null,
+        num_doors: null,
+        num_seats: null,
+        sale_conditions: {
+          exchange_allowed: false,
+          fix_price: false,
+          shipping_allowed: false,
+        },
+        sale_price: MOCK_CAR.salePrice,
+        storytelling: "",
+        title: null,
+        version: null,
+        year: null,
+      });
+    });
   });
 
   describe('when changing model field', () => {
@@ -281,6 +318,45 @@ describe('UploadCarComponent', () => {
 
       expect(carSuggestionsService.getYears).toHaveBeenCalledWith(MOCK_CAR.brand, MOCK_CAR.model);
       expect(component.years).toEqual(CAR_YEARS);
+    });
+
+    it('should reset fields that depend on model', () => {
+      component.item = MOCK_CAR;
+
+      component.ngOnInit();
+      component.uploadForm.patchValue({ model: 'New model' });
+
+      expect(component.uploadForm.value).toEqual({
+        body_type: null,
+        brand: MOCK_CAR.brand,
+        category_id: `${MOCK_CAR.categoryId}`,
+        currency_code: "EUR",
+        engine: null,
+        financed_price: MOCK_CAR.financedPrice,
+        gearbox: null,
+        horsepower: null,
+        id: MOCK_CAR.id,
+        images: [],
+        km: null,
+        location: {
+          address: "",
+          latitude: "",
+          longitude: "",
+        },
+        model: 'New model',
+        num_doors: null,
+        num_seats: null,
+        sale_conditions: {
+          exchange_allowed: false,
+          fix_price: false,
+          shipping_allowed: false,
+        },
+        sale_price: MOCK_CAR.salePrice,
+        storytelling: "",
+        title: null,
+        version: null,
+        year: null,
+      });
     });
   });
 
@@ -308,6 +384,45 @@ describe('UploadCarComponent', () => {
       const expectedTitle = `${MOCK_CAR.brand} ${MOCK_CAR.model} ${MOCK_CAR.year}`
 
       expect(title).toEqual(expectedTitle);
+    });
+
+    it('should reset fields that depend on year', () => {
+      component.item = MOCK_CAR;
+
+      component.ngOnInit();
+      component.uploadForm.patchValue({ year: 2016 });
+
+      expect(component.uploadForm.value).toEqual({
+        body_type: null,
+        brand: MOCK_CAR.brand,
+        category_id: `${MOCK_CAR.categoryId}`,
+        currency_code: "EUR",
+        engine: null,
+        financed_price: MOCK_CAR.financedPrice,
+        gearbox: null,
+        horsepower: null,
+        id: MOCK_CAR.id,
+        images: [],
+        km: null,
+        location: {
+          address: "",
+          latitude: "",
+          longitude: "",
+        },
+        model: MOCK_CAR.model,
+        num_doors: null,
+        num_seats: null,
+        sale_conditions: {
+          exchange_allowed: false,
+          fix_price: false,
+          shipping_allowed: false,
+        },
+        sale_price: MOCK_CAR.salePrice,
+        storytelling: "",
+        title: `${MOCK_CAR.brand} ${MOCK_CAR.model} ${2016}`,
+        version: null,
+        year: 2016,
+      });
     });
   });
 
@@ -568,10 +683,8 @@ describe('UploadCarComponent', () => {
     beforeEach(fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component, 'onSubmit');
-      component.uploadForm.get('model').enable();
-      component.uploadForm.get('year').enable();
-      component.uploadForm.get('version').enable();
-      component.uploadForm.patchValue(UPLOAD_FORM_CAR_VALUES);
+      component.item = MOCK_CAR;
+      component.ngOnInit();
       component.preview();
     }));
 
@@ -581,7 +694,37 @@ describe('UploadCarComponent', () => {
       });
     });
     it('should set itemPreview', () => {
-      expect(componentInstance.itemPreview).toEqual(UPLOAD_FORM_CAR_VALUES);
+      expect(componentInstance.itemPreview).toEqual({
+        id: MOCK_CAR.id,
+        title: `${MOCK_CAR.brand} ${MOCK_CAR.model} ${MOCK_CAR.year}`,
+        storytelling: MOCK_CAR.description,
+        model: MOCK_CAR.model,
+        brand: MOCK_CAR.brand,
+        year: `${MOCK_CAR.year}`,
+        version: MOCK_CAR.version,
+        financed_price: MOCK_CAR.financedPrice,
+        num_seats: MOCK_CAR.numSeats,
+        num_doors: MOCK_CAR.numDoors,
+        body_type: MOCK_CAR.bodyType,
+        km: MOCK_CAR.km,
+        engine: MOCK_CAR.engine,
+        gearbox: MOCK_CAR.gearbox,
+        horsepower: MOCK_CAR.horsepower,
+        category_id: CARS_CATEGORY,
+        sale_price: MOCK_CAR.salePrice,
+        currency_code: MOCK_CAR.currencyCode,
+        sale_conditions: {
+          fix_price: false,
+          exchange_allowed: false,
+          shipping_allowed: false
+        },
+        images: [],
+        location: {
+          address: "",
+          latitude: "",
+          longitude: "",
+        }
+      });
     });
     it('should submit form', fakeAsync(() => {
       tick();
