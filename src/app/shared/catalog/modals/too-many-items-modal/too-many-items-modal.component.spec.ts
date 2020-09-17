@@ -59,13 +59,13 @@ describe('TooManyItemsModalComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TooManyItemsModalComponent);
-    itemService = TestBed.get(ItemService);
-    subscriptionsService = TestBed.get(SubscriptionsService);
+    itemService = TestBed.inject(ItemService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
     component = fixture.componentInstance;
     component.type =  SUBSCRIPTION_TYPES.stripe;
     fixture.detectChanges();
 
-    analyticsService = TestBed.get(AnalyticsService);
+    analyticsService = TestBed.inject(AnalyticsService);
     spyOn(analyticsService, 'trackEvent');
   });
 

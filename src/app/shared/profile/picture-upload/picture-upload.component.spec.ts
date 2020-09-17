@@ -50,8 +50,8 @@ describe('PictureUploadComponent', () => {
     fixture = TestBed.createComponent(PictureUploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    userService = TestBed.get(UserService);
-    errorsService = TestBed.get(ErrorsService);
+    userService = TestBed.inject(UserService);
+    errorsService = TestBed.inject(ErrorsService);
   });
 
   describe('onUploadOutput', () => {

@@ -26,6 +26,8 @@ import { TestRequest } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
 import { Item } from '../item/item';
+import { AnalyticsService } from "../analytics/analytics.service";
+import { MockAnalyticsService } from "../../../tests/analytics.fixtures.spec";
 
 let service: CallsService;
 let userService: UserService;
@@ -52,15 +54,16 @@ describe('CallsService', () => {
         { provide: TrackingService, useValue: {} },
         {
           provide: ConnectionService, useValue: {}
-        }
+        },
+        { provide: AnalyticsService, useClass: MockAnalyticsService }
       ]
     });
-    service = TestBed.get(CallsService);
-    userService = TestBed.get(UserService);
-    itemService = TestBed.get(ItemService);
-    connectionService = TestBed.get(ConnectionService);
-    eventService = TestBed.get(EventService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    service = TestBed.inject(CallsService);
+    userService = TestBed.inject(UserService);
+    itemService = TestBed.inject(ItemService);
+    connectionService = TestBed.inject(ConnectionService);
+    eventService = TestBed.inject(EventService);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

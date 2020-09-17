@@ -63,10 +63,10 @@ describe('UnsubscribeModalComponent', () => {
     fixture = TestBed.createComponent(UnsubscribeModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    userService = TestBed.get(UserService);
-    activeModal = TestBed.get(NgbActiveModal);
-    accessTokenService = TestBed.get(AccessTokenService);
-    event = TestBed.get(EventService);
+    userService = TestBed.inject(UserService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    accessTokenService = TestBed.inject(AccessTokenService);
+    event = TestBed.inject(EventService);
   });
 
   describe('ngOnInit', () => {

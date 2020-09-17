@@ -69,8 +69,8 @@ describe('ThirdVoiceReviewComponent', () => {
     component.message = mockConversation.messages[0];
     component.user = mockConversation.user;
     component.item = mockConversation.item;
-    reviewService = TestBed.get(ReviewService);
-    modalService = TestBed.get(NgbModal);
+    reviewService = TestBed.inject(ReviewService);
+    modalService = TestBed.inject(NgbModal);
     fixture.detectChanges();
   });
 

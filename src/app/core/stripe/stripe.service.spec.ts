@@ -76,11 +76,11 @@ describe('StripeService', () => {
       ],
       imports: [HttpClientTestingModule]
     });
-    service = TestBed.get(StripeService);
-    paymentService = TestBed.get(PaymentService);
-    userService = TestBed.get(UserService);
-    httpMock = TestBed.get(HttpTestingController);
-    eventService = TestBed.get(EventService);
+    service = TestBed.inject(StripeService);
+    paymentService = TestBed.inject(PaymentService);
+    userService = TestBed.inject(UserService);
+    httpMock = TestBed.inject(HttpTestingController);
+    eventService = TestBed.inject(EventService);
   });
 
   describe('buy', () => {

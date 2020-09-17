@@ -45,7 +45,7 @@ describe('CatalogStatusNavbarComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogStatusNavbarComponent);
-    paymentService = TestBed.get(PaymentService);
+    paymentService = TestBed.inject(PaymentService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -81,13 +81,13 @@ describe('CatalogItemActionsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogItemActionsComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
-    toastService = TestBed.get(ToastService);
-    trackingService = TestBed.get(TrackingService);
-    errorsService = TestBed.get(ErrorsService);
-    modalService = TestBed.get(NgbModal);
-    router = TestBed.get(Router);
-    eventService = TestBed.get(EventService);
+    itemService = TestBed.inject(ItemService);
+    toastService = TestBed.inject(ToastService);
+    trackingService = TestBed.inject(TrackingService);
+    errorsService = TestBed.inject(ErrorsService);
+    modalService = TestBed.inject(NgbModal);
+    router = TestBed.inject(Router);
+    eventService = TestBed.inject(EventService);
     spyOn(modalService, 'open').and.callThrough();
     spyOn(toastService, 'show');
   });

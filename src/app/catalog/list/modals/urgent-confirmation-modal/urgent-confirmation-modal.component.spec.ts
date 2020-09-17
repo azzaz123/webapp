@@ -55,10 +55,10 @@ describe('UrgentConfirmationModalComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UrgentConfirmationModalComponent);
-    activeModal = TestBed.get(NgbActiveModal);
-    trackingService = TestBed.get(TrackingService);
-    userService = TestBed.get(UserService);
-    paymentService = TestBed.get(PaymentService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    trackingService = TestBed.inject(TrackingService);
+    userService = TestBed.inject(UserService);
+    paymentService = TestBed.inject(PaymentService);
     component = fixture.componentInstance;
     appboy.initialize(environment.appboy);
     fixture.detectChanges();

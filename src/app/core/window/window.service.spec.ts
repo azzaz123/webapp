@@ -11,7 +11,7 @@ describe('Service: WindowRef', () => {
     TestBed.configureTestingModule({
       providers: [WindowRef]
     });
-    service = TestBed.get(WindowRef);
+    service = TestBed.inject(WindowRef);
   });
 
   it('should return window', () => {

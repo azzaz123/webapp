@@ -46,8 +46,8 @@ describe('ReviewsComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReviewsComponent);
-    userService = TestBed.get(UserService);
-    reviewService = TestBed.get(UserReviewService);
+    userService = TestBed.inject(UserService);
+    reviewService = TestBed.inject(UserReviewService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

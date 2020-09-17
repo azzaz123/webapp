@@ -75,13 +75,13 @@ describe('EditSubscriptionModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditSubscriptionModalComponent);
     component = fixture.componentInstance;
-    toastService = TestBed.get(ToastService);
-    activeModal = TestBed.get(NgbActiveModal);
-    modalService = TestBed.get(NgbModal);
-    eventService = TestBed.get(EventService);
-    subscriptionsService = TestBed.get(SubscriptionsService);
+    toastService = TestBed.inject(ToastService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    modalService = TestBed.inject(NgbModal);
+    eventService = TestBed.inject(EventService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
     component.subscription = MAPPED_SUBSCRIPTIONS[2];
-    analyticsService = TestBed.get(AnalyticsService);
+    analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
 

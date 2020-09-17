@@ -33,9 +33,6 @@ describe('SidebarComponent', () => {
           },
           isProfessional() {
             return observableOf(true);
-          },
-          hasPerm() {
-            return observableOf(true);
           }
         },
         },
@@ -53,7 +50,7 @@ describe('SidebarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
-    userService = TestBed.get(UserService);
+    userService = TestBed.inject(UserService);
     spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
   });
@@ -73,33 +70,6 @@ describe('SidebarComponent', () => {
 
       expect(userService.isProfessional).toHaveBeenCalled();
       expect(component.isProfessional).toBe(true);
-    });
-
-    it('should call hasPerm and set the attribute', () => {
-      spyOn(userService, 'hasPerm').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(userService.hasPerm).toHaveBeenCalledWith('coins');
-      expect(component.withCoins).toBe(true);
-    });
-  });
-
-  describe('logout', () => {
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {preventDefault: preventDefault};
-
-    beforeEach(() => {
-      spyOn(userService, 'logout');
-      component.logout(event);
-    });
-
-    it('should prevent event', () => {
-      expect(preventDefault).toHaveBeenCalled();
-    });
-
-    it('should logout', () => {
-      expect(userService.logout).toHaveBeenCalled();
     });
   });
 

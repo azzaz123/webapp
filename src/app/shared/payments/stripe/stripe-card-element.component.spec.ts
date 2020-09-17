@@ -58,7 +58,7 @@ describe('StripeCardElementComponent', () => {
     fixture = TestBed.createComponent(StripeCardElementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    stripeService = TestBed.get(StripeService);
+    stripeService = TestBed.inject(StripeService);
   });
 
   describe('createNewCard', () => {

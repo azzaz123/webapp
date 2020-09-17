@@ -77,13 +77,13 @@ describe('Service: Tracking', () => {
         EventService
       ]
     });
-    eventService = TestBed.get(EventService);
+    eventService = TestBed.inject(EventService);
     spyOn(eventService, 'subscribe').and.callThrough();
-    service = TestBed.get(TrackingService);
-    userService = TestBed.get(UserService);
-    httpMock = TestBed.get(HttpTestingController);
-    window = TestBed.get(WindowRef).nativeWindow;
-    navigatorService = TestBed.get(NavigatorService);
+    service = TestBed.inject(TrackingService);
+    userService = TestBed.inject(UserService);
+    httpMock = TestBed.inject(HttpTestingController);
+    window = TestBed.inject(WindowRef).nativeWindow;
+    navigatorService = TestBed.inject(NavigatorService);
   });
 
   afterEach(() => {

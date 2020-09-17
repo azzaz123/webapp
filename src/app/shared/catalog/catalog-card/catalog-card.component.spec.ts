@@ -87,13 +87,13 @@ describe('CatalogCardComponent', () => {
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
     fixture.detectChanges();
-    itemService = TestBed.get(ItemService);
-    modalService = TestBed.get(NgbModal);
-    trackingService = TestBed.get(TrackingService);
-    errorsService = TestBed.get(ErrorsService);
-    i18nService = TestBed.get(I18nService);
+    itemService = TestBed.inject(ItemService);
+    modalService = TestBed.inject(NgbModal);
+    trackingService = TestBed.inject(TrackingService);
+    errorsService = TestBed.inject(ErrorsService);
+    i18nService = TestBed.inject(I18nService);
     appboy.initialize(environment.appboy);
-    eventService = TestBed.get(EventService);
+    eventService = TestBed.inject(EventService);
   });
 
   describe('select', () => {

@@ -36,9 +36,9 @@ describe('Service: Notification', () => {
         {provide: PushNotificationsService, useClass: MockedPushNotificationsService}
       ]
     });
-    service = TestBed.get(NotificationService);
-    notification = TestBed.get(PushNotificationsService);
-    trackingService = TestBed.get(TrackingService);
+    service = TestBed.inject(NotificationService);
+    notification = TestBed.inject(PushNotificationsService);
+    trackingService = TestBed.inject(TrackingService);
 
   });
 

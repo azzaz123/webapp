@@ -110,12 +110,12 @@ describe('CartProComponent', () => {
     component = fixture.componentInstance;
     component.status = MOCK_STATUS;
     component.perks = perksModel;
-    cartService = TestBed.get(CartService);
-    itemService = TestBed.get(ItemService);
-    errorService = TestBed.get(ErrorsService);
-    router = TestBed.get(Router);
-    trackingService = TestBed.get(TrackingService);
-    paymentsService = TestBed.get(PaymentService);
+    cartService = TestBed.inject(CartService);
+    itemService = TestBed.inject(ItemService);
+    errorService = TestBed.inject(ErrorsService);
+    router = TestBed.inject(Router);
+    trackingService = TestBed.inject(TrackingService);
+    paymentsService = TestBed.inject(PaymentService);
     fixture.detectChanges();
   });
 

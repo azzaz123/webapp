@@ -36,7 +36,7 @@ describe('CheckoutExtrasProItemComponent', () => {
     component = fixture.componentInstance;
     component.pack = PREPARED_PACKS[0];
     fixture.detectChanges();
-    cartService = TestBed.get(CartService);
+    cartService = TestBed.inject(CartService);
   });
 
   describe('ngOnInit', () => {

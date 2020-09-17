@@ -20,8 +20,8 @@ describe('BlockUserService', () => {
       ]
     });
 
-    httpMock = TestBed.get(HttpTestingController);
-    service = TestBed.get(BlockUserService);
+    httpMock = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(BlockUserService);
   });
 
   afterEach(() => {

@@ -20,8 +20,8 @@ describe('CarKeysService', () => {
       ],
       imports: [HttpClientTestingModule]
     });
-    service = TestBed.get(CarKeysService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(CarKeysService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

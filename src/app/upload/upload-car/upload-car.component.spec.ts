@@ -140,14 +140,14 @@ describe('UploadCarComponent', () => {
     fixture = TestBed.createComponent(UploadCarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    carSuggestionsService = TestBed.get(CarSuggestionsService);
-    carKeysService = TestBed.get(CarKeysService);
-    errorService = TestBed.get(ErrorsService);
-    router = TestBed.get(Router);
-    modalService = TestBed.get(NgbModal);
-    trackingService = TestBed.get(TrackingService);
-    analyticsService = TestBed.get(AnalyticsService);
-    itemService = TestBed.get(ItemService);
+    carSuggestionsService = TestBed.inject(CarSuggestionsService);
+    carKeysService = TestBed.inject(CarKeysService);
+    errorService = TestBed.inject(ErrorsService);
+    router = TestBed.inject(Router);
+    modalService = TestBed.inject(NgbModal);
+    trackingService = TestBed.inject(TrackingService);
+    analyticsService = TestBed.inject(AnalyticsService);
+    itemService = TestBed.inject(ItemService);
   });
 
   describe('when the upload page is initialized', () => {

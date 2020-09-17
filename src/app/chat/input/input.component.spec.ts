@@ -61,11 +61,11 @@ describe('Component: Input', () => {
     });
     fixture = TestBed.createComponent(InputComponent);
     component = TestBed.createComponent(InputComponent).componentInstance;
-    messageService = TestBed.get(MessageService);
-    eventService = TestBed.get(EventService);
-    trackingService = TestBed.get(TrackingService);
-    remoteConsoleService = TestBed.get(RemoteConsoleService);
-    deviceService = TestBed.get(DeviceDetectorService);
+    messageService = TestBed.inject(MessageService);
+    eventService = TestBed.inject(EventService);
+    trackingService = TestBed.inject(TrackingService);
+    remoteConsoleService = TestBed.inject(RemoteConsoleService);
+    deviceService = TestBed.inject(DeviceDetectorService);
   });
 
   beforeEach(() => {
