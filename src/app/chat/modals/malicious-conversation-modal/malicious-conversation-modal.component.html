@@ -1,0 +1,23 @@
+<div class="MaliciousConversationModal">
+
+  <div class="MaliciousConversationModal__close" (click)="activeModal.close()">
+    <mat-icon svgIcon="cross"></mat-icon>
+  </div>
+
+  <div class="MaliciousConversationModal__content">
+    <div class="MaliciousConversationModal__content-info">
+      <div class="MaliciousConversationModal__content-info-title">
+        <span i18n="@@forgetThisChat">You better forget this chat</span>
+      </div>
+
+      <div class="MaliciousConversationModal__content-info-description">
+        <span i18n="@@maliciousConversationDescription">This person violated our coexistence rules. We suggest that you ignore their messages and do not communicate with them through any means other than wallapop, as this may be an attempt to defraud you. </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="MaliciousConversationModal__actions">
+    <tsl-button (click)="activeModal.close()" i18n="@@exitConversation">Exit the conversation</tsl-button>
+  </div>
+
+</div>
