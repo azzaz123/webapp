@@ -17,7 +17,8 @@ export class InboxUser {
               private _sellingItemCount: number,
               private _score: number,
               private _location: any,
-              private _distanceInKm: number) {
+              private _distanceInKm: number,
+              private _malicious: boolean) {
   }
 
   get id(): string {
@@ -111,6 +112,14 @@ export class InboxUser {
   set distanceInKm(value: number) {
     this._distanceInKm = value;
   }
+
+  get malicious() {
+    return this._malicious;
+  }
+
+  set malicious(value: boolean) {
+    this._malicious = value;
+  }
 }
 
-export const InboxUserPlaceholder = new InboxUser(null, 'unknown', false, false, null, null, null, null, 0, 0, null, null);
+export const InboxUserPlaceholder = new InboxUser(null, 'unknown', false, false, null, null, null, null, 0, 0, null, null, null);
