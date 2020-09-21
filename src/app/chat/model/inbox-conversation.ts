@@ -98,6 +98,10 @@ export class InboxConversation {
         return this._phoneShared;
     }
 
+    get isFromMaliciousUser(): boolean {
+        return this._user.malicious;
+    }
+
     static errorConversationFromMessage(message: InboxMessage) {
         const user = InboxUserPlaceholder;
         const item = InboxItemPlaceholder;

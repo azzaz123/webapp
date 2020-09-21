@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -6,7 +6,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './malicious-conversation-modal.component.html',
   styleUrls: ['./malicious-conversation-modal.component.scss']
 })
-export class MaliciousConversationModalComponent implements OnInit, OnDestroy {
+export class MaliciousConversationModalComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal) { }
 
@@ -14,15 +14,24 @@ export class MaliciousConversationModalComponent implements OnInit, OnDestroy {
     this.trackViewMaliciousModal();
   }
 
-  ngOnDestroy(): void {
-    this.trackCloseMaliciousModal();
+  public close(userClickedCTA: boolean) {
+    this.activeModal.close(userClickedCTA);
+
+    if (userClickedCTA) {
+      return this.trackClickCTAMaliciousModal();
+    }
+
+    return this.trackDismissMaliciousModal();
   }
 
   // TODO: TNS-946 - https://wallapop.atlassian.net/browse/TNS-946
   private trackViewMaliciousModal(): void {
   }
 
-  private trackCloseMaliciousModal(): void {
+  private trackClickCTAMaliciousModal(): void {
+  }
+
+  private trackDismissMaliciousModal(): void {
   }
 
 }
