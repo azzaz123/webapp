@@ -136,6 +136,26 @@ $modal-border-radius: 0.3rem;
   }
 }
 
+.modal.warning {
+  $modal-width: 600px;
+  $modal-height: 321px;
+
+  .modal-dialog {
+    max-width: $modal-width;
+    max-height: $modal-height;
+  }
+  .modal-content {
+    border-radius: $border-radius;
+    width: $modal-width !important;
+    height: $modal-height !important;
+
+    @include media-breakpoint-down(sm) {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+}
+
 .modal.review, .modal.sold, .modal.profile {
   $modal-width: 600px;
   .modal-dialog {
