@@ -52,8 +52,7 @@
   <h2 i18n>Reviews</h2>
 </a>
 
-<a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-phones" class="sidebar-section" [routerLink]="['/pro/calls']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CALLS"
-   [ngClass]="{active: tutorialService.step === 5}">
+<a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-phones" class="sidebar-section" [routerLink]="['/pro/calls']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CALLS">
   <div class="sidebar-section-circle">
     <mat-icon svgIcon="navigation_phones"></mat-icon>
   </div>
