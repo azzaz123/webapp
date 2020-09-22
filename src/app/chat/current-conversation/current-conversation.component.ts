@@ -229,10 +229,21 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       return;
     }
 
-    this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' }).result.then(userExitsConversation => {
-      if (userExitsConversation) {
-        this.inboxConversationService.currentConversation = null;
-      }
-    });
+    this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' })
+    .result
+      .then(() => this.handleUserConfirmsMaliciousModal())
+      .catch(() => this.trackDismissMaliciousModal());
+  }
+
+  private handleUserConfirmsMaliciousModal(): void {
+    this.inboxConversationService.currentConversation = null;
+    this.trackClickMaliciousModalCTAButton();
+  }
+
+  // TODO: TNS-946 - https://wallapop.atlassian.net/browse/TNS-946
+  private trackClickMaliciousModalCTAButton() {
+  }
+
+  private trackDismissMaliciousModal() {
   }
 }
