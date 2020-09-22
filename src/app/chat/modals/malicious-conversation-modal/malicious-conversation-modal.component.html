@@ -1,5 +1,5 @@
-<div class="MaliciousConversationModal d-flex flex-row">
-  <div class="MaliciousConversationModal__close" (click)="close()">
+<div class="MaliciousConversationModal d-flex flex-column flex-md-row justify-content-between justify-content-md-center text-center text-md-left">
+  <div class="MaliciousConversationModal__close" (click)="close(false)">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
 
@@ -7,7 +7,7 @@
     <img src="/assets/images/user.png" alt="malicious" />
   </div>
 
-  <div class="d-flex flex-column justify-content-center">
+  <div class="MaliciousConversationModal__content d-flex flex-column justify-content-between justify-content-md-center">
     <div class="MaliciousConversationModal__title">
       <span i18n="@@forgetThisChat"><b>You better forget this chat</b></span>
     </div>

@@ -10,9 +10,6 @@
   padding: $spacing-xxl;
   color: $blue-grey-1;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
 
   &__close {
@@ -41,6 +38,10 @@
   &__description {
     margin-bottom: $spacing-m;
   }
+
+  @include media-breakpoint-down(sm) {
+    padding: 20px;
+  }
 }
 
 .MaliciousConversationModal__image {
@@ -51,5 +52,23 @@
 
   img {
     width: 100%;
+  }
+
+  @include media-breakpoint-down(sm) {
+    height: 50%;
+    margin: 0px;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  tsl-button {
+    width: 100%;
+
+    &::ng-deep {
+      button {
+        width: 100% !important;
+      }
+    }
+
   }
 }

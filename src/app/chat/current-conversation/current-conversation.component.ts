@@ -229,7 +229,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       return;
     }
 
-    this.modalService.open(MaliciousConversationModalComponent).result.then(userExitsConversation => {
+    this.modalService.open(MaliciousConversationModalComponent, { windowClass: 'warning' }).result.then(userExitsConversation => {
       if (userExitsConversation) {
         this.inboxConversationService.currentConversation = null;
       }
