@@ -16,22 +16,9 @@ export class MaliciousConversationModalComponent implements OnInit {
 
   public close(userClickedCTA: boolean) {
     this.activeModal.close(userClickedCTA);
-
-    if (userClickedCTA) {
-      return this.trackClickCTAMaliciousModal();
-    }
-
-    return this.trackDismissMaliciousModal();
   }
 
   // TODO: TNS-946 - https://wallapop.atlassian.net/browse/TNS-946
   private trackViewMaliciousModal(): void {
   }
-
-  private trackClickCTAMaliciousModal(): void {
-  }
-
-  private trackDismissMaliciousModal(): void {
-  }
-
 }

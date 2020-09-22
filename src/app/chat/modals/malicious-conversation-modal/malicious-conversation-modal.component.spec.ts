@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MaliciousConversationModalComponent } from './malicious-conversation-modal.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('MaliciousConversationModalComponent', () => {
   let component: MaliciousConversationModalComponent;
@@ -8,7 +9,8 @@ describe('MaliciousConversationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MaliciousConversationModalComponent ]
+      declarations: [ MaliciousConversationModalComponent ],
+      providers: [ NgbActiveModal ]
     })
     .compileComponents();
   }));
@@ -25,12 +27,8 @@ describe('MaliciousConversationModalComponent', () => {
 
   // TODO: TNS-946 - https://wallapop.atlassian.net/browse/TNS-946
   describe('Analytics', () => {
-    describe('when showing modal', () => {
+    describe('when displaying modal', () => {
       it('should track modal was viewed', () => {});
-    });
-
-    describe('when closing modal', () => {
-      it('should track modal was closed or dismissed', () => {});
     });
   });
 });
