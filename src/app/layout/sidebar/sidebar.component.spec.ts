@@ -73,4 +73,26 @@ describe('SidebarComponent', () => {
     });
   });
 
+  describe('css class', () => {
+    it('should add class "active" in profile when isProfile is true', () => {
+      component.isProfile = true;
+      const element: HTMLElement = fixture.nativeElement.querySelector("#qa-sidebar-profile");
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(element.className).toContain('active');
+    });
+
+    it('should add class "active" in catalog when isProducts is true', () => {
+      component.isProducts = true;
+      const element: HTMLElement = fixture.nativeElement.querySelector("#qa-sidebar-catalog");
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(element.className).toContain('active');
+    });
+  });
+
 });
