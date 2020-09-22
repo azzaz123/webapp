@@ -348,6 +348,11 @@
   <msg id="updateArchivedMessagesWarning"><source>app/chat/inbox/inbox.component.html:76,77</source>We found some problems updating your archived messages. Try again later.
     </msg>
   <msg id="8721026914522212662"><source>app/chat/inbox/archived-inbox-conversation/archived-inbox-conversation.component.html:42</source>Archived </msg>
+  <msg id="ForgetThisChat"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:12</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>You better forget this chat<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></msg>
+  <msg id="MaliciousConversationDescription"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:16,18</source>This person violated our coexistence rules. We suggest that you
+        ignore their messages and do not communicate with them through any means other than wallapop, as this may be
+        an attempt to defraud you. </msg>
+  <msg id="ExitConversation"><source>app/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component.html:23</source>Exit the conversation</msg>
   <msg id="682982254050004818"><source>app/chat/current-conversation/current-conversation.component.html:9,10</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       from the list on the left</msg>
   <msg id="3325766019344626759"><source>app/chat/current-conversation/current-conversation.component.html:11</source>There are no messages</msg>
