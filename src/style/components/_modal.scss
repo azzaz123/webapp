@@ -143,6 +143,13 @@ $modal-border-radius: 0.3rem;
   .modal-dialog {
     max-width: $modal-width;
     max-height: $modal-height;
+
+    @include media-breakpoint-down(sm) {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: calc(100vw - 1rem);
+      max-height: calc(75vh - 1rem);
+    }
   }
   .modal-content {
     border-radius: $border-radius;
