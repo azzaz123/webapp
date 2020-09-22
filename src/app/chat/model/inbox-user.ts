@@ -122,4 +122,4 @@ export class InboxUser {
   }
 }
 
-export const InboxUserPlaceholder = new InboxUser(null, 'unknown', false, false, null, null, null, null, 0, 0, null, null, null);
+export const InboxUserPlaceholder = new InboxUser(null, 'unknown', false, false, null, null, null, null, 0, 0, null, null, false);
