@@ -45,13 +45,11 @@
 }
 
 .MaliciousConversationModal__image {
-  min-width: 174px;
-  min-height: 174px;
-
   margin-right: 42px;
 
   img {
-    width: 100%;
+    width: 174px;
+    height: 174px;
   }
 
   @include media-breakpoint-down(sm) {
@@ -66,7 +64,7 @@
 
     &::ng-deep {
       button {
-        width: 100% !important;
+        width: 100%;
       }
     }
 
