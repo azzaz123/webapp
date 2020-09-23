@@ -76,6 +76,7 @@ import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-c
 import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
 import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
+import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 
 @NgModule({
   imports: [
@@ -224,7 +225,8 @@ import { DisableControlDirective } from './forms/disable-control.directive';
     CountdownPipe,
     ProfileProBillingComponent,
     FullScreenModalComponent,
-    DisableControlDirective
+    DisableControlDirective,
+    RouterLinkDirectiveStub
   ],
   providers: [
     DecimalPipe,
