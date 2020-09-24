@@ -53,7 +53,7 @@ describe('ProfileFormComponent', () => {
       })
     });
     fixture.detectChanges();
-    modalService = TestBed.get(NgbModal);
+    modalService = TestBed.inject(NgbModal);
   });
 
   describe('ngOnInit', () => {

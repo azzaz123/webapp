@@ -69,10 +69,10 @@ describe('Component: Item', () => {
     });
     fixture = TestBed.createComponent(ItemComponent);
     component = TestBed.createComponent(ItemComponent).componentInstance;
-    userService = TestBed.get(UserService);
-    itemService = TestBed.get(ItemService);
-    trackingService = TestBed.get(TrackingService);
-    cookieService = TestBed.get(CookieService);
+    userService = TestBed.inject(UserService);
+    itemService = TestBed.inject(ItemService);
+    trackingService = TestBed.inject(TrackingService);
+    cookieService = TestBed.inject(CookieService);
     appboy.initialize(environment.appboy);
   });
 

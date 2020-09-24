@@ -68,10 +68,10 @@ describe('CheckoutProItemComponent', () => {
     component = fixture.componentInstance;
     component.cartProItem = MOCK_PROITEM3;
     component.selectAllEvent = observableOf(1);
-    fb = TestBed.get(FormBuilder);
+    fb = TestBed.inject(FormBuilder);
     fixture.detectChanges();
-    cartService = TestBed.get(CartService);
-    calendar = TestBed.get(NgbCalendar);
+    cartService = TestBed.inject(CartService);
+    calendar = TestBed.inject(NgbCalendar);
   });
 
   describe('ngOnInit', () => {

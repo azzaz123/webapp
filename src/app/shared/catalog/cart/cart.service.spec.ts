@@ -18,7 +18,7 @@ describe('CartService', () => {
     TestBed.configureTestingModule({
       providers: [CartService]
     });
-    service = TestBed.get(CartService);
+    service = TestBed.inject(CartService);
     service.cart$.subscribe((c: CartChange) => {
       cartChange = c;
     });

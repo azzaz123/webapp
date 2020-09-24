@@ -67,16 +67,16 @@ describe('InboxConversationService', () => {
         I18nService
       ]
     });
-    service = TestBed.get(InboxConversationService);
-    eventService = TestBed.get(EventService);
-    realTime = TestBed.get(RealTimeService);
-    remoteConsoleService = TestBed.get(RemoteConsoleService);
-    messageService = TestBed.get(MessageService);
-    userService = TestBed.get(UserService);
-    itemService = TestBed.get(ItemService);
+    service = TestBed.inject(InboxConversationService);
+    eventService = TestBed.inject(EventService);
+    realTime = TestBed.inject(RealTimeService);
+    remoteConsoleService = TestBed.inject(RemoteConsoleService);
+    messageService = TestBed.inject(MessageService);
+    userService = TestBed.inject(UserService);
+    itemService = TestBed.inject(ItemService);
     toastService = TestBed.inject(ToastService);
     i18nService = TestBed.inject(I18nService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    httpTestingController = TestBed.inject(HttpTestingController);
     jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_USER);
     service.subscribeChatEvents();
     service.conversations = [];

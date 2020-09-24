@@ -107,9 +107,25 @@ export const MOCK_NAVIGATOR_GEOLOCATION = {
 
 export const MOCK_DIDOMI: DidomiLibrary = {
   getUserConsentStatusForPurpose: key => true,
-  getUserConsentStatusForVendor: key => true
+  getUserConsentStatusForVendor: key => true,
+  getUserConsentStatusForAll: () => {
+    return {
+      purposes: {
+        enabled: ['cookies'],
+        disabled: ['analytics'],
+      },
+      vendors: {
+        enabled: [1, 2, 3],
+        disabled: [4, 5],
+      },
+    };
+  },
 };
 
 export const MOCK_THREAT_METRIX: ThreatMetrixLibrary = {
   nfl: (_domain: string, _orgId: string, _sessionId: string) => {}
+};
+
+export const MOCK_LOCATION: Location = {
+  ...window.location
 };

@@ -34,7 +34,7 @@ describe('UserDetailComponent', () => {
     fixture = TestBed.createComponent(UserDetailComponent);
     component = fixture.componentInstance;
     component.user = MOCK_USER;
-    userService = TestBed.get(UserService);
+    userService = TestBed.inject(UserService);
   });
 
   it('should be created', () => {

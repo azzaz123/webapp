@@ -16,8 +16,8 @@ describe('StatisticsService', () => {
       imports: [HttpClientTestingModule],
       providers: [StatisticsService]
     });
-    service = TestBed.get(StatisticsService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(StatisticsService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

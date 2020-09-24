@@ -1,7 +1,7 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { UserService, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, USER_ONLINE_ENDPOINT, PROTOOL_EXTRA_INFO_ENDPOINT, USER_LOCATION_ENDPOINT, USER_STORE_LOCATION_ENDPOINT, USER_STATS_ENDPOINT, USER_STATS_BY_ID_ENDPOINT, USER_ENDPOINT, USER_EMAIL_ENDPOINT, USER_PASSWORD_ENDPOINT, USER_UNSUBSCRIBE_REASONS_ENDPOINT, USER_UNSUBSCRIBE_ENDPOINT, USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT, USER_BY_ID_ENDPOINT, USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT, USER_REPORT_ENDPOINT, USER_COVER_IMAGE_ENDPOINT, USER_PHONE_INFO_ENDPOINT, USER_EXTRA_INFO_ENDPOINT } from './user.service';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -10,17 +10,11 @@ import { I18nService } from '../i18n/i18n.service';
 import {
   CUSTOM_REASON,
   IMAGE,
-  MICRO_NAME,
   MOCK_FULL_USER,
   MOCK_USER,
   MOCK_USER_RESPONSE_BODY,
-  ONLINE,
   MOCK_UNSUBSCRIBE_REASONS,
-  RESPONSE_RATE,
-  SCORING_STARS,
-  SCORING_STARTS,
   SELECTED_REASON,
-  STATS,
   USER_DATA,
   USER_EDIT_DATA,
   USER_EMAIL,
@@ -29,14 +23,11 @@ import {
   USER_LOCATION,
   USER_LOCATION_COORDINATES,
   USER_PRO_DATA,
-  USER_PRO_INFO_NOTIFICATIONS,
   USER_PRO_INFO_RESPONSE,
   USERS_STATS,
-  MOCK_USER_STATS,
-  VALIDATIONS,
-  VERIFICATION_LEVEL
+  MOCK_USER_STATS
 } from '../../../tests/user.fixtures.spec';
-import { AvailableSlots, UserStats } from './user-stats.interface';
+import { UserStats } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { AccessTokenService } from '../http/access-token.service';
 import { EventService } from '../event/event.service';
@@ -113,16 +104,16 @@ describe('Service: User', () => {
         }
       ]
     });
-    service = TestBed.get(UserService);
-    haversineService = TestBed.get(HaversineService);
-    accessTokenService = TestBed.get(AccessTokenService);
+    service = TestBed.inject(UserService);
+    haversineService = TestBed.inject(HaversineService);
+    accessTokenService = TestBed.inject(AccessTokenService);
     accessTokenService.storeAccessToken(null);
-    event = TestBed.get(EventService);
-    cookieService = TestBed.get(CookieService);
-    permissionService = TestBed.get(NgxPermissionsService);
-    featureflagService = TestBed.get(FeatureflagService);
-    httpMock = TestBed.get(HttpTestingController);
-    eventService = TestBed.get(EventService);
+    event = TestBed.inject(EventService);
+    cookieService = TestBed.inject(CookieService);
+    permissionService = TestBed.inject(NgxPermissionsService);
+    featureflagService = TestBed.inject(FeatureflagService);
+    httpMock = TestBed.inject(HttpTestingController);
+    eventService = TestBed.inject(EventService);
   });
 
   afterEach(() => {
@@ -205,19 +196,21 @@ describe('Service: User', () => {
         expect(response).toEqual(MOCK_FULL_USER);
       });
 
-      // TODO: This should change when parsing error status from backend (once permission factory is migrated)
-      describe('and there is error from backend', () => {
-        it('should logout user', () => {
-          spyOn(service, 'logoutLocal');
+      describe('and the user is already logged', () => {
+        describe('and there is error from backend', () => {
+          it('should logout user', () => {
+            accessTokenService.storeAccessToken('abc');
+            spyOn(service, 'logout');
 
-          service.me().subscribe();
-          const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
-          req.flush({}, { status: 401, statusText: 'Unauthorized' });
-  
-          expect(service.logoutLocal).toHaveBeenCalledTimes(1);
+            service.me().subscribe();
+            const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
+            req.error(null, { status: 0, statusText: 'Unauthorized' });
+
+            expect(service.logout).toHaveBeenCalledTimes(1);
+          });
         });
-      })
-    })
+      });
+    });
 
     describe('when there is user stored', () => {
       it('should return user from memory', () => {
@@ -239,7 +232,7 @@ describe('Service: User', () => {
         service.me(false).subscribe(r => response = r);
         httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`).flush(USER_DATA);
       });
-    })
+    });
   });
 
   describe('checkUserStatus', () => {
@@ -274,7 +267,7 @@ describe('Service: User', () => {
       tick(intervalValue * callTimes);
       let requests = httpMock.match(onlineUrl);
       requests.forEach(request => request.flush({}));
-      
+
       expect(requests.length).toBe(callTimes + 1);
       discardPeriodicTasks();
     }));
@@ -283,7 +276,6 @@ describe('Service: User', () => {
       service.sendUserPresenceInterval(intervalValue);
       tick(intervalValue * callTimes);
       service.logout();
-      httpMock.expectOne(`${environment.siteUrl.replace('es', 'www')}${LOGOUT_ENDPOINT}`).flush({});
       tick(intervalValue * 4);
       let requests = httpMock.match(onlineUrl);
       requests.forEach(request => request.flush({}));
@@ -347,27 +339,17 @@ describe('Service: User', () => {
   });
 
   describe('logout', () => {
-    const expectedUrl = `${environment.siteUrl.replace('es', 'www')}${LOGOUT_ENDPOINT}`;
-    const logoutResponse = 'redirect_url';
     let redirectUrl: string;
-    let req: TestRequest;
 
     beforeEach(() => {
       spyOn(permissionService, 'flushPermissions').and.returnValue({});
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
-      accessTokenService.storeAccessToken('token')
+      accessTokenService.storeAccessToken('token');
 
       event.subscribe(EventService.USER_LOGOUT, param => redirectUrl = param);
       cookieService.put('publisherId', 'someId');
 
-      service.logout();
-      req = httpMock.expectOne(expectedUrl);
-      req.flush(logoutResponse);
-    });
-
-    it('should call logout endpoint', () => {
-      expect(req.request.method).toBe('POST');
-      expect(req.request.urlWithParams).toEqual(expectedUrl)
+      service.logout('redirect_url');
     });
 
     it('should call deleteAccessToken', () => {
@@ -485,7 +467,7 @@ describe('Service: User', () => {
   describe('updateLocation', () => {
     it('should call endpoint and return response', () => {
       let response: UserLocation;
-      
+
       service.updateLocation(USER_LOCATION_COORDINATES).subscribe(r => response = r);
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_LOCATION_ENDPOINT}`);
       req.flush(USER_LOCATION);
@@ -717,7 +699,8 @@ describe('Service: User', () => {
         itemHashId: ITEM_HASH,
         conversationHash: CONVERSATIONS_HASH,
         comments: COMMENT,
-        reason: REASON
+        reason: REASON,
+        targetCrm: 'zendesk'
       });
       expect(req.request.headers.get('AppBuild')).toEqual(APP_VERSION);
     });

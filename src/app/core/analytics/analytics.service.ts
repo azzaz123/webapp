@@ -5,13 +5,17 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { User } from '../user/user';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
+import { CookieService } from "ngx-cookie";
+import { UUID } from "angular2-uuid";
+
+export const DEVICE_ID_COOKIE_NAME = 'device_id';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalyticsService {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private cookieService: CookieService) { }
 
   public initialize() {
     this.userService.me().subscribe((user: User) => {
@@ -25,6 +29,20 @@ export class AnalyticsService {
           userIdentities: {
             email: user.email,
             customerid: user.id
+          }
+        },
+        identityCallback: result => {
+          let deviceId = this.cookieService.get(DEVICE_ID_COOKIE_NAME);
+          if (!deviceId) {
+            deviceId = UUID.UUID();
+            this.cookieService.put(DEVICE_ID_COOKIE_NAME, deviceId, {
+              expires: new Date('2038-01-19')
+            });
+          }
+
+          const user = result.getUser();
+          if (user) {
+            user.setUserAttribute('deviceId', deviceId);
           }
         }
       };

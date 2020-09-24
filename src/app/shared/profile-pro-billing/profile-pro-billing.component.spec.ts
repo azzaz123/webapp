@@ -76,13 +76,13 @@ describe('ProfileProBillingComponent', () => {
   }));
 
   beforeEach(() => {
-    modalService = TestBed.get(NgbModal);
+    modalService = TestBed.inject(NgbModal);
     fixture = TestBed.createComponent(ProfileProBillingComponent);
     component = fixture.componentInstance;
-    paymentService = TestBed.get(PaymentService);
-    errorsService = TestBed.get(ErrorsService);
-    eventService = TestBed.get(EventService);
-    component.formComponent = TestBed.get(ProfileFormComponent);
+    paymentService = TestBed.inject(PaymentService);
+    errorsService = TestBed.inject(ErrorsService);
+    eventService = TestBed.inject(EventService);
+    component.formComponent = TestBed.inject(ProfileFormComponent);
     HTMLelement = fixture.debugElement;
     fixture.detectChanges();
   });

@@ -87,14 +87,14 @@ describe('SubscriptionComponent', () => {
   }));
   
   beforeEach(() => {
-    modalService = TestBed.get(NgbModal);
+    modalService = TestBed.inject(NgbModal);
     fixture = TestBed.createComponent(SubscriptionsComponent);
     component = fixture.componentInstance;
-    subscriptionsService = TestBed.get(SubscriptionsService);
-    categoryService = TestBed.get(CategoryService);
-    router = TestBed.get(Router);
-    analyticsService = TestBed.get(AnalyticsService);
-    userService = TestBed.get(UserService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
+    categoryService = TestBed.inject(CategoryService);
+    router = TestBed.inject(Router);
+    analyticsService = TestBed.inject(AnalyticsService);
+    userService = TestBed.inject(UserService);
     fixture.detectChanges();
   });
 

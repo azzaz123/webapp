@@ -20,8 +20,8 @@ describe('GeolocationService', () => {
       providers: [GeolocationService],
       imports: [HttpClientTestingModule]
     });
-    service = TestBed.get(GeolocationService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(GeolocationService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

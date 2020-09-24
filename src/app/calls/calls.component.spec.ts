@@ -45,9 +45,9 @@ describe('CallsComponent', () => {
     fixture = TestBed.createComponent(CallsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    callService = TestBed.get(CallsService);
-    route = TestBed.get(ActivatedRoute);
-    trackingService = TestBed.get(TrackingService);
+    callService = TestBed.inject(CallsService);
+    route = TestBed.inject(ActivatedRoute);
+    trackingService = TestBed.inject(TrackingService);
   });
 
   describe('ngOnInit', () => {

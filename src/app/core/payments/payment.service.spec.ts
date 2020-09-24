@@ -33,8 +33,8 @@ describe('PaymentService', () => {
       ],
       imports: [HttpClientTestingModule]
     });
-    service = TestBed.get(PaymentService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(PaymentService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

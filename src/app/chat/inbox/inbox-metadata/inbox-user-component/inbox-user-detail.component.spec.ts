@@ -37,7 +37,7 @@ describe('InboxUserDetailComponent', () => {
     });
     fixture = TestBed.createComponent(InboxUserDetailComponent);
     component = TestBed.createComponent(InboxUserDetailComponent).componentInstance;
-    userService = TestBed.get(UserService);
+    userService = TestBed.inject(UserService);
     component.user = MOCKED_INBOX_CONVERSATIONS[0].user;
   });
 

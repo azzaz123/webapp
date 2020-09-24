@@ -24,7 +24,7 @@ describe('SubscriptionPriceDiscountComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionPriceDiscountComponent);
     component = fixture.componentInstance;
-    subscriptionsService = TestBed.get(SubscriptionsService);
+    subscriptionsService = TestBed.inject(SubscriptionsService);
     component.subscription = MAPPED_SUBSCRIPTIONS_ADDED[2];
     fixture.detectChanges();
   });

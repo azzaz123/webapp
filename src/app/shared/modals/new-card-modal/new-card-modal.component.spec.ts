@@ -42,8 +42,8 @@ describe('NewCardModalComponent', () => {
     fixture = TestBed.createComponent(NewCardModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    activeModal = TestBed.get(NgbActiveModal);
-    stripeService = TestBed.get(StripeService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    stripeService = TestBed.inject(StripeService);
   });
 
   describe('onCreateCard', () => {

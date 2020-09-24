@@ -33,8 +33,8 @@ describe('SuggesterComponent', () => {
     fixture = TestBed.createComponent(SuggesterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    eventService = TestBed.get(EventService);
-    suggesterService = TestBed.get(SuggesterService);
+    eventService = TestBed.inject(EventService);
+    suggesterService = TestBed.inject(SuggesterService);
   });
 
   describe('suggest', (): void => {

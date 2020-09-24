@@ -26,7 +26,7 @@ describe('BumpTutorialService', () => {
         }
       ]
     });
-    service = TestBed.get(BumpTutorialService);
+    service = TestBed.inject(BumpTutorialService);
   });
 
   it('should be created', () => {

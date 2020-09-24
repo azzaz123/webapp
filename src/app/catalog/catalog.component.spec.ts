@@ -29,7 +29,7 @@ describe('CatalogComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     fixture = TestBed.createComponent(CatalogComponent);
-    trackingService = TestBed.get(TrackingService);
+    trackingService = TestBed.inject(TrackingService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

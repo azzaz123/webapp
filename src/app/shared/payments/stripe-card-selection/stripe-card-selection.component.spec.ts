@@ -41,9 +41,9 @@ describe('StripeCardSelectionComponent', () => {
     fixture = TestBed.createComponent(StripeCardSelectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    stripeService = TestBed.get(StripeService);
-    eventService = TestBed.get(EventService);
-    i18nService = TestBed.get(I18nService);
+    stripeService = TestBed.inject(StripeService);
+    eventService = TestBed.inject(EventService);
+    i18nService = TestBed.inject(I18nService);
   });
 
   describe('ngOnInit', () => {

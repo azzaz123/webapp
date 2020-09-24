@@ -31,7 +31,7 @@ describe('ConfirmCardModalComponent', () => {
     fixture = TestBed.createComponent(ConfirmCardModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    activeModal = TestBed.get(NgbActiveModal);
+    activeModal = TestBed.inject(NgbActiveModal);
   });
 
   describe('confirmChange', () => {

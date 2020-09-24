@@ -57,10 +57,10 @@ describe('Service: Profile', () => {
         }
       ]
     });
-    service = TestBed.get(ProfileService);
-    event = TestBed.get(EventService);
-    cookieService = TestBed.get(CookieService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    service = TestBed.inject(ProfileService);
+    event = TestBed.inject(EventService);
+    cookieService = TestBed.inject(CookieService);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

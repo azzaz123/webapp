@@ -60,9 +60,9 @@ describe('PlanDataComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PlanDataComponent);
-    paymentService = TestBed.get(PaymentService);
-    modalService = TestBed.get(NgbModal);
-    itemService = TestBed.get(ItemService);
+    paymentService = TestBed.inject(PaymentService);
+    modalService = TestBed.inject(NgbModal);
+    itemService = TestBed.inject(ItemService);
     component = fixture.componentInstance;
   });
 

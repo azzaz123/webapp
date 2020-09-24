@@ -98,13 +98,13 @@ describe('BuyProductModalComponent', () => {
     component = fixture.componentInstance;
     component.orderEvent = {...ORDER_EVENT} as OrderEvent;
     fixture.detectChanges();
-    itemService = TestBed.get(ItemService);
-    activeModal = TestBed.get(NgbActiveModal);
-    paymentService = TestBed.get(PaymentService);
-    eventService = TestBed.get(EventService);
-    stripeService = TestBed.get(StripeService);
-    errorService = TestBed.get(ErrorsService);
-    router = TestBed.get(Router);
+    itemService = TestBed.inject(ItemService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    paymentService = TestBed.inject(PaymentService);
+    eventService = TestBed.inject(EventService);
+    stripeService = TestBed.inject(StripeService);
+    errorService = TestBed.inject(ErrorsService);
+    router = TestBed.inject(Router);
   });
 
   describe('ngOnInit', () => {

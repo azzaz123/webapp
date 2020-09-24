@@ -48,8 +48,8 @@ describe('InboxItemForSellComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InboxItemForSellComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.get(ItemService);
-    userService = TestBed.get(UserService);
+    itemService = TestBed.inject(ItemService);
+    userService = TestBed.inject(UserService);
     component.user = { id: USER_ID } as InboxUser;
     spyOn(itemService, 'getLatest').and.returnValue(observableOf({
       data: MOCK_ITEM,

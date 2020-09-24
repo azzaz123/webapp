@@ -76,11 +76,11 @@ describe('BuyWallacoinsModalComponent', () => {
       'wallacoins'
     );
     fixture.detectChanges();
-    paymentService = TestBed.get(PaymentService);
-    activeModal = TestBed.get(NgbActiveModal);
-    errorService = TestBed.get(ErrorsService);
-    stripeService = TestBed.get(StripeService);
-    eventService = TestBed.get(EventService);
+    paymentService = TestBed.inject(PaymentService);
+    activeModal = TestBed.inject(NgbActiveModal);
+    errorService = TestBed.inject(ErrorsService);
+    stripeService = TestBed.inject(StripeService);
+    eventService = TestBed.inject(EventService);
   });
 
   describe('addNewCard', () => {

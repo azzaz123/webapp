@@ -93,10 +93,10 @@ describe('DropAreaComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DropAreaComponent);
     component = fixture.componentInstance;
-    uploadService = TestBed.get(UploadService);
-    errorsService = TestBed.get(ErrorsService);
-    itemService = TestBed.get(ItemService);
-    modalService = TestBed.get(NgbModal);
+    uploadService = TestBed.inject(UploadService);
+    errorsService = TestBed.inject(ErrorsService);
+    itemService = TestBed.inject(ItemService);
+    modalService = TestBed.inject(NgbModal);
   });
 
   describe('ngOnInit', () => {
