@@ -71,10 +71,6 @@ export class CatalogProListComponent implements OnInit {
       });
     });
 
-    this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
-      windowClass: 'upload',
-    });
-
     this.eventService.subscribe('itemChangeStatus', (items) => {
       items.forEach((id: string) => {
         const index: number = findIndex(this.items, {'id': id});
