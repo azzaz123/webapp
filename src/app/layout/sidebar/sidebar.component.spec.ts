@@ -5,7 +5,6 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { SidebarComponent } from './sidebar.component';
 import { UserService } from '../../core/user/user.service';
-import { TutorialService } from '../../core/tutorial/tutorial.service';
 import { User } from '../../core/user/user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MessageService } from '../../chat/service/message.service';
@@ -47,7 +46,6 @@ describe('SidebarComponent', () => {
         RouterTestingModule.withRoutes(routes)
       ],
       providers: [
-        TutorialService,
         {
           provide: UserService, useValue: {
             logout() {
