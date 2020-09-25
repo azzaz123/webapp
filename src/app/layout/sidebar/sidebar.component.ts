@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
-import { TutorialService } from '../../core/tutorial/tutorial.service';
 import { User } from '../../core/user/user';
 import { MessageService } from '../../chat/service/message.service';
 
@@ -17,7 +16,6 @@ export class SidebarComponent implements OnInit {
   public isProfessional: boolean;
 
   constructor(private userService: UserService,
-              public tutorialService: TutorialService,
               public messageService: MessageService) {
   }
 
