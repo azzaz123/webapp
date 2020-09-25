@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemStatsRowComponent } from './item-stats-row.component';
 import { ItemStatsService } from './item-stats-graph/item-stats.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../shared/pipes';
 import { DecimalPipe, CommonModule } from '@angular/common';

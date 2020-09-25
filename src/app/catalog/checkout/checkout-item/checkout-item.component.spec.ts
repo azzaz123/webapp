@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutItemComponent } from './checkout-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -41,7 +41,7 @@ describe('CheckoutItemComponent', () => {
             },
             remove() {
             },
-            cart$: observableOf(CART_CHANGE)
+            cart$: of(CART_CHANGE)
           }
         }
       ],
@@ -101,7 +101,7 @@ describe('CheckoutItemComponent', () => {
           itemId: MOCK_ITEM_V3.id,
           cart: CART
         };
-        cartService.cart$ = observableOf(cartChange);
+        cartService.cart$ = of(cartChange);
 
         component.ngOnInit();
       });
@@ -111,7 +111,7 @@ describe('CheckoutItemComponent', () => {
           action: 'clean',
           cart: CART
         };
-        cartService.cart$ = observableOf(cartChange);
+        cartService.cart$ = of(cartChange);
 
         component.ngOnInit();
       });

@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import {map, share} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -7,7 +7,6 @@ import { Profile } from './profile';
 import { EventService } from '../event/event.service';
 import { ProfileResponse, ProfilesData } from './profile-response.interface';
 import { I18nService } from '../i18n/i18n.service';
-import { AccessTokenService } from '../http/access-token.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Model } from '../resource/model.interface';
 import { environment } from '../../../environments/environment';
@@ -32,7 +31,7 @@ export class ProfileService {
 
   public get(id: string, noCache?: boolean): Observable<Profile> {
     if (this.store[id] && !noCache) {
-      return observableOf(this.store[id]);
+      return of(this.store[id]);
     } else if (this.observables[id]) {
       return this.observables[id];
     } else {

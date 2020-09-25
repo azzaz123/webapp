@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import {debounceTime, switchMap, distinctUntilChanged, catchError} from 'rxjs/operators';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
@@ -8,7 +8,6 @@ import { GeolocationService } from '../../core/geolocation/geolocation.service';
 import { GeolocationResponse } from '../../core/geolocation/geolocation-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { UserService } from '../../core/user/user.service';
-import { UserLocation } from '../../core/user/user-response.interface';
 
 @Component({
   selector: 'tsl-geolocation',
@@ -52,7 +51,7 @@ export class GeolocationComponent implements OnInit, OnChanges {
       switchMap(term => term.length < this.MIN_LENGTH ? [] :
         this.geolocationService.search(term).pipe(
           catchError(() => {
-            return observableOf([]);
+            return of([]);
           }))),)
 
   public formatter = (x: any) => x.description;

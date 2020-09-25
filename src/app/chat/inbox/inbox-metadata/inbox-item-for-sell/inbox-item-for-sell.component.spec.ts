@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InboxItemForSellComponent } from './inbox-item-for-sell.component';
@@ -32,10 +32,10 @@ describe('InboxItemForSellComponent', () => {
         {
           provide: UserService, useValue: {
             getInfo() {
-              return observableOf(USER_INFO_RESPONSE);
+              return of(USER_INFO_RESPONSE);
             },
             getUserStats() {
-              return observableOf(MOCK_USER_STATS);
+              return of(MOCK_USER_STATS);
             }
           }
         },
@@ -51,7 +51,7 @@ describe('InboxItemForSellComponent', () => {
     itemService = TestBed.inject(ItemService);
     userService = TestBed.inject(UserService);
     component.user = { id: USER_ID } as InboxUser;
-    spyOn(itemService, 'getLatest').and.returnValue(observableOf({
+    spyOn(itemService, 'getLatest').and.returnValue(of({
       data: MOCK_ITEM,
       count: LATEST_ITEM_COUNT
     }));

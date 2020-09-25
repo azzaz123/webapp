@@ -1,5 +1,4 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';

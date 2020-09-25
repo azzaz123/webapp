@@ -2,7 +2,7 @@ import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testi
 
 import { CatalogStatusNavbarComponent } from './catalog-status-navbar.component';
 import { PaymentService } from '../../../core/payments/payment.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ScheduledStatus } from '../../../core/payments/payment.interface';
 import { EventService } from '../../../core/event/event.service';
 

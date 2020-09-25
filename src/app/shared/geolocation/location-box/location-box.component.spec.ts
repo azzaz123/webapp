@@ -1,7 +1,7 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { LocationBoxComponent } from './location-box.component';
 import { UserService } from '../../../core/user/user.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { USER_LOCATION } from '../../../upload/upload-product/upload-product.component.spec';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -59,7 +59,7 @@ describe('LocationBoxComponent', () => {
         component.ngOnInit();
       });
 
-      it('should not call me', () => {        
+      it('should not call me', () => {
         expect(userService.me).not.toHaveBeenCalled();
       });
 
@@ -72,18 +72,18 @@ describe('LocationBoxComponent', () => {
     describe('if a location is not provided', () => {
       it('should call me and set user', () => {
         spyOn(userService, 'me').and.callThrough();
-  
+
         component.ngOnInit();
-  
+
         expect(userService.me).toHaveBeenCalled();
         expect(component.user).toEqual(MOCK_USER);
       });
-  
+
       it('should add user location values', fakeAsync(() => {
         component.ngOnInit();
-        
+
         tick();
-  
+
         expect(component.form.get('location.address').value).toBe(USER_LOCATION.title);
         expect(component.form.get('location.latitude').value).toBe(USER_LOCATION.approximated_latitude);
         expect(component.form.get('location.longitude').value).toBe(USER_LOCATION.approximated_longitude);

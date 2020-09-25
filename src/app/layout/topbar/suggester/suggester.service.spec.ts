@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
-import { Observable } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
 

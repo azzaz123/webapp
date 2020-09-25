@@ -1,5 +1,5 @@
 
-import {forkJoin as observableForkJoin, from as observableFrom,  Observable, of } from 'rxjs';
+import { forkJoin, from, Observable, of } from 'rxjs';
 
 import { mergeMap,  catchError, tap, map } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
@@ -357,7 +357,7 @@ export class UserService {
   public hasPerm(permission: string): Observable<boolean> {
     return this.me().pipe(
       mergeMap(() => {
-        return observableFrom(this.permissionService.hasPermission(PERMISSIONS[permission]));
+        return from(this.permissionService.hasPermission(PERMISSIONS[permission]));
       }));
   }
 

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemsStatsComponent } from './items-stats.component';
 import { ItemService } from '../../core/item/item.service';
-import { Observable ,  Subject, of } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { CheapestProducts } from '../../core/item/item-response.interface';

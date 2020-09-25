@@ -1,7 +1,7 @@
 
-import {from as observableFrom,  Observable, Subscriber, Subscription } from 'rxjs';
+import {from, Observable, Subscriber, Subscription } from 'rxjs';
 
-import {combineLatest, mergeAll} from 'rxjs/operators';
+import { combineLatest, mergeAll } from 'rxjs/operators';
 import { EventEmitter, Injectable } from '@angular/core';
 import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput, UploadStatus } from './upload.interface';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -112,7 +112,7 @@ export class UploaderService {
             return { file: file, sub: null };
           }));
 
-          const subscription = observableFrom(this.files
+          const subscription = from(this.files
             .filter(file => file.progress.status !== UploadStatus.Done)
             .map(file => this.uploadFile(file, event))).pipe(
             mergeAll(concurrency),

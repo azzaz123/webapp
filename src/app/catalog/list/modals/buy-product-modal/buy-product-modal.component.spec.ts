@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable, throwError, Subject } from 'rxjs';
+import { of, throwError, Subject } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BuyProductModalComponent } from './buy-product-modal.component';
@@ -55,10 +55,10 @@ describe('BuyProductModalComponent', () => {
         {
           provide: ItemService, useValue: {
             get() {
-              return observableOf(MOCK_ITEM_V3);
+              return of(MOCK_ITEM_V3);
             },
             purchaseProductsWithCredits() {
-              return observableOf({
+              return of({
                 payment_needed: true
               });
             }
@@ -75,7 +75,7 @@ describe('BuyProductModalComponent', () => {
         {
           provide: PaymentService, useValue: {
             getCreditInfo() {
-              return observableOf({});
+              return of({});
             }
           }
         },
@@ -83,7 +83,7 @@ describe('BuyProductModalComponent', () => {
           provide: StripeService, useValue: {
             buy() {},
             getCards() {
-              return observableOf([]);
+              return of([]);
             }
           }
         },
@@ -127,7 +127,7 @@ describe('BuyProductModalComponent', () => {
         credit: 2000,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
       component.ngOnInit();
 
@@ -140,7 +140,7 @@ describe('BuyProductModalComponent', () => {
         credit: 0,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
       component.ngOnInit();
 

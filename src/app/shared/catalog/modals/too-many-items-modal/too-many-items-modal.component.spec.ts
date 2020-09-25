@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { of as observableOf } from 'rxjs';
+import { of } from 'rxjs';
 
 import { TooManyItemsModalComponent } from './too-many-items-modal.component';
 import { ButtonComponent } from '../../../button/button.component';
@@ -45,7 +45,7 @@ describe('TooManyItemsModalComponent', () => {
         {
           provide: ItemService, useValue: {
             get() {
-              return observableOf(MOCK_ITEM_V3_3);
+              return of(MOCK_ITEM_V3_3);
             }
           }
         },
@@ -71,21 +71,21 @@ describe('TooManyItemsModalComponent', () => {
 
   describe('ngOnInit', () => {
     beforeEach(() => {
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(observableOf(MAPPED_SUBSCRIPTIONS_ADDED));
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
     });
     describe('subscription has free trial', () => {
       it('should set isFreeTrial to true', () => {
-        spyOn(itemService, 'get').and.returnValue(observableOf(MOCK_ITEM_V3_3));
+        spyOn(itemService, 'get').and.returnValue(of(MOCK_ITEM_V3_3));
 
         component.itemId = MOCK_ITEM_V3_3.id;
         component.ngOnInit();
-        
+
         expect(component.isFreeTrial).toBe(true);
       });
     });
     describe('subscription has no free trial', () => {
       it('should set isFreeTrial to false', () => {
-        spyOn(itemService, 'get').and.returnValue(observableOf(MOCK_ITEM_V3_2));
+        spyOn(itemService, 'get').and.returnValue(of(MOCK_ITEM_V3_2));
 
         component.itemId = MOCK_ITEM_V3_2.id;
         component.ngOnInit();
