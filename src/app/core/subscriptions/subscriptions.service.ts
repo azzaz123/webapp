@@ -1,5 +1,5 @@
 
-import {of, throwError, forkJoin,  Observable } from 'rxjs';
+import { of, throwError, forkJoin, Observable } from 'rxjs';
 
 import {catchError, retryWhen, delay, take,  mergeMap, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';

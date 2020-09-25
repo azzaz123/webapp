@@ -1,5 +1,5 @@
 
-import {from, empty as observableEmpty,  Observable, of } from 'rxjs';
+import { from, empty, Observable, of } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -28,7 +28,7 @@ class MockUserService {
   }
 
   public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
-    return observableEmpty();
+    return empty();
   }
 }
 

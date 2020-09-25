@@ -1,5 +1,5 @@
 
-import {of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CartExtrasProComponent } from './cart-extras-pro.component';

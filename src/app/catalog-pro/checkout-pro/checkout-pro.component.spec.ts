@@ -1,5 +1,5 @@
 
-import {of } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CheckoutProComponent, BUMPS } from './checkout-pro.component';
