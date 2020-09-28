@@ -179,7 +179,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   ngOnChanges(changes: SimpleChanges) {
     if (changes.categoryId) {
       if (changes.categoryId.currentValue === '-1') {
-        return this.uploadForm.get('category_id').reset();
+        return this.uploadForm.patchValue({ category_id: ''});
       }
       return this.uploadForm.patchValue({ category_id: changes.categoryId.currentValue });
     }

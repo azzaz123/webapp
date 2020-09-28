@@ -924,7 +924,7 @@ describe('UploadProductComponent', () => {
       });
       fixture.detectChanges();
 
-       expect(component.uploadForm.value.category_id).toEqual(null);
+       expect(component.uploadForm.value.category_id).toEqual('');
     });
 
     it('should set categoryId form field when categoryId change', () => {
