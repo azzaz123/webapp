@@ -1,14 +1,10 @@
-/* tslint:disable:no-unused-variable */
-
-
-import {of as observableOf, throwError as observableThrowError,  Observable ,  Subject } from 'rxjs';
+import { of, throwError,  Subject } from 'rxjs';
 import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
@@ -23,7 +19,6 @@ import { UserService } from './core/user/user.service';
 import { MOCK_USER, USER_ID } from '../tests/user.fixtures.spec';
 import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
-import { WindowRef } from './core/window/window.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
@@ -48,7 +43,6 @@ let notificationService: NotificationService;
 let messageService: MessageService;
 let titleService: Title;
 let trackingService: TrackingService;
-let window: any;
 let conversationService: ConversationService;
 let callsService: CallsService;
 let cookieService: CookieService;
@@ -105,13 +99,15 @@ describe('App', () => {
           checkUserStatus() {
           },
           me() {
-            return observableOf(MOCK_USER);
+            return of(MOCK_USER);
           },
           logout() {
           },
+          setPermission() {
+          },
           sendUserPresenceInterval() {},
           isProfessional() {
-            return observableOf(false);
+            return of(false);
           }
         }
         },
@@ -140,19 +136,9 @@ describe('App', () => {
         }
         },
         {
-          provide: WindowRef, useValue: {
-          nativeWindow: {
-            location: {
-              reload() {
-              }
-            }
-          }
-        }
-        },
-        {
           provide: ConversationService, useValue: {
           init() {
-            return observableOf();
+            return of();
           },
           handleNewMessages() {},
           resetCache() {},
@@ -163,20 +149,20 @@ describe('App', () => {
         {
           provide: CallsService, useValue: {
             init() {
-              return observableOf();
+              return of();
             },
           syncItem() {}
           }
         },
         {
           provide: Router, useValue: {
-          events: observableOf(new NavigationEnd(1, 'test', 'test'))
+          events: of(new NavigationEnd(1, 'test', 'test'))
         }
         },
         {
           provide: ActivatedRoute, useValue: {
           outlet: 'primary',
-          data: observableOf({
+          data: of({
             title: 'Chat',
             hideSidebar: true
           })
@@ -219,7 +205,6 @@ describe('App', () => {
     messageService = TestBed.inject(MessageService);
     titleService = TestBed.inject(Title);
     trackingService = TestBed.inject(TrackingService);
-    window = TestBed.inject(WindowRef).nativeWindow;
     conversationService = TestBed.inject(ConversationService);
     callsService = TestBed.inject(CallsService);
     cookieService = TestBed.inject(CookieService);
@@ -230,6 +215,7 @@ describe('App', () => {
     didomiService = TestBed.inject(DidomiService);
 
     spyOn(notificationService, 'init');
+    spyOn(window.location, 'reload');
   });
 
   it('should create the app', async(() => {
@@ -262,11 +248,10 @@ describe('App', () => {
     describe('success case', () => {
       function emitSuccessChatEvents() {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        eventService.emit(EventService.DB_READY);
         eventService.emit(EventService.CHAT_RT_CONNECTED);
       }
       beforeEach(fakeAsync(() => {
-        spyOn(callsService, 'init').and.returnValue(observableOf({}));
+        spyOn(callsService, 'init').and.returnValue(of({}));
         spyOn(inboxService, 'init');
       }));
 
@@ -279,12 +264,11 @@ describe('App', () => {
         expect(eventServiceCalls).toContain(EventService.USER_LOGIN);
       });
 
-      it('should perform a xmpp connect when the login event and the DB_READY event are triggered with the correct user data', () => {
-        spyOn(realTime, 'connect').and.callThrough();
+      it('should perform a xmpp connect when the login event is triggered with the correct user data', () => {
+        spyOn(realTime, 'connect');
 
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        eventService.emit(EventService.DB_READY);
 
         expect(realTime.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
       });
@@ -307,7 +291,7 @@ describe('App', () => {
       });
 
       it('should call callsService.init twice if user is professional', () => {
-        spyOn(userService, 'isProfessional').and.returnValue(observableOf(true));
+        spyOn(userService, 'isProfessional').and.returnValue(of(true));
 
         component.ngOnInit();
         emitSuccessChatEvents();
@@ -320,15 +304,6 @@ describe('App', () => {
         emitSuccessChatEvents();
 
         expect(inboxService.init).toHaveBeenCalledTimes(1);
-      });
-
-      it('should NOT unsubscribe from the RT_CONNECTED_EVENT', () => {
-        spyOn(userService, 'isProfessional').and.returnValue(observableOf(true));
-
-        component.ngOnInit();
-        emitSuccessChatEvents();
-
-        expect(component['RTConnectedSubscription'].closed).toBe(false);
       });
 
       it('should send open_app event if cookie does not exist', () => {
@@ -382,7 +357,7 @@ describe('App', () => {
     });
 
     it('should NOT call userService.sendUserPresenceInterval is the user has not successfully logged in', () => {
-      spyOn(userService, 'me').and.returnValue(observableThrowError({}));
+      spyOn(userService, 'me').and.returnValue(throwError({}));
       spyOn(errorsService, 'show');
       spyOn(userService, 'sendUserPresenceInterval');
 
@@ -391,23 +366,6 @@ describe('App', () => {
 
       expect(userService.sendUserPresenceInterval).not.toHaveBeenCalled();
     });
-
-    it('should logout the user and show the error if token is expired', fakeAsync(() => {
-      const ERROR: any = {
-        'code': 1,
-        'type': 'error',
-        'message': 'Token expired'
-      };
-      spyOn(userService, 'logout');
-      spyOn(errorsService, 'show');
-      spyOn(userService, 'me').and.returnValue(observableThrowError(ERROR));
-
-      component.ngOnInit();
-      eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-      expect(userService.logout).toHaveBeenCalled();
-      expect(errorsService.show).toHaveBeenCalled();
-    }));
 
     it('should init notifications', () => {
       component.ngOnInit();

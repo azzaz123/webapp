@@ -4,31 +4,19 @@
   </div>
   <ngb-carousel interval="0" (slide)="onSlide($event)">
     <ng-template ngbSlide>
-      <div class="step step-1" *ngIf="withCoins">
-        <h2 i18n>Introducing... wallacoins!</h2>
-        <p i18n>Our new currency for your features with unique benefits.</p>
-      </div>
-      <div class="step step-1" *ngIf="!withCoins">
+      <div class="step step-1">
         <h2 i18n>Introducing... credit!</h2>
         <p i18n>You don't need to pay for each feature anymore. Now you can buy packs of features... and save money!</p>
       </div>
     </ng-template>
     <ng-template ngbSlide>
-      <div class="step step-2" *ngIf="withCoins">
-        <h2 i18n>Custom packs</h2>
-        <p i18n>You choose how many wallacoins you want to buy. Depending on your needs, you can choose the pack of wallacoins that best suits you.</p>
-      </div>
-      <div class="step step-2" *ngIf="!withCoins">
+      <div class="step step-2">
         <h2 i18n>Custom packs</h2>
         <p i18n>Depending on your needs, you can choose the pack of wallacoins that best suits you. No matter if you buy a lot of features or a few, you will save money for sure.</p>
       </div>
     </ng-template>
     <ng-template ngbSlide>
-      <div class="step step-3" *ngIf="withCoins">
-        <h2 i18n>Save with your wallacoins</h2>
-        <p i18n>Buy our packs and you can get free wallacoins. The bigger the pack, we will give you more wallacoins.</p>
-      </div>
-      <div class="step step-3" *ngIf="!withCoins">
+      <div class="step step-3">
         <h2 i18n>Only for your features</h2>
         <p i18n>Watch out! The available credit can be only used to buy features. As well, there are many advantages, you will save money and you will pay just once.</p>
       </div>
@@ -36,7 +24,6 @@
   </ngb-carousel>
   <tsl-button *ngIf="!isLast" (click)="carousel.next()" i18n>Next</tsl-button>
   <tsl-button *ngIf="isLast" (click)="activeModal.close()">
-    <span *ngIf="withCoins" i18n>Go to wallacoins</span>
-    <span *ngIf="!withCoins" i18n>Go to credit</span>
+    <span i18n>Go to credit</span>
   </tsl-button>
 </div>

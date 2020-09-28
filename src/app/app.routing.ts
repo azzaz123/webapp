@@ -3,11 +3,26 @@ import { RouterModule, Routes } from '@angular/router';
 import { PERMISSIONS } from './core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { DevelopmentGuard } from './core/user/development.guard';
+import { LoggedGuard } from './core/user/logged.guard';
 
-const routes: Routes = [
+const publicRoutes = [
+  {
+    path: 'login',
+    canLoad: [DevelopmentGuard],
+    loadChildren: () => import('app/login/login.module').then(m => m.LoginModule)
+  },
+  {
+    path: 'register',
+    canLoad: [DevelopmentGuard],
+    loadChildren: () => import('app/register/register.module').then(m => m.RegisterModule)
+  }
+];
+
+const loggedRoutes = [
   { path: '', pathMatch: 'full', redirectTo: 'chat' },
   {
     path: 'pro',
+    canLoad: [LoggedGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       {
@@ -52,26 +67,32 @@ const routes: Routes = [
   },
   {
     path: 'profile',
+    canLoad: [LoggedGuard],
     loadChildren: () => import('app/profile/profile.module').then(m => m.ProfileModule)
   },
   {
     path: 'chat',
+    canLoad: [LoggedGuard],
     loadChildren: () => import('app/chat/chat.module').then(m => m.ChatModule)
   },
   {
     path: 'favorites',
+    canLoad: [LoggedGuard],
     loadChildren: () => import('app/favorites/favorites.module').then(m => m.FavoritesModule)
   },
   {
     path: 'reviews',
+    canLoad: [LoggedGuard],
     loadChildren: () => import('app/reviews/reviews.module').then(m => m.ReviewsModule)
   },
   {
     path: 'wallacoins',
+    canLoad: [LoggedGuard],
     loadChildren: () => import('app/wallacoins/wallacoins.module').then(m => m.WallacoinsModule)
   },
   {
     path: 'catalog',
+    canLoad: [LoggedGuard],
     children: [
       {
         path: '',
@@ -97,12 +118,8 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'login',
-    canLoad: [DevelopmentGuard],
-    loadChildren: () => import('app/login/login.module').then(m => m.LoginModule)
-  },
-  {
     path: 'stats',
+    canLoad: [LoggedGuard],
     loadChildren: () => import('app/stats/stats.module').then(m => m.StatsModule)
   },
   {
@@ -110,9 +127,14 @@ const routes: Routes = [
   }
 ];
 
+const routes: Routes = [
+  ...publicRoutes,
+  ...loggedRoutes
+];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
-    anchorScrolling:'enabled',
+    anchorScrolling: 'enabled',
     scrollPositionRestoration: 'enabled'
   })],
   exports: [RouterModule],

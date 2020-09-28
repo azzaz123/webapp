@@ -1052,7 +1052,7 @@ export const UPLOAD_FORM_ITEM_VALUES: ItemUploadForm = {
 
 export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
   id: '',
-  title: 'The title',
+  title: 'brand model year',
   storytelling: 'The description',
   model: 'model',
   brand: 'brand',

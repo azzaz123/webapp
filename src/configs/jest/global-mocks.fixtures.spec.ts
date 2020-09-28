@@ -125,3 +125,7 @@ export const MOCK_DIDOMI: DidomiLibrary = {
 export const MOCK_THREAT_METRIX: ThreatMetrixLibrary = {
   nfl: (_domain: string, _orgId: string, _sessionId: string) => {}
 };
+
+export const MOCK_LOCATION: Location = {
+  ...window.location
+};

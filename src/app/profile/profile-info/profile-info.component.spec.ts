@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { competitorLinks, ProfileInfoComponent } from './profile-info.component';
+import { competitorLinks, ProfileInfoComponent, BAD_USERNAME_ERROR_CODE } from './profile-info.component';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import {
   IMAGE,
   MOCK_FULL_USER,
@@ -16,6 +16,7 @@ import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-
 import { SwitchComponent } from '../../shared/switch/switch.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
+import { By } from '@angular/platform-browser';
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -72,6 +73,8 @@ describe('ProfileInfoComponent', () => {
           i18nError() {
           },
           i18nSuccess() {
+          },
+          show() {
           }
         }
         },
@@ -92,7 +95,11 @@ describe('ProfileInfoComponent', () => {
           }
         }
       ],
-      declarations: [ProfileInfoComponent, SwitchComponent],
+      declarations: [
+        ProfileInfoComponent,
+        ProfileFormComponent,
+        SwitchComponent
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -160,9 +167,8 @@ describe('ProfileInfoComponent', () => {
     });
   });
 
-  describe('onSubmit', () => {    
-
-    describe('valid form', () => {
+  describe('onSubmit', () => {
+    describe('when the input data is valid', () => {
 
       const BASIC_DATA = {
         first_name: USER_DATA.first_name,
@@ -176,44 +182,82 @@ describe('ProfileInfoComponent', () => {
 
       beforeEach(() => {
         component.initForm();
-        spyOn(userService, 'edit').and.callThrough();
-        spyOn(userService, 'updateProInfo').and.callThrough();
-        spyOn(userService, 'updateLocation').and.callThrough();
-        spyOn(userService, 'updateSearchLocationCookies').and.callThrough();
-        spyOn(errorsService, 'i18nSuccess');
+
         component.profileForm.patchValue(DATA);
         component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
         component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude + 1);
         component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude + 1);
-
-        component.onSubmit();
       });
 
-      it('should call updateProInfo and edit', () => {
-        expect(userService.updateProInfo).toHaveBeenCalledWith(DATA);
-        expect(userService.edit).toHaveBeenCalledWith({
-          ...USER_EDIT_DATA,
-          gender: USER_EDIT_DATA.gender.toUpperCase().substr(0, 1) 
+      describe('and server validates petition', () => {
+        beforeEach(() => {
+          spyOn(userService, 'edit').and.callThrough();
+          spyOn(userService, 'updateProInfo').and.callThrough();
+          spyOn(userService, 'updateLocation').and.callThrough();
+          spyOn(userService, 'updateSearchLocationCookies').and.callThrough();
+          spyOn(errorsService, 'i18nSuccess');
+
+          component.onSubmit();
+        });
+
+        it('should call updateProInfo and edit', () => {
+          expect(userService.updateProInfo).toHaveBeenCalledWith(DATA);
+          expect(userService.edit).toHaveBeenCalledWith({
+            ...USER_EDIT_DATA,
+            gender: USER_EDIT_DATA.gender.toUpperCase().substr(0, 1) 
+          });
+        });
+
+        it('should call i18nSuccess', () => {
+          expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
+        });
+
+        it('should call updateLocation', () => {
+          expect(userService.updateLocation).toHaveBeenCalledWith({
+            latitude: USER_LOCATION_COORDINATES.latitude + 1,
+            longitude: USER_LOCATION_COORDINATES.longitude + 1,
+            name: USER_LOCATION_COORDINATES.name
+          });
+        });
+
+        it('should set search location cookies', () => {
+          expect(userService.updateSearchLocationCookies).toHaveBeenCalledWith({
+            latitude: USER_LOCATION_COORDINATES.latitude + 1,
+            longitude: USER_LOCATION_COORDINATES.longitude + 1,
+            name: USER_LOCATION_COORDINATES.name
+          });
         });
       });
 
-      it('should call i18nSuccess', () => {
-        expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
-      });
+      describe('and when the server errors', () => {
+        it('should display error to user as a toast', () => {
+          const backendError = { error: { code: 101, message: 'General error' } };
+          spyOn(userService, 'edit').and.returnValue(throwError(backendError));
+          spyOn(errorsService, 'show');
 
-      it('should call updateLocation', () => {
-        expect(userService.updateLocation).toHaveBeenCalledWith({
-          latitude: USER_LOCATION_COORDINATES.latitude + 1,
-          longitude: USER_LOCATION_COORDINATES.longitude + 1,
-          name: USER_LOCATION_COORDINATES.name
+          component.onSubmit();
+
+          expect(errorsService.show).toHaveBeenCalledWith(backendError);
         });
-      });
 
-      it('should set search location cookies', () => {
-        expect(userService.updateSearchLocationCookies).toHaveBeenCalledWith({
-          latitude: USER_LOCATION_COORDINATES.latitude + 1,
-          longitude: USER_LOCATION_COORDINATES.longitude + 1,
-          name: USER_LOCATION_COORDINATES.name
+        describe('and when the server notifies username is incorrect', () => {
+          it('should mark username fields as invalid', () => {
+            const backendError = { error: { code: BAD_USERNAME_ERROR_CODE, message: 'Incorrect username' } };
+            spyOn(userService, 'edit').and.returnValue(throwError(backendError));
+            spyOn(errorsService, 'show');
+            let firstNameFieldElementRef;
+            let lastNameFieldElementRef;
+
+            component.onSubmit();
+            fixture.detectChanges();
+            firstNameFieldElementRef
+              = fixture.debugElement.query(By.css('input[formControlname="first_name"]'));
+            lastNameFieldElementRef
+              = fixture.debugElement.query(By.css('input[formControlname="last_name"]'));
+
+            expect(firstNameFieldElementRef.classes['ng-invalid']).toBeDefined();
+            expect(lastNameFieldElementRef.classes['ng-invalid']).toBeDefined();
+          });
         });
       });
     });
