@@ -75,6 +75,8 @@ import { ChangeCardModalComponent } from './modals/change-card-modal/change-card
 import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-card-modal.component';
 import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
 import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
+import { DisableControlDirective } from './forms/disable-control.directive';
+import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 
 @NgModule({
   imports: [
@@ -156,7 +158,8 @@ import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-
     DateCalendarPipe,
     CountdownPipe,
     ProfileProBillingComponent,
-    FullScreenModalComponent
+    FullScreenModalComponent,
+    DisableControlDirective
   ],
   declarations: [
     AdComponent,
@@ -221,7 +224,9 @@ import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-
     DateCalendarPipe,
     CountdownPipe,
     ProfileProBillingComponent,
-    FullScreenModalComponent
+    FullScreenModalComponent,
+    DisableControlDirective,
+    RouterLinkDirectiveStub
   ],
   providers: [
     DecimalPipe,
