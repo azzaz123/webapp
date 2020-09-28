@@ -1,7 +1,7 @@
 import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CatalogItemActionsComponent } from './catalog-item-actions.component';
 import { ItemService } from '../../../core/item/item.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   createItemsArray, ITEMS_BULK_RESPONSE,

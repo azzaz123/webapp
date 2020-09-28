@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { InboxComponent, InboxState } from './inbox.component';
 import { InboxConversationComponent } from './inbox-conversation/inbox-conversation.component';
@@ -66,10 +66,10 @@ describe('Component: InboxComponent', () => {
         {
           provide: UserService, useValue: {
             isProfessional(): Observable<boolean> {
-              return observableOf(false);
+              return of(false);
             },
             me(): Observable<User> {
-              return observableOf(MOCK_USER);
+              return of(MOCK_USER);
             },
             calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
               return 5.5;

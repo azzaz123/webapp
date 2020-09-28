@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 
 import { ReactivateConfirmationModalComponent } from './reactivate-confirmation-modal.component';
@@ -24,7 +24,7 @@ describe('ReactivateConfirmationModalComponent', () => {
         {
           provide: PaymentService, useValue: {
           getCreditInfo() {
-            return observableOf({});
+            return of({});
           }
         }
         }
@@ -48,7 +48,7 @@ describe('ReactivateConfirmationModalComponent', () => {
         credit: 2000,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
       component.ngOnInit();
       tick(1000);
@@ -62,7 +62,7 @@ describe('ReactivateConfirmationModalComponent', () => {
         credit: 0,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
       component.ngOnInit();
       tick(1000);

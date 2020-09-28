@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable, of } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
@@ -60,7 +60,7 @@ describe('StripeCardSelectionComponent', () => {
 
     it('should get financial card and emit false if not present', () => {
       component.financialCards = undefined;
-      spyOn(stripeService, 'getCards').and.returnValue(observableThrowError({}));
+      spyOn(stripeService, 'getCards').and.returnValue(throwError({}));
       spyOn(component.hasCard, 'emit');
 
       component.ngOnInit();

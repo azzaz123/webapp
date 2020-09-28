@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -31,7 +31,7 @@ describe('CallItemComponent', () => {
         { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: ActivatedRoute, useValue: {
-            queryParams: observableOf({})
+            queryParams: of({})
           }
         },
         {

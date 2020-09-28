@@ -1,5 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Observable, Subject, of } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { StripeService, PAYMENTS_API_URL, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from './stripe.service';
 import { EventService } from '../event/event.service';

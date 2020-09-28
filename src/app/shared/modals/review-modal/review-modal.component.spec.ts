@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReviewModalComponent } from './review-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CONVERSATION_USERS, ITEM_ID, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 import { ReviewService } from '../../../core/review/review.service';

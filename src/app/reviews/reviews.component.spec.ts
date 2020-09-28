@@ -2,7 +2,7 @@ import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testi
 import { ReviewsComponent } from './reviews.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserReviewService } from './user-review.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { MOCK_REVIEWS } from '../../tests/review.fixtures.spec';
 import { UserService } from '../core/user/user.service';
 import { MOCK_USER, USER_INFO_RESPONSE, USERS_STATS, MOCK_USER_STATS } from '../../tests/user.fixtures.spec';

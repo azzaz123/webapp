@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EmailModalComponent } from './email-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UserService } from '../../../../core/user/user.service';

@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AdService } from './ad.service';
 import { UserService } from '../user/user.service';
@@ -73,7 +73,7 @@ describe('AdService', () => {
           provide: UserService,
           useValue: {
             me() {
-              return observableOf(MOCK_USER)
+              return of(MOCK_USER)
             }
           }
         },

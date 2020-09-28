@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../shared/pipes';
@@ -50,7 +50,7 @@ describe('ProfileCardFavoriteComponent', () => {
         },
         { provide: ProfileService, useValue: {
             favoriteItem () {
-              return observableOf({});
+              return of({});
             }
           }
         },

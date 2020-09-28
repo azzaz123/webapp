@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -116,7 +116,7 @@ describe('DashboardComponent', () => {
     const CONVERSATIONS: InboxConversation[] = createInboxConversationsArray(4);
 
     beforeEach(() => {
-      spyOn(callService, 'getPage').and.returnValue(observableOf(CALLS));
+      spyOn(callService, 'getPage').and.returnValue(of(CALLS));
       spyOn(trackingService, 'track');
       inboxConversationService.conversations = CONVERSATIONS;
 
@@ -144,7 +144,7 @@ describe('DashboardComponent', () => {
   describe('getTotals', () => {
 
     beforeEach(() => {
-      spyOn(callService, 'getTotals').and.returnValue(observableOf({
+      spyOn(callService, 'getTotals').and.returnValue(of({
         calls: 6,
         archived: 9
       }));
