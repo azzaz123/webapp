@@ -225,7 +225,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   private openMaliciousConversationModal(): void {
-    if (!this.currentConversation || !this.currentConversation.isFromMaliciousUser) {
+    if (!this.currentConversation?.isFromMaliciousUser) {
       return;
     }
 
