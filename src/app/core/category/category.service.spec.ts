@@ -44,6 +44,21 @@ describe('CategoryService', () => {
       });
 
       expect(response).toEqual(CATEGORY_DATA_WEB);
+      expect(http.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return categories fetched previously', () => {
+      let response: CategoryResponse[];
+      spyOn(http, 'get').and.returnValue(of(CATEGORY_DATA_WEB));
+
+      service.getCategories().subscribe((data: CategoryResponse[]) => {
+        response = data;
+      });
+
+      service.getCategories().subscribe();
+
+      expect(response).toEqual(CATEGORY_DATA_WEB);
+      expect(http.get).toHaveBeenCalledTimes(1);
     });
   });
 

@@ -2,14 +2,14 @@ import { MOCK_CONDITIONS } from './../../../tests/extra-info.fixtures.spec';
 import { MOCK_ITEM_CELLPHONES } from './../../../tests/item.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { UploadProductComponent } from './upload-product.component';
 import { CategoryService } from '../../core/category/category.service';
-import { CATEGORIES_OPTIONS_CONSUMER_GOODS, CATEGORIES_DATA_CONSUMER_GOODS } from '../../../tests/category.fixtures.spec';
+import { CATEGORIES_OPTIONS_CONSUMER_GOODS, CATEGORIES_DATA_CONSUMER_GOODS, CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
@@ -39,6 +39,7 @@ import {
 } from '../../core/analytics/analytics-constants';
 import { BrandModel } from '../brand-model.interface';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
+import { CategoryOption } from 'app/core/category/category-response.interface';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -65,6 +66,7 @@ describe('UploadProductComponent', () => {
   let analyticsService: AnalyticsService;
   let deviceService: DeviceDetectorService;
   let userService: UserService;
+  let categoryService: CategoryService;
   const componentInstance: any = {};
 
   beforeEach(async(() => {
@@ -158,6 +160,7 @@ describe('UploadProductComponent', () => {
     analyticsService = TestBed.get(AnalyticsService);
     deviceService = TestBed.get(DeviceDetectorService);
     userService = TestBed.get(UserService);
+    categoryService = TestBed.get(CategoryService);
     appboy.initialize(environment.appboy);
     fixture.detectChanges();
   });
@@ -877,6 +880,72 @@ describe('UploadProductComponent', () => {
       component.resetFashionExtraFields();
 
       expect(component.getSizes).toHaveBeenCalled();
+    });
+  });
+
+  describe('get upload categories', () => {
+    it('should get value, label and icon from consumer goods categories', () => {
+      spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
+      const expected: CategoryOption[] = [
+        {
+          value: '15000',
+          icon_id: 'pc',
+          label: 'Computers & Electronic',
+        },
+        {
+          value: '15245',
+          icon_id: 'pc',
+          label: 'Computers & Electronic',
+        },
+        {
+          value: '14000',
+          icon_id: 'motorbike',
+          label: 'Motorbikes',
+        },
+        {
+          value: '12800',
+          icon_id: 'helmet',
+          label: 'Motor parts',
+        }
+      ];
+
+      component.ngOnInit();
+
+      expect(component.categories).toEqual(expected)
+    });
+  });
+
+  describe('changes in categoryId input', () => {
+    it('should reset categoryId form field when categoryId input is -1', () => {
+      component.categoryId = '-1';
+
+      component.ngOnChanges({
+        categoryId: new SimpleChange(null, component.categoryId, true)
+      });
+      fixture.detectChanges();
+
+       expect(component.uploadForm.value.category_id).toEqual(null);
+    });
+
+    it('should set categoryId form field when categoryId change', () => {
+      component.categoryId = '100';
+
+      component.ngOnChanges({
+        categoryId: new SimpleChange(null, component.categoryId, true)
+      });
+      fixture.detectChanges();
+
+      expect(component.uploadForm.value.category_id).toEqual('100');
+    });
+  });
+
+  describe('isHeroCategory', () => {
+    it('should return true if categoryId is a hero category', () => {
+      expect(component.isHeroCategory(100)).toBeTruthy();
+    });
+
+     it('should return false if categoryId is not a hero category', () => {
+      expect(component.isHeroCategory(5)).toBeFalsy();
     });
   });
 
