@@ -14,7 +14,7 @@ export class MaliciousConversationModalComponent implements OnInit {
     this.trackViewMaliciousModal();
   }
 
-  // TODO: TNS-946 - https://wallapop.atlassian.net/browse/TNS-946
+  // TODO: TNS-925 - https://wallapop.atlassian.net/browse/TNS-925
   private trackViewMaliciousModal(): void {
   }
 }

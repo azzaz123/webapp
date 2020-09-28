@@ -53,7 +53,7 @@ describe('MaliciousConversationModalComponent', () => {
     });
   });
 
-  // TODO: TNS-946 - https://wallapop.atlassian.net/browse/TNS-946
+  // TODO: TNS-925 - https://wallapop.atlassian.net/browse/TNS-925
   describe('Analytics', () => {
     describe('when displaying modal', () => {
       it('should track modal was viewed', () => {});

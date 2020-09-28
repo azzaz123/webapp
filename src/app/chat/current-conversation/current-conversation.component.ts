@@ -240,7 +240,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.trackClickMaliciousModalCTAButton();
   }
 
-  // TODO: TNS-946 - https://wallapop.atlassian.net/browse/TNS-946
+  // TODO: TNS-925 - https://wallapop.atlassian.net/browse/TNS-925
   private trackClickMaliciousModalCTAButton() {
   }
 

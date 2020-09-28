@@ -382,7 +382,7 @@ describe('CurrentConversationComponent', () => {
     });
   });
 
-  // TODO: TNS-946 - https://wallapop.atlassian.net/browse/TNS-946
+  // TODO: TNS-925 - https://wallapop.atlassian.net/browse/TNS-925
   describe('Analytics', () => {
     describe('when malicious modal is shown', () => {
       describe('and when user clicks on CTA', () => {
