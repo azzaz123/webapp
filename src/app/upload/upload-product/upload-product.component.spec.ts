@@ -911,7 +911,7 @@ describe('UploadProductComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.categories).toEqual(expected)
+      expect(component.categories).toEqual(expected);
     });
   });
 
@@ -928,24 +928,24 @@ describe('UploadProductComponent', () => {
     });
 
     it('should set categoryId form field when categoryId change', () => {
-      component.categoryId = '100';
+      component.categoryId = `${CATEGORY_IDS.GAMES_CONSOLES}`;
 
       component.ngOnChanges({
         categoryId: new SimpleChange(null, component.categoryId, true)
       });
       fixture.detectChanges();
 
-      expect(component.uploadForm.value.category_id).toEqual('100');
+      expect(component.uploadForm.value.category_id).toEqual(`${CATEGORY_IDS.GAMES_CONSOLES}`);
     });
   });
 
   describe('isHeroCategory', () => {
     it('should return true if categoryId is a hero category', () => {
-      expect(component.isHeroCategory(100)).toBeTruthy();
+      expect(component.isHeroCategory(CATEGORY_IDS.CAR)).toBeTruthy();
     });
 
      it('should return false if categoryId is not a hero category', () => {
-      expect(component.isHeroCategory(5)).toBeFalsy();
+      expect(component.isHeroCategory(CATEGORY_IDS.GAMES_CONSOLES)).toBeFalsy();
     });
   });
 
