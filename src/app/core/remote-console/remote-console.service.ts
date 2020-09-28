@@ -27,8 +27,10 @@ export class RemoteConsoleService implements OnDestroy {
   private presentationMessageTimeout = new Map();
   private chatConnectionMetric: ChatConnectionMetric;
 
-  constructor(private remoteConsoleClientService: RemoteConsoleClientService, private deviceService: DeviceDetectorService,
-              private featureflagService: FeatureflagService, private userService: UserService) {
+  constructor(
+    private remoteConsoleClientService: RemoteConsoleClientService,
+    private deviceService: DeviceDetectorService,
+    private userService: UserService) {
     this.deviceId = Fingerprint2.get({}, components => {
       const values = components.map(component => component.value);
       this.deviceId = Fingerprint2.x64hash128(values.join(''), 31);
@@ -122,23 +124,6 @@ export class RemoteConsoleService implements OnDestroy {
         metric_type: MetricTypeEnum.MESSAGE_SENT_ACK_TIME,
       });
       this.sendMessageTime.delete(messageId);
-    }
-  }
-
-  /*
-   * @deprecated Use sendMessageActTimeout instead. Remove after deploy new metrics CHATO-4187, CHATO-4191 and CHATO-4199
-   */
-  sendAcceptTimeout(messageId: string): void {
-    if (!this.acceptMessageTime.has(messageId)) {
-      this.acceptMessageTime.set(messageId, new Date().getTime());
-    } else {
-      this.remoteConsoleClientService.info({
-        ...this.getCommonLog(this.userService.user.id),
-        message_id: messageId,
-        send_message_time: new Date().getTime() - this.acceptMessageTime.get(messageId),
-        metric_type: MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-      });
-      this.acceptMessageTime.delete(messageId);
     }
   }
 

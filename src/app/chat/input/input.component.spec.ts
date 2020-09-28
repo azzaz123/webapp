@@ -102,7 +102,6 @@ describe('Component: Input', () => {
       spyOn(EVENT, 'preventDefault');
       spyOn(trackingService, 'track');
       spyOn(remoteConsoleService, 'sendMessageTimeout');
-      spyOn(remoteConsoleService, 'sendAcceptTimeout');
       spyOn(component.clickSentMessage, 'emit');
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       component.currentConversation = conversation;
@@ -148,7 +147,6 @@ describe('Component: Input', () => {
       expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if texts is just spaces', () => {
@@ -161,7 +159,6 @@ describe('Component: Input', () => {
       expect(component.message).toBe('');
       expect(trackingService.track).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if disabled', () => {
@@ -174,7 +171,6 @@ describe('Component: Input', () => {
       expect(messageService.send).not.toHaveBeenCalled();
       expect(trackingService.track).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendMessageTimeout).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendAcceptTimeout).not.toHaveBeenCalled();
     });
 
     it('should NOT call the send method and NOT track the SEND_BUTTON event if message contains link', () => {

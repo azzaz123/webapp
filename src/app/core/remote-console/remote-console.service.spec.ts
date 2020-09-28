@@ -443,69 +443,6 @@ describe('RemoteConsoleService', () => {
     }));
   });
 
-  describe('sendAcceptedTimeout', () => {
-    it('should NOT send call', () => {
-      spyOn(remoteConsoleClientService, 'info');
-
-      service.sendAcceptTimeout(null);
-
-      expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
-    });
-
-    it('should NOT send call if not init calculate time', () => {
-      spyOn(remoteConsoleClientService, 'info');
-
-      service.sendAcceptTimeout('MESSAGE_ID');
-
-      expect(remoteConsoleClientService.info).not.toHaveBeenCalledWith();
-    });
-
-    it('should send call with sending time', fakeAsync(() => {
-      spyOn(remoteConsoleClientService, 'info');
-      spyOn(Date, 'now').and.returnValues(1000, 4000, 2000);
-
-      service.sendAcceptTimeout('MESSAGE_ID');
-      service.sendAcceptTimeout('MESSAGE_ID');
-
-      expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(1);
-      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        ...commonLog,
-        'message_id': 'MESSAGE_ID',
-        'send_message_time': 1000,
-        'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-        'ping_time_ms': navigator['connection']['rtt']
-      });
-    }));
-
-    it('should send twice time call with sending acceptance time', fakeAsync(() => {
-      spyOn(remoteConsoleClientService, 'info');
-      spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000, 4000, 4000);
-
-      service.sendAcceptTimeout('MESSAGE_ID_1');
-      service.sendAcceptTimeout('MESSAGE_ID_2');
-      service.sendAcceptTimeout('MESSAGE_ID_1');
-
-      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        ...commonLog,
-        'message_id': 'MESSAGE_ID_1',
-        'send_message_time': 3000,
-        'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-        'ping_time_ms': navigator['connection']['rtt']
-      });
-
-      service.sendAcceptTimeout('MESSAGE_ID_2');
-
-      expect(remoteConsoleClientService.info).toHaveBeenCalledTimes(2);
-      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        ...commonLog,
-        'message_id': 'MESSAGE_ID_2',
-        'send_message_time': 2000,
-        'metric_type': MetricTypeEnum.XMPP_ACCEPT_MESSAGE_TIME,
-        'ping_time_ms': navigator['connection']['rtt']
-      });
-    }));
-  });
-
   describe('sendPresentationMessageTimeout', () => {
     it('should NOT send call', () => {
       spyOn(remoteConsoleClientService, 'info');
