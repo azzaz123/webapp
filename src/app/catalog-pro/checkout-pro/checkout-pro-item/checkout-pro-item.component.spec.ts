@@ -1,5 +1,5 @@
 
-import {of as observableOf } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutProItemComponent } from './checkout-pro-item.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -46,7 +46,7 @@ describe('CheckoutProItemComponent', () => {
             },
             remove() {
             },
-            cart$: observableOf(CART_CHANGE)
+            cart$: of(CART_CHANGE)
           },
         }, {
           provide: NgbCalendar, useValue: {
@@ -67,7 +67,7 @@ describe('CheckoutProItemComponent', () => {
     fixture = TestBed.createComponent(CheckoutProItemComponent);
     component = fixture.componentInstance;
     component.cartProItem = MOCK_PROITEM3;
-    component.selectAllEvent = observableOf(1);
+    component.selectAllEvent = of(1);
     fb = TestBed.inject(FormBuilder);
     fixture.detectChanges();
     cartService = TestBed.inject(CartService);
@@ -170,7 +170,7 @@ describe('CheckoutProItemComponent', () => {
         itemId: MOCK_ITEM_V3.id,
         cart: CART
       };
-      cartService.cart$ = observableOf(cartChange);
+      cartService.cart$ = of(cartChange);
 
       component.onRemoveOrClean(cartChange);
     });
@@ -180,7 +180,7 @@ describe('CheckoutProItemComponent', () => {
         action: 'clean',
         cart: CART
       };
-      cartService.cart$ = observableOf(cartChange);
+      cartService.cart$ = of(cartChange);
 
       component.onRemoveOrClean(cartChange);
     });

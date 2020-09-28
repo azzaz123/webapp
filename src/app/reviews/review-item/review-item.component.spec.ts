@@ -6,7 +6,7 @@ import { SanitizedBackgroundDirective } from '../../shared/sanitized-background/
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { CategoryService } from '../../core/category/category.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
 describe('ReviewItemComponent', () => {
   let component: ReviewItemComponent;

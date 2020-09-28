@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReactivateModalComponent } from './reactivate-modal.component';
@@ -23,7 +23,7 @@ describe('ReactivateModalComponent', () => {
         {
           provide: PaymentService, useValue: {
           getCreditInfo() {
-            return observableOf({});
+            return of({});
           }
         }
         }
@@ -48,7 +48,7 @@ describe('ReactivateModalComponent', () => {
         credit: 2000,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
       component.ngOnInit();
 
@@ -61,7 +61,7 @@ describe('ReactivateModalComponent', () => {
         credit: 0,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
       component.ngOnInit();
 

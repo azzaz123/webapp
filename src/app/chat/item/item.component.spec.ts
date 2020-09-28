@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -38,17 +38,17 @@ describe('Component: Item', () => {
         {
           provide: ItemService, useValue: {
           getCounters() {
-            return observableOf(ITEM_COUNTERS_DATA);
+            return of(ITEM_COUNTERS_DATA);
           },
           reserveItem() {
-            return observableOf({});
+            return of({});
           },
         }
         },
         {
           provide: UserService, useValue: {
           me() {
-            return observableOf(MOCK_USER);
+            return of(MOCK_USER);
           }
         }
         },

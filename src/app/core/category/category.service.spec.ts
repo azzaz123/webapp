@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { CategoryService, CONSUMER_GOODS_ENDPOINT } from './category.service';
 import {
@@ -40,7 +40,7 @@ describe('CategoryService', () => {
   describe('getCategories', () => {
     it('should return the json from the categories', () => {
       let response: CategoryResponse[];
-      spyOn(http, 'get').and.returnValue(observableOf(CATEGORY_DATA_WEB));
+      spyOn(http, 'get').and.returnValue(of(CATEGORY_DATA_WEB));
 
       service.getCategories().subscribe((data: CategoryResponse[]) => {
         response = data;
@@ -54,7 +54,7 @@ describe('CategoryService', () => {
     let response: IOption[];
     beforeEach(() => {
       response = null;
-      spyOn(http, 'get').and.returnValue(observableOf(CATEGORIES_DATA_CONSUMER_GOODS));
+      spyOn(http, 'get').and.returnValue(of(CATEGORIES_DATA_CONSUMER_GOODS));
     });
 
     it('should return the json from the categories and convert it into options', () => {

@@ -1,5 +1,5 @@
 
-import {forkJoin as observableForkJoin, of as observableOf,  Observable ,  ReplaySubject } from 'rxjs';
+import { forkJoin, of, Observable, ReplaySubject } from 'rxjs';
 
 import {map, tap, catchError, mergeMap} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -69,11 +69,11 @@ export class CallsService {
       }
     }).pipe(
     mergeMap((res: LeadResponse[]) => {
-      return isEmpty(res) ? observableOf([]) : observableForkJoin(
+      return isEmpty(res) ? of([]) : forkJoin(
         res.map((conversation: LeadResponse) => this.getUser(conversation))
       ).pipe(
       mergeMap((response: LeadResponse[]) => {
-        return observableForkJoin(
+        return forkJoin(
           response.map((conversation: LeadResponse) => this.getItem(conversation).pipe(
           map((convWithItem: Lead) => {
             convWithItem.archived = archived;
@@ -83,14 +83,14 @@ export class CallsService {
       }));
     }),
     catchError((a) => {
-      return observableOf(null);
+      return of(null);
     }),);
   }
 
   protected getUser(conversation: LeadResponse): Observable<LeadResponse> {
     if (!conversation.user_id) {
       conversation.user = new User(null);
-      return observableOf(conversation);
+      return of(conversation);
     }
     return this.userService.get(conversation.user_id).pipe(
     map((user: User) => {
@@ -101,7 +101,7 @@ export class CallsService {
 
   protected getItem(conversation: LeadResponse): Observable<Lead> {
     if (!conversation.item_id) {
-      return observableOf(conversation).pipe(
+      return of(conversation).pipe(
       map((data: CallResponse) => this.mapRecordData(data)));
     }
     return this.itemService.get(conversation.item_id).pipe(

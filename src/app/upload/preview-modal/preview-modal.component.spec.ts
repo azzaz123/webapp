@@ -4,7 +4,7 @@ import { PreviewModalComponent } from './preview-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UPLOAD_FORM_CAR_VALUES } from '../../../tests/item.fixtures.spec';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { CarKeysService } from '../upload-car/car-keys.service';
 import { CustomCurrencyPipe } from '../../shared/pipes';
 import { DecimalPipe } from '@angular/common';

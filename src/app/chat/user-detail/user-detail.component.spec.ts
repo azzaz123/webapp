@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserDetailComponent } from './user-detail.component';
@@ -10,7 +10,7 @@ import { MOCK_USER, RESPONSE_RATE, SCORING_STARS, USER_INFO_RESPONSE } from '../
 class MockUserService {
 
   getInfo() {
-    return observableOf(USER_INFO_RESPONSE);
+    return of(USER_INFO_RESPONSE);
   }
 }
 

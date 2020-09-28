@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import {catchError, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -21,7 +21,7 @@ export class ReviewService {
         return true;
       }),
       catchError(() => {
-        return observableOf(false);
+        return of(false);
       }),);
   }
 

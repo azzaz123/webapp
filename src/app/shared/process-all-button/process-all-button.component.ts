@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { Observable } from 'rxjs';
 import { CallsService } from '../../core/conversation/calls.service';
 
 @Component({

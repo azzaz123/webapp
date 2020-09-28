@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopbarComponent } from './topbar.component';
@@ -55,17 +55,17 @@ describe('TopbarComponent', () => {
         {
           provide: UserService, useValue: {
             me(): Observable<User> {
-              return observableOf(MOCK_USER);
+              return of(MOCK_USER);
             },
             isProfessional() {
-              return observableOf(true);
+              return of(true);
             }
           },
         },
         {
           provide: PaymentService, useValue: {
             getCreditInfo() {
-              return observableOf({
+              return of({
                 currencyName: CURRENCY,
                 credit: CREDITS
               });
@@ -83,7 +83,7 @@ describe('TopbarComponent', () => {
         },
         {
           provide: MessageService, useValue: {
-            totalUnreadMessages$: observableOf(1)
+            totalUnreadMessages$: of(1)
           }
         },
         {

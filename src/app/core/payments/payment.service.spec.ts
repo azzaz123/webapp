@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { PaymentService, PAYMENTS_API_URL, PROTOOL_API_URL } from './payment.service';
 import {
@@ -158,7 +158,7 @@ describe('PaymentService', () => {
 
     it('should get user credit', () => {
       let resp: CreditInfo;
-      spyOn(service, 'getPerks').and.returnValue(observableOf(PERKS_MODEL));
+      spyOn(service, 'getPerks').and.returnValue(of(PERKS_MODEL));
       const CREDIT = 100;
       PERKS_MODEL.wallacredits.quantity = CREDIT;
 
@@ -179,7 +179,7 @@ describe('PaymentService', () => {
     let resp: Pack[];
 
     beforeEach(() => {
-      spyOn(service, 'getPacks').and.returnValue(observableOf(createWallacreditsPacksFixture()));
+      spyOn(service, 'getPacks').and.returnValue(of(createWallacreditsPacksFixture()));
 
       service.getCreditsPacks().subscribe((r: Pack[]) => {
         resp = r;

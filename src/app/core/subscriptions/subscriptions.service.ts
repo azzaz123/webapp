@@ -1,5 +1,5 @@
 
-import {of as observableOf, throwError as observableThrowError, forkJoin as observableForkJoin,  Observable } from 'rxjs';
+import { of, throwError, forkJoin, Observable } from 'rxjs';
 
 import {catchError, retryWhen, delay, take,  mergeMap, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -58,7 +58,7 @@ export class SubscriptionsService {
   public getSlots(): Observable<SubscriptionSlot[]> {
     return this.http.get<SubscriptionSlotGeneralResponse>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`).pipe(
       mergeMap(response => {
-        return observableForkJoin(
+        return forkJoin(
           response.slots.map(slot => this.mapSlotResponseToSlot(slot))
         );
       }));
@@ -82,10 +82,10 @@ export class SubscriptionsService {
 
   public getUserSubscriptionType(useCache = true): Observable<SUBSCRIPTION_TYPES> {
     if (useCache && this._userSubscriptionType) {
-      return observableOf(this._userSubscriptionType);
+      return of(this._userSubscriptionType);
     }
 
-    return observableForkJoin([
+    return forkJoin([
       this.userService.isProfessional(),
       this.getSubscriptions(false)
     ])
@@ -93,19 +93,19 @@ export class SubscriptionsService {
       map(values => {
         const isCarDealer = values[0];
         const subscriptions = values[1];
-  
+
         if (isCarDealer) {
           return SUBSCRIPTION_TYPES.carDealer;
         }
-        
+
         if (this.isOneSubscriptionInApp(subscriptions)) {
           return SUBSCRIPTION_TYPES.inApp;
         }
-  
+
         if (this.hasOneStripeSubscription(subscriptions)) {
           return SUBSCRIPTION_TYPES.stripe;
         }
-  
+
         return SUBSCRIPTION_TYPES.notSubscribed;
       }),
       tap(subscriptionType => this._userSubscriptionType = subscriptionType)
@@ -129,7 +129,7 @@ export class SubscriptionsService {
     return this.http.get<any>(`${environment.baseUrl}${API_URL}/${STRIPE_SUBSCRIPTION_URL}/${this.uuid}`).pipe(
       retryWhen((errors) => {
         return errors.pipe(
-          mergeMap((error) => (error.status !== 404) ? observableThrowError(error) : observableOf(error)),
+          mergeMap((error) => (error.status !== 404) ? throwError(error) : of(error)),
           delay(1000),
           take(10),);
       }));
@@ -149,7 +149,7 @@ export class SubscriptionsService {
 
   public getSubscriptions(cache: boolean = true): Observable<SubscriptionsResponse[]> {
     if (this.subscriptions && cache) {
-      return observableOf(this.subscriptions);
+      return of(this.subscriptions);
     }
 
     return this.categoryService.getCategories()
@@ -157,7 +157,7 @@ export class SubscriptionsService {
       mergeMap((categories) => {
         return this.http.get(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).pipe(
         catchError((error) => {
-          return observableOf(error);
+          return of(error);
         }))
         .pipe(
           map((subscriptions: SubscriptionsResponse[]) => {
@@ -186,11 +186,11 @@ export class SubscriptionsService {
 
   private mapSubscriptions(subscription: SubscriptionsResponse, categories: CategoryResponse[]): SubscriptionsResponse {
     let category = categories.find((category: CategoryResponse) => subscription.category_id === category.category_id);
-    
+
     if (!category && subscription.category_id === 0) {
       category = this.categoryService.getConsumerGoodsCategory();
     }
-    
+
     if (category) {
       subscription.category_name = category.name;
       subscription.category_icon = category.icon_id;
@@ -272,9 +272,9 @@ export class SubscriptionsService {
 
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]>{
     if (useCache && this._subscriptionBenefits) {
-      return observableOf(this._subscriptionBenefits);
+      return of(this._subscriptionBenefits);
     }
-    return observableOf(this.i18nService.getTranslations('subscriptionBenefits'))
+    return of(this.i18nService.getTranslations('subscriptionBenefits'))
       .pipe(
         tap(response => this._subscriptionBenefits = response)
       );

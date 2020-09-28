@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UploadConfirmationModalComponent } from './upload-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -44,7 +44,7 @@ describe('UploadConfirmationModalComponent', () => {
         {
           provide: PaymentService, useValue: {
           getCreditInfo() {
-            return observableOf({});
+            return of({});
           }
         }
         }
@@ -70,7 +70,7 @@ describe('UploadConfirmationModalComponent', () => {
         credit: 200,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
       component.ngOnInit();
 
@@ -81,7 +81,7 @@ describe('UploadConfirmationModalComponent', () => {
 
   describe('urgentPrice', () => {
     it('should call urgentPrice', () => {
-      spyOn(itemService, 'getUrgentProducts').and.returnValue(observableOf(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getUrgentProducts').and.returnValue(of(PRODUCT_RESPONSE));
       component.item = MOCK_ITEM;
 
       component.urgentPrice();

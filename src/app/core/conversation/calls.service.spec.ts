@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { CallsService } from './calls.service';
 import { UserService } from '../user/user.service';
@@ -82,7 +82,7 @@ describe('CallsService', () => {
     describe('do NOT cacheAllConversations', () => {
       beforeEach(() => {
         spyOn<any>(service, 'getLeads').and.callFake(() => {
-          return observableOf(CONVERSATIONS);
+          return of(CONVERSATIONS);
         });
       });
       describe('not archived', () => {
@@ -335,7 +335,7 @@ describe('CallsService', () => {
 
     describe('with results', () => {
       beforeEach(() => {
-        spyOn(service, 'query').and.returnValue(observableOf(QUERY_RESULT));
+        spyOn(service, 'query').and.returnValue(of(QUERY_RESULT));
         result = null;
       });
 
@@ -406,7 +406,7 @@ describe('CallsService', () => {
 
     describe('with no results', () => {
       beforeEach(() => {
-        spyOn(service, 'query').and.returnValue(observableOf([]));
+        spyOn(service, 'query').and.returnValue(of([]));
         result = null;
         service.archivedLeads = createCallsArray(EXISTNG_TOTAL);
         service.leads = createCallsArray(EXISTNG_TOTAL);

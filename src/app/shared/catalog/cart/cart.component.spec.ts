@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable, of } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CartComponent } from './cart.component';
@@ -324,7 +324,7 @@ describe('CartComponent', () => {
 
     describe('error', () => {
       it('should call toastr', fakeAsync(() => {
-        spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(observableThrowError({
+        spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(throwError({
           text() {
             return '';
           }

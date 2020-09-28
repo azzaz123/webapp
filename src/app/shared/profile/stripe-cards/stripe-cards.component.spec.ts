@@ -1,5 +1,5 @@
 
-import { throwError as observableThrowError, of } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
@@ -104,7 +104,7 @@ describe('StripeCardsComponent', () => {
     });
 
     it('should show error if getCards returns an error', () => {
-      spyOn(stripeService, 'getCards').and.returnValue(observableThrowError(''));
+      spyOn(stripeService, 'getCards').and.returnValue(throwError(''));
       spyOn(errorService, 'i18nError');
 
       component.ngOnInit();
@@ -114,7 +114,7 @@ describe('StripeCardsComponent', () => {
 
     it('should call getSubscriptions service', () => {
       spyOn(subscriptionsService, 'getSubscriptions').and.callThrough();
-  
+
 
       component.ngOnInit();
 
