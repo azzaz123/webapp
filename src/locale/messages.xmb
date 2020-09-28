@@ -27,21 +27,21 @@
   <msg id="MobileBlockerSubtitle"><source>app/core/mobile-blocker/mobile-blocker.component.html:9,11</source>
     To see this content, open the wallapop app or continue browsing from your computer.
   </msg>
-  <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.html:13</source><source>app/layout/sidebar/sidebar.component.html:41</source><source>app/shared/catalog/cart/cart.component.html:71</source><source>app/wallacoins/wallacoins.component.html:27</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:33</source>credit</msg>
-  <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.html:19</source><source>app/layout/sidebar/sidebar.component.html:33</source><source>app/layout/tabbar/tabbar.component.html:39</source><source>app/dashboard/dashboard.component.html:33</source>Messages</msg>
+  <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.html:13</source><source>app/layout/sidebar/sidebar.component.html:38</source><source>app/shared/catalog/cart/cart.component.html:71</source><source>app/wallacoins/wallacoins.component.html:27</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:33</source>credit</msg>
+  <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.html:19</source><source>app/layout/sidebar/sidebar.component.html:31</source><source>app/layout/tabbar/tabbar.component.html:39</source><source>app/dashboard/dashboard.component.html:33</source>Messages</msg>
   <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.html:26</source><source>app/layout/tabbar/tabbar.component.html:59</source>My Zone</msg>
   <msg id="3983509092263971640"><source>app/layout/topbar/topbar.component.html:27</source>My Pro Zone</msg>
   <msg id="4818441514225396186"><source>app/layout/topbar/topbar.component.html:32</source>List a product</msg>
   <msg id="6348395677948023023"><source>app/layout/topbar/topbar.component.html:33</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:45</source>List a car</msg>
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.html:7</source><source>app/profile/profile.component.html:27</source>Profile</msg>
-  <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.html:15</source>Dashboard</msg>
-  <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.html:23</source><source>app/favorites/favorites.component.html:28</source>Products</msg>
-  <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.html:24</source>Catalog</msg>
-  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.html:49</source><source>app/layout/tabbar/tabbar.component.html:16</source><source>app/shared/catalog/catalog-card/catalog-card.component.html:52</source><source>app/stats/items-stats/items-stats.component.html:16</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:24</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:42</source>Favorites</msg>
-  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.html:56</source>Reviews</msg>
-  <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.html:64</source><source>app/dashboard/dashboard.component.html:42</source>Phones</msg>
-  <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.html:71</source>Help</msg>
-  <msg id="4088311569349098646"><source>app/layout/sidebar/sidebar.component.html:78</source><source>app/stats/stats.component.html:12</source>Stats</msg>
+  <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.html:14</source>Dashboard</msg>
+  <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.html:22</source><source>app/favorites/favorites.component.html:28</source>Products</msg>
+  <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.html:23</source>Catalog</msg>
+  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.html:45</source><source>app/layout/tabbar/tabbar.component.html:16</source><source>app/shared/catalog/catalog-card/catalog-card.component.html:52</source><source>app/stats/items-stats/items-stats.component.html:16</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:24</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:42</source>Favorites</msg>
+  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.html:52</source>Reviews</msg>
+  <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.html:59</source><source>app/dashboard/dashboard.component.html:42</source>Phones</msg>
+  <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.html:66</source>Help</msg>
+  <msg id="4088311569349098646"><source>app/layout/sidebar/sidebar.component.html:73</source><source>app/stats/stats.component.html:12</source>Stats</msg>
   <msg id="2821179408673282599"><source>app/layout/tabbar/tabbar.component.html:8</source>Home</msg>
   <msg id="6932865105766151309"><source>app/layout/tabbar/tabbar.component.html:25</source>Upload</msg>
   <msg id="ngb.alert.close"><source>../node_modules/@ng-bootstrap/ng-bootstrap/alert/alert.d.ts:3</source>Close</msg>
