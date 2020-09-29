@@ -14,7 +14,7 @@ describe('Component: Conversation', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ArchivedInboxConversationComponent],
+      declarations: [ArchivedInboxConversationComponent, DateCalendarPipe],
       providers: [DateCalendarPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

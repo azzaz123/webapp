@@ -43,7 +43,7 @@ describe('CurrentConversationComponent', () => {
         NgbModule,
         NgxPermissionsModule.forRoot()
       ],
-      declarations: [CurrentConversationComponent],
+      declarations: [CurrentConversationComponent, DateCalendarPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [EventService,
         { provide: RealTimeService, useClass: RealTimeServiceMock },
