@@ -812,75 +812,13 @@ describe('UploadProductComponent', () => {
     describe('when selecting a model in the brand field', () => {
       it('should patch brand and model values', () => {
         const brandModelObj: BrandModel = { brand: 'Apple', model: 'iPhone 11 Pro' };
-        
+
         component.uploadForm.patchValue({ category_id: CATEGORY_IDS.CELL_PHONES_ACCESSORIES });
         component.autoCompleteCellphonesModel(brandModelObj);
 
         expect(component.uploadForm.value.extra_info.brand).toEqual('Apple');
         expect(component.uploadForm.value.extra_info.model).toEqual('iPhone 11 Pro');
       });
-    });
-  });
-
-  describe('resetCellphonesExtraFields', () => {
-    it('should reset the brand to the default value', () => {
-      component.uploadForm.patchValue({
-        extra_info: {
-          brand: 'Apple'
-        }
-      })
-
-      component.resetCellphonesExtraFields();
-
-      expect(component.uploadForm.value.extra_info.brand).toBeNull();
-    });
-
-    it('should reset the model to the default value', () => {
-      component.uploadForm.patchValue({
-        extra_info: {
-          model: 'iPhone'
-        }
-      })
-
-      component.resetCellphonesExtraFields();
-
-      expect(component.uploadForm.value.extra_info.model).toBeNull();
-    });
-  });
-
-  describe('resetFashionExtraFields', () => {
-    it('should reset the brand to the default value', () => {
-      component.uploadForm.patchValue({
-        extra_info: {
-          brand: 'Zara'
-        }
-      })
-
-      component.resetFashionExtraFields();
-
-      expect(component.uploadForm.value.extra_info.brand).toBeNull();
-    });
-
-    it('should reset the size to the default value', () => {
-      component.uploadForm.patchValue({
-        extra_info: {
-          size: {
-            id: 1
-          }
-        }
-      })
-
-      component.resetFashionExtraFields();
-
-      expect(component.uploadForm.value.extra_info.size.id).toBeNull();
-    });
-
-    it('should get sizes for the new options', () => {
-      spyOn(component, 'getSizes');
-
-      component.resetFashionExtraFields();
-
-      expect(component.getSizes).toHaveBeenCalled();
     });
   });
 
