@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportListingComponent } from './report-listing.component';
@@ -28,7 +28,7 @@ describe('ReportListingComponent', () => {
         {
           provide: ItemService, useValue: {
           getBanReasons() {
-            return observableOf(BAN_REASONS);
+            return of(BAN_REASONS);
           }
         }
         }

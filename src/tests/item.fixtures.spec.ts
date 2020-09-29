@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   AllowedActionResponse,
   AvailableProductsResponse,
@@ -375,7 +375,7 @@ export const ITEMS_BULK_RESPONSE_FAILED: ItemBulkResponse = {
 export class MockedItemService {
   public get(url: string): Observable<Item> {
     const data: any = ITEM_DATA;
-    return observableOf(new Item(
+    return of(new Item(
       data.id,
       data.legacyId,
       data.owner,
@@ -1052,7 +1052,7 @@ export const UPLOAD_FORM_ITEM_VALUES: ItemUploadForm = {
 
 export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
   id: '',
-  title: 'The title',
+  title: 'brand model year',
   storytelling: 'The description',
   model: 'model',
   brand: 'brand',

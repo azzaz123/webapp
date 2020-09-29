@@ -2,7 +2,7 @@
 import {map, startWith} from 'rxjs/operators';
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import * as moment from 'moment';
-import { Observable ,  interval ,  Subscription } from 'rxjs';
+import { Observable, interval, Subscription } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
 
 

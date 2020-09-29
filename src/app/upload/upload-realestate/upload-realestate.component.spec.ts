@@ -6,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { RealestateKeysService } from './realestate-keys.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Router } from '@angular/router';
 import { Key } from './key.interface';

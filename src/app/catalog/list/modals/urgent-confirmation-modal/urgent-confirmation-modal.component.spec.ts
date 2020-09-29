@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, fakeAsync, ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { UrgentConfirmationModalComponent } from './urgent-confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -36,14 +36,14 @@ describe('UrgentConfirmationModalComponent', () => {
         {
           provide: UserService, useValue: {
             me() {
-              return observableOf(MOCK_USER);
+              return of(MOCK_USER);
             }
           }
         },
         {
           provide: PaymentService, useValue: {
           getCreditInfo() {
-            return observableOf({});
+            return of({});
           }
         }
         }
@@ -90,7 +90,7 @@ describe('UrgentConfirmationModalComponent', () => {
           credit: 200,
           factor: 100
         };
-        spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
+        spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
         component.ngOnInit();
         tick(1000);

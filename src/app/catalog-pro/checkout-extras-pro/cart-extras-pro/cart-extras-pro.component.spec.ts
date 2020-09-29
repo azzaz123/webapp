@@ -1,5 +1,5 @@
 
-import {of as observableOf, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CartExtrasProComponent } from './cart-extras-pro.component';
@@ -54,19 +54,19 @@ describe('CartExtrasProComponent', () => {
             createInstance() { },
             clean() { },
             removeProExtras() { },
-            cart$: observableOf(CART_CHANGE)
+            cart$: of(CART_CHANGE)
           }
         },
         {
           provide: PaymentService, useValue: {
             getBillingInfo() {
-              return observableOf({});
+              return of({});
             },
             orderExtrasProPack() {
-              return observableOf({});
+              return of({});
             },
             updateBillingInfo() {
-              return observableOf({});
+              return of({});
             }
           },
         },
@@ -88,7 +88,7 @@ describe('CartExtrasProComponent', () => {
           provide: StripeService, useValue: {
             buy() {},
             getCards() {
-              return observableOf(true);
+              return of(true);
             }
           }
         },
@@ -242,7 +242,7 @@ describe('CartExtrasProComponent', () => {
 
       it('should call paymentService orderExtrasProPack method to create a pack order', () => {
         spyOn(paymentService, 'orderExtrasProPack').and.callThrough();
-        
+
         component.checkout();
 
         expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith(ORDER_CART_EXTRAS_PRO);

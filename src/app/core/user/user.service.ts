@@ -1,5 +1,5 @@
 
-import {forkJoin as observableForkJoin, from as observableFrom,  Observable, of } from 'rxjs';
+import { forkJoin, from, Observable, of } from 'rxjs';
 
 import { mergeMap,  catchError, tap, map } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
@@ -93,16 +93,7 @@ export class UserService {
       .pipe(map(r => this.storeData(r)));
   }
 
-  public logout() {
-    const logoutUrl = `${environment.siteUrl.replace('es', this.subdomain)}${LOGOUT_ENDPOINT}`;
-    this.http.post<string>(logoutUrl, null, { responseType: 'text' as 'json' }).subscribe(r => this.logoutActions(r));
-  }
-
-  public logoutLocal() {
-    this.logoutActions();
-  }
-
-  private logoutActions(redirect?: string) {
+  public logout(redirect?: string) {
     const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
     const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.remove('publisherId', cookieOptions);
@@ -156,16 +147,16 @@ export class UserService {
       return of(this._user);
     }
 
-    return this.http.get<HttpResponse<UserResponse>>(`${environment.baseUrl}${USER_ENDPOINT}`, { observe: 'response' as 'body' })
+    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`)
       .pipe(
-        map(r => this.mapRecordData(r.body)),
+        map(r => this.mapRecordData(r)),
         tap(user => this._user = user),
-        // TODO: Parse error status when permission factory is refactored
-        catchError(error => { 
-          this.logoutLocal();
+        // TODO: This will need to be parsed when devops team adds CORS headers on API gateway error
+        catchError(error => {
+          this.logout(null);
           return of(error);
         })
-      )
+      );
   }
 
   public checkUserStatus() {
@@ -208,7 +199,8 @@ export class UserService {
       itemHashId,
       conversationHash,
       comments,
-      reason
+      reason,
+      targetCrm: 'zendesk'
     },
       {
         headers: new HttpHeaders().append('AppBuild', APP_VERSION)
@@ -365,7 +357,7 @@ export class UserService {
   public hasPerm(permission: string): Observable<boolean> {
     return this.me().pipe(
       mergeMap(() => {
-        return observableFrom(this.permissionService.hasPermission(PERMISSIONS[permission]));
+        return from(this.permissionService.hasPermission(PERMISSIONS[permission]));
       }));
   }
 

@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TabbarComponent } from './tabbar.component';
@@ -25,7 +25,7 @@ describe('TabbarComponent', () => {
         {
           provide: UserService, useValue: {
             me(): Observable<User> {
-              return observableOf(MOCK_USER);
+              return of(MOCK_USER);
             }
           },
         },

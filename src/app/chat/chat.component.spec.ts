@@ -1,5 +1,5 @@
 
-import {from as observableFrom, empty as observableEmpty,  Observable, of } from 'rxjs';
+import { from, empty, Observable, of } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -28,7 +28,7 @@ class MockUserService {
   }
 
   public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
-    return observableEmpty();
+    return empty();
   }
 }
 
@@ -55,8 +55,8 @@ describe('Component: ChatComponent with ItemId', () => {
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         {
           provide: ActivatedRoute, useValue: {
-            params: observableFrom([{}]),
-            queryParams: observableFrom([{ itemId: 'itemId' }])
+            params: from([{}]),
+            queryParams: from([{ itemId: 'itemId' }])
           }
         },
         I18nService,
@@ -197,7 +197,7 @@ describe('Component: ChatComponent with ItemId', () => {
       spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversation));
       spyOn(sessionStorage, 'setItem');
 
-      activatedRoute.queryParams = observableFrom([{ itemId: 'itemId', searchId  }]);
+      activatedRoute.queryParams = from([{ itemId: 'itemId', searchId  }]);
 
       component.ngOnInit();
 
@@ -249,8 +249,8 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
         { provide: InboxConversationService, useClass: InboxConversationServiceMock },
         {
           provide: ActivatedRoute, useValue: {
-            params: observableFrom([{}]),
-            queryParams: observableFrom([{ conversationId: 'itemId' }])
+            params: from([{}]),
+            queryParams: from([{ conversationId: 'itemId' }])
           }
         },
         I18nService,

@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   ProBumpConfirmationModalComponent
@@ -27,7 +27,7 @@ describe('BumpConfirmationModalComponent', () => {
           {
             provide: UserService, useValue: {
               me() {
-                return observableOf(MOCK_USER);
+                return of(MOCK_USER);
               }
             }
           },
@@ -46,7 +46,7 @@ describe('BumpConfirmationModalComponent', () => {
     beforeEach(fakeAsync(() => {
       spyOn(trackingService, 'track');
     }));
-    
+
     it('should send event featured_purchase_success if code == 200', () => {
       component.code = '200';
 

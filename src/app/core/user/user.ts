@@ -9,7 +9,6 @@ export const PLACEHOLDER_COVER = '/assets/images/cover.svg';
 export const PERMISSIONS = {
   'normal': 'isNormal',
   'professional': 'isProfessional',
-  'coins': 'coins',
   'featured': 'isFeatured'
 };
 

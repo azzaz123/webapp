@@ -1,5 +1,5 @@
 
-import { of as observableOf,  Observable } from 'rxjs';
+import { of,  Observable } from 'rxjs';
 
 import { tap, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -77,7 +77,7 @@ export class StripeService {
 
   public getCards(cache = true): Observable<FinancialCard[]> {
     if (this.financialCards && cache) {
-      return observableOf(this.financialCards);
+      return of(this.financialCards);
     }
     return this.http.get(`${environment.baseUrl}${PAYMENTS_API_URL}/c2b/stripe/payment_methods/cards`).pipe(
       map((financialCards: PaymentMethodCardResponse[]) => this.mapPaymentMethodCard(financialCards)),

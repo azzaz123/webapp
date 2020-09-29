@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { Observable } from 'rxjs';
 
 import { HelpService } from './help.service';
 import { FAQS, FAQ_FEATURES } from '../../tests/faq.fixtures.spec';

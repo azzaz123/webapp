@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable, of } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DropAreaComponent } from './drop-area.component';
@@ -161,7 +161,7 @@ describe('DropAreaComponent', () => {
         message: 'error'
       };
       component.type = ITEM_TYPES.CARS;
-      spyOn(itemService, 'update').and.returnValue(observableThrowError(ERROR));
+      spyOn(itemService, 'update').and.returnValue(throwError(ERROR));
       spyOn(errorsService, 'i18nError');
       component.onError.subscribe((value: any) => {
         event = value;
@@ -228,26 +228,26 @@ describe('DropAreaComponent', () => {
         const fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
         fileUploaded.progress.data.percentage = 100;
         component.files = [UPLOAD_FILE];
-  
+
         component.onUploadOutput({
           type: 'uploading',
           file: fileUploaded
         });
-  
+
         expect(component.files[0].progress.data.percentage).toBe(100);
       });
-  
+
       it('should emit the completed upload percentage', () => {
         const fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
         component.files = [UPLOAD_FILE];
         spyOn(component.onUploadPercentageChange, 'emit');
-  
+
         component.onUploadOutput({
           type: 'uploading',
           file: fileUploaded,
           percentage: 54.23
         });
-  
+
         expect(component.onUploadPercentageChange.emit).toHaveBeenCalledWith(54.23);
       });
     });

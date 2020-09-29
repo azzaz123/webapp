@@ -1,4 +1,4 @@
-<form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+<form *ngIf="!!uploadForm" [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
 
   <div class="box">
     <div class="row">
@@ -17,7 +17,7 @@
             </a>
           </div>
           <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Seat" class="form-control"
-            formControlName="brand" id="brand" [options]="brands" (selected)="getModels($event.value)">
+            formControlName="brand" id="brand" [options]="brands">
           </ng-select>
           <input *ngIf="customMake" type="text" placeholder="E.g. Seat" class="form-control" formControlName="brand"
             id="brand" />
@@ -27,7 +27,7 @@
         <div class="form-group">
           <label for="model" i18n>Model</label>
           <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Ibiza" class="form-control"
-            formControlName="model" id="model" [options]="models" (selected)="getYears($event.value)">
+            formControlName="model" id="model" [options]="models" [disableControl]="modelFieldDisabled">
           </ng-select>
           <input *ngIf="customMake" type="text" i18n-placeholder placeholder="E.g. Ibiza" class="form-control"
             formControlName="model" id="model" />
@@ -68,7 +68,7 @@
         <div class="form-group">
           <label for="year" i18n>Year</label>
           <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Number plate" class="form-control"
-            formControlName="year" id="year" [options]="years" (selected)="getVersions($event.value)"></ng-select>
+            formControlName="year" id="year" [options]="years" [disableControl]="yearFieldDisabled"></ng-select>
           <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Number plate" class="form-control"
             formControlName="year" id="year" />
         </div>
@@ -100,7 +100,7 @@
           </div>
           <ng-select *ngIf="!customMake && !customVersion" i18n-placeholder
             placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
-            for="version" [options]="versions" (selected)="getInfo($event.value)"></ng-select>
+            for="version" [options]="versions" [disableControl]="versionFieldDisabled"></ng-select>
           <input *ngIf="customMake || customVersion" type="text" i18n-placeholder
             placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
             id="version" />

@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 
 import {catchError} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
@@ -134,7 +134,7 @@ export class ChatComponent implements OnInit {
     // Try to find the conversation within the downloaded ones
     this.conversationsLoading = true;
     this.inboxConversationService.openConversationByItemId$(itemId).pipe(
-    catchError(() => observableOf(null)))
+    catchError(() => of(null)))
     .subscribe((conversation: InboxConversation) => {
       if (conversation) {
         this.inboxConversationService.currentConversation = conversation;

@@ -1,5 +1,5 @@
 
-import {of as observableOf } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CheckoutProComponent, BUMPS } from './checkout-pro.component';
@@ -33,7 +33,7 @@ describe('CheckoutProComponent', () => {
           provide: ItemService, useValue: {
             selectedItems: SELECTED_ITEMS,
             getItemsWithAvailableProducts() {
-              return observableOf(ITEMS_WITH_PRODUCTS);
+              return of(ITEMS_WITH_PRODUCTS);
             }
           }
         },
@@ -53,7 +53,7 @@ describe('CheckoutProComponent', () => {
         },
         {
           provide: ActivatedRoute, useValue: {
-          params: observableOf({})
+          params: of({})
         }
         },
         NgbDatepickerConfig,
@@ -115,7 +115,7 @@ describe('CheckoutProComponent', () => {
     describe('with params', () => {
 
       beforeEach(() => {
-        route.params = observableOf({
+        route.params = of({
           itemId: ITEM_ID
         });
       });
@@ -128,7 +128,7 @@ describe('CheckoutProComponent', () => {
       });
 
       it('should redirect if no products available', () => {
-        spyCall.and.returnValue(observableOf([]));
+        spyCall.and.returnValue(of([]));
         spyOn(router, 'navigate');
 
         component.ngOnInit();
@@ -165,7 +165,7 @@ describe('CheckoutProComponent', () => {
       beforeEach(() => {
         component.calendarType = BUMPS.CITY;
       });
-  
+
       it('should hide the calendar', () => {
         expect(component.calendarHidden).toBe(false);
       });
@@ -185,7 +185,7 @@ describe('CheckoutProComponent', () => {
     it('should set the calendarType to the bump selected', () => {
       expect(component.calendarType).toEqual(BUMPS.CITY);
     });
-    
+
     describe('bump is different than planning', () => {
       it('should set allSelected', () => {
         expect(component.allSelected[BUMPS.CITY]).toBe(false);
@@ -199,7 +199,7 @@ describe('CheckoutProComponent', () => {
 
       it('should set allSelected for countrybump to false', () => {
         expect(component.allSelected.countrybump).toBe(false);
-      });      
+      });
     });
 
     describe('bump is planning', () => {
@@ -212,12 +212,12 @@ describe('CheckoutProComponent', () => {
         component.tomorrowDate = calendar.getNext(component.todayDate);
         expect(component.newSelectedDates).toEqual(new CalendarDates(component.todayDate, component.tomorrowDate));
       });
-  
+
       it('should hide the calendar', () => {
         expect(component.calendarHidden).toBe(false);
       });
     });
-    
+
   });
 
 });

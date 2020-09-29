@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
@@ -210,7 +210,7 @@ describe('Service: Xmpp', () => {
 
     it('should set blockedListAvailable and emit an CHAT_RT_CONNECTED event when getBlockedUsers returns', () => {
       spyOn(eventService, 'emit').and.callThrough();
-      spyOn<any>(service, 'getBlockedUsers').and.returnValue(observableOf(true));
+      spyOn<any>(service, 'getBlockedUsers').and.returnValue(of(true));
 
       eventService.emit('session:started', null);
 
@@ -260,7 +260,7 @@ describe('Service: Xmpp', () => {
       });
       it('should emit USER_BLOCKED event if there are new users in list', () => {
         const expectedValue = service['blockedUsers'].concat('3');
-        spyOn<any>(service, 'getPrivacyList').and.returnValue(observableOf(expectedValue));
+        spyOn<any>(service, 'getPrivacyList').and.returnValue(of(expectedValue));
         spyOn(eventService, 'emit').and.callThrough();
 
         eventService.emit('iq', iq);
@@ -269,7 +269,7 @@ describe('Service: Xmpp', () => {
         expect(eventService.emit).toHaveBeenCalledWith(EventService.PRIVACY_LIST_UPDATED, expectedValue);
       });
       it('should set blockedUsers with the new list', () => {
-        spyOn<any>(service, 'getPrivacyList').and.returnValue(observableOf(['1@wallapop.com']));
+        spyOn<any>(service, 'getPrivacyList').and.returnValue(of(['1@wallapop.com']));
 
         eventService.emit('iq', iq);
 
