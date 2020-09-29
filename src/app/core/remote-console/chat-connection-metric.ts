@@ -7,9 +7,10 @@ export class ChatConnectionMetric {
   public xmppRetryCount: number;
   public connectionChatTimeStart: number;
   public alreadySent: boolean;
+  public sendingToBackend: boolean;
 
   get canBeSent(): boolean {
-    return this.inboxConnectionSuccess && this.xmppConnectionSuccess;
+    return this.inboxConnectionSuccess && this.xmppConnectionSuccess && !this.sendingToBackend && !this.alreadySent;
   }
 
   constructor() {
@@ -19,6 +20,7 @@ export class ChatConnectionMetric {
     this.xmppRetryCount = 0;
     this.connectionChatTimeStart = Date.now();
     this.alreadySent = false;
+    this.sendingToBackend = false;
   }
 
   public getConnectionTime(): number {

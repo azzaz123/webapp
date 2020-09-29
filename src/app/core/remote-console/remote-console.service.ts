@@ -65,6 +65,7 @@ export class RemoteConsoleService implements OnDestroy {
 
     if (this.chatConnectionMetric.canBeSent) {
       this.userService.me().subscribe((user: User) => {
+        this.chatConnectionMetric.sendingToBackend = true;
         this.remoteConsoleClientService.info$({
           ...this.getCommonLog(user.id),
           connection_time: this.chatConnectionMetric.getConnectionTime(),
@@ -72,8 +73,10 @@ export class RemoteConsoleService implements OnDestroy {
           inbox_retry_count: this.chatConnectionMetric.inboxRetryCount,
           metric_type: MetricTypeEnum.CHAT_CONNECTION_TIME,
         })
-        .pipe(finalize(() => this.chatConnectionMetric.alreadySent = true))
-        .subscribe();
+        .pipe(
+          finalize(() => this.chatConnectionMetric.sendingToBackend = false)
+        )
+        .subscribe(() => this.chatConnectionMetric.alreadySent = true);
       });
     }
   }
