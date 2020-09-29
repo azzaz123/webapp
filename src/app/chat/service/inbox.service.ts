@@ -13,6 +13,7 @@ import { uniqBy } from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { RemoteConsoleService } from '../../core/remote-console';
+import { ConnectionType } from 'app/core/remote-console/connection-type';
 
 @Injectable()
 export class InboxService {
@@ -47,12 +48,12 @@ export class InboxService {
     this.getInbox$().pipe(
     catchError(() => {
       this.errorRetrievingInbox = true;
-      this.remoteConsoleService.sendConnectionChatTimeout('inbox', false);
-      this.remoteConsoleService.sendConnectionChatFailed('inbox');
+      this.remoteConsoleService.sendChatConnectionTime(ConnectionType.INBOX, false);
+      this.remoteConsoleService.sendConnectionChatFailed(ConnectionType.INBOX);
       return of([]);
     }))
     .subscribe((conversations: InboxConversation[]) => {
-      this.remoteConsoleService.sendConnectionChatTimeout('inbox', true);
+      this.remoteConsoleService.sendChatConnectionTime(ConnectionType.INBOX, true);
       this.inboxConversationService.conversations = conversations;
       this.inboxReady = true;
       this.eventService.emit(EventService.INBOX_LOADED, conversations, 'LOAD_INBOX');

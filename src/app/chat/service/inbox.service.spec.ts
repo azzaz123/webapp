@@ -87,7 +87,7 @@ describe('InboxService', () => {
 
     beforeEach(() => {
       spyOn(http, 'get').and.returnValue(of(JSON.parse(MOCK_INBOX_API_RESPONSE)));
-      spyOn(remoteConsoleService, 'sendConnectionChatTimeout');
+      spyOn(remoteConsoleService, 'sendChatConnectionTime');
     });
 
     it('should set selfId as the of the logged in used', () => {
@@ -144,7 +144,7 @@ describe('InboxService', () => {
     it('should send metric time to connect to chat', () => {
       inboxService.init();
 
-      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', true);
+      expect(remoteConsoleService.sendChatConnectionTime).toHaveBeenCalledWith('inbox', true);
     });
   });
 
@@ -152,7 +152,7 @@ describe('InboxService', () => {
     beforeEach(() => {
       spyOn<any>(inboxService, 'getInbox$').and.returnValue(throwError(''));
       spyOn<any>(inboxService, 'getArchivedInbox$').and.returnValue(of([]));
-      spyOn(remoteConsoleService, 'sendConnectionChatTimeout');
+      spyOn(remoteConsoleService, 'sendChatConnectionTime');
       spyOn(remoteConsoleService, 'sendConnectionChatFailed');
     });
 
@@ -171,7 +171,7 @@ describe('InboxService', () => {
     it('should call send metric chat timeout', () => {
       inboxService.init();
 
-      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('inbox', false);
+      expect(remoteConsoleService.sendChatConnectionTime).toHaveBeenCalledWith('inbox', false);
     });
 
     it('should send metric connection to inbox is failed', () => {

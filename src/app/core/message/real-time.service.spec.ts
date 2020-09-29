@@ -63,7 +63,7 @@ describe('RealTimeService', () => {
   describe('connect', () => {
     beforeEach(() => {
       spyOn(remoteConsoleService, 'sendConnectionTimeout').and.callThrough();
-      spyOn(remoteConsoleService, 'sendConnectionChatTimeout');
+      spyOn(remoteConsoleService, 'sendChatConnectionTime');
     });
 
     it('should not call xmpp.connect if user is connected', () => {
@@ -76,7 +76,7 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect$).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendConnectionChatTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendChatConnectionTime).not.toHaveBeenCalled();
     });
 
     it('should call xmpp.connect and return success', () => {
@@ -87,7 +87,7 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect$).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
       expect(remoteConsoleService.sendConnectionTimeout).toHaveBeenCalled();
-      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('xmpp', true);
+      expect(remoteConsoleService.sendChatConnectionTime).toHaveBeenCalledWith('xmpp', true);
     });
 
     it('should not call xmpp.connect and return failed', () => {
@@ -98,7 +98,7 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect$).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendConnectionChatTimeout).toHaveBeenCalledWith('xmpp', false);
+      expect(remoteConsoleService.sendChatConnectionTime).toHaveBeenCalledWith('xmpp', false);
     });
 
     it('should NOT call xmpp.connect if user do not have internet connection', () => {
@@ -110,7 +110,7 @@ describe('RealTimeService', () => {
 
       expect(xmppService.connect$).not.toHaveBeenCalled();
       expect(remoteConsoleService.sendConnectionTimeout).not.toHaveBeenCalled();
-      expect(remoteConsoleService.sendConnectionChatTimeout).not.toHaveBeenCalled();
+      expect(remoteConsoleService.sendChatConnectionTime).not.toHaveBeenCalled();
     });
 
     it('should NOT call xmpp.connect if is already connected', () => {

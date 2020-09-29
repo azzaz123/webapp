@@ -12,6 +12,7 @@ import { MockedUserService, USER_ID } from '../../../tests/user.fixtures.spec';
 import { RemoteConsoleClientService } from './remote-console-client.service';
 import { RemoteConsoleClientServiceMock } from '../../../tests/remote-console-service-client.fixtures.spec';
 import { of } from 'rxjs';
+import { ConnectionType } from './connection-type';
 
 describe('RemoteConsoleService', () => {
 
@@ -125,7 +126,7 @@ describe('RemoteConsoleService', () => {
     });
   });
 
-  describe('sendConnectionChatTimeout', () => {
+  describe('sendChatConnectionTime', () => {
     const SESSION_ID = 'session-id';
 
     const commonConnectionChatTimeoutLog = {
@@ -144,8 +145,8 @@ describe('RemoteConsoleService', () => {
     it('should connect to chat', () => {
       spyOn(Date, 'now').and.returnValues(3000, 4000, 4500);
 
-      service.sendConnectionChatTimeout('inbox', true);
-      service.sendConnectionChatTimeout('xmpp', true);
+      service.sendChatConnectionTime(ConnectionType.INBOX, true);
+      service.sendChatConnectionTime(ConnectionType.XMPP, true);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
@@ -157,24 +158,24 @@ describe('RemoteConsoleService', () => {
     });
 
     it('should not connect to chat', () => {
-      service.sendConnectionChatTimeout('inbox', false);
+      service.sendChatConnectionTime(ConnectionType.INBOX, false);
 
       expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
     });
 
     it('should not connect to chat if has get response from inbox but can not connect to xmpp', () => {
-      service.sendConnectionChatTimeout('inbox', false);
-      service.sendConnectionChatTimeout('inbox', true);
-      service.sendConnectionChatTimeout('xmpp', false);
+      service.sendChatConnectionTime(ConnectionType.INBOX, false);
+      service.sendChatConnectionTime(ConnectionType.INBOX, true);
+      service.sendChatConnectionTime(ConnectionType.XMPP, false);
       expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
     });
 
     it('should connect to chat if was 1 error when get inbox', () => {
       spyOn(Date, 'now').and.returnValues(3000, 4000, 4700);
 
-      service.sendConnectionChatTimeout('inbox', false);
-      service.sendConnectionChatTimeout('inbox', true);
-      service.sendConnectionChatTimeout('xmpp', true);
+      service.sendChatConnectionTime(ConnectionType.INBOX, false);
+      service.sendChatConnectionTime(ConnectionType.INBOX, true);
+      service.sendChatConnectionTime(ConnectionType.XMPP, true);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
@@ -188,10 +189,10 @@ describe('RemoteConsoleService', () => {
     it('should connect to chat if were 2 error when get inbox', () => {
       spyOn(Date, 'now').and.returnValues(3000, 4000, 4800);
 
-      service.sendConnectionChatTimeout('inbox', false);
-      service.sendConnectionChatTimeout('inbox', false);
-      service.sendConnectionChatTimeout('inbox', true);
-      service.sendConnectionChatTimeout('xmpp', true);
+      service.sendChatConnectionTime(ConnectionType.INBOX, false);
+      service.sendChatConnectionTime(ConnectionType.INBOX, false);
+      service.sendChatConnectionTime(ConnectionType.INBOX, true);
+      service.sendChatConnectionTime(ConnectionType.XMPP, true);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
@@ -205,11 +206,11 @@ describe('RemoteConsoleService', () => {
     it('should connect to chat if was 2 error when get inbox and 1 error when connect to xmpp', () => {
       spyOn(Date, 'now').and.returnValues(3000, 4000, 4900);
 
-      service.sendConnectionChatTimeout('inbox', false);
-      service.sendConnectionChatTimeout('inbox', false);
-      service.sendConnectionChatTimeout('inbox', true);
-      service.sendConnectionChatTimeout('xmpp', false);
-      service.sendConnectionChatTimeout('xmpp', true);
+      service.sendChatConnectionTime(ConnectionType.INBOX, false);
+      service.sendChatConnectionTime(ConnectionType.INBOX, false);
+      service.sendChatConnectionTime(ConnectionType.INBOX, true);
+      service.sendChatConnectionTime(ConnectionType.XMPP, false);
+      service.sendChatConnectionTime(ConnectionType.XMPP, true);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
@@ -223,10 +224,10 @@ describe('RemoteConsoleService', () => {
     it('should connect to chat 2 times', () => {
       spyOn(Date, 'now').and.returnValues(3000, 4000, 5100, 6000, 4000, 6200);
 
-      service.sendConnectionChatTimeout('inbox', false);
-      service.sendConnectionChatTimeout('inbox', true);
-      service.sendConnectionChatTimeout('xmpp', false);
-      service.sendConnectionChatTimeout('xmpp', true);
+      service.sendChatConnectionTime(ConnectionType.INBOX, false);
+      service.sendChatConnectionTime(ConnectionType.INBOX, true);
+      service.sendChatConnectionTime(ConnectionType.XMPP, false);
+      service.sendChatConnectionTime(ConnectionType.XMPP, true);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
@@ -236,9 +237,9 @@ describe('RemoteConsoleService', () => {
         'xmpp_retry_count': 2,
       });
 
-      service.sendConnectionChatTimeout('inbox', true);
-      service.sendConnectionChatTimeout('xmpp', false);
-      service.sendConnectionChatTimeout('xmpp', true);
+      service.sendChatConnectionTime(ConnectionType.INBOX, true);
+      service.sendChatConnectionTime(ConnectionType.XMPP, false);
+      service.sendChatConnectionTime(ConnectionType.XMPP, true);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
@@ -298,7 +299,7 @@ describe('RemoteConsoleService', () => {
       spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000);
 
-      service.sendConnectionChatFailed('inbox');
+      service.sendConnectionChatFailed(ConnectionType.INBOX);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
@@ -312,7 +313,7 @@ describe('RemoteConsoleService', () => {
       spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000);
 
-      service.sendConnectionChatFailed('xmpp');
+      service.sendConnectionChatFailed(ConnectionType.XMPP);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
