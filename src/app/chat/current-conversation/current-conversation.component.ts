@@ -214,6 +214,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   private sendMetricMessageSendFailed(description: string): void {
+    if (!this.currentConversation) {
+      return;
+    }
+
     this.currentConversation.messages
       .filter(message => message.status === MessageStatus.PENDING)
       .forEach(message => this.remoteConsoleService.sendMessageAckFailed(message.id, description));
