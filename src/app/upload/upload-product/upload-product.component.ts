@@ -1,3 +1,4 @@
+import { CategoryResponse } from './../../core/category/category-response.interface';
 import { AnalyticsService } from './../../core/analytics/analytics.service';
 import {
   Component,
@@ -26,11 +27,11 @@ import { Item, ITEM_TYPES } from '../../core/item/item';
 import { DeliveryInfo, ItemContent } from '../../core/item/item-response.interface';
 import { GeneralSuggestionsService } from './general-suggestions.service';
 import { KeywordSuggestion } from '../../shared/keyword-suggester/keyword-suggestion.interface';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { Brand, BrandModel, Model } from '../brand-model.interface';
 import { UserService } from '../../core/user/user.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import {
   ANALYTIC_EVENT_TYPES,
   ANALYTICS_EVENT_NAMES,
@@ -107,14 +108,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }];
   public categories: CategoryOption[] = [];
   public loading: boolean;
-  public fixedCategory: string;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @ViewChild('title', { static: true }) titleField: ElementRef;
   private focused: boolean;
   private oldFormValue: any;
   private oldDeliveryValue: any;
   public isUrgent = false;
-  private allCategories: CategoryOption[];
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
 
@@ -166,44 +165,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngOnInit() {
-    this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
-      this.allCategories = categories;
-      this.categories = categories.filter((category: CategoryOption) => {
-        return !this.categoryService.isHeroCategory(+category.value);
-      });
-      this.detectCategoryChanges();
-      if (!this.item) {
-        if (this.categoryId && this.categoryId !== '-1') {
-          this.uploadForm.get('category_id').patchValue(this.categoryId);
-          const fixedCategory = find(categories, { value: this.categoryId });
-          this.fixedCategory = fixedCategory ? fixedCategory.label : null;
-          this.uploadForm.get('delivery_info').patchValue(null);
-        } else {
-          this.fixedCategory = null;
-        }
-      } else {
-        const selectedCategory = find(categories, { value: this.item.categoryId.toString() });
+    this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
+      this.categories = categories;
 
-        if (this.categoryService.isHeroCategory(this.item.categoryId)) {
-          this.fixedCategory = selectedCategory ? selectedCategory.label : null;
-        }
-        this.uploadForm.patchValue({
-          id: this.item.id,
-          title: this.item.title,
-          sale_price: this.item.salePrice,
-          currency_code: this.item.currencyCode,
-          description: this.item.description,
-          sale_conditions: this.item.saleConditions ? this.item.saleConditions : {},
-          category_id: this.item.categoryId.toString(),
-          delivery_info: this.getDeliveryInfo(),
-          extra_info: this.item.extraInfo || {}
-        });
-        this.oldDeliveryValue = this.getDeliveryInfo();
-        if (+this.item.categoryId === this.fashionCategoryId) {
-          this.getSizes();
-        }
-        this.getObjectTypes();
-        this.getConditions();
+      this.detectCategoryChanges();
+      if (this.item) {
+        this.initializeEditForm();
       }
       this.detectFormChanges();
     });
@@ -211,8 +178,31 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.categoryId) {
-      this.setFixedCategory(changes.categoryId.currentValue);
+      if (changes.categoryId.currentValue === '-1') {
+        return this.uploadForm.patchValue({ category_id: ''});
+      }
+      return this.uploadForm.patchValue({ category_id: changes.categoryId.currentValue });
     }
+  }
+
+  private initializeEditForm() {
+    this.uploadForm.patchValue({
+      id: this.item.id,
+      title: this.item.title,
+      sale_price: this.item.salePrice,
+      currency_code: this.item.currencyCode,
+      description: this.item.description,
+      sale_conditions: this.item.saleConditions ? this.item.saleConditions : {},
+      category_id: this.item.categoryId.toString(),
+      delivery_info: this.getDeliveryInfo(),
+      extra_info: this.item.extraInfo || {}
+    });
+    this.oldDeliveryValue = this.getDeliveryInfo();
+    if (+this.item.categoryId === this.fashionCategoryId) {
+      this.getSizes();
+    }
+    this.getObjectTypes();
+    this.getConditions();
   }
 
   private detectFormChanges() {
@@ -356,16 +346,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.isUrgent = isUrgent;
   }
 
-  private setFixedCategory(categoryId: string) {
-    if (categoryId === '-1') {
-      this.fixedCategory = null;
-    } else {
-      const fixedCategory = find(this.allCategories, { value: categoryId });
-      this.fixedCategory = fixedCategory ? fixedCategory.label : null;
-      this.uploadForm.get('category_id').patchValue(categoryId);
-    }
-  }
-
   public emitLocation(): void {
     this.locationSelected.emit(this.categoryId);
   }
@@ -469,6 +449,36 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public updateUploadPercentage(percentage: number) {
     this.uploadCompletedPercentage = Math.round(percentage);
+  }
+
+  private getUploadCategories(): Observable<CategoryOption[]> {
+    return this.categoryService.getCategories().pipe(
+      map(categories => this.getConsumerGoodCategories(categories)),
+      map(categories => this.getNgSelectOptions(categories)));
+  }
+
+  private getConsumerGoodCategories(categories: CategoryResponse[]): CategoryResponse[] {
+    const userCategories = categories.filter((category) =>
+      category.vertical_id === 'consumer_goods'
+    );
+
+    return userCategories;
+  }
+
+  private getNgSelectOptions(categories: CategoryResponse[]): CategoryOption[] {
+    return categories.map(category => {
+      return {
+        value: category.category_id.toString(),
+        label: category.name,
+        icon_id: category.icon_id,
+      }
+    });
+  }
+
+  public isHeroCategory(category_id: number): boolean {
+    const HERO_CATEGORIES = [CATEGORY_IDS.CAR, CATEGORY_IDS.SERVICES, CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.JOBS];
+
+    return HERO_CATEGORIES.includes(+category_id);
   }
 
   private getConditions(): void {
