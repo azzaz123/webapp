@@ -152,15 +152,15 @@ describe('UploadProductComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadProductComponent);
     component = fixture.componentInstance;
-    errorService = TestBed.get(ErrorsService);
-    generalSuggestionsService = TestBed.get(GeneralSuggestionsService);
-    router = TestBed.get(Router);
-    modalService = TestBed.get(NgbModal);
-    trackingService = TestBed.get(TrackingService);
-    analyticsService = TestBed.get(AnalyticsService);
-    deviceService = TestBed.get(DeviceDetectorService);
-    userService = TestBed.get(UserService);
-    categoryService = TestBed.get(CategoryService);
+    errorService = TestBed.inject(ErrorsService);
+    generalSuggestionsService = TestBed.inject(GeneralSuggestionsService);
+    router = TestBed.inject(Router);
+    modalService = TestBed.inject(NgbModal);
+    trackingService = TestBed.inject(TrackingService);
+    analyticsService = TestBed.inject(AnalyticsService);
+    deviceService = TestBed.inject(DeviceDetectorService);
+    userService = TestBed.inject(UserService);
+    categoryService = TestBed.inject(CategoryService);
     appboy.initialize(environment.appboy);
     fixture.detectChanges();
   });
@@ -883,7 +883,7 @@ describe('UploadProductComponent', () => {
     });
   });
 
-  describe('get upload categories', () => {
+  describe('when getting the upload categories from the server', () => {
     it('should get value, label and icon from consumer goods categories', () => {
       spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
       const expected: CategoryOption[] = [
@@ -915,8 +915,8 @@ describe('UploadProductComponent', () => {
     });
   });
 
-  describe('changes in categoryId input', () => {
-    it('should reset categoryId form field when categoryId input is -1', () => {
+  describe('when the category changes', () => {
+    it('should reset category identifier field when the new category is "everything else" category', () => {
       component.categoryId = '-1';
 
       component.ngOnChanges({
@@ -924,10 +924,10 @@ describe('UploadProductComponent', () => {
       });
       fixture.detectChanges();
 
-       expect(component.uploadForm.value.category_id).toEqual('');
+      expect(component.uploadForm.value.category_id).toEqual('');
     });
 
-    it('should set categoryId form field when categoryId change', () => {
+    it('should set the category field as the new one when the category is not "everything else" category', () => {
       component.categoryId = `${CATEGORY_IDS.GAMES_CONSOLES}`;
 
       component.ngOnChanges({
@@ -939,12 +939,14 @@ describe('UploadProductComponent', () => {
     });
   });
 
-  describe('isHeroCategory', () => {
-    it('should return true if categoryId is a hero category', () => {
+  describe('when the category is a hero category', () => {
+    it('should say that the category is a hero category', () => {
       expect(component.isHeroCategory(CATEGORY_IDS.CAR)).toBeTruthy();
     });
+  });
 
-     it('should return false if categoryId is not a hero category', () => {
+  describe('when the category is not a hero category', () => {
+    it('should say that the category is not a hero category', () => {
       expect(component.isHeroCategory(CATEGORY_IDS.GAMES_CONSOLES)).toBeFalsy();
     });
   });
