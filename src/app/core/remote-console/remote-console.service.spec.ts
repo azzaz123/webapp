@@ -10,7 +10,6 @@ import { APP_VERSION } from '../../../environments/version';
 import { UserService } from '../user/user.service';
 import { MockedUserService, USER_ID } from '../../../tests/user.fixtures.spec';
 import { RemoteConsoleClientService } from './remote-console-client.service';
-import { RemoteConsoleClientServiceMock } from '../../../tests/remote-console-service-client.fixtures.spec';
 import { of } from 'rxjs';
 import { ConnectionType } from './connection-type';
 import { UUID } from 'angular2-uuid';
@@ -36,7 +35,7 @@ describe('RemoteConsoleService', () => {
       ],
       providers: [
         RemoteConsoleService,
-        { provide: RemoteConsoleClientService, useClass: RemoteConsoleClientServiceMock },
+        RemoteConsoleClientService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
         { provide: UserService, useClass: MockedUserService },
@@ -45,14 +44,20 @@ describe('RemoteConsoleService', () => {
         }}
       ]
     });
+
+  });
+
+  beforeEach(() => {
     httpTestingController = TestBed.inject(HttpTestingController);
     service = TestBed.inject(RemoteConsoleService);
     remoteConsoleClientService = TestBed.inject(RemoteConsoleClientService);
     userService = TestBed.inject(UserService);
     cookieService = TestBed.inject(CookieService);
-  });
 
-  beforeEach(() => {
+    spyOn(remoteConsoleClientService, 'info');
+    spyOn(remoteConsoleClientService, 'info$').and.returnValue(of({}));
+    spyOn(userService, 'me').and.returnValue(of({ id: USER_ID }));
+
     commonLog = {
       'timestamp': 4000,
       'client': 'WEB',
@@ -80,7 +85,6 @@ describe('RemoteConsoleService', () => {
     it('should call xmpp conection with parameters', () => {
       const LOCAL_USER_ID = 'USER_ID';
       const CONNECTION_TIME = 1000;
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000);
 
       service.sendConnectionTimeout(LOCAL_USER_ID, CONNECTION_TIME);
@@ -107,7 +111,6 @@ describe('RemoteConsoleService', () => {
     it('should call xmpp conection with parameters and increase number of call if service call method multiple times', () => {
       const LOCAL_USER_ID = 'USER_ID';
       const CONNECTION_TIME = 1000;
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000, 4000, 4000);
 
       service.sendConnectionTimeout(LOCAL_USER_ID, CONNECTION_TIME);
@@ -134,8 +137,7 @@ describe('RemoteConsoleService', () => {
     });
   });
 
-  describe('sendChatConnectionTime', () => {
-
+  describe('sendChatConnectionTime - [CHAT_CONNECTION_TIME]', () => {
     const commonConnectionChatTimeoutLog = {
       'metric_type': MetricTypeEnum.CHAT_CONNECTION_TIME,
       'session_id': SESSION_ID,
@@ -143,116 +145,79 @@ describe('RemoteConsoleService', () => {
       'ping_time_ms': navigator['connection']['rtt'],
     };
 
-    beforeEach(() => {
-      spyOn(userService, 'me').and.returnValue(of({ id: USER_ID }));
-      spyOn(remoteConsoleClientService, 'info');
-    });
+    describe('when the webapp has connected properly to the chat', () => {
+      beforeEach(() => {
+        spyOn(Date, 'now').and.returnValues(3000, 4000, 4500);
 
-    it('should connect to chat', () => {
-      spyOn(Date, 'now').and.returnValues(3000, 4000, 4500);
+        service.sendChatConnectionTime(ConnectionType.XMPP, true);
+        service.sendChatConnectionTime(ConnectionType.INBOX, true);
+      });
 
-      service.sendChatConnectionTime(ConnectionType.INBOX, true);
-      service.sendChatConnectionTime(ConnectionType.XMPP, true);
+      it('should track the metric', () => {
+        expect(remoteConsoleClientService.info$).toHaveBeenCalledWith({
+          ...commonLog,
+          ...commonConnectionChatTimeoutLog,
+          'connection_time': 1500,
+          'xmpp_retry_count': 1,
+          'inbox_retry_count': 1,
+        });
+      });
 
-      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        ...commonLog,
-        ...commonConnectionChatTimeoutLog,
-        'connection_time': 1500,
-        'xmpp_retry_count': 1,
-        'inbox_retry_count': 1,
+      describe('and when the webapp connects again to the chat', () => {
+        beforeEach(() => {
+          service.sendChatConnectionTime(ConnectionType.XMPP, true);
+          service.sendChatConnectionTime(ConnectionType.INBOX, true);
+        });
+
+        it('should not track more times the metric', () => {
+          expect(remoteConsoleClientService.info$).toHaveBeenCalledTimes(1);
+        });
       });
     });
 
-    it('should not connect to chat', () => {
-      service.sendChatConnectionTime(ConnectionType.INBOX, false);
+    describe('when the webapp could not connect to the real time chat', () => {
+      beforeEach(() => service.sendChatConnectionTime(ConnectionType.XMPP, false));
 
-      expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
-    });
-
-    it('should not connect to chat if has get response from inbox but can not connect to xmpp', () => {
-      service.sendChatConnectionTime(ConnectionType.INBOX, false);
-      service.sendChatConnectionTime(ConnectionType.INBOX, true);
-      service.sendChatConnectionTime(ConnectionType.XMPP, false);
-      expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
-    });
-
-    it('should connect to chat if was 1 error when get inbox', () => {
-      spyOn(Date, 'now').and.returnValues(3000, 4000, 4700);
-
-      service.sendChatConnectionTime(ConnectionType.INBOX, false);
-      service.sendChatConnectionTime(ConnectionType.INBOX, true);
-      service.sendChatConnectionTime(ConnectionType.XMPP, true);
-
-      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        ...commonLog,
-        ...commonConnectionChatTimeoutLog,
-        'connection_time': 1700,
-        'inbox_retry_count': 2,
-        'xmpp_retry_count': 1,
+      it('should not track the metric', () => {
+        expect(remoteConsoleClientService.info$).not.toHaveBeenCalled();
       });
     });
 
-    it('should connect to chat if were 2 error when get inbox', () => {
-      spyOn(Date, 'now').and.returnValues(3000, 4000, 4800);
+    describe('when the webapp can not get the inbox', () => {
+      beforeEach(() => {
+        service.sendChatConnectionTime(ConnectionType.XMPP, true);
+        service.sendChatConnectionTime(ConnectionType.INBOX, false);
+      });
 
-      service.sendChatConnectionTime(ConnectionType.INBOX, false);
-      service.sendChatConnectionTime(ConnectionType.INBOX, false);
-      service.sendChatConnectionTime(ConnectionType.INBOX, true);
-      service.sendChatConnectionTime(ConnectionType.XMPP, true);
-
-      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        ...commonLog,
-        ...commonConnectionChatTimeoutLog,
-        'connection_time': 1800,
-        'inbox_retry_count': 3,
-        'xmpp_retry_count': 1,
+      it('should not track the metric', () => {
+        expect(remoteConsoleClientService.info$).not.toHaveBeenCalled();
       });
     });
 
-    it('should connect to chat if was 2 error when get inbox and 1 error when connect to xmpp', () => {
-      spyOn(Date, 'now').and.returnValues(3000, 4000, 4900);
-
-      service.sendChatConnectionTime(ConnectionType.INBOX, false);
-      service.sendChatConnectionTime(ConnectionType.INBOX, false);
-      service.sendChatConnectionTime(ConnectionType.INBOX, true);
-      service.sendChatConnectionTime(ConnectionType.XMPP, false);
-      service.sendChatConnectionTime(ConnectionType.XMPP, true);
-
-      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        ...commonLog,
-        ...commonConnectionChatTimeoutLog,
-        'connection_time': 1900,
-        'inbox_retry_count': 3,
-        'xmpp_retry_count': 2,
-      });
-    });
-
-    it('should connect to chat 2 times', () => {
-      spyOn(Date, 'now').and.returnValues(3000, 4000, 5100, 6000, 4000, 6200);
-
-      service.sendChatConnectionTime(ConnectionType.INBOX, false);
-      service.sendChatConnectionTime(ConnectionType.INBOX, true);
-      service.sendChatConnectionTime(ConnectionType.XMPP, false);
-      service.sendChatConnectionTime(ConnectionType.XMPP, true);
-
-      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        ...commonLog,
-        ...commonConnectionChatTimeoutLog,
-        'connection_time': 2100,
-        'inbox_retry_count': 2,
-        'xmpp_retry_count': 2,
+    describe('when the server fails two times and then works connecting to the real time chat', () => {
+      beforeEach(() => {
+        spyOn(Date, 'now').and.returnValues(3000, 4000, 4800);
+        service.sendChatConnectionTime(ConnectionType.XMPP, false);
+        service.sendChatConnectionTime(ConnectionType.XMPP, false);
+        service.sendChatConnectionTime(ConnectionType.XMPP, true);
       });
 
-      service.sendChatConnectionTime(ConnectionType.INBOX, true);
-      service.sendChatConnectionTime(ConnectionType.XMPP, false);
-      service.sendChatConnectionTime(ConnectionType.XMPP, true);
+      describe('and when the server fails two times and then works getting the inbox', () => {
+        beforeEach(() => {
+          service.sendChatConnectionTime(ConnectionType.INBOX, false);
+          service.sendChatConnectionTime(ConnectionType.INBOX, false);
+          service.sendChatConnectionTime(ConnectionType.INBOX, true);
+        });
 
-      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        ...commonLog,
-        ...commonConnectionChatTimeoutLog,
-        'connection_time': 200,
-        'inbox_retry_count': 1,
-        'xmpp_retry_count': 2,
+        it('should track the metric with 4 retries each', () => {
+          expect(remoteConsoleClientService.info$).toHaveBeenCalledWith({
+            ...commonLog,
+            ...commonConnectionChatTimeoutLog,
+            'connection_time': 1800,
+            'inbox_retry_count': 3,
+            'xmpp_retry_count': 3,
+          });
+        });
       });
     });
   });
@@ -262,7 +227,6 @@ describe('RemoteConsoleService', () => {
     it('should send metric if send message is failed', () => {
       const MESSAGE_ID = 'MESSAGE_ID';
       const DESCRIPTION = 'MESSAGE_ID';
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000);
 
       service.sendMessageAckFailed(MESSAGE_ID, DESCRIPTION);
@@ -279,12 +243,10 @@ describe('RemoteConsoleService', () => {
   describe('sendDuplicateConversations', () => {
 
     it('should call duplicated conversation conection with parameters', () => {
-      const LOCAL_USER_ID = 'USER_ID';
       const CONVERSATIONS_BY_ID = new Map();
       const LOAD_MORE_CONVERSATIONS = 'LOAD_INBOX';
       CONVERSATIONS_BY_ID['xa4ld642'] = 2;
 
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000);
 
       service.sendDuplicateConversations(USER_ID, LOAD_MORE_CONVERSATIONS, CONVERSATIONS_BY_ID);
@@ -302,7 +264,6 @@ describe('RemoteConsoleService', () => {
   describe('sendConnectionChatFailed', () => {
 
     it('should call connection failed if inbox return error', () => {
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000);
 
       service.sendConnectionChatFailed(ConnectionType.INBOX);
@@ -316,7 +277,6 @@ describe('RemoteConsoleService', () => {
     });
 
     it('should call connection failed if inbox return error', () => {
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000);
 
       service.sendConnectionChatFailed(ConnectionType.XMPP);
@@ -332,23 +292,18 @@ describe('RemoteConsoleService', () => {
 
   describe('sendMessageTimeout', () => {
     it('should NOT send call', () => {
-      spyOn(remoteConsoleClientService, 'info');
-
       service.sendMessageTimeout(null);
 
       expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
     });
 
     it('should NOT send call if not init timestamp', () => {
-      spyOn(remoteConsoleClientService, 'info');
-
       service.sendMessageTimeout('MESSAGE_ID');
 
       expect(remoteConsoleClientService.info).not.toHaveBeenCalledWith();
     });
 
     it('should send call with sending time', fakeAsync(() => {
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 4000, 2000);
 
       service.sendMessageTimeout('MESSAGE_ID');
@@ -364,7 +319,6 @@ describe('RemoteConsoleService', () => {
     }));
 
     it('should send twice time call with sending time', fakeAsync(() => {
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000, 4000, 4000);
 
       service.sendMessageTimeout('MESSAGE_ID_1');
@@ -392,23 +346,18 @@ describe('RemoteConsoleService', () => {
 
   describe('sendMessageActTimeout', () => {
     it('should NOT send call', () => {
-      spyOn(remoteConsoleClientService, 'info');
-
       service.sendMessageActTimeout(null);
 
       expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
     });
 
     it('should NOT send call if not init timestamp', () => {
-      spyOn(remoteConsoleClientService, 'info');
-
       service.sendMessageActTimeout('MESSAGE_ID');
 
       expect(remoteConsoleClientService.info).not.toHaveBeenCalledWith();
     });
 
     it('should send call with act sending time', fakeAsync(() => {
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 4000, 2000);
 
       service.sendMessageActTimeout('MESSAGE_ID');
@@ -424,7 +373,6 @@ describe('RemoteConsoleService', () => {
     }));
 
     it('should send twice time call with act sending time', fakeAsync(() => {
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000, 4000, 4000);
 
       service.sendMessageActTimeout('MESSAGE_ID_1');
@@ -452,23 +400,18 @@ describe('RemoteConsoleService', () => {
 
   describe('sendPresentationMessageTimeout', () => {
     it('should NOT send call', () => {
-      spyOn(remoteConsoleClientService, 'info');
-
       service.sendPresentationMessageTimeout(null);
 
       expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
     });
 
     it('should NOT send call if not init calculate time', () => {
-      spyOn(remoteConsoleClientService, 'info');
-
       service.sendPresentationMessageTimeout('MESSAGE_ID');
 
       expect(remoteConsoleClientService.info).not.toHaveBeenCalledWith();
     });
 
     it('should send call with presentation message time', fakeAsync(() => {
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 4000, 2000);
 
       service.sendPresentationMessageTimeout('MESSAGE_ID');
@@ -485,7 +428,6 @@ describe('RemoteConsoleService', () => {
     }));
 
     it('should send twice time call with presentation message time', fakeAsync(() => {
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(1000, 2000, 4000, 4000, 4000, 4000);
 
       service.sendPresentationMessageTimeout('MESSAGE_ID_1');
@@ -516,8 +458,6 @@ describe('RemoteConsoleService', () => {
   describe('sendXmppConnectionClosedWithError', () => {
 
     it('should send call with presentation message time', fakeAsync(() => {
-      spyOn(userService, 'me').and.returnValue(of({ id: USER_ID }));
-      spyOn(remoteConsoleClientService, 'info');
       spyOn(Date, 'now').and.returnValues(4000, 1000);
 
       service.sendXmppConnectionClosedWithError();
@@ -532,7 +472,6 @@ describe('RemoteConsoleService', () => {
   });
 
   describe('getReleaseVersion', () => {
-
     it('should return release version', fakeAsync(() => {
       expect(service.getReleaseVersion('1')).toEqual(1);
       expect(service.getReleaseVersion('1.9')).toEqual(1009);
