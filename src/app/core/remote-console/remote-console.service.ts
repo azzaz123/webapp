@@ -39,7 +39,6 @@ export class RemoteConsoleService implements OnDestroy {
   ngOnDestroy(): void {
     this.sendMessageTime = new Map();
     this.presentationMessageTimeout = new Map();
-    this.removeChatConnectionMetric();
   }
 
   public sendConnectionTimeout(userId: string, connectionTime: number): void {
@@ -54,30 +53,28 @@ export class RemoteConsoleService implements OnDestroy {
   }
 
   public sendChatConnectionTime(connectionType: ConnectionType, success: boolean): void {
+    if (this.chatConnectionMetric?.alreadySent) {
+      return;
+    }
+
     if (!this.chatConnectionMetric) {
       this.chatConnectionMetric = new ChatConnectionMetric();
     }
 
-    if (connectionType === ConnectionType.INBOX) {
-      this.chatConnectionMetric.inboxConnectionSuccess = success;
-      this.chatConnectionMetric.inboxRetryCount += 1;
-    }
+    this.chatConnectionMetric.update(connectionType, success);
 
-    if (connectionType === ConnectionType.XMPP) {
-      this.chatConnectionMetric.xmppConnectionSuccess = success;
-      this.chatConnectionMetric.xmppRetryCount += 1;
-    }
-
-    if (this.chatConnectionMetric.isConnected) {
-      this.userService.me()
-        .pipe(finalize(() => this.removeChatConnectionMetric()))
-        .subscribe((user: User) => this.remoteConsoleClientService.info({
+    if (this.chatConnectionMetric.canBeSent) {
+      this.userService.me().subscribe((user: User) => {
+        this.remoteConsoleClientService.info$({
           ...this.getCommonLog(user.id),
           connection_time: this.chatConnectionMetric.getConnectionTime(),
           xmpp_retry_count: this.chatConnectionMetric.xmppRetryCount,
           inbox_retry_count: this.chatConnectionMetric.inboxRetryCount,
           metric_type: MetricTypeEnum.CHAT_CONNECTION_TIME,
-        }));
+        })
+        .pipe(finalize(() => this.chatConnectionMetric.alreadySent = true))
+        .subscribe();
+      });
     }
   }
 
@@ -181,10 +178,5 @@ export class RemoteConsoleService implements OnDestroy {
       connection_type: navigator['connection'] ? toUpper(navigator['connection']['type']) : '',
       ping_time_ms: navigator['connection'] ? navigator['connection']['rtt'] : -1
     };
-  }
-
-  private removeChatConnectionMetric() {
-    this.chatConnectionMetric = null;
-    delete this.chatConnectionMetric;
   }
 }
