@@ -1,6 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import * as Fingerprint2 from 'fingerprintjs2';
 import { toUpper } from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 
@@ -12,6 +11,8 @@ import { User } from '../user/user';
 import { ChatConnectionMetric } from './chat-connection-metric';
 import { finalize } from 'rxjs/operators';
 import { ConnectionType } from './connection-type';
+import { CookieService } from 'ngx-cookie';
+import { DEVICE_ID_COOKIE_NAME } from '../analytics/analytics.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,17 +30,16 @@ export class RemoteConsoleService implements OnDestroy {
   constructor(
     private remoteConsoleClientService: RemoteConsoleClientService,
     private deviceService: DeviceDetectorService,
-    private userService: UserService) {
-    this.deviceId = Fingerprint2.get({}, components => {
-      const values = components.map(component => component.value);
-      this.deviceId = Fingerprint2.x64hash128(values.join(''), 31);
+    private userService: UserService,
+    cookiesService: CookieService) {
+      this.deviceId = cookiesService.get(DEVICE_ID_COOKIE_NAME).replace('-', '');
       this.sessionId = UUID.UUID();
-    });
   }
 
   ngOnDestroy(): void {
     this.sendMessageTime = new Map();
     this.presentationMessageTimeout = new Map();
+    this.removeChatConnectionMetric();
   }
 
   public sendConnectionTimeout(userId: string, connectionTime: number): void {

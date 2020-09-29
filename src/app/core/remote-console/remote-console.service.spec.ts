@@ -13,18 +13,23 @@ import { RemoteConsoleClientService } from './remote-console-client.service';
 import { RemoteConsoleClientServiceMock } from '../../../tests/remote-console-service-client.fixtures.spec';
 import { of } from 'rxjs';
 import { ConnectionType } from './connection-type';
+import { UUID } from 'angular2-uuid';
+import { CookieService } from 'ngx-cookie';
 
 describe('RemoteConsoleService', () => {
-
   const DEVICE_ID = 'DEVICE_ID';
+  const SESSION_ID = 'SESSION_ID';
 
   let httpTestingController: HttpTestingController;
   let service: RemoteConsoleService;
   let remoteConsoleClientService: RemoteConsoleClientService;
   let userService: UserService;
+  let cookieService: CookieService;
   let commonLog = {};
 
   beforeEach(() => {
+    spyOn(UUID, 'UUID').and.returnValue(SESSION_ID);
+
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -34,16 +39,17 @@ describe('RemoteConsoleService', () => {
         { provide: RemoteConsoleClientService, useClass: RemoteConsoleClientServiceMock },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
-        { provide: UserService, useClass: MockedUserService }
+        { provide: UserService, useClass: MockedUserService },
+        { provide: CookieService, useValue: {
+          get: _name => DEVICE_ID
+        }}
       ]
     });
-
     httpTestingController = TestBed.inject(HttpTestingController);
     service = TestBed.inject(RemoteConsoleService);
     remoteConsoleClientService = TestBed.inject(RemoteConsoleClientService);
     userService = TestBed.inject(UserService);
-
-    service.deviceId = DEVICE_ID;
+    cookieService = TestBed.inject(CookieService);
   });
 
   beforeEach(() => {
@@ -58,7 +64,7 @@ describe('RemoteConsoleService', () => {
       'app_version': service.getReleaseVersion(APP_VERSION),
       'ping_time_ms': navigator['connection']['rtt'],
       'connection_type': '',
-      'session_id': undefined,
+      'session_id': SESSION_ID,
     };
   });
 
@@ -93,7 +99,8 @@ describe('RemoteConsoleService', () => {
         'connection_time': CONNECTION_TIME,
         'call_no': 1,
         'connection_type': '',
-        'ping_time_ms': navigator['connection']['rtt']
+        'ping_time_ms': navigator['connection']['rtt'],
+        'session_id': SESSION_ID
       });
     });
 
@@ -121,13 +128,13 @@ describe('RemoteConsoleService', () => {
         'connection_time': CONNECTION_TIME,
         'call_no': 3,
         'connection_type': '',
-        'ping_time_ms': navigator['connection']['rtt']
+        'ping_time_ms': navigator['connection']['rtt'],
+        'session_id': SESSION_ID
       });
     });
   });
 
   describe('sendChatConnectionTime', () => {
-    const SESSION_ID = 'session-id';
 
     const commonConnectionChatTimeoutLog = {
       'metric_type': MetricTypeEnum.CHAT_CONNECTION_TIME,
@@ -139,7 +146,6 @@ describe('RemoteConsoleService', () => {
     beforeEach(() => {
       spyOn(userService, 'me').and.returnValue(of({ id: USER_ID }));
       spyOn(remoteConsoleClientService, 'info');
-      service.sessionId = SESSION_ID;
     });
 
     it('should connect to chat', () => {
