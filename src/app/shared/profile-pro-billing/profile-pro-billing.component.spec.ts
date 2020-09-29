@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of, throwError } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { ProfileProBillingComponent } from './profile-pro-billing.component';
@@ -125,7 +125,7 @@ describe('ProfileProBillingComponent', () => {
 
       it('should show error if call fails', () => {
         spyOn(errorsService, 'show');
-        spyOn(paymentService, 'updateBillingInfo').and.returnValue(observableThrowError('error'));
+        spyOn(paymentService, 'updateBillingInfo').and.returnValue(throwError('error'));
 
         component.onSubmit();
 
@@ -165,7 +165,7 @@ describe('ProfileProBillingComponent', () => {
           type: 'legal',
           country: 'catalonia'
         });
-        
+
         HTMLelement.queryAll(By.css('tsl-button'))[0].nativeElement.click();
 
         expect(component.billingForm.valid).toBeFalsy();
@@ -223,7 +223,7 @@ describe('ProfileProBillingComponent', () => {
         }));
 
         it('should show an 18n error message if the action has an error', fakeAsync(() => {
-          spyOn(paymentService, 'deleteBillingInfo').and.returnValue(observableThrowError(''));
+          spyOn(paymentService, 'deleteBillingInfo').and.returnValue(throwError(''));
           spyOn(errorsService, 'i18nError');
 
           component.deleteBillingInfo();

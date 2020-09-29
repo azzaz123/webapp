@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable ,  Subject } from 'rxjs';
+import { of ,  Subject } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CatalogProListComponent } from './catalog-pro-list.component';
@@ -59,7 +59,7 @@ describe('CatalogProListComponent', () => {
           provide: ItemService, useValue: {
             selectedItems: [],
             mines() {
-              return observableOf([MOCK_ITEM, MOCK_ITEM]);
+              return of([MOCK_ITEM, MOCK_ITEM]);
             },
             deselectItems() {
             },
@@ -70,7 +70,7 @@ describe('CatalogProListComponent', () => {
             getUrgentProducts() {
             },
             get() {
-              return observableOf(MOCK_ITEM_V3);
+              return of(MOCK_ITEM_V3);
             }
           }
         },
@@ -87,17 +87,17 @@ describe('CatalogProListComponent', () => {
         {
           provide: UserService, useValue: {
             getStats() {
-              return observableOf(MOCK_USER_STATS);
+              return of(MOCK_USER_STATS);
             },
             me() {
-              return observableOf({});
+              return of({});
             }
           }
         },
         {
           provide: ErrorsService, useValue: {
             show() {
-              return observableOf({});
+              return of({});
             },
             i18nError() {
             }
@@ -113,13 +113,13 @@ describe('CatalogProListComponent', () => {
         {
           provide: PaymentService, useValue: {
             pay() {
-              return observableOf({});
+              return of({});
             }
         }
         },
         {
           provide: ActivatedRoute, useValue: {
-            params: observableOf({
+            params: of({
               code: 200
             })
           }
@@ -152,7 +152,7 @@ describe('CatalogProListComponent', () => {
       spyOn(router, 'navigate');
       spyOn(localStorage, 'getItem').and.returnValue('bump');
       spyOn(localStorage, 'removeItem');
-      route.params = observableOf({
+      route.params = of({
         code: 200,
         extras: true
       });
@@ -173,7 +173,7 @@ describe('CatalogProListComponent', () => {
     it('should open bump confirmation modal and redirect to extras if code is 202', fakeAsync(() => {
       spyOn(router, 'navigate');
       spyOn(localStorage, 'getItem').and.returnValue('bump');
-      route.params = observableOf({
+      route.params = of({
         code: '202',
       });
       component['modalRef'] = <any>{
@@ -201,10 +201,10 @@ describe('CatalogProListComponent', () => {
     }));
 
     it('should feature order', fakeAsync(() => {
-      spyOn(itemService, 'getUrgentProducts').and.returnValue(observableOf(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getUrgentProducts').and.returnValue(of(PRODUCT_RESPONSE));
       spyOn(localStorage, 'getItem').and.returnValue('false');
       spyOn(component, 'feature');
-      route.params = observableOf({
+      route.params = of({
         urgent: true,
         itemId: MOCK_ITEM.id
       });
@@ -219,7 +219,7 @@ describe('CatalogProListComponent', () => {
     it('should open the urgent modal if transaction is set as urgent', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('urgent');
       spyOn(localStorage, 'removeItem');
-      route.params = observableOf({
+      route.params = of({
         code: 200
       });
 
@@ -237,7 +237,7 @@ describe('CatalogProListComponent', () => {
     it('should open the bump modal if transaction is set as bump', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('bump');
       spyOn(localStorage, 'removeItem');
-      route.params = observableOf({
+      route.params = of({
         code: 200
       });
 
@@ -253,7 +253,7 @@ describe('CatalogProListComponent', () => {
     }));
 
     it('should open sold modal', fakeAsync(() => {
-      route.params = observableOf({
+      route.params = of({
         sold: true,
         itemId: ITEM_ID
       });
@@ -282,7 +282,7 @@ describe('CatalogProListComponent', () => {
 
     it('should show error message if alreadyFeatured', fakeAsync(() => {
       spyOn(errorService, 'i18nError');
-      route.params = observableOf({
+      route.params = of({
         alreadyFeatured: true
       });
 
@@ -403,7 +403,7 @@ describe('CatalogProListComponent', () => {
     });
     describe('success', () => {
       beforeEach(() => {
-        spyOn(itemService, 'purchaseProducts').and.returnValue(observableOf([]));
+        spyOn(itemService, 'purchaseProducts').and.returnValue(of([]));
         eventId = null;
       });
       describe('with credit card', () => {

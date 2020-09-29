@@ -2,7 +2,7 @@ import { Component, DebugElement, EventEmitter, NO_ERRORS_SCHEMA } from '@angula
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { ItemService } from '../../../core/item/item.service';

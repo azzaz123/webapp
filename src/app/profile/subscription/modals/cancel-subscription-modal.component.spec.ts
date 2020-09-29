@@ -7,7 +7,7 @@ import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.s
 import { ToastService } from '../../../layout/toast/toast.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { SubscriptionsService } from '../../../core/subscriptions/subscriptions.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../tests/analytics.fixtures.spec';
 import {
@@ -82,7 +82,7 @@ describe('CancelSubscriptionModalComponent', () => {
       spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({status: 202}));
 
       component.cancelSubscription();
-      
+
       expect(component.subscriptionsService.cancelSubscription).toHaveBeenCalledWith(tier.id);
       expect(component.loading).toBe(false);
     });

@@ -1,5 +1,5 @@
 
-import {of as observableOf } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatsGraphComponent } from './stats-graph.component';
@@ -20,7 +20,7 @@ describe('StatsGraphComponent', () => {
         {
           provide: StatisticsService, useValue: {
           getStatistics() {
-            return observableOf(STATISTICS_RESPONSE);
+            return of(STATISTICS_RESPONSE);
           }
         }
         },

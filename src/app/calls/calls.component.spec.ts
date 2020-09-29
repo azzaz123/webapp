@@ -1,5 +1,5 @@
 
-import { of as observableOf, Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CallsComponent } from './calls.component';
@@ -26,13 +26,13 @@ describe('CallsComponent', () => {
         {
           provide: CallsService, useValue: {
             getPage() {
-              return observableOf([]);
+              return of([]);
             }
           }
         },
         {
           provide: ActivatedRoute, useValue: {
-            queryParams: observableOf({})
+            queryParams: of({})
           }
         }
       ],
@@ -66,7 +66,7 @@ describe('CallsComponent', () => {
     });
 
     it('should set status', () => {
-      route.queryParams = observableOf({
+      route.queryParams = of({
         status: 'test'
       });
 
@@ -98,7 +98,7 @@ describe('CallsComponent', () => {
       const CALLS: Call[] = createCallsArray(4);
 
       beforeEach(() => {
-        spyOn(callService, 'getPage').and.returnValue(observableOf(CALLS));
+        spyOn(callService, 'getPage').and.returnValue(of(CALLS));
         component['page'] = 1;
       });
 
@@ -158,7 +158,7 @@ describe('CallsComponent', () => {
         const SUBSCRIPTION = new Subscription();
 
         component['callsSubscription'] = SUBSCRIPTION;
-        spyOn(callService, 'getPage').and.returnValue(observableOf(SUBSCRIPTION));
+        spyOn(callService, 'getPage').and.returnValue(of(SUBSCRIPTION));
         spyOn(component['callsSubscription'], 'unsubscribe');
 
         component.getCalls();

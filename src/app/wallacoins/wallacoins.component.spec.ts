@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../shared/pipes';
 import { PaymentService } from '../core/payments/payment.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PerksModel } from '../core/payments/payment.model';

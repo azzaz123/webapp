@@ -2,14 +2,14 @@ import { MOCK_CONDITIONS } from './../../../tests/extra-info.fixtures.spec';
 import { MOCK_ITEM_CELLPHONES } from './../../../tests/item.fixtures.spec';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { UploadProductComponent } from './upload-product.component';
 import { CategoryService } from '../../core/category/category.service';
-import { CATEGORIES_OPTIONS, CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../../tests/category.fixtures.spec';
+import { CATEGORIES_OPTIONS_CONSUMER_GOODS, CATEGORIES_DATA_CONSUMER_GOODS, CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
@@ -39,6 +39,7 @@ import {
 } from '../../core/analytics/analytics-constants';
 import { BrandModel } from '../brand-model.interface';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
+import { CategoryOption } from 'app/core/category/category-response.interface';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -60,12 +61,12 @@ describe('UploadProductComponent', () => {
   let errorService: ErrorsService;
   let generalSuggestionsService: GeneralSuggestionsService;
   let router: Router;
-  let categoryService: CategoryService;
   let modalService: NgbModal;
   let trackingService: TrackingService;
   let analyticsService: AnalyticsService;
   let deviceService: DeviceDetectorService;
   let userService: UserService;
+  let categoryService: CategoryService;
   const componentInstance: any = {};
 
   beforeEach(async(() => {
@@ -101,11 +102,9 @@ describe('UploadProductComponent', () => {
         },
         {
           provide: CategoryService, useValue: {
-            getUploadCategories() {
-              return of(CATEGORIES_OPTIONS);
-            },
-            isHeroCategory() {
-            },
+            getCategories() {
+              return of(CATEGORIES_DATA_CONSUMER_GOODS);
+            }
           }
         },
         {
@@ -153,8 +152,6 @@ describe('UploadProductComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadProductComponent);
     component = fixture.componentInstance;
-    categoryService = TestBed.inject(CategoryService);
-    spyOn(categoryService, 'getUploadCategories').and.callThrough();
     errorService = TestBed.inject(ErrorsService);
     generalSuggestionsService = TestBed.inject(GeneralSuggestionsService);
     router = TestBed.inject(Router);
@@ -163,8 +160,9 @@ describe('UploadProductComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     deviceService = TestBed.inject(DeviceDetectorService);
     userService = TestBed.inject(UserService);
-    fixture.detectChanges();
+    categoryService = TestBed.inject(CategoryService);
     appboy.initialize(environment.appboy);
+    fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
@@ -195,50 +193,9 @@ describe('UploadProductComponent', () => {
     });
 
     it('should get and set categories', () => {
-      spyOn(categoryService, 'isHeroCategory').and.returnValues(false, false, false, false, true, true);
-
       component.ngOnInit();
 
-      expect(categoryService.getUploadCategories).toHaveBeenCalled();
       expect(component.categories).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS);
-    });
-
-    describe('with preselected category', () => {
-      beforeEach(() => {
-        component.categoryId = REALESTATE_CATEGORY;
-
-        component.ngOnInit();
-      });
-
-      it('should set form category_id', () => {
-        expect(component.uploadForm.get('category_id').value).toBe(REALESTATE_CATEGORY);
-      });
-
-      it('should set form delivery_info', () => {
-        expect(component.uploadForm.get('delivery_info').value).toBe(null);
-      });
-
-      it('should set fixedCategory', () => {
-        expect(component.fixedCategory).toBe('Real Estate');
-      });
-    });
-
-    describe('edit mode', () => {
-      it('should set fixedCategory if is hero category', () => {
-        spyOn(categoryService, 'isHeroCategory').and.returnValue(true);
-        component.item = new Item(
-          ITEM_DATA.id,
-          ITEM_DATA.legacy_id,
-          ITEM_DATA.owner,
-          ITEM_DATA.title,
-          ITEM_DATA.description,
-          13000
-        );
-
-        component.ngOnInit();
-
-        expect(component.fixedCategory).toBe('Real Estate');
-      });
     });
 
     describe('when the item has extra fields', () => {
@@ -923,6 +880,74 @@ describe('UploadProductComponent', () => {
       component.resetFashionExtraFields();
 
       expect(component.getSizes).toHaveBeenCalled();
+    });
+  });
+
+  describe('when getting the upload categories from the server', () => {
+    it('should get value, label and icon from consumer goods categories', () => {
+      spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
+      const expected: CategoryOption[] = [
+        {
+          value: '15000',
+          icon_id: 'pc',
+          label: 'Computers & Electronic',
+        },
+        {
+          value: '15245',
+          icon_id: 'pc',
+          label: 'Computers & Electronic',
+        },
+        {
+          value: '14000',
+          icon_id: 'motorbike',
+          label: 'Motorbikes',
+        },
+        {
+          value: '12800',
+          icon_id: 'helmet',
+          label: 'Motor parts',
+        }
+      ];
+
+      component.ngOnInit();
+
+      expect(component.categories).toEqual(expected);
+    });
+  });
+
+  describe('when the category changes', () => {
+    it('should reset category identifier field when the new category is "everything else" category', () => {
+      component.categoryId = '-1';
+
+      component.ngOnChanges({
+        categoryId: new SimpleChange(null, component.categoryId, true)
+      });
+      fixture.detectChanges();
+
+      expect(component.uploadForm.value.category_id).toEqual('');
+    });
+
+    it('should set the category field as the new one when the category is not "everything else" category', () => {
+      component.categoryId = `${CATEGORY_IDS.GAMES_CONSOLES}`;
+
+      component.ngOnChanges({
+        categoryId: new SimpleChange(null, component.categoryId, true)
+      });
+      fixture.detectChanges();
+
+      expect(component.uploadForm.value.category_id).toEqual(`${CATEGORY_IDS.GAMES_CONSOLES}`);
+    });
+  });
+
+  describe('when the category is a hero category', () => {
+    it('should say that the category is a hero category', () => {
+      expect(component.isHeroCategory(CATEGORY_IDS.CAR)).toBeTruthy();
+    });
+  });
+
+  describe('when the category is not a hero category', () => {
+    it('should say that the category is not a hero category', () => {
+      expect(component.isHeroCategory(CATEGORY_IDS.GAMES_CONSOLES)).toBeFalsy();
     });
   });
 

@@ -1,4 +1,4 @@
-import { from as observableFrom, of as observableOf, Observable, Observer, ReplaySubject, throwError } from 'rxjs';
+import { from, of, Observable, Observer, ReplaySubject, throwError } from 'rxjs';
 
 import { map, tap, mergeMap } from 'rxjs/operators';
 import { clone, eq, remove, includes } from 'lodash-es';
@@ -97,7 +97,7 @@ export class XmppService {
     if (!this.clientConnected) {
       return throwError(this.xmppError);
     }
-    return observableOf(true);
+    return of(true);
   }
 
   get clientConnected(): boolean {
@@ -273,7 +273,7 @@ export class XmppService {
   }
 
   private setDefaultPrivacyList(): Observable<any> {
-    return observableFrom(this.client.sendIq({
+    return from(this.client.sendIq({
       type: 'set',
       privacy: {
         default: {
@@ -286,7 +286,7 @@ export class XmppService {
   }
 
   private getPrivacyList(): Observable<any> {
-    return observableFrom(this.client.sendIq({
+    return from(this.client.sendIq({
       type: 'get',
       privacy: {
         list: {
@@ -312,7 +312,7 @@ export class XmppService {
         if (this.blockedUsers.length === 1) {
           return this.setDefaultPrivacyList();
         }
-        return observableOf({});
+        return of({});
       }),
       tap(() => {
         user.blocked = true;
@@ -341,7 +341,7 @@ export class XmppService {
   private setPrivacyList(ids: string[]): Observable<any> {
     const jids = [];
     ids.map(id => jids.push(this.createJid(id).bare));
-    return observableFrom(this.client.sendIq({
+    return from(this.client.sendIq({
       type: 'set',
       privacy: {
         list: {

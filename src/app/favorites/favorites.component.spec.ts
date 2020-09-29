@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { ItemService } from '../core/item/item.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -25,20 +25,20 @@ describe('FavoritesComponent', () => {
       providers: [
         { provide: ItemService, useValue: {
             myFavorites () {
-              return observableOf({data: [MOCK_ITEM, MOCK_ITEM], init: 2});
+              return of({data: [MOCK_ITEM, MOCK_ITEM], init: 2});
             }
           }
         },
         { provide: ProfileService, useValue: {
             myFavorites () {
-              return observableOf({data: [MOCK_PROFILE, MOCK_PROFILE], init: 2});
+              return of({data: [MOCK_PROFILE, MOCK_PROFILE], init: 2});
             }
           }
         },
         {
           provide: UserService, useValue: {
             getStats() {
-              return observableOf(MOCK_USER_STATS);
+              return of(MOCK_USER_STATS);
             }
           }
         },
@@ -112,7 +112,7 @@ describe('FavoritesComponent', () => {
     });
 
     it('should set end true if no init', () => {
-      itemServiceSpy.and.returnValue(observableOf({data: [MOCK_ITEM, MOCK_ITEM], init: null}));
+      itemServiceSpy.and.returnValue(of({data: [MOCK_ITEM, MOCK_ITEM], init: null}));
       component.getItems();
 
       expect(component['end']).toBeTruthy();
@@ -191,7 +191,7 @@ describe('FavoritesComponent', () => {
     });
 
     it('should set end true if no init', () => {
-      profileServiceSpy.and.returnValue(observableOf({data: [MOCK_PROFILE, MOCK_PROFILE], init: null}));
+      profileServiceSpy.and.returnValue(of({data: [MOCK_PROFILE, MOCK_PROFILE], init: null}));
       component.getProfiles();
 
       expect(component['end']).toBeTruthy();

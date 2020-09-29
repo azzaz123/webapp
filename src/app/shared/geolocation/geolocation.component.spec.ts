@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeolocationComponent } from './geolocation.component';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures.spec';
 import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
