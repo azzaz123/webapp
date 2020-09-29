@@ -104,7 +104,7 @@ export class RemoteConsoleService implements OnDestroy {
     });
   }
 
-  public sendConnectionChatFailed(connectionType: ConnectionType): void {
+  public sendChatFailedConnection(connectionType: ConnectionType): void {
     this.remoteConsoleClientService.info({
       ...this.getCommonLog(this.userService.user.id),
       metric_type: MetricTypeEnum.CHAT_FAILED_CONNECTION,

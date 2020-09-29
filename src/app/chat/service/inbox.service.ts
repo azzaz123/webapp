@@ -49,7 +49,6 @@ export class InboxService {
     catchError(() => {
       this.errorRetrievingInbox = true;
       this.remoteConsoleService.sendChatConnectionTime(ConnectionType.INBOX, false);
-      this.remoteConsoleService.sendConnectionChatFailed(ConnectionType.INBOX);
       return of([]);
     }))
     .subscribe((conversations: InboxConversation[]) => {

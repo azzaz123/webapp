@@ -173,12 +173,6 @@ describe('InboxService', () => {
 
       expect(remoteConsoleService.sendChatConnectionTime).toHaveBeenCalledWith('inbox', false);
     });
-
-    it('should send metric connection to inbox is failed', () => {
-      inboxService.init();
-
-      expect(remoteConsoleService.sendConnectionChatFailed).toHaveBeenCalledWith('inbox');
-    });
   });
 
   describe('process API item status as item flags', () => {

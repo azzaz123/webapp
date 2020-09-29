@@ -266,7 +266,7 @@ describe('RemoteConsoleService', () => {
     it('should call connection failed if inbox return error', () => {
       spyOn(Date, 'now').and.returnValues(4000);
 
-      service.sendConnectionChatFailed(ConnectionType.INBOX);
+      service.sendChatFailedConnection(ConnectionType.INBOX);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
@@ -279,7 +279,7 @@ describe('RemoteConsoleService', () => {
     it('should call connection failed if inbox return error', () => {
       spyOn(Date, 'now').and.returnValues(4000);
 
-      service.sendConnectionChatFailed(ConnectionType.XMPP);
+      service.sendChatFailedConnection(ConnectionType.XMPP);
 
       expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
         ...commonLog,
