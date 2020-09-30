@@ -784,7 +784,6 @@
   <translation id="6419236949160000852">Este es el lugar donde se encuentra tu espacio. Esta ubicación podría ser diferente de la ubicación de tu perfil.</translation>
   <translation id="591481955696105417">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 4MB.</translation>
   <translation id="2852614655612881023">¿Que aspecto tiene?</translation>
-  <translation id="258836646318650091">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 10MB. Sólo aceptamos imágenes .jpg</translation>
   <translation id="5171793882050317851" desc="La distancia entre el usuario y el item">
     A
     <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>
