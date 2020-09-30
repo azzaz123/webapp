@@ -4,13 +4,12 @@ import { map, tap, mergeMap } from 'rxjs/operators';
 import { clone, eq, remove, includes } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { EventService } from '../event/event.service';
-import { XmppBodyMessage, XMPPClient, JID, XmppError } from './xmpp.interface';
+import { XmppBodyMessage, XMPPClient, JID } from './xmpp.interface';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { ChatSignal, ChatSignalType } from '../../chat/model';
 import { InboxConversation, InboxMessage, InboxUser, MESSAGES_WHITE_LIST, MessageStatus, MessageType } from '../../chat/model';
 import { RemoteConsoleService } from '../remote-console';
-import { ConnectionType } from '../remote-console/connection-type';
 
 @Injectable()
 export class XmppService {
