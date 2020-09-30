@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ItemResolverService } from './item-resolver.service';
 import { ItemService } from '../core/item/item.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { ITEM_ID, MOCK_ITEM } from '../../tests/item.fixtures.spec';
 import { Item } from '../core/item/item';

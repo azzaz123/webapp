@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UploadComponent } from './upload.component';
 import { ItemService } from '../core/item/item.service';
 import { PRODUCT_RESPONSE, ITEM_DATA_V3 } from '../../tests/item.fixtures.spec';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { UserService } from '../core/user/user.service';
 import { CARS_CATEGORY } from '../core/item/item-categories';

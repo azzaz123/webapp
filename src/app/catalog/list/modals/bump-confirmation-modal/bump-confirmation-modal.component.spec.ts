@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { fakeAsync, ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { BumpConfirmationModalComponent } from './bump-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -41,14 +41,14 @@ describe('BumpConfirmationModalComponent', () => {
           {
             provide: UserService, useValue: {
             me() {
-              return observableOf(MOCK_USER);
+              return of(MOCK_USER);
             }
           }
           },
           {
             provide: PaymentService, useValue: {
               getCreditInfo() {
-                return observableOf(CREDIT_INFO);
+                return of(CREDIT_INFO);
               }
             }
           },

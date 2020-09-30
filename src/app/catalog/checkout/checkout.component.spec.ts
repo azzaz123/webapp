@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutComponent } from './checkout.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -29,7 +29,7 @@ describe('CheckoutComponent', () => {
           provide: ItemService, useValue: {
           selectedItems: SELECTED_ITEMS,
           getItemsWithAvailableProducts() {
-            return observableOf(ITEMS_WITH_PRODUCTS);
+            return of(ITEMS_WITH_PRODUCTS);
           }
         }
         },
@@ -42,13 +42,13 @@ describe('CheckoutComponent', () => {
         {
           provide: PaymentService, useValue: {
           getCreditInfo() {
-            return observableOf({});
+            return of({});
           }
         }
         },
         {
           provide: ActivatedRoute, useValue: {
-            params: observableOf({})
+            params: of({})
         }
         }
       ],
@@ -95,7 +95,7 @@ describe('CheckoutComponent', () => {
       });
 
       it('should set provincialBump to true if no citybump', () => {
-        spyCall.and.returnValue(observableOf(ITEMS_WITH_PRODUCTS_PROVINCE));
+        spyCall.and.returnValue(of(ITEMS_WITH_PRODUCTS_PROVINCE));
 
         component.ngOnInit();
 
@@ -106,7 +106,7 @@ describe('CheckoutComponent', () => {
     describe('with params', () => {
 
       beforeEach(() => {
-        route.params = observableOf({
+        route.params = of({
           itemId: ITEM_ID
         });
       });
@@ -119,7 +119,7 @@ describe('CheckoutComponent', () => {
       });
 
       it('should set provincialBump to true if no citybump', () => {
-        spyCall.and.returnValue(observableOf(ITEMS_WITH_PRODUCTS_PROVINCE));
+        spyCall.and.returnValue(of(ITEMS_WITH_PRODUCTS_PROVINCE));
 
         component.ngOnInit();
 
@@ -127,7 +127,7 @@ describe('CheckoutComponent', () => {
       });
 
       it('should redirect if no products available', () => {
-        spyCall.and.returnValue(observableOf([]));
+        spyCall.and.returnValue(of([]));
         spyOn(router, 'navigate');
 
         component.ngOnInit();
@@ -143,7 +143,7 @@ describe('CheckoutComponent', () => {
         credit: 2000,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
       component.ngOnInit();
 
@@ -156,7 +156,7 @@ describe('CheckoutComponent', () => {
         credit: 0,
         factor: 100
       };
-      spyOn(paymentService, 'getCreditInfo').and.returnValue(observableOf(creditInfo));
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(of(creditInfo));
 
       component.ngOnInit();
 

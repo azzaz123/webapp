@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CartProComponent } from './cart-pro.component';
@@ -58,10 +58,10 @@ describe('CartProComponent', () => {
         {
           provide: PaymentService, useValue: {
             getPerks() {
-              return observableOf(perksModel);
+              return of(perksModel);
             },
             getStatus() {
-              return observableOf(MOCK_STATUS);
+              return of(MOCK_STATUS);
             }
           }
         },
@@ -70,7 +70,7 @@ describe('CartProComponent', () => {
         },
         {
           provide: CartService, useValue: {
-            cart$: observableOf(CART_CHANGE),
+            cart$: of(CART_CHANGE),
             createInstance() {
             },
             remove() {
@@ -82,7 +82,7 @@ describe('CartProComponent', () => {
         {
           provide: ItemService, useValue: {
             bumpProItems() {
-              return observableOf({});
+              return of({});
             },
             deselectItems() {
             }
@@ -184,7 +184,7 @@ describe('CartProComponent', () => {
 
   describe('applyBumps', () => {
     it('should prepare the order', () => {
-      spyOn(itemService, 'bumpProItems').and.returnValue(observableOf([]));
+      spyOn(itemService, 'bumpProItems').and.returnValue(of([]));
       const order: OrderPro[] = component.cart.prepareOrder();
 
       component.applyBumps();
@@ -194,7 +194,7 @@ describe('CartProComponent', () => {
 
     describe('success', () => {
       beforeEach(() => {
-        spyOn(itemService, 'bumpProItems').and.returnValue(observableOf([]));
+        spyOn(itemService, 'bumpProItems').and.returnValue(of([]));
         spyOn(itemService, 'deselectItems').and.callThrough();
         spyOn(errorService, 'i18nError');
         spyOn(router, 'navigate');
@@ -258,7 +258,7 @@ describe('CartProComponent', () => {
 
       it('should thrown bumpError if failedProducts', () => {
         const failedProducts: string = MOCK_PROITEM.item.id;
-        spyOn(itemService, 'bumpProItems').and.returnValue(observableOf(failedProducts));
+        spyOn(itemService, 'bumpProItems').and.returnValue(of(failedProducts));
 
         component.applyBumps();
 
@@ -267,7 +267,7 @@ describe('CartProComponent', () => {
       });
 
       it('should thrown bumpError if operation not succeed and text have value', () => {
-        spyOn(itemService, 'bumpProItems').and.returnValue(observableThrowError({
+        spyOn(itemService, 'bumpProItems').and.returnValue(throwError({
           text() {
             return '';
           }

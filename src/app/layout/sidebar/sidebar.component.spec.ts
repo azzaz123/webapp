@@ -1,5 +1,5 @@
 
-import { of as observableOf, Observable } from 'rxjs';
+import { of, Observable } from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -51,16 +51,16 @@ describe('SidebarComponent', () => {
             logout() {
             },
             me(): Observable<User> {
-              return observableOf(MOCK_USER);
+              return of(MOCK_USER);
             },
             isProfessional() {
-              return observableOf(true);
+              return of(true);
             }
           },
         },
         {
           provide: MessageService, useValue: {
-            totalUnreadMessages$: observableOf(1)
+            totalUnreadMessages$: of(1)
           }
         }
       ],

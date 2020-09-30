@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material';
 
@@ -30,11 +30,11 @@ class NgbModalMock {
 
 class ReviewServiceMock {
   check() {
-    return observableOf(true);
+    return of(true);
   }
 
   createAsBuyer() {
-    return observableOf({});
+    return of({});
   }
 }
 
@@ -110,7 +110,7 @@ describe('ThirdVoiceReviewComponent', () => {
     it('should set show button false and call check', () => {
       spyOn(localStorage, 'getItem').and.returnValue(undefined);
       spyOn(localStorage, 'setItem');
-      spyOn(reviewService, 'check').and.returnValue(observableOf(true));
+      spyOn(reviewService, 'check').and.returnValue(of(true));
 
       component.ngOnInit();
 
@@ -121,7 +121,7 @@ describe('ThirdVoiceReviewComponent', () => {
 
     it('should set show button true and call check', () => {
       spyOn(localStorage, 'getItem').and.returnValue(undefined);
-      spyOn(reviewService, 'check').and.returnValue(observableOf(false));
+      spyOn(reviewService, 'check').and.returnValue(of(false));
 
       component.ngOnInit();
 

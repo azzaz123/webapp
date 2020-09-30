@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import {distinctUntilChanged, catchError, switchMap} from 'rxjs/operators';
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
@@ -33,7 +33,7 @@ export class SuggesterComponent implements OnInit {
       switchMap(term => term.length < this.MIN_LENGTH ? [] :
         this.suggesterService.getSuggestions(term).pipe(
           catchError(() => {
-            return observableOf([]);
+            return of([]);
           }))),)
 
   public formatter = (x: any) => x.suggestion;

@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutExtrasProComponent } from './checkout-extras-pro.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -20,7 +20,7 @@ describe('CheckoutExtrasProComponent', () => {
         {
           provide: PaymentService, useValue: {
             getPacks() {
-              return observableOf({});
+              return of({});
             }
           }
         }
@@ -39,7 +39,7 @@ describe('CheckoutExtrasProComponent', () => {
 
   describe('ngOnInit', () => {
     beforeEach(() => {
-      spyOn(paymentService, 'getPacks').and.returnValue(observableOf(createPacksFixture()));
+      spyOn(paymentService, 'getPacks').and.returnValue(of(createPacksFixture()));
 
       component.ngOnInit();
     });

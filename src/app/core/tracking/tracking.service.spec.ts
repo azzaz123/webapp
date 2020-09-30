@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { CookieService } from 'ngx-cookie';
-import { of } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { WindowRef } from '../window/window.service';
@@ -104,7 +103,7 @@ describe('Service: Tracking', () => {
     it('should send professional flag when user is professional', () => {
       const expectedAttributes = JSON.stringify({ conversation_id: 'conversation', professional: true });
       jest.spyOn(userService, 'user', 'get').mockReturnValue({ type: 'professional' } as any);
-      
+
       service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
       const req = httpMock.expectOne(environment.clickStreamURL);
       req.flush({});

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NOTIFICATION_DURATION, NotificationService } from './notification.service';
 import { TrackingService } from '../tracking/tracking.service';
@@ -72,7 +72,7 @@ describe('Service: Notification', () => {
 
     beforeEach(() => {
       spyOn(MOCKED_NOTIFICATION.notification, 'close');
-      spyOn(notification, 'create').and.returnValue(observableOf(MOCKED_NOTIFICATION));
+      spyOn(notification, 'create').and.returnValue(of(MOCKED_NOTIFICATION));
       message = MOCK_MESSAGE;
       message.user = MOCK_USER;
     });

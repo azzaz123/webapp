@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable, of } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal.component';
@@ -136,7 +136,7 @@ describe('BuyWallacoinsModalComponent', () => {
 
       describe('error', () => {
         it('should call toastr', () => {
-          paymentService.orderExtrasProPack = jasmine.createSpy().and.returnValue(observableThrowError({
+          paymentService.orderExtrasProPack = jasmine.createSpy().and.returnValue(throwError({
             text() {
               return '';
             }

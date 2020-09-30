@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, forkJoin as observableForkJoin } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 
 import { SUBSCRIPTION_TYPES } from '../../../../core/subscriptions/subscriptions.service';
 import { Item } from '../../../../core/item/item';
@@ -42,7 +42,7 @@ export class TooManyItemsModalComponent implements OnInit {
   }
 
   private hasFreeOption(itemId: string): Observable<boolean> {
-    return observableForkJoin([
+    return forkJoin([
       this.itemService.get(itemId),
       this.subscriptionsService.getSubscriptions(false)
     ])
