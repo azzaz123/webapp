@@ -1,5 +1,5 @@
 import { DeviceInfo } from 'ngx-device-detector';
-import { MetricTypeEnum } from '../app/core/remote-console';
+import { ConnectionType } from 'app/core/remote-console/connection-type';
 
 export class MockRemoteConsoleService {
   sendConnectionTimeout(userId: string, timeout: number): void {
@@ -11,9 +11,6 @@ export class MockRemoteConsoleService {
   sendMessageTimeout(userId: string, messageId: string): void {
   }
 
-  sendAcceptTimeout(messageId: string): void {
-  }
-
   sendMessageActTimeout(messageId: string): void {
   }
 
@@ -23,13 +20,13 @@ export class MockRemoteConsoleService {
   sendXmppConnectionClosedWithError(message: string): void {
   }
 
-  sendConnectionChatTimeout(connectionType: 'inbox' | 'xmpp', success: boolean): void {
+  sendChatConnectionTime(connectionType: ConnectionType, success: boolean): void {
   }
 
   sendMessageAckFailed(messageId: string, description: string): void {
   }
 
-  sendConnectionChatFailed(message: 'inbox' | 'xmpp'): void {
+  sendChatFailedConnection(connectionType: ConnectionType): void {
   }
 }
 

@@ -23,6 +23,7 @@ import { ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewChatScreen, AnalyticsPageView } 
 import { InboxUser } from '../model/inbox-user';
 import { Item } from '../../core/item/item';
 import { InboxItem } from '../model/inbox-item';
+import { DateCalendarPipe } from 'app/shared/pipes';
 
 class AdServiceMock {
   adsRefresh() {
@@ -45,7 +46,7 @@ describe('Component: InboxComponent', () => {
         NgxPermissionsModule,
         NgxPermissionsModule.forRoot()
       ],
-      declarations: [InboxComponent, InboxConversationComponent],
+      declarations: [InboxComponent, InboxConversationComponent, DateCalendarPipe],
       providers: [
         EventService,
         { provide: AdService, useClass: AdServiceMock },
