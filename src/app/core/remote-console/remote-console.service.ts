@@ -53,6 +53,10 @@ export class RemoteConsoleService implements OnDestroy {
   }
 
   public sendChatConnectionTime(connectionType: ConnectionType, success: boolean): void {
+    if (this.chatConnectionMetric?.shouldSendErrorMetric) {
+      this.sendChatFailedConnection();
+    }
+
     if (this.chatConnectionMetric?.alreadySent) {
       return;
     }
@@ -104,12 +108,11 @@ export class RemoteConsoleService implements OnDestroy {
     });
   }
 
-  public sendChatFailedConnection(connectionType: ConnectionType): void {
+  public sendChatFailedConnection(): void {
     this.remoteConsoleClientService.info({
       ...this.getCommonLog(this.userService.user.id),
       metric_type: MetricTypeEnum.CHAT_FAILED_CONNECTION,
-      xmpp_connected: connectionType === ConnectionType.XMPP,
-      description: connectionType === ConnectionType.INBOX ? 'Get inbox is failed' : 'Connection xmpp is failed'
+      xmpp_connected: this.chatConnectionMetric?.xmppConnectionSuccess
     });
   }
 

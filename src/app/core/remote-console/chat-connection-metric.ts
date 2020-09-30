@@ -13,6 +13,10 @@ export class ChatConnectionMetric {
     return this.inboxConnectionSuccess && this.xmppConnectionSuccess && !this.sendingToBackend && !this.alreadySent;
   }
 
+  get shouldSendErrorMetric(): boolean {
+    return !this.inboxConnectionSuccess && !this.xmppConnectionSuccess && this.inboxRetryCount !== 0 && this.xmppRetryCount !== 0;
+  }
+
   constructor() {
     this.inboxConnectionSuccess = false;
     this.xmppConnectionSuccess = false;
