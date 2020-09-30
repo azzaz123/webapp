@@ -53,21 +53,17 @@ export class RemoteConsoleService implements OnDestroy {
   }
 
   public sendChatConnectionTime(connectionType: ConnectionType, success: boolean): void {
-    if (this.chatConnectionMetric?.shouldSendErrorMetric) {
-      this.sendChatFailedConnection();
-    }
-
-    if (this.chatConnectionMetric?.alreadySent) {
-      return;
-    }
-
     if (!this.chatConnectionMetric) {
       this.chatConnectionMetric = new ChatConnectionMetric();
     }
 
     this.chatConnectionMetric.update(connectionType, success);
 
-    if (this.chatConnectionMetric.canBeSent) {
+    if (this.chatConnectionMetric?.shouldSendErrorMetric) {
+      this.sendChatFailedConnection();
+    }
+
+    if (!this.chatConnectionMetric.alreadySent && this.chatConnectionMetric.canBeSent) {
       this.userService.me().subscribe((user: User) => {
         this.chatConnectionMetric.sendingToBackend = true;
         this.remoteConsoleClientService.info$({

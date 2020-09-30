@@ -261,31 +261,41 @@ describe('RemoteConsoleService', () => {
     });
   });
 
-  describe('sendConnectionChatFailed', () => {
+  describe('sendConnectionChatFailed - [CHAT_FAILED_CONNECTION]', () => {
 
-    it('should call connection failed if inbox return error', () => {
-      spyOn(Date, 'now').and.returnValues(4000);
+    describe('when the webapp has connected properly to the chat', () => {
+      beforeEach(() => {
+        service.sendChatConnectionTime(ConnectionType.XMPP, true);
+        service.sendChatConnectionTime(ConnectionType.INBOX, true);
+      });
 
-      service.sendChatFailedConnection(ConnectionType.INBOX);
-
-      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        ...commonLog,
-        'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
-        'description': 'Get inbox is failed',
-        'xmpp_connected': false
+      it('should not track the metric', () => {
+        expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
       });
     });
 
-    it('should call connection failed if inbox return error', () => {
-      spyOn(Date, 'now').and.returnValues(4000);
+    describe('when the webapp could not connect to the real time chat', () => {
+      beforeEach(() => {
+        service.sendChatConnectionTime(ConnectionType.XMPP, false);
+      });
 
-      service.sendChatFailedConnection(ConnectionType.XMPP);
+      it('should not track the metric', () => {
+        expect(remoteConsoleClientService.info).not.toHaveBeenCalled();
+      });
 
-      expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
-        ...commonLog,
-        'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
-        'description': 'Connection xmpp is failed',
-        'xmpp_connected': true
+      describe('and when the webapp can not get the inbox', () => {
+        beforeEach(() => {
+          spyOn(Date, 'now').and.returnValues(4000);
+          service.sendChatConnectionTime(ConnectionType.INBOX, false);
+        });
+
+        it('should track the metric', () => {
+          expect(remoteConsoleClientService.info).toHaveBeenCalledWith({
+            ...commonLog,
+            'metric_type': MetricTypeEnum.CHAT_FAILED_CONNECTION,
+            'xmpp_connected': false
+          });
+        });
       });
     });
   });

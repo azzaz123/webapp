@@ -153,7 +153,7 @@ describe('InboxService', () => {
       spyOn<any>(inboxService, 'getInbox$').and.returnValue(throwError(''));
       spyOn<any>(inboxService, 'getArchivedInbox$').and.returnValue(of([]));
       spyOn(remoteConsoleService, 'sendChatConnectionTime');
-      spyOn(remoteConsoleService, 'sendConnectionChatFailed');
+      spyOn(remoteConsoleService, 'sendChatFailedConnection');
     });
 
     it('should set errorRetrievingInbox to true', () => {

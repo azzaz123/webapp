@@ -26,7 +26,7 @@ export class MockRemoteConsoleService {
   sendMessageAckFailed(messageId: string, description: string): void {
   }
 
-  sendConnectionChatFailed(connectionType: ConnectionType): void {
+  sendChatFailedConnection(connectionType: ConnectionType): void {
   }
 }
 
