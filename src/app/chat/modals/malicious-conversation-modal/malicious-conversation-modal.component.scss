@@ -1,0 +1,72 @@
+@import "~style/common";
+
+:host {
+  height: 100%;
+}
+
+.MaliciousConversationModal {
+  width: 100%;
+  height: 100%;
+  padding: $spacing-xxl;
+  color: $blue-grey-1;
+
+  align-items: center;
+
+  &__close {
+    @include square($spacing-ms);
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    mat-icon {
+      @include square($spacing-ms);
+      line-height: initial; 
+  
+      svg {
+        path {
+          fill: $blue-grey-3;
+        }
+      }
+    }
+  }
+
+  &__title {
+    font-size: $font-size-l;
+    margin-bottom: $spacing-ms;
+  }
+
+  &__description {
+    margin-bottom: $spacing-m;
+  }
+
+  @include media-breakpoint-down(sm) {
+    padding: 20px;
+  }
+}
+
+.MaliciousConversationModal__image {
+  margin-right: 42px;
+
+  img {
+    width: 174px;
+    height: 174px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    height: 50%;
+    margin: 0px;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  tsl-button {
+    width: 100%;
+
+    &::ng-deep {
+      button {
+        width: 100%;
+      }
+    }
+
+  }
+}

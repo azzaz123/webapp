@@ -1,4 +1,4 @@
-import { InboxMessage, MESSAGES_WHITE_LIST } from './inbox-message';
+import { InboxMessage } from './inbox-message';
 import { InboxUser, InboxUserPlaceholder } from './inbox-user';
 import { InboxItemStatus, InboxImage, InboxItem, InboxItemPlaceholder } from './inbox-item';
 import { environment } from '../../../environments/environment';
@@ -98,6 +98,10 @@ export class InboxConversation {
         return this._phoneShared;
     }
 
+    get isFromMaliciousUser(): boolean {
+        return this._user.malicious;
+    }
+
     static errorConversationFromMessage(message: InboxMessage) {
         const user = InboxUserPlaceholder;
         const item = InboxItemPlaceholder;
@@ -126,7 +130,7 @@ export class InboxConversation {
         const userBlocked = Boolean(user.available && user.blocked);
         const profileUrl = `${environment.siteUrl}user/${user.slug}`;
         return new InboxUser(user.hash, user.name, userBlocked, user.available, profileUrl, user.image_url, user.response_rate, null, 0,
-            user.score, user.location, undefined);
+            user.score, user.location, undefined, user.malicious);
     }
 
     private static buildInboxItem(item: InboxItemApi): InboxItem {
