@@ -58,6 +58,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() suggestionValue: string;
 
+  MAX_DESCRIPTION_LENGTH = 640;
+  MAX_TITLE_LENGTH = 50;
+
   public itemTypes: any = ITEM_TYPES;
   public currentCategory: CategoryOption;
   public objectTypes: IOption[] = [];
@@ -570,6 +573,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private getUploadExtraInfoControl(field?: string): AbstractControl {
     return field ? this.uploadForm.get('extra_info').get(field) : this.uploadForm.get('extra_info');
+  }
+
+  isDisabledSize(): boolean {
+    return !!!this.getUploadExtraInfoControl('object_type').value || !!!this.getUploadExtraInfoControl('gender').value || !this.sizes.length;
   }
 }
 

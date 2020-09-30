@@ -120,7 +120,6 @@
   <translation id="8061241481597934094"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
   <translation id="8141228329244837517">Subir un producto a mi catálogo</translation>
   <translation id="6946649608831221934">Subir un producto más a mi catálogo</translation>
-  <translation id="243983274320667129">Información de tu producto</translation>
   <translation id="4601810369894625886">Información de tu inmueble</translation>
   <translation id="8781767917622107949">Información básica</translation>
   <translation id="1511766279515968094">Marca</translation>
@@ -184,16 +183,10 @@
   <translation id="7083003813535210826">Destácalo en todo el país</translation>
   <translation id="8890553633144307762">Atrás</translation>
   <translation id="8260444303636416171">Hago envíos</translation>
-  <translation id="3322682308330601072">¿Qué estás vendiendo?</translation>
   <translation id="5315989345504029668">Escribe bien (y sin faltas de ortografía) para que te encuentren más fácilmente.</translation>
-  <translation id="6649229882788371997">(No te pases)</translation>
   <translation id="3306762056923998233">Añade un precio justo y la categoría que mejor representa a tu producto.</translation>
-  <translation id="1806667489382256324">Categoría</translation>
-  <translation id="5433438112560949935">Añade información relevante como estado, modelo, color...</translation>
-  <translation id="7493287338252374869">Cada detalle cuenta, ¡así que cuéntanos más!</translation>
   <translation id="2806917038528218276">Cosas que suelen preguntar los compradores...</translation>
   <translation id="6390066056926289377"><ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>kg Max<ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
-  <translation id="5972351850683239127">Wallapop Envíos</translation>
   <translation id="2877776180648049476">Dinos cuánto pesa tu producto. Recuerda que la suma del largo, alto y ancho no puede exceder los 270cm.</translation>
   <translation id="2059029015636272683">Ahora puedes enviar a través de wallapop (casi) cualquier cosa de manera completamente segura. ¿Te animas? Además, ¡es gratis para ti!</translation>
   <translation id="4021752662928002901">Actualizar</translation>
@@ -751,8 +744,6 @@
   <translation id="8493154674675875451">Foto de portada</translation>
   <translation id="8871965642938314035">(<ph name="INTERPOLATION"><ex>{{(status?.autorenew_scheduled?.citybump || 0) + (status?.autorenew_scheduled?.zonebump || 0)}}</ex></ph> planeado)</translation>
   <translation id="8132836034776935972">Te encontrarán antes si concretas</translation>
-  <translation id="3892318280760368021">Selecciona un tipo</translation>
-  <translation id="2559885490456050359">Marca</translation>
   <translation id="3351130716079059086">Conviértete en Pro</translation>
   <translation id="6632978177693812295">Vea las opciones Pro</translation>
   <translation id="5342432350421167093">Nombre</translation>
@@ -778,8 +769,6 @@
   <translation id="inboxArchivedBox">Mensajes Archivados</translation>
   <translation id="8721026914522212662">Archivado</translation>
   <translation id="3644199581629588381">Escoge el género de la prenda</translation>
-  <translation id="45739481977493163">Talla</translation>
-  <translation id="1243184761486172945">Selecciona una talla</translation>
   <translation id="5635139981490841331">En pocas palabras...</translation>
   <translation id="1429172029774130296">Cargar más..</translation>
   <translation id="3650030434919639531">Utilizar una tarjeta guardada</translation>
@@ -793,14 +782,9 @@
   <translation id="6158688416374751486">Añade un precio justo y el area en metros cuadrados. Cuéntanos también el estado de la propiedad</translation>
   <translation id="6854882443364631275">Presta atención a los errores ortográficos, así nuestros usuarios podrán encontrar tu propiedad más facilmente.</translation>
   <translation id="6419236949160000852">Este es el lugar donde se encuentra tu espacio. Esta ubicación podría ser diferente de la ubicación de tu perfil.</translation>
-  <translation id="1554463637849211201">Fotos</translation>
   <translation id="591481955696105417">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 4MB.</translation>
   <translation id="2852614655612881023">¿Que aspecto tiene?</translation>
-  <translation id="9201389463111383663">No hagas errores, ya que así la gente te encontrará más facilmente.</translation>
-  <translation id="101333005612370054">Añade un precio justo y la categoria que encaja mejor con tu item</translation>
-  <translation id="1663822447043824807">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 10MB. Sólo aceptamos imágenes .jpg</translation>
-  <translation id="518944399314816423">Puedes enviar (casi) todo por wallapop. ¡Y es gratis!</translation>
-  <translation id="3784792223212622760">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
+  <translation id="258836646318650091">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 10MB. Sólo aceptamos imágenes .jpg</translation>
   <translation id="5171793882050317851" desc="La distancia entre el usuario y el item">
     A
     <ph name="DISTANCE"><ex>{{userDistance() | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>
@@ -941,8 +925,6 @@
   <translation id="8634562482546031854">Tipo de objeto</translation>
   <translation id="3584751519463738454">Tipo de prenda</translation>
   <translation id="7609145883180181653">¿Tienes más de <ph name="INTERPOLATION"><ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name.toLowerCase()}}</ex></ph>? <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Contáctanos directamente<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
-  <translation id="4006216918341440943">Estado del producto</translation>
-  <translation id="8657848090104321234">Escoge un estado</translation>
   <translation id="931255636742351800">Sin límite</translation>
   <translation id="5813721227215884251">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
   <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
@@ -1038,8 +1020,6 @@
   <translation id="AddNewModalSubscribeNow">¡Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días!</translation>
   <translation id="EditSubscriptionModalCancelSubscription">Quiero cancelar mi suscripción</translation>
   <translation id="EditSubscriptionModalCancelFreeTrial">Cancelar prueba gratuita</translation>
-  <translation id="uploadFormSelectGender">Selecciona un género</translation>
-  <translation id="uploadFormSubcategory">Subcategoría</translation>
   <translation id="MissingPaymentMethodTitle">No hay un método de pago disponible</translation>
   <translation id="MissingPaymentMethodSubtitle">No hay un método de pago disponible para que podamos renovar tu suscripción cuando caduque.</translation>
   <translation id="PleaseAddCreditCard">Por favor, añade una tarjeta de crédito para no perder los beneficios de ser PRO</translation>
@@ -1125,4 +1105,35 @@
   <translation id="OrderYourCatalogBy">Ordena tu catálogo por</translation>
   <translation id="OrderBy">Ordenar por</translation>
   <translation id="ManageCatalogSubscription">Gestionar <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></translation>
+  <translation id="UploadProductPrice">Precio</translation>
+  <translation id="UploadProductHeadline">¿Qué estás vendiendo?</translation>
+  <translation id="uploadProductSelectGenderPlaceholder">Selecciona un género</translation>
+  <translation id="uploadProductSubcategory">Subcategoría</translation>
+  <translation id="UploadProductTitle">Información de tu producto</translation>
+  <translation id="uploadProductModel">Modelo</translation>
+  <translation id="UploadProductCurrency">Moneda</translation>
+  <translation id="uploadProductDescription">Descripción</translation>
+  <translation id="UploadProductPricePlaceholder">(No te pases)</translation>
+  <translation id="UploadProductCategory">Categoría</translation>
+  <translation id="UploadProductCategoryPlaceholder">Categoría</translation>
+  <translation id="uploadProductDescriptionPlaceholder">Añade información relevante como estado, modelo, color...</translation>
+  <translation id="uploadProductCoachmarkDescription">Cada detalle cuenta, ¡así que cuéntanos más!</translation>
+  <translation id="uploadProductShipping">Wallapop Envíos</translation>
+  <translation id="uploadProductSubmitUpdate">Actualizar</translation>
+  <translation id="uploadProductSubmitItem">Subir producto</translation>
+  <translation id="uploadProductSelectGender">Sexo</translation>
+  <translation id="uploadProductSubcategoryPlaceholder">Selecciona un tipo</translation>
+  <translation id="uploadProductBrand">Marca</translation>
+  <translation id="uploadProductSelectSize">Talla</translation>
+  <translation id="uploadProductSelectSizePlaceholder">Selecciona una talla</translation>
+  <translation id="uploadProductPhotos">Fotos</translation>
+  <translation id="uploadProductPreview">¿Que aspecto tiene?</translation>
+  <translation id="UploadProductCoachmarkTitle">No hagas errores, ya que así la gente te encontrará más facilmente.</translation>
+  <translation id="UploadProductCoachmarkPrice">Añade un precio justo y la categoria que encaja mejor con tu item</translation>
+  <translation id="uploadProductCoachmarkPictures">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 10MB. Sólo aceptamos imágenes .jpg</translation>
+  <translation id="uploadProductShippingDescription">Puedes enviar (casi) todo por wallapop. ¡Y es gratis!</translation>
+  <translation id="uploadProductCoachmarkShipping">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
+  <translation id="uploadProductSubmitLoading">Subiendo...<ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex></ph>%</translation>
+  <translation id="uploadProductProductCondition">Estado del producto</translation>
+  <translation id="uploadProductProductConditionPlaceholder">Escoge un estado</translation>
 </translationbundle>

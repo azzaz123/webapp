@@ -890,4 +890,43 @@ describe('UploadProductComponent', () => {
     });
   });
 
+
+  describe('when the category drop-down change', () => {
+    it('should clear all extra fields ', () => {
+      component.item = MOCK_ITEM_FASHION;
+      const expected = {
+        object_type: { id: null },
+        brand: null,
+        size: { id: null },
+        gender: null,
+        condition: null
+      };
+
+      component.ngOnInit();
+      component.resetAllExtraFields();
+      fixture.detectChanges();
+
+      expect(component.uploadForm.value.extra_info).toEqual(expected);
+    });
+  });
+
+  describe('when the subcategory drop-down change', () => {
+    it('should clear common extra fields ', () => {
+      component.item = MOCK_ITEM_FASHION;
+      const expected = {
+        object_type: { id: '1' },
+        brand: null,
+        size: { id: null },
+        gender: 'male',
+        condition: null
+      };
+
+      component.ngOnInit();
+      component.resetCommonExtraFields();
+      fixture.detectChanges();
+
+      expect(component.uploadForm.value.extra_info).toEqual(expected);
+    });
+  });
+
 });
