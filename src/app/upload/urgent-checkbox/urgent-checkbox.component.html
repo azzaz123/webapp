@@ -1,27 +1,20 @@
 <div class="box urgent d-none d-md-flex" *ngIf="urgentPrice" [ngbPopover]="coachmarkUrgent" [autoClose]="false"
   triggers="mouseenter:mouseleave">
   <div class="content">
-    <h2 i18n>Apply the ASAP Feature</h2>
-    <p i18n *ngIf="urgentPrice">
-      For only
-      <span *ngIf="creditInfo?.credit <= 0">{{urgentPrice | customCurrency:'EUR'}}</span>
-      <span
-        *ngIf="creditInfo?.credit > 0">{{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</span>
-      <span *ngIf="creditInfo?.currencyName === 'wallacoins' && creditInfo?.credit > 0">wallacoins</span>
-      <span *ngIf="creditInfo?.currencyName === 'wallacredits' && creditInfo?.credit > 0">from your credit</span>
-      mark your product as "Asap" for 7 days to differentiate it in the wall and make it easier to find through the asap
-      filter.
+    <h2 i18n="@@UrgentCheckboxTitle">Mark it as "urgent"!</h2>
+    <p i18n="@@UrgentCheckboxDescription">
+      Highlight your product ad by marking it as "urgent". For 7 days it will stand out from other products and attract the attention of more buyers.
     </p>
     <div class="checkbox">
       <button type="button" class="select" [ngClass]="{'selected': isUrgent}" (click)="selectUrgent()">
         <mat-icon svgIcon="check"></mat-icon>
       </button>
-      <span i18n [hidden]="isUrgent" (click)="selectUrgent()">Check as ASAP</span>
-      <span i18n *ngIf="isUrgent" [ngClass]="{'selected': isUrgent}" (click)="selectUrgent()">Checked as ASAP</span>
+      <span i18n="@@UrgentCheckboxDisabled" [hidden]="isUrgent" (click)="selectUrgent()">Mark as "urgent"</span>
+      <span i18n="@@UrgentCheckboxEnabled" *ngIf="isUrgent" [ngClass]="{'selected': isUrgent}" (click)="selectUrgent()">Marked as "urgent"</span>
     </div>
   </div>
   <div class="urgent-background" [class.active]="isUrgent"></div>
   <ng-template #coachmarkUrgent>
-    <div i18n>Your product will be more visible and you will sell it faster.</div>
+    <div i18n="@@UrgentCheckboxTooltip">Your product will be more visible and you will sell it faster.</div>
   </ng-template>
 </div>

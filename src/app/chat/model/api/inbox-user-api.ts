@@ -10,4 +10,5 @@ export class InboxUserApi {
   location: InboxLocationApi;
   response_rate: string;
   slug: string;
+  malicious: boolean;
 }
